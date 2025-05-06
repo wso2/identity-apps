@@ -41,11 +41,12 @@ import {
     ScimOperationsInterface,
     SearchRoleInterface
 } from "@wso2is/admin.roles.v2/models/roles";
-import { ConnectorPropertyInterface  } from "@wso2is/admin.server-configurations.v1";
+import { ConnectorPropertyInterface, ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1";
 import { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
 import { getAssociationType } from "@wso2is/admin.tenants.v1/utils/tenants";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { getUserNameWithoutDomain, resolveUserstore } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -67,6 +68,7 @@ import {
     DangerZone,
     DangerZoneGroup,
     EmphasizedSegment,
+    LinkButton,
     Popup,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
@@ -79,18 +81,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
-import { updateUserInfo } from "../api";
+import { resendCode, updateUserInfo } from "../api";
 import {
     ACCOUNT_LOCK_REASON_MAP,
+    AccountLockedReason,
+    AccountState,
     AdminAccountTypes,
+    AttributeDataType,
     CONNECTOR_PROPERTY_TO_CONFIG_STATUS_MAP,
     LocaleJoiningSymbol,
     PASSWORD_RESET_PROPERTIES,
+    RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP,
+    RecoveryScenario,
     UserManagementConstants
 } from "../constants";
 import {
     AccountConfigSettingsInterface,
     PatchUserOperationValue,
+    ResendCodeRequestData,
     SchemaAttributeValueInterface,
     SubValueInterface
 } from "../models/user";
@@ -211,6 +219,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     );
     const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     const hasUsersUpdatePermissions: boolean = useRequiredScopes(
         featureConfig?.users?.scopes?.update
@@ -222,6 +232,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchemaInterface[]>();
+    const [ simpleMultiValuedExtendedProfileSchema, setSimpleMultiValuedExtendedProfileSchema ]
+        = useState<ProfileSchemaInterface[]>();
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ showAdminRevokeConfirmationModal, setShowAdminRevokeConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<ProfileInfoInterface>(undefined);
@@ -247,6 +259,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const accountLocked: boolean = user[userConfig.userProfileSchema]?.accountLocked === "true" ||
         user[userConfig.userProfileSchema]?.accountLocked === true;
     const accountLockedReason: string = user[userConfig.userProfileSchema]?.lockedReason;
+    const accountState: string = user[userConfig.userProfileSchema]?.accountState;
     const accountDisabled: boolean = user[userConfig.userProfileSchema]?.accountDisabled === "true" ||
         user[userConfig.userProfileSchema]?.accountDisabled === true;
     const oneTimePassword: string = user[userConfig.userProfileSchema]?.oneTimePassword;
@@ -305,15 +318,26 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * Sort the elements of the profileSchema state accordingly by the displayOrder attribute in the ascending order.
      */
     useEffect(() => {
+        const META_VERSION: string = ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION");
+        const filteredSchemas: ProfileSchemaInterface[] = [];
+        const simpleMultiValuedExtendedSchemas: ProfileSchemaInterface[] = [];
 
-        const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas([ ...profileSchemas ])
-            .filter((item: ProfileSchemaInterface) =>
-                item.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION"))
-            .sort((a: ProfileSchemaInterface, b: ProfileSchemaInterface) => {
-                return getDisplayOrder(a) - getDisplayOrder(b);
-            });
+        for (const schema of ProfileUtils.flattenSchemas([ ...profileSchemas ])) {
+            if (schema.name === META_VERSION) {
+                continue;
+            }
+            // Only simple multi-valued attributes in extended schemas are supported generally.
+            if (schema.extended && schema.multiValued && schema.type !== AttributeDataType.COMPLEX) {
+                simpleMultiValuedExtendedSchemas.push(schema);
+            }
+            filteredSchemas.push(schema);
+        }
 
-        setProfileSchema(sortedSchemas);
+        filteredSchemas.sort((a: ProfileSchemaInterface, b: ProfileSchemaInterface) =>
+            getDisplayOrder(a) - getDisplayOrder(b));
+
+        setProfileSchema(filteredSchemas);
+        setSimpleMultiValuedExtendedProfileSchema(simpleMultiValuedExtendedSchemas);
     }, [ profileSchemas ]);
 
     useEffect(() => {
@@ -358,8 +382,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         } else {
                             const schemaName:string = schemaNames[0];
 
-                            if (schema.extended && userInfo[userConfig.userProfileSchema]
-                                && userInfo[userConfig.userProfileSchema][schemaNames[0]]) {
+                            // System Schema
+                            if (schema.extended
+                                && userInfo[userConfig.userProfileSchema]?.[schemaNames[0]]
+                            ) {
                                 if (UserManagementConstants.MULTI_VALUED_ATTRIBUTES.includes(schemaNames[0])) {
                                     const attributeValue: string | string[] =
                                         userInfo[userConfig.userProfileSchema]?.[schemaNames[0]];
@@ -378,8 +404,21 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 return;
                             }
 
-                            if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
-                                && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]) {
+                            // Enterprise Schema
+                            if (schema.extended
+                                && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]]
+                            ) {
+                                if (schema.multiValued) {
+                                    const attributeValue: string | string[] =
+                                        userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]];
+                                    const formattedValue: string = Array.isArray(attributeValue)
+                                        ? attributeValue.join(",")
+                                        : "";
+
+                                    tempProfileInfo.set(schema.name, formattedValue);
+
+                                    return;
+                                }
                                 tempProfileInfo.set(
                                     schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
                                 );
@@ -387,13 +426,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 return;
                             }
 
+                            // Custom Schema
                             if (
                                 schema.extended
                                 && userInfo?.[userSchemaURI]?.[schemaNames[0]]
                             ) {
-                                if (UserManagementConstants.MULTI_VALUED_ATTRIBUTES.includes(schemaNames[0])) {
-                                    const attributeValue: string | string[] =
-                                        userInfo[userSchemaURI]?.[schemaNames[0]];
+                                if (schema.multiValued) {
+                                    const attributeValue: string | string[] = userInfo[userSchemaURI]?.[schemaNames[0]];
                                     const formattedValue: string = Array.isArray(attributeValue)
                                         ? attributeValue.join(",")
                                         : "";
@@ -431,11 +470,23 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 ?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaName]
                                 ?.[schemaSecondaryProperty];
 
-                            if (schema.extended && (userProfileSchema || enterpriseSchema)) {
+                            const customSchema: string = userInfo
+                                ?.[userSchemaURI]?.[schemaName]
+                                ?.[schemaSecondaryProperty];
+
+                            if (schema.extended && (userProfileSchema || enterpriseSchema || customSchema)) {
                                 if (userProfileSchema) {
                                     tempProfileInfo.set(schema.name, userProfileSchema);
+                                } else if (enterpriseSchema && schema.multiValued) {
+                                    tempProfileInfo.set(schema.name,
+                                        Array.isArray(enterpriseSchema) ? enterpriseSchema.join(",") : "");
                                 } else if (enterpriseSchema) {
                                     tempProfileInfo.set(schema.name, enterpriseSchema);
+                                } else if (customSchema && schema.multiValued) {
+                                    tempProfileInfo.set(schema.name,
+                                        Array.isArray(customSchema) ? customSchema.join(",") : "");
+                                } else if (customSchema) {
+                                    tempProfileInfo.set(schema.name, customSchema);
                                 }
                             } else {
                                 const subValue: SubValueInterface = userInfo[schemaName] &&
@@ -619,34 +670,36 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      */
     const mapMultiValuedAttributeValues = (profileData: Map<string, string>): void => {
 
-        if (!isMultipleEmailAndMobileNumberEnabled) return;
         const tempMultiValuedAttributeValues: Record<string, string[]> = {};
         const tempPrimaryValues: Record<string, string> = {};
 
-        let emailAddresses: string[] = profileData?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
-        const primaryEmail: string = profileData?.get(EMAIL_ATTRIBUTE);
+        simpleMultiValuedExtendedProfileSchema?.forEach((schema: ProfileSchemaInterface) => {
+            const attributeValue: string = profileData?.get(schema.name);
 
-        let mobileNumbers: string[] = profileData?.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
-        const primaryMobile: string = profileData?.get(MOBILE_ATTRIBUTE);
+            tempMultiValuedAttributeValues[schema.name] = attributeValue ? attributeValue.split(",") : [];
+        });
 
-        if (!isEmpty(primaryEmail)) {
-            emailAddresses = emailAddresses.filter((value: string) =>
-                !isEmpty(value)
-                && value !== primaryEmail);
-            emailAddresses.unshift(primaryEmail);
+        if (isMultipleEmailAndMobileNumberEnabled) {
+            const primaryEmail: string = profileData?.get(EMAIL_ATTRIBUTE);
+            const primaryMobile: string = profileData?.get(MOBILE_ATTRIBUTE);
+
+            if (!isEmpty(primaryEmail)) {
+                const emailAddresses: string[] = tempMultiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE]
+                    ?.filter((value: string) => !isEmpty(value) && value !== primaryEmail) ?? [];
+
+                emailAddresses.unshift(primaryEmail);
+                tempMultiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE] = emailAddresses;
+            }
+            if (!isEmpty(primaryMobile)) {
+                const mobileNumbers: string[] = tempMultiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE]
+                    ?.filter((value: string) => !isEmpty(value) && value !== primaryMobile) ?? [];
+
+                mobileNumbers.unshift(primaryMobile);
+                tempMultiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE] = mobileNumbers;
+            }
+            tempPrimaryValues[EMAIL_ATTRIBUTE] = primaryEmail;
+            tempPrimaryValues[MOBILE_ATTRIBUTE] = primaryMobile;
         }
-
-        if (!isEmpty(primaryMobile)) {
-            mobileNumbers = mobileNumbers.filter((value: string) =>
-                !isEmpty(value)
-                && value !== primaryMobile);
-            mobileNumbers.unshift(primaryMobile);
-        }
-
-        tempMultiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE] = emailAddresses;
-        tempMultiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE] = mobileNumbers;
-        tempPrimaryValues[EMAIL_ATTRIBUTE] = primaryEmail;
-        tempPrimaryValues[MOBILE_ATTRIBUTE] = primaryMobile;
 
         setMultiValuedAttributeValues(tempMultiValuedAttributeValues);
         setPrimaryValues(tempPrimaryValues);
@@ -1034,8 +1087,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             const attValues: Map<string, string | string []> = new Map();
 
                             if (schemaNames.length === 1 || schemaNames.length === 2) {
-                                if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE
-                                    || schema.name == MOBILE_NUMBERS_ATTRIBUTE) {
+                                if (schema.extended) {
                                     opValue = {
                                         [schema.schemaId]: constructPatchOpValueForMultiValuedAttribute(
                                             schema.name,
@@ -1044,6 +1096,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         )
                                     };
                                 } else {
+                                    // Handle emails and phoneNumbers and their sub attributes.
                                     // Extract the sub attributes from the form values.
                                     for (const value of values.keys()) {
                                         const subAttribute: string[] = value.split(".");
@@ -1106,7 +1159,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             : { [schemaNames[0]]: values.get(schemaNames[0]) };
                                 }
                             } else {
-                                if(schema.extended) {
+                                if (schema.extended && schema.multiValued) {
+                                    opValue = {
+                                        [schema.schemaId]: {
+                                            [schemaNames[0]]: constructPatchOpValueForMultiValuedAttribute(
+                                                schemaNames[1],
+                                                multiValuedAttributeValues[schema.name],
+                                                multiValuedInputFieldValue[schema.name]
+                                            )
+                                        }
+                                    };
+                                } else if (schema.extended) {
                                     const schemaId: string = schema?.schemaId
                                         ? schema.schemaId
                                         : userConfig.userProfileSchema;
@@ -1546,21 +1609,40 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             user.userName !== adminUsername
                                         ) ? (
                                                 <Show when={ featureConfig?.users?.scopes?.update }>
-                                                    <DangerZone
-                                                        data-testid={ `${ testId }-change-password` }
-                                                        actionTitle={ t("user:editUser." +
-                                                            "dangerZoneGroup.passwordResetZone.actionTitle") }
-                                                        header={ t("user:editUser." +
-                                                            "dangerZoneGroup.passwordResetZone.header") }
-                                                        subheader={ t("user:editUser." +
-                                                            "dangerZoneGroup.passwordResetZone.subheader") }
-                                                        onActionClick={ (): void => {
-                                                            setOpenChangePasswordModal(true);
-                                                        } }
-                                                        isButtonDisabled={ accountLocked }
-                                                        buttonDisableHint={ t("user:editUser." +
-                                                            "dangerZoneGroup.passwordResetZone.buttonHint") }
-                                                    />
+                                                    { isSetPassword ? (
+                                                        <DangerZone
+                                                            data-testid={ `${ testId }-set-password` }
+                                                            actionTitle={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordSetZone.actionTitle") }
+                                                            header={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordSetZone.header") }
+                                                            subheader={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordSetZone.subheader") }
+                                                            onActionClick={ (): void => {
+                                                                setOpenChangePasswordModal(true);
+                                                            } }
+                                                        />
+                                                    ) : (
+                                                        <DangerZone
+                                                            data-testid={ `${ testId }-change-password` }
+                                                            actionTitle={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordResetZone.actionTitle") }
+                                                            header={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordResetZone.header") }
+                                                            subheader={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordResetZone.subheader") }
+                                                            onActionClick={ (): void => {
+                                                                setOpenChangePasswordModal(true);
+                                                            } }
+                                                            isButtonDisabled={
+                                                                accountLocked &&
+                                                                accountLockedReason !== AccountLockedReason.
+                                                                    PENDING_ADMIN_FORCED_USER_PASSWORD_RESET
+                                                            }
+                                                            buttonDisableHint={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordResetZone.buttonHint") }
+                                                        />
+                                                    ) }
                                                 </Show>
                                             ) : null
                                     }
@@ -1855,16 +1937,24 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 schema.name === MOBILE_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_MOBILE_NUMBERS_ALLOWED;
             verificationPendingValue = getVerificationPendingAttributeValue(MOBILE_NUMBERS_ATTRIBUTE);
+        } else {
+            attributeValueList = multiValuedAttributeValues[schema.name] ?? [];
+            maxAllowedLimit = ProfileConstants.MAX_MULTI_VALUES_ALLOWED;
         }
 
         const showAccordion: boolean = attributeValueList.length >= 1;
+        const isEmailOrMobile: boolean = schema.name === EMAIL_ADDRESSES_ATTRIBUTE
+            || schema.name === MOBILE_NUMBERS_ATTRIBUTE;
 
         const showVerifiedPopup = (value: string): boolean => {
-            return verificationEnabled &&
+            return isEmailOrMobile && verificationEnabled &&
                 (verifiedAttributeValueList.includes(value) || value === fetchedPrimaryAttributeValue);
         };
 
         const showPrimaryPopup = (value: string): boolean => {
+            if (!isEmailOrMobile) {
+                return false;
+            }
             if (verificationEnabled && !verifiedAttributeValueList.includes(value)) {
                 return value === fetchedPrimaryAttributeValue;
             }
@@ -1873,18 +1963,21 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         };
 
         const showPendingVerificationPopup = (value: string): boolean => {
-            return verificationEnabled
+            return isEmailOrMobile && verificationEnabled
                 && !isEmpty(verificationPendingValue)
                 && !verifiedAttributeValueList.includes(value)
                 && verificationPendingValue === value;
         };
 
         const showMakePrimaryButton = (value: string): boolean => {
+            if (!isEmailOrMobile) {
+                return false;
+            }
             if (verificationEnabled) {
                 return verifiedAttributeValueList.includes(value) && value !== primaryAttributeValue;
-            } else {
-                return value !== primaryAttributeValue;
             }
+
+            return value !== primaryAttributeValue;
         };
 
         const showVerifyButton = (value: string): boolean =>
@@ -2310,10 +2403,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     fluid
                 />
             );
-        } else if (
-            schema?.name === EMAIL_ADDRESSES_ATTRIBUTE
-            || schema?.name === MOBILE_NUMBERS_ATTRIBUTE
-        ) {
+        } else if (schema?.extended && schema?.multiValued) {
             return resolveMultiValuedAttributesFormField(schema, fieldName, key);
         } else if (schema?.name === "dateOfBirth") {
             return (
@@ -2620,8 +2710,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         );
     };
 
-    /*
+    /**
      * Resolves the user account locked reason text.
+     *
      * @returns The resolved account locked reason in readable text.
      */
     const resolveUserAccountLockedReason = (): string => {
@@ -2636,13 +2727,187 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         return "";
     };
 
+    /**
+     * Checks if the user account is in a pending ask password state where the user hasn't
+     * set their password via the setup link yet.
+     */
+    const isPendingAskPasswordState: boolean = accountState === AccountState.PENDING_AP;
+
+    /**
+     * Determines which password change option to be displayed.
+     *
+     * Is true if the "Set Password" option should be presented—this indicates that the
+     * account is in the pending ask password state (i.e. the user hasn’t set a password yet).
+     *
+     * Else false if the "Force Password Reset" option should be displayed, meaning the user
+     * already has an existing password.
+     */
+    const isSetPassword: boolean = isPendingAskPasswordState ||
+        (accountLockedReason === AccountLockedReason.PENDING_ASK_PASSWORD);
+
+    /**
+     * Resolves the recovery scenario based on the account locked reason or account state.
+     * This recoveryscenario is then used to determine whether the resending code/link is supported.
+     *
+     * @returns The resolved recovery scenario.
+     */
+    const resolveRecoveryScenario = (): string | null => {
+        // If the account is locked and a locked reason is provided, process locked reason
+        // to determine the scenario.
+        if (accountLocked && accountLockedReason) {
+            if (accountLockedReason === AccountLockedReason.PENDING_ADMIN_FORCED_USER_PASSWORD_RESET) {
+                if (isAdminPasswordResetSMSOTPEnabled()) {
+                    return RecoveryScenario.ADMIN_FORCED_PASSOWRD_RESET_VIA_SMS_OTP;
+                }
+                if (isAdminPasswordResetEmailLinkEnabled()) {
+                    return RecoveryScenario.ADMIN_FORCED_PASSWORD_RESET_VIA_EMAIL_LINK;
+                }
+                if (isAdminPasswordResetEmailOTPEnabled()) {
+                    return RecoveryScenario.ADMIN_FORCED_PASSWORD_RESET_VIA_OTP;
+                }
+            }
+            if (accountLockedReason === AccountLockedReason.PENDING_ASK_PASSWORD) {
+                return RecoveryScenario.ASK_PASSWORD;
+            }
+        }
+        // For non-locked accounts, use the account state to determine the scenario.
+        if (!accountLocked && accountState) {
+            if (accountState === AccountState.PENDING_AP) {
+                return RecoveryScenario.ASK_PASSWORD;
+            }
+        }
+
+        return null;
+    };
+
+    /**
+     * Renders the "Resend" link component.
+     *
+     * The resend option is shown when a valid recovery scenario is resolved either from
+     * the account locked reason or account state.
+     *
+     * @returns The "Resend" link component.
+     */
+    const ResendLink = (): JSX.Element | null => {
+        const recoveryScenario: string | null = resolveRecoveryScenario();
+
+        if (!recoveryScenario) return null;
+
+        return (
+            <LinkButton
+                onClick={ () => handleResendCode(recoveryScenario) }
+                aria-disabled={ isSubmitting }
+                disabled={ isSubmitting }
+                data-testid={ `${ testId }-resend-link` }
+            >
+                { t("user:resendCode.resend") }
+            </LinkButton>
+        );
+    };
+
+    /**
+     * Initiates a recovery process based on the account's locked reason or account state.
+     **/
+    const handleResendCode = (recoveryScenario: string) => {
+        setIsSubmitting(true);
+
+        const resolvedUsername: string = getUserNameWithoutDomain(user?.userName);
+        const userStoreDomain: string = resolveUserstore(user?.userName, primaryUserStoreDomainName);
+
+        const requestData: ResendCodeRequestData = {
+            properties: [
+                {
+                    key: "RecoveryScenario",
+                    value: recoveryScenario
+                }
+            ],
+            user: {
+                realm: userStoreDomain,
+                username: resolvedUsername
+            }
+        };
+
+        resendCode(requestData)
+            .then(() => {
+                onAlertFired({
+                    description: t("user:profile.notifications.resendCode.success.description",
+                        { recoveryOption: RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP[recoveryScenario] }),
+                    level: AlertLevels.SUCCESS,
+                    message: t("user:profile.notifications.resendCode.success.message")
+                });
+            })
+            .catch((error: IdentityAppsApiException) => {
+                dispatch(addAlert({
+                    description: error?.response?.data?.description || error?.response?.data?.detail ||
+                        t("user:profile.notifications.resendCode.genericError.description", {
+                            recoveryOption: RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP[recoveryScenario] }),
+                    level: AlertLevels.ERROR,
+                    message: t("user:profile.notifications.resendCode.genericError.message")
+                }));
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+            });
+    };
+
+    /**
+     * Checks if admin forced password reset via Email link is enabled.
+     *
+     * @returns true if enabled, false otherwise.
+     */
+    const isAdminPasswordResetEmailLinkEnabled = (): boolean => {
+        const property: ConnectorPropertyInterface | undefined = connectorProperties?.find(
+            (property: ConnectorPropertyInterface) =>
+                property.name === ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_EMAIL_LINK
+        );
+
+        return property?.value === "true";
+    };
+
+    /**
+     * Checks if admin forced password reset via Email OTP is enabled.
+     *
+     * @returns true if enabled, false otherwise
+     */
+    const isAdminPasswordResetEmailOTPEnabled = (): boolean => {
+        const property: ConnectorPropertyInterface | undefined = connectorProperties?.find(
+            (property: ConnectorPropertyInterface) =>
+                property.name === ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_EMAIL_OTP
+        );
+
+        return property?.value === "true";
+    };
+
+    /**
+     * Checks if admin forced password reset via SMS OTP is enabled.
+     *
+     * @returns true if enabled, false otherwise
+     */
+    const isAdminPasswordResetSMSOTPEnabled = (): boolean => {
+        const property: ConnectorPropertyInterface | undefined = connectorProperties?.find(
+            (property: ConnectorPropertyInterface) =>
+                property.name === ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_SMS_OTP
+        );
+
+        return property?.value === "true";
+    };
+
     return (
         !isReadOnlyUserStoresLoading && !isEmpty(profileInfo)
             ? (<>
                 {
                     (accountLocked || accountDisabled) && (
-                        <Alert severity="warning">
+                        <Alert severity="warning" className="user-profile-alert">
                             { t(resolveUserAccountLockedReason()) }
+                            <ResendLink />
+                        </Alert>
+                    )
+                }
+                {
+                    (!accountLocked && isPendingAskPasswordState) && (
+                        <Alert severity="warning" className="user-profile-alert">
+                            { t("user:profile.accountState.pendingAskPassword") }
+                            <ResendLink />
                         </Alert>
                     )
                 }
@@ -2928,6 +3193,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     onAlertFired={ onAlertFired }
                     user={ user }
                     handleUserUpdate={ handleUserUpdate }
+                    isResetPassword={ !isSetPassword }
                 />
             </>)
             : <ContentLoader dimmer/>

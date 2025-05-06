@@ -92,13 +92,14 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ enableBackButton, setEnableBackButton ] = useState<boolean>(true);
 
-    const isReadOnly: boolean = !useRequiredScopes(applicationFeatureConfig?.governanceConnectors?.scopes?.update);
+    const hasGovernanceConnectorsUpdatePermissions: boolean
+        = useRequiredScopes(applicationFeatureConfig?.governanceConnectors?.scopes?.update);
     const path: string[] = history.location.pathname.split("/");
     const type: string = path[ path.length - 3 ];
 
     useEffect(() => {
-        // If Governance Connector read permission is not available, prevent from trying to load the connectors.
-        if (isReadOnly) {
+        // If Governance Connector update permission is not available, prevent from trying to load the connectors.
+        if (!hasGovernanceConnectorsUpdatePermissions) {
             return;
         }
 
@@ -575,7 +576,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                     toggle
                     onChange={ ssoLoginConnectorId ? handleBotDetectionToggle : handleToggle }
                     checked={ enableForm }
-                    readOnly={ isReadOnly }
+                    readOnly={ !hasGovernanceConnectorsUpdatePermissions }
                     data-testId={ `${ testId }-${ connectorId }-enable-toggle` }
                 />
             </>

@@ -1,5 +1,14 @@
 # @wso2is/admin.logs.v1
 
+## 1.6.2
+
+### Patch Changes
+
+- [#8022](https://github.com/wso2/identity-apps/pull/8022) [`daafbd3f4f87ca806cdbf84c3d0f2330f50abd60`](https://github.com/wso2/identity-apps/commit/daafbd3f4f87ca806cdbf84c3d0f2330f50abd60) Thanks [@Avarjana](https://github.com/Avarjana)! - Fix bug in remote log publish form
+
+- Updated dependencies [[`f2e6bfadec1e4ef53cc1c713b1285b0c6b3bfaa5`](https://github.com/wso2/identity-apps/commit/f2e6bfadec1e4ef53cc1c713b1285b0c6b3bfaa5)]:
+  - @wso2is/i18n@2.22.8
+
 ## 1.6.1
 
 ### Patch Changes

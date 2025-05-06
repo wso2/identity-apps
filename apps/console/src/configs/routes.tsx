@@ -1534,15 +1534,6 @@ export const getFullScreenViewRoutes = (): RouteInterface[] => {
 export const getDefaultLayoutRoutes = (): RouteInterface[] => {
     return [
         {
-            component: lazy(() => import("@wso2is/admin.core.v1/pages/privacy")),
-            icon: null,
-            id: "privacy",
-            name: "console:common.sidePanel.privacy",
-            path: AppConstants.getPaths().get("PRIVACY"),
-            protected: true,
-            showOnSidePanel: false
-        },
-        {
             children: [
                 {
                     component: lazy(() => import("@wso2is/admin.tenants.v1/pages/system-settings-page")),

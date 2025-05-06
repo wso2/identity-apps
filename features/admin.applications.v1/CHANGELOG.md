@@ -1,5 +1,51 @@
 # @wso2is/admin.applications.v1
 
+## 2.34.7
+
+### Patch Changes
+
+- [#8142](https://github.com/wso2/identity-apps/pull/8142) [`3e3aefe0906bb9d221e608f716a80aba403120e8`](https://github.com/wso2/identity-apps/commit/3e3aefe0906bb9d221e608f716a80aba403120e8) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix hidden claims filtering in applications
+
+## 2.34.6
+
+### Patch Changes
+
+- [#8118](https://github.com/wso2/identity-apps/pull/8118) [`c4aee527f3dad357cd7a62293d67ef6e884d927a`](https://github.com/wso2/identity-apps/commit/c4aee527f3dad357cd7a62293d67ef6e884d927a) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix identity claims display based on config
+
+- Updated dependencies [[`b279be403444037048c9bff8cfdfe881ee97ec15`](https://github.com/wso2/identity-apps/commit/b279be403444037048c9bff8cfdfe881ee97ec15), [`c4aee527f3dad357cd7a62293d67ef6e884d927a`](https://github.com/wso2/identity-apps/commit/c4aee527f3dad357cd7a62293d67ef6e884d927a)]:
+  - @wso2is/admin.users.v1@2.31.2
+  - @wso2is/admin.claims.v1@2.27.121
+  - @wso2is/admin.login-flow.ai.v1@2.27.100
+  - @wso2is/core@2.7.6
+
+## 2.34.5
+
+### Patch Changes
+
+- [#8125](https://github.com/wso2/identity-apps/pull/8125) [`992ab1300824c7a009577ba87344248c12406745`](https://github.com/wso2/identity-apps/commit/992ab1300824c7a009577ba87344248c12406745) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improvements to MCP client application template
+
+- Updated dependencies [[`992ab1300824c7a009577ba87344248c12406745`](https://github.com/wso2/identity-apps/commit/992ab1300824c7a009577ba87344248c12406745)]:
+  - @wso2is/admin.application-templates.v1@1.5.3
+
+## 2.34.4
+
+### Patch Changes
+
+- [#7993](https://github.com/wso2/identity-apps/pull/7993) [`2aca657fd60a32bf39a7d608f4d65eace3a99b95`](https://github.com/wso2/identity-apps/commit/2aca657fd60a32bf39a7d608f4d65eace3a99b95) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Improve user assignment UI in roles edit page and improvements to transfer components
+
+- Updated dependencies [[`2aca657fd60a32bf39a7d608f4d65eace3a99b95`](https://github.com/wso2/identity-apps/commit/2aca657fd60a32bf39a7d608f4d65eace3a99b95)]:
+  - @wso2is/admin.console-settings.v1@2.25.207
+  - @wso2is/react-components@2.9.13
+  - @wso2is/admin.roles.v2@2.27.150
+  - @wso2is/admin.users.v1@2.30.125
+  - @wso2is/i18n@2.22.12
+
+## 2.34.3
+
+### Patch Changes
+
+- [#8028](https://github.com/wso2/identity-apps/pull/8028) [`8769b37130d71944d4de16de08e4057c185ce90e`](https://github.com/wso2/identity-apps/commit/8769b37130d71944d4de16de08e4057c185ce90e) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix application edit view breaking in sub organizations
+
 ## 2.34.2
 
 ### Patch Changes

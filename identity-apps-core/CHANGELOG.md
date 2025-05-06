@@ -1,5 +1,76 @@
 # @wso2is/identity-apps-core
 
+## 2.24.3
+
+### Patch Changes
+
+- [#8110](https://github.com/wso2/identity-apps/pull/8110) [`dc8cf53e08330f3f377c4256c0036a7c6f8b31b5`](https://github.com/wso2/identity-apps/commit/dc8cf53e08330f3f377c4256c0036a7c6f8b31b5) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add minor review suggestions
+
+## 2.24.2
+
+### Patch Changes
+
+- [#8113](https://github.com/wso2/identity-apps/pull/8113) [`0d4ab197b0321c1b4c334e980354cea91093ad95`](https://github.com/wso2/identity-apps/commit/0d4ab197b0321c1b4c334e980354cea91093ad95) Thanks [@Thumimku](https://github.com/Thumimku)! - Add config support to have custom error page in webapps
+
+## 2.24.1
+
+### Patch Changes
+
+- [#8106](https://github.com/wso2/identity-apps/pull/8106) [`eb751d0d67c4986a6a3f3c6a38f744efbfcd3c8d`](https://github.com/wso2/identity-apps/commit/eb751d0d67c4986a6a3f3c6a38f744efbfcd3c8d) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Fix left aligned footer after branding.
+
+## 2.24.0
+
+### Minor Changes
+
+- [#8082](https://github.com/wso2/identity-apps/pull/8082) [`e0d131587fa454244a9075d8abca98b29a3c6f79`](https://github.com/wso2/identity-apps/commit/e0d131587fa454244a9075d8abca98b29a3c6f79) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add custom layout inheritance support for sub organizations
+
+## 2.23.8
+
+### Patch Changes
+
+- [#8087](https://github.com/wso2/identity-apps/pull/8087) [`5de646f4ee571cbb6f0ffd6967773810fae2fcf3`](https://github.com/wso2/identity-apps/commit/5de646f4ee571cbb6f0ffd6967773810fae2fcf3) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Fix cookie policy branding.
+
+## 2.23.7
+
+### Patch Changes
+
+- [#8063](https://github.com/wso2/identity-apps/pull/8063) [`3478bf849aa907b8b942335fad6a1b95845cdb6f`](https://github.com/wso2/identity-apps/commit/3478bf849aa907b8b942335fad6a1b95845cdb6f) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Fix footer not being stacked on mobile view
+
+## 2.23.6
+
+### Patch Changes
+
+- [#8068](https://github.com/wso2/identity-apps/pull/8068) [`3519546de64992f57c8397da7bf24ecfe406af2e`](https://github.com/wso2/identity-apps/commit/3519546de64992f57c8397da7bf24ecfe406af2e) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Fix NPE issue when accessing oauth2_error.jsp with missing parameters
+
+## 2.23.5
+
+### Patch Changes
+
+- [#8057](https://github.com/wso2/identity-apps/pull/8057) [`b0d1cfa9142126be2870b6af6ef8fd1b99788cd9`](https://github.com/wso2/identity-apps/commit/b0d1cfa9142126be2870b6af6ef8fd1b99788cd9) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix logo overflow in jsp pages
+
+- Updated dependencies [[`b0d1cfa9142126be2870b6af6ef8fd1b99788cd9`](https://github.com/wso2/identity-apps/commit/b0d1cfa9142126be2870b6af6ef8fd1b99788cd9), [`2aca657fd60a32bf39a7d608f4d65eace3a99b95`](https://github.com/wso2/identity-apps/commit/2aca657fd60a32bf39a7d608f4d65eace3a99b95)]:
+  - @wso2is/theme@2.7.5
+
+## 2.23.4
+
+### Patch Changes
+
+- [#8032](https://github.com/wso2/identity-apps/pull/8032) [`9054c4791f8a6393b404df463a6b1824e4819242`](https://github.com/wso2/identity-apps/commit/9054c4791f8a6393b404df463a6b1824e4819242) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Remove search from language switcher
+
+* [#8043](https://github.com/wso2/identity-apps/pull/8043) [`9c1ce998f2bbbad563170846d13a7e983f67063c`](https://github.com/wso2/identity-apps/commit/9c1ce998f2bbbad563170846d13a7e983f67063c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update self registration flow styling
+
+* Updated dependencies [[`9c1ce998f2bbbad563170846d13a7e983f67063c`](https://github.com/wso2/identity-apps/commit/9c1ce998f2bbbad563170846d13a7e983f67063c)]:
+  - @wso2is/theme@2.7.4
+
+## 2.23.3
+
+### Patch Changes
+
+- [#8035](https://github.com/wso2/identity-apps/pull/8035) [`4591b3ea74dda325425f08630075ebac8d1fa1e4`](https://github.com/wso2/identity-apps/commit/4591b3ea74dda325425f08630075ebac8d1fa1e4) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update admin invitation flow styling
+
+- Updated dependencies [[`4591b3ea74dda325425f08630075ebac8d1fa1e4`](https://github.com/wso2/identity-apps/commit/4591b3ea74dda325425f08630075ebac8d1fa1e4)]:
+  - @wso2is/theme@2.7.3
+
 ## 2.23.2
 
 ### Patch Changes

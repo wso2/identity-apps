@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,11 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
+import FormControl from "@oxygen-ui/react/FormControl";
+import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Grid from "@oxygen-ui/react/Grid";
+import Radio from "@oxygen-ui/react/Radio";
+import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import { Show } from "@wso2is/access-control";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
@@ -32,13 +36,13 @@ import {
     CertFileStrategy,
     Code,
     EmphasizedSegment,
+    Heading,
     Hint,
-    PrimaryButton,
-    Switcher,
-    SwitcherOptionProps
+    Message,
+    PrimaryButton
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -75,6 +79,7 @@ export interface IdpCertificatesV2Props extends IdentifiableComponentInterface {
 export type CertificateConfigurationMode = "jwks" | "certificates";
 
 const FORM_ID: string = "idp-certificate-jwks-input-form";
+const JWKS: string = "jwks";
 
 /**
  * This is the certificates component for IdPs.
@@ -85,7 +90,7 @@ const FORM_ID: string = "idp-certificate-jwks-input-form";
  *
  *  +======================================================================+
  *  |                                                                      |
- *  |   (?) Below is the {@link Switcher} component. When user clicks      |
+ *  |   (?) Below is the {@link RadioGroup} component. When user clicks      |
  *  |       on one switch it will change the subcomponent input type.      |
  *  |                                                                      |
  *  |   +==============+====================+                              |
@@ -138,12 +143,12 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
     : ReactElement => {
 
     const {
-        [ "data-componentid" ]: testId,
+        [ "data-componentid" ]: testId = "idp-certificates",
         editingIDP,
         onUpdate,
         isReadOnly,
-        isJWKSEnabled,
-        isPEMEnabled,
+        isJWKSEnabled = true,
+        isPEMEnabled = true,
         templateType
     } = props;
 
@@ -184,8 +189,8 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
         }
     };
 
-    const onSelectionChange = ({ value }: SwitcherOptionProps): void => {
-        setSelectedConfigurationMode(value as CertificateConfigurationMode);
+    const onSelectionChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setSelectedConfigurationMode((event.target as HTMLInputElement).value as CertificateConfigurationMode);
     };
 
     const openAddCertificatesWizard = (): void => {
@@ -267,11 +272,11 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
         >
             <Field.Input
                 hint={ (
-                    <React.Fragment>
-                        A JSON Web Key (JWK) Set is a JSON object that represents a set of JWKs. The JSON
-                        object MUST have a <Code>keys</Code> member, with its value being an array of
+                    <>
+                        The JWKS (JSON Web Key Set) endpoint must return a JSON object that represents a set of JWKs.
+                        The JSON object MUST have a <Code>keys</Code> member, with its value being an array of
                         JWKs.
-                    </React.Fragment>
+                    </>
                 ) }
                 label="JWKS Endpoint URL"
                 ariaLabel="JWKS Endpoint URL"
@@ -325,7 +330,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
     );
 
     const certificateForm: ReactNode = (
-        <React.Fragment>
+        <>
             { !editingIDP?.certificate?.certificates?.length
                 ? (
                     <EmptyCertificatesPlaceholder
@@ -360,7 +365,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                     </Segment>
                 )
             }
-        </React.Fragment>
+        </>
     );
 
     const supportedMimes = () => {
@@ -380,6 +385,14 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
     const shouldShowNoCertificatesAlert = (): boolean => templateType ===
         CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER && !editingIDP?.certificate;
 
+    /**
+     * Checks if the info box in the certificates section should be shown.
+     *
+     * @returns `true` if the IDP is not a trusted token issuer, `false` otherwise.
+     */
+    const shouldShowCertificatesInfo = (): boolean => templateType !==
+        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER;
+
     if (!isJWKSEnabled && !isPEMEnabled) {
         return null;
     }
@@ -397,45 +410,68 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                         </Grid>
                     )
                 }
-                <Grid direction="column" container spacing={ 3 } xs={ 12 }>
-                    { isJWKSEnabled && isPEMEnabled && (
-                        <Grid md={ 12 } lg={ 6 }>
-                            <Switcher
-                                widths={ "two" }
-                                compact
-                                data-testid={ `${ testId }-switcher` }
-                                selectedValue={ selectedConfigurationMode }
-                                onChange={ onSelectionChange }
-                                options={ [
-                                    {
-                                        label: t("authenticationProvider:forms." +
-                                            "certificateSection.certificateEditSwitch.jwks"),
-                                        value: ("jwks" as CertificateConfigurationMode)
-                                    },
-                                    {
-                                        label: t("authenticationProvider:forms." +
-                                            "certificateSection.certificateEditSwitch.pem"),
-                                        value: ("certificates" as CertificateConfigurationMode)
-                                    }
-                                ] }
-                            />
-                        </Grid>
-                    ) }
+                <Grid md={ 12 } lg={ 6 }>
+                    <Heading as="h4">
+                        { t("console:develop.features.authenticationProvider.forms.certificateSection.heading") }
+                    </Heading>
+                    <Heading subHeading as="h6" color="grey">
+                        { t("console:develop.features.authenticationProvider.forms.certificateSection.description") }
+                    </Heading>
+                </Grid>
+                { shouldShowCertificatesInfo() && (
                     <Grid md={ 12 } lg={ 6 }>
-                        { selectedConfigurationMode === "jwks"
-                            ? jwksInputForm
-                            : (
-                                <React.Fragment>
-                                    { certificateForm }
-                                    <Hint>
-                                        Upload certificate(s) for this Identity Provider. You can include
-                                        multiple certificates in case if there&apos;s any certificate rotations.
-                                        You can upload { supportedMimes() } types of certificates.
-                                    </Hint>
-                                </React.Fragment>
-                            )
-                        }
+                        <Message
+                            data-componentid={ `${ testId }-info-messege` }
+                            type="info"
+                            content={ t("console:develop.features.authenticationProvider.forms." +
+                                "certificateSection.info") }
+                        />
                     </Grid>
+                ) }
+                { isJWKSEnabled && isPEMEnabled && (
+                    <Grid md={ 12 } lg={ 6 }>
+                        <FormControl>
+                            <RadioGroup
+                                row
+                                name="certificate-type"
+                                onChange={ onSelectionChange }
+                                data-testid={ `${ testId }-radio-group` }
+                                value={ selectedConfigurationMode }
+                            >
+                                <FormControlLabel
+                                    control={ <Radio checked={ selectedConfigurationMode === "jwks" } /> }
+                                    label={
+                                        t("console:develop.features.authenticationProvider.forms." +
+                                        "certificateSection.certificateEditSwitch.jwks")
+                                    }
+                                    value="jwks"
+                                />
+                                <FormControlLabel
+                                    control={ <Radio checked={ selectedConfigurationMode === "certificates" } /> }
+                                    label={
+                                        t("console:develop.features.authenticationProvider.forms." +
+                                        "certificateSection.certificateEditSwitch.pem")
+                                    }
+                                    value="certificates"
+                                />
+                            </RadioGroup>
+                        </FormControl>
+                    </Grid>
+                ) }
+                <Grid md={ 12 } lg={ 6 }>
+                    { selectedConfigurationMode === JWKS
+                        ? jwksInputForm
+                        : (
+                            <>
+                                { certificateForm }
+                                <Hint>
+                                    Upload certificate(s) for this Identity Provider. You can include
+                                    multiple certificates in case if there&apos;s any certificate rotations.
+                                    You can upload { supportedMimes() } types of certificates.
+                                </Hint>
+                            </>
+                        )
+                    }
                 </Grid>
             </Grid>
             { isPEMEnabled && (
@@ -449,13 +485,4 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
         </EmphasizedSegment>
     );
 
-};
-
-/**
- * Default props of {@link IdpCertificates}
- */
-IdpCertificates.defaultProps = {
-    "data-componentid": "idp-certificates",
-    isJWKSEnabled: true,
-    isPEMEnabled: true
 };
