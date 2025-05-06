@@ -26,6 +26,9 @@ import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/featur
 import { NavCategory, NavRouteInterface, RouteInterface } from "@wso2is/core/models";
 import groupBy from "lodash-es/groupBy";
 import sortBy from "lodash-es/sortBy";
+import {
+    ReactComponent as ResourceServersIcon
+} from "../../themes/wso2is/assets/images/icons/outline-icons/resource-servers-outline.svg"
 import { AppConstants } from "../constants/app-constants";
 import { history } from "../helpers/history";
 
@@ -269,7 +272,7 @@ export class RouteUtils {
         };
 
         const resourceServers: Omit<RouteInterface, "showOnSidePanel"> = {
-            icon: DatabaseDocumentIcon,
+            icon: ResourceServersIcon,
             id: "resourceServers",
             name: "Resource Servers",
             order: 2

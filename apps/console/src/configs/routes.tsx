@@ -202,7 +202,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             ),
             exact: true,
             icon: {
-                icon: getSidePanelIcons().apiResources
+                icon: getSidePanelIcons().mcpServers
             },
             id: "mcpServers",
             name: "MCP Servers",
