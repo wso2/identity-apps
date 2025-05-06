@@ -59,6 +59,7 @@ export class ProfileConstants {
     public static readonly ACCOUNT_STATE: string = "ACCOUNT_STATE";
     public static readonly PREFERRED_CHANNEL: string = "PREFERRED_CHANNEL";
     public static readonly EMAIL_VERIFIED: string = "EMAIL_VERIFIED";
+    public static readonly PHONE_VERIFIED: string = "PHONE_VERIFIED";
 }
 
 /**

@@ -103,7 +103,8 @@ export class ProfileConstants {
         .set("LAST_NAME", "name.familyName")
         .set("ACCOUNT_STATE", "accountState")
         .set("PREFERRED_CHANNEL", "preferredChannel")
-        .set("EMAIL_VERIFIED", "emailVerified");
+        .set("EMAIL_VERIFIED", "emailVerified")
+        .set("PHONE_VERIFIED", "phoneVerified");
 
     /**
      * States if the SCIM schema is mutable.
