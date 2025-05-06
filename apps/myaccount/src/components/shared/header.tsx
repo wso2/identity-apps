@@ -363,7 +363,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         <Image
                             src={ theme?.images?.myAccountLogo?.imgURL
                                     ?? resolveAppLogoFilePath(
-                                        window[ "AppUtils" ].getConfig().ui.appMobileLogoPath,
+                                        window[ "AppUtils" ].getConfig().ui.appMobileLogoPath ??
+                                        window[ "AppUtils" ].getConfig().ui.appLogoPath
+                                        ,
                                         `${ window[ "AppUtils" ].getConfig().clientOrigin
                                         }/` +
                                         `${ StringUtils.removeSlashesFromPath(
