@@ -61,7 +61,8 @@ export interface AddTenantFormProps extends IdentifiableComponentInterface {
     onSubmit?: (payload: AddTenantRequestPayload) => void;
 }
 
-export type AddTenantFormValues = Pick<Tenant, "domain" | "id"> & Omit<TenantOwner, "additionalDetails">;
+export type AddTenantFormValues = Pick<Tenant, "domain" | "name" | "id">
+    & Omit<TenantOwner, "additionalDetails">;
 
 export type AddTenantFormErrors = Partial<AddTenantFormValues>;
 
@@ -177,14 +178,35 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
         ), []);
 
     /**
+     * Form validator to validate the organization name format.
+     *
+     * @param orgName - Input organization name value.
+     * @returns An error if the organization name is not valid else undefined.
+     */
+    const validateOrganizationName: (orgName: string) => Promise<string | undefined> = useCallback(
+        memoize(
+            async (orgName: string): Promise<string | undefined> => {
+                if (!orgName) {
+                    return undefined;
+                }
+                const regex: RegExp = new RegExp(".*[^a-zA-Z0-9._\\- ].*");
+
+                if (regex.test(orgName)) {
+                    return t("tenants:common.form.fields.organizationName.validations.invalidCharPattern");
+                }
+            }
+        ), []);
+
+    /**
      * Handles the form submit action.
      * @param values - Form values.
      */
     const handleSubmit = (values: AddTenantFormValues): void => {
-        const { domain, ...rest } = values;
+        const { domain, name, ...rest } = values;
 
         const payload: AddTenantRequestPayload = {
             domain,
+            name,
             owners: [
                 {
                     ...rest,
@@ -331,6 +353,31 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                         onSubmit={ handleSubmit }
                         className="add-tenant-form"
                     >
+                        <FinalFormField
+                            key="organizationName"
+                            width={ 16 }
+                            className="text-field-container"
+                            ariaLabel="organizationName"
+                            required={ true }
+                            data-componentid={ `${componentId}-organization-name` }
+                            name="name"
+                            type="text"
+                            helperText={
+                                (<Hint>
+                                    <Typography variant="inherit">
+                                        <Trans i18nKey="tenants:common.form.fields.organizationName.helperText">
+                                            Enter a unique name for your organization.
+                                        </Trans>
+                                    </Typography>
+                                </Hint>)
+                            }
+                            label={ t("tenants:common.form.fields.organizationName.label") }
+                            placeholder={ t("tenants:common.form.fields.organizationName.placeholder") }
+                            component={ TextFieldAdapter }
+                            maxLength={ 100 }
+                            minLength={ 0 }
+                            validate={ validateOrganizationName }
+                        />
                         <FinalFormField
                             key="domain"
                             width={ 16 }

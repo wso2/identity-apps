@@ -132,6 +132,15 @@ export interface TenantsNS {
                         required: string;
                     };
                 };
+                organizationName: {
+                    helperText: string;
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        invalidCharPattern: string;
+                        required: string;
+                    };
+                };
                 username: {
                     helperText: string;
                     label: string;
