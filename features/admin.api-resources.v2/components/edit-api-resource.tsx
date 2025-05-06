@@ -100,7 +100,7 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
                 </ResourceTab.Pane>
             )
         },
-        isApiServer && {
+        {
             menuItem: t("apiResources:tabs.scopes.label"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
@@ -111,14 +111,6 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
                         isReadOnly={ isReadOnly }
                         handleUpdateAPIResource = { handleUpdateAPIResource }
                         handleDeleteAPIScope = { handleDeleteAPIScope } />
-                </ResourceTab.Pane>
-            )
-        },
-        isMcpServer && {
-            menuItem: "Tools",
-            render: () => (
-                <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <McpServerTools />
                 </ResourceTab.Pane>
             )
         },

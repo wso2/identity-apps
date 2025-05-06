@@ -29,7 +29,6 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddAPIResourceAuthorization, AddAPIResourceBasic, AddAPIResourcePermissions } from "./add-api-resource-steps";
 import { createAPIResource } from "../../api";
 import { getAPIResourceWizardStepIcons } from "../../configs";
-import { APIResourcesConstants } from "../../constants";
 import {
     APIResourceInterface,
     APIResourcePermissionInterface,
@@ -66,7 +65,7 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const { createResourceWizard, resourceEditPath } = useApiResourcesPageContent();
+    const { isMcpServer, createResourceWizard, resourceEditPath } = useApiResourcesPageContent();
 
     //External trigger to submit the authorization step.
     let submitAuthorization: () => void;
@@ -92,11 +91,6 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
         switch (currentWizardFormType) {
             case AddAPIResourceWizardStepsFormTypes.BASIC_DETAILS:
                 setSubmitBasicDetails();
-
-                // Adding 1 as currentStep is 0-index based.
-                if (steps.length === currentStep + 1) {
-                    handleCreateAPIResource(true);
-                }
 
                 break;
             case AddAPIResourceWizardStepsFormTypes.PERMISSIONS: {
@@ -127,6 +121,10 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
      */
     const handleNext = () => {
         const newStep: number = currentWizardStep + 1;
+
+        if (currentWizardStep === 0 && isMcpServer) {
+            handleCreateAPIResource(true);
+        }
 
         if (newStep < steps.length) {
             setCurrentWizardStep(newStep);
