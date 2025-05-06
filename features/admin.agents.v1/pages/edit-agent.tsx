@@ -30,6 +30,7 @@ import AgentIntegrations from "../components/edit/agent-integrations";
 import AgentOverview from "../components/edit/agent-overview";
 import AgentRoles from "../components/edit/agent-roles";
 import useGetAgent from "../hooks/use-get-agent";
+import AgentLogs from "../components/edit/agent-logs";
 
 interface EditAgentPageProps extends IdentifiableComponentInterface {
 
@@ -64,9 +65,9 @@ export default function EditAgent({
         {
             componentId: "general",
             menuItem: "General",
-            render: () => (<ResourceTab.Pane>
+            render: () => (
                 <AgentOverview agentId={ agentId } />
-            </ResourceTab.Pane>)
+            )
         },
         {
             componentId: "credentials",
@@ -96,6 +97,11 @@ export default function EditAgent({
             componentId: "connections",
             menuItem: "Connections",
             render: () =>  <ResourceTab.Pane><AgentIntegrations /></ResourceTab.Pane>
+        },
+        {
+            componentId: "logs",
+            menuItem: "Audit Logs",
+            render: () =>  <AgentLogs />
         }
     ];
 
