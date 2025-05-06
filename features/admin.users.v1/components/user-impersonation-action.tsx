@@ -436,7 +436,8 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     const resolveUserActions = (): ReactElement => {
 
         return (
-            !isSubOrgUser && !isUserCurrentLoggedInUser && isFeatureEnabled(userFeatureConfig, "IMPERSONATE_USER") ?
+            !isSubOrgUser && !isUserCurrentLoggedInUser 
+                && isFeatureEnabled(userFeatureConfig, UserManagementConstants.IMPERSONATION_FEATURE_FLAG) ?
                 (
                     <React.Fragment>
                         <DangerZoneGroup

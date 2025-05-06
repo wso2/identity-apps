@@ -181,6 +181,8 @@ export class UserManagementConstants {
     public static readonly ID_TOKEN: string = "id_token";
     public static readonly SUBJECT_TOKEN: string = "subject_token";
 
+    // Feature flags.
+    public static readonly IMPERSONATION_FEATURE_FLAG: string = "users.user.impersonation";
     public static readonly ATTRIBUTE_PROFILES_FOR_USER_CREATION_FEATURE_FLAG: string
         = "users.user.creation.attribute.profile";
 }
