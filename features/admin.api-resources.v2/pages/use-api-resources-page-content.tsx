@@ -18,7 +18,7 @@
 
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { DocumentationLink, useDocumentation } from "@wso2is/react-components";
-import React, { useEffect } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { APIResourcesConstants } from "../constants/api-resources-constants";
 import { AddAPIResourceWizardStepsFormTypes, ResourceServerType } from "../models";
@@ -35,8 +35,30 @@ const useApiResourcesPageContent = () => {
     const content: any = {
         [ResourceServerType.API]: {
             addNewResourceButtonText: t("extensions:develop.apiResource.addApiResourceButton"),
+            createResourceWizard: {
+                description: t("extensions:develop.apiResource.wizard.addApiResource.subtitle"),
+                displayNamePlaceholder: t("extensions:develop.apiResource.wizard.addApiResource.steps.basic.form." +
+                    "fields.name.placeholder"),
+                hiddenSteps: [],
+                identifierPlaceholder: t("extensions:develop.apiResource.wizard.addApiResource.steps.basic." +
+                        "form.fields.identifier.placeholder"),
+                title: t("extensions:develop.apiResource.wizard.addApiResource.title")
+            },
+            defaultSearchFilter: `type eq ${ APIResourcesConstants.BUSINESS }`,
+            deleteResourceWizardContent: {
+                buttonText: t("extensions:develop.apiResource.tabs.general.dangerZoneGroup" +
+                    ".deleteApiResource.button"),
+                heading: t("extensions:develop.apiResource.tabs.general.dangerZoneGroup" +
+                    ".deleteApiResource.header"),
+                subHeading: t("extensions:develop.apiResource.tabs.general.dangerZoneGroup" +
+                    ".deleteApiResource.subHeading")
+            },
             isApiServer: true,
             isMcpServer: false,
+            resourceEditBackButtonLink: AppConstants.getPaths().get("API_RESOURCES"),
+            resourceEditBackButtonText: "Back to API Resources",
+            resourceEditPath: AppConstants.getPaths().get("API_RESOURCE_EDIT"),
+            resourceSearchBarPlaceholder: "Search API resources by name",
             resourceServerListDescription: (
                 <>
                     { t("extensions:develop.apiResource.pageHeader.description") }
@@ -49,45 +71,51 @@ const useApiResourcesPageContent = () => {
             ),
             resourceServerListPageTitle: t("extensions:develop.apiResource.pageHeader.title"),
             resourceServerListTitle: t("extensions:develop.apiResource.pageHeader.title"),
-            defaultSearchFilter: `type eq ${ APIResourcesConstants.BUSINESS }`,
-            resourceSearchBarPlaceholder: "Search API resources by name",
-            resourceEditBackButtonText: "Back to API Resources",
-            resourceEditBackButtonLink: AppConstants.getPaths().get("API_RESOURCES"),
-            resourceEditPath: AppConstants.getPaths().get("API_RESOURCE_EDIT"),
-            createResourceWizard: {
-                title: t("extensions:develop.apiResource.wizard.addApiResource.title"),
-                description: t("extensions:develop.apiResource.wizard.addApiResource.subtitle"),
-                identifierPlaceholder: t("extensions:develop.apiResource.wizard.addApiResource.steps.basic." +
-                    "form.fields.identifier.placeholder"),
-                displayNamePlaceholder: t("extensions:develop.apiResource.wizard.addApiResource.steps.basic.form." +
-                    "fields.name.placeholder"),
-                hiddenSteps: []
-            },
+
+
+
+
+
+            scopesTabContent: {
+                subHeading: t("apiResources:tabs.scopes.subTitle")
+            }
+
         },
         [ResourceServerType.MCP]: {
             addNewResourceButtonText: "New MCP Server",
+            createResourceWizard: {
+                displayNamePlaceholder: "My MCP Server",
+                hiddenSteps: [
+                    AddAPIResourceWizardStepsFormTypes.PERMISSIONS,
+                    AddAPIResourceWizardStepsFormTypes.AUTHORIZATION
+                ],
+                identifierPlaceholder: "mcp://my-mcp-server"
+            },
+            defaultSearchFilter: "identifier sw mcp",
+            deleteResourceWizardContent: {
+                buttonText: "Delete MCP Server",
+                heading: "Delete MCP Server",
+                subHeading: "This action will permanently delete the MCP server. Please be certain before you proceed"
+            },
             isApiServer: false,
             isMcpServer: true,
+            resourceEditBackButtonLink: AppConstants.getPaths().get("MCP_SERVERS"),
+            resourceEditBackButtonText: "Back to MCP Servers",
+            resourceEditPath: AppConstants.getPaths().get("MCP_SERVER_EDIT"),
+            resourceSearchBarPlaceholder: "Search MCP servers by name",
             resourceServerListDescription:
                 "Create and manage the APIs that define resource models and access scopes, enabling " +
                 "fine-grained permission control for applications interacting with MCP servers.",
             resourceServerListPageTitle: "MCP Servers",
             resourceServerListTitle: "MCP Servers",
-            defaultSearchFilter: "identifier sw mcp",
-            resourceSearchBarPlaceholder: "Search MCP servers by name",
-            resourceEditBackButtonText: "Back to MCP Servers",
-            resourceEditBackButtonLink: AppConstants.getPaths().get("MCP_SERVERS"),
-            resourceEditPath: AppConstants.getPaths().get("MCP_SERVER_EDIT"),
-            createResourceWizard: {
-                title: "Create an MCP server",
-                description: "Create a new MCP server.",
-                identifierPlaceholder: "mcp://my-mcp-server",
-                displayNamePlaceholder: "My MCP Server",
-                hiddenSteps: [
-                    AddAPIResourceWizardStepsFormTypes.PERMISSIONS,
-                    AddAPIResourceWizardStepsFormTypes.AUTHORIZATION
-                ]
+
+
+
+
+            scopesTabContent: {
+                subHeading: "Scopes the MCP server uses to verify the user's permissions."
             }
+
         }
     };
 
