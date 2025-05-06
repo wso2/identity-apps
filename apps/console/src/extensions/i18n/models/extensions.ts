@@ -2998,7 +2998,15 @@ export interface Extensions {
                 label: string;
                 timeFormat: string;
             };
-            passwordValidationHeading: string;
+            passwordValidation: {
+                heading: string;
+                passwordValidationRegexLabel: string;
+                passwordValidationRegexHint: string;
+                passwordValidationRegexPlaceholder: string;
+                passwordValidationErrorLabel: string;
+                passwordValidationErrorHint: string;
+                passwordValidationErrorPlaceholder: string;
+            };
             userOnboarding: {
                 heading: string;
                 subHeading: string;
