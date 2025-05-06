@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -27,7 +28,6 @@ import { useDispatch } from "react-redux";
 import { Form, Grid } from "semantic-ui-react";
 import { deleteAgent, updateAgent } from "../../api/agents";
 import useGetAgent from "../../hooks/use-get-agent";
-import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 
 interface AgentOverviewProps extends IdentifiableComponentInterface {
     agentId: string;
@@ -46,7 +46,7 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
     useEffect(() => {
         if (agentInfo) {
             setInitialValues({
-                description: agentInfo?.description,
+                description: agentInfo?.["urn:scim:schemas:extension:custom:User"]?.agentDescription,
                 logo: agentInfo?.logo,
                 name: agentInfo.name?.givenName
             });
@@ -64,10 +64,16 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
                                 {
                                     op: "replace",
                                     value: {
-                                        description: values?.description,
-                                        logo: values?.logo,
                                         name: {
                                             givenName: values?.name
+                                        }
+                                    }
+                                },
+                                {
+                                    op: "replace",
+                                    value: {
+                                        "urn:scim:schemas:extension:custom:User": {
+                                            "agentDescription": values?.description
                                         }
                                     }
                                 }
@@ -114,18 +120,6 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
                                                 rows={ 4 }
                                                 maxRows={ 6 }
                                                 component={ TextFieldAdapter }
-                                            ></FinalFormField>
-                                            <FinalFormField
-                                                name="logo"
-                                                label="Logo"
-                                                className="pt-3"
-                                                component={ TextFieldAdapter }
-                                                helperText={
-                                                    (<Hint compact className="hint">
-                                        An image URL for the application. If this is not provided, we will display a
-                                        generated thumbnail instead. Recommended size: 200x200 pixels.
-                                                    </Hint>)
-                                                }
                                             ></FinalFormField>
                                             <Form.Group>
                                                 <PrimaryButton type="submit" className="mt-5">
