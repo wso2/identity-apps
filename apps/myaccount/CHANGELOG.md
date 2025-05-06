@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.19.11
+
+### Patch Changes
+
+- [#8137](https://github.com/wso2/identity-apps/pull/8137) [`9dc89862d531695ca95fbfe63f6790f8eca1883f`](https://github.com/wso2/identity-apps/commit/9dc89862d531695ca95fbfe63f6790f8eca1883f) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Prevent implicit verification of primary email/mobile without user verification
+
+- Updated dependencies [[`9dc89862d531695ca95fbfe63f6790f8eca1883f`](https://github.com/wso2/identity-apps/commit/9dc89862d531695ca95fbfe63f6790f8eca1883f)]:
+  - @wso2is/core@2.7.7
+
 ## 2.19.10
 
 ### Patch Changes

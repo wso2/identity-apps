@@ -633,7 +633,7 @@ importers:
         specifier: ^1.5.203
         version: link:../../features/admin.username-validation.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.31.2
+        specifier: ^2.31.3
         version: link:../../features/admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.32
@@ -651,7 +651,7 @@ importers:
         specifier: ^0.2.0
         version: link:../../features/common.ui.v1
       '@wso2is/core':
-        specifier: ^2.7.6
+        specifier: ^2.7.7
         version: link:../../modules/core
       '@wso2is/dynamic-forms':
         specifier: ^2.4.40
@@ -970,7 +970,7 @@ importers:
         specifier: ^0.2.0
         version: link:../../features/common.ui.v1
       '@wso2is/core':
-        specifier: ^2.7.6
+        specifier: ^2.7.7
         version: link:../../modules/core
       '@wso2is/forms':
         specifier: ^2.3.23
@@ -18411,7 +18411,7 @@ importers:
         specifier: ^2.29.10
         version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.31.2
+        specifier: ^2.31.3
         version: 'link:'
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.30
@@ -18420,7 +18420,7 @@ importers:
         specifier: ^2.27.142
         version: link:../admin.validation.v1
       '@wso2is/core':
-        specifier: ^2.7.6
+        specifier: ^2.7.7
         version: link:../../modules/core
       '@wso2is/dynamic-forms':
         specifier: ^2.4.40
