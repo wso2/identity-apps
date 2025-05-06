@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.54.14
+
+### Patch Changes
+
+- [#8144](https://github.com/wso2/identity-apps/pull/8144) [`da9a1bd0a506dcaa262016d4719d5c8e27a6da5e`](https://github.com/wso2/identity-apps/commit/da9a1bd0a506dcaa262016d4719d5c8e27a6da5e) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Trigger console release
+
 ## 2.54.13
 
 ### Patch Changes

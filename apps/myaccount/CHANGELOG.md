@@ -1,5 +1,20 @@
 # @wso2is/myaccount
 
+## 2.19.10
+
+### Patch Changes
+
+- [#8147](https://github.com/wso2/identity-apps/pull/8147) [`e440b1eb22dbb5f9101dd819dcd921787a67a787`](https://github.com/wso2/identity-apps/commit/e440b1eb22dbb5f9101dd819dcd921787a67a787) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix NPE in passing mobile logo path to myaccount app header
+
+## 2.19.9
+
+### Patch Changes
+
+- [#8136](https://github.com/wso2/identity-apps/pull/8136) [`352b47497274e11301f477766da9c703d3d368a5`](https://github.com/wso2/identity-apps/commit/352b47497274e11301f477766da9c703d3d368a5) Thanks [@BimsaraBodaragama](https://github.com/BimsaraBodaragama)! - Improve Responsive Behavior of My Account Application for Mobile View
+
+- Updated dependencies [[`352b47497274e11301f477766da9c703d3d368a5`](https://github.com/wso2/identity-apps/commit/352b47497274e11301f477766da9c703d3d368a5)]:
+  - @wso2is/theme@2.7.7
+
 ## 2.19.8
 
 ### Patch Changes

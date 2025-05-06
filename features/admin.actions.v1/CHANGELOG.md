@@ -1,5 +1,11 @@
 # @wso2is/admin.actions.v1
 
+## 1.12.6
+
+### Patch Changes
+
+- [#8140](https://github.com/wso2/identity-apps/pull/8140) [`b2ec1b4d10f12fe718396bc284d220afa11ef101`](https://github.com/wso2/identity-apps/commit/b2ec1b4d10f12fe718396bc284d220afa11ef101) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix hidden claims filtering in pre-update profile action
+
 ## 1.12.5
 
 ### Patch Changes
