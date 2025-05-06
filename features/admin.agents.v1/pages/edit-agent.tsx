@@ -78,16 +78,6 @@ export default function EditAgent({
             )
         },
         {
-            componentId: "applications",
-            menuItem: "Applications",
-            render: () =>  <ResourceTab.Pane><AgentConnectedApps /></ResourceTab.Pane>
-        },
-        {
-            componentId: "connections",
-            menuItem: "Connections",
-            render: () =>  <ResourceTab.Pane><AgentIntegrations /></ResourceTab.Pane>
-        },
-        {
             componentId: "roles",
             menuItem: "Roles",
             render: () =>  <ResourceTab.Pane><AgentRoles agentId={ agentId }/></ResourceTab.Pane>
@@ -96,6 +86,16 @@ export default function EditAgent({
             componentId: "groups",
             menuItem: "Groups",
             render: () =>  <ResourceTab.Pane><AgentGroups agentId={ agentId } /></ResourceTab.Pane>
+        },
+        {
+            componentId: "applications",
+            menuItem: "Applications",
+            render: () =>  <ResourceTab.Pane><AgentConnectedApps /></ResourceTab.Pane>
+        },
+        {
+            componentId: "connections",
+            menuItem: "Connections",
+            render: () =>  <ResourceTab.Pane><AgentIntegrations /></ResourceTab.Pane>
         }
     ];
 
