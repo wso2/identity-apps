@@ -25,7 +25,7 @@ import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@w
 import { DangerZone, DangerZoneGroup, EmphasizedSegment, Hint, PrimaryButton } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Form, Grid } from "semantic-ui-react";
+import { Divider, Form, Grid } from "semantic-ui-react";
 import { deleteAgent, updateAgent } from "../../api/agents";
 import useGetAgent from "../../hooks/use-get-agent";
 
@@ -136,6 +136,7 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
                 ></FinalForm>
             </EmphasizedSegment>
 
+<Divider hidden />
             <DangerZoneGroup
                 sectionHeader={ "Danger Zone" }
             >
