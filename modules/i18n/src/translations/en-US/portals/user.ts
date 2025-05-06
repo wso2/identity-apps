@@ -98,8 +98,8 @@ export const user: userNS = {
             impersonateUserZone: {
                 actionTitle: "Impersonate User",
                 buttonDisableHints: {
-                    myAccountDisabled: "My account application should be enabled to impersonate the user.",
                     insufficientPermissions: "Logged in user should be assigned with Impersonator My Account application role.",
+                    myAccountDisabled: "My account application should be enabled to impersonate the user.",
                     userAccountDisabled: "User account should be enabled to impersonate the user.",
                     userAccountLocked: "User account should be unlocked to impersonate the user."
                 },

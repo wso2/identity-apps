@@ -92,8 +92,8 @@ export interface userNS {
             impersonateUserZone: {
                 actionTitle: string;
                 buttonDisableHints: {
-                    myAccountDisabled: string;
                     insufficientPermissions: string;
+                    myAccountDisabled: string;
                     userAccountDisabled: string;
                     userAccountLocked: string;
                 };

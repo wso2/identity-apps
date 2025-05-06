@@ -29,7 +29,7 @@ import {
     RolesMemberInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AuthenticateUtils, StringUtils } from "@wso2is/core/utils";
+import { AuthenticateUtils } from "@wso2is/core/utils";
 import { DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { Dispatch, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -436,8 +436,9 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     const resolveUserActions = (): ReactElement => {
 
         return (
-            !isSubOrgUser && !isUserCurrentLoggedInUser 
-                && isFeatureEnabled(userFeatureConfig, UserManagementConstants.IMPERSONATION_FEATURE_FLAG) ?
+            !isSubOrgUser && !isUserCurrentLoggedInUser
+                && isFeatureEnabled(userFeatureConfig, 
+                    UserManagementConstants.FEATURE_DICTIONARY.get("USER_IMPERSONATION")) ?
                 (
                     <React.Fragment>
                         <DangerZoneGroup
