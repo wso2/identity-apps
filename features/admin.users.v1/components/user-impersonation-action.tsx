@@ -437,7 +437,7 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
 
         return (
             !isSubOrgUser && !isUserCurrentLoggedInUser
-                && isFeatureEnabled(userFeatureConfig, 
+                && isFeatureEnabled(userFeatureConfig,
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_IMPERSONATION")) ?
                 (
                     <React.Fragment>
