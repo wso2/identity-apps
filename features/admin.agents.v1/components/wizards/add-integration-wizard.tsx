@@ -264,7 +264,19 @@ Provide a long-lived credential that the agent can use without requiring user ap
                             <Grid>
                                 <Grid.Row>
                                     <Grid.Column width={ 16 }>
-                                        <Checkbox
+                                        <Radio
+                                            className="mt-5"
+                                            label="Request on demand"
+                                            onChange={ () => setIsRequest(!isRequest) }
+                                            checked={ isRequest === true }
+                                            data-componentid={ `${componentId}-request-on-demand-checkbox` }
+                                        />
+                                        <Hint inline popup>
+                Configure agent to request access token with the selected scopes on demand.
+                                        </Hint>
+                                    </Grid.Column>
+                                    <Grid.Column width={ 16 }>
+                                        <Radio
                                             className="mt-5"
                                             label={ "Connected account" }
                                             onChange={ () => setIsAccountSelected(!isAccount) }
@@ -290,18 +302,6 @@ Provide a long-lived credential that the agent can use without requiring user ap
                                                 </Button>
                                             </div>
                                         ) }
-                                    </Grid.Column>
-                                    <Grid.Column width={ 16 }>
-                                        <Checkbox
-                                            className="mt-5"
-                                            label="Request on demand"
-                                            onChange={ () => setIsRequest(!isRequest) }
-                                            checked={ isRequest === true }
-                                            data-componentid={ `${componentId}-request-on-demand-checkbox` }
-                                        />
-                                        <Hint inline popup>
-                Configure agent to request access token with the selected scopes on demand.
-                                        </Hint>
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
