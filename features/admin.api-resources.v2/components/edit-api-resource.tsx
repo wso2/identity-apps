@@ -25,8 +25,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { AuthorizationAPIResource, GeneralAPIResource, PermissionAPIResource } from "./api-resource-panes";
+import McpServerTools from "./api-resource-panes/mcp-server-tools";
 import { deleteScopeFromAPIResource, updateAPIResource } from "../api";
 import { APIResourceInterface, UpdatedAPIResourceInterface } from "../models";
+import useApiResourcesPageContent from "../pages/use-api-resources-page-content";
 
 /**
  * Prop-types for the API resources page component.
@@ -74,6 +76,11 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
+    const {
+        isMcpServer,
+        isApiServer
+    } = useApiResourcesPageContent();
+
     /**
      * Panes for the resource tab.
      * @returns `ResourceTab.Pane[]`
@@ -93,7 +100,7 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
                 </ResourceTab.Pane>
             )
         },
-        {
+        isApiServer && {
             menuItem: t("apiResources:tabs.scopes.label"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
@@ -107,7 +114,15 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
                 </ResourceTab.Pane>
             )
         },
-        {
+        isMcpServer && {
+            menuItem: "Tools",
+            render: () => (
+                <ResourceTab.Pane controlledSegmentation attached={ false }>
+                    <McpServerTools />
+                </ResourceTab.Pane>
+            )
+        },
+        isApiServer && {
             menuItem: t("extensions:develop.apiResource.tabs.authorization.label"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
