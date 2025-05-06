@@ -140,8 +140,9 @@ public class AppPortalUtils {
                 .getProperty(USER_SESSION_IMPERSONATION));
             if (isUserSessionImpersonationEnabled && MYACCOUNT_APP.equals(applicationName)) {
                 consoleCallbackUrl = ApplicationMgtUtil.replaceUrlOriginWithPlaceholders(consoleCallbackUrl);
-                consoleCallbackUrl = ApplicationMgtUtil.resolveOriginUrlFromPlaceholders(consoleCallbackUrl, CONSOLE_APP);
-                appendedConsoleCallBackURLRegex = "|" + consoleCallbackUrl.replace(portalPath, portalPath 
+                consoleCallbackUrl = ApplicationMgtUtil.resolveOriginUrlFromPlaceholders(consoleCallbackUrl,
+                    CONSOLE_APP);
+                appendedConsoleCallBackURLRegex = "|" + consoleCallbackUrl.replace(portalPath, portalPath
                     + "/resources/users/init-impersonate.html");
             }
         } catch (URLBuilderException e) {
