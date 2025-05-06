@@ -35,6 +35,7 @@ import { Icon, Input } from "semantic-ui-react";
 import { PermissionListAPIResource } from "./permission-list-api-resource";
 import { APIResourcePanesCommonPropsInterface, APIResourcePermissionInterface } from "../../models";
 import { AddAPIResourcePermission } from "../wizard";
+import useApiResourcesPageContent from "../../pages/use-api-resources-page-content";
 
 /**
  * Prop-types for the API resources page component.
@@ -71,6 +72,9 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
     const [ triggerAddAPIResourcePermissionModal, setTriggerAddAPIResourcePermissionModal ] = useTrigger();
     const [ permissionSearchQuery, setPermissionSearchQuery ] = useState<string>("");
 
+    const {
+        scopesTabContent
+    } = useApiResourcesPageContent();
     /**
      * Set the permission list.
      */
@@ -133,7 +137,7 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
                             { t("apiResources:tabs.scopes.title") }
                         </Heading>
                         <Heading as="h6" color="grey" subHeading className="mb-5">
-                            { t("apiResources:tabs.scopes.subTitle") }
+                            { scopesTabContent?.subHeading }
                         </Heading>
                     </Grid>
                     <Grid xs={ 4 } alignItems="flex-end">
