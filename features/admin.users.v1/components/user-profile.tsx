@@ -1596,6 +1596,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             >
                                 <UserImpersonationAction
                                     user={ user }
+                                    isLocked={ accountLocked }
+                                    isDisabled={ accountDisabled }
                                     isReadOnly={ !hasUsersUpdatePermissions }
                                     isUserManagedByParentOrg={ user?.isUserManagedByParentOrg }
                                     data-componentid="user-mgt-edit-user-impersonate-action"

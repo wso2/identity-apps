@@ -29,7 +29,7 @@ import {
     RolesMemberInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AuthenticateUtils } from "@wso2is/core/utils";
+import { AuthenticateUtils, StringUtils } from "@wso2is/core/utils";
 import { DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { Dispatch, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -50,7 +50,15 @@ interface UserImpersonationActionInterface extends IdentifiableComponentInterfac
      */
     user: ProfileInfoInterface;
     /**
-     * Whether impersonation action is read only.
+     * Whether the user is locked.
+     */
+    isLocked: boolean;
+    /**
+     * Whether the user is disabled.
+     */
+    isDisabled: boolean;
+    /**
+     * Whether user is read only.
      */
     isReadOnly: boolean;
     /**
@@ -69,6 +77,9 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     const {
         [ "data-componentid" ]: componentId,
         user,
+        isLocked,
+        isDisabled,
+        isReadOnly,
         isUserManagedByParentOrg
     } = props;
 
@@ -334,14 +345,13 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     /**
      * This function returns if the impersonation action is enabled for the current user.
      *  1. My Account is enabled.
-     *  2. The user is not the current logged in user.
-     *  3. The user is not a sub organization user.
-     *  4. The user is authorized to impersonate.
+     *  2. The user is authorized to impersonate.
+     *  3. The user is not locked.
+     *  4. The user is not disabled.
      */
-    const isMyAccountImpersonatable = (): boolean => {
+    const isImpersonatable = (): boolean => {
 
-        return isMyAccountEnabled && !isUserCurrentLoggedInUser && !isSubOrgUser
-            && isLoggedInUserAuthorizedToImpersonate();
+        return isMyAccountEnabled && isLoggedInUserAuthorizedToImpersonate() && !isLocked && !isDisabled;
     };
 
     /**
@@ -399,19 +409,41 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     };
 
     /**
+     * This function resolves the button disable hint.
+     */
+    const resolvedButtonDisableHint = (): string | undefined => {
+        const baseKey: string = "user:editUser.userActionZoneGroup.impersonateUserZone.buttonDisableHints";
+
+        if (isMyAccountEnabled) {
+            return t(`${baseKey}.myAccountDisabled`);
+        }
+        if (!isLoggedInUserAuthorizedToImpersonate()) {
+            return t(`${baseKey}.insufficientPermissions`);
+        }
+        if (isDisabled) {
+            return t(`${baseKey}.userAccountDisabled`);
+        }
+        if (isLocked) {
+            return t(`${baseKey}.userAccountLocked`);
+        }
+
+        return undefined;
+    };
+
+    /**
      * This function returns impersonate user action in the danger zone.
      */
     const resolveUserActions = (): ReactElement => {
 
         return (
-            !isSubOrgUser && isFeatureEnabled(userFeatureConfig, "IMPERSONATE_USER") ?
+            !isSubOrgUser && !isUserCurrentLoggedInUser && isFeatureEnabled(userFeatureConfig, "IMPERSONATE_USER") ?
                 (
                     <React.Fragment>
                         <DangerZoneGroup
                             className="action-zone"
                         >
                             {
-                                !isUserManagedByParentOrg && (
+                                !isReadOnly && !isUserManagedByParentOrg && (
                                     <DangerZone
                                         data-componentid={ `${ componentId }-danger-zone-button` }
                                         className="action-zone"
@@ -426,7 +458,8 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
                                         onActionClick={ (): void => {
                                             handleUserImpersonation();
                                         } }
-                                        isButtonDisabled={ !isMyAccountImpersonatable() }
+                                        isButtonDisabled={  !isImpersonatable() }
+                                        buttonDisableHint={ resolvedButtonDisableHint() }
                                         isButtonLoading={ impersonationInProgress }
                                     />
                                 )

@@ -97,6 +97,12 @@ export const user: userNS = {
         userActionZoneGroup: {
             impersonateUserZone: {
                 actionTitle: "Impersonate User",
+                buttonDisableHints: {
+                    myAccountDisabled: "My account application should be enabled to impersonate the user.",
+                    insufficientPermissions: "Logged in user should be assigned with Impersonator My Account application role.",
+                    userAccountDisabled: "User account should be enabled to impersonate the user.",
+                    userAccountLocked: "User account should be unlocked to impersonate the user."
+                },
                 header: "Impersonate User",
                 subheader: "Once user impersonation has started, the initiator will no longer be able to log in with their own identity until the existing session is terminated."
             }
