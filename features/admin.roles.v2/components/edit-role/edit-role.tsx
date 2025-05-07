@@ -36,6 +36,7 @@ import { RoleGroupsList } from "./edit-role-groups";
 import { UpdatedRolePermissionDetails } from "./edit-role-permission";
 import { RoleUsersList } from "./edit-role-users";
 import { RoleConstants as LocalRoleConstants } from "../../constants";
+import { isMyAccountImpersonationRole } from "../role-utils";
 
 /**
  * Captures props needed for edit role component
@@ -106,8 +107,6 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
 
     const [ isAdminRole, setIsAdminRole ] = useState<boolean>(false);
     const [ isEveryoneRole, setIsEveryoneRole ] = useState<boolean>(false);
-    const accountAppImpersonateRoleName: string = useSelector(
-        (state: AppState) => state.config.deployment.accountApp.impersonationRoleName);
 
     /**
      * Set the if the role is `Internal/admin`.
@@ -130,7 +129,8 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <BasicRoleDetails
                             isReadOnly={ isAdminRole || isEveryoneRole || isReadOnly || isSharedRole
-                                || roleObject?.displayName === accountAppImpersonateRoleName }
+                                || isMyAccountImpersonationRole(roleObject?.displayName,
+                                    roleObject?.audience?.display) }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 0 }
@@ -144,7 +144,8 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <UpdatedRolePermissionDetails
                             isReadOnly={ isAdminRole || isReadOnly || isSharedRole
-                                || roleObject?.displayName === accountAppImpersonateRoleName }
+                                || isMyAccountImpersonationRole(roleObject?.displayName,
+                                    roleObject?.audience?.display) }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 1 }
