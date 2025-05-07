@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
+import { RoleConstants } from "../constants";
 import { PermissionObject, TreeNode } from "../models/permission";
 
 /**
@@ -50,4 +50,22 @@ export const generatePermissionTree = (permissioObject: PermissionObject, pathCo
     }
 
     return permissionTreeArray;
+};
+
+/**
+ * Checks if the given role is an impersonation role for the My Account application.
+ *
+ * @param roleName - The name of the role.
+ * @param applicationName - The name of the application.
+ *
+ * @returns True if the role is an impersonation role for My Account application, false otherwise.
+ */
+export const isMyAccountImpersonationRole = (roleName:string, applicationName:string): boolean => {
+
+    if (!roleName || !applicationName) {
+        return false;
+    }
+
+    return roleName === RoleConstants.IMPERSONATOR_ROLE_NAME
+        && applicationName === RoleConstants.MY_ACCOUNT_APP_NAME;
 };
