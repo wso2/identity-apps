@@ -1,5 +1,11 @@
 # @wso2is/admin.extensions.v1
 
+## 2.37.12
+
+### Patch Changes
+
+- [#8163](https://github.com/wso2/identity-apps/pull/8163) [`bea9f2c4f90ec88e005d823e348ba16767c00e4d`](https://github.com/wso2/identity-apps/commit/bea9f2c4f90ec88e005d823e348ba16767c00e4d) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - enable delete icon for mapped identity claims in custom scim2 schema
+
 ## 2.37.11
 
 ### Patch Changes
