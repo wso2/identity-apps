@@ -27,7 +27,7 @@ import ListItemText from "@oxygen-ui/react/ListItemText";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import { CircleInfoIcon } from "@oxygen-ui/react-icons";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
-import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
+import { ClaimDataType, ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
@@ -1740,78 +1740,6 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
         );
     };
 
-    const resolveMultiValuedAttributesFormField = (
-        schema: ProfileSchemaInterface,
-        fieldName: string,
-        key: number
-    ): ReactElement => {
-        let attributeValueList: string[] = [];
-        let verifiedAttributeValueList: string[] = [];
-        let primaryAttributeValue: string = "";
-        let fetchedPrimaryAttributeValue: string = "";
-        let verificationEnabled: boolean = false;
-        let primaryAttributeSchema: ProfileSchemaInterface;
-        let maxAllowedLimit: number = 0;
-        let verificationPendingValue: string = "";
-
-        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-            attributeValueList = multiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE] ?? [];
-            verifiedAttributeValueList = profileInfo?.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
-            primaryAttributeValue = primaryValues[EMAIL_ATTRIBUTE];
-            fetchedPrimaryAttributeValue = profileInfo?.get(EMAIL_ATTRIBUTE);
-            verificationEnabled = configSettings?.isEmailVerificationEnabled === "true";
-            primaryAttributeSchema = profileSchema.find((schema: ProfileSchemaInterface) =>
-                schema.name === EMAIL_ATTRIBUTE);
-            maxAllowedLimit = ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED;
-            verificationPendingValue = getVerificationPendingAttributeValue(EMAIL_ADDRESSES_ATTRIBUTE);
-
-        } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
-            attributeValueList = multiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE] ?? [];
-            verifiedAttributeValueList = profileInfo?.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
-            primaryAttributeValue = primaryValues[MOBILE_ATTRIBUTE];
-            fetchedPrimaryAttributeValue = profileInfo?.get(MOBILE_ATTRIBUTE);
-            verificationEnabled = configSettings?.isMobileVerificationEnabled === "true";
-            primaryAttributeSchema = profileSchema.find((schema: ProfileSchemaInterface) =>
-                schema.name === MOBILE_ATTRIBUTE);
-            maxAllowedLimit = ProfileConstants.MAX_MOBILE_NUMBERS_ALLOWED;
-            verificationPendingValue = getVerificationPendingAttributeValue(MOBILE_NUMBERS_ATTRIBUTE);
-        } else {
-            attributeValueList = multiValuedAttributeValues[schema.name] ?? [];
-            primaryAttributeSchema = profileSchema.find(
-                (schemaAttribute: ProfileSchemaInterface) => schemaAttribute.name === schema.name);
-            maxAllowedLimit = ProfileConstants.MAX_MULTI_VALUES_ALLOWED;
-        }
-
-        const showAttributes: boolean = attributeValueList.length >= 1;
-
-        return (
-            <MultiValuedFormFields
-                schema={ schema }
-                fieldName={ fieldName }
-                key={ key }
-                isUserManagedByParentOrg={ isUserManagedByParentOrg }
-                profileInfo={ profileInfo }
-                user={ user }
-                multiValuedAttributeValues={ multiValuedAttributeValues }
-                setMultiValuedAttributeValues={ setMultiValuedAttributeValues }
-                verificationEnabled={ verificationEnabled }
-                verificationPendingValue={ verificationPendingValue }
-                verifiedAttributeValueList={ verifiedAttributeValueList }
-                primaryValues={ primaryValues }
-                setPrimaryValues={ setPrimaryValues }
-                primaryAttributeValue={ primaryAttributeValue }
-                primaryAttributeSchema={ primaryAttributeSchema }
-                fetchedPrimaryAttributeValue= { fetchedPrimaryAttributeValue }
-                handleUserUpdate={ handleUserUpdate }
-                showAttributes={ showAttributes }
-                maxAllowedLimit={ maxAllowedLimit }
-                multiValuedInputFieldValue={ multiValuedInputFieldValue }
-                setMultiValuedInputFieldValue={ setMultiValuedInputFieldValue }
-                isReadOnly={ isReadOnly }
-            />
-        );
-    };
-
     /**
      * If the profile schema is read only or the user is read only, the profile detail for a profile schema should
      * only be displayed in the form only if there is a value for the schema. This function validates whether the
@@ -2001,31 +1929,27 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
             );
         }
 
-        if (schema.type.toUpperCase() === "BOOLEAN") {
-            return (
-                <>
-                    <FinalFormField
-                        key={ key }
-                        component={ CheckboxFieldAdapter }
-                        data-componentid={ resolvedComponentId }
-                        initialValue={ profileInfo.get(schema.name).toUpperCase() === "TRUE" }
-                        ariaLabel={ fieldName }
-                        label={ fieldName }
-                        name={ schema.name }
-                        readOnly={ (isUserManagedByParentOrg &&
-                            sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
-                            || isReadOnly
-                            || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
-                        }
-                        required={ resolvedRequiredValue() }
-                    />
-                    <Divider hidden/>
-                </>
-            );
-        }
-
         if (schema?.extended && schema?.multiValued) {
-            return resolveMultiValuedAttributesFormField(schema, fieldName, key);
+            return (
+                <MultiValuedFormFields
+                    schema={ schema }
+                    fieldName={ fieldName }
+                    key={ key }
+                    isUserManagedByParentOrg={ isUserManagedByParentOrg }
+                    profileInfo={ profileInfo }
+                    user={ user }
+                    multiValuedAttributeValues={ multiValuedAttributeValues }
+                    setMultiValuedAttributeValues={ setMultiValuedAttributeValues }
+                    primaryValues={ primaryValues }
+                    setPrimaryValues={ setPrimaryValues }
+                    handleUserUpdate={ handleUserUpdate }
+                    multiValuedInputFieldValue={ multiValuedInputFieldValue }
+                    setMultiValuedInputFieldValue={ setMultiValuedInputFieldValue }
+                    isReadOnly={ isReadOnly }
+                    configSettings={ configSettings }
+                    profileSchema={ profileSchema }
+                />
+            );
         }
 
         if (schema.name === "country") {
@@ -2230,6 +2154,95 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                             )
                             : null
                         }
+                    />
+                    <Divider hidden/>
+                </>
+            );
+        }
+
+        if (schema.type.toLowerCase() === ClaimDataType.STRING) {
+            return (
+                <>
+                    <FinalFormField
+                        key={ key }
+                        component={ TextFieldAdapter }
+                        data-componentid={ resolvedComponentId }
+                        initialValue={ profileInfo.get(schema.name) }
+                        ariaLabel={ fieldName }
+                        name={ schema.name }
+                        type="text"
+                        label={ fieldName }
+                        placeholder={
+                            t("user:profile.forms.generic.inputs.dropdownPlaceholder",
+                                { fieldName })
+                        }
+                        validate={ (value: string) => validateInput(value, schema, fieldName, resolvedRequiredValue()) }
+                        maxLength={ schema.maxLength
+                            ? schema.maxLength
+                            : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
+                        }
+                        readOnly={ (isUserManagedByParentOrg &&
+                            sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                            || isReadOnly
+                            || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                        }
+                        required={ resolvedRequiredValue() }
+                    />
+                    <Divider hidden/>
+                </>
+            );
+        }
+
+        if (schema.type.toLowerCase() === ClaimDataType.INTEGER) {
+            return (
+                <>
+                    <FinalFormField
+                        key={ key }
+                        component={ TextFieldAdapter }
+                        data-componentid={ resolvedComponentId }
+                        initialValue={ profileInfo.get(schema.name) }
+                        ariaLabel={ fieldName }
+                        name={ schema.name }
+                        type="number"
+                        label={ fieldName }
+                        placeholder={
+                            t("user:profile.forms.generic.inputs.dropdownPlaceholder",
+                                { fieldName })
+                        }
+                        validate={ (value: string) => validateInput(value, schema, fieldName, resolvedRequiredValue()) }
+                        maxLength={ schema.maxLength
+                            ? schema.maxLength
+                            : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
+                        }
+                        readOnly={ (isUserManagedByParentOrg &&
+                            sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                            || isReadOnly
+                            || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                        }
+                        required={ resolvedRequiredValue() }
+                    />
+                    <Divider hidden/>
+                </>
+            );
+        }
+
+        if (schema.type.toLowerCase() === ClaimDataType.BOOLEAN) {
+            return (
+                <>
+                    <FinalFormField
+                        key={ key }
+                        component={ CheckboxFieldAdapter }
+                        data-componentid={ resolvedComponentId }
+                        initialValue={ profileInfo.get(schema.name).toUpperCase() === "TRUE" }
+                        ariaLabel={ fieldName }
+                        label={ fieldName }
+                        name={ schema.name }
+                        readOnly={ (isUserManagedByParentOrg &&
+                            sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                            || isReadOnly
+                            || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                        }
+                        required={ resolvedRequiredValue() }
                     />
                     <Divider hidden/>
                 </>

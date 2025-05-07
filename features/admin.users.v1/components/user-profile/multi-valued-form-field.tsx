@@ -45,9 +45,10 @@ import { FinalFormField, TextFieldAdapter } from "@wso2is/form";
 import { Popup } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import { FormApi } from "final-form";
+import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
-import React, { useCallback, useEffect, useState } from "react";
-import { useField, useForm } from "react-final-form";
+import React, { useCallback, useState } from "react";
+import { FormSpy, useField, useForm } from "react-final-form";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -61,7 +62,8 @@ import {
     VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE,
     VERIFIED_MOBILE_NUMBERS_ATTRIBUTE
 } from "../../constants/user-management-constants";
-import { PatchUserOperationValue } from "../../models/user";
+import { useMultiValuedFieldConfig } from "../../hooks/use-multi-valued-field-config";
+import { AccountConfigSettingsInterface, PatchUserOperationValue } from "../../models/user";
 import "./multi-valued-form-field.scss";
 
 interface MultiValuedFormFieldProps extends IdentifiableComponentInterface {
@@ -101,46 +103,34 @@ interface MultiValuedFormFieldProps extends IdentifiableComponentInterface {
      * Set multi valued attribute values.
      */
     setMultiValuedAttributeValues: (values: Record<string, string[]> | any) => void;
-    verificationEnabled: boolean;
-    verifiedAttributeValueList: string[]
-    fetchedPrimaryAttributeValue: string;
-    primaryAttributeValue: string;
-    verificationPendingValue: string;
-    primaryAttributeSchema: ProfileSchemaInterface;
     /**
      * Handle user update callback.
      */
     handleUserUpdate: (userId: string) => void;
     primaryValues: Record<string, string>;
     setPrimaryValues: (values: Record<string, string> | any) => void;
-    showAttributes: boolean;
-    maxAllowedLimit: number;
     multiValuedInputFieldValue: Record<string, string>;
     setMultiValuedInputFieldValue: (values: Record<string, string> | { [x: string]: any }) => void;
+    profileSchema: ProfileSchemaInterface[];
+    configSettings: AccountConfigSettingsInterface
 }
 
 const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
     const {
-        "data-componentid": componentId = "user-mgt-user-profile",
+        ["data-componentid"]: componentId = "user-mgt-user-profile",
         schema,
         fieldName,
         key,
         profileInfo,
+        profileSchema,
+        configSettings,
         user,
         isUserManagedByParentOrg,
         multiValuedAttributeValues,
         setMultiValuedAttributeValues,
-        verifiedAttributeValueList,
-        verificationEnabled,
-        fetchedPrimaryAttributeValue,
-        primaryAttributeValue,
-        verificationPendingValue,
-        primaryAttributeSchema,
         handleUserUpdate,
         primaryValues,
         setPrimaryValues,
-        showAttributes,
-        maxAllowedLimit,
         multiValuedInputFieldValue,
         setMultiValuedInputFieldValue,
         isReadOnly
@@ -151,26 +141,32 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
     const form: FormApi<Record<string, any>, Partial<Record<string, any>>> = useForm();
     const { input: { value: inputFieldValue } } = useField(schema.name);
 
+    const {
+        fetchedPrimaryAttributeValue,
+        maxAllowedLimit,
+        primaryAttributeSchema,
+        primaryAttributeValue,
+        resolvedMutabilityValue,
+        resolvedPrimarySchemaRequiredValue,
+        resolvedRequiredValue,
+        sharedProfileValueResolvingMethod,
+        showAttributes,
+        verificationEnabled,
+        verificationPendingValue,
+        verifiedAttributeValueList
+    } = useMultiValuedFieldConfig(
+        user,
+        schema,
+        profileInfo,
+        primaryValues,
+        profileSchema,
+        multiValuedAttributeValues,
+        configSettings
+    );
+
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const resolvedComponentId: string = `${ componentId }-${ schema.name }-input`;
-    const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
-    const resolvedMultiValueAttributeRequiredValue: boolean
-        = schema?.profiles?.console?.required ?? schema.required;
-    const sharedProfileValueResolvingMethod: string = schema?.sharedProfileValueResolvingMethod;
-    const resolvedPrimarySchemaRequiredValue: boolean
-        = primaryAttributeSchema?.profiles?.console?.required ?? primaryAttributeSchema?.required;
-    const resolvedRequiredValue: boolean = (resolvedMultiValueAttributeRequiredValue
-        || resolvedPrimarySchemaRequiredValue);
-
-    useEffect(() => {
-        if (!isEmpty(inputFieldValue) && multiValuedInputFieldValue[schema.name] !== inputFieldValue) {
-            setMultiValuedInputFieldValue((prev: Record<string, string>) => ({
-                ...prev,
-                [schema.name]: inputFieldValue
-            }));
-        }
-    }, [ inputFieldValue ]);
 
     const handleAlerts = (alert: AlertInterface) => {
         dispatch(addAlert<AlertInterface>(alert));
@@ -431,29 +427,90 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
     /**
      * Form validator to validate the value against the schema regex.
      * @param value - Input value.
-     * @returns An error if the value is not valid else undefined.
      */
-    const validateInput = async (value: string): Promise<string | undefined> => {
-        if (resolvedRequiredValue && isEmpty(multiValuedAttributeValues[schema?.name]) && isEmpty(value)) {
-            return t("user:profile.forms.generic.inputs.validations.empty", { fieldName });
+    const validateInput = (value: string): Promise<string | undefined> => {
+        return new Promise((resolve: (value: string | PromiseLike<string>) => void) => {
+            debouncedValidateInput(value, resolve);
+        });
+    };
+
+    const validateInputSync = (value: string): boolean => {
+        if (resolvedRequiredValue &&
+            isEmpty(multiValuedAttributeValues[schema.name]) &&
+            isEmpty(value)) {
+
+            return false;
         }
 
         if (isEmpty(value)) {
-            return undefined;
+            return true;
         }
 
         if (!RegExp(primaryAttributeSchema?.regEx).test(value)) {
-            return (
-                t("users:forms.validation.formatError", {
-                    field: fieldName
-                })
-            );
+            return false;
         }
+
+        return true;
     };
+
+    // Note: debounced function now accepts value + resolve
+    const debouncedValidateInput: DebouncedFunc<(
+        value: string,
+        resolve: (result?: string) => void
+    ) => void> = useCallback(
+        debounce((value: string, resolve: (result?: string) => void) => {
+            if (
+                resolvedRequiredValue &&
+                isEmpty(multiValuedAttributeValues[schema.name]) &&
+                isEmpty(value)
+            ) {
+                resolve(t("user:profile.forms.generic.inputs.validations.empty", { fieldName }));
+
+                return;
+            }
+
+            if (isEmpty(value)) {
+                resolve(undefined);
+
+                return;
+            }
+
+            if (!RegExp(primaryAttributeSchema?.regEx).test(value)) {
+                resolve(t("users:forms.validation.formatError", { field: fieldName }));
+
+                return;
+            }
+
+            resolve(undefined);
+        }, 300),
+        [ resolvedRequiredValue, multiValuedAttributeValues, schema?.name, primaryAttributeSchema?.regEx ]
+    );
+
+    const debouncedUpdateInputFieldValue: DebouncedFunc<(fieldName: string, value: string) => void> = useCallback(
+        debounce((fieldName: string, value: string) => {
+            setMultiValuedInputFieldValue((prev: Record<string, string>) => ({
+                ...prev,
+                [fieldName]: value
+            }));
+        }, 300),
+        [ setMultiValuedInputFieldValue ]
+    );
 
     return (
         <Grid direction="row">
             <Grid>
+                <FormSpy subscription={ { values: true } }>
+                    { ({ values }: { values: Record<string, any> }) => {
+                        const fieldValue: string = values?.[schema.name];
+
+                        if (!isEmpty(fieldValue) &&
+                            multiValuedInputFieldValue[schema.name] !== fieldValue) {
+                            debouncedUpdateInputFieldValue(schema.name, fieldValue);
+                        }
+
+                        return null;
+                    } }
+                </FormSpy>
                 <FinalFormField
                     key={ key }
                     component={ TextFieldAdapter }
@@ -472,16 +529,15 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
                         t("user:profile.forms.generic.inputs.dropdownPlaceholder",
                             { fieldName })
                     }
-                    // validate={ validateInput }
+                    validate={ validateInput }
                     onKeyDown={ (event: React.KeyboardEvent<HTMLInputElement>) => {
                         if (event.key === "Enter") {
                             event.preventDefault();
                             const attributeValue: string = inputFieldValue;
+                            const isValid: boolean = validateInputSync(attributeValue);
 
-                            if (
-                                isEmpty(attributeValue) ||
-                                multiValuedAttributeValues[schema.name]?.includes(attributeValue)
-                            ) {
+                            if (!isValid ||
+                                multiValuedAttributeValues[schema.name]?.includes(attributeValue)) {
                                 return;
                             }
 
@@ -496,13 +552,13 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
                                     size="large"
                                     onClick={ () => {
                                         const attributeValue: string = multiValuedInputFieldValue[schema.name];
+                                        const isValid: boolean = validateInputSync(attributeValue);
 
-                                        if (isEmpty(attributeValue) ||
-                                        multiValuedAttributeValues[schema.name]?.includes(attributeValue)) {
+                                        if (!isValid ||
+                                            multiValuedAttributeValues[schema.name]?.includes(attributeValue)) {
                                             return;
                                         }
 
-                                        handleAddMultiValuedItem(schema, attributeValue);
                                         setMultiValuedInputFieldValue({
                                             ...multiValuedInputFieldValue,
                                             [schema.name]: ""

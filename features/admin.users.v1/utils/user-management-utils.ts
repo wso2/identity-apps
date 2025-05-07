@@ -36,7 +36,14 @@ import { DropdownChild } from "@wso2is/forms";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
-import { LocaleJoiningSymbol, UserManagementConstants } from "../constants/user-management-constants";
+import {
+    EMAIL_ADDRESSES_ATTRIBUTE,
+    EMAIL_ATTRIBUTE,
+    LocaleJoiningSymbol,
+    MOBILE_ATTRIBUTE,
+    MOBILE_NUMBERS_ATTRIBUTE,
+    UserManagementConstants
+} from "../constants/user-management-constants";
 import { MultipleInviteMode, MultipleInvitesDisplayNames, UserBasicInterface } from "../models/user";
 
 /**
@@ -622,4 +629,28 @@ export const flattenValues = (obj: Record<string, any>, prefix: string = ""): Ma
     }
 
     return map;
+};
+
+/**
+ * This function returns the verification pending attribute value for email and mobile attributes.
+ * @param schemaName - Schema name.
+ * @returns Verification pending attribute value.
+ */
+export const getVerificationPendingAttributeValue = (schemaName: string, user: ProfileInfoInterface): string | null => {
+    if (schemaName === EMAIL_ATTRIBUTE || schemaName === EMAIL_ADDRESSES_ATTRIBUTE) {
+        const pendingAttributes: Array<{value: string}> | undefined =
+        user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.["pendingEmails"];
+
+        return Array.isArray(pendingAttributes)
+            && pendingAttributes.length > 0
+            && pendingAttributes[0]?.value !== undefined
+            ? pendingAttributes[0].value
+            : null;
+    } else if (schemaName === MOBILE_ATTRIBUTE || schemaName === MOBILE_NUMBERS_ATTRIBUTE) {
+        return !isEmpty(user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.["pendingMobileNumber"])
+            ? user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.["pendingMobileNumber"]
+            : null;
+    }
+
+    return null;
 };
