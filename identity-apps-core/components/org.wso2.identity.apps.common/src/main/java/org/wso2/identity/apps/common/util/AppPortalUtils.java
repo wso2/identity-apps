@@ -40,6 +40,7 @@ import org.wso2.carbon.identity.core.URLBuilderException;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
 import org.wso2.carbon.identity.oauth.IdentityOAuthAdminException;
 import org.wso2.carbon.identity.oauth.OAuthUtil;
+import org.wso2.carbon.identity.oauth.common.OAuthConstants;
 import org.wso2.carbon.identity.oauth.dto.OAuthConsumerAppDTO;
 import org.wso2.carbon.identity.oauth2.OAuth2Constants;
 import org.wso2.carbon.identity.organization.management.service.constant.OrganizationManagementConstants;
@@ -76,6 +77,7 @@ import static org.wso2.identity.apps.common.util.AppPortalConstants.DISPLAY_NAME
 import static org.wso2.identity.apps.common.util.AppPortalConstants.EMAIL_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ACCOUNT_SWITCH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ORGANIZATION_SWITCH;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_TOKEN_EXCHANGE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_AUTH2_TYPE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_CONFIG_TYPE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.MYACCOUNT_APP;
@@ -130,14 +132,14 @@ public class AppPortalUtils {
         String callbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
         String consoleCallbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
         String appendedConsoleCallBackURLRegex = StringUtils.EMPTY;
+        boolean isUserSessionImpersonationEnabled = Boolean.parseBoolean(IdentityUtil
+            .getProperty(USER_SESSION_IMPERSONATION));
         try {
             // Update the callback URL properly if origin is configured for the portal app.
             callbackUrl = ApplicationMgtUtil.replaceUrlOriginWithPlaceholders(callbackUrl);
             callbackUrl = ApplicationMgtUtil.resolveOriginUrlFromPlaceholders(callbackUrl, applicationName);
 
             // Add console url when impersonation is enabled.
-            boolean isUserSessionImpersonationEnabled = Boolean.parseBoolean(IdentityUtil
-                .getProperty(USER_SESSION_IMPERSONATION));
             if (isUserSessionImpersonationEnabled && MYACCOUNT_APP.equals(applicationName)) {
                 consoleCallbackUrl = ApplicationMgtUtil.replaceUrlOriginWithPlaceholders(consoleCallbackUrl);
                 consoleCallbackUrl = ApplicationMgtUtil.resolveOriginUrlFromPlaceholders(consoleCallbackUrl,
@@ -162,6 +164,12 @@ public class AppPortalUtils {
                 + ")";
         }
         oAuthConsumerAppDTO.setCallbackUrl(callbackUrl);
+        // Enable subject token response type for my account.
+        if (isUserSessionImpersonationEnabled && MYACCOUNT_APP.equals(applicationName)) {
+            oAuthConsumerAppDTO.setSubjectTokenEnabled(true);
+            oAuthConsumerAppDTO.setSubjectTokenExpiryTime(
+                OAuthConstants.OIDCConfigProperties.SUBJECT_TOKEN_EXPIRY_TIME_VALUE);
+        }
         oAuthConsumerAppDTO.setBypassClientCredentials(true);
         if (grantTypes != null && !grantTypes.isEmpty()) {
             oAuthConsumerAppDTO.setGrantTypes(String.join(" ", grantTypes));
@@ -323,9 +331,16 @@ public class AppPortalUtils {
                     grantTypes = Arrays.asList(AUTHORIZATION_CODE, REFRESH_TOKEN, GRANT_TYPE_ACCOUNT_SWITCH,
                         GRANT_TYPE_ORGANIZATION_SWITCH);
                 }
+                // Enable token-exchange grant type for my account.
+                boolean isUserSessionImpersonationEnabled = Boolean.parseBoolean(IdentityUtil
+                        .getProperty(USER_SESSION_IMPERSONATION));
+                if (isUserSessionImpersonationEnabled && MYACCOUNT_APP.equals(appPortal.getName())) {
+                    grantTypes.add(GRANT_TYPE_TOKEN_EXCHANGE);
+                }
                 List<String> allowedGrantTypes = Arrays.asList(AppsCommonDataHolder.getInstance()
                     .getOAuthAdminService().getAllowedGrantTypes());
                 grantTypes = grantTypes.stream().filter(allowedGrantTypes::contains).collect(Collectors.toList());
+
                 String consumerKey = appPortal.getConsumerKey();
                 try {
                     AppPortalUtils.createOAuth2Application(appPortal.getName(), appPortal.getPath(), consumerKey,
