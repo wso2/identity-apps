@@ -202,7 +202,7 @@ export const attributeConfig: AttributeConfig = {
             return I18n.instance.t("common:edit");
         },
         hideDeleteIcon: (claim: ExternalClaim): boolean => {
-            return claim?.claimURI === "sub" || isIdentityClaims(claim);
+            return claim?.claimURI === "sub";
         },
         isAttributeEditable: true,
         isEditActionClickable: (claim: ExternalClaim): boolean => {
