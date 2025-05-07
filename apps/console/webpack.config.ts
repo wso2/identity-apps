@@ -694,6 +694,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     if (
                         req.url.startsWith("/app/static/") ||
                         req.url.startsWith("/static/") ||
+                        req.url.startsWith("/app/resources/users/") ||
                         req.url.match(
                             /\.(js|css|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot|ico|json|map)$/)
                     ) {

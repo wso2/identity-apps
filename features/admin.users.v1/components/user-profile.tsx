@@ -81,6 +81,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
+import { UserImpersonationAction } from "./user-impersonation-action";
 import { resendCode, updateUserInfo } from "../api";
 import {
     ACCOUNT_LOCK_REASON_MAP,
@@ -208,7 +209,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
-
     const dispatch: Dispatch = useDispatch();
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
@@ -301,9 +301,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
     }, [ connectorProperties ]);
 
-    /**
-     *  .
-     */
     useEffect(() => {
         // This will load the countries to the dropdown
         setCountryList(CommonUtils.getCountryList());
@@ -1582,8 +1579,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
 
         const resolvedUsername: string = resolveUsernameOrDefaultEmail(user, false);
-        const isUserCurrentLoggedInUser: boolean =
-            authenticatedUser?.includes(resolvedUsername);
+        const isUserCurrentLoggedInUser: boolean = authenticatedUser?.includes(resolvedUsername);
 
         return (
             <>
@@ -1600,6 +1596,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             <Show
                                 when={ featureConfig?.users?.scopes?.delete }
                             >
+                                <UserImpersonationAction
+                                    user={ user }
+                                    isLocked={ accountLocked }
+                                    isDisabled={ accountDisabled }
+                                    isReadOnly={ !hasUsersUpdatePermissions }
+                                    isUserManagedByParentOrg={ isUserManagedByParentOrg }
+                                    data-componentid="user-mgt-edit-user-impersonate-action"
+                                />
+                                <Divider hidden/>
                                 <DangerZoneGroup
                                     sectionHeader={ t("user:editUser.dangerZoneGroup.header") }
                                 >

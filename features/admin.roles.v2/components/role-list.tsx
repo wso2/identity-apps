@@ -17,10 +17,10 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store/index";
 import { RoleConstants as CommonRoleConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
@@ -103,6 +103,8 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const isEditingSystemRolesAllowed: boolean =
         useSelector((state: AppState) => state?.config?.ui?.isSystemRolesEditAllowed);
+    const accountAppImpersonateRoleName: string = useSelector(
+        (state: AppState) => state.config.deployment.accountApp.impersonationRoleName);
 
     const isReadOnly: boolean = useMemo(() => {
         return !isFeatureEnabled(userRolesFeatureConfig,
@@ -318,7 +320,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                         RoleConstants.FEATURE_DICTIONARY.get("ROLE_DELETE"))
                     || !hasRequiredScopes(userRolesFeatureConfig,
                         userRolesFeatureConfig?.scopes?.delete, allowedScopes)
-                    || isSharedRole;
+                    || isSharedRole || role?.displayName === accountAppImpersonateRoleName;
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void => {

@@ -82,6 +82,7 @@ import static org.wso2.identity.apps.common.util.AppPortalConstants.MYACCOUNT_AP
 import static org.wso2.identity.apps.common.util.AppPortalConstants.MYACCOUNT_PORTAL_PATH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.PROFILE_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.USERNAME_CLAIM_URI;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.USER_SESSION_IMPERSONATION;
 
 /**
  * App portal utils.
@@ -127,10 +128,23 @@ public class AppPortalUtils {
             portalPath = "/" + portalPath;
         }
         String callbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
+        String consoleCallbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
+        String appendedConsoleCallBackURLRegex = StringUtils.EMPTY;
         try {
             // Update the callback URL properly if origin is configured for the portal app.
             callbackUrl = ApplicationMgtUtil.replaceUrlOriginWithPlaceholders(callbackUrl);
             callbackUrl = ApplicationMgtUtil.resolveOriginUrlFromPlaceholders(callbackUrl, applicationName);
+
+            // Add console url when impersonation is enabled.
+            boolean isUserSessionImpersonationEnabled = Boolean.parseBoolean(IdentityUtil
+                .getProperty(USER_SESSION_IMPERSONATION));
+            if (isUserSessionImpersonationEnabled && MYACCOUNT_APP.equals(applicationName)) {
+                consoleCallbackUrl = ApplicationMgtUtil.replaceUrlOriginWithPlaceholders(consoleCallbackUrl);
+                consoleCallbackUrl = ApplicationMgtUtil.resolveOriginUrlFromPlaceholders(consoleCallbackUrl,
+                    CONSOLE_APP);
+                appendedConsoleCallBackURLRegex = "|" + consoleCallbackUrl.replace(portalPath, portalPath
+                    + "/resources/users/init-impersonate.html");
+            }
         } catch (URLBuilderException e) {
             throw new IdentityOAuthAdminException("Server encountered an error while building callback URL with " +
                 "placeholders for the server URL", e);
@@ -139,10 +153,12 @@ public class AppPortalUtils {
             callbackUrl = "regexp=(" + callbackUrl
                 + "|" + callbackUrl.replace(portalPath, "/t/carbon.super" + portalPath)
                 + "|" + callbackUrl.replace(portalPath, "/t/carbon.super/o/(.*)" + portalPath)
+                + appendedConsoleCallBackURLRegex
                 + ")";
         } else {
             callbackUrl = "regexp=(" + callbackUrl.replace(portalPath, "/t/(.*)" + portalPath)
                 + "|" + callbackUrl.replace(portalPath, "/t/(.*)/o/(.*)" + portalPath)
+                + appendedConsoleCallBackURLRegex
                 + ")";
         }
         oAuthConsumerAppDTO.setCallbackUrl(callbackUrl);
