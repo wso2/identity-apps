@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.54.16
+
+### Patch Changes
+
+- [#8124](https://github.com/wso2/identity-apps/pull/8124) [`5883496b4f95ddf31098bba652fe97f57acd7130`](https://github.com/wso2/identity-apps/commit/5883496b4f95ddf31098bba652fe97f57acd7130) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix UX issues in console settings
+
+- Updated dependencies [[`5883496b4f95ddf31098bba652fe97f57acd7130`](https://github.com/wso2/identity-apps/commit/5883496b4f95ddf31098bba652fe97f57acd7130)]:
+  - @wso2is/admin.console-settings.v1@2.25.209
+
 ## 2.54.15
 
 ### Patch Changes
