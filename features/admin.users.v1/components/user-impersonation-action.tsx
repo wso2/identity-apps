@@ -365,14 +365,8 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         setCodeVerifier(codeVerifier);
         setCodeChallenge(codeChallenge);
         setImpersonationInProgress(true);
-    };
-
-    /**
-     * This function handles the impersonation error.
-     */
-    useEffect(() => {
-        if (impersonationInProgress && codeChallenge != undefined && codeChallenge != null) {
-            setTimeout(() => {
+        setTimeout(() => {
+            if (impersonationInProgress && idToken == undefined && subjectToken == undefined) {
                 setImpersonationInProgress(false);
                 dispatch(addAlert({
                     description: t(
@@ -383,9 +377,24 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
                         "users:notifications.impersonateUser.error.message"
                     )
                 }));
-            }, 5000);
-        }
-    }, [ impersonationInProgress ]);
+            }
+        }, 5000);
+    };
+
+    /**
+     * This function returns the tenant aware URL.
+     *
+     * @param url - The URL to be modified.
+     */
+    const getTenantAwareURL = (url: string): string => {
+
+        const newURL: URL = new URL(url);
+        const newPathname: string = newURL.pathname.replace(/^\/t\/[^/]+/, "");
+
+        newURL.pathname = newPathname;
+
+        return newURL.toString();
+    };
 
     /**
      * This function resolves the iframe for the impersonation.
@@ -396,7 +405,7 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
             return (
                 <iframe
                     hidden
-                    src={ `${consoleUrl}/resources/users/init-impersonate.html`
+                    src={ `${getTenantAwareURL(consoleUrl)}/resources/users/init-impersonate.html`
                         + `?userId=${encodeURIComponent(user.id)}`
                         + `&codeChallenge=${encodeURIComponent(codeChallenge)}`
                         + `&clientId=${encodeURIComponent(accountAppClientID)}`
