@@ -335,7 +335,8 @@ public class AppPortalUtils {
                 boolean isUserSessionImpersonationEnabled = Boolean.parseBoolean(IdentityUtil
                         .getProperty(USER_SESSION_IMPERSONATION));
                 if (isUserSessionImpersonationEnabled && MYACCOUNT_APP.equals(appPortal.getName())) {
-                    grantTypes.add(GRANT_TYPE_TOKEN_EXCHANGE);
+                    grantTypes = Arrays.asList(AUTHORIZATION_CODE, REFRESH_TOKEN, GRANT_TYPE_ACCOUNT_SWITCH,
+                    GRANT_TYPE_TOKEN_EXCHANGE);
                 }
                 List<String> allowedGrantTypes = Arrays.asList(AppsCommonDataHolder.getInstance()
                     .getOAuthAdminService().getAllowedGrantTypes());
