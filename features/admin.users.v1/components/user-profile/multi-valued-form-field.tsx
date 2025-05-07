@@ -44,13 +44,14 @@ import { addAlert } from "@wso2is/core/store";
 import { FinalFormField, TextFieldAdapter } from "@wso2is/form";
 import { Popup } from "@wso2is/react-components";
 import { AxiosError } from "axios";
+import { FormApi } from "final-form";
 import isEmpty from "lodash-es/isEmpty";
-import React, { useState } from "react";
-import { useFormState } from "react-final-form";
+import React, { useCallback, useEffect, useState } from "react";
+import { useField, useForm } from "react-final-form";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Icon } from "semantic-ui-react";
+import { Divider, Icon } from "semantic-ui-react";
 import { updateUserInfo } from "../../api/users";
 import {
     EMAIL_ADDRESSES_ATTRIBUTE,
@@ -62,7 +63,6 @@ import {
 } from "../../constants/user-management-constants";
 import { PatchUserOperationValue } from "../../models/user";
 import "./multi-valued-form-field.scss";
-
 
 interface MultiValuedFormFieldProps extends IdentifiableComponentInterface {
     /**
@@ -113,10 +113,10 @@ interface MultiValuedFormFieldProps extends IdentifiableComponentInterface {
     handleUserUpdate: (userId: string) => void;
     primaryValues: Record<string, string>;
     setPrimaryValues: (values: Record<string, string> | any) => void;
-    multiValuedInputFieldValue: Record<string, string>;
     showAttributes: boolean;
     maxAllowedLimit: number;
-    setIsFormStale: (value: boolean) => void;
+    multiValuedInputFieldValue: Record<string, string>;
+    setMultiValuedInputFieldValue: (values: Record<string, string> | { [x: string]: any }) => void;
 }
 
 const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
@@ -141,15 +141,16 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
         setPrimaryValues,
         showAttributes,
         maxAllowedLimit,
-        setIsFormStale,
+        multiValuedInputFieldValue,
+        setMultiValuedInputFieldValue,
         isReadOnly
     } = props;
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { values } = useFormState();
+    const form: FormApi<Record<string, any>, Partial<Record<string, any>>> = useForm();
+    const { input: { value: inputFieldValue } } = useField(schema.name);
 
-    const [ multiValuedInputFieldValue, setMultiValuedInputFieldValue ] = useState<Record<string, string>>({});
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const resolvedComponentId: string = `${ componentId }-${ schema.name }-input`;
@@ -162,6 +163,15 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
     const resolvedRequiredValue: boolean = (resolvedMultiValueAttributeRequiredValue
         || resolvedPrimarySchemaRequiredValue);
 
+    useEffect(() => {
+        if (!isEmpty(inputFieldValue) && multiValuedInputFieldValue[schema.name] !== inputFieldValue) {
+            setMultiValuedInputFieldValue((prev: Record<string, string>) => ({
+                ...prev,
+                [schema.name]: inputFieldValue
+            }));
+        }
+    }, [ inputFieldValue ]);
+
     const handleAlerts = (alert: AlertInterface) => {
         dispatch(addAlert<AlertInterface>(alert));
     };
@@ -172,8 +182,12 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
      * @param schema - Schema of the attribute
      * @param attributeValue - Value of the attribute
      */
-    const handleVerify = (schema: ProfileSchemaInterface, attributeValue: string) => {
+    const handleVerify: (schema: ProfileSchemaInterface, attributeValue: string) => void = useCallback((
+        schema: ProfileSchemaInterface,
+        attributeValue: string
+    ) => {
         setIsSubmitting(true);
+
         const data: PatchOperationRequest<PatchUserOperationValue> = {
             Operations: [
                 {
@@ -183,45 +197,41 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
             ],
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
+
         let translationKey: string = "";
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             translationKey = "user:profile.notifications.verifyEmail.";
-            const verifiedEmailList: string[] = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
-                get("VERIFIED_EMAIL_ADDRESSES"))?.split(",") || [];
+            const verifiedEmailList: string[] = profileInfo?.get(
+                ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES")
+            )?.split(",") || [];
 
             verifiedEmailList.push(attributeValue);
             data.Operations[0].value = {
                 [schema.schemaId]: {
-                    [VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE]:
-                        verifiedEmailList
+                    [VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE]: verifiedEmailList
                 }
             };
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             translationKey = "user:profile.notifications.verifyMobile.";
-            const verifiedMobileList: string[] = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
-                get("VERIFIED_MOBILE_NUMBERS"))?.split(",") || [];
+            const verifiedMobileList: string[] = profileInfo?.get(
+                ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS")
+            )?.split(",") || [];
 
             verifiedMobileList.push(attributeValue);
             data.Operations[0].value = {
                 [schema.schemaId]: {
-                    [VERIFIED_MOBILE_NUMBERS_ATTRIBUTE]:
-                        verifiedMobileList
+                    [VERIFIED_MOBILE_NUMBERS_ATTRIBUTE]: verifiedMobileList
                 }
             };
         }
 
-        setIsSubmitting(true);
         updateUserInfo(user.id, data)
             .then(() => {
                 handleAlerts({
-                    description: t(
-                        `${translationKey}success.description`
-                    ),
+                    description: t(`${translationKey}success.description`),
                     level: AlertLevels.SUCCESS,
-                    message: t(
-                        `${translationKey}success.message`
-                    )
+                    message: t(`${translationKey}success.message`)
                 });
 
                 handleUserUpdate(user.id);
@@ -236,6 +246,7 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
 
                     return;
                 }
+
                 dispatch(addAlert({
                     description: t(`${translationKey}genericError.description`),
                     level: AlertLevels.ERROR,
@@ -245,7 +256,12 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
             .finally(() => {
                 setIsSubmitting(false);
             });
-    };
+    }, [
+        profileInfo,
+        user.id,
+        handleAlerts,
+        handleUserUpdate
+    ]);
 
     /**
      * Assign primary email address or mobile number the multi-valued attribute.
@@ -253,14 +269,19 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
      * @param schemaName - Name of the primary attribute schema.
      * @param attributeValue - Value of the attribute
      */
-    const handleMakePrimary = (schemaName: string, attributeValue: string) => {
-
+    const handleMakePrimary: (schemaName: string, attributeValue: string) => void = useCallback((
+        schemaName: string,
+        attributeValue: string
+    ) => {
         setPrimaryValues((prevPrimaryValues: Record<string, string>) => ({
             ...prevPrimaryValues,
             [schemaName]: attributeValue
         }));
-        setIsFormStale(true);
-    };
+
+        // Trigger form change to mark it as dirty
+        form.change("multiValuedStateTracker", new Date().toISOString());
+    }, [ setPrimaryValues, form ]);
+
 
     /**
      * Delete a multi-valued item.
@@ -268,8 +289,10 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
      * @param schema - schema of the attribute
      * @param attributeValue - value of the attribute
      */
-    const handleMultiValuedItemDelete = (schema: ProfileSchemaInterface, attributeValue: string) => {
-
+    const handleMultiValuedItemDelete: (schema: ProfileSchemaInterface, attributeValue: string) => void = useCallback((
+        schema: ProfileSchemaInterface,
+        attributeValue: string
+    ): void => {
         const filteredValues: string[] =
             multiValuedAttributeValues[schema?.name]?.filter((value: string) => value !== attributeValue) || [];
 
@@ -294,8 +317,15 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
             }
         }
 
-        setIsFormStale(true);
-    };
+        form.change("multiValuedStateTracker", new Date().toISOString());
+        form.change(schema.name, "");
+    }, [
+        multiValuedAttributeValues,
+        primaryValues,
+        setMultiValuedAttributeValues,
+        setPrimaryValues,
+        form
+    ]);
 
     /**
      * Handle the add multi-valued attribute item.
@@ -303,8 +333,10 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
      * @param schema - Schema of the attribute
      * @param attributeValue - Value of the attribute
      */
-    const handleAddMultiValuedItem = (schema: ProfileSchemaInterface, attributeValue: string) => {
-
+    const handleAddMultiValuedItem: (schema: ProfileSchemaInterface, attributeValue: string) => void = useCallback((
+        schema: ProfileSchemaInterface,
+        attributeValue: string
+    ) => {
         if (isEmpty(attributeValue)) return;
 
         setMultiValuedAttributeValues((prevValues: Record<string, string[]>) => ({
@@ -326,8 +358,75 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             updatePrimaryValue(MOBILE_ATTRIBUTE);
         }
-        setIsFormStale(true);
-    };
+
+        form.change("multiValuedStateTracker", new Date().toISOString());
+        form.change(schema.name, "");
+    }, [
+        setMultiValuedAttributeValues,
+        primaryValues,
+        setPrimaryValues,
+        form
+    ]);
+
+    const showVerifiedPopup: (value: string) => boolean = useCallback((value: string): boolean => {
+        return verificationEnabled &&
+            (verifiedAttributeValueList.includes(value) || value === fetchedPrimaryAttributeValue);
+    }, [ verificationEnabled, verifiedAttributeValueList, fetchedPrimaryAttributeValue ]);
+
+    const showVerifyButton: (value: string) => boolean = useCallback((value: string): boolean => {
+        return schema.name === EMAIL_ADDRESSES_ATTRIBUTE &&
+            verificationEnabled &&
+            !(verifiedAttributeValueList.includes(value) || value === primaryAttributeValue);
+    }, [
+        schema.name,
+        verificationEnabled,
+        verifiedAttributeValueList,
+        primaryAttributeValue
+    ]);
+
+    const showPendingVerificationPopup: (value: string) => boolean = useCallback((value: string): boolean => {
+        return verificationEnabled &&
+            !isEmpty(verificationPendingValue) &&
+            !verifiedAttributeValueList.includes(value) &&
+            verificationPendingValue === value;
+    }, [
+        verificationEnabled,
+        verificationPendingValue,
+        verifiedAttributeValueList
+    ]);
+
+    const showPrimaryPopup: (value: string) => boolean = useCallback((value: string): boolean => {
+        if (isEmpty(primaryAttributeValue)) {
+            return false;
+        }
+
+        if (verificationEnabled && !verifiedAttributeValueList.includes(value)) {
+            return value === fetchedPrimaryAttributeValue;
+        }
+
+        return value === primaryAttributeValue;
+    }, [
+        primaryAttributeValue,
+        verificationEnabled,
+        verifiedAttributeValueList,
+        fetchedPrimaryAttributeValue
+    ]);
+
+    const showMakePrimaryButton: (value: string) => boolean = useCallback((value: string): boolean => {
+        if (isEmpty(primaryAttributeValue)) {
+            return false;
+        }
+
+        if (verificationEnabled) {
+            return verifiedAttributeValueList.includes(value) && value !== primaryAttributeValue;
+        }
+
+        return value !== primaryAttributeValue;
+    }, [ primaryAttributeValue, verificationEnabled, verifiedAttributeValueList ]);
+
+    const showDeleteButton: (value: string) => boolean = useCallback((value: string): boolean => {
+        return !(value === primaryAttributeValue && resolvedPrimarySchemaRequiredValue);
+    }, [ primaryAttributeValue, resolvedPrimarySchemaRequiredValue ]);
 
     /**
      * Form validator to validate the value against the schema regex.
@@ -335,6 +434,10 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
      * @returns An error if the value is not valid else undefined.
      */
     const validateInput = async (value: string): Promise<string | undefined> => {
+        if (resolvedRequiredValue && isEmpty(multiValuedAttributeValues[schema?.name]) && isEmpty(value)) {
+            return t("user:profile.forms.generic.inputs.validations.empty", { fieldName });
+        }
+
         if (isEmpty(value)) {
             return undefined;
         }
@@ -348,49 +451,6 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
         }
     };
 
-    const showVerifiedPopup = (value: string): boolean => {
-        return verificationEnabled &&
-            (verifiedAttributeValueList.includes(value) || value === fetchedPrimaryAttributeValue);
-    };
-
-    const showVerifyButton = (value: string): boolean =>
-        schema.name === EMAIL_ADDRESSES_ATTRIBUTE
-        && verificationEnabled
-        && !(verifiedAttributeValueList.includes(value) || value === primaryAttributeValue);
-
-    const showPendingVerificationPopup = (value: string): boolean => {
-        return verificationEnabled
-            && !isEmpty(verificationPendingValue)
-            && !verifiedAttributeValueList.includes(value)
-            && verificationPendingValue === value;
-    };
-
-    const showPrimaryPopup = (value: string): boolean => {
-        if (isEmpty(primaryAttributeValue)) {
-            return false;
-        }
-        if (verificationEnabled && !verifiedAttributeValueList.includes(value)) {
-            return value === fetchedPrimaryAttributeValue;
-        }
-
-        return value === primaryAttributeValue;
-    };
-
-    const showMakePrimaryButton = (value: string): boolean => {
-        if (isEmpty(primaryAttributeValue)) {
-            return false;
-        }
-        if (verificationEnabled) {
-            return verifiedAttributeValueList.includes(value) && value !== primaryAttributeValue;
-        }
-
-        return value !== primaryAttributeValue;
-    };
-
-    const showDeleteButton = (value: string): boolean => {
-        return !(value === primaryAttributeValue && resolvedPrimarySchemaRequiredValue);
-    };
-
     return (
         <Grid direction="row">
             <Grid>
@@ -399,7 +459,6 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
                     component={ TextFieldAdapter }
                     data-componentid={ resolvedComponentId }
                     initialValue={ multiValuedInputFieldValue[schema.name] }
-                    className
                     ariaLabel={ fieldName }
                     type="text"
                     name={ schema.name }
@@ -413,7 +472,22 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
                         t("user:profile.forms.generic.inputs.dropdownPlaceholder",
                             { fieldName })
                     }
-                    validate={ (value: string) => validateInput(value) }
+                    // validate={ validateInput }
+                    onKeyDown={ (event: React.KeyboardEvent<HTMLInputElement>) => {
+                        if (event.key === "Enter") {
+                            event.preventDefault();
+                            const attributeValue: string = inputFieldValue;
+
+                            if (
+                                isEmpty(attributeValue) ||
+                                multiValuedAttributeValues[schema.name]?.includes(attributeValue)
+                            ) {
+                                return;
+                            }
+
+                            handleAddMultiValuedItem(schema, attributeValue);
+                        }
+                    } }
                     endAdornment={ (
                         <InputAdornment position="end">
                             <Tooltip title="Add">
@@ -421,8 +495,7 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
                                     data-componentid={ `${ componentId }-multivalue-add-icon` }
                                     size="large"
                                     onClick={ () => {
-                                        // Getting the value from the form
-                                        const attributeValue: string = values[schema.name];
+                                        const attributeValue: string = multiValuedInputFieldValue[schema.name];
 
                                         if (isEmpty(attributeValue) ||
                                         multiValuedAttributeValues[schema.name]?.includes(attributeValue)) {
@@ -455,7 +528,7 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
                         || isReadOnly
                         || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
                     }
-                    required={ resolvedRequiredValue && isEmpty(multiValuedAttributeValues[schema?.name]) }
+                    required={ resolvedRequiredValue }
                     disabled={ isSubmitting
                         || isReadOnly
                         || multiValuedAttributeValues[schema?.name]?.length >= maxAllowedLimit
@@ -463,7 +536,7 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
                 />
             </Grid>
             {
-                showAttributes && (
+                showAttributes ? (
                     <Grid xs={ 12 }>
                         <TableContainer
                             component={ Paper }
@@ -635,7 +708,7 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
                             </Table>
                         </TableContainer>
                     </Grid>
-                )
+                ) : <Divider hidden />
             }
         </Grid>
     );

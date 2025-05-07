@@ -17,10 +17,15 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
+import Button from "@oxygen-ui/react/Button";
 import Flag from "@oxygen-ui/react/CountryFlag";
-import OxygenGrid from '@oxygen-ui/react/Grid';
-import IconButton from "@oxygen-ui/react/IconButton";
-import Paper from "@oxygen-ui/react/Paper";
+import OxygenGrid from "@oxygen-ui/react/Grid";
+import InputAdornment from "@oxygen-ui/react/InputAdornment";
+import ListItem from "@oxygen-ui/react/ListItem";
+import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
+import ListItemText from "@oxygen-ui/react/ListItemText";
+import Tooltip from "@oxygen-ui/react/Tooltip";
+import { CircleInfoIcon } from "@oxygen-ui/react-icons";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -50,10 +55,18 @@ import {
     ProfileInfoInterface,
     ProfileSchemaInterface,
     RolesMemberInterface,
-    SharedProfileValueResolvingMethod,
+    SharedProfileValueResolvingMethod
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CommonUtils, ProfileUtils } from "@wso2is/core/utils";
+import {
+    AutocompleteFieldAdapter,
+    CheckboxFieldAdapter,
+    FinalForm,
+    FinalFormField,
+    FormRenderProps,
+    TextFieldAdapter
+} from "@wso2is/form";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import {
     ConfirmationModal,
@@ -71,8 +84,9 @@ import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useMemo, 
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Button, CheckboxProps, Divider, DropdownItemProps, Input } from "semantic-ui-react";
+import { CheckboxProps, Divider, DropdownItemProps } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
+import MultiValuedFormFields from "./user-profile/multi-valued-form-field";
 import { resendCode, updateUserInfo } from "../api";
 import {
     ACCOUNT_LOCK_REASON_MAP,
@@ -109,22 +123,6 @@ import {
     isSchemaReadOnly,
     normalizeLocaleFormat
 } from "../utils/user-management-utils";
-import {
-    AutocompleteFieldAdapter,
-    CheckboxFieldAdapter,
-    FinalForm,
-    FinalFormField,
-    FormRenderProps,
-    FormState,
-    TextFieldAdapter
-} from "@wso2is/form/src";
-import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
-import ListItem from "@oxygen-ui/react/ListItem";
-import ListItemText from "@oxygen-ui/react/ListItemText";
-import InputAdornment from "@oxygen-ui/react/InputAdornment";
-import Tooltip from "@oxygen-ui/react/Tooltip";
-import { CircleInfoIcon } from "@oxygen-ui/react-icons";
-import MultiValuedFormFields from "./user-profile/multi-valued-form-field";
 
 /**
  * Prop types for the basic details component.
@@ -212,7 +210,6 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
     } = props;
 
     const { t } = useTranslation();
-
     const dispatch: Dispatch = useDispatch();
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
@@ -230,10 +227,6 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
 
     const hasUsersUpdatePermissions: boolean = useRequiredScopes(
         featureConfig?.users?.scopes?.update
-    );
-
-    const isDistinctAttributeProfilesDisabled: boolean = featureConfig?.attributeDialects?.disabledFeatures?.includes(
-        ClaimManagementConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG
     );
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
@@ -258,6 +251,10 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ adminRoleId, setAdminRoleId ] = useState<string>("");
     const [ associationType, setAssociationType ] = useState<string>("");
+    const [ multiValuedInputFieldValue, setMultiValuedInputFieldValue ] = useState<Record<string, string>>({});
+    const [ multiValuedAttributeValues, setMultiValuedAttributeValues ] =
+        useState<Record<string, string[]>>({});
+    const [ primaryValues, setPrimaryValues ] = useState<Record<string, string>>({});
 
     const createdDate: string = user?.meta?.created;
     const modifiedDate: string = user?.meta?.lastModified;
@@ -270,11 +267,9 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
     const oneTimePassword: string = user[userConfig.userProfileSchema]?.oneTimePassword;
     const isCurrentUserAdmin: boolean = user?.roles?.some((role: RolesMemberInterface) =>
         role.display === administratorConfig.adminRoleName) ?? false;
-    const [ isFormStale, setIsFormStale ] = useState<boolean>(false);
-    const [ multiValuedInputFieldValue, setMultiValuedInputFieldValue ] = useState<Record<string, string>>({});
-    const [ multiValuedAttributeValues, setMultiValuedAttributeValues ] =
-        useState<Record<string, string[]>>({});
-    const [ primaryValues, setPrimaryValues ] = useState<Record<string, string>>({});
+    const isDistinctAttributeProfilesDisabled: boolean = featureConfig?.attributeDialects?.disabledFeatures?.includes(
+        ClaimManagementConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG
+    );
 
     const isMultipleEmailAndMobileNumberEnabled: boolean = useMemo(() => {
         return isMultipleEmailsAndMobileNumbersEnabled(profileInfo, profileSchema);
@@ -296,7 +291,7 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                 value: supportedI18nLanguages[key].code
             }))
             : [];
-    }, [supportedI18nLanguages]);
+    }, [ supportedI18nLanguages ]);
 
     const hiddenSchemas: string[] = [
         ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT"),
@@ -1027,8 +1022,6 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
      */
     const handleSubmit = (formValues: ProfileInfoInterface): void => {
 
-        console.log("structured-values", formValues);
-
         // Process country and local value before flattening
         const countryValue: DropdownItemProps = formValues["country"];
         const localeValue: DropdownItemProps = formValues["locale"];
@@ -1043,8 +1036,11 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
 
         const values: Map<string, string> = flattenValues(formValues);
 
-        console.log("flattened-values", values);
-
+        // Remove userID, createdDate and modifiedDate from the values map
+        values.delete("userID");
+        values.delete("createdDate");
+        values.delete("modifiedDate");
+        values.delete("multiValuedStateTracker");
 
         const data: PatchRoleDataInterface = {
             Operations: [],
@@ -1400,11 +1396,6 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                 data.Operations.push(operation);
             });
         }
-
-        console.log("new-data", data);
-
-
-        return
 
         setIsSubmitting(true);
 
@@ -1812,10 +1803,10 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                 primaryAttributeSchema={ primaryAttributeSchema }
                 fetchedPrimaryAttributeValue= { fetchedPrimaryAttributeValue }
                 handleUserUpdate={ handleUserUpdate }
-                multiValuedInputFieldValue={ multiValuedInputFieldValue }
                 showAttributes={ showAttributes }
                 maxAllowedLimit={ maxAllowedLimit }
-                setIsFormStale={ setIsFormStale }
+                multiValuedInputFieldValue={ multiValuedInputFieldValue }
+                setMultiValuedInputFieldValue={ setMultiValuedInputFieldValue }
                 isReadOnly={ isReadOnly }
             />
         );
@@ -1877,8 +1868,6 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
     ):
         Promise<string | undefined> => {
         if (required && isEmpty(value) ) {
-            console.log("required", value);
-
             return t("user:profile.forms.validation.empty", { field: fieldName });
         }
 
@@ -1960,7 +1949,6 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                             key={ key }
                             ariaLabel="userID"
                             data-componentid={ `${componentId}-userID` }
-                            required={ resolvedRequiredValue }
                             name={ schema.name }
                             type="text"
                             label={ !commonConfig.userEditSection.showEmail
@@ -1990,7 +1978,6 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                         key={ key }
                         ariaLabel="userID"
                         data-componentid={ `${componentId}-userID` }
-                        required={ resolvedRequiredValue }
                         name={ schema.name }
                         type="text"
                         label={ !commonConfig.userEditSection.showEmail
@@ -2030,7 +2017,7 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                             || isReadOnly
                             || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
                         }
-                        required={ resolvedRequiredValue }
+                        required={ resolvedRequiredValue() }
                     />
                     <Divider hidden/>
                 </>
@@ -2091,8 +2078,8 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                             || isReadOnly
                             || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
                         }
-                        required={ resolvedRequiredValue }
-                        disableClearable={ resolvedRequiredValue }
+                        required={ resolvedRequiredValue() }
+                        disableClearable={ resolvedRequiredValue() }
                     />
                     <Divider hidden/>
                 </>
@@ -2152,8 +2139,8 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                             || isReadOnly
                             || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
                         }
-                        required={ resolvedRequiredValue }
-                        disableClearable={ resolvedRequiredValue }
+                        required={ resolvedRequiredValue() }
+                        disableClearable={ resolvedRequiredValue() }
                     />
                     <Divider hidden/>
                 </>
@@ -2183,7 +2170,7 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                             || isReadOnly
                             || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
                         }
-                        required={ resolvedRequiredValue }
+                        required={ resolvedRequiredValue() }
 
                     />
                     <Divider hidden/>
@@ -2234,7 +2221,7 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                             || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
                             || schema.name === "userName"
                         }
-                        required={ resolvedRequiredValue }
+                        required={ resolvedRequiredValue() }
                         endAdornment={ isVerificationPending
                             ? (
                                 <InputAdornment position="end">
@@ -2285,7 +2272,7 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                         || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
                         || schema.name === "userName"
                     }
-                    required={ resolvedRequiredValue }
+                    required={ resolvedRequiredValue() }
                 />
                 <Divider hidden/>
             </>
@@ -2509,18 +2496,16 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                             && editUserDisclaimerMessage
                         }
                         <FinalForm
-                            // initialValues={ {
-                            //     userID: user.id
-                            // } }
                             keepDirtyOnReinitialize={ true }
                             onSubmit={ handleSubmit }
-                            render={ ({ handleSubmit }: FormRenderProps) => {
+                            render={ ({ handleSubmit, dirty }: FormRenderProps) => {
                                 return (
                                     <form
                                         id={ "user-profile-form" }
                                         onSubmit={ handleSubmit }
                                         className="user-profile-form"
                                     >
+
                                         {
                                             user.id && (
                                                 <>
@@ -2617,16 +2602,21 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                                                 </>
                                             )
                                         }
+                                        <FinalFormField
+                                            name="multiValuedStateTracker"
+                                            component="input"
+                                            type="hidden"
+                                        />
                                         {
                                             !isReadOnly && (
                                                 <Button
                                                     data-componentid={ `${ componentId }-form-update-button` }
-                                                    primary
+                                                    variant="contained"
                                                     type="submit"
                                                     size="small"
                                                     className="form-button"
                                                     loading={ isSubmitting }
-                                                    // disabled={ isSubmitting || !isFormStale }
+                                                    disabled={ isSubmitting || !dirty }
                                                 >
                                                     { t("common:update") }
                                                 </Button>
