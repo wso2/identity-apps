@@ -1,5 +1,16 @@
 # @wso2is/admin.users.v1
 
+## 2.31.4
+
+### Patch Changes
+
+- [#8156](https://github.com/wso2/identity-apps/pull/8156) [`e45bde73f36b81bee1f9de39e3b32620df1e0948`](https://github.com/wso2/identity-apps/commit/e45bde73f36b81bee1f9de39e3b32620df1e0948) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Change variable name
+
+* [#8154](https://github.com/wso2/identity-apps/pull/8154) [`49aec70a34a2bb1610b654d98c49a28afc334350`](https://github.com/wso2/identity-apps/commit/49aec70a34a2bb1610b654d98c49a28afc334350) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Use bracket notation for object property access and rename the variable
+
+* Updated dependencies [[`e45bde73f36b81bee1f9de39e3b32620df1e0948`](https://github.com/wso2/identity-apps/commit/e45bde73f36b81bee1f9de39e3b32620df1e0948), [`49aec70a34a2bb1610b654d98c49a28afc334350`](https://github.com/wso2/identity-apps/commit/49aec70a34a2bb1610b654d98c49a28afc334350)]:
+  - @wso2is/admin.users.v1@2.31.4
+
 ## 2.31.3
 
 ### Patch Changes
