@@ -119,8 +119,8 @@ const VERIFIED_MOBILE_NUMBERS_ATTRIBUTE: string =
     ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS");
 const VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE: string =
     ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES");
-const PRIMARY_EMAIL_VERIFIED_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_VERIFIED");
-const PRIMARY_MOBILE_VERIFIED_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_VERIFIED");
+const EMAIL_VERIFIED_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_VERIFIED");
+const MOBILE_VERIFIED_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_VERIFIED");
 
 /**
  * Prop types for the basic details component.
@@ -1929,8 +1929,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 schema.name === EMAIL_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED;
             verificationPendingValue = getVerificationPendingAttributeValue(EMAIL_ADDRESSES_ATTRIBUTE);
-            primaryVerified = user[userConfig.userProfileSchema]?.[PRIMARY_EMAIL_VERIFIED_ATTRIBUTE] === true ||
-                user[userConfig.userProfileSchema]?.[PRIMARY_EMAIL_VERIFIED_ATTRIBUTE] === "true";
+            primaryVerified = user[userConfig.userProfileSchema]?.get(EMAIL_VERIFIED_ATTRIBUTE) === true ||
+                user[userConfig.userProfileSchema]?.get(EMAIL_VERIFIED_ATTRIBUTE) === "true";
 
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             attributeValueList = multiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE] ?? [];
@@ -1942,8 +1942,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 schema.name === MOBILE_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_MOBILE_NUMBERS_ALLOWED;
             verificationPendingValue = getVerificationPendingAttributeValue(MOBILE_NUMBERS_ATTRIBUTE);
-            primaryVerified = user[userConfig.userProfileSchema]?.[PRIMARY_MOBILE_VERIFIED_ATTRIBUTE] === true ||
-                user[userConfig.userProfileSchema]?.[PRIMARY_MOBILE_VERIFIED_ATTRIBUTE] === "true";
+            primaryVerified = user[userConfig.userProfileSchema]?.get(MOBILE_VERIFIED_ATTRIBUTE) === true ||
+                user[userConfig.userProfileSchema]?.get(MOBILE_VERIFIED_ATTRIBUTE) === "true";
 
         } else {
             attributeValueList = multiValuedAttributeValues[schema.name] ?? [];
