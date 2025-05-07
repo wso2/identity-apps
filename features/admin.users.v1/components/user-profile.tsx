@@ -81,6 +81,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
+import { UserImpersonationAction } from "./user-impersonation-action";
 import { resendCode, updateUserInfo } from "../api";
 import {
     ACCOUNT_LOCK_REASON_MAP,
@@ -119,8 +120,8 @@ const VERIFIED_MOBILE_NUMBERS_ATTRIBUTE: string =
     ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS");
 const VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE: string =
     ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES");
-const EMAIL_VERIFIED_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_VERIFIED");
-const MOBILE_VERIFIED_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_VERIFIED");
+const PRIMARY_EMAIL_VERIFIED_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_VERIFIED");
+const PRIMARY_MOBILE_VERIFIED_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_VERIFIED");
 
 /**
  * Prop types for the basic details component.
@@ -208,7 +209,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
-
     const dispatch: Dispatch = useDispatch();
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
@@ -301,9 +301,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
     }, [ connectorProperties ]);
 
-    /**
-     *  .
-     */
     useEffect(() => {
         // This will load the countries to the dropdown
         setCountryList(CommonUtils.getCountryList());
@@ -1582,8 +1579,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
 
         const resolvedUsername: string = resolveUsernameOrDefaultEmail(user, false);
-        const isUserCurrentLoggedInUser: boolean =
-            authenticatedUser?.includes(resolvedUsername);
+        const isUserCurrentLoggedInUser: boolean = authenticatedUser?.includes(resolvedUsername);
 
         return (
             <>
@@ -1600,6 +1596,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             <Show
                                 when={ featureConfig?.users?.scopes?.delete }
                             >
+                                <UserImpersonationAction
+                                    user={ user }
+                                    isLocked={ accountLocked }
+                                    isDisabled={ accountDisabled }
+                                    isReadOnly={ !hasUsersUpdatePermissions }
+                                    isUserManagedByParentOrg={ isUserManagedByParentOrg }
+                                    data-componentid="user-mgt-edit-user-impersonate-action"
+                                />
+                                <Divider hidden/>
                                 <DangerZoneGroup
                                     sectionHeader={ t("user:editUser.dangerZoneGroup.header") }
                                 >
@@ -1929,8 +1934,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 schema.name === EMAIL_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED;
             verificationPendingValue = getVerificationPendingAttributeValue(EMAIL_ADDRESSES_ATTRIBUTE);
-            primaryVerified = user[userConfig.userProfileSchema]?.get(EMAIL_VERIFIED_ATTRIBUTE) === true ||
-                user[userConfig.userProfileSchema]?.get(EMAIL_VERIFIED_ATTRIBUTE) === "true";
+            primaryVerified = user[userConfig.userProfileSchema]?.[PRIMARY_EMAIL_VERIFIED_ATTRIBUTE] === true ||
+                user[userConfig.userProfileSchema]?.[PRIMARY_EMAIL_VERIFIED_ATTRIBUTE] === "true";
 
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             attributeValueList = multiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE] ?? [];
@@ -1942,8 +1947,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 schema.name === MOBILE_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_MOBILE_NUMBERS_ALLOWED;
             verificationPendingValue = getVerificationPendingAttributeValue(MOBILE_NUMBERS_ATTRIBUTE);
-            primaryVerified = user[userConfig.userProfileSchema]?.get(MOBILE_VERIFIED_ATTRIBUTE) === true ||
-                user[userConfig.userProfileSchema]?.get(MOBILE_VERIFIED_ATTRIBUTE) === "true";
+            primaryVerified = user[userConfig.userProfileSchema]?.[PRIMARY_MOBILE_VERIFIED_ATTRIBUTE] === true ||
+                user[userConfig.userProfileSchema]?.[PRIMARY_MOBILE_VERIFIED_ATTRIBUTE] === "true";
 
         } else {
             attributeValueList = multiValuedAttributeValues[schema.name] ?? [];

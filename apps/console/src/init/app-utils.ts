@@ -75,6 +75,9 @@ export const AppUtils: any = (function() {
     const TENANT_PREFIX_IDP_URL_PLACEHOLDER: string = "${tenantPrefix}";
     const USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER: string = "${userTenantDomain}";
     const SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER: string = "${superTenantDomain}";
+    const MYACCOUNT_CONSUMER_KEY: string = "MY_ACCOUNT";
+    const IMPERSONATOR_ROLE_NAME: string = "Impersonator";
+    const MYACCOUNT_APP_NAME: string = "My Account";
 
     return {
         /**
@@ -223,8 +226,11 @@ export const AppUtils: any = (function() {
             return {
                 __experimental__platformIdP: _config.__experimental__platformIdP,
                 accountApp: {
+                    appName: MYACCOUNT_APP_NAME,
                     centralAppPath: _config.accountApp.centralAppOrigin + _config.accountApp.path,
+                    clientID: MYACCOUNT_CONSUMER_KEY,
                     commonPostLogoutUrl : commonPostLogoutUrl,
+                    impersonationRoleName: IMPERSONATOR_ROLE_NAME,
                     path: skipTenant ?
                         _config.accountAppOrigin + _config.accountApp.path:
                         _config.accountAppOrigin + this.getTenantPath(true) + _config.accountApp.path,

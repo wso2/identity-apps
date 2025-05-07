@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { createHash } from "crypto";
 import { AuthenticatedUserInfo, BasicUserInfo } from "@asgardeo/auth-react";
 import { TokenConstants } from "../constants";
 
@@ -148,4 +149,37 @@ export class AuthenticateUtils {
             username: response?.sub
         };
     }
+
+    /**
+     * Generates code verifier for PKCE.
+     *
+     * @returns A generated code verifier.
+     */
+    public static generateCodeVerifier(): string {
+        const array: Uint8Array = new Uint8Array(32);
+
+        window.crypto.getRandomValues(array);
+
+        return btoa(String.fromCharCode(...array))
+            .replace(/\+/g, "-")
+            .replace(/\//g, "_")
+            .replace(/=+$/, "");
+    };
+
+    /**
+     * Generates code challange for code verifier.
+     *
+     * @param codeVerifier - The code verifier.
+     * @returns A generated code challange.
+     */
+    public static getCodeChallangeForTheVerifier = async (codeVerifier: string) => {
+        const encoder: TextEncoder = new TextEncoder();
+        const encodedCodeVerifier: Uint8Array = encoder.encode(codeVerifier);
+        const hashedCodeVerifier: Buffer = createHash("sha256").update(encodedCodeVerifier).digest();
+
+        return btoa(String.fromCharCode(...new Uint8Array(hashedCodeVerifier)))
+            .replace(/\+/g, "-")
+            .replace(/\//g, "_")
+            .replace(/=+$/, "");
+    };
 }

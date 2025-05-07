@@ -1,5 +1,34 @@
 # @wso2is/console
 
+## 2.54.18
+
+### Patch Changes
+
+- [#8116](https://github.com/wso2/identity-apps/pull/8116) [`09d8b338d4b54547c052364326779f2575ac365f`](https://github.com/wso2/identity-apps/commit/09d8b338d4b54547c052364326779f2575ac365f) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Onboard impersonation feature.
+
+* [#8159](https://github.com/wso2/identity-apps/pull/8159) [`c2c860870f95ebb57e71f0cbe2383df5102345c1`](https://github.com/wso2/identity-apps/commit/c2c860870f95ebb57e71f0cbe2383df5102345c1) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Show identity claims in SCIM mapping
+
+* Updated dependencies [[`09d8b338d4b54547c052364326779f2575ac365f`](https://github.com/wso2/identity-apps/commit/09d8b338d4b54547c052364326779f2575ac365f), [`c2c860870f95ebb57e71f0cbe2383df5102345c1`](https://github.com/wso2/identity-apps/commit/c2c860870f95ebb57e71f0cbe2383df5102345c1)]:
+  - @wso2is/admin.applications.v1@2.34.8
+  - @wso2is/react-components@2.9.14
+  - @wso2is/admin.roles.v2@2.27.152
+  - @wso2is/admin.users.v1@2.31.5
+  - @wso2is/theme@2.7.8
+  - @wso2is/core@2.7.8
+  - @wso2is/i18n@2.22.19
+  - @wso2is/admin.claims.v1@2.27.122
+
+## 2.54.17
+
+### Patch Changes
+
+- [#8156](https://github.com/wso2/identity-apps/pull/8156) [`e45bde73f36b81bee1f9de39e3b32620df1e0948`](https://github.com/wso2/identity-apps/commit/e45bde73f36b81bee1f9de39e3b32620df1e0948) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Change variable name
+
+* [#8154](https://github.com/wso2/identity-apps/pull/8154) [`49aec70a34a2bb1610b654d98c49a28afc334350`](https://github.com/wso2/identity-apps/commit/49aec70a34a2bb1610b654d98c49a28afc334350) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Use bracket notation for object property access and rename the variable
+
+* Updated dependencies [[`e45bde73f36b81bee1f9de39e3b32620df1e0948`](https://github.com/wso2/identity-apps/commit/e45bde73f36b81bee1f9de39e3b32620df1e0948), [`49aec70a34a2bb1610b654d98c49a28afc334350`](https://github.com/wso2/identity-apps/commit/49aec70a34a2bb1610b654d98c49a28afc334350)]:
+  - @wso2is/admin.users.v1@2.31.4
+
 ## 2.54.16
 
 ### Patch Changes
