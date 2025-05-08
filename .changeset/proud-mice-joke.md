@@ -4,4 +4,4 @@
 "@wso2is/admin.users.v1": patch
 ---
 
-Impersonator role improvements.
+Improve my account Impersonator role edit restrictions
