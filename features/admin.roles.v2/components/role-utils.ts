@@ -60,7 +60,7 @@ export const generatePermissionTree = (permissioObject: PermissionObject, pathCo
  *
  * @returns True if the role is an impersonation role for My Account application, false otherwise.
  */
-export const isMyAccountImpersonationRole = (roleName:string, applicationName:string): boolean => {
+export const isMyAccountImpersonationRole = (roleName: string, applicationName: string): boolean => {
 
     if (!roleName || !applicationName) {
         return false;
