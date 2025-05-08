@@ -552,9 +552,18 @@ export enum ShareWithOrgStatus {
     UNDEFINED
 }
 
-export enum ApplicationShareStatus {
-    FAIL = "FAIL",
+export enum ApplicationShareUnitStatus {
+    FAILED = "FAILED",
     SUCCESS = "SUCCESS",
+    PARTIALLY_COMPLETED = "PARTIALLY_COMPLETED",
     ALL = "ALL"
+}
+
+export enum ApplicationShareStatus {
+    FAILED = "FAILED",
+    SUCCESS = "SUCCESS",
+    IDLE = "IDLE",
+    IN_PROGRESS = "IN_PROGRESS",
+    PARTIALLY_COMPLETED = "PARTIALLY_COMPLETED",
 }
 

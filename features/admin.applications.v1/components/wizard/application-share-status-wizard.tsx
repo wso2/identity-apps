@@ -1,10 +1,6 @@
-import Alert from "@oxygen-ui/react/Alert";
-import AlertTitle from "@oxygen-ui/react/AlertTitle";
-import React, { useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import React, { useState } from "react";
 import { ShareApplicationStatusResponseList } from "../share-application-status-response-list";
-import { ApplicationShareUnitStatusResponse, ShareApplicationStatusResponseSummary } from "../../models/application";
-import { getApplicationUnitShares } from "../../api/application";
+import { ShareApplicationStatusResponseSummary } from "../../models/application";
 
 interface ApplicationShareStatusWizardProps {
     componentId: string;
@@ -18,11 +14,9 @@ const ApplicationShareStatusWizard: React.FC<ApplicationShareStatusWizardProps> 
     componentId,
     operationId,
 }) => {
-    const { t } = useTranslation(); 
 
     const [ hasLoaded, setHasLoaded ] = useState<boolean>(false);
     const [ hasError, setHasError ] = useState<boolean>(false);
-    const [ applicationShareStatusResponse, setApplicationShareStatusResponse ] = useState<ApplicationShareUnitStatusResponse[]>([]);
     const [ applicationShareStatusResponseSummary, setApplicationShareStatusResponseSummary ] = useState<ShareApplicationStatusResponseSummary>(initialApplicationShareStatusResponseSummary);
 
     return (
@@ -32,22 +26,7 @@ const ApplicationShareStatusWizard: React.FC<ApplicationShareStatusWizardProps> 
                 operationId={ operationId }
                 data-componentid={ `${componentId}-manual-response-list` }
                 hasError={ hasError }
-                // responseList={ applicationShareStatusResponse }
                 shareApplicationSummary={ applicationShareStatusResponseSummary }
-                successAlert={ (
-                    <Alert severity="success">
-                        <AlertTitle>
-                            {
-                                t("user:modals.bulkImportUserWizard." +
-                                "wizardSummary.manualCreation.alerts.creationSuccess.message")
-                            }
-                        </AlertTitle>
-                        {
-                            t("user:modals.bulkImportUserWizard." +
-                            "wizardSummary.manualCreation.alerts.creationSuccess.description")
-                        }
-                    </Alert>
-                ) }
             />
         </>
     );
