@@ -100,7 +100,7 @@ import {
     UserAddOptionTypes,
     UserManagementConstants
 } from "../constants";
-import { AccountStatusFilterOption, InvitationStatus, UserListInterface } from "../models/user";
+import { InvitationStatus, UserListInterface } from "../models/user";
 import "./users.scss";
 import { resolveUserSearchAttributes } from "../utils/user-management-utils";
 
@@ -231,10 +231,10 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
         if (selectedAccountStatusFilters.length > 0) {
             const accountStatusScimFilters: string[] = selectedAccountStatusFilters.map((filterKey: string) => {
-                const accountStatusOption: AccountStatusFilterOption = USER_ACCOUNT_STATUS_FILTER_OPTIONS.find(
-                    (option: AccountStatusFilterOption) => option.key === filterKey);
+                const filterOption: DropdownChild = USER_ACCOUNT_STATUS_FILTER_OPTIONS.find(
+                    (option: DropdownChild) => option.key === filterKey);
 
-                return accountStatusOption ? accountStatusOption.scimFilter : "";
+                return filterOption ? filterOption.value : "";
             }).filter((scimFilter: string) => scimFilter !== "");
 
             if (accountStatusScimFilters.length > 0) {
@@ -674,7 +674,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const accountStatusFilter = (): ReactElement => ((
         <AccountStatusFilterDropdown
             selectedFilters={ selectedAccountStatusFilters }
-            onSelectedFiltersChange={ handleSelectedAccountStatusFiltersChange }
+            onChange={ handleSelectedAccountStatusFiltersChange }
         />
     ));
 
@@ -726,25 +726,25 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             >
                 { selectedAccountStatusFilters.length > 0 && (
                     <Label.Group>
-                        { selectedAccountStatusFilters.map((accountStatusFilterKey: string) => {
-                            const statusFilterOption: AccountStatusFilterOption =
-                            USER_ACCOUNT_STATUS_FILTER_OPTIONS.find(
-                                (option: AccountStatusFilterOption) => option.key === accountStatusFilterKey);
+                        { selectedAccountStatusFilters.map((filterKey: string) => {
+                            const filterOption: DropdownChild =
+                                USER_ACCOUNT_STATUS_FILTER_OPTIONS
+                                    .find((option: DropdownChild) => option.key === filterKey);
 
-                            if (!statusFilterOption) {
+                            if (!filterOption) {
                                 return null;
                             }
 
                             return (
                                 <Label
-                                    key={ accountStatusFilterKey }
+                                    key={ filterKey }
                                     className="filter-label active basic"
                                     as="a"
-                                    onClick={ () => handleAccountStatusFilterRemove(accountStatusFilterKey) }
+                                    onClick={ () => handleAccountStatusFilterRemove(filterKey) }
                                     data-testid={
-                                        `${componentId}-account-status-filter-label-${accountStatusFilterKey}` }
+                                        `${componentId}-account-status-filter-label-${filterKey}` }
                                 >
-                                    { statusFilterOption.text }
+                                    { filterOption.text }
                                     <XMarkIcon className="filter-label-close-icon" />
                                 </Label>
                             );

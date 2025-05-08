@@ -20,7 +20,7 @@
 import { ServerConfigurationsConstants } from
     "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import { ProfileConstants } from "@wso2is/core/constants";
-import { AccountStatusFilterOption } from "../models/user";
+import { DropdownChild } from "@wso2is/forms";
 
 /**
  * Class containing app constants which can be used across several applications.
@@ -469,36 +469,25 @@ export enum AttributeDataType {
 /**
  * User account status options for filtering users.
  */
-export const USER_ACCOUNT_STATUS_FILTER_OPTIONS: AccountStatusFilterOption[] = [
+export const USER_ACCOUNT_STATUS_FILTER_OPTIONS: DropdownChild[] = [
     {
         key: "LOCKED",
-        scimFilter: "urn:scim:wso2:schema:accountState eq 'LOCKED'",
-        text: "Locked"
+        text: "Locked",
+        value: "urn:scim:wso2:schema:accountState eq 'LOCKED'"
     },
     {
         key: "DISABLED",
-        scimFilter: "urn:scim:wso2:schema:accountState eq 'DISABLED'",
-        text: "Disabled"
+        text: "Disabled",
+        value: "urn:scim:wso2:schema:accountState eq 'DISABLED'"
     },
     {
         key: "PENDING_FUPR",
-        scimFilter: "urn:scim:wso2:schema:accountState eq 'PENDING_FUPR'",
-        text: "Pending password reset"
+        text: "Pending password reset",
+        value: "urn:scim:wso2:schema:accountState eq 'PENDING_FUPR'"
     },
     {
         key: "PENDING_AP",
-        scimFilter: "urn:scim:wso2:schema:accountState eq 'PENDING_AP'",
-        text: "Pending initial password setup"
+        text: "Pending initial password setup",
+        value: "urn:scim:wso2:schema:accountState eq 'PENDING_AP'"
     }
-    // TODO: To be added once the SCIM NE filter is implemented.
-    // {
-    //     key: "PENDING_EMAIL",
-    //     scimFilter: "urn:scim:wso2:schema:emailVerified ne true",
-    //     text: "Pending email verification"
-    // },
-    // {
-    //     key: "PENDING_MOBILE",
-    //     scimFilter: "urn:scim:wso2:schema:phoneVerified ne true",
-    //     text: "Pending mobile verification"
-    // }
 ];

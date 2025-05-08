@@ -186,6 +186,9 @@ export interface usersNS {
         };
     };
     advancedSearch: {
+        accountStatusFilter: {
+            label: string;
+        };
         form: {
             dropdown: {
                 filterAttributeOptions: {

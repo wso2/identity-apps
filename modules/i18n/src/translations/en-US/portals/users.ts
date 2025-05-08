@@ -33,6 +33,9 @@ export const users: usersNS = {
         }
     },
     advancedSearch: {
+        accountStatusFilter: {
+            label: "Account Status"
+        },
         form: {
             dropdown: {
                 filterAttributeOptions: {

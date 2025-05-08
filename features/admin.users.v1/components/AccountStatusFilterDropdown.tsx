@@ -17,7 +17,6 @@
  */
 
 import { SelectChangeEvent } from "@mui/material/Select";
-
 import Badge from "@oxygen-ui/react/Badge";
 import Box from "@oxygen-ui/react/Box";
 import Checkbox from "@oxygen-ui/react/Checkbox";
@@ -25,22 +24,26 @@ import FormControl from "@oxygen-ui/react/FormControl";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
-
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { DropdownChild } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement } from "react";
-
+import { useTranslation } from "react-i18next";
 import { USER_ACCOUNT_STATUS_FILTER_OPTIONS } from "../constants/user-management-constants";
-import { AccountStatusFilterOption } from "../models/user";
-
 import "./AccountStatusFilterDropdown.scss";
 
 /**
  * Props for the AccountStatusFilterDropdown component.
  */
 interface AccountStatusFilterDropdownProps extends IdentifiableComponentInterface {
+    /**
+     * Array of selected account status filter keys.
+     */
     selectedFilters: string[];
-    onSelectedFiltersChange: (selected: string[]) => void;
-    label?: string;
+    /**
+     * Callback function triggered when the selected filters change.
+     * @param selected - Array of selected filter keys.
+     */
+    onChange: (selected: string[]) => void;
 }
 
 /**
@@ -51,15 +54,16 @@ interface AccountStatusFilterDropdownProps extends IdentifiableComponentInterfac
  */
 const AccountStatusFilterDropdown: FunctionComponent<AccountStatusFilterDropdownProps> = ({
     selectedFilters,
-    onSelectedFiltersChange,
-    label = "Account Status",
-    ["data-componentid"]: componentId = "account-status-filter"
+    onChange,
+    ["data-componentid"]: componentId = "account-status-filter-dropdown"
 }: AccountStatusFilterDropdownProps): ReactElement => {
+
+    const { t } = useTranslation();
 
     const handleChange = (event: SelectChangeEvent<string[]>) => {
         const value: string[] | string = event.target.value;
 
-        onSelectedFiltersChange(typeof value === "string" ? value.split(",") : value);
+        onChange(typeof value === "string" ? value.split(",") : value);
     };
 
     /**
@@ -67,11 +71,11 @@ const AccountStatusFilterDropdown: FunctionComponent<AccountStatusFilterDropdown
      * @returns The rendered component
      */
     const renderLabelWithCount = (): ReactElement => (
-        <Box 
+        <Box
             className="dropdown-label-container"
             data-componentid={ `${componentId}-label` }
         >
-            { label }
+            { t("users:advancedSearch.accountStatusFilter.label") }
             { selectedFilters.length > 0 && (
                 <Badge
                     className="status-count-badge"
@@ -83,39 +87,40 @@ const AccountStatusFilterDropdown: FunctionComponent<AccountStatusFilterDropdown
     );
 
     return (
-        <Box 
+        <Box
             className="account-status-filter-dropdown"
             data-componentid={ componentId }
         >
             <FormControl fullWidth>
                 <Select
-                    className="account-status-select"
-                    id="account-status-select"
+                    className="account-status-select-input"
                     multiple
                     value={ selectedFilters }
                     onChange={ handleChange }
                     renderValue={ renderLabelWithCount }
-                    data-testid={ `${componentId}-select` }
+                    data-testid={ `${componentId}-select-input` }
                     displayEmpty
                 >
                     { USER_ACCOUNT_STATUS_FILTER_OPTIONS
                         .sort((
-                            currentFilterOption: AccountStatusFilterOption,
-                            nextFilterOption: AccountStatusFilterOption
+                            currentFilterOption: DropdownChild,
+                            nextFilterOption: DropdownChild
                         ) => {
-                            const isCurrentSelected: boolean = selectedFilters.includes(currentFilterOption.key);
-                            const isNextSelected: boolean = selectedFilters.includes(nextFilterOption.key);
+                            const isCurrentSelected: boolean =
+                                selectedFilters.includes(currentFilterOption.key.toString());
+                            const isNextSelected: boolean =
+                                selectedFilters.includes(nextFilterOption.key.toString());
 
                             return isCurrentSelected === isNextSelected ? 0 : isCurrentSelected ? -1 : 1;
                         })
-                        .map((filterOption: AccountStatusFilterOption) => (
+                        .map((filterOption: DropdownChild) => (
                             <MenuItem
                                 key={ filterOption.key }
                                 value={ filterOption.key }
                                 data-testid={ `${componentId}-option-${filterOption.key}` }
                             >
-                                <Checkbox 
-                                    checked={ selectedFilters.indexOf(filterOption.key) > -1 }
+                                <Checkbox
+                                    checked={ selectedFilters.indexOf(filterOption.key.toString()) > -1 }
                                     data-testid={ `${componentId}-checkbox-${filterOption.key}` }
                                 />
                                 <ListItemText primary={ filterOption.text } />
