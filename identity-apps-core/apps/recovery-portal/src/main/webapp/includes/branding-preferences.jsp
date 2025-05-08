@@ -516,35 +516,74 @@
 
                 // Theme
                 if (brandingPreference.has(THEME_KEY)) {
+                    if (StringUtils.isBlank(activeThemeName)) {
+                        String uiThemeParam = request.getParameter("ui_theme");
+                        String uiTheme = null;
+
+                        if (StringUtils.isNotBlank(uiThemeParam)) {
+                            uiTheme = uiThemeParam;
+                        } else {
+                            String callback = request.getParameter("callback");
+
+                            if (StringUtils.isNotBlank(callback) && callback.contains("ui_theme=")) {
+
+                                try {
+                                    String[] parts = callback.split("[?&]");
+                                    for (String part : parts) {
+                                        if (part.startsWith("ui_theme=")) {
+                                            uiTheme = part.split("=")[1];
+                                            break;
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    // Fallback to default theme if parsing fails.
+                                }
+                            }
+                        }
+
+                        if (StringUtils.isNotBlank(uiTheme)) {
+
+                            if (uiTheme.trim().equalsIgnoreCase("dark")) {
+                                activeThemeName = "DARK";
+                            } else if (uiTheme.trim().equalsIgnoreCase("light")) {
+                                activeThemeName = "LIGHT";
+                            } else {
+                                activeThemeName = "";
+                            }
+                        }
+                    }
+
                     if (brandingPreference.getJSONObject(THEME_KEY).has(ACTIVE_THEME_KEY)) {
-                        if (!StringUtils.isBlank(brandingPreference.getJSONObject(THEME_KEY).getString(ACTIVE_THEME_KEY))) {
+                        if (!StringUtils.isBlank(brandingPreference.getJSONObject(THEME_KEY).getString(ACTIVE_THEME_KEY))
+                                && StringUtils.isBlank(activeThemeName)) {
                             activeThemeName = brandingPreference.getJSONObject(THEME_KEY).getString(ACTIVE_THEME_KEY);
+                        }
+                    }
 
-                            if (brandingPreference.getJSONObject(THEME_KEY).has(activeThemeName)
-                                && brandingPreference.getJSONObject(THEME_KEY).getJSONObject(activeThemeName) != null) {
+                    if (!StringUtils.isBlank(activeThemeName)
+                        && brandingPreference.getJSONObject(THEME_KEY).has(activeThemeName)
+                        && brandingPreference.getJSONObject(THEME_KEY).getJSONObject(activeThemeName) != null) {
 
-                                theme = brandingPreference.getJSONObject(THEME_KEY).getJSONObject(activeThemeName);
+                        theme = brandingPreference.getJSONObject(THEME_KEY).getJSONObject(activeThemeName);
 
-                                if (theme.has(IMAGES_KEY) && theme.getJSONObject(IMAGES_KEY) != null) {
+                        if (theme.has(IMAGES_KEY) && theme.getJSONObject(IMAGES_KEY) != null) {
                                     if (theme.getJSONObject(IMAGES_KEY).has(LOGO_KEY) && theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY) != null) {
-                                        if (theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY).has(IMAGE_URL_KEY)
-                                            && !StringUtils.isBlank(theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY).getString(IMAGE_URL_KEY))) {
+                                if (theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY).has(IMAGE_URL_KEY)
+                                        && !StringUtils.isBlank(theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY).getString(IMAGE_URL_KEY))) {
 
-                                            logoURL = theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY).getString(IMAGE_URL_KEY);
-                                        }
-                                        if (theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY).has(ALT_TEXT_KEY)
-                                            && !StringUtils.isBlank(theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY).getString(ALT_TEXT_KEY))) {
+                                    logoURL = theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY).getString(IMAGE_URL_KEY);
+                                }
+                                if (theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY).has(ALT_TEXT_KEY)
+                                        && !StringUtils.isBlank(theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY).getString(ALT_TEXT_KEY))) {
 
-                                            logoAlt = theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY).getString(ALT_TEXT_KEY);
-                                        }
-                                    }
+                                    logoAlt = theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY).getString(ALT_TEXT_KEY);
+                                }
+                            }
                                     if (theme.getJSONObject(IMAGES_KEY).has(FAVICON_KEY) && theme.getJSONObject(IMAGES_KEY).getJSONObject(FAVICON_KEY) != null) {
-                                        if (theme.getJSONObject(IMAGES_KEY).getJSONObject(FAVICON_KEY).has(IMAGE_URL_KEY)
-                                            && !StringUtils.isBlank(theme.getJSONObject(IMAGES_KEY).getJSONObject(FAVICON_KEY).getString(IMAGE_URL_KEY))) {
-
-                                            faviconURL = theme.getJSONObject(IMAGES_KEY).getJSONObject(FAVICON_KEY).getString(IMAGE_URL_KEY);
-                                        }
-                                    }
+                                if (theme.getJSONObject(IMAGES_KEY).getJSONObject(FAVICON_KEY).has(IMAGE_URL_KEY)
+                                        && !StringUtils.isBlank(theme.getJSONObject(IMAGES_KEY).getJSONObject(FAVICON_KEY).getString(IMAGE_URL_KEY))) {
+                
+                                    faviconURL = theme.getJSONObject(IMAGES_KEY).getJSONObject(FAVICON_KEY).getString(IMAGE_URL_KEY);
                                 }
                             }
                         }

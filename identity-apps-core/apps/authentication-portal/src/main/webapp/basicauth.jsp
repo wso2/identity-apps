@@ -677,6 +677,8 @@
     <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute
             (request.getParameter("sessionDataKey"))%>'/>
 
+    <input type="hidden" name="ui_theme" value='<%=Encode.forHtmlAttribute(request.getParameter("ui_theme"))%>'/>
+
     <div class="mt-0">
         <div class="buttons">
             <button
