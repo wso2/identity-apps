@@ -49,9 +49,9 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = (
         "data-testid": testId = "layout-editor-tabs"
     } = props;
 
-    const htmlContent = useRef(html);
-    const cssContent = useRef(css);
-    const jsContent = useRef(js);
+    const htmlContent: React.MutableRefObject<string> = useRef<string>(html);
+    const cssContent: React.MutableRefObject<string> = useRef<string>(css);
+    const jsContent: React.MutableRefObject<string> = useRef<string>(js);
 
     // Keep refs in sync when props change
     useEffect(() => {
@@ -69,35 +69,35 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = (
 
     const handleTabChange = () => {
         onContentUpdate?.({
-            html: htmlContent.current,
             css: cssContent.current,
+            html: htmlContent.current,
             js: jsContent.current
         });
     };
 
     return (
         <ResourceTab
-            onTabChange={ handleTabChange }
-            panes={ [
+            onTabChange = { handleTabChange }
+            panes = { [
                 {
                     menuItem: "HTML",
                     render: () => (
-                        <ResourceTab.Pane attached={ false } data-testid={ `${ testId }-html-tab` }>
+                        <ResourceTab.Pane attached = { false } data-testid={ `${ testId }-html-tab` }>
                             <CodeEditor
-                                language="htmlmixed"
-                                sourceCode={ html }
-                                options={ { lineWrapping: true } }
-                                onChange={ (editor, data, value) => {
+                                language = "htmlmixed"
+                                sourceCode = { html }
+                                options = { { lineWrapping: true } }
+                                onChange = { (editor, data, value) => {
                                     htmlContent.current = value;
                                 } }
-                                onBlur={ () => onContentUpdate?.({
-                                    html: htmlContent.current,
+                                onBlur = { () => onContentUpdate?.({
                                     css: cssContent.current,
+                                    html: htmlContent.current,
                                     js: jsContent.current
                                 }) }
-                                readOnly={ readOnly }
-                                theme="light"
-                                data-testid={ `${ testId }-html-editor` }
+                                readOnly = { readOnly }
+                                theme = "light"
+                                data-testid = { `${ testId }-html-editor` }
                             />
                         </ResourceTab.Pane>
                     )
@@ -105,22 +105,22 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = (
                 {
                     menuItem: "CSS",
                     render: () => (
-                        <ResourceTab.Pane attached={ false } data-testid={ `${ testId }-css-tab` }>
+                        <ResourceTab.Pane attached = { false } data-testid = { `${ testId }-css-tab` }>
                             <CodeEditor
-                                language="css"
-                                sourceCode={ css }
-                                options={ { lineWrapping: true } }
-                                onChange={ (editor, data, value) => {
+                                language = "css"
+                                sourceCode = { css }
+                                options = { { lineWrapping: true } }
+                                onChange = { (editor, data, value) => {
                                     cssContent.current = value;
                                 } }
-                                onBlur={ () => onContentUpdate?.({
-                                    html: htmlContent.current,
+                                onBlur = { () => onContentUpdate?.({
                                     css: cssContent.current,
+                                    html: htmlContent.current,
                                     js: jsContent.current
                                 }) }
-                                readOnly={ readOnly }
-                                theme="light"
-                                data-testid={ `${ testId }-css-editor` }
+                                readOnly = { readOnly }
+                                theme = "light"
+                                data-testid = { `${ testId }-css-editor` }
                             />
                         </ResourceTab.Pane>
                     )
@@ -128,28 +128,28 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = (
                 {
                     menuItem: "JavaScript",
                     render: () => (
-                        <ResourceTab.Pane attached={ false } data-testid={ `${ testId }-js-tab` }>
+                        <ResourceTab.Pane attached = { false } data-testid = { `${ testId }-js-tab` }>
                             <CodeEditor
-                                language="javascript"
-                                sourceCode={ js }
-                                options={ { lineWrapping: true } }
-                                onChange={ (editor, data, value) => {
+                                language = "javascript"
+                                sourceCode = { js }
+                                options = { { lineWrapping: true } }
+                                onChange = { (editor, data, value) => {
                                     jsContent.current = value;
                                 } }
                                 onBlur={ () => onContentUpdate?.({
-                                    html: htmlContent.current,
                                     css: cssContent.current,
+                                    html: htmlContent.current,
                                     js: jsContent.current
                                 }) }
-                                readOnly={ readOnly }
-                                theme="light"
-                                data-testid={ `${ testId }-js-editor` }
+                                readOnly = { readOnly }
+                                theme = "light"
+                                data-testid = { `${ testId }-js-editor` }
                             />
                         </ResourceTab.Pane>
                     )
                 }
             ] }
-            data-testid={ `${ testId }-tabs` }
+            data-testid = { `${ testId }-tabs` }
         />
     );
 };

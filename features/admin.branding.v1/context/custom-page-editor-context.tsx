@@ -31,9 +31,7 @@ export interface CustomPageEditorContextProps {
  */
 const CustomPageEditorContext: Context<CustomPageEditorContextProps> = createContext<
     null | CustomPageEditorContextProps
->(
-    null
-);
+>(null);
 
 /**
  * Display name for the CustomPageEditorContext.
