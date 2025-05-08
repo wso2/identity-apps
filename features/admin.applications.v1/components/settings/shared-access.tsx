@@ -17,14 +17,16 @@
  */
 
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
+import { useSelector } from "react-redux";
+import { OperationStatus } from "../../constants/application-management";
 import { useOperationStatusPoller } from "../../hooks/use-operation-status-poller";
 import { ApplicationInterface } from "../../models/application";
 import { ApplicationShareForm } from "../forms/share-application-form";
 import { OperationStatusBanner } from "../shared-access-status-banner";
-import { ApplicationShareStatus } from "../../constants/application-management";
 
 /**
  * Proptypes for the shared access component.
@@ -56,34 +58,36 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
 ): ReactElement => {
 
     const { application, onUpdate, readOnly } = props;
-    const [ sharingState, setSharingState ] = useState<ApplicationShareStatus>(ApplicationShareStatus.IDLE);
+    const [ sharingState, setSharingState ] = useState<OperationStatus>(OperationStatus.IDLE);
     const [ sharingOperationId, setSharingOperationId ] = useState<string>();
+    const disabledFeatures: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.applications?.disabledFeatures);
+    const isApplicationShareOperationStatusEnabled: boolean =
+        disabledFeatures?.includes("applications.sharedAccess.status") ?? false;
 
     const { status, startPolling } = useOperationStatusPoller({  // use-application-sharing-operation-status
-        applicationId: application.id,
-        pollingInterval: 5000,
-        onCompleted: (finalStatus) => {
+        enabled: isApplicationShareOperationStatusEnabled,
+        onCompleted: (finalStatus: OperationStatus) => {
             setSharingState(finalStatus);
         },
-        onStatusChange: (newOperationId, newStatus) => {
+        onStatusChange: (newOperationId: string, newStatus: OperationStatus) => {
             setSharingState(newStatus);
             setSharingOperationId(newOperationId);
         },
-        onError: (error) => {
-            console.error("Polling error:", error);
-        },
-        enabled: true //config.operationStatusPoller?.enabled ??
+        operationType: "B2B_APPLICATION_SHARE",
+        pollingInterval: 5000,
+        subjectId: application.id
     });
 
     const handleChildStartedOperation = () => {
-        setSharingState(ApplicationShareStatus.IN_PROGRESS);
+        setSharingState(OperationStatus.IN_PROGRESS);
         startPolling();
     };
 
     return (
         <>
             <OperationStatusBanner
-                status={ sharingState}
+                status={ sharingState }
                 sharingOperationId={ sharingOperationId }/>
             <EmphasizedSegment className="advanced-configuration-section" padded="very">
                 <ApplicationShareForm
@@ -92,7 +96,7 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
                     readOnly={ readOnly }
                     onOperationStarted={ handleChildStartedOperation }
                     operationStatus={ status }
-                    isSharingInProgress={ sharingState === ApplicationShareStatus.IN_PROGRESS }
+                    isSharingInProgress={ sharingState === OperationStatus.IN_PROGRESS }
                 />
             </EmphasizedSegment>
         </>

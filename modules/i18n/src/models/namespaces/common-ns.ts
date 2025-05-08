@@ -190,4 +190,8 @@ export interface CommonNS {
     verified: string;
     primary: string;
     makePrimary: string;
+    asyncOperationErrorMessage: {
+        description: string;
+        message: string;
+    }
 }

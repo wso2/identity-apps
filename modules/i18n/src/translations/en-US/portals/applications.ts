@@ -660,7 +660,18 @@ export const applications: ApplicationsNS = {
                 },
                 switchToSelectiveShareFromSharingWithAllSuborgsWarning: "Switching from sharing the app with all organizations to " +
                     "sharing with selected organizations will " +
-                    "reset the application configurations in all organizations."
+                    "reset the application configurations in all organizations.",
+                asyncOperationStatus: {
+                    inProgress: {
+                        heading: "Update In Progress.",
+                        description: "Updating shared access is in progress."
+                    },
+                    completed: {
+                        heading: "Update Partialy Successfull.",
+                        description: "Updating shared access completed with partial success.",
+                        actionText: "View"
+                    }
+                }
             },
             signOnMethod: {
                 sections: {

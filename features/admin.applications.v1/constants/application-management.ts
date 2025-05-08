@@ -556,7 +556,7 @@ export enum ApplicationShareUnitStatus {
     ALL = "ALL"
 }
 
-export enum ApplicationShareStatus {
+export enum OperationStatus {
     FAILED = "FAILED",
     SUCCESS = "SUCCESS",
     IDLE = "IDLE",

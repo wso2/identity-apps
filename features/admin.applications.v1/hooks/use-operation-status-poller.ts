@@ -16,49 +16,45 @@
  * under the License.
  */
 
-import { useEffect, useRef, useState } from "react";
-import { getSharedAccessStatus } from "../api/application";
-import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { AxiosResponse } from "axios";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { ApplicationShareStatus } from "../constants/application-management";
+import { getSharedAccessStatus } from "../api/application";
+import { OperationStatus } from "../constants/application-management";
 
-export interface UseOperationStatusPollerOptions {
-    applicationId: string;
+export interface UseOperationStatusPollerProps {
+    operationType: string;
+    subjectId: string;
     pollingInterval?: number;
-    onCompleted?: (finalStatus: ApplicationShareStatus) => void;
-    onStatusChange?: (operationId: string, status: ApplicationShareStatus) => void;
-    onError?: (error: unknown) => void;
+    onCompleted?: (finalStatus: OperationStatus) => void;
+    onStatusChange?: (operationId: string, status: OperationStatus) => void;
     enabled?: boolean;
 }
 
 export const useOperationStatusPoller = ({
-    applicationId,
+    operationType,
+    subjectId,
     pollingInterval,
     onCompleted,
     onStatusChange,
-    onError,
     enabled
-}: UseOperationStatusPollerOptions) => {
+}: UseOperationStatusPollerProps) => {
 
-    const [status, setStatus] = useState<ApplicationShareStatus>(ApplicationShareStatus.IDLE);
-    const intervalRef = useRef<number | null>(null);
+    const [ status, setStatus ] = useState<OperationStatus>(OperationStatus.IDLE);
+    const intervalRef: MutableRefObject<number> = useRef<number | null>(null);
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const fetchStatus = async (): Promise< { operationId: string, status: ApplicationShareStatus } > => {
-        try {
-            const response = await getSharedAccessStatus(applicationId);
-            const newStatus: ApplicationShareStatus = response.data?.operations[0]?.status ?? ApplicationShareStatus.IDLE;
-            const newOperationId: string = response.data?.operations[0]?.operationId ?? null;
+    const fetchStatus = async (): Promise< { operationId: string, status: OperationStatus } > => {
+        const response: AxiosResponse = await getSharedAccessStatus(operationType, subjectId, 1000);
+        const newStatus: OperationStatus = response.data?.operations[0]?.status ?? OperationStatus.IDLE;
+        const newOperationId: string = response.data?.operations[0]?.operationId ?? null;
 
-            return {operationId: newOperationId, status: newStatus}
-
-        } catch (error) {
-            throw error;
-        }
+        return { operationId: newOperationId, status: newStatus };
     };
 
     const startPolling = () => {
@@ -66,72 +62,63 @@ export const useOperationStatusPoller = ({
 
         intervalRef.current = window.setInterval(async () => {
             try {
-                const {operationId: newOperationId, status: newStatus} = await fetchStatus();
+                const { operationId: newOperationId, status: newStatus } = await fetchStatus();
+
                 setStatus(newStatus);
                 onStatusChange?.(newOperationId, newStatus);
 
-                if (newStatus !== ApplicationShareStatus.IN_PROGRESS) {
+                if (newStatus !== OperationStatus.IN_PROGRESS) {
                     clearInterval(intervalRef.current!);
                     intervalRef.current = null;
                     onCompleted?.(newStatus);
-                    if (newStatus === ApplicationShareStatus.FAILED) {
-                        dispatch(addAlert({
-                            description: t("applications:edit.sections.shareApplication.completedSharingNotification.failure.description"),
-                            level: AlertLevels.ERROR,
-                            message: t("applications:edit.sections.shareApplication.completedSharingNotification.failure.message")
-                        }));
-                    } else if (newStatus === ApplicationShareStatus.SUCCESS) {
-                        dispatch(addAlert({
-                            description: t("applications:edit.sections.shareApplication.completedSharingNotification.success.description"),
-                            level: AlertLevels.SUCCESS,
-                            message: t("applications:edit.sections.shareApplication.completedSharingNotification.success.message")
-                        }));
-                    } else if (newStatus === ApplicationShareStatus.PARTIALLY_COMPLETED) {
-                        dispatch(addAlert({
-                            description: t("applications:edit.sections.shareApplication.completedSharingNotification.partialSuccess.description"),
-                            level: AlertLevels.WARNING,
-                            message: t("applications:edit.sections.shareApplication.completedSharingNotification.partialSuccess.message")
-                        }));
-                    }
                 }
             } catch (error) {
-                console.error("Polling error:", error);
+                dispatch(addAlert({
+                    description: t("common:asyncOperationErrorMessage.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("common:asyncOperationErrorMessage.message")
+                }));
                 clearInterval(intervalRef.current!);
                 intervalRef.current = null;
-                onError?.(error);
             }
         }, pollingInterval);
     };
 
     const fetchInitialStatus = async () => {
-        if (!enabled) return; 
         try {
-            const {operationId: newOperationId, status: initialStatus} = await fetchStatus();
+
+            const { operationId: newOperationId, status: initialStatus } = await fetchStatus();
+
             setStatus(initialStatus);
             onStatusChange?.(newOperationId, initialStatus);
 
-            if (initialStatus === ApplicationShareStatus.IN_PROGRESS) {
+            if (initialStatus === OperationStatus.IN_PROGRESS) {
                 startPolling();
             } else {
                 onCompleted?.(initialStatus);
             }
         } catch (error) {
-            onError?.(error);
+            dispatch(addAlert({
+                description: t("common:asyncOperationErrorMessage.description"),
+                level: AlertLevels.ERROR,
+                message: t("common:asyncOperationErrorMessage.message")
+            }));
         }
     };
 
     useEffect(() => {
         if (!enabled) return;
         fetchInitialStatus();
+
         return () => {
             if (intervalRef.current !== null) {
                 clearInterval(intervalRef.current);
             }
         };
-    }, [enabled]);
+    }, [ enabled ]);
 
     return {
-        status,
-        startPolling
+        startPolling,
+        status
     };
 };

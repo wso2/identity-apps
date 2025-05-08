@@ -39,6 +39,10 @@ export const common: CommonNS = {
     apps: "Apps",
     assignee: "Assignee",
     assignees: "Assignees",
+    asyncOperationErrorMessage: {
+        description: "Something went wrong",
+        message: "An unexpected error occured. Please check back later."
+    },
     authentication: "Authentication",
     authenticator: "Authenticator",
     authenticator_plural: "Authenticators",

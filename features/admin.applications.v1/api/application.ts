@@ -1246,16 +1246,15 @@ export const useMyAccountStatus = <Data = MyAccountPortalStatusInterface, Error 
     };
 };
 
-export const getApplicationUnitShares = (operationId: string): Promise<any> => {
+export const getApplicationUnitShares = (operationId: string, limit: number): Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
         data: operationId,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.asyncStatus + "/" + operationId + "/unit-operations?limit=1000"
+        url: store.getState().config.endpoints.asyncStatus + "/" + operationId + "/unit-operations?limit=" + limit
     };
 
     return httpClient(requestConfig)
@@ -1263,7 +1262,6 @@ export const getApplicationUnitShares = (operationId: string): Promise<any> => {
             if ((response.status !== 200)) {
                 return Promise.reject(new Error("Failed to fetch shared access status units."));
             }
-            console.log(response);
 
             return Promise.resolve(response);
         }).catch((error: AxiosError) => {
@@ -1271,16 +1269,16 @@ export const getApplicationUnitShares = (operationId: string): Promise<any> => {
         });
 };
 
-export const getSharedAccessStatus = (applicationId: string): Promise<any> => {
+export const getSharedAccessStatus = (operationType: string, subjectId: string, limit: number): Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
-        data: applicationId,
+        data: subjectId,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.asyncStatus + "/?filter=subjectId eq " + applicationId + " &limit=1000"
+        url: store.getState().config.endpoints.asyncStatus + "/?filter=subjectId eq "
+            + subjectId + " and operationType eq " + operationType + " &limit=" + limit
     };
 
     return httpClient(requestConfig)
@@ -1288,7 +1286,6 @@ export const getSharedAccessStatus = (applicationId: string): Promise<any> => {
             if ((response.status !== 200)) {
                 return Promise.reject(new Error("Failed to fetch shared access status."));
             }
-            console.log(response);
 
             return Promise.resolve(response);
         }).catch((error: AxiosError) => {

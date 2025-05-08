@@ -835,6 +835,17 @@ export interface ApplicationsNS {
                     message: string,
                     description: string,
                 },
+                asyncOperationStatus: {
+                    inProgress: {
+                        heading: string,
+                        description: string
+                    },
+                    completed: {
+                        heading: string,
+                        description: string,
+                        actionText: string
+                    }
+                },
                 switchToSelectiveShareFromSharingWithAllSuborgsWarning: string;
             };
             apiAuthorization: {
