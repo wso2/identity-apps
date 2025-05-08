@@ -56,6 +56,7 @@
             "defaultLogoUrl": "/libs/themes/default/assets/images/branding/logo.svg",
             "defaultWhiteLogoUrl": "/libs/themes/default/assets/images/branding/logo-inverted.svg"
         },
+        "enableOldUIForEmailProvider": false,
         "enableCustomEmailTemplates": true,
         "enableCustomSmsTemplates": true,
         "enableEmailDomain": false,
@@ -1319,6 +1320,7 @@
         },
         "selfAppIdentifier": "Console",
         "showAppSwitchButton": true,
+        "showPasswordOfEmailProvider": true,
         "showSmsOtpPwdRecoveryFeatureStatusChip": false,
         "showStatusLabelForNewAuthzRuntimeFeatures": false,
         "systemAppsIdentifiers": [
