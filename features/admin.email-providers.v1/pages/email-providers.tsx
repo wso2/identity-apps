@@ -1124,7 +1124,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                         .EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
                                                                     width={ 16 }
                                                                     data-componentid={
-                                                                        `${componentId}-smtp-password` 
+                                                                        `${componentId}-smtp-password`
                                                                     }
                                                                     autoComplete="new-password"
                                                                 />
