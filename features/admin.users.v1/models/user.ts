@@ -464,3 +464,12 @@ export enum InvitationStatus {
     PENDING = "Pending",
     EXPIRED = "Expired"
 }
+
+/**
+ * Interface for user account status filtering option.
+ */
+export interface AccountStatusFilterOption {
+    key: string;
+    text: string;
+    scimFilter: string;
+}
