@@ -44,6 +44,7 @@
         "announcements": [],
         "appCopyright": "${copyright} ${year} WSO2 LLC.",
         "appLogoPath": "/assets/images/branding/logo.svg",
+        "appMobileLogoPath": "/assets/images/branding/logo-mini.svg",
         "appName": "My Account",
         "appTitle": "My Account | WSO2 Identity Server",
         "appWhiteLogoPath": "/assets/images/branding/logo-inverted.svg",

@@ -41,6 +41,7 @@ import org.wso2.carbon.identity.core.util.IdentityTenantUtil;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
 import org.wso2.carbon.identity.oauth.IdentityOAuthAdminException;
 import org.wso2.carbon.identity.oauth.OAuthUtil;
+import org.wso2.carbon.identity.oauth.common.OAuthConstants;
 import org.wso2.carbon.identity.oauth.dto.OAuthConsumerAppDTO;
 import org.wso2.carbon.identity.oauth2.OAuth2Constants;
 import org.wso2.carbon.identity.organization.management.service.constant.OrganizationManagementConstants;
@@ -77,12 +78,14 @@ import static org.wso2.identity.apps.common.util.AppPortalConstants.DISPLAY_NAME
 import static org.wso2.identity.apps.common.util.AppPortalConstants.EMAIL_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ACCOUNT_SWITCH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ORGANIZATION_SWITCH;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_TOKEN_EXCHANGE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_AUTH2_TYPE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_CONFIG_TYPE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.MYACCOUNT_APP;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.MYACCOUNT_PORTAL_PATH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.PROFILE_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.USERNAME_CLAIM_URI;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.USER_SESSION_IMPERSONATION;
 
 /**
  * App portal utils.
@@ -128,10 +131,23 @@ public class AppPortalUtils {
             portalPath = "/" + portalPath;
         }
         String callbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
+        String consoleCallbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
+        String appendedConsoleCallBackURLRegex = StringUtils.EMPTY;
+        boolean isUserSessionImpersonationEnabled = Boolean.parseBoolean(IdentityUtil
+            .getProperty(USER_SESSION_IMPERSONATION));
         try {
             // Update the callback URL properly if origin is configured for the portal app.
             callbackUrl = ApplicationMgtUtil.replaceUrlOriginWithPlaceholders(callbackUrl);
             callbackUrl = ApplicationMgtUtil.resolveOriginUrlFromPlaceholders(callbackUrl, applicationName);
+
+            // Add console url when impersonation is enabled.
+            if (isUserSessionImpersonationEnabled && MYACCOUNT_APP.equals(applicationName)) {
+                consoleCallbackUrl = ApplicationMgtUtil.replaceUrlOriginWithPlaceholders(consoleCallbackUrl);
+                consoleCallbackUrl = ApplicationMgtUtil.resolveOriginUrlFromPlaceholders(consoleCallbackUrl,
+                    CONSOLE_APP);
+                appendedConsoleCallBackURLRegex = "|" + consoleCallbackUrl.replace(portalPath, portalPath
+                    + "/resources/users/init-impersonate.html");
+            }
         } catch (URLBuilderException e) {
             throw new IdentityOAuthAdminException("Server encountered an error while building callback URL with " +
                 "placeholders for the server URL", e);
@@ -140,13 +156,21 @@ public class AppPortalUtils {
             callbackUrl = "regexp=(" + callbackUrl
                 + "|" + callbackUrl.replace(portalPath, "/t/carbon.super" + portalPath)
                 + "|" + callbackUrl.replace(portalPath, "/t/carbon.super/o/(.*)" + portalPath)
+                + appendedConsoleCallBackURLRegex
                 + ")";
         } else {
             callbackUrl = "regexp=(" + callbackUrl.replace(portalPath, "/t/(.*)" + portalPath)
                 + "|" + callbackUrl.replace(portalPath, "/t/(.*)/o/(.*)" + portalPath)
+                + appendedConsoleCallBackURLRegex
                 + ")";
         }
         oAuthConsumerAppDTO.setCallbackUrl(callbackUrl);
+        // Enable subject token response type for my account.
+        if (isUserSessionImpersonationEnabled && MYACCOUNT_APP.equals(applicationName)) {
+            oAuthConsumerAppDTO.setSubjectTokenEnabled(true);
+            oAuthConsumerAppDTO.setSubjectTokenExpiryTime(
+                OAuthConstants.OIDCConfigProperties.SUBJECT_TOKEN_EXPIRY_TIME_VALUE);
+        }
         oAuthConsumerAppDTO.setBypassClientCredentials(true);
         if (grantTypes != null && !grantTypes.isEmpty()) {
             oAuthConsumerAppDTO.setGrantTypes(String.join(" ", grantTypes));
@@ -307,6 +331,13 @@ public class AppPortalUtils {
                 if (CONSOLE_APP.equals(appPortal.getName())) {
                     grantTypes = Arrays.asList(AUTHORIZATION_CODE, REFRESH_TOKEN, GRANT_TYPE_ACCOUNT_SWITCH,
                         GRANT_TYPE_ORGANIZATION_SWITCH);
+                }
+                // Enable token-exchange grant type for my account.
+                boolean isUserSessionImpersonationEnabled = Boolean.parseBoolean(IdentityUtil
+                        .getProperty(USER_SESSION_IMPERSONATION));
+                if (isUserSessionImpersonationEnabled && MYACCOUNT_APP.equals(appPortal.getName())) {
+                    grantTypes = Arrays.asList(AUTHORIZATION_CODE, REFRESH_TOKEN, GRANT_TYPE_ACCOUNT_SWITCH,
+                    GRANT_TYPE_TOKEN_EXCHANGE);
                 }
                 List<String> allowedGrantTypes = Arrays.asList(AppsCommonDataHolder.getInstance()
                     .getOAuthAdminService().getAllowedGrantTypes());

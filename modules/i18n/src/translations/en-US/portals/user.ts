@@ -93,6 +93,19 @@ export const user: userNS = {
                 part1:"Enter the",
                 part2: "in the format YYYY-MM-DD"
             }
+        },
+        userActionZoneGroup: {
+            impersonateUserZone: {
+                actionTitle: "Impersonate User",
+                buttonDisableHints: {
+                    insufficientPermissions: "Logged in user should be assigned with Impersonator My Account application role.",
+                    myAccountDisabled: "My account application should be enabled to impersonate the user.",
+                    userAccountDisabled: "User account should be enabled to impersonate the user.",
+                    userAccountLocked: "User account should be unlocked to impersonate the user."
+                },
+                header: "Impersonate User",
+                subheader: "Once user impersonation has started, the initiator will no longer be able to log in with their own identity until the existing session is terminated."
+            }
         }
     },
     forms: {

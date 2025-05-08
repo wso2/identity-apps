@@ -40,6 +40,8 @@ public class AppPortalConstants {
 
     public static final String GRANT_TYPE_ORGANIZATION_SWITCH = "organization_switch";
 
+    public static final String GRANT_TYPE_TOKEN_EXCHANGE = "urn:ietf:params:oauth:grant-type:token-exchange";
+
     public static final String SYSTEM_PROP_SKIP_SERVER_INITIALIZATION = "skipServerInitialization";
 
     public static final String CONSOLE_APP = "Console";
@@ -47,6 +49,7 @@ public class AppPortalConstants {
 
     public static final String CONSOLE_PORTAL_PATH = "Console.AppBaseName";
     public static final String MYACCOUNT_PORTAL_PATH = "MyAccount.AppBaseName";
+    public static final String USER_SESSION_IMPERSONATION = "OAuth.UserSessionImpersonation";
 
     private AppPortalConstants() {
 

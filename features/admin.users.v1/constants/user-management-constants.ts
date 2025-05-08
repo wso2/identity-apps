@@ -68,7 +68,8 @@ export class UserManagementConstants {
         .set("USER_READ", "users.read")
         .set("USER_GROUPS", "users.edit.groups")
         .set("USER_ROLES", "users.edit.roles")
-        .set("USER_SHARED_PROFILES", "users.updateSharedProfiles");
+        .set("USER_SHARED_PROFILES", "users.updateSharedProfiles")
+        .set("USER_IMPERSONATION", "users.user.impersonation");
 
     // API errors
     public static readonly USER_INFO_UPDATE_ERROR: string = "Could not update the user information.";
@@ -177,6 +178,11 @@ export class UserManagementConstants {
         ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES")
     ];
 
+    // Impersonation related constants.
+    public static readonly ID_TOKEN: string = "id_token";
+    public static readonly SUBJECT_TOKEN: string = "subject_token";
+
+    // Feature flags.
     public static readonly ATTRIBUTE_PROFILES_FOR_USER_CREATION_FEATURE_FLAG: string
         = "users.user.creation.attribute.profile";
 }

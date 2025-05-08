@@ -1,5 +1,34 @@
 # @wso2is/admin.applications.v1
 
+## 2.34.9
+
+### Patch Changes
+
+- [#8157](https://github.com/wso2/identity-apps/pull/8157) [`6dfa562fcaa06bdd446d4d62f5089e6dc07019a9`](https://github.com/wso2/identity-apps/commit/6dfa562fcaa06bdd446d4d62f5089e6dc07019a9) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide client credentials grant type in MCP client app template if the client is not marked as a public client
+
+- Updated dependencies [[`6dfa562fcaa06bdd446d4d62f5089e6dc07019a9`](https://github.com/wso2/identity-apps/commit/6dfa562fcaa06bdd446d4d62f5089e6dc07019a9)]:
+  - @wso2is/admin.extensions.v1@2.37.11
+
+## 2.34.8
+
+### Patch Changes
+
+- [#8116](https://github.com/wso2/identity-apps/pull/8116) [`09d8b338d4b54547c052364326779f2575ac365f`](https://github.com/wso2/identity-apps/commit/09d8b338d4b54547c052364326779f2575ac365f) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Onboard impersonation feature.
+
+- Updated dependencies [[`09d8b338d4b54547c052364326779f2575ac365f`](https://github.com/wso2/identity-apps/commit/09d8b338d4b54547c052364326779f2575ac365f), [`c2c860870f95ebb57e71f0cbe2383df5102345c1`](https://github.com/wso2/identity-apps/commit/c2c860870f95ebb57e71f0cbe2383df5102345c1)]:
+  - @wso2is/react-components@2.9.14
+  - @wso2is/admin.roles.v2@2.27.152
+  - @wso2is/admin.users.v1@2.31.5
+  - @wso2is/core@2.7.8
+  - @wso2is/i18n@2.22.19
+  - @wso2is/admin.claims.v1@2.27.122
+
+## 2.34.7
+
+### Patch Changes
+
+- [#8142](https://github.com/wso2/identity-apps/pull/8142) [`3e3aefe0906bb9d221e608f716a80aba403120e8`](https://github.com/wso2/identity-apps/commit/3e3aefe0906bb9d221e608f716a80aba403120e8) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix hidden claims filtering in applications
+
 ## 2.34.6
 
 ### Patch Changes
