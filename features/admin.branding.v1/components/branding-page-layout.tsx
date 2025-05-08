@@ -43,6 +43,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import BrandingCore from "./branding-core";
+import CustomPageEditorPageLayout from "./custom-page-editor-page-layout";
 import { useApplicationList } from "../../admin.applications.v1/api/application";
 import { ApplicationManagementConstants } from "../../admin.applications.v1/constants/application-management";
 import { ApplicationListItemInterface } from "../../admin.applications.v1/models/application";
@@ -51,7 +52,6 @@ import { BrandingModes, BrandingPreferencesConstants } from "../constants/brandi
 import useBrandingPreference from "../hooks/use-branding-preference";
 import "./branding-page-layout.scss";
 import useCustomPageEditor from "../hooks/use-custom-page-editor";
-import CustomPageEditorPageLayout from "./custom-page-editor-page-layout";
 
 type BrandingPageLayoutInterface = IdentifiableComponentInterface;
 
@@ -95,7 +95,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
 
     const [ isBrandingAppsRedirect, setIsBrandingAppsRedirect ] = useState<boolean>(false);
 
-    const { customLayoutMode , setCustomLayoutMode } = useCustomPageEditor();
+    const { customLayoutMode } = useCustomPageEditor();
 
     const animationVariants: Variants = {
         enter: {
@@ -146,7 +146,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
 
             return;
         }
-    }, [history?.location?.state, applicationList]);
+    }, [ history?.location?.state, applicationList ]);
 
     /**
      * Handles the application list fetch request error.
@@ -179,7 +179,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                 message: t("applications:notifications.fetchApplications." + "genericError.message")
             })
         );
-    }, [applicationListFetchRequestError]);
+    }, [ applicationListFetchRequestError ]);
 
     /**
      * Handles the branding mode change from application/organization branding.
@@ -222,10 +222,6 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         return t("extensions:develop.branding.pageHeader.description");
     };
 
-    const handleBackButtonClick = () => {
-        setCustomLayoutMode(true);
-    };
-
     return (
         <PageLayout
             pageTitle={ resolveBrandingTitle() }
@@ -248,7 +244,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                         <AnimatePresence>
                             <motion.div
                                 className="content"
-                                key={ resolveBrandingTitle()}
+                                key={ resolveBrandingTitle() }
                                 initial="enter"
                                 animate="in"
                                 exit="exit"
@@ -260,7 +256,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                 variants={ animationVariants }
                             >
                                 <h1>
-                                    { resolveBrandingTitle()}
+                                    { resolveBrandingTitle() }
                                     { brandingMode === BrandingModes.APPLICATION && (
                                         <FeatureFlagLabel
                                             featureFlags={ brandingFeatureFlags }
@@ -274,7 +270,8 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                             </motion.div>
                         </AnimatePresence>
                     </div>
-                    {!brandingDisabledFeatures.includes(BrandingPreferencesConstants.APP_WISE_BRANDING_FEATURE_TAG) && (
+                    { !brandingDisabledFeatures.includes(
+                        BrandingPreferencesConstants.APP_WISE_BRANDING_FEATURE_TAG) && (
                         <div className="branding-mode-container">
                             <LayoutGroup>
                                 <motion.div
@@ -289,7 +286,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                     variants={ animationVariants }
                                     layout
                                 >
-                                    <Paper className="branding-mode-toggle-container" elevation={0}>
+                                    <Paper className="branding-mode-toggle-container" elevation = { 0 }>
                                         <ToggleButtonGroup
                                             exclusive
                                             onChange={ handleBrandingModeChange }
@@ -307,7 +304,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                             <ToggleButton
                                                 data-componentid={ `${componentId}-application-mode-button` }
                                                 value={ BrandingModes.APPLICATION }
-                                                onClick={() => {
+                                                onClick = { () => {
                                                     activeTab === BrandingPreferencesConstants.TABS.TEXT_TAB_ID &&
                                                         updateActiveTab(
                                                             BrandingPreferencesConstants.TABS.GENERAL_TAB_ID
@@ -396,7 +393,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                 ) }
                             </LayoutGroup>
                         </div>
-                    )}
+                    ) }
                 </div>
             ) }
             description={ (
