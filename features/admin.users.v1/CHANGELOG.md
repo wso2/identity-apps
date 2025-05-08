@@ -1,5 +1,15 @@
 # @wso2is/admin.users.v1
 
+## 2.31.6
+
+### Patch Changes
+
+- [#8167](https://github.com/wso2/identity-apps/pull/8167) [`77c9420874a36db30c1077afe3cd6cce49810998`](https://github.com/wso2/identity-apps/commit/77c9420874a36db30c1077afe3cd6cce49810998) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Improve my account Impersonator role edit restrictions
+
+- Updated dependencies [[`77c9420874a36db30c1077afe3cd6cce49810998`](https://github.com/wso2/identity-apps/commit/77c9420874a36db30c1077afe3cd6cce49810998)]:
+  - @wso2is/admin.roles.v2@2.27.153
+  - @wso2is/admin.users.v1@2.31.6
+
 ## 2.31.5
 
 ### Patch Changes
