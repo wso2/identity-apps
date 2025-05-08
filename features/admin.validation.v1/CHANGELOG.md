@@ -1,5 +1,11 @@
 # @wso2is/admin.validation.v1
 
+## 2.27.143
+
+### Patch Changes
+
+- [#8151](https://github.com/wso2/identity-apps/pull/8151) [`db5556ca9bb0c7b46b26069e39f83238977dc8fe`](https://github.com/wso2/identity-apps/commit/db5556ca9bb0c7b46b26069e39f83238977dc8fe) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix password input validation UI
+
 ## 2.27.142
 
 ### Patch Changes

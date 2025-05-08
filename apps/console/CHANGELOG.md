@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.54.21
+
+### Patch Changes
+
+- [#8151](https://github.com/wso2/identity-apps/pull/8151) [`db5556ca9bb0c7b46b26069e39f83238977dc8fe`](https://github.com/wso2/identity-apps/commit/db5556ca9bb0c7b46b26069e39f83238977dc8fe) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix password input validation UI
+
+* [#8169](https://github.com/wso2/identity-apps/pull/8169) [`c95e58d7f9b9d80589384a428850b3387ad22161`](https://github.com/wso2/identity-apps/commit/c95e58d7f9b9d80589384a428850b3387ad22161) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Trigger console release
+
+* Updated dependencies [[`db5556ca9bb0c7b46b26069e39f83238977dc8fe`](https://github.com/wso2/identity-apps/commit/db5556ca9bb0c7b46b26069e39f83238977dc8fe)]:
+  - @wso2is/admin.validation.v1@2.27.143
+
 ## 2.54.20
 
 ### Patch Changes
