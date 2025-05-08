@@ -1,26 +1,91 @@
-import React, { useState } from "react";
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
-import { Trans } from "react-i18next";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { Heading, LinkButton } from "@wso2is/react-components";
-import ApplicationShareStatusWizard from "./wizard/application-share-status-wizard";
+import React, { ReactElement, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
-import { ApplicationShareStatus } from "../constants/application-management";
+import ApplicationShareStatusWizard from "./wizard/application-share-status-wizard";
+import { OperationStatus } from "../constants/application-management";
 
-interface Props {
-    status: ApplicationShareStatus;
+/**
+ * Proptypes for the operation status banner component.
+ */
+interface OperationStatusBannerPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Application share operation status.
+     */
+    status: OperationStatus;
+    /**
+     * The operation ID of the share operation.
+     */
     sharingOperationId?: string;
 }
 
-export const OperationStatusBanner: React.FC<Props> = ({ status, sharingOperationId }) => {
-    if (status == ApplicationShareStatus.IDLE || status == ApplicationShareStatus.SUCCESS) return null;
-
-    const isFailure = status === ApplicationShareStatus.PARTIALLY_COMPLETED || status === ApplicationShareStatus.FAILED;
+/**
+ * Operation status banner component.
+ *
+ * @param props - Props injected to the component.
+ *
+ * @returns Operation status banner component.
+ */
+export const OperationStatusBanner: React.FC<OperationStatusBannerPropsInterface> = (
+    props: OperationStatusBannerPropsInterface
+): ReactElement => {
+    const { status, sharingOperationId, [ "data-componentid" ]: componentId } = props;
     const [ showStatusModal, setShowStatusModal ] = useState(false);
-    const [ componentId, SetComponentId ] = useState();
+    const dispatch: Dispatch = useDispatch();
+    const { t } = useTranslation();
+
+    if (status === OperationStatus.FAILED) {
+        dispatch(addAlert({
+            description: t("applications:edit.sections.shareApplication.completedSharingNotification."
+                + "failure.description"),
+            level: AlertLevels.ERROR,
+            message: t("applications:edit.sections.shareApplication.completedSharingNotification."
+                + "failure.message")
+        }));
+    } else if (status === OperationStatus.SUCCESS) {
+        dispatch(addAlert({
+            description: t("applications:edit.sections.shareApplication.completedSharingNotification."
+                + "success.description"),
+            level: AlertLevels.SUCCESS,
+            message: t("applications:edit.sections.shareApplication.completedSharingNotification."
+                + "success.message")
+        }));
+    } else if (status === OperationStatus.PARTIALLY_COMPLETED) {
+        dispatch(addAlert({
+            description: t("applications:edit.sections.shareApplication.completedSharingNotification."
+                + "partialSuccess.description"),
+            level: AlertLevels.WARNING,
+            message: t("applications:edit.sections.shareApplication.completedSharingNotification."
+                + "partialSuccess.message")
+        }));
+    }
 
     const handleShowStatusModal = () => {
         setShowStatusModal(true);
@@ -32,21 +97,23 @@ export const OperationStatusBanner: React.FC<Props> = ({ status, sharingOperatio
     return (
 
         <div className="banner-wrapper">
-            { status === ApplicationShareStatus.IN_PROGRESS && (
+            { status === OperationStatus.IN_PROGRESS && (
                 <div className="banner-wrapper">
                     <Alert
                         severity="warning"
                     >
                         <AlertTitle className="alert-title">
                             <Trans components={ { strong: <strong/> } } >
-                                Update In Progress.
+                                { t("applications:edit.sections.shareApplication.asyncOperationStatus"
+                                    + ".inProgress.heading") }
                             </Trans>
                         </AlertTitle>
-                        Updating shared access is in progress.
+                        { t("applications:edit.sections.shareApplication.asyncOperationStatus"
+                            + ".inProgress.description") }
                     </Alert>
                 </div>
             ) }
-            { isFailure && (
+            { OperationStatus.PARTIALLY_COMPLETED|| status === OperationStatus.FAILED && (
                 <div className="banner-wrapper">
                     <Alert
                         severity="warning"
@@ -55,10 +122,9 @@ export const OperationStatusBanner: React.FC<Props> = ({ status, sharingOperatio
                                 <Box display="flex">
                                     <Button
                                         className="banner-view-hide-details"
-                                        onClick={handleShowStatusModal}>
-                                        {
-                                            "View"
-                                        }
+                                        onClick={ handleShowStatusModal }>
+                                        { t("applications:edit.sections.shareApplication.asyncOperationStatus"
+                                            + ".completed.actionText") }
                                     </Button>
                                 </Box>
                             )
@@ -66,17 +132,19 @@ export const OperationStatusBanner: React.FC<Props> = ({ status, sharingOperatio
                     >
                         <AlertTitle className="alert-title">
                             <Trans components={ { strong: <strong/> } } >
-                                Update Partialy Successfull.
+                                { t("applications:edit.sections.shareApplication.asyncOperationStatus"
+                                + ".completed.heading") }
                             </Trans>
                         </AlertTitle>
-                        Updating shared access completed with partial success.
+                        { t("applications:edit.sections.shareApplication.asyncOperationStatus"
+                            + ".completed.description") }
                     </Alert>
                 </div>
             ) }
 
             <ModalWithSidePanel
-                data-testid={ componentId }
-                data-componentid={ componentId }
+                data-testid={ `${ componentId }-modal` }
+                data-componentid={ `${ componentId }-modal` }
                 open={ showStatusModal }
                 className="wizard application-create-wizard"
                 dimmer="blurring"
@@ -95,11 +163,9 @@ export const OperationStatusBanner: React.FC<Props> = ({ status, sharingOperatio
                     <ModalWithSidePanel.Content className="content-container">
                         <Grid>
                             <ApplicationShareStatusWizard
-                                componentId="wizard1"
-                                operationId={sharingOperationId}
-                                isSubmitting={true}
-                                isLoading={true}
-                                hasError={false}
+                                componentId={ `${ componentId }-wizard` }
+                                operationId={ sharingOperationId }
+                                hasError={ false }
                             />
                         </Grid>
                     </ModalWithSidePanel.Content>
@@ -108,8 +174,8 @@ export const OperationStatusBanner: React.FC<Props> = ({ status, sharingOperatio
                             <Grid.Row column={ 1 }>
                                 <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                     <LinkButton
-                                        data-testid={ `-close-button` }
-                                        data-componentid={ `-close-button` }
+                                        data-testid={ "-close-button" }
+                                        data-componentid={ "-close-button" }
                                         floated="left"
                                         onClick={ () => { handleHideStatusModal(); } }
                                         disabled={ false }
@@ -117,9 +183,9 @@ export const OperationStatusBanner: React.FC<Props> = ({ status, sharingOperatio
                                         close
                                     </LinkButton>
                                 </Grid.Column>
-                            </Grid.Row>                           
+                            </Grid.Row>
                         </Grid>
-                    </ModalWithSidePanel.Actions>                
+                    </ModalWithSidePanel.Actions>
                 </ModalWithSidePanel.MainPanel>
             </ModalWithSidePanel>
         </div>

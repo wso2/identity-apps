@@ -68,8 +68,8 @@ import {
     Grid,
     Radio
 } from "semantic-ui-react";
+import { OperationStatus } from "../../constants/application-management";
 import { ApplicationInterface, additionalSpProperty } from "../../models/application";
-import { ApplicationShareStatus } from "../../constants/application-management";
 
 enum ShareType {
     SHARE_ALL,
@@ -97,7 +97,7 @@ export interface ApplicationShareFormPropsInterface
     readOnly?: boolean;
     isSharingInProgress?: boolean;
     onOperationStarted?: () => void;
-    operationStatus?: ApplicationShareStatus;
+    operationStatus?: OperationStatus;
 }
 
 export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsInterface> = (
@@ -111,8 +111,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
         [ "data-componentid" ]: componentId,
         readOnly,
         isSharingInProgress,
-        onOperationStarted,
-        operationStatus
+        onOperationStarted
     } = props;
 
     const dispatch: Dispatch = useDispatch();
@@ -181,7 +180,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
      * Listen for status updates from the parent.
      */
     useEffect(() => {
-        if (props.operationStatus === ApplicationShareStatus.PARTIALLY_COMPLETED) {
+        if (props.operationStatus === OperationStatus.PARTIALLY_COMPLETED) {
             onApplicationSharingCompleted?.();
         }
     }, [ props.operationStatus ]);
@@ -325,40 +324,40 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
     };
 
     const renderConfirmationModal = (): ReactElement | null => {
-            return (
-                <>
-                    <ConfirmationModal
-                        data-componentid={ `${componentId}-in-progress-reshare-confirmation-modal` }
-                        onClose={ (): void => {
-                            setShowConfirmationModal(false);
-                        } }
-                        type="warning"
-                        open={ showConfirmationModal }
-                        assertionHint={ t("applications:confirmations.InProgressReshare.assertionHint") }
-                        assertionType="checkbox"
-                        primaryAction={ t("common:confirm") }
-                        secondaryAction={ t("common:cancel") }
-                        onPrimaryActionClick={ (): void => {
-                            handleShareApplication();
-                        } }
-                        onSecondaryActionClick={ (): void => {
-                            setShowConfirmationModal(false);
-                        } }
-                        closeOnDimmerClick={ false }
-                    >
-                        <ConfirmationModal.Header>
-                            { t("applications:confirmations.InProgressReshare.header") }
-                        </ConfirmationModal.Header>
-                        <ConfirmationModal.Message attached warning>
-                            { t("applications:confirmations.InProgressReshare.message") }
-                        </ConfirmationModal.Message>
-                        <ConfirmationModal.Content>
-                            { t("applications:confirmations.InProgressReshare.content") }
-                        </ConfirmationModal.Content>
-                    </ConfirmationModal>  
-                </>
-            );
-        };
+        return (
+            <>
+                <ConfirmationModal
+                    data-componentid={ `${componentId}-in-progress-reshare-confirmation-modal` }
+                    onClose={ (): void => {
+                        setShowConfirmationModal(false);
+                    } }
+                    type="warning"
+                    open={ showConfirmationModal }
+                    assertionHint={ t("applications:confirmations.InProgressReshare.assertionHint") }
+                    assertionType="checkbox"
+                    primaryAction={ t("common:confirm") }
+                    secondaryAction={ t("common:cancel") }
+                    onPrimaryActionClick={ (): void => {
+                        handleShareApplication();
+                    } }
+                    onSecondaryActionClick={ (): void => {
+                        setShowConfirmationModal(false);
+                    } }
+                    closeOnDimmerClick={ false }
+                >
+                    <ConfirmationModal.Header>
+                        { t("applications:confirmations.InProgressReshare.header") }
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message attached warning>
+                        { t("applications:confirmations.InProgressReshare.message") }
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content>
+                        { t("applications:confirmations.InProgressReshare.content") }
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
+            </>
+        );
+    };
 
     const handleShareApplication: () => Promise<void> = useCallback(async () => {
         onOperationStarted?.();
