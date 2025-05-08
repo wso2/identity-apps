@@ -20,6 +20,7 @@ import { HttpResponse, useAuthContext } from "@asgardeo/auth-react";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { isMyAccountImpersonationRole } from "@wso2is/admin.roles.v2/components/role-utils";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -107,10 +108,6 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         state.config.ui.features?.users);
     const accountAppClientID: string = useSelector((state: AppState) =>
         state.config.deployment.accountApp.clientID);
-    const accountAppImpersonateRoleName: string = useSelector((state: AppState) =>
-        state.config.deployment.accountApp.impersonationRoleName);
-    const accountAppName: string = useSelector((state: AppState) =>
-        state.config.deployment.accountApp.appName);
     const getUserId = (userId: string): string => {
         const tenantAwareUserId: string = userId.split("@").length > 1 ? userId.split("@")[0] : userId;
         const userDomainAwareUserId: string = tenantAwareUserId.split("/").length > 1 ?
@@ -333,8 +330,8 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         for (let index: number = 0; index < authenticatedUserRoles?.length; index++) {
             const authenticatedUserRole: RolesMemberInterface = authenticatedUserRoles[index];
 
-            if (authenticatedUserRole.display === accountAppImpersonateRoleName
-                    && authenticatedUserRole.audienceDisplay === accountAppName) {
+            if (isMyAccountImpersonationRole(authenticatedUserRole?.display,
+                authenticatedUserRole?.audienceDisplay)) {
                 return true;
             }
         }
@@ -423,7 +420,7 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     const resolvedButtonDisableHint = (): string | undefined => {
         const baseKey: string = "user:editUser.userActionZoneGroup.impersonateUserZone.buttonDisableHints";
 
-        if (isMyAccountEnabled) {
+        if (!isMyAccountEnabled) {
             return t(`${baseKey}.myAccountDisabled`);
         }
         if (!isLoggedInUserAuthorizedToImpersonate()) {

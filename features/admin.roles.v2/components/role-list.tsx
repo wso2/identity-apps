@@ -47,6 +47,7 @@ import React, { ReactElement, ReactNode, SyntheticEvent, useMemo, useState } fro
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
+import { isMyAccountImpersonationRole } from "./role-utils";
 import { RoleDeleteErrorConfirmation } from "./wizard/role-delete-error-confirmation";
 import { RoleAudienceTypes, RoleConstants } from "../constants/role-constants";
 
@@ -103,8 +104,6 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const isEditingSystemRolesAllowed: boolean =
         useSelector((state: AppState) => state?.config?.ui?.isSystemRolesEditAllowed);
-    const accountAppImpersonateRoleName: string = useSelector(
-        (state: AppState) => state.config.deployment.accountApp.impersonationRoleName);
 
     const isReadOnly: boolean = useMemo(() => {
         return !isFeatureEnabled(userRolesFeatureConfig,
@@ -320,7 +319,8 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                         RoleConstants.FEATURE_DICTIONARY.get("ROLE_DELETE"))
                     || !hasRequiredScopes(userRolesFeatureConfig,
                         userRolesFeatureConfig?.scopes?.delete, allowedScopes)
-                    || isSharedRole || role?.displayName === accountAppImpersonateRoleName;
+                    || isSharedRole
+                    || isMyAccountImpersonationRole(role?.displayName, role?.audience?.display);
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void => {
