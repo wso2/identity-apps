@@ -19,22 +19,19 @@
 import { useEffect, useRef, useState } from "react";
 import { getSharedAccessStatus } from "../api/application";
 import { addAlert } from "@wso2is/core/store";
-import {
-    AlertLevels,
-    IdentifiableComponentInterface
-} from "@wso2is/core/models";
+import { AlertLevels } from "@wso2is/core/models";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-
-export type OperationStatus = "IDLE" | "ONGOING" | "SUCCESS" | "FAILED" | "PARTIAL";
+import { ApplicationShareStatus } from "../constants/application-management";
 
 export interface UseOperationStatusPollerOptions {
     applicationId: string;
     pollingInterval?: number;
-    onCompleted?: (finalStatus: OperationStatus) => void;
-    onStatusChange?: (operationId: string, status: OperationStatus) => void;
+    onCompleted?: (finalStatus: ApplicationShareStatus) => void;
+    onStatusChange?: (operationId: string, status: ApplicationShareStatus) => void;
     onError?: (error: unknown) => void;
+    enabled?: boolean;
 }
 
 export const useOperationStatusPoller = ({
@@ -42,18 +39,19 @@ export const useOperationStatusPoller = ({
     pollingInterval,
     onCompleted,
     onStatusChange,
-    onError
+    onError,
+    enabled
 }: UseOperationStatusPollerOptions) => {
 
-    const [status, setStatus] = useState<OperationStatus>("IDLE");
+    const [status, setStatus] = useState<ApplicationShareStatus>(ApplicationShareStatus.IDLE);
     const intervalRef = useRef<number | null>(null);
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const fetchStatus = async (): Promise< { operationId: string, status: OperationStatus } > => {
+    const fetchStatus = async (): Promise< { operationId: string, status: ApplicationShareStatus } > => {
         try {
             const response = await getSharedAccessStatus(applicationId);
-            const newStatus: OperationStatus = response.data?.operations[0]?.status ?? "IDLE";
+            const newStatus: ApplicationShareStatus = response.data?.operations[0]?.status ?? ApplicationShareStatus.IDLE;
             const newOperationId: string = response.data?.operations[0]?.operationId ?? null;
 
             return {operationId: newOperationId, status: newStatus}
@@ -64,36 +62,31 @@ export const useOperationStatusPoller = ({
     };
 
     const startPolling = () => {
-        if (intervalRef.current !== null) return;
+        if (!enabled || intervalRef.current !== null) return;
 
         intervalRef.current = window.setInterval(async () => {
             try {
-                console.log("Polling for status...");
                 const {operationId: newOperationId, status: newStatus} = await fetchStatus();
-                if (newOperationId !== null) {
-                    console.log("New operation ID:", newOperationId);
-                }
-
                 setStatus(newStatus);
                 onStatusChange?.(newOperationId, newStatus);
 
-                if (newStatus !== "ONGOING") {
+                if (newStatus !== ApplicationShareStatus.IN_PROGRESS) {
                     clearInterval(intervalRef.current!);
                     intervalRef.current = null;
                     onCompleted?.(newStatus);
-                    if (newStatus === "FAILED") {
+                    if (newStatus === ApplicationShareStatus.FAILED) {
                         dispatch(addAlert({
                             description: t("applications:edit.sections.shareApplication.completedSharingNotification.failure.description"),
                             level: AlertLevels.ERROR,
                             message: t("applications:edit.sections.shareApplication.completedSharingNotification.failure.message")
                         }));
-                    } else if (newStatus === "SUCCESS") {
+                    } else if (newStatus === ApplicationShareStatus.SUCCESS) {
                         dispatch(addAlert({
                             description: t("applications:edit.sections.shareApplication.completedSharingNotification.success.description"),
                             level: AlertLevels.SUCCESS,
                             message: t("applications:edit.sections.shareApplication.completedSharingNotification.success.message")
                         }));
-                    } else if (newStatus === "PARTIAL") {
+                    } else if (newStatus === ApplicationShareStatus.PARTIALLY_COMPLETED) {
                         dispatch(addAlert({
                             description: t("applications:edit.sections.shareApplication.completedSharingNotification.partialSuccess.description"),
                             level: AlertLevels.WARNING,
@@ -111,12 +104,13 @@ export const useOperationStatusPoller = ({
     };
 
     const fetchInitialStatus = async () => {
+        if (!enabled) return; 
         try {
             const {operationId: newOperationId, status: initialStatus} = await fetchStatus();
             setStatus(initialStatus);
             onStatusChange?.(newOperationId, initialStatus);
 
-            if (initialStatus === "ONGOING") {
+            if (initialStatus === ApplicationShareStatus.IN_PROGRESS) {
                 startPolling();
             } else {
                 onCompleted?.(initialStatus);
@@ -127,15 +121,14 @@ export const useOperationStatusPoller = ({
     };
 
     useEffect(() => {
-        console.log("useOperationStatusPoller initialized.");
+        if (!enabled) return;
         fetchInitialStatus();
-
         return () => {
             if (intervalRef.current !== null) {
                 clearInterval(intervalRef.current);
             }
         };
-    }, []);
+    }, [enabled]);
 
     return {
         status,

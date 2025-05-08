@@ -69,6 +69,7 @@ import {
     Radio
 } from "semantic-ui-react";
 import { ApplicationInterface, additionalSpProperty } from "../../models/application";
+import { ApplicationShareStatus } from "../../constants/application-management";
 
 enum ShareType {
     SHARE_ALL,
@@ -96,7 +97,7 @@ export interface ApplicationShareFormPropsInterface
     readOnly?: boolean;
     isSharingInProgress?: boolean;
     onOperationStarted?: () => void;
-    operationStatus?: "IDLE" | "ONGOING" | "SUCCESS" | "FAILED" | "PARTIAL";
+    operationStatus?: ApplicationShareStatus;
 }
 
 export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsInterface> = (
@@ -180,9 +181,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
      * Listen for status updates from the parent.
      */
     useEffect(() => {
-        if (props.operationStatus === "PARTIAL") {
-            // Operation completed — do anything you want here
-            // e.g., reset form, show notification, update internal state
+        if (props.operationStatus === ApplicationShareStatus.PARTIALLY_COMPLETED) {
             onApplicationSharingCompleted?.();
         }
     }, [ props.operationStatus ]);

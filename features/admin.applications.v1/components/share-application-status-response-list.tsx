@@ -35,7 +35,7 @@ import {
     Icon
 } from "semantic-ui-react";
 import { ApplicationShareStatusUnitLinkInterface, ApplicationShareUnitStatusResponse, ShareApplicationStatusResponseSummary } from "../models/application";
-import { ApplicationShareStatus } from "../constants/application-management";
+import { ApplicationShareUnitStatus } from "../constants/application-management";
 import "./share-application-status-response-list.scss";
 import useGetApplicationShareStatusUnits from "../api/use-get-application-share-status";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -46,7 +46,6 @@ interface ShareApplicationStatusResponseListProps {
     ["data-componentid"]?: string;
     shareApplicationSummary?: ShareApplicationStatusResponseSummary;
     hasError: boolean;
-    successAlert?: ReactElement;
 }
 
 interface Params {
@@ -72,13 +71,12 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
         isLoading,
         shareApplicationSummary,
         hasError,
-        successAlert,
         ["data-componentid"]: componentId
     } = props;
 
     const { t } = useTranslation();
 
-    const [ selectedStatus, setSelectedStatus ] = useState<ApplicationShareStatus>(ApplicationShareStatus.FAIL);
+    const [ selectedStatus, setSelectedStatus ] = useState<ApplicationShareUnitStatus>(ApplicationShareUnitStatus.FAILED);
     // const [ successShareCount, setSuccessShareCount ] = useState<number>();
     // const [ failedShareCount, setfailedShareCount ] = useState<number>();
     const [ unitOperations, setUnitOperations ] = useState<ApplicationShareUnitStatusResponse[]>([]);
@@ -154,7 +152,7 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
     }, [shareUnitStatusListFetchRequestError]);
 
     const handleStatusDropdownChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
-        const newStatus = data.value as ApplicationShareStatus;
+        const newStatus = data.value as ApplicationShareUnitStatus;
         setSelectedStatus(newStatus);
         setUnitOperations([]);
         setAfterCursor(null);
@@ -163,7 +161,7 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
         setParams({
             limit: API_LIMIT,
             after: null,
-            filter: newStatus === ApplicationShareStatus.ALL ? "" : `status eq ${newStatus}`,
+            filter: newStatus === ApplicationShareUnitStatus.ALL ? "" : `status eq ${newStatus}`,
             shouldFetch: true
         });
     };
@@ -239,13 +237,13 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
                 id: "status",
                 key: "status",
                 render: (response: ApplicationShareUnitStatusResponse): ReactNode => {
-                    const isSuccess = response.status === ApplicationShareStatus.SUCCESS;
+                    const isSuccess = response.status === ApplicationShareUnitStatus.SUCCESS;
                     return (
                         <Header className="share-application-status-response-list-status-icon" as="h6" data-componentid={ `${componentId}-status-item-heading` } >
                             <Header.Content>
                                 <Icon
                                     name="circle"
-                                    color={response.status === ApplicationShareStatus.SUCCESS ? "green" : "red"}
+                                    color={response.status === ApplicationShareUnitStatus.SUCCESS ? "green" : "red"}
                                     size="small"
                                     data-componentid={ `${componentId}-status-icon` }
                                 />
@@ -277,9 +275,9 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
     };
 
     const statusOptions: DropdownItemProps[] = [
-        { key: "ALL", text: "All", value: ApplicationShareStatus.ALL },
-        { key: "SUCCESS", text: "Success", value: ApplicationShareStatus.SUCCESS },
-        { key: "FAIL", text: "Failed", value: ApplicationShareStatus.FAIL }
+        { key: "ALL", text: "All", value: ApplicationShareUnitStatus.ALL },
+        { key: "SUCCESS", text: "Success", value: ApplicationShareUnitStatus.SUCCESS },
+        { key: "FAIL", text: "Failed", value: ApplicationShareUnitStatus.FAILED }
     ];
 
     return (
