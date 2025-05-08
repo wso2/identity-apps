@@ -639,7 +639,7 @@ importers:
         specifier: ^2.27.32
         version: link:../../features/admin.userstores.v1
       '@wso2is/admin.validation.v1':
-        specifier: ^2.27.142
+        specifier: ^2.27.143
         version: link:../../features/admin.validation.v1
       '@wso2is/admin.workflow-approvals.v1':
         specifier: ^2.25.203
