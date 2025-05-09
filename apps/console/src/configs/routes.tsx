@@ -1439,7 +1439,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         {
             category: "customerData",
             component: lazy(() =>
-                import("@wso2is/admin.cds.v1/pages/identity-resolution")
+                import("@wso2is/admin.cds.v1/pages/profile-unification-rules")
             ),
             exact: true,
             icon: {
@@ -1448,7 +1448,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             id: "unification",
             name: "Unification",
             order: 32,
-            path: "/resolution", // ✅ Make sure this is correctly defined in AppConstants if you use get()
+            path: "/unification", // ✅ Make sure this is correctly defined in AppConstants if you use get()
             protected: true,
             showOnSidePanel: true
         },        
@@ -1456,7 +1456,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             category: "customerData",
             label: "Traits",
             component: lazy(() =>
-                import("@wso2is/admin.cds.v1/pages/traits")
+                import("@wso2is/admin.cds.v1/pages/profile-enrichment-rules")
             ),
             exact: true,
             icon: {
@@ -1465,22 +1465,22 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             id: "enrichment",
             name: "Enrichment",
             order: 33,
-            path: "/traits", // should resolve to "/traits"
+            path: "/enrichment", // should resolve to "/traits"
             protected: true,
             showOnSidePanel: true,
         
             children: [
                 {
                     component: lazy(() =>
-                        import("@wso2is/admin.cds.v1/pages/traits") // 👈 new trait visualizer page
+                        import("@wso2is/admin.cds.v1/pages/profile-enrichment-rules") 
                     ),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
                     },
                     id: "traitView",
-                    name: "View Trait",
-                    path: "/traits/:trait_id",
+                    name: "View ",
+                    path: "/enrichment/:trait_id",
                     protected: true,
                     showOnSidePanel: false
                 }
@@ -1502,23 +1502,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             path: "/profiles", 
             protected: true,
             showOnSidePanel: true,
-        
-            // children: [
-            //     {
-            //         component: lazy(() =>
-            //             import("@wso2is/admin.cds.v1/pages/profile") // 👈 new trait visualizer page
-            //         ),
-            //         exact: true,
-            //         icon: {
-            //             icon: getSidePanelIcons().childIcon
-            //         },
-            //         id: "profileView",
-            //         name: "Profile List",
-            //         path: "/profile/:profile_id",
-            //         protected: true,
-            //         showOnSidePanel: false
-            //     }
-            // ]
         },     
         {
             category: "customerData",
