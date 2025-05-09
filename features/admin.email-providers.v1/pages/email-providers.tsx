@@ -925,7 +925,8 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                         <Grid.Row columns={ 1 }>
                                                             <Grid.Column>
                                                                 <p>
-                                                                    { t("extensions:develop.emailProviders.description") }
+                                                                    { t("extensions:develop.emailProviders
+                                                                     .description") }
                                                                 </p>
                                                                 <Message
                                                                     info
@@ -965,8 +966,8 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                     hint={ (
                                                                         <Trans
                                                                             i18nKey={
-                                                                                "extensions:develop.emailProviders.form" +
-                                                                                ".smtpServerHost.hint"
+                                                                                "extensions:develop.emailProviders" +
+                                                                                ".form.smtpServerHost.hint"
                                                                             }
                                                                         >
                                                                             The Server Host usually begins with
@@ -982,7 +983,9 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                     minLength={ EmailProviderConstants
                                                                         .EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
                                                                     width={ 16 }
-                                                                    data-componentid={ `${componentId}-smtp-server-host` }
+                                                                    data-componentid={
+                                                                        `${componentId}-smtp-server-host`
+                                                                    }
                                                                     autoComplete="new-password"
                                                                 />
                                                             </Grid.Column>
@@ -1000,12 +1003,12 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                     hint={ (
                                                                         <Trans
                                                                             i18nKey={
-                                                                                "extensions:develop.emailProviders.form" +
-                                                                                ".smtpPort.hint"
+                                                                                "extensions:develop.emailProviders" +
+                                                                                ".form.smtpPort.hint"
                                                                             }
                                                                         >
-                                                                            For security reasons, we currently support port
-                                                                            <Code>587</Code> only.
+                                                                            For security reasons, we currently support
+                                                                            port <Code>587</Code> only.
                                                                         </Trans>
                                                                     ) }
                                                                     required={ true }
@@ -1016,7 +1019,9 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                     minLength={ EmailProviderConstants
                                                                         .EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
                                                                     width={ 16 }
-                                                                    data-componentid={ `${componentId}-smtp-server-port` }
+                                                                    data-componentid={
+                                                                        `${componentId}-smtp-server-port`
+                                                                    }
                                                                     autoComplete="new-password"
                                                                 />
                                                             </Grid.Column>
@@ -1027,7 +1032,8 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                     ariaLabel="From Address Field"
                                                                     inputType="email"
                                                                     name="fromAddress"
-                                                                    label={ t("extensions:develop.emailProviders.form." +
+                                                                    label={
+                                                                        t("extensions:develop.emailProviders.form." +
                                                                         "fromAddress.label") }
                                                                     placeholder={
                                                                         t("extensions:develop.emailProviders.form" +
@@ -1043,7 +1049,8 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                     minLength={ EmailProviderConstants
                                                                         .EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
                                                                     width={ 16 }
-                                                                    data-componentid={ `${componentId}-smtp-from-address` }
+                                                                    data-componentid={
+                                                                        `${componentId}-smtp-from-address` }
                                                                     autoComplete="new-password"
                                                                 />
                                                             </Grid.Column>
@@ -1082,13 +1089,15 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                         ariaLabel="Username Field"
                                                                         inputType="default"
                                                                         name="userName"
-                                                                        label={ t("extensions:develop.emailProviders.form" +
+                                                                        label={
+                                                                            t("extensions:develop.emailProviders.form" +
                                                                             ".userName.label") }
                                                                         placeholder={
                                                                             t("extensions:develop.emailProviders.form" +
                                                                             ".userName.placeholder")
                                                                         }
-                                                                        hint={ t("extensions:develop.emailProviders.form" +
+                                                                        hint={
+                                                                            t("extensions:develop.emailProviders.form" +
                                                                             ".userName.hint") }
                                                                         required={ true }
                                                                         value={ emailProviderConfig?.userName }
@@ -1098,7 +1107,8 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                         minLength={ EmailProviderConstants
                                                                             .EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
                                                                         width={ 16 }
-                                                                        data-componentid={ `${componentId}-smtp-username` }
+                                                                        data-componentid={
+                                                                            `${componentId}-smtp-username` }
                                                                         autoComplete="new-password"
                                                                     />
                                                                 </Grid.Column>
@@ -1140,8 +1150,8 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                     ariaLabel="Display Name Field"
                                                                     inputType="default"
                                                                     name="displayName"
-                                                                    label={ t("extensions:develop.emailProviders.form." +
-                                                                        "displayName.label") }
+                                                                    label={ t("extensions:develop.emailProviders." +
+                                                                        "form.displayName.label") }
                                                                     placeholder={
                                                                         t("extensions:develop.emailProviders.form" +
                                                                         ".displayName.placeholder")
@@ -1156,7 +1166,8 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                     minLength={ EmailProviderConstants
                                                                         .EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
                                                                     width={ 16 }
-                                                                    data-componentid={ `${componentId}-smtp-displayName` }
+                                                                    data-componentid={
+                                                                        `${componentId}-smtp-displayName` }
                                                                     autoComplete="new-password"
                                                                 />
                                                             </Grid.Column>
@@ -1165,7 +1176,10 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                     { (!enableOldUIForEmailProvider) && (<div>
                                                         <Divider className="divider-container" />
                                                         <Heading className="heading-container" as="h5">
-                                                            { t("emailProviders:fields.authenticationTypeDropdown.title") }
+                                                            {
+                                                                t("emailProviders:fields.authenticationTypeDropdown" +
+                                                                ".title")
+                                                            }
                                                         </Heading>
 
                                                         { (
@@ -1201,7 +1215,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                             `${
                                                                                 componentId
                                                                             }
-                                                                            -create-wizard-endpoint-authentication-dropdown`
+                                                                        -create-wizard-endpoint-authentication-dropdown`
                                                                         }
                                                                         width={ 16 }
                                                                     />
@@ -1238,7 +1252,10 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                     hasEmailProviderUpdatePermissions && (
                                                         <>
                                                             <Grid.Row columns={ 1 } className="mt-6">
-                                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                                                <Grid.Column
+                                                                    mobile={ 16 }
+                                                                    tablet={ 16 }
+                                                                    computer={ 16 }>
                                                                     <PrimaryButton
                                                                         size="small"
                                                                         loading={ isSubmitting }
@@ -1272,7 +1289,8 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                             >
                                                 <DangerZone
                                                     data-componentid={ `${ componentId }-revert-email-provider-config` }
-                                                    actionTitle={ t("extensions:develop.emailProviders.dangerZoneGroup" +
+                                                    actionTitle={ t("extensions:develop" +
+                                                        ".emailProviders.dangerZoneGroup" +
                                                     ".revertConfig.actionTitle") }
                                                     header={ t("extensions:develop.emailProviders.dangerZoneGroup" +
                                                     ".revertConfig.heading") }
@@ -1289,7 +1307,8 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                 onClose={ (): void => setOpenRevertConfigModal(false) }
                                                 type="negative"
                                                 open={ isOpenRevertConfigModal }
-                                                assertionHint={ t("extensions:develop.emailProviders.confirmationModal" +
+                                                assertionHint={
+                                                    t("extensions:develop.emailProviders.confirmationModal" +
                                                     ".assertionHint") }
                                                 assertionType="checkbox"
                                                 primaryAction={ t("common:confirm") }
@@ -1306,7 +1325,8 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                 closeOnDimmerClick={ false }
                                             >
                                                 <ConfirmationModal.Header
-                                                    data-componentid={ `${ componentId }-revert-confirmation-modal-header` }
+                                                    data-componentid={
+                                                        `${ componentId }-revert-confirmation-modal-header` }
                                                 >
                                                     { t("extensions:develop.emailProviders.confirmationModal.header") }
                                                 </ConfirmationModal.Header>
