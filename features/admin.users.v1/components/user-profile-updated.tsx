@@ -27,7 +27,7 @@ import ListItemText from "@oxygen-ui/react/ListItemText";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import { CircleInfoIcon } from "@oxygen-ui/react-icons";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
-import { ClaimDataType, ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
@@ -61,7 +61,6 @@ import { addAlert } from "@wso2is/core/store";
 import { CommonUtils, ProfileUtils } from "@wso2is/core/utils";
 import {
     AutocompleteFieldAdapter,
-    CheckboxFieldAdapter,
     FinalForm,
     FinalFormField,
     FormRenderProps,
@@ -86,6 +85,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider, DropdownItemProps } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
+import DynamicTypeFormField from "./user-profile/dynamic-type-form-field";
 import MultiValuedFormFields from "./user-profile/multi-valued-form-field";
 import { resendCode, updateUserInfo } from "../api";
 import {
@@ -1796,18 +1796,22 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
     ):
         Promise<string | undefined> => {
         if (required && isEmpty(value) ) {
-            return t("user:profile.forms.validation.empty", { field: fieldName });
+            return (
+                t("user:profile.forms.generic.inputs.validations.empty", { fieldName })
+            );
         }
 
-        if (!value) {
+        if (isEmpty(value)) {
             return undefined;
         }
 
         if (!RegExp(schema.regEx).test(value)) {
             return (
-                t("users:forms.validation.dateFormatError", { field: fieldName })
+                t("users:forms.validation.formatError", { field: fieldName })
             );
         }
+
+        return undefined;
     };
 
     const generatePendingVerificationTooltip = (): ReactNode => (
@@ -1854,7 +1858,6 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
             schema.name.replace(".", "_"), { defaultValue: schema.displayName }
         );
 
-        const domainName: string[] = profileInfo?.get(schema.name)?.toString().split("/");
         const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
         const sharedProfileValueResolvingMethod: string = schema?.sharedProfileValueResolvingMethod;
         const resolvedComponentId: string = `${ componentId }-${ schema.name }-input`;
@@ -1868,8 +1871,33 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
             return schema?.profiles?.console?.required ?? schema.required;
         };
 
-        if (schema.name === "userName" && domainName?.length > 1) {
-            if ( adminUserType === "internal" ) {
+        if (schema.name === "userName") {
+            const domainName: string[] = profileInfo?.get(schema.name)?.toString().split("/");
+
+            if (domainName?.length > 1) {
+                if (adminUserType === "internal") {
+                    return (
+                        <>
+                            <FinalFormField
+                                data-componentId={ `${ componentId }-profile-form-${ schema.name }-input` }
+                                key={ key }
+                                ariaLabel="userID"
+                                data-componentid={ `${componentId}-userID` }
+                                name={ schema.name }
+                                type="text"
+                                label={ !commonConfig.userEditSection.showEmail
+                                    ? fieldName + " (Email)"
+                                    : fieldName
+                                }
+                                component={ TextFieldAdapter }
+                                initialValue={ domainName[1] }
+                                readOnly={ true }
+                            />
+                            <Divider hidden/>
+                        </>
+                    );
+                }
+
                 return (
                     <>
                         <FinalFormField
@@ -1879,20 +1907,16 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                             data-componentid={ `${componentId}-userID` }
                             name={ schema.name }
                             type="text"
-                            label={ !commonConfig.userEditSection.showEmail
-                                ? fieldName + " (Email)"
-                                : fieldName
-                            }
-                            placeholder={ "Enter your" + " " + fieldName }
+                            label={ domainName[0] + " / " }
                             component={ TextFieldAdapter }
-                            minLength={ 0 }
+                            initialValue={ domainName[1] }
+                            readOnly={ isReadOnly ||
+                                resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA }
                             maxLength={
                                 schema.maxLength
                                     ? schema.maxLength
                                     : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
                             }
-                            readOnly={ true }
-                            initialValue={ domainName[1] }
                         />
                         <Divider hidden/>
                     </>
@@ -1912,17 +1936,9 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                             ? fieldName + " (Email)"
                             : fieldName
                         }
-                        placeholder={ "Enter your" + " " + fieldName }
                         component={ TextFieldAdapter }
-                        minLength={ 0 }
-                        maxLength={
-                            schema.maxLength
-                                ? schema.maxLength
-                                : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
-                        }
-                        readOnly={ isReadOnly ||
-                            resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA }
-                        initialValue={ domainName[1] }
+                        initialValue={ profileInfo.get(schema.name) }
+                        readOnly={ true }
                     />
                     <Divider hidden/>
                 </>
@@ -2160,94 +2176,20 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
             );
         }
 
-        if (schema.type.toLowerCase() === ClaimDataType.STRING) {
-            return (
-                <>
-                    <FinalFormField
-                        key={ key }
-                        component={ TextFieldAdapter }
-                        data-componentid={ resolvedComponentId }
-                        initialValue={ profileInfo.get(schema.name) }
-                        ariaLabel={ fieldName }
-                        name={ schema.name }
-                        type="text"
-                        label={ fieldName }
-                        placeholder={
-                            t("user:profile.forms.generic.inputs.dropdownPlaceholder",
-                                { fieldName })
-                        }
-                        validate={ (value: string) => validateInput(value, schema, fieldName, resolvedRequiredValue()) }
-                        maxLength={ schema.maxLength
-                            ? schema.maxLength
-                            : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
-                        }
-                        readOnly={ (isUserManagedByParentOrg &&
-                            sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
-                            || isReadOnly
-                            || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
-                        }
-                        required={ resolvedRequiredValue() }
-                    />
-                    <Divider hidden/>
-                </>
-            );
-        }
-
-        if (schema.type.toLowerCase() === ClaimDataType.INTEGER) {
-            return (
-                <>
-                    <FinalFormField
-                        key={ key }
-                        component={ TextFieldAdapter }
-                        data-componentid={ resolvedComponentId }
-                        initialValue={ profileInfo.get(schema.name) }
-                        ariaLabel={ fieldName }
-                        name={ schema.name }
-                        type="number"
-                        label={ fieldName }
-                        placeholder={
-                            t("user:profile.forms.generic.inputs.dropdownPlaceholder",
-                                { fieldName })
-                        }
-                        validate={ (value: string) => validateInput(value, schema, fieldName, resolvedRequiredValue()) }
-                        maxLength={ schema.maxLength
-                            ? schema.maxLength
-                            : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
-                        }
-                        readOnly={ (isUserManagedByParentOrg &&
-                            sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
-                            || isReadOnly
-                            || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
-                        }
-                        required={ resolvedRequiredValue() }
-                    />
-                    <Divider hidden/>
-                </>
-            );
-        }
-
-        if (schema.type.toLowerCase() === ClaimDataType.BOOLEAN) {
-            return (
-                <>
-                    <FinalFormField
-                        key={ key }
-                        component={ CheckboxFieldAdapter }
-                        data-componentid={ resolvedComponentId }
-                        initialValue={ profileInfo.get(schema.name).toUpperCase() === "TRUE" }
-                        ariaLabel={ fieldName }
-                        label={ fieldName }
-                        name={ schema.name }
-                        readOnly={ (isUserManagedByParentOrg &&
-                            sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
-                            || isReadOnly
-                            || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
-                        }
-                        required={ resolvedRequiredValue() }
-                    />
-                    <Divider hidden/>
-                </>
-            );
-        }
+        return (
+            <DynamicTypeFormField
+                key={ key }
+                data-componentid={ resolvedComponentId }
+                schema={ schema }
+                profileInfo={ profileInfo }
+                readOnly={ (isUserManagedByParentOrg &&
+                    sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                    || isReadOnly
+                    || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                }
+                required={ resolvedRequiredValue() }
+            />
+        );
 
         return (
             <>
@@ -2255,7 +2197,7 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                     key={ key }
                     component={ TextFieldAdapter }
                     data-componentid={ resolvedComponentId }
-                    initialValue={ profileInfo.get(schema.name) }
+                    initialValue={ profileInfo.get(schema.name) ?? null }
                     ariaLabel={ fieldName }
                     name={ schema.name }
                     type="text"
@@ -2269,22 +2211,23 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                         t("user:profile.forms.generic.inputs.dropdownPlaceholder",
                             { fieldName })
                     }
+                    parse={ (value: string) => value }
                     validate={ (value: string) => validateInput(value, schema, fieldName, resolvedRequiredValue()) }
-                    maxLength={
-                        fieldName.toLowerCase().includes("uri") || fieldName.toLowerCase().includes("url")
-                            ? ProfileConstants.URI_CLAIM_VALUE_MAX_LENGTH
-                            : (
-                                schema.maxLength
-                                    ? schema.maxLength
-                                    : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
-                            )
-                    }
-                    readOnly={ (isUserManagedByParentOrg &&
-                        sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
-                        || isReadOnly
-                        || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
-                        || schema.name === "userName"
-                    }
+                    // maxLength={
+                    //     fieldName.toLowerCase().includes("uri") || fieldName.toLowerCase().includes("url")
+                    //         ? ProfileConstants.URI_CLAIM_VALUE_MAX_LENGTH
+                    //         : (
+                    //             schema.maxLength
+                    //                 ? schema.maxLength
+                    //                 : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
+                    //         )
+                    // }
+                    // readOnly={ (isUserManagedByParentOrg &&
+                    //     sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                    //     || isReadOnly
+                    //     || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                    //     || schema.name === "userName"
+                    // }
                     required={ resolvedRequiredValue() }
                 />
                 <Divider hidden/>
@@ -2514,7 +2457,7 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                             render={ ({ handleSubmit, dirty }: FormRenderProps) => {
                                 return (
                                     <form
-                                        id={ "user-profile-form" }
+                                        id="user-profile-form"
                                         onSubmit={ handleSubmit }
                                         className="user-profile-form"
                                     >

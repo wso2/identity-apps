@@ -429,9 +429,22 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
      * @param value - Input value.
      */
     const validateInput = (value: string): Promise<string | undefined> => {
-        return new Promise((resolve: (value: string | PromiseLike<string>) => void) => {
-            debouncedValidateInput(value, resolve);
-        });
+        if (resolvedRequiredValue &&
+            isEmpty(multiValuedAttributeValues[schema.name]) &&
+            isEmpty(value)) {
+            return(t("user:profile.forms.generic.inputs.validations.empty", { fieldName }));
+        }
+
+        if (isEmpty(value)) {
+
+            return undefined;
+        }
+
+        if (!RegExp(primaryAttributeSchema?.regEx).test(value)) {
+            return(t("users:forms.validation.formatError", { field: fieldName }));
+        }
+
+        return undefined;
     };
 
     const validateInputSync = (value: string): boolean => {
@@ -452,39 +465,6 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
 
         return true;
     };
-
-    // Note: debounced function now accepts value + resolve
-    const debouncedValidateInput: DebouncedFunc<(
-        value: string,
-        resolve: (result?: string) => void
-    ) => void> = useCallback(
-        debounce((value: string, resolve: (result?: string) => void) => {
-            if (
-                resolvedRequiredValue &&
-                isEmpty(multiValuedAttributeValues[schema.name]) &&
-                isEmpty(value)
-            ) {
-                resolve(t("user:profile.forms.generic.inputs.validations.empty", { fieldName }));
-
-                return;
-            }
-
-            if (isEmpty(value)) {
-                resolve(undefined);
-
-                return;
-            }
-
-            if (!RegExp(primaryAttributeSchema?.regEx).test(value)) {
-                resolve(t("users:forms.validation.formatError", { field: fieldName }));
-
-                return;
-            }
-
-            resolve(undefined);
-        }, 300),
-        [ resolvedRequiredValue, multiValuedAttributeValues, schema?.name, primaryAttributeSchema?.regEx ]
-    );
 
     const debouncedUpdateInputFieldValue: DebouncedFunc<(fieldName: string, value: string) => void> = useCallback(
         debounce((fieldName: string, value: string) => {
@@ -515,7 +495,6 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
                     key={ key }
                     component={ TextFieldAdapter }
                     data-componentid={ resolvedComponentId }
-                    initialValue={ multiValuedInputFieldValue[schema.name] }
                     ariaLabel={ fieldName }
                     type="text"
                     name={ schema.name }
@@ -613,12 +592,15 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
                                                         direction="row"
                                                         gap={ 1 }
                                                         container
+                                                        justifyContent="flex-start"
+                                                        alignItems="center"
                                                     >
                                                         <label
                                                             data-componentid={
                                                                 `${componentId}-${schema.name}` +
                                                                         `-value-${index}`
                                                             }
+                                                            className="multi-value-table-label"
                                                         >
                                                             { value }
                                                         </label>
