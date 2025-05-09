@@ -47,7 +47,7 @@ export const emailProviders: EmailProviderNS = {
                         }
                     }
                 },
-                client_credential: {
+                clientCredential: {
                     name: "Client Credential",
                     properties: {
                         clientID: {

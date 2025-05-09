@@ -61,10 +61,10 @@ import { Divider, Grid, Icon, Placeholder, Ref } from "semantic-ui-react";
 import { deleteEmailProviderConfigurations,
     updateEmailProviderConfigurations,
     useEmailProviderConfig,
-    usePasswordOfEmailProvider } from "../api";
+    useEmailProviderConfigV1 } from "../api";
 import {
     AuthenticationType,
-    AuthenticationTypeDropdownOption,
+    DropdownChild,
     EmailProviderConstants
 } from "../constants";
 import {
@@ -127,7 +127,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
 
     const {
         data: passwordProviderConfig
-    } = usePasswordOfEmailProvider();
+    } = useEmailProviderConfigV1();
     const [ displayBanner, setDisplayBanner ] = useState<boolean>(false);
 
     const [ endpointAuthType, setEndpointAuthType ] = useState<AuthenticationType>(null);
@@ -214,7 +214,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                     case AuthenticationType.BASIC:
                         return t("emailProviders:fields.authentication.types.basic.name");
                     case AuthenticationType.CLIENT_CREDENTIAL:
-                        return t("emailProviders:fields.authentication.types.client_credential.name");
+                        return t("emailProviders:fields.authentication.types.clientCredential.name");
                     default:
                         return;
                 }
@@ -445,8 +445,8 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                     property.key === EmailProviderConstants.SCOPES)?.value);
             formState.current.change("clientSecret", null);
         }
-        if (showPasswordOfEmailProvider) {
-            formState.current.change("password", passwordProviderConfig[0].password);
+        if (showPasswordOfEmailProvider && passwordProviderConfig[0].password) {
+            formState.current.change("password",  passwordProviderConfig[0].password);
         } else {
             formState.current.change("password", null);
         }
@@ -830,7 +830,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
      */
     const resolveAlertBanner = (): ReactElement => {
         return (showPasswordOfEmailProvider && displayBanner && (
-            <div className="banner-wrapper">
+            <div className="pasword-deprecated-banner-wrapper">
                 <Alert
                     severity="warning"
                     action={
@@ -838,7 +838,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                             <Box display="flex">
                                 <Button
                                     data-componentid={ `${componentId}-password-deprecated-ignore-button` }
-                                    className="ignore-once-button"
+                                    className="password-deprecated-ignore-once-button"
                                     onClick={ () => setDisplayBanner(false) }>
                                     <Icon
                                         link
@@ -1187,7 +1187,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                     value={ endpointAuthType }
                                                                     options={ [
                                                                         ...EmailProviderConstants.AUTH_TYPES.map((
-                                                                            option: AuthenticationTypeDropdownOption) =>
+                                                                            option: DropdownChild) =>
                                                                             ({ text: t(option.text),
                                                                                 value: option.value.toString()
                                                                             }))

@@ -62,7 +62,7 @@ export interface ExtendedFeatureResourceEndpointsInterface {
     emailProviderEndpoint : string;
 
     /**
-     * Event Publishing API endpoint.
+     * Email Provider V2 API endpoint.
      */
     emailProviderV2Endpoint : string;
 

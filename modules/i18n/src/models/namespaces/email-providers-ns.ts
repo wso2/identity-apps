@@ -32,7 +32,7 @@ export interface EmailProviderNS {
             };
             label: string;
             types: {
-                client_credential: {
+                clientCredential: {
                     name: string;
                     properties: {
                         tokenEndpoint: {

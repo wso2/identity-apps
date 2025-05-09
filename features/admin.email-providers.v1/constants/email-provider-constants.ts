@@ -21,7 +21,7 @@ import { IdentityAppsError } from "@wso2is/core/errors";
 /**
  * Interface for the authentication type dropdown options.
  */
-export interface AuthenticationTypeDropdownOption {
+export interface DropdownChild {
     key: AuthenticationType;
     text: string;
     value: AuthenticationType;
@@ -96,7 +96,7 @@ export class EmailProviderConstants {
             )
         };
 
-    public static readonly AUTH_TYPES: AuthenticationTypeDropdownOption[] = [
+    public static readonly AUTH_TYPES: DropdownChild[] = [
         {
             key: AuthenticationType.BASIC,
             text: "emailProviders:fields.authentication.types.basic.name",
@@ -104,7 +104,7 @@ export class EmailProviderConstants {
         },
         {
             key: AuthenticationType.CLIENT_CREDENTIAL,
-            text: "emailProviders:fields.authentication.types.client_credential.name",
+            text: "emailProviders:fields.authentication.types.clientCredential.name",
             value: AuthenticationType.CLIENT_CREDENTIAL
         }
     ];

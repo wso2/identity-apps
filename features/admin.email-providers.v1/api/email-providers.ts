@@ -55,23 +55,23 @@ export const useEmailProviderConfig = <Data = EmailProviderConfigAPIResponseInte
             : store.getState().config.endpoints.emailProviderV2Endpoint
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
 
     return {
         data,
         error: error,
-        isLoading: !error && !data,
+        isLoading,
         isValidating,
         mutate: mutate
     };
 };
 
 /**
- * Get email provider configurations.
+ * Get email provider configurations with V1 API.
  *
  * @returns the email provider configurations of the tenant.
  */
-export const usePasswordOfEmailProvider = <Data = EmailProviderConfigAPIResponseInterface[],
+export const useEmailProviderConfigV1 = <Data = EmailProviderConfigAPIResponseInterface[],
     Error = RequestErrorInterface>(): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {
@@ -98,6 +98,7 @@ export const usePasswordOfEmailProvider = <Data = EmailProviderConfigAPIResponse
  * Update email provider configurations.
  *
  * @param data - the updated email provider configurations.
+ * @param enableOldUIForEmailProvider - whether to use the old UI for email provider.
  * @returns a promise to update the email provider configurations.
  */
 export const updateEmailProviderConfigurations = (data: EmailProviderConfigAPIResponseInterface,
@@ -141,7 +142,8 @@ export const updateEmailProviderConfigurations = (data: EmailProviderConfigAPIRe
 
 /**
  * Delete email provider configurations.
- *
+ * @param enableOldUIForEmailProvider - whether to use the old UI for email provider.
+ * @returns a promise to delete the email provider configurations.
  */
 export const deleteEmailProviderConfigurations = (enableOldUIForEmailProvider: boolean):
     Promise<EmailProviderConfigAPIResponseInterface> => {
