@@ -23,6 +23,7 @@ import {
     ColorPickerResponseInterface,
     CopyInputField,
     DangerButton,
+    EditInputField,
     LinkButton,
     Password,
     Popup,
@@ -342,6 +343,48 @@ export const CopyFieldAdapter = (props: FieldRenderProps<any>): ReactElement => 
                 />
             </Form.Field>
         </Form.Group>
+    );
+};
+
+export const EditFieldAdapter = (props: FieldRenderProps<any>): ReactElement => {
+
+    const { childFieldProps, parentFormProps } = props;
+    const {
+        label,
+        ...filteredChildFieldProps
+    } = childFieldProps;
+
+    return (
+        <>
+            {
+                label && (
+                    <div className={ `field ${ filteredChildFieldProps.required ? "required" : "" }` }>
+                        <label>{ label }</label>
+                    </div>
+                )
+            }
+            <EditInputField
+                key={ filteredChildFieldProps.testId }
+                required={ filteredChildFieldProps.required }
+                data-testid={ filteredChildFieldProps.testId }
+                autoFocus={ filteredChildFieldProps.autoFocus || false }
+                { ...filteredChildFieldProps }
+                value={
+                    filteredChildFieldProps?.value
+                        ? filteredChildFieldProps?.value
+                        : (
+                            parentFormProps?.values[ filteredChildFieldProps?.name ]
+                                ? parentFormProps?.values[ filteredChildFieldProps?.name ]
+                                : ""
+                        )
+                }
+                onChange={ (newValue: string) => {
+                    if (parentFormProps?.form) {
+                        parentFormProps.form.change(filteredChildFieldProps?.name, newValue);
+                    }
+                } }
+            />
+        </>
     );
 };
 

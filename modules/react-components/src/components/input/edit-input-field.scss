@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,11 +16,6 @@
  * under the License.
  */
 
-export * from "./advanced-search";
-export * from "./copy-input-field";
-export * from "./edit-input-field";
-export * from "./file-upload";
-export * from "./url-input";
-export * from "./password";
-export * from "./inline-edit-field";
-export * from "./search-with-filter-labels";
+.edit-input-action {
+    box-shadow: none !important;
+}

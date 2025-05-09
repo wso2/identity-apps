@@ -279,6 +279,9 @@ export interface organizationsNS {
                 validation: {
                     duplicate: string;
                     empty: string;
+                    invalidPattern: string;
+                    mandatoryExtension: string;
+                    startingWithDot: string;
                 };
                 label: string;
                 placeholder: string;

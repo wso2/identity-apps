@@ -122,3 +122,11 @@ export interface OrganizationsMetaAttributesListInterface {
     links?: OrganizationLinkInterface[];
     attributes: string[];
 }
+
+export interface CheckOrgHandleInterface {
+    orgHandle: string;
+}
+
+export interface CheckOrgHandleResponseInterface {
+    available: boolean;
+}

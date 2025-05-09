@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,6 +28,7 @@ export enum FieldInputTypes {
     INPUT_EMAIL = "email",
     INPUT_URL = "url",
     INPUT_COPY = "copy_input",
+    INPUT_EDIT = "edit_input",
     INPUT_PASSWORD = "password",
     INPUT_TEXT_WITH_ADORNMENT = "text_with_adornment",
 }
