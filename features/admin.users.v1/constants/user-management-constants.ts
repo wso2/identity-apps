@@ -468,26 +468,28 @@ export enum AttributeDataType {
 
 /**
  * User account status options for filtering users.
+ *
+ * @readonly
  */
 export const USER_ACCOUNT_STATUS_FILTER_OPTIONS: DropdownChild[] = [
     {
         key: "LOCKED",
-        text: "Locked",
+        text: "users:advancedSearch.accountStatusFilter.options.locked",
         value: "urn:scim:wso2:schema:accountState eq 'LOCKED'"
     },
     {
         key: "DISABLED",
-        text: "Disabled",
+        text: "users:advancedSearch.accountStatusFilter.options.disabled",
         value: "urn:scim:wso2:schema:accountState eq 'DISABLED'"
     },
     {
         key: "PENDING_FUPR",
-        text: "Pending password reset",
+        text: "users:advancedSearch.accountStatusFilter.options.pendingPasswordReset",
         value: "urn:scim:wso2:schema:accountState eq 'PENDING_FUPR'"
     },
     {
         key: "PENDING_AP",
-        text: "Pending initial password setup",
+        text: "users:advancedSearch.accountStatusFilter.options.pendingInitialPasswordSetup",
         value: "urn:scim:wso2:schema:accountState eq 'PENDING_AP'"
     }
 ];

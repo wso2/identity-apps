@@ -230,15 +230,15 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         let baseFilter: string | null = searchQuery === "" ? null : searchQuery;
 
         if (selectedAccountStatusFilters.length > 0) {
-            const accountStatusScimFilters: string[] = selectedAccountStatusFilters.map((filterKey: string) => {
+            const scimFilterExpressions: string[] = selectedAccountStatusFilters.map((filterKey: string) => {
                 const filterOption: DropdownChild = USER_ACCOUNT_STATUS_FILTER_OPTIONS.find(
                     (option: DropdownChild) => option.key === filterKey);
 
                 return filterOption ? filterOption.value : "";
-            }).filter((scimFilter: string) => scimFilter !== "");
+            }).filter((scimFilterExpression: string) => scimFilterExpression !== "");
 
-            if (accountStatusScimFilters.length > 0) {
-                const accountStatusFilter: string = accountStatusScimFilters.join(" and ");
+            if (scimFilterExpressions.length > 0) {
+                const accountStatusFilter: string = scimFilterExpressions.join(" and ");
 
                 if (baseFilter) {
                     baseFilter = `${baseFilter} and ${accountStatusFilter}`;
@@ -514,6 +514,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const handleSearchQueryClear = (): void => {
         setTriggerClearQuery(!triggerClearQuery);
         setSearchQuery("");
+        setSelectedAccountStatusFilters([]);
     };
 
     /**
@@ -741,10 +742,10 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                                     className="filter-label active basic"
                                     as="a"
                                     onClick={ () => handleAccountStatusFilterRemove(filterKey) }
-                                    data-testid={
+                                    data-componentid={
                                         `${componentId}-account-status-filter-label-${filterKey}` }
                                 >
-                                    { filterOption.text }
+                                    { t(filterOption.text as string) }
                                     <XMarkIcon className="filter-label-close-icon" />
                                 </Label>
                             );
@@ -767,7 +768,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         realmConfigs={ realmConfigs }
                         onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
                         onSearchQueryClear={ handleSearchQueryClear }
-                        searchQuery={ searchQuery }
+                        searchQuery={ combinedUserFilter }
                         data-testid="user-mgt-user-list"
                         featureConfig={ featureConfig }
                         isReadOnlyUserStore={ isReadOnlyUserStore }

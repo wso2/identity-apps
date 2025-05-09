@@ -80,7 +80,7 @@ const AccountStatusFilterDropdown: FunctionComponent<AccountStatusFilterDropdown
                 <Badge
                     className="status-count-badge"
                     badgeContent={ selectedFilters.length }
-                    data-testid={ `${componentId}-label-badge` }
+                    data-componentid={ `${componentId}-label-badge` }
                 />
             ) }
         </Box>
@@ -98,32 +98,21 @@ const AccountStatusFilterDropdown: FunctionComponent<AccountStatusFilterDropdown
                     value={ selectedFilters }
                     onChange={ handleChange }
                     renderValue={ renderLabelWithCount }
-                    data-testid={ `${componentId}-select-input` }
+                    data-componentid={ `${componentId}-select-input` }
                     displayEmpty
                 >
                     { USER_ACCOUNT_STATUS_FILTER_OPTIONS
-                        .sort((
-                            currentFilterOption: DropdownChild,
-                            nextFilterOption: DropdownChild
-                        ) => {
-                            const isCurrentSelected: boolean =
-                                selectedFilters.includes(currentFilterOption.key.toString());
-                            const isNextSelected: boolean =
-                                selectedFilters.includes(nextFilterOption.key.toString());
-
-                            return isCurrentSelected === isNextSelected ? 0 : isCurrentSelected ? -1 : 1;
-                        })
                         .map((filterOption: DropdownChild) => (
                             <MenuItem
                                 key={ filterOption.key }
                                 value={ filterOption.key }
-                                data-testid={ `${componentId}-option-${filterOption.key}` }
+                                data-componentid={ `${componentId}-option-${filterOption.key}` }
                             >
                                 <Checkbox
                                     checked={ selectedFilters.indexOf(filterOption.key.toString()) > -1 }
-                                    data-testid={ `${componentId}-checkbox-${filterOption.key}` }
+                                    data-componentid={ `${componentId}-checkbox-${filterOption.key}` }
                                 />
-                                <ListItemText primary={ filterOption.text } />
+                                <ListItemText primary={ t(filterOption.text as string) } />
                             </MenuItem>
                         ))
                     }

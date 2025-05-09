@@ -16,12 +16,6 @@
  * under the License.
  */
 
-$primary-color: #ff7300;
-$badge-text-color: white;
-$badge-dimension: 20px;
-$select-background-color: #fafafa;
-$select-height: 40px;
-
 .account-status-filter-dropdown {
     margin-right: 5px;
     min-width: 200px;
@@ -36,18 +30,15 @@ $select-height: 40px;
             margin-right: 5px;
 
             .MuiBadge-badge {
-                background-color: $primary-color;
-                border-radius: 50%;
-                color: $badge-text-color;
-                height: $badge-dimension;
-                min-width: $badge-dimension;
+                background-color: var(--oxygen-palette-primary-main);
+                color: var(--oxygen-palette-primary-contrastText);
             }
         }
     }
 
     .account-status-select-input {
-        background-color: $select-background-color;
-        height: $select-height;
+        background-color: var(--oxygen-palette-grey-50);
+        height: 40px;
 
         .MuiOutlinedInput-notchedOutline {
             border: none;
@@ -55,7 +46,7 @@ $select-height: 40px;
 
         &.Mui-focused {
             .MuiOutlinedInput-notchedOutline {
-                border: 1px solid $primary-color;
+                border: 1px solid var(--oxygen-palette-primary-main);;
             }
         }
     }

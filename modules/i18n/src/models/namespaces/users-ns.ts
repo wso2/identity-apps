@@ -188,6 +188,12 @@ export interface usersNS {
     advancedSearch: {
         accountStatusFilter: {
             label: string;
+            options: {
+                disabled: string;
+                locked: string;
+                pendingInitialPasswordSetup: string;
+                pendingPasswordReset: string;
+            };
         };
         form: {
             dropdown: {
