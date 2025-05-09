@@ -23,6 +23,7 @@ import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import InputLabel, { InputLabelProps } from "@oxygen-ui/react/InputLabel";
 import TextField, { TextFieldProps } from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, HTMLProps, ReactElement, SyntheticEvent, useMemo, useState } from "react";
 import { FieldRenderProps } from "react-final-form";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -32,7 +33,7 @@ import "./autocomplete-field-adapter.scss";
  * Props interface of {@link AutocompleteFieldAdapter}
  */
 export interface AutocompleteFieldAdapterPropsInterface
-    extends FieldRenderProps<string, HTMLElement, string>,
+    extends FieldRenderProps<string | any, HTMLElement, string | any>,
         AutocompleteProps<unknown>,
         IdentifiableComponentInterface {
     /**
@@ -103,7 +104,9 @@ const AutocompleteFieldAdapter: FunctionComponent<AutocompleteFieldAdapterPropsI
         ...rest
     } = props;
 
-    const [ value, setValue ] = useState<unknown>(multipleValues ? [] : undefined);
+    const [ value, setValue ] = useState<unknown>(!isEmpty(input.value)
+        ? input.value
+        : multipleValues ? [] : undefined);
 
     const isError: boolean = (meta.error || meta.submitError) && meta.touched;
 
@@ -159,6 +162,10 @@ const AutocompleteFieldAdapter: FunctionComponent<AutocompleteFieldAdapterPropsI
                             size="small"
                             variant="outlined"
                             fullWidth={ fullWidth }
+                            inputProps={ {
+                                ...params.inputProps,
+                                role: "presentation"
+                            } }
                             { ...InputProps }
                             { ...FormControlProps }
                         />

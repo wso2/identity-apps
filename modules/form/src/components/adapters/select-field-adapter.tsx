@@ -28,7 +28,7 @@ import { FieldRenderProps } from "react-final-form";
  * Interface for the DropDownItem.
  */
 export interface DropDownItemInterface {
-    text: string;
+    text: ReactNode;
     value: string;
 }
 
