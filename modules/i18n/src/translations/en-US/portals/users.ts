@@ -33,6 +33,15 @@ export const users: usersNS = {
         }
     },
     advancedSearch: {
+        accountStatusFilter: {
+            label: "Account Status",
+            options: {
+                disabled: "Disabled",
+                locked: "Locked",
+                pendingInitialPasswordSetup: "Pending initial password setup",
+                pendingPasswordReset: "Pending password reset"
+            }
+        },
         form: {
             dropdown: {
                 filterAttributeOptions: {
