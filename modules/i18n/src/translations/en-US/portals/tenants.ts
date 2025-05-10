@@ -116,6 +116,15 @@ export const tenants: TenantsNS = {
                         required: "Last name is required."
                     }
                 },
+                organizationName: {
+                    helperText: "Enter a unique name for your organization.  The  valid characters are letters, numbers, spaces, '.', '-', and '_'.",
+                    label: "Organization Name",
+                    placeholder: "Enter an Organization name",
+                    validations: {
+                        invalidCharPattern: "The organization name contains one or more illegal characters.",
+                        required: "An organization name is required."
+                    }
+                },
                 password: {
                     actions: {
                         generate: {

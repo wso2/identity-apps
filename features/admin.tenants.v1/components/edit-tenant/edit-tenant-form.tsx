@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,6 +24,8 @@ import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography/Typography";
 import { CopyIcon, GlobeIcon } from "@oxygen-ui/react-icons";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { patchOrganization } from "@wso2is/admin.organizations.v1/api/organization";
+import { OrganizationPatchData } from "@wso2is/admin.organizations.v1/models/organizations";
 import { generatePassword, getConfiguration } from "@wso2is/admin.users.v1/utils/generate-password.utils";
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api/validation-config";
@@ -42,7 +44,8 @@ import {
 } from "@wso2is/form";
 import { Hint, PasswordValidation } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
+import memoize from "lodash-es/memoize";
+import React, { FunctionComponent, ReactElement, useCallback, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -67,7 +70,7 @@ export type EditTenantFormProps = IdentifiableComponentInterface & {
     onSubmit?: () => void;
 };
 
-export type EditTenantFormValues = Pick<Tenant, "domain" | "id"> & Omit<TenantOwner, "additionalDetails">;
+export type EditTenantFormValues = Pick<Tenant, "domain" | "name" | "id"> & Omit<TenantOwner, "additionalDetails">;
 
 export type EditTenantFormErrors = Partial<EditTenantFormValues>;
 
@@ -111,9 +114,19 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
      */
     const handleSubmit = (values: EditTenantFormValues): void => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { domain, id, username, ...rest } = values;
+        const { domain, id, name, username, ...rest } = values;
 
-        updateTenantOwner(tenant?.id, { id: tenant?.owners[0]?.id, ...rest } as TenantOwner)
+        const patchData: OrganizationPatchData[] = [
+            {
+                operation: "REPLACE",
+                path: "/name",
+                value: name
+            }
+        ];
+
+        Promise.all([
+            patchOrganization(values.id, patchData),
+            updateTenantOwner(tenant?.id, { id: tenant?.owners[0]?.id, ...rest } as TenantOwner) ])
             .then(() => {
                 dispatch(
                     addAlert({
@@ -147,6 +160,7 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
             email: undefined,
             firstname: undefined,
             lastname: undefined,
+            name: undefined,
             password: undefined
         };
 
@@ -162,6 +176,10 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
             errors.email = t("tenants:common.form.fields.email.validations.required");
         } else if (!FormValidation.email(values.email)) {
             errors.email = t("tenants:common.form.fields.email.validations.invalid");
+        }
+
+        if (!values.name) {
+            errors.name = t("tenants:common.form.fields.organizationName.validations.required");
         }
 
         if (!values.password) {
@@ -287,6 +305,26 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
         </FormSpy>
     );
 
+    /**
+     * Form validator to validate the organization name format.
+     *
+     * @param orgName - Input organization name value.
+     * @returns An error if the organization name is not valid else undefined.
+     */
+    const validateOrganizationName: (orgName: string) => Promise<string | undefined> = useCallback(
+        memoize(
+            async (orgName: string): Promise<string | undefined> => {
+                if (!orgName) {
+                    return undefined;
+                }
+                const regex: RegExp = new RegExp(".*[^a-zA-Z0-9._\\- ].*");
+
+                if (regex.test(orgName)) {
+                    return t("tenants:common.form.fields.organizationName.validations.invalidCharPattern");
+                }
+            }
+        ), []);
+
     return (
         <FinalForm
             initialValues={ {
@@ -295,6 +333,7 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
                 firstname: tenant?.owners[0]?.firstname,
                 id: tenant?.id,
                 lastname: tenant?.owners[0]?.lastname,
+                name: tenant?.name,
                 password: "",
                 username: tenant?.owners[0]?.username
             } }
@@ -330,6 +369,31 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
                         onSubmit={ handleSubmit }
                         className="edit-tenant-form"
                     >
+                        <FinalFormField
+                            key="organizationName"
+                            width={ 16 }
+                            className="text-field-container"
+                            ariaLabel="organizationName"
+                            required={ true }
+                            data-componentid={ `${componentId}-organization-name` }
+                            name="name"
+                            type="text"
+                            helperText={
+                                (<Hint>
+                                    <Typography variant="inherit">
+                                        <Trans i18nKey="tenants:common.form.fields.organizationName.helperText">
+                                            Enter a unique name for your organization.
+                                        </Trans>
+                                    </Typography>
+                                </Hint>)
+                            }
+                            label={ t("tenants:common.form.fields.organizationName.label") }
+                            placeholder={ t("tenants:common.form.fields.organizationName.placeholder") }
+                            component={ TextFieldAdapter }
+                            maxLength={ 100 }
+                            minLength={ 0 }
+                            validate={ validateOrganizationName }
+                        />
                         <FinalFormField
                             key="domain"
                             width={ 16 }
