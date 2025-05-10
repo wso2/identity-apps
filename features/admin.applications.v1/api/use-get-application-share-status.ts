@@ -43,7 +43,7 @@ const useGetApplicationShareStatusUnits = <
         filter: string,
         limit: number,
         after: string,
-        before: string,
+        before: string
     ): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -55,35 +55,18 @@ const useGetApplicationShareStatusUnits = <
             after,
             before,
             filter,
-            limit,
+            limit
         },
         url: store.getState().config.endpoints.asyncStatus + "/" + operationId + "/unit-operations"
     };
 
-    // Construct full URL with query parameters for debugging
-    const baseUrl = store.getState().config.endpoints.asyncStatus + "/" + operationId + "/unit-operations";
-    const queryParams = new URLSearchParams({
-        filter,
-        limit: limit.toString(),
-        after,
-        before
-    });
-    //
-
-const fullUrl = `${baseUrl}?${queryParams.toString()}`;
-console.log("Resolved URL:", fullUrl);
-
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch? requestConfig : null, {
         shouldRetryOnError: false
     });
-    console.log("data", data);
-    console.log("error", error);
-    console.log("isloading", !error && !data);
 
     return {
         data,
         error,
-        // isLoading: !error && !data,
         isLoading: false,
         isValidating,
         mutate

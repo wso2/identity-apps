@@ -23,18 +23,30 @@ import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { getSharedAccessStatus } from "../api/application";
+import { getAsyncOperationStatus } from "../api/application";
 import { OperationStatus } from "../constants/application-management";
+import { OperationStatusSummary } from "../models/application";
 
+/**
+ * Proptypes for the use operation status poller hook.
+ */
 export interface UseOperationStatusPollerProps {
     operationType: string;
     subjectId: string;
     pollingInterval?: number;
     onCompleted?: (finalStatus: OperationStatus) => void;
-    onStatusChange?: (operationId: string, status: OperationStatus) => void;
+    onStatusChange?: (operationId: string, status: OperationStatus,
+        summary: OperationStatusSummary) => void;
     enabled?: boolean;
 }
 
+/**
+ *  Use operation status poller hook.
+ *
+ * @param props - Props injected to the component.
+ *
+ * @returns Use operation status poller hook.
+ */
 export const useOperationStatusPoller = ({
     operationType,
     subjectId,
@@ -49,12 +61,20 @@ export const useOperationStatusPoller = ({
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const fetchStatus = async (): Promise< { operationId: string, status: OperationStatus } > => {
-        const response: AxiosResponse = await getSharedAccessStatus(operationType, subjectId, 1000);
+    const fetchStatus = async (): Promise< { operationId: string, status: OperationStatus,
+        summary: OperationStatusSummary } > => {
+
+        const response: AxiosResponse = await getAsyncOperationStatus(operationType, subjectId, 1000);
         const newStatus: OperationStatus = response.data?.operations[0]?.status ?? OperationStatus.IDLE;
         const newOperationId: string = response.data?.operations[0]?.operationId ?? null;
+        const operationSummary: OperationStatusSummary = {
+            failedCount: response.data?.operations[0]?.unitOperationDetail?.summary?.failed ?? 0,
+            partiallyCompletedCount: response.data?.operations[0]?.unitOperationDetail?.
+                summary?.partiallyCompleted ?? 0,
+            successCount: response.data?.operations[0]?.unitOperationDetail?.summary?.success ?? 0
+        };
 
-        return { operationId: newOperationId, status: newStatus };
+        return { operationId: newOperationId, status: newStatus, summary: operationSummary };
     };
 
     const startPolling = () => {
@@ -62,10 +82,13 @@ export const useOperationStatusPoller = ({
 
         intervalRef.current = window.setInterval(async () => {
             try {
-                const { operationId: newOperationId, status: newStatus } = await fetchStatus();
+                const { operationId: newOperationId, status: newStatus, summary: operationSummary }
+                    = await fetchStatus();
 
-                setStatus(newStatus);
-                onStatusChange?.(newOperationId, newStatus);
+                if (newStatus !== status) {
+                    setStatus(newStatus);
+                    onStatusChange?.(newOperationId, newStatus, operationSummary);
+                }
 
                 if (newStatus !== OperationStatus.IN_PROGRESS) {
                     clearInterval(intervalRef.current!);
@@ -74,9 +97,9 @@ export const useOperationStatusPoller = ({
                 }
             } catch (error) {
                 dispatch(addAlert({
-                    description: t("common:asyncOperationErrorMessage.description"),
+                    description: t("common:asyncOperationErrorMessage.message"),
                     level: AlertLevels.ERROR,
-                    message: t("common:asyncOperationErrorMessage.message")
+                    message: t("common:asyncOperationErrorMessage.description")
                 }));
                 clearInterval(intervalRef.current!);
                 intervalRef.current = null;
@@ -87,10 +110,13 @@ export const useOperationStatusPoller = ({
     const fetchInitialStatus = async () => {
         try {
 
-            const { operationId: newOperationId, status: initialStatus } = await fetchStatus();
+            const { operationId: newOperationId, status: initialStatus, summary: operationSummary }
+                = await fetchStatus();
 
-            setStatus(initialStatus);
-            onStatusChange?.(newOperationId, initialStatus);
+            if (initialStatus !== status) {
+                setStatus(initialStatus);
+                onStatusChange?.(newOperationId, initialStatus, operationSummary);
+            }
 
             if (initialStatus === OperationStatus.IN_PROGRESS) {
                 startPolling();

@@ -567,6 +567,9 @@
                 "enabled": {% if console.applications.enabled is defined %} {{ console.applications.enabled }},
                 {% else %} true,
                 {% endif %}
+                {% if console.applications.applicationShareStatusPollInterval is defined %}
+                "applicationShareStatusPollInterval": {{ console.applications.applicationShareStatusPollInterval }},
+                {% endif %}
                 "scopes": {
                     {% if console.applications.scopes is defined %}
                     {% for operation, scopes in console.applications.scopes.items() %}

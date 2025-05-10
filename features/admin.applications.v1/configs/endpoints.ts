@@ -29,10 +29,10 @@ export const getApplicationsResourceEndpoints = (serverHost: string): Applicatio
 
     return {
         applications: `${ serverHost }/api/server/v1/applications`,
+        asyncStatus: `${ serverHost }/api/server/v1/async-operations`,
         dcrConfiguration: `${ serverHost }/api/server/v1/configs/dcr`,
         groupMetadata: `${ serverHost }/api/server/v1/applications/meta/groups`,
         myAccountConfigMgt: `${ serverHostWithoutOPath }/api/identity/config-mgt/v1.0/resource/myaccount`,
-        requestPathAuthenticators: `${ serverHost }/api/server/v1/configs/authenticators?type=REQUEST_PATH`,
-        asyncStatus: `${ serverHost }/api/server/v1/async-operations`
+        requestPathAuthenticators: `${ serverHost }/api/server/v1/configs/authenticators?type=REQUEST_PATH`
     };
 };

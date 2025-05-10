@@ -17,8 +17,8 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useState } from "react";
-import { ShareApplicationStatusResponseSummary } from "../../models/application";
+import React, { FunctionComponent, ReactElement } from "react";
+import { OperationStatusSummary } from "../../models/application";
 import { ShareApplicationStatusResponseList } from "../share-application-status-response-list";
 
 /**
@@ -33,6 +33,10 @@ interface ApplicationShareStatusWizardProps extends IdentifiableComponentInterfa
      * The operation ID of the share operation.
      */
     operationId: string;
+    /**
+     * The summary of the share operation.
+     */
+    operationSummary: OperationStatusSummary;
     hasError: boolean;
 }
 
@@ -47,27 +51,17 @@ const ApplicationShareStatusWizard: FunctionComponent<ApplicationShareStatusWiza
     props: ApplicationShareStatusWizardProps
 ): ReactElement => {
 
-    const { operationId, hasError, componentId } = props;
-    const [ hasLoaded ] = useState<boolean>(false);
-    const [ applicationShareStatusResponseSummary ] =
-    useState<ShareApplicationStatusResponseSummary>(initialApplicationShareStatusResponseSummary);
+    const { operationId, componentId, operationSummary } = props;
 
     return (
         <>
             <ShareApplicationStatusResponseList
-                isLoading={ !hasLoaded }
                 operationId={ operationId }
+                operationSummary={ operationSummary }
                 data-componentid={ `${componentId}-list` }
-                hasError={ hasError }
-                shareApplicationSummary={ applicationShareStatusResponseSummary }
             />
         </>
     );
-};
-
-const initialApplicationShareStatusResponseSummary: ShareApplicationStatusResponseSummary = {
-    failedAppShare: 0,
-    successAppShare: 0
 };
 
 export default ApplicationShareStatusWizard;
