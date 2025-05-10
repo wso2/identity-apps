@@ -187,6 +187,19 @@ export interface emailTemplatesNS {
             };
         };
     };
+    form: {
+        inputs: {
+            locale: {
+                label: string;
+                placeholder: string;
+            };
+            template: {
+                label: string;
+                placeholder: string;
+                hint: string;
+            };
+        };
+    };
     placeholders: {
         emptyList: {
             action: string;
@@ -247,4 +260,9 @@ export interface emailTemplatesNS {
         placeholder: string;
         error: string;
     };
+    dangerZone: {
+        heading: string;
+        message: string;
+        action: string;
+    }
 }

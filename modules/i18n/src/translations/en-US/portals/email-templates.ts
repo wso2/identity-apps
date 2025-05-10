@@ -18,31 +18,54 @@
 import { emailTemplatesNS } from "../../../models";
 
 export const emailTemplates: emailTemplatesNS = {
+    advancedSearch: {
+        error: "Filter query format incorrect",
+        form: {
+            inputs: {
+                filterAttribute: {
+                    placeholder: "E.g. Name etc."
+                },
+                filterCondition: {
+                    placeholder: "E.g. Starts with etc."
+                },
+                filterValue: {
+                    placeholder: "E.g. TOTP, passwordResetSuccess etc."
+                }
+            }
+        },
+        placeholder: "Search by email template type"
+    },
     buttons: {
+        createTemplateType: "Create Template Type",
         deleteTemplate: "Delete Template",
         editTemplate: "Edit Template",
         newTemplate: "New Template",
-        viewTemplate: "View Template",
-        createTemplateType: "Create Template Type",
-        newType: "New Template Type"
+        newType: "New Template Type",
+        viewTemplate: "View Template"
     },
     confirmations: {
         deleteTemplate: {
             assertionHint: "Please type <1>{{ id }}</1> to confirm.",
             content: "If you delete this email template, all associated work flows will no longer " +
-                "have a valid email template to work with. Please proceed cautiously.",
+            "have a valid email template to work with. Please proceed cautiously.",
             header: "Are you sure?",
             message: "This action is irreversible and will permanently delete the selected email template."
         },
         deleteTemplateType: {
             assertionHint: "Please type <1>{{ id }}</1> to confirm.",
             content: "If you delete this email template type, all associated work flows will no longer " +
-                "have a valid email template to work with and this will delete all the locale templates " +
-                "associated with this template type. Please proceed cautiously.",
+            "have a valid email template to work with and this will delete all the locale templates " +
+            "associated with this template type. Please proceed cautiously.",
             header: "Are you sure?",
             message: "This action is irreversible and will permanently delete the selected email " +
-                "template type."
+            "template type."
         }
+    },
+    dangerZone: {
+        action: "Revert",
+        heading: "Revert to default",
+        message: "This action will revert the selected template to " +
+            "default and you will lose any changes you've done to this template."
     },
     editor: {
         tabs: {
@@ -51,6 +74,32 @@ export const emailTemplates: emailTemplatesNS = {
             },
             preview: {
                 tabName: "Preview"
+            }
+        }
+    },
+    form: {
+        inputs: {
+            locale: {
+                label: "Locale",
+                placeholder: "Select Locale"
+            },
+            template: {
+                hint: "Select the Email template",
+                label: "Email Template",
+                placeholder: "Select the Email template"
+            }
+        }
+    },
+    forms: {
+        addTemplateType: {
+            fields: {
+                type: {
+                    label: "Template Type Name",
+                    placeholder: "Enter a template type name",
+                    validations: {
+                        empty: "Template type name is required to proceed."
+                    }
+                }
             }
         }
     },
@@ -73,6 +122,20 @@ export const emailTemplates: emailTemplatesNS = {
                 message: "Creating email template is successful"
             }
         },
+        createTemplateType: {
+            error: {
+                description: "{{description}}",
+                message: "Error creating email template type."
+            },
+            genericError: {
+                description: "Couldn't create email template type.",
+                message: "Something went wrong"
+            },
+            success: {
+                description: "Successfully created the email template type.",
+                message: "Creating email template type is successful"
+            }
+        },
         deleteTemplate: {
             error: {
                 description: "{{description}}",
@@ -87,6 +150,20 @@ export const emailTemplates: emailTemplatesNS = {
                 message: "Email template delete successful"
             }
         },
+        deleteTemplateType: {
+            error: {
+                description: "{{description}}",
+                message: "Error deleting email template type."
+            },
+            genericError: {
+                description: "Couldn't delete email template type.",
+                message: "Something went wrong"
+            },
+            success: {
+                description: "Successfully deleted the email template type.",
+                message: "Email template type delete successful"
+            }
+        },
         getTemplateDetails: {
             error: {
                 description: "{{description}}",
@@ -98,6 +175,20 @@ export const emailTemplates: emailTemplatesNS = {
             },
             success: {
                 description: "Successfully retrieved the email template details.",
+                message: "Retrieval successful"
+            }
+        },
+        getTemplateTypes: {
+            error: {
+                description: "{{description}}",
+                message: "Retrieval error"
+            },
+            genericError: {
+                description: "Couldn't retrieve the email template types.",
+                message: "Something went wrong"
+            },
+            success: {
+                description: "Successfully retrieved the email template types.",
                 message: "Retrieval successful"
             }
         },
@@ -133,48 +224,6 @@ export const emailTemplates: emailTemplatesNS = {
             success: {
                 description: "Successfully updated the email template.",
                 message: "Email template update successful"
-            }
-        },
-        createTemplateType: {
-            error: {
-                description: "{{description}}",
-                message: "Error creating email template type."
-            },
-            genericError: {
-                description: "Couldn't create email template type.",
-                message: "Something went wrong"
-            },
-            success: {
-                description: "Successfully created the email template type.",
-                message: "Creating email template type is successful"
-            }
-        },
-        deleteTemplateType: {
-            error: {
-                description: "{{description}}",
-                message: "Error deleting email template type."
-            },
-            genericError: {
-                description: "Couldn't delete email template type.",
-                message: "Something went wrong"
-            },
-            success: {
-                description: "Successfully deleted the email template type.",
-                message: "Email template type delete successful"
-            }
-        },
-        getTemplateTypes: {
-            error: {
-                description: "{{description}}",
-                message: "Retrieval error"
-            },
-            genericError: {
-                description: "Couldn't retrieve the email template types.",
-                message: "Something went wrong"
-            },
-            success: {
-                description: "Successfully retrieved the email template types.",
-                message: "Retrieval successful"
             }
         },
         updateTemplateType: {
@@ -222,35 +271,5 @@ export const emailTemplates: emailTemplatesNS = {
             },
             subHeading: "Create a new template type to associate with email requirements."
         }
-    },
-    forms: {
-        addTemplateType: {
-            fields: {
-                type: {
-                    label: "Template Type Name",
-                    placeholder: "Enter a template type name",
-                    validations: {
-                        empty: "Template type name is required to proceed."
-                    }
-                }
-            }
-        }
-    },
-    advancedSearch: {
-        error: "Filter query format incorrect",
-        form: {
-            inputs: {
-                filterAttribute: {
-                    placeholder: "E.g. Name etc."
-                },
-                filterCondition: {
-                    placeholder: "E.g. Starts with etc."
-                },
-                filterValue: {
-                    placeholder: "E.g. TOTP, passwordResetSuccess etc."
-                }
-            }
-        },
-        placeholder: "Search by email template type"
     }
 };
