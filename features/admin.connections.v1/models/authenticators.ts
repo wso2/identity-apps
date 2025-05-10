@@ -27,7 +27,16 @@ import {
 /**
  * Interface for Multi-factor Authenticators.
  */
-export type MultiFactorAuthenticatorInterface = GovernanceConnectorInterface;
+export interface MultiFactorAuthenticatorInterface extends GovernanceConnectorInterface {
+    /**
+     * Authenticator AMR Value
+     */
+    amrValue?: string;
+    /**
+     * 
+     */
+    type?: AuthenticatorTypes;
+}
 
 /**
  * Interface to map response list item from Authenticators API.
@@ -50,6 +59,10 @@ export interface AuthenticatorInterface {
      * Authenticator Display Name.
      */
     displayName: string;
+    /**
+     * Authenticator AMR Value
+     */
+    amrValue: string;
     /**
      * Is authenticator enabled.
      */
@@ -149,6 +162,7 @@ export interface FederatedAuthenticatorMetaDataInterface {
     icon: any;
     name: string;
     displayName: string;
+    // amrValue: string;
 }
 
 /**
