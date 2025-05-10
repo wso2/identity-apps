@@ -931,3 +931,56 @@ export enum SubjectTypes {
     PUBLIC = "public",
     PAIRWISE = "pairwise"
 }
+/**
+ * Interface for the share application status response.
+ */
+export interface ShareApplicationStatusResponse {
+    resourceIdentifier: string;
+    status: string;
+    message: string;
+}
+
+/**
+ * Interface for the share application status summary.
+ */
+export interface OperationStatusSummary {
+    successCount: number;
+    failedCount: number;
+    partiallyCompletedCount: number
+}
+
+export interface ApplicationShareUnitStatusResponse {
+    unitOperationId: string;
+    operationId: string;
+    residentResourceId: string;
+    targetOrgId: string;
+    targetOrgName: string;
+    status: string;
+    statusMessage: string;
+    createdTime: string;
+}
+
+export interface SharedAccessStatusResponse {
+    operationId: string;
+    correlationId: string;
+    operationType: string;
+    subjectType: string;
+    subjectId: string;
+    initiatedOrgId: string;
+    initiatedUserId: string;
+    status: string;
+    policy: string;
+    createdTime: string;
+    modifiedTime: string;
+    unitOperationRef: string;
+}
+
+export interface ApplicationShareStatusUnitLinkInterface {
+    href: string;
+    rel: string;
+}
+
+export interface ApplicationShareStatusUnitListInterface {
+    links: ApplicationShareStatusUnitLinkInterface[];
+    unitOperations: ApplicationShareUnitStatusResponse[];
+}

@@ -1245,3 +1245,60 @@ export const useMyAccountStatus = <Data = MyAccountPortalStatusInterface, Error 
         mutate
     };
 };
+
+/**
+ * Hook to get asynchronous operation status units.
+ *
+ * @returns Response of the asynchronous operation status units.
+ */
+export const getAsyncOperationStatusUnits = (operationId: string, limit: number): Promise<any> => {
+    const requestConfig: AxiosRequestConfig = {
+        data: operationId,
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.asyncStatus + "/" + operationId + "/unit-operations?limit=" + limit
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if ((response.status !== 200)) {
+                return Promise.reject(new Error("Failed to fetch async operation status units."));
+            }
+
+            return Promise.resolve(response);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Hook to get asynchronous operation status.
+ *
+ * @returns Response of the asynchronous operation status.
+ */
+export const getAsyncOperationStatus = (operationType: string, subjectId: string, limit: number): Promise<any> => {
+    const requestConfig: AxiosRequestConfig = {
+        data: subjectId,
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.asyncStatus + "/?filter=subjectId eq "
+            + subjectId + " and operationType eq " + operationType + " &limit=" + limit
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if ((response.status !== 200)) {
+                return Promise.reject(new Error("Failed to fetch async operation status."));
+            }
+
+            return Promise.resolve(response);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};

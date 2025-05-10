@@ -544,6 +544,11 @@ export class ApplicationManagementConstants {
         ApplicationManagementConstants.DEFAULT_NAME_ATTRIBUTE_FORMAT,
         "urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
     ];
+
+    /**
+     * Application share type to send to async operation status poller.
+     */
+    public static readonly B2B_APPLICATION_SHARE: string = "B2B_APPLICATION_SHARE";
 }
 
 export enum ShareWithOrgStatus {
@@ -551,3 +556,19 @@ export enum ShareWithOrgStatus {
     FALSE,
     UNDEFINED
 }
+
+export enum ApplicationShareUnitStatus {
+    FAILED = "FAILED",
+    SUCCESS = "SUCCESS",
+    PARTIALLY_COMPLETED = "PARTIALLY_COMPLETED",
+    ALL = "ALL"
+}
+
+export enum OperationStatus {
+    FAILED = "FAILED",
+    SUCCESS = "SUCCESS",
+    IDLE = "IDLE",
+    IN_PROGRESS = "IN_PROGRESS",
+    PARTIALLY_COMPLETED = "PARTIALLY_COMPLETED",
+}
+

@@ -273,6 +273,12 @@ export interface ApplicationsNS {
             content: string;
             assertionHint: string;
         };
+        InProgressReshare: {
+            header: string;
+            message: string;
+            content: string;
+            assertionHint: string;
+        };
         clientSecretHashDisclaimer: {
             modal: {
                 header: string;
@@ -811,6 +817,35 @@ export interface ApplicationsNS {
                         description: string;
                     };
                 };
+                completedSharingNotification: {
+                    failure: {
+                        message: string;
+                        description: string;
+                    },
+                    success: {
+                        message: string;
+                        description: string;
+                    },
+                    partialSuccess: {
+                        message: string;
+                        description: string;
+                    }
+                },
+                addAsyncSharingNotification: {
+                    message: string,
+                    description: string,
+                },
+                asyncOperationStatus: {
+                    inProgress: {
+                        heading: string,
+                        description: string
+                    },
+                    completed: {
+                        heading: string,
+                        description: string,
+                        actionText: string
+                    }
+                },
                 switchToSelectiveShareFromSharingWithAllSuborgsWarning: string;
             };
             apiAuthorization: {
@@ -2947,5 +2982,10 @@ export interface ApplicationsNS {
                 description2: string;
             };
         };
+        sharedAccessStatus: {
+            heading: string,
+            subHeading: string,
+            actionText: string
+        }
     };
 }

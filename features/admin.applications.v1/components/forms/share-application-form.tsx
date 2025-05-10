@@ -37,6 +37,7 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
+    ConfirmationModal,
     ContentLoader,
     Heading,
     Hint,
@@ -53,6 +54,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, {
     FormEvent,
     FunctionComponent,
+    ReactElement,
     useCallback,
     useEffect,
     useMemo,
@@ -66,6 +68,7 @@ import {
     Grid,
     Radio
 } from "semantic-ui-react";
+import { OperationStatus } from "../../constants/application-management";
 import { ApplicationInterface, additionalSpProperty } from "../../models/application";
 
 enum ShareType {
@@ -92,6 +95,9 @@ export interface ApplicationShareFormPropsInterface
      * Make the form read only.
      */
     readOnly?: boolean;
+    isSharingInProgress?: boolean;
+    onOperationStarted?: () => void;
+    operationStatus?: OperationStatus;
 }
 
 export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsInterface> = (
@@ -103,7 +109,9 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
         triggerApplicationShare,
         onApplicationSharingCompleted,
         [ "data-componentid" ]: componentId,
-        readOnly
+        readOnly,
+        isSharingInProgress,
+        onOperationStarted
     } = props;
 
     const dispatch: Dispatch = useDispatch();
@@ -121,6 +129,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
     const [ sharedWithAll, setSharedWithAll ] = useState<boolean>(false);
     const [ filter, setFilter ] = useState<string>();
     const { isOrganizationManagementEnabled } = useGlobalVariables();
+    const [ showConfirmationModal, setShowConfirmationModal ] = useState(false);
 
     const {
         data: organizations,
@@ -166,6 +175,15 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
         isOrganizationsFetchRequestValidating,
         isSharedOrganizationsFetchRequestValidating
     ]);
+
+    /**
+     * Listen for status updates from the parent.
+     */
+    useEffect(() => {
+        if (props.operationStatus === OperationStatus.PARTIALLY_COMPLETED) {
+            onApplicationSharingCompleted?.();
+        }
+    }, [ props.operationStatus ]);
 
     /**
      * Fetches the organization list.
@@ -301,9 +319,52 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
         }
     }, [ triggerApplicationShare ]);
 
+    const handleInterruptOngoingShare = () => {
+        setShowConfirmationModal(true);
+    };
+
+    const renderConfirmationModal = (): ReactElement | null => {
+        return (
+            <>
+                <ConfirmationModal
+                    data-componentid={ `${componentId}-in-progress-reshare-confirmation-modal` }
+                    onClose={ (): void => {
+                        setShowConfirmationModal(false);
+                    } }
+                    type="warning"
+                    open={ showConfirmationModal }
+                    assertionHint={ t("applications:confirmations.InProgressReshare.assertionHint") }
+                    assertionType="checkbox"
+                    primaryAction={ t("common:confirm") }
+                    secondaryAction={ t("common:cancel") }
+                    onPrimaryActionClick={ (): void => {
+                        handleShareApplication();
+                        setShowConfirmationModal(false);
+                    } }
+                    onSecondaryActionClick={ (): void => {
+                        setShowConfirmationModal(false);
+                    } }
+                    closeOnDimmerClick={ false }
+                >
+                    <ConfirmationModal.Header>
+                        { t("applications:confirmations.InProgressReshare.header") }
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message attached warning>
+                        { t("applications:confirmations.InProgressReshare.message") }
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content>
+                        { t("applications:confirmations.InProgressReshare.content") }
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
+            </>
+        );
+    };
+
     const handleShareApplication: () => Promise<void> = useCallback(async () => {
+        onOperationStarted?.();
         let shareAppData: ShareApplicationRequestInterface;
         let removedOrganization: OrganizationInterface[];
+
 
         if (shareType === ShareType.SHARE_ALL) {
             shareAppData = {
@@ -338,26 +399,24 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
         }
 
         if (shareType === ShareType.SHARE_ALL || shareType === ShareType.SHARE_SELECTED) {
+            dispatch(
+                addAlert({
+                    description: t(
+                        "applications:edit.sections.shareApplication" +
+                        ".addAsyncSharingNotification.description"
+                    ),
+                    level: AlertLevels.INFO,
+                    message: t(
+                        "applications:edit.sections.shareApplication" +
+                        ".addAsyncSharingNotification.message"
+                    )
+                })
+            );
             shareApplication(
                 currentOrganization.id,
                 application.id,
                 shareAppData
             )
-                .then(() => {
-                    dispatch(
-                        addAlert({
-                            description: t(
-                                "applications:edit.sections.shareApplication" +
-                                ".addSharingNotification.success.description"
-                            ),
-                            level: AlertLevels.SUCCESS,
-                            message: t(
-                                "applications:edit.sections.shareApplication" +
-                                ".addSharingNotification.success.message"
-                            )
-                        })
-                    );
-                })
                 .catch((error: AxiosError) => {
                     if (error.response.data.message) {
                         dispatch(
@@ -571,6 +630,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
             <Heading ellipsis as="h6">
                 { t("applications:edit.sections.sharedAccess.subTitle") }
             </Heading>
+            { renderConfirmationModal() }
             <Grid>
                 <Grid.Row>
                     <Grid.Column width={ 8 }>
@@ -723,7 +783,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                         <Divider hidden />
                         <PrimaryButton
                             data-componentid={ `${ componentId }-update-button` }
-                            onClick={ handleShareApplication }
+                            onClick={ isSharingInProgress ? handleInterruptOngoingShare : handleShareApplication }
                         >
                             { t("common:update") }
                         </PrimaryButton>

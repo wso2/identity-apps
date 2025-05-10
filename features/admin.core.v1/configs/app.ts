@@ -326,6 +326,7 @@ export class Config {
             appTitle: window[ "AppUtils" ]?.getConfig()?.ui?.appTitle,
             applicationTemplateLoadingStrategy:
                 window[ "AppUtils" ]?.getConfig()?.ui?.applicationTemplateLoadingStrategy,
+            asyncOperationStatus: window[ "AppUtils" ]?.getConfig()?.ui?.asyncOperationStatus,
             connectionResourcesUrl: window[ "AppUtils" ]?.getConfig()?.ui?.connectionResourcesUrl,
             cookiePolicyUrl: window[ "AppUtils" ]?.getConfig()?.ui?.cookiePolicyUrl,
             emailTemplates: {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,11 +17,19 @@
  */
 
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
-import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
-import { ApplicationInterface } from "../../models/application";
+import React, { FunctionComponent, ReactElement, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
+import { ApplicationManagementConstants, OperationStatus } from "../../constants/application-management";
+import { useOperationStatusPoller } from "../../hooks/use-operation-status-poller";
+import { ApplicationInterface, OperationStatusSummary } from "../../models/application";
 import { ApplicationShareForm } from "../forms/share-application-form";
+import { OperationStatusBanner } from "../shared-access-status-banner";
 
 /**
  * Proptypes for the shared access component.
@@ -53,15 +61,82 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
 ): ReactElement => {
 
     const { application, onUpdate, readOnly } = props;
+    const [ sharingState, setSharingState ] = useState<OperationStatus>(OperationStatus.IDLE);
+    const [ sharingOperationId, setSharingOperationId ] = useState<string>();
+    const disabledFeatures: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.applications?.disabledFeatures);
+    const isApplicationShareOperationStatusEnabled: boolean =
+        disabledFeatures?.includes("applications.sharedAccess.status") ?? false;
+    const applicationShareStatusPollInterval: number = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.applications?.applicationShareStatusPollInterval);
+    const [ sharingOperationSummary, setSharingOperationSummary ] = useState<OperationStatusSummary>();
+    const dispatch: Dispatch = useDispatch();
+    const { t } = useTranslation();
+
+    const { status, startPolling } = useOperationStatusPoller({
+        enabled: isApplicationShareOperationStatusEnabled,
+        onCompleted: (finalStatus: OperationStatus) => {
+            setSharingState(finalStatus);
+            if (status === OperationStatus.FAILED) {
+                dispatch(addAlert({
+                    description: t("applications:edit.sections.shareApplication.completedSharingNotification."
+                        + "failure.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("applications:edit.sections.shareApplication.completedSharingNotification."
+                        + "failure.message")
+                }));
+            } else if (status === OperationStatus.SUCCESS) {
+                dispatch(addAlert({
+                    description: t("applications:edit.sections.shareApplication.completedSharingNotification."
+                        + "success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("applications:edit.sections.shareApplication.completedSharingNotification."
+                        + "success.message")
+                }));
+            } else if (status === OperationStatus.PARTIALLY_COMPLETED) {
+                dispatch(addAlert({
+                    description: t("applications:edit.sections.shareApplication.completedSharingNotification."
+                        + "partialSuccess.description"),
+                    level: AlertLevels.WARNING,
+                    message: t("applications:edit.sections.shareApplication.completedSharingNotification."
+                        + "partialSuccess.message")
+                }));
+            }
+        },
+        onStatusChange: (newOperationId: string, newStatus: OperationStatus,
+            operationSummary: OperationStatusSummary) => {
+            setSharingState(newStatus);
+            setSharingOperationId(newOperationId);
+            setSharingOperationSummary(operationSummary);
+        },
+        operationType: ApplicationManagementConstants.B2B_APPLICATION_SHARE,
+        pollingInterval: applicationShareStatusPollInterval,
+        subjectId: application.id
+    });
+
+    const handleChildStartedOperation = () => {
+        setSharingState(OperationStatus.IN_PROGRESS);
+        startPolling();
+    };
 
     return (
-        <EmphasizedSegment className="advanced-configuration-section" padded="very">
-            <ApplicationShareForm
-                application={ application }
-                onApplicationSharingCompleted={ () => onUpdate(application?.id) }
-                readOnly={ readOnly }
-            />
-        </EmphasizedSegment>
+        <>
+            <OperationStatusBanner
+                status={ sharingState }
+                sharingOperationId={ sharingOperationId }
+                sharingOperationSummary={ sharingOperationSummary }/>
+
+            <EmphasizedSegment className="advanced-configuration-section" padded="very">
+                <ApplicationShareForm
+                    application={ application }
+                    onApplicationSharingCompleted={ () => onUpdate(application?.id) }
+                    readOnly={ readOnly }
+                    onOperationStarted={ handleChildStartedOperation }
+                    operationStatus={ status }
+                    isSharingInProgress={ sharingState === OperationStatus.IN_PROGRESS }
+                />
+            </EmphasizedSegment>
+        </>
     );
 };
 
