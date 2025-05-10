@@ -165,7 +165,9 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
             onSubmit={ (values: Map<string, FormValue>) => {
                 const data: Claim
                  = {
+                     canonicalValues: values.get("canonicalValue") as string[] || [],
                      claimURI: claimURIBase + "/" + values.get("claimURI").toString().trim(),
+                     dataType: values.get("dataType")?.toString(),
                      description: values.get("description")?.toString(),
                      displayName: values.get("name").toString(),
                      displayOrder: values.get("displayOrder") ? parseInt(values.get("displayOrder")?.toString()) : 0,
@@ -173,6 +175,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                      readOnly: values.get("readOnly")?.length > 0,
                      regEx: values.get("regularExpression")?.toString(),
                      required: values.get("required")?.length > 0,
+                     subAttributes: values.get("subAttributes") as string[] || [],
                      supportedByDefault: values.get("supportedByDefault")?.length > 0
                  };
 
