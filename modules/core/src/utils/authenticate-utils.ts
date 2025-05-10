@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { createHash } from "crypto";
 import { AuthenticatedUserInfo, BasicUserInfo } from "@asgardeo/auth-react";
 import { TokenConstants } from "../constants";
 
@@ -175,7 +174,8 @@ export class AuthenticateUtils {
     public static getCodeChallangeForTheVerifier = async (codeVerifier: string) => {
         const encoder: TextEncoder = new TextEncoder();
         const encodedCodeVerifier: Uint8Array = encoder.encode(codeVerifier);
-        const hashedCodeVerifier: Buffer = createHash("sha256").update(encodedCodeVerifier).digest();
+        const hashedCodeVerifier: ArrayBuffer = await window.crypto.subtle.digest("SHA-256",
+            encodedCodeVerifier);
 
         return btoa(String.fromCharCode(...new Uint8Array(hashedCodeVerifier)))
             .replace(/\+/g, "-")
