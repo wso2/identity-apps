@@ -1,5 +1,15 @@
 # @wso2is/core
 
+## 2.8.0
+
+### Minor Changes
+
+- [#8174](https://github.com/wso2/identity-apps/pull/8174) [`15a063f9e5c1b3e14b1fbb2e1c1a0697d98f53e1`](https://github.com/wso2/identity-apps/commit/15a063f9e5c1b3e14b1fbb2e1c1a0697d98f53e1) Thanks [@lashinijay](https://github.com/lashinijay)! - Introduce client credential authentication for email providers
+
+### Patch Changes
+
+- [#8177](https://github.com/wso2/identity-apps/pull/8177) [`709983b9893e6922dc0c9066f0af61d35d1fa1cc`](https://github.com/wso2/identity-apps/commit/709983b9893e6922dc0c9066f0af61d35d1fa1cc) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Improve code verifier function.
+
 ## 2.7.8
 
 ### Patch Changes
