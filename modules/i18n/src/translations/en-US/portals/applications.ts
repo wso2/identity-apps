@@ -3297,6 +3297,11 @@ export const applications: ApplicationsNS = {
                     }
                 }
             }
+        },
+        sharedAccessStatus: {
+            heading: "Summary - Update application shared access",
+            subHeading: "Summary of detailed application sharing failures.",
+            actionText: "Close"
         }
     },
     resident: {

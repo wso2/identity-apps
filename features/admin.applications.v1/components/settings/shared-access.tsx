@@ -18,13 +18,16 @@
 
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
-import { useSelector } from "react-redux";
-import { OperationStatus } from "../../constants/application-management";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
+import { ApplicationManagementConstants, OperationStatus } from "../../constants/application-management";
 import { useOperationStatusPoller } from "../../hooks/use-operation-status-poller";
-import { ApplicationInterface } from "../../models/application";
+import { ApplicationInterface, OperationStatusSummary } from "../../models/application";
 import { ApplicationShareForm } from "../forms/share-application-form";
 import { OperationStatusBanner } from "../shared-access-status-banner";
 
@@ -64,18 +67,50 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
         state?.config?.ui?.features?.applications?.disabledFeatures);
     const isApplicationShareOperationStatusEnabled: boolean =
         disabledFeatures?.includes("applications.sharedAccess.status") ?? false;
+    const applicationShareStatusPollInterval: number = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.applications?.applicationShareStatusPollInterval);
+    const [ sharingOperationSummary, setSharingOperationSummary ] = useState<OperationStatusSummary>();
+    const dispatch: Dispatch = useDispatch();
+    const { t } = useTranslation();
 
-    const { status, startPolling } = useOperationStatusPoller({  // use-application-sharing-operation-status
+    const { status, startPolling } = useOperationStatusPoller({
         enabled: isApplicationShareOperationStatusEnabled,
         onCompleted: (finalStatus: OperationStatus) => {
             setSharingState(finalStatus);
+            if (status === OperationStatus.FAILED) {
+                dispatch(addAlert({
+                    description: t("applications:edit.sections.shareApplication.completedSharingNotification."
+                        + "failure.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("applications:edit.sections.shareApplication.completedSharingNotification."
+                        + "failure.message")
+                }));
+            } else if (status === OperationStatus.SUCCESS) {
+                dispatch(addAlert({
+                    description: t("applications:edit.sections.shareApplication.completedSharingNotification."
+                        + "success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("applications:edit.sections.shareApplication.completedSharingNotification."
+                        + "success.message")
+                }));
+            } else if (status === OperationStatus.PARTIALLY_COMPLETED) {
+                dispatch(addAlert({
+                    description: t("applications:edit.sections.shareApplication.completedSharingNotification."
+                        + "partialSuccess.description"),
+                    level: AlertLevels.WARNING,
+                    message: t("applications:edit.sections.shareApplication.completedSharingNotification."
+                        + "partialSuccess.message")
+                }));
+            }
         },
-        onStatusChange: (newOperationId: string, newStatus: OperationStatus) => {
+        onStatusChange: (newOperationId: string, newStatus: OperationStatus,
+            operationSummary: OperationStatusSummary) => {
             setSharingState(newStatus);
             setSharingOperationId(newOperationId);
+            setSharingOperationSummary(operationSummary);
         },
-        operationType: "B2B_APPLICATION_SHARE",
-        pollingInterval: 5000,
+        operationType: ApplicationManagementConstants.B2B_APPLICATION_SHARE,
+        pollingInterval: applicationShareStatusPollInterval,
         subjectId: application.id
     });
 
@@ -88,7 +123,9 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
         <>
             <OperationStatusBanner
                 status={ sharingState }
-                sharingOperationId={ sharingOperationId }/>
+                sharingOperationId={ sharingOperationId }
+                sharingOperationSummary={ sharingOperationSummary }/>
+
             <EmphasizedSegment className="advanced-configuration-section" padded="very">
                 <ApplicationShareForm
                     application={ application }

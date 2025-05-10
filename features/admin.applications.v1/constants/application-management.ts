@@ -544,6 +544,11 @@ export class ApplicationManagementConstants {
         ApplicationManagementConstants.DEFAULT_NAME_ATTRIBUTE_FORMAT,
         "urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
     ];
+
+    /**
+     * Application share type to send to async operation status poller.
+     */
+    public static readonly B2B_APPLICATION_SHARE: string = "B2B_APPLICATION_SHARE";
 }
 
 export enum ShareWithOrgStatus {

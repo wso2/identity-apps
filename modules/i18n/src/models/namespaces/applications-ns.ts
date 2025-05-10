@@ -2995,5 +2995,10 @@ export interface ApplicationsNS {
                 description2: string;
             };
         };
+        sharedAccessStatus: {
+            heading: string,
+            subHeading: string,
+            actionText: string
+        }
     };
 }

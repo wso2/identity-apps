@@ -943,9 +943,10 @@ export interface ShareApplicationStatusResponse {
 /**
  * Interface for the share application status summary.
  */
-export interface ShareApplicationStatusResponseSummary {
-    successAppShare: number;
-    failedAppShare: number;
+export interface OperationStatusSummary {
+    successCount: number;
+    failedCount: number;
+    partiallyCompletedCount: number
 }
 
 export interface ApplicationShareUnitStatusResponse {

@@ -339,6 +339,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                     secondaryAction={ t("common:cancel") }
                     onPrimaryActionClick={ (): void => {
                         handleShareApplication();
+                        setShowConfirmationModal(false);
                     } }
                     onSecondaryActionClick={ (): void => {
                         setShowConfirmationModal(false);

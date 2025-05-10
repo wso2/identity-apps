@@ -226,6 +226,7 @@
                 }
             },
             "applications": {
+                "applicationShareStatusPollInterval": 5000,
                 "disabledFeatures": [
                     "applications.loginFlow.ai",
                     "applications.loginFlow.legacyEditor"

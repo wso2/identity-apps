@@ -32,23 +32,26 @@ import {
     DropdownProps,
     Grid,
     Header,
-    Icon,
-    Label
+    Icon
 } from "semantic-ui-react";
 import useGetApplicationShareStatusUnits from "../api/use-get-application-share-status";
 import { ApplicationShareUnitStatus } from "../constants/application-management";
 import { ApplicationShareStatusUnitLinkInterface, ApplicationShareUnitStatusResponse,
-    ShareApplicationStatusResponseSummary } from "../models/application";
+    OperationStatusSummary } from "../models/application";
 import "./share-application-status-response-list.scss";
 
+/**
+ * Proptypes for the share application status response list.
+ */
 interface ShareApplicationStatusResponseListProps extends IdentifiableComponentInterface {
     operationId: string;
-    isLoading?: boolean;
-    ["data-componentid"]?: string;
-    shareApplicationSummary?: ShareApplicationStatusResponseSummary;
-    hasError: boolean;
+    ["data-componentid"]: string;
+    operationSummary?: OperationStatusSummary;
 }
 
+/**
+ * Proptypes for the REST api params.
+ */
 interface Params {
     shouldFetch?: boolean,
     filter?: string;
@@ -69,16 +72,12 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
 
     const {
         operationId,
-        isLoading,
-        shareApplicationSummary,
-        hasError,
+        operationSummary,
         ["data-componentid"]: componentId
     } = props;
 
     const [ selectedStatus, setSelectedStatus ] = useState<ApplicationShareUnitStatus>
     (ApplicationShareUnitStatus.FAILED);
-    // const [ successShareCount, setSuccessShareCount ] = useState<number>();
-    // const [ failedShareCount, setfailedShareCount ] = useState<number>();
     const [ unitOperations, setUnitOperations ] = useState<ApplicationShareUnitStatusResponse[]>([]);
     const [ afterCursor, setAfterCursor ] = useState<string | null>(null);
     const [ hasMoreItems, setHasMoreItems ] = useState(true);
@@ -92,8 +91,6 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
         limit: API_LIMIT,
         shouldFetch: true
     });
-    const successShareCount = 2;
-    const failedShareCount = 3;
 
     const {
         data: shareUnitStatusListResponse,
@@ -111,22 +108,22 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
         if (isInitialLoading) {
             setIsInitialLoading(false);
         }
-        setParams((prevParams) => ({
+        setParams((prevParams: Params) => ({
             ...prevParams,
             shouldFetch: false
         }));
 
         const newUnitShares: ApplicationShareUnitStatusResponse[] = shareUnitStatusListResponse.unitOperations || [];
 
-        setUnitOperations((prevUnits) => [...prevUnits, ...newUnitShares]);
+        setUnitOperations((prevUnits: ApplicationShareUnitStatusResponse[]) => [ ...prevUnits, ...newUnitShares ]);
 
         let nextFound: boolean = false;
 
         shareUnitStatusListResponse?.links?.forEach((link: ApplicationShareStatusUnitLinkInterface) => {
 
             if (link.rel === "next") {
-                const urlParams = new URLSearchParams(link.href.split("?")[1]);
-                const nextCursor = urlParams.get("after");
+                const urlParams: URLSearchParams = new URLSearchParams(link.href.split("?")[1]);
+                const nextCursor: string = urlParams.get("after");
 
                 setAfterCursor(nextCursor);
                 setHasMoreItems(!!nextCursor);
@@ -146,7 +143,7 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
             setIsInitialLoading(false);
             setHasMoreItems(false);
         }
-    }, [ shareUnitStatusListFetchRequestError] );
+    }, [ shareUnitStatusListFetchRequestError ] );
 
     const handleStatusDropdownChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
         const newStatus: ApplicationShareUnitStatus = data.value as ApplicationShareUnitStatus;
@@ -167,12 +164,12 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
         if (isShareUnitStatusFetchRequestLoading || !hasMoreItems) {
             return;
         }
-        setParams((prevParams) => ({
+        setParams((prevParams: Params) => ({
             ...prevParams,
             after: afterCursor,
             shouldFetch: true
         }));
-    }; 
+    };
     const OrgIdDisplay = ({ id }: { id: string }) => {
         const [ isHovered, setIsHovered ] = useState(false);
         const [ isCopied, setIsCopied ] = useState(false);
@@ -279,26 +276,22 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
     const statusOptions: DropdownItemProps[] = [
         { key: "ALL", text: "All", value: ApplicationShareUnitStatus.ALL },
         { key: "SUCCESS", text: "Success", value: ApplicationShareUnitStatus.SUCCESS },
-        { key: "FAIL", text: "Failed", value: ApplicationShareUnitStatus.FAILED }
+        { key: "FAILED", text: "Failed", value: ApplicationShareUnitStatus.FAILED },
+        { key: "PARTIALLY_COMPLETED", text: "Partially Completed",
+            value: ApplicationShareUnitStatus.PARTIALLY_COMPLETED }
     ];
 
     return (
         <>
             <Grid.Row columns={ 2 } verticalAlign="middle">
                 <Grid.Column width={ 8 }>
-                    { shareApplicationSummary && (
-                        <Label.Group size="small">
-                            <Label color="green">
-                                Success
-                                <Label.Detail>{ successShareCount }</Label.Detail>
-                            </Label>
-                            <Label color="red">
-                                Failed
-                                <Label.Detail>{ failedShareCount }</Label.Detail>
-                            </Label>
-                        </Label.Group>
+                    { operationSummary && (
+                        <p>
+                            Partially Completed: { operationSummary.partiallyCompletedCount } &nbsp;&nbsp;
+                            | &nbsp;&nbsp; Failed: { operationSummary.failedCount }
+                        </p>
                     ) }
-                    { !shareApplicationSummary && "Status counts unavailable" }
+                    { !operationSummary && "Status counts unavailable" }
                 </Grid.Column>
 
                 <Grid.Column width={ 8 } textAlign="right">
