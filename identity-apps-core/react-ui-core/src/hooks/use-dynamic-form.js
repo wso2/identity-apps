@@ -18,7 +18,10 @@
 
 import { useCallback, useState } from "react";
 
-const useDynamicForm = (fields) => {
+/**
+ * Custom hook to manage the state and behavior of a dynamic form.
+ */
+const useDynamicForm = (fields, onSubmit) => {
 
     const [ formState, setFormState ] = useState({
         dirtyFields: {},
@@ -72,7 +75,7 @@ const useDynamicForm = (fields) => {
         });
     }, [ fields ]);
 
-    const handleSubmit = (onSubmit) => (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
 
         let errors = [];
@@ -87,7 +90,7 @@ const useDynamicForm = (fields) => {
                 });
             }
 
-            if (field.config.validation) {
+            if (field.config.validation && fieldValue) {
                 field.config.validation.forEach(rule => {
                     if (rule.type === "MIN_LENGTH" && fieldValue.length < rule.value) {
                         errors.push({
