@@ -41,6 +41,7 @@ export class OrganizationManagementConstants {
     public static readonly ROOT_ORGANIZATION: OrganizationInterface = {
         id: this.SUPER_ORGANIZATION_ID,
         name: "Super",
+        orgHandle: "carbon.super",
         ref: "",
         status: "ACTIVE"
     };
