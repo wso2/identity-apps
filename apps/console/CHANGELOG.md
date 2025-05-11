@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.55.1
+
+### Patch Changes
+
+- [#8178](https://github.com/wso2/identity-apps/pull/8178) [`73eedc4c81f0d36fa30593ba58d6102456182038`](https://github.com/wso2/identity-apps/commit/73eedc4c81f0d36fa30593ba58d6102456182038) Thanks [@lashinijay](https://github.com/lashinijay)! - Force trigger console version
+
 ## 2.55.0
 
 ### Minor Changes
