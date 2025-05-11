@@ -55,7 +55,7 @@ const useGetRolesList = <Data = RoleListInterface, Error = RequestErrorInterface
             filter,
             startIndex
         },
-        url: store.getState().config.endpoints.rolesV2
+        url: store.getState().config.endpoints.rolesV3
     };
 
     const {
