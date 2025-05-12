@@ -21,7 +21,7 @@ import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/co
 import {  UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
-import { updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
+import { updateUsersForRole } from "@wso2is/admin.roles.v2/api/roles";
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { getUsersList, sendInvite } from "@wso2is/admin.users.v1/api";
@@ -261,7 +261,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
             for (const roleId of roleIds) {
                 setIsSubmitting(true);
 
-                await updateRoleDetails(roleId, roleData)
+                await updateUsersForRole(roleId, roleData)
                     .catch((error: AxiosError) => {
                         if (!error.response || error.response.status === 401) {
                             setAlert({
@@ -344,7 +344,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
 
         setConfirmationModalLoading(true);
 
-        updateRoleDetails(adminRoleId, roleData)
+        updateUsersForRole(adminRoleId, roleData)
             .then(() => {
                 dispatch(addAlert({
                     description: t(
