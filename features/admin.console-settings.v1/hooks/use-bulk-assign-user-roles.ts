@@ -17,7 +17,7 @@
  */
 
 import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
-import { updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
+import { updateUsersForRole } from "@wso2is/admin.roles.v2/api/roles";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { PayloadInterface } from "@wso2is/admin.users.v1/models/user";
 import { RolesInterface } from "@wso2is/core/models";
@@ -97,7 +97,7 @@ const useBulkAssignAdministratorRoles = (): UseBulkAssignAdministratorRolesInter
         const roleIds: string[] = roles.map((role: RolesInterface) => role.id);
 
         const updateRolePromises: Promise<void>[] = roleIds.map((roleId: string) => {
-            return updateRoleDetails(roleId, payload);
+            return updateUsersForRole(roleId, payload);
         });
 
         try {
@@ -136,7 +136,7 @@ const useBulkAssignAdministratorRoles = (): UseBulkAssignAdministratorRolesInter
         const roleIds: string[] = user.roles.map((role: UserRoleInterface) => role.value);
 
         const updateRolePromises: Promise<void>[] = roleIds.map((roleId: string) => {
-            return updateRoleDetails(roleId, payload);
+            return updateUsersForRole(roleId, payload);
         });
 
         try {
