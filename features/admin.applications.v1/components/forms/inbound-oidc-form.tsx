@@ -1249,6 +1249,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     return;
                 }
 
+                // Hide client credentials grant type in mcp client app template
+                // if the client is marked as public
+                if (
+                    template?.["originalTemplateId"] &&
+                    template?.["originalTemplateId"] === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION &&
+                    isPublicClient &&
+                    name === ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
+                ) {
+                    return;
+                }
+
                 /**
                  * Create the checkbox children object. hint is marked
                  * as optional because not all children have hint/description
@@ -4531,7 +4542,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 initialValues?.clientSecret
                             && (initialValues?.state !== State.REVOKED)
                             && (!isSPAApplication))
-                            && (!isMobileApplication)
+                            && !isMobileApplication
+                            && !isPublicClient
                             && !isSystemApplication
                             && !isDefaultApplication
                             && (

@@ -143,7 +143,8 @@ export const applicationConfig: ApplicationConfig = {
         ],
         [ "mcp-client-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
         ],
         [ "mobile-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,

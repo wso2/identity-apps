@@ -33,6 +33,15 @@ export const users: usersNS = {
         }
     },
     advancedSearch: {
+        accountStatusFilter: {
+            label: "Account Status",
+            options: {
+                disabled: "Disabled",
+                locked: "Locked",
+                pendingInitialPasswordSetup: "Pending initial password setup",
+                pendingPasswordReset: "Pending password reset"
+            }
+        },
         form: {
             dropdown: {
                 filterAttributeOptions: {
@@ -286,6 +295,20 @@ export const users: usersNS = {
             success: {
                 description: "Successfully retrieved the admin roles.",
                 message: "Role retrieval successful"
+            }
+        },
+        impersonateUser: {
+            error: {
+                description: "Couldn't impersonate user.",
+                message: "Error impersonating user"
+            },
+            genericError: {
+                description: "Couldn't impersonate user.",
+                message: "Something went wrong"
+            },
+            success: {
+                description: "User impersonation started successfully.",
+                message: "User impersonation successful"
             }
         },
         revokeAdmin: {

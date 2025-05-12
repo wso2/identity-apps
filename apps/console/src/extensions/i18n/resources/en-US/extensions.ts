@@ -1647,7 +1647,7 @@ export const extensions: Extensions = {
             goBack: "Go back to Notification Providers",
             confirmationModal: {
                 assertionHint: "Please confirm your action.",
-                content: "If you delete this configuration, the emails will be sent from the Asgardeo Email Address. " +
+                content: "If you delete this configuration, emails will be sent from the default email provider. " +
                     "Please proceed with caution.",
                 header: "Are you sure?",
                 message: "This action is irreversible and will permanently delete the email provider configurations."
@@ -3596,7 +3596,15 @@ export const extensions: Extensions = {
                 label: "Password expires in ",
                 timeFormat: "days"
             },
-            passwordValidationHeading: "Password Input Validation",
+            passwordValidation: {
+                heading: "Password Input Validation",
+                passwordValidationRegexLabel: "Password pattern regex",
+                passwordValidationRegexHint: "Provide a valid regular expression for the password pattern. The regex must be between 3 and 255 characters.",
+                passwordValidationRegexPlaceholder: "Enter password pattern regex",
+                passwordValidationErrorLabel: "Error message on pattern violation",
+                passwordValidationErrorHint: "This error message will be displayed when a pattern violation is detected.",
+                passwordValidationErrorPlaceholder: "Enter the error message"
+            },
             userOnboarding: {
                 backButton: "Go back to Self Registration",
                 heading: "Self Registration",

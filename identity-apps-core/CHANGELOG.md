@@ -1,5 +1,32 @@
 # @wso2is/identity-apps-core
 
+## 2.24.7
+
+### Patch Changes
+
+- [#8103](https://github.com/wso2/identity-apps/pull/8103) [`3d453f26bb1c3023bf700a8d4a6aaa675f21cbb5`](https://github.com/wso2/identity-apps/commit/3d453f26bb1c3023bf700a8d4a6aaa675f21cbb5) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Support Backward Compatibility for Non-Tenant-Qualified URLs
+
+## 2.24.6
+
+### Patch Changes
+
+- [#8165](https://github.com/wso2/identity-apps/pull/8165) [`86521ccd41a7b6cca70714bc490420f4abdc1296`](https://github.com/wso2/identity-apps/commit/86521ccd41a7b6cca70714bc490420f4abdc1296) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Release core.
+
+## 2.24.5
+
+### Patch Changes
+
+- [#8162](https://github.com/wso2/identity-apps/pull/8162) [`b7b29c35c35ca8c56826aa67c7ebed8d0c0c6c18`](https://github.com/wso2/identity-apps/commit/b7b29c35c35ca8c56826aa67c7ebed8d0c0c6c18) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add myaccount changes.
+
+## 2.24.4
+
+### Patch Changes
+
+- [#8116](https://github.com/wso2/identity-apps/pull/8116) [`09d8b338d4b54547c052364326779f2575ac365f`](https://github.com/wso2/identity-apps/commit/09d8b338d4b54547c052364326779f2575ac365f) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Onboard impersonation feature.
+
+- Updated dependencies [[`09d8b338d4b54547c052364326779f2575ac365f`](https://github.com/wso2/identity-apps/commit/09d8b338d4b54547c052364326779f2575ac365f)]:
+  - @wso2is/theme@2.7.8
+
 ## 2.24.3
 
 ### Patch Changes
