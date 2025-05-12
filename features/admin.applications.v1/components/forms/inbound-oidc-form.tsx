@@ -243,6 +243,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const { isOrganizationManagementEnabled } = useGlobalVariables();
     const [ isEncryptionEnabled, setEncryptionEnable ] = useState(false);
     const [ isPublicClient, setPublicClient ] = useState<boolean>(false);
+    const [ isDPoPSelected, setDPoPSelected ] = useState<boolean>(false);
     const [ callBackUrls, setCallBackUrls ] = useState("");
     const [ audienceUrls, setAudienceUrls ] = useState("");
     const [ showURLError, setShowURLError ] = useState(false);
@@ -805,6 +806,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         if (initialValues?.accessToken?.bindingType !== SupportedAccessTokenBindingTypes?.NONE) {
             setIsTokenBindingTypeSelected(true);
         }
+
+        // Removes validate binding type option when DPoP is selected.
+        if (initialValues?.accessToken?.bindingType === SupportedAccessTokenBindingTypes?.DPOP) {
+            setDPoPSelected(true);
+        }
     }, [ initialValues?.accessToken ]);
 
     /**
@@ -878,6 +884,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             case "jwt":
                 return t("applications:forms.inboundOIDC.sections" +
                     ".accessToken.fields.type.valueDescriptions.jwt");
+            case "dpop":
+                return t("applications:forms.inboundOIDC.sections" +
+                    ".accessToken.fields.bindingType.valueDescriptions.dpop");
             default:
                 return undefined;
         }
@@ -909,6 +918,18 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             case "sso-session":
                 return t("applications:forms.inboundOIDC.sections" +
                     ".accessToken.fields.bindingType.children.ssoBinding.label");
+            case "cookie":
+                return t("applications:forms.inboundOIDC.sections" +
+                    ".accessToken.fields.bindingType.children.cookie.label");
+            case "certificate":
+                return t("applications:forms.inboundOIDC.sections" +
+                    ".accessToken.fields.bindingType.children.certificate.label");
+            case "device-flow":
+                return t("applications:forms.inboundOIDC.sections" +
+                    ".accessToken.fields.bindingType.children.deviceFlow.label");
+            case "client-request":
+                return t("applications:forms.inboundOIDC.sections" +
+                    ".accessToken.fields.bindingType.children.clientRequest.label");
             default:
                 return label;
         }
@@ -2897,6 +2918,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     setIsTokenBindingTypeSelected(
                                         values.get("bindingType") !== SupportedAccessTokenBindingTypes.NONE
                                     );
+                                    setDPoPSelected(
+                                        values.get("bindingType") === SupportedAccessTokenBindingTypes.DPOP
+                                    );
                                 } }
                             />
                             <Hint>
@@ -2928,42 +2952,44 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 && !isMcpClientApplication
                 && (
                     <>
-                        <Grid.Row columns={ 1 } data-componentid={ testId + "-validate-token-binding" }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Field
-                                    ref={ validateTokenBinding }
-                                    name="ValidateTokenBinding"
-                                    label=""
-                                    required={ false }
-                                    requiredErrorMessage=""
-                                    type="checkbox"
-                                    value={
-                                        isValidateTokenBindingEnabled() ? [ "validateTokenBinding" ] : []
-                                    }
-                                    children={ [
-                                        {
-                                            label: t("applications:forms.inboundOIDC" +
+                        { !isDPoPSelected && (
+                            <Grid.Row columns={ 1 } data-componentid={ testId + "-validate-token-binding" }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Field
+                                        ref={ validateTokenBinding }
+                                        name="ValidateTokenBinding"
+                                        label=""
+                                        required={ false }
+                                        requiredErrorMessage=""
+                                        type="checkbox"
+                                        value={
+                                            isValidateTokenBindingEnabled() ? [ "validateTokenBinding" ] : []
+                                        }
+                                        children={ [
+                                            {
+                                                label: t("applications:forms.inboundOIDC" +
                                                 ".sections.accessToken.fields.validateBinding.label"),
-                                            value: "validateTokenBinding"
-                                        }
-                                    ] }
-                                    readOnly={ readOnly || isFAPIApplication }
-                                    data-testid={ `${ testId }-access-token-validate-binding-checkbox` }
-                                />
-                                <Hint>
-                                    <Trans
-                                        i18nKey={
-                                            "applications:forms.inboundOIDC.sections" +
+                                                value: "validateTokenBinding"
+                                            }
+                                        ] }
+                                        readOnly={ readOnly || isFAPIApplication }
+                                        data-testid={ `${ testId }-access-token-validate-binding-checkbox` }
+                                    />
+                                    <Hint>
+                                        <Trans
+                                            i18nKey={
+                                                "applications:forms.inboundOIDC.sections" +
                                             ".accessToken.fields.validateBinding.hint"
-                                        }
-                                    >
+                                            }
+                                        >
                                         Validate the binding attributes at the token validation. The client needs to
                                         present the <Code withBackground>access_token</Code> + cookie for successful
                                         authorization.
-                                    </Trans>
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
+                                        </Trans>
+                                    </Hint>
+                                </Grid.Column>
+                            </Grid.Row>
+                        ) }
                         <Grid.Row columns={ 1 } data-componentid={ testId + "-revoke-access-token-upon-user-logout" }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
