@@ -43,7 +43,7 @@ import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import { EditRoleFederatedGroupsAccordion } from "./edit-role-federated-groups-accordion";
 import { EditRoleLocalGroupsAccordion } from "./edit-role-local-groups-accordion";
-import { updateRoleDetails } from "../../api";
+import { assignGroupstoRoles } from "../../api";
 import { RoleAudienceTypes, Schemas } from "../../constants";
 import { PatchRoleDataInterface, RoleEditSectionsInterface } from "../../models/roles";
 import { RoleManagementUtils } from "../../utils";
@@ -220,7 +220,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             schemas: [ Schemas.PATCH_OP ]
         };
 
-        updateRoleDetails(role.id, roleUpdateData)
+        assignGroupstoRoles(role.id, roleUpdateData)
             .then(() => {
                 dispatch(
                     addAlert({
