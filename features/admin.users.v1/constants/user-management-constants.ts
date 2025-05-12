@@ -481,21 +481,21 @@ export const USER_ACCOUNT_STATUS_FILTER_OPTIONS: DropdownChild[] = [
     {
         key: "LOCKED",
         text: "users:advancedSearch.accountStatusFilter.options.locked",
-        value: "urn:scim:wso2:schema:accountState eq 'LOCKED'"
+        value: "urn:scim:wso2:schema:accountState eq LOCKED"
     },
     {
         key: "DISABLED",
         text: "users:advancedSearch.accountStatusFilter.options.disabled",
-        value: "urn:scim:wso2:schema:accountState eq 'DISABLED'"
+        value: "urn:scim:wso2:schema:accountState eq DISABLED"
     },
     {
         key: "PENDING_FUPR",
         text: "users:advancedSearch.accountStatusFilter.options.pendingPasswordReset",
-        value: "urn:scim:wso2:schema:accountState eq 'PENDING_FUPR'"
+        value: "urn:scim:wso2:schema:accountState eq PENDING_FUPR"
     },
     {
         key: "PENDING_AP",
         text: "users:advancedSearch.accountStatusFilter.options.pendingInitialPasswordSetup",
-        value: "urn:scim:wso2:schema:accountState eq 'PENDING_AP'"
+        value: "urn:scim:wso2:schema:accountState eq PENDING_AP"
     }
 ];
