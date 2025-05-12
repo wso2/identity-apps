@@ -65,7 +65,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Dropdown, DropdownProps, Header, Icon, PaginationProps, SemanticICONS } from "semantic-ui-react";
 import { AddRoleUserModal } from "./add-role-user-modal";
-import { updateRoleDetails } from "../../api";
+import { updateUsersForRole } from "../../api";
 import { CreateRoleMemberInterface, PatchRoleDataInterface, RoleEditSectionsInterface } from "../../models/roles";
 import "./edit-role.scss";
 
@@ -293,6 +293,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         };
 
         setIsSubmitting(true);
+
         updateRoleDetails(role.id, roleData)
             .then((response: AxiosResponse) => {
                 if (response?.status === 200) {
@@ -312,6 +313,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                         })
                     );
                 }
+
                 onRoleUpdate(tabIndex);
             })
             .catch( (error: AxiosError) => {
