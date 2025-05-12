@@ -26,7 +26,7 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs, commonConfig, userConfig } from "@wso2is/admin.extensions.v1";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
-import { searchRoleList, updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
+import { searchRoleList, updateUsersForRole } from "@wso2is/admin.roles.v2/api/roles";
 import {
     PatchRoleDataInterface,
     SearchRoleInterface
@@ -765,7 +765,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
-        updateRoleDetails(adminRoleId, roleData)
+        updateUsersForRole(adminRoleId, roleData)
             .then(() => {
                 dispatch(addAlert({
                     description: t(
