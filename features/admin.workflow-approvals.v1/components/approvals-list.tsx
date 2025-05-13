@@ -329,7 +329,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                             image
                             as="h6"
                             className="header-with-icon"
-                            data-testid={ `${ testId }-item-heading` }
+                            data-testid={ `${testId}-item-heading` }
                         >
                             <GenericIcon
                                 bordered
@@ -339,21 +339,28 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                                 shape="rounded"
                                 spaced="right"
                                 hoverable={ false }
-                                icon={ getTableIcons().header.default }
-                            />
+                                icon={ getTableIcons().header.default } />
                             <Header.Content>
-                                { approval.id + " " + approval.presentationSubject + " " }
-                                <Label circular size="tiny">
-                                    { approval.presentationName }
+                                { approval.presentationName + ":" }
+                                { /* { approval.name + " " + approval.presentationSubject + " " } */ }
+                                <Label circular>
+                                    { /* { approval.presentationName } */ }
+
+                                    { approval.name }
                                 </Label>
-                                <Header.Subheader data-testid={ `${ testId }-item-sub-heading` }>
+                                {/* <Header.Subheader>
+                                    <div className="pb-2">
+                                        { approval.presentationSubject }
+                                    </div>
+                                    <Header.Subheader/>
+                                </Header.Subheader> */}
+                                <Header.Subheader data-testid={ `${testId}-item-sub-heading` }>
                                     <div className="pb-2">
                                         <Label
                                             circular
                                             size="mini"
                                             className="micro mr-2 ml-0 vertical-aligned-baseline"
-                                            color={ resolveApprovalTagColor(approval.status) }
-                                        />
+                                            color={ resolveApprovalTagColor(approval.status) } />
                                         { approval.status }
                                     </div>
                                 </Header.Subheader>
