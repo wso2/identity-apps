@@ -23,6 +23,10 @@ import {
     ApplicationTemplateLoadingStrategies
 } from "@wso2is/admin.applications.v1/models/application";
 import { ApplicationsResourceEndpointsInterface } from "@wso2is/admin.applications.v1/models/endpoints";
+import {
+    WorkflowAssociationsResourceEndpointsInterface,
+    WorkflowsResourceEndpointsInterface
+} from "@wso2is/admin.approval-workflows.v1/models";
 import { BrandingPreferenceResourceEndpointsInterface } from "@wso2is/admin.branding.v1/models/endpoints";
 import { CertificatesResourceEndpointsInterface } from "@wso2is/admin.certificates.v1";
 import { ClaimResourceEndpointsInterface } from "@wso2is/admin.claims.v1/models/endpoints";
@@ -41,7 +45,6 @@ import { TenantResourceEndpointsInterface } from "@wso2is/admin.tenants.v1/model
 import { UsersResourceEndpointsInterface } from "@wso2is/admin.users.v1/models/endpoints";
 import { UserstoreResourceEndpointsInterface } from "@wso2is/admin.userstores.v1/models/endpoints";
 import { ValidationServiceEndpointsInterface } from "@wso2is/admin.validation.v1/models";
-import {WorkflowsResourceEndpointsInterface} from "@wso2is/admin.workflow-models.v1/models";
 import {
     CommonConfigInterface,
     CommonDeploymentConfigInterface,
@@ -620,6 +623,7 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     ActionsResourceEndpointsInterface,
     PolicyAdministrationEndpointsInterface,
     WorkflowsResourceEndpointsInterface,
+    WorkflowAssociationsResourceEndpointsInterface,
     RulesEndpointsInterface {
 
     CORSOrigins: string;
