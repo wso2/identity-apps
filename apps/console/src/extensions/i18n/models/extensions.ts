@@ -3224,7 +3224,7 @@ export interface Extensions {
                 attributeManagement: string;
                 AccountManagement: string;
                 userManagement: string;
-                workflows: string;
+                approvalWorkflows: string;
                 organizationSettings: string;
             };
         };

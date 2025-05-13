@@ -302,10 +302,10 @@ export class I18nConstants {
         I18nModuleConstants.CUSTOM_AUTHENTICATION_NAMESPACE;
 
     /**
-     * Workflow Model namespace.
+     * Approval Workflow namespace.
      */
-    public static readonly WORKFLOW_MODELS_NAMESPACE: string =
-        I18nModuleConstants.WORKFLOW_MODELS_NAMESPACE;
+    public static readonly APPROVAL_WORKFLOWS_NAMESPACE: string =
+        I18nModuleConstants.APPROVAL_WORKFLOWS_NAMESPACE;
 
     /**
      * Locations of the I18n namespaces.
@@ -364,7 +364,7 @@ export class I18nConstants {
         [ I18nConstants.REMOTE_USER_STORES_NAMESPACE, "portals" ],
         [ I18nConstants.RULES_NAMESPACE, "portals" ],
         [ I18nConstants.PUSH_PROVIDERS_NAMESPACE, "portals" ],
-        [ I18nConstants.WORKFLOW_MODELS_NAMESPACE, "portals" ]
+        [ I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE, "portals" ]
     ]);
 
     /**

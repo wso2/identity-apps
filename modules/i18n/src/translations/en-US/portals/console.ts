@@ -6702,8 +6702,7 @@ export const console: ConsoleNS = {
                 addEmailTemplate: "Add Email Template",
                 addEmailTemplateLocale: "Add Email Template Locale",
                 approvals: "Approvals",
-                workflowModels: "Workflow Models",
-                workflowModelAssociations: "Workflow Associations",
+                approvalWorkflows: "Approval Workflows",
                 attributeDialects: "Attributes",
                 categories: {
                     attributes: "User Attributes",
@@ -6716,14 +6715,14 @@ export const console: ConsoleNS = {
                 },
                 certificates: "Certificates",
                 configurations: "Configurations",
-                createWorkflows: "Create Workflow",
+                createApprovalWorkflows: "Create Approval Workflow",
                 editEmailTemplate: "Email Templates",
                 editExternalDialect: "Edit Attribute Mapping",
                 editGroups: "Edit Group",
                 editLocalClaims: "Edit Attributes",
                 editRoles: "Edit Role",
                 editUsers: "Edit User",
-                editWorkflowModel: "Edit Workflow Model",
+                editApprovalWorkflow: "Edit Approval Workflow",
                 editUserstore: "Edit User Store",
                 emailDomainDiscovery: "Email Domain Discovery",
                 emailTemplateTypes: "",
@@ -8471,30 +8470,30 @@ export const console: ConsoleNS = {
                     }
                 }
             },
-            workflowModels: {
+            approvalWorkflows: {
                 advancedSearch: {
-                    placeholder: "Search by workflow model name"
+                    placeholder: "Search by approval workflow name"
                 },
                 confirmation: {
                     confirm: "Confirm",
-                    content: "If you delete this workflow model, the data in this workflow model will also be deleted. "
+                    content: "If you delete this approval workflow, the data in this approval workflow will also be deleted. "
                         + "Please proceed with caution.",
                     header: "Are you sure?",
                     hint: "Please confirm your action.",
                     message: "This action is irreversible and will permanently delete the"
-                        + " selected workflow model and the data in it."
+                        + " selected approval workflow and the data in it."
                 },
                 dangerZone: {
                     delete: {
-                        actionTitle: "Delete Workflow Model",
-                        header: "Delete Workflow Model",
-                        subheader: "Once you delete a workflow model, there is no going back. "
+                        actionTitle: "Delete Approval Workflow",
+                        header: "Delete Approval Workflow",
+                        subheader: "Once you delete an approval workflow, there is no going back. "
                             + "Please be certain."
                     },
                     disable: {
-                        actionTitle: "Enable Workflow Model",
-                        header: "Enable Workflow Model",
-                        subheader: "Disabling a workflow model can make you lose access to the users in the workflow model. " +
+                        actionTitle: "Enable Approval Workflow",
+                        header: "Enable Approval Workflow",
+                        subheader: "Disabling an approval workflow can make you lose access to the users in the approval workflow. " +
                             "Proceed with caution."
                     }
                 },
@@ -8512,9 +8511,9 @@ export const console: ConsoleNS = {
                             placeholder: "Enter a name",
                             requiredErrorMessage: "Name is a required field",
                             validationErrorMessages: {
-                                alreadyExistsErrorMessage: "A workflow model with this name already exists.",
-                                maxCharLimitErrorMessage: "Workflow model name cannot exceed {{maxLength}} characters.",
-                                invalidInputErrorMessage: "Workflow model name cannot contain the pattern {{invalidString}}."
+                                alreadyExistsErrorMessage: "An approval workflow with this name already exists.",
+                                maxCharLimitErrorMessage: "Approval Workflow name cannot exceed {{maxLength}} characters.",
+                                invalidInputErrorMessage: "Approval Workflow name cannot contain the pattern {{invalidString}}."
                             }
                         },
                         type: {
@@ -8523,65 +8522,72 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
+                list: {
+                    columns: {
+                        actions: "Actions",
+                        lastModified: "Modified Time",
+                        name: "Approval Workflow"
+                    }
+                },
                 notifications: {
-                    addWorkflowModel: {
+                    addApprovalWorkflow: {
                         genericError: {
-                            description: "There was an error while creating the workflow model.",
+                            description: "There was an error while creating the approval workflow.",
                             message: "Something went wrong!"
                         },
                         success: {
-                            description: "The workflow model has been added successfully!",
-                            message: "Workflow model added successfully!"
+                            description: "The approval workflow has been added successfully!",
+                            message: "approval workflow added successfully!"
                         }
                     },
                     apiLimitReachedError: {
                         error: {
-                            description: "You have reached the maximum number of workflow models allowed.",
-                            message: "Failed to create the workflow model"
+                            description: "You have reached the maximum number of approval workflows allowed.",
+                            message: "Failed to create the approval workflow"
                         }
                     },
                     delay: {
-                        description: "It may take a while for the workflow model list to be updated. "
-                            + "Refresh in a few seconds to get the updated workflow model list.",
-                        message: "Updating workflow model list takes time"
+                        description: "It may take a while for the approval workflow list to be updated. "
+                            + "Refresh in a few seconds to get the updated approval workflow list.",
+                        message: "Updating approval workflow list takes time"
                     },
-                    deleteWorkflowModel: {
+                    deleteApprovalWorkflow: {
                         genericError: {
-                            description: "There was an error while deleting the workflow model.",
+                            description: "There was an error while deleting the approval workflow.",
                             message: "Something went wrong!"
                         },
                         success: {
-                            description: "The workflow model has been deleted successfully!",
-                            message: "Workflow Model deleted successfully!"
+                            description: "The approval workflow has been deleted successfully!",
+                            message: "Approval workflow deleted successfully!"
                         }
                     },
-                    fetchWorkflowModelMetadata: {
+                    fetchApprovalWorkflowMetadata: {
                         genericError: {
                             description: "An error occurred while fetching the type meta data.",
                             message: "Something went wrong"
                         }
                     },
-                    fetchWorkflowModelTemplates: {
+                    fetchApprovalWorkflowTemplates: {
                         genericError: {
-                            description: "An error occurred while fetching the workflow model type details.",
+                            description: "An error occurred while fetching the approval workflow type details.",
                             message: "Something went wrong"
                         }
                     },
-                    fetchWorkflowModelTypes: {
+                    fetchApprovalWorkflowTypes: {
                         genericError: {
-                            description: "An error occurred while fetching the workflow model types.",
+                            description: "An error occurred while fetching the approval workflow types.",
                             message: "Something went wrong"
                         }
                     },
-                    fetchWorkflowModels: {
+                    fetchApprovalWorkflows: {
                         genericError: {
-                            description: "An error occurred while fetching workflow models.",
+                            description: "An error occurred while fetching approval workflows.",
                             message: "Something went wrong"
                         }
                     },
                     testConnection: {
                         genericError: {
-                            description: "An error occurred while testing the connection to the workflow model",
+                            description: "An error occurred while testing the connection to the approval workflow",
                             message: "Something went wrong"
                         },
                         success: {
@@ -8593,21 +8599,21 @@ export const console: ConsoleNS = {
                         description: "It might take some time for the updated properties to appear.",
                         message: "Updating properties takes time"
                     },
-                    updateWorkflowModel: {
+                    updateApprovalWorkflow: {
                         genericError: {
-                            description: "An error occurred while updating the workflow model.",
+                            description: "An error occurred while updating the approval workflow.",
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "This workflow model has been updated successfully!",
-                            message: "Workflow model updated successfully!"
+                            description: "This approval workflow has been updated successfully!",
+                            message: "approval workflow updated successfully!"
                         }
                     }
                 },
                 pageLayout: {
                     edit: {
-                        back: "Go back to workflow models",
-                        description: "Edit workflow model",
+                        back: "Go back to approval workflows",
+                        description: "Edit approval workflow",
                         tabs: {
                             connection: "Connection",
                             general: "General",
@@ -8616,29 +8622,29 @@ export const console: ConsoleNS = {
                         }
                     },
                     list: {
-                        description: "Create and manage workflow models.",
-                        primaryAction: "New Workflow Model",
-                        title: "Workflow Models"
+                        description: "Create and manage approval workflows.",
+                        primaryAction: "New approval workflow",
+                        title: "Approval workflows"
                     },
                     templates: {
-                        back: "Go back to workflow models",
-                        description: "Please choose one of the following workflow model types.",
+                        back: "Go back to approval workflows",
+                        description: "Please choose one of the following approval workflow types.",
                         templateHeading: "Quick Setup",
-                        templateSubHeading: "Predefined set of templates to speed up your workflow model creation.",
-                        title: "Select Workflow Model Type"
+                        templateSubHeading: "Predefined set of templates to speed up your approval workflow creation.",
+                        title: "Select Approval Workflow Type"
                     }
                 },
                 placeholders: {
                     emptyList: {
-                        action: "New Workflow Model",
-                        subtitles: "There are currently no workflow models available. "
-                            + "You can add a new workflow model easily by following the "
-                            + "steps in the workflow model creation wizard.",
-                        title: "Add a new workflow model"
+                        action: "New Approval Workflow",
+                        subtitles: "There are currently no approval workflows available. "
+                            + "You can add a new approval workflow easily by following the "
+                            + "steps in the approval workflow creation wizard.",
+                        title: "Add a new approval workflow"
                     },
                     emptyListReadOnly: {
-                        subtitles: "There are currently no workflow models available.",
-                        title: "No workflow models"
+                        subtitles: "There are currently no approval workflows available.",
+                        title: "No approval workflows"
                     },
                     emptySearch: {
                         action: "Clear search query",
@@ -8657,174 +8663,13 @@ export const console: ConsoleNS = {
                     update: "Update"
                 },
                 wizard: {
-                    header: "Add {{type}} Workflow Model",
+                    header: "Add {{type}} approval workflow",
                     steps: {
                         general: "General",
                         group: "Group",
                         summary: "Summary",
                         user: "User"
                     }
-                }
-            },
-            workflowModelAssociations: {
-                advancedSearch: {
-                    placeholder: "Search by workflow model association name"
-                },
-                confirmation: {
-                    confirm: "Confirm",
-                    content: "If you delete this workflow model association, the data in this workflow model association will also be deleted. "
-                        + "Please proceed with caution.",
-                    header: "Are you sure?",
-                    hint: "Please confirm your action.",
-                    message: "This action is irreversible and will permanently delete the"
-                        + " selected workflow model association and the data in it."
-                },
-                dangerZone: {
-                    delete: {
-                        actionTitle: "Delete Workflow Model Association",
-                        header: "Delete Workflow Model Association",
-                        subheader: "Once you delete a workflow model association, there is no going back. "
-                            + "Please be certain."
-                    },
-                    disable: {
-                        actionTitle: "Enable Workflow Model Association",
-                        header: "Enable Workflow Model Association",
-                        subheader: "Disabling a workflow model association can make you lose access to the users in the workflow model association. " +
-                            "Proceed with caution."
-                    }
-                },
-                forms: {
-                    general: {
-                        description: {
-                            label: "Description",
-                            placeholder: "Sample Association 1",
-                            validationErrorMessages: {
-                                invalidInputErrorMessage: "Description cannot contain the pattern {{invalidString}}."
-                            }
-                        },
-                        name: {
-                            label: "Name",
-                            placeholder: "Sample Association 1",
-                            requiredErrorMessage: "Name is a required field",
-                            validationErrorMessages: {
-                                alreadyExistsErrorMessage: "A workflow model association with this name already exists.",
-                                maxCharLimitErrorMessage: "Workflow model association name cannot exceed {{maxLength}} characters.",
-                                invalidInputErrorMessage: "Workflow model association name cannot contain the pattern {{invalidString}}."
-                            }
-                        },
-                        type: {
-                            label: "Type",
-                            requiredErrorMessage: "Select a Type"
-                        }
-                    }
-                },
-                notifications: {
-                    addWorkflowModelAssociation: {
-                        genericError: {
-                            description: "There was an error while creating the workflow model.",
-                            message: "Something went wrong!"
-                        },
-                        success: {
-                            description: "The workflow model association has been added successfully!",
-                            message: "Workflow model association added successfully!"
-                        }
-                    },
-                    apiLimitReachedError: {
-                        error: {
-                            description: "You have reached the maximum number of workflow model associations allowed.",
-                            message: "Failed to create the workflow model association"
-                        }
-                    },
-                    delay: {
-                        description: "It may take a while for the workflow model list to be updated. "
-                            + "Refresh in a few seconds to get the updated workflow model list.",
-                        message: "Updating workflow model list takes time"
-                    },
-                    deleteWorkflowModelAssociation: {
-                        genericError: {
-                            description: "There was an error while deleting the workflow model association.",
-                            message: "Something went wrong!"
-                        },
-                        success: {
-                            description: "The workflow model association has been deleted successfully!",
-                            message: "Workflow Model Association deleted successfully!"
-                        }
-                    },
-                    fetchWorkflowModelAssociations: {
-                        genericError: {
-                            description: "An error occurred while fetching workflow model associations.",
-                            message: "Something went wrong"
-                        }
-                    },
-                    testConnection: {
-                        genericError: {
-                            description: "An error occurred while testing the connection to the workflow model association",
-                            message: "Something went wrong"
-                        },
-                        success: {
-                            description: "The connection is healthy.",
-                            message: "Connection successful!"
-                        }
-                    },
-                    updateDelay: {
-                        description: "It might take some time for the updated properties to appear.",
-                        message: "Updating properties takes time"
-                    },
-                    updateWorkflowModelAssociation: {
-                        genericError: {
-                            description: "An error occurred while updating the workflow model association.",
-                            message: "Something went wrong"
-                        },
-                        success: {
-                            description: "This workflow model association has been updated successfully!",
-                            message: "Workflow model association updated successfully!"
-                        }
-                    }
-                },
-                pageLayout: {
-                    edit: {
-                        back: "Go back to workflow model associations",
-                        description: "Edit workflow model association",
-                        tabs: {
-                            connection: "Connection",
-                            general: "General",
-                            group: "Group",
-                            user: "User"
-                        }
-                    },
-                    list: {
-                        description: "Create and manage workflow model associations.",
-                        primaryAction: "New Workflow Model Association",
-                        title: "Workflow Model Association"
-                    }
-                },
-                placeholders: {
-                    emptyList: {
-                        action: "New Workflow Model Association",
-                        subtitles: "There are currently no workflow model associations available. "
-                            + "You can add a new workflow model association easily by following the "
-                            + "steps in the workflow model association creation wizard.",
-                        title: "Add a new workflow model association"
-                    },
-                    emptyListReadOnly: {
-                        subtitles: "There are currently no workflow model associations available.",
-                        title: "No workflow model associations"
-                    },
-                    emptySearch: {
-                        action: "Clear search query",
-                        subtitles: "We couldn't find any results for {{searchQuery}}. "
-                            + "Please try a different search term.",
-                        title: "No results found"
-                    }
-                },
-                sqlEditor: {
-                    create: "Create",
-                    darkMode: "Dark Mode",
-                    delete: "Delete",
-                    read: "Read",
-                    reset: "Reset Changes",
-                    title: "SQL Query Types",
-                    update: "Update"
                 }
             }
         },

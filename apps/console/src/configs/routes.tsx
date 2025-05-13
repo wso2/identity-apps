@@ -1162,83 +1162,49 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
-            category: "extensions:manage.sidePanel.categories.workflows",
+            category: "extensions:manage.sidePanel.categories.approvalWorkflows",
             children: [
                 {
-                    component: lazy(() => import("@wso2is/admin.workflow-models.v1/pages/workflow-model-edit-page")),
+                    component: lazy(() =>
+                        import("@wso2is/admin.approval-workflows.v1/pages/approval-workflow-edit-page")
+                    ),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
                     },
-                    id: "workflowModelEdit",
-                    name: "console:manage.features.sidePanel.editWorkflowModel",
-                    path: AppConstants.getPaths().get("WORKFLOW_MODEL_EDIT"),
+                    id: "approvalWorkflowEdit",
+                    name: "console:manage.features.sidePanel.editApprovalWorkflow",
+                    path: AppConstants.getPaths().get("APPROVAL_WORKFLOW_EDIT"),
                     protected: true,
                     showOnSidePanel: false
                 },
                 {
-                    component: lazy(() => import("@wso2is/admin.workflow-models.v1/pages/workflow-model-create-page")),
+                    component: lazy(() =>
+                        import(
+                            "@wso2is/admin.approval-workflows.v1/pages/" +
+                            "approval-workflow-create-page"
+                        )
+                    ),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
                     },
-                    id: "workflowModelCreate",
-                    name: "console:manage.features.sidePanel.createWorkflows",
-                    path: AppConstants.getPaths().get("WORKFLOW_MODEL_CREATE"),
+                    id: "approvalWorkflowCreate",
+                    name: "console:manage.features.sidePanel.createApprovalWorkflows",
+                    path: AppConstants.getPaths().get("APPROVAL_WORKFLOW_CREATE"),
                     protected: true,
                     showOnSidePanel: false
                 }
             ],
-            component: lazy(() => import("@wso2is/admin.workflow-models.v1/pages/workflow-models")),
+            component: lazy(() => import("@wso2is/admin.approval-workflows.v1/pages/approval-workflows")),
             exact: true,
             icon: {
                 icon: <DocumentCheckIcon fill="black" className="icon" />
             },
-            id: "workflowModels",
-            name: "console:manage.features.sidePanel.workflowModels",
-            order: 27,
-            path: AppConstants.getPaths().get("WORKFLOW_MODELS"),
-            protected: true,
-            showOnSidePanel: true
-        },
-        {
-            category: "extensions:manage.sidePanel.categories.workflows",
-            children: [
-                // {
-                //     component: lazy(() => import("@wso2is/admin.workflow-model-associations.v1/pages/workflow-model-edit-page")),
-                //     exact: true,
-                //     icon: {
-                //         icon: getSidePanelIcons().childIcon
-                //     },
-                //     id: "workflowModelAssociationEdit",
-                //     name: "console:manage.features.sidePanel.editWorkflowModelAssociation",
-                //     path: AppConstants.getPaths().get("WORKFLOW_MODEL_ASSOCIATION_EDIT"),
-                //     protected: true,
-                //     showOnSidePanel: false
-                // },
-                {
-                    component: lazy(() => import("@wso2is/admin.workflow-model-associations.v1/pages/workflow-model-association-create-page")),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
-                    id: "workflowModelAssociationCreate",
-                    name: "console:manage.features.sidePanel.createWorkflowAssociations",
-                    path: AppConstants.getPaths().get("WORKFLOW_MODEL_ASSOCIATION_CREATE"),
-                    protected: true,
-                    showOnSidePanel: false
-                }
-            ],
-            component: lazy(() => import
-            ("@wso2is/admin.workflow-model-associations.v1/pages/workflow-model-associations")),
-            exact: true,
-            icon: {
-                icon: <DocumentCheckIcon fill="black" className="icon" />
-            },
-            id: "workflowModelAssociations",
-            name: "console:manage.features.sidePanel.workflowModelAssociations",
-            order: 28,
-            path: AppConstants.getPaths().get("WORKFLOW_MODEL_ASSOCIATIONS"),
+            id: "workflows",
+            name: "console:manage.features.sidePanel.approvalWorkflows",
+            order: 8,
+            path: AppConstants.getPaths().get("APPROVAL_WORKFLOWS"),
             protected: true,
             showOnSidePanel: true
         },

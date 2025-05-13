@@ -365,9 +365,9 @@ export class I18nModuleConstants {
     public static readonly RULES_NAMESPACE: string = "rules";
 
     /**
-     * Workflow Models namespace.
+     * Approval Workflows namespace.
      */
-    public static readonly WORKFLOW_MODELS_NAMESPACE: string = "workflowModels";
+    public static readonly APPROVAL_WORKFLOWS_NAMESPACE: string = "approvalWorkflows";
 
     /**
      * Constant representing the locale preference key.

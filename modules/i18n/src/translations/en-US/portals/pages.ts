@@ -30,6 +30,10 @@ export const pages: pagesNS = {
         subTitle: null,
         title: "Add New Template"
     },
+    approvalWorkflows: {
+        subTitle: "Create and manage approval workflows.",
+        title: "Approval Workflows"
+    },
     approvalsPage: {
         subTitle: "Review operational tasks that requires your approval",
         title: "Approvals"
@@ -124,13 +128,5 @@ export const pages: pagesNS = {
         backButton: "Go back to {{type}}",
         subTitle: "{{name}}",
         title: "{{email}}"
-    },
-    workflowModelAssociations: {
-        subTitle: "Create and manage workflow model associations.",
-        title: "Workflow Model Associations"
-    },
-    workflowModels: {
-        subTitle: "Create and manage workflow models.",
-        title: "Workflow Models"
     }
 };

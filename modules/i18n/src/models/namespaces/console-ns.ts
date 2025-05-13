@@ -6653,8 +6653,7 @@ export interface ConsoleNS {
                 addEmailTemplate: string;
                 addEmailTemplateLocale: string;
                 approvals: string;
-                workflowModels: string;
-                workflowModelAssociations: string;
+                approvalWorkflows: string;
                 attributeDialects: string;
                 categories: {
                     attributes: string;
@@ -6667,7 +6666,7 @@ export interface ConsoleNS {
                 };
                 certificates: string;
                 configurations: string;
-                createWorkflows: string;
+                createApprovalWorkflows: string;
                 editEmailTemplate: string;
                 editExternalDialect: string;
                 editGroups: string;
@@ -6675,7 +6674,7 @@ export interface ConsoleNS {
                 editRoles: string;
                 editUsers: string;
                 editUserstore: string;
-                editWorkflowModel: string;
+                editApprovalWorkflow: string;
                 emailDomainDiscovery: string;
                 emailTemplateTypes: string;
                 emailTemplates: string;
@@ -8154,36 +8153,43 @@ export interface ConsoleNS {
                     };
                 };
             };
-            workflowModels: {
+            approvalWorkflows: {
                 advancedSearch: {
                     placeholder: string;
                 };
+                list: {
+                    columns: {
+                        actions: string;
+                        lastModified: string;
+                        name: string;
+                    }
+                };
                 notifications: {
-                    fetchWorkflowModels: {
+                    fetchApprovalWorkflows: {
                         genericError: {
                             message: string;
                             description: string;
                         };
                     };
-                    fetchWorkflowModelTemplates: {
+                    fetchApprovalWorkflowTemplates: {
                         genericError: {
                             message: string;
                             description: string;
                         };
                     };
-                    fetchWorkflowModelTypes: {
+                    fetchApprovalWorkflowTypes: {
                         genericError: {
                             message: string;
                             description: string;
                         };
                     };
-                    fetchWorkflowModelMetadata: {
+                    fetchApprovalWorkflowMetadata: {
                         genericError: {
                             message: string;
                             description: string;
                         };
                     };
-                    deleteWorkflowModel: {
+                    deleteApprovalWorkflow: {
                         genericError: {
                             message: string;
                             description: string;
@@ -8197,7 +8203,7 @@ export interface ConsoleNS {
                         message: string;
                         description: string;
                     };
-                    updateWorkflowModel: {
+                    updateApprovalWorkflow: {
                         genericError: {
                             message: string;
                             description: string;
@@ -8217,7 +8223,7 @@ export interface ConsoleNS {
                             description: string;
                         };
                     };
-                    addWorkflowModel: {
+                    addApprovalWorkflow: {
                         genericError: {
                             message: string;
                             description: string;
@@ -8312,157 +8318,6 @@ export interface ConsoleNS {
                         summary: string;
                     };
                     header: string;
-                };
-                placeholders: {
-                    emptySearch: {
-                        action: string;
-                        title: string;
-                        subtitles: string;
-                    };
-                    emptyList: {
-                        action: string;
-                        title: string;
-                        subtitles: string;
-                    };
-                    emptyListReadOnly: {
-                        title: string;
-                        subtitles: string;
-                    };
-                };
-                sqlEditor: {
-                    reset: string;
-                    title: string;
-                    create: string;
-                    update: string;
-                    read: string;
-                    delete: string;
-                    darkMode: string;
-                };
-            };
-            workflowModelAssociations: {
-                advancedSearch: {
-                    placeholder: string;
-                };
-                notifications: {
-                    fetchWorkflowModelAssociations: {
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    deleteWorkflowModelAssociation: {
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    delay: {
-                        message: string;
-                        description: string;
-                    };
-                    updateWorkflowModelAssociation: {
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    testConnection: {
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    addWorkflowModelAssociation: {
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    apiLimitReachedError: {
-                        error: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    updateDelay: {
-                        message: string;
-                        description: string;
-                    };
-                };
-                confirmation: {
-                    hint: string;
-                    header: string;
-                    message: string;
-                    content: string;
-                    confirm: string;
-                };
-                pageLayout: {
-                    list: {
-                        title: string;
-                        description: string;
-                        primaryAction: string;
-                    };
-                    edit: {
-                        description: string;
-                        back: string;
-                        tabs: {
-                            general: string;
-                            connection: string;
-                            user: string;
-                            group: string;
-                        };
-                    };
-                };
-                forms: {
-                    general: {
-                        name: {
-                            label: string;
-                            placeholder: string;
-                            requiredErrorMessage: string;
-                            validationErrorMessages: {
-                                [key: string]: string;
-                            };
-                        };
-                        type: {
-                            label: string;
-                            requiredErrorMessage: string;
-                        };
-                        description: {
-                            label: string;
-                            placeholder: string;
-                            validationErrorMessages: {
-                                invalidInputErrorMessage: string;
-                            };
-                        };
-                    };
-                };
-                dangerZone: {
-                    delete: {
-                        actionTitle: string;
-                        header: string;
-                        subheader: string;
-                    };
-                    disable: {
-                        actionTitle: string;
-                        header: string;
-                        subheader: string;
-                    };
                 };
                 placeholders: {
                     emptySearch: {
