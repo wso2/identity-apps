@@ -23,11 +23,12 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { ApplicationShareStatusUnitListInterface } from "../models/application";
+import { AsyncOperationStatusUnitListInterface } from "../models/application";
 
 /**
- * Hook to get the list of application share status units.
+ * Hook to get the list of asynchronous operation status units.
  *
+ * @param operationId - Operation id the data.
  * @param shouldFetch - Should fetch the data.
  * @param filter - Search filter.
  * @param limit - Pagination limit.
@@ -35,9 +36,8 @@ import { ApplicationShareStatusUnitListInterface } from "../models/application";
  * @param before - Pagination before.
  * @returns SWR response object.
  */
-const useGetApplicationShareStatusUnits = <
-    Data = ApplicationShareStatusUnitListInterface,
-    Error = RequestErrorInterface>(
+export const useGetAsyncOperationStatusUnits = <Data = AsyncOperationStatusUnitListInterface, Error =
+    RequestErrorInterface>(
         operationId: string,
         shouldFetch: boolean,
         filter: string,
@@ -60,17 +60,16 @@ const useGetApplicationShareStatusUnits = <
         url: store.getState().config.endpoints.asyncStatus + "/" + operationId + "/unit-operations"
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch? requestConfig : null, {
-        shouldRetryOnError: false
-    });
+    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null,
+        {
+            shouldRetryOnError: false
+        });
 
     return {
         data,
         error,
-        isLoading: false,
+        isLoading,
         isValidating,
         mutate
     };
 };
-
-export default useGetApplicationShareStatusUnits;

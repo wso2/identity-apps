@@ -25,6 +25,7 @@ import {
     TableColumnInterface
 } from "@wso2is/react-components";
 import React, { ReactElement, ReactNode, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {
     Dropdown,
@@ -34,9 +35,9 @@ import {
     Header,
     Icon
 } from "semantic-ui-react";
-import useGetApplicationShareStatusUnits from "../api/use-get-application-share-status";
+import { useGetAsyncOperationStatusUnits } from "../api/use-get-application-share-status-units";
 import { ApplicationShareUnitStatus } from "../constants/application-management";
-import { ApplicationShareStatusUnitLinkInterface, ApplicationShareUnitStatusResponse,
+import { AsyncOperationStatusLinkInterface, AsyncOperationStatusUnitResponse,
     OperationStatusSummary } from "../models/application";
 import "./share-application-status-response-list.scss";
 
@@ -78,10 +79,11 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
 
     const [ selectedStatus, setSelectedStatus ] = useState<ApplicationShareUnitStatus>
     (ApplicationShareUnitStatus.FAILED);
-    const [ unitOperations, setUnitOperations ] = useState<ApplicationShareUnitStatusResponse[]>([]);
+    const [ unitOperations, setUnitOperations ] = useState<AsyncOperationStatusUnitResponse[]>([]);
     const [ afterCursor, setAfterCursor ] = useState<string | null>(null);
     const [ hasMoreItems, setHasMoreItems ] = useState(true);
     const [ isInitialLoading, setIsInitialLoading ] = useState<boolean>(true);
+    const { t } = useTranslation();
 
     const API_LIMIT: number = UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT;
 
@@ -93,15 +95,15 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
     });
 
     const {
-        data: shareUnitStatusListResponse,
+        data: shareStatusUnitListResponse,
         isLoading: isShareUnitStatusFetchRequestLoading,
         isValidating: isShareUnitStatusFetchRequestValidating,
         error: shareUnitStatusListFetchRequestError
-    } = useGetApplicationShareStatusUnits(operationId, params.shouldFetch,
+    } = useGetAsyncOperationStatusUnits(operationId, params.shouldFetch,
         params.filter, params.limit, params.after, null);
 
     useEffect(() => {
-        if (!shareUnitStatusListResponse || isShareUnitStatusFetchRequestLoading ||
+        if (!shareStatusUnitListResponse || isShareUnitStatusFetchRequestLoading ||
             isShareUnitStatusFetchRequestValidating) {
             return;
         }
@@ -113,13 +115,13 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
             shouldFetch: false
         }));
 
-        const newUnitShares: ApplicationShareUnitStatusResponse[] = shareUnitStatusListResponse.unitOperations || [];
+        const newUnitShares: AsyncOperationStatusUnitResponse[] = shareStatusUnitListResponse.unitOperations || [];
 
-        setUnitOperations((prevUnits: ApplicationShareUnitStatusResponse[]) => [ ...prevUnits, ...newUnitShares ]);
+        setUnitOperations((prevUnits: AsyncOperationStatusUnitResponse[]) => [ ...prevUnits, ...newUnitShares ]);
 
         let nextFound: boolean = false;
 
-        shareUnitStatusListResponse?.links?.forEach((link: ApplicationShareStatusUnitLinkInterface) => {
+        shareStatusUnitListResponse?.links?.forEach((link: AsyncOperationStatusLinkInterface) => {
 
             if (link.rel === "next") {
                 const urlParams: URLSearchParams = new URLSearchParams(link.href.split("?")[1]);
@@ -134,7 +136,7 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
             setAfterCursor(null);
             setHasMoreItems(false);
         }
-    }, [ shareUnitStatusListResponse,
+    }, [ shareStatusUnitListResponse,
         isShareUnitStatusFetchRequestLoading,
         isShareUnitStatusFetchRequestValidating, isInitialLoading ]);
 
@@ -160,6 +162,7 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
             shouldFetch: true
         });
     };
+
     const loadMoreData = () => {
         if (isShareUnitStatusFetchRequestLoading || !hasMoreItems) {
             return;
@@ -170,6 +173,7 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
             shouldFetch: true
         }));
     };
+
     const OrgIdDisplay = ({ id }: { id: string }) => {
         const [ isHovered, setIsHovered ] = useState(false);
         const [ isCopied, setIsCopied ] = useState(false);
@@ -187,7 +191,7 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
                 onMouseEnter={ () => setIsHovered(true) }
                 onMouseLeave={ () => setIsHovered(false) }
             >
-                <span className="ellipsis-text" title={ id }>
+                <span className="org-id-wrapper-ellipsis-text" title={ id }>
                     { id }
                 </span>
                 <span className="copy-icon-container">
@@ -212,16 +216,16 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
                 dataIndex: "targetOrgId",
                 id: "targetOrgId",
                 key: "targetOrgId",
-                render: (response: ApplicationShareUnitStatusResponse): ReactNode => {
+                render: (response: AsyncOperationStatusUnitResponse): ReactNode => {
                     return (
                         <Header
                             className="share-application-status-response-list-header"
                             data-componentid={ `${componentId}-application-item-heading` }>
                             <Header.Subheader className="share-application-status-response-list-org-handler">
-                                { response.targetOrgName }
+                                { response?.targetOrgName }
                             </Header.Subheader>
                             <Header.Content className="share-application-status-response-list-org-id">
-                                <OrgIdDisplay id={ response.targetOrgId } />
+                                <OrgIdDisplay id={ response?.targetOrgId } />
                             </Header.Content>
                         </Header>
                     );
@@ -233,7 +237,7 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
                 dataIndex: "status",
                 id: "status",
                 key: "status",
-                render: (response: ApplicationShareUnitStatusResponse): ReactNode => {
+                render: (response: AsyncOperationStatusUnitResponse): ReactNode => {
                     return (
                         <Header
                             className="share-application-status-response-list-status-icon"
@@ -242,7 +246,7 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
                             <Header.Content>
                                 <Icon
                                     name="circle"
-                                    color={ response.status === ApplicationShareUnitStatus.SUCCESS ? "green" : "red" }
+                                    color={ response?.status === ApplicationShareUnitStatus.SUCCESS ? "green" : "red" }
                                     size="small"
                                     data-componentid={ `${componentId}-status-icon` }
                                 />
@@ -257,13 +261,22 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
                 dataIndex: "statusMessage",
                 id: "statusMessage",
                 key: "statusMessage",
-                render: (response: ApplicationShareUnitStatusResponse): ReactNode => {
+                render: (response: AsyncOperationStatusUnitResponse): ReactNode => {
                     return (
                         <Header as="h6" data-componentid={ `${componentId}-status-item-heading` }>
                             <Header.Content>
-                                { response.status === "SUCCESS"
-                                    ? "Application shared successfully."
-                                    : response.statusMessage }
+                                { response?.status === "SUCCESS" && response?.statusMessage === null
+                                    ? t("applications:edit.sections.shareApplication."
+                                        + "applicationShareFailureSummaryDefaultStatus.success")
+                                    : response?.statusMessage }
+                                { response?.status === "FAILED" && response?.statusMessage === null
+                                    ? t("applications:edit.sections.shareApplication."
+                                        + "applicationShareFailureSummaryDefaultStatus.failed")
+                                    : response?.statusMessage }
+                                { response?.status === "PARTIALLY_COMPLETED" && response?.statusMessage === null
+                                    ? t("applications:edit.sections.shareApplication."
+                                        + "applicationShareFailureSummaryDefaultStatus.partiallyCompleted")
+                                    : response?.statusMessage }
                             </Header.Content>
                         </Header>
                     );
@@ -274,10 +287,14 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
     };
 
     const statusOptions: DropdownItemProps[] = [
-        { key: "ALL", text: "All", value: ApplicationShareUnitStatus.ALL },
-        { key: "SUCCESS", text: "Success", value: ApplicationShareUnitStatus.SUCCESS },
-        { key: "FAILED", text: "Failed", value: ApplicationShareUnitStatus.FAILED },
-        { key: "PARTIALLY_COMPLETED", text: "Partially Completed",
+        { key: "ALL", text: t("applications:edit.sections.sharedAccess.sharedAccessStatusOptions.all"),
+            value: ApplicationShareUnitStatus.ALL },
+        { key: "SUCCESS", text: t("applications:edit.sections.sharedAccess.sharedAccessStatusOptions.success"),
+            value: ApplicationShareUnitStatus.SUCCESS },
+        { key: "FAILED", text: t("applications:edit.sections.sharedAccess.sharedAccessStatusOptions.failed"),
+            value: ApplicationShareUnitStatus.FAILED },
+        { key: "PARTIALLY_COMPLETED",
+            text: t("applications:edit.sections.sharedAccess.sharedAccessStatusOptions.partiallyCompleted"),
             value: ApplicationShareUnitStatus.PARTIALLY_COMPLETED }
     ];
 
@@ -287,8 +304,10 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
                 <Grid.Column width={ 8 }>
                     { operationSummary && (
                         <p>
-                            Partially Completed: { operationSummary.partiallyCompletedCount } &nbsp;&nbsp;
-                            | &nbsp;&nbsp; Failed: { operationSummary.failedCount }
+                            { t("applications:wizards.sharedAccessStatus.banner.partiallyCompleted") }
+                            { operationSummary.partiallyCompletedCount } &nbsp;&nbsp; | &nbsp;&nbsp;
+                            { t("applications:wizards.sharedAccessStatus.banner.partiallyCompleted") }
+                            { operationSummary.failedCount }
                         </p>
                     ) }
                     { !operationSummary && "Status counts unavailable" }
@@ -335,7 +354,7 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
                         }
                         scrollableTarget={ "scrollableDiv" }
                     >
-                        <DataTable<ApplicationShareUnitStatusResponse>
+                        <DataTable<AsyncOperationStatusUnitResponse>
                             className="addon-field-wrapper"
                             isLoading={ isInitialLoading && unitOperations.length === 0 }
                             loadingStateOptions={ {

@@ -190,6 +190,9 @@
         {% if console.ui.application_template_loading_strategy is defined %}
         "applicationTemplateLoadingStrategy": "{{ console.ui.application_template_loading_strategy }}",
         {% endif %}
+        {% if console.ui.application_sharing_status_polling_interval is defined %}
+        "applicationSharingStatusPollingInterval": {{ console.ui.application_sharing_status_polling_interval }},
+        {% endif %}
         {% if console.ui.identity_provider_template_loading_strategy is defined %}
         "identityProviderTemplateLoadingStrategy": "{{ console.ui.identity_provider_template_loading_strategy }}",
         {% endif %}
@@ -566,9 +569,6 @@
                 ],
                 "enabled": {% if console.applications.enabled is defined %} {{ console.applications.enabled }},
                 {% else %} true,
-                {% endif %}
-                {% if console.applications.applicationShareStatusPollInterval is defined %}
-                "applicationShareStatusPollInterval": {{ console.applications.applicationShareStatusPollInterval }},
                 {% endif %}
                 "scopes": {
                     {% if console.applications.scopes is defined %}

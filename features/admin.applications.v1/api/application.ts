@@ -1247,48 +1247,33 @@ export const useMyAccountStatus = <Data = MyAccountPortalStatusInterface, Error 
 };
 
 /**
- * Hook to get asynchronous operation status units.
+ * Function to get asynchronous operation status.
  *
- * @returns Response of the asynchronous operation status units.
+ * @param operationType - Operation Type.
+ * @param subjectId - Subject Id of the operation.
+ * @param limit - number of records to fetch.
+ *
+ * @returns Promise of response of the operation status.
  */
-export const getAsyncOperationStatusUnits = (operationId: string, limit: number): Promise<any> => {
+export const getAsyncOperationStatus = (
+    after: string,
+    before: string,
+    filter: string,
+    limit: number
+): Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
-        data: operationId,
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.asyncStatus + "/" + operationId + "/unit-operations?limit=" + limit
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            if ((response.status !== 200)) {
-                return Promise.reject(new Error("Failed to fetch async operation status units."));
-            }
-
-            return Promise.resolve(response);
-        }).catch((error: AxiosError) => {
-            return Promise.reject(error);
-        });
-};
-
-/**
- * Hook to get asynchronous operation status.
- *
- * @returns Response of the asynchronous operation status.
- */
-export const getAsyncOperationStatus = (operationType: string, subjectId: string, limit: number): Promise<any> => {
-    const requestConfig: AxiosRequestConfig = {
-        data: subjectId,
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
+        params: {
+            after,
+            before,
+            filter,
+            limit
         },
-        method: HttpMethods.GET,
-        url: store.getState().config.endpoints.asyncStatus + "/?filter=subjectId eq "
-            + subjectId + " and operationType eq " + operationType + " &limit=" + limit
+        url: store.getState().config.endpoints.asyncStatus
     };
 
     return httpClient(requestConfig)
