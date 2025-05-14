@@ -18,6 +18,7 @@
 
 import {
     BrandingPreferenceAPIResponseInterface,
+    BrandingPreferenceCustomContentInterface,
     BrandingSubFeatures,
     PreviewScreenType,
     PreviewScreenVariationType
@@ -178,6 +179,11 @@ export interface BrandingPreferenceContextProps {
      * Sets the selected application.
      */
     setSelectedApplication: (application: string) => void;
+    /**
+    * Updates the custom branding layout content.
+    * @param updatedContent - HTML, CSS, JS content.
+    */
+    updateBrandingCustomContent: (updatedContent: BrandingPreferenceCustomContentInterface) => void;
 }
 
 /**

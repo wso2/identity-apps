@@ -18,15 +18,27 @@
 
 import { MenuItem } from "@mui/material";
 import Button from "@oxygen-ui/react/Button";
-import Divider from "@oxygen-ui/react/Divider";
 import Select from "@oxygen-ui/react/Select";
 import { ArrowUpRightFromSquareIcon } from "@oxygen-ui/react-icons";
-import { TestableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import { BrandingPreferenceCustomContentInterface } from "@wso2is/common.branding.v1/models/branding-preferences";
+import { IdentifiableComponentInterface, TestableComponentInterface} from "@wso2is/core/models";
+import { FormPropsInterface } from "@wso2is/form/src/components/form";
+import React, {
+    FunctionComponent,
+    MutableRefObject,
+    ReactElement,
+    useContext,
+    useEffect,
+    useRef,
+    useState } from "react";
+import { useTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router";
 import { Segment } from "semantic-ui-react";
 import { EditorViewTabs } from "./custom-page-editor/editor-view";
+import { StickyTabPaneActionPanel } from "./sticky-tab-pane-action-panel";
+import BrandingPreferenceContext from "../context/branding-preference-context";
 import useCustomPageEditor from "../hooks/use-custom-page-editor";
+import { PredefinedLayouts } from "../meta/layouts";
 
 type CustomPageEditorPageLayoutPropsInterface = TestableComponentInterface;
 
@@ -48,15 +60,28 @@ interface UpdatedContent {
 }
 
 const templateOptions: TemplateOptions[] = [
-    { key: "centered", text: "Centered", value: "centered" },
+    { key: PredefinedLayouts.CENTERED, text: "Centered", value: PredefinedLayouts.CENTERED },
     { key: "left", text: "Left-aligned", value: "left" },
     { key: "right", text: "Right-aligned", value: "right" },
     { key: "left-image", text: "Left-image", value: "left-image" },
     { key: "right-image", text: "Right-image", value: "right-image" }
 ];
 
+interface CustomPageEditorPageLayoutInterface extends IdentifiableComponentInterface{
+    isLoading: boolean;
+    /**
+     * Is the form in a submitting state.
+     */
+    isSubmitting: boolean;
+    /**
+     * Is the form read only.
+     */
+    readOnly: boolean;
+}
+
 const CustomPageEditorPageLayout: FunctionComponent<CustomPageEditorPageLayoutPropsInterface> = (
-    props: CustomPageEditorPageLayoutPropsInterface & RouteComponentProps<RouteParams>
+    props: CustomPageEditorPageLayoutPropsInterface &
+    CustomPageEditorPageLayoutInterface & RouteComponentProps<RouteParams>
 ): ReactElement => {
 
     const [ , setTemplate ] = useState("centered");
@@ -71,14 +96,43 @@ const CustomPageEditorPageLayout: FunctionComponent<CustomPageEditorPageLayoutPr
         setCustomLayoutMode(false);
     };
 
-    const [ html, setHtml ] = useState("<div>Hello</div>");
-    const [ css, setCss ] = useState("body { background: white; }");
-    const [ js, setJs ] = useState("console.log('Hi');");
+    const { preference: brandingPreference } = useContext(BrandingPreferenceContext);
+    const customContent: BrandingPreferenceCustomContentInterface =
+        brandingPreference?.preference?.customContent?? {};
+
+    const [ html, setHtml ] = useState("");
+    const [ css, setCss ] = useState("");
+    const [ js, setJs ] = useState("");
+
+    useEffect(() => {
+        setHtml(customContent.htmlContent ?? "");
+        setCss(customContent.cssContent ?? "");
+        setJs(customContent.jsContent ?? "");
+    }, [ customContent ]);
 
     const handleReset = () => {
-        setHtml("<div>Hello</div>");
-        setCss("body { background: white; }");
-        setJs("console.log('Hi');");
+        setHtml("");
+        setCss("");
+        setJs("");
+    };
+
+    const { t } = useTranslation();
+
+    const formRef: MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
+
+    const { updateBrandingCustomContent } = useContext(BrandingPreferenceContext);
+
+    const handleSaveAndPublish = (): void => {
+        // TODO: Implement save logic (API call or context update)
+        console.log("Saving...");
+        console.log("HTML:", html);
+        console.log("CSS:", css);
+        console.log("JS:", js);
+        updateBrandingCustomContent({
+            cssContent: css,
+            htmlContent: html,
+            jsContent: js
+        });
     };
 
     return (
@@ -120,34 +174,39 @@ const CustomPageEditorPageLayout: FunctionComponent<CustomPageEditorPageLayoutPr
                         </span>
                     </Button>
                 </div>
-                <Segment style = { { paddingLeft: "0", paddingRight: "0" } }>
+                <Segment style = { { paddingLeft: "0", paddingRight: "0", paddingBottom: "0" } }>
                     <EditorViewTabs
                         html = { html }
                         css = { css }
                         js = { js }
                         onContentUpdate = { ( updated: UpdatedContent ) => {
-                            console.log("Updated content:", updated);
+                            setHtml(updated.html);
+                            setCss(updated.css);
+                            setJs(updated.js);
                         } }
                     />
-                    <Divider/>
-                    <div style = { { paddingLeft: "6px", paddingTop:"10px" } }>
+                    <StickyTabPaneActionPanel
+                        formRef={ formRef }
+                        saveButton={ {
+                            "data-testid": `${ testId }-save-button`,
+                            isDisabled: false,
+                            isLoading: false,
+                            onClick: () => {
+                                handleSaveAndPublish();
+                            },
+                            readOnly: false
+                        } }
+                        data-componentid="sticky-tab-action-panel"
+                    >
                         <Button
-                            variant = "contained"
-                            data-testid = { `${ testId }-save-button` }
-                            onClick = { () => {
-                                console.log("Save and publish clicked");
-                            } }>
-                            Save and Publish
+                            onClick={ () =>  {
+                                handleReset();
+                                console.log("Reset all button clicked");
+                            } }
+                        >
+                            { t("branding:form.actions.resetAll") }
                         </Button>
-                        <Button
-                            style = { { marginLeft: "4px" } }
-                            color = "secondary"
-                            variant = "contained"
-                            onClick = { handleReset }
-                            data-testid = { `${ testId }-reset-button` }>
-                            Reset to Default
-                        </Button>
-                    </div>
+                    </StickyTabPaneActionPanel>
                 </Segment>
             </div>
         </div>

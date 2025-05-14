@@ -90,7 +90,7 @@ export const StickyTabPaneActionPanel: FunctionComponent<PropsWithChildren<Stick
         <Segment
             className="sticky-action-container"
             attached="bottom"
-            padded="very"
+            // padded="very"
             data-componentid={ componentId }
         >
             <PrimaryButton

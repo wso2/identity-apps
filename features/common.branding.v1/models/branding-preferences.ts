@@ -81,6 +81,28 @@ export interface BrandingPreferenceInterface {
      * Configurations.
      */
     configs: BrandingPreferenceConfigInterface;
+    /**
+     * Custom Content for the branding preference.
+     */
+    customContent?: BrandingPreferenceCustomContentInterface;
+}
+
+/**
+ * Interface Branding preference custom content.
+ */
+export interface BrandingPreferenceCustomContentInterface {
+    /**
+     * HTML content.
+     */
+    htmlContent?: string;
+    /**
+     * CSS content.
+     */
+    cssContent?: string;
+    /**
+     * JS content.
+     */
+    jsContent?: string;
 }
 
 /**
