@@ -1212,10 +1212,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                         listen={ handleDropdownChange }
                                                                         enableReinitialize={ true }
                                                                         data-componentid={
-                                                                            `${
-                                                                                componentId
-                                                                            }
-                                                                        -create-wizard-endpoint-authentication-dropdown`
+                                                                            `${ componentId }-authentication-dropdown`
                                                                         }
                                                                         width={ 16 }
                                                                     />
