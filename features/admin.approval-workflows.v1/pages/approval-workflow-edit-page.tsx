@@ -29,10 +29,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { useGetApprovalWorkflowDetails } from "../api";
+import { useGetApprovalWorkflowDetails } from "../api/use-get-approval-workflow-details";
 import EditApprovalWorkflow from "../components/edit/approval-workflow-edit";
-import { WorkflowDetails } from "../models";
 import "./approval-workflow-edit-page.scss";
+import { WorkflowDetails } from "../models/approval-workflows";
 
 /**
  * Prop types for the approval workflow edit page.

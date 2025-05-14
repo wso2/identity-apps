@@ -36,7 +36,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import "../../pages/approval-workflow-edit-page.scss";
 import { Dispatch } from "redux";
-import { deleteApprovalWorkflowById, updateApprovalWorkflow } from "../../api";
+import { deleteApprovalWorkflowById, updateApprovalWorkflow } from "../../api/approval-workflow";
 import {
     addWorkflowAssociation,
     deleteWorkflowAssociationById,
@@ -48,13 +48,13 @@ import {
     WorkflowDetails,
     WorkflowTemplate,
     WorkflowTemplateParameters
-} from "../../models";
+} from "../../models/approval-workflows";
 import {
     ApprovalSteps,
+    ApprovalWorkflowFormDataInterface,
     ConfigurationsFormValuesInterface,
     DropdownPropsInterface,
     GeneralDetailsFormValuesInterface,
-    ApprovalWorkflowFormDataInterface,
     WorkflowOperationsDetailsFormValuesInterface
 } from "../../models/ui";
 import { WorkflowAssociationPayload, WorkflowOperations } from "../../models/workflow-associations";

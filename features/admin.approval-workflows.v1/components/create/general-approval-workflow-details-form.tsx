@@ -35,7 +35,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { useGetApprovalWorkflows } from "../../api";
+import { useGetApprovalWorkflows } from "../../api/approval-workflow";
 import { APPROVAL_WORKFLOW_VALIDATION_REGEX_PATTERNS } from "../../constants/approval-workflow-constants";
 import { GeneralDetailsFormValuesInterface } from "../../models/ui";
 import "./general-approval-workflow-details-form.scss";
@@ -92,7 +92,7 @@ const GeneralApprovalWorkflowDetailsForm: ForwardRefExoticComponent<RefAttribute
             ref: ForwardedRef<GeneralApprovalWorkflowDetailsFormRef>
         ): ReactElement => {
             const triggerFormSubmit: MutableRefObject<() => void> = useRef<(() => void) | null>(null);
-            const currentValuesRef = useRef<GeneralDetailsFormValuesInterface | null>(null);
+            const currentValuesRef: MutableRefObject<GeneralDetailsFormValuesInterface | null> = useRef(null);
 
             const dispatch: Dispatch = useDispatch();
             const { t } = useTranslation();
@@ -107,7 +107,7 @@ const GeneralApprovalWorkflowDetailsForm: ForwardRefExoticComponent<RefAttribute
             // Expose triggerSubmit to the parent via the ref
             useImperativeHandle(ref, () => ({
                 isFormEdited: () => {
-                    return !isEqual(initialValues, currentValuesRef.current); 
+                    return !isEqual(initialValues, currentValuesRef.current);
                 },
                 triggerSubmit: () => {
                     if (triggerFormSubmit.current) {

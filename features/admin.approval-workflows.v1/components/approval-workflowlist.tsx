@@ -37,8 +37,8 @@ import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
-import { getTableIcons } from "../configs";
-import { WorkflowListItemInterface } from "../models";
+import { getTableIcons } from "../configs/ui";
+import { WorkflowListItemInterface } from "../models/approval-workflows";
 
 /**
  * Props interface for the Approval Workflow List component.

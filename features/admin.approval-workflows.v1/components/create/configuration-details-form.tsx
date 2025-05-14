@@ -17,12 +17,9 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
-import Button from "@oxygen-ui/react/Button";
-import Divider from "@oxygen-ui/react/Divider";
-import { ArrowRightIcon, CircleCheckFilledIcon, PlusIcon } from "@oxygen-ui/react-icons";
+import { CircleCheckFilledIcon, PlusIcon } from "@oxygen-ui/react-icons";
 import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
 import { IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
-import { PrimaryButton } from "@wso2is/react-components";
 import React, {
     ForwardRefExoticComponent,
     ForwardedRef,
@@ -37,10 +34,9 @@ import React, {
 } from "react";
 import "./configuration-details-form.scss";
 import { useTranslation } from "react-i18next";
-import { Icon } from "semantic-ui-react";
 import ApprovalStep from "./approval-step";
-import { ENTITY_TYPES, EntityType, templateNameMap } from "../../constants/approval-workflow-constants";
-import { MultiStepApprovalTemplate } from "../../models";
+import { ENTITY_TYPES, EntityType } from "../../constants/approval-workflow-constants";
+import { MultiStepApprovalTemplate } from "../../models/approval-workflows";
 import { ApprovalSteps, ConfigurationsFormValuesInterface } from "../../models/ui";
 
 /**
@@ -87,186 +83,186 @@ interface StraightArrowProps {
  */
 const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<ConfigurationsFormRef> &
     ConfigurationsPropsInterface> = forwardRef(
-    (
-        {
-            isReadOnly,
-            onSubmit,
-            hasErrors,
-            initialValues,
-            ["data-componentid"]: testId = "workflow-model-configuration-details"
-        }: ConfigurationsPropsInterface,
-        ref: ForwardedRef<ConfigurationsFormRef>
-    ): ReactElement => {
-        const StraightArrow: React.FC<StraightArrowProps> = (props: StraightArrowProps) => {
-            const { length = 100, color = "#555", strokeWidth = 2 } = props;
+        (
+            {
+                isReadOnly,
+                onSubmit,
+                hasErrors,
+                initialValues,
+                ["data-componentid"]: testId = "workflow-model-configuration-details"
+            }: ConfigurationsPropsInterface,
+            ref: ForwardedRef<ConfigurationsFormRef>
+        ): ReactElement => {
+            const StraightArrow: React.FC<StraightArrowProps> = (props: StraightArrowProps) => {
+                const { length = 100, color = "#555", strokeWidth = 2 } = props;
 
-            return (
-                <svg width={length} height="10" viewBox={`0 0 ${length} 10`} xmlns="http://www.w3.org/2000/svg">
-                    <line x1="0" y1="5" x2={length - 10} y2="5" stroke={color} strokeWidth={strokeWidth} />
-                    <polygon points={`${length - 10},0 ${length},5 ${length - 10},10`} fill={color} />
-                </svg>
-            );
-        };
+                return (
+                    <svg width={ length } height="10" viewBox={ `0 0 ${length} 10` } xmlns="http://www.w3.org/2000/svg">
+                        <line x1="0" y1="5" x2={ length - 10 } y2="5" stroke={ color } strokeWidth={ strokeWidth } />
+                        <polygon points={ `${length - 10},0 ${length},5 ${length - 10},10` } fill={ color } />
+                    </svg>
+                );
+            };
 
-        const { t } = useTranslation();
+            const { t } = useTranslation();
 
-        const [steps, setSteps] = useState<MultiStepApprovalTemplate[]>([]);
-        // const temporarySteps: any = useRef<ConfigurationsFormValuesInterface>({
-        //     approvalSteps: []
-        // });
-        // Correct:
-        const temporarySteps = useRef<{ approvalSteps: MultiStepApprovalTemplate[] }>({
-            approvalSteps: []
-        });
+            const [ steps, setSteps ] = useState<MultiStepApprovalTemplate[]>([]);
+            // const temporarySteps: any = useRef<ConfigurationsFormValuesInterface>({
+            //     approvalSteps: []
+            // });
+            // Correct:
+            const temporarySteps = useRef<{ approvalSteps: MultiStepApprovalTemplate[] }>({
+                approvalSteps: []
+            });
 
-        const [stepValues, setStepValues] = useState<MultiStepApprovalTemplate[]>([]);
+            const [ stepValues, setStepValues ] = useState<MultiStepApprovalTemplate[]>([]);
 
-        const [isValidStep, setValidStep] = useState<boolean>(true);
-        const hasInitializedSteps: any = useRef(false);
+            const [ isValidStep, setValidStep ] = useState<boolean>(true);
+            const hasInitializedSteps: any = useRef(false);
 
-        /**
+            /**
          * Initializes approval steps based on `initialValues`. If no steps are provided, a default step is created.
          *
          * @param initialValues - Initial values for approval steps.
          * @returns
          */
-        useEffect(() => {
-            if (!hasInitializedSteps.current && initialValues) {
-                if (initialValues?.approvalSteps?.length > 0) {
-                    const parsedSteps: MultiStepApprovalTemplate[] = initialValues.approvalSteps.map(
-                        (step: ApprovalSteps, index: number) => ({
-                            id: `step${Date.now()}-${index}`,
-                            stepNumber: index + 1,
-                            roles: step.roles || [],
-                            users: step.users || []
-                        })
-                    );
+            useEffect(() => {
+                if (!hasInitializedSteps.current && initialValues) {
+                    if (initialValues?.approvalSteps?.length > 0) {
+                        const parsedSteps: MultiStepApprovalTemplate[] = initialValues.approvalSteps.map(
+                            (step: ApprovalSteps, index: number) => ({
+                                id: `step${Date.now()}-${index}`,
+                                stepNumber: index + 1,
+                                roles: step.roles || [],
+                                users: step.users || []
+                            })
+                        );
 
-                    setSteps(parsedSteps);
-                    temporarySteps.current.approvalSteps = parsedSteps;
-                    console.log("Initial Steps", parsedSteps);
-                } else {
-                    console.log("No value", initialValues);
-                    const defaultStep: MultiStepApprovalTemplate = {
-                        id: `step${Date.now()}`,
-                        stepNumber: 1,
-                        roles: [],
-                        users: []
+                        setSteps(parsedSteps);
+                        temporarySteps.current.approvalSteps = parsedSteps;
+                        console.log("Initial Steps", parsedSteps);
+                    } else {
+                        console.log("No value", initialValues);
+                        const defaultStep: MultiStepApprovalTemplate = {
+                            id: `step${Date.now()}`,
+                            stepNumber: 1,
+                            roles: [],
+                            users: []
+                        };
+
+                        setSteps([ defaultStep ]);
+                        temporarySteps.current.approvalSteps = [ defaultStep ];
+                    }
+
+                    hasInitializedSteps.current = true;
+                }
+            }, [ initialValues ]);
+
+            useEffect(() => {
+                console.log("Steps", steps);
+            }, [ steps ]);
+
+            // Exposing triggerSubmit method
+            useImperativeHandle(ref, () => ({
+                triggerSubmit: () => {
+                    const configurationData: ConfigurationsFormValuesInterface = {
+                        approvalSteps: temporarySteps.current.approvalSteps
                     };
 
-                    setSteps([defaultStep]);
-                    temporarySteps.current.approvalSteps = [defaultStep];
+                    onSubmit?.(configurationData);
                 }
+            }));
 
-                hasInitializedSteps.current = true;
-            }
-        }, [initialValues]);
-
-        useEffect(() => {
-            console.log("Steps", steps);
-        }, [steps]);
-
-        // Exposing triggerSubmit method
-        useImperativeHandle(ref, () => ({
-            triggerSubmit: () => {
-                const configurationData: ConfigurationsFormValuesInterface = {
-                    approvalSteps: temporarySteps.current.approvalSteps
-                };
-
-                onSubmit?.(configurationData);
-            }
-        }));
-
-        /**
+            /**
          * Adds a new approval step if the last step is valid.
          *
          * @returns
          */
-        const addNewStep = () => {
-            const currentStep: any = temporarySteps.current.approvalSteps[steps.length - 1];
+            const addNewStep = () => {
+                const currentStep: any = temporarySteps.current.approvalSteps[steps.length - 1];
 
-            const hasValidRoles: boolean = currentStep?.roles?.length > 0;
-            const hasValidUsers: boolean = currentStep?.users?.length > 0;
+                const hasValidRoles: boolean = currentStep?.roles?.length > 0;
+                const hasValidUsers: boolean = currentStep?.users?.length > 0;
 
-            // Show validation error only if trying to add a new step and the last step is invalid
-            if (!hasValidRoles && !hasValidUsers && steps.length > 0) {
-                setValidStep(false);
+                // Show validation error only if trying to add a new step and the last step is invalid
+                if (!hasValidRoles && !hasValidUsers && steps.length > 0) {
+                    setValidStep(false);
 
-                return;
-            }
+                    return;
+                }
 
-            setValidStep(true);
+                setValidStep(true);
 
-            const newStep: MultiStepApprovalTemplate = {
-                id: `step${Date.now()}`,
-                stepNumber: steps.length + 1,
-                roles: [],
-                users: []
+                const newStep: MultiStepApprovalTemplate = {
+                    id: `step${Date.now()}`,
+                    stepNumber: steps.length + 1,
+                    roles: [],
+                    users: []
+                };
+
+                setSteps((prevSteps: MultiStepApprovalTemplate[]) => [ ...prevSteps, newStep ]);
+                temporarySteps.current.approvalSteps.push(newStep);
             };
 
-            setSteps((prevSteps: MultiStepApprovalTemplate[]) => [...prevSteps, newStep]);
-            temporarySteps.current.approvalSteps.push(newStep);
-        };
-
-        /**
+            /**
          * Deletes an approval step and renumbers remaining steps.
          *
          * @param stepId - ID of the step to delete.
          * @param index - Index of the step to delete.
          * @returns
          */
-        // const handleDelete = (stepId: string, index: number) => {
-        //     setSteps((prevSteps: MultiStepApprovalTemplate[]) => {
-        //         return prevSteps.reduce((acc: MultiStepApprovalTemplate[], step: MultiStepApprovalTemplate) => {
-        //             if (step.id !== stepId) {
-        //                 // Use the current length of accumulator to determine the new stepNumber
-        //                 acc.push({ ...step, stepNumber: acc.length + 1 });
-        //             }
+            // const handleDelete = (stepId: string, index: number) => {
+            //     setSteps((prevSteps: MultiStepApprovalTemplate[]) => {
+            //         return prevSteps.reduce((acc: MultiStepApprovalTemplate[], step: MultiStepApprovalTemplate) => {
+            //             if (step.id !== stepId) {
+            //                 // Use the current length of accumulator to determine the new stepNumber
+            //                 acc.push({ ...step, stepNumber: acc.length + 1 });
+            //             }
 
-        //             return acc;
-        //         }, [] as MultiStepApprovalTemplate[]);
-        //     });
+            //             return acc;
+            //         }, [] as MultiStepApprovalTemplate[]);
+            //     });
 
-        //     temporarySteps.current.approvalSteps.splice(index, 1);
+            //     temporarySteps.current.approvalSteps.splice(index, 1);
 
-        //     console.log("Steps after deletion", temporarySteps);
-        // };
+            //     console.log("Steps after deletion", temporarySteps);
+            // };
 
-        useEffect(() => {
-            console.log("Step Values are here", stepValues);
-        }, stepValues);
+            useEffect(() => {
+                console.log("Step Values are here", stepValues);
+            }, stepValues);
 
-        const handleDelete = (stepId: string, index: number) => {
-            setStepValues(temporarySteps.current.approvalSteps);
-            console.log("Step details before deletion", temporarySteps.current.approvalSteps);
+            const handleDelete = (stepId: string, index: number) => {
+                setStepValues(temporarySteps.current.approvalSteps);
+                console.log("Step details before deletion", temporarySteps.current.approvalSteps);
 
-            setSteps((prevSteps: MultiStepApprovalTemplate[]) => {
-                return prevSteps.reduce((acc: MultiStepApprovalTemplate[], step: MultiStepApprovalTemplate) => {
-                    if (step.id !== stepId) {
+                setSteps((prevSteps: MultiStepApprovalTemplate[]) => {
+                    return prevSteps.reduce((acc: MultiStepApprovalTemplate[], step: MultiStepApprovalTemplate) => {
+                        if (step.id !== stepId) {
                         // Use the current length of accumulator to determine the new stepNumber
-                        acc.push({ ...step, stepNumber: acc.length + 1 });
-                    }
+                            acc.push({ ...step, stepNumber: acc.length + 1 });
+                        }
 
-                    return acc;
-                }, [] as MultiStepApprovalTemplate[]);
-            });
-            // Instead of splice, create a new array without the deleted step
-            const updatedStepValues = temporarySteps.current.approvalSteps
-                .filter((step: MultiStepApprovalTemplate) => step.id !== stepId)
-                .map((step: MultiStepApprovalTemplate, idx: number) => ({
-                    ...step,
-                    stepNumber: idx + 1, // Reassign step number
-                    users: step.users, // preserve users
-                    roles: step.roles // preserve roles
-                }));
+                        return acc;
+                    }, [] as MultiStepApprovalTemplate[]);
+                });
+                // Instead of splice, create a new array without the deleted step
+                const updatedStepValues = temporarySteps.current.approvalSteps
+                    .filter((step: MultiStepApprovalTemplate) => step.id !== stepId)
+                    .map((step: MultiStepApprovalTemplate, idx: number) => ({
+                        ...step,
+                        stepNumber: idx + 1, // Reassign step number
+                        users: step.users, // preserve users
+                        roles: step.roles // preserve roles
+                    }));
 
-            temporarySteps.current.approvalSteps = updatedStepValues;
-            setStepValues(updatedStepValues); // <-- Update the clean state as well.
+                temporarySteps.current.approvalSteps = updatedStepValues;
+                setStepValues(updatedStepValues); // <-- Update the clean state as well.
 
-            console.log("Steps after deletion", updatedStepValues);
-        };
+                console.log("Steps after deletion", updatedStepValues);
+            };
 
-        /**
+            /**
          * Updates users or roles for a specific approval step.
          *
          * @param index - Step index.
@@ -274,7 +270,7 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
          * @param type - Type of entity (`USERS` or `ROLES`).
          * @returns
          */
-        const handleStepChange: (
+            const handleStepChange: (
             index: number,
             updatedEntities: UserBasicInterface[] | RolesInterface[],
             type: EntityType
@@ -293,60 +289,60 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
             []
         );
 
-        return (
-            <>
-                <Box className="approval-steps-container" data-componentid={`${testId}-approval-steps-container`}>
-                    <div className="approval-steps-stepsWrapper">
-                        {steps.map((step: MultiStepApprovalTemplate, index: number) => (
-                            <React.Fragment key={step.id}>
-                                <ApprovalStep
-                                    key={step.id}
-                                    index={index}
-                                    step={step}
-                                    initialValues={initialValues?.approvalSteps?.[index]}
-                                    isOneStepLeft={steps.length === 1}
-                                    hasErrors={hasErrors}
-                                    onDelete={() => handleDelete(step.id, index)}
-                                    updateUsers={(updateUsers: UserBasicInterface[]) =>
-                                        handleStepChange(index, updateUsers, ENTITY_TYPES.USERS)
-                                    }
-                                    updateRoles={(updateRoles: RolesInterface[]) =>
-                                        handleStepChange(index, updateRoles, ENTITY_TYPES.ROLES)
-                                    }
-                                    showValidationError={index === steps.length - 1 && !isValidStep}
-                                    data-componentid={`${testId}-approval-step-${index}`}
-                                />
+            return (
+                <>
+                    <Box className="approval-steps-container" data-componentid={ `${testId}-approval-steps-container` }>
+                        <div className="approval-steps-stepsWrapper">
+                            { steps.map((step: MultiStepApprovalTemplate, index: number) => (
+                                <React.Fragment key={ step.id }>
+                                    <ApprovalStep
+                                        key={ step.id }
+                                        index={ index }
+                                        step={ step }
+                                        initialValues={ initialValues?.approvalSteps?.[index] }
+                                        isOneStepLeft={ steps.length === 1 }
+                                        hasErrors={ hasErrors }
+                                        onDelete={ () => handleDelete(step.id, index) }
+                                        updateUsers={ (updateUsers: UserBasicInterface[]) =>
+                                            handleStepChange(index, updateUsers, ENTITY_TYPES.USERS)
+                                        }
+                                        updateRoles={ (updateRoles: RolesInterface[]) =>
+                                            handleStepChange(index, updateRoles, ENTITY_TYPES.ROLES)
+                                        }
+                                        showValidationError={ index === steps.length - 1 && !isValidStep }
+                                        data-componentid={ `${testId}-approval-step-${index}` }
+                                    />
 
-                                <div className="arrow-plus-wrapper">
-                                    {index === steps.length - 1 ? (
-                                        <>
-                                            <div className="arrow-plus-wrapper">
-                                                <div className="arrow-container">
-                                                    <div className="arrow-line">
-                                                        <StraightArrow length={100} />
+                                    <div className="arrow-plus-wrapper">
+                                        { index === steps.length - 1 ? (
+                                            <>
+                                                <div className="arrow-plus-wrapper">
+                                                    <div className="arrow-container">
+                                                        <div className="arrow-line">
+                                                            <StraightArrow length={ 100 } />
+                                                        </div>
+                                                        <div className="plus-icon" onClick={ addNewStep }>
+                                                            <PlusIcon />
+                                                        </div>
                                                     </div>
-                                                    <div className="plus-icon" onClick={addNewStep}>
-                                                        <PlusIcon />
+                                                    <div>
+                                                        <CircleCheckFilledIcon className="icon-configured" />
                                                     </div>
                                                 </div>
-                                                <div>
-                                                    <CircleCheckFilledIcon className="icon-configured" />
-                                                </div>
+                                            </>
+                                        ) : (
+                                            <div className="arrow-line">
+                                                <StraightArrow length={ 100 } />
                                             </div>
-                                        </>
-                                    ) : (
-                                        <div className="arrow-line">
-                                            <StraightArrow length={100} />
-                                        </div>
-                                    )}
-                                </div>
-                            </React.Fragment>
-                        ))}
-                    </div>
-                </Box>
-            </>
-        );
-    }
-);
+                                        ) }
+                                    </div>
+                                </React.Fragment>
+                            )) }
+                        </div>
+                    </Box>
+                </>
+            );
+        }
+    );
 
 export default ConfigurationsForm;

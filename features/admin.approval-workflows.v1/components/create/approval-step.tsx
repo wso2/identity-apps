@@ -28,9 +28,9 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StepRolesList } from "./create-step-roles";
 import { StepUsersList } from "./create-step-users";
-import { MultiStepApprovalTemplate } from "../../models";
 import { ApprovalSteps } from "../../models/ui";
 import "./approval-step.scss";
+import { MultiStepApprovalTemplate } from "../../models/approval-workflows";
 
 /**
  * Props for the approval step component.

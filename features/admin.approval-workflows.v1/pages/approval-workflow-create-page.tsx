@@ -34,7 +34,7 @@ import React, { FunctionComponent, MutableRefObject, ReactElement, useRef, useSt
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { addApprovalWorkflow } from "../api";
+import { addApprovalWorkflow } from "../api/approval-workflow";
 import { addWorkflowAssociation } from "../api/workflow-associations";
 import ConfigurationsForm, { ConfigurationsFormRef } from "../components/create/configuration-details-form";
 import GeneralApprovalWorkflowDetailsForm, {
@@ -43,13 +43,13 @@ import GeneralApprovalWorkflowDetailsForm, {
 import WorkflowOperationsDetailsForm, {
     WorkflowOperationsDetailsFormRef
 } from "../components/create/workflow-operations-details-form";
-import { ApprovalWorkflowPayload, OptionDetails, WorkflowTemplate } from "../models";
+import { ApprovalWorkflowPayload, OptionDetails, WorkflowTemplate } from "../models/approval-workflows";
 import {
     ApprovalSteps,
+    ApprovalWorkflowFormDataInterface,
     ConfigurationsFormValuesInterface,
     DropdownPropsInterface,
     GeneralDetailsFormValuesInterface,
-    ApprovalWorkflowFormDataInterface,
     WorkflowOperationsDetailsFormValuesInterface
 } from "../models/ui";
 import { WorkflowAssociationPayload } from "../models/workflow-associations";
