@@ -108,6 +108,8 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         state.config.ui.features?.users);
     const accountAppClientID: string = useSelector((state: AppState) =>
         state.config.deployment.accountApp.clientID);
+    const authenticatedUserTenanted: string = useSelector((state: AppState) => state?.auth?.username);
+    const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
     const getUserId = (userId: string): string => {
         const tenantAwareUserId: string = userId.split("@").length > 1 ? userId.split("@")[0] : userId;
         const userDomainAwareUserId: string = tenantAwareUserId.split("/").length > 1 ?
@@ -340,6 +342,18 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     };
 
     /**
+     * This function checks whether the authenticated user and the user to be impersonated
+     * are in the same tenant.
+     */
+    const isInTheSameTenant = (): boolean => {
+
+        const authenticatedUserTenantDomain: string = authenticatedUserTenanted.split("@").length > 1
+            ? authenticatedUserTenanted.split("@")[1] : "";
+
+        return authenticatedUserTenantDomain === tenantDomain;
+    };
+
+    /**
      * This function returns if the impersonation action is enabled for the current user.
      *  1. My Account is enabled.
      *  2. The user is authorized to impersonate.
@@ -442,7 +456,7 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     const resolveUserActions = (): ReactElement => {
 
         return (
-            !isSubOrgUser && !isUserCurrentLoggedInUser
+            !isSubOrgUser && !isUserCurrentLoggedInUser && isInTheSameTenant()
                 && isFeatureEnabled(userFeatureConfig,
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_IMPERSONATION")) ?
                 (
