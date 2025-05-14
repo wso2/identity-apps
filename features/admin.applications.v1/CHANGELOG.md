@@ -1,5 +1,11 @@
 # @wso2is/admin.applications.v1
 
+## 2.34.10
+
+### Patch Changes
+
+- [#8194](https://github.com/wso2/identity-apps/pull/8194) [`3f3dd0769950b6a3f41df0817b3f17a4342a9e74`](https://github.com/wso2/identity-apps/commit/3f3dd0769950b6a3f41df0817b3f17a4342a9e74) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Clone application template object before assigning custom properties
+
 ## 2.34.9
 
 ### Patch Changes
