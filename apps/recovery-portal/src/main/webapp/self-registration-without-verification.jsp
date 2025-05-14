@@ -82,7 +82,7 @@
         <% } %>
 
         <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
-        <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
+        <link href="libs/bootstrap_5.3.5/css/bootstrap.min.css" rel="stylesheet">
         <link href="css/Roboto.css" rel="stylesheet">
         <link href="css/custom-common.css" rel="stylesheet">
 
@@ -283,7 +283,7 @@
     <% } %>
 
     <script src="libs/jquery_3.6.0/jquery-3.6.0.min.js"></script>
-    <script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
+    <script src="libs/bootstrap_5.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript">
 
         function onSubmit(token) {
