@@ -211,9 +211,9 @@
     "serverOrigin": "https://localhost:9443",
     "session": {
         "checkSessionInterval": 3.0,
-        "sessionRefreshTimeOut": 30055.0,
-        "userIdleTimeOut": 60055.0,
-        "userIdleWarningTimeOut": 58055.0
+        "sessionRefreshTimeOut": 300.0,
+        "userIdleTimeOut": 600.0,
+        "userIdleWarningTimeOut": 580.0
     },
     "superTenantProxy": "",
     "tenantContext": {
