@@ -45,15 +45,14 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { AutoCompleteRenderOption } from
-    "./auto-complete-render-option";
-import { RenderChip } from "./render-chip";
+import AutoCompleteRenderOption from "./auto-complete-render-option";
+import RenderChip from "./render-chip";
 import { RoleDropdownItem } from "../../models/roles";
 import { StepEditSectionsInterface } from "../../models/users";
 
 type StepRolesPropsInterface = IdentifiableComponentInterface & StepEditSectionsInterface;
 
-export const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
+const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
     props: StepRolesPropsInterface
 ): ReactElement => {
     const {
@@ -369,9 +368,5 @@ export const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
     );
 };
 
-/**
- * Default props for application roles tab component.
- */
-StepRolesList.defaultProps = {
-    "data-componentid": "create-step-users"
-};
+export default StepRolesList;
+

@@ -36,7 +36,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { AutoCompleteRenderOption } from "./auto-complete-render-option";
+import AutoCompleteRenderOption from "./auto-complete-render-option";
 import { DropdownPropsInterface, WorkflowOperationsDetailsFormValuesInterface } from "../../models/ui";
 import "./general-approval-workflow-details-form.scss";
 import "./workflow-operations-details-form.scss";

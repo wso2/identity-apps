@@ -26,11 +26,11 @@ import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
 import { IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { StepRolesList } from "./create-step-roles";
-import { StepUsersList } from "./create-step-users";
+import StepRolesList from "./create-step-roles";
+import StepUsersList from "./create-step-users";
+import { MultiStepApprovalTemplate } from "../../models/approval-workflows";
 import { ApprovalSteps } from "../../models/ui";
 import "./approval-step.scss";
-import { MultiStepApprovalTemplate } from "../../models/approval-workflows";
 
 /**
  * Props for the approval step component.

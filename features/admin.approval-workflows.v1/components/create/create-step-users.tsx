@@ -63,7 +63,7 @@ import { StepEditSectionsInterface } from "../../models/users";
 
 type StepUsersPropsInterface = IdentifiableComponentInterface & StepEditSectionsInterface;
 
-export const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
+const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
     props: StepUsersPropsInterface
 ): ReactElement => {
     const {
@@ -400,3 +400,4 @@ export const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
     );
 };
 
+export default StepUsersList;

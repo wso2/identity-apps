@@ -52,7 +52,7 @@ interface RenderChipInterface extends IdentifiableComponentInterface, ChipProps 
     activeOption: any;
 }
 
-export const RenderChip: FunctionComponent<RenderChipInterface> = (
+const RenderChip: FunctionComponent<RenderChipInterface> = (
     props: RenderChipInterface
 ): ReactElement => {
 
@@ -112,3 +112,5 @@ export const RenderChip: FunctionComponent<RenderChipInterface> = (
         </>
     );
 };
+
+export default RenderChip;

@@ -47,7 +47,7 @@ type WorkflowsPageInterface = IdentifiableComponentInterface;
  * @returns Approval Workflow page component.
  */
 const ApprovalWorkflows: FunctionComponent<WorkflowsPageInterface> = (props: WorkflowsPageInterface): ReactElement => {
-    const { ["data-componentid"]: componentId } = props;
+    const { ["data-componentid"]: componentId = "approval-workflows" } = props;
 
     const { t } = useTranslation();
 
@@ -304,13 +304,6 @@ const ApprovalWorkflows: FunctionComponent<WorkflowsPageInterface> = (props: Wor
             </ListLayout>
         </PageLayout>
     );
-};
-
-/**
- * Default props for the component.
- */
-ApprovalWorkflows.defaultProps = {
-    "data-componentid": "approval-workflows"
 };
 
 export default ApprovalWorkflows;

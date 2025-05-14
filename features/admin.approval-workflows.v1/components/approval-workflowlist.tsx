@@ -86,7 +86,7 @@ interface ApprovalWorkflowListProps
  *
  * @returns approval workflow list component.
  */
-export const ApprovalWorkflowList: React.FunctionComponent<ApprovalWorkflowListProps> = (
+const ApprovalWorkflowList: React.FunctionComponent<ApprovalWorkflowListProps> = (
     props: ApprovalWorkflowListProps
 ): ReactElement => {
 
@@ -96,7 +96,7 @@ export const ApprovalWorkflowList: React.FunctionComponent<ApprovalWorkflowListP
         onSearchQueryClear,
         handleApprovalWorkflowDelete,
         searchQuery,
-        ["data-componentid"]: componentId
+        ["data-componentid"]: componentId = "approval-workflow-list"
     } = props;
 
     const { t } = useTranslation();
@@ -307,13 +307,6 @@ export const ApprovalWorkflowList: React.FunctionComponent<ApprovalWorkflowListP
             ) }
         </>
     );
-};
-
-/**
- * Default props for the component.
- */
-ApprovalWorkflowList.defaultProps = {
-    "data-componentid": "approval-workflow-list"
 };
 
 export default ApprovalWorkflowList;

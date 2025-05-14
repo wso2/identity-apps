@@ -58,7 +58,7 @@ interface AutoCompleteRenderOption extends IdentifiableComponentInterface {
     renderOptionProps: HTMLAttributes<HTMLLIElement>
 }
 
-export const AutoCompleteRenderOption: FunctionComponent<AutoCompleteRenderOption> = (
+const AutoCompleteRenderOption: FunctionComponent<AutoCompleteRenderOption> = (
     props: AutoCompleteRenderOption
 ): ReactElement => {
 
@@ -109,3 +109,5 @@ export const AutoCompleteRenderOption: FunctionComponent<AutoCompleteRenderOptio
         </li>
     );
 };
+
+export default AutoCompleteRenderOption;

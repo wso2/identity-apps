@@ -29,7 +29,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { BareFetcher, PublicConfiguration } from "swr/dist/_internal";
 import { RETRY_COUNT_LIMIT, RETRY_INTERVAL } from "../constants/approval-workflow-constants";
-import { WorkflowDetails } from "../models";
+import { WorkflowDetails } from "../models/approval-workflows";
 
 /**
  * Hook to get the approval workflow details.

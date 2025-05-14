@@ -69,7 +69,7 @@ type CreateApprovalWorkflowProps = IdentifiableComponentInterface;
 const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps> = (
     props: CreateApprovalWorkflowProps
 ): ReactElement => {
-    const { ["data-componentid"]: componentId } = props;
+    const { ["data-componentid"]: componentId = "create-approval-workflow" } = props;
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
@@ -441,13 +441,6 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
             </EmphasizedSegment>
         </PageLayout>
     );
-};
-
-/**
- * Default props for approval workflow create component.
- */
-ApprovalWorkflowCreatePage.defaultProps = {
-    "data-componentid": "create-approval-workflow"
 };
 
 export default ApprovalWorkflowCreatePage;
