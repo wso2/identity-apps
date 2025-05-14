@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.55.4
+
+### Patch Changes
+
+- [#8194](https://github.com/wso2/identity-apps/pull/8194) [`3f3dd0769950b6a3f41df0817b3f17a4342a9e74`](https://github.com/wso2/identity-apps/commit/3f3dd0769950b6a3f41df0817b3f17a4342a9e74) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Clone application template object before assigning custom properties
+
+* [#8172](https://github.com/wso2/identity-apps/pull/8172) [`03ba1504e5c6089bbf28febb1ba51cc1114afd1e`](https://github.com/wso2/identity-apps/commit/03ba1504e5c6089bbf28febb1ba51cc1114afd1e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve session refresh logic
+
+* Updated dependencies [[`3f3dd0769950b6a3f41df0817b3f17a4342a9e74`](https://github.com/wso2/identity-apps/commit/3f3dd0769950b6a3f41df0817b3f17a4342a9e74)]:
+  - @wso2is/admin.applications.v1@2.34.10
+
 ## 2.55.3
 
 ### Patch Changes
