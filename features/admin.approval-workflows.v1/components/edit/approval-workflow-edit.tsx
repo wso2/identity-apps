@@ -113,7 +113,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const workflowIdFilter: string = `workflowId:${approvalWorkflowId}`;
+    const workflowIdFilter: string = `workflowId eq ${approvalWorkflowId}`;
 
     const generalApprovalWorkflowDetailsFormRef: MutableRefObject<GeneralApprovalWorkflowDetailsFormRef> = useRef<
         GeneralApprovalWorkflowDetailsFormRef
