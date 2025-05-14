@@ -390,8 +390,8 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
                             label={ t("tenants:common.form.fields.organizationName.label") }
                             placeholder={ t("tenants:common.form.fields.organizationName.placeholder") }
                             component={ TextFieldAdapter }
-                            maxLength={ 100 }
-                            minLength={ 0 }
+                            maxLength={ 30 }
+                            minLength={ 4 }
                             validate={ validateOrganizationName }
                         />
                         <FinalFormField

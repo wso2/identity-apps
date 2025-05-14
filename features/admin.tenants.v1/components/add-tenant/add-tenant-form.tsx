@@ -365,17 +365,15 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                             helperText={
                                 (<Hint>
                                     <Typography variant="inherit">
-                                        <Trans i18nKey="tenants:common.form.fields.organizationName.helperText">
-                                            Enter a unique name for your organization.
-                                        </Trans>
+                                        { t("tenants:common.form.fields.organizationName.helperText") }
                                     </Typography>
                                 </Hint>)
                             }
                             label={ t("tenants:common.form.fields.organizationName.label") }
                             placeholder={ t("tenants:common.form.fields.organizationName.placeholder") }
                             component={ TextFieldAdapter }
-                            maxLength={ 100 }
-                            minLength={ 0 }
+                            maxLength={ 30 }
+                            minLength={ 4 }
                             validate={ validateOrganizationName }
                         />
                         <FinalFormField
