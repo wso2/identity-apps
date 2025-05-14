@@ -147,6 +147,15 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
         }
     }, [ shareUnitStatusListFetchRequestError ] );
 
+    /**
+     * Handles the status dropdown change event.
+     * Updates the selected status, resets state variables, and sets the API request parameters.
+     *
+     * @param event - The dropdown change event.
+     * @param data - The selected dropdown data.
+     *
+     * @returns void
+     */
     const handleStatusDropdownChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
         const newStatus: ApplicationShareUnitStatus = data.value as ApplicationShareUnitStatus;
 
