@@ -39,7 +39,9 @@ export const users: usersNS = {
                 disabled: "Disabled",
                 locked: "Locked",
                 pendingInitialPasswordSetup: "Pending initial password setup",
-                pendingPasswordReset: "Pending password reset"
+                pendingPasswordReset: "Pending password reset",
+                pendingPrimaryEmailVerification: "Pending email verification",
+                pendingPrimaryMobileVerification: "Pending mobile verification"
             }
         },
         form: {
