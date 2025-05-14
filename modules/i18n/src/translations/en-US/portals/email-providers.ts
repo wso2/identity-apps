@@ -47,7 +47,7 @@ export const emailProviders: EmailProviderNS = {
                         }
                     }
                 },
-                client_credential: {
+                clientCredential: {
                     name: "Client Credential",
                     properties: {
                         clientID: {
@@ -148,6 +148,12 @@ export const emailProviders: EmailProviderNS = {
             validations: {
                 required: "Authentication Scheme is a required field."
             }
+        }
+    },
+    showPassword: {
+        alert: {
+            content: "The password will no longer be visible on the configuration page from 15th June 2025 onwards." ,
+            title: "Notice"
         }
     }
 };

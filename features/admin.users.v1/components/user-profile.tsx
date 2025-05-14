@@ -81,6 +81,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
+import { UserImpersonationAction } from "./user-impersonation-action";
 import { resendCode, updateUserInfo } from "../api";
 import {
     ACCOUNT_LOCK_REASON_MAP,
@@ -119,6 +120,8 @@ const VERIFIED_MOBILE_NUMBERS_ATTRIBUTE: string =
     ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS");
 const VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE: string =
     ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES");
+const PRIMARY_EMAIL_VERIFIED_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_VERIFIED");
+const PRIMARY_MOBILE_VERIFIED_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_VERIFIED");
 
 /**
  * Prop types for the basic details component.
@@ -206,7 +209,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
-
     const dispatch: Dispatch = useDispatch();
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
@@ -299,9 +301,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
     }, [ connectorProperties ]);
 
-    /**
-     *  .
-     */
     useEffect(() => {
         // This will load the countries to the dropdown
         setCountryList(CommonUtils.getCountryList());
@@ -1583,8 +1582,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
 
         const resolvedUsername: string = resolveUsernameOrDefaultEmail(user, false);
-        const isUserCurrentLoggedInUser: boolean =
-            authenticatedUser?.includes(resolvedUsername);
+        const isUserCurrentLoggedInUser: boolean = authenticatedUser?.includes(resolvedUsername);
 
         return (
             <>
@@ -1601,6 +1599,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             <Show
                                 when={ featureConfig?.users?.scopes?.delete }
                             >
+                                <UserImpersonationAction
+                                    user={ user }
+                                    isLocked={ accountLocked }
+                                    isDisabled={ accountDisabled }
+                                    isReadOnly={ !hasUsersUpdatePermissions }
+                                    isUserManagedByParentOrg={ isUserManagedByParentOrg }
+                                    data-componentid="user-mgt-edit-user-impersonate-action"
+                                />
+                                <Divider hidden/>
                                 <DangerZoneGroup
                                     sectionHeader={ t("user:editUser.dangerZoneGroup.header") }
                                 >
@@ -1918,6 +1925,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         let primaryAttributeSchema: ProfileSchemaInterface;
         let maxAllowedLimit: number = 0;
         let verificationPendingValue: string = "";
+        let primaryVerified: boolean = false;
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             attributeValueList = multiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE] ?? [];
@@ -1929,6 +1937,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 schema.name === EMAIL_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED;
             verificationPendingValue = getVerificationPendingAttributeValue(EMAIL_ADDRESSES_ATTRIBUTE);
+            primaryVerified = user[userConfig.userProfileSchema]?.[PRIMARY_EMAIL_VERIFIED_ATTRIBUTE] === true ||
+                user[userConfig.userProfileSchema]?.[PRIMARY_EMAIL_VERIFIED_ATTRIBUTE] === "true";
 
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             attributeValueList = multiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE] ?? [];
@@ -1940,44 +1950,71 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 schema.name === MOBILE_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_MOBILE_NUMBERS_ALLOWED;
             verificationPendingValue = getVerificationPendingAttributeValue(MOBILE_NUMBERS_ATTRIBUTE);
+            primaryVerified = user[userConfig.userProfileSchema]?.[PRIMARY_MOBILE_VERIFIED_ATTRIBUTE] === true ||
+                user[userConfig.userProfileSchema]?.[PRIMARY_MOBILE_VERIFIED_ATTRIBUTE] === "true";
+
         } else {
             attributeValueList = multiValuedAttributeValues[schema.name] ?? [];
-            primaryAttributeSchema = profileSchema.find(
-                (schemaAttribute: ProfileSchemaInterface) => schemaAttribute.name === schema.name);
             maxAllowedLimit = ProfileConstants.MAX_MULTI_VALUES_ALLOWED;
         }
 
         const showAccordion: boolean = attributeValueList.length >= 1;
+        const isEmailOrMobile: boolean = schema.name === EMAIL_ADDRESSES_ATTRIBUTE
+            || schema.name === MOBILE_NUMBERS_ATTRIBUTE;
 
         const showVerifiedPopup = (value: string): boolean => {
-            return verificationEnabled &&
-                (verifiedAttributeValueList.includes(value) || value === fetchedPrimaryAttributeValue);
+            const isPrimaryAndVerified: boolean = value === fetchedPrimaryAttributeValue && primaryVerified;
+
+            return isEmailOrMobile && verificationEnabled &&
+                (verifiedAttributeValueList.includes(value) || isPrimaryAndVerified);
         };
 
         const showPrimaryPopup = (value: string): boolean => {
-            if (isEmpty(primaryAttributeValue)) {
+            if (!isEmailOrMobile) {
                 return false;
             }
-            if (verificationEnabled && !verifiedAttributeValueList.includes(value)) {
-                return value === fetchedPrimaryAttributeValue;
+
+            const isFetchedPrimary : boolean = value === fetchedPrimaryAttributeValue;
+            const isCurrentPrimary : boolean = value === primaryAttributeValue;
+            const isVerified : boolean =
+                !verificationEnabled ||                       // verification disabled → treat as verified.
+                verifiedAttributeValueList.includes(value) || // explicitly verified via list.
+                (isFetchedPrimary && primaryVerified);        // legacy single‑value flow
+
+            /* ───────── SINGLE VALUE ─────────
+            * Show the popup if that lone value is either:
+            *   • already stored as primary in the database, OR
+            *   • the user later set as primary while it is verified.
+            */
+            if (attributeValueList.length === 1) {
+                return isFetchedPrimary || (isCurrentPrimary && isVerified);
             }
 
-            return value === primaryAttributeValue;
+            /* ───── MULTIPLE VALUES ─────
+            * Show the popup on exactly one row — the one that is the
+            * current primary *and* meets at least ONE of these:
+            *   • it is verified, OR
+            *   • the database has flagged it as primary.
+            */
+            return isCurrentPrimary && (isVerified || isFetchedPrimary);
         };
 
         const showPendingVerificationPopup = (value: string): boolean => {
-            return verificationEnabled
+            return isEmailOrMobile && verificationEnabled
                 && !isEmpty(verificationPendingValue)
                 && !verifiedAttributeValueList.includes(value)
                 && verificationPendingValue === value;
         };
 
         const showMakePrimaryButton = (value: string): boolean => {
-            if (isEmpty(primaryAttributeValue)) {
+            const isPrimaryAndVerified: boolean = value === fetchedPrimaryAttributeValue && primaryVerified;
+
+            if (!isEmailOrMobile) {
                 return false;
             }
             if (verificationEnabled) {
-                return verifiedAttributeValueList.includes(value) && value !== primaryAttributeValue;
+                return (verifiedAttributeValueList.includes(value) || isPrimaryAndVerified)
+                    && value !== primaryAttributeValue;
             }
 
             return value !== primaryAttributeValue;
@@ -1986,7 +2023,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         const showVerifyButton = (value: string): boolean =>
             schema.name === EMAIL_ADDRESSES_ATTRIBUTE
             && verificationEnabled
-            && !(verifiedAttributeValueList.includes(value) || value === primaryAttributeValue);
+            && !(verifiedAttributeValueList.includes(value) ||
+                (value === fetchedPrimaryAttributeValue && primaryVerified));
 
         const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
         const resolvedMultiValueAttributeRequiredValue: boolean

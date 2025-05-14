@@ -88,6 +88,19 @@ export interface userNS {
                 part2: string;
             };
         };
+        userActionZoneGroup: {
+            impersonateUserZone: {
+                actionTitle: string;
+                buttonDisableHints: {
+                    insufficientPermissions: string;
+                    myAccountDisabled: string;
+                    userAccountDisabled: string;
+                    userAccountLocked: string;
+                };
+                header: string;
+                subheader: string;
+            };
+        };
     };
     forms: {
         addUserForm: {

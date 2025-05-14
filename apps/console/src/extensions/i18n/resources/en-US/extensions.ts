@@ -1656,8 +1656,7 @@ export const extensions: Extensions = {
                 header: "Danger Zone",
                 revertConfig: {
                     heading: "Revert Configurations",
-                    subHeading: "This action will revert mail server configurations to default configurations. " +
-                        "Once reverted, you will receive emails from the Asgardeo domain.",
+                    subHeading: "This action will revert mail server configurations to default configurations.",
                     actionTitle: "Revert"
                 }
             },
@@ -3597,7 +3596,15 @@ export const extensions: Extensions = {
                 label: "Password expires in ",
                 timeFormat: "days"
             },
-            passwordValidationHeading: "Password Input Validation",
+            passwordValidation: {
+                heading: "Password Input Validation",
+                passwordValidationRegexLabel: "Password pattern regex",
+                passwordValidationRegexHint: "Provide a valid regular expression for the password pattern. The regex must be between 3 and 255 characters.",
+                passwordValidationRegexPlaceholder: "Enter password pattern regex",
+                passwordValidationErrorLabel: "Error message on pattern violation",
+                passwordValidationErrorHint: "This error message will be displayed when a pattern violation is detected.",
+                passwordValidationErrorPlaceholder: "Enter the error message"
+            },
             userOnboarding: {
                 backButton: "Go back to Self Registration",
                 heading: "Self Registration",

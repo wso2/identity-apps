@@ -17,6 +17,13 @@
  */
 
 export interface EmailProviderNS {
+    showPassword: {
+        alert: {
+            title: string;
+            content: string;
+        };
+
+    }
     fields: {
         authentication: {
             info: {
@@ -25,7 +32,7 @@ export interface EmailProviderNS {
             };
             label: string;
             types: {
-                client_credential: {
+                clientCredential: {
                     name: string;
                     properties: {
                         tokenEndpoint: {

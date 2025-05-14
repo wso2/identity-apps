@@ -1,5 +1,181 @@
 # @wso2is/console
 
+## 2.55.3
+
+### Patch Changes
+
+- [#8185](https://github.com/wso2/identity-apps/pull/8185) [`1aa8365c9b821cbe0e38a8f4e873332b943d2cb1`](https://github.com/wso2/identity-apps/commit/1aa8365c9b821cbe0e38a8f4e873332b943d2cb1) Thanks [@brionmario](https://github.com/brionmario)! - Fix typo
+
+## 2.55.2
+
+### Patch Changes
+
+- [#8180](https://github.com/wso2/identity-apps/pull/8180) [`d49acf6be21a6b3165cefd525e593f4f335cdbda`](https://github.com/wso2/identity-apps/commit/d49acf6be21a6b3165cefd525e593f4f335cdbda) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Remove single quote from the users filter query
+
+- Updated dependencies [[`d49acf6be21a6b3165cefd525e593f4f335cdbda`](https://github.com/wso2/identity-apps/commit/d49acf6be21a6b3165cefd525e593f4f335cdbda)]:
+  - @wso2is/admin.users.v1@2.32.1
+
+## 2.55.1
+
+### Patch Changes
+
+- [#8178](https://github.com/wso2/identity-apps/pull/8178) [`73eedc4c81f0d36fa30593ba58d6102456182038`](https://github.com/wso2/identity-apps/commit/73eedc4c81f0d36fa30593ba58d6102456182038) Thanks [@lashinijay](https://github.com/lashinijay)! - Force trigger console version
+
+## 2.55.0
+
+### Minor Changes
+
+- [#8171](https://github.com/wso2/identity-apps/pull/8171) [`7c7082aaf820c0e390f2e3b5d3224d9cfa0da10e`](https://github.com/wso2/identity-apps/commit/7c7082aaf820c0e390f2e3b5d3224d9cfa0da10e) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add support for users filtering based on the account status
+
+* [#8174](https://github.com/wso2/identity-apps/pull/8174) [`15a063f9e5c1b3e14b1fbb2e1c1a0697d98f53e1`](https://github.com/wso2/identity-apps/commit/15a063f9e5c1b3e14b1fbb2e1c1a0697d98f53e1) Thanks [@lashinijay](https://github.com/lashinijay)! - Introduce client credential authentication for email providers
+
+### Patch Changes
+
+- [#8103](https://github.com/wso2/identity-apps/pull/8103) [`3d453f26bb1c3023bf700a8d4a6aaa675f21cbb5`](https://github.com/wso2/identity-apps/commit/3d453f26bb1c3023bf700a8d4a6aaa675f21cbb5) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Support Backward Compatibility for Non-Tenant-Qualified URLs
+
+- Updated dependencies [[`7c7082aaf820c0e390f2e3b5d3224d9cfa0da10e`](https://github.com/wso2/identity-apps/commit/7c7082aaf820c0e390f2e3b5d3224d9cfa0da10e), [`15a063f9e5c1b3e14b1fbb2e1c1a0697d98f53e1`](https://github.com/wso2/identity-apps/commit/15a063f9e5c1b3e14b1fbb2e1c1a0697d98f53e1), [`709983b9893e6922dc0c9066f0af61d35d1fa1cc`](https://github.com/wso2/identity-apps/commit/709983b9893e6922dc0c9066f0af61d35d1fa1cc)]:
+  - @wso2is/admin.users.v1@2.32.0
+  - @wso2is/i18n@2.23.0
+  - @wso2is/admin.email-providers.v1@2.27.0
+  - @wso2is/admin.extensions.v1@2.38.0
+  - @wso2is/admin.core.v1@2.44.0
+  - @wso2is/core@2.8.0
+  - @wso2is/form@2.7.0
+
+## 2.54.21
+
+### Patch Changes
+
+- [#8151](https://github.com/wso2/identity-apps/pull/8151) [`db5556ca9bb0c7b46b26069e39f83238977dc8fe`](https://github.com/wso2/identity-apps/commit/db5556ca9bb0c7b46b26069e39f83238977dc8fe) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix password input validation UI
+
+* [#8169](https://github.com/wso2/identity-apps/pull/8169) [`c95e58d7f9b9d80589384a428850b3387ad22161`](https://github.com/wso2/identity-apps/commit/c95e58d7f9b9d80589384a428850b3387ad22161) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Trigger console release
+
+* Updated dependencies [[`db5556ca9bb0c7b46b26069e39f83238977dc8fe`](https://github.com/wso2/identity-apps/commit/db5556ca9bb0c7b46b26069e39f83238977dc8fe)]:
+  - @wso2is/admin.validation.v1@2.27.143
+
+## 2.54.20
+
+### Patch Changes
+
+- [#8167](https://github.com/wso2/identity-apps/pull/8167) [`77c9420874a36db30c1077afe3cd6cce49810998`](https://github.com/wso2/identity-apps/commit/77c9420874a36db30c1077afe3cd6cce49810998) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Improve my account Impersonator role edit restrictions
+
+- Updated dependencies [[`77c9420874a36db30c1077afe3cd6cce49810998`](https://github.com/wso2/identity-apps/commit/77c9420874a36db30c1077afe3cd6cce49810998)]:
+  - @wso2is/admin.roles.v2@2.27.153
+  - @wso2is/admin.users.v1@2.31.6
+
+## 2.54.19
+
+### Patch Changes
+
+- [#8157](https://github.com/wso2/identity-apps/pull/8157) [`6dfa562fcaa06bdd446d4d62f5089e6dc07019a9`](https://github.com/wso2/identity-apps/commit/6dfa562fcaa06bdd446d4d62f5089e6dc07019a9) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide client credentials grant type in MCP client app template if the client is not marked as a public client
+
+- Updated dependencies [[`6dfa562fcaa06bdd446d4d62f5089e6dc07019a9`](https://github.com/wso2/identity-apps/commit/6dfa562fcaa06bdd446d4d62f5089e6dc07019a9)]:
+  - @wso2is/admin.applications.v1@2.34.9
+  - @wso2is/admin.extensions.v1@2.37.11
+
+## 2.54.18
+
+### Patch Changes
+
+- [#8116](https://github.com/wso2/identity-apps/pull/8116) [`09d8b338d4b54547c052364326779f2575ac365f`](https://github.com/wso2/identity-apps/commit/09d8b338d4b54547c052364326779f2575ac365f) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Onboard impersonation feature.
+
+* [#8159](https://github.com/wso2/identity-apps/pull/8159) [`c2c860870f95ebb57e71f0cbe2383df5102345c1`](https://github.com/wso2/identity-apps/commit/c2c860870f95ebb57e71f0cbe2383df5102345c1) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Show identity claims in SCIM mapping
+
+* Updated dependencies [[`09d8b338d4b54547c052364326779f2575ac365f`](https://github.com/wso2/identity-apps/commit/09d8b338d4b54547c052364326779f2575ac365f), [`c2c860870f95ebb57e71f0cbe2383df5102345c1`](https://github.com/wso2/identity-apps/commit/c2c860870f95ebb57e71f0cbe2383df5102345c1)]:
+  - @wso2is/admin.applications.v1@2.34.8
+  - @wso2is/react-components@2.9.14
+  - @wso2is/admin.roles.v2@2.27.152
+  - @wso2is/admin.users.v1@2.31.5
+  - @wso2is/theme@2.7.8
+  - @wso2is/core@2.7.8
+  - @wso2is/i18n@2.22.19
+  - @wso2is/admin.claims.v1@2.27.122
+
+## 2.54.17
+
+### Patch Changes
+
+- [#8156](https://github.com/wso2/identity-apps/pull/8156) [`e45bde73f36b81bee1f9de39e3b32620df1e0948`](https://github.com/wso2/identity-apps/commit/e45bde73f36b81bee1f9de39e3b32620df1e0948) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Change variable name
+
+* [#8154](https://github.com/wso2/identity-apps/pull/8154) [`49aec70a34a2bb1610b654d98c49a28afc334350`](https://github.com/wso2/identity-apps/commit/49aec70a34a2bb1610b654d98c49a28afc334350) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Use bracket notation for object property access and rename the variable
+
+* Updated dependencies [[`e45bde73f36b81bee1f9de39e3b32620df1e0948`](https://github.com/wso2/identity-apps/commit/e45bde73f36b81bee1f9de39e3b32620df1e0948), [`49aec70a34a2bb1610b654d98c49a28afc334350`](https://github.com/wso2/identity-apps/commit/49aec70a34a2bb1610b654d98c49a28afc334350)]:
+  - @wso2is/admin.users.v1@2.31.4
+
+## 2.54.16
+
+### Patch Changes
+
+- [#8124](https://github.com/wso2/identity-apps/pull/8124) [`5883496b4f95ddf31098bba652fe97f57acd7130`](https://github.com/wso2/identity-apps/commit/5883496b4f95ddf31098bba652fe97f57acd7130) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix UX issues in console settings
+
+- Updated dependencies [[`5883496b4f95ddf31098bba652fe97f57acd7130`](https://github.com/wso2/identity-apps/commit/5883496b4f95ddf31098bba652fe97f57acd7130)]:
+  - @wso2is/admin.console-settings.v1@2.25.209
+
+## 2.54.15
+
+### Patch Changes
+
+- [#8137](https://github.com/wso2/identity-apps/pull/8137) [`9dc89862d531695ca95fbfe63f6790f8eca1883f`](https://github.com/wso2/identity-apps/commit/9dc89862d531695ca95fbfe63f6790f8eca1883f) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Prevent implicit verification of primary email/mobile without user verification
+
+- Updated dependencies [[`9dc89862d531695ca95fbfe63f6790f8eca1883f`](https://github.com/wso2/identity-apps/commit/9dc89862d531695ca95fbfe63f6790f8eca1883f)]:
+  - @wso2is/admin.users.v1@2.31.3
+  - @wso2is/core@2.7.7
+
+## 2.54.14
+
+### Patch Changes
+
+- [#8144](https://github.com/wso2/identity-apps/pull/8144) [`da9a1bd0a506dcaa262016d4719d5c8e27a6da5e`](https://github.com/wso2/identity-apps/commit/da9a1bd0a506dcaa262016d4719d5c8e27a6da5e) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Trigger console release
+
+## 2.54.13
+
+### Patch Changes
+
+- [#8134](https://github.com/wso2/identity-apps/pull/8134) [`69cf55ba97fab4f8329edc0c877fd17ab162cb33`](https://github.com/wso2/identity-apps/commit/69cf55ba97fab4f8329edc0c877fd17ab162cb33) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - revert email provider UI enhancement
+
+## 2.54.12
+
+### Patch Changes
+
+- [#8132](https://github.com/wso2/identity-apps/pull/8132) [`0149b3e586fb181b1f79ed6cf000e0f8b07f7e4a`](https://github.com/wso2/identity-apps/commit/0149b3e586fb181b1f79ed6cf000e0f8b07f7e4a) Thanks [@lashinijay](https://github.com/lashinijay)! - Revert onboarding multiple authentication schemes for email provider
+
+- Updated dependencies [[`0149b3e586fb181b1f79ed6cf000e0f8b07f7e4a`](https://github.com/wso2/identity-apps/commit/0149b3e586fb181b1f79ed6cf000e0f8b07f7e4a)]:
+  - @wso2is/admin.email-providers.v1@2.26.1
+  - @wso2is/admin.extensions.v1@2.37.10
+  - @wso2is/admin.core.v1@2.43.6
+  - @wso2is/form@2.6.36
+  - @wso2is/i18n@2.22.18
+
+## 2.54.11
+
+### Patch Changes
+
+- [#8130](https://github.com/wso2/identity-apps/pull/8130) [`b279be403444037048c9bff8cfdfe881ee97ec15`](https://github.com/wso2/identity-apps/commit/b279be403444037048c9bff8cfdfe881ee97ec15) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix issue in showing make primary button in user profile multivalued field
+
+- Updated dependencies [[`b279be403444037048c9bff8cfdfe881ee97ec15`](https://github.com/wso2/identity-apps/commit/b279be403444037048c9bff8cfdfe881ee97ec15), [`c4aee527f3dad357cd7a62293d67ef6e884d927a`](https://github.com/wso2/identity-apps/commit/c4aee527f3dad357cd7a62293d67ef6e884d927a)]:
+  - @wso2is/admin.users.v1@2.31.2
+  - @wso2is/admin.actions.v1@1.12.5
+  - @wso2is/admin.alternative-login-identifier.v1@1.5.204
+  - @wso2is/admin.applications.v1@2.34.6
+  - @wso2is/admin.claims.v1@2.27.121
+  - @wso2is/core@2.7.6
+
+## 2.54.10
+
+### Patch Changes
+
+- [#8125](https://github.com/wso2/identity-apps/pull/8125) [`992ab1300824c7a009577ba87344248c12406745`](https://github.com/wso2/identity-apps/commit/992ab1300824c7a009577ba87344248c12406745) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improvements to MCP client application template
+
+- Updated dependencies [[`992ab1300824c7a009577ba87344248c12406745`](https://github.com/wso2/identity-apps/commit/992ab1300824c7a009577ba87344248c12406745)]:
+  - @wso2is/admin.application-templates.v1@1.5.3
+  - @wso2is/admin.applications.v1@2.34.5
+
+## 2.54.9
+
+### Patch Changes
+
+- [#8123](https://github.com/wso2/identity-apps/pull/8123) [`c3174cd64845726fa59675a8db877be3211704ea`](https://github.com/wso2/identity-apps/commit/c3174cd64845726fa59675a8db877be3211704ea) Thanks [@lashinijay](https://github.com/lashinijay)! - Refactor Email Provider Configuration revert message
+
 ## 2.54.8
 
 ### Patch Changes

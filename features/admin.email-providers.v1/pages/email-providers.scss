@@ -16,77 +16,90 @@
  * under the License.
  */
 
-.form-wrapper {
-    .form-container {
-        margin-top: 0px;
-        margin-bottom: 0px;
+.email-providers-page-password-deprecated-banner {
+    .ignore-once-button {
+        color: #788997;
     }
 
-    .box-container {
-        background-color: #f9fafb;
-        border-radius: 8px;
-        padding: 30px;
-
-        .box-field {
-            margin-top: 20px;
-            margin-left: 10px;
-            margin-right: 10px;
-        }
-    }
-
-    .text-field-container {
-        margin-top: 8px;
-        margin-bottom: 8px;
-    }
-
-    .select-field-container {
-        margin-bottom: 8px;
-    }
-
-    .hint-text {
-        margin-top: 0px;
-        margin-bottom: 8px;
-    }
-
-    .divider-container {
-        margin-top: 20px;
+    .banner-wrapper {
         margin-bottom: 20px;
     }
+ }
 
-    .heading-container {
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
-
-    .button-container {
-        margin-top: 30px;
-    }
-
-    .alert-title {
-        font-weight: 100;
-    }
-
-    .secondary-button {
-        margin-top: 10px;
-    }
-
-    .placeholder {
-        border-radius: 8px;
-        margin-bottom: 8px;
-
-        &.label {
-            height: 20px;
-            max-width: 100px;
+.email-provider-config-page {
+    .form-wrapper {
+        .form-container {
+            margin-top: 0px;
+            margin-bottom: 0px;
         }
-
-        &.text-field {
-            height: 40px;
+    
+        .box-container {
+            background-color: #f9fafb;
+            border-radius: 8px;
+            padding: 30px;
+    
+            .box-field {
+                margin-top: 20px;
+                margin-left: 10px;
+                margin-right: 10px;
+            }
         }
-    }
-
-    .placeholder-box {
-        > * {
+    
+        .text-field-container {
+            margin-top: 8px;
             margin-bottom: 8px;
         }
+    
+        .select-field-container {
+            margin-bottom: 8px;
+        }
+    
+        .hint-text {
+            margin-top: 0px;
+            margin-bottom: 8px;
+        }
+    
+        .divider-container {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+    
+        .heading-container {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+    
+        .button-container {
+            margin-top: 30px;
+        }
+    
+        .alert-title {
+            font-weight: 100;
+        }
+    
+        .secondary-button {
+            margin-top: 10px;
+        }
+    
+        .placeholder {
+            border-radius: 8px;
+            margin-bottom: 8px;
+    
+            &.label {
+                height: 20px;
+                max-width: 100px;
+            }
+    
+            &.text-field {
+                height: 40px;
+            }
+        }
+    
+        .placeholder-box {
+            > * {
+                margin-bottom: 8px;
+            }
+        }
     }
-}
+ }
+
