@@ -1,5 +1,11 @@
 # @wso2is/admin.email-providers.v1
 
+## 2.27.1
+
+### Patch Changes
+
+- [#8195](https://github.com/wso2/identity-apps/pull/8195) [`34f7b64eddd6bf4796956ccea0efc2f3d0d10688`](https://github.com/wso2/identity-apps/commit/34f7b64eddd6bf4796956ccea0efc2f3d0d10688) Thanks [@lashinijay](https://github.com/lashinijay)! - Update unnecesarily lengthy component name
+
 ## 2.27.0
 
 ### Minor Changes
