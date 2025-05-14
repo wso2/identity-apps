@@ -123,10 +123,16 @@ export interface OrganizationsMetaAttributesListInterface {
     attributes: string[];
 }
 
+/**
+ * Represents the request body structure for checking the availability of an organization handle.
+ */
 export interface CheckOrgHandleInterface {
     orgHandle: string;
 }
 
+/**
+ * Represents the response structure for checking the availability of an organization handle.
+ */
 export interface CheckOrgHandleResponseInterface {
     available: boolean;
 }

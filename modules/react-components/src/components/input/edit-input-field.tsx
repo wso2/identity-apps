@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Button, Input } from "semantic-ui-react";
@@ -25,7 +25,7 @@ import "./edit-input-field.scss";
 /**
  * Editable input field props.
  */
-export interface EditInputFieldPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
+export interface EditInputFieldPropsInterface extends IdentifiableComponentInterface {
     /**
      * Input value.
      */
@@ -58,21 +58,15 @@ export interface EditInputFieldPropsInterface extends IdentifiableComponentInter
  * @param props - Props injected to the component.
  * @returns Edit Input Field Component.
  */
-
-export const EditInputField: FunctionComponent<EditInputFieldPropsInterface> = (
-    props: EditInputFieldPropsInterface
-): ReactElement => {
-
-    const {
-        value,
-        className,
-        label,
-        onChange,
-        placeholder,
-        validate,
-        [ "data-componentid" ]: componentId,
-        [ "data-testid" ]: testId
-    } = props;
+export const EditInputField: FunctionComponent<EditInputFieldPropsInterface> = ({
+    value,
+    className,
+    label,
+    onChange,
+    placeholder,
+    validate,
+    "data-componentid": componentId = "edit-input"
+}: EditInputFieldPropsInterface): ReactElement => {
 
     const classes = classNames("edit-input", className);
 
@@ -129,15 +123,6 @@ export const EditInputField: FunctionComponent<EditInputFieldPropsInterface> = (
             fluid
             className={ classes }
             data-componentid={ `${ componentId }-wrapper` }
-            data-testid={ `${ testId }-wrapper` }
         />
     );
-};
-
-/**
- * Default proptypes for the edit input component.
- */
-EditInputField.defaultProps = {
-    "data-componentid": "edit-input",
-    "data-testid": "edit-input"
 };

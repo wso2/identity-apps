@@ -29,6 +29,7 @@ import {
     Popup,
     PrimaryButton
 } from "@wso2is/react-components";
+import classNames from "classnames";
 import omit from "lodash-es/omit";
 import React, { ClipboardEvent, FormEvent, KeyboardEvent, ReactElement } from "react";
 import { FieldRenderProps } from "react-final-form";
@@ -346,6 +347,11 @@ export const CopyFieldAdapter = (props: FieldRenderProps<any>): ReactElement => 
     );
 };
 
+/**
+ * Renders a form input field with a label and edit icon to toggle editability.
+ *
+ * @param props - Field props and parent form context for value and change handling.
+ */
 export const EditFieldAdapter = (props: FieldRenderProps<any>): ReactElement => {
 
     const { childFieldProps, parentFormProps } = props;
@@ -354,11 +360,15 @@ export const EditFieldAdapter = (props: FieldRenderProps<any>): ReactElement => 
         ...filteredChildFieldProps
     } = childFieldProps;
 
+    const fieldClassNames: string = classNames("field", {
+        required: filteredChildFieldProps.required
+    });
+
     return (
         <>
             {
                 label && (
-                    <div className={ `field ${ filteredChildFieldProps.required ? "required" : "" }` }>
+                    <div className={ fieldClassNames }>
                         <label>{ label }</label>
                     </div>
                 )
