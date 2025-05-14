@@ -59,12 +59,19 @@ export const useGetApprovalWorkflows = <Data = WorkflowListResponseInterface, Er
         url: store.getState()?.config?.endpoints?.workflows
     };
 
-    const { data, error, isValidating, mutate, response } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
+    const {
+        data,
+        error,
+        isLoading,
+        isValidating,
+        mutate,
+        response
+    } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,
         error,
-        isLoading: !error && !data,
+        isLoading,
         isValidating,
         mutate,
         response
