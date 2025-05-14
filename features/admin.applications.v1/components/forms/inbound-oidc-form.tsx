@@ -1039,10 +1039,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
 
         return allowedList.sort((a: RadioChild, b: RadioChild) => {
-            if (a.label < b.label) return -1;
-            if (a.label > b.label) return 1;
 
-            return 0;
+            if (a.label === SupportedAccessTokenBindingTypes.NONE) return -1;
+            if (b.label === SupportedAccessTokenBindingTypes.NONE) return 1;
+
+            return a.label.localeCompare(b.label);
         });
     };
 
