@@ -777,6 +777,12 @@ export interface ApplicationsNS {
             sharedAccess: {
                 subTitle: string;
                 tabName: string;
+                sharedAccessStatusOptions: {
+                    all: string;
+                    success: string;
+                    failed: string;
+                    partiallyCompleted: string;
+                }
             };
             shareApplication: {
                 heading: string;
@@ -847,6 +853,11 @@ export interface ApplicationsNS {
                     }
                 },
                 switchToSelectiveShareFromSharingWithAllSuborgsWarning: string;
+                applicationShareFailureSummaryDefaultStatus: {
+                    success: string,
+                    failed: string,
+                    partiallyCompleted: string
+                }
             };
             apiAuthorization: {
                 m2mPolicyMessage: string;
@@ -2998,7 +3009,11 @@ export interface ApplicationsNS {
         sharedAccessStatus: {
             heading: string,
             subHeading: string,
-            actionText: string
+            actionText: string,
+            banner: {
+                partiallyCompleted: string,
+                failed: string
+            }
         }
     };
 }

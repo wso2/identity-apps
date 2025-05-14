@@ -18,7 +18,9 @@
 
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { AlertLevels, FeatureAccessConfigInterface,
+    IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
@@ -26,7 +28,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { ApplicationManagementConstants, OperationStatus } from "../../constants/application-management";
-import { useOperationStatusPoller } from "../../hooks/use-operation-status-poller";
+import { useAsyncOperationStatus } from "../../hooks/use-async-operation-status";
 import { ApplicationInterface, OperationStatusSummary } from "../../models/application";
 import { ApplicationShareForm } from "../forms/share-application-form";
 import { OperationStatusBanner } from "../shared-access-status-banner";
@@ -63,45 +65,35 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
     const { application, onUpdate, readOnly } = props;
     const [ sharingState, setSharingState ] = useState<OperationStatus>(OperationStatus.IDLE);
     const [ sharingOperationId, setSharingOperationId ] = useState<string>();
-    const disabledFeatures: string[] = useSelector((state: AppState) =>
-        state?.config?.ui?.features?.applications?.disabledFeatures);
-    const isApplicationShareOperationStatusEnabled: boolean =
-        disabledFeatures?.includes("applications.sharedAccess.status") ?? false;
-    const applicationShareStatusPollInterval: number = useSelector((state: AppState) =>
-        state?.config?.ui?.features?.applications?.applicationShareStatusPollInterval);
     const [ sharingOperationSummary, setSharingOperationSummary ] = useState<OperationStatusSummary>();
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const { status, startPolling } = useOperationStatusPoller({
+    const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.applications);
+    const isApplicationShareOperationStatusEnabled: boolean = isFeatureEnabled(
+        applicationFeatureConfig,
+        ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_SHARED_ACCESS_STATUS"));
+    const applicationSharingStatusPollingInterval: number = useSelector((state: AppState) =>
+        state?.config?.ui?.applicationSharingStatusPollingInterval);
+
+    const statusToi18nKeyMap: Map<OperationStatus, string> = new Map<OperationStatus, string>([
+        [ OperationStatus.SUCCESS, "success" ],
+        [ OperationStatus.FAILED, "failure" ],
+        [ OperationStatus.PARTIALLY_COMPLETED, "partialSuccess" ]
+    ]);
+
+    const { status, startPolling } = useAsyncOperationStatus({
         enabled: isApplicationShareOperationStatusEnabled,
         onCompleted: (finalStatus: OperationStatus) => {
             setSharingState(finalStatus);
-            if (status === OperationStatus.FAILED) {
-                dispatch(addAlert({
-                    description: t("applications:edit.sections.shareApplication.completedSharingNotification."
-                        + "failure.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("applications:edit.sections.shareApplication.completedSharingNotification."
-                        + "failure.message")
-                }));
-            } else if (status === OperationStatus.SUCCESS) {
-                dispatch(addAlert({
-                    description: t("applications:edit.sections.shareApplication.completedSharingNotification."
-                        + "success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("applications:edit.sections.shareApplication.completedSharingNotification."
-                        + "success.message")
-                }));
-            } else if (status === OperationStatus.PARTIALLY_COMPLETED) {
-                dispatch(addAlert({
-                    description: t("applications:edit.sections.shareApplication.completedSharingNotification."
-                        + "partialSuccess.description"),
-                    level: AlertLevels.WARNING,
-                    message: t("applications:edit.sections.shareApplication.completedSharingNotification."
-                        + "partialSuccess.message")
-                }));
-            }
+            dispatch(addAlert({
+                description: t("applications:edit.sections.shareApplication.completedSharingNotification."
+                    + statusToi18nKeyMap.get(status) + ".description"),
+                level: AlertLevels.ERROR,
+                message: t("applications:edit.sections.shareApplication.completedSharingNotification."
+                    + statusToi18nKeyMap.get(status) + ".message")
+            }));
         },
         onStatusChange: (newOperationId: string, newStatus: OperationStatus,
             operationSummary: OperationStatusSummary) => {
@@ -110,7 +102,7 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
             setSharingOperationSummary(operationSummary);
         },
         operationType: ApplicationManagementConstants.B2B_APPLICATION_SHARE,
-        pollingInterval: applicationShareStatusPollInterval,
+        pollingInterval: applicationSharingStatusPollingInterval,
         subjectId: application.id
     });
 

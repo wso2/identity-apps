@@ -949,7 +949,7 @@ export interface OperationStatusSummary {
     partiallyCompletedCount: number
 }
 
-export interface ApplicationShareUnitStatusResponse {
+export interface AsyncOperationStatusUnitResponse {
     unitOperationId: string;
     operationId: string;
     residentResourceId: string;
@@ -960,7 +960,7 @@ export interface ApplicationShareUnitStatusResponse {
     createdTime: string;
 }
 
-export interface SharedAccessStatusResponse {
+export interface AsyncOperationStatusResponse {
     operationId: string;
     correlationId: string;
     operationType: string;
@@ -972,15 +972,28 @@ export interface SharedAccessStatusResponse {
     policy: string;
     createdTime: string;
     modifiedTime: string;
-    unitOperationRef: string;
+    unitOperationDetail: {
+        ref: string;
+        summary: {
+            success: number;
+            failed: number;
+            partiallyCompleted: number;
+        }
+    }
 }
 
-export interface ApplicationShareStatusUnitLinkInterface {
+export interface AsyncOperationStatusLinkInterface {
     href: string;
     rel: string;
 }
 
-export interface ApplicationShareStatusUnitListInterface {
-    links: ApplicationShareStatusUnitLinkInterface[];
-    unitOperations: ApplicationShareUnitStatusResponse[];
+export interface AsyncOperationStatusUnitListInterface {
+    links: AsyncOperationStatusLinkInterface[];
+    unitOperations: AsyncOperationStatusUnitResponse[];
 }
+
+export interface AsyncOperationStatusListInterface {
+    links: AsyncOperationStatusLinkInterface[];
+    operations: AsyncOperationStatusResponse[];
+}
+

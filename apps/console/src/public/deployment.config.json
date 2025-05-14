@@ -230,6 +230,7 @@
         "appName": "Console",
         "appTitle": "WSO2 Identity Server Console",
         "appWhiteLogoPath": "/assets/images/branding/logo-inverted.svg",
+        "applicationSharingStatusPollingInterval": 5000,
         "connectionResourcesUrl": "",
         "cookiePolicyUrl": "/authenticationendpoint/cookie_policy.do",
         "emailTemplates": {
@@ -424,7 +425,6 @@
                 }
             },
             "applications": {
-                "applicationShareStatusPollInterval": 5000,
                 "disabledFeatures": [
                     "applications.loginFlow.legacyEditor",
                     "applications.sharedAccess.status"

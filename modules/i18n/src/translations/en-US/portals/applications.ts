@@ -599,7 +599,13 @@ export const applications: ApplicationsNS = {
             },
             sharedAccess: {
                 subTitle: "Select the following options to share the application with the organizations.",
-                tabName: "Shared Access"
+                tabName: "Shared Access",
+                sharedAccessStatusOptions: {
+                    all: "All",
+                    success: "Success",
+                    failed: "Failed",
+                    partiallyCompleted: "Partially Completed"
+                }
             },
             shareApplication: {
                 addSharingNotification: {
@@ -671,6 +677,11 @@ export const applications: ApplicationsNS = {
                         description: "Updating shared access completed with partial success.",
                         actionText: "View"
                     }
+                },
+                applicationShareFailureSummaryDefaultStatus: {
+                    success: "Application shared successfully.",
+                    failed: "Application sharing failed.",
+                    partiallyCompleted: "Application sharing partially completed."
                 }
             },
             signOnMethod: {
@@ -3301,7 +3312,11 @@ export const applications: ApplicationsNS = {
         sharedAccessStatus: {
             heading: "Summary - Update application shared access",
             subHeading: "Summary of detailed application sharing failures.",
-            actionText: "Close"
+            actionText: "Close",
+            banner: {
+                partiallyCompleted: "Partially Completed: ",
+                failed: "Failed: "
+            }
         }
     },
     resident: {

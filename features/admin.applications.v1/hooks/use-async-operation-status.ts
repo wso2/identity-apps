@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AxiosResponse } from "axios";
@@ -30,7 +31,7 @@ import { OperationStatusSummary } from "../models/application";
 /**
  * Proptypes for the use operation status poller hook.
  */
-export interface UseOperationStatusPollerProps {
+export interface useAsyncOperationStatusProps {
     operationType: string;
     subjectId: string;
     pollingInterval?: number;
@@ -41,30 +42,47 @@ export interface UseOperationStatusPollerProps {
 }
 
 /**
+ * Proptypes for the REST api params.
+ */
+interface Params {
+    filter?: string;
+    limit?: number;
+    after?: string;
+    before?: string;
+}
+
+/**
  *  Use operation status poller hook.
  *
  * @param props - Props injected to the component.
  *
  * @returns Use operation status poller hook.
  */
-export const useOperationStatusPoller = ({
+export const useAsyncOperationStatus = ({
     operationType,
     subjectId,
     pollingInterval,
     onCompleted,
     onStatusChange,
     enabled
-}: UseOperationStatusPollerProps) => {
+}: useAsyncOperationStatusProps) => {
 
     const [ status, setStatus ] = useState<OperationStatus>(OperationStatus.IDLE);
     const intervalRef: MutableRefObject<number> = useRef<number | null>(null);
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
+    const API_LIMIT: number = UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT;
+
+    const [ params ] = useState<Params>({
+        after: null,
+        filter: `subjectId eq ${subjectId} and operationType eq ${operationType}`,
+        limit: API_LIMIT
+    });
 
     const fetchStatus = async (): Promise< { operationId: string, status: OperationStatus,
         summary: OperationStatusSummary } > => {
 
-        const response: AxiosResponse = await getAsyncOperationStatus(operationType, subjectId, 1000);
+        const response: AxiosResponse = await getAsyncOperationStatus(params.after, null, params.filter, params.limit);
         const newStatus: OperationStatus = response.data?.operations[0]?.status ?? OperationStatus.IDLE;
         const newOperationId: string = response.data?.operations[0]?.operationId ?? null;
         const operationSummary: OperationStatusSummary = {
