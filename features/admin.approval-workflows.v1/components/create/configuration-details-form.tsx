@@ -33,7 +33,6 @@ import React, {
     useState
 } from "react";
 import "./configuration-details-form.scss";
-import { useTranslation } from "react-i18next";
 import ApprovalStep from "./approval-step";
 import { ENTITY_TYPES, EntityType } from "../../constants/approval-workflow-constants";
 import { MultiStepApprovalTemplate } from "../../models/approval-workflows";
@@ -61,7 +60,7 @@ export interface ConfigurationsPropsInterface extends IdentifiableComponentInter
     /**
      * Initial values for the form.
      */
-    initialValues?: Partial<ConfigurationsFormValuesInterface>;
+    initialValues?: ConfigurationsFormValuesInterface;
 }
 
 export interface ConfigurationsFormRef {
@@ -93,6 +92,7 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
             }: ConfigurationsPropsInterface,
             ref: ForwardedRef<ConfigurationsFormRef>
         ): ReactElement => {
+
             const StraightArrow: React.FC<StraightArrowProps> = (props: StraightArrowProps) => {
                 const { length = 100, color = "#555", strokeWidth = 2 } = props;
 
@@ -104,47 +104,36 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                 );
             };
 
-            const { t } = useTranslation();
-
             const [ steps, setSteps ] = useState<MultiStepApprovalTemplate[]>([]);
-            // const temporarySteps: any = useRef<ConfigurationsFormValuesInterface>({
-            //     approvalSteps: []
-            // });
-            // Correct:
-            const temporarySteps = useRef<{ approvalSteps: MultiStepApprovalTemplate[] }>({
+            const [ isValidStep, setValidStep ] = useState<boolean>(true);
+            const temporarySteps: any = useRef<{ approvalSteps: MultiStepApprovalTemplate[] }>({
                 approvalSteps: []
             });
 
-            const [ stepValues, setStepValues ] = useState<MultiStepApprovalTemplate[]>([]);
-
-            const [ isValidStep, setValidStep ] = useState<boolean>(true);
-            const hasInitializedSteps: any = useRef(false);
-
             /**
-         * Initializes approval steps based on `initialValues`. If no steps are provided, a default step is created.
-         *
-         * @param initialValues - Initial values for approval steps.
-         * @returns
-         */
+             * Initializes approval steps based on `initialValues`. If no steps are provided,
+             * a default step is created.
+             *
+             * @param initialValues - Initial values for approval steps.
+             * @returns
+             */
             useEffect(() => {
-                if (!hasInitializedSteps.current && initialValues) {
+                if (initialValues) {
                     if (initialValues?.approvalSteps?.length > 0) {
                         const parsedSteps: MultiStepApprovalTemplate[] = initialValues.approvalSteps.map(
                             (step: ApprovalSteps, index: number) => ({
-                                id: `step${Date.now()}-${index}`,
+                                id: `step-${index}`,
                                 stepNumber: index + 1,
-                                roles: step.roles || [],
-                                users: step.users || []
+                                users: step.users || [],
+                                roles: step.roles || []
                             })
                         );
 
                         setSteps(parsedSteps);
                         temporarySteps.current.approvalSteps = parsedSteps;
-                        console.log("Initial Steps", parsedSteps);
                     } else {
-                        console.log("No value", initialValues);
                         const defaultStep: MultiStepApprovalTemplate = {
-                            id: `step${Date.now()}`,
+                            id: `step${Date.now()}-1`,
                             stepNumber: 1,
                             roles: [],
                             users: []
@@ -153,14 +142,8 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                         setSteps([ defaultStep ]);
                         temporarySteps.current.approvalSteps = [ defaultStep ];
                     }
-
-                    hasInitializedSteps.current = true;
                 }
             }, [ initialValues ]);
-
-            useEffect(() => {
-                console.log("Steps", steps);
-            }, [ steps ]);
 
             // Exposing triggerSubmit method
             useImperativeHandle(ref, () => ({
@@ -174,10 +157,10 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
             }));
 
             /**
-         * Adds a new approval step if the last step is valid.
-         *
-         * @returns
-         */
+             * Adds a new approval step if the last step is valid.
+             *
+             * @returns
+             */
             const addNewStep = () => {
                 const currentStep: any = temporarySteps.current.approvalSteps[steps.length - 1];
 
@@ -205,89 +188,56 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
             };
 
             /**
-         * Deletes an approval step and renumbers remaining steps.
-         *
-         * @param stepId - ID of the step to delete.
-         * @param index - Index of the step to delete.
-         * @returns
-         */
-            // const handleDelete = (stepId: string, index: number) => {
-            //     setSteps((prevSteps: MultiStepApprovalTemplate[]) => {
-            //         return prevSteps.reduce((acc: MultiStepApprovalTemplate[], step: MultiStepApprovalTemplate) => {
-            //             if (step.id !== stepId) {
-            //                 // Use the current length of accumulator to determine the new stepNumber
-            //                 acc.push({ ...step, stepNumber: acc.length + 1 });
-            //             }
-
-            //             return acc;
-            //         }, [] as MultiStepApprovalTemplate[]);
-            //     });
-
-            //     temporarySteps.current.approvalSteps.splice(index, 1);
-
-            //     console.log("Steps after deletion", temporarySteps);
-            // };
-
-            useEffect(() => {
-                console.log("Step Values are here", stepValues);
-            }, stepValues);
-
-            const handleDelete = (stepId: string, index: number) => {
-                setStepValues(temporarySteps.current.approvalSteps);
-                console.log("Step details before deletion", temporarySteps.current.approvalSteps);
-
-                setSteps((prevSteps: MultiStepApprovalTemplate[]) => {
-                    return prevSteps.reduce((acc: MultiStepApprovalTemplate[], step: MultiStepApprovalTemplate) => {
+             * Deletes the specified step and reorders the remaining steps.
+             *
+             * @param stepId - ID of the step to delete.
+             */
+            const handleDelete = (stepId: string) => {
+                const updatedSteps: MultiStepApprovalTemplate[] = steps.reduce(
+                    (
+                        acc: MultiStepApprovalTemplate[],
+                        step: MultiStepApprovalTemplate
+                    ) => {
                         if (step.id !== stepId) {
-                        // Use the current length of accumulator to determine the new stepNumber
                             acc.push({ ...step, stepNumber: acc.length + 1 });
                         }
 
                         return acc;
-                    }, [] as MultiStepApprovalTemplate[]);
-                });
-                // Instead of splice, create a new array without the deleted step
-                const updatedStepValues = temporarySteps.current.approvalSteps
-                    .filter((step: MultiStepApprovalTemplate) => step.id !== stepId)
-                    .map((step: MultiStepApprovalTemplate, idx: number) => ({
-                        ...step,
-                        stepNumber: idx + 1, // Reassign step number
-                        users: step.users, // preserve users
-                        roles: step.roles // preserve roles
-                    }));
+                    },
+                    []
+                );
 
-                temporarySteps.current.approvalSteps = updatedStepValues;
-                setStepValues(updatedStepValues); // <-- Update the clean state as well.
-
-                console.log("Steps after deletion", updatedStepValues);
+                setSteps(updatedSteps);
+                temporarySteps.current.approvalSteps = updatedSteps;
             };
 
-            /**
-         * Updates users or roles for a specific approval step.
-         *
-         * @param index - Step index.
-         * @param updatedEntities - Updated users or roles.
-         * @param type - Type of entity (`USERS` or `ROLES`).
-         * @returns
-         */
-            const handleStepChange: (
-            index: number,
-            updatedEntities: UserBasicInterface[] | RolesInterface[],
-            type: EntityType
-        ) => void = useCallback(
-            (index: number, updatedEntities: UserBasicInterface[] | RolesInterface[], type: EntityType) => {
-                const updatedStep: MultiStepApprovalTemplate = {
-                    ...temporarySteps.current.approvalSteps[index],
-                    [type]:
-                        type === ENTITY_TYPES.USERS
-                            ? (updatedEntities as UserBasicInterface[]).map((user: UserBasicInterface) => user.id)
-                            : (updatedEntities as RolesInterface[]).map((role: RolesInterface) => role.id)
-                };
 
-                temporarySteps.current.approvalSteps[index] = updatedStep;
-            },
-            []
-        );
+            /**
+             * Updates users or roles for a specific approval step.
+             *
+             * @param index - Step index.
+             * @param updatedEntities - Updated users or roles.
+             * @param type - Type of entity (`USERS` or `ROLES`).
+             * @returns
+             */
+            const handleStepChange: (
+                index: number,
+                updatedEntities: UserBasicInterface[] | RolesInterface[],
+                type: EntityType
+                ) => void = useCallback(
+                    (index: number, updatedEntities: UserBasicInterface[] | RolesInterface[], type: EntityType) => {
+                        const updatedStep: MultiStepApprovalTemplate = {
+                            ...temporarySteps.current.approvalSteps[index],
+                            [type]:
+                            type === ENTITY_TYPES.USERS
+                                ? (updatedEntities as UserBasicInterface[]).map((user: UserBasicInterface) => user.id)
+                                : (updatedEntities as RolesInterface[]).map((role: RolesInterface) => role.id)
+                        };
+
+                        temporarySteps.current.approvalSteps[index] = updatedStep;
+                    },
+                    []
+                );
 
             return (
                 <>
@@ -299,10 +249,11 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                                         key={ step.id }
                                         index={ index }
                                         step={ step }
-                                        initialValues={ initialValues?.approvalSteps?.[index] }
+                                        isReadOnly={ isReadOnly }
+                                        initialValues={ step }
                                         isOneStepLeft={ steps.length === 1 }
                                         hasErrors={ hasErrors }
-                                        onDelete={ () => handleDelete(step.id, index) }
+                                        onDelete={ () => handleDelete(step.id) }
                                         updateUsers={ (updateUsers: UserBasicInterface[]) =>
                                             handleStepChange(index, updateUsers, ENTITY_TYPES.USERS)
                                         }
