@@ -126,6 +126,7 @@
                                 data-callback="onCompleted"
                                 data-action="usernameRecovery"
                                 data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                                data-bind="answerSubmit"
                             >
                             </div>
                         </div>
@@ -175,18 +176,23 @@
         }
         $(document).ready(function () {
             $("#securityQuestionForm").submit(function (e) {
-               <%
-                   if (reCaptchaEnabled) {
-               %>
-               if (!grecaptcha.getResponse()) {
-                   e.preventDefault();
-                   grecaptcha.execute();
+                const errorMessage = $("#error-msg");
+                errorMessage.hide();
 
-                   return true;
-               }
-               <%
-                   }
-               %>
+                <%
+                    if (reCaptchaEnabled) {
+                %>
+                    var resp = $("[name='g-recaptcha-response']")[0].value;
+                    if (resp.trim() == '') {
+                        errorMessage.text("<%=i18n(recoveryResourceBundle, customText, "Please.select.reCaptcha")%>");
+                        errorMessage.show();
+                        $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
+                        return false;
+                    }
+                    return true;
+                <%
+                    }
+                %>
                return true;
             });
         });

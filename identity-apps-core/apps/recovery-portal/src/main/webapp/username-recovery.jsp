@@ -314,6 +314,7 @@
                                 data-callback="onCompleted"
                                 data-action="usernameRecovery"
                                 data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                                data-bind="recoverySubmit"
                             >
                             </div>
                         </div>
@@ -375,18 +376,6 @@
 
         $(document).ready(function () {
             $("#recoverDetailsForm").submit(function (e) {
-                <%
-                    if (reCaptchaEnabled) {
-                %>
-                if (!grecaptcha.getResponse()) {
-                    e.preventDefault();
-                    grecaptcha.execute();
-                    return true;
-                }
-                <%
-                    }
-                %>
-
                 // Prevent clicking multiple times, and notify the user something
                 // is happening in the background.
                 const submitButton = $("#recoverySubmit");
@@ -394,6 +383,21 @@
 
                 const errorMessage = $("#error-msg");
                 errorMessage.hide();
+
+                <%
+                    if (reCaptchaEnabled) {
+                %>
+                        var resp = $("[name='g-recaptcha-response']")[0].value;
+                        if (resp.trim() == '') {
+                            errorMessage.text("<%=i18n(recoveryResourceBundle, customText, "please.select.recaptcha")%>");
+                            errorMessage.show();
+                            $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
+                            return false;
+                        }
+                        return true;
+                <%
+                    }
+                %>
 
                 <% if (isFirstNameInClaims && isFirstNameRequired) { %>
                     const firstName = $("#first-name").val();
