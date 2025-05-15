@@ -267,7 +267,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     const [ isMcpClientApplication, setIsMcpClientApplication ] = useState<boolean>();
 
     useEffect(() => {
-        if (template["originalTemplateId"] === "mcp-client-application") {
+        if (template?.["originalTemplateId"] === "mcp-client-application") {
             setIsMcpClientApplication(true);
         }
     }, [ template ]);

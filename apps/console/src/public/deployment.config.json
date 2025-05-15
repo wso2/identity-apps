@@ -168,6 +168,16 @@
                 "description": "This SMS is sent to verify the user's mobile number after an update.",
                 "displayName": "Verify Mobile On Update",
                 "id": "dmVyaWZ5TW9iaWxlT25VcGRhdGU"
+            },
+            {
+                "description": "This SMS is sent to provide a one-time password when admin initiates a password reset for a user",
+                "displayName": "Admin Forced Password Reset",
+                "id": "YWRtaW5Gb3JjZWRQYXNzd29yZFJlc2V0"
+            },
+            {
+                "description": "This SMS is sent to provide a one-time password when admin resends a password reset request",
+                "displayName": "Admin Resend Forced Password Reset",
+                "id": "cmVzZW5kQWRtaW5Gb3JjZWRQYXNzd29yZFJlc2V0"
             }
         ]
     },
@@ -230,6 +240,7 @@
         "enableCustomSmsTemplates": true,
         "enableEmailDomain": false,
         "enableIdentityClaims": true,
+        "enableOldUIForEmailProvider": false,
         "features": {
             "accountLogin": {
                 "disabledFeatures": [],
@@ -812,7 +823,11 @@
                 "scopes": {}
             },
             "identityProviders": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "identityProviders.federationHub",
+                    "identityProviders.saml.artifactBinding",
+                    "identityProviders.saml.attributeConsumingServiceIndex"
+                ],
                 "enabled": true,
                 "featureFlags": [],
                 "scopes": {
@@ -1592,6 +1607,7 @@
         },
         "selfAppIdentifier": "Console",
         "showAppSwitchButton": true,
+        "showPasswordOfEmailProvider": true,
         "showSmsOtpPwdRecoveryFeatureStatusChip": false,
         "showStatusLabelForNewAuthzRuntimeFeatures": false,
         "systemAppsIdentifiers": [

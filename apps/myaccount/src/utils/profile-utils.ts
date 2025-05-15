@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -291,4 +291,18 @@ export const getProfileCompletion = (
     store.dispatch(setProfileCompletion(completion));
 
     return completion;
+};
+
+/**
+ * Checks if the primary claim is verified.
+ *
+ * @param claimKey - Claim key to check.
+ * @param profileInfo - Profile information.
+ * @returns True if the primary claim is verified, false otherwise.
+ */
+export const isPrimaryClaimVerified = (claimKey: string, profileInfo: BasicProfileInterface): boolean => {
+    const systemSchema: string | undefined = SCIMConfigs?.scim?.systemSchema;
+    const claimValue: boolean | string = profileInfo?.[systemSchema]?.[claimKey];
+
+    return claimValue === true || claimValue === "true";
 };

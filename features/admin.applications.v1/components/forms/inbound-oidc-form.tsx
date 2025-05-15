@@ -606,7 +606,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     }, [ template ]);
 
     useEffect(() => {
-        if (template["originalTemplateId"] === "mcp-client-application") {
+        if (template?.["originalTemplateId"] === "mcp-client-application") {
             setIsMcpClientApplication(true);
         }
     }, [ template ]);
@@ -1222,8 +1222,19 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 }
 
                 if (
-                    template["originalTemplateId"] &&
-                    !applicationConfig.allowedGrantTypes[template["originalTemplateId"]].includes(name)
+                    template?.["originalTemplateId"] &&
+                    !applicationConfig.allowedGrantTypes[template["originalTemplateId"]]?.includes(name)
+                ) {
+                    return;
+                }
+
+                // Hide client credentials grant type in mcp client app template
+                // if the client is marked as public
+                if (
+                    template?.["originalTemplateId"] &&
+                    template?.["originalTemplateId"] === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION &&
+                    isPublicClient &&
+                    name === ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
                 ) {
                     return;
                 }
@@ -4505,7 +4516,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 initialValues?.clientSecret
                             && (initialValues?.state !== State.REVOKED)
                             && (!isSPAApplication))
-                            && (!isMobileApplication)
+                            && !isMobileApplication
+                            && !isPublicClient
                             && !isSystemApplication
                             && !isDefaultApplication
                             && (

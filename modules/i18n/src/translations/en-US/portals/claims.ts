@@ -469,6 +469,12 @@ export const claims: ClaimsNS = {
                 disabledConfigInfo: "Please note that below section is disabled as there is no " +
                     "external claim mapping found for this claim attribute."
             },
+            multiValued: {
+                label: "Allow multiple values for this attribute",
+                placeholder: "Select a user attribute"
+            },
+            multiValuedDisabledHint: "This setting cannot be modified for system claims.",
+            multiValuedHint: "Select this option if the attribute can have multiple values.",
             name: {
                 label: "Attribute Display Name",
                 placeholder: "Enter the display name",

@@ -69,7 +69,7 @@ const Droppable: FC<PropsWithChildren<DroppableProps>> = ({
             ref={ ref }
             data-componentid={ componentId }
             className={ classNames(
-                "dnd-droppable",
+                "flow-builder-dnd-droppable",
                 {
                     allowed: draggedResource && (accept as string[])?.includes(draggedResource?.type),
                     disallowed: draggedResource && !(accept as string[])?.includes(draggedResource?.type),
@@ -82,6 +82,7 @@ const Droppable: FC<PropsWithChildren<DroppableProps>> = ({
                 flexDirection: "column",
                 gap: "10px",
                 height: "100%",
+                transition: "background-color 0.2s ease",
                 width: "100%",
                 ...sx
             } }

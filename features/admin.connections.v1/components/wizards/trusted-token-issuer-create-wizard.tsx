@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,11 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
+import FormControl from "@oxygen-ui/react/FormControl";
+import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Grid from "@oxygen-ui/react/Grid";
+import Radio from "@oxygen-ui/react/Radio";
+import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals/tier-limit-reach-error-modal";
 import { getCertificateIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
@@ -49,8 +53,6 @@ import {
     PickerResult,
     PrimaryButton,
     Steps,
-    Switcher,
-    SwitcherOptionProps,
     useDocumentation,
     useWizardAlert
 } from "@wso2is/react-components";
@@ -59,6 +61,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
+    ChangeEvent,
     FC,
     MutableRefObject,
     PropsWithChildren,
@@ -90,12 +93,12 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
 
     const {
         onWizardClose,
-        currentStep,
+        currentStep = 0,
         onIDPCreate,
         title,
         subTitle,
         template,
-        [ "data-componentid" ]: componentId
+        [ "data-componentid" ]: componentId = "trusted-token-issuer"
     } = props;
 
     // General constants
@@ -125,20 +128,6 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
     const { getLink } = useDocumentation();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-
-    // Options list for the certificate type switcher.
-    const certificateOptions: [SwitcherOptionProps, SwitcherOptionProps] = [
-        {
-            label: t("authenticationProvider:" +
-                "templates.trustedTokenIssuer.forms.jwksUrl.optionLabel"),
-            value: CertificateType.JWKS
-        },
-        {
-            label: t("authenticationProvider:" +
-                "templates.trustedTokenIssuer.forms.pem.optionLabel"),
-            value: CertificateType.PEM
-        }
-    ];
 
     /**
      * Initial values of the form.
@@ -207,6 +196,26 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
         },
         500
     );
+
+    /**
+     * Handles the option changed event.
+     */
+    const onSelectionChange = (event: ChangeEvent<HTMLInputElement>): void => {
+        const value: string = (event.target as HTMLInputElement).value;
+
+        switch (value) {
+            case CertificateType.JWKS:
+                setFinishShouldBeDisabled(jwksUrl === null);
+
+                break;
+            case CertificateType.PEM:
+                setFinishShouldBeDisabled(!isPemCertValid);
+
+                break;
+        }
+
+        setSelectedCertInputType(value as CertificateType);
+    };
 
     /**
      * Check whether loop back call is allowed or not.
@@ -441,27 +450,27 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                             { t("authenticationProvider:" +
                                 "templates.trustedTokenIssuer.forms.certificateType.label") }
                         </div>
-                        <Switcher
-                            compact
-                            defaultOptionValue={ certificateOptions[0].value }
-                            selectedValue={ selectedCertInputType }
-                            onChange={ ({ value }: SwitcherOptionProps) => {
-
-                                switch (value) {
-                                    case CertificateType.JWKS:
-                                        setFinishShouldBeDisabled(jwksUrl === null);
-
-                                        break;
-                                    case CertificateType.PEM:
-                                        setFinishShouldBeDisabled(!isPemCertValid);
-
-                                        break;
-                                }
-
-                                setSelectedCertInputType(value as CertificateType);
-                            } }
-                            options={ certificateOptions }
-                        />
+                        <FormControl>
+                            <RadioGroup
+                                row
+                                name="certificate-type"
+                                onChange={ onSelectionChange }
+                                value={ selectedCertInputType }
+                            >
+                                <FormControlLabel
+                                    control={ <Radio /> }
+                                    label={ t("console:develop.features.authenticationProvider.templates." +
+                                        "trustedTokenIssuer.forms.jwksUrl.optionLabel") }
+                                    value={ CertificateType.JWKS }
+                                />
+                                <FormControlLabel
+                                    control={ <Radio /> }
+                                    label={ t("console:develop.features.authenticationProvider.templates." +
+                                        "trustedTokenIssuer.forms.pem.optionLabel") }
+                                    value={ CertificateType.PEM }
+                                />
+                            </RadioGroup>
+                        </FormControl>
                     </Grid>
                 </Grid>
                 <Grid xs={ 12 }>
@@ -727,12 +736,4 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
             </Modal>
         </>
     );
-};
-
-/**
- * Default props for the trusted token issuer creation wizard.
- */
-TrustedTokenIssuerCreateWizard.defaultProps = {
-    currentStep: 0,
-    "data-componentid": "trusted-token-issuer"
 };
