@@ -16,10 +16,9 @@
  * under the License.
  */
 
-import { ClaimDataType } from "@wso2is/admin.claims.v1/constants";
 import { ProfileConstants } from "@wso2is/core/constants";
-import { IdentifiableComponentInterface, ProfileSchemaInterface } from "@wso2is/core/models";
-import { CheckboxFieldAdapter, FinalFormField, TextFieldAdapter } from "@wso2is/form";
+import { ClaimDataType, IdentifiableComponentInterface, ProfileSchemaInterface } from "@wso2is/core/models";
+import { CheckboxFieldAdapter, FinalFormField, SelectFieldAdapter, TextFieldAdapter } from "@wso2is/form";
 import isEmpty from "lodash-es/isEmpty";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -190,6 +189,36 @@ const DynamicTypeFormField = (props: DynamicTypeFormFieldPropsInterface) => {
                     name={ schema.name }
                     readOnly={ readOnly }
                     required={ required }
+                />
+                <Divider hidden/>
+            </>
+        );
+    }
+
+    if (claimType === ClaimDataType.OPTIONS) {
+        const options: string[] = schema["canonicalValues"] ?? [];
+
+        return (
+            <>
+                <FinalFormField
+                    key={ key }
+                    component={ SelectFieldAdapter }
+                    data-componentid={ componentId }
+                    initialValue={ profileInfo.get(schema.name) }
+                    ariaLabel={ fieldName }
+                    name={ schema.name }
+                    type="dropdown"
+                    label={ fieldName }
+                    placeholder={
+                        t("user:profile.forms.generic.inputs.dropdownPlaceholder",
+                            { fieldName })
+                    }
+                    options={ options }
+                    maxLength={ maxLength }
+                    readOnly={ readOnly }
+                    required={ required }
+                    clearable={ true }
+                    displayEmpty={ true }
                 />
                 <Divider hidden/>
             </>
