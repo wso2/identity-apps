@@ -24,7 +24,7 @@ import { getApplicationsResourceEndpoints } from "@wso2is/admin.applications.v1/
 import {
     getWorkflowAssociationsResourceEndpoints,
     getWorkflowsResourceEndpoints
-} from "@wso2is/admin.approval-workflows.v1/configs";
+} from "@wso2is/admin.approval-workflows.v1/configs/endpoints";
 import { getBrandingResourceEndpoints } from "@wso2is/admin.branding.v1/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "@wso2is/admin.certificates.v1";
 import { getClaimResourceEndpoints } from "@wso2is/admin.claims.v1/configs/endpoints";
