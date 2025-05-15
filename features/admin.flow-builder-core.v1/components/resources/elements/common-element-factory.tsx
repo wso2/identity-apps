@@ -20,6 +20,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Node } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
 import ButtonAdapter from "./adapters/button-adapter";
+import CaptchaAdapter from "./adapters/captcha-adapter";
 import ChoiceAdapter from "./adapters/choice-adapter";
 import DividerAdapter from "./adapters/divider-adapter";
 import FormAdapter from "./adapters/form-adapter";
@@ -84,6 +85,8 @@ export const CommonElementFactory: FunctionComponent<CommonElementFactoryPropsIn
         return <DividerAdapter stepId={ stepId } resource={ resource } />;
     } else if (resource.type === ElementTypes.Image) {
         return <ImageAdapter stepId={ stepId } resource={ resource } />;
+    } else if (resource.type === ElementTypes.CAPTCHA) {
+        return <CaptchaAdapter stepId={ stepId } resource={ resource } />;
     }
 
     return null;

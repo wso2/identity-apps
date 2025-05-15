@@ -69,6 +69,11 @@ const CommonElementPropertyFactory: FunctionComponent<CommonElementPropertyFacto
     onChange,
     ...rest
 }: CommonElementPropertyFactoryPropsInterface): ReactElement | null => {
+
+    console.log("resource", resource);
+    console.log("propertyKey", propertyKey);
+    console.log("propertyValue", propertyValue);
+
     if (propertyKey === "text") {
         if (resource.type === ElementTypes.RichText) {
             return <RichText ToolbarProps={ { history: false, strikeThrough: false } } { ...rest } />;
@@ -100,6 +105,18 @@ const CommonElementPropertyFactory: FunctionComponent<CommonElementPropertyFacto
                 }
                 placeholder={ `Enter ${startCase(propertyKey)}` }
                 data-componentid={ `${componentId}-${propertyKey}` }
+                { ...rest }
+            />
+        );
+    }
+
+    if (resource.type == ElementTypes.CAPTCHA) {
+        return (
+            <TextField
+                fullWidth
+                label="Provider"
+                defaultValue="ReCAPTCHA V2"
+                data-componentid={ `${ componentId }-${ propertyKey }` }
                 { ...rest }
             />
         );

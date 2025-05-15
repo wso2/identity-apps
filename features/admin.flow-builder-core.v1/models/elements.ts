@@ -40,6 +40,7 @@ export enum ElementCategories {
 export enum ElementTypes {
     Input = "INPUT",
     Button = "BUTTON",
+    CAPTCHA = "CAPTCHA",
     Divider = "DIVIDER",
     Choice = "CHOICE",
     Image = "IMAGE",
