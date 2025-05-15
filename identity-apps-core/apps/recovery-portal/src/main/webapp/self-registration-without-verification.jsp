@@ -234,6 +234,7 @@
                                     data-callback="onCompleted"
                                     data-action="register"
                                     data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                                    data-bind="registrationSubmit"
                                 >
                                 </div>
                             </div>
@@ -311,16 +312,19 @@
         $(document).ready(function () {
 
             $("#register").submit(function (e) {
-
+                var error_msg = $("#error-msg");
+                error_msg.hide();
                 <%
                     if (reCaptchaEnabled) {
                 %>
-                if (!grecaptcha.getResponse()) {
-                    e.preventDefault();
-                    grecaptcha.execute();
-
-                    return true;
-                }
+                        var resp = $("[name='g-recaptcha-response']")[0].value;
+                        if (resp.trim() == '') {
+                            error_msg.text("<%=i18n(recoveryResourceBundle, customText, "Please.select.reCaptcha")%>");
+                            error_msg.show();
+                            $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
+                            return false;
+                        }
+                        return true;
                 <%
                     }
                 %>
@@ -328,7 +332,6 @@
                 var unsafeCharPattern = /[<>`\"]/;
                 var elements = document.getElementsByTagName("input");
                 var invalidInput = false;
-                var error_msg = $("#error-msg");
 
                 for (i = 0; i < elements.length; i++) {
                     if (elements[i].type === 'text' && elements[i].value != null
