@@ -304,6 +304,7 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
                                         setSelectedUserStoreDomainName(e.target.value as string);
                                     } }
                                     fullWidth
+                                    disabled={ isReadOnly }
                                     sx={ { height: 38 } }
                                     data-componentid={ `${testId}-dropdown-userstore-select` }
                                 >
@@ -337,6 +338,7 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
                             loading={ isUserListFetchRequestLoading || isUserSearchLoading }
                             options={ users }
                             value={ selectedUsersFromUserStore }
+                            disabled={ isReadOnly }
                             getOptionLabel={ (user: UserBasicInterface) => RoleManagementUtils.getUserUsername(user) }
                             renderInput={ (params: AutocompleteRenderInputParams) => (
                                 <TextField

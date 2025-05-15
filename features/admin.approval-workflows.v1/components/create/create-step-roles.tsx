@@ -202,7 +202,7 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
     };
 
     useEffect(() => {
-        fetchAllRoles(); // Only fetch once
+        fetchAllRoles();
     }, []);
 
     useEffect(() => {
@@ -252,6 +252,7 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
                                 <Select
                                     data-componentid={ `${testId}-dropdown-role-type` }
                                     value={ selectedRoleType }
+                                    disabled={ isReadOnly }
                                     onChange={ (e: SelectChangeEvent<unknown>) => {
                                         updateSelectedAllRoles();
                                         setSelectedRolesFromRoleType([]);
@@ -290,6 +291,7 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
                             loading={ isRolesListLoading || isRoleSearchLoading }
                             options={ roles }
                             value={ selectedRoles }
+                            disabled={ isReadOnly }
                             getOptionLabel={ (role: RolesInterface) => role.displayName }
                             renderInput={ (params: AutocompleteRenderInputParams) => (
                                 <TextField
