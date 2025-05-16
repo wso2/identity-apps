@@ -70,10 +70,6 @@ const CommonElementPropertyFactory: FunctionComponent<CommonElementPropertyFacto
     ...rest
 }: CommonElementPropertyFactoryPropsInterface): ReactElement | null => {
 
-    console.log("resource", resource);
-    console.log("propertyKey", propertyKey);
-    console.log("propertyValue", propertyValue);
-
     if (propertyKey === "text") {
         if (resource.type === ElementTypes.RichText) {
             return <RichText ToolbarProps={ { history: false, strikeThrough: false } } { ...rest } />;
