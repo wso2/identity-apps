@@ -18,6 +18,7 @@
 
 import Collapse from "@mui/material/Collapse";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
+import { OperationStatus } from "@wso2is/admin.core.v1/models/common";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     shareApplication,
@@ -68,7 +69,6 @@ import {
     Grid,
     Radio
 } from "semantic-ui-react";
-import { OperationStatus } from "../../constants/application-management";
 import { ApplicationInterface, additionalSpProperty } from "../../models/application";
 
 enum ShareType {
@@ -95,8 +95,17 @@ export interface ApplicationShareFormPropsInterface
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Specifies if there is an ongoing sharing process.
+     */
     isSharingInProgress?: boolean;
+    /**
+     * Callback when application sharing starts.
+     */
     onOperationStarted?: () => void;
+    /**
+     * Specifies the current sharing status of the application.
+     */
     operationStatus?: OperationStatus;
 }
 
@@ -111,6 +120,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
         [ "data-componentid" ]: componentId,
         readOnly,
         isSharingInProgress,
+        operationStatus,
         onOperationStarted
     } = props;
 
@@ -180,10 +190,10 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
      * Listen for status updates from the parent.
      */
     useEffect(() => {
-        if (props.operationStatus === OperationStatus.PARTIALLY_COMPLETED) {
+        if (operationStatus === OperationStatus.PARTIALLY_COMPLETED) {
             onApplicationSharingCompleted?.();
         }
-    }, [ props.operationStatus ]);
+    }, [ operationStatus, onApplicationSharingCompleted ]);
 
     /**
      * Fetches the organization list.
@@ -319,10 +329,18 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
         }
     }, [ triggerApplicationShare ]);
 
+    /**
+     * Triggers the display of a confirmation modal when the user attempts to start a new share
+     * while one is ongoing, asking for confirmation to interrupt the current share.
+     */
     const handleInterruptOngoingShare = () => {
         setShowConfirmationModal(true);
     };
 
+    /**
+     * Renders a confirmation modal asking the user to confirm if they want to interrupt the
+     * ongoing application share. Provides options to confirm or cancel the operation.
+     */
     const renderConfirmationModal = (): ReactElement | null => {
         return (
             <>
@@ -364,7 +382,6 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
         onOperationStarted?.();
         let shareAppData: ShareApplicationRequestInterface;
         let removedOrganization: OrganizationInterface[];
-
 
         if (shareType === ShareType.SHARE_ALL) {
             shareAppData = {
