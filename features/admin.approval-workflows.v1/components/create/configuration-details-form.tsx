@@ -60,7 +60,7 @@ export interface ConfigurationsPropsInterface extends IdentifiableComponentInter
     /**
      * Initial values for the form.
      */
-    initialValues?: ConfigurationsFormValuesInterface;
+    initialValues?: Partial<ConfigurationsFormValuesInterface>;
 }
 
 export interface ConfigurationsFormRef {
@@ -88,7 +88,7 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                 onSubmit,
                 hasErrors,
                 initialValues,
-                ["data-componentid"]: testId = "workflow-model-configuration-details"
+                ["data-componentid"]: componentId = "workflow-model-configuration-details"
             }: ConfigurationsPropsInterface,
             ref: ForwardedRef<ConfigurationsFormRef>
         ): ReactElement => {
@@ -241,10 +241,13 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
 
             return (
                 <>
-                    <Box className="approval-steps-container" data-componentid={ `${testId}-approval-steps-container` }>
+                    <Box
+                        className="approval-steps-container"
+                        data-componentid={ `${componentId}-approval-steps-container` }
+                    >
                         <div className="approval-steps-stepsWrapper">
                             { steps.map((step: MultiStepApprovalTemplate, index: number) => (
-                                <React.Fragment key={ step.id }>
+                                <>
                                     <ApprovalStep
                                         key={ step.id }
                                         index={ index }
@@ -261,7 +264,7 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                                             handleStepChange(index, updateRoles, ENTITY_TYPES.ROLES)
                                         }
                                         showValidationError={ index === steps.length - 1 && !isValidStep }
-                                        data-componentid={ `${testId}-approval-step-${index}` }
+                                        data-componentid={ `${componentId}-approval-step-${index}` }
                                     />
 
                                     <div className="arrow-plus-wrapper">
@@ -287,7 +290,7 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                                             </div>
                                         ) }
                                     </div>
-                                </React.Fragment>
+                                </>
                             )) }
                         </div>
                     </Box>

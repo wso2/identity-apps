@@ -72,7 +72,7 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
         activeUserStore,
         onUsersChange,
         showValidationError,
-        ["data-componentid"]: testId
+        ["data-componentid"]: componentId
         = "workflow-model-approval-step-users"
     } = props;
 
@@ -279,13 +279,13 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
                     spacing={ 1 }
                     alignItems="center"
                     className="full-width"
-                    data-componentid={ `${testId}-userstore-users-grid` }
+                    data-componentid={ `${componentId}-userstore-users-grid` }
                 >
                     { !activeUserStore && (
                         <>
                             <Grid
                                 md={ 1.5 }
-                                data-componentid={ `${testId}-field-userstore-label` }
+                                data-componentid={ `${componentId}-field-userstore-label` }
                             >
                                 <label>{ t("approvalWorkflows:forms.configurations.template.users.label") }</label>
                             </Grid>
@@ -294,7 +294,7 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
                                 sm={ 4 }
                                 md={ 3.5 }
                                 alignItems="center"
-                                data-componentid={ `${testId}-field-userstore-select` }
+                                data-componentid={ `${componentId}-field-userstore-select` }
                             >
                                 <Select
                                     value={ selectedUserStoreDomainName }
@@ -306,7 +306,7 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
                                     fullWidth
                                     disabled={ isReadOnly }
                                     sx={ { height: 38 } }
-                                    data-componentid={ `${testId}-dropdown-userstore-select` }
+                                    data-componentid={ `${componentId}-dropdown-userstore-select` }
                                 >
                                     { isUserStoresLoading ? (
                                         <p>{ t("common:loading") }</p>
@@ -316,7 +316,7 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
                                                 key={ userstore.key }
                                                 value={ userstore.value }
                                                 data-componentid=
-                                                    { `${testId}-dropdown-userstore-option-${userstore.key}` }
+                                                    { `${componentId}-dropdown-userstore-option-${userstore.key}` }
                                             >
                                                 { userstore.text }
                                             </MenuItem>
@@ -330,7 +330,7 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
                         xs={ 12 }
                         sm={ 6.5 }
                         md={ 7 }
-                        data-componentid={ `${testId}-field-user-autocomplete` }
+                        data-componentid={ `${componentId}-field-user-autocomplete` }
                     >
                         <Autocomplete
                             multiple
@@ -350,7 +350,7 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
                                             ? "At least one of the options should be completed"
                                             : ""
                                     }
-                                    data-componentid={ `${testId}-field-user-search` }
+                                    data-componentid={ `${componentId}-field-user-search` }
                                 />
                             ) }
                             onChange={ (event: SyntheticEvent, users: UserBasicInterface[]) => {
@@ -375,7 +375,7 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
                                         activeOption={ activeOption }
                                         setActiveOption={ setActiveOption }
                                         variant="filled"
-                                        data-componentid={ `${testId}-chip-selected-user-${option.id}` }
+                                        data-componentid={ `${componentId}-chip-selected-user-${option.id}` }
                                     />
                                 ))
                             }
@@ -390,7 +390,7 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
                                     displayName={ RoleManagementUtils.getNameToDisplayOfUser(option) }
                                     userstore={ RoleManagementUtils.getUserStore(option.userName) }
                                     renderOptionProps={ props }
-                                    data-componentid={ `${testId}-option-user-${option.id}` }
+                                    data-componentid={ `${componentId}-option-user-${option.id}` }
                                 />
                             ) }
                         />

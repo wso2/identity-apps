@@ -87,12 +87,12 @@ const GeneralApprovalWorkflowDetailsForm: ForwardRefExoticComponent<RefAttribute
                 isReadOnly,
                 onSubmit,
                 initialValues,
-                ["data-componentid"]: testId = "workflow-model-general-details"
+                ["data-componentid"]: componentId = "workflow-model-general-details"
             }: GeneralApprovalWorkflowDetailsPropsInterface,
             ref: ForwardedRef<GeneralApprovalWorkflowDetailsFormRef>
         ): ReactElement => {
             const triggerFormSubmit: MutableRefObject<() => void> = useRef<(() => void) | null>(null);
-            const currentValuesRef: MutableRefObject<GeneralDetailsFormValuesInterface | null> = useRef(null);
+            const currentValuesRef: any = useRef(null);
 
             const dispatch: Dispatch = useDispatch();
             const { t } = useTranslation();
@@ -238,7 +238,7 @@ const GeneralApprovalWorkflowDetailsForm: ForwardRefExoticComponent<RefAttribute
                                     disabled={ isReadOnly }
                                     required
                                     fullWidth
-                                    data-componentid={ `${testId}-field-name` }
+                                    data-componentid={ `${componentId}-field-name` }
                                 />
                                 <FinalFormField
                                     className="text-field-container"
@@ -251,7 +251,7 @@ const GeneralApprovalWorkflowDetailsForm: ForwardRefExoticComponent<RefAttribute
                                     placeholder={ t("approvalWorkflows:forms.general.description.label") }
                                     component={ TextFieldAdapter }
                                     disabled={ isReadOnly }
-                                    data-componentid={ `${testId}-field-description` }
+                                    data-componentid={ `${componentId}-field-description` }
                                 />
                             </form>
                         );

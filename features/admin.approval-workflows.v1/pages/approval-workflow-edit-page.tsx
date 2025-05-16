@@ -98,6 +98,7 @@ const ApprovalWorkflowEditPage: FunctionComponent<ApprovalWorkflowEditPagePropsI
     return (
 
         <PageLayout
+            data-componentid={ `${componentId}-page-layout` }
             pageTitle={ t("pages:actions.title") }
             title={ <>{ approvalWorkflowDetails?.name }</> }
             description={ <>{ approvalWorkflowDetails?.description }</> }
@@ -107,12 +108,12 @@ const ApprovalWorkflowEditPage: FunctionComponent<ApprovalWorkflowEditPagePropsI
                 },
                 text: t("approvalWorkflows:pageLayout.edit.back")
             } }
-            data-componentid={ null }
             bottomMargin={ false }
             contentTopMargin={ true }
             pageHeaderMaxWidth={ false }
         >
             <EditApprovalWorkflow
+                data-componentid={ `${componentId}-edit-layout` }
                 approvalWorkflowDetails={ workflowDetails }
                 approvalWorkflowId={ approvalWorkflowId }
                 isReadOnly={ false }

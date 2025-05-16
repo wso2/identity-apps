@@ -98,7 +98,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                 isReadOnly,
                 onSubmit,
                 initialValues,
-                ["data-componentid"]: testId
+                ["data-componentid"]: componentId
                 = "workflow-operations"
             }: WorkflowOperationsDetailsPropsInterface,
             ref: ForwardedRef<WorkflowOperationsDetailsFormRef>
@@ -142,7 +142,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                     xs={ 12 }
                                     sm={ 4 }
                                     md={ 7 }
-                                    data-componentid={ `${testId}-field-role-autocomplete-container` }
+                                    data-componentid={ `${componentId}-field-role-autocomplete-container` }
                                 >
                                     <div className="operations-autocomplete">
                                         <Grid width={ 16 } className="operations-autocomplete-header">
@@ -153,7 +153,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
 
                                         <Autocomplete
                                             className="operations-autocomplete-input"
-                                            data-componentid={ `${testId}-field-operation-autocomplete` }
+                                            data-componentid={ `${componentId}-field-operation-autocomplete` }
                                             multiple
                                             disableCloseOnSelect
                                             options={ operations }
@@ -166,7 +166,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                                     placeholder={
                                                         t("approvalWorkflows:forms.operations.dropDown.placeholder")
                                                     }
-                                                    data-componentid={ `${testId}-field-operation-search` }
+                                                    data-componentid={ `${componentId}-field-operation-search` }
                                                 />
                                             ) }
                                             onChange={ (
@@ -198,7 +198,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                                     selected={ selected }
                                                     displayName={ option.text }
                                                     renderOptionProps={ props }
-                                                    data-componentid={ `${testId}-option-operation-${option.key}` }
+                                                    data-componentid={ `${componentId}-option-operation-${option.key}` }
                                                 />
                                             ) }
                                         />

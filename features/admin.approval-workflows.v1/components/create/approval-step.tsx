@@ -55,7 +55,7 @@ interface ApprovalStepProps extends IdentifiableComponentInterface {
     /**
      * Initial values for the step.
      */
-    initialValues?: ApprovalSteps;
+    initialValues?: MultiStepApprovalTemplate;
 
     /**
      * Whether there's only one step left.
@@ -108,7 +108,7 @@ const ApprovalStep: FunctionComponent<ApprovalStepProps> = (
         updateRoles,
         onDelete,
         showValidationError,
-        ["data-componentid"]: testId
+        ["data-componentid"]: componentId
         = "workflow-model-approval-step"
     } = props;
 
@@ -142,30 +142,30 @@ const ApprovalStep: FunctionComponent<ApprovalStepProps> = (
     };
 
     return (
-        <div className="approval-step-wrapper" data-componentid={ `${testId}-wrapper-${step.stepNumber}` }>
+        <div className="approval-step-wrapper" data-componentid={ `${componentId}-wrapper-${step.stepNumber}` }>
             <Typography
                 variant="subtitle2"
                 className="approval-step-label"
-                data-componentid={ `${testId}-label-${step.stepNumber}` }
+                data-componentid={ `${componentId}-label-${step.stepNumber}` }
             >
                 { `Step ${step.stepNumber}` }
             </Typography>
             <Card
                 className="approval-step-card"
                 key={ step.id }
-                data-componentid={ `${testId}-card-${step.stepNumber}` }
+                data-componentid={ `${componentId}-card-${step.stepNumber}` }
             >
 
-                <List data-componentid={ `${testId}-list-${step.stepNumber}` }>
+                <List data-componentid={ `${componentId}-list-${step.stepNumber}` }>
                     { /* <Grid
                     container
                     justifyContent="space-between"
                     className="approval-step-heading"
-                    data-componentid={ `${testId}-heading-${step.stepNumber}` }
+                    data-componentid={ `${componentId}-heading-${step.stepNumber}` }
                 >
                     <Typography
                         variant="body2"
-                        data-componentid={ `${testId}-label-${step.stepNumber}` }
+                        data-componentid={ `${componentId}-label-${step.stepNumber}` }
                     >
                         { `Step ${step.stepNumber}` }
                     </Typography>
@@ -177,43 +177,43 @@ const ApprovalStep: FunctionComponent<ApprovalStepProps> = (
                     size="small"
                     className="delete-button"
                     onClick={ () => onDelete(step.id) }
-                    data-componentid={ `${testId}-delete-button-${step.stepNumber}` }
+                    data-componentid={ `${componentId}-delete-button-${step.stepNumber}` }
                 >
                     <TrashIcon
                         className="delete-button-icon"
-                        data-componentid={ `${testId}-delete-icon-${step.stepNumber}` }
+                        data-componentid={ `${componentId}-delete-icon-${step.stepNumber}` }
                     />
                 </Fab> */ }
                     <div
                         className="rules-component"
-                        data-componentid={ `${testId}-rules-component-${step.stepNumber}` }
+                        data-componentid={ `${componentId}-rules-component-${step.stepNumber}` }
                     >
                         <Box
                             className="box-container"
-                            data-componentid={ `${testId}-box-container-${step.stepNumber}` }
+                            data-componentid={ `${componentId}-box-container-${step.stepNumber}` }
                         >
                             <ListItem
                                 className="list-item-roles"
-                                data-componentid={ `${testId}-roles-list-item-${step.stepNumber}` }
+                                data-componentid={ `${componentId}-roles-list-item-${step.stepNumber}` }
                             >
                                 <StepRolesList
                                     initialValues={ initialValues }
                                     isReadOnly={ isReadOnly }
                                     onRolesChange={ handleRolesChange }
                                     showValidationError={ validationError }
-                                    data-componentid={ `${testId}-roles-list-${step.stepNumber}` }
+                                    data-componentid={ `${componentId}-roles-list-${step.stepNumber}` }
                                 />
                             </ListItem>
                             <ListItem
                                 className="list-item-users"
-                                data-componentid={ `${testId}-users-list-item-${step.stepNumber}` }
+                                data-componentid={ `${componentId}-users-list-item-${step.stepNumber}` }
                             >
                                 <StepUsersList
                                     initialValues={ initialValues }
                                     isReadOnly={ isReadOnly }
                                     onUsersChange={ handleUsersChange }
                                     showValidationError={ validationError }
-                                    data-componentid={ `${testId}-users-list-${step.stepNumber}` }
+                                    data-componentid={ `${componentId}-users-list-${step.stepNumber}` }
                                 />
                             </ListItem>
                         </Box>
@@ -223,13 +223,13 @@ const ApprovalStep: FunctionComponent<ApprovalStepProps> = (
                     variant="circular"
                     size="small"
                     onClick={ () => onDelete(step.id) }
-                    data-componentid={ `${testId}-delete-button-${step.stepNumber}` }
+                    data-componentid={ `${componentId}-delete-button-${step.stepNumber}` }
                     className={"close-button"}
                     disabled={ isReadOnly || isOneStepLeft }
                 >
                     <CrossIcon
                         className="delete-button-icon"
-                        data-componentid={ `${testId}-delete-icon-${step.stepNumber}` }
+                        data-componentid={ `${componentId}-delete-icon-${step.stepNumber}` }
                     />
                 </Fab>
 
