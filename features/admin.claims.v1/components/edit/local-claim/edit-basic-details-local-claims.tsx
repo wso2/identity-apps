@@ -16,13 +16,16 @@
  * under the License.
  */
 
+import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
 import Table from "@oxygen-ui/react/Table";
 import TableBody from "@oxygen-ui/react/TableBody";
 import TableCell from "@oxygen-ui/react/TableCell";
 import TableHead from "@oxygen-ui/react/TableHead";
 import TableRow from "@oxygen-ui/react/TableRow";
+import { TrashIcon } from "@oxygen-ui/react-icons";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
+import useGetAllLocalClaims from "@wso2is/admin.claims.v1/api/use-get-all-local-claims";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
@@ -46,6 +49,7 @@ import {
     AlertLevels,
     Claim,
     ClaimDialect,
+    DataType,
     ExternalClaim,
     ProfileSchemaInterface,
     SharedProfileValueResolvingMethod,
@@ -56,6 +60,7 @@ import { Property } from "@wso2is/core/src/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { DropDownItemInterface } from "@wso2is/form/src";
+import { DynamicField , KeyValue, useTrigger } from "@wso2is/forms";
 import {
     ConfirmationModal,
     CopyInputField,
@@ -134,6 +139,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ hasMapping, setHasMapping ] = useState<boolean>(false);
     const [ mappingChecked, setMappingChecked ] = useState<boolean>(false);
+    const [ dataType, setDataType ] = useState<string>(claim?.dataType || "");
+    const [ subAttributes, setSubAttributes ] = useState<string[]>([]);
+    const [ canonicalValues, setCanonicalValues ] = useState<KeyValue[]>();
 
     const nameField: MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
     const regExField: MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
@@ -190,10 +198,54 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             value: SharedProfileValueResolvingMethod.FROM_FIRST_FOUND_IN_HIERARCHY
         }
     ];
+
+    const dataTypeOptions: DropDownItemInterface[] = [
+        {
+            text: t("claims:local.forms.dataType.options.text"),
+            value: DataType.TEXT
+        },
+        {
+            text: t("claims:local.forms.dataType.options.options"),
+            value: DataType.OPTIONS
+        },
+        {
+            text: t("claims:local.forms.dataType.options.number"),
+            value: DataType.INTEGER
+        },
+        {
+            text: t("claims:local.forms.dataType.options.fraction"),
+            value: DataType.DECIMAL
+        },
+        {
+            text: t("claims:local.forms.dataType.options.boolean"),
+            value: DataType.BOOLEAN
+        },
+        {
+            text: t("claims:local.forms.dataType.options.date"),
+            value: DataType.DATE_TIME
+        },
+        {
+            text: t("claims:local.forms.dataType.options.object"),
+            value: DataType.COMPLEX
+        }
+    ];
+
     const {
         data: fetchedDialects,
         error: fetchDialectsRequestError
     } = useGetClaimDialects(null);
+
+    const enableIdentityClaims: boolean = useSelector((state: AppState) => state?.config?.ui?.enableIdentityClaims);
+
+    const {
+        data: fetchedAttributes
+    } = useGetAllLocalClaims({
+        "exclude-identity-claims": !enableIdentityClaims,
+        filter: null,
+        limit: null,
+        offset: null,
+        sort: null
+    });
 
     // Extract custom user schema ID.
     const customUserSchemaID: string = useMemo(() => fetchedDialects?.find(
@@ -225,6 +277,28 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
      * Update attribute profile states from claims
      */
     useEffect(() => {
+
+        if (claim.canonicalValues && Array.isArray(claim.canonicalValues)) {
+            setCanonicalValues(claim.canonicalValues.map((item: KeyValue) => ({
+                key: item.key,
+                value: item.value
+            })));
+        } else {
+            setCanonicalValues([]);
+        }
+
+        if (claim.subAttributes && Array.isArray(claim.subAttributes)) {
+            setSubAttributes(claim.subAttributes);
+        }
+
+        if (claim?.dataType === DataType.STRING && claim?.canonicalValues?.length > 0) {
+            setDataType(DataType.OPTIONS);
+        } else if (claim?.dataType === DataType.STRING) {
+            setDataType(DataType.TEXT);
+        } else {
+            setDataType(claim?.dataType || DataType.STRING);
+        }
+
         setIsConsoleRequired(claim?.profiles?.console?.required ?? claim?.required);
         setIsEndUserRequired(claim?.profiles?.endUser?.required ?? claim?.required);
         setIsSelfRegistrationRequired(claim?.profiles?.selfRegistration?.required ?? claim?.required);
@@ -527,11 +601,28 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const onSubmit = (values: Record<string, unknown>) => {
         let data: Claim;
 
+        if (dataType === DataType.COMPLEX && subAttributes.length === 0) {
+            dispatch(
+                addAlert({
+                    description: t("claims:local.forms.subAttributes.validationError"),
+                    level: AlertLevels.WARNING,
+                    message: t("claims:local.forms.subAttributes.validationErrorMessage")
+                })
+            );
+
+            return; // Block submission
+        }
         if (isDistinctAttributeProfilesDisabled) {
             // Use the legacy configuration.
             data = {
                 attributeMapping: claim.attributeMapping,
+                canonicalValues: values?.canonicalValues !== undefined
+                    ? values.canonicalValues as KeyValue[]
+                    : canonicalValues,
                 claimURI: claim.claimURI,
+                dataType: dataType === DataType.TEXT || dataType === DataType.OPTIONS
+                    ? DataType.STRING
+                    : dataType,
                 description: values?.description !== undefined
                     ? values.description?.toString()
                     : claim?.description,
@@ -555,6 +646,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 sharedProfileValueResolvingMethod: values?.sharedProfileValueResolvingMethod !== undefined
                     ? values?.sharedProfileValueResolvingMethod as SharedProfileValueResolvingMethod
                     : claim?.sharedProfileValueResolvingMethod,
+                subAttributes: dataType === DataType.COMPLEX ? subAttributes : undefined,
                 supportedByDefault: values?.supportedByDefault !== undefined
                     ? !!values.supportedByDefault
                     : claim?.supportedByDefault,
@@ -566,7 +658,13 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             // Use the new configuration.
             data = {
                 attributeMapping: claim.attributeMapping,
+                canonicalValues: values?.canonicalValues !== undefined
+                    ? values.canonicalValues as KeyValue[]
+                    : canonicalValues,
                 claimURI: claim.claimURI,
+                dataType: dataType === DataType.TEXT || dataType === DataType.OPTIONS
+                    ? DataType.STRING
+                    : dataType,
                 description: values?.description !== undefined
                     ? values.description?.toString()
                     : claim?.description,
@@ -619,6 +717,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 sharedProfileValueResolvingMethod: values?.sharedProfileValueResolvingMethod !== undefined
                     ? values?.sharedProfileValueResolvingMethod as SharedProfileValueResolvingMethod
                     : claim?.sharedProfileValueResolvingMethod,
+                subAttributes: dataType === DataType.COMPLEX ? subAttributes : undefined,
                 supportedByDefault: values?.supportedByDefault !== undefined
                     ? !!values.supportedByDefault : claim?.supportedByDefault,
                 uniquenessScope: values?.uniquenessScope !== undefined
@@ -957,18 +1056,114 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         hint={ t("claims:local.forms.descriptionHint") }
                         readOnly={ isSubOrganization() || isReadOnly }
                     />
-                    <Field.Checkbox
-                        ariaLabel={ t("claims:local.forms.multiValued.label") }
-                        name="multiValued"
-                        label={ t("claims:local.forms.multiValued.label") }
-                        required={ false }
-                        defaultValue={ claim?.multiValued }
-                        data-testid={ `${testId}-form-multi-valued-input` }
-                        hint={ isSystemClaim
-                            ? t("claims:local.forms.multiValuedDisabledHint")
-                            : t("claims:local.forms.multiValuedHint") }
-                        readOnly={ isSubOrganization() || isSystemClaim || isReadOnly }
+                    <Field.Dropdown
+                        ariaLabel={ t("claims:local.forms.dataType.label") }
+                        name="dataType"
+                        label={ t("claims:local.forms.dataType.label") }
+                        data-testid={ `${testId}-form-data-type-input` }
+                        hint={ t("claims:local.forms.dataType.hint") }
+                        disabled={ isSubOrganization() || isSystemClaim || isReadOnly }
+                        options={ dataTypeOptions }
+                        value={ dataType }
+                        onChange={ (
+                            event: React.SyntheticEvent<HTMLElement, Event>,
+                            data: { value: string }
+                        ) => {
+                            setSubAttributes([]);
+                            setCanonicalValues([]);
+                            setDataType(data.value);
+                        } }
                     />
+                    { dataType === DataType.COMPLEX && (
+                        <>
+                            <Field.Dropdown
+                                ariaLabel="subAttributes-dropdown"
+                                name="subAttributesDropdown"
+                                label={ t("claims:local.forms.subAttributes.label") }
+                                placeholder={ t("claims:local.forms.subAttributes.placeholder") }
+                                options={
+                                    fetchedAttributes
+                                        ?.filter((claim: Claim) => {
+                                            return !claim.properties?.some(
+                                                (property: Property) => property.key === "isSystemClaim" &&
+                                                    property.value === "true"
+                                            );
+                                        })
+                                        .map((claim: Claim) => ({
+                                            text: claim.claimURI,
+                                            value: claim.claimURI
+                                        }))
+                                        .sort((a, b) => a.text.localeCompare(b.text)) // Sort options alphabetically
+                                }
+                                onChange={ (event, data) => {
+                                    if (event.type === "click" && !subAttributes.includes(data.value)) {
+                                        setSubAttributes([ ...subAttributes, data.value ]);
+                                    }
+                                } }
+                                data-testid={ `${testId}-form-sub-attributes-dropdown` }
+                                search
+                            />
+                            <div>
+                                { subAttributes.map((attribute, index) => (
+                                    <div
+                                        style={ { alignItems: "center", display: "flex",
+                                            justifyContent: "space-between"
+                                        } }
+                                        key={ index }>
+                                        <span>{ attribute }</span>
+                                        <IconButton
+                                            disabled={ isReadOnly }
+                                            onClick={ () => {
+                                                setSubAttributes(subAttributes.filter((item) => item !== attribute));
+                                            } }
+                                            data-componentid={ `${testId}-delete-sub-attribute-${index}` }
+                                            style={ { marginLeft: "auto" } }
+                                        >
+                                            <TrashIcon />
+                                        </IconButton>
+                                    </div>
+                                )) }
+                            </div>
+                        </>
+                    ) }
+
+                    { dataType === DataType.OPTIONS && (
+                        <>
+                            <p>{ t("claims:local.forms.canonicalValues.hint") }</p>
+                            <DynamicField
+                                data={ canonicalValues.map((value: KeyValue) =>
+                                    ({ key: value.key, value: value.value })) }
+                                keyType="text"
+                                keyName={ t("claims:local.forms.canonicalValues.keyLabel") }
+                                valueName={ t("claims:local.forms.canonicalValues.valueLabel") }
+                                keyRequiredMessage={ t("claims:local.forms.canonicalValues.keyRequiredErrorMessage") }
+                                valueRequiredErrorMessage=
+                                    { t("claims:local.forms.canonicalValues.valueRequiredErrorMessage") }
+                                requiredField={ true }
+                                listen={ (data: KeyValue[]) => {
+                                    setCanonicalValues(data.map((item: KeyValue) =>
+                                        ({ key: item.key, value: item.value })));
+                                } }
+                                data-testid={ `${testId}-form-canonical-values-dynamic-field` }
+                                readOnly={ isReadOnly }
+                            />
+                        </>
+                    ) }
+
+                    { dataType !== DataType.BOOLEAN && (
+                        <Field.Checkbox
+                            ariaLabel={ t("claims:local.forms.multiValued.label") }
+                            name="multiValued"
+                            label={ t("claims:local.forms.multiValued.label") }
+                            required={ false }
+                            defaultValue={ claim?.multiValued }
+                            data-testid={ `${testId}-form-multi-valued-input` }
+                            hint={ isSystemClaim
+                                ? t("claims:local.forms.multiValuedDisabledHint")
+                                : t("claims:local.forms.multiValuedHint") }
+                            readOnly={ isSubOrganization() || isSystemClaim || isReadOnly }
+                        />
+                    ) }
                     { !attributeConfig.localAttributes.createWizard.showRegularExpression && !hideSpecialClaims
                         && (
                             <Field.Input

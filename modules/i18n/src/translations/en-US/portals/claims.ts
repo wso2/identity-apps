@@ -451,6 +451,26 @@ export const claims: ClaimsNS = {
                 placeholder: "Enter an attribute name",
                 requiredErrorMessage: "Attribute name is required"
             },
+            canonicalValues: {
+                hint: "Provide the allowed values for the attribute.",
+                keyLabel: "Display Value",
+                keyRequiredErrorMessage: "Display value is required",
+                valueLabel: "Actual Value",
+                valueRequiredErrorMessage: "Actual value is required"
+            },
+            dataType: {
+                hint: "The data type of the attribute.",
+                label: "Data Type",
+                options: {
+                    boolean: "Boolean",
+                    date: "Date",
+                    fraction: "Fraction",
+                    number: "Number",
+                    object: "Object",
+                    options: "Options",
+                    text: "Text"
+                }
+            },
             description: {
                 label: "Description",
                 placeholder: "Enter a description",
@@ -527,6 +547,12 @@ export const claims: ClaimsNS = {
                     fromOrigin: "From Origin",
                     fromSharedProfile: "From Shared Profile"
                 }
+            },
+            subAttributes: {
+                label: "The sub-attributes of the attribute",
+                placeholder: "Enter a sub-attribute name",
+                validationError: "At least one sub-attribute must be provided.",
+                validationErrorMessage: "Sub-attributes are required for complex data types."
             },
             supportedByDefault: {
                 label: "Display this attribute on the user's profile"
