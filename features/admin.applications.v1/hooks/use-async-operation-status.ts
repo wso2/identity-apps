@@ -95,14 +95,14 @@ export const useAsyncOperationStatus = ({
 }: useAsyncOperationStatusProps) => {
 
     const API_LIMIT: number = UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT;
-
-    const intervalRef: MutableRefObject<number> = useRef<number | null>(null);
-    const [ status, setStatus ] = useState<OperationStatus>(OperationStatus.IDLE);
-    const [ params ] = useState<UseAsyncOperationStatusParams>({
+    const params: UseAsyncOperationStatusParams = {
         after: null,
         filter: `subjectId eq ${subjectId} and operationType eq ${operationType}`,
         limit: API_LIMIT
-    });
+    };
+
+    const intervalRef: MutableRefObject<number> = useRef<number | null>(null);
+    const [ status, setStatus ] = useState<OperationStatus>(OperationStatus.IDLE);
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
