@@ -130,7 +130,6 @@ public class AppsCommonServiceComponent {
                     org.wso2.carbon.identity.role.v3.mgt.core.listener.RoleManagementListener.class.getName(),
                     consoleRoleListenerV3, null);
                 log.debug("ConsoleRoleListenerV3 registered successfully.");
-
             }
 
             if (!CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
