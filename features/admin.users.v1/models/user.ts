@@ -152,6 +152,7 @@ export interface AddUserWizardStateInterface {
     passwordOption: string;
     groups: GroupsInterface[];
     roles: RolesInterface[];
+    emails?: (EmailsInterface | string | MultiValueAttributeInterface)[];
 }
 
 /**
@@ -166,7 +167,7 @@ export interface EmailsInterface {
  * Captures user details
  */
 export interface UserDetailsInterface {
-    emails: EmailsInterface[];
+    emails: (EmailsInterface | string | MultiValueAttributeInterface)[];
     name?: NameInterface;
     userName: string;
     password?: string;
@@ -427,6 +428,20 @@ export interface UserInviteInterface {
     roles?: string[];
     email: string;
     status?: InviteUserStatus;
+}
+
+/**
+ * Interface for the resend code request payload.
+ */
+export interface ResendCodeRequestData {
+    user: {
+        username: string;
+        realm: string;
+    };
+    properties: Array<{
+        key: string;
+        value: string;
+    }>;
 }
 
 /**

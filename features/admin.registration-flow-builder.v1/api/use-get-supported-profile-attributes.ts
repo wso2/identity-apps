@@ -48,7 +48,7 @@ const useGetSupportedProfileAttributes = <Data = Attribute[], Error = RequestErr
         },
         method: HttpMethods.GET,
         params: {
-            "exclude-identity-claims": true
+            "exclude-hidden-claims": true
         },
         url: store.getState().config.endpoints.localClaims
     };

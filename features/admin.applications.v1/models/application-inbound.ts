@@ -515,7 +515,8 @@ export interface OIDCEndpointsInterface {
  */
 export enum SupportedAccessTokenBindingTypes {
     NONE = "None",
-    CERTIFICATE = "certificate"
+    CERTIFICATE = "certificate",
+    DPOP = "DPoP"
 }
 
 /**

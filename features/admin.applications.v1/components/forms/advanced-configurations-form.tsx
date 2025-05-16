@@ -393,7 +393,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                         template?.id === ApplicationManagementConstants.MOBILE ||
                         template?.id === ApplicationManagementConstants.TEMPLATE_IDS.get("oidcWeb"))
                     ) && (
-                        <Grid>
+                        <Grid data-componentid={ `${ testId }-application-native-authentication` }>
                             <Grid.Row columns={ 2 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Divider />
@@ -437,7 +437,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                         template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
                         template?.id === ApplicationManagementConstants.MOBILE)
                     ) && (
-                        <Grid>
+                        <Grid data-componentid={ `${ testId }-client-attestation` }>
                             <Grid.Row
                                 columns={ 1 }
                                 onClick={ handleWhenClientAttestationClickedWhenDisabled }>
@@ -556,7 +556,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                         template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
                         template?.id === ApplicationManagementConstants.MOBILE)
                     ) && (
-                        <Grid>
+                        <Grid data-componentid={ `${ testId }-trusted-apps` }>
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Divider />
@@ -629,7 +629,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                         template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
                         template?.id === ApplicationManagementConstants.MOBILE
                     ) && (
-                        <Grid>
+                        <Grid data-componentid={ `${ testId }-platform-settings` }>
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Divider />

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,6 @@
  */
 
 import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { sortList } from "@wso2is/admin.core.v1/utils/sort-list";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, ClaimsGetParams, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
@@ -26,7 +25,7 @@ import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Code } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import { getAnExternalClaim, updateAnExternalClaim } from "../../../api";
@@ -112,15 +111,12 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
 
     const dispatch: Dispatch = useDispatch();
 
-    const enableIdentityClaims: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.enableIdentityClaims);
-
     const { t } = useTranslation();
 
     useEffect(() => {
         setIsClaimsLoading(true);
         const params: ClaimsGetParams = {
-            "exclude-identity-claims": !enableIdentityClaims,
+            "exclude-hidden-claims": true,
             filter: null,
             limit: null,
             offset: null,

@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.validation.v1",
-    "version": "2.27.142",
+    "version": "2.27.143",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",

@@ -146,6 +146,7 @@ export interface UserStore {
  * Type of object passed to Test a JDBC connection
  */
 export interface TestConnection {
+    domain?: string;
     driverName: string;
     connectionURL: string;
     username: string;

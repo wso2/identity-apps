@@ -36,6 +36,7 @@ import { RoleGroupsList } from "./edit-role-groups";
 import { UpdatedRolePermissionDetails } from "./edit-role-permission";
 import { RoleUsersList } from "./edit-role-users";
 import { RoleConstants as LocalRoleConstants } from "../../constants";
+import { isMyAccountImpersonationRole } from "../role-utils";
 
 /**
  * Captures props needed for edit role component
@@ -127,7 +128,9 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <BasicRoleDetails
-                            isReadOnly={ isAdminRole || isEveryoneRole || isReadOnly || isSharedRole }
+                            isReadOnly={ isAdminRole || isEveryoneRole || isReadOnly || isSharedRole
+                                || isMyAccountImpersonationRole(roleObject?.displayName,
+                                    roleObject?.audience?.display) }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 0 }
@@ -140,7 +143,9 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <UpdatedRolePermissionDetails
-                            isReadOnly={ isAdminRole || isReadOnly || isSharedRole }
+                            isReadOnly={ isAdminRole || isReadOnly || isSharedRole
+                                || isMyAccountImpersonationRole(roleObject?.displayName,
+                                    roleObject?.audience?.display) }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 1 }

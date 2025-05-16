@@ -1,0 +1,21 @@
+@media (max-width: 767px) {
+    .oxygen-app-shell .oxygen-app-shell-content .oxygen-app-shell-main-wrapper .oxygen-app-shell-main {
+        padding: var(--oxygen-customComponents-AppShell-properties-padding) 8px;
+    }
+
+    .MuiContainer-root {
+        padding-left: 4px;
+        padding-right: 4px;
+    }
+
+    .layout.page-layout .layout-content.padded {
+        padding: 25px 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .oxygen-brand.with-link {
+        margin-right: -100px !important;
+        z-index: 1;
+    }
+}

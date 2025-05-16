@@ -36,6 +36,7 @@ export interface EmailProviderConfigAPIResponseInterface {
     fromAddress?: string;
     userName?: string;
     password?: string;
+    authType?: string;
     properties?: EmailProviderConfigPropertiesInterface[];
 }
 
@@ -50,6 +51,11 @@ export interface EmailProviderConfigFormValuesInterface {
     password?: string;
     displayName?: string;
     replyToAddress?: string;
+    authType?: string;
+    clientId?: string;
+    clientSecret?: string;
+    tokenEndpoint?: string;
+    scopes?: string;
 }
 
 export interface EmailProviderConfigFormErrorValidationsInterface {
@@ -60,6 +66,11 @@ export interface EmailProviderConfigFormErrorValidationsInterface {
     userName?: string;
     password?: string;
     displayName?: string;
+    authType?: string;
+    clientId?: string;
+    clientSecret?: string;
+    tokenEndpoint?: string;
+    scopes?: string;
 }
 
 /**

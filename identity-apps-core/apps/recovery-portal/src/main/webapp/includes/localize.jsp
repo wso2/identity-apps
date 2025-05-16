@@ -25,6 +25,8 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="java.io.BufferedReader" %>
+<%@ page import="java.io.FileReader" %>
 
 <%
     String lang = "en_US"; // Default lang is en_US
@@ -252,5 +254,51 @@
             // Return the link itself as a fallback.
             return StringEscapeUtils.escapeHtml4(transformedLink);
         }
+    }
+%>
+
+<%! 
+    private static final String LOCALE_CODE_KEY = "localeCode";
+    private static final String FLAG_CODE_KEY = "flagCode";
+    private static final String DISPLAY_NAME_KEY = "displayName";
+%>
+
+<%!
+    /**
+     * Retrieve all available locales and their display names for the Local dropdown.
+     *
+     * @return {List<Map<String, String>>}
+     */
+    private List<Map<String, String>> getLocaleList(ServletContext context) {
+        List<Map<String, String>> localeList = new ArrayList<>();
+        String localeOptionsFilePath = context.getRealPath("/WEB-INF/classes/LocaleOptions.properties");
+        try (BufferedReader localeReader = new BufferedReader(new FileReader(localeOptionsFilePath, java.nio.charset.StandardCharsets.UTF_8))) {
+            Properties localeProperties = new Properties();
+            localeProperties.load(localeReader);
+            for (String key : localeProperties.stringPropertyNames()) {
+                String[] values = localeProperties.getProperty(key).split(",");
+                
+                // Validate the number of values
+                if (values.length == 3) {
+                    String flagCode = values[0].trim();
+                    String displayName = values[1].trim();
+                    String localeCode = values[2].trim();
+                    // Avoid null or empty values
+                    if (StringUtils.isNotBlank(flagCode) && StringUtils.isNotBlank(displayName) && StringUtils.isNotBlank(localeCode)) {
+                        Map<String, String> localeMap = new HashMap<>();
+                        localeMap.put(FLAG_CODE_KEY, flagCode);
+                        localeMap.put(DISPLAY_NAME_KEY, displayName);
+                        localeMap.put(LOCALE_CODE_KEY, localeCode);
+                        localeList.add(localeMap);
+                    }
+                } else {
+                    System.err.println("Invalid locale entry in LocaleOptions.properties for key: " + key);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error reading LocaleOptions.properties: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return localeList;
     }
 %>

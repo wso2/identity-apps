@@ -45,6 +45,30 @@ export interface UserStoresContextProps {
      * Function to mutate the user stores list.
      */
     mutateUserStoreList: (delay?: number) => void;
+    /**
+     * Hidden user stores list.
+     */
+    hiddenUserStoreNamesList: string[];
+    /**
+     * Function to check if a user store is hidden.
+     *
+     * @param userStoreName - User store name.
+     */
+    isUserStoreHidden: (userStoreName: string) => boolean;
+    /**
+     * Function to filter the user stores list.
+     *
+     * @param includeHiddenUserStores - Include hidden user stores.
+     * @param includeDisabledUserStores - Include disabled user stores.
+     * @param includeReadOnlyUserStores - Include read only user stores.
+     * @param includePrimaryUserStore - Include primary user store.
+     */
+    filterUserStores: (
+        includeHiddenUserStores: boolean,
+        includeDisabledUserStores: boolean,
+        includeReadOnlyUserStores: boolean,
+        includePrimaryUserStore: boolean
+    ) => UserStoreListItem[];
 }
 
 /**

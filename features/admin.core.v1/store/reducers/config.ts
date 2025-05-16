@@ -148,6 +148,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             remoteLogPublishEndpoint: "",
             remoteLogging: "",
             requestPathAuthenticators: "",
+            resendCode: "",
             resourceTypes: "",
             roles: "",
             rolesV2: "",
@@ -213,6 +214,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 defaultWhiteLogoUrl: ""
             },
             enableCustomEmailTemplates: undefined,
+            enableOldUIForEmailProvider: undefined,
             features: {
                 applications: null,
                 approvals: null,
@@ -297,6 +299,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             },
             selfAppIdentifier: "",
             showAppSwitchButton: undefined,
+            showPasswordOfEmailProvider: undefined,
             showSmsOtpPwdRecoveryFeatureStatusChip: undefined,
             showStatusLabelForNewAuthzRuntimeFeatures: undefined,
             systemAppsIdentifiers: [],

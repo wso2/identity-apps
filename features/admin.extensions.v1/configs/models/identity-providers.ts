@@ -21,15 +21,7 @@ import { ResourceTabPaneInterface } from "@wso2is/react-components";
 import { ReactElement, ReactNode } from "react";
 
 export interface ExtendedSamlConfigInterface {
-    isArtifactBindingEnabled: boolean;
-    attributeConsumingServiceIndexEnabled: boolean;
     saml2WebSSOUserIdLocationEnabled: boolean;
-    authContextComparisonLevelEnabled: boolean;
-    responseAuthenticationContextClassEnabled: boolean;
-    forceAuthenticationEnabled: boolean;
-    includeAuthenticationContextEnabled: boolean;
-    isAssertionEncryptionEnabled: boolean;
-    includeNameIDPolicyEnabled: boolean;
     enableAssertionSigningEnabled: boolean;
     includePublicCertEnabled: boolean;
 }

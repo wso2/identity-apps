@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,7 +19,7 @@
 /**
  * Class containing Sign In With Ethereum IDP constants.
  */
-export class SIWEConstants {
+class SIWEConstants {
 
     public static readonly SIWE_REGISTRATION_INVALID_STATUS_CODE_ERROR_CODE: string = "ASG-CON-SIWE-00001";
     public static readonly SIWE_REGISTRATION_ERROR_CODE: string = "ASG-CON-SIWE-00002";
@@ -52,5 +52,7 @@ export class SIWEConstants {
         CALLBACK_URL: "callbackUrl",
         CLIENT_ID: "ClientId",
         CLIENT_SECRET: "ClientSecret"
-    }
+    };
 }
+
+export default SIWEConstants;

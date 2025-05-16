@@ -175,6 +175,20 @@ export const AppUtils: AppUtilsInterface = (function() {
         },
 
         /**
+         * Get the client ID of my account.
+         *
+         * @returns client ID of my account.
+         */
+        getClientId: function() {
+
+            if(_config.tenantContext?.enableTenantQualifiedUrls || this.isSuperTenant()) {
+                return _config.clientID;
+            }
+
+            return _config.clientID + "_" + this.getTenantName();
+        },
+
+        /**
          * Get the client origin with the tenant.
          *
          * @returns
@@ -199,14 +213,13 @@ export const AppUtils: AppUtilsInterface = (function() {
 
             const tenantPath: string = this.getTenantPath();
             const resolvedTenantPath: string = tenantPath.match(this.getSuperTenant())?.length > 0 ? "" : tenantPath;
-            const clientID: string = _config.clientID;
 
             return {
                 __experimental__platformIdP: _config.__experimental__platformIdP,
                 appBase: _config.appBaseName,
                 appBaseNameForHistoryAPI: this.constructAppBaseNameForHistoryAPI(),
                 appBaseWithTenant: this.getAppBaseWithTenantAndOrganization(),
-                clientID: clientID,
+                clientID: this.getClientId(),
                 clientOrigin: _config.clientOrigin,
                 clientOriginWithTenant: this.getClientOriginWithTenant(),
                 consoleApp: {

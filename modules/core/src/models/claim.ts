@@ -25,6 +25,7 @@ export interface Claim {
     dialectURI?: string;
     description: string;
     displayOrder: number;
+    multiValued: boolean;
     displayName: string;
     readOnly: boolean;
     regEx: string;
@@ -105,6 +106,7 @@ export interface ClaimsGetParams {
     sort: string;
     attributes?: string;
     "exclude-identity-claims"?: boolean;
+    "exclude-hidden-claims"?: boolean;
 }
 
 /**

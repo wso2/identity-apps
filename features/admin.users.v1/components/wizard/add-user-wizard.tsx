@@ -17,8 +17,10 @@
  */
 
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { userConfig } from "@wso2is/admin.extensions.v1";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
+import { SCIMConfigInterface } from "@wso2is/admin.extensions.v1/configs/models/scim";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { updateGroupDetails, useGroupList } from "@wso2is/admin.groups.v1/api/groups";
@@ -28,9 +30,12 @@ import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
+    FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
+    MultiValueAttributeInterface,
     RolesInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
@@ -40,10 +45,12 @@ import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2
 import { AxiosError, AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import intersection from "lodash-es/intersection";
+import isEmpty from "lodash-es/isEmpty";
 import merge from "lodash-es/merge";
+import omit from "lodash-es/omit";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddUserUpdated } from "./steps/add-user-basic";
@@ -58,10 +65,11 @@ import {
 } from "../../constants";
 import {
     AddUserWizardStateInterface,
+    EmailsInterface,
     PayloadInterface,
     UserDetailsInterface,
-    WizardStepInterface,
-    createEmptyUserDetails } from "../../models/user";
+    WizardStepInterface
+} from "../../models/user";
 import { generatePassword, getConfiguration, getUsernameConfiguration } from "../../utils";
 
 interface AddUserWizardPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
@@ -124,6 +132,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ submitGroupList, setSubmitGroupList ] = useTrigger();
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
 
+    const userFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features.users);
+
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
     const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
@@ -140,6 +151,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ newUserId, setNewUserId ] = useState<string>("");
     const [ submitStep, setSubmitStep ] = useState<WizardStepsFormTypes>(undefined);
     const [ selectedGroupsList, setSelectedGroupList ] = useState<GroupsInterface[]>([]);
+
+    const isAttributeProfileForUserCreationEnabled: boolean = isFeatureEnabled(
+        userFeatureConfig,
+        UserManagementConstants.ATTRIBUTE_PROFILES_FOR_USER_CREATION_FEATURE_FLAG
+    );
 
     const excludedAttributes: string = "members";
 
@@ -444,62 +460,84 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             username = userInfo.domain + "/" + userInfo.userName;
         }
 
-        let userDetails: UserDetailsInterface = createEmptyUserDetails();
+        let userDetails: UserDetailsInterface = {
+            emails: [
+                {
+                    primary: true,
+                    value: userInfo.email
+                }
+            ],
+            name: {
+                familyName: userInfo.lastName,
+                givenName: userInfo.firstName
+            },
+            profileUrl: userInfo.profileUrl,
+            userName: username
+        };
+
         const password: string = userInfo.newPassword;
 
         // Users who get invited offline are also considered as password-based users.
         // They will be assigned a randomly generated temporary password.
         // Temporary password can be changed via the offline invite link.
         if (askPasswordFromUser) {
-            userDetails = {
-                emails: [
-                    {
-                        primary: true,
-                        value: userInfo.email
-                    }
-                ],
-                name: {
-                    familyName: userInfo.lastName,
-                    givenName: userInfo.firstName
-                },
-                password: password,
-                profileUrl: userInfo.profileUrl,
-                userName: username
-            };
+            userDetails.password = password;
         } else if (isOfflineUser) {
-            userDetails = {
-                emails: [
-                    {
-                        primary: true,
-                        value: userInfo.email
-                    }
-                ],
-                name: {
-                    familyName: userInfo.lastName,
-                    givenName: userInfo.firstName
-                },
-                password: generateRandomPassword(),
-                profileUrl: userInfo.profileUrl,
-                userName: username
-            };
+            userDetails.password = generateRandomPassword();
         } else {
-            userDetails = {
-                emails: [
-                    {
-                        primary: true,
-                        value: userInfo.email
-                    }
-                ],
-                name: {
-                    familyName: userInfo.lastName,
-                    givenName: userInfo.firstName
-                },
-                profileUrl: userInfo.profileUrl,
-                [ SCIMConfigs.scim.systemSchema ]: {
-                    askPassword: "true"
-                },
-                userName: username
+            userDetails[ SCIMConfigs.scim.systemSchema ] = {
+                askPassword: "true"
             };
+        }
+
+        if (isAttributeProfileForUserCreationEnabled) {
+            const mergedSCIMSchema: SCIMConfigInterface = {
+                ...userDetails[SCIMConfigs.scim.systemSchema],
+                ...userInfo[SCIMConfigs.scim.systemSchema]
+            };
+
+            const combinedUserDetails: UserDetailsInterface = omit({
+                ...userInfo,
+                ...userDetails,
+                [SCIMConfigs.scim.systemSchema]: mergedSCIMSchema
+            }, "passwordOption", "newPassword", "userType", "domain", "firstName", "lastName");
+
+            // If email value is not present, use the emails value.
+            if (isEmpty(userInfo?.email) && userInfo?.emails.length > 0) {
+                delete combinedUserDetails.email;
+
+                // Primary will be the string value in the emails array.
+                const primaryEmail: string = userInfo.emails.find(
+                    (subAttribute: (string | MultiValueAttributeInterface | EmailsInterface)) =>
+                        typeof subAttribute === "string") as string;
+
+                if (primaryEmail) {
+                    combinedUserDetails.emails = [
+                        {
+                            primary: true,
+                            value: primaryEmail
+                        },
+                        ...userInfo?.emails
+                    ];
+                }
+                else {
+                    // This means that the user has not provided any email value.
+                    // This is an invalid case. Therefore, we need to throw an error.
+                    dispatch(addAlert({
+                        description: t(
+                            "users:notifications.addUser.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "users:notifications.addUser.genericError.message"
+                        )
+                    }));
+
+                    return;
+                }
+            }
+
+            userDetails = { ...combinedUserDetails };
         }
 
         setIsSubmitting(true);

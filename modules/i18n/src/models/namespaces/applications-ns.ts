@@ -1381,6 +1381,18 @@ export interface ApplicationsNS {
                                 ssoBinding: {
                                     label: string;
                                 };
+                                cookie: {
+                                    label: string;
+                                };
+                                clientRequest: {
+                                    label: string;
+                                };
+                                certificate: {
+                                    label: string;
+                                };
+                                deviceFlow: {
+                                    label: string;
+                                };
                             };
                             description: string;
                             label: string;
@@ -1388,6 +1400,7 @@ export interface ApplicationsNS {
                                 cookie: string;
                                 none: string;
                                 sso_session: string;
+                                dpop: string;
                             };
                         };
                         expiry: {

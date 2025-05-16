@@ -67,7 +67,7 @@ const usePushAuthenticator = () => {
 
         initPushAuthenticatorQRCode()
             .then((response: any) => {
-                const qrCode: string = window.btoa(JSON.stringify(response?.data));
+                const qrCode: string = JSON.stringify(response?.data);
 
                 setIsConfigPushAuthenticatorModalOpen(true);
                 setQrCode(qrCode);

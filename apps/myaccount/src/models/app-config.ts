@@ -84,7 +84,6 @@ export interface ServiceResourceEndpointsInterface {
     profileSchemas: string;
     push: string;
     sessions: string;
-    smsOtpResend: string;
     smsOtpValidate: string;
     token: string;
     totp: string;
@@ -95,6 +94,7 @@ export interface ServiceResourceEndpointsInterface {
     revoke: string;
     wellKnown: string;
     validationMgt: string;
+    verificationResend: string;
 
     /**
      * Swagger Documentation {@link https://docs.wso2.com/display/IS511/apidocs/Consent-management-apis/}

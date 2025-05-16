@@ -124,6 +124,13 @@ For further reference, checkout the official documentation of [React Testing Lib
 
 Following are few of the useful commands that you can use to run the existing unit tests for modules.
 
+### Build the module
+
+```bash
+# From project/module root.
+pnpm install && pnpm build
+```
+
 ### Run the full test suite
 
 ```bash

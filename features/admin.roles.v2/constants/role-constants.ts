@@ -96,6 +96,16 @@ export class RoleConstants {
      * Property key for shared role.
      */
     public static readonly IS_SHARED_ROLE: string = "isSharedRole";
+
+    /**
+     * Key word for impersonation role.
+     */
+    public static readonly IMPERSONATOR_ROLE_NAME: string = "Impersonator";
+
+    /**
+     * Application name for My Account application.
+     */
+    public static readonly MY_ACCOUNT_APP_NAME: string = "My Account";
 }
 
 /**

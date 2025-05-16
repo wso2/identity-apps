@@ -507,6 +507,12 @@ export interface ClaimsNS {
                 label: string;
                 placeholder: string;
             };
+            multiValued: {
+                label: string;
+                placeholder: string;
+            };
+            multiValuedHint: string;
+            multiValuedDisabledHint: string;
             displayOrderHint: string;
             required: {
                 label: string;

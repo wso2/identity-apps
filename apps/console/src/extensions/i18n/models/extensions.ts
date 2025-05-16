@@ -2876,6 +2876,31 @@ export interface Extensions {
                         recoveryOptionHeading: string;
                     },
                     heading: string;
+                };
+                forcedPasswordRecovery: {
+                    form: {
+                        fields: {
+                            enableEmailLinkBasedReset: {
+                                label: string;
+                            },
+                            enableEmailOTPBasedReset: {
+                                label: string;
+                            },
+                            enableSMSOTPBasedReset: {
+                                label: string;
+                            },
+                            expiryTime: {
+                                label: string;
+                                hint: string;
+                                placeholder: string;
+                            }
+                        },
+                        heading: {
+                            label: string;
+                            hint: string;
+                        }
+                        subheading: string;
+                    }
                 }
             };
             accountSecurity: {
@@ -2973,7 +2998,15 @@ export interface Extensions {
                 label: string;
                 timeFormat: string;
             };
-            passwordValidationHeading: string;
+            passwordValidation: {
+                heading: string;
+                passwordValidationRegexLabel: string;
+                passwordValidationRegexHint: string;
+                passwordValidationRegexPlaceholder: string;
+                passwordValidationErrorLabel: string;
+                passwordValidationErrorHint: string;
+                passwordValidationErrorPlaceholder: string;
+            };
             userOnboarding: {
                 heading: string;
                 subHeading: string;
@@ -3123,7 +3156,11 @@ export interface Extensions {
                 resetPassword: {
                     changePasswordModal: {
                         emailUnavailableWarning: string;
-                        emailResetWarning: string;
+                        emailResetWarning: {
+                            emailLink: string;
+                            emailOTP: string;
+                            smsOTP: string;
+                        }
                         passwordResetConfigDisabled: string;
                     };
                 };

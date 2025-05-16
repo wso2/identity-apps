@@ -11,6 +11,7 @@
 
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
+<%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -30,10 +31,12 @@
     String regex = "application=";
     String errorMsgContext = errorMsg;
     String errorMsgApp = "";
-    String[] error = errorMsg.split(regex);
-    if (error.length > 1) {
-        errorMsgContext = errorMsg.split(regex)[0] + regex;
-        errorMsgApp = errorMsg.split(regex)[1];
+    if (StringUtils.isNotBlank(errorMsg)) {
+        String[] error = errorMsg.split(regex);
+        if (error.length > 1) {
+            errorMsgContext = error[0] + regex;
+            errorMsgApp = error[1];
+        }
     }
 %>
 

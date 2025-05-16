@@ -21,6 +21,7 @@ import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/vi
 import {
     BlockTypes,
     ButtonTypes,
+    ButtonVariants,
     Element,
     ElementTypes,
     InputVariants
@@ -260,7 +261,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             },
             deletable: false,
             id: INITIAL_FLOW_START_STEP_ID,
-            position: { x: -50, y: 330 },
+            position: { x: -300, y: 330 },
             type: StaticStepTypes.Start
         };
 
@@ -524,14 +525,14 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 },
                 deletable: true,
                 id: INITIAL_FLOW_VIEW_STEP_ID,
-                position: { x: 300, y: 200 },
+                position: { x: -300, y: 330 },
                 type: StepTypes.View
             },
             {
                 data: {},
                 deletable: false,
                 id: INITIAL_FLOW_USER_ONBOARD_STEP_ID,
-                position: { x: 850, y: 408 },
+                position: { x: 1200, y: 408 },
                 type: StaticStepTypes.UserOnboard
             }
         ]);
@@ -653,6 +654,24 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         // Set the `"action": { "type": "EXECUTOR", "executor": { "name": "PasswordOnboardExecutor"}, "next": "" }`
         modifiedComponents = modifiedComponents.map((component: Element) => {
             if (component.type === BlockTypes.Form) {
+                // Set all the `PRIMARY` buttons inside the form type to `submit`.
+                component.components = component.components.map((formComponent: Element) => {
+                    if (
+                        formComponent.type === ElementTypes.Button &&
+                                        formComponent.variant === ButtonVariants.Primary
+                    ) {
+                        return {
+                            ...formComponent,
+                            config: {
+                                ...formComponent.config,
+                                type: ButtonTypes.Submit
+                            }
+                        };
+                    }
+
+                    return formComponent;
+                });
+
                 const hasPasswordField: boolean = component.components?.some(
                     (formComponent: Element) =>
                         formComponent.type === ElementTypes.Input && formComponent.variant === InputVariants.Password

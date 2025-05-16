@@ -25,7 +25,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
-import { updateRole } from "@wso2is/admin.roles.v2/api";
+import { updateRoleDetails } from "@wso2is/admin.roles.v2/api";
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
 import { RoleConstants } from "@wso2is/admin.roles.v2/constants";
 import {
@@ -322,7 +322,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
 
                 if (rolesList?.length > 0) {
                     Promise.all(rolesList.map((roleId: string) => {
-                        return updateRole(roleId, roleData);
+                        return updateRoleDetails(roleId, roleData);
                     })).then(() => {
                         dispatch(
                             addAlert({

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -49,8 +49,22 @@ export class ApplicationTemplateConstants {
     public static readonly APPLICATION_INBOUND_PROTOCOL_KEYS: {
         [ AuthProtocolTypes.WS_FEDERATION ]: string;
         [ AuthProtocolTypes.WS_TRUST ]: string;
-    } = {
-        [ AuthProtocolTypes.WS_FEDERATION ]: "passiveSts",
-        [ AuthProtocolTypes.WS_TRUST ]: "wsTrust"
-    };
+        } = {
+            [ AuthProtocolTypes.WS_FEDERATION ]: "passiveSts",
+            [ AuthProtocolTypes.WS_TRUST ]: "wsTrust"
+        };
+
+    /**
+     * Excludes old application templates from triggering API calls to fetch
+     * template or metadata JSON files, as they have not been migrated to the
+     * extension API.
+     */
+    public static readonly EXCLUDED_APP_TEMPLATES_FOR_EXTENSION_API: string[] = [
+        "custom-application",
+        "custom-protocol-application",
+        "m2m-application",
+        "mobile-application",
+        "single-page-application",
+        "traditional-web-application"
+    ];
 }

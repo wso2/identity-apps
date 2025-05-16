@@ -40,6 +40,7 @@ import {
 } from "../configs";
 import { AppConstants, UIConstants } from "../constants";
 import { AppState } from "../store";
+import "./default.scss";
 
 /**
  * Default page layout.

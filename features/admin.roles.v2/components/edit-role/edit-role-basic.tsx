@@ -30,6 +30,7 @@ import { deleteRoleById, updateRoleDetails } from "../../api";
 import useGetRolesList from "../../api/use-get-roles-list";
 import { RoleAudienceTypes, RoleConstants, Schemas } from "../../constants";
 import { PatchRoleDataInterface, RoleBasicInterface, RoleEditSectionsInterface } from "../../models/roles";
+import { isMyAccountImpersonationRole } from "../role-utils";
 import { RoleDeleteErrorConfirmation } from "../wizard/role-delete-error-confirmation";
 
 /**
@@ -238,6 +239,9 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                 t("roles:edit.basics.dangerZone.subheader",
                                     { type: "role" })
                             }
+                            isButtonDisabled={ isSubmitting
+                                || isMyAccountImpersonationRole(role?.displayName,
+                                    role?.audience?.display) }
                             onActionClick={ () => onRoleDeleteClicked() }
                             data-componentid={ `${ componentid }-role-danger-zone` }
                         />

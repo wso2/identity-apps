@@ -21,6 +21,7 @@
     <test name="identity-apps-common-test-all">
         <classes>
             <class name="org.wso2.identity.apps.common.listener.AppPortalRoleManagementListenerTest" />
+            <class name="org.wso2.identity.apps.common.util.AppPortalUtilsTest" />
         </classes>
     </test>
 </suite>

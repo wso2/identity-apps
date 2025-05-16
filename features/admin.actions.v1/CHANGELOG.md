@@ -1,5 +1,21 @@
 # @wso2is/admin.actions.v1
 
+## 1.12.6
+
+### Patch Changes
+
+- [#8140](https://github.com/wso2/identity-apps/pull/8140) [`b2ec1b4d10f12fe718396bc284d220afa11ef101`](https://github.com/wso2/identity-apps/commit/b2ec1b4d10f12fe718396bc284d220afa11ef101) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix hidden claims filtering in pre-update profile action
+
+## 1.12.5
+
+### Patch Changes
+
+- [#8118](https://github.com/wso2/identity-apps/pull/8118) [`c4aee527f3dad357cd7a62293d67ef6e884d927a`](https://github.com/wso2/identity-apps/commit/c4aee527f3dad357cd7a62293d67ef6e884d927a) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix identity claims display based on config
+
+- Updated dependencies [[`c4aee527f3dad357cd7a62293d67ef6e884d927a`](https://github.com/wso2/identity-apps/commit/c4aee527f3dad357cd7a62293d67ef6e884d927a)]:
+  - @wso2is/admin.claims.v1@2.27.121
+  - @wso2is/core@2.7.6
+
 ## 1.12.4
 
 ### Patch Changes

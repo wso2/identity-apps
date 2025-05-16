@@ -23,12 +23,15 @@ import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { AutocompleteFieldAdapter, FinalForm, FinalFormField, FormRenderProps } from "@wso2is/form";
 import { Heading, Hint, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, Modal, ModalProps } from "semantic-ui-react";
 import { ConsoleAdministratorOnboardingConstants } from "../../../constants/console-administrator-onboarding-constants";
 import useBulkAssignAdministratorRoles from "../../../hooks/use-bulk-assign-user-roles";
@@ -80,7 +83,7 @@ const AddExistingUserWizard: FunctionComponent<AddExistingUserWizardPropsInterfa
     } = props;
 
     const { t } = useTranslation();
-
+    const dispatch: Dispatch = useDispatch();
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
@@ -146,6 +149,11 @@ const AddExistingUserWizard: FunctionComponent<AddExistingUserWizardPropsInterfa
                 }
             },
             () => {
+                dispatch(addAlert({
+                    description: t("extensions:manage.users.wizard.addAdmin.internal.updateRole.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("extensions:manage.users.wizard.addAdmin.internal.updateRole.success.message")
+                }));
                 onSuccess();
                 onClose(null, null);
             }

@@ -33,9 +33,10 @@ import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { ProfileInfoInterface, ProfileSchemaInterface, SharedProfileValueResolvingMethod } from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
 import { DropdownChild } from "@wso2is/forms";
+import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
-import { UserManagementConstants } from "../constants/user-management-constants";
+import { LocaleJoiningSymbol, UserManagementConstants } from "../constants/user-management-constants";
 import { MultipleInviteMode, MultipleInvitesDisplayNames, UserBasicInterface } from "../models/user";
 
 /**
@@ -476,3 +477,121 @@ export const resolveUserSearchAttributes = (
  */
 export const generateAttributesString = (attributeIterator: IterableIterator<string>) =>
     Array.from(attributeIterator).filter((attr: string) => attr !== "").join(",");
+
+/**
+ * The profile schema is displayed only if the schema is BOTH supported by default and required
+ *
+ * @param schema - The profile schema to be validated.
+ * @returns whether the field for the input schema should be displayed.
+ */
+export const isFieldDisplayableInUserCreationWizard = (
+    schema: ProfileSchemaInterface,
+    isDistinctAttributeProfilesDisabled: boolean
+): boolean => {
+    let resolvedRequiredValue: boolean = schema?.required;
+    let resolveSupportedByDefaultValue: boolean = schema?.supportedByDefault?.toLowerCase() === "true";
+
+    // If the distinct attribute profiles feature is enabled, check the profiles object for flag.
+    if (!isDistinctAttributeProfilesDisabled) {
+        if (schema?.profiles?.console?.supportedByDefault !== undefined) {
+            resolveSupportedByDefaultValue = schema?.profiles?.console?.supportedByDefault;
+        }
+
+        if (schema?.profiles?.console?.required !== undefined) {
+            resolvedRequiredValue = schema?.profiles?.console?.required;
+        }
+    }
+
+    // The field should be displayed if both required and supported by default are true.
+    return resolveSupportedByDefaultValue && resolvedRequiredValue;
+};
+
+/**
+ * The function returns the normalized format of locale.
+ *
+ * @param locale - locale value.
+ * @param localeJoiningSymbol - symbol used to join language and region parts of locale.
+ * @param updateSupportedLanguage - If supported languages needs to be updated with the given localString or not.
+ * @param supportedI18nLanguages - Supported languages.
+ */
+export const normalizeLocaleFormat = (
+    locale: string,
+    localeJoiningSymbol: LocaleJoiningSymbol,
+    updateSupportedLanguage: boolean,
+    supportedI18nLanguages: SupportedLanguagesMeta
+): string => {
+    if (!locale) {
+        return locale;
+    }
+
+    const separatorIndex: number = locale.search(/[-_]/);
+
+    let normalizedLocale: string = locale;
+
+    if (separatorIndex !== -1) {
+        const language: string = locale.substring(0, separatorIndex).toLowerCase();
+        const region: string = locale.substring(separatorIndex + 1).toUpperCase();
+
+        normalizedLocale = `${language}${localeJoiningSymbol}${region}`;
+    }
+
+    if (updateSupportedLanguage && !supportedI18nLanguages[normalizedLocale]) {
+        supportedI18nLanguages[normalizedLocale] = {
+            code: normalizedLocale,
+            name: UserManagementConstants.GLOBE,
+            namespaces: []
+        };
+    }
+
+    return normalizedLocale;
+};
+
+type JsonValue = string | number | boolean | null | JsonObject | JsonArray;
+interface JsonObject { [key: string]: JsonValue; }
+interface JsonArray extends Array<JsonValue> {}
+
+const deepMerge = <T extends JsonValue>(target: T, source: T): T => {
+    if (Array.isArray(target) && Array.isArray(source)) {
+        return [ ...target, ...source ] as T;
+    }
+
+    if (
+        typeof target === "object" &&
+        typeof source === "object" &&
+        target !== null &&
+        source !== null &&
+        !Array.isArray(target) &&
+        !Array.isArray(source)
+    ) {
+        const merged: JsonObject = { ...target };
+
+        for (const key in source) {
+            if (key in merged) {
+                merged[key] = deepMerge(merged[key], (source as JsonObject)[key]);
+            } else {
+                merged[key] = (source as JsonObject)[key];
+            }
+        }
+
+        return merged as T;
+    }
+
+    // Fallback overwrite
+    return source;
+};
+
+export const groupByTopLevelKey = <T extends Record<string, JsonValue>>(inputArray: T[]): T => {
+    const grouped: Record<string, JsonValue> = {};
+
+    for (const obj of inputArray) {
+        for (const key in obj) {
+            if (grouped[key] === undefined) {
+                grouped[key] = obj[key];
+            } else {
+                grouped[key] = deepMerge(grouped[key], obj[key]);
+            }
+        }
+    }
+
+    return grouped as T;
+};

@@ -132,18 +132,6 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                     return undefined;
                 }
 
-                let isAvailable: boolean = true;
-
-                try {
-                    isAvailable = await getTenantDomainAvailability(value);
-                } catch (error) {
-                    isAvailable = false;
-                }
-
-                if (!isAvailable) {
-                    return t("tenants:common.form.fields.domain.validations.domainUnavailable");
-                }
-
                 if (isTenantDomainDotExtensionMandatory) {
                     const lastIndexOfDot: number = value.lastIndexOf(".");
 
@@ -172,6 +160,18 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                     if (regex.test(value)) {
                         return t("tenants:common.form.fields.domain.validations.domainInvalidCharPattern");
                     }
+                }
+
+                let isAvailable: boolean = true;
+
+                try {
+                    isAvailable = await getTenantDomainAvailability(value);
+                } catch (error) {
+                    isAvailable = false;
+                }
+
+                if (!isAvailable) {
+                    return t("tenants:common.form.fields.domain.validations.domainUnavailable");
                 }
             }
         ), []);

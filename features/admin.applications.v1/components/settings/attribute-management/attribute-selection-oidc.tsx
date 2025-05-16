@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,7 +22,6 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { OIDCScopesClaimsListInterface } from "@wso2is/admin.oidc-scopes.v1";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { ExternalClaim, FeatureAccessConfigInterface, TestableComponentInterface } from "@wso2is/core/models";
@@ -216,8 +215,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
 
     useEffect(() => {
         if (externalClaims) {
-            setAvailableExternalClaims([ ...applicationConfig.attributeSettings
-                .attributeSelection.getExternalClaims(externalClaims) ]);
+            setAvailableExternalClaims([ ...externalClaims ]);
         }
     }, [ externalClaims ]);
 
@@ -436,21 +434,20 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         const initialSelectedClaims: ExtendedExternalClaimInterface[] = [];
         const initialAvailableClaims: ExtendedExternalClaimInterface[] = [];
 
-        applicationConfig.attributeSettings.attributeSelection.getExternalClaims(externalClaims)
-            .map((claim: ExternalClaim) => {
-                if (initialRequest.includes(claim.mappedLocalClaimURI)) {
-                    const newClaim: ExtendedExternalClaimInterface = {
-                        ...claim,
-                        mandatory: checkInitialRequestMandatory(claim.mappedLocalClaimURI),
-                        requested: true
-                    };
+        externalClaims.map((claim: ExternalClaim) => {
+            if (initialRequest.includes(claim.mappedLocalClaimURI)) {
+                const newClaim: ExtendedExternalClaimInterface = {
+                    ...claim,
+                    mandatory: checkInitialRequestMandatory(claim.mappedLocalClaimURI),
+                    requested: true
+                };
 
-                    initialSelectedClaims.push(newClaim);
+                initialSelectedClaims.push(newClaim);
 
-                } else {
-                    initialAvailableClaims.push(claim);
-                }
-            });
+            } else {
+                initialAvailableClaims.push(claim);
+            }
+        });
 
         const tempFilterSelectedExternalClaims: ExtendedExternalClaimInterface[] = [ ...filterSelectedExternalClaims ];
 

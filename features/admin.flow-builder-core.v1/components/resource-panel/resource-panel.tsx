@@ -298,7 +298,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                             <Typography variant="h6">Components</Typography>
                         </AccordionSummary>
                         <AccordionDetails className="flow-builder-element-panel-category-details">
-                            <Typography variant="body2">Use these components to build up your vies</Typography>
+                            <Typography variant="body2">Use these components to build up your views</Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { elements.map((element: Element, index: number) => (
                                     <ResourcePanelDraggable

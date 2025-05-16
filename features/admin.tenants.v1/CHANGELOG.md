@@ -1,5 +1,14 @@
 # @wso2is/admin.tenants.v1
 
+## 2.29.10
+
+### Patch Changes
+
+- [#8079](https://github.com/wso2/identity-apps/pull/8079) [`6210f70a92166a192b748a35541b26ed26c9c039`](https://github.com/wso2/identity-apps/commit/6210f70a92166a192b748a35541b26ed26c9c039) Thanks [@hwupathum](https://github.com/hwupathum)! - Fix tenant domain validation
+
+- Updated dependencies [[`7c400d20c1e92560bf974fbd74ee3999a32d1f1e`](https://github.com/wso2/identity-apps/commit/7c400d20c1e92560bf974fbd74ee3999a32d1f1e)]:
+  - @wso2is/admin.users.v1@2.30.129
+
 ## 2.29.9
 
 ### Patch Changes

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ReactNode } from "react";
 import { Notification } from "react-notification-system";
 
 /**
@@ -23,6 +24,15 @@ import { Notification } from "react-notification-system";
  */
 export interface AlertInterface extends Notification {
     description: string;
+}
+
+/**
+ * System Notification Alert State model.
+ */
+export interface SystemNotificationAlertState {
+    isVisible: boolean;
+    severity: AlertLevels;
+    message: ReactNode;
 }
 
 /**
@@ -35,3 +45,4 @@ export enum AlertLevels {
     INFO = "info",
     WARNING = "warning"
 }
+
