@@ -1,0 +1,27 @@
+.workflow-operations-details-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 6px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.operations-autocomplete {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; 
+
+    .operations-autocomplete-header  {
+        margin-bottom: 5px;
+
+        h6 {
+            color: #666666; 
+        }
+    }
+    .operations-autocomplete-input {
+        margin-bottom: 10px;
+    }
+
+}
+

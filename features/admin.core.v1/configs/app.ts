@@ -21,6 +21,10 @@ import { getAdministratorsResourceEndpoints } from "@wso2is/admin.administrators
 import { getAPIResourceEndpoints } from "@wso2is/admin.api-resources.v2/configs/endpoint";
 import { getApplicationTemplatesResourcesEndpoints } from "@wso2is/admin.application-templates.v1/configs/endpoints";
 import { getApplicationsResourceEndpoints } from "@wso2is/admin.applications.v1/configs/endpoints";
+import {
+    getWorkflowAssociationsResourceEndpoints,
+    getWorkflowsResourceEndpoints
+} from "@wso2is/admin.approval-workflows.v1/configs/endpoints";
 import { getBrandingResourceEndpoints } from "@wso2is/admin.branding.v1/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "@wso2is/admin.certificates.v1";
 import { getClaimResourceEndpoints } from "@wso2is/admin.claims.v1/configs/endpoints";
@@ -230,7 +234,8 @@ export class Config {
                 I18nConstants.REMOTE_USER_STORES_NAMESPACE,
                 I18nConstants.RULES_NAMESPACE,
                 I18nConstants.PUSH_PROVIDERS_NAMESPACE,
-                I18nConstants.EMAIL_PROVIDERS_NAMESPACE
+                I18nConstants.EMAIL_PROVIDERS_NAMESPACE,
+                I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE
             ],
             preload: []
         };
@@ -293,8 +298,8 @@ export class Config {
             ...getPolicyAdministrationResourceEndpoints(this.resolveServerHost()),
             ...getPushProviderResourceEndpoints(this.resolveServerHost()),
             ...getPushProviderTemplateEndpoints(this.resolveServerHost()),
-            ...getRemoteLoggingEndpoints(this.resolveServerHost()),
-            ...getRegistrationFlowBuilderResourceEndpoints(this.resolveServerHost()),
+            ...getWorkflowsResourceEndpoints(this.resolveServerHost()),
+            ...getWorkflowAssociationsResourceEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,

@@ -1,0 +1,28 @@
+.workflow-model-general-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 20px;
+    margin-left: 5px;
+}
+
+.workflow-association-operations {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    margin-left: 5px;
+    margin-top: 15px;
+}
+
+.workflow-model-configuration-settings {
+    margin-top: 20px;
+    margin-left: 5px;
+    margin-bottom: 20px;
+    .operations-autocomplete-header  {
+        margin-bottom: 5px;
+    
+        h6 {
+            color: #666666; 
+        }
+    }
+}
