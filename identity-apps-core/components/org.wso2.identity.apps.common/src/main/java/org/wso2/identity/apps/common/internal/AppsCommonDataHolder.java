@@ -46,6 +46,7 @@ public class AppsCommonDataHolder {
     private RealmService realmService;
 
     private RoleManagementService roleManagementService;
+    private org.wso2.carbon.identity.role.v3.mgt.core.RoleManagementService roleManagementServiceV3;
 
     private APIResourceManager apiResourceManager;
     private APIResourceCollectionManager apiResourceCollectionManager;
@@ -202,6 +203,26 @@ public class AppsCommonDataHolder {
     public RoleManagementService getRoleManagementServiceV2() {
 
         return roleManagementService;
+    }
+
+    /**
+     * Set role management service v3.
+     *
+     * @param roleManagementServiceV3 RoleManagementServiceV3.
+     */
+    public void setRoleManagementServiceV3(org.wso2.carbon.identity.role.v3.mgt.core.RoleManagementService
+                                               roleManagementServiceV3) {
+
+        this.roleManagementServiceV3 = roleManagementServiceV3;
+    }
+
+    /**
+     * Get role management service v3.
+     * @return RoleManagementServiceV3.
+     */
+    public org.wso2.carbon.identity.role.v3.mgt.core.RoleManagementService getRoleManagementServiceV3() {
+
+        return roleManagementServiceV3;
     }
 
     /**
