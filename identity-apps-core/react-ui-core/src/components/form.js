@@ -22,29 +22,28 @@ import { FormField, Form as SemanticForm } from "semantic-ui-react";
 import Field from "./field";
 import useDynamicForm from "../hooks/use-dynamic-form";
 
-const Form = ({ formSchema, onSubmit }) => {
+const Form = ({ formSchema, onSubmit, recaptchaRef }) => {
     const {
         formState,
         handleChange,
         handleFieldError,
         handleSubmit
-    } = useDynamicForm(formSchema);
+    } = useDynamicForm(formSchema, onSubmit);
 
     return (
         <div className="segment-form">
-            <SemanticForm noValidate onSubmit={ (event) => handleSubmit(onSubmit)(event) } size="large">
-                {
-                    formSchema.map((field, index) => (
-                        <FormField key={ index } required={ field.config.required }>
-                            <Field
-                                component={ field }
-                                formState={ formState }
-                                formStateHandler={ handleChange }
-                                formFieldError={ handleFieldError }
-                            />
-                        </FormField>
-                    ))
-                }
+            <SemanticForm noValidate onSubmit={ handleSubmit } size="large">
+                { formSchema.map((field, index) => (
+                    <FormField key={ index } required={ field.config.required }>
+                        <Field
+                            component={ field }
+                            formState={ formState }
+                            formStateHandler={ handleChange }
+                            formFieldError={ handleFieldError }
+                            recaptchaRef={ field.type === "CAPTCHA" ? recaptchaRef : undefined }
+                        />
+                    </FormField>
+                )) }
             </SemanticForm>
         </div>
     );
