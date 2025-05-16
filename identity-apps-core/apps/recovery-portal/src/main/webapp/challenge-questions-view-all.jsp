@@ -60,7 +60,7 @@
     <% } else { %>
             <jsp:include page="includes/header.jsp"/>
     <% } %>
-    
+
     <%
         if (reCaptchaEnabled) {
             String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
@@ -128,6 +128,7 @@
                                 data-callback="onCompleted"
                                 data-action="securityQuestion"
                                 data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                                data-bind="answerSubmit"
                             >
                             </div>
                         </div>
@@ -178,15 +179,19 @@
         }
         $(document).ready(function () {
             $("#securityQuestionForm").submit(function (e) {
+                var errorMessage = $("#error-msg");
+                errorMessage.hide();
                 <%
                     if (reCaptchaEnabled) {
                 %>
-                if (!grecaptcha.getResponse()) {
-                    e.preventDefault();
-                    grecaptcha.execute();
-
-                    return true;
-                }
+                        var resp = $("[name='g-recaptcha-response']")[0].value;
+                        if (resp.trim() == '') {
+                            errorMessage.text("<%=i18n(recoveryResourceBundle, customText, "Please.select.reCaptcha")%>");
+                            errorMessage.show();
+                            $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
+                            return false;
+                        }
+                        return true;
                 <%
                     }
                 %>
