@@ -40,8 +40,8 @@ export const common: CommonNS = {
     assignee: "Cessionário",
     assignees: "Cessionários",
     asyncOperationErrorMessage: {
-        description: "Something went wrong",
-        message: "An unexpected error occured. Please check back later."
+        description: "Algo deu errado",
+        message: "Ocorreu um erro inesperado. Verifique novamente mais tarde."
     },
     authentication: "Autenticação",
     authenticator: "Autenticador",

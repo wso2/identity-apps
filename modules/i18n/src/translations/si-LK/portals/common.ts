@@ -40,8 +40,8 @@ export const common: CommonNS = {
     assignee: "පැවරුම්කරු",
     assignees: "පැවරුම්කරුවන්",
     asyncOperationErrorMessage: {
-        description: "Something went wrong",
-        message: "An unexpected error occured. Please check back later."
+        description: "යමක් වැරදී ඇත.",
+        message: "අනපේක්ෂිත දෝෂයක් සිදු විය. කරුණාකර පසුව නැවත පරීක්ෂා කරන්න."
     },
     authentication: "සත්‍යාපනය",
     authenticator: "සත්‍යාපකය",
