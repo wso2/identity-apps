@@ -27,6 +27,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import useApiResourcesPageContent from "./use-api-resources-page-content";
 import { useAPIResourceDetails } from "../api";
 import { EditAPIResource } from "../components";
 import { APIResourceType, APIResourcesConstants } from "../constants";
@@ -54,6 +55,11 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+
+    const {
+        resourceEditBackButtonText,
+        resourceEditBackButtonLink
+    } = useApiResourcesPageContent();
 
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
     const [ apiResourceId, setAPIResourceId ] = useState<string>(null);
@@ -126,7 +132,7 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
             history.push(APIResourcesConstants.getPaths().get("API_RESOURCES_CATEGORY")
                 .replace(":categoryId", categoryId));
         } else {
-            history.push(APIResourcesConstants.getPaths().get("API_RESOURCES"));
+            history.push(resourceEditBackButtonLink);
         }
     };
 
@@ -154,7 +160,7 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
                         ? t("pages:rolesEdit.backButton", { type: "Management APIs" })
                         : categoryId === APIResourceType.ORGANIZATION
                             ? t("pages:rolesEdit.backButton", { type: "Organization APIs" })
-                            : t("pages:rolesEdit.backButton", { type: "APIs" })
+                            : resourceEditBackButtonText
                 } }
                 titleTextAlign="left"
                 bottomMargin={ false }
