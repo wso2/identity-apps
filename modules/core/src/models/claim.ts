@@ -167,3 +167,22 @@ export enum SharedProfileValueResolvingMethod {
     FROM_SHARED_PROFILE = "FromSharedProfile",
     FROM_FIRST_FOUND_IN_HIERARCHY = "FromFirstFoundInHierarchy"
 }
+
+/**
+ * Enum representing the data types of claims.
+ * - STRING: A string value.
+ * - INTEGER: An integer value.
+ * - DECIMAL: A decimal value.
+ * - BOOLEAN: A boolean value.
+ * - DATE_TIME: A date and time value.
+ * - COMPLEX: A complex value.
+ */
+export enum ClaimDataType {
+    STRING = "string",
+    INTEGER = "integer",
+    DECIMAL = "decimal",
+    BOOLEAN = "boolean",
+    DATE_TIME = "date_time",
+    COMPLEX = "complex",
+    OPTIONS = "options"
+}
