@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,18 +28,24 @@ import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { SMSTemplateType } from "../models/sms-templates";
+import { TemplateType } from "../models/templates";
 
-interface SMSCustomizationHeaderProps extends IdentifiableComponentInterface {
-    /**
-     * Selected SMS template id.
-     */
-    selectedSmsTemplateId: string;
+interface TemplateHeaderProps extends IdentifiableComponentInterface {
 
     /**
-     * Selected SMS template description.
+     * Template channel
      */
-    selectedSmsTemplateDescription: string;
+    templateChannel: "email" | "sms";
+
+    /**
+     * Selected template id.
+     */
+    selectedTemplateId: string;
+
+    /**
+     * Selected template description.
+     */
+    selectedTemplateDescription: string;
 
     /**
      * Selected locale
@@ -47,9 +53,9 @@ interface SMSCustomizationHeaderProps extends IdentifiableComponentInterface {
     selectedLocale: string;
 
     /**
-     * SMS templates list.
+     * Templates list.
      */
-    smsTemplatesList: SMSTemplateType[];
+    templatesList: TemplateType[];
 
     /**
      * Callback to be called when the template is changed.
@@ -65,23 +71,24 @@ interface SMSCustomizationHeaderProps extends IdentifiableComponentInterface {
 }
 
 /**
- * SMS customization header.
+ * customization header.
  *
  * @param props - Props injected to the component.
  *
- * @returns Header component for SMS Customization.
+ * @returns Header component for Customization.
  */
-const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
-    props: SMSCustomizationHeaderProps
+const TemplateHeader: FunctionComponent<TemplateHeaderProps> = (
+    props: TemplateHeaderProps
 ): ReactElement => {
     const {
-        selectedSmsTemplateId,
-        selectedSmsTemplateDescription,
+        templateChannel,
+        selectedTemplateId,
+        selectedTemplateDescription,
         selectedLocale,
-        smsTemplatesList,
+        templatesList,
         onTemplateSelected,
         onLocaleChanged,
-        ["data-componentid"]: componentId = "sms-customization-header"
+        ["data-componentid"]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -93,21 +100,21 @@ const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
     );
 
     /**
-     * Memoized list of SMS template options.
+     * Memoized list of template options.
      *
      * Generates an array of objects with `text` as the template display name
-     * and `value` as the template ID. Recomputes only when `smsTemplatesList` changes.
+     * and `value` as the template ID. Recomputes only when `templatesList` changes.
      *
      * @returns Array of dropdown options.
      */
-    const smsTemplateListOptions: { text: string; value: string }[] = useMemo(() => {
-        return smsTemplatesList?.map((template: SMSTemplateType) => {
+    const templateListOptions: { text: string; value: string }[] = useMemo(() => {
+        return templatesList?.map((template: TemplateType) => {
             return {
                 text: template.displayName,
                 value: template.id
             };
         });
-    }, [ smsTemplatesList ]);
+    }, [ templatesList ]);
 
     useEffect(() => {
         if (!supportedI18nLanguages) {
@@ -137,40 +144,40 @@ const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
             <Grid container spacing={ 2 } marginTop={ 2 }>
                 <Grid xs={ 12 } md={ 6 } lg={ 5 } xl={ 4 }>
                     <FinalFormField
-                        key="selectedSmsTemplate"
+                        key="selectedTemplate"
                         width={ 16 }
                         FormControlProps={ {
                             margin: "dense"
                         } }
-                        ariaLabel="SMS Template Dropdown"
+                        ariaLabel= "Template Dropdown"
                         required={ true }
-                        data-componentid={ `${componentId}-sms-template-list` }
-                        name="selectedSmsTemplate"
+                        data-componentid={ `${componentId}-${templateChannel}-template-list` }
+                        name="selectedTemplate"
                         type={ "dropdown" }
-                        label={ t("smsTemplates:form.inputs.template.label") }
-                        placeholder={ t("smsTemplates:form.inputs.template.placeholder") }
+                        label={ t(`${templateChannel}Templates:form.inputs.template.label`) }
+                        placeholder={ t(`${templateChannel}Templates:form.inputs.template.placeholder`) }
                         component={ SelectFieldAdapter }
-                        options={ smsTemplateListOptions }
+                        options={ templateListOptions }
                         onChange={ onTemplateSelected }
-                        value={ selectedSmsTemplateId }
-                        defaultValue={ selectedSmsTemplateId }
+                        value={ selectedTemplateId }
+                        defaultValue={ selectedTemplateId }
                     />
-                    <Hint>{ selectedSmsTemplateDescription ?? null }</Hint>
+                    <Hint>{ selectedTemplateDescription ?? null }</Hint>
                 </Grid>
                 <Grid xs={ 12 } md={ 6 } lg={ 5 } xl={ 4 }>
                     <FinalFormField
-                        key="selectedSmsTemplateLocale"
+                        key="selectedTemplateLocale"
                         width={ 16 }
                         FormControlProps={ {
                             margin: "dense"
                         } }
-                        ariaLabel="SMS Template Locale Dropdown"
+                        ariaLabel= "Template Locale Dropdown"
                         required={ true }
-                        data-componentid={ `${componentId}-sms-template-locale` }
-                        name="selectedSmsTemplateLocale"
+                        data-componentid={ `${componentId}-${templateChannel}-template-locale` }
+                        name="selectedTemplateLocale"
                         type={ "dropdown" }
-                        label={ t("smsTemplates:form.inputs.locale.label") }
-                        placeholder={ t("smsTemplates:form.inputs.locale.placeholder") }
+                        label={ t(`${templateChannel}Templates:form.inputs.locale.label`) }
+                        placeholder={ t(`${templateChannel}Templates:form.inputs.locale.placeholder`) }
                         value={ selectedLocale }
                         defaultValue={ selectedLocale }
                         component={ SelectFieldAdapter }
@@ -187,8 +194,8 @@ const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
             <FinalForm
                 onSubmit={ () => {} }
                 initialValues={ {
-                    selectedSmsTemplate: selectedSmsTemplateId,
-                    selectedSmsTemplateLocale: selectedLocale
+                    selectedTemplate: selectedTemplateId,
+                    selectedTemplateLocale: selectedLocale
                 } }
                 render={ ({ handleSubmit }: FormRenderProps) => (
                     <form onSubmit={ handleSubmit }>{ renderFormFields() }</form>
@@ -198,4 +205,4 @@ const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
     );
 };
 
-export default SMSCustomizationHeader;
+export default TemplateHeader;

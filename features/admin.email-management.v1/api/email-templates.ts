@@ -24,10 +24,10 @@ import useRequest, {
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
+import { TemplateManagementConstants } from "@wso2is/common.templates.v1/constants/template-management-constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { EmailManagementConstants } from "../constants/email-management-constants";
 import { EmailTemplate, EmailTemplateType } from "../models/email-templates";
 
 /**
@@ -109,7 +109,7 @@ export const useEmailTemplate = <Data = EmailTemplate, Error = RequestErrorInter
     if (fetchSystemTemplate) {
         requestConfig.url =
             store.getState().config.endpoints.emailManagement +
-            `/template-types/${templateType}/system-templates/${EmailManagementConstants.DEAFULT_LOCALE_FORMATTED}`;
+            `/template-types/${templateType}/system-templates/${TemplateManagementConstants.DEAFULT_LOCALE_FORMATTED}`;
     }
 
     const {

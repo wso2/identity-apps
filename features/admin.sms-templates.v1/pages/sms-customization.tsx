@@ -25,6 +25,9 @@ import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/bran
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import TemplateDangerZone from "@wso2is/common.templates.v1/components/template-danger-zone";
+import TemplateHeader from "@wso2is/common.templates.v1/components/template-header";
+import { TemplateManagementConstants } from "@wso2is/common.templates.v1/constants/template-management-constants";
 import {
     AlertInterface,
     AlertLevels,
@@ -32,7 +35,7 @@ import {
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { DangerZone, DangerZoneGroup, DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
+import { DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -45,9 +48,7 @@ import useGetSmsTemplate from "../api/use-get-sms-template";
 import useGetSmsTemplatesList from "../api/use-get-sms-templates-list";
 import SMSCustomizationFooter from "../components/sms-customization-footer";
 import SMSCustomizationForm from "../components/sms-customization-form";
-import SMSCustomizationHeader from "../components/sms-customization-header";
 import SMSTemplatePreview from "../components/sms-template-preview";
-import { SMSTemplateConstants } from "../constants/sms-template-constants";
 import { SMSTemplate, SMSTemplateType } from "../models/sms-templates";
 import "./sms-customization.scss";
 
@@ -70,7 +71,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
     const [ isInheritedTemplate, setIsInheritedTemplate ] = useState(false);
     const [ shouldFetch, setShouldFetch ] = useState(true);
     const [ isTemplateNotAvailable, setIsTemplateNotAvailable ] = useState(false);
-    const [ selectedLocale, setSelectedLocale ] = useState(SMSTemplateConstants.DEAFULT_LOCALE);
+    const [ selectedLocale, setSelectedLocale ] = useState(TemplateManagementConstants.DEAFULT_LOCALE);
     const [ selectedSmsTemplateId, setSelectedSmsTemplateId ] = useState<string>();
     const [ selectedSmsTemplateDescription, setSelectedSmsTemplateDescription ] = useState<string>();
     const [ selectedSmsTemplate, setSelectedSmsTemplate ] = useState<SMSTemplate>();
@@ -190,7 +191,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                 setIsInheritedTemplate(true);
 
                 return;
-            } else if (!isSystemTemplate || selectedLocale !== SMSTemplateConstants.DEAFULT_LOCALE) {
+            } else if (!isSystemTemplate || selectedLocale !== TemplateManagementConstants.DEAFULT_LOCALE) {
                 setIsSystemTemplate(true);
 
                 return;
@@ -216,7 +217,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         setIsSystemTemplate(false);
         setIsInheritedTemplate(false);
         setCurrentSmsTemplate(undefined);
-        setSelectedLocale(SMSTemplateConstants.DEAFULT_LOCALE);
+        setSelectedLocale(TemplateManagementConstants.DEAFULT_LOCALE);
         setSelectedSmsTemplateId(templateId);
         setSelectedSmsTemplateDescription(
             availableSmsTemplatesList?.find((template: SMSTemplateType) => template.id === templateId)?.description
@@ -299,8 +300,6 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         }
 
         setIsTemplateNotAvailable(false);
-        setIsSystemTemplate(false);
-        setIsInheritedTemplate(false);
     };
 
     const handleDeleteRequest = (): void => {
@@ -314,7 +313,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                         message: t("smsTemplates:notifications.deleteSmsTemplate.success.message")
                     })
                 );
-                setSelectedLocale(SMSTemplateConstants.DEAFULT_LOCALE);
+                setSelectedLocale(TemplateManagementConstants.DEAFULT_LOCALE);
                 setIsSystemTemplate(false);
                 setIsInheritedTemplate(false);
                 setShouldFetch(true);
@@ -329,32 +328,6 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                     })
                 );
             });
-    };
-
-    const renderDangerZone = (): ReactElement => {
-        let zoneType: string = "revert";
-
-        if (isSystemTemplate || isInheritedTemplate) {
-            return null;
-        } else if (selectedLocale !== SMSTemplateConstants.DEAFULT_LOCALE) {
-            zoneType = "remove";
-        }
-
-        const props: any = {
-            actionTitle: t(`smsTemplates:dangerZone.${zoneType}.action`),
-            header: t(`smsTemplates:dangerZone.${zoneType}.heading`),
-            subheader: t(`smsTemplates:dangerZone.${zoneType}.message`)
-        };
-
-        return (
-            <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
-                <DangerZone
-                    { ...props }
-                    data-componentid={ `${componentId}-remove-sms-provider-config` }
-                    onActionClick={ handleDeleteRequest }
-                />
-            </DangerZoneGroup>
-        );
     };
 
     return (
@@ -374,13 +347,15 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                 bottomMargin={ false }
                 data-componentid={ componentId }
             >
-                <SMSCustomizationHeader
-                    selectedSmsTemplateId={ selectedSmsTemplateId }
-                    selectedSmsTemplateDescription={ selectedSmsTemplateDescription }
+                <TemplateHeader
+                    templateChannel="sms"
+                    selectedTemplateId={ selectedSmsTemplateId }
+                    selectedTemplateDescription={ selectedSmsTemplateDescription }
                     selectedLocale={ selectedLocale }
-                    smsTemplatesList={ availableSmsTemplatesList }
+                    templatesList={ availableSmsTemplatesList }
                     onTemplateSelected={ handleTemplateIdChange }
                     onLocaleChanged={ handleLocaleChange }
+                    data-componentid={ "sms-customization-header" }
                 />
 
                 <Card className="p-0 mb-5">
@@ -425,7 +400,14 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                     </Grid>
                 </Card>
 
-                <Show when={ featureConfig?.smsTemplates?.scopes?.delete }>{ renderDangerZone() }</Show>
+                <Show when={ featureConfig?.smsTemplates?.scopes?.delete }>
+                    <TemplateDangerZone
+                        templateChannel="sms"
+                        isSystemTemplate={ isSystemTemplate }
+                        isInheritedTemplate={ isInheritedTemplate }
+                        onDeleteRequest={ handleDeleteRequest }
+                    />
+                </Show>
             </PageLayout>
         </BrandingPreferenceProvider>
     );
