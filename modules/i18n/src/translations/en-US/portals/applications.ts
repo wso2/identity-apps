@@ -1600,8 +1600,20 @@ export const applications: ApplicationsNS = {
                         },
                         bindingType: {
                             children: {
+                                cookie: {
+                                    label: "Cookie"
+                                },
+                                clientRequest: {
+                                    label: "Client Request"
+                                },
+                                certificate: {
+                                    label: "Certificate"
+                                },
+                                deviceFlow: {
+                                    label: "Device Flow"
+                                },
                                 ssoBinding: {
-                                    label: "SSO-session"
+                                    label: "SSO Session"
                                 }
                             },
                             description: "Select type <1>SSO-session</1> to allow {{productName}} to " +
@@ -1616,7 +1628,9 @@ export const applications: ApplicationsNS = {
                                     "when the token expires or is revoked.",
                                 sso_session: "Binds the access token to the login session. " +
                                     "{{productName}} will issue a new access token for each new login " +
-                                    "and revoke the token upon logout."
+                                    "and revoke the token upon logout.",
+                                dpop: "Binds the access token to the client's public key. The client must present"+
+                                    " a signed DPoP proof in each request to prove posession of the corresponding private key."
                             }
                         },
                         expiry: {
