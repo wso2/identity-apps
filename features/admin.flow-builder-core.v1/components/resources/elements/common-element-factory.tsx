@@ -85,7 +85,7 @@ export const CommonElementFactory: FunctionComponent<CommonElementFactoryPropsIn
         return <DividerAdapter stepId={ stepId } resource={ resource } />;
     } else if (resource.type === ElementTypes.Image) {
         return <ImageAdapter stepId={ stepId } resource={ resource } />;
-    } else if (resource.type === ElementTypes.CAPTCHA) {
+    } else if (resource.type === ElementTypes.Captcha) {
         return <CaptchaAdapter stepId={ stepId } resource={ resource } />;
     }
 

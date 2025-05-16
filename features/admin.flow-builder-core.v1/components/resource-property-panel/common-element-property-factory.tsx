@@ -110,7 +110,7 @@ const CommonElementPropertyFactory: FunctionComponent<CommonElementPropertyFacto
         );
     }
 
-    if (resource.type == ElementTypes.CAPTCHA) {
+    if (resource.type == ElementTypes.Captcha) {
         return (
             <TextField
                 fullWidth
