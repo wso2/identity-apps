@@ -334,9 +334,7 @@ public class AppsCommonServiceComponent {
     )
     protected void setAuthorizedAPIManagementService(AuthorizedAPIManagementService authorizedAPIManagementService) {
 
-        if (log.isDebugEnabled()) {
-            log.debug("Setting AuthorizedAPIManagementService Service");
-        }
+        log.debug("Setting AuthorizedAPIManagementService Service");
         AppsCommonDataHolder.getInstance().
                 setAuthorizedAPIManagementService(authorizedAPIManagementService);
     }
@@ -348,9 +346,7 @@ public class AppsCommonServiceComponent {
      */
     protected void unsetAuthorizedAPIManagementService(AuthorizedAPIManagementService authorizedAPIManagementService) {
 
-        if (log.isDebugEnabled()) {
-            log.debug("Unsetting AuthorizedAPIManagementService.");
-        }
+        log.debug("Unsetting AuthorizedAPIManagementService.");
         AppsCommonDataHolder.getInstance().setAuthorizedAPIManagementService(null);
     }
 }

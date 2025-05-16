@@ -23,6 +23,7 @@ import org.wso2.carbon.CarbonConstants;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.identity.api.resource.mgt.APIResourceManager;
 import org.wso2.carbon.identity.api.resource.mgt.APIResourceMgtException;
+import org.wso2.carbon.identity.api.resource.mgt.constant.APIResourceManagementConstants;
 import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
 import org.wso2.carbon.identity.application.common.model.APIResource;
@@ -292,7 +293,7 @@ public class AppPortalUtils {
         if (Boolean.parseBoolean(IdentityUtil.getProperty(USER_SESSION_IMPERSONATION)) &&
                 MYACCOUNT_APP.equals(appName)) {  
             addAPIResourceToApplication(appId, tenantDomain);
-            addOImpersonatorRole(appOwner, appId, tenantId, tenantDomain);
+            addImpersonatorRole(appOwner, appId, tenantId, tenantDomain);
         }
     }
 
@@ -486,7 +487,7 @@ public class AppPortalUtils {
         }
     }
     
-    private static void addOImpersonatorRole(String appOwner, String appId, int tenantId, String tenantDomain)
+    private static void addImpersonatorRole(String appOwner, String appId, int tenantId, String tenantDomain)
         throws IdentityApplicationManagementException {
 
         List<Permission> permissions = new ArrayList<>();
@@ -510,9 +511,9 @@ public class AppPortalUtils {
         AuthorizedAPI authorizedAPI = new AuthorizedAPI(
                 appId,
                 apiResource.getId(),
-                "RBAC",
+                APIResourceManagementConstants.RBAC_AUTHORIZATION,
                 apiResource.getScopes(),
-                "TENANT"
+                APIResourceManagementConstants.APIResourceTypes.TENANT
         );
         try {
             AuthorizedAPIManagementService authorizedAPIManagementService = new AuthorizedAPIManagementServiceImpl();
@@ -533,7 +534,7 @@ public class AppPortalUtils {
             throw new IdentityApplicationManagementException("Error occurred while retrieving API resource.");
         }
         if (apiResource == null) {
-            throw new IdentityApplicationManagementException("API resources unavailable.");
+            throw new IdentityApplicationManagementException("Impersonation API resource is not available.");
         }
         return apiResource;
     }
