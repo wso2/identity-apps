@@ -54,10 +54,13 @@ interface OperationStatusBannerPropsInterface extends IdentifiableComponentInter
  *
  * @returns Operation status banner component.
  */
-export const OperationStatusBanner: React.FC<OperationStatusBannerPropsInterface> = (
-    props: OperationStatusBannerPropsInterface
-): ReactElement => {
-    const { status, sharingOperationId, [ "data-componentid" ]: componentId, sharingOperationSummary } = props;
+export const OperationStatusBanner: React.FC<OperationStatusBannerPropsInterface> = ({
+    status,
+    sharingOperationId,
+    "data-componentid": componentId,
+    sharingOperationSummary
+}: OperationStatusBannerPropsInterface): ReactElement => {
+
     const [ showStatusModal, setShowStatusModal ] = useState(false);
     const { t } = useTranslation();
 

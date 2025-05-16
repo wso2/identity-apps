@@ -18,6 +18,8 @@
 
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { AsyncOperationStatusLinkInterface, AsyncOperationStatusUnitResponse, OperationStatusSummary } from
+    "@wso2is/admin.core.v1/models/common";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     DataTable,
@@ -37,8 +39,6 @@ import {
 } from "semantic-ui-react";
 import { useGetAsyncOperationStatusUnits } from "../api/use-get-application-share-status-units";
 import { ApplicationShareUnitStatus } from "../constants/application-management";
-import { AsyncOperationStatusLinkInterface, AsyncOperationStatusUnitResponse,
-    OperationStatusSummary } from "../models/application";
 import "./share-application-status-response-list.scss";
 
 /**
@@ -53,7 +53,7 @@ interface ShareApplicationStatusResponseListProps extends IdentifiableComponentI
 /**
  * Proptypes for the REST api params.
  */
-interface Params {
+interface GetApplicationStatusResponseParams {
     shouldFetch?: boolean,
     filter?: string;
     limit?: number;
@@ -67,15 +67,11 @@ interface Params {
  * @param props - Props injected to the component.
  * @returns Application share status result.
  */
-export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareApplicationStatusResponseListProps> = (
-    props: ShareApplicationStatusResponseListProps
-): ReactElement => {
-
-    const {
-        operationId,
-        operationSummary,
-        ["data-componentid"]: componentId
-    } = props;
+export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareApplicationStatusResponseListProps> = ({
+    operationId,
+    operationSummary,
+    ["data-componentid"]: componentId
+}: ShareApplicationStatusResponseListProps): ReactElement => {
 
     const [ selectedStatus, setSelectedStatus ] = useState<ApplicationShareUnitStatus>
     (ApplicationShareUnitStatus.FAILED);
@@ -87,7 +83,7 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
 
     const API_LIMIT: number = UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT;
 
-    const [ params, setParams ] = useState<Params>({
+    const [ params, setParams ] = useState<GetApplicationStatusResponseParams>({
         after: null,
         filter: `status eq ${selectedStatus}`,
         limit: API_LIMIT,
@@ -110,7 +106,7 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
         if (isInitialLoading) {
             setIsInitialLoading(false);
         }
-        setParams((prevParams: Params) => ({
+        setParams((prevParams: GetApplicationStatusResponseParams) => ({
             ...prevParams,
             shouldFetch: false
         }));
@@ -176,7 +172,7 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
         if (isShareUnitStatusFetchRequestLoading || !hasMoreItems) {
             return;
         }
-        setParams((prevParams: Params) => ({
+        setParams((prevParams: GetApplicationStatusResponseParams) => ({
             ...prevParams,
             after: afterCursor,
             shouldFetch: true

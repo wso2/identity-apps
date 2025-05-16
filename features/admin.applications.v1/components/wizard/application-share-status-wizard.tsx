@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import { OperationStatusSummary } from "@wso2is/admin.core.v1/models/common";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { OperationStatusSummary } from "../../models/application";
 import { ShareApplicationStatusResponseList } from "../share-application-status-response-list";
 
 /**
@@ -47,11 +47,11 @@ interface ApplicationShareStatusWizardProps extends IdentifiableComponentInterfa
  *
  * @returns Application share status wizard component.
  */
-const ApplicationShareStatusWizard: FunctionComponent<ApplicationShareStatusWizardProps> = (
-    props: ApplicationShareStatusWizardProps
-): ReactElement => {
-
-    const { operationId, componentId, operationSummary } = props;
+const ApplicationShareStatusWizard: FunctionComponent<ApplicationShareStatusWizardProps> = ({
+    operationId,
+    componentId,
+    operationSummary
+}: ApplicationShareStatusWizardProps): ReactElement => {
 
     return (
         <>
