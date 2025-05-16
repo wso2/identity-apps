@@ -167,7 +167,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                  = {
                      canonicalValues: values.get("canonicalValues")
                          ? ((values.get("canonicalValues") as unknown) as { key: string; value: string }[])
-                             .map((item) => ({
+                             .map((item: { key: string; value: string }) => ({
                                  key: item.key,
                                  value: item.value
                              }))
