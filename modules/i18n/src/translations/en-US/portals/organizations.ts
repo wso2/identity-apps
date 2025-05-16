@@ -97,6 +97,11 @@ export const organizations: organizationsNS = {
                 label: "Organization Name",
                 placeholder: "Enter organization name"
             },
+            orgHandle: {
+                ariaLabel: "Organization Handle",
+                label: "Organization Handle",
+                placeholder: "Enter organization handle"
+            },
             type: {
                 ariaLabel: "Organization Type",
                 label: "Organization Type"
@@ -127,6 +132,17 @@ export const organizations: organizationsNS = {
                 validation: {
                     duplicate: "Organization name already exists",
                     empty: "Organization name is required"
+                }
+            },
+            orgHandle: {
+                label: "Organization Handle",
+                placeholder: "Organization handle (E.g., myorg.com)",
+                validation: {
+                    duplicate: "The entered organization handle already exists",
+                    empty: "The organization handle is required",
+                    invalidPattern: "The entered organization handle contains invalid characters. Valid characters include letters (a-z, A-Z), numbers, spaces, periods (.), hyphens (-), and underscores (_).",
+                    mandatoryExtension: "The organization handle should include a domain extension, such as .com. (E.g,: abc.com)",
+                    startingWithDot: "The organization handle cannot start with a dot"
                 }
             },
             structural: "Structural",
