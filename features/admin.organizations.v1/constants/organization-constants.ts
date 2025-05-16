@@ -69,7 +69,6 @@ export class OrganizationManagementConstants {
      * Organization handle constants.
      */
     public static readonly ORG_HANDLE_REGEX: string = "^[a-zA-Z0-9 .\\-_]+$";
-    public static readonly ORG_PREFIX: string = "org";
     public static readonly ORG_HANDLE_SANITIZATION_REGEX: RegExp = /^[^a-z]*|[^a-z0-9]/g;
     public static readonly MIN_ORG_HANDLE_LENGTH: number = 3;
     public static readonly MAX_ORG_HANDLE_LENGTH: number = 32;

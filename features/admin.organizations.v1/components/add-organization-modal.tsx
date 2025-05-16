@@ -233,7 +233,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     function generateRandomOrgHandle(sanitizedValue: string) {
         const randomString: string = Math.random().toString(36).substring(2, 6);
 
-        const generateOrgHandle: string = OrganizationManagementConstants.ORG_PREFIX + sanitizedValue + randomString;
+        const generateOrgHandle: string = sanitizedValue + randomString;
 
         if (isOrgHandleDotExtensionMandatory) {
             return generateOrgHandle + ".com";
