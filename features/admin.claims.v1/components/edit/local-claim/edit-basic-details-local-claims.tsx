@@ -60,7 +60,7 @@ import { Property } from "@wso2is/core/src/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { DropDownItemInterface } from "@wso2is/form/src";
-import { DynamicField , KeyValue, useTrigger } from "@wso2is/forms";
+import { DynamicField , KeyValue } from "@wso2is/forms";
 import {
     ConfirmationModal,
     CopyInputField,
@@ -1093,9 +1093,15 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                             text: claim.claimURI,
                                             value: claim.claimURI
                                         }))
-                                        .sort((a, b) => a.text.localeCompare(b.text)) // Sort options alphabetically
+                                        .sort(
+                                            (a: { text: string }, b: { text: string }) =>
+                                                a.text.localeCompare(b.text)
+                                        )
                                 }
-                                onChange={ (event, data) => {
+                                onChange={ (
+                                    event: React.SyntheticEvent<HTMLElement, Event>,
+                                    data: { value: string }
+                                ) => {
                                     if (event.type === "click" && !subAttributes.includes(data.value)) {
                                         setSubAttributes([ ...subAttributes, data.value ]);
                                     }
@@ -1104,7 +1110,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 search
                             />
                             <div>
-                                { subAttributes.map((attribute, index) => (
+                                { subAttributes.map((attribute: string, index: number) => (
                                     <div
                                         style={ { alignItems: "center", display: "flex",
                                             justifyContent: "space-between"
@@ -1114,7 +1120,11 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                         <IconButton
                                             disabled={ isReadOnly }
                                             onClick={ () => {
-                                                setSubAttributes(subAttributes.filter((item) => item !== attribute));
+                                                setSubAttributes(
+                                                    subAttributes.filter(
+                                                        (item: string) => item !== attribute
+                                                    )
+                                                );
                                             } }
                                             data-componentid={ `${testId}-delete-sub-attribute-${index}` }
                                             style={ { marginLeft: "auto" } }
