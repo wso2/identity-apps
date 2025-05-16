@@ -48,8 +48,10 @@ import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.identity.apps.common.listner.AppPortalApplicationMgtListener;
 import org.wso2.identity.apps.common.listner.AppPortalOAuthAppMgtListener;
 import org.wso2.identity.apps.common.listner.AppPortalRoleManagementListener;
+import org.wso2.identity.apps.common.listner.AppPortalRoleManagementV3Listener;
 import org.wso2.identity.apps.common.listner.AppPortalTenantMgtListener;
 import org.wso2.identity.apps.common.listner.ConsoleRoleListener;
+import org.wso2.identity.apps.common.listner.ConsoleRoleV3Listener;
 import org.wso2.identity.apps.common.util.AppPortalUtils;
 
 import java.util.HashSet;
@@ -115,6 +117,20 @@ public class AppsCommonServiceComponent {
                 RoleManagementListener consoleRoleListener = new ConsoleRoleListener();
                 bundleContext.registerService(RoleManagementListener.class.getName(), consoleRoleListener, null);
                 log.debug("ConsoleRoleListener registered successfully.");
+
+                org.wso2.carbon.identity.role.v3.mgt.core.listener.RoleManagementListener roleManagementListenerV3 =
+                        new AppPortalRoleManagementV3Listener(true);
+                bundleContext.registerService(org.wso2.carbon.identity.role.v3.mgt.core.listener.
+                        RoleManagementListener.class.getName(), roleManagementListenerV3, null);
+                log.debug("AppPortalRoleManagementV3Listener registered successfully.");
+
+                org.wso2.carbon.identity.role.v3.mgt.core.listener.RoleManagementListener consoleRoleListenerV3 =
+                        new ConsoleRoleV3Listener();
+                bundleContext.registerService(
+                    org.wso2.carbon.identity.role.v3.mgt.core.listener.RoleManagementListener.class.getName(),
+                    consoleRoleListenerV3, null);
+                log.debug("ConsoleRoleListenerV3 registered successfully.");
+
             }
 
             if (!CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
@@ -254,6 +270,24 @@ public class AppsCommonServiceComponent {
     protected void unsetRoleManagementServiceV2(RoleManagementService roleManagementService) {
 
         AppsCommonDataHolder.getInstance().setRoleManagementServiceV2(null);
+    }
+
+    @Reference(
+        name = "role.management.service.v3",
+        service = org.wso2.carbon.identity.role.v3.mgt.core.RoleManagementService.class,
+        cardinality = ReferenceCardinality.MANDATORY,
+        policy = ReferencePolicy.DYNAMIC,
+        unbind = "unsetRoleManagementServiceV3")
+    protected void setRoleManagementServiceV3(org.wso2.carbon.identity.role.v3.mgt.core.RoleManagementService
+                                                      roleManagementService) {
+
+        AppsCommonDataHolder.getInstance().setRoleManagementServiceV3(roleManagementService);
+    }
+
+    protected void unsetRoleManagementServiceV3(org.wso2.carbon.identity.role.v3.mgt.core.RoleManagementService
+                                                    roleManagementService) {
+
+        AppsCommonDataHolder.getInstance().setRoleManagementServiceV3(null);
     }
 
     @Reference(
