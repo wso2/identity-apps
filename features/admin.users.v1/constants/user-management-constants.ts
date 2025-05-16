@@ -20,6 +20,7 @@
 import { ServerConfigurationsConstants } from
     "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import { ProfileConstants } from "@wso2is/core/constants";
+import { DropdownChild } from "@wso2is/forms";
 
 /**
  * Class containing app constants which can be used across several applications.
@@ -68,7 +69,8 @@ export class UserManagementConstants {
         .set("USER_READ", "users.read")
         .set("USER_GROUPS", "users.edit.groups")
         .set("USER_ROLES", "users.edit.roles")
-        .set("USER_SHARED_PROFILES", "users.updateSharedProfiles");
+        .set("USER_SHARED_PROFILES", "users.updateSharedProfiles")
+        .set("USER_IMPERSONATION", "users.user.impersonation");
 
     // API errors
     public static readonly USER_INFO_UPDATE_ERROR: string = "Could not update the user information.";
@@ -89,6 +91,9 @@ export class UserManagementConstants {
 
     public static readonly TERMINATE_ALL_USER_SESSIONS_ERROR: string = "Could not terminate all the user sessions " +
         "due to some error.";
+
+    public static readonly RESEND_CODE_REQUEST_ERROR: string = "Error occured while resending the " +
+        "verification link/code.";
 
     public static readonly WSO2_LOCAL_CLAIM_DIALECT: string = "http://wso2.org/claims";
     public static readonly SCIM2_USER_SCHEMA: string = "urn:ietf:params:scim:schemas:core:2.0:User";
@@ -173,6 +178,14 @@ export class UserManagementConstants {
         ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS"),
         ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES")
     ];
+
+    // Impersonation related constants.
+    public static readonly ID_TOKEN: string = "id_token";
+    public static readonly SUBJECT_TOKEN: string = "subject_token";
+
+    // Feature flags.
+    public static readonly ATTRIBUTE_PROFILES_FOR_USER_CREATION_FEATURE_FLAG: string
+        = "users.user.creation.attribute.profile";
 }
 
 /**
@@ -333,18 +346,93 @@ export enum LocaleJoiningSymbol {
 }
 
 /**
+ * Enum for type of the user association.
+ *
+ * @readonly
+ */
+export enum UserSharedType {
+    OWNER = "OWNER",
+    INVITED = "INVITED",
+    SHARED = "SHARED"
+}
+
+/**
+ * Enum for account lock reason.
+ *
+ * @readonly
+ */
+export enum AccountLockedReason {
+    PENDING_SELF_REGISTRATION = "PENDING_SELF_REGISTRATION",
+    PENDING_ADMIN_FORCED_USER_PASSWORD_RESET = "PENDING_ADMIN_FORCED_USER_PASSWORD_RESET",
+    PENDING_EMAIL_VERIFICATION = "PENDING_EMAIL_VERIFICATION",
+    PENDING_ASK_PASSWORD = "PENDING_ASK_PASSWORD",
+    IDLE_ACCOUNT = "IDLE_ACCOUNT",
+    ADMIN_INITIATED = "ADMIN_INITIATED",
+    MAX_ATTEMPTS_EXCEEDED = "MAX_ATTEMPTS_EXCEEDED"
+}
+
+/**
+ * Enum for user account state.
+ *
+ * @readonly
+ */
+export enum AccountState {
+    LOCKED = "LOCKED",
+    PENDING_AP = "PENDING_AP",
+    PENDING_SR = "PENDING_SR",
+    PENDING_LR = "PENDING_LR",
+    DISABLED = "DISABLED",
+    UNLOCKED = "UNLOCKED"
+}
+
+/**
+ * Enum for recovery scenario.
+ *
+ * @readonly
+ */
+export enum RecoveryScenario {
+    NOTIFICATION_BASED_PW_RECOVERY = "NOTIFICATION_BASED_PW_RECOVERY",
+    QUESTION_BASED_PWD_RECOVERY = "QUESTION_BASED_PWD_RECOVERY",
+    USERNAME_RECOVERY = "USERNAME_RECOVERY",
+    SELF_SIGN_UP = "SELF_SIGN_UP",
+    ASK_PASSWORD = "ASK_PASSWORD",
+    ADMIN_FORCED_PASSWORD_RESET_VIA_EMAIL_LINK = "ADMIN_FORCED_PASSWORD_RESET_VIA_EMAIL_LINK",
+    ADMIN_FORCED_PASSWORD_RESET_VIA_OTP = "ADMIN_FORCED_PASSWORD_RESET_VIA_OTP",
+    ADMIN_FORCED_PASSOWRD_RESET_VIA_SMS_OTP = "ADMIN_FORCED_PASSWORD_RESET_VIA_SMS_OTP",
+    EMAIL_VERIFICATION_ON_UPDATE = "EMAIL_VERIFICATION_ON_UPDATE",
+    EMAIL_VERIFICATION_ON_VERIFIED_LIST_UPDATE = "EMAIL_VERIFICATION_ON_VERIFIED_LIST_UPDATE",
+    MOBILE_VERIFICATION_ON_UPDATE = "MOBILE_VERIFICATION_ON_UPDATE",
+    MOBILE_VERIFICATION_ON_VERIFIED_LIST_UPDATE = "MOBILE_VERIFICATION_ON_VERIFIED_LIST_UPDATE",
+    LITE_SIGN_UP = "LITE_SIGN_UP",
+    TENANT_ADMIN_ASK_PASSWORD = "TENANT_ADMIN_ASK_PASSWORD",
+    PASSWORD_EXPIRY = "PASSWORD_EXPIRY",
+    ADMIN_INVITE_SET_PASSWORD_OFFLINE = "ADMIN_INVITE_SET_PASSWORD_OFFLINE"
+}
+
+/**
+ * Enum for recovery option types.
+ *
+ * @readonly
+ */
+export enum RecoveryOptionTypes {
+    CODE = "code",
+    LINK = "link"
+}
+
+/**
  *  user account locked reason.
  *
  * @readonly
  */
 export const ACCOUNT_LOCK_REASON_MAP: Record<string, string> = {
-    ADMIN_INITIATED: "user:profile.accountLockReason.adminInitiated",
-    DEFAULT: "user:profile.accountLockReason.default",
-    MAX_ATTEMPTS_EXCEEDED: "user:profile.accountLockReason.maxAttemptsExceeded",
-    PENDING_ADMIN_FORCED_USER_PASSWORD_RESET: "user:profile.accountLockReason.pendingAdminForcedUserPasswordReset",
-    PENDING_ASK_PASSWORD: "user:profile.accountLockReason.pendingAskPassword",
-    PENDING_EMAIL_VERIFICATION: "user:profile.accountLockReason.pendingEmailVerification",
-    PENDING_SELF_REGISTRATION: "user:profile.accountLockReason.pendingSelfRegistration"
+    [AccountLockedReason.ADMIN_INITIATED]: "user:profile.accountLockReason.adminInitiated",
+    "DEFAULT": "user:profile.accountLockReason.default",
+    [AccountLockedReason.MAX_ATTEMPTS_EXCEEDED]: "user:profile.accountLockReason.maxAttemptsExceeded",
+    [AccountLockedReason.PENDING_ADMIN_FORCED_USER_PASSWORD_RESET]:
+        "user:profile.accountLockReason.pendingAdminForcedUserPasswordReset",
+    [AccountLockedReason.PENDING_ASK_PASSWORD]: "user:profile.accountLockReason.pendingAskPassword",
+    [AccountLockedReason.PENDING_EMAIL_VERIFICATION]: "user:profile.accountLockReason.pendingEmailVerification",
+    [AccountLockedReason.PENDING_SELF_REGISTRATION]: "user:profile.accountLockReason.pendingSelfRegistration"
 };
 
 export const CONNECTOR_PROPERTY_TO_CONFIG_STATUS_MAP: Record<string, string> = {
@@ -357,8 +445,57 @@ export const CONNECTOR_PROPERTY_TO_CONFIG_STATUS_MAP: Record<string, string> = {
 };
 
 export const PASSWORD_RESET_PROPERTIES: string[] = [
-    ServerConfigurationsConstants.RECOVERY_LINK_PASSWORD_RESET,
-    ServerConfigurationsConstants.OTP_PASSWORD_RESET,
-    ServerConfigurationsConstants.OFFLINE_PASSWORD_RESET
+    ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_EMAIL_LINK,
+    ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_EMAIL_OTP,
+    ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_SMS_OTP,
+    ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_OFFLINE
 ];
 
+/**
+ * Map of recovery scenario to recovery option type.
+ *
+ * @readonly
+ */
+export const RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP: Record<string, string[]> = {
+    [RecoveryScenario.ADMIN_FORCED_PASSWORD_RESET_VIA_EMAIL_LINK]: [ RecoveryOptionTypes.LINK ],
+    [RecoveryScenario.ADMIN_FORCED_PASSWORD_RESET_VIA_OTP]: [ RecoveryOptionTypes.CODE ],
+    [RecoveryScenario.ADMIN_FORCED_PASSOWRD_RESET_VIA_SMS_OTP]: [ RecoveryOptionTypes.CODE ],
+    [RecoveryScenario.ASK_PASSWORD]: [ RecoveryOptionTypes.LINK ]
+};
+
+/**
+ * Enum for data type of scim attributes.
+ *
+ * @readonly
+ */
+export enum AttributeDataType {
+    COMPLEX = "COMPLEX"
+}
+
+/**
+ * User account status options for filtering users.
+ *
+ * @readonly
+ */
+export const USER_ACCOUNT_STATUS_FILTER_OPTIONS: DropdownChild[] = [
+    {
+        key: "LOCKED",
+        text: "users:advancedSearch.accountStatusFilter.options.locked",
+        value: "urn:scim:wso2:schema:accountState eq LOCKED"
+    },
+    {
+        key: "DISABLED",
+        text: "users:advancedSearch.accountStatusFilter.options.disabled",
+        value: "urn:scim:wso2:schema:accountState eq DISABLED"
+    },
+    {
+        key: "PENDING_FUPR",
+        text: "users:advancedSearch.accountStatusFilter.options.pendingPasswordReset",
+        value: "urn:scim:wso2:schema:accountState eq PENDING_FUPR"
+    },
+    {
+        key: "PENDING_AP",
+        text: "users:advancedSearch.accountStatusFilter.options.pendingInitialPasswordSetup",
+        value: "urn:scim:wso2:schema:accountState eq PENDING_AP"
+    }
+];

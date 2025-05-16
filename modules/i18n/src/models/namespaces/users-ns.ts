@@ -74,6 +74,11 @@ export interface usersNS {
             message: string;
             content: string;
         };
+        unassignGroup: {
+            assertionHint: string;
+            header: string;
+            content: string;
+        };
     };
     editUser: {
         tab: {
@@ -181,6 +186,15 @@ export interface usersNS {
         };
     };
     advancedSearch: {
+        accountStatusFilter: {
+            label: string;
+            options: {
+                disabled: string;
+                locked: string;
+                pendingInitialPasswordSetup: string;
+                pendingPasswordReset: string;
+            };
+        };
         form: {
             dropdown: {
                 filterAttributeOptions: {
@@ -349,6 +363,20 @@ export interface usersNS {
             };
         };
         getAdminRole: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
+        impersonateUser: {
             error: {
                 message: string;
                 description: string;

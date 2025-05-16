@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { customAuthenticationNS } from "../../../models";
+import { customAuthenticatorNS } from "../../../models";
 
-export const customAuthentication: customAuthenticationNS = {
+export const customAuthenticator: customAuthenticatorNS = {
     fields: {
         createWizard: {
             authenticationTypeStep: {
@@ -126,7 +126,7 @@ export const customAuthentication: customAuthenticationNS = {
                     hint: "Must be a string containing only letters (a-z, A-Z) numbers (0-9), " +
                     "underscore (_) and hyphen (-). ",
                     label: "Identifier",
-                    placeholder: "Authenticator Identifier",
+                    placeholder: "authenticator-identifier",
                     validations: {
                         empty: "",
                         invalid: "Invalid Identifier"

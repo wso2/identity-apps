@@ -23,7 +23,7 @@ import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { getProfileSchemas } from "@wso2is/admin.users.v1/api";
 import { WizardStepInterface } from "@wso2is/admin.users.v1/models/user";
-import { useUserStores } from "@wso2is/admin.userstores.v1/api";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, ProfileSchemaInterface, TestableComponentInterface } from "@wso2is/core/models";
@@ -114,8 +114,8 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const {
-        data: userStoreList
-    } = useUserStores(null);
+        userStoresList
+    } = useUserStores();
 
     /**
      * Conditionally disable map attribute step
@@ -136,12 +136,12 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
                 setShowMapAttributes(state.length > 0 && userStoresEnabled);
             });
-        } else if (userStoreList?.length > 0) {
+        } else if (userStoresList?.length > 0) {
             setShowMapAttributes(true);
         } else {
             setShowMapAttributes(false);
         }
-    }, [ hiddenUserStores, userStoreList ]);
+    }, [ hiddenUserStores, userStoresList ]);
 
     /**
      * Navigate to the claim edit page after adding a claim.

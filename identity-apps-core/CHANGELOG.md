@@ -1,5 +1,373 @@
 # @wso2is/identity-apps-core
 
+## 2.24.7
+
+### Patch Changes
+
+- [#8103](https://github.com/wso2/identity-apps/pull/8103) [`3d453f26bb1c3023bf700a8d4a6aaa675f21cbb5`](https://github.com/wso2/identity-apps/commit/3d453f26bb1c3023bf700a8d4a6aaa675f21cbb5) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Support Backward Compatibility for Non-Tenant-Qualified URLs
+
+## 2.24.6
+
+### Patch Changes
+
+- [#8165](https://github.com/wso2/identity-apps/pull/8165) [`86521ccd41a7b6cca70714bc490420f4abdc1296`](https://github.com/wso2/identity-apps/commit/86521ccd41a7b6cca70714bc490420f4abdc1296) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Release core.
+
+## 2.24.5
+
+### Patch Changes
+
+- [#8162](https://github.com/wso2/identity-apps/pull/8162) [`b7b29c35c35ca8c56826aa67c7ebed8d0c0c6c18`](https://github.com/wso2/identity-apps/commit/b7b29c35c35ca8c56826aa67c7ebed8d0c0c6c18) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add myaccount changes.
+
+## 2.24.4
+
+### Patch Changes
+
+- [#8116](https://github.com/wso2/identity-apps/pull/8116) [`09d8b338d4b54547c052364326779f2575ac365f`](https://github.com/wso2/identity-apps/commit/09d8b338d4b54547c052364326779f2575ac365f) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Onboard impersonation feature.
+
+- Updated dependencies [[`09d8b338d4b54547c052364326779f2575ac365f`](https://github.com/wso2/identity-apps/commit/09d8b338d4b54547c052364326779f2575ac365f)]:
+  - @wso2is/theme@2.7.8
+
+## 2.24.3
+
+### Patch Changes
+
+- [#8110](https://github.com/wso2/identity-apps/pull/8110) [`dc8cf53e08330f3f377c4256c0036a7c6f8b31b5`](https://github.com/wso2/identity-apps/commit/dc8cf53e08330f3f377c4256c0036a7c6f8b31b5) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add minor review suggestions
+
+## 2.24.2
+
+### Patch Changes
+
+- [#8113](https://github.com/wso2/identity-apps/pull/8113) [`0d4ab197b0321c1b4c334e980354cea91093ad95`](https://github.com/wso2/identity-apps/commit/0d4ab197b0321c1b4c334e980354cea91093ad95) Thanks [@Thumimku](https://github.com/Thumimku)! - Add config support to have custom error page in webapps
+
+## 2.24.1
+
+### Patch Changes
+
+- [#8106](https://github.com/wso2/identity-apps/pull/8106) [`eb751d0d67c4986a6a3f3c6a38f744efbfcd3c8d`](https://github.com/wso2/identity-apps/commit/eb751d0d67c4986a6a3f3c6a38f744efbfcd3c8d) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Fix left aligned footer after branding.
+
+## 2.24.0
+
+### Minor Changes
+
+- [#8082](https://github.com/wso2/identity-apps/pull/8082) [`e0d131587fa454244a9075d8abca98b29a3c6f79`](https://github.com/wso2/identity-apps/commit/e0d131587fa454244a9075d8abca98b29a3c6f79) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add custom layout inheritance support for sub organizations
+
+## 2.23.8
+
+### Patch Changes
+
+- [#8087](https://github.com/wso2/identity-apps/pull/8087) [`5de646f4ee571cbb6f0ffd6967773810fae2fcf3`](https://github.com/wso2/identity-apps/commit/5de646f4ee571cbb6f0ffd6967773810fae2fcf3) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Fix cookie policy branding.
+
+## 2.23.7
+
+### Patch Changes
+
+- [#8063](https://github.com/wso2/identity-apps/pull/8063) [`3478bf849aa907b8b942335fad6a1b95845cdb6f`](https://github.com/wso2/identity-apps/commit/3478bf849aa907b8b942335fad6a1b95845cdb6f) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Fix footer not being stacked on mobile view
+
+## 2.23.6
+
+### Patch Changes
+
+- [#8068](https://github.com/wso2/identity-apps/pull/8068) [`3519546de64992f57c8397da7bf24ecfe406af2e`](https://github.com/wso2/identity-apps/commit/3519546de64992f57c8397da7bf24ecfe406af2e) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Fix NPE issue when accessing oauth2_error.jsp with missing parameters
+
+## 2.23.5
+
+### Patch Changes
+
+- [#8057](https://github.com/wso2/identity-apps/pull/8057) [`b0d1cfa9142126be2870b6af6ef8fd1b99788cd9`](https://github.com/wso2/identity-apps/commit/b0d1cfa9142126be2870b6af6ef8fd1b99788cd9) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix logo overflow in jsp pages
+
+- Updated dependencies [[`b0d1cfa9142126be2870b6af6ef8fd1b99788cd9`](https://github.com/wso2/identity-apps/commit/b0d1cfa9142126be2870b6af6ef8fd1b99788cd9), [`2aca657fd60a32bf39a7d608f4d65eace3a99b95`](https://github.com/wso2/identity-apps/commit/2aca657fd60a32bf39a7d608f4d65eace3a99b95)]:
+  - @wso2is/theme@2.7.5
+
+## 2.23.4
+
+### Patch Changes
+
+- [#8032](https://github.com/wso2/identity-apps/pull/8032) [`9054c4791f8a6393b404df463a6b1824e4819242`](https://github.com/wso2/identity-apps/commit/9054c4791f8a6393b404df463a6b1824e4819242) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Remove search from language switcher
+
+* [#8043](https://github.com/wso2/identity-apps/pull/8043) [`9c1ce998f2bbbad563170846d13a7e983f67063c`](https://github.com/wso2/identity-apps/commit/9c1ce998f2bbbad563170846d13a7e983f67063c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update self registration flow styling
+
+* Updated dependencies [[`9c1ce998f2bbbad563170846d13a7e983f67063c`](https://github.com/wso2/identity-apps/commit/9c1ce998f2bbbad563170846d13a7e983f67063c)]:
+  - @wso2is/theme@2.7.4
+
+## 2.23.3
+
+### Patch Changes
+
+- [#8035](https://github.com/wso2/identity-apps/pull/8035) [`4591b3ea74dda325425f08630075ebac8d1fa1e4`](https://github.com/wso2/identity-apps/commit/4591b3ea74dda325425f08630075ebac8d1fa1e4) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update admin invitation flow styling
+
+- Updated dependencies [[`4591b3ea74dda325425f08630075ebac8d1fa1e4`](https://github.com/wso2/identity-apps/commit/4591b3ea74dda325425f08630075ebac8d1fa1e4)]:
+  - @wso2is/theme@2.7.3
+
+## 2.23.2
+
+### Patch Changes
+
+- [#8016](https://github.com/wso2/identity-apps/pull/8016) [`2bc210fce9c48f32e571fd415cd12f4c5d957924`](https://github.com/wso2/identity-apps/commit/2bc210fce9c48f32e571fd415cd12f4c5d957924) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with form submit
+
+## 2.23.1
+
+### Patch Changes
+
+- [#8014](https://github.com/wso2/identity-apps/pull/8014) [`138996caee82130d30cfedf7acc62bdce351140a`](https://github.com/wso2/identity-apps/commit/138996caee82130d30cfedf7acc62bdce351140a) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with password validation
+
+## 2.23.0
+
+### Minor Changes
+
+- [#8012](https://github.com/wso2/identity-apps/pull/8012) [`5e8c6e7c10e4ee98139f0211deb99acecea39238`](https://github.com/wso2/identity-apps/commit/5e8c6e7c10e4ee98139f0211deb99acecea39238) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Drop action ID in Google signup request
+
+## 2.22.8
+
+### Patch Changes
+
+- [#7977](https://github.com/wso2/identity-apps/pull/7977) [`6d8d15189fd5e090ded37fc16fe6d7bf136a19c4`](https://github.com/wso2/identity-apps/commit/6d8d15189fd5e090ded37fc16fe6d7bf136a19c4) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve username validation
+
+## 2.22.7
+
+### Patch Changes
+
+- [#7994](https://github.com/wso2/identity-apps/pull/7994) [`6c94cb58ffab51345823040b904398652d7f169b`](https://github.com/wso2/identity-apps/commit/6c94cb58ffab51345823040b904398652d7f169b) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve error handling in dynamic portal
+
+## 2.22.6
+
+### Patch Changes
+
+- [#7843](https://github.com/wso2/identity-apps/pull/7843) [`06d97bc5656fb699d406a2dec113a28d6b94a0b1`](https://github.com/wso2/identity-apps/commit/06d97bc5656fb699d406a2dec113a28d6b94a0b1) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix My Account access url issue when accountLockOnCreationEnabled
+
+## 2.22.5
+
+### Patch Changes
+
+- [#7981](https://github.com/wso2/identity-apps/pull/7981) [`c10e9175a878535fbb9bcd21ed5fade298ac3560`](https://github.com/wso2/identity-apps/commit/c10e9175a878535fbb9bcd21ed5fade298ac3560) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve error message in dynamic registration portal
+
+## 2.22.4
+
+### Patch Changes
+
+- [#7966](https://github.com/wso2/identity-apps/pull/7966) [`3757b978b324f47c13deea30254de36e0758da4e`](https://github.com/wso2/identity-apps/commit/3757b978b324f47c13deea30254de36e0758da4e) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Remove server port when building the callback url when the server is starting at default https port
+
+## 2.22.3
+
+### Patch Changes
+
+- [#7935](https://github.com/wso2/identity-apps/pull/7935) [`05a2dc96ad980edaeac2e362fb34c5f06a438b9c`](https://github.com/wso2/identity-apps/commit/05a2dc96ad980edaeac2e362fb34c5f06a438b9c) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Validate HEAD requests when clicking on org invitation link
+
+* [#7936](https://github.com/wso2/identity-apps/pull/7936) [`8c77be8232c791ea1badaa04ee40ec8b35b5edb6`](https://github.com/wso2/identity-apps/commit/8c77be8232c791ea1badaa04ee40ec8b35b5edb6) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Add global configuration and support configurations in authentication and recovery portals to show/hide cookie consent banner
+
+## 2.22.2
+
+### Patch Changes
+
+- [#7954](https://github.com/wso2/identity-apps/pull/7954) [`cb66573556871b58a2253ef638c647245cbb4283`](https://github.com/wso2/identity-apps/commit/cb66573556871b58a2253ef638c647245cbb4283) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues with Google one-tap prompt
+
+## 2.22.1
+
+### Patch Changes
+
+- [#7957](https://github.com/wso2/identity-apps/pull/7957) [`ea8fa90dfe5e4ccadc7c705e02c20354f98fa59b`](https://github.com/wso2/identity-apps/commit/ea8fa90dfe5e4ccadc7c705e02c20354f98fa59b) Thanks [@ThaminduDilshan](https://github.com/ThaminduDilshan)! - Import registration-portal-url-resolver to the user-not-found page
+
+## 2.22.0
+
+### Minor Changes
+
+- [#7949](https://github.com/wso2/identity-apps/pull/7949) [`a29a79750806383bb9c9bdc60382b043d6d9796f`](https://github.com/wso2/identity-apps/commit/a29a79750806383bb9c9bdc60382b043d6d9796f) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve API error response handling in dynamic registration portal
+
+## 2.21.0
+
+### Minor Changes
+
+- [#7901](https://github.com/wso2/identity-apps/pull/7901) [`d7eb376080cc93f307ce6f57b680d0cdd7d9fad5`](https://github.com/wso2/identity-apps/commit/d7eb376080cc93f307ce6f57b680d0cdd7d9fad5) Thanks [@Malith-19](https://github.com/Malith-19)! - Add password recovery email otp support.
+
+## 2.20.0
+
+### Minor Changes
+
+- [#7922](https://github.com/wso2/identity-apps/pull/7922) [`a343ac94575641708784e3e38d9b4aec8a252365`](https://github.com/wso2/identity-apps/commit/a343ac94575641708784e3e38d9b4aec8a252365) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Update validation framework to align with API response
+
+## 2.19.8
+
+### Patch Changes
+
+- [#7892](https://github.com/wso2/identity-apps/pull/7892) [`c1f60ee6fd860cd38e53f5eaf86c4ff74fbb84fc`](https://github.com/wso2/identity-apps/commit/c1f60ee6fd860cd38e53f5eaf86c4ff74fbb84fc) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with button type fields
+
+## 2.19.7
+
+### Patch Changes
+
+- [#7883](https://github.com/wso2/identity-apps/pull/7883) [`c4ae480beaafc677e3d73a92a9fd03c8225d7506`](https://github.com/wso2/identity-apps/commit/c4ae480beaafc677e3d73a92a9fd03c8225d7506) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix resolving application branding in new dynamic portal
+
+## 2.19.6
+
+### Patch Changes
+
+- [#7881](https://github.com/wso2/identity-apps/pull/7881) [`6f6564046f57869ddac09d6238fb4101bc1f9f86`](https://github.com/wso2/identity-apps/commit/6f6564046f57869ddac09d6238fb4101bc1f9f86) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce prompt history option in registration flow AI
+
+## 2.19.5
+
+### Patch Changes
+
+- [#7878](https://github.com/wso2/identity-apps/pull/7878) [`52aa54394406ef270f18c50b160e5320445bcd13`](https://github.com/wso2/identity-apps/commit/52aa54394406ef270f18c50b160e5320445bcd13) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix minor issues in dynamic portl and registration flow composer
+
+## 2.19.4
+
+### Patch Changes
+
+- [#7874](https://github.com/wso2/identity-apps/pull/7874) [`701c2cf53d2243cc54c1381eb9ed345e094b2278`](https://github.com/wso2/identity-apps/commit/701c2cf53d2243cc54c1381eb9ed345e094b2278) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix OTP field rendering issue
+
+## 2.19.3
+
+### Patch Changes
+
+- [#7864](https://github.com/wso2/identity-apps/pull/7864) [`316f362fac6951cc752547492c179833b6c9d22c`](https://github.com/wso2/identity-apps/commit/316f362fac6951cc752547492c179833b6c9d22c) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix mobile responsive issues in OTP input fields
+
+## 2.19.2
+
+### Patch Changes
+
+- [#7838](https://github.com/wso2/identity-apps/pull/7838) [`009772bf2f5e0b8382ff31c1392f2e5ed4d2954c`](https://github.com/wso2/identity-apps/commit/009772bf2f5e0b8382ff31c1392f2e5ed4d2954c) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add redirect to tenanted My Account url
+
+## 2.19.1
+
+### Patch Changes
+
+- [#7834](https://github.com/wso2/identity-apps/pull/7834) [`9701ee37f38fc9e25d4fbefb7e8c9d047912e6fc`](https://github.com/wso2/identity-apps/commit/9701ee37f38fc9e25d4fbefb7e8c9d047912e6fc) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix action id issue in dynamic portal
+
+## 2.19.0
+
+### Minor Changes
+
+- [#7653](https://github.com/wso2/identity-apps/pull/7653) [`a8ab43d1fb107db42ebcb9b4c894a6caa3368fe9`](https://github.com/wso2/identity-apps/commit/a8ab43d1fb107db42ebcb9b4c894a6caa3368fe9) Thanks [@brionmario](https://github.com/brionmario)! - - Refactor `UserPreferencesProvider` and move it to a new `common.ui.v1` package.
+  - Refactor the existing usages.
+  - Persist the side panel state in the local storage.
+  - https://github.com/wso2/product-is/issues/19315
+  - Close the Navbar when a fresh user tries out the new Self Sign Up composer.
+
+### Patch Changes
+
+- [#7833](https://github.com/wso2/identity-apps/pull/7833) [`32fdac320a167325b69c7214f83d393ab294d6c2`](https://github.com/wso2/identity-apps/commit/32fdac320a167325b69c7214f83d393ab294d6c2) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in OTP pages
+
+## 2.18.3
+
+### Patch Changes
+
+- [#7829](https://github.com/wso2/identity-apps/pull/7829) [`2380f0b11ffad4ef56dbcdd82e4035d377591b08`](https://github.com/wso2/identity-apps/commit/2380f0b11ffad4ef56dbcdd82e4035d377591b08) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix minor issue in dynamic portal
+
+## 2.18.2
+
+### Patch Changes
+
+- [#7826](https://github.com/wso2/identity-apps/pull/7826) [`94524fd1fc1e0140f6b1349df39a8e5ca0f17fea`](https://github.com/wso2/identity-apps/commit/94524fd1fc1e0140f6b1349df39a8e5ca0f17fea) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Set `inputmode` to `numeric` for TOTP fields
+
+## 2.18.1
+
+### Patch Changes
+
+- [#7821](https://github.com/wso2/identity-apps/pull/7821) [`56446a2a6fa89cf404c9bb2022a55ccc2f8d3dc8`](https://github.com/wso2/identity-apps/commit/56446a2a6fa89cf404c9bb2022a55ccc2f8d3dc8) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add minor fix to login portal
+
+## 2.18.0
+
+### Minor Changes
+
+- [#7818](https://github.com/wso2/identity-apps/pull/7818) [`328f4ed456f68d62a385be9b65d43410c45c07f9`](https://github.com/wso2/identity-apps/commit/328f4ed456f68d62a385be9b65d43410c45c07f9) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce new registration portal
+
+## 2.17.0
+
+### Minor Changes
+
+- [#7815](https://github.com/wso2/identity-apps/pull/7815) [`35fb4baf8e981fe5553d2ba4f2384ae601941649`](https://github.com/wso2/identity-apps/commit/35fb4baf8e981fe5553d2ba4f2384ae601941649) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce dynamic registration portal
+
+## 2.16.0
+
+### Minor Changes
+
+- [#7813](https://github.com/wso2/identity-apps/pull/7813) [`290ebf412bd269ac1b5ea1edd6d2a5c457f5dc8d`](https://github.com/wso2/identity-apps/commit/290ebf412bd269ac1b5ea1edd6d2a5c457f5dc8d) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce new dynamic registration portal
+
+## 2.15.0
+
+### Minor Changes
+
+- [#7803](https://github.com/wso2/identity-apps/pull/7803) [`4dc7fa24e95b337cc3372864c2b86c89e654a50b`](https://github.com/wso2/identity-apps/commit/4dc7fa24e95b337cc3372864c2b86c89e654a50b) Thanks [@brionmario](https://github.com/brionmario)! - 🎉 Introduce Self Registration Sign-up Composer - https://github.com/wso2/product-is/issues/21562
+
+## 2.14.5
+
+### Patch Changes
+
+- [#7794](https://github.com/wso2/identity-apps/pull/7794) [`3a44fb52813b12752dca8b62e33065162958750d`](https://github.com/wso2/identity-apps/commit/3a44fb52813b12752dca8b62e33065162958750d) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix encoding issue in username recovery page
+
+* [#7796](https://github.com/wso2/identity-apps/pull/7796) [`3b4382651de8341dcae536795bcda5188dc1f06f`](https://github.com/wso2/identity-apps/commit/3b4382651de8341dcae536795bcda5188dc1f06f) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix French translations
+
+## 2.14.4
+
+### Patch Changes
+
+- [#7765](https://github.com/wso2/identity-apps/pull/7765) [`ca4456de6a8bd866bcb5e2056ed8b0c1635d7ed4`](https://github.com/wso2/identity-apps/commit/ca4456de6a8bd866bcb5e2056ed8b0c1635d7ed4) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Fix Syntax Error with self-registration-with-verification.jsp
+
+## 2.14.3
+
+### Patch Changes
+
+- [#7742](https://github.com/wso2/identity-apps/pull/7742) [`67bfa9c4ce2410dd80d9aca6dd653879c4f4c292`](https://github.com/wso2/identity-apps/commit/67bfa9c4ce2410dd80d9aca6dd653879c4f4c292) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Fix i18n experience for duplicate claim value error
+
+## 2.14.2
+
+### Patch Changes
+
+- [#7711](https://github.com/wso2/identity-apps/pull/7711) [`d29c0354d9a62afd5d1a89f9794edca6b90b7a50`](https://github.com/wso2/identity-apps/commit/d29c0354d9a62afd5d1a89f9794edca6b90b7a50) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix field alignment issue in self-registration
+
+## 2.14.1
+
+### Patch Changes
+
+- [#7701](https://github.com/wso2/identity-apps/pull/7701) [`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Trigger patch release to all packages to prepare for RC
+
+- Updated dependencies [[`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce)]:
+  - @wso2is/theme@2.6.11
+
+## 2.14.0
+
+### Minor Changes
+
+- [#7688](https://github.com/wso2/identity-apps/pull/7688) [`4951d27a683c9bf120a3c29bc9e5171b410050ad`](https://github.com/wso2/identity-apps/commit/4951d27a683c9bf120a3c29bc9e5171b410050ad) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Improve i18n experience for backend errors
+
+### Patch Changes
+
+- [#7657](https://github.com/wso2/identity-apps/pull/7657) [`63182bb74dae72883c8f18d9ca46d347c76a74d0`](https://github.com/wso2/identity-apps/commit/63182bb74dae72883c8f18d9ca46d347c76a74d0) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Add Error Messages for Generic and Pending Verification Scenarios In JIT flow
+
+## 2.13.8
+
+### Patch Changes
+
+- [#7659](https://github.com/wso2/identity-apps/pull/7659) [`6ce252e6e135734cd4f5ed74918048ea6523f29f`](https://github.com/wso2/identity-apps/commit/6ce252e6e135734cd4f5ed74918048ea6523f29f) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - Encode type parameter
+
+* [#7679](https://github.com/wso2/identity-apps/pull/7679) [`66e83462043aa3a7796c3a44ea41ad52362e74bb`](https://github.com/wso2/identity-apps/commit/66e83462043aa3a7796c3a44ea41ad52362e74bb) Thanks [@KD23243](https://github.com/KD23243)! - Add JSP directive for UTF-8 encoding
+
+- [#7661](https://github.com/wso2/identity-apps/pull/7661) [`c076fd45b3195bfe82845bf9fc2b3ce7823db8fa`](https://github.com/wso2/identity-apps/commit/c076fd45b3195bfe82845bf9fc2b3ce7823db8fa) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - Encode username
+
+## 2.13.7
+
+### Patch Changes
+
+- [#7660](https://github.com/wso2/identity-apps/pull/7660) [`1ebe4f1e07a2fc3e1dfefc6a1b19fc009783e33e`](https://github.com/wso2/identity-apps/commit/1ebe4f1e07a2fc3e1dfefc6a1b19fc009783e33e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the UI rendering of consent purposes in the JIT and self-registration flows
+
+* [#7658](https://github.com/wso2/identity-apps/pull/7658) [`8a155aec1c8a4fa63d8edd0c2475004a560c7c04`](https://github.com/wso2/identity-apps/commit/8a155aec1c8a4fa63d8edd0c2475004a560c7c04) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Rename login flows
+
+- [#7620](https://github.com/wso2/identity-apps/pull/7620) [`3cfd3de4c42c91c3b304230feaf49e205db5a492`](https://github.com/wso2/identity-apps/commit/3cfd3de4c42c91c3b304230feaf49e205db5a492) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - encode sp parameter
+
+* [#7646](https://github.com/wso2/identity-apps/pull/7646) [`d4db8916d1b755c6eb36f27de2f94b7727356fa1`](https://github.com/wso2/identity-apps/commit/d4db8916d1b755c6eb36f27de2f94b7727356fa1) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - Encode spId of application
+
+## 2.13.6
+
+### Patch Changes
+
+- Updated dependencies [[`6c74317ac2e2ce9dcc9dc924eb9be20dd976fd92`](https://github.com/wso2/identity-apps/commit/6c74317ac2e2ce9dcc9dc924eb9be20dd976fd92)]:
+  - @wso2is/theme@2.6.10
+
+## 2.13.5
+
+### Patch Changes
+
+- [#7628](https://github.com/wso2/identity-apps/pull/7628) [`04f935ab2fc28a62cea947db238885eb1da41946`](https://github.com/wso2/identity-apps/commit/04f935ab2fc28a62cea947db238885eb1da41946) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - reverting i18n improvement for backend errors
+
 ## 2.13.4
 
 ### Patch Changes

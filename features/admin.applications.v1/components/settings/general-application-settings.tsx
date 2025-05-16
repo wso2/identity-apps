@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -44,7 +44,7 @@ import {
     ApplicationTemplateListItemInterface
 } from "../../models/application";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
-import { GeneralDetailsForm } from "../forms/general-details-form";
+import { GeneralDetailsForm } from "../forms/general-details-form/general-details-form";
 
 /**
  * Proptypes for the applications general details component.
@@ -139,6 +139,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         readOnly,
         isManagementApp,
         application,
+        template,
         isBrandingSectionHidden,
         [ "data-componentid" ]: componentId
     } = props;
@@ -386,6 +387,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                             data-testid={ `${ componentId }-form` }
                             isSubmitting={ isSubmitting }
                             isManagementApp={ isManagementApp }
+                            template={ template }
                         />
                     </EmphasizedSegment>
                     <Divider hidden />

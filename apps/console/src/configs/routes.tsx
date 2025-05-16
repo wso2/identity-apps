@@ -594,6 +594,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             ],
             component: lazy(() => import("@wso2is/admin.claims.v1/pages/claim-dialects")),
             exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ATTRIBUTE_DIALECTS,
             icon: {
                 icon: getSidePanelIcons().claims
             },
@@ -883,6 +884,22 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID),
                     protected: true,
                     showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import(
+                            // eslint-disable-next-line max-len
+                            "@wso2is/admin.server-configurations.v1/pages/registration-flow-builder/registration-flow-builder-page"
+                        )
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "registrationFlowBuilder",
+                    path: AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER"),
+                    protected: true,
+                    showOnSidePanel: false
                 }
             ],
             component: lazy(() =>
@@ -1074,6 +1091,48 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             category: "extensions:develop.sidePanel.categories.monitor",
+            children: [
+                {
+                    children: [
+                        {
+                            component: lazy(() =>
+                                import("@wso2is/admin.logs.v1/pages/logs-settings-configuration-page")),
+                            exact: true,
+                            icon: {
+                                icon: getSidePanelIcons().childIcon
+                            },
+                            id: "auditLogsSettings",
+                            name: "Audit Logs Settings",
+                            path: AppConstants.getPaths().get("LOG_SETTINGS_AUDIT"),
+                            protected: true,
+                            showOnSidePanel: false
+                        },
+                        {
+                            component: lazy(() =>
+                                import("@wso2is/admin.logs.v1/pages/logs-settings-configuration-page")),
+                            exact: true,
+                            icon: {
+                                icon: getSidePanelIcons().childIcon
+                            },
+                            id: "diagnosticLogsSettings",
+                            name: "Diagnostic Logs Settings",
+                            path: AppConstants.getPaths().get("LOG_SETTINGS_DIAGNOSTICS"),
+                            protected: true,
+                            showOnSidePanel: false
+                        }
+                    ],
+                    component: lazy(() => import("@wso2is/admin.logs.v1/pages/logs-settings-page")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "logSettings",
+                    name: "Log Settings",
+                    path: AppConstants.getPaths().get("LOG_SETTINGS"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
             component: lazy(() => import("@wso2is/admin.logs.v1/pages/logs-page")),
             exact: true,
             featureGateIds: [ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER ],
@@ -1141,7 +1200,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             },
             id: "dynamicConnector",
             name: "Dynamic Connector",
-            order: 24,
+            order: 998,
             path: AppConstants.getPaths()
                 .get("GOVERNANCE_CONNECTOR_EDIT"),
             protected: true,
@@ -1392,6 +1451,17 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     path: AppConstants.getPaths().get("PRE_UPDATE_PASSWORD_EDIT"),
                     protected: true,
                     showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.actions.v1/pages/action-configuration-page")
+                    ),
+                    exact: true,
+                    id: "pre-update-profile",
+                    name: "Pre Update Profile",
+                    path: AppConstants.getPaths().get("PRE_UPDATE_PROFILE_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
                 }
             ],
             component: lazy(() =>
@@ -1510,15 +1580,6 @@ export const getFullScreenViewRoutes = (): RouteInterface[] => {
  */
 export const getDefaultLayoutRoutes = (): RouteInterface[] => {
     return [
-        {
-            component: lazy(() => import("@wso2is/admin.core.v1/pages/privacy")),
-            icon: null,
-            id: "privacy",
-            name: "console:common.sidePanel.privacy",
-            path: AppConstants.getPaths().get("PRIVACY"),
-            protected: true,
-            showOnSidePanel: false
-        },
         {
             children: [
                 {

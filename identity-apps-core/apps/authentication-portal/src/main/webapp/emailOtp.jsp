@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -219,6 +219,7 @@
                                     id='OTPCode'
                                     name="OTPCode"
                                     c size='30'
+                                    autocomplete="off"
                                     aria-describedby="OTPDescription"/>
                                 <i id="password-eye" class="eye icon right-align password-toggle slash" onclick="showOTPCode()"></i>
                             </div>
@@ -232,6 +233,7 @@
                                         id='OTPCode'
                                         name="OTPCode"
                                         size='30'
+                                        autocomplete="off"
                                         aria-describedby="OTPDescription"/>
                                     <i id="password-eye" class="eye icon right-align password-toggle slash" onclick="showOTPCode()"></i>
                                 </div>

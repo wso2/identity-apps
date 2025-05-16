@@ -158,6 +158,11 @@
     </listener>
 
     <servlet>
+        <servlet-name>create-account.do</servlet-name>
+        <jsp-file>/create-account.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
         <servlet-name>retry.do</servlet-name>
         <jsp-file>/retry.jsp</jsp-file>
     </servlet>
@@ -382,6 +387,11 @@
         <jsp-file>/select_org.jsp</jsp-file>
     </servlet>
 
+    <servlet>
+        <servlet-name>register.do</servlet-name>
+        <jsp-file>/self-registration.jsp</jsp-file>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>totp_enroll.do</servlet-name>
         <url-pattern>/totp_enroll.do</url-pattern>
@@ -460,6 +470,11 @@
     <servlet-mapping>
         <servlet-name>device_success.do</servlet-name>
         <url-pattern>/device_success.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>create-account.do</servlet-name>
+        <url-pattern>/create-account.do</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
@@ -595,6 +610,11 @@
     <servlet-mapping>
         <servlet-name>duo_error.do</servlet-name>
         <url-pattern>/duo_error.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>register.do</servlet-name>
+        <url-pattern>/register.do</url-pattern>
     </servlet-mapping>
 
     <error-page>

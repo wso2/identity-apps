@@ -26,7 +26,7 @@ import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
 import { ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
 import ExtensionTemplatesProvider from "@wso2is/admin.template-core.v1/provider/extension-templates-provider";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     AppAvatar,
@@ -53,7 +53,8 @@ import { CustomAuthConnectionInterface } from "../models/connection";
 /**
  * Proptypes for the Custom Local Authenticator edit page component.
  */
-type AuthenticatorEditPagePropsInterface = IdentifiableComponentInterface & RouteComponentProps;
+type AuthenticatorEditPagePropsInterface = IdentifiableComponentInterface & RouteComponentProps &
+    TestableComponentInterface;
 
 /**
  * Custom Local Authenticator Edit page.
@@ -64,7 +65,8 @@ type AuthenticatorEditPagePropsInterface = IdentifiableComponentInterface & Rout
  */
 export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPagePropsInterface> = ({
     location,
-    "data-componentid": _componentId = "authenticator-edit-page"
+    "data-componentid": componentId = "authenticator-edit-page",
+    "data-testid": testId = "authenticator-edit-page"
 }: AuthenticatorEditPagePropsInterface): ReactElement => {
     const dispatch: Dispatch = useDispatch();
 
@@ -155,8 +157,8 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
         const has2FA: boolean = tags.some((tag: string) => tag.toUpperCase() === AuthenticatorLabels.SECOND_FACTOR);
 
         return has2FA
-            ? ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATION
-            : ConnectionTemplateIds.INTERNAL_CUSTOM_AUTHENTICATION;
+            ? ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATOR
+            : ConnectionTemplateIds.INTERNAL_CUSTOM_AUTHENTICATOR;
     };
 
     /**
@@ -179,7 +181,7 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
                                 description: error.response.data.description
                             }),
                             level: AlertLevels.ERROR,
-                            message: t("authenticationProvider:" + "notifications.getIDP.error.message")
+                            message: t("authenticationProvider:notifications.getIDP.error.message")
                         })
                     );
 
@@ -188,9 +190,9 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
 
                 dispatch(
                     addAlert({
-                        description: t("authenticationProvider:" + "notifications.getIDP.genericError.description"),
+                        description: t("authenticationProvider:notifications.getIDP.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:" + "notifications.getIDP.genericError.message")
+                        message: t("authenticationProvider:notifications.getIDP.genericError.message")
                     })
                 );
             })
@@ -254,15 +256,15 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
             return (
                 <LabelWithPopup
                     popupHeader={ t("authenticationProvider:popups.appStatus.enabled.header") }
-                    popupSubHeader={ t("authenticationProvider:popups.appStatus." + "enabled.content") }
+                    popupSubHeader={ t("authenticationProvider:popups.appStatus.enabled.content") }
                     labelColor="green"
                 />
             );
         } else {
             return (
                 <LabelWithPopup
-                    popupHeader={ t("authenticationProvider:popups.appStatus." + "disabled.header") }
-                    popupSubHeader={ t("authenticationProvider:popups.appStatus." + "disabled.content") }
+                    popupHeader={ t("authenticationProvider:popups.appStatus.disabled.header") }
+                    popupSubHeader={ t("authenticationProvider:popups.appStatus.disabled.content") }
                     labelColor="grey"
                 />
             );
@@ -299,12 +301,12 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
         return (
             <Label size="small">
                 { getCustomLocalAuthTemplateId(connector)
-                    === ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATION ?
+                    === ConnectionTemplateIds.TWO_FACTOR_CUSTOM_AUTHENTICATOR ?
                     t(
-                        "customAuthentication:fields.createWizard.authenticationTypeStep." +
+                        "customAuthenticator:fields.createWizard.authenticationTypeStep." +
                     "twoFactorAuthenticationCard.header"
                     ) : t(
-                        "customAuthentication:fields.createWizard.authenticationTypeStep." +
+                        "customAuthenticator:fields.createWizard.authenticationTypeStep." +
                     "internalUserAuthenticationCard.header"
                     ) }
             </Label>
@@ -361,20 +363,21 @@ export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPageProps
                 description={ resolveAuthenticatorDescription(connector) }
                 image={ resolveConnectorImage(connector) }
                 backButton={ {
-                    "data-componentid": `${_componentId}-page-back-button`,
+                    "data-componentid": `${componentId}-back-button`,
                     onClick: handleBackButtonClick,
                     text: t("console:develop.pages.authenticationProviderTemplate.backButton")
                 } }
                 titleTextAlign="left"
                 bottomMargin={ false }
-                data-componentid={ `${_componentId}-page-layout` }
+                data-componentid={ `${componentId}-page-layout` }
             >
                 <EditConnection
                     identityProvider={ connector }
                     isLoading={ isConnectorDetailsFetchRequestLoading }
                     onDelete={ handleIdentityProviderDelete }
                     onUpdate={ handleAuthenticatorUpdate }
-                    data-componentid={ _componentId }
+                    data-componentid={ componentId }
+                    data-testid={ testId }
                     template={ template }
                     type={ templateId }
                     isReadOnly={ isReadOnly }

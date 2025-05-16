@@ -86,6 +86,9 @@ export const tenants: TenantsNS = {
                     label: "Email",
                     placeholder: "Enter the admin’s email address.",
                     validations: {
+                        invalid: "Please enter a valid email address. You can use alphanumeric " +
+                            "characters, unicode characters, underscores (_), dashes (-), periods (.), " +
+                            "and an at sign (@).",
                         required: "Email is required."
                     }
                 },
@@ -168,6 +171,13 @@ export const tenants: TenantsNS = {
             secondaryAction: "Cancel"
         }
     },
+    deploymentUnits: {
+        label: "Region",
+        placeholder: "Select a region (e.g., US).",
+        validations: {
+            empty: "This is a required field."
+        }
+    },
     edit: {
         backButton: "Go back to Root Organizations",
         consoleURL: {
@@ -236,6 +246,10 @@ export const tenants: TenantsNS = {
                 }
             }
         }
+    },
+    listDeploymentUnits: {
+        description: "An error occurred while fetching regions.",
+        message: "Unable to fetch regions"
     },
     listing: {
         advancedSearch: {

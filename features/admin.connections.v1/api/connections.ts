@@ -92,7 +92,7 @@ export const createConnection = (
  *
  * @param connection - Connection settings data.
  */
-export const createCustomAuthentication = (
+export const createCustomAuthenticator = (
     connection: CustomAuthConnectionInterface
 ): Promise<AxiosResponse<CustomAuthConnectionInterface>> => {
 
@@ -121,10 +121,10 @@ export const createCustomAuthentication = (
 /**
  * Function to update custom local authenticator.
  *
- * @param id - ID of the custom authentication.
+ * @param id - ID of the custom authenticator.
  * @param connection - Connection settings data.
  */
-export const updateCustomAuthentication = (
+export const updateCustomAuthenticator = (
     id: string,
     connection: CustomAuthConnectionInterface
 ): Promise<AxiosResponse<CustomAuthConnectionInterface>> => {
@@ -152,11 +152,11 @@ export const updateCustomAuthentication = (
 };
 
 /**
- * Function to delete a custom authentication.
+ * Function to delete a custom authenticator.
  *
- * @param id - ID of the custom authentication
+ * @param id - ID of the custom authenticator.
  */
-export const deleteCustomAuthentication = (
+export const deleteCustomAuthenticator = (
     id: string
 ): Promise<AxiosResponse<CustomAuthConnectionInterface>> => {
 
@@ -850,6 +850,39 @@ export const getConnectedApps = (idpId: string): Promise<any> => {
             if (response.status !== 200) {
                 return Promise.reject(
                     new Error("Failed to get connected apps for the IDP: " + idpId)
+                );
+            }
+
+            return Promise.resolve(response.data as ConnectedAppsInterface);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Get connected apps of the authenticator.
+ *
+ * Currently, connected apps can be added only to custom local authenticators and federated authenticators.
+ *
+ * @param authenticatorId - ID of the authenticator.
+ * @returns  A promise containing the response.
+ */
+export const getConnectedAppsOfAuthenticator = (authenticatorId: string): Promise<any> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.authenticators + "/" + authenticatorId + "/connected-apps/"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(
+                    new Error("Failed to get connected apps for the authenticator: " + authenticatorId)
                 );
             }
 

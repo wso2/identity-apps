@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -297,10 +297,12 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
 
         return (
             valueOptions.map((item: Resource) => (
-                <MenuItem key={ item.id } value={ item.id } className="flex-row-gap-10">
-                    <Checkbox checked={ rule?.values.indexOf(item.id) > -1 } />
-                    <Chip label={ getResourceIdentifier(item, isRoleAttribute) } />
-                    <ListItemText primary={ getResourceDisplayName(item, isRoleAttribute) } />
+                <MenuItem key={ item.id } value={ item.id }>
+                    <Grid direction="row" alignItems="center" gap={ 1 } container>
+                        <Checkbox checked={ rule?.values.indexOf(item.id) > -1 } />
+                        <Chip label={ getResourceIdentifier(item, isRoleAttribute) } />
+                        <ListItemText primary={ getResourceDisplayName(item, isRoleAttribute) } />
+                    </Grid>
                 </MenuItem>
             ))
         );
@@ -326,15 +328,13 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
         }
 
         return (
-            <div className="flex-row-gap-10">
-                <div className="flex-row-gap-10">
-                    <Chip label={ getResourceIdentifier(firstItem, isRoleAttribute) } size="small" />
-                    <ListItemText primary={ getResourceDisplayName(firstItem, isRoleAttribute) } />
-                </div>
+            <Grid container direction="row" alignItems="center" gap={ 1 } justifyContent="flex-start">
+                <Chip label={ getResourceIdentifier(firstItem, isRoleAttribute) } size="small" />
+                <ListItemText primary={ getResourceDisplayName(firstItem, isRoleAttribute) } />
                 { selected?.length > 1 && (
                     <Chip label={ `+${selected?.length - 1} ${t("common:more")}` } size="small" />
                 ) }
-            </div>
+            </Grid>
         );
     };
 
@@ -362,43 +362,55 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
 
     return (
         <div data-componentid={ componentId }>
-            <div className="flex-row-gap-10">
-                <Select
-                    value={ isSkipFallbackEnabled ? PasswordExpiryRuleOperator.NE : PasswordExpiryRuleOperator.EQ }
-                    onChange={ handleSkipFallbackChange }
-                    disabled={ !isPasswordExpiryEnabled }
-                    readOnly={ isReadOnly }
-                    data-componentid={ `${componentId}-skip-fallback-select` }
-                >
-                    { operatorOptions.map((option: { label: string, value: PasswordExpiryRuleOperator }) => (
-                        <MenuItem key={ option.value } value={ option.value }>
-                            { option.label }
-                        </MenuItem>
-                    )) }
-                </Select>
+            <Grid container direction="row" columnSpacing={ 1 } alignItems="stretch">
+                <Grid>
+                    <Select
+                        size="small"
+                        value={ isSkipFallbackEnabled ? PasswordExpiryRuleOperator.NE : PasswordExpiryRuleOperator.EQ }
+                        onChange={ handleSkipFallbackChange }
+                        disabled={ !isPasswordExpiryEnabled }
+                        readOnly={ isReadOnly }
+                        data-componentid={ `${componentId}-skip-fallback-select` }
+                        className="password-expiry-rule-select"
+                    >
+                        { operatorOptions.map((option: { label: string, value: PasswordExpiryRuleOperator }) => (
+                            <MenuItem key={ option.value } value={ option.value }>
+                                { option.label }
+                            </MenuItem>
+                        )) }
+                    </Select>
+                </Grid>
                 { !isSkipFallbackEnabled
                     ? (
-                        <div className="flex-row-gap-10">
-                            <TextField
-                                type="number"
-                                value={ defaultPasswordExpiryTime }
-                                data-componentid={ `${componentId}-default-expiry-time` }
-                                onChange={ handleDefaultExpiryTimeChange }
-                                disabled={ !isPasswordExpiryEnabled }
-                                inputProps={ {
-                                    max: GovernanceConnectorConstants.
-                                        PASSWORD_EXPIRY_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_VALUE,
-                                    min: GovernanceConnectorConstants.
-                                        PASSWORD_EXPIRY_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_VALUE,
-                                    readOnly: isReadOnly
-                                } }
-                            />
-                            { t("validation:passwordExpiry.rules.messages.defaultRuleApplyMessage") }
-                        </div>
+                        <>
+                            <Grid>
+                                <TextField
+                                    type="number"
+                                    value={ defaultPasswordExpiryTime }
+                                    data-componentid={ `${componentId}-default-expiry-time` }
+                                    onChange={ handleDefaultExpiryTimeChange }
+                                    disabled={ !isPasswordExpiryEnabled }
+                                    inputProps={ {
+                                        max: GovernanceConnectorConstants.
+                                            PASSWORD_EXPIRY_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_VALUE,
+                                        min: GovernanceConnectorConstants.
+                                            PASSWORD_EXPIRY_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_VALUE,
+                                        readOnly: isReadOnly
+                                    } }
+                                />
+                            </Grid>
+                            <Grid alignContent="center">
+                                { t("validation:passwordExpiry.rules.messages.defaultRuleApplyMessage") }
+                            </Grid>
+                        </>
                     )
-                    : (" " + t("validation:passwordExpiry.rules.messages.defaultRuleSkipMessage"))
+                    : (
+                        <Grid alignContent="center">
+                            { t("validation:passwordExpiry.rules.messages.defaultRuleSkipMessage") }
+                        </Grid>
+                    )
                 }
-            </div>
+            </Grid>
             <Alert severity="info" className="info-box">
                 { t("validation:passwordExpiry.rules.messages.info") }
             </Alert>
@@ -409,10 +421,8 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
                 disabled={ !isPasswordExpiryEnabled || isReadOnly }
                 data-componentid={ `${componentId}-add-rule` }
             >
-                <div className="flex-row-gap-10">
-                    <PlusIcon />
-                    { t("validation:passwordExpiry.rules.buttons.addRule") }
-                </div>
+                <PlusIcon />
+                { t("validation:passwordExpiry.rules.buttons.addRule") }
             </Button>
             {
                 rules?.length > 0 && (
@@ -424,32 +434,30 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
             <List>
                 { rules?.map((rule: PasswordExpiryRule, index: number) => (
                     <ListItem key={ rule?.id }>
-                        <Grid container spacing={ 2 } alignItems="center" className="full-width">
-                            <Grid md={ 1 }>
-                                <div className="priority-arrows">
-                                    <IconButton
-                                        onClick={ () => movePriority(index, Direction.UP) }
-                                        disabled={ !isPasswordExpiryEnabled || index === 0 || isReadOnly }
-                                        data-componentid={ `${componentId}-move-up-${index}` }
-                                    >
-                                        <ChevronUpIcon
-                                            fill="#000000"
-                                        />
-                                    </IconButton>
-                                    <IconButton
-                                        disabled={ !isPasswordExpiryEnabled
-                                            || index === rules.length - 1
-                                            || isReadOnly }
-                                        onClick={ () => movePriority(index, Direction.DOWN) }
-                                        data-componentid={ `${componentId}-move-down-${index}` }
-                                    >
-                                        <ChevronDownIcon
-                                            fill="#000000"
-                                        />
-                                    </IconButton>
-                                </div>
+                        <Grid container spacing={ 1 } alignItems="stretch" width={ 1 }>
+                            <Grid container xs={ 1 } direction="row">
+                                <IconButton
+                                    onClick={ () => movePriority(index, Direction.UP) }
+                                    disabled={ !isPasswordExpiryEnabled || index === 0 || isReadOnly }
+                                    data-componentid={ `${componentId}-move-up-${index}` }
+                                >
+                                    <ChevronUpIcon
+                                        fill="#000000"
+                                    />
+                                </IconButton>
+                                <IconButton
+                                    disabled={ !isPasswordExpiryEnabled
+                                        || index === rules.length - 1
+                                        || isReadOnly }
+                                    onClick={ () => movePriority(index, Direction.DOWN) }
+                                    data-componentid={ `${componentId}-move-down-${index}` }
+                                >
+                                    <ChevronDownIcon
+                                        fill="#000000"
+                                    />
+                                </IconButton>
                             </Grid>
-                            <Grid md={ 1.5 }>
+                            <Grid xs={ 1.5 }>
                                 <Select
                                     value={ rule?.attribute }
                                     onChange={ (e: SelectChangeEvent<PasswordExpiryRuleAttribute>) =>
@@ -459,10 +467,10 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
                                             e.target.value as PasswordExpiryRuleAttribute
                                         )
                                     }
-                                    fullWidth
                                     readOnly={ isReadOnly }
                                     disabled={ !isPasswordExpiryEnabled }
                                     data-componentid={ `${componentId}-attribute-select-${index}` }
+                                    fullWidth
                                 >
                                     { attributeOptions?.map((
                                         option: { label: string, value: PasswordExpiryRuleAttribute }
@@ -473,9 +481,8 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
                                     )) }
                                 </Select>
                             </Grid>
-                            <Grid md={ 4 }>
+                            <Grid xs={ 4 }>
                                 <Select
-                                    className="select-multiple-menu"
                                     labelId={ `${componentId}-values-select-label-${index}` }
                                     data-componentid={ `${componentId}-values-select-${index}` }
                                     multiple
@@ -489,21 +496,24 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
                                     renderValue={ (selected: string[]) => renderSelectedValues(selected, rule) }
                                     disabled={ !isPasswordExpiryEnabled }
                                     error={ hasErrors[rule?.id]?.values }
+                                    className="password-expiry-rule-select"
+                                    size="small"
+                                    fullWidth
                                 >
                                     {
                                         renderResourceMenuItems(rule)
                                     }
                                 </Select>
                             </Grid>
-                            <Grid md={ 1.5 }>
+                            <Grid xs={ 1.5 }>
                                 <Select
                                     value={ rule?.operator }
                                     onChange={ (e: SelectChangeEvent<PasswordExpiryRuleOperator>) =>
                                         handleRuleChange(index, "operator", e.target.value) }
-                                    fullWidth
                                     readOnly={ isReadOnly }
                                     disabled={ !isPasswordExpiryEnabled }
                                     data-componentid={ `${componentId}-operator-select-${index}` }
+                                    fullWidth
                                 >
                                     { operatorOptions.map((
                                         option: { label: string, value: PasswordExpiryRuleOperator }
@@ -515,7 +525,7 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
                                 </Select>
                             </Grid>
                             { rule?.operator === PasswordExpiryRuleOperator.EQ && (
-                                <Grid md={ 1 }>
+                                <Grid xs={ 1 }>
                                     <TextField
                                         id="expiryDays"
                                         data-componentid={ `${componentId}-expiry-days-${index}` }
@@ -525,6 +535,7 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
                                         onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
                                             handleExpiryDaysChange(index, e.target.value) }
                                         inputProps={ {
+                                            className: "password-expiry-rule-input",
                                             max: GovernanceConnectorConstants.
                                                 PASSWORD_EXPIRY_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_VALUE,
                                             min: GovernanceConnectorConstants.
@@ -533,20 +544,19 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
                                         } }
                                         error={ hasErrors[rule?.id]?.expiryDays }
                                         disabled={ !isPasswordExpiryEnabled }
+                                        className="password-expiry-rule-select"
                                     />
                                 </Grid>
                             ) }
-                            <Grid md={ 2.5 } className="flex-row">
+                            <Grid
+                                xs={ rule?.operator === PasswordExpiryRuleOperator.NE ? 3.5 : 2.5 }
+                                alignContent="center"
+                            >
                                 { rule?.operator === PasswordExpiryRuleOperator.EQ
                                     ? t("validation:passwordExpiry.rules.messages.applyMessage")
                                     : t("validation:passwordExpiry.rules.messages.skipMessage") }
                             </Grid>
-                            { rule?.operator === PasswordExpiryRuleOperator.NE && (
-                                <Grid md={ 1 }>
-                                    <div></div>
-                                </Grid>
-                            ) }
-                            <Grid md={ 0.5 }>
+                            <Grid xs={ 0.5 } alignContent="center">
                                 <IconButton
                                     disabled={ isReadOnly || !isPasswordExpiryEnabled }
                                     onClick={ () => deleteRule(rule?.id) }

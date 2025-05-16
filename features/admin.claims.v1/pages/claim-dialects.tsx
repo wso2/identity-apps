@@ -25,6 +25,7 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, ClaimDialect, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -39,7 +40,7 @@ import {
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -79,6 +80,8 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
         featureConfig?.attributeVerification?.scopes?.read
     );
 
+    const { filterUserStores, userStoresList, mutateUserStoreList } = useUserStores();
+
     const { isSubOrganization } = useGetCurrentOrganizationType();
     const [ addEditClaim, setAddEditClaim ] = useState(false);
     const [ isLoading, setIsLoading ] = useState(true);
@@ -94,7 +97,14 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
         (state: AppState) => state.config.ui.listAllAttributeDialects
     );
     const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
-    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
+
+    const configuredUserStoreCount: number = useMemo(
+        () => filterUserStores(false, false, true, true)?.length,
+        [ userStoresList ]
+    );
+
+    const isAttributeDialectReadOnly: boolean = !hasAttributeDialectsUpdatePermissions
+        || (isSubOrganization() && configuredUserStoreCount < 1);
 
     /**
      * Fetches all the dialects.
@@ -192,6 +202,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
 
     useEffect(() => {
         getDialect();
+        mutateUserStoreList();
     }, []);
 
     /**
@@ -314,14 +325,14 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                             >
                                                                 <Popup
                                                                     content={
-                                                                        hasAttributeDialectsUpdatePermissions
-                                                                            ? t("common:edit")
-                                                                            : t("common:view")
+                                                                        isAttributeDialectReadOnly
+                                                                            ? t("common:view")
+                                                                            : t("common:edit")
                                                                     }
                                                                     trigger={
-                                                                        hasAttributeDialectsUpdatePermissions
-                                                                            ? <Icon color="grey" name="pencil" />
-                                                                            : <Icon color="grey" name="eye" />
+                                                                        isAttributeDialectReadOnly
+                                                                            ? <Icon color="grey" name="eye" />
+                                                                            : <Icon color="grey" name="pencil" />
                                                                     }
                                                                     inverted
                                                                 />
@@ -332,7 +343,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                             </List>
                                         </EmphasizedSegment>
                                         { !isSubOrganization() &&
-                                        !isSAASDeployment &&
                                         featureConfig?.attributeVerification?.enabled &&
                                         hasAttributeVerificationReadPermissions && (
                                             <EmphasizedSegment
@@ -359,12 +369,9 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                     />
                                                                     <List.Header>
                                                                         { t(
-                                                                            "console:manage.features." +
-                                                                            "governanceConnectors." +
-                                                                            "connectorCategories." +
-                                                                            "otherSettings.connectors." +
-                                                                            "userClaimUpdate." +
-                                                                            "friendlyName"
+                                                                            "governanceConnectors:" +
+                                                                            "connectorCategories.otherSettings." +
+                                                                            "connectors.userClaimUpdate.friendlyName"
                                                                         ) }
                                                                     </List.Header>
                                                                     <List.Description
@@ -374,16 +381,9 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                         }
                                                                     >
                                                                         { t(
-                                                                            "console:manage.features." +
-                                                                            "governanceConnectors." +
-                                                                            "connectorSubHeading",
-                                                                            { name: t(
-                                                                                "console:manage.features." +
-                                                                                "governanceConnectors." +
-                                                                                "connectorCategories." +
-                                                                                "otherSettings.connectors." +
-                                                                                "userClaimUpdate.friendlyName"
-                                                                            ) }
+                                                                            "governanceConnectors:" +
+                                                                            "connectorCategories.otherSettings." +
+                                                                            "connectors.userClaimUpdate.subTitle"
                                                                         ) }
                                                                     </List.Description>
                                                                 </Grid.Column>

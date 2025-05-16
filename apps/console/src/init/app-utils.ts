@@ -75,6 +75,7 @@ export const AppUtils: any = (function() {
     const TENANT_PREFIX_IDP_URL_PLACEHOLDER: string = "${tenantPrefix}";
     const USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER: string = "${userTenantDomain}";
     const SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER: string = "${superTenantDomain}";
+    const MYACCOUNT_CONSUMER_KEY: string = "MY_ACCOUNT";
 
     return {
         /**
@@ -181,7 +182,12 @@ export const AppUtils: any = (function() {
         },
 
         getClientId: function() {
-            return _config.clientID;
+
+            if(_config.tenantContext?.enableTenantQualifiedUrls || this.isSuperTenant()) {
+                return _config.clientID;
+            }
+
+            return _config.clientID + "_" + this.getTenantName();
         },
 
         getClientOriginWithTenant: function() {
@@ -223,6 +229,8 @@ export const AppUtils: any = (function() {
             return {
                 __experimental__platformIdP: _config.__experimental__platformIdP,
                 accountApp: {
+                    centralAppPath: _config.accountApp.centralAppOrigin + _config.accountApp.path,
+                    clientID: MYACCOUNT_CONSUMER_KEY,
                     commonPostLogoutUrl : commonPostLogoutUrl,
                     path: skipTenant ?
                         _config.accountAppOrigin + _config.accountApp.path:
@@ -240,6 +248,7 @@ export const AppUtils: any = (function() {
                 appBase: _config.appBaseName,
                 appBaseNameForHistoryAPI: this.constructAppBaseNameForHistoryAPI(),
                 appBaseWithTenant: this.getAppBaseWithTenantAndOrganization(),
+                centralDeploymentEnabled: _config.centralDeploymentEnabled,
                 clientID: this.getClientId(),
                 clientOrigin: _config.clientOrigin,
                 clientOriginWithTenant: this.getClientOriginWithTenant(),

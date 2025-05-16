@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -36,10 +36,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { getUserStores } from "../api";
+import { useGetUserStores } from "../api/use-get-user-stores";
 import { UserStoresList } from "../components";
 import { UserStoreManagementConstants, UserStoreTypes } from "../constants";
-import { QueryParams, UserStoreListItem } from "../models";
+import { UserStoreListItem } from "../models";
 
 /**
  * Props for the Userstore page.
@@ -88,7 +88,6 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
     const [ userStores, setUserStores ] = useState<UserStoreListItem[]>([]);
     const [ offset, setOffset ] = useState(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
-    const [ isLoading, setIsLoading ] = useState(true);
     const [ filteredUserStores, setFilteredUserStores ] = useState<UserStoreListItem[]>([]);
     const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
     const [ sortOrder, setSortOrder ] = useState(true);
@@ -102,45 +101,33 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
 
     const [ resetPagination, setResetPagination ] = useTrigger();
 
-    /**
-     * Fetches all userstores.
-     *
-     * @param limit - Limit per page.
-     * @param sort - SortBy.
-     * @param offset - Offset.
-     * @param filter - FilterBy.
-     */
-    const fetchUserStores = (limit?: number, sort?: string, offset?: number, filter?: string) => {
-        const params: QueryParams = {
-            filter: filter || null,
-            limit: limit || null,
-            offset: offset || null,
-            sort: sort || null
-        };
+    const {
+        data: fetchedUserStores,
+        isLoading: isUserStoreGetRequestLoading,
+        error: userStoreGetRequestError,
+        mutate: fetchUserStores
+    } = useGetUserStores(null, null, null, null);
 
-        setIsLoading(true);
-        getUserStores(params).then((response: UserStoreListItem[]) => {
-            setUserStores(response);
-            setFilteredUserStores(response);
-            setIsLoading(false);
-        }).catch((error: any) => {
-            setIsLoading(false);
+    useEffect(() => {
+        if (fetchedUserStores?.length > 0) {
+            setUserStores(fetchedUserStores);
+            setFilteredUserStores(fetchedUserStores);
+        }
+    }, [ fetchedUserStores ]);
+
+    useEffect(() => {
+        if (userStoreGetRequestError) {
             dispatch(addAlert(
                 {
-                    description: error?.description
-                        || t("userstores:notifications.fetchUserstores.genericError" +
-                            ".description"),
+                    description: userStoreGetRequestError?.name
+                        || t("userstores:notifications.fetchUserstores.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message
+                    message: userStoreGetRequestError?.message
                         || t("userstores:notifications.fetchUserstores.genericError.message")
                 }
             ));
-        });
-    };
-
-    useEffect(() => {
-        fetchUserStores(null, null, null, null);
-    }, []);
+        }
+    }, [ userStoreGetRequestError ]);
 
     useEffect(() => {
         setFilteredUserStores((sortList(filteredUserStores, sortBy.value, sortOrder)));
@@ -273,7 +260,7 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
         <PageLayout
             action={
                 (
-                    isLoading
+                    isUserStoreGetRequestLoading
                     || !(
                         !searchQuery
                         && filteredUserStores?.length <= 0
@@ -320,7 +307,7 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                     </Show>
                 )
             }
-            isLoading={ isLoading }
+            isLoading={ isUserStoreGetRequestLoading }
             title={ t("userstores:pageLayout.list.title") }
             pageTitle={ t("userstores:pageLayout.list.title") }
             description={ t("userstores:pageLayout.list.description") }
@@ -374,10 +361,11 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                 showPagination={ true }
                 sortOptions={ SORT_BY }
                 sortStrategy={ sortBy }
-                showTopActionPanel={ isLoading || !(!searchQuery && filteredUserStores?.length <= 0) }
+                showTopActionPanel={ isUserStoreGetRequestLoading ||
+                    !(!searchQuery && filteredUserStores?.length <= 0) }
                 totalPages={ Math.ceil(filteredUserStores?.length / listItemLimit) }
                 totalListSize={ filteredUserStores?.length }
-                isLoading={ isLoading }
+                isLoading={ isUserStoreGetRequestLoading }
                 data-testid={ `${ testId }-list-layout` }
             >
                 <UserStoresList

@@ -20,8 +20,6 @@ import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
-import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
-import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
@@ -44,28 +42,28 @@ export interface PolicyListDraggableNodePropsInterface
      * The node that is being dragged.
      */
     policy: PolicyInterface;
-    mutateActivePolicyList?: () => void;
-    mutateInactivePolicyList?: () => void;
-    setActivePolicies?: React.Dispatch<React.SetStateAction<PolicyInterface[]>>;
-    setPageActive: React.Dispatch<React.SetStateAction<number>>;
-    setHasMoreActivePolicies: React.Dispatch<React.SetStateAction<boolean>>;
+    /**
+     * Delete an active policy.
+     *
+     * @param policyId - The policy ID.
+     */
+    onDelete: (policyId: string) => void;
+    /**
+     * Callback to deactivate a policy.
+     *
+     * @param policyId - The policy ID.
+     */
+    onDeactivate: (policyId: string) => void;
 }
 
 const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInterface> = ({
     "data-componentid": componentId = "policy-list-draggable-node",
     policy,
-    mutateActivePolicyList,
-    mutateInactivePolicyList,
-    setActivePolicies,
-    setPageActive,
-    setHasMoreActivePolicies
+    onDelete,
+    onDeactivate
 }: PolicyListDraggableNodePropsInterface): ReactElement => {
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-
-    const handleEdit = (policyId: string) => {
-        history.push(`${AppConstants.getPaths().get("EDIT_POLICY").replace(":id", btoa(policyId))}`);
-    };
 
     const handleDelete = async (): Promise<void> => {
         try {
@@ -84,13 +82,7 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
                 message: t("policyAdministration:alerts.deleteSuccess.message")
             }));
 
-            setActivePolicies([]);
-            setPageActive(0);
-            setHasMoreActivePolicies(true);
-
-            mutateActivePolicyList();
-            mutateInactivePolicyList();
-
+            onDelete(policy.policyId);
         } catch (error) {
             // Dispatch the error alert.
             dispatch(addAlert({
@@ -117,9 +109,7 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
                 message: t("policyAdministration:alerts.deactivateSuccess.message")
             }));
 
-            mutateActivePolicyList();
-            mutateInactivePolicyList();
-
+            onDeactivate(policy.policyId);
         } catch (error) {
             dispatch(addAlert({
                 description:  t("policyAdministration:alerts.deactivateFailure.description"),
@@ -139,17 +129,17 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
                         <Popup
                             trigger={ (
                                 <Icon
-                                    link={ true }
-                                    onClick={ () => handleEdit(policy.policyId) }
+                                    link={ false }
                                     data-componentid={ `${componentId}-edit-button` }
                                     className="list-icon"
                                     size="small"
                                     color="grey"
                                     name="pencil alternate"
+                                    disabled={ true }
                                 />
                             ) }
                             position="top center"
-                            content={ t("common:edit") }
+                            content={ t("policyAdministration:editPolicy.disabledBtnTooltip") }
                             inverted
                         />
                         <Popup

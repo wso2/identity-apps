@@ -26,17 +26,16 @@ import {
 } from "@wso2is/admin.identity-providers.v1/models";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FinalForm, FormRenderProps, FormSpy } from "@wso2is/form";
+import { FinalForm, FormRenderProps } from "@wso2is/form";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { getLocalAuthenticator } from "../../../api/authenticators";
 import {
     getFederatedAuthenticatorDetails,
-    updateCustomAuthentication,
+    updateCustomAuthenticator,
     updateFederatedAuthenticator
 } from "../../../api/connections";
 import {
@@ -66,6 +65,10 @@ export interface CustomAuthenticatorSettingsPagePropsInterface extends Identifia
      */
     isLoading?: boolean;
     /**
+     * Specifies if the component should only be read-only.
+     */
+    isReadOnly: boolean;
+    /**
      * Connection details.
      */
     connector: CustomAuthConnectionInterface | ConnectionInterface;
@@ -73,6 +76,10 @@ export interface CustomAuthenticatorSettingsPagePropsInterface extends Identifia
      * Callback to update the connector details.
      */
     onUpdate: (id: string, tabName?: string) => void;
+    /**
+     * Loading Component.
+     */
+    loader: () => ReactElement;
 }
 
 /**
@@ -84,8 +91,10 @@ export interface CustomAuthenticatorSettingsPagePropsInterface extends Identifia
 export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorSettingsPagePropsInterface> = ({
     isCustomLocalAuthenticator,
     isLoading,
+    isReadOnly,
     connector,
     onUpdate,
+    loader: Loader,
     ["data-componentid"]: componentId = "custom-authenticator-settings-page"
 }: CustomAuthenticatorSettingsPagePropsInterface): ReactElement => {
     const dispatch: Dispatch = useDispatch();
@@ -94,61 +103,33 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
     const [ initialValues, setInitialValues ] = useState<EndpointConfigFormPropertyInterface>(null);
     const [ endpointAuthenticationType, setEndpointAuthenticationType ] = useState<AuthenticationType>(null);
     const [ isEndpointAuthenticationUpdated, setIsEndpointAuthenticationUpdated ] = useState<boolean>(false);
+    const [ isEndpointDetailsLoading, setIsEndpointDetailsLoading ] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (isCustomLocalAuthenticator) {
+            setInitialValues({
+                authenticationType: (connector as CustomAuthConnectionInterface)?.endpoint?.authentication?.type,
+                endpointUri: (connector as CustomAuthConnectionInterface)?.endpoint?.uri
+            });
+        } else {
+            const customAuthenticatorId: string = connector?.federatedAuthenticators?.
+                authenticators[0]?.authenticatorId;
+
+            getCustomFederatedAuthenticatorInitialValues(customAuthenticatorId);
+        }
+    }, []);
 
     /**
-     * This useEffect is utilized only for custom authenticators in order to fetch additional
-     * details related to authenticators.
+     * This function is utilized only for custom federated authenticators since endpoint details are not
+     * returned from the get IDP API. Therefore, the specific federated authenticator GET API is triggered.
+     *
      * This is not required for other connections since all the required details
      * are passed from the parent component.
+     *
+     * @param customFederatedAuthenticatorId - Custom federated authenticator id.
      */
-    useEffect(() => {
-        let customAuthenticatorId: string;
-
-        if (isCustomLocalAuthenticator) {
-            customAuthenticatorId = (connector as CustomAuthConnectionInterface)?.id;
-            getCustomLocalAuthenticator(customAuthenticatorId);
-        } else {
-            customAuthenticatorId = connector?.federatedAuthenticators?.authenticators[0]?.authenticatorId;
-            getCustomFederatedAuthenticator(customAuthenticatorId);
-        }
-    }, [ isCustomLocalAuthenticator ]);
-
-    const resolveDisplayName = (): string => {
-        if (isCustomLocalAuthenticator) {
-            return (connector as CustomAuthConnectionInterface)?.displayName;
-        } else {
-            return (connector as ConnectionInterface)?.name;
-        }
-    };
-
-    /**
-    * This function is used to get the custom local authenticator details which includes endpoint
-    * configurations that need to be accessed from the "Settings" tab.
-    *
-    * @param customLocalAuthenticatorId - Custom local authenticator id.
-    */
-    const getCustomLocalAuthenticator = (customLocalAuthenticatorId: string) => {
-        getLocalAuthenticator(customLocalAuthenticatorId)
-            .then((data: CustomAuthConnectionInterface) => {
-                const endpointAuth: EndpointConfigFormPropertyInterface = {
-                    authenticationType: data?.endpoint?.authentication?.type,
-                    endpointUri: data?.endpoint?.uri
-                };
-
-                setInitialValues(endpointAuth);
-            })
-            .catch((error: AxiosError) => {
-                handleGetCustomAuthenticatorError(error);
-            });
-    };
-
-    /**
-    * This function is used to get the custom federated authenticator details which includes endpoint
-    * configurations that need to be accessed from the "Settings" tab.
-    *
-    * @param customFederatedAuthenticatorId - Custom federated authenticator id.
-    */
-    const getCustomFederatedAuthenticator = (customFederatedAuthenticatorId: string) => {
+    const getCustomFederatedAuthenticatorInitialValues = (customFederatedAuthenticatorId: string) => {
+        setIsEndpointDetailsLoading(true);
         getFederatedAuthenticatorDetails(connector?.id, customFederatedAuthenticatorId)
             .then((data: FederatedAuthenticatorListItemInterface) => {
                 const endpointAuth: EndpointConfigFormPropertyInterface = {
@@ -160,7 +141,17 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
             })
             .catch((error: AxiosError) => {
                 handleGetCustomAuthenticatorError(error);
+            }).finally(() => {
+                setIsEndpointDetailsLoading(false);
             });
+    };
+
+    const resolveDisplayName = (): string => {
+        if (isCustomLocalAuthenticator) {
+            return (connector as CustomAuthConnectionInterface)?.displayName;
+        } else {
+            return (connector as ConnectionInterface)?.name;
+        }
     };
 
     const validateForm = (values: EndpointConfigFormPropertyInterface):
@@ -183,6 +174,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
         authProperties: Partial<AuthenticationPropertiesInterface>
     ) => {
         const updatingValues: EndpointAuthenticationUpdateInterface = {
+            description: connector.description,
             displayName: resolveDisplayName(),
             endpoint: {
                 authentication: {
@@ -191,11 +183,12 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                 },
                 uri: values?.endpointUri
             },
+            image: connector.image,
             isEnabled: connector.isEnabled,
             isPrimary: connector.isPrimary
         };
 
-        updateCustomAuthentication(connector.id, updatingValues as CustomAuthConnectionInterface)
+        updateCustomAuthenticator(connector.id, updatingValues as CustomAuthConnectionInterface)
             .then(() => {
                 dispatch(
                     addAlert({
@@ -208,9 +201,6 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
             })
             .catch((error: AxiosError) => {
                 handleConnectionUpdateError(error);
-            })
-            .finally(() => {
-                getCustomLocalAuthenticator(connector.id);
             });
     };
 
@@ -245,19 +235,16 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                 dispatch(
                     addAlert({
                         description: t(
-                            "customAuthentication:notifications.updateCustomAuthenticator.success.description"
+                            "customAuthenticator:notifications.updateCustomAuthenticator.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
-                        message: t("customAuthentication:notifications.updateCustomAuthenticator.success.message")
+                        message: t("customAuthenticator:notifications.updateCustomAuthenticator.success.message")
                     })
                 );
                 onUpdate(connector.id);
             })
             .catch((error: AxiosError) => {
                 handleCustomAuthenticatorUpdateError(error);
-            })
-            .finally(() => {
-                getCustomFederatedAuthenticator(federatedAuthenticatorId);
             });
     };
 
@@ -296,105 +283,48 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
         }
     };
 
+    if (isLoading || isEndpointDetailsLoading) {
+        return <Loader />;
+    }
+
     return (
-        <div className="custom-authentication-settings-tab">
+        <div className="custom-authenticator-settings-tab">
             <FinalForm
                 onSubmit={ handleSubmit }
                 initialValues={ initialValues }
                 validate={ validateForm }
-                render={ ({ handleSubmit, form }: FormRenderProps) => (
-                    <form onSubmit={ handleSubmit }>
-                        <EmphasizedSegment
-                            className="endpoint-settings-container"
-                            padded={ "very" }
-                            data-componentid={ `${componentId}-section` }
-                        >
-                            <div className="form-container with-max-width">
-                                <ActionEndpointConfigForm
-                                    initialValues={ initialValues }
-                                    isCreateFormState={ false }
-                                    onAuthenticationTypeChange={ (
-                                        authenticationType: AuthenticationType,
-                                        isAuthenticationUpdated: boolean
-                                    ) => {
-                                        setEndpointAuthenticationType(authenticationType);
-                                        setIsEndpointAuthenticationUpdated(isAuthenticationUpdated);
-                                    } }
-                                />
-                                { !isLoading && (
-                                    <Button
-                                        size="medium"
-                                        variant="contained"
-                                        onClick={ handleSubmit }
-                                        className={ "button-container" }
-                                        data-componentid={ `${componentId}-primary-button` }
-                                    >
-                                        { t("actions:buttons.update") }
-                                    </Button>
-                                ) }
-                            </div>
-                        </EmphasizedSegment>
-                        <FormSpy subscription={ { values: true } }>
-                            { ({ values }: { values: EndpointConfigFormPropertyInterface }) => {
-                                if (!isEndpointAuthenticationUpdated) {
-                                    form.change("authenticationType", values?.authenticationType);
-                                    switch (values?.authenticationType) {
-                                        case AuthenticationType.BASIC:
-                                            delete values.usernameAuthProperty;
-                                            delete values.passwordAuthProperty;
-
-                                            break;
-                                        case AuthenticationType.BEARER:
-                                            delete values.accessTokenAuthProperty;
-
-                                            break;
-                                        case AuthenticationType.API_KEY:
-                                            delete values.headerAuthProperty;
-                                            delete values.valueAuthProperty;
-
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                }
-
-                                // Clear inputs of property field values of other authentication types.
-                                switch (values?.authenticationType) {
-                                    case AuthenticationType.BASIC:
-                                        delete values.accessTokenAuthProperty;
-                                        delete values.headerAuthProperty;
-                                        delete values.valueAuthProperty;
-
-                                        break;
-                                    case AuthenticationType.BEARER:
-                                        delete values.usernameAuthProperty;
-                                        delete values.passwordAuthProperty;
-                                        delete values.headerAuthProperty;
-                                        delete values.valueAuthProperty;
-
-                                        break;
-                                    case AuthenticationType.API_KEY:
-                                        delete values.usernameAuthProperty;
-                                        delete values.passwordAuthProperty;
-                                        delete values.accessTokenAuthProperty;
-
-                                        break;
-                                    case AuthenticationType.NONE:
-                                        delete values.usernameAuthProperty;
-                                        delete values.passwordAuthProperty;
-                                        delete values.headerAuthProperty;
-                                        delete values.valueAuthProperty;
-                                        delete values.accessTokenAuthProperty;
-
-                                        break;
-                                    default:
-                                        break;
-                                }
-
-                                return null;
-                            } }
-                        </FormSpy>
-                    </form>
+                render={ ({ handleSubmit }: FormRenderProps) => (
+                    <EmphasizedSegment
+                        className="endpoint-settings-container"
+                        padded={ "very" }
+                        data-componentid={ `${componentId}-section` }
+                    >
+                        <div className="form-container with-max-width">
+                            <ActionEndpointConfigForm
+                                initialValues={ initialValues }
+                                isCreateFormState={ false }
+                                isReadOnly={ isReadOnly }
+                                onAuthenticationTypeChange={ (
+                                    authenticationType: AuthenticationType,
+                                    isAuthenticationUpdated: boolean
+                                ) => {
+                                    setEndpointAuthenticationType(authenticationType);
+                                    setIsEndpointAuthenticationUpdated(isAuthenticationUpdated);
+                                } }
+                            />
+                            { !isLoading && !isReadOnly && (
+                                <Button
+                                    size="medium"
+                                    variant="contained"
+                                    onClick={ handleSubmit }
+                                    className={ "button-container" }
+                                    data-componentid={ `${componentId}-update-button` }
+                                >
+                                    { t("actions:buttons.update") }
+                                </Button>
+                            ) }
+                        </div>
+                    </EmphasizedSegment>
                 ) }
             ></FinalForm>
         </div>

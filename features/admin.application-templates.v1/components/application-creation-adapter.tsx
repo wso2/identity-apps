@@ -23,7 +23,9 @@ import { ApplicationTemplateListItemInterface } from "@wso2is/admin.applications
 import { ApplicationTemplateManagementUtils } from
     "@wso2is/admin.applications.v1/utils/application-template-management-utils";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/models/templates";
+import {
+    CustomAttributeInterface, ExtensionTemplateListInterface
+} from "@wso2is/admin.template-core.v1/models/templates";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -100,27 +102,28 @@ const ApplicationCreationAdapter: FunctionComponent<ApplicationCreationAdapterPr
         const oldApplicationTemplate: ApplicationTemplateListItemInterface = oldApplicationTemplates?.find(
             (oldTemplate: ApplicationTemplateListItemInterface) => oldTemplate?.templateId === template?.id);
 
-        switch(template?.category) {
-            case ApplicationTemplateCategories.DEFAULT:
-                return (
-                    <MinimalAppCreateWizard
-                        title={ oldApplicationTemplate?.name }
-                        subTitle={ oldApplicationTemplate?.description }
-                        closeWizard={ (): void => onClose() }
-                        template={ oldApplicationTemplate }
-                        showHelpPanel={ true }
-                        subTemplates={ oldApplicationTemplate?.subTemplates }
-                        subTemplatesSectionTitle={ oldApplicationTemplate?.subTemplatesSectionTitle }
-                        addProtocol={ false }
-                        templateLoadingStrategy={ ApplicationManagementConstants.DEFAULT_APP_TEMPLATE_LOADING_STRATEGY }
-                    />
-                );
-            default:
-                return (
-                    <ApplicationCreateWizard
-                        onClose={ onClose }
-                    />
-                );
+        const shouldUseNewCreateWizard: boolean =
+            template?.customAttributes?.find(
+                (property: CustomAttributeInterface) => property.key === "useNewCreateWizard"
+            )?.value || false;
+
+
+        if (template?.category === ApplicationTemplateCategories.DEFAULT && !shouldUseNewCreateWizard) {
+            return (
+                <MinimalAppCreateWizard
+                    title={ oldApplicationTemplate?.name }
+                    subTitle={ oldApplicationTemplate?.description }
+                    closeWizard={ () => onClose() }
+                    template={ oldApplicationTemplate }
+                    showHelpPanel={ true }
+                    subTemplates={ oldApplicationTemplate?.subTemplates }
+                    subTemplatesSectionTitle={ oldApplicationTemplate?.subTemplatesSectionTitle }
+                    addProtocol={ false }
+                    templateLoadingStrategy={ ApplicationManagementConstants.DEFAULT_APP_TEMPLATE_LOADING_STRATEGY }
+                />
+            );
+        } else {
+            return <ApplicationCreateWizard onClose={ onClose } />;
         }
     };
 

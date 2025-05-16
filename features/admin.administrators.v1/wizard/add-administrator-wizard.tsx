@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,19 +16,17 @@
  * under the License.
  */
 
-import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
-import {  UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
+import {  UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
-import { sendInvite, useUsersList } from "@wso2is/admin.users.v1/api";
-import { getUserWizardStepIcons } from "@wso2is/admin.users.v1/configs/ui";
+import { getUsersList, sendInvite } from "@wso2is/admin.users.v1/api";
 import { AdminAccountTypes, UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
-import { UserInviteInterface } from "@wso2is/admin.users.v1/models/user";
+import { UserInviteInterface, UserListInterface } from "@wso2is/admin.users.v1/models/user";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -36,38 +34,25 @@ import {
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { useTrigger } from "@wso2is/forms";
 import {
     ConfirmationModal,
-    GenericIconProps,
     LinkButton,
     PrimaryButton,
     useWizardAlert
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import intersection from "lodash-es/intersection";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Grid, Icon, Modal } from "semantic-ui-react";
-import { AddAdminUserBasic } from "./steps/admin-user-basic";
+import { Grid, Modal } from "semantic-ui-react";
+import { AddAdminUserBasic, AddAdminUserBasicFormRef } from "./steps/admin-user-basic";
 import { InternalAdminFormDataInterface } from "../models/invite";
 import { isAdminUser } from "../utils/administrators";
 
 interface AddUserWizardPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     closeWizard: () => void;
-    compact?: boolean;
-    currentStep?: number;
-    updateList?: () => void;
-    rolesList?: any;
-    emailVerificationEnabled: boolean;
-    requiredSteps?: WizardStepsFormTypes[] | string[];
-    submitStep?: WizardStepsFormTypes | string;
-    showStepper?: boolean;
-    onSuccessfulUserAddition?: (id: string) => void;
     onInvitationSendSuccessful?: () => void;
-    conditionallyShowStepper?: boolean;
     adminTypeSelection? :string;
     /**
      * On user update callback.
@@ -75,24 +60,6 @@ interface AddUserWizardPropsInterface extends IdentifiableComponentInterface, Te
      * @param userId - ID of the updated user.
      */
     onUserUpdate?: () => void;
-}
-
-/**
- * Interface for wizard step.
- */
-interface WizardStepInterface {
-    content: ReactElement;
-    icon: GenericIconProps | any;
-    name: string;
-    title: string;
-}
-
-/**
- * Enum for wizard steps form types.
- * @readonly
- */
-export enum WizardStepsFormTypes {
-    BASIC_DETAILS = "BasicDetails"
 }
 
 /**
@@ -108,8 +75,6 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
     const {
         adminTypeSelection,
         closeWizard,
-        currentStep,
-        requiredSteps,
         onInvitationSendSuccessful,
         onUserUpdate,
         [ "data-componentid" ]: componentId,
@@ -119,23 +84,13 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const administratorsFeatureConfig: FeatureAccessConfigInterface =
-        useSelector((state: AppState) => state?.config?.ui?.features?.administrators);
-    const consoleSettingsFeatureConfig: FeatureAccessConfigInterface =
-        useSelector((state: AppState) => state?.config?.ui?.features?.consoleSettings);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
 
-    const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
+    const adminUserBasicFormRef: MutableRefObject<AddAdminUserBasicFormRef> = useRef<AddAdminUserBasicFormRef>(null);
 
-    const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
-    const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
-    const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>([]);
-    const [ isStepsUpdated, setIsStepsUpdated ] = useState(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isFinishButtonDisabled, setFinishButtonDisabled ] = useState<boolean>(false);
-    const [ searchQuery, setSearchQuery ] = useState<string>(null);
-    const [ invite, setInvite ] = useState<UserInviteInterface>(null);
     const [ showAdminRoleAddConfirmationModal, setShowAdminRoleAddConfirmationModal ] = useState<boolean>(false);
     const [ confirmationModalLoading, setConfirmationModalLoading ] = useState<boolean>(false);
     const [ adminRoleId, setAdminRoleId ] = useState<string>(null);
@@ -143,41 +98,25 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
-    // Excluding groups and roles from getUserList API call to improve performance.
-    const excludedAttributes: string = UserManagementConstants.GROUPS_ATTRIBUTE;
-
-    const {
-        data: originalAdminUserList,
-        error: adminUserListFetchRequestError
-    } = useUsersList(
-        1,
-        0,
-        searchQuery,
-        null,
-        primaryUserStoreDomainName,
-        excludedAttributes,
-        !!searchQuery
-    );
-
     /**
      * Retrieve the application data for the console application, filtering by name.
      */
     const {
-        data: applicationListData ,
+        data: applicationListData,
+        isLoading: isApplicationListRequestLoading,
         error: applicationListFetchRequestError
     } = useApplicationList(
         null,
         null,
         null,
-        `name eq ${ApplicationManagementConstants.CONSOLE_APP_NAME}`,
-        !!searchQuery
+        `name eq ${ApplicationManagementConstants.CONSOLE_APP_NAME}`
     );
 
     /**
      * Build the roles filter to search for roles specific to the console application.
      */
     const roleSearchFilter: string = useMemo(() => {
-        if (applicationListData?.applications && applicationListData?.applications?.length > 0) {
+        if (applicationListData?.applications?.length > 0) {
             return `audience.value eq ${applicationListData?.applications[0]?.id}`;
         }
 
@@ -185,123 +124,19 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
     }, [ applicationListData ]);
 
     /**
-     * Retrieve the roles list.
-     * Only retrieve roles when there an edge case where the user
-     * is already in the system and the user is not an admin user.
+     * Retrieve the roles list for the console application.
      */
     const {
-        data: rolesList,
-        error: rolesListFetchRequestError
+        data: consoleRolesList,
+        isLoading: isConsoleRolesListRequestLoading,
+        error: consoleRolesListFetchRequestError
     } = useGetRolesList(
         null,
         null,
         roleSearchFilter,
         null,
-        !!searchQuery
+        !!roleSearchFilter
     );
-
-    useEffect(() => {
-        setWizardSteps(filterSteps([
-            WizardStepsFormTypes.BASIC_DETAILS ]));
-        setIsStepsUpdated(true);
-    }, []);
-
-    /**
-     * This hook will check if the user is an admin user and prompt to add the admin role to the user.
-     */
-    useEffect(() => {
-        if (!originalAdminUserList || !invite?.email) {
-            return;
-        }
-
-        // If total results are 0, the user does not exists.
-        // This means there is a pending invitation for the user.
-        if (originalAdminUserList.totalResults <= 0) {
-            dispatch(addAlert({
-                description: t(
-                    "extensions:manage.invite.notifications.sendInvite.inviteAlreadyExistsError.description",
-                    { userName: invite.email }
-                ),
-                level: AlertLevels.ERROR,
-                message: t(
-                    "extensions:manage.invite.notifications.sendInvite.inviteAlreadyExistsError.message"
-                )
-            }));
-            setIsSubmitting(false);
-            closeWizard();
-
-            return;
-        }
-
-        // Check if the user in the first index is with Administrator role.
-        // If an admin, show an error message.
-        if (isAdminUser(originalAdminUserList.Resources[ 0 ])) {
-            dispatch(addAlert({
-                description: t(
-                    "extensions:manage.invite.notifications.sendInvite.userAlreadyExistsError.description",
-                    { userName: invite.email }
-                ),
-                level: AlertLevels.ERROR,
-                message: t(
-                    "extensions:manage.invite.notifications.sendInvite.userAlreadyExistsError.message"
-                )
-            }));
-            setIsSubmitting(false);
-            closeWizard();
-        } else {
-            // When the user is already in the PRIMARY userstore in managed deployment, administrators is hidden,
-            // and console settings is enabled, assign already selected roles to the user.
-            if (
-                !administratorsFeatureConfig?.enabled &&
-                consoleSettingsFeatureConfig?.enabled
-            ) {
-                const assignedRoles: RolesInterface[] = invite?.roles.map(
-                    (roleDisplayName: string) => rolesList?.Resources?.find(
-                        (role: RolesInterface) => role?.displayName === roleDisplayName
-                    )
-                ).filter(Boolean);
-
-                assignUserRoles(originalAdminUserList.Resources, assignedRoles);
-
-                return;
-            // otherwise, prompt for assigning the admin role back
-            } else {
-                // If not, prompt to assign the admin role to the user.
-                setIsSubmitting(false);
-                setShowAdminRoleAddConfirmationModal(true);
-                setSelectedUser(originalAdminUserList.Resources[ 0 ]);
-            }
-        }
-    }, [ originalAdminUserList ]);
-
-    /**
-     * Dispatches error notifications for Admin user fetch request error.
-     */
-    useEffect(() => {
-        if (!adminUserListFetchRequestError) {
-            return;
-        }
-
-        if (adminUserListFetchRequestError?.response?.data?.description) {
-            dispatch(addAlert({
-                description: adminUserListFetchRequestError?.response?.data?.description
-                    ?? adminUserListFetchRequestError?.response?.data?.detail
-                        ?? t("users:notifications.fetchUsers.error.description"),
-                level: AlertLevels.ERROR,
-                message: adminUserListFetchRequestError?.response?.data?.message
-                    ?? t("users:notifications.fetchUsers.error.message")
-            }));
-
-            return;
-        }
-
-        dispatch(addAlert({
-            description: t("users:notifications.fetchUsers.genericError." +
-                "description"),
-            level: AlertLevels.ERROR,
-            message: t("users:notifications.fetchUsers.genericError.message")
-        }));
-    }, [ adminUserListFetchRequestError ]);
 
     /**
      * Dispatches error notifications for application list fetch request error.
@@ -337,17 +172,17 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
      * Dispatches error notifications for roles list fetch request error.
      */
     useEffect(() => {
-        if (!rolesListFetchRequestError) {
+        if (!consoleRolesListFetchRequestError) {
             return;
         }
 
-        if (rolesListFetchRequestError?.response?.data?.description) {
+        if (consoleRolesListFetchRequestError?.response?.data?.description) {
             dispatch(addAlert({
-                description: rolesListFetchRequestError?.response?.data?.description
-                    ?? rolesListFetchRequestError?.response?.data?.detail
+                description: consoleRolesListFetchRequestError?.response?.data?.description
+                    ?? consoleRolesListFetchRequestError?.response?.data?.detail
                         ?? t("roles:notifications.fetchRoles.error.description"),
                 level: AlertLevels.ERROR,
-                message: rolesListFetchRequestError?.response?.data?.message
+                message: consoleRolesListFetchRequestError?.response?.data?.message
                     ?? t("roles:notifications.fetchRoles.error.message")
             }));
 
@@ -359,17 +194,17 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
             level: AlertLevels.ERROR,
             message: t("roles:notifications.fetchRoles.genericError.message")
         }));
-    }, [ rolesListFetchRequestError ]);
+    }, [ consoleRolesListFetchRequestError ]);
 
     /**
      * Get the administrator role from the roles list.
      */
     useEffect(() => {
-        if (!rolesList || rolesList.Resources.length <= 0) {
+        if (!consoleRolesList || consoleRolesList.Resources.length <= 0) {
             return;
         }
 
-        const adminRole: RolesInterface = rolesList.Resources.find((role: RolesInterface) =>
+        const adminRole: RolesInterface = consoleRolesList.Resources.find((role: RolesInterface) =>
             role.displayName === administratorConfig.adminRoleName);
 
         // If the admin role is not found, show an error message.
@@ -387,41 +222,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
             // Else, set the admin role ID.
             setAdminRoleId(adminRole?.id);
         }
-    }, [ rolesList ]);
-
-    /**
-     * Sets the current wizard step to the previous on every `partiallyCompletedStep`
-     * value change, and resets the partially completed step value.
-     */
-    useEffect(() => {
-        if (partiallyCompletedStep === undefined) {
-            return;
-        }
-
-        setCurrentWizardStep(currentWizardStep - 1);
-        setPartiallyCompletedStep(undefined);
-    }, [ partiallyCompletedStep ]);
-
-    /**
-     * Navigates to the next step.
-     */
-    const navigateToNext = () => {
-        switch (wizardSteps[ currentWizardStep ]?.name) {
-            case WizardStepsFormTypes.BASIC_DETAILS:
-                setSubmitGeneralSettings();
-
-                break;
-            default:
-                break;
-        }
-    };
-
-    /**
-     * Navigates to the previous step.
-     */
-    const navigateToPrevious = () => {
-        setPartiallyCompletedStep(currentWizardStep);
-    };
+    }, [ consoleRolesList ]);
 
     /**
      * This function handles assigning the roles to the user.
@@ -651,8 +452,8 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                         }));
                     } else if (error.response.status === 409) {
                         // User already exists in the system.
-                        // We need to check if this user is having the Administator role.
-                        handleAlredyExistingUser(invite);
+                        // We need to check if this user is having the Administrator role.
+                        handleAlreadyExistingUser(invite);
                     } else if (error?.response?.data?.description) {
                         setIsSubmitting(false);
                         closeWizard();
@@ -689,23 +490,95 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
      *
      * @param error - Axios error response.
      */
-    const handleAlredyExistingUser = (invite: UserInviteInterface): void => {
+    const handleAlreadyExistingUser = (invite: UserInviteInterface): void => {
         if (!invite?.email) {
             setIsSubmitting(false);
 
             return;
         }
 
-        if (!selectedUser || selectedUser?.userName !== invite.email) {
-            // If the user is not selected. Query the user.
-            setSearchQuery(`userName eq ${ invite.email }`);
-            setInvite(invite);
-        } else {
-            // If the user is already selected, prompt to assign the admin role.
-            // Handles cancelling and re-opening the modal.
-            setShowAdminRoleAddConfirmationModal(true);
-            setIsSubmitting(false);
-        }
+        getUsersList(
+            1,
+            0,
+            `userName eq ${invite.email}`,
+            null,
+            primaryUserStoreDomainName,
+            UserManagementConstants.GROUPS_ATTRIBUTE
+        )
+            .then((response: UserListInterface) => {
+                if (response.totalResults === 0) {
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "extensions:manage.invite.notifications.sendInvite." +
+                                    "inviteAlreadyExistsError.description",
+                                { userName: invite.email }
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "extensions:manage.invite.notifications.sendInvite.inviteAlreadyExistsError.message"
+                            )
+                        })
+                    );
+                    setIsSubmitting(false);
+                    closeWizard();
+
+                    return;
+                }
+
+                const existingUser: UserBasicInterface = response.Resources[0];
+
+                if (isAdminUser(existingUser)) {
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "extensions:manage.invite.notifications.sendInvite.userAlreadyExistsError.description",
+                                { userName: invite.email }
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "extensions:manage.invite.notifications.sendInvite.userAlreadyExistsError.message"
+                            )
+                        })
+                    );
+                    setIsSubmitting(false);
+                    closeWizard();
+
+                    return;
+                }
+
+                const userHasAConsoleRole: boolean = existingUser.roles?.some((role: UserRoleInterface) =>
+                    consoleRolesList?.Resources?.some((consoleRole: RolesInterface) => consoleRole.id === role.value)
+                );
+
+                if (userHasAConsoleRole) {
+                    const assignedRoles: RolesInterface[] = invite?.roles
+                        .map((roleDisplayName: string) =>
+                            consoleRolesList?.Resources?.find(
+                                (role: RolesInterface) => role?.displayName === roleDisplayName
+                            )
+                        )
+                        .filter(Boolean);
+
+                    assignUserRoles([ existingUser ], assignedRoles);
+
+                    return;
+                }
+
+                setIsSubmitting(false);
+                setSelectedUser(existingUser);
+                setShowAdminRoleAddConfirmationModal(true);
+            })
+            .catch(() => {
+                dispatch(
+                    addAlert({
+                        description: t("users:notifications.fetchUsers.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("users:notifications.fetchUsers.genericError.message")
+                    })
+                );
+                setIsSubmitting(false);
+            });
     };
 
     /**
@@ -715,205 +588,114 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
         assignUserRoles(data?.checkedUsers, data?.selectedRoles);
     };
 
-    /**
-     * Resolves the step content.
-     *
-     * @returns Step content.
-     */
-    const resolveStepContent = (): ReactElement => {
-        switch (wizardSteps[ currentWizardStep ]?.name) {
-            case WizardStepsFormTypes.BASIC_DETAILS:
-                return getAdminBasicDetailsWizardStep()?.content;
-        }
-    };
-
-    /**
-     * Filters the steps evaluating the requested steps.
-     *
-     * @param steps - Steps to filter.
-     * @returns Filtered steps.
-     */
-    const filterSteps = (steps: WizardStepsFormTypes[]): WizardStepInterface[] => {
-
-        const getStepContent = (stepsToFilter: WizardStepsFormTypes[] | string[]) => {
-
-            const filteredSteps: any[] = [];
-
-            stepsToFilter.forEach((step: WizardStepsFormTypes) => {
-                if (step === WizardStepsFormTypes.BASIC_DETAILS) {
-                    filteredSteps.push(getAdminBasicDetailsWizardStep());
-                }
-            });
-
-            return filteredSteps;
-        };
-
-        if (!requiredSteps) {
-            return getStepContent(steps);
-        }
-
-        return getStepContent(intersection(steps, requiredSteps));
-    };
-
-    /**
-     * Basic Wizard Step.
-     * @returns Basic details wizard step.
-     */
-    const getAdminBasicDetailsWizardStep = (): WizardStepInterface => {
-
-        return {
-            content: (
-                <AddAdminUserBasic
-                    administratorType={ adminTypeSelection }
-                    triggerSubmit={ submitGeneralSettings }
-                    onSubmit={ (values: InternalAdminFormDataInterface | UserInviteInterface) =>
-                        (adminTypeSelection === AdminAccountTypes.INTERNAL)
-                            ? sendInternalInvitation(values as InternalAdminFormDataInterface)
-                            : sendExternalInvitation(values as UserInviteInterface)
-                    }
-                    setFinishButtonDisabled={ setFinishButtonDisabled }
-                />
-            ),
-            icon: getUserWizardStepIcons().general,
-            name: WizardStepsFormTypes.BASIC_DETAILS,
-            title: t("console:manage.features.user.modals.addUserWizard.steps.basicDetails")
-        };
-    };
-
     return (
-        wizardSteps && isStepsUpdated ? (
-            <>
-                <Modal
-                    data-componentid={ componentId }
-                    data-testid={ testId }
-                    open={ true }
-                    className="wizard application-create-wizard"
-                    dimmer="blurring"
-                    size="small"
-                    onClose={ closeWizard }
-                    closeOnDimmerClick={ false }
-                    closeOnEscape
-                >
-                    <Modal.Header className="wizard-header">
-                        { adminTypeSelection === AdminAccountTypes.INTERNAL
-                            ? t("extensions:manage.users.wizard.addAdmin.internal.title")
-                            : t("extensions:manage.users.wizard.addAdmin.external.title")
+        <>
+            <Modal
+                data-componentid={ componentId }
+                data-testid={ testId }
+                open={ true }
+                className="wizard application-create-wizard"
+                dimmer="blurring"
+                size="small"
+                onClose={ closeWizard }
+                closeOnDimmerClick={ false }
+                closeOnEscape
+            >
+                <Modal.Header className="wizard-header">
+                    { adminTypeSelection === AdminAccountTypes.INTERNAL
+                        ? t("extensions:manage.users.wizard.addAdmin.internal.title")
+                        : t("extensions:manage.users.wizard.addAdmin.external.title")
+                    }
+                </Modal.Header>
+                <Modal.Content className={ "content-container" } scrolling>
+                    { alert && alertComponent }
+                    <AddAdminUserBasic
+                        ref={ adminUserBasicFormRef }
+                        administratorType={ adminTypeSelection }
+                        onSubmit={ (values: InternalAdminFormDataInterface | UserInviteInterface) =>
+                            (adminTypeSelection === AdminAccountTypes.INTERNAL)
+                                ? sendInternalInvitation(values as InternalAdminFormDataInterface)
+                                : sendExternalInvitation(values as UserInviteInterface)
                         }
-                    </Modal.Header>
-                    <Modal.Content className={ "content-container" } scrolling>
-                        { alert && alertComponent }
-                        { resolveStepContent() }
-                    </Modal.Content>
-                    <Modal.Actions>
-                        <Grid>
-                            <Grid.Row column={ 1 }>
-                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                    <LinkButton
-                                        data-componentid={ `${ componentId }-cancel-button` }
-                                        data-testid={ `${ testId }-cancel-button` }
-                                        floated="left"
-                                        onClick={ () => closeWizard() }
-                                    >
-                                        { t("common:cancel") }
-                                    </LinkButton>
-                                </Grid.Column>
-                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                    { (currentWizardStep < wizardSteps?.length - 1) && (
-                                        <PrimaryButton
-                                            data-componentid={ `${ componentId }-next-button` }
-                                            data-testid={ `${ testId }-next-button` }
-                                            floated="right"
-                                            onClick={ navigateToNext }
-                                        >
-                                            { t("console:manage.features.user.modals.addUserWizard.buttons.next") }
-                                            <Icon name="arrow right" />
-                                        </PrimaryButton>
-                                    ) }
-                                    { currentWizardStep === wizardSteps?.length - 1 && (
-                                        <PrimaryButton
-                                            data-componentid={ `${ componentId }-finish-button` }
-                                            data-testid={ `${ testId }-finish-button` }
-                                            floated="right"
-                                            loading={ isSubmitting }
-                                            disabled={ isSubmitting || isFinishButtonDisabled }
-                                            onClick={ navigateToNext }
-                                        >
-                                            {
-                                                adminTypeSelection === AdminAccountTypes.INTERNAL
-                                                    ? t("extensions:manage.features.user.addUser.add")
-                                                    : t("extensions:manage.features.user.addUser.invite")
-                                            }
-                                        </PrimaryButton>
-                                    ) }
-                                    { (wizardSteps?.length > 1 && currentWizardStep > 0) && (
-                                        <LinkButton
-                                            data-componentid={ `${ componentId }-previous-button` }
-                                            data-testid={ `${ testId }-previous-button` }
-                                            floated="right"
-                                            onClick={ navigateToPrevious }
-                                        >
-                                            <Icon name="arrow left" />
-                                            { t("console:manage.features.user.modals.addUserWizard.buttons.previous") }
-                                        </LinkButton>
-                                    ) }
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    </Modal.Actions>
-                </Modal>
-                {
-                    selectedUser && adminRoleId && (
-                        <ConfirmationModal
-                            primaryActionLoading={ confirmationModalLoading }
-                            data-componentid={ `${ componentId }-confirmation-modal` }
-                            onClose={ (): void => {
-                                setSubmitGeneralSettings();
-                                setShowAdminRoleAddConfirmationModal(false);
-                            } }
-                            type="warning"
-                            open={ showAdminRoleAddConfirmationModal }
-                            assertionHint={
-                                t("extensions:manage.invite.assignAdminUser.confirmationModal.assertionHint") }
-                            assertionType="checkbox"
-                            primaryAction="Confirm"
-                            secondaryAction="Cancel"
-                            onSecondaryActionClick={ (): void => {
-                                setSubmitGeneralSettings();
-                                setShowAdminRoleAddConfirmationModal(false);
-                                setAlert(null);
-                            } }
-                            onPrimaryActionClick={ (): void => {
-                                setConfirmationModalLoading(true);
-                                assignAdminRole();
-                            } }
-                            closeOnDimmerClick={ false }
+                        setFinishButtonDisabled={ setFinishButtonDisabled }
+                        consoleRolesList={ consoleRolesList?.Resources }
+                        isConsoleRolesListLoading={
+                            isApplicationListRequestLoading
+                            || isConsoleRolesListRequestLoading
+                        }
+                    />
+                </Modal.Content>
+                <Modal.Actions>
+                    <Grid>
+                        <Grid.Row column={ 1 }>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                <LinkButton
+                                    data-componentid={ `${ componentId }-cancel-button` }
+                                    data-testid={ `${ testId }-cancel-button` }
+                                    floated="left"
+                                    onClick={ () => closeWizard() }
+                                >
+                                    { t("common:cancel") }
+                                </LinkButton>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                <PrimaryButton
+                                    data-componentid={ `${ componentId }-finish-button` }
+                                    data-testid={ `${ testId }-finish-button` }
+                                    floated="right"
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting || isFinishButtonDisabled }
+                                    onClick={ () => adminUserBasicFormRef?.current?.triggerSubmit() }
+                                >
+                                    {
+                                        adminTypeSelection === AdminAccountTypes.INTERNAL
+                                            ? t("extensions:manage.features.user.addUser.add")
+                                            : t("extensions:manage.features.user.addUser.invite")
+                                    }
+                                </PrimaryButton>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </Modal.Actions>
+            </Modal>
+            {
+                selectedUser && adminRoleId && (
+                    <ConfirmationModal
+                        primaryActionLoading={ confirmationModalLoading }
+                        data-componentid={ `${ componentId }-confirmation-modal` }
+                        onClose={ (): void => {
+                            setShowAdminRoleAddConfirmationModal(false);
+                        } }
+                        type="warning"
+                        open={ showAdminRoleAddConfirmationModal }
+                        assertionHint={
+                            t("extensions:manage.invite.assignAdminUser.confirmationModal.assertionHint") }
+                        assertionType="checkbox"
+                        primaryAction="Confirm"
+                        secondaryAction="Cancel"
+                        onSecondaryActionClick={ (): void => {
+                            setShowAdminRoleAddConfirmationModal(false);
+                            setAlert(null);
+                        } }
+                        onPrimaryActionClick={ (): void => {
+                            setConfirmationModalLoading(true);
+                            assignAdminRole();
+                        } }
+                        closeOnDimmerClick={ false }
+                    >
+                        <ConfirmationModal.Header data-componentid={ `${ componentId }-confirmation-modal-header` }>
+                            { t("extensions:manage.invite.assignAdminUser.confirmationModal.header") }
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Content
+                            data-componentid={ `${ componentId }-confirmation-modal-message` }
+                            attached
+                            warning
                         >
-                            <ConfirmationModal.Header data-componentid={ `${ componentId }-confirmation-modal-header` }>
-                                { t("extensions:manage.invite.assignAdminUser.confirmationModal.header") }
-                            </ConfirmationModal.Header>
-                            <ConfirmationModal.Content
-                                data-componentid={ `${ componentId }-confirmation-modal-message` }
-                                attached
-                                warning
-                            >
-                                { t("extensions:manage.invite.assignAdminUser.confirmationModal.message") }
-                            </ConfirmationModal.Content>
-                        </ConfirmationModal>
-                    )
-                }
-            </>
-        ) : null
+                            { t("extensions:manage.invite.assignAdminUser.confirmationModal.message") }
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>
+                )
+            }
+        </>
     );
-};
-
-/**
- * Default props for the add administrator wizard.
- */
-AddAdministratorWizard.defaultProps = {
-    compact: false,
-    conditionallyShowStepper: false,
-    currentStep: 0,
-    emailVerificationEnabled: false,
-    showStepper: true,
-    submitStep: WizardStepsFormTypes.BASIC_DETAILS
 };

@@ -16,23 +16,26 @@
  * under the License.
  */
 
-import { AppState } from "@wso2is/admin.core.v1/store";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { userConfig } from "@wso2is/admin.extensions.v1";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
+import { SCIMConfigInterface } from "@wso2is/admin.extensions.v1/configs/models/scim";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { updateGroupDetails, useGroupList } from "@wso2is/admin.groups.v1/api/groups";
 import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { getAUserStore, useUserStores } from "@wso2is/admin.userstores.v1/api";
-import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
-import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
+    FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
-    ProfileSchemaInterface,
+    MultiValueAttributeInterface,
     RolesInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
@@ -42,32 +45,31 @@ import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2
 import { AxiosError, AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import intersection from "lodash-es/intersection";
+import isEmpty from "lodash-es/isEmpty";
 import merge from "lodash-es/merge";
+import omit from "lodash-es/omit";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { DropdownItemProps, Grid, Icon, Modal } from "semantic-ui-react";
+import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddUserUpdated } from "./steps/add-user-basic";
 import { AddUserGroups } from "./steps/add-user-groups";
-import { AddUserType } from "./steps/add-user-type";
 import { AddUserWizardSummary } from "./user-wizard-summary";
 import { addUser } from "../../api";
 import { getUserWizardStepIcons } from "../../configs";
 import {
-    AdminAccountTypes,
-    HiddenFieldNames,
     PasswordOptionTypes,
-    UserAccountTypesMain,
     UserManagementConstants,
     WizardStepsFormTypes
 } from "../../constants";
 import {
     AddUserWizardStateInterface,
+    EmailsInterface,
     PayloadInterface,
     UserDetailsInterface,
-    WizardStepInterface,
-    createEmptyUserDetails } from "../../models/user";
+    WizardStepInterface
+} from "../../models/user";
 import { generatePassword, getConfiguration, getUsernameConfiguration } from "../../utils";
 
 interface AddUserWizardPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
@@ -124,41 +126,36 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const dispatch: Dispatch = useDispatch();
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
     const { isSubOrganization } = useGetCurrentOrganizationType();
+    const { userStoresList } = useUserStores();
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
     const [ submitGroupList, setSubmitGroupList ] = useTrigger();
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
 
-    const profileSchemas: ProfileSchemaInterface[] = useSelector(
-        (state: AppState) => state.profile.profileSchemas);
+    const userFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features.users);
 
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
     const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
-    const [ fixedGroupList, setFixedGroupsList ] = useState<GroupsInterface[]>(undefined);
-    const [ groupList, setGroupsList ] = useState<GroupsInterface[]>([]);
-    const [ tempGroupList, setTempGroupList ] = useState<GroupsInterface[]>([]);
-    const [ initialGroupList, setInitialGroupList ] = useState<GroupsInterface[]>([]);
-    const [ initialTempGroupList, setInitialTempGroupList ] = useState<GroupsInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ isAlphanumericUsername, setIsAlphanumericUsername ] = useState<boolean>(false);
     const [ isBasicDetailsLoading, setBasicDetailsLoading ] = useState<boolean>(false);
     const [ isStepsUpdated, setIsStepsUpdated ] = useState<boolean>(false);
-    const [ isFirstNameRequired, setFirstNameRequired ] = useState<boolean>(true);
-    const [ isLastNameRequired, setLastNameRequired ] = useState<boolean>(true);
-    const [ isEmailRequired, setEmailRequired ] = useState<boolean>(false);
     const [ askPasswordFromUser, setAskPasswordFromUser ] = useState<boolean>(true);
+    const [ passwordOption, setPasswordOption ] = useState<PasswordOptionTypes>(userConfig.defaultPasswordOption);
     const [ isOfflineUser, setOfflineUser ] = useState<boolean>(false);
     const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>([]);
     const [ selectedUserStore, setSelectedUserStore ] =
         useState<string>(userStore ?? userstoresConfig.primaryUserstoreName);
-    const [ hiddenFields, setHiddenFields ] =
-        useState<(HiddenFieldNames)[]>([]);
     const [ isUserSummaryEnabled, setUserSummaryEnabled ] = useState(true);
     const [ newUserId, setNewUserId ] = useState<string>("");
-    const [ userTypeSelection, setUserTypeSelection ] = useState<string>(AdminAccountTypes.EXTERNAL);
     const [ submitStep, setSubmitStep ] = useState<WizardStepsFormTypes>(undefined);
-    const [ isUserStoreError, setUserStoreError ] = useState<boolean>(false);
+    const [ selectedGroupsList, setSelectedGroupList ] = useState<GroupsInterface[]>([]);
+
+    const isAttributeProfileForUserCreationEnabled: boolean = isFeatureEnabled(
+        userFeatureConfig,
+        UserManagementConstants.ATTRIBUTE_PROFILES_FOR_USER_CREATION_FEATURE_FLAG
+    );
 
     const excludedAttributes: string = "members";
 
@@ -166,101 +163,28 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         data: validationData
     } = useValidationConfigData();
 
-    // Hook to get the user groups list.
     const {
         data: originalGroupList,
         error: groupListFetchRequestError
     } = useGroupList(
-        selectedUserStore,
-        excludedAttributes,
         null,
-        userTypeSelection === AdminAccountTypes.EXTERNAL
+        null,
+        null,
+        selectedUserStore,
+        excludedAttributes
     );
 
-    // Hook to get the user store list.
-    const {
-        data: originalUserStoreList,
-        isLoading: isUserStoreListFetchRequestLoading,
-        isValidating: isUserStoreListFetchRequestValidating,
-        error: userStoreListFetchRequestError
-    } = useUserStores(null);
-
-    /**
-     * Set read-write userstores list.
-     */
-    const readWriteUserStoresList: DropdownItemProps[] = useMemo(() => {
-        const storeOptions: DropdownItemProps[] = [
-            {
-                key: -1,
-                text: userstoresConfig.primaryUserstoreName,
-                value: userstoresConfig.primaryUserstoreId
-            }
-        ];
-
-        if (!originalUserStoreList) {
-            return null;
+    const fixedGroupList: GroupsInterface[] = useMemo(() => {
+        if (!originalGroupList?.Resources) {
+            return [];
         }
 
-        if (originalUserStoreList?.length > 0) {
-            originalUserStoreList.map((store: UserStoreListItem, index: number) => {
-                if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName) {
-                    getAUserStore(store.id).then((response: UserStorePostData) => {
-                        const isDisabled: boolean = response.properties.find(
-                            (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
-
-                        const isReadOnly: boolean = response.properties.find(
-                            (property: UserStoreProperty) =>
-                                property.name === UserStoreManagementConstants.
-                                    USER_STORE_PROPERTY_READ_ONLY)?.value === "true";
-
-                        if (!isDisabled && !isReadOnly) {
-                            const storeOption: DropdownItemProps = {
-                                key: index,
-                                text: store.name,
-                                value: store.id
-                            };
-
-                            storeOptions.push(storeOption);
-                        }
-                    });
-                }
-            });
-        }
-
-        return storeOptions;
-    }, [ originalUserStoreList ]);
-
-    /**
-     * Fetch initial role list based on conditions
-     */
-    useEffect(() => {
-        resolveNamefieldAttributes(profileSchemas);
-    }, []);
-
-    /**
-     * Moderate Groups response from the API.
-     */
-    useEffect(() => {
-        if (!originalGroupList) {
-            return;
-        }
-
-        const groupResources: GroupsInterface[] = originalGroupList.Resources;
-
-        if (originalGroupList.itemsPerPage === 0) {
-            setGroupsList([]);
-            setInitialGroupList([]);
-            setFixedGroupsList([]);
-
-            return;
-        }
-
-        if (groupResources && groupResources instanceof Array) {
-            setGroupsList(groupResources);
-            setInitialGroupList(groupResources);
-            setFixedGroupsList(groupResources);
-        }
+        return originalGroupList.Resources;
     }, [ originalGroupList ]);
+
+    const isAlphanumericUsername: boolean = useMemo(() => {
+        return getUsernameConfiguration(validationData)?.enableValidator === "true";
+    }, [ validationData ]);
 
     /**
      * Set user type in wizard state based on defaultUserTypeSelection
@@ -277,17 +201,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             }
         });
     }, [ defaultUserTypeSelection ]);
-
-    /**
-     * Determine if alphanumeric username is enabled
-     */
-    useEffect(() => {
-        setIsAlphanumericUsername(
-            getUsernameConfiguration(validationData)?.enableValidator === "true"
-                ? true
-                : false
-        );
-    }, [ validationData ]);
 
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
@@ -320,8 +233,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             return;
         }
 
-        if (!isSubOrganization() &&
-            (isUserStoreListFetchRequestLoading || isUserStoreListFetchRequestValidating)) {
+        if (!isSubOrganization() && !userStoresList) {
             return;
         }
 
@@ -337,7 +249,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         }
 
         // If the summary step is enabled, show the summary step.
-        if (userTypeSelection === AdminAccountTypes.EXTERNAL && isUserSummaryEnabled) {
+        if (isUserSummaryEnabled) {
             wizardStepArray.push(...filterSteps([
                 WizardStepsFormTypes.USER_SUMMARY
             ]));
@@ -347,10 +259,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         setIsStepsUpdated(true);
     }, [
         fixedGroupList,
-        isUserSummaryEnabled,
-        userTypeSelection,
-        isUserStoreListFetchRequestLoading,
-        isUserStoreListFetchRequestValidating
+        isUserSummaryEnabled
     ]);
 
     /**
@@ -382,82 +291,19 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         }));
     }, [ groupListFetchRequestError ]);
 
-    /**
-     * Handles the userstore list fetch request error.
-     */
-    useEffect(() => {
-        if (!userStoreListFetchRequestError) {
-            return;
-        }
+    const resolveSelectedUserstoreId = (): string => {
+        let selectedUserstoreId: string = userstoresConfig.primaryUserstoreId;
 
-        setUserStoreError(true);
+        if (selectedUserStore) {
+            const selected: UserStoreListItem = userStoresList?.find(
+                (store: UserStoreListItem) => store.name === selectedUserStore);
 
-        if (userStoreListFetchRequestError.response
-            && userStoreListFetchRequestError.response.data
-            && userStoreListFetchRequestError.response.data.description) {
-            dispatch(addAlert({
-                description: userStoreListFetchRequestError.response.data.description,
-                level: AlertLevels.ERROR,
-                message: t("console:manage.features.users.notifications." +
-                    "fetchUsers.error.message")
-            }));
-
-            return;
-        }
-
-        dispatch(addAlert({
-            description: t("console:manage.features.users.notifications.fetchUserstores.genericError." +
-                "description"),
-            level: AlertLevels.ERROR,
-            message: t("console:manage.features.users.notifications.fetchUserstores.genericError.message")
-        }));
-    }, [ userStoreListFetchRequestError ]);
-
-    const resolveNamefieldAttributes = (profileSchemas: ProfileSchemaInterface[]) => {
-        const hiddenAttributes: (HiddenFieldNames)[] = [];
-        const nameSchema: ProfileSchemaInterface = profileSchemas
-            .find((schema: ProfileSchemaInterface) => schema.name === "name");
-        const emailSchema: ProfileSchemaInterface = profileSchemas
-            .find((schema: ProfileSchemaInterface) => (schema.name === "emails"));
-
-        if (emailSchema) {
-            hiddenAttributes.push(HiddenFieldNames.EMAIL);
-            setEmailRequired(emailSchema.required);
-        }
-
-        if (nameSchema?.subAttributes?.length > 0) {
-            // Check for presence of firstName, lastName attributes.
-            const firstNameAttribute: ProfileSchemaInterface = nameSchema.subAttributes
-                .find((attribute: ProfileSchemaInterface) => attribute.name === "givenName");
-            const lastNameAttribute: ProfileSchemaInterface = nameSchema.subAttributes
-                .find((attribute: ProfileSchemaInterface) => attribute.name === "familyName");
-
-            if (firstNameAttribute && lastNameAttribute) {
-                setFirstNameRequired(firstNameAttribute.required);
-                setLastNameRequired(lastNameAttribute.required);
-
-            } else {
-                if (firstNameAttribute) {
-                    // First Name attribute is available.
-                    // But Last Name attribute is not available
-                    hiddenAttributes.push(HiddenFieldNames.LASTNAME);
-                    setFirstNameRequired(firstNameAttribute.required);
-                }
-
-                if (lastNameAttribute) {
-                    // Last Name attribute is available.
-                    // But First Name attribute is not available
-                    hiddenAttributes.push(HiddenFieldNames.FIRSTNAME);
-                    setLastNameRequired(lastNameAttribute.required);
-                }
+            if (selected) {
+                selectedUserstoreId = selected.id;
             }
-        } else {
-            // If nameSchema is not present, firstName and lastName is set
-            // to be not visible on the attributes.
-            // Therefore it is hidden from the add user wizard.
-            hiddenAttributes.push(HiddenFieldNames.FIRSTNAME, HiddenFieldNames.LASTNAME);
         }
-        setHiddenFields(hiddenAttributes);
+
+        return selectedUserstoreId;
     };
 
     /**
@@ -488,9 +334,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             const filteredSteps: any[] = [];
 
             stepsToFilter.forEach((step: WizardStepsFormTypes) => {
-                if (step === WizardStepsFormTypes.USER_MODE) {
-                    filteredSteps.push(getUserModeStep());
-                } else if (step === WizardStepsFormTypes.BASIC_DETAILS) {
+                if (step === WizardStepsFormTypes.BASIC_DETAILS) {
                     filteredSteps.push(getUserBasicWizardStep());
                 } else if (step === WizardStepsFormTypes.GROUP_LIST) {
                     filteredSteps.push(getUserGroupsWizardStep());
@@ -507,22 +351,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         }
 
         return getStepContent(intersection(steps, requiredSteps));
-    };
-
-    const handleGroupListChange = (groupList: GroupsInterface[]) => {
-        setGroupsList(groupList);
-    };
-
-    const handleInitialGroupListChange = (groupList: GroupsInterface[]) => {
-        setInitialGroupList(groupList);
-    };
-
-    const handleAddedGroupListChange = (newGroupList: GroupsInterface[]) => {
-        setTempGroupList(newGroupList);
-    };
-
-    const handleAddedGroupInitialListChange = (newGroupList: GroupsInterface[]) => {
-        setInitialTempGroupList(newGroupList);
     };
 
     const navigateToNext = () => {
@@ -632,62 +460,84 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             username = userInfo.domain + "/" + userInfo.userName;
         }
 
-        let userDetails: UserDetailsInterface = createEmptyUserDetails();
+        let userDetails: UserDetailsInterface = {
+            emails: [
+                {
+                    primary: true,
+                    value: userInfo.email
+                }
+            ],
+            name: {
+                familyName: userInfo.lastName,
+                givenName: userInfo.firstName
+            },
+            profileUrl: userInfo.profileUrl,
+            userName: username
+        };
+
         const password: string = userInfo.newPassword;
 
         // Users who get invited offline are also considered as password-based users.
         // They will be assigned a randomly generated temporary password.
         // Temporary password can be changed via the offline invite link.
         if (askPasswordFromUser) {
-            userDetails = {
-                emails: [
-                    {
-                        primary: true,
-                        value: userInfo.email
-                    }
-                ],
-                name: {
-                    familyName: userInfo.lastName,
-                    givenName: userInfo.firstName
-                },
-                password: password,
-                profileUrl: userInfo.profileUrl,
-                userName: username
-            };
+            userDetails.password = password;
         } else if (isOfflineUser) {
-            userDetails = {
-                emails: [
-                    {
-                        primary: true,
-                        value: userInfo.email
-                    }
-                ],
-                name: {
-                    familyName: userInfo.lastName,
-                    givenName: userInfo.firstName
-                },
-                password: generateRandomPassword(),
-                profileUrl: userInfo.profileUrl,
-                userName: username
-            };
+            userDetails.password = generateRandomPassword();
         } else {
-            userDetails = {
-                emails: [
-                    {
-                        primary: true,
-                        value: userInfo.email
-                    }
-                ],
-                name: {
-                    familyName: userInfo.lastName,
-                    givenName: userInfo.firstName
-                },
-                profileUrl: userInfo.profileUrl,
-                [ SCIMConfigs.scim.systemSchema ]: {
-                    askPassword: "true"
-                },
-                userName: username
+            userDetails[ SCIMConfigs.scim.systemSchema ] = {
+                askPassword: "true"
             };
+        }
+
+        if (isAttributeProfileForUserCreationEnabled) {
+            const mergedSCIMSchema: SCIMConfigInterface = {
+                ...userDetails[SCIMConfigs.scim.systemSchema],
+                ...userInfo[SCIMConfigs.scim.systemSchema]
+            };
+
+            const combinedUserDetails: UserDetailsInterface = omit({
+                ...userInfo,
+                ...userDetails,
+                [SCIMConfigs.scim.systemSchema]: mergedSCIMSchema
+            }, "passwordOption", "newPassword", "userType", "domain", "firstName", "lastName");
+
+            // If email value is not present, use the emails value.
+            if (isEmpty(userInfo?.email) && userInfo?.emails.length > 0) {
+                delete combinedUserDetails.email;
+
+                // Primary will be the string value in the emails array.
+                const primaryEmail: string = userInfo.emails.find(
+                    (subAttribute: (string | MultiValueAttributeInterface | EmailsInterface)) =>
+                        typeof subAttribute === "string") as string;
+
+                if (primaryEmail) {
+                    combinedUserDetails.emails = [
+                        {
+                            primary: true,
+                            value: primaryEmail
+                        },
+                        ...userInfo?.emails
+                    ];
+                }
+                else {
+                    // This means that the user has not provided any email value.
+                    // This is an invalid case. Therefore, we need to throw an error.
+                    dispatch(addAlert({
+                        description: t(
+                            "users:notifications.addUser.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "users:notifications.addUser.genericError.message"
+                        )
+                    }));
+
+                    return;
+                }
+            }
+
+            userDetails = { ...combinedUserDetails };
         }
 
         setIsSubmitting(true);
@@ -854,13 +704,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      * @returns Text on the wizard title.
      */
     const resolveWizardTitle = (): string => {
-        let wizardTitle: string = "";
-
-        if (userTypeSelection === UserAccountTypesMain.EXTERNAL) {
-            wizardTitle = t("extensions:manage.users.wizard.addUser.title");
-        } else {
-            wizardTitle = t("parentOrgInvitations:addUserWizard.heading");
-        }
+        let wizardTitle: string = t("extensions:manage.users.wizard.addUser.title");
 
         if (wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.firstName) {
             wizardTitle += " - " + wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.firstName;
@@ -890,24 +734,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     };
 
     /**
-     * User Mode Step.
-     * @returns User mode selection step.
-     */
-    const getUserModeStep = (): WizardStepInterface => {
-        return {
-            content: (
-                <AddUserType
-                    userTypeSelection={ userTypeSelection }
-                    setUserTypeSelection={ setUserTypeSelection }
-                />
-            ),
-            icon: getUserWizardStepIcons().user,
-            name: WizardStepsFormTypes.USER_MODE,
-            title: t("user:modals.addUserWizard.steps.method")
-        };
-    };
-
-    /**
      * Basic Wizard Step.
      * @returns Basic details wizard step.
      */
@@ -920,13 +746,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     emailVerificationEnabled={ emailVerificationEnabled }
                     onSubmit={ (values: AddUserWizardStateInterface) =>
                         handleWizardFormSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
-                    hiddenFields={ hiddenFields }
                     requestedPasswordOption={ wizardState &&
                     wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.passwordOption }
                     isUserstoreRequired={ false }
-                    isFirstNameRequired={ isFirstNameRequired }
-                    isLastNameRequired={ isLastNameRequired }
-                    isEmailRequired={ isEmailRequired }
+                    passwordOption={ passwordOption }
+                    setPasswordOption={ setPasswordOption }
                     setUserSummaryEnabled={ setUserSummaryEnabled }
                     setAskPasswordFromUser={ setAskPasswordFromUser }
                     setOfflineUser={ setOfflineUser }
@@ -935,8 +759,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     isBasicDetailsLoading={ isBasicDetailsLoading }
                     setBasicDetailsLoading={ setBasicDetailsLoading }
                     validationConfig ={ validationData }
-                    readWriteUserStoresList={ readWriteUserStoresList }
-                    isUserStoreError={ isUserStoreError }
+                    selectedUserStoreId={ resolveSelectedUserstoreId() }
                 />
             ),
             icon: getUserWizardStepIcons().general,
@@ -956,27 +779,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     triggerSubmit={ submitGroupList }
                     onSubmit={ (values: { groups : GroupsInterface[] }) =>
                         handleWizardFormSubmit(values, WizardStepsFormTypes.GROUP_LIST) }
-                    initialValues={
-                        {
-                            groupList: groupList,
-                            initialGroupList: initialGroupList,
-                            initialTempGroupList: initialTempGroupList,
-                            tempGroupList: tempGroupList
-                        }
-                    }
-                    handleGroupListChange={
-                        (groups: GroupsInterface[]) => handleGroupListChange(groups)
-                    }
-                    handleTempListChange={
-                        (groups: GroupsInterface[]) => handleAddedGroupListChange(groups)
-                    }
-                    handleInitialTempListChange={
-                        (groups: GroupsInterface[]) => handleAddedGroupInitialListChange(groups)
-                    }
-                    handleInitialGroupListChange={
-                        (groups: GroupsInterface[]) => handleInitialGroupListChange(groups)
-                    }
-                    handleSetGroupId={ null }
+                    selectedGroupsList={ selectedGroupsList }
+                    setSelectedGroupList={ setSelectedGroupList }
+                    selectedUserStore={ selectedUserStore }
                 />
             ),
             icon: getUserWizardStepIcons().groups,
@@ -1017,8 +822,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      */
     const resolveStepContent = (): ReactElement => {
         switch (wizardSteps[ currentWizardStep ]?.name) {
-            case WizardStepsFormTypes.USER_MODE:
-                return getUserModeStep()?.content;
             case WizardStepsFormTypes.BASIC_DETAILS:
                 return getUserBasicWizardStep()?.content;
             case WizardStepsFormTypes.GROUP_LIST:

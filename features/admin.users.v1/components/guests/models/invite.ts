@@ -23,7 +23,7 @@ import { InviteUserStatus } from "../../../models/user";
 /**
   * Enum for role types.
   */
-export enum RoleType {
+export enum SystemRoleType {
     EVERYONE = "everyone",
     SYSTEM = "system",
     SELFSIGNUP = "selfsignup"

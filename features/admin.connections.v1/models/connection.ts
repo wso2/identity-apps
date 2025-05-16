@@ -833,7 +833,7 @@ export interface EnterpriseConnectionCreateWizardGeneralFormValuesInterface {
 /**
  * Interface for the general form values in the custom authentication wizard.
  */
-export interface CustomAuthenticationCreateWizardGeneralFormValuesInterface {
+export interface CustomAuthenticatorCreateWizardGeneralFormValuesInterface {
     /**
      * Identifier of the custom authentication.
      */
@@ -907,7 +907,7 @@ export enum EndpointAuthenticationType {
     BEARER = "BEARER",
 }
 
-export interface CustomAuthenticationCreateWizardProps extends GenericConnectionCreateWizardPropsInterface,
+export interface CustomAuthenticatorCreateWizardProps extends GenericConnectionCreateWizardPropsInterface,
     IdentifiableComponentInterface {}
 
 /**
@@ -925,7 +925,7 @@ export interface WizardStepInterface {
     name: WizardStepsCustomAuth;
 }
 
-export type AvailableCustomAuthentications = "external" | "internal" | "two-factor";
+export type AvailableCustomAuthenticators = "external" | "internal" | "two-factor";
 export type FormErrors = { [key: string]: string };
 
 /**

@@ -136,7 +136,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
         }
 
         // Verifies if the user is a user without local credentials.
-        const localCredentialExist: string = profileDetails?.profileInfo?.[SCIMConfigs.scim.customEnterpriseSchema]?.
+        const localCredentialExist: string = profileDetails?.profileInfo?.[SCIMConfigs.scim.systemSchema]?.
             [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("LOCAL_CREDENTIAL_EXISTS")];
 
         if (localCredentialExist && localCredentialExist == "false") {

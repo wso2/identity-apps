@@ -18,10 +18,11 @@
 
 import fs from "fs";
 import path from "path";
+import { ParsedUrlQuery } from "querystring";
+import url, { UrlWithParsedQuery } from "url";
 import zlib, { BrotliOptions } from "zlib";
 import nxReactWebpackConfig from "@nx/react/plugins/webpack.js";
 import CompressionPlugin from "compression-webpack-plugin";
-import history from "connect-history-api-fallback";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
@@ -181,6 +182,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     const devServerHost: string = process.env.DEV_SERVER_HOST || config.devServer?.host;
     const isDevServerHostCheckDisabled: boolean = process.env.DISABLE_DEV_SERVER_HOST_CHECK === "true";
     const isESLintPluginDisabled: boolean = process.env.DISABLE_ESLINT_PLUGIN === "true";
+    const isTSCheckPluginDisabled: boolean = process.env.DISABLE_TS_CHECK_PLUGIN === "true";
     const devServerWebSocketHost: string = process.env.WDS_SOCKET_HOST;
     const devServerWebSocketPath: string = process.env.WDS_SOCKET_PATH;
     const devServerWebSocketPort: string = process.env.WDS_SOCKET_PORT;
@@ -199,6 +201,17 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
         // This is set to `info` in profiling mode to get the desired result.
         level: process.env.LOG_LEVEL ? process.env.LOG_LEVEL : isProfilingMode ? "info" : "none"
     } as WebpackOptionsNormalized["infrastructureLogging"];
+
+    // Disable the TS Check in the Dev server if disabled from the `.env`.
+    if (!isProduction && isTSCheckPluginDisabled) {
+        const forkTsCheckerPluginIndex: number = config.plugins.findIndex((plugin: WebpackPluginInstance) => {
+            return plugin.constructor.name === "ForkTsCheckerWebpackPlugin";
+        });
+
+        if (forkTsCheckerPluginIndex !== -1) {
+            config.plugins.splice(forkTsCheckerPluginIndex, 1);
+        }
+    }
 
     // Remove `IndexHtmlWebpackPlugin` plugin added by NX and add `HtmlWebpackPlugin` instead.
     const indexHtmlWebpackPluginIndex: number = config.plugins.findIndex((plugin: webpack.WebpackPluginInstance) => {
@@ -236,6 +249,10 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                       "authentication.framework.util.FrameworkUtils.isOrganizationManagementEnabled\"%>"
                     : "",
                 hash: true,
+                importIdentityTenantUtil: !isDeployedOnExternalTomcatServer
+                    ? "<%@ page import=\"" +
+                    "static org.wso2.carbon.identity.core.util.IdentityTenantUtil.isTenantQualifiedUrlsEnabled\" %>"
+                    : "",
                 importStringUtils: "<%@ page import=\"org.apache.commons.lang.StringUtils\" %>",
                 importSuperTenantConstant: !isDeployedOnExternalTomcatServer
                     ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
@@ -254,6 +271,9 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 isOrganizationManagementEnabled: !isDeployedOnExternalTomcatServer
                     ? "<%= isOrganizationManagementEnabled() %>"
                     : "false",
+                isTenantQualifiedUrlsEnabled: !isDeployedOnExternalTomcatServer
+                    ? "<%=isTenantQualifiedUrlsEnabled()%>"
+                    : "",
                 minify: false,
                 proxyContextPath: !isDeployedOnExternalTomcatServer
                     ? "<%=ServerConfiguration.getInstance().getFirstProperty(PROXY_CONTEXT_PATH)%>"
@@ -297,6 +317,10 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                       "authentication.framework.util.FrameworkUtils.isOrganizationManagementEnabled\"%>"
                     : "",
                 hash: true,
+                importIdentityTenantUtil: !isDeployedOnExternalTomcatServer
+                    ? "<%@ page import=\"" +
+                    "static org.wso2.carbon.identity.core.util.IdentityTenantUtil.isTenantQualifiedUrlsEnabled\" %>"
+                    : "",
                 importOwaspEncode: "<%@ page import=\"org.owasp.encoder.Encode\" %>",
                 importSuperTenantConstant: !isDeployedOnExternalTomcatServer
                     ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
@@ -316,6 +340,9 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 isOrganizationManagementEnabled: !isDeployedOnExternalTomcatServer
                     ? "<%= isOrganizationManagementEnabled() %>"
                     : "false",
+                isTenantQualifiedUrlsEnabled: !isDeployedOnExternalTomcatServer
+                    ? "<%=isTenantQualifiedUrlsEnabled()%>"
+                    : "",
                 minify: false,
                 proxyContextPath: !isDeployedOnExternalTomcatServer
                     ? "<%=ServerConfiguration.getInstance().getFirstProperty(PROXY_CONTEXT_PATH)%>"
@@ -663,22 +690,69 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     if (isDeployedOnExternalStaticServer && isPreAuthCheckEnabled) {
         config.devServer = {
             ...config.devServer,
-            onBeforeSetupMiddleware: (devServer: { app: { use: (arg0: any) => void } }) => {
-                devServer.app.use(
-                    history({
-                        rewrites: [
-                            { from: /^\/$/, to: "/app" },
-                            { from: /^\/app$/, to: "/app/index.html" },
-                            { from: /^\/o\/.*$/, to: "/app/index.html" },
-                            { from: /^\/t(\/.*)?$/, to: "/app/index.html" },
-                            {
-                                // eslint-disable-next-line max-len
-                                from: /^\/app(\/.*(?<!\.(js|css|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot|ico|json|xml|txt)))?$/,
-                                to: "/app/index.html"
-                            }
-                        ]
-                    })
-                );
+            setupMiddlewares: (middlewares: any, devServer: any) => {
+                if (!devServer) {
+                    throw new Error("webpack-dev-server is not defined");
+                }
+
+                devServer.app.use((req: any, res: any, next: any) => {
+                    const originalUrl: string = req.url;
+
+                    // Skip rewrite requests for static files.
+                    if (
+                        req.url.startsWith("/app/static/") ||
+                        req.url.startsWith("/static/") ||
+                        req.url.match(
+                            /\.(js|css|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot|ico|json|map)$/)
+                    ) {
+                        return next(); // Let Webpack DevServer serve the static file.
+                    }
+
+                    const parsedUrl: UrlWithParsedQuery = url.parse(originalUrl, true);
+                    const pathWithoutQuery: string = parsedUrl.pathname;
+                    const query: ParsedUrlQuery = parsedUrl.query;
+
+                    const indexHTMLPath: string = path.join(__dirname, "build/myaccount/index.html");
+                    const appHTMLPath: string = path.join(__dirname, "build/myaccount/app/index.html");
+
+                    const patterns: RegExp[] = [
+                        /^\/app(\?.+)?$/,
+                        /^\/t\/[^/?]+\/app(\?.+)?$/,
+                        /^\/t\/[^/?]+\/o\/[^/?]+\/app(\?.+)?$/
+                    ];
+
+                    // Determine if the request matches one of the patterns and has `code`.
+                    let matchFound: boolean = false;
+
+                    for (const pattern of patterns) {
+                        if (pattern.test(pathWithoutQuery) && query.code) {
+                            matchFound = true;
+
+                            break;
+                        }
+                    }
+
+                    if (matchFound) {
+                        if (fs.existsSync(appHTMLPath)) {
+                            res.setHeader("Content-Type", "text/html");
+
+                            return res.status(200).send(fs.readFileSync(appHTMLPath, "utf8"));
+                        } else {
+                            return res.status(404).send("app.html not found");
+                        }
+                    }
+
+                    // Serve index.html as the fallback.
+                    if (fs.existsSync(indexHTMLPath)) {
+                        res.setHeader("Content-Type", "text/html");
+
+                        return res.status(200).send(fs.readFileSync(indexHTMLPath, "utf8"));
+                    } else {
+                        return res.status(404).send("index.html not found");
+                    }
+                });
+
+                return middlewares;
             }
         };
     } else {

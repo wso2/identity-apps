@@ -36,6 +36,7 @@ import { Placeholder, Ref } from "semantic-ui-react";
 import { getConnectorCategories, getConnectorCategory } from "../api";
 import GovernanceConnectorCategoriesGrid from "../components/governance-connector-grid";
 import { ServerConfigurationsConstants } from "../constants";
+import useRegistrationFlowBuilderConnector from "../hooks/use-registration-flow-builder-connector";
 import {
     ConnectorOverrideConfig,
     GovernanceConnectorCategoryInterface,
@@ -70,6 +71,8 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     const { t } = useTranslation();
     const { UIConfig } = useUIConfig();
 
+    const registrationFlowBuilderConnector: unknown = useRegistrationFlowBuilderConnector();
+
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPasswordInputValidationEnabled: boolean = useSelector((state: AppState) =>
@@ -92,7 +95,12 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     );
 
     const predefinedCategories: any = useMemo(() => {
-        const originalConnectors: Array<any> = GovernanceConnectorUtils.getCombinedPredefinedConnectorCategories();
+        let originalConnectors: Array<any> = GovernanceConnectorUtils.getCombinedPredefinedConnectorCategories();
+
+        originalConnectors = GovernanceConnectorUtils.addAdditionalConnectors(originalConnectors, [
+            registrationFlowBuilderConnector
+        ]);
+
         const refinedConnectorCategories: Array<any> = [];
 
         const isOrganizationDiscoveryEnabled: boolean = featureConfig?.organizationDiscovery?.enabled
@@ -128,7 +136,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         }
 
         return refinedConnectorCategories;
-    }, [ featureConfig, UIConfig, allowedScopes ]);
+    }, [ featureConfig, UIConfig, allowedScopes, registrationFlowBuilderConnector ]);
 
     const [
         dynamicConnectorCategories,

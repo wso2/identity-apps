@@ -198,14 +198,42 @@ export class GovernanceConnectorUtils {
         });
     }
 
+    /**
+     * Add additional connectors which are displayed based on dynamic configurations.
+     *
+     * @param currentConnectorList - Current connector list.
+     * @param additionalConnectors - Additional connectors to be added.
+     * @returns Combined connector list.
+     */
+    public static addAdditionalConnectors(
+        currentConnectorList: GovernanceConnectorCategoryInterface[],
+        additionalConnectors: Array<any>
+    ): GovernanceConnectorInterface[] {
+
+        return currentConnectorList.map((category: any) => {
+
+            const additionalConnectorsForCategory: any = additionalConnectors
+                .find((el: any) => el?.id === category?.id) ?? [];
+
+            if (additionalConnectorsForCategory?.connectors?.length > 0) {
+                return {
+                    ...category,
+                    connectors: [ ...category.connectors, ...additionalConnectorsForCategory.connectors ]
+                };
+            } else {
+                return category;
+            }
+        });
+    }
+
     public static getPredefinedConnectorCategories(): Array<any> {
 
         return [
             {
                 connectors: [
                     {
-                        description: "Configure multiple attributes as the login identifier.",
-                        header: "Multi Attribute Login",
+                        description: "Configure alternative login identifier settings.",
+                        header: "Alternative Login Identifiers",
                         id: ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID,
                         route: AppConstants.getPaths()
                             .get("GOVERNANCE_CONNECTOR_EDIT")
@@ -217,7 +245,7 @@ export class GovernanceConnectorUtils {
                     },
                     {
                         description: "Configure alternative login identifier settings.",
-                        header: "Alternative Login Identifier",
+                        header: "Alternative Login Identifiers",
                         id: ServerConfigurationsConstants.ALTERNATIVE_LOGIN_IDENTIFIER,
                         route: AppConstants.getPaths()
                             .get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT"),

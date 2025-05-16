@@ -1,0 +1,98 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+:root {
+    --wso2is-flow-builder-background-color: #f6f7f9;
+    --wso2is-flow-builder-background-color-dark: #48484C;
+    --wso2is-flow-builder-background-pattern-color-props: var(--oxygen-palette-grey-200);
+    --wso2is-flow-builder-handle-background-colors: var(--oxygen-palette-grey-200);
+    --wso2is-flow-builder-handle-size: 12px;
+}
+
+.decorated-visual-flow {
+    .react-flow {
+        --xy-background-color: var(--wso2is-flow-builder-background-color);
+        --xy-background-pattern-color-props: var(--wso2is-flow-builder-background-pattern-color-props);
+        --xy-edge-stroke: #d7d7d7;
+        --xy-edge-stroke-width-default: 3;
+        --xy-handle-height: var(--wso2is-flow-builder-handle-size);
+        --xy-handle-width: var(--wso2is-flow-builder-handle-size);
+        --xy-handle-top-default: 50%;
+        --xy-handle-top-offset: var(--wso2is-flow-builder-step-action-panel-height);
+        --xy-handle-background-color: var(--wso2is-flow-builder-handle-background-colors);
+        --xy-handle-background-color-default: var(--oxygen-palette-grey-200);
+        --xy-handle-border-color-default: var(--oxygen-palette-grey-400);
+    }
+
+    .react-flow.dark {
+        --xy-background-color: var(--wso2is-flow-builder-background-color-dark);
+        --xy-background-pattern-color-props: #5f5f5f;
+        --xy-edge-stroke-default: var(--oxygen-palette-grey-200);
+    }
+
+    .react-flow {
+        .react-flow__edges {
+            z-index: 9999;
+        }
+
+        .react-flow__edge {
+            &:hover {
+                .react-flow__edge-path {
+                    stroke: var(--oxygen-palette-primary-main);
+                }
+
+                .react-flow__handle {
+                    border-color: var(--oxygen-palette-primary-main);
+                }
+            }
+        }
+
+        .react-flow__handle {
+            height: var(--xy-handle-height);
+            width: var(--xy-handle-width);
+            border-width: var(--xy-handle-border-width-default);
+            z-index: 9999;
+            background: var(--xy-handle-background-color, var(--xy-handle-background-color-default));
+            border: 1px solid var(--xy-handle-border-color, var(--xy-handle-border-color-default));
+
+            &:hover {
+                border-color: var(--oxygen-palette-primary-main);
+            }
+        }
+
+        .react-flow__renderer {
+            background-size: 8px 8px;
+            background-image: radial-gradient(circle, var(--xy-background-pattern-color-props) 1px, transparent 1px);
+        }
+
+        .react-flow__edge-path {
+            stroke: var(--xy-edge-stroke, var(--xy-edge-stroke-default));
+            stroke-width: var(--xy-edge-stroke-width, var(--xy-edge-stroke-width-default));
+        }
+
+        .react-flow__controls-button {
+            background: var(--xy-controls-button-background-color, var(--xy-controls-button-background-color-default));
+            border-bottom: 1px solid var(--xy-controls-button-border-color-props, var(--xy-controls-button-border-color, var(--xy-controls-button-border-color-default)));
+            color: var(--xy-controls-button-color-props, var(--xy-controls-button-color, var(--xy-controls-button-color-default)));
+        }
+
+        .flow-builder-step {
+            box-shadow: var(--oxygen-shadows-7);
+        }
+    }
+}

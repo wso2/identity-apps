@@ -186,10 +186,25 @@ export const actions: actionsNS = {
         rules: {
             button: "Configure Rule",
             info: {
-                message: "This action will be executed without any conditions.",
+                message: {
+                    preIssueAccessToken: "Executes for JWT token requests from any application for <0>authorization_code</0>, " +
+                    "<1>client_credentials</1>, <2>password</2>, and <3>refresh_token</3> grant types.",
+                    preUpdatePassword: "Executes for any user or admin initiated password update/reset flow."
+                },
                 title: "No execution rule is configured."
             },
             label: "Execution Rule"
+        },
+        userAttributes: {
+            error: {
+                limitReached: "You can select only up to 10 attributes."
+            },
+            heading: "Attributes",
+            hint: "Select user attributes that need to be shared with the external service.",
+            search: {
+                clearButton: "Clear all",
+                placeholder: "Search user attribute"
+            }
         }
     },
     goBackActions: "Go back to Actions",
@@ -288,6 +303,12 @@ export const actions: actionsNS = {
             update: {
                 description: "Couldn't update the action.",
                 message: "Something went wrong."
+            },
+            userAttributes: {
+                getAttributes: {
+                    description: "Couldn't retrieve the user attributes.",
+                    message: "Something went wrong"
+                }
             }
         },
         success: {
@@ -358,8 +379,7 @@ export const actions: actionsNS = {
         },
         preUpdateProfile: {
             description: {
-                expanded: "This action is executed before updating the profile of a user. " +
-                "Refer the documentation for the API definition to implement.",
+                expanded: "Use this action to validate user attributes at profile update.",
                 shortened: "This action is executed before updating the profile of a user."
             },
             heading: "Pre Update Profile"

@@ -19,20 +19,16 @@
 import { useRequiredScopes } from "@wso2is/access-control";
 import { AuthenticatorAccordion } from "@wso2is/admin.core.v1/components/authenticator-accordion";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
-import { AppState } from "@wso2is/admin.core.v1/store";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading } from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
-import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, Divider, Grid } from "semantic-ui-react";
 import { updateApplicationConfigurations } from "../../../api/application";
-import { ProvisioningConfigurationInterface, SimpleUserStoreListItemInterface } from "../../../models/application";
+import { ProvisioningConfigurationInterface } from "../../../models/application";
 import { ProvisioningConfigurationsForm } from "../../forms/provisioning-configuration-form";
 
 /**
@@ -84,14 +80,8 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
     } = props;
 
     const { t } = useTranslation();
-    const { isSuperOrganization } = useGetCurrentOrganizationType();
     const dispatch: Dispatch = useDispatch();
     const hasApplicationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.update);
-
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
-
-    const [ userStore, setUserStore ] = useState<SimpleUserStoreListItemInterface[]>([]);
 
     const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>(defaultActiveIndexes);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -154,27 +144,6 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
         setAccordionActiveIndexes(newIndexes);
     };
 
-    useEffect(() => {
-        if (readOnly) return;
-
-        const userstore: SimpleUserStoreListItemInterface[] = [];
-
-        userstore.push({
-            id: primaryUserStoreDomainName,
-            name: primaryUserStoreDomainName
-        });
-        if (isSuperOrganization()) {
-            getUserStoreList().then((response: AxiosResponse) => {
-                userstore.push(...response.data);
-                setUserStore(userstore);
-            }).catch(() => {
-                setUserStore(userstore);
-            });
-        } else {
-            setUserStore(userstore);
-        }
-    }, []);
-
     return (
         <>
             <Heading as="h4">
@@ -196,7 +165,6 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
                                             <ProvisioningConfigurationsForm
                                                 config={ provisioningConfigurations }
                                                 onSubmit={ handleProvisioningConfigFormSubmit }
-                                                useStoreList={ userStore }
                                                 readOnly={
                                                     readOnly
                                                     || !hasApplicationUpdatePermissions

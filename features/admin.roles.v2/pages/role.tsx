@@ -132,7 +132,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
 
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
-        const offsetValue: number = (data.activePage as number - 1) * listItemLimit;
+        const offsetValue: number = ((data.activePage as number - 1) * listItemLimit) + 1;
 
         setListOffset(offsetValue);
     };

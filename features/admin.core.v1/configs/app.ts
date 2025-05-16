@@ -35,6 +35,7 @@ import { getExtendedFeatureResourceEndpoints } from "@wso2is/admin.extensions.v1
 import { getFeatureGateResourceEndpoints } from "@wso2is/admin.feature-gate.v1/configs/endpoints";
 import { getGroupsResourceEndpoints } from "@wso2is/admin.groups.v1/configs/endpoints";
 import { getIDVPResourceEndpoints } from "@wso2is/admin.identity-verification-providers.v1/configs/endpoints";
+import { getRemoteLoggingEndpoints } from "@wso2is/admin.logs.v1/configs/endpoints";
 import { getScopesResourceEndpoints } from "@wso2is/admin.oidc-scopes.v1";
 import { getInsightsResourceEndpoints } from "@wso2is/admin.org-insights.v1/config/org-insights";
 import { getOrganizationsResourceEndpoints } from "@wso2is/admin.organizations.v1/configs";
@@ -43,6 +44,9 @@ import { getPolicyAdministrationResourceEndpoints } from "@wso2is/admin.policy-a
 import {
     getPushProviderResourceEndpoints, getPushProviderTemplateEndpoints
 } from "@wso2is/admin.push-providers.v1/configs/endpoints";
+import {
+    getRegistrationFlowBuilderResourceEndpoints
+} from "@wso2is/admin.registration-flow-builder.v1/config/endpoints";
 import { getRemoteFetchConfigResourceEndpoints } from "@wso2is/admin.remote-repository-configuration.v1";
 import { getRolesResourceEndpoints } from "@wso2is/admin.roles.v2/configs/endpoints";
 import { getRulesEndpoints } from "@wso2is/admin.rules.v1/configs/endpoints";
@@ -125,6 +129,7 @@ export class Config {
             appHomePath: window[ "AppUtils" ]?.getConfig()?.routes?.home,
             appLoginPath: window[ "AppUtils" ]?.getConfig()?.routes?.login,
             appLogoutPath: window[ "AppUtils" ]?.getConfig()?.routes?.logout,
+            centralDeploymentEnabled: window[ "AppUtils" ]?.getConfig()?.centralDeploymentEnabled,
             clientHost: window[ "AppUtils" ]?.getConfig()?.clientOriginWithTenant,
             clientID: window[ "AppUtils" ]?.getConfig()?.clientID,
             clientOrigin: window[ "AppUtils" ]?.getConfig()?.clientOrigin,
@@ -224,7 +229,7 @@ export class Config {
                 I18nConstants.APPLICATION_TEMPLATES_NAMESPACE,
                 I18nConstants.ACTIONS_NAMESPACE,
                 I18nConstants.TENANTS_NAMESPACE,
-                I18nConstants.CUSTOM_AUTHENTICATION_NAMESPACE,
+                I18nConstants.CUSTOM_AUTHENTICATOR_NAMESPACE,
                 I18nConstants.POLICY_ADMINISTRATION_NAMESPACE,
                 I18nConstants.REMOTE_USER_STORES_NAMESPACE,
                 I18nConstants.RULES_NAMESPACE,
@@ -335,6 +340,7 @@ export class Config {
             enableCustomEmailTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.enableCustomEmailTemplates,
             enableEmailDomain: window[ "AppUtils" ]?.getConfig()?.ui?.enableEmailDomain ?? false,
             enableIdentityClaims: window[ "AppUtils" ]?.getConfig()?.ui?.enableIdentityClaims ?? true,
+            enableOldUIForEmailProvider: window[ "AppUtils" ]?.getConfig()?.ui?.enableOldUIForEmailProvider,
             features: window[ "AppUtils" ]?.getConfig()?.ui?.features,
             googleOneTapEnabledTenants: window["AppUtils"]?.getConfig()?.ui?.googleOneTapEnabledTenants,
             governanceConnectors: window["AppUtils"]?.getConfig()?.ui?.governanceConnectors,
@@ -383,6 +389,7 @@ export class Config {
             },
             selfAppIdentifier: window[ "AppUtils" ]?.getConfig()?.ui?.selfAppIdentifier,
             showAppSwitchButton: window[ "AppUtils" ]?.getConfig()?.ui?.showAppSwitchButton,
+            showPasswordOfEmailProvider: window[ "AppUtils" ]?.getConfig()?.ui?.showPasswordOfEmailProvider,
             showSmsOtpPwdRecoveryFeatureStatusChip:
                 window[ "AppUtils" ]?.getConfig()?.ui?.showSmsOtpPwdRecoveryFeatureStatusChip,
             showStatusLabelForNewAuthzRuntimeFeatures:

@@ -22,17 +22,22 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
-import { SCIMConfigs } from "@wso2is/admin.extensions.v1";
+import { SCIMConfigs, userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import {
     ConnectorPropertyInterface,
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1";
+import {
+    AdminForcedPasswordResetOption
+} from "@wso2is/admin.server-configurations.v1/models/admin-forced-password-reset";
+import { useUserStoreRegEx } from "@wso2is/admin.userstores.v1/api/use-get-user-store-regex";
 import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { CommonUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, RadioChild, Validation, useTrigger } from "@wso2is/forms";
 import { LinkButton, Message, PasswordValidation, PrimaryButton } from "@wso2is/react-components";
 import React,
@@ -41,6 +46,7 @@ import React,
     ReactElement,
     ReactNode,
     useEffect,
+    useMemo,
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -81,6 +87,11 @@ interface ChangePasswordPropsInterface extends TestableComponentInterface {
      * Handles force password reset trigger.
      */
     handleForcePasswordResetTrigger?: () => void;
+    /**
+     * Flag to identify if this is a password reset operation.
+     * When false, it indicates that a new password is being set (Usage: in the ask password flow).
+     */
+    isResetPassword?: boolean;
 }
 
 /**
@@ -101,29 +112,29 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
         handleCloseChangePasswordModal,
         connectorProperties,
         handleForcePasswordResetTrigger,
+        isResetPassword = true,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
 
     const [ passwordConfig, setPasswordConfig ] = useState<ValidationFormInterface>(undefined);
-    const [ userStorePasswordRegex, setUserStorePasswordRegex ] = useState<string>("");
-    const [ isPasswordRegExLoading, setPasswordRegExLoading ] = useState<boolean>(false);
     const [ isPasswordPatternValid, setIsPasswordPatternValid ] = useState<boolean>(true);
     const [ isConfirmPasswordMatch, setIsConfirmPasswordMatch ] = useState<boolean>(undefined);
     const [ password, setPassword ] = useState<string>("");
     const [ passwordResetOption, setPasswordResetOption ] = useState("setPassword");
+    const [ adminForcedPasswordResetOption, setAdminForcedPasswordResetOption ]
+        = useState(AdminForcedPasswordResetOption.EMAIL_LINK);
     const [ triggerSubmit, setTriggerSubmit ] = useTrigger();
     const [
         governanceConnectorProperties,
         setGovernanceConnectorProperties
     ] = useState<ConnectorPropertyInterface[]>(undefined);
-    const [ forcePasswordReset, setForcePasswordReset ] = useState<string>("false");
+    const [ isForcePasswordResetEnable, setIsForcePasswordResetEnable ] = useState<boolean>(false);
+
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
 
     const hasLoginAndRegistrationFeaturePermissions: boolean = useRequiredScopes(
         featureConfig?.loginAndRegistration?.scopes?.feature
@@ -132,6 +143,20 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
     const {
         data: validationConfig
     } = useValidationConfigData();
+
+    const userStore: string = useMemo(() => {
+        const userNameComponents: string[] = user?.userName?.split("/");
+
+        return userNameComponents?.length > 1 ? userNameComponents[0] : userstoresConfig.primaryUserstoreName;
+    }, [ user ]);
+
+    const {
+        data: userStorePasswordRegEx,
+        isLoading: isUserStorePasswordRegExLoading
+    } = useUserStoreRegEx(
+        userStore,
+        USERSTORE_REGEX_PROPERTIES.PasswordRegEx
+    );
 
     /**
      * Retrieve the password validation configuration from the validation data.
@@ -142,29 +167,13 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
         }
     }, [ validationConfig ]);
 
-    /**
-     * This gets regex for the current user's userstore.
-     */
-    useEffect(() => {
-        setPasswordRegExLoading(true);
-        const userNameComponents: string[] = user?.userName?.split("/");
-        const userStore: string = userNameComponents?.length > 1 ? userNameComponents[0] : primaryUserStoreDomainName;
-
-        SharedUserStoreUtils.getUserStoreRegEx(userStore, USERSTORE_REGEX_PROPERTIES.PasswordRegEx)
-            .then((response: string) => {
-                setUserStorePasswordRegex(response);
-            })
-            .finally(() => {
-                setPasswordRegExLoading(false);
-            });
-    }, [ user ]);
-
     useEffect(() => {
         if (!connectorProperties) {
             return;
         }
 
-        if (governanceConnectorProperties === undefined) {
+        if (governanceConnectorProperties === undefined
+            || governanceConnectorProperties?.length !== connectorProperties?.length) {
             setGovernanceConnectorProperties(connectorProperties);
         }
     }, [ connectorProperties ]);
@@ -175,14 +184,29 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             Array.isArray(governanceConnectorProperties) &&
             governanceConnectorProperties?.length > 0) {
 
-            for (const property of governanceConnectorProperties) {
-                if (property.name === ServerConfigurationsConstants.RECOVERY_LINK_PASSWORD_RESET) {
+            let isEmailLinkEnabled: boolean = false;
+            let isEmailOtpEnabled: boolean = false;
+            let isSmsOtpEnabled: boolean = false;
 
-                    if(property.value === "true") {
-                        setForcePasswordReset(property.value);
-                    }
+            for (const property of governanceConnectorProperties) {
+                if (property.name === ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_EMAIL_LINK) {
+                    isEmailLinkEnabled = CommonUtils.parseBoolean(property.value);
+                } else if (property.name === ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_EMAIL_OTP) {
+                    isEmailOtpEnabled = CommonUtils.parseBoolean(property.value);
+                } else if( property.name === ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_SMS_OTP) {
+                    isSmsOtpEnabled = CommonUtils.parseBoolean(property.value);
                 }
             }
+
+            setIsForcePasswordResetEnable(isEmailLinkEnabled || isEmailOtpEnabled || isSmsOtpEnabled);
+            let resetOption: AdminForcedPasswordResetOption = AdminForcedPasswordResetOption.EMAIL_LINK;
+
+            if (isSmsOtpEnabled) {
+                resetOption = AdminForcedPasswordResetOption.SMS_OTP;
+            } else if (isEmailOtpEnabled) {
+                resetOption = AdminForcedPasswordResetOption.EMAIL_OTP;
+            }
+            setAdminForcedPasswordResetOption(resetOption);
         }
     }, [ governanceConnectorProperties ]);
 
@@ -207,7 +231,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
      * Handle admin initiated password reset.
      */
     const handleForcePasswordReset = () => {
-        if (forcePasswordReset === "false") {
+        if (!isForcePasswordResetEnable) {
             onAlertFired({
                 description: t(
                     "user:profile.notifications.noPasswordResetOptions.error.description"
@@ -289,66 +313,62 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                 ServerConfigurationsConstants.ADMIN_FORCED_PASSWORD_RESET));
     };
 
-    const resolveConfigurationList = (governanceConnectorProperties: ConnectorPropertyInterface[]): ReactNode => {
-        return governanceConnectorProperties?.map((property: ConnectorPropertyInterface, index: number) => {
-            if (property?.name === ServerConfigurationsConstants.RECOVERY_LINK_PASSWORD_RESET) {
-                if (property?.value === "true") {
-                    return (
-                        <Grid.Row key={ index }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                                <Message
-                                    key={ index }
-                                    hideDefaultIcon
-                                    icon="mail"
-                                    content=
-                                        {
-                                            t("extensions:manage.users." +
-                                            "editUserProfile.resetPassword." +
-                                            "changePasswordModal.emailResetWarning")
-                                        }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                    );
-                }
+    const resolveConfigurationList = (): ReactNode => {
+        if (isForcePasswordResetEnable) {
+            const warningMessage: string = "extensions:manage.users.editUserProfile.resetPassword.changePasswordModal."
+            + "emailResetWarning." + adminForcedPasswordResetOption.toString();
 
-                return (
-                    <Grid.Row key={ index }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                            <Message
-                                hideDefaultIcon
-                                error
-                                key={ index }
-                                content={
-                                    (
-                                        <>
-                                            <Icon color="red" name="times circle" />
-                                            <Trans
-                                                i18nKey={ "extensions:manage.users.editUserProfile.resetPassword." +
-                                                    "changePasswordModal.passwordResetConfigDisabled" }>
-                                                Password reset via recovery email is not enabled.
-                                                Please make sure to enable it from
-                                                {
-                                                    hasLoginAndRegistrationFeaturePermissions
-                                                        ? (
-                                                            <a
-                                                                onClick={ handleLoginAndRegistrationPageRedirect }
-                                                                className="ml-1 external-link link pointing primary"
-                                                            >
-                                                                Login and Registration
-                                                            </a>
-                                                        ) : "Login and Registration"
-                                                } configurations
-                                            </Trans>
-                                        </>
-                                    )
+            return (
+                <Grid.Row>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                        <Message
+                            hideDefaultIcon
+                            icon={ adminForcedPasswordResetOption === AdminForcedPasswordResetOption.SMS_OTP
+                                ? "mobile" : "mail" }
+                            content=
+                                {
+                                    t(warningMessage)
                                 }
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-                );
-            }
-        });
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+            );
+        }
+
+        return (
+            <Grid.Row>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                    <Message
+                        hideDefaultIcon
+                        error
+                        content={
+                            (
+                                <>
+                                    <Icon color="red" name="times circle" />
+                                    <Trans
+                                        i18nKey={ "extensions:manage.users.editUserProfile.resetPassword." +
+                                            "changePasswordModal.passwordResetConfigDisabled" }>
+                                        Password reset via recovery email is not enabled.
+                                        Please make sure to enable it from
+                                        {
+                                            hasLoginAndRegistrationFeaturePermissions
+                                                ? (
+                                                    <a
+                                                        onClick={ handleLoginAndRegistrationPageRedirect }
+                                                        className="ml-1 external-link link pointing primary"
+                                                    >
+                                                        Login and Registration
+                                                    </a>
+                                                ) : "Login and Registration"
+                                        } configurations
+                                    </Trans>
+                                </>
+                            )
+                        }
+                    />
+                </Grid.Column>
+            </Grid.Row>
+        );
     };
 
     /**
@@ -381,7 +401,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             return isPasswordPatternValid;
         }
 
-        return SharedUserStoreUtils.validateInputAgainstRegEx(password, userStorePasswordRegex);
+        return SharedUserStoreUtils.validateInputAgainstRegEx(password, userStorePasswordRegEx);
     };
 
     /**
@@ -431,7 +451,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                             type="password"
                             value=""
                             listen={ handlePasswordChange }
-                            loading={ isPasswordRegExLoading }
+                            loading={ isUserStorePasswordRegExLoading }
                             validation={ validateNewPassword }
                         />
                         { passwordConfig && (
@@ -566,7 +586,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
         if (passwordResetOption && passwordResetOption === "setPassword") {
             return passwordFormFields();
         } else {
-            return resolveConfigurationList(governanceConnectorProperties);
+            return resolveConfigurationList();
         }
     };
 
@@ -589,11 +609,15 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
         updateUserInfo(user.id, data).then(() => {
             onAlertFired({
                 description: t(
-                    "user:profile.notifications.changeUserPassword.success.description"
+                    isResetPassword
+                        ? "user:profile.notifications.changeUserPassword.success.description"
+                        : "user:profile.notifications.setUserPassword.success.description"
                 ),
                 level: AlertLevels.SUCCESS,
                 message: t(
-                    "user:profile.notifications.changeUserPassword.success.message"
+                    isResetPassword
+                        ? "user:profile.notifications.changeUserPassword.success.message"
+                        : "user:profile.notifications.setUserPassword.success.message"
                 )
             });
             handleCloseChangePasswordModal();
@@ -603,22 +627,35 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             .catch((error: any) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     onAlertFired({
-                        description: t("user:profile.notifications.changeUserPassword.error.description",
-                            { description: error.response.data.detail }),
+                        description: t(
+                            isResetPassword
+                                ? "user:profile.notifications.changeUserPassword.error.description"
+                                : "user:profile.notifications.setUserPassword.error.description",
+                            { description: error.response.data.detail }
+                        ),
                         level: AlertLevels.ERROR,
-                        message: t("user:profile.notifications.changeUserPassword.error." +
-                        "message")
+                        message: t(
+                            isResetPassword
+                                ? "user:profile.notifications.changeUserPassword.error.message"
+                                : "user:profile.notifications.setUserPassword.error.message"
+                        )
                     });
 
                     return;
                 }
 
                 onAlertFired({
-                    description: t("user:profile.notifications.changeUserPassword" +
-                        ".genericError.description"),
+                    description: t(
+                        isResetPassword
+                            ? "user:profile.notifications.changeUserPassword.genericError.description"
+                            : "user:profile.notifications.setUserPassword.genericError.description"
+                    ),
                     level: AlertLevels.ERROR,
-                    message: t("user:profile.notifications.changeUserPassword.genericError." +
-                        "message")
+                    message: t(
+                        isResetPassword
+                            ? "user:profile.notifications.changeUserPassword.genericError.message"
+                            : "user:profile.notifications.setUserPassword.genericError.message"
+                    )
                 });
                 handleCloseChangePasswordModal();
                 handleModalClose();
@@ -633,7 +670,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
      * configured in the server.
      */
     const resolveModalContent = () => {
-        if (governanceConnectorProperties?.length > 1) {
+        if (isResetPassword && governanceConnectorProperties?.length > 1) {
             return (
                 <>
                     <Grid.Row>
@@ -675,7 +712,9 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                             <Message
                                 type="warning"
-                                content={ t("user:modals.changePasswordModal.message") }
+                                content={ isResetPassword
+                                    ? t("user:modals.changePasswordModal.message")
+                                    : t("user:modals.setPasswordModal.message") }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -691,7 +730,9 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             size="tiny"
         >
             <Modal.Header>
-                { t("user:modals.changePasswordModal.header") }
+                { isResetPassword
+                    ? t("user:modals.changePasswordModal.header")
+                    : t("user:modals.setPasswordModal.header") }
             </Modal.Header>
             <Modal.Content>
                 <Forms
@@ -721,7 +762,9 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                 disabled={ isSubmitting }
                                 onClick={ () => setTriggerSubmit() }
                             >
-                                { t("user:modals.changePasswordModal.button") }
+                                { isResetPassword
+                                    ? t("user:modals.changePasswordModal.button")
+                                    : t("user:modals.setPasswordModal.button") }
                             </PrimaryButton>
                             <LinkButton
                                 data-testid={ `${ testId }-cancel-button` }

@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------------------
 #
-# Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
+# Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
 #
 # WSO2 LLC. licenses this file to you under the Apache License,
 # Version 2.0 (the "License"); you may not use this file except
@@ -25,7 +25,7 @@ on:
         branches: [ master ]
         paths-ignore:
             - "LICENSE"
-        workflow_dispatch:
+    workflow_dispatch:
 
 env:
     GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
@@ -41,26 +41,27 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                node-version: [lts/*]
+                node-version: [20]
                 maven-version: [3.8.6]
                 java-version: [11]
                 pnpm-version: [8.7.4]
         steps:
             - name: ⬇️ Checkout
               id: checkout
-              uses: actions/checkout@v2.3.3
+              uses: actions/checkout@v4
               with:
                   token: ${{ env.GH_TOKEN }}
+                  persist-credentials: true
                   fetch-depth: 0
 
             - name: Set up Git user
               run: |
-                git config user.name ${{ env.BOT_USERNAME }}}
-                git config user.email ${{ env.BOT_EMAIL }}}
+                git config user.name ${{ env.BOT_USERNAME }}
+                git config user.email ${{ env.BOT_EMAIL }}
 
             - name: 🟢 Setup node
               id: setup-node
-              uses: actions/setup-node@v2
+              uses: actions/setup-node@v4
               with:
                   node-version: ${{ matrix.node-version }}
 
@@ -79,7 +80,7 @@ jobs:
                   maven-version: ${{ matrix.maven-version }}
 
             - name: 🥡 Setup pnpm
-              uses: pnpm/action-setup@v2.1.0
+              uses: pnpm/action-setup@v4
               with:
                   version: ${{ matrix.pnpm-version }}
                   run_install: false
@@ -90,7 +91,7 @@ jobs:
                   echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
 
             - name: 🔆 Cache pnpm modules
-              uses: actions/cache@v3
+              uses: actions/cache@v4
               id: pnpm-cache
               with:
                   path: ${{ steps.get-pnpm-cache-dir.outputs.pnpm_cache_dir }}
@@ -154,7 +155,7 @@ jobs:
 
             - name: 💾 Cache local Maven repository
               id: cache-maven-m2
-              uses: actions/cache@v2
+              uses: actions/cache@v4
               with:
                   path: ~/.m2/repository
                   key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -164,11 +165,11 @@ jobs:
             - name: 📣 Create Release Pull Request or Publish to npm
               if: ${{ env.SHOULD_GENERATE_CHANGESET == 'true' }}
               id: changesets
-              uses: changesets/action@v1
+              uses: changesets/action@v1.4.9
               with:
                   title: "[Release] [GitHub Action] Update package versions"
-                  publish: pnpm publish:packages
-                  version: pnpm version:packages
+                  publish: pnpm run publish:packages
+                  version: pnpm run version:packages
                   commit: "[WSO2 Release] [GitHub Action] [Release] [skip ci] update package versions"
               env:
                   GITHUB_TOKEN: ${{ env.GH_TOKEN }}

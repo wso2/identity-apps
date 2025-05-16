@@ -33,6 +33,8 @@ export interface TenantInfo {
     domain: string;
     associationType: string;
     default: boolean;
+    deploymentUnitName?: string;
+    consoleHostname?: string;
 }
 
 /**
@@ -47,4 +49,20 @@ export interface TenantRequestResponse {
 
 export interface TriggerPropTypesInterface extends IdentifiableComponentInterface {
     currentTenant: string;
+}
+
+/**
+ * Interface for the Deployment unit.
+ */
+export interface DeploymentUnit {
+    name: string;
+    displayName: string;
+    consoleHostname: string;
+}
+
+/**
+ * Interface for the response returned by the get deployment unit request.
+ */
+export interface DeploymentUnitResponse {
+    deploymentUnits: DeploymentUnit[];
 }

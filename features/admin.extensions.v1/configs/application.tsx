@@ -141,6 +141,11 @@ export const applicationConfig: ApplicationConfig = {
         [ "m2m-application" ]: [
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
         ],
+        [ "mcp-client-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
+        ],
         [ "mobile-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
@@ -171,10 +176,14 @@ export const applicationConfig: ApplicationConfig = {
 
                 return allowedTemplates.includes(templateId);
             },
+            isMandateLinkedLocalAccountEnabled: (templateId: string): boolean => {
+                const allowedTemplates: string[] = [];
+
+                return allowedTemplates.includes(templateId);
+            },
             showIncludeTenantDomain: true,
             showIncludeUserstoreDomainRole: true,
             showIncludeUserstoreDomainSubject: true,
-            showMandateLinkedLocalAccount: false,
             showRoleAttribute: true,
             showRoleMapping: true,
             showSubjectAttribute: true,
@@ -447,7 +456,6 @@ export const applicationConfig: ApplicationConfig = {
             "custom-application": []
         },
         shouldValidateCertificate: true,
-        showBackChannelLogout: true,
         showCertificates: true,
         showClientSecretMessage: false,
         showFrontChannelLogout: false,

@@ -39,6 +39,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             __experimental__platformIdP: null,
             accountApp: {
                 basePath: "",
+                centralAppPath: "",
                 displayName: "",
                 path: "",
                 tenantQualifiedPath: ""
@@ -55,6 +56,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             appHomePath: "",
             appLoginPath: "",
             appLogoutPath: "",
+            centralDeploymentEnabled: undefined,
             clientHost: "",
             clientID: "",
             clientOrigin: "",
@@ -108,6 +110,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             dcrConfiguration: "",
             deleteSecret: "",
             deleteSecretType: "",
+            deploymentUnits: "",
             entitlementPoliciesApi: "",
             entitlementPolicyCombiningAlgorithmApi: "",
             entitlementPolicyPublishApi: "",
@@ -119,6 +122,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             getSecretList: "",
             getSecretType: "",
             governanceConnectorCategories: "",
+            groupMetadata: "",
             groups: "",
             guests: "",
             guestsList: "",
@@ -140,8 +144,10 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             passwordPolicy: "",
             permission: "",
             publicCertificates: "",
+            remoteLogPublishEndpoint: "",
             remoteLogging: "",
             requestPathAuthenticators: "",
+            resendCode: "",
             resourceTypes: "",
             roles: "",
             rolesV2: "",
@@ -208,6 +214,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 defaultWhiteLogoUrl: ""
             },
             enableCustomEmailTemplates: undefined,
+            enableOldUIForEmailProvider: undefined,
             features: {
                 applications: null,
                 approvals: null,
@@ -292,6 +299,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             },
             selfAppIdentifier: "",
             showAppSwitchButton: undefined,
+            showPasswordOfEmailProvider: undefined,
             showSmsOtpPwdRecoveryFeatureStatusChip: undefined,
             showStatusLabelForNewAuthzRuntimeFeatures: undefined,
             systemAppsIdentifiers: [],

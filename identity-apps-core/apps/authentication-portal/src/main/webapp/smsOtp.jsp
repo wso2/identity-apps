@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -55,9 +55,11 @@
 
     String authenticators = Encode.forUriComponent(request.getParameter("authenticators"));
     int otpLength = 6;
+    boolean isOnlyNumeric = true;
     if (authenticators.equals(LOCAL_SMS_OTP_AUTHENTICATOR_ID)) {
         try {
             otpLength = Integer.parseInt(AuthenticatorUtils.getSmsAuthenticatorConfig("SmsOTP.OTPLength", tenantDomain));
+            isOnlyNumeric = AuthenticatorUtils.getSmsAuthenticatorConfig("SmsOTP.OtpRegex.UseNumericChars", tenantDomain).equals("true");
         } catch (Exception e) {
             // Exception is caught and ignored. otpLength will be kept as 6.
         }
@@ -204,7 +206,7 @@
                                         %>
                                             <div class="field mt-5">
                                                 <input
-                                                    class="text-center p-3"
+                                                    class="text-center p-1 pb-3 pt-3"
                                                     id=<%= currentStringIndex %>
                                                     name=<%= currentStringIndex %>
                                                     onkeyup="movetoNext(this, '<%= nextStringIndex %>', '<%= previousStringIndex %>')"
@@ -212,13 +214,16 @@
                                                     placeholder="·"
                                                     autofocus
                                                     maxlength="1"
+                                                    autocomplete="off"
+                                                    type="text"
+                                                    inputmode=<%= isOnlyNumeric ? "numeric" : "text" %>
                                                 >
                                             </div>
                                         <% } %>
                                     </div>
                                 <% } else { %>
                                     <div class="ui fluid icon input addon-wrapper">
-                                        <input type="text" id='OTPCode' name="OTPcode" size='30'/>
+                                        <input type="text" id='OTPCode' name="OTPcode" size='30' autocomplete="off"/>
                                         <i id="password-eye" class="eye icon right-align password-toggle slash" onclick="showOTPCode()"></i>
                                     </div>
                                 <% } %>

@@ -182,6 +182,7 @@ export const branding: BrandingNS = {
     },
     variations: {
         "sms-otp": "SMS OTP",
+        "email-otp": "Email OTP",
         "email-link": "Email Link",
         "base": "Base",
         "multi": "Multi Option",
@@ -191,19 +192,19 @@ export const branding: BrandingNS = {
     ai: {
         banner: {
             full: {
-                heading: "Elevate Your Brand Identity with ",
-                subHeading: "Get a professional brand identity in seconds, just enter your website URL.",
+                heading: "Generate Your Branding Styles with AI",
+                subHeading: "Enter your website URL and Branding AI will adjust the branding settings to match your theme.",
                 button: "Try Branding AI"
             },
             input: {
-                heading: "Configure Branding with ",
-                subHeading: "Just enter your website URL. Get a unique brand identity that reflects your organization.",
+                heading: "Generate Your Branding Styles with AI",
+                subHeading: "Enter your website URL and Branding AI will adjust the branding settings to match your theme.",
                 placeholder: "Enter website URL",
                 button: "Generate Branding"
             },
             collapsed: {
-                heading: "Configure branding with ",
-                subHeading: "Enter your organization's website URL. Our AI efficiently customizes branding elements to match your organization.",
+                heading: "Generate Your Branding Styles with AI",
+                subHeading: "Enter your website URL and Branding AI will adjust the branding settings to match your theme.",
                 button: "Try Branding AI"
             }
         },

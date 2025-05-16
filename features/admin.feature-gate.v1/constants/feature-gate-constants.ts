@@ -24,6 +24,7 @@ class FeatureGateConstants {
     private constructor() {}
 
     public static readonly SAAS_FEATURES_IDENTIFIER: string = "console.saasFeatures";
+    public static readonly PREVIEW_FEATURES_IDENTIFIER: string = "console.previewFeatures";
 }
 
 export default FeatureGateConstants;

@@ -51,10 +51,13 @@ import useGetActionById from "../api/use-get-action-by-id";
 import useGetActionsByType from "../api/use-get-actions-by-type";
 import PreIssueAccessTokenActionConfigForm from "../components/pre-issue-access-token-action-config-form";
 import PreUpdatePasswordActionConfigForm from "../components/pre-update-password-action-config-form";
+import PreUpdateProfileActionConfigForm from "../components/pre-update-profile-action-config-form";
 import { ActionsConstants } from "../constants/actions-constants";
 import {
     ActionConfigFormPropertyInterface, PreUpdatePasswordActionConfigFormPropertyInterface,
-    PreUpdatePasswordActionResponseInterface
+    PreUpdatePasswordActionResponseInterface,
+    PreUpdateProfileActionConfigFormPropertyInterface,
+    PreUpdateProfileActionResponseInterface
 } from "../models/actions";
 import "./action-configuration-page.scss";
 import { useHandleError, useHandleSuccess } from "../util/alert-util";
@@ -83,6 +86,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     const handleError: (error: AxiosError, operation: string) => void = useHandleError();
 
     const hasActionUpdatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.update);
+    const hasActionCreatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.create);
 
     const actionTypeApiPath: string = useMemo(() => {
         const path: string[] = history.location.pathname.split("/");
@@ -159,6 +163,19 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
             }
         }, [ action ]);
 
+    const preUpdateProfileActionInitialValues: PreUpdateProfileActionConfigFormPropertyInterface =
+        useMemo(() => {
+
+            if (action && actionTypeApiPath === ActionsConstants.PRE_UPDATE_PROFILE_API_PATH ) {
+                return {
+                    ...actionCommonInitialValues,
+                    attributes: (action as PreUpdateProfileActionResponseInterface)?.attributes
+                };
+            } else {
+                return null;
+            }
+        }, [ action ]);
+
     /**
      * The following useEffect is used to handle if any error occurs while fetching Actions by Type.
      */
@@ -214,6 +231,17 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
             );
         }
     }, [ isActionLoading, actionFetchRequestError ]);
+
+    /**
+     * This function resolves whether the form is read-only or not.
+     */
+    const isReadOnly = (): boolean => {
+        if (showCreateForm) {
+            return !hasActionCreatePermissions;
+        } else {
+            return !hasActionUpdatePermissions;
+        }
+    };
 
     /**
      * Handles the back button click event.
@@ -386,6 +414,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                                 <PreIssueAccessTokenActionConfigForm
                                     initialValues={ actionCommonInitialValues }
                                     isLoading={ isLoading }
+                                    isReadOnly={ isReadOnly() }
                                     actionTypeApiPath={ actionTypeApiPath }
                                     isCreateFormState={ showCreateForm }
                                 />
@@ -395,6 +424,17 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                                 <PreUpdatePasswordActionConfigForm
                                     initialValues={ preUpdatePasswordActionInitialValues }
                                     isLoading={ isLoading }
+                                    isReadOnly={ isReadOnly() }
+                                    actionTypeApiPath={ actionTypeApiPath }
+                                    isCreateFormState={ showCreateForm }
+                                />
+                            )
+                            }
+                            { actionTypeApiPath === ActionsConstants.PRE_UPDATE_PROFILE_API_PATH && (
+                                <PreUpdateProfileActionConfigForm
+                                    initialValues={ preUpdateProfileActionInitialValues }
+                                    isLoading={ isLoading }
+                                    isReadOnly={ isReadOnly() }
                                     actionTypeApiPath={ actionTypeApiPath }
                                     isCreateFormState={ showCreateForm }
                                 />

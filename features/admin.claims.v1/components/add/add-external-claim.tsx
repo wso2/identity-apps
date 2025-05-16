@@ -123,8 +123,6 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
 
     const dispatch: Dispatch = useDispatch();
 
-    const enableIdentityClaims: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.enableIdentityClaims);
     const userSchemaURI: string = useSelector(
         (state: AppState) => state?.config?.ui?.userSchemaURI);
 
@@ -224,7 +222,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
      */
     useEffect(() => {
         const params: ClaimsGetParams = {
-            "exclude-identity-claims": !enableIdentityClaims,
+            "exclude-hidden-claims": true,
             filter: null,
             limit: null,
             offset: null,
@@ -382,16 +380,6 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                                         break;
                                                     }
                                                 }
-
-                                                if (attributeType === ClaimManagementConstants.OIDC) {
-                                                    if (!value.toString().match(/^[A-za-z0-9#_]+$/)) {
-                                                        validation.isValid = false;
-                                                        validation.errorMessages.push(t(
-                                                            "claims:external.forms.attributeURI." +
-                                                            "validationErrorMessages.invalidName",
-                                                            { type: resolveType(attributeType) }));
-                                                    }
-                                                }
                                             } }
                                             children={
                                                 serverSupportedClaims?.map((claim: string, index: number) => {
@@ -423,7 +411,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                             listen={ (values: Map<string, FormValue>) => {
                                                 setClaim(values.get("claimURI").toString());
                                             } }
-                                            maxLength={ 30 }
+                                            maxLength={ 50 }
                                             data-testid={ `${ testId }-form-claim-uri-input` }
                                             validation={ (value: string, validation: Validation) => {
                                                 for (const claim of externalClaims) {
@@ -435,16 +423,6 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                                             { type: resolveType(attributeType) }));
 
                                                         break;
-                                                    }
-                                                }
-
-                                                if (attributeType === ClaimManagementConstants.OIDC) {
-                                                    if (!value.toString().match(/^[A-za-z0-9#_]+$/)) {
-                                                        validation.isValid = false;
-                                                        validation.errorMessages.push(t(
-                                                            "claims:external.forms.attributeURI." +
-                                                            "validationErrorMessages.invalidName",
-                                                            { type: resolveType(attributeType) }));
                                                     }
                                                 }
                                             } }

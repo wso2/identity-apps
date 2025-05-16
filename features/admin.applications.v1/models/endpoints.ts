@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -29,6 +29,10 @@ export interface ApplicationsResourceEndpointsInterface {
      * Below route is to fetch the dcr configuration from server configurations api.
      */
     dcrConfiguration: string;
+    /**
+     * Below route is to fetch the group list as metadata from the application API.
+     */
+    groupMetadata: string;
 }
 
 export interface UpdateClaimConfiguration {

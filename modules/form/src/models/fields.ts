@@ -28,7 +28,8 @@ export enum FieldInputTypes {
     INPUT_EMAIL = "email",
     INPUT_URL = "url",
     INPUT_COPY = "copy_input",
-    INPUT_PASSWORD = "password"
+    INPUT_PASSWORD = "password",
+    INPUT_TEXT_WITH_ADORNMENT = "text_with_adornment",
 }
 
 export enum FieldButtonTypes {

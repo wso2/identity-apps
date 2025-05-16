@@ -74,8 +74,7 @@ import {
     Label,
     SemanticICONS
 } from "semantic-ui-react";
-import { getConnectedApps } from "../../../api/connections";
-import { useGetAuthenticatorConnectedApps } from "../../../api/use-get-authenticator-connected-apps";
+import { getConnectedApps, getConnectedAppsOfAuthenticator } from "../../../api/connections";
 import {
     ConnectedAppInterface,
     ConnectedAppsInterface,
@@ -163,8 +162,6 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
     const [ connectedAppsCount, setconnectedAppsCount ] = useState<number>(0);
     const [ isCustomLocalAuthenticator, setIsCustomLocalAuthenticator ] = useState<boolean>(undefined);
     const [ isAppsLoading, setIsAppsLoading ] = useState<boolean>(false);
-    const [ shouldFetchLocalAuthenticatorConnectedApps, setShouldFetchLocalAuthenticatorConnectedApps ] =
-        useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
@@ -180,10 +177,6 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         templates: extensionApplicationTemplates,
         isExtensionTemplatesRequestLoading: isExtensionApplicationTemplatesRequestLoading
     } = useExtensionTemplates();
-    const {
-        data: connectedAppsOfAuthenticator,
-        isLoading: isAuthenticatorConnectedAppsLoading
-    } = useGetAuthenticatorConnectedApps(editingIDP?.id, shouldFetchLocalAuthenticatorConnectedApps);
 
     /**
      * This useEffect checks whether the authenticator is a custom local authenticator.
@@ -192,10 +185,8 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
     useEffect(() => {
         if (ConnectionsManagementUtils.IsCustomLocalAuthenticator(editingIDP)) {
             setIsCustomLocalAuthenticator(true);
-            setShouldFetchLocalAuthenticatorConnectedApps(true);
         } else {
             setIsCustomLocalAuthenticator(false);
-            setShouldFetchLocalAuthenticatorConnectedApps(false);
         }
     }, [ editingIDP ]);
 
@@ -203,51 +194,49 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
      * This useEffect sets the fetched connected apps of the local authenticator to the state.
      */
     useEffect(() => {
-        if (!connectedAppsOfAuthenticator || isAuthenticatorConnectedAppsLoading) {
-            setIsAppsLoading(true);
-
+        if (isCustomLocalAuthenticator === undefined || !isCustomLocalAuthenticator) {
             return;
         }
 
-        // If there are no connected apps, set the state and return.
-        if (connectedAppsOfAuthenticator?.count === 0) {
-            setConnectedApps([]);
-            setFilterSelectedApps([]);
-            setIsAppsLoading(false);
+        setIsAppsLoading(true);
+        getConnectedAppsOfAuthenticator(editingIDP.id)
+            .then(async (response: ConnectedAppsInterface) => {
+                setconnectedAppsCount(response.count);
 
-            return;
-        }
+                if (response.count > 0) {
 
-        const fetchAppDetails = async () => {
-            setconnectedAppsCount(connectedAppsOfAuthenticator.count);
-
-            if (connectedAppsOfAuthenticator.count > 0) {
-                const appRequests: Promise<any>[] = connectedAppsOfAuthenticator.connectedApps.map(
-                    (app: ConnectedAppInterface) => {
+                    const appRequests: Promise<any>[] = response.connectedApps.map((app: ConnectedAppInterface) => {
                         return getApplicationDetails(app.appId);
-                    }
-                );
+                    });
 
-                const results: ApplicationBasicInterface[] = await Promise.all(
-                    appRequests.map((response: Promise<any>) => response.catch((error: IdentityAppsError) => {
-                        dispatch(addAlert({
-                            description: error?.description
-                                || t("idp:connectedApps.genericError.description"),
-                            level: AlertLevels.ERROR,
-                            message: error?.message
-                                || t("idp:connectedApps.genericError.message")
-                        }));
-                    }))
-                );
+                    const results: ApplicationBasicInterface[] = await Promise.all(
+                        appRequests.map((response: Promise<any>) => response.catch((error: IdentityAppsError) => {
+                            dispatch(addAlert({
+                                description: error?.description
+                                    || t("idp:connectedApps.genericError.description"),
+                                level: AlertLevels.ERROR,
+                                message: error?.message
+                                    || t("idp:connectedApps.genericError.message")
+                            }));
+                        }))
+                    );
 
-                setConnectedApps(results);
-                setFilterSelectedApps(results);
+                    setConnectedApps(results);
+                    setFilterSelectedApps(results);
+                }
+            })
+            .catch((error: IdentityAppsError) => {
+                dispatch(addAlert({
+                    description: error?.description
+                        || t("idp:connectedApps.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: error?.message || t("idp:connectedApps.genericError.message")
+                }));
+            })
+            .finally(() => {
                 setIsAppsLoading(false);
-            }
-        };
-
-        fetchAppDetails();
-    }, [ isCustomLocalAuthenticator, connectedAppsOfAuthenticator ]);
+            });
+    }, [ isCustomLocalAuthenticator ]);
 
     /**
      * This useEffect fetches the connected apps of the IDP and sets them to the state.

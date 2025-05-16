@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,12 +16,14 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getGovernanceConnectors } from "@wso2is/admin.server-configurations.v1/api";
 import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants";
@@ -29,9 +31,11 @@ import { ConnectorPropertyInterface, GovernanceConnectorInterface }
     from "@wso2is/admin.server-configurations.v1/models";
 import { getUserDetails, updateUserInfo } from "@wso2is/admin.users.v1/api/users";
 import { EditUser } from "@wso2is/admin.users.v1/components/edit-user";
+import { UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import UserManagementProvider from "@wso2is/admin.users.v1/providers/user-management-provider";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils/user-management-utils";
-import { hasRequiredScopes, resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { isFeatureEnabled, resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -42,7 +46,7 @@ import {
 }from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EditAvatarModal, Popup, TabPageLayout, UserAvatar } from "@wso2is/react-components";
-import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -64,25 +68,49 @@ const ConsoleAdministratorsEditPage: FunctionComponent<ConsoleAdministratorsEdit
     props: ConsoleAdministratorsEditPageInterface
 ): ReactElement => {
 
-    const { "data-componentid": componentId } = props;
+    const { "data-componentid": componentId = "console-administrators-edit-page" } = props;
 
     const { t } = useTranslation();
 
     const dispatch: Dispatch<any> = useDispatch();
 
     const { isSuperOrganization } = useGetCurrentOrganizationType();
+    const { isUserStoreReadOnly, readOnlyUserStoreNamesList } = useUserStores();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
+    const hasUsersUpdatePermissions: boolean = useRequiredScopes(featureConfig?.users?.scopes?.update);
+    const isUserUpdateFeatureEnabled: boolean = isFeatureEnabled(
+        featureConfig?.users, UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"));
+    const isUpdatingSharedProfilesFeatureEnabled: boolean = isFeatureEnabled(
+        featureConfig?.users, UserManagementConstants.FEATURE_DICTIONARY.get("USER_SHARED_PROFILES"));
 
     const [ user, setUserProfile ] = useState<ProfileInfoInterface>(emptyProfileInfo);
     const [ isUserDetailsRequestLoading, setIsUserDetailsRequestLoading ] = useState<boolean>(false);
-    const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
     const [ showEditAvatarModal, setShowEditAvatarModal ] = useState<boolean>(false);
     const [ connectorProperties, setConnectorProperties ] = useState<ConnectorPropertyInterface[]>(undefined);
-    const [ isReadOnlyUserStoresLoading, setReadOnlyUserStoresLoading ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
+    /**
+     * Checks if the user store is read only.
+     */
+    const isReadOnlyUserStore: boolean = useMemo(() => {
+        const userStoreName: string = user?.userName?.split("/").length > 1
+            ? user?.userName?.split("/")[0]
+            : userstoresConfig.primaryUserstoreName;
+
+        return isUserStoreReadOnly(userStoreName);
+    }, [ user, readOnlyUserStoreNamesList ]);
+
+    /**
+     * Checks if the UI should be in read-only mode.
+     */
+    const isReadOnly: boolean = !isUserUpdateFeatureEnabled
+        || !hasUsersUpdatePermissions
+        || isReadOnlyUserStore
+        || user[ SCIMConfigs.scim.systemSchema ]?.userSourceId
+        || user[ SCIMConfigs.scim.systemSchema ]?.isReadOnlyUser === "true"
+        || (user[ SCIMConfigs.scim.systemSchema ]?.managedOrg && !isUpdatingSharedProfilesFeatureEnabled);
 
     useEffect(() => {
         if (isSuperOrganization) {
@@ -126,21 +154,6 @@ const ConsoleAdministratorsEditPage: FunctionComponent<ConsoleAdministratorsEdit
 
         getUser(id);
     }, []);
-
-    useEffect(() => {
-        if (!isSuperOrganization) {
-            return;
-        }
-
-        setReadOnlyUserStoresLoading(true);
-        SharedUserStoreUtils.getReadOnlyUserStores()
-            .then((response: string[]) => {
-                setReadOnlyUserStoresList(response);
-            })
-            .finally(() => {
-                setReadOnlyUserStoresLoading(false);
-            });
-    }, [ user ]);
 
     const getUser = (id: string) => {
         setIsUserDetailsRequestLoading(true);
@@ -316,16 +329,12 @@ const ConsoleAdministratorsEditPage: FunctionComponent<ConsoleAdministratorsEdit
                     user.userName) }
                 image={ (
                     <UserAvatar
-                        editable={
-                            hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
-                        }
+                        editable={ !isReadOnly }
+                        hoverable={ !isReadOnly }
                         name={ resolveUserDisplayName(user) }
                         size="tiny"
                         image={ user?.profileUrl }
-                        onClick={ () =>
-                            hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
-                            && setShowEditAvatarModal(true)
-                        }
+                        onClick={ () => !isReadOnly && setShowEditAvatarModal(true) }
                     />
                 ) }
                 loadingStateOptions={ {
@@ -342,13 +351,12 @@ const ConsoleAdministratorsEditPage: FunctionComponent<ConsoleAdministratorsEdit
                 data-componentid={ componentId }
             >
                 <EditUser
-                    featureConfig={ featureConfig }
                     user={ user }
                     handleUserUpdate={ handleUserUpdate }
-                    readOnlyUserStores={ readOnlyUserStoresList }
                     connectorProperties={ connectorProperties }
                     isLoading={ isUserDetailsRequestLoading }
-                    isReadOnlyUserStoresLoading={ isReadOnlyUserStoresLoading }
+                    isReadOnly={ isReadOnly }
+                    isReadOnlyUserStore={ isReadOnlyUserStore }
                 />
                 {
                     showEditAvatarModal && (
@@ -436,10 +444,6 @@ const ConsoleAdministratorsEditPage: FunctionComponent<ConsoleAdministratorsEdit
             </TabPageLayout>
         </UserManagementProvider>
     );
-};
-
-ConsoleAdministratorsEditPage.defaultProps = {
-    "data-componentid": "console-administrators-edit-page"
 };
 
 export default ConsoleAdministratorsEditPage;

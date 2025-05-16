@@ -85,7 +85,8 @@ export const policyAdministration: policyAdministrationNS = {
         title: "Create Policy"
     },
     editPolicy: {
-        backBtn: "Go back to Policy Administration "
+        backBtn: "Go back to Policy Administration ",
+        disabledBtnTooltip: "You need to deactivate this policy to enable editing."
     },
     inactivePoliciesPlaceholder: {
         subtitle: "There are currently no inactive policies to display.",

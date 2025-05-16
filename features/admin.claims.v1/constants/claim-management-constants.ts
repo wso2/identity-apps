@@ -32,6 +32,12 @@ export class ClaimManagementConstants {
     private constructor() { }
 
     /**
+     * Set of keys used to enable/disable features.
+     */
+    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
+        .set("MOBILE_VERIFICATION_BY_PRIVILEGED_USERS", "attributeVerification.mobileVerificationByPrivilegedUser");
+
+    /**
      * Claim URI Attribute key.
      */
     public static readonly CLAIM_URI_ATTRIBUTE_KEY: string = "claimURI";

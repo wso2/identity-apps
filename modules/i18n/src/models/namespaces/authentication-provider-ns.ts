@@ -334,6 +334,7 @@ export interface AuthenticationProviderNS {
                     hint: string;
                     label: string;
                     placeholder: string;
+                    unit: string;
                     validations: {
                         required: string;
                         invalid: string;
@@ -2052,4 +2053,13 @@ export interface AuthenticationProviderNS {
             previous: string;
         };
     };
+    overrides: {
+        authenticators: {
+            customAuthenticators: {
+                pluginBased: {
+                    name: string;
+                }
+            }
+        }
+    }
 }

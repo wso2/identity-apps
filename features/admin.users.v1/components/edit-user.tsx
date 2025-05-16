@@ -16,16 +16,13 @@
  * under the License.
  */
 
-import { useRequiredScopes } from "@wso2is/access-control";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
-import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { ServerConfigurationsInterface, getServerConfigs } from "@wso2is/admin.server-configurations.v1";
 import { ConnectorPropertyInterface } from "@wso2is/admin.server-configurations.v1/models";
-import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertInterface, AlertLevels, ProfileInfoInterface, SBACInterface } from "@wso2is/core/models";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Message, ResourceTab } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -41,7 +38,7 @@ import { UserSessions } from "./user-sessions";
 import { AdminAccountTypes, UserManagementConstants } from "../constants";
 import useUserManagement from "../hooks/use-user-management";
 
-interface EditUserPropsInterface extends SBACInterface<FeatureConfigInterface> {
+interface EditUserPropsInterface extends IdentifiableComponentInterface {
     /**
      * User profile
      */
@@ -51,21 +48,21 @@ interface EditUserPropsInterface extends SBACInterface<FeatureConfigInterface> {
      */
     handleUserUpdate: (userId: string) => void;
     /**
-     * List of readOnly user stores.
-     */
-    readOnlyUserStores?: string[];
-    /**
      * Password reset connector properties
      */
     connectorProperties: ConnectorPropertyInterface[];
     /**
      * Is the page loading
      */
-    isLoading: boolean
+    isLoading: boolean;
     /**
-     * Is read only user stores loading.
+     * Whether the UI should be in read-only mode.
      */
-    isReadOnlyUserStoresLoading?: boolean;
+    isReadOnly?: boolean;
+    /**
+     * Whether the user store is read-only.
+     */
+    isReadOnlyUserStore?: boolean;
 }
 
 /**
@@ -80,11 +77,10 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const {
         user,
         handleUserUpdate,
-        featureConfig,
-        readOnlyUserStores,
         connectorProperties,
         isLoading,
-        isReadOnlyUserStoresLoading
+        isReadOnly = false,
+        isReadOnlyUserStore = false
     } = props;
 
     const { t } = useTranslation();
@@ -92,11 +88,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const dispatch: Dispatch = useDispatch();
     const { isSuperOrganization } = useGetCurrentOrganizationType();
 
-    const hasUsersUpdatePermissions: boolean = useRequiredScopes(
-        featureConfig?.users?.scopes?.update
-    );
+    const { isLoading: isUserStoresLoading } = useUserStores();
 
-    const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
     const [ isSuperAdmin, setIsSuperAdmin ] = useState<boolean>(false);
     const [ isSelectedSuperAdmin, setIsSelectedSuperAdmin ] = useState<boolean>(false);
     const [
@@ -106,31 +99,10 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const [ hideTermination, setHideTermination ] = useState<boolean>(false);
     const [ adminUsername, setAdminUsername ] = useState<string|null>(null);
     const [ isUserManagedByParentOrg, setIsUserManagedByParentOrg ] = useState<boolean>(false);
-    const [ isUserProfileReadOnly, setIsUserProfileReadOnly ] = useState<boolean>(false);
 
     const userRolesDisabledFeatures: string[] = useSelector((state: AppState) => {
         return state.config.ui.features?.users?.disabledFeatures;
     });
-
-    const isUpdatingSharedProfilesEnabled: boolean = !userRolesDisabledFeatures?.includes(
-        UserManagementConstants.FEATURE_DICTIONARY.get("USER_SHARED_PROFILES")
-    );
-
-    useEffect(() => {
-        const userStore: string = user?.userName?.split("/").length > 1
-            ? user?.userName?.split("/")[0]
-            : userstoresConfig.primaryUserstoreName;
-
-        if (!isFeatureEnabled(featureConfig?.users, UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
-            || readOnlyUserStores?.includes(userStore?.toString())
-            || !hasUsersUpdatePermissions
-            || user[ SCIMConfigs.scim.systemSchema ]?.userSourceId
-            || user[ SCIMConfigs.scim.systemSchema ]?.isReadOnlyUser === "true"
-        ) {
-            setReadOnly(true);
-        }
-
-    }, [ user, readOnlyUserStores ]);
 
     useEffect(() => {
         if (!isSuperOrganization()) {
@@ -142,10 +114,6 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
 
     useEffect(() => {
         if (user[ SCIMConfigs.scim.systemSchema ]?.managedOrg) {
-            if (!isUpdatingSharedProfilesEnabled) {
-                setIsUserProfileReadOnly(true);
-            }
-
             setIsUserManagedByParentOrg(true);
         }
     }, [ user ]);
@@ -219,9 +187,10 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         onAlertFired={ handleAlerts }
                         user={ user }
                         handleUserUpdate={ handleUserUpdate }
-                        isReadOnly={ isReadOnly || isUserProfileReadOnly }
+                        isReadOnly={ isReadOnly }
                         connectorProperties={ connectorProperties }
-                        isReadOnlyUserStoresLoading={ isReadOnlyUserStoresLoading }
+                        isReadOnlyUserStoresLoading={ isUserStoresLoading }
+                        isReadOnlyUserStore={ isReadOnlyUserStore }
                         isUserManagedByParentOrg={ isUserManagedByParentOrg }
                         adminUserType={ AdminAccountTypes.INTERNAL }
                         allowDeleteOnly={

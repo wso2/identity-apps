@@ -69,6 +69,7 @@ export const common: CommonNS = {
     dangerZone: "Zona de perigo",
     darkMode: "Modo escuro",
     delete: "Excluir",
+    deprecated: "Esta configuração foi descontinuada e será removida em uma versão futura.",
     description: "Descrição",
     deviceModel: "Modelo do dispositivo",
     disable: "Desabilitar",

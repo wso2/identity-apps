@@ -58,7 +58,7 @@ export interface ApplicationConfig {
             showIncludeTenantDomain: boolean;
             showIncludeUserstoreDomainRole: boolean;
             showIncludeUserstoreDomainSubject: boolean;
-            showMandateLinkedLocalAccount: boolean;
+            isMandateLinkedLocalAccountEnabled: (templateId: string) => boolean;
             showRoleAttribute: boolean;
             showRoleMapping: boolean;
             showValidateLinkedLocalAccount: boolean;
@@ -128,7 +128,6 @@ export interface ApplicationConfig {
         showNativeClientSecretMessage: boolean;
         showIdTokenEncryption: boolean;
         showIdTokenResponseSigningAlgorithm: boolean;
-        showBackChannelLogout: boolean;
         showRequestObjectConfigurations: boolean;
         showRequestObjectSignatureValidation: boolean;
         showCertificates: boolean;

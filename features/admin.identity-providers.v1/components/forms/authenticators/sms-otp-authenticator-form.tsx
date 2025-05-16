@@ -494,12 +494,11 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                     }
                 </Label>
             </Field.Input>
-            { /* TODO: Uncomment resend attempt count field once it's finalized.
-
             <Field.Input
                 ariaLabel="Allowed Resend Attempts"
                 inputType="number"
                 name="SmsOTP_ResendAttemptsCount"
+                labelPosition="right"
                 label={
                     t("authenticationProvider:forms.authenticatorSettings" +
                         ".smsOTP.allowedResendAttemptCount.label")
@@ -521,21 +520,33 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                 }
                 required={ true }
                 readOnly={ readOnly }
+                max={
+                    ConnectionUIConstants
+                        .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE
+                }
+                min={
+                    ConnectionUIConstants
+                        .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE
+                }
                 maxLength={
-                    IdentityProviderManagementConstants
+                    ConnectionUIConstants
                         .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH
                 }
                 minLength={
-                    IdentityProviderManagementConstants
+                    ConnectionUIConstants
                         .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH
                 }
                 width={ 12 }
                 data-testid={ `${ testId }-allowed-resend-attempt-count` }
             >
                 <input />
+                <Label>
+                    {
+                        t("authenticationProvider:forms.authenticatorSettings" +
+                            ".smsOTP.allowedResendAttemptCount.unit")
+                    }
+                </Label>
             </Field.Input>
-
-            */ }
             <Field.Button
                 form={ FORM_ID }
                 size="small"

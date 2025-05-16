@@ -29,7 +29,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid, Modal } from "semantic-ui-react";
 import { UserInviteInterface } from "../../../models/user";
-import { RoleType } from "../models/invite";
+import { SystemRoleType } from "../models/invite";
 
 interface InviteeRoleSelectionPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     invitee: UserInviteInterface;
@@ -123,9 +123,9 @@ export const InviteeRoleSelection: FunctionComponent<InviteeRoleSelectionPropsIn
 
                                 if (
                                     roleName?.length >= 1 &&
-                                    !roleName.includes(RoleType.EVERYONE) &&
-                                    !roleName.includes(RoleType.SYSTEM) &&
-                                    !roleName.includes(RoleType.SELFSIGNUP)
+                                    !roleName.includes(SystemRoleType.EVERYONE) &&
+                                    !roleName.includes(SystemRoleType.SYSTEM) &&
+                                    !roleName.includes(SystemRoleType.SELFSIGNUP)
                                 ) {
                                     return (
                                         <>

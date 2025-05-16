@@ -24,14 +24,11 @@ import Divider from "@oxygen-ui/react/Divider";
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import Typography from "@oxygen-ui/react/Typography";
-import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalFormField, FormSpy, SelectFieldAdapter, TextFieldAdapter } from "@wso2is/form/src";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { Icon } from "semantic-ui-react";
 import { ActionsConstants } from "../constants/actions-constants";
 import {
@@ -51,6 +48,10 @@ interface ActionEndpointConfigFormInterface extends IdentifiableComponentInterfa
      */
     isCreateFormState: boolean;
     /**
+     * Specifies whether the form is read-only.
+     */
+    isReadOnly: boolean;
+    /**
      * Callback function triggered when the authentication type is changed.
      *
      * @param updatedValue - The new authentication type selected.
@@ -62,29 +63,18 @@ interface ActionEndpointConfigFormInterface extends IdentifiableComponentInterfa
 const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterface> = ({
     initialValues,
     isCreateFormState,
+    isReadOnly,
     onAuthenticationTypeChange,
     [ "data-componentid" ]: _componentId = "action-endpoint-config-form"
 }: ActionEndpointConfigFormInterface): ReactElement => {
 
-    const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state.config.ui.features.actions);
     const [ authenticationType, setAuthenticationType ] = useState<AuthenticationType>(null);
     const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
     const [ isShowSecret1, setIsShowSecret1 ] = useState<boolean>(false);
     const [ isShowSecret2, setIsShowSecret2 ] = useState<boolean>(false);
-    const hasActionUpdatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.update);
-    const hasActionCreatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.create);
     const [ isHttpEndpointUri, setIsHttpEndpointUri ] = useState<boolean>(false);
 
     const { t } = useTranslation();
-
-    const getFieldDisabledStatus = (): boolean => {
-        if (isCreateFormState) {
-            return !hasActionCreatePermissions;
-        } else {
-            return !hasActionUpdatePermissions;
-        }
-    };
 
     /**
      * The following useEffect is used to set the current Action Authentication Type.
@@ -169,7 +159,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                             size="small"
                             className={ "secondary-button" }
                             data-componentid={ `${_componentId}-change-authentication-button` }
-                            disabled={ getFieldDisabledStatus() }
+                            disabled={ isReadOnly }
                         >
                             { t("actions:buttons.changeAuthentication") }
                         </Button>
@@ -222,7 +212,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                                         component={ TextFieldAdapter }
                                         maxLength={ 100 }
                                         minLength={ 0 }
-                                        disabled={ getFieldDisabledStatus() }
+                                        disabled={ isReadOnly }
                                     />
                                     <FinalFormField
                                         key="password"
@@ -248,7 +238,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                                         component={ TextFieldAdapter }
                                         maxLength={ 100 }
                                         minLength={ 0 }
-                                        disabled={ getFieldDisabledStatus() }
+                                        disabled={ isReadOnly }
                                     />
                                 </>
                             );
@@ -280,7 +270,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                                         component={ TextFieldAdapter }
                                         maxLength={ 100 }
                                         minLength={ 0 }
-                                        disabled={ getFieldDisabledStatus() }
+                                        disabled={ isReadOnly }
                                     />
                                 </>
                             );
@@ -313,7 +303,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                                         component={ TextFieldAdapter }
                                         maxLength={ 100 }
                                         minLength={ 0 }
-                                        disabled={ getFieldDisabledStatus() }
+                                        disabled={ isReadOnly }
                                     />
                                     <FinalFormField
                                         key="value"
@@ -339,7 +329,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                                         component={ TextFieldAdapter }
                                         maxLength={ 100 }
                                         minLength={ 0 }
-                                        disabled={ getFieldDisabledStatus() }
+                                        disabled={ isReadOnly }
                                     />
                                 </>
                             );
@@ -407,7 +397,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                                 ]
                             }
                             onChange={ handleAuthTypeChange }
-                            disabled={ getFieldDisabledStatus() }
+                            disabled={ isReadOnly }
                         />
                         { renderAuthenticationPropertyFields() }
                     </>
@@ -462,16 +452,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                 component={ TextFieldAdapter }
                 maxLength={ 100 }
                 minLength={ 0 }
-                disabled={ getFieldDisabledStatus() }
-            />
-            <FormSpy
-                onChange={ ({ values }: { values: EndpointConfigFormPropertyInterface }) => {
-                    if (values?.endpointUri?.startsWith("http://")) {
-                        setIsHttpEndpointUri(true);
-                    } else {
-                        setIsHttpEndpointUri(false);
-                    }
-                } }
+                disabled={ isReadOnly }
             />
             { isHttpEndpointUri && (
                 <Alert
@@ -491,6 +472,58 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                 { t("actions:fields.authentication.label") }
             </Typography>
             { renderAuthenticationSection() }
+            <FormSpy
+                onChange={ ({ values }: { values: EndpointConfigFormPropertyInterface }) => {
+                    if (values?.endpointUri?.startsWith("http://")) {
+                        setIsHttpEndpointUri(true);
+                    } else {
+                        setIsHttpEndpointUri(false);
+                    }
+
+                    if (isAuthenticationUpdateFormState) {
+                        // Clear inputs of property field values of other authentication types.
+                        switch (authenticationType) {
+                            case AuthenticationType.BASIC:
+                                delete values.accessTokenAuthProperty;
+                                delete values.headerAuthProperty;
+                                delete values.valueAuthProperty;
+
+                                break;
+                            case AuthenticationType.BEARER:
+                                delete values.usernameAuthProperty;
+                                delete values.passwordAuthProperty;
+                                delete values.headerAuthProperty;
+                                delete values.valueAuthProperty;
+
+                                break;
+                            case AuthenticationType.API_KEY:
+                                delete values.usernameAuthProperty;
+                                delete values.passwordAuthProperty;
+                                delete values.accessTokenAuthProperty;
+
+                                break;
+                            case AuthenticationType.NONE:
+                                delete values.usernameAuthProperty;
+                                delete values.passwordAuthProperty;
+                                delete values.headerAuthProperty;
+                                delete values.valueAuthProperty;
+                                delete values.accessTokenAuthProperty;
+
+                                break;
+                            default:
+                                break;
+                        }
+                    } else {
+                        // Clear inputs of all property field values.
+                        values.authenticationType = initialValues?.authenticationType;
+                        delete values.usernameAuthProperty;
+                        delete values.passwordAuthProperty;
+                        delete values.headerAuthProperty;
+                        delete values.valueAuthProperty;
+                        delete values.accessTokenAuthProperty;
+                    }
+                } }
+            />
         </>
     );
 };

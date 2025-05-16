@@ -32,6 +32,7 @@ import { CertificatesResourceEndpointsInterface } from "@wso2is/admin.certificat
 import { ClaimResourceEndpointsInterface } from "@wso2is/admin.claims.v1/models/endpoints";
 import { ConnectionResourceEndpointsInterface } from "@wso2is/admin.connections.v1";
 import { GroupsResourceEndpointsInterface } from "@wso2is/admin.groups.v1/models/endpoints";
+import { RemoteLoggingResourceEndpointsInterface } from "@wso2is/admin.logs.v1/models/endpoints";
 import { ScopesResourceEndpointsInterface } from "@wso2is/admin.oidc-scopes.v1";
 import { OrganizationResourceEndpointsInterface } from "@wso2is/admin.organizations.v1/models";
 import { PolicyAdministrationEndpointsInterface } from "@wso2is/admin.policy-administration.v1/models/endpoints";
@@ -291,6 +292,10 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      */
     accountApp: ExternalAppConfigInterface;
     /**
+     * Central deployment enabled.
+     */
+    centralDeploymentEnabled: boolean;
+    /**
      * Configs of the developer app.
      */
     developerApp: ExternalAppConfigInterface;
@@ -316,6 +321,10 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
  * Interface for defining settings and configs of an external app.
  */
 interface ExternalAppConfigInterface {
+    /**
+     * Access URL for the central app.
+     */
+    centralAppPath?: string;
     /**
      * App base path. ex: `/account`, `/admin` etc.
      */
@@ -439,6 +448,14 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Whether a SAAS deployment or not.
      */
     isSAASDeployment: boolean;
+    /**
+     * Enable old UI of email provider.
+     */
+    enableOldUIForEmailProvider: boolean;
+    /**
+     * Show password of email provider.
+     */
+    showPasswordOfEmailProvider: boolean;
     /**
      * Enable/Disable custom email template feature
      */
@@ -624,7 +641,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     PolicyAdministrationEndpointsInterface,
     WorkflowsResourceEndpointsInterface,
     WorkflowAssociationsResourceEndpointsInterface,
-    RulesEndpointsInterface {
+    RulesEndpointsInterface,
+    RemoteLoggingResourceEndpointsInterface {
 
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details

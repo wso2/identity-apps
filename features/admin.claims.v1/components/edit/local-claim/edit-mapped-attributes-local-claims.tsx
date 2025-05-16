@@ -22,11 +22,21 @@ import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import Typography from "@oxygen-ui/react/Typography";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { getProfileSchemas } from "@wso2is/admin.users.v1/api";
 import { UserStoreBasicData } from "@wso2is/admin.userstores.v1/models/user-stores";
-import { AlertLevels, AttributeMapping, Claim, IdentifiableComponentInterface, Property } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import {
+    AlertInterface,
+    AlertLevels,
+    AttributeMapping,
+    Claim,
+    IdentifiableComponentInterface,
+    ProfileSchemaInterface,
+    Property
+} from "@wso2is/core/models";
+import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
 import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import { EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
@@ -90,6 +100,43 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
     const isReadOnly: boolean = !useRequiredScopes(
         featureConfig?.attributeDialects?.scopes?.update
     );
+
+    /**
+     * Fetch the updated SCIM2 schema list.
+     */
+    const fetchUpdatedSchemaList = (): void => {
+        dispatch(setProfileSchemaRequestLoadingStatus(true));
+
+        getProfileSchemas()
+            .then((response: ProfileSchemaInterface[]) => {
+                dispatch(setSCIMSchemas<ProfileSchemaInterface[]>(response));
+            })
+            .catch((error: IdentityAppsApiException) => {
+                if (error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.notifications.getProfileSchema.error.message")
+                    })
+                    );
+                }
+
+                dispatch(
+                    addAlert<AlertInterface>({
+                        description: t(
+                            "console:manage.notifications.getProfileSchema.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "console:manage.notifications.getProfileSchema.genericError.message"
+                        )
+                    })
+                );
+            })
+            .finally(() => {
+                dispatch(setProfileSchemaRequestLoadingStatus(false));
+            });
+    };
 
     const getExcludedStoresFromClaim = (claim: Claim): string[] => {
         const property: Property = claim?.properties?.find(
@@ -205,6 +252,7 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                             }
                                         ));
                                         update();
+                                        fetchUpdatedSchemaList();
                                     })
                                     //TODO: [Type Fix] Fix the type of the `error` object
                                     .catch((error: any) => {

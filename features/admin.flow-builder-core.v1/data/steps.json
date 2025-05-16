@@ -1,0 +1,41 @@
+[
+    {
+        "resourceType": "STEP",
+        "category": "INTERFACE",
+        "type": "VIEW",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "View",
+            "image": "https://www.svgrepo.com/show/448632/step.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {}
+    },
+    {
+        "resourceType": "STEP",
+        "category": "DECISION",
+        "type": "RULE",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Rule",
+            "image": "https://www.svgrepo.com/show/413199/decide.svg",
+            "showOnResourcePanel": false
+        },
+        "config": {}
+    },
+    {
+        "resourceType": "STEP",
+        "category": "WORKFLOW",
+        "type": "REDIRECTION",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Redirection",
+            "image": "https://www.svgrepo.com/show/510970/external-link.svg",
+            "showOnResourcePanel": false
+        },
+        "config": {}
+    }
+]

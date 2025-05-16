@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -256,7 +256,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
         const groupData: PatchGroupDataInterface = {
             Operations: [ {
                 "op": "remove",
-                "path": `members[display eq ${user.userName}]`
+                "path": `members[value eq ${user.id}]`
             } ],
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
@@ -484,15 +484,19 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
     return (
         <EmphasizedSegment padded="very" className="list-group-roles-section">
             <Box display="flex" justifyContent="space-between">
-                <div>
-                    <Heading as="h4">
-                        { t("groups:edit.users.heading") }
-                    </Heading>
-                    <Heading subHeading ellipsis as="h6">
-                        { t("groups:edit.users.subHeading") }
-                    </Heading>
-                </div>
-                { !isReadOnly && groupUserList?.totalResults > 0 && (
+                {
+                    (!!searchQuery || groupUserList?.totalResults > 0) &&  (
+                        <div>
+                            <Heading as="h4">
+                                { t("groups:edit.users.heading") }
+                            </Heading>
+                            <Heading subHeading ellipsis as="h6">
+                                { t("groups:edit.users.subHeading") }
+                            </Heading>
+                        </div>
+                    )
+                }
+                { !isReadOnly && (!!searchQuery || groupUserList?.totalResults > 0) && (
                     <PrimaryButton
                         data-testid={
                             `${ testId }-users-list-edit-button`
@@ -527,6 +531,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                         : false
                 } }
                 showPaginationPageLimit={ !isReadOnly }
+                showTopActionPanel={ (!!searchQuery || groupUserList?.totalResults > 0) }
             >
                 <DataTable<UserBasicInterface>
                     isLoading={ isLoading }

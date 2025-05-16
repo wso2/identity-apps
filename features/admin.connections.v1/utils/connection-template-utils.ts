@@ -284,11 +284,11 @@ export const groupConnectionTemplates = (
         /**
          * Custom authenticators are grouped under "Custom Authentication".
          */
-        if (group.id === ConnectionUIConstants.CONNECTION_TEMPLATE_GROUPS.CUSTOM_AUTHENTICATION) {
+        if (group.id === ConnectionUIConstants.CONNECTION_TEMPLATE_GROUPS.CUSTOM_AUTHENTICATOR) {
             const subTemplateIds: string[] = [
-                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXTERNAL_CUSTOM_AUTHENTICATION,
-                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.INTERNAL_CUSTOM_AUTHENTICATION,
-                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TWO_FACTOR_CUSTOM_AUTHENTICATION
+                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXTERNAL_CUSTOM_AUTHENTICATOR,
+                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.INTERNAL_CUSTOM_AUTHENTICATOR,
+                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TWO_FACTOR_CUSTOM_AUTHENTICATOR
             ];
 
             updatedGroup.subTemplates = _templates

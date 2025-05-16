@@ -357,7 +357,7 @@ export class I18nModuleConstants {
     /**
      * Custom Authentication namespace.
      */
-    public static readonly CUSTOM_AUTHENTICATION_NAMESPACE: string = "customAuthentication";
+    public static readonly CUSTOM_AUTHENTICATOR_NAMESPACE: string = "customAuthenticator";
 
     /**
      * Rules namespace.
@@ -374,4 +374,9 @@ export class I18nModuleConstants {
      * This key is used to store the user's language preference in cookies or local storage.
      */
     public static readonly PREFERENCE_STORAGE_KEY: string = "ui_lang";
+
+    /**
+     * Email Provider namespace.
+     */
+    public static readonly EMAIL_PROVIDERS_NAMESPACE: string = "emailProviders";
 }

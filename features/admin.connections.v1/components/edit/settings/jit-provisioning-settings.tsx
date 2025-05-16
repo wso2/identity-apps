@@ -16,16 +16,12 @@
  * under the License.
  */
 
-import { SimpleUserStoreListItemInterface } from "@wso2is/admin.applications.v1/models/application";
-import { AppState } from "@wso2is/admin.core.v1/store";
-import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment } from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { updateJITProvisioningConfigs } from "../../../api/connections";
 import { JITProvisioningResponseInterface } from "../../../models/connection";
@@ -80,13 +76,8 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
         [ "data-testid" ]: testId
     } = props;
 
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
-
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
-
-    const [ userStore, setUserStore ] = useState<SimpleUserStoreListItemInterface[]>([]);
 
     /**
      * Handles the advanced config form submit action.
@@ -117,22 +108,6 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
             });
     };
 
-    useEffect(() => {
-        const userstore: SimpleUserStoreListItemInterface[] = [];
-
-        userstore.push({
-            id: primaryUserStoreDomainName,
-            name: primaryUserStoreDomainName
-        });
-
-        getUserStoreList().then((response: AxiosResponse) => {
-            userstore.push(...response.data);
-            setUserStore(userstore);
-        }).catch(() => {
-            setUserStore(userstore);
-        });
-    }, []);
-
     return (
         !isLoading
             ? (
@@ -141,7 +116,6 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
                         idpId={ idpId }
                         initialValues={ jitProvisioningConfigurations }
                         onSubmit={ handleJITProvisioningConfigFormSubmit }
-                        useStoreList={ userStore }
                         data-testid={ testId }
                         isReadOnly={ isReadOnly }
                     />

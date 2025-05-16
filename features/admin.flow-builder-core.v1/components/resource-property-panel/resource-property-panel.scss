@@ -1,0 +1,139 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+:root {
+    --wso2is-flow-builder-element-property-panel-background: var(--oxygen-palette-common-white);
+    --wso2is-flow-builder-element-property-panel-width: 350px;
+}
+
+@mixin open {
+    width: var(--wso2is-flow-builder-element-property-panel-width);
+    transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
+    overflow: hidden;
+}
+
+@mixin close {
+    width: 0;
+    transition: width 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
+    overflow: hidden;
+}
+
+.flow-builder-element-property-panel {
+    .flow-builder-element-property-panel {
+        position: absolute;
+        width: var(--wso2is-flow-builder-element-property-panel-width);
+        background: var(--wso2is-flow-builder-element-property-panel-background);
+        box-shadow: 3px 0px 20px 0 rgba(0, 0, 0, 0.06);
+        border-right: 1px solid #E8E8E8;
+        border-left: 1px solid #E8E8E8;
+    }
+
+    &:not(.open) {
+        @include close;
+
+        .MuiDrawer-paper {
+            @include close;
+        }
+    }
+
+    &.open {
+        @include open;
+
+        .MuiDrawer-paper {
+            @include open;
+        }
+    }
+}
+
+.flow-builder-element-property-panel {
+    .flow-builder-element-property-panel {
+
+        .flow-builder-element-property-panel-header {
+            padding: var(--oxygen-spacing-1) var(--oxygen-spacing-2);
+            border-bottom: 1px solid var(--oxygen-palette-divider);
+
+            .sub-title {
+                margin-top: 5px;
+
+                .oxygen-avatar {
+                    height: 15px;
+                    width: 15px;
+                    color: var(--oxygen-palette-text-secondary);
+                }
+            }
+        }
+
+        .flow-builder-element-property-panel-content {
+            padding: var(--oxygen-spacing-1) var(--oxygen-spacing-2);
+
+            &.full-height {
+                height: 100%;
+            }
+        }
+
+        .flow-builder-element-property-panel-categories {
+            box-shadow: none;
+            background-color: transparent;
+            overflow: hidden;
+            transition: height 0.3s ease-in-out;
+
+            .flow-builder-element-property-panel-category-heading {
+                .MuiAccordionSummary-content {
+                    display: flex;
+                    flex-direction: row;
+                    align-content: center;
+                    align-items: center;
+                    justify-content: flex-start;
+                    gap: 5px;
+
+                    .oxygen-typography {
+                        font-size: 1em;
+                    }
+                }
+            }
+
+            .flow-builder-element-property-panel-category-details {
+                background: var(--wso2is-flow-builder-element-property-panel-background);
+
+                > .OxygenStack-root {
+                    margin-top: var(--oxygen-spacing-2);
+                }
+            }
+
+            &:not(:first-child) {
+                .flow-builder-element-property-panel-category-heading {
+                    border-top: 1px solid var(--oxygen-palette-divider);
+                }
+            }
+        }
+
+        .flow-builder-element-property-panel-footer {
+            border-top: 1px solid var(--oxygen-palette-divider);
+            padding: var(--oxygen-spacing-2);
+
+            .flow-builder-element-property-panel-footer-secondary-action {
+                &.icon-button {
+                    border-radius: var(--oxygen-shape-borderRadius);
+                    height: 40px;
+                    width: 40px;
+                    min-width: 40px;
+                }
+            }
+        }
+    }
+}

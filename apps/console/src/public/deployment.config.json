@@ -110,6 +110,26 @@
             {
                 "displayName": "Account Disabled",
                 "id": "QWNjb3VudERpc2FibGU"
+            },
+            {
+                "description": "This email informs the user that the email address is updated",
+                "displayName": "Email update without verification",
+                "id": "bm90aWZ5T25FeGlzdGluZ0VtYWlsVXBkYXRlV2l0aG91dFZlcmlmaWNhdGlvbg"
+            },
+            {
+                "description": "This email informs the user that the email address is updated",
+                "displayName": "Email Update Notification",
+                "id": "bm90aWZ5T25FeGlzdGluZ0VtYWlsVXBkYXRl"
+            },
+            {
+                "description": "This email sends an Email OTP to a user for password reset",
+                "displayName": "Password Reset Email OTP",
+                "id": "UGFzc3dvcmRSZXNldE9UUA"
+            },
+            {
+                "description": "This email resends an Email OTP to a user for password reset",
+                "displayName": "Resend Password Reset Email OTP",
+                "id": "cmVzZW5kUGFzc3dvcmRSZXNldE9UUA"
             }
         ],
         "outboundProvisioningConnectors": [],
@@ -148,6 +168,16 @@
                 "description": "This SMS is sent to verify the user's mobile number after an update.",
                 "displayName": "Verify Mobile On Update",
                 "id": "dmVyaWZ5TW9iaWxlT25VcGRhdGU"
+            },
+            {
+                "description": "This SMS is sent to provide a one-time password when admin initiates a password reset for a user",
+                "displayName": "Admin Forced Password Reset",
+                "id": "YWRtaW5Gb3JjZWRQYXNzd29yZFJlc2V0"
+            },
+            {
+                "description": "This SMS is sent to provide a one-time password when admin resends a password reset request",
+                "displayName": "Admin Resend Forced Password Reset",
+                "id": "cmVzZW5kQWRtaW5Gb3JjZWRQYXNzd29yZFJlc2V0"
             }
         ]
     },
@@ -210,6 +240,7 @@
         "enableCustomSmsTemplates": true,
         "enableEmailDomain": false,
         "enableIdentityClaims": true,
+        "enableOldUIForEmailProvider": false,
         "features": {
             "accountLogin": {
                 "disabledFeatures": [],
@@ -495,9 +526,16 @@
                 }
             },
             "auditLogs": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "remote.log.publish"
+                ],
                 "enabled": true,
-                "featureFlags": [],
+                "featureFlags": [
+                    {
+                        "feature": "remote.log.publish",
+                        "flag": ""
+                    }
+                ],
                 "scopes": {
                     "update": [
                         "internal_application_mgt_view"
@@ -785,7 +823,11 @@
                 "scopes": {}
             },
             "identityProviders": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "identityProviders.federationHub",
+                    "identityProviders.saml.artifactBinding",
+                    "identityProviders.saml.attributeConsumingServiceIndex"
+                ],
                 "enabled": true,
                 "featureFlags": [],
                 "scopes": {
@@ -868,11 +910,19 @@
                         "flag": ""
                     },
                     {
+                        "feature": "loginAndRegistration.loginSecurity.fraudDetection",
+                        "flag": ""
+                    },
+                    {
                         "feature": "loginAndRegistration.organizationSettings.discovery",
                         "flag": ""
                     },
                     {
                         "feature": "loginAndRegistration.organizationSettings.impersonation",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "loginAndRegistration.userOnboarding.registrationFlowBuilder",
                         "flag": ""
                     }
                 ],
@@ -1067,6 +1117,23 @@
                     ]
                 }
              },
+            "registrationFlowBuilder": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [
+                        "internal_authenticator_view",
+                        "internal_registration_flow_view"
+                    ],
+                    "update": [
+                        "internal_governance_update",
+                        "internal_registration_flow_update"
+                    ]
+                }
+            },
             "remoteFetchConfig": {
                 "disabledFeatures": [],
                 "enabled": false,
@@ -1540,6 +1607,7 @@
         },
         "selfAppIdentifier": "Console",
         "showAppSwitchButton": true,
+        "showPasswordOfEmailProvider": true,
         "showSmsOtpPwdRecoveryFeatureStatusChip": false,
         "showStatusLabelForNewAuthzRuntimeFeatures": false,
         "systemAppsIdentifiers": [

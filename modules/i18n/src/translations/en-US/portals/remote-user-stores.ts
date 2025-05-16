@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -110,6 +110,10 @@ export const remoteUserStores: RemoteUserStoresNS = {
             description: "There was an error while disconnecting the user store.",
             message: "Disconnection failed!"
         },
+        tokenCountExceededError: {
+            description: "You have reached the maximum number of tokens allowed.",
+            message: "Token generation failed!"
+        },
         tokenGenerateError: {
             description: "There was an error while generating the installation token.",
             message: "Token generation failed!"
@@ -127,7 +131,7 @@ export const remoteUserStores: RemoteUserStoresNS = {
                 classic:
                     "If your requirement is only for authentication, we recommend using the <1>Optimized User Store Connection</1> for efficiency.",
                 optimized:
-                    "This configuration supports Authentication Only. User and group management features are not available in this setup. If user management is an essential requirement, please use the <1>Classic User Store Connection</1> instead."
+                    "This configuration supports Authentication and User Attribute retrieval only. User and group management features are not available in this setup. If user management is an essential requirement, please use the <1>Classic User Store Connection</1> instead."
             },
             notifications: {
                 createUserStore: {

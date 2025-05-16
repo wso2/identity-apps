@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2024, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2016-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -145,6 +145,7 @@
     Boolean isQuestionBasedPasswordRecoveryEnabledByTenant = false;
     Boolean isSMSRecoveryAvailable = false;
     Boolean isEmailLinkBasedPasswordRecoveryEnabledByTenant = false;
+    Boolean isEmailOtpBasedPasswordRecoveryEnabledByTenant = false;
     Boolean isMultiAttributeLoginEnabledInTenant = false;
     String allowedAttributes = null;
     try {
@@ -154,6 +155,8 @@
             Boolean.parseBoolean(IdentityUtil.getProperty("Connectors.ChallengeQuestions.Enabled"));
         isEmailLinkBasedPasswordRecoveryEnabledByTenant =
             preferenceRetrievalClient.checkEmailLinkBasedPasswordRecovery(tenantDomain);
+        isEmailOtpBasedPasswordRecoveryEnabledByTenant = 
+            preferenceRetrievalClient.checkEmailOTPBasedPasswordRecovery(tenantDomain);
         isSMSRecoveryAvailable = preferenceRetrievalClient.checkSMSOTPBasedPasswordRecovery(tenantDomain);
         isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantDomain);
         allowedAttributes = preferenceRetrievalClient.checkMultiAttributeLoginProperty(tenantDomain);
@@ -168,15 +171,15 @@
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }
-    Boolean isEmailRecoveryAvailable = isEmailNotificationEnabled && isEmailLinkBasedPasswordRecoveryEnabledByTenant;
-
+    Boolean isEmailRecoveryAvailable = isEmailNotificationEnabled && 
+        (isEmailLinkBasedPasswordRecoveryEnabledByTenant || isEmailOtpBasedPasswordRecoveryEnabledByTenant);
     String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
     Boolean isEmailUsernameEnabled = false;
-    String usernameLabel = "Username";
+    String usernameLabel = i18n(recoveryResourceBundle, customText, "Username");
     String usernamePlaceHolder = "Enter.your.username.here";
 
     if (StringUtils.isNotBlank(emailUsernameEnable) && Boolean.parseBoolean(emailUsernameEnable)) {
-        usernameLabel = "email.username";
+        usernameLabel = i18n(recoveryResourceBundle, customText, "email.username");
         usernamePlaceHolder = "enter.your.email";
     } else if (isMultiAttributeLoginEnabledInTenant) {
         if (allowedAttributes != null) {
@@ -262,7 +265,7 @@
                         </div>
                         <div class="field">
                             <label for="username">
-                                <%=i18n(recoveryResourceBundle, customText, usernameLabel) %>
+                                <%=usernameLabel %>
                             </label>
                             <div class="ui fluid left icon input">
                                 <input
@@ -296,7 +299,7 @@
                         </div>
                         <div class="field">
                             <label for="username">
-                                <%=i18n(recoveryResourceBundle, customText, usernameLabel) %>
+                                <%=usernameLabel %>
                             </label>
                             <div class="ui fluid left icon input">
                                 <% String identifierPlaceholder=i18n(recoveryResourceBundle, customText,
@@ -350,12 +353,15 @@
                             data-testid="password-recovery-page-multi-option-radio">
                             <%
                                 if (isEmailRecoveryAvailable) {
+                                    String emailSendLabel = isEmailOtpBasedPasswordRecoveryEnabledByTenant
+                                                                ? "send.email.otp" 
+                                                                : "send.email.link";
                             %>
                             <div class="field">
                                 <div class="ui radio checkbox">
                                     <input type="radio" name="recoveryOption" value="<%=EMAIL%>"
                                         <%=EMAIL.equals(selectedOption)?"checked":""%>/>
-                                    <label><%=i18n(recoveryResourceBundle, customText, "send.email.link")%>
+                                    <label><%=i18n(recoveryResourceBundle, customText, emailSendLabel)%>
                                     </label>
                                 </div>
                             </div>
@@ -403,6 +409,8 @@
                         <input type="hidden" name="urlQuery" value="<%=request.getQueryString() %>"/>
                         <input type="hidden" name="isMultiRecoveryOptionsAvailable"
                             value="<%=multipleRecoveryOptionsAvailable %>"/>
+                        <input type="hidden" name="isEmailOtpBasedPasswordRecoveryEnabledByTenant"
+                            value="<%=isEmailOtpBasedPasswordRecoveryEnabledByTenant %>"/>
 
                         <%
                             String callback = request.getParameter("callback");
@@ -443,11 +451,14 @@
                         <div class="mt-4">
                             <%
                                 String submitButtoni18nText =
-                                    multipleRecoveryOptionsAvailable? "password.recovery.button.multi" :
-                                    ( isEmailRecoveryAvailable? "password.recovery.button.email.link" :
-                                    ( isQuestionBasedPasswordRecoveryEnabledByTenant? "Recover.with.question" :
+                                    multipleRecoveryOptionsAvailable ? "password.recovery.button.multi" :
+                                    ( isEmailOtpBasedPasswordRecoveryEnabledByTenant ?
+                                        "password.recovery.button.email.otp" :
+                                    ( isEmailLinkBasedPasswordRecoveryEnabledByTenant ? 
+                                        "password.recovery.button.email.link" :
+                                    ( isQuestionBasedPasswordRecoveryEnabledByTenant ? "Recover.with.question" :
                                     ( isSMSRecoveryAvailable ? "password.recovery.button.smsotp" :
-                                    "Submit")));
+                                    "Submit"))));
                             %>
                             <button id="recoverySubmit"
                                     class="ui primary button large fluid"

@@ -1,0 +1,18 @@
+[
+    {
+        "resourceType": "WIDGET",
+        "category": "SECURITY",
+        "type": "RECAPTCHA",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "reCAPTCHA",
+            "description": "Add reCAPTCHA to your registration experience",
+            "image": "https://www.gstatic.com/recaptcha/api2/logo_48.png",
+            "showOnResourcePanel": false
+        },
+        "config": {
+            "version": 2
+        }
+    }
+]

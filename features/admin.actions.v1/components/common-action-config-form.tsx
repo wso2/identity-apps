@@ -16,14 +16,11 @@
  * under the License.
  */
 
-import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalFormField, TextFieldAdapter } from "@wso2is/form/src";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import ActionEndpointConfigForm from "./action-endpoint-config-form";
 import {
     ActionConfigFormPropertyInterface,
@@ -40,6 +37,10 @@ interface CommonActionConfigFormInterface extends IdentifiableComponentInterface
      */
     isCreateFormState: boolean;
     /**
+     * Specifies whether the form is read-only.
+     */
+    isReadOnly: boolean;
+    /**
      * Callback function triggered when the authentication type is changed.
      *
      * @param updatedValue - The new authentication type selected.
@@ -51,24 +52,12 @@ interface CommonActionConfigFormInterface extends IdentifiableComponentInterface
 const CommonActionConfigForm: FunctionComponent<CommonActionConfigFormInterface> = ({
     initialValues,
     isCreateFormState,
+    isReadOnly,
     onAuthenticationTypeChange,
     [ "data-componentid" ]: _componentId = "common-action-config-form"
 }: CommonActionConfigFormInterface): ReactElement => {
 
-    const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state.config.ui.features.actions);
-    const hasActionUpdatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.update);
-    const hasActionCreatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.create);
-
     const { t } = useTranslation();
-
-    const getFieldDisabledStatus = (): boolean => {
-        if (isCreateFormState) {
-            return !hasActionCreatePermissions;
-        } else {
-            return !hasActionUpdatePermissions;
-        }
-    };
 
     return (
         <>
@@ -94,12 +83,13 @@ const CommonActionConfigForm: FunctionComponent<CommonActionConfigFormInterface>
                 component={ TextFieldAdapter }
                 maxLength={ 100 }
                 minLength={ 0 }
-                disabled={ getFieldDisabledStatus() }
+                disabled={ isReadOnly }
             />
             <ActionEndpointConfigForm
                 initialValues={ initialValues }
                 isCreateFormState={ isCreateFormState }
                 onAuthenticationTypeChange={ onAuthenticationTypeChange }
+                isReadOnly={ isReadOnly }
             />
         </>
     );

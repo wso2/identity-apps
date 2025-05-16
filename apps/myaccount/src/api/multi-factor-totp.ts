@@ -252,7 +252,7 @@ export const checkIfTOTPEnabled = (): Promise<any> => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
-            const totpEnabled: string = response?.["data"]?.[SCIMConfigs.scim.customEnterpriseSchema]?.["totpEnabled"];
+            const totpEnabled: string = response?.["data"]?.[SCIMConfigs.scim.systemSchema]?.["totpEnabled"];
 
             if (totpEnabled && totpEnabled == "true") {
                 return true;

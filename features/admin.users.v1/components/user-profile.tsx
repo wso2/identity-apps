@@ -41,11 +41,12 @@ import {
     ScimOperationsInterface,
     SearchRoleInterface
 } from "@wso2is/admin.roles.v2/models/roles";
-import { ConnectorPropertyInterface  } from "@wso2is/admin.server-configurations.v1";
+import { ConnectorPropertyInterface, ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1";
 import { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
 import { getAssociationType } from "@wso2is/admin.tenants.v1/utils/tenants";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { getUserNameWithoutDomain, resolveUserstore } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -67,6 +68,7 @@ import {
     DangerZone,
     DangerZoneGroup,
     EmphasizedSegment,
+    LinkButton,
     Popup,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
@@ -79,25 +81,35 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Icon, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
-import { updateUserInfo } from "../api";
+import { UserImpersonationAction } from "./user-impersonation-action";
+import { resendCode, updateUserInfo } from "../api";
 import {
     ACCOUNT_LOCK_REASON_MAP,
+    AccountLockedReason,
+    AccountState,
     AdminAccountTypes,
+    AttributeDataType,
     CONNECTOR_PROPERTY_TO_CONFIG_STATUS_MAP,
     LocaleJoiningSymbol,
     PASSWORD_RESET_PROPERTIES,
+    RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP,
+    RecoveryScenario,
     UserManagementConstants
 } from "../constants";
 import {
     AccountConfigSettingsInterface,
     PatchUserOperationValue,
+    ResendCodeRequestData,
     SchemaAttributeValueInterface,
     SubValueInterface
 } from "../models/user";
 import "./user-profile.scss";
 import {
     constructPatchOpValueForMultiValuedAttribute,
-    isMultipleEmailsAndMobileNumbersEnabled
+    constructPatchOperationForMultiValuedVerifiedAttribute,
+    getDisplayOrder,
+    isMultipleEmailsAndMobileNumbersEnabled,
+    isSchemaReadOnly
 } from "../utils/user-management-utils";
 
 const EMAIL_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
@@ -108,6 +120,8 @@ const VERIFIED_MOBILE_NUMBERS_ATTRIBUTE: string =
     ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS");
 const VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE: string =
     ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES");
+const PRIMARY_EMAIL_VERIFIED_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_VERIFIED");
+const PRIMARY_MOBILE_VERIFIED_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_VERIFIED");
 
 /**
  * Prop types for the basic details component.
@@ -195,7 +209,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
-
     const dispatch: Dispatch = useDispatch();
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
@@ -208,6 +221,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     );
     const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     const hasUsersUpdatePermissions: boolean = useRequiredScopes(
         featureConfig?.users?.scopes?.update
@@ -219,6 +234,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchemaInterface[]>();
+    const [ simpleMultiValuedExtendedProfileSchema, setSimpleMultiValuedExtendedProfileSchema ]
+        = useState<ProfileSchemaInterface[]>();
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ showAdminRevokeConfirmationModal, setShowAdminRevokeConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<ProfileInfoInterface>(undefined);
@@ -244,6 +261,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const accountLocked: boolean = user[userConfig.userProfileSchema]?.accountLocked === "true" ||
         user[userConfig.userProfileSchema]?.accountLocked === true;
     const accountLockedReason: string = user[userConfig.userProfileSchema]?.lockedReason;
+    const accountState: string = user[userConfig.userProfileSchema]?.accountState;
     const accountDisabled: boolean = user[userConfig.userProfileSchema]?.accountDisabled === "true" ||
         user[userConfig.userProfileSchema]?.accountDisabled === true;
     const oneTimePassword: string = user[userConfig.userProfileSchema]?.oneTimePassword;
@@ -256,22 +274,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const [ primaryValues, setPrimaryValues ] = useState<Record<string, string>>({}); // For multi-valued attributes.
     const [ isMultiValuedItemInvalid, setIsMultiValuedItemInvalid ] =  useState<Record<string, boolean>>({});
 
-    // Multi-valued attribute delete confirmation modal related states.
-    const [ selectedAttributeInfo, setSelectedAttributeInfo ] =
-        useState<{ value: string; schema?: ProfileSchemaInterface }>({ value: "" });
-    const [ showMultiValuedItemDeleteConfirmationModal, setShowMultiValuedItemDeleteConfirmationModal ] =
-        useState<boolean>(false);
-    const handleMultiValuedItemDeleteModalClose: () => void = useCallback(() => {
-        setShowMultiValuedItemDeleteConfirmationModal(false);
-        setSelectedAttributeInfo({ value: "" });
-    }, []);
-    const handleMultiValuedItemDeleteConfirmClick: ()=> void = useCallback(() => {
-        handleMultiValuedItemDelete(selectedAttributeInfo.schema, selectedAttributeInfo.value);
-        handleMultiValuedItemDeleteModalClose();
-    }, [ selectedAttributeInfo, handleMultiValuedItemDeleteModalClose ]);
-
     const isMultipleEmailAndMobileNumberEnabled: boolean = useMemo(() => {
-        return isMultipleEmailsAndMobileNumbersEnabled(profileInfo,profileSchema);
+        return isMultipleEmailsAndMobileNumbersEnabled(profileInfo, profileSchema);
     }, [ profileSchema, profileInfo ]);
 
     useEffect(() => {
@@ -297,9 +301,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
     }, [ connectorProperties ]);
 
-    /**
-     *  .
-     */
     useEffect(() => {
         // This will load the countries to the dropdown
         setCountryList(CommonUtils.getCountryList());
@@ -316,33 +317,26 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * Sort the elements of the profileSchema state accordingly by the displayOrder attribute in the ascending order.
      */
     useEffect(() => {
+        const META_VERSION: string = ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION");
+        const filteredSchemas: ProfileSchemaInterface[] = [];
+        const simpleMultiValuedExtendedSchemas: ProfileSchemaInterface[] = [];
 
-        const getDisplayOrder = (schema: ProfileSchemaInterface): number => {
-            if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE
-                && (!schema.displayOrder || schema.displayOrder == "0")) return 6;
-            if (schema.name === MOBILE_NUMBERS_ATTRIBUTE
-                && (!schema.displayOrder || schema.displayOrder == "0")) return 7;
+        for (const schema of ProfileUtils.flattenSchemas([ ...profileSchemas ])) {
+            if (schema.name === META_VERSION) {
+                continue;
+            }
+            // Only simple multi-valued attributes in extended schemas are supported generally.
+            if (schema.extended && schema.multiValued && schema.type !== AttributeDataType.COMPLEX) {
+                simpleMultiValuedExtendedSchemas.push(schema);
+            }
+            filteredSchemas.push(schema);
+        }
 
-            return schema.displayOrder ? parseInt(schema.displayOrder, 10) : -1;
-        };
+        filteredSchemas.sort((a: ProfileSchemaInterface, b: ProfileSchemaInterface) =>
+            getDisplayOrder(a) - getDisplayOrder(b));
 
-        const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas([ ...profileSchemas ])
-            .filter((item: ProfileSchemaInterface) =>
-                item.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION"))
-            .sort((a: ProfileSchemaInterface, b: ProfileSchemaInterface) => {
-                const orderA: number = getDisplayOrder(a);
-                const orderB: number = getDisplayOrder(b);
-
-                if (orderA === -1) {
-                    return -1;
-                } else if (orderB === -1) {
-                    return 1;
-                } else {
-                    return orderA - orderB;
-                }
-            });
-
-        setProfileSchema(sortedSchemas);
+        setProfileSchema(filteredSchemas);
+        setSimpleMultiValuedExtendedProfileSchema(simpleMultiValuedExtendedSchemas);
     }, [ profileSchemas ]);
 
     useEffect(() => {
@@ -387,8 +381,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         } else {
                             const schemaName:string = schemaNames[0];
 
-                            if (schema.extended && userInfo[userConfig.userProfileSchema]
-                                && userInfo[userConfig.userProfileSchema][schemaNames[0]]) {
+                            // System Schema
+                            if (schema.extended
+                                && userInfo[userConfig.userProfileSchema]?.[schemaNames[0]]
+                            ) {
                                 if (UserManagementConstants.MULTI_VALUED_ATTRIBUTES.includes(schemaNames[0])) {
                                     const attributeValue: string | string[] =
                                         userInfo[userConfig.userProfileSchema]?.[schemaNames[0]];
@@ -407,8 +403,21 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 return;
                             }
 
-                            if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
-                                && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]) {
+                            // Enterprise Schema
+                            if (schema.extended
+                                && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]]
+                            ) {
+                                if (schema.multiValued) {
+                                    const attributeValue: string | string[] =
+                                        userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]];
+                                    const formattedValue: string = Array.isArray(attributeValue)
+                                        ? attributeValue.join(",")
+                                        : "";
+
+                                    tempProfileInfo.set(schema.name, formattedValue);
+
+                                    return;
+                                }
                                 tempProfileInfo.set(
                                     schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
                                 );
@@ -416,13 +425,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 return;
                             }
 
+                            // Custom Schema
                             if (
                                 schema.extended
                                 && userInfo?.[userSchemaURI]?.[schemaNames[0]]
                             ) {
-                                if (UserManagementConstants.MULTI_VALUED_ATTRIBUTES.includes(schemaNames[0])) {
-                                    const attributeValue: string | string[] =
-                                        userInfo[userSchemaURI]?.[schemaNames[0]];
+                                if (schema.multiValued) {
+                                    const attributeValue: string | string[] = userInfo[userSchemaURI]?.[schemaNames[0]];
                                     const formattedValue: string = Array.isArray(attributeValue)
                                         ? attributeValue.join(",")
                                         : "";
@@ -460,11 +469,23 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 ?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaName]
                                 ?.[schemaSecondaryProperty];
 
-                            if (schema.extended && (userProfileSchema || enterpriseSchema)) {
+                            const customSchema: string = userInfo
+                                ?.[userSchemaURI]?.[schemaName]
+                                ?.[schemaSecondaryProperty];
+
+                            if (schema.extended && (userProfileSchema || enterpriseSchema || customSchema)) {
                                 if (userProfileSchema) {
                                     tempProfileInfo.set(schema.name, userProfileSchema);
+                                } else if (enterpriseSchema && schema.multiValued) {
+                                    tempProfileInfo.set(schema.name,
+                                        Array.isArray(enterpriseSchema) ? enterpriseSchema.join(",") : "");
                                 } else if (enterpriseSchema) {
                                     tempProfileInfo.set(schema.name, enterpriseSchema);
+                                } else if (customSchema && schema.multiValued) {
+                                    tempProfileInfo.set(schema.name,
+                                        Array.isArray(customSchema) ? customSchema.join(",") : "");
+                                } else if (customSchema) {
+                                    tempProfileInfo.set(schema.name, customSchema);
                                 }
                             } else {
                                 const subValue: SubValueInterface = userInfo[schemaName] &&
@@ -648,34 +669,36 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      */
     const mapMultiValuedAttributeValues = (profileData: Map<string, string>): void => {
 
-        if (!isMultipleEmailAndMobileNumberEnabled) return;
         const tempMultiValuedAttributeValues: Record<string, string[]> = {};
         const tempPrimaryValues: Record<string, string> = {};
 
-        let emailAddresses: string[] = profileData?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
-        const primaryEmail: string = profileData?.get(EMAIL_ATTRIBUTE);
+        simpleMultiValuedExtendedProfileSchema?.forEach((schema: ProfileSchemaInterface) => {
+            const attributeValue: string = profileData?.get(schema.name);
 
-        let mobileNumbers: string[] = profileData?.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
-        const primaryMobile: string = profileData?.get(MOBILE_ATTRIBUTE);
+            tempMultiValuedAttributeValues[schema.name] = attributeValue ? attributeValue.split(",") : [];
+        });
 
-        if (!isEmpty(primaryEmail)) {
-            emailAddresses = emailAddresses.filter((value: string) =>
-                !isEmpty(value)
-                && value !== primaryEmail);
-            emailAddresses.unshift(primaryEmail);
+        if (isMultipleEmailAndMobileNumberEnabled) {
+            const primaryEmail: string = profileData?.get(EMAIL_ATTRIBUTE);
+            const primaryMobile: string = profileData?.get(MOBILE_ATTRIBUTE);
+
+            if (!isEmpty(primaryEmail)) {
+                const emailAddresses: string[] = tempMultiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE]
+                    ?.filter((value: string) => !isEmpty(value) && value !== primaryEmail) ?? [];
+
+                emailAddresses.unshift(primaryEmail);
+                tempMultiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE] = emailAddresses;
+            }
+            if (!isEmpty(primaryMobile)) {
+                const mobileNumbers: string[] = tempMultiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE]
+                    ?.filter((value: string) => !isEmpty(value) && value !== primaryMobile) ?? [];
+
+                mobileNumbers.unshift(primaryMobile);
+                tempMultiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE] = mobileNumbers;
+            }
+            tempPrimaryValues[EMAIL_ATTRIBUTE] = primaryEmail;
+            tempPrimaryValues[MOBILE_ATTRIBUTE] = primaryMobile;
         }
-
-        if (!isEmpty(primaryMobile)) {
-            mobileNumbers = mobileNumbers.filter((value: string) =>
-                !isEmpty(value)
-                && value !== primaryMobile);
-            mobileNumbers.unshift(primaryMobile);
-        }
-
-        tempMultiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE] = emailAddresses;
-        tempMultiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE] = mobileNumbers;
-        tempPrimaryValues[EMAIL_ATTRIBUTE] = primaryEmail;
-        tempPrimaryValues[MOBILE_ATTRIBUTE] = primaryMobile;
 
         setMultiValuedAttributeValues(tempMultiValuedAttributeValues);
         setPrimaryValues(tempPrimaryValues);
@@ -824,6 +847,30 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     /**
+     * This function returns the verification pending attribute value for email and mobile attributes.
+     * @param schemaName - Schema name.
+     * @returns Verification pending attribute value.
+     */
+    const getVerificationPendingAttributeValue = (schemaName: string): string | null => {
+        if (schemaName === EMAIL_ATTRIBUTE || schemaName === EMAIL_ADDRESSES_ATTRIBUTE) {
+            const pendingAttributes: Array<{value: string}> | undefined =
+            user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.["pendingEmails"];
+
+            return Array.isArray(pendingAttributes)
+                && pendingAttributes.length > 0
+                && pendingAttributes[0]?.value !== undefined
+                ? pendingAttributes[0].value
+                : null;
+        } else if (schemaName === MOBILE_ATTRIBUTE || schemaName === MOBILE_NUMBERS_ATTRIBUTE) {
+            return !isEmpty(user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.["pendingMobileNumber"])
+                ? user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.["pendingMobileNumber"]
+                : null;
+        }
+
+        return null;
+    };
+
+    /**
      * This function handles deletion of the user.
      *
      * @param deletingUser - user object to be revoked their admin permissions.
@@ -880,23 +927,112 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @param values - The Map of form values.
      */
     const handlePrimaryEmailAndMobile = (values: Map<string, string | string[]>): void => {
-        const tempPrimaryMobile: string = primaryValues[MOBILE_ATTRIBUTE];
-        const mobileNumbersInputFieldValue: string = multiValuedInputFieldValue[MOBILE_NUMBERS_ATTRIBUTE];
 
-        if (!isEmpty(tempPrimaryMobile)) {
-            values.set(MOBILE_ATTRIBUTE, tempPrimaryMobile);
-        } else if (!isEmpty(mobileNumbersInputFieldValue)) {
-            values.set(MOBILE_ATTRIBUTE, mobileNumbersInputFieldValue);
+        const mobileSchema: ProfileSchemaInterface = profileSchema.find(
+            (schema: ProfileSchemaInterface) => schema.name === MOBILE_ATTRIBUTE
+        );
+
+        if (!isSchemaReadOnly(mobileSchema, isUserManagedByParentOrg)) {
+            const tempPrimaryMobile: string = primaryValues[MOBILE_ATTRIBUTE];
+            const mobileNumbersInputFieldValue: string = multiValuedInputFieldValue[MOBILE_NUMBERS_ATTRIBUTE];
+
+            if (tempPrimaryMobile !== undefined && tempPrimaryMobile !== null) {
+                values.set(MOBILE_ATTRIBUTE, tempPrimaryMobile);
+            }
+
+            if (isEmpty(tempPrimaryMobile) && !isEmpty(mobileNumbersInputFieldValue)) {
+                values.set(MOBILE_ATTRIBUTE, mobileNumbersInputFieldValue);
+            }
         }
 
-        const tempPrimaryEmail: string = primaryValues[EMAIL_ATTRIBUTE];
-        const newEmail: string = multiValuedInputFieldValue[EMAIL_ADDRESSES_ATTRIBUTE];
+        const emailSchema: ProfileSchemaInterface = profileSchema.find(
+            (schema: ProfileSchemaInterface) => schema.name === EMAIL_ATTRIBUTE
+        );
 
-        if (!isEmpty(tempPrimaryEmail)) {
-            values.set(EMAIL_ATTRIBUTE, tempPrimaryEmail);
-        } else if (!isEmpty(newEmail)) {
-            values.set(EMAIL_ATTRIBUTE, newEmail);
+        if (!isSchemaReadOnly(emailSchema, isUserManagedByParentOrg)) {
+            const tempPrimaryEmail: string = primaryValues[EMAIL_ATTRIBUTE] ?? "";
+            const emailsInputFieldValue: string = multiValuedInputFieldValue[EMAIL_ADDRESSES_ATTRIBUTE];
+
+            if (tempPrimaryEmail !== undefined && tempPrimaryEmail !== null) {
+                values.set(EMAIL_ATTRIBUTE, tempPrimaryEmail);
+            }
+            if (isEmpty(tempPrimaryEmail) && !isEmpty(emailsInputFieldValue)) {
+                values.set(EMAIL_ATTRIBUTE, emailsInputFieldValue);
+            }
         }
+    };
+
+    const handleVerifiedEmailAddresses = (data: PatchRoleDataInterface): void => {
+
+        const verifiedAttributeSchema: ProfileSchemaInterface | undefined = profileSchema.find(
+            (schema: ProfileSchemaInterface) => schema.name === VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE
+        );
+
+        if (!isMultipleEmailAndMobileNumberEnabled
+            || configSettings?.isEmailVerificationEnabled !== "true"
+            || isSchemaReadOnly(verifiedAttributeSchema, isUserManagedByParentOrg)) return;
+
+        const verifiedAttributeValueList: string[]
+            = profileInfo?.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
+        const operation: ScimOperationsInterface = constructPatchOperationForMultiValuedVerifiedAttribute({
+            primaryValue: profileInfo?.get(EMAIL_ATTRIBUTE),
+            valueList: multiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE],
+            verifiedAttributeSchema,
+            verifiedValueList: verifiedAttributeValueList
+        });
+
+        if (!operation) return;
+        data.Operations.push(operation);
+    };
+
+    const handleVerifiedMobileNumbers = (data: PatchRoleDataInterface): void => {
+        const verifiedAttributeSchema: ProfileSchemaInterface | undefined = profileSchema.find(
+            (schema: ProfileSchemaInterface) => schema.name === VERIFIED_MOBILE_NUMBERS_ATTRIBUTE
+        );
+
+        if (!isMultipleEmailAndMobileNumberEnabled
+            || configSettings?.isMobileVerificationEnabled !== "true"
+            || isSchemaReadOnly(verifiedAttributeSchema, isUserManagedByParentOrg)) return;
+
+        const verifiedAttributeValueList: string[]
+            = profileInfo?.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
+        const operation: ScimOperationsInterface = constructPatchOperationForMultiValuedVerifiedAttribute({
+            primaryValue: profileInfo?.get(MOBILE_ATTRIBUTE),
+            valueList: multiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE],
+            verifiedAttributeSchema,
+            verifiedValueList: verifiedAttributeValueList
+        });
+
+        if (!operation) return;
+        data.Operations.push(operation);
+    };
+
+    /**
+     * Removes the email address from the form values if it is pending verification.
+     * This prevents unnecessary retriggering of the verification process.
+     * @param values - Form values.
+     */
+    const handleVerificationPendingEmail = (values: Map<string, string | string[]>): void => {
+        if (isMultipleEmailAndMobileNumberEnabled
+            || configSettings?.isEmailVerificationEnabled !== "true"
+            || isEmpty(getVerificationPendingAttributeValue(EMAIL_ATTRIBUTE))
+            || values.get(EMAIL_ATTRIBUTE) !== getVerificationPendingAttributeValue(EMAIL_ATTRIBUTE)) return;
+
+        values.delete(EMAIL_ATTRIBUTE);
+    };
+
+    /**
+     * Removes the mobile number from the form values if it is pending verification.
+     * This prevents unnecessary retriggering of the verification process.
+     * @param values - Form values.
+     */
+    const handleVerificationPendingMobile = (values: Map<string, string | string[]>): void => {
+        if (isMultipleEmailAndMobileNumberEnabled
+            || configSettings?.isMobileVerificationEnabled !== "true"
+            || isEmpty(getVerificationPendingAttributeValue(MOBILE_ATTRIBUTE))
+            || values.get(MOBILE_ATTRIBUTE) !== getVerificationPendingAttributeValue(MOBILE_ATTRIBUTE)) return;
+
+        values.delete(MOBILE_ATTRIBUTE);
     };
 
     /**
@@ -918,6 +1054,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         if (isMultipleEmailAndMobileNumberEnabled) {
             handlePrimaryEmailAndMobile(values);
+            handleVerifiedEmailAddresses(data);
+            handleVerifiedMobileNumbers(data);
+        } else {
+            handleVerificationPendingEmail(values);
+            handleVerificationPendingMobile(values);
         }
 
         if (adminUserType === AdminAccountTypes.INTERNAL) {
@@ -945,8 +1086,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             const attValues: Map<string, string | string []> = new Map();
 
                             if (schemaNames.length === 1 || schemaNames.length === 2) {
-                                if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE
-                                    || schema.name == MOBILE_NUMBERS_ATTRIBUTE) {
+                                if (schema.extended) {
                                     opValue = {
                                         [schema.schemaId]: constructPatchOpValueForMultiValuedAttribute(
                                             schema.name,
@@ -955,6 +1095,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         )
                                     };
                                 } else {
+                                    // Handle emails and phoneNumbers and their sub attributes.
                                     // Extract the sub attributes from the form values.
                                     for (const value of values.keys()) {
                                         const subAttribute: string[] = value.split(".");
@@ -1017,7 +1158,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             : { [schemaNames[0]]: values.get(schemaNames[0]) };
                                 }
                             } else {
-                                if(schema.extended) {
+                                if (schema.extended && schema.multiValued) {
+                                    opValue = {
+                                        [schema.schemaId]: {
+                                            [schemaNames[0]]: constructPatchOpValueForMultiValuedAttribute(
+                                                schemaNames[1],
+                                                multiValuedAttributeValues[schema.name],
+                                                multiValuedInputFieldValue[schema.name]
+                                            )
+                                        }
+                                    };
+                                } else if (schema.extended) {
                                     const schemaId: string = schema?.schemaId
                                         ? schema.schemaId
                                         : userConfig.userProfileSchema;
@@ -1428,8 +1579,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
 
         const resolvedUsername: string = resolveUsernameOrDefaultEmail(user, false);
-        const isUserCurrentLoggedInUser: boolean =
-            authenticatedUser?.includes(resolvedUsername);
+        const isUserCurrentLoggedInUser: boolean = authenticatedUser?.includes(resolvedUsername);
 
         return (
             <>
@@ -1446,6 +1596,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             <Show
                                 when={ featureConfig?.users?.scopes?.delete }
                             >
+                                <UserImpersonationAction
+                                    user={ user }
+                                    isLocked={ accountLocked }
+                                    isDisabled={ accountDisabled }
+                                    isReadOnly={ !hasUsersUpdatePermissions }
+                                    isUserManagedByParentOrg={ isUserManagedByParentOrg }
+                                    data-componentid="user-mgt-edit-user-impersonate-action"
+                                />
+                                <Divider hidden/>
                                 <DangerZoneGroup
                                     sectionHeader={ t("user:editUser.dangerZoneGroup.header") }
                                 >
@@ -1457,21 +1616,40 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             user.userName !== adminUsername
                                         ) ? (
                                                 <Show when={ featureConfig?.users?.scopes?.update }>
-                                                    <DangerZone
-                                                        data-testid={ `${ testId }-change-password` }
-                                                        actionTitle={ t("user:editUser." +
-                                                            "dangerZoneGroup.passwordResetZone.actionTitle") }
-                                                        header={ t("user:editUser." +
-                                                            "dangerZoneGroup.passwordResetZone.header") }
-                                                        subheader={ t("user:editUser." +
-                                                            "dangerZoneGroup.passwordResetZone.subheader") }
-                                                        onActionClick={ (): void => {
-                                                            setOpenChangePasswordModal(true);
-                                                        } }
-                                                        isButtonDisabled={ accountLocked }
-                                                        buttonDisableHint={ t("user:editUser." +
-                                                            "dangerZoneGroup.passwordResetZone.buttonHint") }
-                                                    />
+                                                    { isSetPassword ? (
+                                                        <DangerZone
+                                                            data-testid={ `${ testId }-set-password` }
+                                                            actionTitle={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordSetZone.actionTitle") }
+                                                            header={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordSetZone.header") }
+                                                            subheader={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordSetZone.subheader") }
+                                                            onActionClick={ (): void => {
+                                                                setOpenChangePasswordModal(true);
+                                                            } }
+                                                        />
+                                                    ) : (
+                                                        <DangerZone
+                                                            data-testid={ `${ testId }-change-password` }
+                                                            actionTitle={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordResetZone.actionTitle") }
+                                                            header={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordResetZone.header") }
+                                                            subheader={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordResetZone.subheader") }
+                                                            onActionClick={ (): void => {
+                                                                setOpenChangePasswordModal(true);
+                                                            } }
+                                                            isButtonDisabled={
+                                                                accountLocked &&
+                                                                accountLockedReason !== AccountLockedReason.
+                                                                    PENDING_ADMIN_FORCED_USER_PASSWORD_RESET
+                                                            }
+                                                            buttonDisableHint={ t("user:editUser." +
+                                                                "dangerZoneGroup.passwordResetZone.buttonHint") }
+                                                        />
+                                                    ) }
                                                 </Show>
                                             ) : null
                                     }
@@ -1636,7 +1814,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             };
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             translationKey = "user:profile.notifications.verifyMobile.";
-            setSelectedAttributeInfo({ schema, value: attributeValue });
             const verifiedMobileList: string[] = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
                 get("VERIFIED_MOBILE_NUMBERS"))?.split(",") || [];
 
@@ -1740,53 +1917,111 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         let attributeValueList: string[] = [];
         let verifiedAttributeValueList: string[] = [];
         let primaryAttributeValue: string = "";
+        let fetchedPrimaryAttributeValue: string = "";
         let verificationEnabled: boolean = false;
         let primaryAttributeSchema: ProfileSchemaInterface;
         let maxAllowedLimit: number = 0;
+        let verificationPendingValue: string = "";
+        let primaryVerified: boolean = false;
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             attributeValueList = multiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE] ?? [];
             verifiedAttributeValueList = profileInfo?.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
             primaryAttributeValue = primaryValues[EMAIL_ATTRIBUTE];
+            fetchedPrimaryAttributeValue = profileInfo?.get(EMAIL_ATTRIBUTE);
             verificationEnabled = configSettings?.isEmailVerificationEnabled === "true";
             primaryAttributeSchema = profileSchema.find((schema: ProfileSchemaInterface) =>
                 schema.name === EMAIL_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED;
+            verificationPendingValue = getVerificationPendingAttributeValue(EMAIL_ADDRESSES_ATTRIBUTE);
+            primaryVerified = user[userConfig.userProfileSchema]?.[PRIMARY_EMAIL_VERIFIED_ATTRIBUTE] === true ||
+                user[userConfig.userProfileSchema]?.[PRIMARY_EMAIL_VERIFIED_ATTRIBUTE] === "true";
 
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             attributeValueList = multiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE] ?? [];
             verifiedAttributeValueList = profileInfo?.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
             primaryAttributeValue = primaryValues[MOBILE_ATTRIBUTE];
-            verificationEnabled = configSettings?.isMobileVerificationEnabled === "true"
-                || configSettings?.isMobileVerificationByPrivilegeUserEnabled === "true";
+            fetchedPrimaryAttributeValue = profileInfo?.get(MOBILE_ATTRIBUTE);
+            verificationEnabled = configSettings?.isMobileVerificationEnabled === "true";
             primaryAttributeSchema = profileSchema.find((schema: ProfileSchemaInterface) =>
                 schema.name === MOBILE_ATTRIBUTE);
             maxAllowedLimit = ProfileConstants.MAX_MOBILE_NUMBERS_ALLOWED;
+            verificationPendingValue = getVerificationPendingAttributeValue(MOBILE_NUMBERS_ATTRIBUTE);
+            primaryVerified = user[userConfig.userProfileSchema]?.[PRIMARY_MOBILE_VERIFIED_ATTRIBUTE] === true ||
+                user[userConfig.userProfileSchema]?.[PRIMARY_MOBILE_VERIFIED_ATTRIBUTE] === "true";
+
+        } else {
+            attributeValueList = multiValuedAttributeValues[schema.name] ?? [];
+            maxAllowedLimit = ProfileConstants.MAX_MULTI_VALUES_ALLOWED;
         }
 
         const showAccordion: boolean = attributeValueList.length >= 1;
+        const isEmailOrMobile: boolean = schema.name === EMAIL_ADDRESSES_ATTRIBUTE
+            || schema.name === MOBILE_NUMBERS_ATTRIBUTE;
 
         const showVerifiedPopup = (value: string): boolean => {
-            return verificationEnabled &&
-                (verifiedAttributeValueList.includes(value) || value === primaryAttributeValue);
+            const isPrimaryAndVerified: boolean = value === fetchedPrimaryAttributeValue && primaryVerified;
+
+            return isEmailOrMobile && verificationEnabled &&
+                (verifiedAttributeValueList.includes(value) || isPrimaryAndVerified);
         };
 
         const showPrimaryPopup = (value: string): boolean => {
-            return value === primaryAttributeValue;
+            if (!isEmailOrMobile) {
+                return false;
+            }
+
+            const isFetchedPrimary : boolean = value === fetchedPrimaryAttributeValue;
+            const isCurrentPrimary : boolean = value === primaryAttributeValue;
+            const isVerified : boolean =
+                !verificationEnabled ||                       // verification disabled → treat as verified.
+                verifiedAttributeValueList.includes(value) || // explicitly verified via list.
+                (isFetchedPrimary && primaryVerified);        // legacy single‑value flow
+
+            /* ───────── SINGLE VALUE ─────────
+            * Show the popup if that lone value is either:
+            *   • already stored as primary in the database, OR
+            *   • the user later set as primary while it is verified.
+            */
+            if (attributeValueList.length === 1) {
+                return isFetchedPrimary || (isCurrentPrimary && isVerified);
+            }
+
+            /* ───── MULTIPLE VALUES ─────
+            * Show the popup on exactly one row — the one that is the
+            * current primary *and* meets at least ONE of these:
+            *   • it is verified, OR
+            *   • the database has flagged it as primary.
+            */
+            return isCurrentPrimary && (isVerified || isFetchedPrimary);
+        };
+
+        const showPendingVerificationPopup = (value: string): boolean => {
+            return isEmailOrMobile && verificationEnabled
+                && !isEmpty(verificationPendingValue)
+                && !verifiedAttributeValueList.includes(value)
+                && verificationPendingValue === value;
         };
 
         const showMakePrimaryButton = (value: string): boolean => {
-            if (verificationEnabled) {
-                return verifiedAttributeValueList.includes(value) && value !== primaryAttributeValue;
-            } else {
-                return value !== primaryAttributeValue;
+            const isPrimaryAndVerified: boolean = value === fetchedPrimaryAttributeValue && primaryVerified;
+
+            if (!isEmailOrMobile) {
+                return false;
             }
+            if (verificationEnabled) {
+                return (verifiedAttributeValueList.includes(value) || isPrimaryAndVerified)
+                    && value !== primaryAttributeValue;
+            }
+
+            return value !== primaryAttributeValue;
         };
 
         const showVerifyButton = (value: string): boolean =>
             schema.name === EMAIL_ADDRESSES_ATTRIBUTE
             && verificationEnabled
-            && !(verifiedAttributeValueList.includes(value) || value === primaryAttributeValue);
+            && !(verifiedAttributeValueList.includes(value) ||
+                (value === fetchedPrimaryAttributeValue && primaryVerified));
 
         const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
         const resolvedMultiValueAttributeRequiredValue: boolean
@@ -1960,6 +2195,34 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                     </div>
                                                                 )
                                                     }
+                                                    {
+                                                        showPendingVerificationPopup(value)
+                                                            && (
+                                                                <div
+                                                                    className="verified-icon"
+                                                                    data-componentid={
+                                                                        `${testId}-profile-form-${schema.name}` +
+                                                                        `-pending-verification-icon-${index}`
+                                                                    }
+                                                                >
+                                                                    <Popup
+                                                                        name="pending-verification-popup"
+                                                                        size="tiny"
+                                                                        trigger={
+                                                                            (
+                                                                                <Icon
+                                                                                    name="info circle"
+                                                                                    color="yellow"
+                                                                                />
+                                                                            )
+                                                                        }
+                                                                        header= { t("user:profile.tooltips." +
+                                                                            "confirmationPending") }
+                                                                        inverted
+                                                                    />
+                                                                </div>
+                                                            )
+                                                    }
                                                 </div>
                                             </TableCell>
                                             <TableCell align="right">
@@ -2000,8 +2263,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                         size="small"
                                                         hidden={ !showDeleteButton(value) }
                                                         onClick={ () => {
-                                                            setSelectedAttributeInfo({ schema, value });
-                                                            setShowMultiValuedItemDeleteConfirmationModal(true);
+                                                            handleMultiValuedItemDelete(schema, value);
                                                         } }
                                                         data-componentid={
                                                             `${testId}-profile-form` +
@@ -2179,10 +2441,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     fluid
                 />
             );
-        } else if (
-            schema?.name === EMAIL_ADDRESSES_ATTRIBUTE
-            || schema?.name === MOBILE_NUMBERS_ATTRIBUTE
-        ) {
+        } else if (schema?.extended && schema?.multiValued) {
             return resolveMultiValuedAttributesFormField(schema, fieldName, key);
         } else if (schema?.name === "dateOfBirth") {
             return (
@@ -2213,6 +2472,58 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     maxLength={ schema.maxLength
                         ? schema.maxLength
                         : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
+                    }
+                />
+            );
+        } else if (schema?.name === EMAIL_ATTRIBUTE || schema?.name === MOBILE_ATTRIBUTE) {
+            let isVerificationPending: boolean = false;
+            let initialValue: string = profileInfo.get(schema?.name);
+
+            if (schema?.name === EMAIL_ATTRIBUTE) {
+                isVerificationPending = configSettings?.isEmailVerificationEnabled === "true"
+                    && !isEmpty(getVerificationPendingAttributeValue(EMAIL_ATTRIBUTE));
+            } else {
+                isVerificationPending = configSettings?.isMobileVerificationEnabled === "true"
+                    && !isEmpty(getVerificationPendingAttributeValue(MOBILE_ATTRIBUTE));
+            }
+
+            if (isVerificationPending) {
+                initialValue = getVerificationPendingAttributeValue(schema?.name);
+            }
+
+            return (
+                <Field
+                    data-testid={ `${testId}-profile-form-${schema.name}-input` }
+                    name={ schema.name }
+                    label={ fieldName }
+                    icon={ isVerificationPending
+                        ? generatePendingVerificationTooltip()
+                        : null }
+                    required={ resolvedRequiredValue }
+                    requiredErrorMessage={ fieldName + " is required" }
+                    placeholder={ "Enter your " + fieldName }
+                    type="text"
+                    value={ initialValue }
+                    key={ key }
+                    disabled={ schema.name === "userName" }
+                    readOnly={ (isUserManagedByParentOrg &&
+                        sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
+                        || isReadOnly
+                        || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
+                    }
+                    validation={ (value: string, validation: Validation) => {
+                        if (!RegExp(schema.regEx).test(value)) {
+                            validation.isValid = false;
+                            validation.errorMessages
+                                .push(t("users:forms.validation.formatError", {
+                                    field: fieldName
+                                }));
+                        }
+                    } }
+                    maxLength={
+                        schema.maxLength
+                            ? schema.maxLength
+                            : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
                     }
                 />
             );
@@ -2294,6 +2605,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             if (!resolveSupportedByDefaultValue) {
                 return false;
             }
+        }
+
+        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE || schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+            return !isEmpty(multiValuedAttributeValues[schema.name])
+                || (!isReadOnly && resolvedMutabilityValue !== ProfileConstants.READONLY_SCHEMA);
         }
 
         return (!isEmpty(profileInfo.get(schema.name)) ||
@@ -2407,62 +2723,34 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         );
     };
 
-    /**
-     * This methods generates and returns the delete confirmation modal.
-     *
-     * @returns ReactElement Generates the delete confirmation modal.
-     */
-    const generateDeleteConfirmationModalForMultiValuedField = (): JSX.Element => {
-        if (isEmpty(selectedAttributeInfo?.value)) {
-            return null;
-        }
-
-        const translationKey: string = "user:profile.confirmationModals.deleteAttributeConfirmation.";
-        let attributeDisplayName: string = "";
-        let primaryAttributeSchema: ProfileSchemaInterface;
-
-        if (selectedAttributeInfo?.schema?.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-            primaryAttributeSchema = profileSchema.find((schema: ProfileSchemaInterface) =>
-                schema.name === EMAIL_ATTRIBUTE);
-        } else if (selectedAttributeInfo?.schema?.name === MOBILE_NUMBERS_ATTRIBUTE) {
-            primaryAttributeSchema = profileSchema.find((schema: ProfileSchemaInterface) =>
-                schema.name === MOBILE_ATTRIBUTE);
-        }
-        attributeDisplayName = primaryAttributeSchema?.displayName;
+    const generatePendingVerificationTooltip = (): JSX.Element => {
 
         return (
-            <ConfirmationModal
-                data-componentid={ `${testId}-confirmation-modal` }
-                onClose={ handleMultiValuedItemDeleteModalClose }
-                type="negative"
-                open={ Boolean(selectedAttributeInfo?.value) }
-                assertionHint={ t(`${translationKey}assertionHint`) }
-                assertionType="checkbox"
-                primaryAction={ t("common:confirm") }
-                secondaryAction={ t("common:cancel") }
-                onSecondaryActionClick={ handleMultiValuedItemDeleteModalClose }
-                onPrimaryActionClick={ handleMultiValuedItemDeleteConfirmClick }
-                closeOnDimmerClick={ false }
+            <div
+                className="verification-pending-icon"
+                data-componentid={ `${testId}-profile-form-email-pending-verification-icon` }
             >
-                <ConfirmationModal.Header data-componentid={ `${testId}-confirmation-modal-header` }>
-                    { t(`${translationKey}heading`) }
-                </ConfirmationModal.Header>
-                <ConfirmationModal.Message
-                    data-componentid={ `${testId}-confirmation-modal-message` }
-                    attached
-                    negative
-                >
-                    { t(`${translationKey}description`, { attributeDisplayName }) }
-                </ConfirmationModal.Message>
-                <ConfirmationModal.Content data-componentid={ `${testId}-confirmation-modal-content` }>
-                    { t(`${translationKey}content`, { attributeDisplayName }) }
-                </ConfirmationModal.Content>
-            </ConfirmationModal>
+                <Popup
+                    name="pending-verification-popup"
+                    size="tiny"
+                    trigger={
+                        (
+                            <Icon
+                                name="info circle"
+                                color="yellow"
+                            />
+                        )
+                    }
+                    header= { t("user:profile.tooltips.confirmationPending") }
+                    inverted
+                />
+            </div>
         );
     };
 
-    /*
+    /**
      * Resolves the user account locked reason text.
+     *
      * @returns The resolved account locked reason in readable text.
      */
     const resolveUserAccountLockedReason = (): string => {
@@ -2477,19 +2765,194 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         return "";
     };
 
+    /**
+     * Checks if the user account is in a pending ask password state where the user hasn't
+     * set their password via the setup link yet.
+     */
+    const isPendingAskPasswordState: boolean = accountState === AccountState.PENDING_AP;
+
+    /**
+     * Determines which password change option to be displayed.
+     *
+     * Is true if the "Set Password" option should be presented—this indicates that the
+     * account is in the pending ask password state (i.e. the user hasn’t set a password yet).
+     *
+     * Else false if the "Force Password Reset" option should be displayed, meaning the user
+     * already has an existing password.
+     */
+    const isSetPassword: boolean = isPendingAskPasswordState ||
+        (accountLockedReason === AccountLockedReason.PENDING_ASK_PASSWORD);
+
+    /**
+     * Resolves the recovery scenario based on the account locked reason or account state.
+     * This recoveryscenario is then used to determine whether the resending code/link is supported.
+     *
+     * @returns The resolved recovery scenario.
+     */
+    const resolveRecoveryScenario = (): string | null => {
+        // If the account is locked and a locked reason is provided, process locked reason
+        // to determine the scenario.
+        if (accountLocked && accountLockedReason) {
+            if (accountLockedReason === AccountLockedReason.PENDING_ADMIN_FORCED_USER_PASSWORD_RESET) {
+                if (isAdminPasswordResetSMSOTPEnabled()) {
+                    return RecoveryScenario.ADMIN_FORCED_PASSOWRD_RESET_VIA_SMS_OTP;
+                }
+                if (isAdminPasswordResetEmailLinkEnabled()) {
+                    return RecoveryScenario.ADMIN_FORCED_PASSWORD_RESET_VIA_EMAIL_LINK;
+                }
+                if (isAdminPasswordResetEmailOTPEnabled()) {
+                    return RecoveryScenario.ADMIN_FORCED_PASSWORD_RESET_VIA_OTP;
+                }
+            }
+            if (accountLockedReason === AccountLockedReason.PENDING_ASK_PASSWORD) {
+                return RecoveryScenario.ASK_PASSWORD;
+            }
+        }
+        // For non-locked accounts, use the account state to determine the scenario.
+        if (!accountLocked && accountState) {
+            if (accountState === AccountState.PENDING_AP) {
+                return RecoveryScenario.ASK_PASSWORD;
+            }
+        }
+
+        return null;
+    };
+
+    /**
+     * Renders the "Resend" link component.
+     *
+     * The resend option is shown when a valid recovery scenario is resolved either from
+     * the account locked reason or account state.
+     *
+     * @returns The "Resend" link component.
+     */
+    const ResendLink = (): JSX.Element | null => {
+        const recoveryScenario: string | null = resolveRecoveryScenario();
+
+        if (!recoveryScenario) return null;
+
+        return (
+            <LinkButton
+                onClick={ () => handleResendCode(recoveryScenario) }
+                aria-disabled={ isSubmitting }
+                disabled={ isSubmitting }
+                data-testid={ `${ testId }-resend-link` }
+            >
+                { t("user:resendCode.resend") }
+            </LinkButton>
+        );
+    };
+
+    /**
+     * Initiates a recovery process based on the account's locked reason or account state.
+     **/
+    const handleResendCode = (recoveryScenario: string) => {
+        setIsSubmitting(true);
+
+        const resolvedUsername: string = getUserNameWithoutDomain(user?.userName);
+        const userStoreDomain: string = resolveUserstore(user?.userName, primaryUserStoreDomainName);
+
+        const requestData: ResendCodeRequestData = {
+            properties: [
+                {
+                    key: "RecoveryScenario",
+                    value: recoveryScenario
+                }
+            ],
+            user: {
+                realm: userStoreDomain,
+                username: resolvedUsername
+            }
+        };
+
+        resendCode(requestData)
+            .then(() => {
+                onAlertFired({
+                    description: t("user:profile.notifications.resendCode.success.description",
+                        { recoveryOption: RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP[recoveryScenario] }),
+                    level: AlertLevels.SUCCESS,
+                    message: t("user:profile.notifications.resendCode.success.message")
+                });
+            })
+            .catch((error: IdentityAppsApiException) => {
+                dispatch(addAlert({
+                    description: error?.response?.data?.description || error?.response?.data?.detail ||
+                        t("user:profile.notifications.resendCode.genericError.description", {
+                            recoveryOption: RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP[recoveryScenario] }),
+                    level: AlertLevels.ERROR,
+                    message: t("user:profile.notifications.resendCode.genericError.message")
+                }));
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+            });
+    };
+
+    /**
+     * Checks if admin forced password reset via Email link is enabled.
+     *
+     * @returns true if enabled, false otherwise.
+     */
+    const isAdminPasswordResetEmailLinkEnabled = (): boolean => {
+        const property: ConnectorPropertyInterface | undefined = connectorProperties?.find(
+            (property: ConnectorPropertyInterface) =>
+                property.name === ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_EMAIL_LINK
+        );
+
+        return property?.value === "true";
+    };
+
+    /**
+     * Checks if admin forced password reset via Email OTP is enabled.
+     *
+     * @returns true if enabled, false otherwise
+     */
+    const isAdminPasswordResetEmailOTPEnabled = (): boolean => {
+        const property: ConnectorPropertyInterface | undefined = connectorProperties?.find(
+            (property: ConnectorPropertyInterface) =>
+                property.name === ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_EMAIL_OTP
+        );
+
+        return property?.value === "true";
+    };
+
+    /**
+     * Checks if admin forced password reset via SMS OTP is enabled.
+     *
+     * @returns true if enabled, false otherwise
+     */
+    const isAdminPasswordResetSMSOTPEnabled = (): boolean => {
+        const property: ConnectorPropertyInterface | undefined = connectorProperties?.find(
+            (property: ConnectorPropertyInterface) =>
+                property.name === ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_SMS_OTP
+        );
+
+        return property?.value === "true";
+    };
+
     return (
         !isReadOnlyUserStoresLoading && !isEmpty(profileInfo)
             ? (<>
                 {
                     (accountLocked || accountDisabled) && (
-                        <Alert severity="warning">
+                        <Alert severity="warning" className="user-profile-alert">
                             { t(resolveUserAccountLockedReason()) }
+                            <ResendLink />
+                        </Alert>
+                    )
+                }
+                {
+                    (!accountLocked && isPendingAskPasswordState) && (
+                        <Alert severity="warning" className="user-profile-alert">
+                            { t("user:profile.accountState.pendingAskPassword") }
+                            <ResendLink />
                         </Alert>
                     )
                 }
                 <EmphasizedSegment padded="very">
                     {
                         isReadOnly
+                        && !isReadOnlyUserStore
                         && (!isEmpty(tenantAdmin) || tenantAdmin !== null)
                         && !user[ SCIMConfigs.scim.systemSchema ]?.userSourceId
                         && editUserDisclaimerMessage
@@ -2760,9 +3223,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         </ConfirmationModal>
                     )
                 }
-                {
-                    showMultiValuedItemDeleteConfirmationModal && generateDeleteConfirmationModalForMultiValuedField()
-                }
                 <ChangePasswordComponent
                     handleForcePasswordResetTrigger={ null }
                     connectorProperties={ connectorProperties }
@@ -2771,6 +3231,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     onAlertFired={ onAlertFired }
                     user={ user }
                     handleUserUpdate={ handleUserUpdate }
+                    isResetPassword={ !isSetPassword }
                 />
             </>)
             : <ContentLoader dimmer/>

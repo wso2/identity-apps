@@ -1171,6 +1171,16 @@ export interface ApplicationsNS {
                     hint: string;
                     label: string;
                 };
+                discoverableGroups: {
+                    label: string;
+                    action: {
+                        assign: string;
+                    };
+                    radioOptions: {
+                        everyone: string;
+                        userGroups: string;
+                    };
+                };
                 accessUrl: {
                     hint: string;
                     label: string;
@@ -1325,6 +1335,18 @@ export interface ApplicationsNS {
                                 ssoBinding: {
                                     label: string;
                                 };
+                                cookie: {
+                                    label: string;
+                                };
+                                clientRequest: {
+                                    label: string;
+                                };
+                                certificate: {
+                                    label: string;
+                                };
+                                deviceFlow: {
+                                    label: string;
+                                };
                             };
                             description: string;
                             label: string;
@@ -1332,6 +1354,7 @@ export interface ApplicationsNS {
                                 cookie: string;
                                 none: string;
                                 sso_session: string;
+                                dpop: string;
                             };
                         };
                         expiry: {

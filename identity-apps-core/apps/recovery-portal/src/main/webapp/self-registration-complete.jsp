@@ -82,7 +82,7 @@
     String confirmLiteReg = (String) request.getAttribute("confirmLiteReg");
     String resendUsername = request.getParameter("username");
     String sp = Encode.forJava(request.getParameter("sp"));
-    String spId = request.getParameter("spId");
+    String spId = Encode.forJava(request.getParameter("spId"));
     String sessionDataKey = (String) request.getAttribute("sessionDataKey");
     String applicationAccessURLWithoutEncoding = null;
     String tenantedMyaccountURL = null;
@@ -339,12 +339,25 @@
                                 <script>maskEmail('<%= emailValue %>');</script>
                                 </br></br>
                         <%
-                                if (showBackButton && StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)) {
+                            if (showBackButton && StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)) {
                         %>
-                                    <i class="caret left icon primary"></i>
-                                    <a href="<%= IdentityManagementEndpointUtil.getURLEncodedCallback(applicationAccessURLWithoutEncoding)%>">
-                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Back.to.application")%>
-                                    </a>
+                            <%
+                                if (!StringUtils.isBlank(sp) && sp.equals("My Account")) {
+                            %>
+                                <i class="caret left icon primary"></i>
+                                <a href="<%= IdentityManagementEndpointUtil.getURLEncodedCallback(tenantedMyaccountURL)%>">
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Go.to.MyAccount")%>
+                                </a>
+                            <%
+                                } else {
+                            %>
+                                <i class="caret left icon primary"></i>
+                                <a href="<%= IdentityManagementEndpointUtil.getURLEncodedCallback(applicationAccessURLWithoutEncoding)%>">
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Back.to.application")%>
+                                </a>
+                            <%
+                                }
+                            %>
                         <%
                             } else {
                                 if (sp.equals("My Account")) {

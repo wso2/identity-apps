@@ -31,7 +31,9 @@ export interface rulesNS {
     };
     fields: {
         autocomplete: {
+            clearFilterActionText: string;
             moreItemsMessage: string;
+            placeholderText: string;
         };
     };
     texts: {
