@@ -35,6 +35,7 @@ import org.wso2.carbon.identity.application.common.IdentityApplicationManagement
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationRequestConfig;
 import org.wso2.carbon.identity.application.common.model.ServiceProvider;
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
+import org.wso2.carbon.identity.application.mgt.AuthorizedAPIManagementService;
 import org.wso2.carbon.identity.application.mgt.listener.ApplicationMgtListener;
 import org.wso2.carbon.identity.core.util.IdentityCoreInitializedEvent;
 import org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl;
@@ -322,5 +323,34 @@ public class AppsCommonServiceComponent {
             }
         }
         return systemAppConsumerKeys;
+    }
+
+    @Reference(
+            name = "identity.authorized.api.management.component",
+            service = AuthorizedAPIManagementService.class,
+            cardinality = ReferenceCardinality.MANDATORY,
+            policy = ReferencePolicy.DYNAMIC,
+            unbind = "unsetAuthorizedAPIManagementService"
+    )
+    protected void setAuthorizedAPIManagementService(AuthorizedAPIManagementService authorizedAPIManagementService) {
+
+        if (log.isDebugEnabled()) {
+            log.debug("Setting AuthorizedAPIManagementService Service");
+        }
+        AppsCommonDataHolder.getInstance().
+                setAuthorizedAPIManagementService(authorizedAPIManagementService);
+    }
+
+    /**
+     * Unsets AuthorizedAPIManagementService Service.
+     *
+     * @param authorizedAPIManagementService An instance of AuthorizedAPIManagementService
+     */
+    protected void unsetAuthorizedAPIManagementService(AuthorizedAPIManagementService authorizedAPIManagementService) {
+
+        if (log.isDebugEnabled()) {
+            log.debug("Unsetting AuthorizedAPIManagementService.");
+        }
+        AppsCommonDataHolder.getInstance().setAuthorizedAPIManagementService(null);
     }
 }
