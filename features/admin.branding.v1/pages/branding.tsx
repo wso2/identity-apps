@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,6 +21,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import BrandingPageLayout from "../components/branding-page-layout";
 import BrandingPreferenceProvider from "../providers/branding-preference-provider";
+import CustomPageEditorProvider from "../providers/custom-page-provider";
 
 /**
  * Prop-types for the branding page component.
@@ -38,7 +39,9 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
     return (
         <BrandingPreferenceProvider>
             <AIBrandingPreferenceProvider>
-                <BrandingPageLayout />
+                <CustomPageEditorProvider>
+                    <BrandingPageLayout />
+                </CustomPageEditorProvider>
             </AIBrandingPreferenceProvider>
         </BrandingPreferenceProvider>
     );
