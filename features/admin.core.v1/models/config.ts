@@ -556,6 +556,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Multi-tenancy related configurations.
      */
     multiTenancy: MultiTenancyConfigInterface;
+    /**
+     * Async Operation Polling Interval.
+     */
+    asyncOperationStatus: number;
 }
 
 /**

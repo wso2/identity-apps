@@ -39,6 +39,10 @@ export const common: CommonNS = {
     apps: "செயலிகள்",
     assignee: "ஒதுக்கப்பட்டவர்",
     assignees: "அளிக்கப்பட்டவர்கள்",
+    asyncOperationErrorMessage: {
+        description: "ஏதோ தவறாகிவிட்டது.",
+        message: "எதிர்பாராத பிழை ஏற்பட்டது. பின்னர் மீண்டும் சரிபார்க்கவும்."
+    },
     authentication: "அங்கீகார",
     authenticator: "அங்கீகார",
     authenticator_plural: "அங்கீகாரிகள்",

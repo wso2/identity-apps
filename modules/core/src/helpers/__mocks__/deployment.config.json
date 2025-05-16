@@ -50,6 +50,7 @@
         "appName": "Console",
         "appTitle": "WSO2 Identity Server Console",
         "appWhiteLogoPath": "/assets/images/branding/logo-inverted.svg",
+        "applicationSharingStatusPollingInterval": 5000,
         "connectionResourcesUrl": "",
         "cookiePolicyUrl": "/authenticationendpoint/cookie_policy.do",
         "emailTemplates": {
@@ -228,7 +229,8 @@
             "applications": {
                 "disabledFeatures": [
                     "applications.loginFlow.ai",
-                    "applications.loginFlow.legacyEditor"
+                    "applications.loginFlow.legacyEditor",
+                    "applications.sharedAccess.status"
                 ],
                 "enabled": true,
                 "featureFlags": [
