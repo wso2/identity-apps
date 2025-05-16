@@ -677,15 +677,6 @@
     <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute
             (request.getParameter("sessionDataKey"))%>'/>
 
-    <%
-        String uiThemeParam = request.getParameter("ui_theme");
-        if ("LIGHT".equalsIgnoreCase(uiThemeParam) || "DARK".equalsIgnoreCase(uiThemeParam)) {
-    %>
-        <input type="hidden" name="ui_theme" value="<%= Encode.forHtmlAttribute(uiThemeParam) %>"/>
-    <%
-        }
-    %>
-
     <div class="mt-0">
         <div class="buttons">
             <button

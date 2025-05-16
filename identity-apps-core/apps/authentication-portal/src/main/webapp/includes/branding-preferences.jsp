@@ -273,6 +273,7 @@
     String SHOULD_REMOVE_ASGARDEO_BRANDING_KEY = "removeAsgardeoBranding";
     String SHOULD_REMOVE_DEFAULT_BRANDING_KEY = "removeDefaultBranding";
     String TEXT_KEY = "text";
+    String RESOLUTION_STRATEGY_KEY = "resolutionStrategy";
 
     // Additional keys to override the fallback values.
     String PRODUCT_NAME_KEY = "productName";
@@ -420,6 +421,25 @@
     String preferenceResolvedFromResourceName = tenantRequestingPreferences;
     String applicationRequestingPreferences = spAppId;
     String locale = StringUtils.isNotBlank(getUserLocaleCode(request)) ? getUserLocaleCode(request) : DEFAULT_RESOURCE_LOCALE;
+    String resolutionStrategy = "DEFAULT";
+    String uiThemeParam = request.getParameter("ui_theme");
+    String currentCookieTheme = null;
+
+    Cookie[] allCookies = request.getCookies();
+
+    if (allCookies != null) {
+        for (Cookie cookie : allCookies) {
+
+            if ("ui_theme".equals(cookie.getName())) {
+                currentCookieTheme = cookie.getValue();
+                break;
+            }
+        }
+    }
+
+    if (StringUtils.isBlank(uiThemeParam) && StringUtils.isNotBlank(currentCookieTheme)) {
+        uiThemeParam = currentCookieTheme;
+    }
 
     try {
 
@@ -466,6 +486,66 @@
 
             // Proceed only if the branding is enabled.
             if (isBrandingEnabledInTenantPreferences) {
+
+                // Get the resolution strategy.
+                if (brandingPreference.has(THEME_KEY)) {
+                    if (brandingPreference.getJSONObject(THEME_KEY).has(RESOLUTION_STRATEGY_KEY)) {
+                        resolutionStrategy = brandingPreference.getJSONObject(THEME_KEY).getString(RESOLUTION_STRATEGY_KEY);
+                    }
+                }
+
+                // If the branding theme is set using the application.
+                if ("APP_PREFERENCE".equalsIgnoreCase(resolutionStrategy)) {
+
+                    // Check theme from the query param first.
+                    String resolvedUiTheme = request.getParameter("ui_theme");
+
+                    // If not in query param, check other parameteres.
+                    if (StringUtils.isBlank(resolvedUiTheme)) {
+                        String paramKey = null;
+
+                        if (StringUtils.isNotBlank(request.getParameter("callback"))) {
+                            paramKey = request.getParameter("callback");
+                        } else if (StringUtils.isNotBlank(request.getParameter("multiOptionURI"))) {
+                            paramKey = request.getParameter("multiOptionURI");
+                        } else if (StringUtils.isNotBlank(request.getParameter("urlQuery"))) {
+                            paramKey = request.getParameter("urlQuery");
+                        }
+
+                        if (StringUtils.isNotBlank(paramKey) && paramKey.contains("ui_theme=")) {
+                            try {
+                                String[] parts = paramKey.split("[?&]");
+                                for (String part : parts) {
+                                    if (part.startsWith("ui_theme=")) {
+                                        resolvedUiTheme = part.split("=")[1];
+                                        break;
+                                    }
+                                }
+                            } catch (Exception e) {
+                                // Silent fallback
+                            }
+                        }
+                    }
+
+                    // Fallback to cookie
+                    if (StringUtils.isBlank(resolvedUiTheme)) {
+                        resolvedUiTheme = currentCookieTheme;
+                    }
+
+                    uiThemeParam = resolvedUiTheme;
+
+                    // Write cookie only if resolved value is non-blank and different from cookie
+                    if (StringUtils.isNotBlank(resolvedUiTheme) && !resolvedUiTheme.equals(currentCookieTheme)) {
+                        
+                        String cookieName = "ui_theme";
+                        String cookieValue = resolvedUiTheme;
+                        int maxAge = 2592000;
+                    
+                        String headerValue = cookieName + "=" + cookieValue + "; Path=/; Max-Age=" + maxAge + "; Secure; HttpOnly; SameSite=None";
+                        response.setHeader("Set-Cookie", headerValue);
+                    }
+                }
+
                 // Custom Text
                 for (String screenName : screenNames) {
                     StringBuilder textBrandingCacheKey = new StringBuilder(BRANDING_TEXT_PREFERENCE_CACHE_KEY);
@@ -523,41 +603,18 @@
 
                 // Theme
                 if (brandingPreference.has(THEME_KEY)) {
-                    if (StringUtils.isBlank(activeThemeName)) {
-                        String uiThemeParam = request.getParameter("ui_theme");
-                        String uiTheme = null;
+                    
+                    if (StringUtils.isBlank(activeThemeName) &&
+                    "APP_PREFERENCE".equalsIgnoreCase(resolutionStrategy) &&
+                    StringUtils.isNotBlank(uiThemeParam)) {
 
-                        if (StringUtils.isNotBlank(uiThemeParam)) {
-                            uiTheme = uiThemeParam;
-                        } else {
-                            String callback = request.getParameter("callback");
-
-                            if (StringUtils.isNotBlank(callback) && callback.contains("ui_theme=")) {
-
-                                try {
-                                    String[] parts = callback.split("[?&]");
-                                    for (String part : parts) {
-                                        if (part.startsWith("ui_theme=")) {
-                                            uiTheme = part.split("=")[1];
-                                            break;
-                                        }
-                                    }
-                                } catch (Exception e) {
-                                    // Fallback to default theme if parsing fails.
-                                }
-                            }
-                        }
-
-                        if (StringUtils.isNotBlank(uiTheme)) {
-
-                            if (uiTheme.trim().equalsIgnoreCase("dark")) {
+                            if (StringUtils.equalsIgnoreCase(uiThemeParam, "dark")) {
                                 activeThemeName = "DARK";
-                            } else if (uiTheme.trim().equalsIgnoreCase("light")) {
+                            } else if (StringUtils.equalsIgnoreCase(uiThemeParam, "light")) {
                                 activeThemeName = "LIGHT";
                             } else {
                                 activeThemeName = "";
                             }
-                        }
                     }
 
                     if (brandingPreference.getJSONObject(THEME_KEY).has(ACTIVE_THEME_KEY)) {
