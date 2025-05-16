@@ -455,8 +455,10 @@ export const claims: ClaimsNS = {
                 hint: "Provide the allowed values for the attribute.",
                 keyLabel: "Display Value",
                 keyRequiredErrorMessage: "Display value is required",
-                valueLabel: "Actual Value",
-                valueRequiredErrorMessage: "Actual value is required"
+                validationError: "At least one option must be provided.",
+                validationErrorMessage: "No options provided.",
+                valueLabel: "Value",
+                valueRequiredErrorMessage: "Value is required"
             },
             dataType: {
                 hint: "The data type of the attribute.",
@@ -550,7 +552,7 @@ export const claims: ClaimsNS = {
             },
             subAttributes: {
                 label: "The sub-attributes of the attribute",
-                placeholder: "Enter a sub-attribute name",
+                placeholder: "Select subattributes",
                 validationError: "At least one sub-attribute must be provided.",
                 validationErrorMessage: "Sub-attributes are required for complex data types."
             },

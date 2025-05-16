@@ -513,6 +513,8 @@ export interface ClaimsNS {
                 valueLabel: string;
                 keyRequiredErrorMessage: string;
                 valueRequiredErrorMessage: string;
+                validationError: string;
+                validationErrorMessage: string;
             };
             dataType: {
                 hint: string;

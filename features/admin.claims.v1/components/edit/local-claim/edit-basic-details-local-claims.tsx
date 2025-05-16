@@ -91,6 +91,7 @@ import { Divider, Grid, Icon, Form as SemanticForm } from "semantic-ui-react";
 import { deleteAClaim, getExternalClaims, updateAClaim } from "../../../api";
 import useGetClaimDialects from "../../../api/use-get-claim-dialects";
 import { ClaimManagementConstants } from "../../../constants";
+import "./edit-basic-details-local-claims.scss";
 
 /**
  * Prop types for `EditBasicDetailsLocalClaims` component
@@ -278,7 +279,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
      */
     useEffect(() => {
 
-        if (claim.canonicalValues && Array.isArray(claim.canonicalValues)) {
+        if (claim?.canonicalValues && Array.isArray(claim.canonicalValues)) {
             setCanonicalValues(claim.canonicalValues.map((item: KeyValue) => ({
                 key: item.key,
                 value: item.value
@@ -598,6 +599,28 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             });
     };
 
+    const subAttributeDropdownOptions: DropDownItemInterface[] = useMemo(() => {
+        return fetchedAttributes
+            ?.filter((claim: Claim) => {
+                const isSystemClaim: boolean = claim.properties?.some(
+                    (property: Property) =>
+                        property.key === "isSystemClaim" && property.value === "true"
+                );
+                const isCurrentClaim: boolean = claim.claimURI === props.claim.claimURI;
+                const isAlreadySelected: boolean = subAttributes.includes(claim.claimURI);
+
+                return !isSystemClaim && !isCurrentClaim && !isAlreadySelected;
+            })
+            .map((claim: Claim) => ({
+                text: claim.claimURI,
+                value: claim.claimURI
+            }))
+            .sort(
+                (a: { text: string }, b: { text: string }) =>
+                    a.text.localeCompare(b.text)
+            );
+    }, [ fetchedAttributes, subAttributes, props.claim.claimURI ]);
+
     const onSubmit = (values: Record<string, unknown>) => {
         let data: Claim;
 
@@ -605,12 +628,24 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             dispatch(
                 addAlert({
                     description: t("claims:local.forms.subAttributes.validationError"),
-                    level: AlertLevels.WARNING,
+                    level: AlertLevels.ERROR,
                     message: t("claims:local.forms.subAttributes.validationErrorMessage")
                 })
             );
 
-            return; // Block submission
+            return;
+        }
+
+        if (dataType === DataType.OPTIONS && canonicalValues.length === 0) {
+            dispatch(
+                addAlert({
+                    description: t("claims:local.forms.canonicalValues.validationError"),
+                    level: AlertLevels.ERROR,
+                    message: t("claims:local.forms.canonicalValues.validationErrorMessage")
+                })
+            );
+
+            return;
         }
         if (isDistinctAttributeProfilesDisabled) {
             // Use the legacy configuration.
@@ -1081,28 +1116,12 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 name="subAttributesDropdown"
                                 label={ t("claims:local.forms.subAttributes.label") }
                                 placeholder={ t("claims:local.forms.subAttributes.placeholder") }
-                                options={
-                                    fetchedAttributes
-                                        ?.filter((claim: Claim) => {
-                                            return !claim.properties?.some(
-                                                (property: Property) => property.key === "isSystemClaim" &&
-                                                    property.value === "true"
-                                            );
-                                        })
-                                        .map((claim: Claim) => ({
-                                            text: claim.claimURI,
-                                            value: claim.claimURI
-                                        }))
-                                        .sort(
-                                            (a: { text: string }, b: { text: string }) =>
-                                                a.text.localeCompare(b.text)
-                                        )
-                                }
+                                options={ subAttributeDropdownOptions }
                                 onChange={ (
                                     event: React.SyntheticEvent<HTMLElement, Event>,
                                     data: { value: string }
                                 ) => {
-                                    if (event.type === "click" && !subAttributes.includes(data.value)) {
+                                    if (!subAttributes.includes(data.value)) {
                                         setSubAttributes([ ...subAttributes, data.value ]);
                                     }
                                 } }
@@ -1112,12 +1131,11 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             <div>
                                 { subAttributes.map((attribute: string, index: number) => (
                                     <div
-                                        style={ { alignItems: "center", display: "flex",
-                                            justifyContent: "space-between"
-                                        } }
+                                        className="sub-attribute-row"
                                         key={ index }>
                                         <span>{ attribute }</span>
                                         <IconButton
+                                            className="sub-attribute-delete-btn"
                                             disabled={ isReadOnly }
                                             onClick={ () => {
                                                 setSubAttributes(
