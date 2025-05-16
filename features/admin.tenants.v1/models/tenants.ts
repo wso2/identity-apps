@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,6 +28,10 @@ export interface Tenant<T = TenantOwner> {
      * The domain of the tenant.
      */
     domain: string;
+    /**
+     * The name of the tenant.
+     */
+    name?: string;
     /**
      * The owners of the tenant.
      */
@@ -77,7 +81,7 @@ export type AddTenantRequestPayload = Pick<Tenant<Omit<TenantOwner, "id"> & {
          */
         value: string;
     }[];
-}>, "domain" | "owners">;
+}>, "domain" | "name" | "owners">;
 
 /**
  * Represents an owner of a tenant.
