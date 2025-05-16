@@ -361,7 +361,7 @@ export const applications: ApplicationsNS = {
         },
         InProgressReshare: {
             assertionHint: "Please confirm your action.",
-            content: "This action is irreversible and this will permanently delete the previous update.",
+            content: "This action is irreversible and will discard the application sharing operations currently in progress",
             header: "Are you sure?",
             message: "Updating the shared access is in progress. Cancelling this will terminate the execution of the rest of the workflow."
         }
