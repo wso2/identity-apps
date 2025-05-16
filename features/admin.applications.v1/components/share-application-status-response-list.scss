@@ -43,14 +43,14 @@
     color: gray;
  }
 
-.org-id-wrapper {
+.share-application-status-response-list-org-id-wrapper {
    display: flex;
    align-items: center;
    max-width: 100%;
    gap: 0.5rem;
 }
 
-.org-id-wrapper-ellipsis-text {
+.share-application-status-response-list-ellipsis-text {
    white-space: nowrap;
    overflow: hidden;
    text-overflow: ellipsis;
@@ -61,7 +61,7 @@
    line-height: 2.0;
 }
 
-.copy-icon-container {
+.share-application-status-response-list-copy-icon-container {
    width: 10px;
    display: flex;
    align-items: center;
@@ -69,7 +69,7 @@
    flex-shrink: 0;
 }
 
-.copy-icon {
+.share-application-status-response-list-copy-icon {
    opacity: 0;
    visibility: hidden;
    transition: opacity 0.1s ease;
@@ -79,18 +79,18 @@
    line-height: 1; 
 }
 
-.copy-icon.visible {
+.share-application-status-response-list-copy-icon.visible {
    opacity: 1;
    visibility: visible;
 }
 
-.custom-list-layout-override {
+.share-application-status-response-list-custom-list-layout-override {
    display: block !important; 
    margin-right: 0px !important;
    width: 100% !important;
  }
 
- .infinite-scroll-loader {
+.share-application-status-response-list-infinite-scroll-loader {
    display: flex;
    justify-content: center;
    align-items: center;

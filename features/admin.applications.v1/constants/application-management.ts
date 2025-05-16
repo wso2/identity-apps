@@ -561,12 +561,3 @@ export enum ApplicationShareUnitStatus {
     PARTIALLY_COMPLETED = "PARTIALLY_COMPLETED",
     ALL = "ALL"
 }
-
-export enum OperationStatus {
-    FAILED = "FAILED",
-    SUCCESS = "SUCCESS",
-    IDLE = "IDLE",
-    IN_PROGRESS = "IN_PROGRESS",
-    PARTIALLY_COMPLETED = "PARTIALLY_COMPLETED",
-}
-

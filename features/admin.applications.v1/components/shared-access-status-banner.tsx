@@ -21,14 +21,13 @@ import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
+import { OperationStatus, OperationStatusSummary } from "@wso2is/admin.core.v1/models/common";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Heading, LinkButton } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import ApplicationShareStatusWizard from "./wizard/application-share-status-wizard";
-import { OperationStatus } from "../constants/application-management";
-import { OperationStatusSummary } from "../models/application";
 
 /**
  * Proptypes for the operation status banner component.
@@ -62,21 +61,15 @@ export const OperationStatusBanner: React.FC<OperationStatusBannerPropsInterface
     const [ showStatusModal, setShowStatusModal ] = useState(false);
     const { t } = useTranslation();
 
-    const handleShowStatusModal = () => {
-        setShowStatusModal(true);
-    };
-    const handleHideStatusModal = () => {
-        setShowStatusModal(false);
+    const handleStatusModalVisibility = (isVisible: boolean) => {
+        setShowStatusModal(isVisible);
     };
 
     return (
-
         <div className="banner-wrapper">
             { status === OperationStatus.IN_PROGRESS && (
                 <div className="banner-wrapper">
-                    <Alert
-                        severity="warning"
-                    >
+                    <Alert severity="warning">
                         <AlertTitle className="alert-title">
                             <Trans components={ { strong: <strong/> } } >
                                 { t("applications:edit.sections.shareApplication.asyncOperationStatus"
@@ -96,7 +89,7 @@ export const OperationStatusBanner: React.FC<OperationStatusBannerPropsInterface
                             <Box display="flex">
                                 <Button
                                     className="banner-view-hide-details"
-                                    onClick={ handleShowStatusModal }>
+                                    onClick={ () => handleStatusModalVisibility(true) }>
                                     { t("applications:edit.sections.shareApplication.asyncOperationStatus"
                                         + ".completed.actionText") }
                                 </Button>
@@ -121,7 +114,7 @@ export const OperationStatusBanner: React.FC<OperationStatusBannerPropsInterface
                 className="wizard application-create-wizard"
                 dimmer="blurring"
                 size="small"
-                onClose={ () => handleHideStatusModal() }
+                onClose={ () => handleStatusModalVisibility(false) }
                 closeOnDimmerClick={ false }
                 closeOnEscape
             >
@@ -150,7 +143,7 @@ export const OperationStatusBanner: React.FC<OperationStatusBannerPropsInterface
                                         data-testid={ "-close-button" }
                                         data-componentid={ "-close-button" }
                                         floated="left"
-                                        onClick={ () => { handleHideStatusModal(); } }
+                                        onClick={ () => handleStatusModalVisibility(false) }
                                         disabled={ false }
                                     >
                                         { t("applications:wizards.sharedAccessStatus.actionText") }

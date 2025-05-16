@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { OperationStatus, OperationStatusSummary } from "@wso2is/admin.core.v1/models/common";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
@@ -27,9 +28,9 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { ApplicationManagementConstants, OperationStatus } from "../../constants/application-management";
+import { ApplicationManagementConstants } from "../../constants/application-management";
 import { useAsyncOperationStatus } from "../../hooks/use-async-operation-status";
-import { ApplicationInterface, OperationStatusSummary } from "../../models/application";
+import { ApplicationInterface } from "../../models/application";
 import { ApplicationShareForm } from "../forms/share-application-form";
 import { OperationStatusBanner } from "../shared-access-status-banner";
 

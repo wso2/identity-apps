@@ -387,7 +387,6 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
 
     return (
         <>
-            begin
             <Grid.Row columns={ 1 }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     {
@@ -476,7 +475,6 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
             </Grid.Row>
             <Grid.Row columns={ 1 }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    test
                     <ListLayout
                         advancedSearch={ (
                             <AdvancedSearchWithBasicFilters
@@ -537,7 +535,6 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                         onPageChange={ () => null }
                         disableRightActionPanel={ false }
                     >
-                        test2
                         <Typography variant="body2" style={ { textAlign: "right" } }>
                             {
                                 responseOperationType === BulkImportResponseOperationTypes.USER_CREATION
@@ -551,7 +548,6 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                     )
                             }
                         </Typography>
-                        test3
                         <DataTable<BulkUserImportOperationResponse>
                             className="addon-field-wrapper"
                             isLoading={ isLoading }

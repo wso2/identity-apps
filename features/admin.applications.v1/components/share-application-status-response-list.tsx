@@ -196,19 +196,19 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
 
         return (
             <div
-                className="org-id-wrapper"
+                className="share-application-status-response-list-org-id-wrapper"
                 onMouseEnter={ () => setIsHovered(true) }
                 onMouseLeave={ () => setIsHovered(false) }
             >
-                <span className="org-id-wrapper-ellipsis-text" title={ id }>
+                <span className="share-application-status-response-list-ellipsis-text" title={ id }>
                     { id }
                 </span>
-                <span className="copy-icon-container">
+                <span className="share-application-status-response-list-copy-icon-container">
                     { isHovered && (
                         <Icon
                             name={ isCopied ? "check" : "copy outline" }
                             title={ isCopied ? "Copied!" : "Copy ID" }
-                            className={ "copy-icon visible" }
+                            className={ "share-application-status-response-list-copy-icon visible" }
                             onClick={ handleCopy }
                             link
                         />
@@ -338,7 +338,7 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
             </Grid.Row>
 
             <ListLayout
-                className="custom-list-layout-override"
+                className="share-application-status-response-list-custom-list-layout-override"
                 id="share-units"
                 showPagination={ false }
                 showTopActionPanel={ false }
@@ -357,7 +357,7 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
                         next={ loadMoreData }
                         hasMore={ hasMoreItems }
                         loader={
-                            (<div className="infinite-scroll-loader">
+                            (<div className="share-application-status-response-list-infinite-scroll-loader">
                                 <CircularProgress size={ 22 } className="list-item-loader" />
                             </div>)
                         }
