@@ -619,7 +619,7 @@ export const applications: ApplicationsNS = {
                     }
                 },
                 addAsyncSharingNotification: {
-                    description: "Application sharing may take a while.",
+                    description: "Application sharing may take a while to complete.",
                     message: "Application sharing in progress."
                 },
                 getSharedOrganizations: {
@@ -652,15 +652,15 @@ export const applications: ApplicationsNS = {
                 },
                 completedSharingNotification: {
                     failure: {
-                        description: "Application sharing ended with failure for all organizations.",
+                        description: "Application sharing completed with failure for all organizations.",
                         message: "Application sharing failed."
                     },
                     success: {
-                        description: "Application sharing ended with success for all organizations.",
+                        description: "Application sharing completed with success for all organizations.",
                         message: "Application sharing successful."
                     },
                     partialSuccess: {
-                        description: "Application sharing ended with partial success for some organizations.",
+                        description: "Application sharing completed with partial success for some organizations.",
                         message: "Application sharing partially successful."
                     }
                 },
