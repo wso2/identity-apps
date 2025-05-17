@@ -1128,7 +1128,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 data-testid={ `${testId}-form-sub-attributes-dropdown` }
                                 search
                             />
-                            <div>
+                            <div className="sub-attribute-list">
                                 { subAttributes.map((attribute: string, index: number) => (
                                     <div
                                         className="sub-attribute-row"
