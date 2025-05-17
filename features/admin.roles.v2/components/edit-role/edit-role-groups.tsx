@@ -18,16 +18,22 @@
 
 import { useGetApplication } from "@wso2is/admin.applications.v1/api/use-get-application";
 import { AuthenticationStepInterface, AuthenticatorInterface } from "@wso2is/admin.applications.v1/models/application";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     FederatedAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
+import { useRequiredScopes } from "@wso2is/access-control";
 import {
     PatchGroupAddOpInterface,
     PatchGroupRemoveOpInterface
 } from "@wso2is/admin.groups.v1/models/groups";
 import { useIdentityProviderList } from "@wso2is/admin.identity-providers.v1/api/identity-provider";
 import { IdentityProviderInterface, StrictIdentityProviderInterface } from "@wso2is/admin.identity-providers.v1/models";
-import { AlertLevels, IdentifiableComponentInterface, RoleGroupsInterface } from "@wso2is/core/models";
+import {
+    FeatureAccessConfigInterface,
+    AlertLevels,
+    IdentifiableComponentInterface,
+    RoleGroupsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, Heading } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -38,12 +44,12 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import { EditRoleFederatedGroupsAccordion } from "./edit-role-federated-groups-accordion";
 import { EditRoleLocalGroupsAccordion } from "./edit-role-local-groups-accordion";
-import { assignGroupstoRoles } from "../../api";
+import { assignGroupstoRoles, updateRoleDetails } from "../../api";
 import { RoleAudienceTypes, Schemas } from "../../constants";
 import { PatchRoleDataInterface, RoleEditSectionsInterface } from "../../models/roles";
 import { RoleManagementUtils } from "../../utils";
@@ -65,6 +71,11 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     const assignedGroups: Map<string, RoleGroupsInterface[]> = RoleManagementUtils
         .getRoleGroupsGroupedByIdp(role?.groups);
     const LOCAL_GROUPS_IDENTIFIER_ID: string = "LOCAL";
+
+    const userRoleV3Config: FeatureAccessConfigInterface = useSelector(
+            (state: AppState) => state?.config?.ui?.features?.entitlement);
+    const hasRoleV3UpdateScopes: boolean = useRequiredScopes(userRoleV3Config?.scopes?.update);
+    const updateGroupRoleAssignment = hasRoleV3UpdateScopes ? assignGroupstoRoles : updateRoleDetails;
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
@@ -220,7 +231,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             schemas: [ Schemas.PATCH_OP ]
         };
 
-        assignGroupstoRoles(role.id, roleUpdateData)
+        updateGroupRoleAssignment(role.id, roleUpdateData)
             .then(() => {
                 dispatch(
                     addAlert({

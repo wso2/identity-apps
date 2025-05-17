@@ -20,14 +20,16 @@ import { useApplicationList } from "@wso2is/admin.applications.v1/api/applicatio
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import {  UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { useRequiredScopes } from "@wso2is/access-control";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
-import { updateUsersForRole } from "@wso2is/admin.roles.v2/api/roles";
+import { updateUsersForRole, updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { getUsersList, sendInvite } from "@wso2is/admin.users.v1/api";
 import { AdminAccountTypes, UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { UserInviteInterface, UserListInterface } from "@wso2is/admin.users.v1/models/user";
 import {
+    FeatureAccessConfigInterface,
     AlertLevels,
     IdentifiableComponentInterface,
     RolesInterface,
@@ -86,6 +88,11 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
 
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
+
+    const entitlementConfig: FeatureAccessConfigInterface = useSelector(
+                (state: AppState) => state?.config?.ui?.features?.entitlement);
+    const hasRoleV3UpdateScopes: boolean = useRequiredScopes(entitlementConfig?.scopes?.update);
+    const updateUserRoleAssignment = hasRoleV3UpdateScopes ? updateUsersForRole : updateRoleDetails;
 
     const adminUserBasicFormRef: MutableRefObject<AddAdminUserBasicFormRef> = useRef<AddAdminUserBasicFormRef>(null);
 
@@ -261,7 +268,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
             for (const roleId of roleIds) {
                 setIsSubmitting(true);
 
-                await updateUsersForRole(roleId, roleData)
+                await updateUserRoleAssignment(roleId, roleData)
                     .catch((error: AxiosError) => {
                         if (!error.response || error.response.status === 401) {
                             setAlert({
@@ -344,7 +351,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
 
         setConfirmationModalLoading(true);
 
-        updateUsersForRole(adminRoleId, roleData)
+        updateUserRoleAssignment(adminRoleId, roleData)
             .then(() => {
                 dispatch(addAlert({
                     description: t(
