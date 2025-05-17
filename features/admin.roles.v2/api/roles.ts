@@ -74,7 +74,7 @@ export const getApplicationRolesByAudience = (
             filter,
             limit
         },
-        url:  `${ store.getState().config.endpoints.rolesV2 }`
+        url:  `${ store.getState().config.endpoints.rolesV3 }`
     };
 
     return httpClient(requestConfig)
@@ -115,7 +115,7 @@ export const getRoleByName = (
             filter,
             limit
         },
-        url:  `${ store.getState().config.endpoints.rolesV2 }`
+        url:  `${ store.getState().config.endpoints.rolesV3 }`
     };
 
     return httpClient(requestConfig)
@@ -140,7 +140,7 @@ export const getRoleById = (roleId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.rolesV2 + "/" + roleId
+        url: store.getState().config.endpoints.rolesV3 + "/" + roleId
     };
 
     return httpClient(requestConfig)
@@ -165,7 +165,7 @@ export const useGetRoleById = <Data = RolesInterface, Error = RequestErrorInterf
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.rolesV2}/${roleId}`
+        url: `${store.getState().config.endpoints.rolesV3}/${roleId}`
     };
 
     const {
@@ -226,6 +226,81 @@ export const updateRoleDetails = (roleId: string, roleData: PatchRoleDataInterfa
 };
 
 /**
+ * Update Data of the matched ID or the role
+ *
+ * @param roleId - role id to update role details
+ * @param roleData - Data that needs to be updated.
+ */
+export const updateRoleV3Details = (roleId: string, roleData: PatchRoleDataInterface): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
+        data: roleData,
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: store.getState().config.endpoints.rolesV3 + "/" + roleId
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Assign/de-assign groups to a role uaing SCIM2 Roles API V3.
+ *
+ * @param roleId - role id to update role details
+ * @param roleData - Data that needs to be updated.
+ */
+export const assignGroupstoRoles = (roleId: string, roleData: PatchRoleDataInterface): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
+        data: roleData,
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: store.getState().config.endpoints.rolesV3 + "/" + roleId + "/Groups"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Assign/de-assign Users to a role uaing SCIM2 Roles API V3.
+ *
+ * @param roleId - role id to update role details
+ * @param roleData - Data that needs to be updated.
+ */
+export const updateUsersForRole = (roleId: string, roleData: PatchRoleDataInterface): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
+        data: roleData,
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: store.getState().config.endpoints.rolesV3 + "/" + roleId + "/Users"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
  * Retrieve a list of matched roles according to the search query.
  *
  * @param searchData - search query data
@@ -238,7 +313,7 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store?.getState()?.config?.endpoints?.rolesV2 + "/.search"
+        url: store?.getState()?.config?.endpoints?.rolesV3 + "/.search"
     };
 
     return httpClient(requestConfig)
@@ -263,7 +338,7 @@ export const deleteRoleById = (roleId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: store.getState().config.endpoints.rolesV2 + "/" + roleId
+        url: store.getState().config.endpoints.rolesV3 + "/" + roleId
     };
 
     return httpClient(requestConfig)
@@ -288,7 +363,7 @@ export const createRole = (data: CreateRoleInterface): Promise<AxiosResponse> =>
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config.endpoints.rolesV2
+        url: store.getState().config.endpoints.rolesV3
     };
 
     return httpClient(requestConfig)
@@ -429,7 +504,7 @@ export const getRolesList = (domain: string, filter?: string): Promise<RoleListI
             domain,
             filter
         },
-        url: store.getState().config.endpoints.rolesV2
+        url: store.getState().config.endpoints.rolesV3
     };
 
     return httpClient(requestConfig)
