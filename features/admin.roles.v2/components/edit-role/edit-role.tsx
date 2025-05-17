@@ -78,8 +78,12 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
 
     const featureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRoles);
+    const userRoleV3Config: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userV3Roles);
     const usersFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.users);
+    const entitlementConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.entitlement);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const administratorRoleDisplayName: string = useSelector(
         (state: AppState) => state?.config?.ui?.administratorRoleDisplayName);
@@ -91,19 +95,35 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
             property?.name === LocalRoleConstants.IS_SHARED_ROLE && property?.value === "true"), [ roleObject ]);
 
     const isReadOnly: boolean = useMemo(() => {
-        return !isFeatureEnabled(featureConfig,
-            LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE"))
-            || !hasRequiredScopes(featureConfig,
-                featureConfig?.scopes?.update, allowedScopes)
-            || roleObject?.meta?.systemRole;
-    }, [ featureConfig, allowedScopes ]);
+        const hasMetaUpdate = hasRequiredScopes(userRoleV3Config, userRoleV3Config?.scopes?.update, allowedScopes);
+        const hasLegacyUpdate = hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes);
+
+        return !(
+            isFeatureEnabled(featureConfig, LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE")) &&
+            (hasMetaUpdate || hasLegacyUpdate) &&
+            !roleObject?.meta?.systemRole
+        );
+    }, [ featureConfig, userRoleV3Config, allowedScopes, roleObject ]);
+
+    const canEditRoleGroups = (
+        featureConfig: FeatureAccessConfigInterface,
+        userRoleV3Config: FeatureAccessConfigInterface,
+        entitlementConfig: FeatureAccessConfigInterface,
+        allowedScopes: string
+    ): boolean =>
+        hasRequiredScopes(entitlementConfig, entitlementConfig?.scopes?.update, allowedScopes) ? true
+        : hasRequiredScopes(userRoleV3Config, userRoleV3Config?.scopes?.update, allowedScopes) ? false
+        : hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes);
 
     const isUserReadOnly: boolean = useMemo(() => {
-        return !isFeatureEnabled(usersFeatureConfig,
-            UserManagementConstants.FEATURE_DICTIONARY.get("USER_CREATE")) ||
-            !hasRequiredScopes(usersFeatureConfig,
-                usersFeatureConfig?.scopes?.update, allowedScopes);
-    }, [ usersFeatureConfig, allowedScopes ]);
+    return !isFeatureEnabled(
+                featureConfig,
+                LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE"))
+        || !hasRequiredScopes(
+                featureConfig,
+                featureConfig?.scopes?.update, allowedScopes)
+        || roleObject?.meta?.systemRole;
+    }, [ featureConfig, allowedScopes ]);
 
     const [ isAdminRole, setIsAdminRole ] = useState<boolean>(false);
     const [ isEveryoneRole, setIsEveryoneRole ] = useState<boolean>(false);
@@ -158,7 +178,11 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <RoleGroupsList
-                            isReadOnly={ isReadOnly }
+                            isReadOnly={ !canEditRoleGroups(featureConfig,
+                                                            userRoleV3Config,
+                                                            entitlementConfig,
+                                                            allowedScopes
+                                                        ) }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 2 }
@@ -177,7 +201,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                     render: () => (
                         <ResourceTab.Pane controlledSegmentation attached={ false }>
                             <RoleUsersList
-                                isReadOnly={ isReadOnly || isUserReadOnly }
+                                isReadOnly={ isUserReadOnly }
                                 role={ roleObject }
                                 onRoleUpdate={ onRoleUpdate }
                                 tabIndex={ 3 }
