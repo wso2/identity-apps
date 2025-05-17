@@ -111,6 +111,10 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
         "apiResources"
     );
 
+    const entitlementConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.entitlement);
+    const hasEntitlementPermission = useRequiredScopes(entitlementConfig?.scopes?.update);
+
     const [ permissions, setPermissions ] = useState<CreateRolePermissionInterface[]>(undefined);
 
     const filteredTenantAPIResourceCollections: APIResourceCollectionResponseInterface = useMemo(() => {
@@ -122,6 +126,11 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
         const clonedTenantAPIResourceCollections: APIResourceCollectionResponseInterface =
             cloneDeep(tenantAPIResourceCollections);
         const filteringAPIResourceCollectionNames: string[] = [];
+
+        if(!hasEntitlementPermission) {
+            filteringAPIResourceCollectionNames.push(
+                ConsoleRolesOnboardingConstants.ENTITLEMENT_MANAGEMENT_ROLE_ID);
+        }
 
         filteringAPIResourceCollectionNames.push(
             ConsoleRolesOnboardingConstants.ROLE_V1_API_RESOURCES_COLLECTION_NAME);
@@ -144,6 +153,11 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
         const clonedOrganizationAPIResourceCollections: APIResourceCollectionResponseInterface =
             cloneDeep(organizationAPIResourceCollections);
         const filteringAPIResourceCollectionNames: string[] = [];
+
+        if(!hasEntitlementPermission) {
+            filteringAPIResourceCollectionNames.push(
+                ConsoleRolesOnboardingConstants.ORG_ENTITLEMENT_MANAGEMENT_ROLE_ID);
+        }
 
         filteringAPIResourceCollectionNames.push(
             ConsoleRolesOnboardingConstants.ORG_ROLE_V1_API_RESOURCES_COLLECTION_NAME);
