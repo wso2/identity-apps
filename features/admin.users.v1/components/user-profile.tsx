@@ -24,7 +24,7 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs, commonConfig, userConfig } from "@wso2is/admin.extensions.v1";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
-import { searchRoleList, updateUsersForRole } from "@wso2is/admin.roles.v2/api/roles";
+import { searchRoleList, updateRoleDetails, updateUsersForRole } from "@wso2is/admin.roles.v2/api/roles";
 import {
     PatchRoleDataInterface,
     SearchRoleInterface
@@ -38,6 +38,7 @@ import { getUserNameWithoutDomain, resolveUserstore } from "@wso2is/core/helpers
 import {
     AlertInterface,
     AlertLevels,
+    FeatureAccessConfigInterface,
     MultiValueAttributeInterface,
     ProfileInfoInterface,
     ProfileSchemaInterface,
@@ -186,6 +187,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const hasUsersUpdatePermissions: boolean = useRequiredScopes(
         featureConfig?.users?.scopes?.update
     );
+
+    const entitlementConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.entitlement);
+    const hasRoleV3UpdateScopes: boolean = useRequiredScopes(entitlementConfig?.scopes?.update);
+    const updateUserRoleAssignment = hasRoleV3UpdateScopes ? updateUsersForRole : updateRoleDetails;
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchemaInterface[]>();
@@ -702,7 +708,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
-        updateUsersForRole(adminRoleId, roleData)
+        updateUserRoleAssignment(adminRoleId, roleData)
             .then(() => {
                 dispatch(addAlert({
                     description: t(

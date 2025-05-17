@@ -25,7 +25,7 @@ import { UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
-import { updateUsersForRole } from "@wso2is/admin.roles.v2/api/roles";
+import { updateUsersForRole, updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1";
 import { deleteGuestUser } from "@wso2is/admin.users.v1/api";
@@ -43,6 +43,7 @@ import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
+    FeatureAccessConfigInterface,
     AlertLevels,
     IdentifiableComponentInterface,
     LoadableComponentInterface,
@@ -196,6 +197,11 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
 
+    const entitlementConfig: FeatureAccessConfigInterface = useSelector(
+            (state: AppState) => state?.config?.ui?.features?.entitlement);
+    const hasRoleV3UpdateScopes: boolean = useRequiredScopes(entitlementConfig?.scopes?.update);
+    const updateUserRoleAssignment = hasRoleV3UpdateScopes ? updateUsersForRole : updateRoleDetails;
+
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
     /**
@@ -283,7 +289,7 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                 schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
             };
 
-            return updateUsersForRole(adminRoleId, roleData)
+            return updateUserRoleAssignment(adminRoleId, roleData)
                 .then(() => {
                     dispatch(addAlert({
                         description: t("users:notifications.revokeAdmin.success.description"),
