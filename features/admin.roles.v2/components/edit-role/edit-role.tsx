@@ -120,13 +120,12 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
         : hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes);
 
     const isUserReadOnly: boolean = useMemo(() => {
-    return !isFeatureEnabled(
-                featureConfig,
-                LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE"))
-        || !hasRequiredScopes(
-                featureConfig,
-                featureConfig?.scopes?.update, allowedScopes)
-        || roleObject?.meta?.systemRole;
+        return (hasRequiredScopes(entitlementConfig, entitlementConfig?.scopes?.update, allowedScopes)) ? false
+            : hasRequiredScopes(userRoleV3Config, userRoleV3Config?.scopes?.update, allowedScopes) ? true
+            : (!isFeatureEnabled(usersFeatureConfig,
+                UserManagementConstants.FEATURE_DICTIONARY.get("USER_CREATE")) ||
+                !hasRequiredScopes(usersFeatureConfig,
+                    usersFeatureConfig?.scopes?.update, allowedScopes));
     }, [ featureConfig, allowedScopes ]);
 
     const [ isAdminRole, setIsAdminRole ] = useState<boolean>(false);
