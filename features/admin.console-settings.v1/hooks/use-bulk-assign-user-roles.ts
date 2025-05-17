@@ -16,12 +16,15 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
-import { updateUsersForRole } from "@wso2is/admin.roles.v2/api/roles";
+import { updateUsersForRole, updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { PayloadInterface } from "@wso2is/admin.users.v1/models/user";
-import { RolesInterface } from "@wso2is/core/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { FeatureAccessConfigInterface, RolesInterface } from "@wso2is/core/models";
 import { AxiosError } from "axios";
+import { useSelector } from "react-redux";
 
 /**
  * Props interface of {@link useBulkAssignAdministratorRoles}
@@ -71,6 +74,12 @@ const useBulkAssignAdministratorRoles = (): UseBulkAssignAdministratorRolesInter
      * @param onAdministratorRoleAssignError - Error callback.
      * @param onAdministratorRoleAssignSuccess - Success callback.
      */
+
+    const entitlementConfig: FeatureAccessConfigInterface = useSelector(
+                (state: AppState) => state?.config?.ui?.features?.entitlement);
+    const hasRoleV3UpdateScopes: boolean = useRequiredScopes(entitlementConfig?.scopes?.update);
+    const updateUserRoleAssignment = hasRoleV3UpdateScopes ? updateUsersForRole : updateRoleDetails;
+
     const assignAdministratorRoles = async (
         user: UserBasicInterface,
         roles: RolesInterface[],
@@ -97,7 +106,7 @@ const useBulkAssignAdministratorRoles = (): UseBulkAssignAdministratorRolesInter
         const roleIds: string[] = roles.map((role: RolesInterface) => role.id);
 
         const updateRolePromises: Promise<void>[] = roleIds.map((roleId: string) => {
-            return updateUsersForRole(roleId, payload);
+            return updateUserRoleAssignment(roleId, payload);
         });
 
         try {
@@ -136,7 +145,7 @@ const useBulkAssignAdministratorRoles = (): UseBulkAssignAdministratorRolesInter
         const roleIds: string[] = user.roles.map((role: UserRoleInterface) => role.value);
 
         const updateRolePromises: Promise<void>[] = roleIds.map((roleId: string) => {
-            return updateUsersForRole(roleId, payload);
+            return updateUserRoleAssignment(roleId, payload);
         });
 
         try {

@@ -214,6 +214,31 @@ export const updateRoleDetails = (roleId: string, roleData: PatchRoleDataInterfa
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
+        url: store.getState().config.endpoints.rolesV2 + "/" + roleId
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Update Data of the matched ID or the role
+ *
+ * @param roleId - role id to update role details
+ * @param roleData - Data that needs to be updated.
+ */
+export const updateRoleV3Details = (roleId: string, roleData: PatchRoleDataInterface): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
+        data: roleData,
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
         url: store.getState().config.endpoints.rolesV3 + "/" + roleId
     };
 
@@ -226,7 +251,7 @@ export const updateRoleDetails = (roleId: string, roleData: PatchRoleDataInterfa
 };
 
 /**
- * Assign/de-assign groups to a role.
+ * Assign/de-assign groups to a role uaing SCIM2 Roles API V3.
  *
  * @param roleId - role id to update role details
  * @param roleData - Data that needs to be updated.
@@ -251,7 +276,7 @@ export const assignGroupstoRoles = (roleId: string, roleData: PatchRoleDataInter
 };
 
 /**
- * Assign/de-assign Users from a role.
+ * Assign/de-assign Users to a role uaing SCIM2 Roles API V3.
  *
  * @param roleId - role id to update role details
  * @param roleData - Data that needs to be updated.
