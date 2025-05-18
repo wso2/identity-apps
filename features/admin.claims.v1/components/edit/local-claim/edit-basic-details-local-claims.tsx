@@ -1121,7 +1121,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     event: React.SyntheticEvent<HTMLElement, Event>,
                                     data: { value: string }
                                 ) => {
-                                    if (!subAttributes.includes(data.value)) {
+                                    if (event.type === "click" && !subAttributes.includes(data.value)) {
                                         setSubAttributes([ ...subAttributes, data.value ]);
                                     }
                                 } }
