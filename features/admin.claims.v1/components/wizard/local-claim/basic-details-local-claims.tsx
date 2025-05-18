@@ -174,7 +174,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                          : [],
                      claimURI: claimURIBase + "/" + values.get("claimURI").toString().trim(),
                      dataType: values.get("dataType")?.toString() === DataType.STRING
-                         ? (values.get("canonicalValues") && (values.get("canonicalValues") as string[]).length > 0
+                         ? ((values.get("canonicalValues") as string[]).length > 0
                              ? DataType.OPTIONS
                              : DataType.TEXT)
                          : values.get("dataType")?.toString(),

@@ -619,7 +619,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 (a: { text: string }, b: { text: string }) =>
                     a.text.localeCompare(b.text)
             );
-    }, [ fetchedAttributes, subAttributes, props.claim.claimURI ]);
+    }, [ fetchedAttributes, subAttributes, claim?.claimURI ]);
 
     const onSubmit = (values: Record<string, unknown>) => {
         let data: Claim;
