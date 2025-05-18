@@ -65,10 +65,6 @@ export const useGetAsyncOperationStatusUnits = <Data = AsyncOperationStatusUnitL
             shouldRetryOnError: false
         });
 
-    if (data) {
-        console.log("Received Data:", data);
-    }
-
     return {
         data,
         error,
