@@ -34,7 +34,7 @@ import ApplicationShareStatusWizard from "./wizard/application-share-status-wiza
  */
 interface OperationStatusBannerPropsInterface extends IdentifiableComponentInterface {
     /**
-     * Application share operation status.
+     * The current status of the application share operation.
      */
     status: OperationStatus;
     /**

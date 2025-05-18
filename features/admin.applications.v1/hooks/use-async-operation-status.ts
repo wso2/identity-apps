@@ -45,12 +45,6 @@ export interface useAsyncOperationStatusProps {
      */
     pollingInterval?: number;
     /**
-     * Callback function triggered when the operation reaches a completed status.
-     *
-     * @param finalStatus - The final status of the operation after completion.
-     */
-    onCompleted?: (finalStatus: OperationStatus) => void;
-    /**
      * Callback function triggered whenever the status of the operation changes.
      *
      * @param operationId - The unique identifier of the operation.
@@ -89,7 +83,6 @@ export const useAsyncOperationStatus = ({
     operationType,
     subjectId,
     pollingInterval,
-    onCompleted,
     onStatusChange,
     enabled
 }: useAsyncOperationStatusProps) => {
@@ -103,6 +96,7 @@ export const useAsyncOperationStatus = ({
 
     const intervalRef: MutableRefObject<number> = useRef<number | null>(null);
     const [ status, setStatus ] = useState<OperationStatus>(OperationStatus.IDLE);
+    const [ currentOperationId, setCurrentOperationId ] = useState<string>(null);
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
@@ -129,23 +123,45 @@ export const useAsyncOperationStatus = ({
      * Starts polling for the operation status at regular intervals.
      * Stops polling when the operation is completed.
      */
-    const startPolling = () => {
-        if (!enabled || intervalRef.current !== null) return;
+    const startPolling = (operationIdToPoll?: string) => {
+        if (!enabled) return;
+        setStatus(OperationStatus.IN_PROGRESS);
+
+        // If reinitiating polling for a new share, clear the previous interval.
+        if (!operationIdToPoll) {
+            setCurrentOperationId(null);
+            if (intervalRef.current !== null) {
+                clearInterval(intervalRef.current!);
+                intervalRef.current = null;
+            }
+        }
 
         intervalRef.current = window.setInterval(async () => {
             try {
                 const { operationId: newOperationId, status: newStatus, summary: operationSummary }
                     = await fetchStatus();
 
-                if (newStatus !== status) {
-                    setStatus(newStatus);
-                    onStatusChange?.(newOperationId, newStatus, operationSummary);
+                // Check if the polling has begun from the useEffect.
+                if (currentOperationId) {
+                    // If the operationId is the same as the one being polled and status has changed.
+                    if (newOperationId === currentOperationId && (newStatus !== status)) {
+                        setStatus(newStatus);
+                        onStatusChange?.(newOperationId, newStatus, operationSummary);
+                    }
+                }else{
+                    // If the polling has started upon a new operation.
+                    setCurrentOperationId(newOperationId);
+                    if (newStatus !== status) {
+                        setStatus(newStatus);
+                        onStatusChange?.(newOperationId, newStatus, operationSummary);
+                    }
                 }
 
                 if (newStatus !== OperationStatus.IN_PROGRESS) {
                     clearInterval(intervalRef.current!);
                     intervalRef.current = null;
-                    onCompleted?.(newStatus);
+                    setStatus(OperationStatus.IDLE);
+                    setCurrentOperationId(null);
                 }
             } catch (error) {
                 dispatch(addAlert({
@@ -170,14 +186,13 @@ export const useAsyncOperationStatus = ({
                 = await fetchStatus();
 
             if (initialStatus !== status) {
-                setStatus(initialStatus);
                 onStatusChange?.(newOperationId, initialStatus, operationSummary);
             }
 
             if (initialStatus === OperationStatus.IN_PROGRESS) {
-                startPolling();
-            } else {
-                onCompleted?.(initialStatus);
+                setStatus(OperationStatus.IN_PROGRESS);
+                setCurrentOperationId(newOperationId);
+                startPolling(newOperationId);
             }
         } catch (error) {
             dispatch(addAlert({

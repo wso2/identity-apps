@@ -379,7 +379,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
     };
 
     const handleShareApplication: () => Promise<void> = useCallback(async () => {
-        onOperationStarted?.();
+        handleAsyncSharingNotification(shareType);
         let shareAppData: ShareApplicationRequestInterface;
         let removedOrganization: OrganizationInterface[];
 
@@ -416,19 +416,6 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
         }
 
         if (shareType === ShareType.SHARE_ALL || shareType === ShareType.SHARE_SELECTED) {
-            dispatch(
-                addAlert({
-                    description: t(
-                        "applications:edit.sections.shareApplication" +
-                        ".addAsyncSharingNotification.description"
-                    ),
-                    level: AlertLevels.INFO,
-                    message: t(
-                        "applications:edit.sections.shareApplication" +
-                        ".addAsyncSharingNotification.message"
-                    )
-                })
-            );
             shareApplication(
                 currentOrganization.id,
                 application.id,
@@ -635,6 +622,20 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
         setTempOrganizationList,
         checkedUnassignedListItems
     ]);
+
+    function handleAsyncSharingNotification(shareType: ShareType): void {
+        if (shareType === ShareType.SHARE_ALL || shareType === ShareType.SHARE_SELECTED) {
+            onOperationStarted?.();
+            dispatch(
+                addAlert({
+                    description: t("applications:edit.sections.shareApplication.addAsyncSharingNotification"
+                        + ".description"),
+                    level: AlertLevels.INFO,
+                    message: t("applications:edit.sections.shareApplication.addAsyncSharingNotification.message")
+                })
+            );
+        }
+    }
 
     if (isLoading) {
         return (

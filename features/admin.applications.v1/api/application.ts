@@ -1273,7 +1273,7 @@ export const getAsyncOperationStatus = (
             filter,
             limit
         },
-        url: store.getState().config.endpoints.asyncStatus
+        url: store.getState().config.endpoints.asyncStatus + "/"
     };
 
     return httpClient(requestConfig)

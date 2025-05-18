@@ -78,29 +78,32 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
     const applicationSharingStatusPollingInterval: number = useSelector((state: AppState) =>
         state?.config?.ui?.applicationSharingStatusPollingInterval);
 
-    const statusToi18nKeyMap: Map<OperationStatus, string> = new Map<OperationStatus, string>([
-        [ OperationStatus.SUCCESS, "success" ],
-        [ OperationStatus.FAILED, "failure" ],
-        [ OperationStatus.PARTIALLY_COMPLETED, "partialSuccess" ]
-    ]);
+    const statusToi18nKeyMap: Map<OperationStatus, { alertLevel: AlertLevels, i18nKey: string }> =
+        new Map<OperationStatus, { alertLevel: AlertLevels, i18nKey: string }>([
+            [ OperationStatus.SUCCESS, { alertLevel: AlertLevels.SUCCESS, i18nKey: "success" } ],
+            [ OperationStatus.FAILED, { alertLevel: AlertLevels.ERROR, i18nKey: "failure" } ],
+            [ OperationStatus.PARTIALLY_COMPLETED, { alertLevel: AlertLevels.WARNING, i18nKey: "partialSuccess" } ]
+        ]);
 
     const { status, startPolling } = useAsyncOperationStatus({
         enabled: isApplicationShareOperationStatusEnabled,
-        onCompleted: (finalStatus: OperationStatus) => {
-            setSharingState(finalStatus);
-            dispatch(addAlert({
-                description: t("applications:edit.sections.shareApplication.completedSharingNotification."
-                    + statusToi18nKeyMap.get(status) + ".description"),
-                level: AlertLevels.ERROR,
-                message: t("applications:edit.sections.shareApplication.completedSharingNotification."
-                    + statusToi18nKeyMap.get(status) + ".message")
-            }));
-        },
-        onStatusChange: (newOperationId: string, newStatus: OperationStatus,
-            operationSummary: OperationStatusSummary) => {
+        onStatusChange: (newOperationId: string, newStatus: OperationStatus,summary: OperationStatusSummary) => {
+            if (sharingState !== OperationStatus.IDLE && newStatus !== OperationStatus.IN_PROGRESS) {
+                const alertDetails: { alertLevel: AlertLevels, i18nKey: string } = statusToi18nKeyMap.get(newStatus);
+
+                if (alertDetails) {
+                    dispatch(addAlert({
+                        description: t("applications:edit.sections.shareApplication.completedSharingNotification."
+                            + alertDetails.i18nKey + ".description"),
+                        level: alertDetails.alertLevel,
+                        message: t("applications:edit.sections.shareApplication.completedSharingNotification."
+                            + alertDetails.i18nKey + ".message")
+                    }));
+                }
+            }
             setSharingState(newStatus);
             setSharingOperationId(newOperationId);
-            setSharingOperationSummary(operationSummary);
+            setSharingOperationSummary(summary);
         },
         operationType: ApplicationManagementConstants.B2B_APPLICATION_SHARE,
         pollingInterval: applicationSharingStatusPollingInterval,
