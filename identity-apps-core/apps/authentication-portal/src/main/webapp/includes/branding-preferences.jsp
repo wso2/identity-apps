@@ -415,6 +415,7 @@
     String APP_PREFERENCE_RESOURCE_TYPE = "APP";
     String RESOURCE_TYPE_KEY = "type";
     String RESOURCE_NAME_KEY = "name";
+    String UI_THEME = "ui_theme";
     String preferenceResourceType = ORG_PREFERENCE_RESOURCE_TYPE;
     String tenantRequestingPreferences = tenantForTheming;
     JSONObject preferenceResolvedFrom = null;
@@ -422,23 +423,23 @@
     String applicationRequestingPreferences = spAppId;
     String locale = StringUtils.isNotBlank(getUserLocaleCode(request)) ? getUserLocaleCode(request) : DEFAULT_RESOURCE_LOCALE;
     String resolutionStrategy = "DEFAULT";
-    String uiThemeParam = request.getParameter("ui_theme");
-    String currentCookieTheme = null;
+    String uiThemeParam = request.getParameter(UI_THEME);
+    String themeFromCookie = null;
 
     Cookie[] allCookies = request.getCookies();
 
     if (allCookies != null) {
         for (Cookie cookie : allCookies) {
 
-            if ("ui_theme".equals(cookie.getName())) {
-                currentCookieTheme = cookie.getValue();
+            if (UI_THEME.equals(cookie.getName())) {
+                themeFromCookie = cookie.getValue();
                 break;
             }
         }
     }
 
-    if (StringUtils.isBlank(uiThemeParam) && StringUtils.isNotBlank(currentCookieTheme)) {
-        uiThemeParam = currentCookieTheme;
+    if (StringUtils.isBlank(uiThemeParam) && StringUtils.isNotBlank(themeFromCookie)) {
+        uiThemeParam = themeFromCookie;
     }
 
     try {
@@ -498,7 +499,7 @@
                 if ("APP_PREFERENCE".equalsIgnoreCase(resolutionStrategy)) {
 
                     // Check theme from the query param first.
-                    String resolvedUiTheme = request.getParameter("ui_theme");
+                    String resolvedUiTheme = request.getParameter(UI_THEME);
 
                     // If not in query param, check other parameteres.
                     if (StringUtils.isBlank(resolvedUiTheme)) {
@@ -529,15 +530,15 @@
 
                     // Fallback to cookie
                     if (StringUtils.isBlank(resolvedUiTheme)) {
-                        resolvedUiTheme = currentCookieTheme;
+                        resolvedUiTheme = themeFromCookie;
                     }
 
                     uiThemeParam = resolvedUiTheme;
 
                     // Write cookie only if resolved value is non-blank and different from cookie
-                    if (StringUtils.isNotBlank(resolvedUiTheme) && !resolvedUiTheme.equals(currentCookieTheme)) {
+                    if (StringUtils.isNotBlank(resolvedUiTheme) && !resolvedUiTheme.equals(themeFromCookie)) {
                         
-                        String cookieName = "ui_theme";
+                        String cookieName = UI_THEME;
                         String cookieValue = resolvedUiTheme;
                         int maxAge = 2592000;
                     
