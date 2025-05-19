@@ -542,7 +542,7 @@
                         String cookieValue = resolvedUiTheme;
                         int maxAge = 2592000;
                     
-                        String headerValue = cookieName + "=" + cookieValue + "; Path=/; Max-Age=" + maxAge + "; Secure; HttpOnly; SameSite=None";
+                        String headerValue = cookieName + "=" + cookieValue + "; Path=/; Max-Age=" + maxAge + "; Secure";
                         response.setHeader("Set-Cookie", headerValue);
                     }
                 }
