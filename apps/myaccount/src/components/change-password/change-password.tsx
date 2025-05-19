@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -84,6 +84,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
     const endUserSession: () => Promise<boolean> = useEndUserSession();
 
     const userOrganizationId: string = useSelector((state: AppState) => state?.organization?.userOrganizationId);
+    const userOrganizationHandle: string = useSelector((state: AppState) => state?.organization?.userOrganizationHandle);
     const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
     const isSubOrgUser: boolean = (organizationType === OrganizationType.SUBORGANIZATION);
 
@@ -182,7 +183,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
      */
     const changePassword = () => {
 
-        updatePassword(currentPassword, newPassword, isSubOrgUser, userOrganizationId)
+        updatePassword(currentPassword, newPassword, isSubOrgUser, userOrganizationId, userOrganizationHandle)
             .then((response: any) => {
                 if (response.status && response.status === 200) {
                     // reset the form.

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -36,8 +36,8 @@ import { store } from "../store";
  * @param newPassword - newly assigned password.
  * @returns axiosResponse - a promise containing the response.
  */
-export const updatePassword = (currentPassword: string, newPassword: string,
-    isSubOrgUser: boolean = false, userOrganizationId: string = null): Promise<AxiosResponse> => {
+export const updatePassword = (currentPassword: string, newPassword: string, isSubOrgUser: boolean = false,
+    userOrganizationId: string = null, userOrganizationHandle: string = null): Promise<AxiosResponse> => {
 
     // If the `httpRequest` method from SDK is used for the request, it causes the 401 to be handled by
     // the callbacks set fot the application which will log the user out. Hence, axios will be used
@@ -46,7 +46,7 @@ export const updatePassword = (currentPassword: string, newPassword: string,
     // See https://github.com/asgardio/asgardio-js-oidc-sdk/issues/45 for progress.
     // httpRequest.disableHandler();
 
-    const tenantDomain: string = isSubOrgUser ? userOrganizationId :
+    const tenantDomain: string = isSubOrgUser ? userOrganizationHandle :
         store.getState().authenticationInformation.tenantDomain;
     const username: string = [
         store.getState().authenticationInformation?.profileInfo.userName,

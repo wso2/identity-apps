@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,7 +20,8 @@ import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 
 export enum OrganizationActionTypes {
     SET_ORGANIZATION_TYPE = "SET_ORGANIZATION_TYPE",
-    SET_USER_ORGANIZATION_ID = "SET_USER_ORGANIZATION_ID"
+    SET_USER_ORGANIZATION_ID = "SET_USER_ORGANIZATION_ID",
+    SET_USER_ORGANIZATION_HANDLE = "SET_ORGANIZATION_HANDLE",
 }
 
 export interface SetOrganizationTypeInterface {
@@ -33,6 +34,12 @@ export interface SetUserOrganizationIdInterface {
     type: OrganizationActionTypes.SET_USER_ORGANIZATION_ID;
 }
 
+export interface SetUserOrganizationHandleInterface {
+    payload: string;
+    type: OrganizationActionTypes.SET_USER_ORGANIZATION_HANDLE;
+}
+
 export type OrganizationAction =
     | SetOrganizationTypeInterface
-    | SetUserOrganizationIdInterface;
+    | SetUserOrganizationIdInterface
+    | SetUserOrganizationHandleInterface;
