@@ -171,6 +171,12 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         }
     }, [ idToken, subjectToken ]);
 
+    /**
+     * Timeout to handle unexpected errors occurs in the impersonation iframe.
+     * Currently, there's no way to detect such errors from within the iframe,
+     * as the iframe itself is unaware of the errors occured in different
+     * hosts—such as the authentication portal.
+     */
     useEffect(() => {
         if (impersonationInProgress) {
             setTimeout(() => {
@@ -244,7 +250,7 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
                 // Set if my account is enabled.
                 setMyAccountStatus(myAccountApplication?.applicationEnabled);
 
-                // Set if my account login Steps is one and the BasicAuthenticator is included.
+                // Set if my account have only one login step and the BasicAuthenticator is included.
                 if (myAccountApplication?.authenticationSequence?.steps?.length === 1) {
                     const step: any = myAccountApplication?.authenticationSequence?.steps[0];
 
