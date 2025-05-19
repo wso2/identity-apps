@@ -98,6 +98,8 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     const [ authenticatedUserRoles, setAuthenticatedUserRoles ] = useState<RolesMemberInterface[]>([]);
     const [ myAccountAppId, setMyAccountAppId ] = useState<string>(null);
     const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
+    const [ isMyAccountImpersonatable, setIsMyAccountImpersonatable ]
+        = useState<boolean>(false);
 
     const consoleUrl: string = useSelector((state: AppState) => state?.config?.deployment?.clientHost);
     const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
@@ -216,17 +218,25 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
      * Sets the initial spinner.
      */
     useEffect(() => {
-        let status: boolean = AppConstants.DEFAULT_MY_ACCOUNT_STATUS;
-
         if (!isMyAccountApplicationGetRequestLoading
                 && !isMyAccountApplicationDataFetchRequestLoading
         ) {
             if (myAccountApplication) {
-                status = myAccountApplication?.applicationEnabled;
+                // Set if my account is enabled.
+                setMyAccountStatus(myAccountApplication?.applicationEnabled);
+
+                // Set if my account login Steps is one and the BasicAuthenticator is included.
+                if (myAccountApplication?.authenticationSequence?.steps?.length === 1) {
+                    const step: any = myAccountApplication?.authenticationSequence?.steps[0];
+
+                    if (Array.isArray(step?.options) && step.options.some(
+                        (option: any) => option?.authenticator === "BasicAuthenticator"
+                    )) {
+                        setIsMyAccountImpersonatable(true);
+                    }
+                }
             }
         }
-
-        setMyAccountStatus(status);
     }, [
         isMyAccountApplicationGetRequestLoading,
         isMyAccountApplicationDataFetchRequestLoading,
@@ -373,7 +383,8 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
      */
     const isImpersonatable = (): boolean => {
 
-        return isMyAccountEnabled && isLoggedInUserAuthorizedToImpersonate() && !isLocked && !isDisabled;
+        return isMyAccountImpersonatable && isMyAccountEnabled
+            && isLoggedInUserAuthorizedToImpersonate() && !isLocked && !isDisabled;
     };
 
     /**
@@ -445,6 +456,9 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     const resolvedButtonDisableHint = (): string | undefined => {
         const baseKey: string = "user:editUser.userActionZoneGroup.impersonateUserZone.buttonDisableHints";
 
+        if (!isMyAccountImpersonatable) {
+            return t(`${baseKey}.myAccountLoginFlowIncompatible`);
+        }
         if (!isMyAccountEnabled) {
             return t(`${baseKey}.myAccountDisabled`);
         }
