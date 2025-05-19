@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useAsyncOperationStatus } from "@wso2is/admin.core.v1/hooks/use-async-operation-status";
 import { OperationStatus, OperationStatusSummary } from "@wso2is/admin.core.v1/models/common";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -29,7 +30,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { ApplicationManagementConstants } from "../../constants/application-management";
-import { useAsyncOperationStatus } from "../../hooks/use-async-operation-status";
 import { ApplicationInterface } from "../../models/application";
 import { ApplicationShareForm } from "../forms/share-application-form";
 import { OperationStatusBanner } from "../shared-access-status-banner";

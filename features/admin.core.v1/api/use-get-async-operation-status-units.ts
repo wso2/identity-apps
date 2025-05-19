@@ -16,14 +16,14 @@
  * under the License.
  */
 
+import { HttpMethods } from "@wso2is/core/models";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "@wso2is/admin.core.v1/hooks/use-request";
-import { AsyncOperationStatusUnitListInterface } from "@wso2is/admin.core.v1/models/common";
-import { store } from "@wso2is/admin.core.v1/store";
-import { HttpMethods } from "@wso2is/core/models";
+} from "../hooks/use-request";
+import { AsyncOperationStatusUnitListInterface } from "../models/common";
+import { store } from "../store";
 
 /**
  * Hook to get the list of asynchronous operation status units.

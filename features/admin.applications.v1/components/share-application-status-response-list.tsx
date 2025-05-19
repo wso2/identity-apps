@@ -17,12 +17,18 @@
  */
 
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
+import { useGetAsyncOperationStatusUnits } from "@wso2is/admin.core.v1/api/use-get-async-operation-status-units";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
-import { AsyncOperationStatusLinkInterface, AsyncOperationStatusUnitResponse, OperationStatusSummary } from
-    "@wso2is/admin.core.v1/models/common";
+import {
+    AsyncOperationStatusLinkInterface,
+    AsyncOperationStatusUnitResponse,
+    OperationStatus,
+    OperationStatusSummary } from "@wso2is/admin.core.v1/models/common";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     DataTable,
+    EmptyPlaceholder,
     ListLayout,
     TableColumnInterface
 } from "@wso2is/react-components";
@@ -37,7 +43,6 @@ import {
     Header,
     Icon
 } from "semantic-ui-react";
-import { useGetAsyncOperationStatusUnits } from "../api/use-get-application-share-status-units";
 import { ApplicationShareUnitStatus } from "../constants/application-management";
 import "./share-application-status-response-list.scss";
 
@@ -73,22 +78,22 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
     ["data-componentid"]: componentId
 }: ShareApplicationStatusResponseListProps): ReactElement => {
 
+    const API_LIMIT: number = UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT;
+
     const [ selectedStatus, setSelectedStatus ] = useState<ApplicationShareUnitStatus>
     (ApplicationShareUnitStatus.FAILED);
     const [ unitOperations, setUnitOperations ] = useState<AsyncOperationStatusUnitResponse[]>([]);
     const [ afterCursor, setAfterCursor ] = useState<string | null>(null);
     const [ hasMoreItems, setHasMoreItems ] = useState(true);
     const [ isInitialLoading, setIsInitialLoading ] = useState<boolean>(true);
-    const { t } = useTranslation();
-
-    const API_LIMIT: number = UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT;
-
     const [ params, setParams ] = useState<GetApplicationStatusResponseParams>({
         after: null,
         filter: `status eq ${selectedStatus}`,
         limit: API_LIMIT,
         shouldFetch: true
     });
+
+    const { t } = useTranslation();
 
     const {
         data: shareStatusUnitListResponse,
@@ -191,28 +196,37 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
         };
 
         return (
-            <div
-                className="share-application-status-response-list-org-id-wrapper"
-                onMouseEnter={ () => setIsHovered(true) }
-                onMouseLeave={ () => setIsHovered(false) }
-            >
-                <span className="share-application-status-response-list-ellipsis-text" title={ id }>
-                    { id }
-                </span>
-                <span className="share-application-status-response-list-copy-icon-container">
-                    { isHovered && (
-                        <Icon
-                            name={ isCopied ? "check" : "copy outline" }
-                            title={ isCopied ? "Copied!" : "Copy ID" }
-                            className={ "share-application-status-response-list-copy-icon visible" }
-                            onClick={ handleCopy }
-                            link
-                        />
-                    ) }
-                </span>
+            <div className="share-application-status-response-list">
+                <div
+                    className="org-id-wrapper"
+                    onMouseEnter={ () => setIsHovered(true) }
+                    onMouseLeave={ () => setIsHovered(false) }
+                >
+                    <span className="ellipsis-text" title={ id }>{ id }</span>
+                    <span className="copy-icon-container">
+                        { isHovered && (
+                            <Icon
+                                name={ isCopied ? "check" : "copy outline" }
+                                title={ isCopied ? "Copied!" : "Copy ID" }
+                                className={ "copy-icon visible" }
+                                onClick={ handleCopy }
+                                link
+                            />
+                        ) }
+                    </span>
+                </div>
             </div>
         );
     };
+
+    const statusToDefaultMessage: Map<OperationStatus, string> = new Map<OperationStatus, string>([
+        [ OperationStatus.SUCCESS, t("applications:edit.sections.shareApplication."
+            + "applicationShareFailureSummaryDefaultStatus.success") ],
+        [ OperationStatus.FAILED, t("applications:edit.sections.shareApplication."
+            + "applicationShareFailureSummaryDefaultStatus.failed") ],
+        [ OperationStatus.PARTIALLY_COMPLETED, t("applications:edit.sections.shareApplication."
+            + "applicationShareFailureSummaryDefaultStatus.partiallyCompleted") ]
+    ]);
 
     const resolveTableColumns = (): TableColumnInterface[] => {
         return [
@@ -223,16 +237,16 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
                 key: "targetOrgId",
                 render: (response: AsyncOperationStatusUnitResponse): ReactNode => {
                     return (
-                        <Header
-                            className="share-application-status-response-list-header"
-                            data-componentid={ `${componentId}-application-item-heading` }>
-                            <Header.Subheader className="share-application-status-response-list-org-handler">
-                                { response?.targetOrgName }
-                            </Header.Subheader>
-                            <Header.Content className="share-application-status-response-list-org-id">
-                                <OrgIdDisplay id={ response?.targetOrgId } />
-                            </Header.Content>
-                        </Header>
+                        <div className="share-application-status-response-list">
+                            <Header className="header" data-componentid={ `${componentId}-application-item-heading` }>
+                                <Header.Subheader className="org-handler">
+                                    { response?.targetOrgName }
+                                </Header.Subheader>
+                                <Header.Content className="org-id">
+                                    <OrgIdDisplay id={ response?.targetOrgId } />
+                                </Header.Content>
+                            </Header>
+                        </div>
                     );
                 },
                 title: "targetOrgId"
@@ -245,13 +259,12 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
                 render: (response: AsyncOperationStatusUnitResponse): ReactNode => {
                     return (
                         <Header
-                            className="share-application-status-response-list-status-icon"
                             as="h6"
                             data-componentid={ `${componentId}-status-item-heading` } >
                             <Header.Content>
                                 <Icon
                                     name="circle"
-                                    color={ response?.status === ApplicationShareUnitStatus.SUCCESS ? "green" : "red" }
+                                    color={ response?.status === OperationStatus.SUCCESS ? "green" : "red" }
                                     size="small"
                                     data-componentid={ `${componentId}-status-icon` }
                                 />
@@ -270,18 +283,8 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
                     return (
                         <Header as="h6" data-componentid={ `${componentId}-status-item-heading` }>
                             <Header.Content>
-                                { response?.status === "SUCCESS" && response?.statusMessage === null
-                                    ? t("applications:edit.sections.shareApplication."
-                                        + "applicationShareFailureSummaryDefaultStatus.success")
-                                    : response?.statusMessage }
-                                { response?.status === "FAILED" && response?.statusMessage === null
-                                    ? t("applications:edit.sections.shareApplication."
-                                        + "applicationShareFailureSummaryDefaultStatus.failed")
-                                    : response?.statusMessage }
-                                { response?.status === "PARTIALLY_COMPLETED" && response?.statusMessage === null
-                                    ? t("applications:edit.sections.shareApplication."
-                                        + "applicationShareFailureSummaryDefaultStatus.partiallyCompleted")
-                                    : response?.statusMessage }
+                                { response?.statusMessage
+                                    ? response?.statusMessage : statusToDefaultMessage.get(response?.status) }
                             </Header.Content>
                         </Header>
                     );
@@ -311,7 +314,7 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
                         <p>
                             { t("applications:wizards.sharedAccessStatus.banner.partiallyCompleted") }
                             { operationSummary.partiallyCompletedCount } &nbsp;&nbsp; | &nbsp;&nbsp;
-                            { t("applications:wizards.sharedAccessStatus.banner.partiallyCompleted") }
+                            { t("applications:wizards.sharedAccessStatus.banner.failed") }
                             { operationSummary.failedCount }
                         </p>
                     ) }
@@ -332,53 +335,66 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
                     </div>
                 </Grid.Column>
             </Grid.Row>
-
-            <ListLayout
-                className="share-application-status-response-list-custom-list-layout-override"
-                id="share-units"
-                showPagination={ false }
-                showTopActionPanel={ false }
-                isLoading={ isInitialLoading && unitOperations.length === 0 }
-                data-testid={ `${componentId}-list-layout` }
-                data-componentid={ `${componentId}-list-layout` }
-                totalDataSize={ unitOperations.length }
-                listItemLimit={ API_LIMIT }
-                showLayoutLoading={ isInitialLoading && unitOperations.length === 0 }
-                onPageChange={ () => null }
-                totalPages={ 200 }
-            >
-                <div id="scrollableDiv" style={ { height: "400px", overflow: "auto" } }>
-                    <InfiniteScroll
-                        dataLength={ unitOperations.length }
-                        next={ loadMoreData }
-                        hasMore={ hasMoreItems }
-                        loader={
-                            (<div className="share-application-status-response-list-infinite-scroll-loader">
-                                <CircularProgress size={ 22 } className="list-item-loader" />
-                            </div>)
-                        }
-                        scrollableTarget={ "scrollableDiv" }
-                    >
-                        <DataTable<AsyncOperationStatusUnitResponse>
-                            className="addon-field-wrapper"
-                            isLoading={ isInitialLoading && unitOperations.length === 0 }
-                            loadingStateOptions={ {
-                                count: API_LIMIT,
-                                imageType: "circular"
-                            } }
-                            actions={ [] }
-                            columns={ resolveTableColumns() }
-                            data={ unitOperations }
-                            onRowClick={ () => null }
-                            transparent={ true }
-                            selectable={ false }
-                            showHeader={ false }
-                            data-testid={ `${componentId}-data-table` }
-                            data-componentid={ `${componentId}-data-table` }
-                        />
-                    </InfiniteScroll>
-                </div>
-            </ListLayout>
+            <div className="share-application-status-response-list">
+                <ListLayout
+                    className="custom-list-layout-override"
+                    id="share-units"
+                    showPagination={ false }
+                    showTopActionPanel={ false }
+                    isLoading={ isInitialLoading && unitOperations.length === 0 }
+                    data-testid={ `${componentId}-list-layout` }
+                    data-componentid={ `${componentId}-list-layout` }
+                    totalDataSize={ unitOperations.length }
+                    listItemLimit={ API_LIMIT }
+                    showLayoutLoading={ isInitialLoading && unitOperations.length === 0 }
+                    onPageChange={ () => null }
+                    totalPages={ 200 }
+                >
+                    <div id="scrollableDiv" style={ { height: "400px", overflow: "auto" } }>
+                        { unitOperations.length === 0 ? (
+                            <EmptyPlaceholder
+                                data-testid={ `${componentId}-empty-list-placeholder` }
+                                action={ null }
+                                image={ getEmptyPlaceholderIllustrations().emptyList }
+                                imageSize="micro"
+                                subtitle={ [
+                                    t("myAccount:components.applications.placeholders.emptyList.subtitles.0")
+                                ] }
+                            />
+                        ) : (
+                            <InfiniteScroll
+                                dataLength={ unitOperations.length }
+                                next={ loadMoreData }
+                                hasMore={ hasMoreItems }
+                                loader={
+                                    (<div className="infinite-scroll-loader">
+                                        <CircularProgress size={ 22 } className="list-item-loader" />
+                                    </div>)
+                                }
+                                scrollableTarget={ "scrollableDiv" }
+                            >
+                                <DataTable<AsyncOperationStatusUnitResponse>
+                                    className="addon-field-wrapper"
+                                    isLoading={ isInitialLoading && unitOperations.length === 0 }
+                                    loadingStateOptions={ {
+                                        count: API_LIMIT,
+                                        imageType: "circular"
+                                    } }
+                                    actions={ [] }
+                                    columns={ resolveTableColumns() }
+                                    data={ unitOperations }
+                                    onRowClick={ () => null }
+                                    transparent={ true }
+                                    selectable={ false }
+                                    showHeader={ false }
+                                    data-testid={ `${componentId}-data-table` }
+                                    data-componentid={ `${componentId}-data-table` }
+                                />
+                            </InfiniteScroll>
+                        ) }
+                    </div>
+                </ListLayout>
+            </div>
         </>
     );
 };

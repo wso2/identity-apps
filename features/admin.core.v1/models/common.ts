@@ -245,7 +245,7 @@ export interface AsyncOperationStatusUnitResponse {
     residentResourceId: string;
     targetOrgId: string;
     targetOrgName: string;
-    status: string;
+    status: OperationStatus;
     statusMessage: string;
     createdTime: string;
 }

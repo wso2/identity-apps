@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AxiosResponse } from "axios";
@@ -24,9 +23,10 @@ import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { getAsyncOperationStatus } from "../api/async-operations";
+import { UIConstants } from "../constants/ui-constants";
 import { AsyncOperationStatusResponse, OperationStatus, OperationStatusSummary } from
-    "../../admin.core.v1/models/common";
-import { getAsyncOperationStatus } from "../api/application";
+    "../models/common";
 
 /**
  * Proptypes for the use operation status poller hook.

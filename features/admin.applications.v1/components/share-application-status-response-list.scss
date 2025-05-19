@@ -16,83 +16,84 @@
  * under the License.
  */
 
- .share-application-status-response-list-header {
-   display: flex;
-   flex-direction: column; 
-   align-items: left; 
-   text-align: left;
-   justify-content: left;
+ .share-application-status-response-list {
+   width: 100%;
+   .header {
+      display: flex;
+      flex-direction: column; 
+      align-items: left; 
+      text-align: left;
+      justify-content: left;
+      color: black;
+   }
+   .org-handler {
+      font-size: 15px;
+      margin-top: 5px;
+      color: rgb(0, 0, 0) !important;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 250px;
+      display: inline-block;
+      vertical-align: middle;
+      flex-shrink: 1;
+      line-height: 2.0;
+   }
+   .org-id {
+      font-size: 11px;
+      color: gray;
+   }
+   .org-id-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      max-width: 63%;
+      gap: 0.5rem;
+   }
+   .ellipsis-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 150px;
+      display: inline-block;
+      vertical-align: middle;
+      flex-shrink: 1;
+      line-height: 2.0;
+   }
+   .copy-icon-container {
+      position: absolute;
+      right: 0;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.1s ease, visibility 0s 0.1s;
+   }
+   .org-id-wrapper:hover .copy-icon-container {
+      visibility: visible;
+      opacity: 1;
+      transition: opacity 0.1s ease, visibility 0s 0s;
+   }
+   .copy-icon {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.1s ease, visibility 0s 0.1s;
+      cursor: pointer;
+      font-size: 1rem;
+      vertical-align: middle;
+      line-height: 1;
+   }
+
+   .copy-icon.visible {
+      opacity: 1;
+      visibility: visible;
+   }
+   .custom-list-layout-override {
+      display: block !important; 
+      margin-right: 0px !important;
+      width: 100% !important;
+   }
+   .infinite-scroll-loader {
+      justify-content: center;
+      align-items: center;
+      height: 100px; 
+   }
  }
-
-.share-application-status-response-list-org-handler {
-   font-size: 15px;
-   margin-top: 5px;
-   color: black;
-   white-space: nowrap;
-   overflow: hidden;
-   text-overflow: ellipsis;
-   max-width: 250px;
-   display: inline-block;
-   vertical-align: middle;
-   flex-shrink: 1;
-   line-height: 2.0;
- }
- 
-.share-application-status-response-list-org-id {
-    font-size: 11px;
-    color: gray;
- }
-
-.share-application-status-response-list-org-id-wrapper {
-   display: flex;
-   align-items: center;
-   max-width: 100%;
-   gap: 0.5rem;
-}
-
-.share-application-status-response-list-ellipsis-text {
-   white-space: nowrap;
-   overflow: hidden;
-   text-overflow: ellipsis;
-   max-width: 150px;
-   display: inline-block;
-   vertical-align: middle;
-   flex-shrink: 1;
-   line-height: 2.0;
-}
-
-.share-application-status-response-list-copy-icon-container {
-   width: 10px;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   flex-shrink: 0;
-}
-
-.share-application-status-response-list-copy-icon {
-   opacity: 0;
-   visibility: hidden;
-   transition: opacity 0.1s ease;
-   cursor: pointer;
-   font-size: 1rem;
-   vertical-align: middle; 
-   line-height: 1; 
-}
-
-.share-application-status-response-list-copy-icon.visible {
-   opacity: 1;
-   visibility: visible;
-}
-
-.share-application-status-response-list-custom-list-layout-override {
-   display: block !important; 
-   margin-right: 0px !important;
-   width: 100% !important;
- }
-
-.share-application-status-response-list-infinite-scroll-loader {
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   height: 100px; 
-}
