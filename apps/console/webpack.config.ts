@@ -174,15 +174,6 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
         config.plugins.splice(indexHtmlWebpackPluginIndex, 1);
     }
 
-    // Remove ForkTSCheckerWebpackPluginIndex plugin added by NX and add HtmlWebpackPlugin instead.
-    const forkTSCheckerWebpackPluginIndex: number = config.plugins.findIndex((plugin: WebpackPluginInstance) => {
-        return plugin.constructor.name === "ForkTsCheckerWebpackPlugin";
-    });
-
-    if (forkTSCheckerWebpackPluginIndex !== -1) {
-        config.plugins.splice(forkTSCheckerWebpackPluginIndex, 1);
-    }
-
     if (isProduction && !isDeployedOnExternalStaticServer) {
         /* eslint-disable max-len */
         config.plugins.push(
