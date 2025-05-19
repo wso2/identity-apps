@@ -106,11 +106,12 @@
 
     if (StringUtils.isNotBlank(callback) &&
         StringUtils.isNotBlank(userStoreDomain)) {
-        if (StringUtils.isNotBlank(sp)) {
+        if (StringUtils.isNotBlank(sp) && !StringUtils.equalsIgnoreCase(sp, "null")) {
             applicationName = sp;
         } else if (callback.contains(CONSOLE_APP_NAME.toLowerCase())) {
             applicationName = CONSOLE_APP_NAME;
-        } else if (callback.contains(MY_ACCOUNT_APP_NAME.toLowerCase().replaceAll("\\s+", ""))) {
+        } else if (callback.contains(MY_ACCOUNT_APP_NAME.toLowerCase().replaceAll("\\s+", "")) || 
+                isUserPortalUrl(callback, tenantDomain, application)) {
             applicationName = MY_ACCOUNT_APP_NAME;
         }
     } else {
@@ -284,6 +285,16 @@
 	}
 
     session.invalidate();
+%>
+
+<%! 
+    private boolean isUserPortalUrl(String callback, String tenantDomain, ServletContext application) {
+        
+        String userPortalUrl = IdentityManagementEndpointUtil.getUserPortalUrl(
+                application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL),
+                tenantDomain);
+        return StringUtils.equals(callback, userPortalUrl);
+    }
 %>
 
 <%-- Data for the layout from the page --%>

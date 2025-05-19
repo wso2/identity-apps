@@ -1,5 +1,16 @@
 # @wso2is/admin.users.v1
 
+## 2.32.3
+
+### Patch Changes
+
+- [#8204](https://github.com/wso2/identity-apps/pull/8204) [`186f06c1a3364687cbf9e91a841da97538f06336`](https://github.com/wso2/identity-apps/commit/186f06c1a3364687cbf9e91a841da97538f06336) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add impersonation UX improvements.
+
+- Updated dependencies [[`186f06c1a3364687cbf9e91a841da97538f06336`](https://github.com/wso2/identity-apps/commit/186f06c1a3364687cbf9e91a841da97538f06336)]:
+  - @wso2is/admin.extensions.v1@2.38.1
+  - @wso2is/admin.users.v1@2.32.3
+  - @wso2is/i18n@2.23.2
+
 ## 2.32.2
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @wso2is/identity-apps-core
 
+## 2.24.8
+
+### Patch Changes
+
+- [#8203](https://github.com/wso2/identity-apps/pull/8203) [`ef2da53205586c3d40e6a9244c6b41061bb652c2`](https://github.com/wso2/identity-apps/commit/ef2da53205586c3d40e6a9244c6b41061bb652c2) Thanks [@BimsaraBodaragama](https://github.com/BimsaraBodaragama)! - Fix isAccessUrlAvailable Property Setting for Admin-Initiated Password Reset.
+
+* [#8183](https://github.com/wso2/identity-apps/pull/8183) [`529d543867227fc46a85796a22e69dbadc8d992d`](https://github.com/wso2/identity-apps/commit/529d543867227fc46a85796a22e69dbadc8d992d) Thanks [@BimsaraBodaragama](https://github.com/BimsaraBodaragama)! - Add changeset to Adding Locale Dropdown and Required Field Validation for Self-Registration Page
+
+- [#8202](https://github.com/wso2/identity-apps/pull/8202) [`9158880755d755c55c281d06e188315d2d7038b6`](https://github.com/wso2/identity-apps/commit/9158880755d755c55c281d06e188315d2d7038b6) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add impersonator role creation to app portal util.
+
 ## 2.24.7
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # @wso2is/i18n
 
+## 2.23.2
+
+### Patch Changes
+
+- [#8204](https://github.com/wso2/identity-apps/pull/8204) [`186f06c1a3364687cbf9e91a841da97538f06336`](https://github.com/wso2/identity-apps/commit/186f06c1a3364687cbf9e91a841da97538f06336) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add impersonation UX improvements.
+
+## 2.23.1
+
+### Patch Changes
+
+- [#8182](https://github.com/wso2/identity-apps/pull/8182) [`e9855f0cb78df5d2609ed21bcc20aee8f535104e`](https://github.com/wso2/identity-apps/commit/e9855f0cb78df5d2609ed21bcc20aee8f535104e) Thanks [@adibmbrk](https://github.com/adibmbrk)! - Remove validate token bindings when DPoP enabled and fix minor inconsistencies in the ui
+
 ## 2.23.0
 
 ### Minor Changes

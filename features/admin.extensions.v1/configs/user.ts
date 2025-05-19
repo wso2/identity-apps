@@ -23,6 +23,7 @@ import { ProfileInfoInterface } from "@wso2is/core/models";
 import { User } from "./models";
 
 export const userConfig: User = {
+    allowImpersonationForPrimaryUserStore: true,
     bulkUserImportLimit: {
         fileSize: 500,
         inviteEmails: 50,
