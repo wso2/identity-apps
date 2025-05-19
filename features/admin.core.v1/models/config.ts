@@ -559,7 +559,7 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
     /**
      * Async Operation Polling Interval.
      */
-    asyncOperationStatus: number;
+    asyncOperationStatusPollingInterval: number;
 }
 
 /**
@@ -647,6 +647,7 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     me: string;
     saml2Meta: string;
     wellKnown: string;
+    asyncStatus: string;
 }
 
 export interface ResourceEndpointsInterface {

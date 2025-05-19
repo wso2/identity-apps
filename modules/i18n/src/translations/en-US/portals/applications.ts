@@ -359,11 +359,11 @@ export const applications: ApplicationsNS = {
             message: "If you revoke this application, authentication flows for this application will " +
                 "stop working. Please proceed with caution."
         },
-        InProgressReshare: {
+        inProgressReshare: {
             assertionHint: "Please confirm your action.",
             content: "This action is irreversible and will discard the application sharing operations currently in progress",
             header: "Are you sure?",
-            message: "Updating the shared access is in progress. Cancelling this will terminate the execution of the rest of the workflow."
+            message: "Sharing application with organizations is in progress. Cancelling will terminate the operation."
         }
     },
     dangerZoneGroup: {

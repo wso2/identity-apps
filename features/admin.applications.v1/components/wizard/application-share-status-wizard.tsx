@@ -54,13 +54,11 @@ const ApplicationShareStatusWizard: FunctionComponent<ApplicationShareStatusWiza
 }: ApplicationShareStatusWizardProps): ReactElement => {
 
     return (
-        <>
-            <ShareApplicationStatusResponseList
-                operationId={ operationId }
-                operationSummary={ operationSummary }
-                data-componentid={ `${componentId}-list` }
-            />
-        </>
+        <ShareApplicationStatusResponseList
+            operationId={ operationId }
+            operationSummary={ operationSummary }
+            data-componentid={ `${componentId}-list` }
+        />
     );
 };
 

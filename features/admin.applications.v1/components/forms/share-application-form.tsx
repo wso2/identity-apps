@@ -351,7 +351,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                     } }
                     type="warning"
                     open={ showConfirmationModal }
-                    assertionHint={ t("applications:confirmations.InProgressReshare.assertionHint") }
+                    assertionHint={ t("applications:confirmations.inProgressReshare.assertionHint") }
                     assertionType="checkbox"
                     primaryAction={ t("common:confirm") }
                     secondaryAction={ t("common:cancel") }
@@ -365,13 +365,13 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                     closeOnDimmerClick={ false }
                 >
                     <ConfirmationModal.Header>
-                        { t("applications:confirmations.InProgressReshare.header") }
+                        { t("applications:confirmations.inProgressReshare.header") }
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message attached warning>
-                        { t("applications:confirmations.InProgressReshare.message") }
+                        { t("applications:confirmations.inProgressReshare.message") }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>
-                        { t("applications:confirmations.InProgressReshare.content") }
+                        { t("applications:confirmations.inProgressReshare.content") }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             </>

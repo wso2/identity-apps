@@ -40,8 +40,8 @@ export const common: CommonNS = {
     "assignee": "Beauftragter",
     "assignees": "Beauftragte",
     "asyncOperationErrorMessage": {
-        "description": "Da ist etwas schiefgelaufen",
-        "message": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später noch einmal."
+        "description": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später noch einmal.",
+        "message": "Da ist etwas schiefgelaufen"
     },
     "authentication": "Authentifizierung",
     "authenticator": "Authentifikator",

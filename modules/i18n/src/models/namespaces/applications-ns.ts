@@ -273,7 +273,7 @@ export interface ApplicationsNS {
             content: string;
             assertionHint: string;
         };
-        InProgressReshare: {
+        inProgressReshare: {
             header: string;
             message: string;
             content: string;

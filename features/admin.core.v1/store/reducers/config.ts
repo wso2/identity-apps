@@ -206,7 +206,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             appName: "",
             appTitle: "",
             applicationTemplateLoadingStrategy: undefined,
-            asyncOperationStatus: null,
+            asyncOperationStatusPollingInterval: null,
             connectionResourcesUrl: "",
             cookiePolicyUrl: "",
             emailTemplates: {
