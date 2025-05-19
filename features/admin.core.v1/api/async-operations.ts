@@ -23,7 +23,6 @@ import { store } from "../store";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance())
-    .bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Function to get asynchronous operation status.
