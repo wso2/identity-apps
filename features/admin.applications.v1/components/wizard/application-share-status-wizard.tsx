@@ -37,6 +37,9 @@ interface ApplicationShareStatusWizardProps extends IdentifiableComponentInterfa
      * The summary of the share operation.
      */
     operationSummary: OperationStatusSummary;
+    /**
+     * Is error has occurred.
+     */
     hasError: boolean;
 }
 

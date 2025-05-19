@@ -656,7 +656,7 @@ export const applications: ApplicationsNS = {
                         message: "Application sharing failed."
                     },
                     success: {
-                        description: "Application sharing completed with success for all organizations.",
+                        description: "Application was shared with organizations successfully.",
                         message: "Application sharing successful."
                     },
                     partialSuccess: {

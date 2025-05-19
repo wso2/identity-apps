@@ -82,7 +82,7 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
         new Map<OperationStatus, { alertLevel: AlertLevels, i18nKey: string }>([
             [ OperationStatus.SUCCESS, { alertLevel: AlertLevels.SUCCESS, i18nKey: "success" } ],
             [ OperationStatus.FAILED, { alertLevel: AlertLevels.ERROR, i18nKey: "failure" } ],
-            [ OperationStatus.PARTIALLY_COMPLETED, { alertLevel: AlertLevels.WARNING, i18nKey: "partialSuccess" } ]
+            [ OperationStatus.PARTIALLY_COMPLETED, { alertLevel: AlertLevels.ERROR, i18nKey: "partialSuccess" } ]
         ]);
 
     const { status, startPolling } = useAsyncOperationStatus({

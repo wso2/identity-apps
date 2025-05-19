@@ -22,7 +22,7 @@ import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../store";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
-    .httpRequest.bind(AsgardeoSPAClient.getInstance())
+    .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Function to get asynchronous operation status.

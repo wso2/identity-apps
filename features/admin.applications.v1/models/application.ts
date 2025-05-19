@@ -931,11 +931,3 @@ export enum SubjectTypes {
     PUBLIC = "public",
     PAIRWISE = "pairwise"
 }
-/**
- * Interface for the share application status response.
- */
-export interface ShareApplicationStatusResponse {
-    resourceIdentifier: string;
-    status: string;
-    message: string;
-}
