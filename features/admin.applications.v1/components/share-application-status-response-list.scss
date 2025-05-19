@@ -35,7 +35,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 250px;
+      max-width: 230px;
       display: inline-block;
       vertical-align: middle;
       flex-shrink: 1;
@@ -51,7 +51,7 @@
       position: relative;
       display: flex;
       align-items: center;
-      max-width: 63%;
+      max-width: 80%;
       gap: 0.5rem;
    }
 
@@ -59,7 +59,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 150px;
+      max-width: 80%;
       display: inline-block;
       vertical-align: middle;
       flex-shrink: 1;

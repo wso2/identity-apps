@@ -358,7 +358,7 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
                                 image={ getEmptyPlaceholderIllustrations().emptyList }
                                 imageSize="micro"
                                 subtitle={ [
-                                    t("myAccount:components.applications.placeholders.emptyList.subtitles.0")
+                                    t("applications:edit.sections.attributes.emptySearchResults.title")
                                 ] }
                             />
                         ) : (
