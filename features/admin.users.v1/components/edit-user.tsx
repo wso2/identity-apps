@@ -33,11 +33,11 @@ import { Dispatch } from "redux";
 import { Divider, Grid, TabProps } from "semantic-ui-react";
 import { UserGroupsList } from "./user-groups-edit";
 import { UserProfile } from "./user-profile";
+import { UserProfileUpdated } from "./user-profile-updated";
 import { UserRolesList } from "./user-roles-list";
 import { UserSessions } from "./user-sessions";
 import { AdminAccountTypes, UserManagementConstants } from "../constants";
 import useUserManagement from "../hooks/use-user-management";
-import { UserProfileUpdated } from "./user-profile-updated";
 
 interface EditUserPropsInterface extends IdentifiableComponentInterface {
     /**

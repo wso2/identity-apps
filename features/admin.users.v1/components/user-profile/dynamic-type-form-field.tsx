@@ -16,6 +16,7 @@
  * under the License.
  */
 
+// import DateTimePicker from "@oxygen-ui/react/DateTimePicker";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { ClaimDataType, IdentifiableComponentInterface, ProfileSchemaInterface } from "@wso2is/core/models";
 import { AutocompleteFieldAdapter, CheckboxFieldAdapter, FinalFormField, TextFieldAdapter } from "@wso2is/form";
@@ -93,6 +94,10 @@ const DynamicTypeFormField = (props: DynamicTypeFormFieldPropsInterface) => {
 
         return undefined;
     };
+
+    // return (
+    //     <DateTimePicker />
+    // )
 
     if (claimType === ClaimDataType.STRING) {
         const options: string[] = schema["canonicalValues"] ?? [];

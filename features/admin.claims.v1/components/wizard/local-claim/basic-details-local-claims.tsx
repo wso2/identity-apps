@@ -163,30 +163,29 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
     return (
         <Forms
             onSubmit={ (values: Map<string, FormValue>) => {
-                const data: Claim
-                 = {
+                const data: Claim = {
                     canonicalValues: values.get("canonicalValues")
-                    ? ((values.get("canonicalValues") as unknown) as { key: string; value: string }[])
-                        .map((item: { key: string; value: string }) => ({
-                            key: item.key,
-                            value: item.value
-                        }))
-                    : [],
+                        ? ((values.get("canonicalValues") as unknown) as { key: string; value: string }[])
+                            .map((item: { key: string; value: string }) => ({
+                                key: item.key,
+                                value: item.value
+                            }))
+                        : [],
                     claimURI: claimURIBase + "/" + values.get("claimURI").toString().trim(),
                     dataType: values.get("dataType")?.toString() === ClaimDataType.STRING
                         ? ((values.get("canonicalValues") as string[]).length > 0
                             ? ClaimDataType.OPTIONS
                             : ClaimDataType.TEXT)
                         : values.get("dataType")?.toString(),
-                     description: values.get("description")?.toString(),
-                     displayName: values.get("name").toString(),
-                     displayOrder: values.get("displayOrder") ? parseInt(values.get("displayOrder")?.toString()) : 0,
-                     multiValued: values.get("multiValued")?.length > 0,
-                     readOnly: values.get("readOnly")?.length > 0,
-                     regEx: values.get("regularExpression")?.toString(),
-                     required: values.get("required")?.length > 0,
-                     supportedByDefault: values.get("supportedByDefault")?.length > 0
-                 };
+                    description: values.get("description")?.toString(),
+                    displayName: values.get("name").toString(),
+                    displayOrder: values.get("displayOrder") ? parseInt(values.get("displayOrder")?.toString()) : 0,
+                    multiValued: values.get("multiValued")?.length > 0,
+                    readOnly: values.get("readOnly")?.length > 0,
+                    regEx: values.get("regularExpression")?.toString(),
+                    required: values.get("required")?.length > 0,
+                    supportedByDefault: values.get("supportedByDefault")?.length > 0
+                };
 
                 if (attributeConfig.localAttributes.createWizard.customWIzard) {
 
