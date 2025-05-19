@@ -30,15 +30,20 @@ const CustomerDataTabPane = ({
 
     const publishingEndpoint = `https://${isHost}/${orgName}/${appId}/Events`;
     const profileEndpoint = `https://${isHost}/${orgName}/profile/${profileId}`;
-    const writekeyEndpoint = `http://localhost:8900/api/v1/events/write-key/${appId}`;
+    const writekeyEndpoint = `http://localhost:8900/api/server/v1/applications/${appId}/api-keys`;
 
     const fetchWriteKey = async () => {
         setIsLoading(true);
         try {
             const response = await axios.get(writekeyEndpoint);
-            if (response.data?.write_key) {
-                setCurrentKey(response.data.write_key);
+            if (response.data?.APIKey) {
+                setCurrentKey(response.data.APIKey);
+            } else {
+                const create_response = await axios.post(writekeyEndpoint);
+                if (create_response.data?.APIKey) {
+                    setCurrentKey(create_response.data.APIKey);
             }
+        }
         } catch (error) {
             console.error("Failed to fetch new write key:", error);
         } finally {
