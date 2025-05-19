@@ -191,7 +191,7 @@
         "applicationTemplateLoadingStrategy": "{{ console.ui.application_template_loading_strategy }}",
         {% endif %}
         {% if console.ui.application_sharing_status_polling_interval is defined %}
-        "applicationSharingStatusPollingInterval": {{ console.ui.application_sharing_status_polling_interval }},
+        "asyncOperationStatusPollingInterval": {{ console.ui.application_sharing_status_polling_interval }},
         {% endif %}
         {% if console.ui.identity_provider_template_loading_strategy is defined %}
         "identityProviderTemplateLoadingStrategy": "{{ console.ui.identity_provider_template_loading_strategy }}",

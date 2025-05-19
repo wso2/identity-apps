@@ -75,8 +75,8 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
     const isApplicationShareOperationStatusEnabled: boolean = isFeatureEnabled(
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_SHARED_ACCESS_STATUS"));
-    const applicationSharingStatusPollingInterval: number = useSelector((state: AppState) =>
-        state?.config?.ui?.applicationSharingStatusPollingInterval);
+    const asyncOperationStatusPollingInterval: number = useSelector((state: AppState) =>
+        state?.config?.ui?.asyncOperationStatusPollingInterval);
 
     const statusToi18nKeyMap: Map<OperationStatus, { alertLevel: AlertLevels, i18nKey: string }> =
         new Map<OperationStatus, { alertLevel: AlertLevels, i18nKey: string }>([
@@ -106,7 +106,7 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
             setSharingOperationSummary(summary);
         },
         operationType: ApplicationManagementConstants.B2B_APPLICATION_SHARE,
-        pollingInterval: applicationSharingStatusPollingInterval,
+        pollingInterval: asyncOperationStatusPollingInterval,
         subjectId: application.id
     });
 
