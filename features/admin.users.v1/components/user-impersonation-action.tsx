@@ -171,6 +171,25 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         }
     }, [ idToken, subjectToken ]);
 
+    useEffect(() => {
+        if (impersonationInProgress) {
+            setTimeout(() => {
+                if (impersonationInProgress && idToken == undefined && subjectToken == undefined) {
+                    setImpersonationInProgress(false);
+                    dispatch(addAlert({
+                        description: t(
+                            "users:notifications.impersonateUser.error.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "users:notifications.impersonateUser.error.message"
+                        )
+                    }));
+                }
+            }, 5000);
+        }
+    }, [ impersonationInProgress ]);
+
     const handleInitImpersonateIframeMessage = (event: CompositionEvent) => {
         if (event.data === "impersonation-authorize-request-complete"
                 && sessionStorage.getItem(IMPERSONATION_ARTIFACTS) != null) {
@@ -398,20 +417,6 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         setCodeVerifier(codeVerifier);
         setCodeChallenge(codeChallenge);
         setImpersonationInProgress(true);
-        setTimeout(() => {
-            if (impersonationInProgress && idToken == undefined && subjectToken == undefined) {
-                setImpersonationInProgress(false);
-                dispatch(addAlert({
-                    description: t(
-                        "users:notifications.impersonateUser.error.description"
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: t(
-                        "users:notifications.impersonateUser.error.message"
-                    )
-                }));
-            }
-        }, 5000);
     };
 
     /**
