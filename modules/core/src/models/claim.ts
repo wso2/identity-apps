@@ -26,6 +26,9 @@ export interface Claim {
     description: string;
     displayOrder: number;
     multiValued: boolean;
+    dataType: string;
+    subAttributes?: string[];
+    canonicalValues?: Property[];
     displayName: string;
     readOnly: boolean;
     regEx: string;

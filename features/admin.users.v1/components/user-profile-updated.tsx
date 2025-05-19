@@ -1138,9 +1138,7 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                                     } else {
                                         opValue = {
                                             [schemaId]: {
-                                                [schemaNames[0]]: schema.type.toUpperCase() === "BOOLEAN" ?
-                                                    !!values.get(schema.name)?.includes(schema.name) :
-                                                    values.get(schemaNames[0])
+                                                [schemaNames[0]]: values.get(schemaNames[0])
                                             }
                                         };
                                     }
@@ -1177,9 +1175,7 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                                     opValue = {
                                         [schemaId]: {
                                             [schemaNames[0]]: {
-                                                [schemaNames[1]]: schema.type.toUpperCase() === "BOOLEAN" ?
-                                                    !!values.get(schema.name)?.includes(schema.name) :
-                                                    values.get(schema.name)
+                                                [schemaNames[1]]: values.get(schema.name)
                                             }
                                         }
                                     };
@@ -1221,9 +1217,7 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                                             [schemaNames[0]]: [
                                                 {
                                                     type: schemaNames[1],
-                                                    value: schema.type.toUpperCase() === "BOOLEAN" ?
-                                                        !!values.get(schema.name)?.includes(schema.name) :
-                                                        values.get(schema.name)
+                                                    value: values.get(schema.name)
                                                 }
                                             ]
                                         };
@@ -1317,9 +1311,7 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
 
                                     opValue = {
                                         [schemaId]: {
-                                            [schemaNames[0]]: schema.type.toUpperCase() === "BOOLEAN" ?
-                                                !!values.get(schema.name)?.includes(schema.name) :
-                                                values.get(schemaNames[0])
+                                            [schemaNames[0]]: values.get(schemaNames[0])
                                         }
                                     };
                                 } else {
@@ -1345,9 +1337,7 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                                     opValue = {
                                         [schemaId]: {
                                             [schemaNames[0]]: {
-                                                [schemaNames[1]]: schema.type.toUpperCase() === "BOOLEAN" ?
-                                                    !!values.get(schema.name)?.includes(schema.name) :
-                                                    values.get(schema.name)
+                                                [schemaNames[1]]: values.get(schema.name)
                                             }
                                         }
                                     };
@@ -1371,9 +1361,7 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                                             [schemaNames[0]]: [
                                                 {
                                                     type: schemaNames[1],
-                                                    value: schema.type.toUpperCase() === "BOOLEAN" ?
-                                                        !!values.get(schema.name)?.includes(schema.name) :
-                                                        values.get(schema.name)
+                                                    value: values.get(schema.name)
                                                 }
                                             ]
                                         };

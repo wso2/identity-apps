@@ -18,7 +18,7 @@
 
 import { ProfileConstants } from "@wso2is/core/constants";
 import { ClaimDataType, IdentifiableComponentInterface, ProfileSchemaInterface } from "@wso2is/core/models";
-import { CheckboxFieldAdapter, FinalFormField, SelectFieldAdapter, TextFieldAdapter } from "@wso2is/form";
+import { AutocompleteFieldAdapter, CheckboxFieldAdapter, FinalFormField, TextFieldAdapter } from "@wso2is/form";
 import isEmpty from "lodash-es/isEmpty";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -95,6 +95,37 @@ const DynamicTypeFormField = (props: DynamicTypeFormFieldPropsInterface) => {
     };
 
     if (claimType === ClaimDataType.STRING) {
+        const options: string[] = schema["canonicalValues"] ?? [];
+
+        // If the claim is a string and has canonical values, render a dropdown.
+        if (options.length > 0) {
+            return (
+                <>
+                    <FinalFormField
+                        key={ key }
+                        component={ AutocompleteFieldAdapter }
+                        data-componentid={ componentId }
+                        initialValue={ profileInfo.get(schema.name) }
+                        value={ profileInfo.get(schema.name) }
+                        ariaLabel={ fieldName }
+                        name={ schema.name }
+                        label={ fieldName }
+                        placeholder={
+                            t("user:profile.forms.generic.inputs.dropdownPlaceholder",
+                                { fieldName })
+                        }
+                        options={ options }
+                        readOnly={ readOnly }
+                        required={ required }
+                        clearable={ !required }
+                        displayEmpty={ true }
+                        multipleValues={ false }
+                    />
+                    <Divider hidden/>
+                </>
+            );
+        }
+
         return (
             <>
                 <FinalFormField
@@ -183,42 +214,12 @@ const DynamicTypeFormField = (props: DynamicTypeFormFieldPropsInterface) => {
                     key={ key }
                     component={ CheckboxFieldAdapter }
                     data-componentid={ componentId }
-                    initialValue={ profileInfo.get(schema.name).toUpperCase() === "TRUE" }
+                    initialValue={ profileInfo.get(schema.name) ?? false }
                     ariaLabel={ fieldName }
                     label={ fieldName }
                     name={ schema.name }
                     readOnly={ readOnly }
                     required={ required }
-                />
-                <Divider hidden/>
-            </>
-        );
-    }
-
-    if (claimType === ClaimDataType.OPTIONS) {
-        const options: string[] = schema["canonicalValues"] ?? [];
-
-        return (
-            <>
-                <FinalFormField
-                    key={ key }
-                    component={ SelectFieldAdapter }
-                    data-componentid={ componentId }
-                    initialValue={ profileInfo.get(schema.name) }
-                    ariaLabel={ fieldName }
-                    name={ schema.name }
-                    type="dropdown"
-                    label={ fieldName }
-                    placeholder={
-                        t("user:profile.forms.generic.inputs.dropdownPlaceholder",
-                            { fieldName })
-                    }
-                    options={ options }
-                    maxLength={ maxLength }
-                    readOnly={ readOnly }
-                    required={ required }
-                    clearable={ true }
-                    displayEmpty={ true }
                 />
                 <Divider hidden/>
             </>

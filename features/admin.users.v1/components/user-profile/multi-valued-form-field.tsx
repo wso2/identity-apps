@@ -17,6 +17,7 @@
  */
 
 import TableContainer from "@mui/material/TableContainer";
+import { AutocompleteRenderGetTagProps } from "@oxygen-ui/react/Autocomplete";
 import Button from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
 import Grid from "@oxygen-ui/react/Grid";
@@ -34,6 +35,7 @@ import { ProfileConstants } from "@wso2is/core/constants";
 import {
     AlertInterface,
     AlertLevels,
+    ClaimDataType,
     IdentifiableComponentInterface,
     PatchOperationRequest,
     ProfileInfoInterface,
@@ -41,13 +43,13 @@ import {
     SharedProfileValueResolvingMethod
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FinalFormField, TextFieldAdapter } from "@wso2is/form";
+import { AutocompleteFieldAdapter, FinalFormField, TextFieldAdapter } from "@wso2is/form";
 import { Popup } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import { FormApi } from "final-form";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
-import React, { useCallback, useState } from "react";
+import React, { ReactNode, useCallback, useState } from "react";
 import { FormSpy, useField, useForm } from "react-final-form";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -476,21 +478,109 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
         [ setMultiValuedInputFieldValue ]
     );
 
-    return (
-        <Grid direction="row">
-            <Grid>
-                <FormSpy subscription={ { values: true } }>
-                    { ({ values }: { values: Record<string, any> }) => {
-                        const fieldValue: string = values?.[schema.name];
+    const resolvedMultiValuedInputField = (): ReactNode => {
+        const claimType: string = schema.type.toLowerCase();
+        const resolvedReadOnlyValue: boolean =  (isUserManagedByParentOrg &&
+            sharedProfileValueResolvingMethod == SharedProfileValueResolvingMethod.FROM_ORIGIN)
+            || isReadOnly
+            || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA;
+        const resolvedDisabledValue: boolean = isSubmitting
+            || isReadOnly
+            || multiValuedAttributeValues[schema?.name]?.length >= maxAllowedLimit;
+        const resolvedMaxLengthValue: number =  fieldName.toLowerCase().includes("uri") ||
+            fieldName.toLowerCase().includes("url")
+            ? ProfileConstants.URI_CLAIM_VALUE_MAX_LENGTH
+            : (
+                schema.maxLength
+                    ? schema.maxLength
+                    : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
+            );
 
-                        if (!isEmpty(fieldValue) &&
-                            multiValuedInputFieldValue[schema.name] !== fieldValue) {
-                            debouncedUpdateInputFieldValue(schema.name, fieldValue);
-                        }
+        const keyDownEvent = (event: React.KeyboardEvent<HTMLInputElement>): void => {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                const attributeValue: string = inputFieldValue;
+                const isValid: boolean = validateInputSync(attributeValue);
 
-                        return null;
-                    } }
-                </FormSpy>
+                if (!isValid ||
+                    multiValuedAttributeValues[schema.name]?.includes(attributeValue)) {
+                    return;
+                }
+
+                handleAddMultiValuedItem(schema, attributeValue);
+            }
+        };
+
+        const resolvedEndAdornment: ReactNode = (
+            <InputAdornment position="end">
+                <Tooltip title="Add">
+                    <IconButton
+                        data-componentid={ `${ componentId }-multivalue-add-icon` }
+                        size="large"
+                        onClick={ () => {
+                            const attributeValue: string = multiValuedInputFieldValue[schema.name];
+                            const isValid: boolean = validateInputSync(attributeValue);
+
+                            if (!isValid ||
+                                multiValuedAttributeValues[schema.name]?.includes(attributeValue)) {
+                                return;
+                            }
+
+                            setMultiValuedInputFieldValue({
+                                ...multiValuedInputFieldValue,
+                                [schema.name]: ""
+                            });
+                        } }
+                    >
+                        <PlusIcon />
+                    </IconButton>
+                </Tooltip>
+            </InputAdornment>
+        );
+
+        if (claimType === ClaimDataType.STRING) {
+            const options: string[] = schema["canonicalValues"] ?? [];
+
+            // This is a multi valued dropdown field.
+            if (options.length > 0) {
+                return (
+                    <>
+                        <FinalFormField
+                            key={ key }
+                            component={ AutocompleteFieldAdapter }
+                            data-componentid={ componentId }
+                            initialValue={ profileInfo.get(schema.name) }
+                            value={ profileInfo.get(schema.name) }
+                            ariaLabel={ fieldName }
+                            name={ schema.name }
+                            label={ fieldName }
+                            placeholder={
+                                t("user:profile.forms.generic.inputs.dropdownPlaceholder",
+                                    { fieldName })
+                            }
+                            options={ options }
+                            readOnly={ resolvedReadOnlyValue }
+                            required={ resolvedRequiredValue }
+                            clearable={ !resolvedRequiredValue }
+                            displayEmpty={ true }
+                            multipleValues={ true }
+                            renderTags={ (value: readonly any[], getTagProps: AutocompleteRenderGetTagProps) => {
+                                return value.map((option: any, index: number) => (
+                                    <Chip
+                                        key={ index }
+                                        size="small"
+                                        label={ option }
+                                        { ...getTagProps({ index }) }
+                                    />
+                                ));
+                            } }
+                        />
+                        <Divider hidden/>
+                    </>
+                );
+            }
+
+            return (
                 <FinalFormField
                     key={ key }
                     component={ TextFieldAdapter }
@@ -509,66 +599,88 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
                             { fieldName })
                     }
                     validate={ validateInput }
-                    onKeyDown={ (event: React.KeyboardEvent<HTMLInputElement>) => {
-                        if (event.key === "Enter") {
-                            event.preventDefault();
-                            const attributeValue: string = inputFieldValue;
-                            const isValid: boolean = validateInputSync(attributeValue);
-
-                            if (!isValid ||
-                                multiValuedAttributeValues[schema.name]?.includes(attributeValue)) {
-                                return;
-                            }
-
-                            handleAddMultiValuedItem(schema, attributeValue);
-                        }
-                    } }
-                    endAdornment={ (
-                        <InputAdornment position="end">
-                            <Tooltip title="Add">
-                                <IconButton
-                                    data-componentid={ `${ componentId }-multivalue-add-icon` }
-                                    size="large"
-                                    onClick={ () => {
-                                        const attributeValue: string = multiValuedInputFieldValue[schema.name];
-                                        const isValid: boolean = validateInputSync(attributeValue);
-
-                                        if (!isValid ||
-                                            multiValuedAttributeValues[schema.name]?.includes(attributeValue)) {
-                                            return;
-                                        }
-
-                                        setMultiValuedInputFieldValue({
-                                            ...multiValuedInputFieldValue,
-                                            [schema.name]: ""
-                                        });
-                                    } }
-                                >
-                                    <PlusIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </InputAdornment>
-                    ) }
-                    maxLength={
-                        fieldName.toLowerCase().includes("uri") || fieldName.toLowerCase().includes("url")
-                            ? ProfileConstants.URI_CLAIM_VALUE_MAX_LENGTH
-                            : (
-                                schema.maxLength
-                                    ? schema.maxLength
-                                    : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
-                            )
-                    }
-                    readOnly={ (isUserManagedByParentOrg &&
-                        sharedProfileValueResolvingMethod == SharedProfileValueResolvingMethod.FROM_ORIGIN)
-                        || isReadOnly
-                        || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
-                    }
+                    onKeyDown={ (event: React.KeyboardEvent<HTMLInputElement>) => keyDownEvent(event) }
+                    endAdornment={ resolvedEndAdornment }
+                    maxLength={ resolvedMaxLengthValue }
+                    readOnly={ resolvedReadOnlyValue }
                     required={ resolvedRequiredValue }
-                    disabled={ isSubmitting
-                        || isReadOnly
-                        || multiValuedAttributeValues[schema?.name]?.length >= maxAllowedLimit
-                    }
+                    disabled={ resolvedDisabledValue }
                 />
+            );
+        }
+
+        if (claimType === ClaimDataType.DECIMAL ||
+            claimType === ClaimDataType.INTEGER) {
+            return (
+                <FinalFormField
+                    key={ key }
+                    component={ TextFieldAdapter }
+                    data-componentid={ resolvedComponentId }
+                    ariaLabel={ fieldName }
+                    type="number"
+                    name={ schema.name }
+                    label={ fieldName }
+                    placeholder={
+                        t("user:profile.forms.generic.inputs.dropdownPlaceholder",
+                            { fieldName })
+                    }
+                    validate={ validateInput }
+                    onKeyDown={ (event: React.KeyboardEvent<HTMLInputElement>) => keyDownEvent(event) }
+                    endAdornment={ resolvedEndAdornment }
+                    maxLength={ resolvedMaxLengthValue }
+                    readOnly={ resolvedReadOnlyValue }
+                    required={ resolvedRequiredValue }
+                    disabled={ resolvedDisabledValue }
+                />
+            );
+        }
+
+        // Fallback to text field for other types.
+        return (
+            <FinalFormField
+                key={ key }
+                component={ TextFieldAdapter }
+                data-componentid={ resolvedComponentId }
+                ariaLabel={ fieldName }
+                type="text"
+                name={ schema.name }
+                label={ schema.name === "profileUrl" ? "Profile Image URL" :
+                    (  (!commonConfig.userEditSection.showEmail && schema.name === "userName")
+                        ? fieldName +" (Email)"
+                        : fieldName
+                    )
+                }
+                placeholder={
+                    t("user:profile.forms.generic.inputs.dropdownPlaceholder",
+                        { fieldName })
+                }
+                validate={ validateInput }
+                onKeyDown={ (event: React.KeyboardEvent<HTMLInputElement>) => keyDownEvent(event) }
+                endAdornment={ resolvedEndAdornment }
+                maxLength={ resolvedMaxLengthValue }
+                readOnly={ resolvedReadOnlyValue }
+                required={ resolvedRequiredValue }
+                disabled={ resolvedDisabledValue }
+            />
+        );
+    };
+
+    return (
+        <Grid direction="row">
+            <Grid>
+                <FormSpy subscription={ { values: true } }>
+                    { ({ values }: { values: Record<string, any> }) => {
+                        const fieldValue: string = values?.[schema.name];
+
+                        if (!isEmpty(fieldValue) &&
+                            multiValuedInputFieldValue[schema.name] !== fieldValue) {
+                            debouncedUpdateInputFieldValue(schema.name, fieldValue);
+                        }
+
+                        return null;
+                    } }
+                </FormSpy>
+                { resolvedMultiValuedInputField() }
             </Grid>
             {
                 showAttributes ? (
