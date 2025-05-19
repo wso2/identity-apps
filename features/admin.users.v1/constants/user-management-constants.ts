@@ -183,6 +183,9 @@ export class UserManagementConstants {
     public static readonly ID_TOKEN: string = "id_token";
     public static readonly SUBJECT_TOKEN: string = "subject_token";
 
+    // Name of the Asgardeo userstore.
+    public static readonly ASGARDEO_USERSTORE: string = "ASGARDEO-USER";
+
     // Feature flags.
     public static readonly ATTRIBUTE_PROFILES_FOR_USER_CREATION_FEATURE_FLAG: string
         = "users.user.creation.attribute.profile";
