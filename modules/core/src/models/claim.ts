@@ -184,5 +184,6 @@ export enum ClaimDataType {
     BOOLEAN = "boolean",
     DATE_TIME = "date_time",
     COMPLEX = "complex",
-    OPTIONS = "options"
+    OPTIONS = "options",
+    TEXT = "text"
 }

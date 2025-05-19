@@ -359,6 +359,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @param userInfo - BasicProfileInterface
      */
     const mapUserToSchema = (proSchema: ProfileSchemaInterface[], userInfo: ProfileInfoInterface): void => {
+        console.log("Mapping user to schema");
+        console.log(proSchema);
+        console.log(userInfo);
+
+
         if (!isEmpty(profileSchema) && !isEmpty(userInfo)) {
             const tempProfileInfo: Map<string, string> = new Map<string, string>();
 
@@ -653,6 +658,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     }
                 });
             }
+
+            console.log("Mapped profile info");
+            console.log(tempProfileInfo);
 
             setProfileInfo(tempProfileInfo);
         }
