@@ -19,6 +19,8 @@
 import { HttpResponse, useAuthContext } from "@asgardeo/auth-react";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1";
+import { userConfig } from "@wso2is/admin.extensions.v1/configs/user";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { isMyAccountImpersonationRole } from "@wso2is/admin.roles.v2/components/role-utils";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
@@ -108,8 +110,6 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         state.config.ui.features?.users);
     const accountAppClientID: string = useSelector((state: AppState) =>
         state.config.deployment.accountApp.clientID);
-    const authenticatedUserTenanted: string = useSelector((state: AppState) => state?.auth?.username);
-    const loggedInTenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
     const getUserId = (userId: string): string => {
         const tenantAwareUserId: string = userId.split("@").length > 1 ? userId.split("@")[0] : userId;
         const userDomainAwareUserId: string = tenantAwareUserId.split("/").length > 1 ?
@@ -341,15 +341,27 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         return false;
     };
 
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
+
     /**
      * This function checks whether the authenticated user's (impersonator) tenant is the logged tenant.
      */
-    const isAuthenticatedUserBelongToTheLoggedInTenant = (): boolean => {
+    const isAuthenticatedUserInAnAllowedUserstore = (): boolean => {
 
-        const authenticatedUserTenantDomain: string = authenticatedUserTenanted.split("@").length > 1
-            ? authenticatedUserTenanted.split("@")[1] : "";
+        const userUserStore: string = user?.userName?.split("/").length > 1
+            ? user?.userName?.split("/")[0]
+            : userstoresConfig?.primaryUserstoreName;
 
-        return authenticatedUserTenantDomain === loggedInTenantDomain;
+        const authenticatedUserUserStore: string = authenticatedUserProfileInfo?.id?.split("/").length > 1
+            ? authenticatedUserProfileInfo?.id?.split("/")[0]
+            : (
+                userConfig?.allowImpersonationForPrimaryUserStore
+                    ? primaryUserStoreDomainName : UserManagementConstants.ASGARDEO_USERSTORE
+            );
+
+        return authenticatedUserUserStore !== UserManagementConstants.ASGARDEO_USERSTORE
+            || userUserStore === authenticatedUserUserStore;
     };
 
     /**
@@ -455,7 +467,7 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     const resolveUserActions = (): ReactElement => {
 
         return (
-            !isSubOrgUser && !isUserCurrentLoggedInUser && isAuthenticatedUserBelongToTheLoggedInTenant()
+            !isSubOrgUser && !isUserCurrentLoggedInUser && isAuthenticatedUserInAnAllowedUserstore()
                 && isFeatureEnabled(userFeatureConfig,
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_IMPERSONATION")) ?
                 (
