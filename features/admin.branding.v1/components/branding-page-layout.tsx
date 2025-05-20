@@ -32,7 +32,7 @@ import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/featur
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { AlertLevels, FeatureFlagsInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { DocumentationLink, PageLayout,useDocumentation } from "@wso2is/react-components";
+import { DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
 import { AnimatePresence, LayoutGroup, Variants, motion } from "framer-motion";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -133,8 +133,8 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         setBrandingMode(BrandingModes.APPLICATION);
 
         // Check if application ID from state is available in the application list.
-        if (applicationList?.applications?.find(
-            (app: ApplicationListItemInterface) => app.id === history.location.state)) {
+        if (applicationList?.applications?.find((app: ApplicationListItemInterface) => 
+            app.id === history.location.state)) {
             setSelectedApplication(history.location.state as string);
 
             return;
@@ -149,23 +149,25 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
             return;
         }
 
-        if (
-            applicationListFetchRequestError.response
+        if (applicationListFetchRequestError.response
             && applicationListFetchRequestError.response.data
             && applicationListFetchRequestError.response.data.description) {
             dispatch(addAlert({
                 description: applicationListFetchRequestError.response.data.description,
                 level: AlertLevels.ERROR,
-                message: t("applications:notifications.fetchApplications" + ".error.message")
+                message: t("applications:notifications.fetchApplications" +
+                    ".error.message")
             }));
 
             return;
         }
 
         dispatch(addAlert({
-            description: t("applications:notifications.fetchApplications" + ".genericError.description"),
+            description: t("applications:notifications.fetchApplications" +
+                ".genericError.description"),
             level: AlertLevels.ERROR,
-            message: t("applications:notifications.fetchApplications." + "genericError.message")
+            message: t("applications:notifications.fetchApplications." +
+                "genericError.message")
         }));
     }, [ applicationListFetchRequestError ]);
 
@@ -246,8 +248,8 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                             <FeatureFlagLabel
                                                 featureFlags={ brandingFeatureFlags }
                                                 featureKey={
-                                                    FeatureFlagConstants.
-                                                        FEATURE_FLAG_KEY_MAP.BRANDING_STYLES_AND_TEXT_TITLE
+                                                    FeatureFlagConstants
+                                                        .FEATURE_FLAG_KEY_MAP.BRANDING_STYLES_AND_TEXT_TITLE
                                                 }
                                                 type="chip"
                                             />
@@ -274,7 +276,10 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                         variants={ animationVariants }
                                         layout
                                     >
-                                        <Paper className="branding-mode-toggle-container" elevation = { 0 }>
+                                        <Paper
+                                            className="branding-mode-toggle-container"
+                                            elevation = { 0 }
+                                        >
                                             <ToggleButtonGroup
                                                 exclusive
                                                 onChange={ handleBrandingModeChange }
@@ -286,20 +291,26 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                                     data-componentid={ `${componentId}-organization-mode-button` }
                                                     value={ BrandingModes.ORGANIZATION }
                                                 >
-                                                    <BuildingIcon className="toggle-button-icon" size={ 14 } />
+                                                    <BuildingIcon
+                                                        className="toggle-button-icon"
+                                                        size={ 14 }
+                                                    />
                                                     { t("extensions:develop.branding.pageHeader.organization") }
                                                 </ToggleButton>
                                                 <ToggleButton
                                                     data-componentid={ `${componentId}-application-mode-button` }
                                                     value={ BrandingModes.APPLICATION }
-                                                    onClick = { () => {
+                                                    onClick={ () => {
                                                         activeTab === BrandingPreferencesConstants.TABS.TEXT_TAB_ID &&
                                                         updateActiveTab(
                                                             BrandingPreferencesConstants.TABS.GENERAL_TAB_ID
                                                         );
                                                     } }
                                                 >
-                                                    <TilesIcon className="toggle-button-icon" size={ 14 } />
+                                                    <TilesIcon
+                                                        className="toggle-button-icon"
+                                                        size={ 14 }
+                                                    />
                                                     { t("extensions:develop.branding.pageHeader.application") }
                                                 </ToggleButton>
                                             </ToggleButtonGroup>
@@ -326,8 +337,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                                 options={ applicationList?.applications ?? [] }
                                                 value={ applicationList?.applications?.find(
                                                     (app: ApplicationListItemInterface) =>
-                                                        app.id === selectedApplication
-                                                ) }
+                                                        app.id === selectedApplication) }
                                                 onChange={ (
                                                     event: SyntheticEvent<Element, Event>,
                                                     application: ApplicationListItemInterface
@@ -338,35 +348,31 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                                 isOptionEqualToValue={ (
                                                     option: ApplicationListItemInterface,
                                                     value: ApplicationListItemInterface
-                                                ) => option.id === value.id }
+                                                ) =>
+                                                    option.id === value.id
+                                                }
                                                 filterOptions={ (options: ApplicationListItemInterface[]) =>
-                                                    options.filter(
-                                                        (application: ApplicationListItemInterface) =>
-                                                            !ApplicationManagementConstants.SYSTEM_APPS.includes(
-                                                                application?.name) &&
+                                                    options.filter((application: ApplicationListItemInterface) =>
+                                                        !ApplicationManagementConstants.SYSTEM_APPS.includes(
+                                                            application?.name) &&
                                                         !ApplicationManagementConstants.DEFAULT_APPS.includes(
                                                             application?.name) &&
-                                                        !(
-                                                            application?.templateId ===
-                                                            ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
-                                                        )
+                                                        !(application?.templateId === ApplicationManagementConstants.
+                                                            M2M_APP_TEMPLATE_ID)
                                                     )
                                                 }
                                                 loading={ isApplicationListFetchRequestLoading }
                                                 getOptionLabel={ (application: ApplicationListItemInterface) =>
-                                                    application.name
-                                                }
+                                                    application.name }
                                                 renderInput={ (params: AutocompleteRenderInputParams) => (
                                                     <TextField
                                                         { ...params }
                                                         size="small"
-                                                        placeholder={
-                                                            isBrandingAppsRedirect
-                                                                ? applicationList?.applications?.find(
-                                                                    (app: ApplicationListItemInterface) =>
-                                                                        app.id === selectedApplication
-                                                                )?.name
-                                                                : t("extensions:develop.branding.pageHeader." + 
+                                                        placeholder={ isBrandingAppsRedirect
+                                                            ? applicationList?.applications?.find(
+                                                                (app: ApplicationListItemInterface) =>
+                                                                    app.id === selectedApplication)?.name
+                                                            : t("extensions:develop.branding.pageHeader." +
                                                                     "selectApplication") }
                                                         margin="none"
                                                         value={ selectedApplication }
@@ -377,12 +383,13 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                     ) }
                                 </LayoutGroup>
                             </div>
-                        ) }
+                        ) 
+                    }
                 </div>
             ) }
             description={ (
                 <div className="with-label">
-                    <AnimatePresence>
+                    <AnimatePresence >
                         <motion.div
                             className="content"
                             key={ resolveBrandingTitle() }
@@ -394,20 +401,20 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                 stiffness: 400,
                                 type: "spring"
                             } }
-                            variants={ animationVariants }
-                        >
+                            variants={ animationVariants }>
                             { resolveBrandingDescription() }
-                            <DocumentationLink link={ getLink("develop.branding.learnMore") }>
+                            <DocumentationLink
+                                link={ getLink("develop.branding.learnMore") }
+                            >
                                 { t("common:learnMore") }
                             </DocumentationLink>
                         </motion.div>
                     </AnimatePresence>
                 </div>
             ) }
-            data-componentid={ `${componentId}-layout` }
+            data-componentid={ `${ componentId }-layout` }
             className="branding-page"
         >
-
             <LayoutGroup>
                 { customLayoutMode ? (
                     <CustomPageEditorPageLayout/>
