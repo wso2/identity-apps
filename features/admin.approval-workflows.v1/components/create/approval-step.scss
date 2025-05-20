@@ -2,9 +2,7 @@
     margin-top: 16px;
     margin-bottom: 16px;
     position: relative;
-    // width: 75%;
-    width: 520px; /* Fixed width */
-    flex-shrink: 0;
+    width: 520px;;
 }
 
 .delete-button {
@@ -45,7 +43,6 @@
         background-color: #f9f9f9;
     }
 }
-
 
 .rules-component {
     .box-container {
