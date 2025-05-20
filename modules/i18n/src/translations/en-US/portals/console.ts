@@ -8278,44 +8278,27 @@ export const console: ConsoleNS = {
                         header: "Delete Approval Workflow",
                         subheader: "Once you delete an approval workflow, there is no going back. "
                             + "Please be certain."
-                    },
-                    disable: {
-                        actionTitle: "Enable Approval Workflow",
-                        header: "Enable Approval Workflow",
-                        subheader: "Disabling an approval workflow can make you lose access to the users in the approval workflow. " +
-                            "Proceed with caution."
                     }
                 },
                 forms: {
                     general: {
                         description: {
                             label: "Description",
-                            placeholder: "Approval Process 1",
+                            placeholder: "Describe the purpose of this approval workflow",
                             validationErrorMessages: {
                                 invalidInputErrorMessage: "Description cannot contain the pattern {{invalidString}}."
                             }
                         },
                         name: {
                             label: "Name",
-                            placeholder: "Enter a name",
+                            placeholder: "Sample Approval Workflow",
                             requiredErrorMessage: "Name is a required field",
                             validationErrorMessages: {
                                 alreadyExistsErrorMessage: "An approval workflow with this name already exists.",
                                 maxCharLimitErrorMessage: "Approval Workflow name cannot exceed {{maxLength}} characters.",
                                 invalidInputErrorMessage: "Approval Workflow name cannot contain the pattern {{invalidString}}."
                             }
-                        },
-                        type: {
-                            label: "Type",
-                            requiredErrorMessage: "Select a Type"
                         }
-                    }
-                },
-                list: {
-                    columns: {
-                        actions: "Actions",
-                        lastModified: "Modified Time",
-                        name: "Approval Workflow"
                     }
                 },
                 notifications: {
@@ -8348,24 +8331,6 @@ export const console: ConsoleNS = {
                         success: {
                             description: "The approval workflow has been deleted successfully!",
                             message: "Approval workflow deleted successfully!"
-                        }
-                    },
-                    fetchApprovalWorkflowMetadata: {
-                        genericError: {
-                            description: "An error occurred while fetching the type meta data.",
-                            message: "Something went wrong"
-                        }
-                    },
-                    fetchApprovalWorkflowTemplates: {
-                        genericError: {
-                            description: "An error occurred while fetching the approval workflow type details.",
-                            message: "Something went wrong"
-                        }
-                    },
-                    fetchApprovalWorkflowTypes: {
-                        genericError: {
-                            description: "An error occurred while fetching the approval workflow types.",
-                            message: "Something went wrong"
                         }
                     },
                     fetchApprovalWorkflows: {
@@ -8450,15 +8415,6 @@ export const console: ConsoleNS = {
                     reset: "Reset Changes",
                     title: "SQL Query Types",
                     update: "Update"
-                },
-                wizard: {
-                    header: "Add {{type}} approval workflow",
-                    steps: {
-                        general: "General",
-                        group: "Group",
-                        summary: "Summary",
-                        user: "User"
-                    }
                 }
             }
         },

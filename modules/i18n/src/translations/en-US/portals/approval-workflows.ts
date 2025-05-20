@@ -18,27 +18,10 @@
 import { approvalWorkflowsNS } from "../../../models";
 
 export const approvalWorkflows: approvalWorkflowsNS = {
-    advancedSearch: {
-        error: "Filter query format incorrect",
-        form: {
-            inputs: {
-                filterAttribute: {
-                    placeholder: "E.g. Name, Description etc."
-                },
-                filterCondition: {
-                    placeholder: "E.g. Starts with etc."
-                },
-                filterValue: {
-                    placeholder: "E.g. PRIMARY, SECONDARY etc."
-                }
-            }
-        },
-        placeholder: "Search by approval workflow name"
-    },
     confirmation: {
         confirm: "Confirm",
         content:
-            "If you delete this approval workflow, the user data in this approval workflow will also be deleted. " +
+            "If you delete this approval workflow, all the data in this approval workflow will also be deleted. " +
             "Please proceed with caution.",
         header: "Are you sure?",
         hint: "Please confirm your action.",
@@ -136,7 +119,7 @@ export const approvalWorkflows: approvalWorkflowsNS = {
         general: {
             description: {
                 label: "Description",
-                placeholder: "Sample description",
+                placeholder: "Describe the purpose of this approval workflow",
                 validationErrorMessages: {
                     allSymbolsErrorMessage: "Description should have a combination of " +
                     "alphanumerics and special characters. Please try a different name.",
@@ -223,21 +206,9 @@ export const approvalWorkflows: approvalWorkflowsNS = {
                 message: "Workflow operation deleted successfully!"
             }
         },
-        fetchApprovalWorkflowMetadata: {
-            genericError: {
-                description: "An error occurred while fetching the type meta data.",
-                message: "Something went wrong"
-            }
-        },
         fetchApprovalWorkflowTemplates: {
             genericError: {
                 description: "An error occurred while fetching the approval workflow type details.",
-                message: "Something went wrong"
-            }
-        },
-        fetchApprovalWorkflowTypes: {
-            genericError: {
-                description: "An error occurred while fetching the approval workflow types.",
                 message: "Something went wrong"
             }
         },
@@ -304,13 +275,7 @@ export const approvalWorkflows: approvalWorkflowsNS = {
         },
         edit: {
             back: "Go back to approval workflows",
-            description: "Edit approval workflow",
-            tabs: {
-                connection: "Connection",
-                general: "General",
-                group: "Group",
-                user: "User"
-            }
+            description: "Edit approval workflow"
         },
         list: {
             description: "Create and manage approval workflows.",

@@ -8011,33 +8011,8 @@ export interface ConsoleNS {
                 advancedSearch: {
                     placeholder: string;
                 };
-                list: {
-                    columns: {
-                        actions: string;
-                        lastModified: string;
-                        name: string;
-                    }
-                };
                 notifications: {
                     fetchApprovalWorkflows: {
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    fetchApprovalWorkflowTemplates: {
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    fetchApprovalWorkflowTypes: {
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    fetchApprovalWorkflowMetadata: {
                         genericError: {
                             message: string;
                             description: string;
@@ -8139,10 +8114,6 @@ export interface ConsoleNS {
                                 [key: string]: string;
                             };
                         };
-                        type: {
-                            label: string;
-                            requiredErrorMessage: string;
-                        };
                         description: {
                             label: string;
                             placeholder: string;
@@ -8158,20 +8129,6 @@ export interface ConsoleNS {
                         header: string;
                         subheader: string;
                     };
-                    disable: {
-                        actionTitle: string;
-                        header: string;
-                        subheader: string;
-                    };
-                };
-                wizard: {
-                    steps: {
-                        general: string;
-                        user: string;
-                        group: string;
-                        summary: string;
-                    };
-                    header: string;
                 };
                 placeholders: {
                     emptySearch: {

@@ -16,23 +16,6 @@
  * under the License.
  */
 export interface approvalWorkflowsNS {
-    advancedSearch: {
-        form: {
-            inputs: {
-                filterAttribute: {
-                    placeholder: string;
-                };
-                filterCondition: {
-                    placeholder: string;
-                };
-                filterValue: {
-                    placeholder: string;
-                };
-            };
-        };
-        placeholder: string;
-        error: string;
-    };
     notifications: {
         fetchApprovalWorkflows: {
             genericError: {
@@ -47,18 +30,6 @@ export interface approvalWorkflowsNS {
             };
         };
         fetchApprovalWorkflowTemplates: {
-            genericError: {
-                message: string;
-                description: string;
-            };
-        };
-        fetchApprovalWorkflowTypes: {
-            genericError: {
-                message: string;
-                description: string;
-            };
-        };
-        fetchApprovalWorkflowMetadata: {
             genericError: {
                 message: string;
                 description: string;
@@ -167,12 +138,6 @@ export interface approvalWorkflowsNS {
         edit: {
             description: string;
             back: string;
-            tabs: {
-                general: string;
-                connection: string;
-                user: string;
-                group: string;
-            };
         };
         create: {
             title: string;
