@@ -301,17 +301,16 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
             setBrandingPreference(response);
 
             dispatch(addAlert({
+                description: "Your changes have been saved and published.",
                 level: AlertLevels.SUCCESS,
-                message: "Branding layout updated successfully.",
-                description: "Your changes have been saved and published."
+                message: "Branding layout updated successfully."
             }));
-        }).catch((error: unknown) => {
-            console.error("Failed to update branding preference:", error);
+        }).catch((_error: unknown) => {
 
             dispatch(addAlert({
+                description: "An error occurred while saving. Please try again.",
                 level: AlertLevels.ERROR,
-                message: "Branding layout update failed.",
-                description: "An error occurred while saving. Please try again."
+                message: "Branding layout update failed."
             }));
         });
     };

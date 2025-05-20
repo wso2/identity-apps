@@ -17,6 +17,7 @@
  */
 
 import { CodeEditor, ResourceTab } from "@wso2is/react-components";
+import { Editor } from "codemirror";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -87,7 +88,7 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = (
                                 language = "htmlmixed"
                                 sourceCode = { html }
                                 options = { { lineWrapping: true } }
-                                onChange = { (editor, data, value) => {
+                                onChange = { (_editor: Editor, _data: any, value: string) => {
                                     htmlContent.current = value;
                                 } }
                                 onBlur = { () => onContentUpdate?.({
@@ -110,7 +111,7 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = (
                                 language = "css"
                                 sourceCode = { css }
                                 options = { { lineWrapping: true } }
-                                onChange = { (editor, data, value) => {
+                                onChange = { (_editor: Editor, _data: any, value: string) => {
                                     cssContent.current = value;
                                 } }
                                 onBlur = { () => onContentUpdate?.({
@@ -133,7 +134,7 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = (
                                 language = "javascript"
                                 sourceCode = { js }
                                 options = { { lineWrapping: true } }
-                                onChange = { (editor, data, value) => {
+                                onChange = { (_editor: Editor, _data: any, value: string) => {
                                     jsContent.current = value;
                                 } }
                                 onBlur={ () => onContentUpdate?.({
