@@ -296,6 +296,7 @@ export class Config {
             ...getRemoteLoggingEndpoints(this.resolveServerHost()),
             ...getRegistrationFlowBuilderResourceEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,
+            asyncStatus: `${ this.resolveServerHost(false, true) }/api/server/v1/async-operations`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,
             saml2Meta: `${ this.resolveServerHost(false, true) }/identity/metadata/saml2`,
@@ -326,6 +327,8 @@ export class Config {
             appTitle: window[ "AppUtils" ]?.getConfig()?.ui?.appTitle,
             applicationTemplateLoadingStrategy:
                 window[ "AppUtils" ]?.getConfig()?.ui?.applicationTemplateLoadingStrategy,
+            asyncOperationStatusPollingInterval:
+                window[ "AppUtils" ]?.getConfig()?.ui?.asyncOperationStatusPollingInterval,
             connectionResourcesUrl: window[ "AppUtils" ]?.getConfig()?.ui?.connectionResourcesUrl,
             cookiePolicyUrl: window[ "AppUtils" ]?.getConfig()?.ui?.cookiePolicyUrl,
             emailTemplates: {

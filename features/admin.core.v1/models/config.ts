@@ -556,6 +556,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Multi-tenancy related configurations.
      */
     multiTenancy: MultiTenancyConfigInterface;
+    /**
+     * Async Operation Polling Interval.
+     */
+    asyncOperationStatusPollingInterval: number;
 }
 
 /**
@@ -643,6 +647,7 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     me: string;
     saml2Meta: string;
     wellKnown: string;
+    asyncStatus: string;
 }
 
 export interface ResourceEndpointsInterface {

@@ -92,6 +92,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             applicationTemplate: "",
             applicationTemplateMetadata: "",
             applications: "",
+            asyncStatus: "",
             authenticatorTags: "",
             authenticators: "",
             brandingPreference: "",
@@ -205,6 +206,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             appName: "",
             appTitle: "",
             applicationTemplateLoadingStrategy: undefined,
+            asyncOperationStatusPollingInterval: null,
             connectionResourcesUrl: "",
             cookiePolicyUrl: "",
             emailTemplates: {
