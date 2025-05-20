@@ -147,7 +147,6 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
         const workflowTemplate: WorkflowTemplate = {
             name: "MultiStepApprovalTemplate",
             steps: values.approvalSteps.map((step: ApprovalSteps, index: number) => ({
-                step: index + 1,
                 options: [
                     {
                         entity: "roles",
@@ -157,14 +156,15 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
                         entity: "users",
                         values: step.users
                     }
-                ].filter((option: OptionDetails) => option.values.length > 0)
+                ].filter((option: OptionDetails) => option.values.length > 0),
+                step: index + 1
             }))
         };
 
         const approvalWorkflowPayload: ApprovalWorkflowPayload = {
-            name: approvalWorkflowFormData.generalDetails.name,
             description: approvalWorkflowFormData.generalDetails.description,
             engine: "workflowImplSimple",
+            name: approvalWorkflowFormData.generalDetails.name,
             template: workflowTemplate
         };
 

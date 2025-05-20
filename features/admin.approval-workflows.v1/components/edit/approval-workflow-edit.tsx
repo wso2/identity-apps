@@ -215,16 +215,16 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
         ) ?? [];
 
         setApprovalProcessFormData({
+            configurations: {
+                approvalSteps: steps
+            },
             generalDetails: {
-                name: approvalWorkflowDetails.name,
                 description: approvalWorkflowDetails.description,
-                engine: approvalWorkflowDetails.engine
+                engine: approvalWorkflowDetails.engine,
+                name: approvalWorkflowDetails.name
             },
             workflowOperationsDetails: {
                 matchedOperations: []
-            },
-            configurations: {
-                approvalSteps: steps
             }
         });
 
@@ -277,7 +277,6 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
             name: "MultiStepApprovalTemplate",
             steps: updatedApprovalProcessFormData.configurations.approvalSteps.map(
                 (step: ApprovalSteps, index: number) => ({
-                    step: index + 1,
                     options: [
                         {
                             entity: "roles",
@@ -287,15 +286,16 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                             entity: "users",
                             values: step.users
                         }
-                    ].filter(option => option.values.length > 0)
+                    ].filter((option: { entity: string; values: string[] }) => option.values.length > 0),
+                    step: index + 1
                 })
             )
         };
 
         const approvalWorkflowPayload: ApprovalWorkflowPayload = {
-            name: updatedApprovalProcessFormData.generalDetails.name,
             description: updatedApprovalProcessFormData.generalDetails.description,
             engine: "workflowImplSimple",
+            name: updatedApprovalProcessFormData.generalDetails.name,
             template: workflowTemplate
         };
 

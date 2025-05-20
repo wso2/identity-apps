@@ -123,9 +123,9 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                         const parsedSteps: MultiStepApprovalTemplate[] = initialValues.approvalSteps.map(
                             (step: ApprovalSteps, index: number) => ({
                                 id: `step-${index}`,
+                                roles: step.roles || [],
                                 stepNumber: index + 1,
-                                users: step.users || [],
-                                roles: step.roles || []
+                                users: step.users || []
                             })
                         );
 
@@ -134,8 +134,8 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                     } else {
                         const defaultStep: MultiStepApprovalTemplate = {
                             id: `step${Date.now()}-1`,
-                            stepNumber: 1,
                             roles: [],
+                            stepNumber: 1,
                             users: []
                         };
 
@@ -178,8 +178,8 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
 
                 const newStep: MultiStepApprovalTemplate = {
                     id: `step${Date.now()}`,
-                    stepNumber: steps.length + 1,
                     roles: [],
+                    stepNumber: steps.length + 1,
                     users: []
                 };
 

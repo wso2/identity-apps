@@ -55,7 +55,7 @@ const ApprovalWorkflowEditPage: FunctionComponent<ApprovalWorkflowEditPagePropsI
     const { t } = useTranslation();
 
     const approvalWorkflowId: string = match.params["id"]?.split("#")[0];
-    //Scopes should be defined accordingly
+    //Scopes should be replaced once new scopes are defined for workflow feature
     const approvalWorkflowFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userStores
     );
@@ -116,7 +116,7 @@ const ApprovalWorkflowEditPage: FunctionComponent<ApprovalWorkflowEditPagePropsI
                 data-componentid={ `${componentId}-edit-layout` }
                 approvalWorkflowDetails={ workflowDetails }
                 approvalWorkflowId={ approvalWorkflowId }
-                isReadOnly={ false }
+                isReadOnly={ !hasApprovalWorkflowUpdatePermission }
                 mutateApprovalWorkflowDetails={ mutateWorkflowDetails }
                 isLoading={ isApprovalWorkflowDetailsRequestLoading }
             />
