@@ -163,7 +163,7 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
 
         const approvalWorkflowPayload: ApprovalWorkflowPayload = {
             description: approvalWorkflowFormData.generalDetails.description,
-            engine: "workflowImplSimple",
+            engine: "WorkflowEngine",
             name: approvalWorkflowFormData.generalDetails.name,
             template: workflowTemplate
         };
