@@ -273,6 +273,7 @@
     String SHOULD_REMOVE_ASGARDEO_BRANDING_KEY = "removeAsgardeoBranding";
     String SHOULD_REMOVE_DEFAULT_BRANDING_KEY = "removeDefaultBranding";
     String TEXT_KEY = "text";
+    String RESOLUTION_STRATEGY_KEY = "resolutionStrategy";
 
     // Additional keys to override the fallback values.
     String PRODUCT_NAME_KEY = "productName";
@@ -412,12 +413,32 @@
     String APP_PREFERENCE_RESOURCE_TYPE = "APP";
     String RESOURCE_TYPE_KEY = "type";
     String RESOURCE_NAME_KEY = "name";
+    String UI_THEME = "ui_theme";
     String preferenceResourceType = ORG_PREFERENCE_RESOURCE_TYPE;
     String tenantRequestingPreferences = tenantForTheming;
     JSONObject preferenceResolvedFrom = null;
     String preferenceResolvedFromResourceName = tenantRequestingPreferences;
     String applicationRequestingPreferences = spAppId;
     String locale = StringUtils.isNotBlank(getUserLocaleCode(request)) ? getUserLocaleCode(request) : DEFAULT_RESOURCE_LOCALE;
+    String resolutionStrategy = "DEFAULT";
+    String uiThemeParam = request.getParameter(UI_THEME);
+    String themeFromCookie = null;
+
+    Cookie[] allCookies = request.getCookies();
+
+    if (allCookies != null) {
+        for (Cookie cookie : allCookies) {
+
+            if (UI_THEME.equals(cookie.getName())) {
+                themeFromCookie = cookie.getValue();
+                break;
+            }
+        }
+    }
+
+    if (StringUtils.isBlank(uiThemeParam) && StringUtils.isNotBlank(themeFromCookie)) {
+        uiThemeParam = themeFromCookie;
+    }
 
     try {
 
@@ -464,6 +485,66 @@
 
             // Proceed only if the branding is enabled.
             if (isBrandingEnabledInTenantPreferences) {
+
+                // Get the resolution strategy.
+                if (brandingPreference.has(THEME_KEY)) {
+                    if (brandingPreference.getJSONObject(THEME_KEY).has(RESOLUTION_STRATEGY_KEY)) {
+                        resolutionStrategy = brandingPreference.getJSONObject(THEME_KEY).getString(RESOLUTION_STRATEGY_KEY);
+                    }
+                }
+
+                // If the branding theme is set using the application.
+                if ("APP_PREFERENCE".equalsIgnoreCase(resolutionStrategy)) {
+
+                    // Check theme from the query param first.
+                    String resolvedUiTheme = request.getParameter(UI_THEME);
+
+                    // If not in query param, check other parameteres.
+                    if (StringUtils.isBlank(resolvedUiTheme)) {
+                        String paramKey = null;
+
+                        if (StringUtils.isNotBlank(request.getParameter("callback"))) {
+                            paramKey = request.getParameter("callback");
+                        } else if (StringUtils.isNotBlank(request.getParameter("multiOptionURI"))) {
+                            paramKey = request.getParameter("multiOptionURI");
+                        } else if (StringUtils.isNotBlank(request.getParameter("urlQuery"))) {
+                            paramKey = request.getParameter("urlQuery");
+                        }
+
+                        if (StringUtils.isNotBlank(paramKey) && paramKey.contains("ui_theme=")) {
+                            try {
+                                String[] parts = paramKey.split("[?&]");
+                                for (String part : parts) {
+                                    if (part.startsWith("ui_theme=")) {
+                                        resolvedUiTheme = part.split("=")[1];
+                                        break;
+                                    }
+                                }
+                            } catch (Exception e) {
+                                // Silent fallback
+                            }
+                        }
+                    }
+
+                    // Fallback to cookie
+                    if (StringUtils.isBlank(resolvedUiTheme)) {
+                        resolvedUiTheme = themeFromCookie;
+                    }
+
+                    uiThemeParam = resolvedUiTheme;
+
+                    // Write cookie only if resolved value is non-blank and different from cookie
+                    if (StringUtils.isNotBlank(resolvedUiTheme) && !resolvedUiTheme.equals(themeFromCookie)) {
+                        
+                        String cookieName = UI_THEME;
+                        String cookieValue = resolvedUiTheme;
+                        int maxAge = 2592000;
+                    
+                        String headerValue = cookieName + "=" + cookieValue + "; Path=/; Max-Age=" + maxAge + "; Secure";
+                        response.setHeader("Set-Cookie", headerValue);
+                    }
+                }
+
                 // Custom Text
                 for (String screenName : screenNames) {
                     StringBuilder textBrandingCacheKey = new StringBuilder(BRANDING_TEXT_PREFERENCE_CACHE_KEY);
@@ -521,35 +602,51 @@
 
                 // Theme
                 if (brandingPreference.has(THEME_KEY)) {
+
+                    if (StringUtils.isBlank(activeThemeName) &&
+                    "APP_PREFERENCE".equalsIgnoreCase(resolutionStrategy) &&
+                    StringUtils.isNotBlank(uiThemeParam)) {
+
+                            if (StringUtils.equalsIgnoreCase(uiThemeParam, "dark")) {
+                                activeThemeName = "DARK";
+                            } else if (StringUtils.equalsIgnoreCase(uiThemeParam, "light")) {
+                                activeThemeName = "LIGHT";
+                            } else {
+                                activeThemeName = "";
+                            }
+                    }
+
                     if (brandingPreference.getJSONObject(THEME_KEY).has(ACTIVE_THEME_KEY)) {
-                        if (!StringUtils.isBlank(brandingPreference.getJSONObject(THEME_KEY).getString(ACTIVE_THEME_KEY))) {
+                        if (!StringUtils.isBlank(brandingPreference.getJSONObject(THEME_KEY).getString(ACTIVE_THEME_KEY))
+                                && StringUtils.isBlank(activeThemeName)) {
                             activeThemeName = brandingPreference.getJSONObject(THEME_KEY).getString(ACTIVE_THEME_KEY);
+                        }
+                    }
 
-                            if (brandingPreference.getJSONObject(THEME_KEY).has(activeThemeName)
-                                && brandingPreference.getJSONObject(THEME_KEY).getJSONObject(activeThemeName) != null) {
+                    if (!StringUtils.isBlank(activeThemeName)
+                        && brandingPreference.getJSONObject(THEME_KEY).has(activeThemeName)
+                        && brandingPreference.getJSONObject(THEME_KEY).getJSONObject(activeThemeName) != null) {
 
-                                theme = brandingPreference.getJSONObject(THEME_KEY).getJSONObject(activeThemeName);
+                        theme = brandingPreference.getJSONObject(THEME_KEY).getJSONObject(activeThemeName);
 
-                                if (theme.has(IMAGES_KEY) && theme.getJSONObject(IMAGES_KEY) != null) {
+                        if (theme.has(IMAGES_KEY) && theme.getJSONObject(IMAGES_KEY) != null) {
                                     if (theme.getJSONObject(IMAGES_KEY).has(LOGO_KEY) && theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY) != null) {
-                                        if (theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY).has(IMAGE_URL_KEY)
-                                            && !StringUtils.isBlank(theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY).getString(IMAGE_URL_KEY))) {
+                                if (theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY).has(IMAGE_URL_KEY)
+                                        && !StringUtils.isBlank(theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY).getString(IMAGE_URL_KEY))) {
 
-                                            logoURL = theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY).getString(IMAGE_URL_KEY);
-                                        }
-                                        if (theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY).has(ALT_TEXT_KEY)
-                                            && !StringUtils.isBlank(theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY).getString(ALT_TEXT_KEY))) {
+                                    logoURL = theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY).getString(IMAGE_URL_KEY);
+                                }
+                                if (theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY).has(ALT_TEXT_KEY)
+                                        && !StringUtils.isBlank(theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY).getString(ALT_TEXT_KEY))) {
 
-                                            logoAlt = theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY).getString(ALT_TEXT_KEY);
-                                        }
-                                    }
+                                    logoAlt = theme.getJSONObject(IMAGES_KEY).getJSONObject(LOGO_KEY).getString(ALT_TEXT_KEY);
+                                }
+                            }
                                     if (theme.getJSONObject(IMAGES_KEY).has(FAVICON_KEY) && theme.getJSONObject(IMAGES_KEY).getJSONObject(FAVICON_KEY) != null) {
-                                        if (theme.getJSONObject(IMAGES_KEY).getJSONObject(FAVICON_KEY).has(IMAGE_URL_KEY)
-                                            && !StringUtils.isBlank(theme.getJSONObject(IMAGES_KEY).getJSONObject(FAVICON_KEY).getString(IMAGE_URL_KEY))) {
-
-                                            faviconURL = theme.getJSONObject(IMAGES_KEY).getJSONObject(FAVICON_KEY).getString(IMAGE_URL_KEY);
-                                        }
-                                    }
+                                if (theme.getJSONObject(IMAGES_KEY).getJSONObject(FAVICON_KEY).has(IMAGE_URL_KEY)
+                                        && !StringUtils.isBlank(theme.getJSONObject(IMAGES_KEY).getJSONObject(FAVICON_KEY).getString(IMAGE_URL_KEY))) {
+                
+                                    faviconURL = theme.getJSONObject(IMAGES_KEY).getJSONObject(FAVICON_KEY).getString(IMAGE_URL_KEY);
                                 }
                             }
                         }
