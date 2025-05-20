@@ -65,12 +65,19 @@ export const useGetWorkflowAssociations = <
         url: store.getState()?.config?.endpoints?.workflowAssociations
     };
 
-    const { data, error, isValidating, mutate, response } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
+    const {
+        data,
+        error,
+        isLoading,
+        isValidating,
+        mutate,
+        response
+    } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,
         error,
-        isLoading: !error && !data,
+        isLoading,
         isValidating,
         mutate,
         response
