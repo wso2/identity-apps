@@ -32,7 +32,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Icon, Input } from "semantic-ui-react";
 import { deleteApprovalWorkflowById, useGetApprovalWorkflows } from "../api/approval-workflow";
-import ApprovalWorkflowList from "../components/approval-workflowlist";
+import ApprovalWorkflowList from "../components/approval-workflow-list";
 import { WorkflowListItemInterface } from "../models/approval-workflows";
 
 /**
