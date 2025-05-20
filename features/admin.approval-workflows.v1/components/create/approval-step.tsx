@@ -126,7 +126,6 @@ const ApprovalStep: FunctionComponent<ApprovalStepProps> = (
         setValidationError(showValidationError);
     },[ showValidationError ]);
 
-
     const handleUsersChange = (updatedUsers: UserBasicInterface[]) => {
         setSelectedUsers(updatedUsers);
         updateUsers(updatedUsers);
