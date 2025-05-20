@@ -1,4 +1,3 @@
-
 /**
  * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
@@ -26,7 +25,7 @@ import {
  * Get the resource endpoints for the workflow management feature.
  *
  * @param serverHost - Server Host.
- * @return { WorkflowsResourceEndpointsInterface }
+ * @returns WorkflowsResourceEndpointsInterface
  */
 export const getWorkflowsResourceEndpoints = (serverHost: string): WorkflowsResourceEndpointsInterface => {
     return {
@@ -38,7 +37,7 @@ export const getWorkflowsResourceEndpoints = (serverHost: string): WorkflowsReso
  * Get the resource endpoints for the workflow management feature.
  *
  * @param serverHost - Server Host.
- * @return { WorkflowAssociationsResourceEndpointsInterface }
+ * @returns WorkflowAssociationsResourceEndpointsInterface
  */
 export const getWorkflowAssociationsResourceEndpoints = (
     serverHost: string
