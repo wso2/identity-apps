@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
+import { RolesInterface } from "@wso2is/core/models";
+
 /**
  * Dropdown option type for operation type selection.
  */
@@ -55,8 +58,6 @@ export interface GeneralDetailsFormValuesInterface {
      */
     engine?: string;
 }
-
-
 
 /**
  * Form values interface for workflow operations details.
@@ -111,4 +112,48 @@ export interface ApprovalWorkflowFormDataInterface {
      * Configurations of the workflow, including approval steps.
      */
     configurations: Partial<ConfigurationsFormValuesInterface>;
+}
+
+
+/**
+ * Props for the editable sections of an approval step.
+ */
+export interface StepEditSectionsInterface {
+
+    /**
+     * Whether the step is in read-only mode.
+     */
+    isReadOnly: boolean;
+
+    /**
+     * Active user store identifier.
+     *
+     * Used to determine if user store logic is handled outside the component.
+     */
+    activeUserStore?: string;
+
+    /**
+     * Type of the active role store.
+     */
+    activeRoleType?: string;
+
+    /**
+     * Initial values for the approval step.
+     */
+    initialValues?: ApprovalSteps;
+
+    /**
+     * Callback to handle user updates.
+     */
+    onUsersChange?: (users: UserBasicInterface[]) => void;
+
+    /**
+     * Callback to handle role updates.
+     */
+    onRolesChange?: (roles: RolesInterface[]) => void;
+
+    /**
+     * Whether to show validation error messages.
+     */
+    showValidationError?: boolean;
 }

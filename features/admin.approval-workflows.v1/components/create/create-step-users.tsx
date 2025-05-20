@@ -34,7 +34,8 @@ import { RoleConstants } from "@wso2is/admin.roles.v2/constants";
 import { RoleManagementUtils } from "@wso2is/admin.roles.v2/utils/role-management-utils";
 import { useUsersList } from "@wso2is/admin.users.v1/api";
 import { UserBasicInterface } from "@wso2is/admin.users.v1/models/user";
-import { getAUserStore, useUserStores } from "@wso2is/admin.userstores.v1/api";
+import { getAUserStore } from "@wso2is/admin.userstores.v1/api/";
+import { useGetUserStores } from "@wso2is/admin.userstores.v1/api/use-get-user-stores";
 import {
     UserStoreDropdownItem,
     UserStoreListItem,
@@ -95,7 +96,7 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
     const [ selectedAllUsers, setSelectedAllUsers ] = useState<Record<string, UserBasicInterface[] | undefined>>({});
     const [ validationError, setValidationError ] = useState<boolean>(false);
 
-    const { data: userStores, isLoading: isUserStoresLoading } = useUserStores(null);
+    const { data: userStores, isLoading: isUserStoresLoading } = useGetUserStores(null);
 
     const {
         data: userResponse,

@@ -27,11 +27,11 @@ export interface WorkflowsResourceEndpointsInterface {
 }
 
 /**
- * Interface for defining endpoints related to workflows.
+ * Interface for defining endpoints related to workflow associations.
  */
 export interface WorkflowAssociationsResourceEndpointsInterface {
     /**
-     * The endpoint URL for accessing workflows.
+     * The endpoint URL for accessing workflow associations.
      */
     workflowAssociations: string;
 }

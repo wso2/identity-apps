@@ -29,7 +29,6 @@ import { useTranslation } from "react-i18next";
 import StepRolesList from "./create-step-roles";
 import StepUsersList from "./create-step-users";
 import { MultiStepApprovalTemplate } from "../../models/approval-workflows";
-import { ApprovalSteps } from "../../models/ui";
 import "./approval-step.scss";
 
 /**
@@ -157,33 +156,6 @@ const ApprovalStep: FunctionComponent<ApprovalStepProps> = (
             >
 
                 <List data-componentid={ `${componentId}-list-${step.stepNumber}` }>
-                    { /* <Grid
-                    container
-                    justifyContent="space-between"
-                    className="approval-step-heading"
-                    data-componentid={ `${componentId}-heading-${step.stepNumber}` }
-                >
-                    <Typography
-                        variant="body2"
-                        data-componentid={ `${componentId}-label-${step.stepNumber}` }
-                    >
-                        { `Step ${step.stepNumber}` }
-                    </Typography>
-                </Grid> */ }
-
-                    { /* <Fab
-                    color="error"
-                    aria-label="delete"
-                    size="small"
-                    className="delete-button"
-                    onClick={ () => onDelete(step.id) }
-                    data-componentid={ `${componentId}-delete-button-${step.stepNumber}` }
-                >
-                    <TrashIcon
-                        className="delete-button-icon"
-                        data-componentid={ `${componentId}-delete-icon-${step.stepNumber}` }
-                    />
-                </Fab> */ }
                     <div
                         className="rules-component"
                         data-componentid={ `${componentId}-rules-component-${step.stepNumber}` }
@@ -224,7 +196,7 @@ const ApprovalStep: FunctionComponent<ApprovalStepProps> = (
                     size="small"
                     onClick={ () => onDelete(step.id) }
                     data-componentid={ `${componentId}-delete-button-${step.stepNumber}` }
-                    className={"close-button"}
+                    className={ "close-button" }
                     disabled={ isReadOnly || isOneStepLeft }
                 >
                     <CrossIcon

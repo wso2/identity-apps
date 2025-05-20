@@ -21,7 +21,6 @@ import Autocomplete, {
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
 } from "@oxygen-ui/react/Autocomplete";
-
 import Grid from "@oxygen-ui/react/Grid";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
@@ -47,8 +46,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import AutoCompleteRenderOption from "./auto-complete-render-option";
 import RenderChip from "./render-chip";
-import { RoleDropdownItem } from "../../models/roles";
-import { StepEditSectionsInterface } from "../../models/users";
+import { DropdownPropsInterface, StepEditSectionsInterface } from "../../models/ui";
 
 type StepRolesPropsInterface = IdentifiableComponentInterface & StepEditSectionsInterface;
 
@@ -100,7 +98,7 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
     /**
      * Filter options for the roles list.
      */
-    const filterOptions: RoleDropdownItem[] = [
+    const filterOptions: DropdownPropsInterface[] = [
         {
             key: RoleConstants.ROLE_AUDIENCE_APPLICATION_FILTER,
             text: "Application",
@@ -264,7 +262,7 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
                                     { isRolesListLoading ? (
                                         <p>{ t("common:loading") }</p>
                                     ) : (
-                                        filterOptions?.map((roleType: RoleDropdownItem) => (
+                                        filterOptions?.map((roleType: DropdownPropsInterface) => (
                                             <MenuItem
                                                 key={ roleType.key }
                                                 value={ roleType.value }

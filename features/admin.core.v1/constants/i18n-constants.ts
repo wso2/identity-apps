@@ -303,8 +303,8 @@ export class I18nConstants {
     /**
      * Custom Authentication namespace.
      */
-    public static readonly CUSTOM_AUTHENTICATION_NAMESPACE: string =
-        I18nModuleConstants.CUSTOM_AUTHENTICATION_NAMESPACE;
+    public static readonly CUSTOM_AUTHENTICATOR_NAMESPACE: string =
+        I18nModuleConstants.CUSTOM_AUTHENTICATOR_NAMESPACE;
 
     /**
      * Approval Workflow namespace.

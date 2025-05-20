@@ -234,8 +234,7 @@ export class Config {
                 I18nConstants.REMOTE_USER_STORES_NAMESPACE,
                 I18nConstants.RULES_NAMESPACE,
                 I18nConstants.PUSH_PROVIDERS_NAMESPACE,
-                I18nConstants.EMAIL_PROVIDERS_NAMESPACE,
-                I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE
+                I18nConstants.EMAIL_PROVIDERS_NAMESPACE
             ],
             preload: []
         };
@@ -298,8 +297,10 @@ export class Config {
             ...getPolicyAdministrationResourceEndpoints(this.resolveServerHost()),
             ...getPushProviderResourceEndpoints(this.resolveServerHost()),
             ...getPushProviderTemplateEndpoints(this.resolveServerHost()),
+            ...getRemoteLoggingEndpoints(this.resolveServerHost()),
             ...getWorkflowsResourceEndpoints(this.resolveServerHost()),
             ...getWorkflowAssociationsResourceEndpoints(this.resolveServerHost()),
+            ...getRegistrationFlowBuilderResourceEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,

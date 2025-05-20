@@ -17,26 +17,6 @@
  */
 
 /**
- * Dropdown option type for workflow engine selection.
- */
-export interface WorkflowEngineTypeDropdownOption {
-    /**
-     * Unique key for the option.
-     */
-    key: string;
-
-    /**
-     * Display text for the option.
-     */
-    text: string;
-
-    /**
-     * Actual value of the option.
-     */
-    value: string;
-}
-
-/**
  * Interface representing a list of workflows along with pagination details.
  */
 export interface WorkflowListResponseInterface {
@@ -60,7 +40,6 @@ export interface WorkflowListResponseInterface {
      */
     workflows?: WorkflowListItemInterface[];
 }
-
 
 /**
  * Interface for a workflow item in the list view.
@@ -213,13 +192,6 @@ export interface OptionDetails {
 }
 
 /**
- * Dropdown options for available workflow engines.
- */
-export const workflowEngineOptions: WorkflowEngineTypeDropdownOption[] = [
-    { key: "engine_1", text: "Simple Workflow Engine", value: "workflowImplSimple" }
-];
-
-/**
  * Multi-step approval template structure.
  */
 export type MultiStepApprovalTemplate = {
@@ -243,3 +215,5 @@ export type MultiStepApprovalTemplate = {
      */
     users: string[];
 };
+
+

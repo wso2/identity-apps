@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 export interface WorkflowAssociationPayload {
     /**
      * Name of the workflow association.
