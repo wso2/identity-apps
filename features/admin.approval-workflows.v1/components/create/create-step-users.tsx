@@ -60,7 +60,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { userstoresConfig } from "../../../admin.extensions.v1";
-import { StepEditSectionsInterface } from "../../models/users";
+import { StepEditSectionsInterface } from "../../models/ui";
 
 type StepUsersPropsInterface = IdentifiableComponentInterface & StepEditSectionsInterface;
 
