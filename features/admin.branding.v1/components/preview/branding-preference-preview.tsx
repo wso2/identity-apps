@@ -338,14 +338,16 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
         `
         .floating-editor-button {
             position: fixed;
-            bottom: 20px;
+            bottom: 50px;
             right: 20px;
             z-index: 1000;
             padding: 10px 16px;
             border: none;
-            border-radius: 4px;
-            font-size: 14px;
             cursor: pointer;
+            width: 200px;
+            height: 70px;
+            font-size: 22px !important;
+            border-radius: 35px !important;
         }
         `
     ];

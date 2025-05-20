@@ -16,12 +16,8 @@
  * under the License.
  */
 
-import { MenuItem } from "@mui/material";
-import Button from "@oxygen-ui/react/Button";
-import Select from "@oxygen-ui/react/Select";
-import { ArrowUpRightFromSquareIcon } from "@oxygen-ui/react-icons";
 import { BrandingPreferenceCustomContentInterface } from "@wso2is/common.branding.v1/models/branding-preferences";
-import { IdentifiableComponentInterface, TestableComponentInterface} from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { FormPropsInterface } from "@wso2is/form/src/components/form";
 import React, {
     FunctionComponent,
@@ -31,14 +27,12 @@ import React, {
     useEffect,
     useRef,
     useState } from "react";
-import { useTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router";
 import { Segment } from "semantic-ui-react";
 import { EditorViewTabs } from "./custom-page-editor/editor-view";
 import { StickyTabPaneActionPanel } from "./sticky-tab-pane-action-panel";
 import BrandingPreferenceContext from "../context/branding-preference-context";
 import useCustomPageEditor from "../hooks/use-custom-page-editor";
-import { PredefinedLayouts } from "../meta/layouts";
 
 type CustomPageEditorPageLayoutPropsInterface = TestableComponentInterface;
 
@@ -47,25 +41,11 @@ interface RouteParams {
     templateId: string;
 }
 
-interface TemplateOptions {
-    key: string;
-    value: string;
-    text: string;
-}
-
 interface UpdatedContent {
     html: string;
     css: string;
     js: string;
 }
-
-const templateOptions: TemplateOptions[] = [
-    { key: PredefinedLayouts.CENTERED, text: "Centered", value: PredefinedLayouts.CENTERED },
-    { key: "left", text: "Left-aligned", value: "left" },
-    { key: "right", text: "Right-aligned", value: "right" },
-    { key: "left-image", text: "Left-image", value: "left-image" },
-    { key: "right-image", text: "Right-image", value: "right-image" }
-];
 
 interface CustomPageEditorPageLayoutInterface extends IdentifiableComponentInterface{
     isLoading: boolean;
@@ -83,8 +63,6 @@ const CustomPageEditorPageLayout: FunctionComponent<CustomPageEditorPageLayoutPr
     props: CustomPageEditorPageLayoutPropsInterface &
     CustomPageEditorPageLayoutInterface & RouteComponentProps<RouteParams>
 ): ReactElement => {
-
-    const [ , setTemplate ] = useState("centered");
 
     const {
         [ "data-testid" ]: testId
@@ -110,24 +88,11 @@ const CustomPageEditorPageLayout: FunctionComponent<CustomPageEditorPageLayoutPr
         setJs(customContent.jsContent ?? "");
     }, [ customContent ]);
 
-    const handleReset = () => {
-        setHtml("");
-        setCss("");
-        setJs("");
-    };
-
-    const { t } = useTranslation();
-
     const formRef: MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
 
     const { updateBrandingCustomContent } = useContext(BrandingPreferenceContext);
 
     const handleSaveAndPublish = (): void => {
-        // TODO: Implement save logic (API call or context update)
-        console.log("Saving...");
-        console.log("HTML:", html);
-        console.log("CSS:", css);
-        console.log("JS:", js);
         updateBrandingCustomContent({
             cssContent: css,
             htmlContent: html,
@@ -149,32 +114,7 @@ const CustomPageEditorPageLayout: FunctionComponent<CustomPageEditorPageLayoutPr
                     Go back
             </div>
             <div style = { { position: "relative" } }>
-                <div style = { { padding: "6px", position: "absolute", right: "0", top: "0",zIndex: "5" } }>
-                    <span style = { { marginRight: "1em" } }> Start With </span>
-                    <Select
-                        defaultValue = { templateOptions[0].value }
-                        variant = "outlined"
-                        onChange = { ( event: React.ChangeEvent<HTMLInputElement> ) => {
-                            setTemplate(event.target.value as string);
-                        } }
-                        data-testid = { `${ testId }-template-select` }
-                        style = { { height: "40px", marginRight: "1em" ,width: "200px" } }
-                    >
-                        { templateOptions.map(( option: TemplateOptions ) => (
-                            <MenuItem key = { option.key } value = { option.value }>
-                                { option.text }
-                            </MenuItem>
-                        ))
-                        }
-                    </Select>
-                    <Button variant = "outlined">
-                        Preview
-                        <span className = "ml-2">
-                            <ArrowUpRightFromSquareIcon />
-                        </span>
-                    </Button>
-                </div>
-                <Segment style = { { paddingLeft: "0", paddingRight: "0", paddingBottom: "0" } }>
+                <Segment style = { { paddingBottom: "0", paddingLeft: "0", paddingRight: "0" } }>
                     <EditorViewTabs
                         html = { html }
                         css = { css }
@@ -198,14 +138,6 @@ const CustomPageEditorPageLayout: FunctionComponent<CustomPageEditorPageLayoutPr
                         } }
                         data-componentid="sticky-tab-action-panel"
                     >
-                        <Button
-                            onClick={ () =>  {
-                                handleReset();
-                                console.log("Reset all button clicked");
-                            } }
-                        >
-                            { t("branding:form.actions.resetAll") }
-                        </Button>
                     </StickyTabPaneActionPanel>
                 </Segment>
             </div>
