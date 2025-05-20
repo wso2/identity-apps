@@ -133,8 +133,9 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         setBrandingMode(BrandingModes.APPLICATION);
 
         // Check if application ID from state is available in the application list.
-        if (applicationList?.applications?.find((app: ApplicationListItemInterface) => 
+        if (applicationList?.applications?.find((app: ApplicationListItemInterface) =>
             app.id === history.location.state)) {
+
             setSelectedApplication(history.location.state as string);
 
             return;
@@ -278,7 +279,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                     >
                                         <Paper
                                             className="branding-mode-toggle-container"
-                                            elevation = { 0 }
+                                            elevation={ 0 }
                                         >
                                             <ToggleButtonGroup
                                                 exclusive
@@ -373,7 +374,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                                                 (app: ApplicationListItemInterface) =>
                                                                     app.id === selectedApplication)?.name
                                                             : t("extensions:develop.branding.pageHeader." +
-                                                                    "selectApplication") }
+                                                                "selectApplication") }
                                                         margin="none"
                                                         value={ selectedApplication }
                                                     />
@@ -383,7 +384,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                     ) }
                                 </LayoutGroup>
                             </div>
-                        ) 
+                        )
                     }
                 </div>
             ) }
