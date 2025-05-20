@@ -1,5 +1,14 @@
 # @wso2is/i18n
 
+## 2.23.3
+
+### Patch Changes
+
+- [#8138](https://github.com/wso2/identity-apps/pull/8138) [`2a689708a425b21ca765f319f8a86c6c5b38e727`](https://github.com/wso2/identity-apps/commit/2a689708a425b21ca765f319f8a86c6c5b38e727) Thanks [@roshanemoraes](https://github.com/roshanemoraes)! - Detailed Status Tracking for Application Sharing
+
+- Updated dependencies [[`2a689708a425b21ca765f319f8a86c6c5b38e727`](https://github.com/wso2/identity-apps/commit/2a689708a425b21ca765f319f8a86c6c5b38e727)]:
+  - @wso2is/core@2.8.1
+
 ## 2.23.2
 
 ### Patch Changes
