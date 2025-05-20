@@ -26,17 +26,33 @@ describe("AuthenticateUtils", (): void => {
             global.TextEncoder = TextEncoder;
         }
 
-        // // Mock window object
-        // Object.defineProperty(global, "window", {
-        //     value: {},
-        //     writable: true
-        // });
+        // Mock window.crypto with all required properties.
+        Object.defineProperty(global, "crypto", {
+            value: {
+                getRandomValues: (array: Uint8Array) => {
+                    // Mock getRandomValues to fill the array with random values.
+                    for (let i: number = 0; i < array.length; i++) {
+                        array[i] = Math.floor(Math.random() * 256);
+                    }
 
-        // Object.defineProperty(global.self, "crypto", {
-        //     value: {
-        //         subtle: crypto.webcrypto.subtle
-        //     }
-        // });
+                    return array;
+                },
+                subtle: {
+                    digest: jest.fn(async (_algorithm: string, _data: ArrayBuffer) => {
+                        // Generate a mock hash based on the input data.
+                        const input: Uint8Array = new Uint8Array(_data);
+                        const mockHash: Uint8Array = new Uint8Array(32);
+
+                        for (let i: number = 0; i < mockHash.length; i++) {
+                            mockHash[i] = (input[i % input.length] + i) % 256;
+                        }
+
+                        return mockHash.buffer;
+                    })
+                }
+            },
+            writable: true
+        });
     });
 
     describe("generateCodeVerifier", (): void => {

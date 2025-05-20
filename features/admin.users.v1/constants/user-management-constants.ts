@@ -20,6 +20,7 @@
 import { ServerConfigurationsConstants } from
     "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import { ProfileConstants } from "@wso2is/core/constants";
+import { DropdownChild } from "@wso2is/forms";
 
 /**
  * Class containing app constants which can be used across several applications.
@@ -181,6 +182,9 @@ export class UserManagementConstants {
     // Impersonation related constants.
     public static readonly ID_TOKEN: string = "id_token";
     public static readonly SUBJECT_TOKEN: string = "subject_token";
+
+    // Name of the Asgardeo userstore.
+    public static readonly ASGARDEO_USERSTORE: string = "ASGARDEO-USER";
 
     // Feature flags.
     public static readonly ATTRIBUTE_PROFILES_FOR_USER_CREATION_FEATURE_FLAG: string
@@ -470,3 +474,31 @@ export const RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP: Record<string, strin
 export enum AttributeDataType {
     COMPLEX = "COMPLEX"
 }
+
+/**
+ * User account status options for filtering users.
+ *
+ * @readonly
+ */
+export const USER_ACCOUNT_STATUS_FILTER_OPTIONS: DropdownChild[] = [
+    {
+        key: "LOCKED",
+        text: "users:advancedSearch.accountStatusFilter.options.locked",
+        value: "urn:scim:wso2:schema:accountState eq LOCKED"
+    },
+    {
+        key: "DISABLED",
+        text: "users:advancedSearch.accountStatusFilter.options.disabled",
+        value: "urn:scim:wso2:schema:accountState eq DISABLED"
+    },
+    {
+        key: "PENDING_FUPR",
+        text: "users:advancedSearch.accountStatusFilter.options.pendingPasswordReset",
+        value: "urn:scim:wso2:schema:accountState eq PENDING_FUPR"
+    },
+    {
+        key: "PENDING_AP",
+        text: "users:advancedSearch.accountStatusFilter.options.pendingInitialPasswordSetup",
+        value: "urn:scim:wso2:schema:accountState eq PENDING_AP"
+    }
+];

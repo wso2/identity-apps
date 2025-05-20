@@ -1,5 +1,88 @@
 # @wso2is/console
 
+## 2.55.7
+
+### Patch Changes
+
+- [#8204](https://github.com/wso2/identity-apps/pull/8204) [`186f06c1a3364687cbf9e91a841da97538f06336`](https://github.com/wso2/identity-apps/commit/186f06c1a3364687cbf9e91a841da97538f06336) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add impersonation UX improvements.
+
+- Updated dependencies [[`186f06c1a3364687cbf9e91a841da97538f06336`](https://github.com/wso2/identity-apps/commit/186f06c1a3364687cbf9e91a841da97538f06336)]:
+  - @wso2is/admin.extensions.v1@2.38.1
+  - @wso2is/admin.users.v1@2.32.3
+  - @wso2is/i18n@2.23.2
+
+## 2.55.6
+
+### Patch Changes
+
+- [#8182](https://github.com/wso2/identity-apps/pull/8182) [`e9855f0cb78df5d2609ed21bcc20aee8f535104e`](https://github.com/wso2/identity-apps/commit/e9855f0cb78df5d2609ed21bcc20aee8f535104e) Thanks [@adibmbrk](https://github.com/adibmbrk)! - Remove validate token bindings when DPoP enabled and fix minor inconsistencies in the ui
+
+- Updated dependencies [[`e9855f0cb78df5d2609ed21bcc20aee8f535104e`](https://github.com/wso2/identity-apps/commit/e9855f0cb78df5d2609ed21bcc20aee8f535104e)]:
+  - @wso2is/admin.applications.v1@2.34.11
+  - @wso2is/i18n@2.23.1
+
+## 2.55.5
+
+### Patch Changes
+
+- [#8193](https://github.com/wso2/identity-apps/pull/8193) [`c5640cac8f9fd9e71927455f47e18ddeacaea201`](https://github.com/wso2/identity-apps/commit/c5640cac8f9fd9e71927455f47e18ddeacaea201) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Hide impersonation if authenticated user belong to different tenant.
+
+- Updated dependencies [[`c5640cac8f9fd9e71927455f47e18ddeacaea201`](https://github.com/wso2/identity-apps/commit/c5640cac8f9fd9e71927455f47e18ddeacaea201)]:
+  - @wso2is/admin.users.v1@2.32.2
+
+## 2.55.4
+
+### Patch Changes
+
+- [#8194](https://github.com/wso2/identity-apps/pull/8194) [`3f3dd0769950b6a3f41df0817b3f17a4342a9e74`](https://github.com/wso2/identity-apps/commit/3f3dd0769950b6a3f41df0817b3f17a4342a9e74) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Clone application template object before assigning custom properties
+
+* [#8172](https://github.com/wso2/identity-apps/pull/8172) [`03ba1504e5c6089bbf28febb1ba51cc1114afd1e`](https://github.com/wso2/identity-apps/commit/03ba1504e5c6089bbf28febb1ba51cc1114afd1e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve session refresh logic
+
+* Updated dependencies [[`3f3dd0769950b6a3f41df0817b3f17a4342a9e74`](https://github.com/wso2/identity-apps/commit/3f3dd0769950b6a3f41df0817b3f17a4342a9e74)]:
+  - @wso2is/admin.applications.v1@2.34.10
+
+## 2.55.3
+
+### Patch Changes
+
+- [#8185](https://github.com/wso2/identity-apps/pull/8185) [`1aa8365c9b821cbe0e38a8f4e873332b943d2cb1`](https://github.com/wso2/identity-apps/commit/1aa8365c9b821cbe0e38a8f4e873332b943d2cb1) Thanks [@brionmario](https://github.com/brionmario)! - Fix typo
+
+## 2.55.2
+
+### Patch Changes
+
+- [#8180](https://github.com/wso2/identity-apps/pull/8180) [`d49acf6be21a6b3165cefd525e593f4f335cdbda`](https://github.com/wso2/identity-apps/commit/d49acf6be21a6b3165cefd525e593f4f335cdbda) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Remove single quote from the users filter query
+
+- Updated dependencies [[`d49acf6be21a6b3165cefd525e593f4f335cdbda`](https://github.com/wso2/identity-apps/commit/d49acf6be21a6b3165cefd525e593f4f335cdbda)]:
+  - @wso2is/admin.users.v1@2.32.1
+
+## 2.55.1
+
+### Patch Changes
+
+- [#8178](https://github.com/wso2/identity-apps/pull/8178) [`73eedc4c81f0d36fa30593ba58d6102456182038`](https://github.com/wso2/identity-apps/commit/73eedc4c81f0d36fa30593ba58d6102456182038) Thanks [@lashinijay](https://github.com/lashinijay)! - Force trigger console version
+
+## 2.55.0
+
+### Minor Changes
+
+- [#8171](https://github.com/wso2/identity-apps/pull/8171) [`7c7082aaf820c0e390f2e3b5d3224d9cfa0da10e`](https://github.com/wso2/identity-apps/commit/7c7082aaf820c0e390f2e3b5d3224d9cfa0da10e) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add support for users filtering based on the account status
+
+* [#8174](https://github.com/wso2/identity-apps/pull/8174) [`15a063f9e5c1b3e14b1fbb2e1c1a0697d98f53e1`](https://github.com/wso2/identity-apps/commit/15a063f9e5c1b3e14b1fbb2e1c1a0697d98f53e1) Thanks [@lashinijay](https://github.com/lashinijay)! - Introduce client credential authentication for email providers
+
+### Patch Changes
+
+- [#8103](https://github.com/wso2/identity-apps/pull/8103) [`3d453f26bb1c3023bf700a8d4a6aaa675f21cbb5`](https://github.com/wso2/identity-apps/commit/3d453f26bb1c3023bf700a8d4a6aaa675f21cbb5) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Support Backward Compatibility for Non-Tenant-Qualified URLs
+
+- Updated dependencies [[`7c7082aaf820c0e390f2e3b5d3224d9cfa0da10e`](https://github.com/wso2/identity-apps/commit/7c7082aaf820c0e390f2e3b5d3224d9cfa0da10e), [`15a063f9e5c1b3e14b1fbb2e1c1a0697d98f53e1`](https://github.com/wso2/identity-apps/commit/15a063f9e5c1b3e14b1fbb2e1c1a0697d98f53e1), [`709983b9893e6922dc0c9066f0af61d35d1fa1cc`](https://github.com/wso2/identity-apps/commit/709983b9893e6922dc0c9066f0af61d35d1fa1cc)]:
+  - @wso2is/admin.users.v1@2.32.0
+  - @wso2is/i18n@2.23.0
+  - @wso2is/admin.email-providers.v1@2.27.0
+  - @wso2is/admin.extensions.v1@2.38.0
+  - @wso2is/admin.core.v1@2.44.0
+  - @wso2is/core@2.8.0
+  - @wso2is/form@2.7.0
+
 ## 2.54.21
 
 ### Patch Changes

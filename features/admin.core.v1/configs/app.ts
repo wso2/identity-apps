@@ -255,7 +255,8 @@ export class Config {
                 I18nConstants.POLICY_ADMINISTRATION_NAMESPACE,
                 I18nConstants.REMOTE_USER_STORES_NAMESPACE,
                 I18nConstants.RULES_NAMESPACE,
-                I18nConstants.PUSH_PROVIDERS_NAMESPACE
+                I18nConstants.PUSH_PROVIDERS_NAMESPACE,
+                I18nConstants.EMAIL_PROVIDERS_NAMESPACE
             ],
             preload: []
         };
@@ -360,6 +361,7 @@ export class Config {
             enableCustomEmailTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.enableCustomEmailTemplates,
             enableEmailDomain: window[ "AppUtils" ]?.getConfig()?.ui?.enableEmailDomain ?? false,
             enableIdentityClaims: window[ "AppUtils" ]?.getConfig()?.ui?.enableIdentityClaims ?? true,
+            enableOldUIForEmailProvider: window[ "AppUtils" ]?.getConfig()?.ui?.enableOldUIForEmailProvider,
             features: window[ "AppUtils" ]?.getConfig()?.ui?.features,
             googleOneTapEnabledTenants: window["AppUtils"]?.getConfig()?.ui?.googleOneTapEnabledTenants,
             governanceConnectors: window["AppUtils"]?.getConfig()?.ui?.governanceConnectors,
@@ -408,6 +410,7 @@ export class Config {
             },
             selfAppIdentifier: window[ "AppUtils" ]?.getConfig()?.ui?.selfAppIdentifier,
             showAppSwitchButton: window[ "AppUtils" ]?.getConfig()?.ui?.showAppSwitchButton,
+            showPasswordOfEmailProvider: window[ "AppUtils" ]?.getConfig()?.ui?.showPasswordOfEmailProvider,
             showSmsOtpPwdRecoveryFeatureStatusChip:
                 window[ "AppUtils" ]?.getConfig()?.ui?.showSmsOtpPwdRecoveryFeatureStatusChip,
             showStatusLabelForNewAuthzRuntimeFeatures:
