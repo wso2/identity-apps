@@ -282,6 +282,7 @@ export interface organizationsNS {
                     invalidPattern: string;
                     mandatoryExtension: string;
                     startingWithDot: string;
+                    tooltip: string;
                 };
                 label: string;
                 placeholder: string;

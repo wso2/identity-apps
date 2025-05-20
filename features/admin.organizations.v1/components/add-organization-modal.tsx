@@ -22,14 +22,14 @@ import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
-import { Heading, LinkButton, Message, PrimaryButton } from "@wso2is/react-components";
+import { Heading, Hint, LinkButton, Message, PrimaryButton, Text } from "@wso2is/react-components";
 import debounce from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Grid, Modal } from "semantic-ui-react";
+import { Grid, Icon, Modal } from "semantic-ui-react";
 import { addOrganization, checkOrgHandleAvailability } from "../api";
 import {
     ORGANIZATION_DESCRIPTION_MAX_LENGTH,
@@ -41,6 +41,7 @@ import {
 } from "../constants";
 import { AddOrganizationInterface, CheckOrgHandleResponseInterface, GenericOrganization, OrganizationResponseInterface }
     from "../models";
+import { TenantManagementConstants } from "@wso2is/admin.tenants.v1/constants";
 
 interface OrganizationAddFormProps {
     name: string;
@@ -91,6 +92,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     const [ orgLevelReachedError, setOrgLevelReachedError ] = useState<boolean>(false);
     const [ orgHandle, setOrgHandle ] = useState<string>();
     const [ isCheckingOrgHandleValidity, setCheckingOrgHandleValidity ] = useState<boolean>(false);
+    const [ isFocused, setIsFocused ] = useState<boolean>(false);
 
     const isOrgHandleDotExtensionMandatory: boolean = useSelector(
         (state: AppState) => state.config?.ui?.multiTenancy?.isTenantDomainDotExtensionMandatory
@@ -301,6 +303,91 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
         }
     }, 1000);
 
+    /**
+     * Function to render the validation status of first letter of organization handle being in alphabet.
+     *
+     * @returns Organization handle alphabet validation.
+     */
+    const renderTenantAlphabetValidation = (): ReactElement => {
+        if (orgHandle === TenantManagementConstants.TENANT_URI_PLACEHOLDER || orgHandle === undefined) {
+            return <Icon name="circle" color="grey"/>;
+        }
+
+        if (orgHandle.match(TenantManagementConstants.FORM_FIELD_CONSTRAINTS.TENANT_NAME_FIRST_ALPHABET)) {
+            return <Icon name="check circle" color="green"/>;
+        }
+
+        if (isFocused) {
+            return <Icon name="circle" color="grey"/>;
+        } else {
+            return <Icon name="remove circle" color="red"/>;
+        }
+    };
+
+    /**
+     * Function to render the validation status of the length of organization handle.
+     *
+     * @returns Organization handle length validation.
+     */
+    const renderTenantLengthValidation = (): ReactElement => {
+        if (orgHandle === TenantManagementConstants.TENANT_URI_PLACEHOLDER || orgHandle === undefined) {
+            return <Icon name="circle" color="grey"/>;
+        }
+
+        if (orgHandle.length >= TenantManagementConstants.FORM_FIELD_CONSTRAINTS.TENANT_NAME_MIN_LENGTH &&
+            orgHandle.length < TenantManagementConstants.FORM_FIELD_CONSTRAINTS.TENANT_NAME_MAX_LENGTH) {
+            return <Icon name="check circle" color="green"/>;
+        }
+
+        if (isFocused) {
+            return <Icon name="circle" color="grey"/>;
+        } else {
+            return <Icon name="remove circle" color="red"/>;
+        }
+    };
+
+    /**
+     * Function to render the validation status of the organization handle being alphanumeric.
+     *
+     * @returns Organization handle numerical validation.
+     */
+    const renderTenantAlphanumericValidation = (): ReactElement => {
+        if (orgHandle === TenantManagementConstants.TENANT_URI_PLACEHOLDER || orgHandle === undefined) {
+            return <Icon name="circle" color="grey"/>;
+        }
+
+        if (orgHandle.match(TenantManagementConstants.FORM_FIELD_CONSTRAINTS.TENANT_NAME_ALPHANUMERIC)) {
+            return <Icon name="check circle" color="green"/>;
+        }
+
+        if (isFocused) {
+            return <Icon name="circle" color="grey"/>;
+        } else {
+            return <Icon name="remove circle" color="red"/>;
+        }
+    };
+
+    /**
+     * Function to render the validation status of the organization handle being unique.
+     *
+     * @returns Organization handle unique validation.
+     */
+    const renderTenantUniqueValidation = (): ReactElement => {
+        if (orgHandle === TenantManagementConstants.TENANT_URI_PLACEHOLDER || orgHandle === undefined) {
+            return <Icon name="circle" color="grey"/>;
+        }
+
+        if (orgHandle && !isCheckingOrgHandleValidity) {
+            return <Icon name="check circle" color="green"/>;
+        }
+
+        if (isFocused) {
+            return <Icon name="circle" color="grey"/>;
+        } else {
+            return <Icon name="remove circle" color="red"/>;
+        }
+    };
+
     return (
         <>
             { openLimitReachedModal && (
@@ -401,11 +488,24 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                         listen={ (value: string) => generateOrgHandle(value) }
                                     />
                                     <Field.Input
+                                        className={
+                                            !isFocused &&
+                                            orgHandle !== undefined &&
+                                            (isCheckingOrgHandleValidity || !!error)
+                                                ? "error"
+                                                : ""
+                                        }
                                         ariaLabel="Organization Handle"
-                                        inputType="edit_input"
+                                        inputType="name"
                                         name="orgHandle"
-                                        label={ t("organizations:forms.addOrganization.orgHandle.label") }
-                                        required={ true }
+                                        label={
+                                            (<span>
+                                                { t("organizations:forms.addOrganization.orgHandle.label") }
+                                                <Hint inline popup data-testid={ `${ testId }-org-handle-info-icon` }>
+                                                    { t("organizations:forms.addOrganization.orgHandle.tooltip") }
+                                                </Hint>
+                                            </span>)
+                                        }
                                         placeholder={
                                             t("organizations:forms.addOrganization.orgHandle.placeholder")
                                         }
@@ -414,8 +514,39 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                         data-componentid={ `${ testId }-organization-handle-input` }
                                         width={ 16 }
                                         value={ orgHandle || undefined }
-                                        validate={ (value: string) => checkOrgHandleValidity(value) }
+                                        validation={ (value: string) => {
+                                            checkOrgHandleValidity(value);
+                                        } }
+                                        onBlur={ () => setIsFocused(false) }
+                                        onFocus={ () => setIsFocused(true) }
+                                        required={ true }
                                     />
+                                    <Grid className="m-0 pt-2">
+                                        <Grid.Row className="p-0">
+                                            { renderTenantAlphabetValidation() }
+                                            <Text muted>
+                                                Must begin with an alphabet character
+                                            </Text>
+                                        </Grid.Row>
+                                        <Grid.Row className="p-0">
+                                            { renderTenantLengthValidation() }
+                                            <Text muted>
+                                                More than 4 characters, Less than 30 characters
+                                            </Text>
+                                        </Grid.Row>
+                                        <Grid.Row className="p-0">
+                                            { renderTenantAlphanumericValidation() }
+                                            <Text muted>
+                                                Only consist of lowercase alphanumerics
+                                            </Text>
+                                        </Grid.Row>
+                                        <Grid.Row className="p-0">
+                                            { renderTenantUniqueValidation() }
+                                            <Text muted>
+                                                Must be unique
+                                            </Text>
+                                        </Grid.Row>
+                                    </Grid>
                                     <Field.Input
                                         ariaLabel="Description"
                                         inputType="description"
