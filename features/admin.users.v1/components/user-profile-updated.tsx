@@ -2075,6 +2075,7 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
             );
         }
 
+        // TODO: Use the DateTimePicker component when it's available.
         if (schema?.name === "dateOfBirth") {
             return (
                 <>
@@ -2087,8 +2088,9 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                         name={ schema.name }
                         label={ fieldName }
                         placeholder="YYYY-MM-DD"
-                        type="date"
+                        type="text"
                         validate={ (value: string) => validateInput(value, schema, fieldName) }
+                        parse={ (value: string) => value }
                         maxLength={ schema.maxLength
                             ? schema.maxLength
                             : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
@@ -2177,49 +2179,6 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                 }
                 required={ resolvedRequiredValue() }
             />
-        );
-
-        return (
-            <>
-                <FinalFormField
-                    key={ key }
-                    component={ TextFieldAdapter }
-                    data-componentid={ resolvedComponentId }
-                    initialValue={ profileInfo.get(schema.name) ?? null }
-                    ariaLabel={ fieldName }
-                    name={ schema.name }
-                    type="text"
-                    label={ schema.name === "profileUrl" ? "Profile Image URL" :
-                        (  (!commonConfig.userEditSection.showEmail && schema.name === "userName")
-                            ? fieldName + " (Email)"
-                            : fieldName
-                        )
-                    }
-                    placeholder={
-                        t("user:profile.forms.generic.inputs.dropdownPlaceholder",
-                            { fieldName })
-                    }
-                    parse={ (value: string) => value }
-                    validate={ (value: string) => validateInput(value, schema, fieldName, resolvedRequiredValue()) }
-                    // maxLength={
-                    //     fieldName.toLowerCase().includes("uri") || fieldName.toLowerCase().includes("url")
-                    //         ? ProfileConstants.URI_CLAIM_VALUE_MAX_LENGTH
-                    //         : (
-                    //             schema.maxLength
-                    //                 ? schema.maxLength
-                    //                 : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
-                    //         )
-                    // }
-                    // readOnly={ (isUserManagedByParentOrg &&
-                    //     sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN)
-                    //     || isReadOnly
-                    //     || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA
-                    //     || schema.name === "userName"
-                    // }
-                    required={ resolvedRequiredValue() }
-                />
-                <Divider hidden/>
-            </>
         );
     };
 

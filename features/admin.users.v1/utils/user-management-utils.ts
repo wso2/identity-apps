@@ -624,7 +624,7 @@ export const flattenValues = (obj: Record<string, any>, prefix: string = ""): Ma
 
             subMap.forEach((v: string, k: string) => map.set(k, v));
         } else {
-            map.set(path, value?.toString() ?? "");
+            map.set(path, value);
         }
     }
 

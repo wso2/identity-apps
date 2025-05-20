@@ -18,6 +18,7 @@
 
 import { ProfileConstants } from "@wso2is/core/constants";
 import { ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
+import isEmpty from "lodash-es/isEmpty";
 import { useMemo } from "react";
 import {
     EMAIL_ADDRESSES_ATTRIBUTE,
@@ -57,7 +58,7 @@ export const useMultiValuedFieldConfig = (
             = primaryAttributeSchema?.profiles?.console?.required ?? primaryAttributeSchema?.required;
         const resolvedRequiredValue: boolean = (resolvedMultiValueAttributeRequiredValue
             || resolvedPrimarySchemaRequiredValue);
-        const showAttributes: boolean = attributeValueList.length >= 1;
+        const showAttributes: boolean = isEmpty(schema.canonicalValues) && attributeValueList.length >= 1;
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             attributeValueList = multiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE] ?? [];

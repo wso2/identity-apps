@@ -40,6 +40,7 @@ import {
     PatchOperationRequest,
     ProfileInfoInterface,
     ProfileSchemaInterface,
+    Property,
     SharedProfileValueResolvingMethod
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -508,6 +509,11 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
                 }
 
                 handleAddMultiValuedItem(schema, attributeValue);
+
+                setMultiValuedInputFieldValue({
+                    ...multiValuedInputFieldValue,
+                    [schema.name]: ""
+                });
             }
         };
 
@@ -526,6 +532,8 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
                                 return;
                             }
 
+                            handleAddMultiValuedItem(schema, attributeValue);
+
                             setMultiValuedInputFieldValue({
                                 ...multiValuedInputFieldValue,
                                 [schema.name]: ""
@@ -539,7 +547,7 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
         );
 
         if (claimType === ClaimDataType.STRING) {
-            const options: string[] = schema["canonicalValues"] ?? [];
+            const options: Property[] = schema["canonicalValues"] ?? [];
 
             // This is a multi valued dropdown field.
             if (options.length > 0) {
@@ -599,6 +607,7 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
                             { fieldName })
                     }
                     validate={ validateInput }
+                    parse={ (value: string) => value ?? "" }
                     onKeyDown={ (event: React.KeyboardEvent<HTMLInputElement>) => keyDownEvent(event) }
                     endAdornment={ resolvedEndAdornment }
                     maxLength={ resolvedMaxLengthValue }
@@ -625,6 +634,7 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
                             { fieldName })
                     }
                     validate={ validateInput }
+                    parse={ (value: string) => value }
                     onKeyDown={ (event: React.KeyboardEvent<HTMLInputElement>) => keyDownEvent(event) }
                     endAdornment={ resolvedEndAdornment }
                     maxLength={ resolvedMaxLengthValue }
@@ -655,6 +665,7 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
                         { fieldName })
                 }
                 validate={ validateInput }
+                parse={ (value: string) => value }
                 onKeyDown={ (event: React.KeyboardEvent<HTMLInputElement>) => keyDownEvent(event) }
                 endAdornment={ resolvedEndAdornment }
                 maxLength={ resolvedMaxLengthValue }

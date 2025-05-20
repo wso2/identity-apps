@@ -16,9 +16,8 @@
  * under the License.
  */
 
-// import DateTimePicker from "@oxygen-ui/react/DateTimePicker";
 import { ProfileConstants } from "@wso2is/core/constants";
-import { ClaimDataType, IdentifiableComponentInterface, ProfileSchemaInterface } from "@wso2is/core/models";
+import { ClaimDataType, IdentifiableComponentInterface, ProfileSchemaInterface, Property } from "@wso2is/core/models";
 import { AutocompleteFieldAdapter, CheckboxFieldAdapter, FinalFormField, TextFieldAdapter } from "@wso2is/form";
 import isEmpty from "lodash-es/isEmpty";
 import React from "react";
@@ -95,12 +94,13 @@ const DynamicTypeFormField = (props: DynamicTypeFormFieldPropsInterface) => {
         return undefined;
     };
 
-    // return (
-    //     <DateTimePicker />
-    // )
+    if (claimType === ClaimDataType.COMPLEX) {
+        // Do not render anything for complex types.
+        return null;
+    }
 
     if (claimType === ClaimDataType.STRING) {
-        const options: string[] = schema["canonicalValues"] ?? [];
+        const options: Property[] = schema["canonicalValues"] ?? [];
 
         // If the claim is a string and has canonical values, render a dropdown.
         if (options.length > 0) {
@@ -185,6 +185,7 @@ const DynamicTypeFormField = (props: DynamicTypeFormFieldPropsInterface) => {
         );
     }
 
+    // TODO: Use the DateTimePicker component when it's available.
     if (claimType === ClaimDataType.DATE_TIME) {
         return (
             <>
@@ -195,7 +196,7 @@ const DynamicTypeFormField = (props: DynamicTypeFormFieldPropsInterface) => {
                     initialValue={ profileInfo.get(schema.name) }
                     ariaLabel={ fieldName }
                     name={ schema.name }
-                    type="date"
+                    type="text"
                     label={ fieldName }
                     placeholder={
                         t("user:profile.forms.generic.inputs.dropdownPlaceholder",
