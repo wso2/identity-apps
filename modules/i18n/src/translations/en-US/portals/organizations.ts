@@ -137,12 +137,14 @@ export const organizations: organizationsNS = {
             orgHandle: {
                 label: "Organization Handle",
                 placeholder: "Organization handle (E.g., myorg.com)",
+                tooltip: "A human-readable unique identifier used as a URL handle to access the new organization.",
                 validation: {
-                    duplicate: "The entered organization handle already exists",
-                    empty: "The organization handle is required",
+                    duplicate: "The entered organization handle already exists.",
+                    empty: "The organization handle is required.",
+                    invalidFirstCharacter: "The organization handle must begin with an alphabet character.",
+                    invalidLength: "The organization handle must be more than 4 characters, less than 30 characters.",
                     invalidPattern: "The entered organization handle contains invalid characters. Valid characters include letters (a-z, A-Z), numbers, spaces, periods (.), hyphens (-), and underscores (_).",
-                    mandatoryExtension: "The organization handle should include a domain extension, such as .com. (E.g,: abc.com)",
-                    startingWithDot: "The organization handle cannot start with a dot"
+                    mandatoryExtension: "The organization handle should include a domain extension, such as .com (E.g,: abc.com)."
                 }
             },
             structural: "Structural",

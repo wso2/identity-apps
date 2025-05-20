@@ -59,6 +59,7 @@ import {
     OrganizationPatchData,
     OrganizationResponseInterface
 } from "../../models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 
 interface OrganizationEditFormProps {
     name: string;
@@ -119,6 +120,11 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
         showOrgDeleteConfirmation,
         setShowOrgDeleteConfirmationModal
     ] = useState(false);
+
+    const isOrgHandleFeatureEnabled: boolean = isFeatureEnabled(
+        featureConfig.organizations,
+        "organizations.orgHandle"
+    );
 
     const handleSubmit: (values: OrganizationResponseInterface) => Promise<void> = useCallback(
         async (values: OrganizationResponseInterface): Promise<void> => {
@@ -472,7 +478,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                         minLength={ OrganizationManagementConstants.MIN_ORG_HANDLE_LENGTH }
                                     />
                                 ) }
-                                { organization?.orgHandle && (
+                                { organization?.orgHandle && isOrgHandleFeatureEnabled && (
                                     <Field.Input
                                         data-testid={ `${ testId }-overview-form-org-handle-input` }
                                         name="orgHandle"

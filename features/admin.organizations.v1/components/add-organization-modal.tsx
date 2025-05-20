@@ -17,19 +17,21 @@
  */
 
 import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals/tier-limit-reach-error-modal";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
-import { Heading, LinkButton, Message, PrimaryButton } from "@wso2is/react-components";
+import { Heading, Hint, LinkButton, Message, PrimaryButton, Text } from "@wso2is/react-components";
 import debounce from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Grid, Modal } from "semantic-ui-react";
+import { Grid, Icon, Modal } from "semantic-ui-react";
 import { addOrganization, checkOrgHandleAvailability } from "../api";
 import {
     ORGANIZATION_DESCRIPTION_MAX_LENGTH,
@@ -45,7 +47,6 @@ import { AddOrganizationInterface, CheckOrgHandleResponseInterface, GenericOrgan
 interface OrganizationAddFormProps {
     name: string;
     orgHandle: string;
-    domainName?: string;
     description?: string;
 }
 
@@ -89,29 +90,45 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
         (state: AppState) => state.organization.organization);
     const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
     const [ orgLevelReachedError, setOrgLevelReachedError ] = useState<boolean>(false);
+    const [ orgHandleError, setOrgHandleError ] = useState<string>("");
+    const [ orgNameError, setOrgNameError ] = useState<string>("");
     const [ orgHandle, setOrgHandle ] = useState<string>();
     const [ isCheckingOrgHandleValidity, setCheckingOrgHandleValidity ] = useState<boolean>(false);
+    const [ isOrgHandleDuplicate, setIsOrgHandleDuplicate ] = useState<boolean>(false);
+    const [ isOrgHandleFieldFocused, setIsOrgHandleFieldFocused ] = useState<boolean>(false);
 
     const isOrgHandleDotExtensionMandatory: boolean = useSelector(
         (state: AppState) => state.config?.ui?.multiTenancy?.isTenantDomainDotExtensionMandatory
     );
 
-    const submitOrganization = async (values: OrganizationAddFormProps): Promise<Record<string, string>|void> => {
+    const featureConfig: FeatureConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features
+    );
+    const isOrgHandleFeatureEnabled: boolean = isFeatureEnabled(
+        featureConfig.organizations,
+        "organizations.orgHandle"
+    );
+
+    const submitOrganization = async (values: OrganizationAddFormProps): Promise<Record<string, string> | void> => {
+        if (orgHandleError) {
+            return;
+        }
         const organization: AddOrganizationInterface = {
             description: values?.description,
             name: values?.name,
-            orgHandle: values?.orgHandle,
+            orgHandle: isOrgHandleFeatureEnabled ? orgHandle : null,
             parentId: parent?.id ?? currentOrganization.id,
             type: ORGANIZATION_TYPE.TENANT
         };
 
-        if (!values?.name) {
+        if (!organization.name) {
             return Promise.resolve({
                 name: t("organizations:forms.addOrganization.name.validation.empty")
             });
-        } else if (!values?.orgHandle) {
+        }
+        if (isOrgHandleFeatureEnabled && isValidOrgHandle(organization.orgHandle)) {
             return Promise.resolve({
-                handle: t("organizations:forms.addOrganization.orgHandle.validation.empty")
+                orgHandle: orgHandleError
             });
         }
 
@@ -146,11 +163,12 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                         setOpenLimitReachedModal(true);
                     } else if (error.code ===
                         OrganizationManagementConstants.ERROR_SUB_ORGANIZATION_EXIST.getErrorCode()) {
-                        setError(t(OrganizationManagementConstants.ERROR_SUB_ORGANIZATION_EXIST.getErrorMessage(),
-                            {
-                                description: error.description
-                            }
-                        ));
+                        setOrgNameError(
+                            t(OrganizationManagementConstants.ERROR_SUB_ORGANIZATION_EXIST.getErrorMessage(),
+                                {
+                                    description: error.description
+                                }
+                            ));
                     } else {
                         setError(t(
                             "organizations:notifications." +
@@ -170,6 +188,61 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
             .finally(() => {
                 setIsSubmitting(false);
             });
+    };
+
+    /**
+     * Validates the organization handle and sets the error state if it is invalid.
+     *
+     * @param orgHandle - The organization handle to validate.
+     * @returns boolean - True if the organization handle is invalid; false otherwise.
+     */
+    const isValidOrgHandle = (orgHandle: string): boolean => {
+
+        // 1. Empty check.
+        if (!orgHandle || orgHandle === OrganizationManagementConstants.ORG_HANDLE_PLACEHOLDER) {
+            setOrgHandleError(t("organizations:forms.addOrganization.orgHandle.validation.empty"));
+
+            return true;
+        }
+
+        // 2. First character must be an alphabet.
+        if (!orgHandle.match(OrganizationManagementConstants.ORG_HANDLE_FIELD_CONSTRAINTS.ORG_HANDLE_FIRST_ALPHABET)) {
+            setOrgHandleError(t("organizations:forms.addOrganization.orgHandle.validation.invalidFirstCharacter"));
+
+            return true;
+        }
+
+        // 3. Length check.
+        const minLength: number = OrganizationManagementConstants.ORG_HANDLE_FIELD_CONSTRAINTS.ORG_HANDLE_MIN_LENGTH;
+        const maxLength: number = OrganizationManagementConstants.ORG_HANDLE_FIELD_CONSTRAINTS.ORG_HANDLE_MAX_LENGTH;
+
+        if (orgHandle.length < minLength || orgHandle.length >= maxLength) {
+            setOrgHandleError(t("organizations:forms.addOrganization.orgHandle.validation.invalidLength",
+                { max: maxLength, min: minLength }));
+
+            return true;
+        }
+
+        // 4. Alphanumeric check.
+        const alphanumericValidationRegex: RegExp = isOrgHandleDotExtensionMandatory
+            ? OrganizationManagementConstants.ORG_HANDLE_FIELD_CONSTRAINTS.ORG_HANDLE_ALPHANUMERIC_WITH_DOMAIN
+            : OrganizationManagementConstants.ORG_HANDLE_FIELD_CONSTRAINTS.ORG_HANDLE_ALPHANUMERIC;
+
+        if (!orgHandle.match(alphanumericValidationRegex)) {
+            setOrgHandleError(t("organizations:forms.addOrganization.orgHandle.validation.invalidPattern"));
+
+            return true;
+        }
+
+        // 5. Uniqueness check (async, but here just check the state).
+        if (isCheckingOrgHandleValidity || isOrgHandleDuplicate) {
+            setOrgHandleError(t("organizations:forms.addOrganization.orgHandle.validation.duplicate"));
+
+            return true;
+        }
+        setOrgHandleError("");
+
+        return false;
     };
 
     /**
@@ -196,6 +269,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     const generateOrgHandle = (orgName: string): void => {
 
         if (isEmpty(orgName)) {
+            setOrgHandleError("");
             setOrgHandle(undefined);
         } else {
             const sanitizedValue: string = orgName.trim().toLowerCase()
@@ -219,6 +293,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                     // Org handle exists, try again.
                     setAutoGeneratedOrgHandle(sanitizedValue);
                 } else {
+                    setOrgHandleError("");
                     setOrgHandle(autoGenOrgHandle);
                 }
             });
@@ -236,11 +311,95 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
         const generateOrgHandle: string = sanitizedValue + randomString;
 
         if (isOrgHandleDotExtensionMandatory) {
-            return generateOrgHandle + ".com";
+            return generateOrgHandle + OrganizationManagementConstants.SAMPLE_ORG_HANDLE_DOMAIN_EXTENSION;
         }
 
         return generateOrgHandle;
     }
+
+    /**
+     * Function to render the validation status of first letter of organization handle being in alphabet.
+     *
+     * @returns Organization handle alphabet validation.
+     */
+    const renderOrgHandleAlphabetValidationIcon = (): ReactElement => {
+        if (!orgHandle || orgHandle === OrganizationManagementConstants.ORG_HANDLE_PLACEHOLDER) {
+            return <Icon name="circle" color="grey" />;
+        }
+
+        if (orgHandle.match(OrganizationManagementConstants.ORG_HANDLE_FIELD_CONSTRAINTS.ORG_HANDLE_FIRST_ALPHABET)) {
+            return <Icon name="check circle" color="green"/>;
+        }
+
+        return isOrgHandleFieldFocused
+            ? <Icon name="circle" color="grey"/>
+            : <Icon name="remove circle" color="red"/>;
+    };
+
+    /**
+     * Function to render the validation status of the length of organization handle.
+     *
+     * @returns Organization handle length validation.
+     */
+    const renderOrgHandleLengthValidationIcon = (): ReactElement => {
+        if (!orgHandle || orgHandle === OrganizationManagementConstants.ORG_HANDLE_PLACEHOLDER) {
+            return <Icon name="circle" color="grey" />;
+        }
+
+        const minLength: number = OrganizationManagementConstants.ORG_HANDLE_FIELD_CONSTRAINTS.ORG_HANDLE_MIN_LENGTH;
+        const maxLength: number = OrganizationManagementConstants.ORG_HANDLE_FIELD_CONSTRAINTS.ORG_HANDLE_MAX_LENGTH;
+
+        if (orgHandle.length >= minLength && orgHandle.length < maxLength) {
+            return <Icon name="check circle" color="green" />;
+        }
+
+        return isOrgHandleFieldFocused
+            ? <Icon name="circle" color="grey" />
+            : <Icon name="remove circle" color="red" />;
+    };
+
+    /**
+     * Function to render the validation status of the organization handle being alphanumeric.
+     *
+     * @returns Organization handle numerical validation.
+     */
+    const renderOrgHandleAlphanumericValidationIcon = (): ReactElement => {
+        if (!orgHandle || orgHandle === OrganizationManagementConstants.ORG_HANDLE_PLACEHOLDER) {
+            return <Icon name="circle" color="grey" />;
+        }
+
+        const alphanumericValidationRegex: RegExp = isOrgHandleDotExtensionMandatory
+            ? OrganizationManagementConstants.ORG_HANDLE_FIELD_CONSTRAINTS.ORG_HANDLE_ALPHANUMERIC_WITH_DOMAIN
+            : OrganizationManagementConstants.ORG_HANDLE_FIELD_CONSTRAINTS.ORG_HANDLE_ALPHANUMERIC;
+
+        if (orgHandle.match(alphanumericValidationRegex)) {
+            return <Icon name="check circle" color="green" />;
+        }
+
+        return isOrgHandleFieldFocused
+            ? <Icon name="circle" color="grey" />
+            : <Icon name="remove circle" color="red" />;
+    };
+
+    /**
+     * Function to render the validation status of the organization handle being unique.
+     *
+     * @returns Organization handle unique validation.
+     */
+    const renderOrgHandleUniqueValidationIcon = (): ReactElement => {
+        if (!orgHandle || orgHandle === OrganizationManagementConstants.ORG_HANDLE_PLACEHOLDER) {
+            return <Icon name="circle" color="grey" />;
+        }
+
+
+        if (orgHandle && !isCheckingOrgHandleValidity && !isOrgHandleDuplicate) {
+            return <Icon name="check circle" color="green" />;
+        }
+
+        return isOrgHandleFieldFocused
+            ? <Icon name="circle" color="grey" />
+            : <Icon name="remove circle" color="red" />;
+    };
 
     /**
      * Validate the organization handle.
@@ -258,44 +417,10 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
             const response: CheckOrgHandleResponseInterface = await checkOrgHandleAvailability({ orgHandle });
 
             if (!response.available) {
-                setError(t("organizations:forms.addOrganization.orgHandle.validation.duplicate"));
-                setCheckingOrgHandleValidity(false);
-
-                return;
+                setIsOrgHandleDuplicate(true);
+            } else {
+                setIsOrgHandleDuplicate(false);
             }
-
-            // Disallow starting with a dot.
-            if (orgHandle.startsWith(".")) {
-                setError(t("organizations:forms.addOrganization.orgHandle.validation.startingWithDot"));
-                setCheckingOrgHandleValidity(false);
-
-                return;
-            }
-
-            // Validate .extension requirement.
-            if (isOrgHandleDotExtensionMandatory) {
-                const lastIndexOfDot: any = orgHandle.lastIndexOf(".");
-
-                if (lastIndexOfDot <= 0) {
-                    setError(t("organizations:forms.addOrganization.orgHandle.validation.mandatoryExtension"));
-                    setCheckingOrgHandleValidity(false);
-
-                    return;
-                }
-            }
-
-            // Validate against pattern.
-            const regex: RegExp = new RegExp(OrganizationManagementConstants.ORG_HANDLE_REGEX);
-
-            if (!regex.test(orgHandle)) {
-                setError(t("organizations:forms.addOrganization.orgHandle.validation.invalidPattern"));
-                setCheckingOrgHandleValidity(false);
-
-                return;
-            }
-
-            // All validations passed.
-            setError("");
         } finally {
             setCheckingOrgHandleValidity(false);
         }
@@ -366,10 +491,10 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                 </Modal.Header>
                 <Modal.Content>
                     <Grid>
-                        { (error && !isSubmitting) && (
+                        { ((error || orgNameError || orgHandleError) && !isSubmitting) && (
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column width={ 16 }>
-                                    <Message type="error" content={ error } />
+                                    <Message type="error" content={ error || orgNameError || orgHandleError } />
                                 </Grid.Column>
                             </Grid.Row>
                         ) }
@@ -398,24 +523,79 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                         minLength={ ORGANIZATION_NAME_MIN_LENGTH }
                                         data-componentid={ `${ testId }-organization-name-input` }
                                         width={ 16 }
-                                        listen={ (value: string) => generateOrgHandle(value) }
+                                        listen={ (value: string) => {
+                                            setOrgNameError("");
+                                            if (isOrgHandleFeatureEnabled) {
+                                                generateOrgHandle(value);
+                                            }
+                                        } }
                                     />
-                                    <Field.Input
-                                        ariaLabel="Organization Handle"
-                                        inputType="edit_input"
-                                        name="orgHandle"
-                                        label={ t("organizations:forms.addOrganization.orgHandle.label") }
-                                        required={ true }
-                                        placeholder={
-                                            t("organizations:forms.addOrganization.orgHandle.placeholder")
-                                        }
-                                        maxLength={ ORGANIZATION_NAME_MAX_LENGTH }
-                                        minLength={ ORGANIZATION_NAME_MIN_LENGTH }
-                                        data-componentid={ `${ testId }-organization-handle-input` }
-                                        width={ 16 }
-                                        value={ orgHandle || undefined }
-                                        validate={ (value: string) => checkOrgHandleValidity(value) }
-                                    />
+                                    { isOrgHandleFeatureEnabled && (
+                                        <Field.Input
+                                            ariaLabel="Organization Handle"
+                                            inputType="name"
+                                            name="orgHandle"
+                                            label={
+                                                (<span>
+                                                    { t("organizations:forms.addOrganization.orgHandle.label") }
+                                                    <Hint
+                                                        inline
+                                                        popup
+                                                        data-testid={ `${testId}-org-handle-info-icon` }>
+                                                        { t("organizations:forms.addOrganization.orgHandle.tooltip")
+                                                        }
+                                                    </Hint>
+                                                </span>)
+                                            }
+                                            placeholder={
+                                                t("organizations:forms.addOrganization.orgHandle.placeholder")
+                                            }
+                                            maxLength={ ORGANIZATION_NAME_MAX_LENGTH }
+                                            minLength={ ORGANIZATION_NAME_MIN_LENGTH }
+                                            data-componentid={ `${ testId }-organization-handle-input` }
+                                            width={ 16 }
+                                            value={ orgHandle || undefined }
+                                            onChange={ (e: React.ChangeEvent<HTMLInputElement>) => {
+                                                setOrgHandle(e.target.value);
+                                                checkOrgHandleValidity(e.target.value);
+                                                setOrgHandleError("");
+                                            } }
+                                            onBlur={ () => setIsOrgHandleFieldFocused(false) }
+                                            onFocus={ () => setIsOrgHandleFieldFocused(true) }
+                                            required={ true }
+                                        />
+                                    ) }
+                                    { isOrgHandleFeatureEnabled && (
+                                        <Grid className="m-0" style={ { marginTop: "-10px" } }>
+                                            <Grid.Row className="p-0">
+                                                { renderOrgHandleAlphabetValidationIcon() }
+                                                <Text muted size={ 12 }>
+                                                    Must begin with an alphabet character
+                                                </Text>
+                                            </Grid.Row>
+                                            <Grid.Row className="p-0">
+                                                { renderOrgHandleLengthValidationIcon() }
+                                                <Text muted size={ 12 }>
+                                                    More than 4 characters, less than 30 characters
+                                                </Text>
+                                            </Grid.Row>
+                                            <Grid.Row className="p-0">
+                                                { renderOrgHandleAlphanumericValidationIcon() }
+                                                <Text muted size={ 12 }>
+                                                    Only consist of lowercase alphanumerics
+                                                    { isOrgHandleDotExtensionMandatory && (
+                                                        <> (Must be in the format of <strong>abc.com</strong>)</>
+                                                    ) }
+                                                </Text>
+                                            </Grid.Row>
+                                            <Grid.Row className="p-0">
+                                                { renderOrgHandleUniqueValidationIcon() }
+                                                <Text muted size={ 12 }>
+                                                    Must be unique
+                                                </Text>
+                                            </Grid.Row>
+                                        </Grid>
+                                    ) }
                                     <Field.Input
                                         ariaLabel="Description"
                                         inputType="description"
@@ -455,7 +635,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                     } }
                                     data-componentid={ `${ testId }-next-button` }
                                     loading={ isSubmitting }
-                                    disabled={ isSubmitting || isCheckingOrgHandleValidity || !!error }
+                                    disabled={ isSubmitting }
                                 >
                                     { t("common:create") }
                                 </PrimaryButton>

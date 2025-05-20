@@ -23,13 +23,11 @@ import {
     ColorPickerResponseInterface,
     CopyInputField,
     DangerButton,
-    EditInputField,
     LinkButton,
     Password,
     Popup,
     PrimaryButton
 } from "@wso2is/react-components";
-import classNames from "classnames";
 import omit from "lodash-es/omit";
 import React, { ClipboardEvent, FormEvent, KeyboardEvent, ReactElement } from "react";
 import { FieldRenderProps } from "react-final-form";
@@ -344,57 +342,6 @@ export const CopyFieldAdapter = (props: FieldRenderProps<any>): ReactElement => 
                 />
             </Form.Field>
         </Form.Group>
-    );
-};
-
-/**
- * Renders a form input field with a label and edit icon to toggle editability.
- *
- * @param props - Field props and parent form context for value and change handling.
- */
-export const EditFieldAdapter = (props: FieldRenderProps<any>): ReactElement => {
-
-    const { childFieldProps, parentFormProps } = props;
-    const {
-        label,
-        ...filteredChildFieldProps
-    } = childFieldProps;
-
-    const fieldClassNames: string = classNames("field", {
-        required: filteredChildFieldProps.required
-    });
-
-    return (
-        <>
-            {
-                label && (
-                    <div className={ fieldClassNames }>
-                        <label>{ label }</label>
-                    </div>
-                )
-            }
-            <EditInputField
-                key={ filteredChildFieldProps.testId }
-                required={ filteredChildFieldProps.required }
-                data-testid={ filteredChildFieldProps.testId }
-                autoFocus={ filteredChildFieldProps.autoFocus || false }
-                { ...filteredChildFieldProps }
-                value={
-                    filteredChildFieldProps?.value
-                        ? filteredChildFieldProps?.value
-                        : (
-                            parentFormProps?.values[ filteredChildFieldProps?.name ]
-                                ? parentFormProps?.values[ filteredChildFieldProps?.name ]
-                                : ""
-                        )
-                }
-                onChange={ (newValue: string) => {
-                    if (parentFormProps?.form) {
-                        parentFormProps.form.change(filteredChildFieldProps?.name, newValue);
-                    }
-                } }
-            />
-        </>
     );
 };
 

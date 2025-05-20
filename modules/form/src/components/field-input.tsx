@@ -22,7 +22,6 @@ import React, { ReactElement } from "react";
 import { Field as FinalFormField } from "react-final-form";
 import {
     CopyFieldAdapter,
-    EditFieldAdapter,
     PasswordFieldAdapter,
     TextFieldWithAdornmentAdapter,
     __DEPRECATED__TextFieldAdapter
@@ -46,7 +45,6 @@ export interface FieldInputPropsInterface extends FormFieldPropsInterface {
         | "email"
         | "url"
         | "copy_input"
-        | "edit_input"
         | "password"
         | "phoneNumber"
         | "roleName"
@@ -113,20 +111,6 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                     name={ props.name }
                     parse={ (value: any) => value }
                     component={ CopyFieldAdapter }
-                    validate={ (value: any, allValues: Record<string, unknown>, meta: FieldState<any>) =>
-                        getValidation(value, allValues, meta, "text", props.required, inputType, validation)
-                    }
-                    { ...rest }
-                />
-            );
-        } else if (inputType == FieldInputTypes.INPUT_EDIT) {
-            return (
-                <FinalFormField
-                    key={ testId }
-                    type="text"
-                    name={ props.name }
-                    parse={ (value: any) => value }
-                    component={ EditFieldAdapter }
                     validate={ (value: any, allValues: Record<string, unknown>, meta: FieldState<any>) =>
                         getValidation(value, allValues, meta, "text", props.required, inputType, validation)
                     }
