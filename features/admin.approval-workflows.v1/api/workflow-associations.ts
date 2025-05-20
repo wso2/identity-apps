@@ -58,9 +58,9 @@ export const useGetWorkflowAssociations = <
         },
         method: HttpMethods.GET,
         params: {
+            filter,
             limit,
-            offset,
-            filter
+            offset
         },
         url: store.getState()?.config?.endpoints?.workflowAssociations
     };

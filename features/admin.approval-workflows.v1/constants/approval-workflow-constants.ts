@@ -64,8 +64,8 @@ export const templateNameMap: Record<string, string> = {
 };
 
 export const ENTITY_TYPES: any = {
-    USERS: "users",
-    ROLES: "roles"
+    ROLES: "roles",
+    USERS: "users"
 } as const;
 
 export type EntityType = (typeof ENTITY_TYPES)[keyof typeof ENTITY_TYPES];

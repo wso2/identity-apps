@@ -114,7 +114,6 @@ export interface ApprovalWorkflowFormDataInterface {
     configurations: Partial<ConfigurationsFormValuesInterface>;
 }
 
-
 /**
  * Props for the editable sections of an approval step.
  */
