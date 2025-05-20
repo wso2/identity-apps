@@ -39,7 +39,7 @@ import { useGetApprovalWorkflows } from "../../api/approval-workflow";
 import { APPROVAL_WORKFLOW_VALIDATION_REGEX_PATTERNS } from "../../constants/approval-workflow-constants";
 import { GeneralDetailsFormValuesInterface } from "../../models/ui";
 import "./general-approval-workflow-details-form.scss";
-import { validateInputWithRegex } from "../../utils/approvalWorkflow-utils";
+import { validateInputWithRegex } from "../../utils/approval-workflow-utils";
 
 /**
  * Props for the general details form component.
