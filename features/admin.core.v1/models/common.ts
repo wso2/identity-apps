@@ -215,3 +215,86 @@ export interface RoleListInterface {
     Resources?: RolesInterface[];
     schemas: string;
 }
+
+/**
+ * Enum representing the status of an operation.
+ */
+export enum OperationStatus {
+    FAILED = "FAILED",
+    SUCCESS = "SUCCESS",
+    IDLE = "IDLE",
+    IN_PROGRESS = "IN_PROGRESS",
+    PARTIALLY_COMPLETED = "PARTIALLY_COMPLETED",
+}
+
+/**
+ * Interface for the share application status summary.
+ */
+export interface OperationStatusSummary {
+    successCount: number;
+    failedCount: number;
+    partiallyCompletedCount: number
+}
+
+/**
+ * Interface representing the response of a unit operation's status.
+ */
+export interface AsyncOperationStatusUnitResponse {
+    unitOperationId: string;
+    operationId: string;
+    residentResourceId: string;
+    targetOrgId: string;
+    targetOrgName: string;
+    status: OperationStatus;
+    statusMessage: string;
+    createdTime: string;
+}
+
+/**
+ * Interface representing the response of an asynchronous operation's status.
+ */
+export interface AsyncOperationStatusResponse {
+    operationId: string;
+    correlationId: string;
+    operationType: string;
+    subjectType: string;
+    subjectId: string;
+    initiatedOrgId: string;
+    initiatedUserId: string;
+    status: OperationStatus;
+    policy: string;
+    createdTime: string;
+    modifiedTime: string;
+    unitOperationDetail: {
+        ref: string;
+        summary: {
+            success: number;
+            failed: number;
+            partiallyCompleted: number;
+        }
+    }
+}
+
+/**
+ * Interface representing a link related to the operation status.
+ */
+export interface AsyncOperationStatusLinkInterface {
+    href: string;
+    rel: string;
+}
+
+/**
+ * Interface representing a list of unit operation responses with links.
+ */
+export interface AsyncOperationStatusUnitListInterface {
+    links: AsyncOperationStatusLinkInterface[];
+    unitOperations: AsyncOperationStatusUnitResponse[];
+}
+
+/**
+ * Interface representing a list of operation responses with links.
+ */
+export interface AsyncOperationStatusListInterface {
+    links: AsyncOperationStatusLinkInterface[];
+    operations: AsyncOperationStatusResponse[];
+}
