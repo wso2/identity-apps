@@ -137,6 +137,7 @@ export const organizations: organizationsNS = {
             orgHandle: {
                 label: "Organization Handle",
                 placeholder: "Organization handle (E.g., myorg.com)",
+                tooltip: "A human-readable unique identifier used as a URL handle to access the new organization.",
                 validation: {
                     duplicate: "The entered organization handle already exists",
                     empty: "The organization handle is required",

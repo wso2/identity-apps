@@ -489,15 +489,15 @@ export const unshareApplication = (
 /**
  * Check whether the new organization handle already exists in the system.
  *
- * @param orgHandle - new organization handle.
+ * @param checkOrgHandleRequest - new organization handle to check.
  *
  * @returns a promise containing the response.
  */
-export const checkOrgHandleAvailability = (orgHandle: CheckOrgHandleInterface):
+export const checkOrgHandleAvailability = (checkOrgHandleRequest: CheckOrgHandleInterface):
     Promise<CheckOrgHandleResponseInterface> => {
 
     const config: HttpRequestConfig = {
-        data: orgHandle,
+        data: checkOrgHandleRequest,
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json"

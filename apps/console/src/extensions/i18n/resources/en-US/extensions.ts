@@ -2683,6 +2683,7 @@ export const extensions: Extensions = {
                     makeDefaultOrganization: "Make default organization",
                     backButton: "Go back",
                     copyOrganizationId: "Copy organization ID",
+                    copyOrganizationHandle: "Copy organization Handle",
                     copied: "Copied!",
                     tenantSearch: {
                         placeholder: "Search organization",

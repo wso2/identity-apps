@@ -174,7 +174,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
     const [ defaultTenant, setDefaultTenant ] = useState<TenantInfo>(undefined);
     const [ currentTenant, setCurrentTenant ] = useState<TenantInfo>(undefined);
     const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
-    const [ organizationName, setOrganizationName] = useState<string>("");
+    const [ organizationName, setOrganizationName ] = useState<string>("");
     const [ organizationHandle, setOrganizationHandle ] = useState<string>("");
     const [ isCopying, setIsCopying ] = useState<boolean>(false);
 

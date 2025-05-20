@@ -22,14 +22,14 @@ import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
-import { Heading, LinkButton, Message, PrimaryButton } from "@wso2is/react-components";
+import { Heading, Hint, LinkButton, Message, PrimaryButton, Text } from "@wso2is/react-components";
 import debounce from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Grid, Modal } from "semantic-ui-react";
+import { Grid, Icon, Modal } from "semantic-ui-react";
 import { addOrganization, checkOrgHandleAvailability } from "../api";
 import {
     ORGANIZATION_DESCRIPTION_MAX_LENGTH,
@@ -45,7 +45,6 @@ import { AddOrganizationInterface, CheckOrgHandleResponseInterface, GenericOrgan
 interface OrganizationAddFormProps {
     name: string;
     orgHandle: string;
-    domainName?: string;
     description?: string;
 }
 
@@ -89,27 +88,32 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
         (state: AppState) => state.organization.organization);
     const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
     const [ orgLevelReachedError, setOrgLevelReachedError ] = useState<boolean>(false);
+    const [ orgHandleError, setOrgHandleError ] = useState<boolean>(false);
+    const [ orgNameError, setOrgNameError ] = useState<string>("");
     const [ orgHandle, setOrgHandle ] = useState<string>();
     const [ isCheckingOrgHandleValidity, setCheckingOrgHandleValidity ] = useState<boolean>(false);
+    const [ isOrgHandleDuplicate, setIsOrgHandleDuplicate ] = useState<boolean>(false);
+    const [ isOrgNameFieldFocused, setIsOrgNameFieldFocused ] = useState<boolean>(false);
+    const [ isOrgHandleFieldFocused, setIsOrgHandleFieldFocused ] = useState<boolean>(false);
 
     const isOrgHandleDotExtensionMandatory: boolean = useSelector(
         (state: AppState) => state.config?.ui?.multiTenancy?.isTenantDomainDotExtensionMandatory
     );
 
-    const submitOrganization = async (values: OrganizationAddFormProps): Promise<Record<string, string>|void> => {
+    const submitOrganization = async (values: OrganizationAddFormProps): Promise<Record<string, string> | void> => {
         const organization: AddOrganizationInterface = {
             description: values?.description,
             name: values?.name,
-            orgHandle: values?.orgHandle,
+            orgHandle: values?.orgHandle || orgHandle,
             parentId: parent?.id ?? currentOrganization.id,
             type: ORGANIZATION_TYPE.TENANT
         };
 
-        if (!values?.name) {
+        if (!organization.name) {
             return Promise.resolve({
                 name: t("organizations:forms.addOrganization.name.validation.empty")
             });
-        } else if (!values?.orgHandle) {
+        } else if (!organization.orgHandle) {
             return Promise.resolve({
                 handle: t("organizations:forms.addOrganization.orgHandle.validation.empty")
             });
@@ -146,11 +150,12 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                         setOpenLimitReachedModal(true);
                     } else if (error.code ===
                         OrganizationManagementConstants.ERROR_SUB_ORGANIZATION_EXIST.getErrorCode()) {
-                        setError(t(OrganizationManagementConstants.ERROR_SUB_ORGANIZATION_EXIST.getErrorMessage(),
-                            {
-                                description: error.description
-                            }
-                        ));
+                        setOrgNameError(
+                            t(OrganizationManagementConstants.ERROR_SUB_ORGANIZATION_EXIST.getErrorMessage(),
+                                {
+                                    description: error.description
+                                }
+                            ));
                     } else {
                         setError(t(
                             "organizations:notifications." +
@@ -236,11 +241,94 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
         const generateOrgHandle: string = sanitizedValue + randomString;
 
         if (isOrgHandleDotExtensionMandatory) {
-            return generateOrgHandle + ".com";
+            return generateOrgHandle + OrganizationManagementConstants.SAMPLE_ORG_HANDLE_DOT_EXTENSION;
         }
 
         return generateOrgHandle;
     }
+
+    /**
+     * Function to render the validation status of first letter of organization handle being in alphabet.
+     *
+     * @returns Organization handle alphabet validation.
+     */
+    const renderOrgHandleAlphabetValidationIcon: any = useMemo(() => {
+        if (orgHandle === OrganizationManagementConstants.ORG_HANDLE_PLACEHOLDER || orgHandle === undefined) {
+            return <Icon name="circle" color="grey" verticalAlign="middle"/>;
+        }
+
+        if (orgHandle.match(OrganizationManagementConstants.ORG_HANDLE_FIELD_CONSTRAINTS.ORG_HANDLE_FIRST_ALPHABET)) {
+            return <Icon name="check circle" color="green"/>;
+        }
+
+        return isOrgHandleFieldFocused
+            ? <Icon name="circle" color="grey"/>
+            : <Icon name="remove circle" color="red"/>;
+    }, [ orgHandle, isOrgHandleFieldFocused ]);
+
+    /**
+     * Function to render the validation status of the length of organization handle.
+     *
+     * @returns Organization handle length validation.
+     */
+    const renderOrgHandleLengthValidationIcon: any = useMemo(() => {
+        if (orgHandle === OrganizationManagementConstants.ORG_HANDLE_PLACEHOLDER || orgHandle === undefined) {
+            return <Icon name="circle" color="grey"/>;
+        }
+
+        if (
+            orgHandle.length >= OrganizationManagementConstants.ORG_HANDLE_FIELD_CONSTRAINTS.ORG_HANDLE_MIN_LENGTH &&
+            orgHandle.length < OrganizationManagementConstants.ORG_HANDLE_FIELD_CONSTRAINTS.ORG_HANDLE_MAX_LENGTH
+        ) {
+            return <Icon name="check circle" color="green"/>;
+        }
+
+        return isOrgHandleFieldFocused
+            ? <Icon name="circle" color="grey"/>
+            : <Icon name="remove circle" color="red"/>;
+    }, [ orgHandle, isOrgHandleFieldFocused ]);
+
+    /**
+     * Function to render the validation status of the organization handle being alphanumeric.
+     *
+     * @returns Organization handle numerical validation.
+     */
+    const renderOrgHandleAlphanumericValidationIcon: any = useMemo(() => {
+        if (orgHandle === OrganizationManagementConstants.ORG_HANDLE_PLACEHOLDER || orgHandle === undefined) {
+            return <Icon name="circle" color="grey"/>;
+        }
+
+        const regex: any = isOrgHandleDotExtensionMandatory
+            ? OrganizationManagementConstants.ORG_HANDLE_FIELD_CONSTRAINTS.ORG_HANDLE_ALPHANUMERIC_WITH_DOMAIN
+            : OrganizationManagementConstants.ORG_HANDLE_FIELD_CONSTRAINTS.ORG_HANDLE_ALPHANUMERIC;
+
+        if (orgHandle.match(regex)) {
+            return <Icon name="check circle" color="green"/>;
+        }
+
+        return isOrgHandleFieldFocused
+            ? <Icon name="circle" color="grey"/>
+            : <Icon name="remove circle" color="red"/>;
+    }, [ orgHandle, isOrgHandleFieldFocused ]);
+
+    /**
+     * Function to render the validation status of the organization handle being unique.
+     *
+     * @returns Organization handle unique validation.
+     */
+    const renderOrgHandleUniqueValidationIcon: any = useMemo(() => {
+        if (orgHandle === OrganizationManagementConstants.ORG_HANDLE_PLACEHOLDER || orgHandle === undefined) {
+            return <Icon name="circle" color="grey"/>;
+        }
+
+        if (orgHandle && !isCheckingOrgHandleValidity && !isOrgHandleDuplicate) {
+            return <Icon name="check circle" color="green"/>;
+        }
+
+        return isOrgHandleFieldFocused
+            ? <Icon name="circle" color="grey"/>
+            : <Icon name="remove circle" color="red"/>;
+    }, [ orgHandle, isOrgHandleDuplicate, isOrgHandleFieldFocused ]);
 
     /**
      * Validate the organization handle.
@@ -258,44 +346,8 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
             const response: CheckOrgHandleResponseInterface = await checkOrgHandleAvailability({ orgHandle });
 
             if (!response.available) {
-                setError(t("organizations:forms.addOrganization.orgHandle.validation.duplicate"));
-                setCheckingOrgHandleValidity(false);
-
-                return;
+                setIsOrgHandleDuplicate(true);
             }
-
-            // Disallow starting with a dot.
-            if (orgHandle.startsWith(".")) {
-                setError(t("organizations:forms.addOrganization.orgHandle.validation.startingWithDot"));
-                setCheckingOrgHandleValidity(false);
-
-                return;
-            }
-
-            // Validate .extension requirement.
-            if (isOrgHandleDotExtensionMandatory) {
-                const lastIndexOfDot: any = orgHandle.lastIndexOf(".");
-
-                if (lastIndexOfDot <= 0) {
-                    setError(t("organizations:forms.addOrganization.orgHandle.validation.mandatoryExtension"));
-                    setCheckingOrgHandleValidity(false);
-
-                    return;
-                }
-            }
-
-            // Validate against pattern.
-            const regex: RegExp = new RegExp(OrganizationManagementConstants.ORG_HANDLE_REGEX);
-
-            if (!regex.test(orgHandle)) {
-                setError(t("organizations:forms.addOrganization.orgHandle.validation.invalidPattern"));
-                setCheckingOrgHandleValidity(false);
-
-                return;
-            }
-
-            // All validations passed.
-            setError("");
         } finally {
             setCheckingOrgHandleValidity(false);
         }
@@ -366,10 +418,10 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                 </Modal.Header>
                 <Modal.Content>
                     <Grid>
-                        { (error && !isSubmitting) && (
+                        { ((error || orgNameError || orgHandleError) && !isSubmitting) && (
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column width={ 16 }>
-                                    <Message type="error" content={ error } />
+                                    <Message type="error" content={ error || orgNameError || orgHandleError } />
                                 </Grid.Column>
                             </Grid.Row>
                         ) }
@@ -382,6 +434,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                     triggerSubmit={ (submit: () => void) => (submitForm.current = submit) }
                                 >
                                     <Field.Input
+                                        className={ !isOrgNameFieldFocused && (!!orgNameError) ? "error" : "" }
                                         ariaLabel="Organization Name"
                                         inputType="name"
                                         name="name"
@@ -399,13 +452,28 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                         data-componentid={ `${ testId }-organization-name-input` }
                                         width={ 16 }
                                         listen={ (value: string) => generateOrgHandle(value) }
+                                        onBlur={ () => setIsOrgNameFieldFocused(false) }
+                                        onFocus={ () => setIsOrgNameFieldFocused(true) }
                                     />
                                     <Field.Input
+                                        className={
+                                            !isOrgHandleFieldFocused &&
+                                            orgHandle !== undefined &&
+                                            (isCheckingOrgHandleValidity || !!orgHandleError)
+                                                ? "error"
+                                                : ""
+                                        }
                                         ariaLabel="Organization Handle"
-                                        inputType="edit_input"
+                                        inputType="name"
                                         name="orgHandle"
-                                        label={ t("organizations:forms.addOrganization.orgHandle.label") }
-                                        required={ true }
+                                        label={
+                                            (<span>
+                                                { t("organizations:forms.addOrganization.orgHandle.label") }
+                                                <Hint inline popup data-testid={ `${ testId }-org-handle-info-icon` }>
+                                                    { t("organizations:forms.addOrganization.orgHandle.tooltip") }
+                                                </Hint>
+                                            </span>)
+                                        }
                                         placeholder={
                                             t("organizations:forms.addOrganization.orgHandle.placeholder")
                                         }
@@ -414,8 +482,40 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                         data-componentid={ `${ testId }-organization-handle-input` }
                                         width={ 16 }
                                         value={ orgHandle || undefined }
-                                        validate={ (value: string) => checkOrgHandleValidity(value) }
+                                        listen={ (value: string) => setOrgHandle(value) }
+                                        validation={ (value: string) => {
+                                            checkOrgHandleValidity(value);
+                                        } }
+                                        onBlur={ () => setIsOrgHandleFieldFocused(false) }
+                                        onFocus={ () => setIsOrgHandleFieldFocused(true) }
+                                        required={ true }
                                     />
+                                    <Grid className="m-0" style={ { marginTop: "-10px" } }>
+                                        <Grid.Row className="p-0">
+                                            { renderOrgHandleAlphabetValidationIcon }
+                                            <Text muted size={ 12 }>
+                                                Must begin with an alphabet character
+                                            </Text>
+                                        </Grid.Row>
+                                        <Grid.Row className="p-0">
+                                            { renderOrgHandleLengthValidationIcon }
+                                            <Text muted size={ 12 }>
+                                                More than 4 characters, Less than 30 characters
+                                            </Text>
+                                        </Grid.Row>
+                                        <Grid.Row className="p-0">
+                                            { renderOrgHandleAlphanumericValidationIcon }
+                                            <Text muted size={ 12 }>
+                                                Only consist of lowercase alphanumerics
+                                            </Text>
+                                        </Grid.Row>
+                                        <Grid.Row className="p-0">
+                                            { renderOrgHandleUniqueValidationIcon }
+                                            <Text muted size={ 12 }>
+                                                Must be unique
+                                            </Text>
+                                        </Grid.Row>
+                                    </Grid>
                                     <Field.Input
                                         ariaLabel="Description"
                                         inputType="description"
@@ -455,7 +555,8 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                     } }
                                     data-componentid={ `${ testId }-next-button` }
                                     loading={ isSubmitting }
-                                    disabled={ isSubmitting || isCheckingOrgHandleValidity || !!error }
+                                    disabled={ isSubmitting || isCheckingOrgHandleValidity || !!error
+                                        || !!orgNameError || !!orgHandleError }
                                 >
                                     { t("common:create") }
                                 </PrimaryButton>

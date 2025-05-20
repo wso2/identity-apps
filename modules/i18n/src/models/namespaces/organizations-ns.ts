@@ -276,6 +276,9 @@ export interface organizationsNS {
                 placeholder: string;
             };
             orgHandle: {
+                label: string;
+                placeholder: string;
+                tooltip: string;
                 validation: {
                     duplicate: string;
                     empty: string;
@@ -283,8 +286,6 @@ export interface organizationsNS {
                     mandatoryExtension: string;
                     startingWithDot: string;
                 };
-                label: string;
-                placeholder: string;
             };
             description: {
                 label: string;
