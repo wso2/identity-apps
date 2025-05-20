@@ -513,7 +513,7 @@ importers:
         specifier: ^1.5.3
         version: link:../../features/admin.application-templates.v1
       '@wso2is/admin.applications.v1':
-        specifier: ^2.34.10
+        specifier: ^2.34.11
         version: link:../../features/admin.applications.v1
       '@wso2is/admin.authentication.v1':
         specifier: ^2.25.204
@@ -549,7 +549,7 @@ importers:
         specifier: ^2.27.0
         version: link:../../features/admin.email-providers.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.38.0
+        specifier: ^2.38.1
         version: link:../../features/admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.6.1
@@ -633,7 +633,7 @@ importers:
         specifier: ^1.5.203
         version: link:../../features/admin.username-validation.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.32.2
+        specifier: ^2.32.3
         version: link:../../features/admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.32
@@ -663,7 +663,7 @@ importers:
         specifier: ^2.3.22
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.23.0
+        specifier: ^2.23.2
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.14
@@ -2686,7 +2686,7 @@ importers:
         specifier: ^2.3.22
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.22.19
+        specifier: ^2.23.1
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.14
@@ -7840,7 +7840,7 @@ importers:
         specifier: ^2.29.6
         version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.32.0
+        specifier: ^2.32.3
         version: link:../admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.29
@@ -7861,7 +7861,7 @@ importers:
         specifier: ^2.3.22
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.23.0
+        specifier: ^2.23.2
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.12
@@ -18387,7 +18387,7 @@ importers:
         specifier: ^2.44.0
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.38.0
+        specifier: ^2.38.1
         version: link:../admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.4.203
@@ -18411,7 +18411,7 @@ importers:
         specifier: ^2.29.10
         version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.32.2
+        specifier: ^2.32.3
         version: 'link:'
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.30
@@ -18432,7 +18432,7 @@ importers:
         specifier: ^2.3.23
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.23.0
+        specifier: ^2.23.2
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.14

@@ -100,6 +100,7 @@ export const user: userNS = {
                 buttonDisableHints: {
                     insufficientPermissions: "Logged in user should be assigned with Impersonator My Account application role.",
                     myAccountDisabled: "My account application should be enabled to impersonate the user.",
+                    myAccountLoginFlowIncompatible: "My account Login Flow is incompatible.",
                     userAccountDisabled: "User account should be enabled to impersonate the user.",
                     userAccountLocked: "User account should be unlocked to impersonate the user."
                 },
