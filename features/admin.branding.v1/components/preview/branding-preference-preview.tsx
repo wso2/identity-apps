@@ -89,6 +89,11 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
     props: BrandingPreferencePreviewInterface
 ): ReactElement => {
 
+    const isLayoutCustomizationDisabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.ui?.features?.branding?.disabledFeatures
+            ?.includes("branding.stylesAndText.customLayoutConfig");
+    });
+
     const {
         ["data-componentid"]: componentId,
         brandingPreference,
@@ -392,8 +397,8 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
                 id="branding-preference-preview-iframe"
             >
                 {
-                    !isLoading && isIframeReady && !isLayoutResolving && !isPreviewScreenSkeletonContentLoading
-                        ? (
+                    !isLoading && isIframeReady && !isLayoutResolving && !isPreviewScreenSkeletonContentLoading ? (
+                        isLayoutCustomizationDisabled ? (
                             commonConfig.enableDefaultBrandingPreviewSection
                                 && layoutContext[0] === PredefinedLayouts.CUSTOM ? (
                                     <div className="branding-preference-preview-message" >
@@ -418,12 +423,6 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
                                             title={ t("extensions:develop.branding.tabs.preview."
                                                 + "info.layout.activatedMessage.title") }
                                         />
-                                        <PrimaryButton
-                                            className="floating-editor-button"
-                                            onClick={ () => setCustomLayoutMode(true) }
-                                        >
-                                            Create
-                                        </PrimaryButton>
                                     </div>
                                 ) : (
                                     isErrorOccured
@@ -475,7 +474,40 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
                                         )
                                         : resolvePreviewScreen()
                                 )
-                        ) : <ContentLoader data-componentid={ `${ componentId }-loader` } />
+                        ) : (
+                            <div className="branding-preference-preview-message" >
+                                <EmptyPlaceholder
+                                    image={ CustomLayoutSuccessImg }
+                                    imageSize="small"
+                                    subtitle={
+                                        [
+                                            t("extensions:develop.branding.tabs.preview."
+                                                        + "info.layout.activatedMessage.subTitle"),
+                                            <>
+                                                { t("extensions:develop.branding.tabs.preview."
+                                                            + "info.layout.activatedMessage.description") }
+                                                <DocumentationLink
+                                                    link={ getLink("develop.branding.layout.custom.learnMore") }
+                                                >
+                                                    { t("common:learnMore") }
+                                                </DocumentationLink>
+                                            </>
+                                        ]
+                                    }
+                                    title={ t("extensions:develop.branding.tabs.preview."
+                                                + "info.layout.activatedMessage.title") }
+                                />
+                                <PrimaryButton
+                                    className="floating-editor-button"
+                                    onClick={ () => setCustomLayoutMode(true) }
+                                >
+                                    Create
+                                </PrimaryButton>
+                            </div>
+                        )
+                    ) : (
+                        <ContentLoader data-componentid={ `${componentId}-loader` } />
+                    )
                 }
             </Iframe>
         </div>
