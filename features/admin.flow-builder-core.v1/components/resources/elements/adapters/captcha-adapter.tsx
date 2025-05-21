@@ -46,4 +46,3 @@ const CaptchaAdapter: FunctionComponent<CaptchaAdapterPropsInterface> = ({
 );
 
 export default CaptchaAdapter;
-
