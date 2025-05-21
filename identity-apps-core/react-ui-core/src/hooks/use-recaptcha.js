@@ -19,45 +19,39 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
     DEFAULT_RECAPTCHA_SCRIPT_URL,
-    DEFAULT_RECAPTCHA_SCRIPT_URL_PARAMS
+    DEFAULT_RECAPTCHA_SCRIPT_URL_PARAMS,
+    RECAPTCHA_V2_SCRIPT_ID
 } from "../constants/captcha-constants";
 import { loadCaptchaApi } from "../utils/captcha-utils";
 
+/**
+ * Hook to load and manage the Google reCAPTCHA V2 widget.
+ */
 const useReCaptcha = (siteKey = "", reCaptchaScriptUrl) => {
     const containerRef = useRef(null);
     const widgetIdRef = useRef(null);
-    const [ ready, setReady ] = useState(false);
+    const [ scriptLoaded, setScriptLoaded ] = useState(false);
     const [ token, setToken ] = useState(null);
+    const [ widgetReady,  setWidgetReady  ] = useState(false);
     const reCaptchaUrl = reCaptchaScriptUrl + DEFAULT_RECAPTCHA_SCRIPT_URL_PARAMS || DEFAULT_RECAPTCHA_SCRIPT_URL;
 
     useEffect(() => {
-        let mounted = true;
+        if (!siteKey) return;
 
-        if (!siteKey) {
-            return;
-        }
-
-        loadCaptchaApi(reCaptchaUrl).then((grecaptcha) => {
-            if (!mounted || !containerRef.current) return;
-
-            widgetIdRef.current = grecaptcha.render(containerRef.current, {
-                sitekey: siteKey,
-                size: "invisible",
-                callback: (recaptchaToken) => {
-                    setToken(recaptchaToken);
-                }
+        loadCaptchaApi(reCaptchaUrl, RECAPTCHA_V2_SCRIPT_ID)
+            .then((grecaptcha) => {
+                widgetIdRef.current = grecaptcha.render(containerRef.current, {
+                    callback: setToken,
+                    sitekey: siteKey,
+                    size:    "invisible"
+                });
+                setWidgetReady(true);
+                setScriptLoaded(true);
             });
-
-            setReady(true);
-        });
-
-        return () => {
-            mounted = false;
-        };
     }, [ siteKey ]);
 
     const execute = useCallback(() => {
-        if (ready && widgetIdRef.current !== null) {
+        if (scriptLoaded && widgetIdRef.current !== null) {
             window.grecaptcha.execute(widgetIdRef.current);
 
             return new Promise((resolve) => {
@@ -71,16 +65,16 @@ const useReCaptcha = (siteKey = "", reCaptchaScriptUrl) => {
         }
 
         return Promise.reject("ReCAPTCHA not ready");
-    }, [ ready, token ]);
+    }, [ widgetReady, token ]);
 
     const reset = useCallback(() => {
-        if (ready && widgetIdRef.current !== null) {
+        if (scriptLoaded && widgetIdRef.current !== null) {
             window.grecaptcha.reset(widgetIdRef.current);
             setToken(null);
         }
-    }, [ ready ]);
+    }, [ widgetReady ]);
 
-    return { execute, reset, containerRef, ready, token };
+    return { execute, reset, containerRef, scriptLoaded, token };
 };
 
 export default useReCaptcha;

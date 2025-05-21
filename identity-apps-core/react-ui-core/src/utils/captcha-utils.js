@@ -22,28 +22,36 @@
  * @param {*} captchaScriptURL
  * @returns
  */
-export const loadCaptchaApi = (captchaScriptURL) => {
-    if (window.grecaptcha) {
+export function loadCaptchaApi(captchaScriptURL, captchaScriptId = "") {
+    if (window.grecaptcha && window.grecaptcha.render) {
         return Promise.resolve(window.grecaptcha);
     }
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
+        const existing = document.getElementById(captchaScriptId);
+
+        if (existing) {
+            return window.grecaptcha.ready(() => resolve(window.grecaptcha));
+        }
+
         const script = document.createElement("script");
 
-        script.src = captchaScriptURL;
+        script.id    = "recaptcha-v2-script";
+        script.src   = `${captchaScriptURL}?render=explicit`;
         script.async = true;
         script.defer = true;
 
-        window.onRecaptchaLoaded = () => {
-            resolve(window.grecaptcha);
+        script.onerror = () => {
+            reject(new Error("Failed to load reCAPTCHA API"));
         };
 
         script.onload = () => {
-            if (window.grecaptcha) {
-                resolve(window.grecaptcha);
+            if (!window.grecaptcha || !window.grecaptcha.ready) {
+                return reject(new Error("reCAPTCHA API loaded, but no grecaptcha.ready"));
             }
+            window.grecaptcha.ready(() => resolve(window.grecaptcha));
         };
 
         document.head.appendChild(script);
     });
-};
+}

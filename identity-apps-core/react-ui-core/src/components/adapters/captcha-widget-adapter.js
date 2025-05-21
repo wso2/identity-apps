@@ -21,7 +21,6 @@ import React, { forwardRef } from "react";
 import RecaptchaAdapter from "./recaptcha-widget-adapter";
 
 const CaptchaWidgetAdapter = ({ component }, ref) => {
-
     switch (component.variant) {
         case "RECAPTCHA_V2":
             return <RecaptchaAdapter component={ component } ref={ ref }/>;

@@ -19,3 +19,4 @@
 // Google ReCaptcha constants.
 export const DEFAULT_RECAPTCHA_SCRIPT_URL = "https://www.google.com/recaptcha/api.js?render=explicit";
 export const DEFAULT_RECAPTCHA_SCRIPT_URL_PARAMS = "?render=explicit";
+export const RECAPTCHA_V2_SCRIPT_ID = "recaptcha-v2-script";
