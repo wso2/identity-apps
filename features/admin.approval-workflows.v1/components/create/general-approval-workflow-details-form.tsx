@@ -35,7 +35,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { useGetApprovalWorkflows } from "../../api/approval-workflow";
+import { useGetApprovalWorkflows } from "../../api/use-get-approval-workflows";
 import { APPROVAL_WORKFLOW_VALIDATION_REGEX_PATTERNS } from "../../constants/approval-workflow-constants";
 import { GeneralDetailsFormValuesInterface } from "../../models/ui";
 import "./general-approval-workflow-details-form.scss";
@@ -248,7 +248,7 @@ const GeneralApprovalWorkflowDetailsForm: ForwardRefExoticComponent<RefAttribute
                                     name="description"
                                     type="text"
                                     label={ t("approvalWorkflows:forms.general.description.label") }
-                                    placeholder={ t("approvalWorkflows:forms.general.description.label") }
+                                    placeholder={ t("approvalWorkflows:forms.general.description.placeholder") }
                                     component={ TextFieldAdapter }
                                     disabled={ isReadOnly }
                                     data-componentid={ `${componentId}-field-description` }

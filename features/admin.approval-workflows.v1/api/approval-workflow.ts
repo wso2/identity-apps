@@ -16,67 +16,16 @@
  * under the License.
  */
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
-import useRequest, {
-    RequestConfigInterface,
-    RequestErrorInterface,
-    RequestResultInterface
-} from "@wso2is/admin.core.v1/hooks/use-request";
+import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { ApprovalWorkflowPayload, WorkflowListResponseInterface } from "../models/approval-workflows";
+import { ApprovalWorkflowPayload } from "../models/approval-workflows";
 
 /**
  * Get an axios instance.
  */
 const httpClient: any = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
-
-/**
- * Fetches all approval workflows.
- * @param limit - Maximum number of approval workflows to fetch.
- * @param offset - Number of items to skip for pagination.
- * @param filter - Filter to be applied to the approval workflow.
- * @param shouldFetch - If true, will fetch the data.
- * @returns approval workflows
- */
-export const useGetApprovalWorkflows = <Data = WorkflowListResponseInterface, Error = RequestErrorInterface>(
-    limit: number,
-    offset: number,
-    filter?: string,
-    shouldFetch: boolean = true
-): RequestResultInterface<Data, Error> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        params: {
-            filter,
-            limit,
-            offset
-        },
-        url: store.getState()?.config?.endpoints?.workflows
-    };
-
-    const {
-        data,
-        error,
-        isLoading,
-        isValidating,
-        mutate,
-        response
-    } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
-
-    return {
-        data,
-        error,
-        isLoading,
-        isValidating,
-        mutate,
-        response
-    };
-};
 
 /**
  * Delete a selected approval workflow with a given approval workflow ID.
@@ -110,7 +59,7 @@ export const deleteApprovalWorkflowById = (id: string): Promise<any> => {
  *
  * @returns A promise that resolves to the newly created approval workflow.
  */
-export const addApprovalWorkflow = (data: ApprovalWorkflowPayload) => {
+export const addApprovalWorkflow = (data: ApprovalWorkflowPayload): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         data,
         headers: {
@@ -138,7 +87,7 @@ export const addApprovalWorkflow = (data: ApprovalWorkflowPayload) => {
  *
  * @returns updated approval workflow.
  */
-export const updateApprovalWorkflow = (id: string, data: ApprovalWorkflowPayload) => {
+export const updateApprovalWorkflow = (id: string, data: ApprovalWorkflowPayload): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         data,
         headers: {

@@ -23,27 +23,37 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { WorkflowDetails } from "../models/approval-workflows";
+import { WorkflowAssociationListResponseInterface } from "../models/workflow-associations";
 
 /**
- * Hook to get the approval workflow details.
- *
- * @param approvalWorkflowId - Id of the approval workflow to be fetched.
+ * Fetches all workflow associations.
+ * @param limit - Maximum number of workflow associations to fetch.
+ * @param offset - Number of items to skip for pagination.
+ * @param filter - Filter to be applied to the workflow association.
  * @param shouldFetch - If true, will fetch the data.
- *
- * @returns approval workflow details.
+ * @returns workflow associations
  */
-export const useGetApprovalWorkflowDetails = <Data = WorkflowDetails, Error = RequestErrorInterface>(
-    approvalWorkflowId: string,
-    shouldFetch: boolean = true
-): RequestResultInterface<Data, Error> => {
+export const useGetWorkflowAssociations = <
+    Data = WorkflowAssociationListResponseInterface,
+    Error = RequestErrorInterface
+>(
+        limit: number,
+        offset: number,
+        filter?: string,
+        shouldFetch: boolean = true
+    ): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${store.getState()?.config?.endpoints?.workflows}/${approvalWorkflowId}`
+        params: {
+            filter,
+            limit,
+            offset
+        },
+        url: store.getState()?.config?.endpoints?.workflowAssociations
     };
 
     const {
@@ -51,16 +61,16 @@ export const useGetApprovalWorkflowDetails = <Data = WorkflowDetails, Error = Re
         error,
         isLoading,
         isValidating,
-        mutate
-    } = useRequest<Data, Error>(
-        shouldFetch ? requestConfig : null
-    );
+        mutate,
+        response
+    } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,
         error,
         isLoading,
         isValidating,
-        mutate
+        mutate,
+        response
     };
 };

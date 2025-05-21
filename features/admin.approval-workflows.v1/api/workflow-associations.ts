@@ -17,16 +17,11 @@
  */
 
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
-import useRequest,
-{
-    RequestConfigInterface,
-    RequestErrorInterface,
-    RequestResultInterface
-} from "@wso2is/admin.core.v1/hooks/use-request";
+import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { WorkflowAssociationListResponseInterface, WorkflowAssociationPayload } from "../models/workflow-associations";
+import { WorkflowAssociationPayload } from "../models/workflow-associations";
 
 /**
  * Get an axios instance.
@@ -35,57 +30,13 @@ const httpClient: any = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Fetches all workflow associations.
- * @param limit - Maximum number of workflow associations to fetch.
- * @param offset - Number of items to skip for pagination.
- * @param filter - Filter to be applied to the workflow association.
- * @param shouldFetch - If true, will fetch the data.
- * @returns workflow associations
+ * Create a workflow association.
+ *
+ * @param data - The data used to create the workflow association.
+ *
+ * @returns A promise that resolves to the newly created workflow association.
  */
-export const useGetWorkflowAssociations = <
-    Data = WorkflowAssociationListResponseInterface,
-    Error = RequestErrorInterface
->(
-        limit: number,
-        offset: number,
-        filter?: string,
-        shouldFetch: boolean = true
-    ): RequestResultInterface<Data, Error> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        params: {
-            filter,
-            limit,
-            offset
-        },
-        url: store.getState()?.config?.endpoints?.workflowAssociations
-    };
-
-    const {
-        data,
-        error,
-        isLoading,
-        isValidating,
-        mutate,
-        response
-    } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
-
-    return {
-        data,
-        error,
-        isLoading,
-        isValidating,
-        mutate,
-        response
-    };
-};
-
-
-export const addWorkflowAssociation = (data: WorkflowAssociationPayload) => {
+export const addWorkflowAssociation = (data: WorkflowAssociationPayload): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         data,
         headers: {
