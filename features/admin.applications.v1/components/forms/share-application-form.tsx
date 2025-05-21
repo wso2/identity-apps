@@ -32,6 +32,7 @@ import {
     OrganizationResponseInterface,
     ShareApplicationRequestInterface
 } from "@wso2is/admin.organizations.v1/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     FeatureAccessConfigInterface,
@@ -70,9 +71,8 @@ import {
     Grid,
     Radio
 } from "semantic-ui-react";
-import { ApplicationInterface, additionalSpProperty } from "../../models/application";
-import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { ApplicationManagementConstants } from "../../constants/application-management";
+import { ApplicationInterface, additionalSpProperty } from "../../models/application";
 
 enum ShareType {
     SHARE_ALL,
