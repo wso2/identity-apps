@@ -113,6 +113,10 @@ const CommonElementPropertyFactory: FunctionComponent<CommonElementPropertyFacto
                 label="Provider"
                 defaultValue="ReCAPTCHA V2"
                 data-componentid={ `${ componentId }-${ propertyKey }` }
+                inputProps={ {
+                    disabled: true,
+                    readOnly: true
+                } }
                 { ...rest }
             />
         );
