@@ -52,7 +52,6 @@ import { ReactComponent as CustomLayoutWarningImg } from
     "../../../themes/wso2is/assets/images/branding/custom-layout-warning.svg";
 import { useLayout, useLayoutStyle } from "../../api/layout";
 import { usePreviewContent, usePreviewStyle } from "../../api/preview-skeletons";
-import useCustomPageEditor from "../../hooks/use-custom-page-editor";
 import { BrandingPreferenceMeta } from "../../meta/branding-preference-meta";
 import { LAYOUT_DATA, PredefinedLayouts } from "../../meta/layouts";
 
@@ -76,6 +75,14 @@ interface BrandingPreferencePreviewInterface extends IdentifiableComponentInterf
      * On preview resize callback.
      */
     onPreviewResize: (width: number) => void;
+    /**
+     * Custom Layout Mode.
+     */
+    customLayoutMode?: boolean;
+    /**
+     * Set custom layout mode.
+     */
+    setCustomLayoutMode?: (value: boolean) => void;
 }
 
 /**
@@ -99,7 +106,9 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
         brandingPreference,
         isLoading,
         screenType,
-        onPreviewResize
+        onPreviewResize,
+        customLayoutMode,
+        setCustomLayoutMode
     } = props;
 
     const { t } = useTranslation();
@@ -131,8 +140,6 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
         isLoading: isPreviewScreenSkeletonContentLoading
     } = usePreviewContent(screenType);
     const { data: previewScreenSkeletonStyles } = usePreviewStyle(screenType);
-
-    const { setCustomLayoutMode } = useCustomPageEditor();
 
     /**
      * Update the iframe styles to achieve responsiveness.
@@ -471,39 +478,41 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
                                                     }
                                                 />
                                             </div>
-                                        )
-                                        : resolvePreviewScreen()
+                                        ) : resolvePreviewScreen()
                                 )
                         ) : (
-                            <div className="branding-preference-preview-message" >
-                                <EmptyPlaceholder
-                                    image={ CustomLayoutSuccessImg }
-                                    imageSize="small"
-                                    subtitle={
-                                        [
-                                            t("extensions:develop.branding.tabs.preview."
+                            commonConfig.enableDefaultBrandingPreviewSection
+                                && layoutContext[0] === PredefinedLayouts.CUSTOM ? (
+                                    <div className="branding-preference-preview-message" >
+                                        <EmptyPlaceholder
+                                            image={ CustomLayoutSuccessImg }
+                                            imageSize="small"
+                                            subtitle={
+                                                [
+                                                    t("extensions:develop.branding.tabs.preview."
                                                         + "info.layout.activatedMessage.subTitle"),
-                                            <>
-                                                { t("extensions:develop.branding.tabs.preview."
+                                                    <>
+                                                        { t("extensions:develop.branding.tabs.preview."
                                                             + "info.layout.activatedMessage.description") }
-                                                <DocumentationLink
-                                                    link={ getLink("develop.branding.layout.custom.learnMore") }
-                                                >
-                                                    { t("common:learnMore") }
-                                                </DocumentationLink>
-                                            </>
-                                        ]
-                                    }
-                                    title={ t("extensions:develop.branding.tabs.preview."
+                                                        <DocumentationLink
+                                                            link={ getLink("develop.branding.layout.custom.learnMore") }
+                                                        >
+                                                            { t("common:learnMore") }
+                                                        </DocumentationLink>
+                                                    </>
+                                                ]
+                                            }
+                                            title={ t("extensions:develop.branding.tabs.preview."
                                                 + "info.layout.activatedMessage.title") }
-                                />
-                                <PrimaryButton
-                                    className="floating-editor-button"
-                                    onClick={ () => setCustomLayoutMode(true) }
-                                >
-                                    Create
-                                </PrimaryButton>
-                            </div>
+                                        />
+                                        <PrimaryButton
+                                            className="floating-editor-button"
+                                            onClick={ () => setCustomLayoutMode(!customLayoutMode) }
+                                        >
+                                            Create
+                                        </PrimaryButton>
+                                    </div>
+                                ) : resolvePreviewScreen()
                         )
                     ) : (
                         <ContentLoader data-componentid={ `${componentId}-loader` } />

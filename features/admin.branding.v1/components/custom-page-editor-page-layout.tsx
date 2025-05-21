@@ -17,7 +17,7 @@
  */
 
 import { BrandingPreferenceCustomContentInterface } from "@wso2is/common.branding.v1/models/branding-preferences";
-import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FormPropsInterface } from "@wso2is/form/src/components/form";
 import React, {
     FunctionComponent,
@@ -32,9 +32,21 @@ import { Segment } from "semantic-ui-react";
 import { EditorViewTabs } from "./custom-page-editor/editor-view";
 import { StickyTabPaneActionPanel } from "./sticky-tab-pane-action-panel";
 import BrandingPreferenceContext from "../context/branding-preference-context";
-import useCustomPageEditor from "../hooks/use-custom-page-editor";
 
-type CustomPageEditorPageLayoutPropsInterface = TestableComponentInterface;
+interface CustomPageEditorPageLayoutPropsInterface {
+    /**
+     * The test id for the component.
+     */
+    "data-testid"?: string;
+    /**
+     * Custom Layout Mode.
+     */
+    customLayoutMode?: boolean;
+    /**
+     * Set custom layout mode.
+     */
+    setCustomLayoutMode?: (value: boolean) => void;
+}
 
 interface RouteParams {
     templateTypeId: string;
@@ -48,6 +60,9 @@ interface UpdatedContent {
 }
 
 interface CustomPageEditorPageLayoutInterface extends IdentifiableComponentInterface{
+    /**
+     * Is the form is loading.
+     */
     isLoading: boolean;
     /**
      * Is the form in a submitting state.
@@ -65,13 +80,13 @@ const CustomPageEditorPageLayout: FunctionComponent<CustomPageEditorPageLayoutPr
 ): ReactElement => {
 
     const {
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        customLayoutMode,
+        setCustomLayoutMode
     } = props;
 
-    const { setCustomLayoutMode } = useCustomPageEditor();
-
     const handleBackButtonClick = (): void => {
-        setCustomLayoutMode(false);
+        setCustomLayoutMode(!customLayoutMode);
     };
 
     const { preference: brandingPreference } = useContext(BrandingPreferenceContext);

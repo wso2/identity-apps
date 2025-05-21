@@ -66,7 +66,17 @@ import { BrandingPreferenceUtils } from "../utils/branding-preference-utils";
 /**
  * Prop-types for the branding core component.
  */
-type BrandingCoreInterface = IdentifiableComponentInterface;
+type BrandingCoreInterface = IdentifiableComponentInterface &
+{
+    /**
+     * Custom Layout Mode.
+     */
+    customLayoutMode?: boolean;
+    /**
+     * Set custom layout mode.
+     */
+    setCustomLayoutMode?: (value: boolean) => void;
+};
 
 /**
  * Branding core.
@@ -79,7 +89,9 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
 ): ReactElement => {
 
     const {
-        ["data-componentid"]: componentId
+        ["data-componentid"]: componentId,
+        customLayoutMode,
+        setCustomLayoutMode
     } = props;
 
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
@@ -738,6 +750,8 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                 )
             }
             <BrandingPreferenceTabs
+                customLayoutMode={ customLayoutMode }
+                setCustomLayoutMode={ setCustomLayoutMode }
                 key={ preferenceTabsComponentKey }
                 predefinedThemes={ predefinedThemes }
                 brandingPreference={ brandingPreference }

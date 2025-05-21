@@ -117,6 +117,14 @@ interface BrandingPreferenceTabsInterface extends IdentifiableComponentInterface
      * Name of the application
      */
     appName?: string;
+    /**
+     * Custom Layout Mode.
+     */
+    customLayoutMode?: boolean;
+    /**
+     * Set custom layout mode.
+     */
+    setCustomLayoutMode?: (value: boolean) => void;
 }
 
 /**
@@ -141,7 +149,9 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
         appName,
         onSubmit,
         onLayoutChange,
-        onPreviewResize
+        onPreviewResize,
+        customLayoutMode,
+        setCustomLayoutMode
     } = props;
 
     const { t } = useTranslation();
@@ -381,6 +391,8 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
     const PreviewPreferenceTabPane = (): ReactElement => (
         <ResourceTab.Pane className="preview-tab" attached="bottom" data-componentid="branding-preference-preview-tab">
             <BrandingPreferencePreview
+                customLayoutMode={ customLayoutMode }
+                setCustomLayoutMode={ setCustomLayoutMode }
                 screenType={ selectedScreen }
                 isLoading={ isLoading }
                 brandingPreference={ brandingPreferenceForPreview }

@@ -47,7 +47,6 @@ import { AI_BRANDING_FEATURE_ID } from "../constants/ai-branding-constants";
 import { BrandingModes, BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
 import useBrandingPreference from "../hooks/use-branding-preference";
 import "./branding-page-layout.scss";
-import useCustomPageEditor from "../hooks/use-custom-page-editor";
 
 type BrandingPageLayoutInterface = IdentifiableComponentInterface;
 
@@ -93,7 +92,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
 
     const [ isBrandingAppsRedirect, setIsBrandingAppsRedirect ] = useState<boolean>(false);
 
-    const { customLayoutMode } = useCustomPageEditor();
+    const [ customLayoutMode, setCustomLayoutMode ] = useState<boolean>( false );
 
     const animationVariants: Variants = {
         enter: {
@@ -418,7 +417,10 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         >
             <LayoutGroup>
                 { customLayoutMode ? (
-                    <CustomPageEditorPageLayout/>
+                    <CustomPageEditorPageLayout
+                        customLayoutMode={ customLayoutMode }
+                        setCustomLayoutMode={ setCustomLayoutMode }
+                    />
                 ) : (
                     <>
                         {
@@ -429,7 +431,10 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                 />
                             )
                         }
-                        <BrandingCore />
+                        <BrandingCore
+                            customLayoutMode={ customLayoutMode }
+                            setCustomLayoutMode={ setCustomLayoutMode }
+                        />
                     </>
                 ) }
             </LayoutGroup>
