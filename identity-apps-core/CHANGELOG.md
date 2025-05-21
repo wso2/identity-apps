@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.24.9
+
+### Patch Changes
+
+- [#8175](https://github.com/wso2/identity-apps/pull/8175) [`d290998ce34bc11acf2822f4394768c8238f81cf`](https://github.com/wso2/identity-apps/commit/d290998ce34bc11acf2822f4394768c8238f81cf) Thanks [@savindi7](https://github.com/savindi7)! - Resolve theme from query param/cookie in auth and recovery portals.
+
 ## 2.24.8
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/admin.applications.v1
 
+## 2.35.1
+
+### Patch Changes
+
+- [#8212](https://github.com/wso2/identity-apps/pull/8212) [`faf9fbe02e3ddd242685e1e9c600277baebd9be7`](https://github.com/wso2/identity-apps/commit/faf9fbe02e3ddd242685e1e9c600277baebd9be7) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix JWT access token type being not applied for mcp client apps
+
 ## 2.35.0
 
 ### Minor Changes

@@ -1402,7 +1402,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         : Number(metadata?.defaultApplicationAccessTokenExpiryTime),
                     bindingType: values.get("bindingType"),
                     revokeTokensWhenIDPSessionTerminated: values.get("RevokeAccessToken")?.length > 0,
-                    type: values.get("type"),
+                    type: isMcpClientApplication ? JWT : values.get("type"),
                     userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds")),
                     validateTokenBinding: values.get("ValidateTokenBinding")?.length > 0
                 },
