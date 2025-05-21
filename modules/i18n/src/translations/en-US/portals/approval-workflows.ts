@@ -263,11 +263,13 @@ export const approvalWorkflows: approvalWorkflowsNS = {
                     title: "General Details"
                 },
                 step2: {
-                    description: "Select the operations this approval workflow should trigger.",
+                    description: "Select the operations that would trigger this approval workflow",
+                    hint: "This approval workflow will be triggered when any of the selected operations are initiated.",
                     title:  "Workflow Operation Details"
                 },
                 step3: {
                     description: "Configure the approval steps of the model. Approval by any selected user or role member will complete each step.",
+                    hint: "You can add multiple approval steps to the workflow. Each step can have different approvers. Approval by any selected user or role member will complete each step.",
                     title:  "Approval Step Details"
                 }
             },

@@ -21,7 +21,7 @@ import Grid from "@oxygen-ui/react/Grid";
 import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalForm, FormRenderProps } from "@wso2is/form";
-import { Heading } from "@wso2is/react-components";
+import { Heading, Hint } from "@wso2is/react-components";
 import React, {
     ForwardRefExoticComponent,
     ForwardedRef,
@@ -202,6 +202,9 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                                 />
                                             ) }
                                         />
+                                        <Hint className="hint" compact>
+                                            { t("approvalWorkflows:pageLayout.create.stepper.step2.hint") }
+                                        </Hint>
                                     </div>
                                 </Grid>
                             </form>

@@ -151,10 +151,12 @@ export interface approvalWorkflowsNS {
                 step2: {
                     title:  string,
                     description: string,
+                    hint: string
                 },
                 step3: {
                     title:  string,
-                    description: string
+                    description: string,
+                    hint: string
                 }
             }
         };

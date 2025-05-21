@@ -20,6 +20,7 @@ import Box from "@oxygen-ui/react/Box";
 import { CircleCheckFilledIcon, PlusIcon } from "@oxygen-ui/react-icons";
 import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
 import { IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
+import { Hint } from "@wso2is/react-components";
 import React, {
     ForwardRefExoticComponent,
     ForwardedRef,
@@ -33,6 +34,7 @@ import React, {
     useState
 } from "react";
 import "./configuration-details-form.scss";
+import { useTranslation } from "react-i18next";
 import ApprovalStep from "./approval-step";
 import { ENTITY_TYPES, EntityType } from "../../constants/approval-workflow-constants";
 import { MultiStepApprovalTemplate } from "../../models/approval-workflows";
@@ -92,6 +94,8 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
             }: ConfigurationsPropsInterface,
             ref: ForwardedRef<ConfigurationsFormRef>
         ): ReactElement => {
+
+            const { t } = useTranslation();
 
             const StraightArrow: React.FC<StraightArrowProps> = (props: StraightArrowProps) => {
                 const { length = 100, color = "#555", strokeWidth = 2 } = props;
@@ -294,6 +298,9 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                             )) }
                         </div>
                     </Box>
+                    <Hint className="hint" compact>
+                        { t("approvalWorkflows:pageLayout.create.stepper.step3.hint") }
+                    </Hint>
                 </>
             );
         }
