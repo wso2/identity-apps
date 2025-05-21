@@ -24,10 +24,11 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface, LoadableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import {
+    AnimatedAvatar,
+    AppAvatar,
     ConfirmationModal,
     DataTable,
     EmptyPlaceholder,
-    GenericIcon,
     LinkButton,
     PrimaryButton,
     TableActionsInterface,
@@ -37,7 +38,6 @@ import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
-import { getTableIcons } from "../configs/ui";
 import { WorkflowListItemInterface } from "../models/approval-workflows";
 
 /**
@@ -221,21 +221,26 @@ const ApprovalWorkflowList: React.FunctionComponent<ApprovalWorkflowListProps> =
             key: "name",
             render: (approvalWorkflow: WorkflowListItemInterface): ReactNode => (
                 <Header image as="h6" className="header-with-icon">
-                    <GenericIcon
-                        bordered
-                        defaultIcon
-                        relaxed="very"
-                        size="micro"
-                        shape="rounded"
+                    <AppAvatar
+                        image={ (
+                            <AnimatedAvatar
+                                name={ approvalWorkflow?.name[ 0 ] }
+                                size="mini"
+                                data-componentid={ `${ componentId }-item-image-inner` }
+                            />
+                        ) }
+                        size="mini"
                         spaced="right"
-                        hoverable={ false }
-                        icon={ getTableIcons().header.default }
+                        data-componentid={ `${ componentId }-item-image` }
                     />
                     <Header.Content>
                         { approvalWorkflow.name }
                         { approvalWorkflow.description && (
                             <Header.Subheader>
-                                { approvalWorkflow.description }
+                                { approvalWorkflow.description.length > 90
+                                    ? approvalWorkflow.description.slice(0, 90) + "..."
+                                    : approvalWorkflow.description
+                                }
                             </Header.Subheader>
                         ) }
                     </Header.Content>
