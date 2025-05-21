@@ -232,34 +232,19 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
                     dispatch(
                         addAlert({
                             description: t(
-                                "approvalWorkflows:notifications.addApprovalWorkflow.genericError.description"
+                                "approvalWorkflows:notifications.addWorkflowAssociation.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
-                            message: t("approvalWorkflows:notifications.addApprovalWorkflow.genericError.description")
+                            message: t(
+                                "approvalWorkflows:notifications.addWorkflowAssociation.genericError.description"
+                            )
                         })
                     );
                 } finally {
                     setIsApprovalWorkflowCreateRequestLoading(false);
                 }
             })
-            .catch((error: AxiosError) => {
-                if (!error.response || error.response.status === 401) {
-                    dispatch(
-                        addAlert({
-                            description: t(
-                                "console:manage.features.approvalWorkflows.notifications." +
-                                    "createPermission." +
-                                    "error.description"
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "console:manage.features.approvalWorkflows.notifications.createPermission." +
-                                    "error.message"
-                            )
-                        })
-                    );
-                }
-
+            .catch(() => {
                 dispatch(
                     addAlert({
                         description: t("approvalWorkflows:notifications.addApprovalWorkflow.genericError.description"),
