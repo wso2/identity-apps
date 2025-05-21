@@ -37,10 +37,10 @@ import { useDispatch } from "react-redux";
 import "../../pages/approval-workflow-edit-page.scss";
 import { Dispatch } from "redux";
 import { deleteApprovalWorkflowById, updateApprovalWorkflow } from "../../api/approval-workflow";
+import { useGetWorkflowAssociations } from "../../api/use-get-workflow-associations";
 import {
     addWorkflowAssociation,
-    deleteWorkflowAssociationById,
-    useGetWorkflowAssociations
+    deleteWorkflowAssociationById
 } from "../../api/workflow-associations";
 import {
     ApprovalWorkflowPayload,
@@ -294,7 +294,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
 
         const approvalWorkflowPayload: ApprovalWorkflowPayload = {
             description: updatedApprovalProcessFormData.generalDetails.description,
-            engine: "workflowImplSimple",
+            engine: "WorkflowEngine",
             name: updatedApprovalProcessFormData.generalDetails.name,
             template: workflowTemplate
         };
