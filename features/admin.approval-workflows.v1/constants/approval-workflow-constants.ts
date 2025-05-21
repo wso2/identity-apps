@@ -1,4 +1,3 @@
-
 /**
  * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
@@ -17,7 +16,6 @@
  * under the License.
  */
 
-// eslint-disable-next-line header/header
 export class ApprovalWorkflowConstants {
 
     private constructor() {}
@@ -46,22 +44,8 @@ export const APPROVAL_WORKFLOW_VALIDATION_REGEX_PATTERNS: ApprovalWorkflowValida
 export enum ApprovalWorkflowEditTabIDs {
     GENERAL = "general",
     OPERATIONS = "workflow operations",
-    CONFIGURATIONS = "approval workflow",
+    CONFIGURATIONS = "approval steps",
 }
-
-/**
- * Maps engine keys to human-readable names.
- */
-export const engineNameMap: Record<string, string> = {
-    "workflowImplSimple": "Simple Workflow Engine"
-};
-
-/**
- * Maps template keys to human-readable names.
- */
-export const templateNameMap: Record<string, string> = {
-    "MultiStepApprovalTemplate": "Multi Step User/Role Approval Template"
-};
 
 export const ENTITY_TYPES: any = {
     ROLES: "roles",
@@ -69,9 +53,5 @@ export const ENTITY_TYPES: any = {
 } as const;
 
 export type EntityType = (typeof ENTITY_TYPES)[keyof typeof ENTITY_TYPES];
-
-export const RETRY_INTERVAL: number = 2000;
-export const RETRY_COUNT_LIMIT: number = 10;
-
 
 export default ApprovalWorkflowConstants;
