@@ -32,8 +32,10 @@ import {
     OrganizationResponseInterface,
     ShareApplicationRequestInterface
 } from "@wso2is/admin.organizations.v1/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
+    FeatureAccessConfigInterface,
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -69,6 +71,7 @@ import {
     Grid,
     Radio
 } from "semantic-ui-react";
+import { ApplicationManagementConstants } from "../../constants/application-management";
 import { ApplicationInterface, additionalSpProperty } from "../../models/application";
 
 enum ShareType {
@@ -130,6 +133,11 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
     const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
     );
+    const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.applications);
+    const isApplicationShareOperationStatusEnabled: boolean = isFeatureEnabled(
+        applicationFeatureConfig,
+        ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_SHARED_ACCESS_STATUS"));
 
     const [ subOrganizationList, setSubOrganizationList ] = useState<Array<OrganizationInterface>>([]);
     const [ sharedOrganizationList, setSharedOrganizationList ] = useState<Array<OrganizationInterface>>([]);
@@ -379,7 +387,9 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
     };
 
     const handleShareApplication: () => Promise<void> = useCallback(async () => {
-        handleAsyncSharingNotification(shareType);
+        if (isApplicationShareOperationStatusEnabled) {
+            handleAsyncSharingNotification(shareType);
+        }
         let shareAppData: ShareApplicationRequestInterface;
         let removedOrganization: OrganizationInterface[];
 

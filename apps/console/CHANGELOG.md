@@ -1,5 +1,22 @@
 # @wso2is/console
 
+## 2.56.3
+
+### Patch Changes
+
+- [#8215](https://github.com/wso2/identity-apps/pull/8215) [`b0e96f6e1367e63ad6c87ba6eb474567d1b35239`](https://github.com/wso2/identity-apps/commit/b0e96f6e1367e63ad6c87ba6eb474567d1b35239) Thanks [@savindi7](https://github.com/savindi7)! - Fix visual editor Connector update issue.
+
+## 2.56.2
+
+### Patch Changes
+
+- [#8209](https://github.com/wso2/identity-apps/pull/8209) [`a4d837f3c5f9eab3e85d6b8d9c665285dad7a0ac`](https://github.com/wso2/identity-apps/commit/a4d837f3c5f9eab3e85d6b8d9c665285dad7a0ac) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix pagination issues in user listing page
+
+- Updated dependencies [[`c25227533412e019643c4bdd27f8abe3ab9c0ea4`](https://github.com/wso2/identity-apps/commit/c25227533412e019643c4bdd27f8abe3ab9c0ea4), [`a4d837f3c5f9eab3e85d6b8d9c665285dad7a0ac`](https://github.com/wso2/identity-apps/commit/a4d837f3c5f9eab3e85d6b8d9c665285dad7a0ac)]:
+  - @wso2is/admin.applications.v1@2.35.2
+  - @wso2is/react-components@2.9.15
+  - @wso2is/admin.users.v1@2.32.4
+
 ## 2.56.1
 
 ### Patch Changes
