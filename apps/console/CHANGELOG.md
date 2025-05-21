@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.56.3
+
+### Patch Changes
+
+- [#8215](https://github.com/wso2/identity-apps/pull/8215) [`b0e96f6e1367e63ad6c87ba6eb474567d1b35239`](https://github.com/wso2/identity-apps/commit/b0e96f6e1367e63ad6c87ba6eb474567d1b35239) Thanks [@savindi7](https://github.com/savindi7)! - Fix visual editor Connector update issue.
+
 ## 2.56.2
 
 ### Patch Changes
