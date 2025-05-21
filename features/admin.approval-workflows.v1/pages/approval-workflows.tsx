@@ -31,7 +31,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Icon, Input } from "semantic-ui-react";
-import { deleteApprovalWorkflowById, useGetApprovalWorkflows } from "../api/approval-workflow";
+import { deleteApprovalWorkflowById } from "../api/approval-workflow";
+import { useGetApprovalWorkflows } from "../api/use-get-approval-workflows";
 import ApprovalWorkflowList from "../components/approval-workflow-list";
 import { WorkflowListItemInterface } from "../models/approval-workflows";
 
