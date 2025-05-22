@@ -158,6 +158,8 @@ public class MainTagHandler extends TagSupport {
         data = null;
         engine = null;
         context = null;
+        legacyProcessor = null;
+        layoutProcessor = null;
         super.release();
     }
 }
