@@ -107,6 +107,7 @@ public class MainTagHandler extends TagSupport {
     public int doStartTag() throws JspException {
 
         if (isLikelyRelativePath(layoutFileRelativePath)) {
+            engine = new LocalTemplateEngine();
             legacyProcessor = new LegacyLayoutFileProcessor(engine, compile, pageContext,
                 layoutName, layoutFileRelativePath, data);
             return legacyProcessor.startLegacyLayoutRendering();
@@ -140,21 +141,10 @@ public class MainTagHandler extends TagSupport {
         }
     }
 
-    /**
-     * This method is executed at the end of the processing for the "main" tag.
-     * Final operations or cleanup for the tag can be handled here.
-     *
-     * @return an integer - EVAL_PAGE to continue evaluating the rest of the JSP page.
-     */
-    public int doEndTag() {
-
-        return EVAL_PAGE;
-    }
-
     private boolean isLikelyRelativePath(String input) {
 
-        return input != null && (( input.startsWith("http") || input.startsWith("https")) &&
-            input.endsWith(".html")
+        return input != null && ( input.startsWith("http") || input.startsWith("https") ||
+            input.endsWith(".html") || input.endsWith(".ser")
         );
     }
 
