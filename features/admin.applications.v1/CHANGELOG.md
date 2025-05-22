@@ -1,5 +1,15 @@
 # @wso2is/admin.applications.v1
 
+## 2.35.2
+
+### Patch Changes
+
+- [#8217](https://github.com/wso2/identity-apps/pull/8217) [`c25227533412e019643c4bdd27f8abe3ab9c0ea4`](https://github.com/wso2/identity-apps/commit/c25227533412e019643c4bdd27f8abe3ab9c0ea4) Thanks [@roshanemoraes](https://github.com/roshanemoraes)! - Disabling Async operation status feature banner
+
+- Updated dependencies [[`a4d837f3c5f9eab3e85d6b8d9c665285dad7a0ac`](https://github.com/wso2/identity-apps/commit/a4d837f3c5f9eab3e85d6b8d9c665285dad7a0ac)]:
+  - @wso2is/react-components@2.9.15
+  - @wso2is/admin.users.v1@2.32.4
+
 ## 2.35.1
 
 ### Patch Changes
