@@ -462,7 +462,10 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                 </MenuItem>
                             </Show>
                         ),
-                        <Show featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
+                        <Show
+                            key={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }
+                            featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }
+                        >
                             <Show
                                 when={ loginAndRegistrationFeatureConfig?.scopes?.update }
                                 featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }
