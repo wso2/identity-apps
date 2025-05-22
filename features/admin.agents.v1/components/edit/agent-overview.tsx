@@ -21,7 +21,8 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form/src";
+import { FinalForm, FinalFormField, FormRenderProps, SelectFieldAdapter, TextFieldAdapter } from "@wso2is/form";
+import { DropdownChild } from "@wso2is/forms";
 import { DangerZone, DangerZoneGroup, EmphasizedSegment, Hint, PrimaryButton } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -32,6 +33,56 @@ import useGetAgent from "../../hooks/use-get-agent";
 interface AgentOverviewProps extends IdentifiableComponentInterface {
     agentId: string;
 }
+
+export enum ModelType {
+    GPT_4 = "gpt_4",
+    GPT_4_TURBO = "gpt_4_turbo",
+    CLAUDE_3 = "claude_3",
+    GEMINI_1_5 = "gemini_1_5",
+    MISTRAL_7B = "mistral_7b",
+    MIXTRAL = "mixtral",
+    LLAMA_3 = "llama_3"
+}
+
+const MODEL_TYPES: DropdownChild[] = [
+    {
+        key: ModelType.GPT_4,
+        text: "GPT-4",
+        value: ModelType.GPT_4
+    },
+    {
+        key: ModelType.GPT_4_TURBO,
+        text: "GPT-4 Turbo",
+        value: ModelType.GPT_4_TURBO
+    },
+    {
+        key: ModelType.CLAUDE_3,
+        text: "Claude 3",
+        value: ModelType.CLAUDE_3
+    },
+    {
+        key: ModelType.GEMINI_1_5,
+        text: "Gemini 1.5",
+        value: ModelType.GEMINI_1_5
+    },
+    {
+        key: ModelType.MISTRAL_7B,
+        text: "Mistral 7B",
+        value: ModelType.MISTRAL_7B
+    },
+    {
+        key: ModelType.MIXTRAL,
+        text: "Mixtral",
+        value: ModelType.MIXTRAL
+    },
+    {
+        key: ModelType.LLAMA_3,
+        text: "LLaMA 3",
+        value: ModelType.LLAMA_3
+    }
+];
+
+
 
 export default function AgentOverview({ agentId }: AgentOverviewProps) {
 
@@ -48,7 +99,10 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
             setInitialValues({
                 description: agentInfo?.["urn:scim:schemas:extension:custom:User"]?.agentDescription,
                 logo: agentInfo?.logo,
-                name: agentInfo.name?.givenName
+                name: agentInfo.name?.givenName,
+                version: "1.0.0",
+                languageModel: ModelType.GPT_4.toString(),
+                owner: "admin@guardio.com"
             });
         }
     }, [ agentInfo ]);
@@ -94,9 +148,6 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
                                 message: "Something went wrong"
                             }));
                         });
-
-
-
                     } }
                     render={ ({ handleSubmit }: FormRenderProps) => {
                         return (
@@ -112,6 +163,35 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
                                                 label="Name"
                                                 component={ TextFieldAdapter }
                                             ></FinalFormField>
+
+                                            <div style={ { marginTop: "5%" } }>
+                                                <FinalFormField
+                                                    key="languageModel"
+                                                    width={ 16 }
+                                                    FormControlProps={ {
+                                                        margin: "dense"
+                                                    } }
+                                                    ariaLabel="Language Model"
+
+                                                    name="languageModel"
+                                                    type={ "dropdown" }
+                                                    displayEmpty={ true }
+                                                    label={ "Language Model" }
+                                                    component={ SelectFieldAdapter }
+                                                    maxLength={ 100 }
+                                                    minLength={ 0 }
+                                                    options={
+                                                        [ ...MODEL_TYPES.map(
+                                                            (option: DropdownChild) => ({
+                                                                text: option.text,
+                                                                value: option.value.toString()
+                                                            }))
+                                                        ]
+                                                    }
+                                                    disabled={ false }
+                                                />
+                                            </div>
+
                                             <FinalFormField
                                                 name="description"
                                                 className="pt-3"
@@ -136,17 +216,17 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
                 ></FinalForm>
             </EmphasizedSegment>
 
-<Divider hidden />
+            <Divider hidden />
             <DangerZoneGroup
                 sectionHeader={ "Danger Zone" }
             >
-                { /* <DangerZone
-                        actionTitle={ "Transfer ownership" }
-                        header={ "Transfer Ownership" }
-                        subheader={ "Transfer ownership of this agent to another user in the organization." }
-                        onActionClick={ (): void => null }
-                        data-testid={ `danger-zone-disable` }
-                    /> */ }
+                {/* <DangerZone
+                    actionTitle={ "Transfer ownership" }
+                    header={ "Transfer Ownership" }
+                    subheader={ "Transfer ownership of this agent to another user in the organization." }
+                    onActionClick={ (): void => null }
+                    data-testid={ "danger-zone-disable" }
+                /> */}
 
                 <DangerZone
                     actionTitle={
