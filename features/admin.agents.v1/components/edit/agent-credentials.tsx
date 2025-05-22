@@ -37,48 +37,43 @@ export default function AgentCredentials({
     return (
         <EmphasizedSegment padded="very" style={ { border: "none", padding: "21px" } }>
             <Typography variant="h4">Credentials</Typography>
-            <Typography variant="body1" className="mt-1 mb-5" style={ { color: "#9c9c9c" } }>
+            <Typography variant="body1" className="mt-1 mb-3" style={ { color: "#9c9c9c" } }>
                 Authentication details for this agent to securely access applications and API resources.
             </Typography>
             <Grid container>
                 <Grid xs={ 8 }>
                     <div style={ { marginBottom: "20px" } }>
                         <label>Agent ID</label>
-                        <CopyInputField value={ "dZBvthATdJmUNb_knryEiKZ26Xoa" } />
+                        <CopyInputField value={ agentId } />
                     </div>
 
                     <Divider />
-                    <Heading as="h4">Agent secret</Heading>
-
+                    <Typography variant="h5">Agent secret</Typography>
+                    <Typography variant="body1" className="mb-3" style={ { color: "#9c9c9c" } }>
+Use the agent secret to generate one time passwords for agent authentication.
+                    </Typography>
                     <Message info>
+                        <div style={ { display: "flex", flexDirection: "row" } }>
                         If you’ve lost or forgotten the agent secret, you can regenerate it, but be aware that any
                         scripts or applications using the current agent secret will need to be updated.
-                    </Message>
-                    <div style={ { display: "flex", flexDirection: "row" } }>
-                        <CopyInputField
-                            secret
-                            showSecret={ false }
-                            value={ "VzP7d_.9qN|Y3LXtJWA-fUMbrgKo2x1/ETmlBcZ84.vsHnQy5u" }
-                            hideSecretLabel={ "Hide secret" }
-                            showSecretLabel={ "Show secret" }
-                            data-componentid={ "client-secret-readonly-input" }
-                        />
-                        <Button
-                            color="red"
-                            onClick={ regenerateAgentScret }
-                            style={ { marginLeft: "10px" } }
-                            data-testid={ `${componentId}-oidc-regenerate-button` }
-                        >
+
+                            <Button
+                                color="red"
+                                onClick={ regenerateAgentScret }
+                                style={ { marginLeft: "10px" } }
+                                data-testid={ `${componentId}-oidc-regenerate-button` }
+                            >
                             Regenerate
-                        </Button>
-                    </div>
+                            </Button>
+                        </div>
+                    </Message>
+
 
                     <>
                         <Divider />
-                        <Divider hidden />
                         <SemanticGrid.Row columns={ 1 }>
                             <SemanticGrid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Heading as="h4">Certificate</Heading>
+                                <Typography variant="h5" className="mb-2">Certificate</Typography>
                                 <Button
                                     basic
                                     primary
