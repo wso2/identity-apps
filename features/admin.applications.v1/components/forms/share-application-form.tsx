@@ -431,6 +431,23 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                 application.id,
                 shareAppData
             )
+                .then(() => {
+                    if (!isApplicationShareOperationStatusEnabled) {
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "applications:edit.sections.shareApplication" +
+                                    ".addSharingNotification.success.description"
+                                ),
+                                level: AlertLevels.SUCCESS,
+                                message: t(
+                                    "applications:edit.sections.shareApplication" +
+                                    ".addSharingNotification.success.message"
+                                )
+                            })
+                        );
+                    }
+                })
                 .catch((error: AxiosError) => {
                     if (error.response.data.message) {
                         dispatch(
