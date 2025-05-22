@@ -27,10 +27,10 @@ import AgentConnectedApps from "../components/edit/agent-connected-apps";
 import AgentCredentials from "../components/edit/agent-credentials";
 import AgentGroups from "../components/edit/agent-groups";
 import AgentIntegrations from "../components/edit/agent-integrations";
+import AgentLogs from "../components/edit/agent-logs";
 import AgentOverview from "../components/edit/agent-overview";
 import AgentRoles from "../components/edit/agent-roles";
 import useGetAgent from "../hooks/use-get-agent";
-import AgentLogs from "../components/edit/agent-logs";
 
 interface EditAgentPageProps extends IdentifiableComponentInterface {
 
@@ -66,7 +66,13 @@ export default function EditAgent({
             componentId: "general",
             menuItem: "General",
             render: () => (
-                <AgentOverview agentId={ agentId } />
+                <ResourceTab.Pane
+                    data-componentid="agent-overview"
+                    attached={ false }
+                    className="overview-tab-pane"
+                >
+                    <AgentOverview agentId={ agentId } />
+                </ResourceTab.Pane>
             )
         },
         {
@@ -79,30 +85,30 @@ export default function EditAgent({
             )
         },
         {
+            componentId: "groups",
+            menuItem: "Groups",
+            render: () =>  <AgentGroups agentId={ agentId } />
+        },
+        {
             componentId: "roles",
             menuItem: "Roles",
             render: () =>  <ResourceTab.Pane><AgentRoles agentId={ agentId }/></ResourceTab.Pane>
         },
-        {
-            componentId: "groups",
-            menuItem: "Groups",
-            render: () =>  <ResourceTab.Pane><AgentGroups agentId={ agentId } /></ResourceTab.Pane>
-        },
-        {
-            componentId: "applications",
-            menuItem: "Applications",
-            render: () =>  <ResourceTab.Pane><AgentConnectedApps /></ResourceTab.Pane>
-        },
+        // {
+        //     componentId: "applications",
+        //     menuItem: "Applications",
+        //     render: () =>  <ResourceTab.Pane><AgentConnectedApps /></ResourceTab.Pane>
+        // },
         {
             componentId: "connections",
             menuItem: "Connections",
             render: () =>  <ResourceTab.Pane><AgentIntegrations /></ResourceTab.Pane>
-        },
-        {
-            componentId: "logs",
-            menuItem: "Audit Logs",
-            render: () =>  <AgentLogs />
         }
+        // {
+        //     componentId: "logs",
+        //     menuItem: "Audit Logs",
+        //     render: () =>  <AgentLogs />
+        // }
     ];
 
     const handleBackButtonClick = () => {
@@ -113,7 +119,9 @@ export default function EditAgent({
         <TabPageLayout
             pageTitle="Edit agent"
             title={ agentInfo?.name?.givenName }
-            description={ agentInfo?.id }
+            description={ (<>
+                <strong>Created by: </strong>admin@guardio.com
+            </>) }
             isLoading={ isAgentInfoLoading }
             backButton={ {
                 "data-testid": `${componentId}-back-button`,
