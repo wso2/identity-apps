@@ -19,13 +19,16 @@
 import { Typography } from "@mui/material";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants/role-constants";
+import { UserGroupsList } from "@wso2is/admin.users.v1/components/user-groups-edit";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { RolesMemberInterface } from "@wso2is/core/models";
+import { AlertInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
 import { Button, EmphasizedSegment } from "@wso2is/react-components";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Grid, Icon, Input, Label, Table } from "semantic-ui-react";
 import useGetAgent from "../../hooks/use-get-agent";
 
@@ -35,122 +38,22 @@ interface AgentGroupViewProps {
 
 export default function AgentGroups({ agentId }: AgentGroupViewProps) {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
     const {
         data: agentInfo
     } = useGetAgent(agentId);
 
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
-
-    const resolveTableContent = () => {
-        return (<>
-
-            <Table.Body>
-                {
-                    agentInfo?.groups?.map((group: RolesMemberInterface, index: number) => {
-                        const userGroup: string[] = group?.display?.split("/");
-
-                        if (userGroup[0] !== APPLICATION_DOMAIN &&
-                            userGroup[0] !== INTERNAL_DOMAIN) {
-                            return (
-                                <Table.Row key={ index }>
-                                    <Table.Cell>
-                                        {
-                                            userGroup?.length === 1
-                                                ? (<Label color="olive">
-                                                    {
-                                                        StringUtils.isEqualCaseInsensitive(
-                                                            primaryUserStoreDomainName, PRIMARY_USERSTORE)
-                                                            ? t("console:manage.features.users.userstores" +
-                                                                ".userstoreOptions.primary")
-                                                            : primaryUserStoreDomainName
-                                                    }
-                                                </Label>)
-                                                : (<Label color="olive">
-                                                    { userGroup[0] }
-                                                </Label>)
-                                        }
-                                    </Table.Cell>
-                                    <Table.Cell>
-                                        {
-                                            userGroup?.length === 1
-                                                ? group?.display
-                                                : userGroup[1]
-                                        }
-                                    </Table.Cell>
-                                </Table.Row>
-                            );
-                        }
-                    })
-                }
-            </Table.Body>
-
-        </>);
+    const handleAlerts = (alert: AlertInterface) => {
+        dispatch(addAlert<AlertInterface>(alert));
     };
 
-    return (<EmphasizedSegment padded="very" style={ { border: "none", padding: "21px" } }>
-        <Typography variant="h4">
-            Groups
-        </Typography>
-        <Typography variant="body1" className="mb-5" style={ { color: "#9c9c9c" } }>
-            Add or remove the groups agent is assigned with and note that this will affect performing certain tasks.
-        </Typography>
-
-        <EmphasizedSegment
-            data-testid="user-mgt-groups-list"
-            className="user-role-edit-header-segment"
-            style={ { border: "none", paddingLeft: 0 } }
-        >
-            <Grid.Row>
-                <Grid.Column>
-                    <Input
-                        data-testid="user-mgt-groups-list-search-input"
-                        icon={ <Icon name="search"/> }
-                        onChange={ null }
-                        placeholder={ t("user:updateUser.groups." +
-                                                    "editGroups.searchPlaceholder") }
-                        floated="left"
-                        size="small"
-                    />
-
-                    <Button
-                        data-testid="user-mgt-groups-list-update-button"
-                        size="medium"
-                        icon="pencil"
-                        floated="right"
-                        onClick={ null }
-                    />
-
-                </Grid.Column>
-            </Grid.Row>
-            <Grid.Row>
-                <Table singleLine compact>
-                    <Table.Header>
-                        <Table.Row>
-                            <Table.HeaderCell>
-                                <strong>
-                                    { t("user:updateUser.groups." +
-                                                                "editGroups.groupList.headers.0") }
-                                </strong>
-                            </Table.HeaderCell>
-                            <Table.HeaderCell>
-                                <strong>
-                                    { t("user:updateUser.groups." +
-                                                                "editGroups.groupList.headers.1") }
-                                </strong>
-                            </Table.HeaderCell>
-                        </Table.Row>
-                    </Table.Header>
-                    { resolveTableContent() }
-                </Table>
-            </Grid.Row>
-        </EmphasizedSegment>
-
-
-
-
-
-
-    </EmphasizedSegment>);
+    return (
+        <UserGroupsList
+            onAlertFired={ handleAlerts }
+            user={ agentInfo }
+            handleUserUpdate={ () => {} }
+            isReadOnly={ false }
+        />
+    );
 }
