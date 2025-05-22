@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.24.10
+
+### Patch Changes
+
+- [#8210](https://github.com/wso2/identity-apps/pull/8210) [`1aa8ee02b5c810cd745d6f82ec9721d4e9792a44`](https://github.com/wso2/identity-apps/commit/1aa8ee02b5c810cd745d6f82ec9721d4e9792a44) Thanks [@nilasini](https://github.com/nilasini)! - Change self registration orchestration endpoint
+
+* [#8223](https://github.com/wso2/identity-apps/pull/8223) [`b0bf58809dd2ffc999604f6b0111e6faa4efcce8`](https://github.com/wso2/identity-apps/commit/b0bf58809dd2ffc999604f6b0111e6faa4efcce8) Thanks [@BimsaraBodaragama](https://github.com/BimsaraBodaragama)! - Fix Callback URL Validation for Offline Onboarding Flow
+
 ## 2.24.9
 
 ### Patch Changes
