@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.56.4
+
+### Patch Changes
+
+- [#8224](https://github.com/wso2/identity-apps/pull/8224) [`63a4d1d386f124317adbe23264c92eca993a7588`](https://github.com/wso2/identity-apps/commit/63a4d1d386f124317adbe23264c92eca993a7588) Thanks [@roshanemoraes](https://github.com/roshanemoraes)! - Fix missing display of success alert in application sharing.
+
 ## 2.56.3
 
 ### Patch Changes
