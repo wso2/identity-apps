@@ -261,7 +261,7 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
         <PageLayout
             title={ t("approvalWorkflows:pageLayout.create.title") }
             contentTopMargin={ true }
-            description={ t("approvalWorkflows:pageLayout.create.title") }
+            description={ t("approvalWorkflows:pageLayout.create.description") }
             className="workflow-model-create-page-layout"
             data-componentid={ `${componentId}-page-layout` }
             backButton={ {
