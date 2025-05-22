@@ -33,11 +33,7 @@
 
         if (requestBody.length() > 0) {
             JSONObject requestJson = new JSONObject(requestBody.toString());
-            if (requestJson.has("applicationId")) {
-                endpoint = "/api/server/v1/registration/initiate"; 
-            } else {
-                endpoint = "/api/server/v1/registration/submit";
-            } 
+            endpoint = "/api/server/v1/registration/execute";
         }
     } catch (Exception e) {
         out.print("{\"error\": \"Error reading request: " + e.getMessage() + "\"}");
@@ -45,9 +41,9 @@
     }
 
     StringBuilder apiResponse = new StringBuilder();
-    HttpURLConnection connection = null;    
+    HttpURLConnection connection = null;
     String apiURL = identityServerEndpointContextParam + endpoint;
-    
+
     try {
         URL url = new URL(apiURL);
         connection = (HttpURLConnection) url.openConnection();
