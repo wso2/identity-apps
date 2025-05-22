@@ -80,18 +80,32 @@
                     if (!StringUtils.isBlank(brandingPreference.getJSONObject(LAYOUT_KEY).getString(ACTIVE_LAYOUT_KEY))){
                         String temp = brandingPreference.getJSONObject(LAYOUT_KEY).getString(ACTIVE_LAYOUT_KEY);
                         if (StringUtils.equals(temp, PREFIX_FOR_CUSTOM_LAYOUT_NAME)) {
-                            // App-wise and tenant-wise custom layout resolving logic.
-                            if (StringUtils.equals(preferenceResourceType, APP_PREFERENCE_RESOURCE_TYPE)) {
-                                layout = temp + CUSTOM_LAYOUT_NAME_SEPERATOR + tenantRequestingPreferences + CUSTOM_LAYOUT_NAME_SEPERATOR + convertApplicationName(applicationRequestingPreferences);
-                                layoutFileRelativePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + convertApplicationName(applicationRequestingPreferences) + "/body.ser";
-                                layoutData.put("BASE_URL", layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + convertApplicationName(applicationRequestingPreferences));
-                            } else if (StringUtils.equals(preferenceResourceType, ORG_PREFERENCE_RESOURCE_TYPE)) {
-                                layout = temp + CUSTOM_LAYOUT_NAME_SEPERATOR + tenantRequestingPreferences;
-                                layoutFileRelativePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/body.ser";
-                                layoutData.put("BASE_URL", layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences));
+
+                            if(brandingPreference.has(CUSTOM_CONTENT_KEY)){
+                                if (brandingPreference.getJSONObject(CUSTOM_CONTENT_KEY).has(HTML_CONTENT_KEY)) {
+                                    if (!StringUtils.isBlank(brandingPreference.getJSONObject(CUSTOM_CONTENT_KEY)
+                                        .getString(HTML_CONTENT_KEY))) {
+                                        if (isCustomContentAdded) {
+                                            layout = temp;
+                                            layoutFileRelativePath =
+                                                brandingPreference.getJSONObject(CUSTOM_CONTENT_KEY)
+                                                    .getString(HTML_CONTENT_KEY);
+                                        }
+                                    }
+                                }
+                            }else{
+                                // App-wise and tenant-wise custom layout resolving logic.
+                                if (StringUtils.equals(preferenceResourceType, APP_PREFERENCE_RESOURCE_TYPE)) {
+                                    layout = temp + CUSTOM_LAYOUT_NAME_SEPERATOR + tenantRequestingPreferences + CUSTOM_LAYOUT_NAME_SEPERATOR + convertApplicationName(applicationRequestingPreferences);
+                                    layoutFileRelativePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + convertApplicationName(applicationRequestingPreferences) + "/body.ser";
+                                    layoutData.put("BASE_URL", layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + convertApplicationName(applicationRequestingPreferences));
+                                } else if (StringUtils.equals(preferenceResourceType, ORG_PREFERENCE_RESOURCE_TYPE)) {
+                                    layout = temp + CUSTOM_LAYOUT_NAME_SEPERATOR + tenantRequestingPreferences;
+                                    layoutFileRelativePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/body.ser";
+                                    layoutData.put("BASE_URL", layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences));
+                                }
                             }
-//                            layout = "custom";
-//                            layoutFileRelativePath = "http://localhost:5001/resources/left-aligned.html";
+
                         } else {
                             // Pre-added layouts
                             String layoutFilePath = "includes/layouts/" + temp + "/body.ser";

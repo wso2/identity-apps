@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (http://www.wso2.com).
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,12 +18,12 @@
 
 package org.wso2.identity.apps.taglibs.layout.controller;
 
-//import org.wso2.identity.apps.taglibs.layout.controller.core.LayoutParser;
 import org.wso2.identity.apps.taglibs.layout.controller.core.LocalTemplateEngine;
+import org.wso2.identity.apps.taglibs.layout.controller.processor.LayoutContentProcessor;
+import org.wso2.identity.apps.taglibs.layout.controller.processor.LegacyLayoutFileProcessor;
 
-import java.io.PrintWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +41,10 @@ public class MainTagHandler extends TagSupport {
     private Map<String, Object> data = new HashMap<>();
     private boolean compile = false;
     private LocalTemplateEngine engine = null;
+    Context context = new Context();
+
+    private LayoutContentProcessor layoutProcessor;
+    private LegacyLayoutFileProcessor legacyProcessor;
 
     /**
      * Set the name of the layout.
@@ -83,69 +87,75 @@ public class MainTagHandler extends TagSupport {
     }
 
     /**
-     * This method will execute when the starting point of the "main" tag is reached.
+     * Context for handling layout rendering.
      *
-     * @return int -> SKIP_BODY, EVAL_BODY_INCLUDE, EVAL_BODY_BUFFERED.
-     * @throws JspException
+     * - reader: BufferedReader instance used for reading layout or tags content.
+     * - endContent: String value to specify the content or marker indicating the end of layout processing.
+     */
+    private static class Context{
+
+        private BufferedReader reader;
+        private String endContent;
+    }
+
+    /**
+     * This method will execute when the starting point of the "main" tag is reached.
+     * based on the nature of layout content switches between legacy or the default rendering.
+     *
+     * @throws JspException .
      */
     public int doStartTag() throws JspException {
 
-        engine = new LocalTemplateEngine();
-        try {
-            if (compile) {
-                String rawLayoutFilePath = layoutFileRelativePath.replaceFirst(".ser", ".html");
-                engine.execute(layoutName,
-                        layoutFileRelativePath.startsWith("http") ? new URL(rawLayoutFilePath) :
-                                pageContext.getServletContext().getResource(rawLayoutFilePath), data,
-                        new PrintWriter(pageContext.getOut()));
-            } else {
-                engine.executeWithoutCompile(layoutName,
-                        layoutFileRelativePath.startsWith("http") ? new URL(layoutFileRelativePath) :
-                                pageContext.getServletContext().getResource(layoutFileRelativePath), data,
-                        new PrintWriter(pageContext.getOut()));
+        if (isLikelyRelativePath(layoutFileRelativePath)) {
+            legacyProcessor = new LegacyLayoutFileProcessor(engine, compile, pageContext,
+                layoutName, layoutFileRelativePath, data);
+            return legacyProcessor.startLegacyLayoutRendering();
+        } else {
+            layoutProcessor = new LayoutContentProcessor(pageContext, layoutFileRelativePath,
+                context.endContent, context.reader);
+            try {
+                return layoutProcessor.processLayoutUntilNextComponent();
+            } catch (IOException e) {
+                throw new JspException("Error processing layout HTML", e);
             }
-        } catch (MalformedURLException e) {
-            throw new JspException("Can't create a URL to the given relative path", e);
         }
-        if (engine.getExecutor().componentExecutionEnabled()) {
-            pageContext.setAttribute(Constant.COMPONENT_NAME_STORING_VAR, engine.getExecutor().getComponentName());
-            engine.getExecutor().deactivateComponent();
-            return EVAL_BODY_INCLUDE;
-        }
-        return SKIP_BODY;
     }
 
     /**
      * This method will execute after each body execution of the "main" tag.
+     * based on the nature of layout content switches between legacy or the default rendering.
      *
-     * @return int -> EVAL_BODY_AGAIN, SKIP_BODY.
      * @throws JspException
      */
     public int doAfterBody() throws JspException {
 
-        try {
-            if (compile) {
-                String rawLayoutFilePath = layoutFileRelativePath.replaceFirst(".ser", ".html");
-                engine.execute(layoutName,
-                        layoutFileRelativePath.startsWith("http") ? new URL(rawLayoutFilePath) :
-                                pageContext.getServletContext().getResource(rawLayoutFilePath), data,
-                        new PrintWriter(pageContext.getOut()));
-            } else {
-                engine.executeWithoutCompile(layoutName,
-                        layoutFileRelativePath.startsWith("http") ? new URL(layoutFileRelativePath) :
-                                pageContext.getServletContext().getResource(layoutFileRelativePath), data,
-                        new PrintWriter(pageContext.getOut()));
+        if (isLikelyRelativePath(layoutFileRelativePath)) {
+            return legacyProcessor.continueLegacyLayoutRendering();
+        } else {
+            try {
+                return layoutProcessor.processRemainingLayoutAfterComponent();
+            } catch (IOException e) {
+                throw new JspException("Error processing layout after component", e);
             }
-        } catch (MalformedURLException e) {
-            throw new JspException("Can't create a URL to the given relative path", e);
         }
-        if (engine.getExecutor().componentExecutionEnabled()) {
-            pageContext.setAttribute(Constant.COMPONENT_NAME_STORING_VAR, engine.getExecutor().getComponentName());
-            engine.getExecutor().deactivateComponent();
-            return EVAL_BODY_AGAIN;
-        }
-        pageContext.removeAttribute(Constant.COMPONENT_NAME_STORING_VAR);
-        return SKIP_BODY;
+    }
+
+    /**
+     * This method is executed at the end of the processing for the "main" tag.
+     * Final operations or cleanup for the tag can be handled here.
+     *
+     * @return an integer - EVAL_PAGE to continue evaluating the rest of the JSP page.
+     */
+    public int doEndTag() {
+
+        return EVAL_PAGE;
+    }
+
+    private boolean isLikelyRelativePath(String input) {
+
+        return input != null && (( input.startsWith("http") || input.startsWith("https")) &&
+            input.endsWith(".html")
+        );
     }
 
     /**
@@ -157,7 +167,7 @@ public class MainTagHandler extends TagSupport {
         layoutFileRelativePath = null;
         data = null;
         engine = null;
+        context = null;
         super.release();
     }
-
 }

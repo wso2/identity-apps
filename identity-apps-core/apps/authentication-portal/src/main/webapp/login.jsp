@@ -471,8 +471,6 @@
         }
     %>
 
-<%--<link rel="stylesheet" href="https://cdn.statically.io/gh/SamudraUduwaka/testFilesForCustomPageEditor/d115e03619ed6cf7cace805da68c3f68b5fcf29d/styles.css"/>--%>
-
 </head>
 
 <body class="login-portal layout authentication-portal-layout" onload="checkSessionKey()" data-page="<%= request.getAttribute("pageName") %>">
@@ -483,8 +481,7 @@
         <jsp:include page="util/timeout.jsp"/>
     <% } %>
 
-    <layout:main layoutName="custom" layoutFileRelativePath="http://localhost:5001/resources/left-aligned.html" data="<%= layoutData %>" compile="true">
-<%--    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" compile="true">--%>
+    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>">
         <layout:component componentName="ProductHeader">
             <%
                 if (StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT) &&

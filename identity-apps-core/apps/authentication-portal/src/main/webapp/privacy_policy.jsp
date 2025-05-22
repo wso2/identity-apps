@@ -44,8 +44,7 @@
     <% } %>
 </head>
 <body class="login-portal layout authentication-portal-layout policy-page-layout cookie-policy-page-layout" data-page="<%= request.getAttribute("pageName") %>">
-<layout:main layoutName="custom" layoutFileRelativePath="http://localhost:5001/resources/left-aligned.html" data="<%= layoutData %>" compile="true">
-<%--<layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>">--%>
+<layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>">
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
             <%

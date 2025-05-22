@@ -205,6 +205,8 @@
     boolean isSelfSignUpEnabledInTenantPreferences = true;
     boolean isPasswordRecoveryEnabledInTenantPreferences = true;
     boolean shouldRemoveDefaultBranding = true;
+    // For Custom Content Feature
+    boolean isCustomContentAdded = false;
     @Deprecated
     JSONObject colors = null;
     JSONObject theme = null;
@@ -245,6 +247,11 @@
 
     // Preferences response object pointer keys.
     String PREFERENCE_KEY = "preference";
+    // For Custom Content Feature
+    String CUSTOM_CONTENT_KEY = "customContent";
+    String HTML_CONTENT_KEY = "htmlContent";
+    String CSS_CONTENT_KEY = "cssContent";
+    String JS_CONTENT_KEY = "jsContent";
     String ACTIVE_THEME_KEY = "activeTheme";
     String COLORS_KEY = "colors";
     String THEME_KEY = "theme";
@@ -487,6 +494,18 @@
                             }
                         }
                     }
+                }
+
+                // Custom content
+                if(brandingPreference.has(CUSTOM_CONTENT_KEY)){
+                    if(!StringUtils.isBlank(brandingPreference.getJSONObject(CUSTOM_CONTENT_KEY).getString(HTML_CONTENT_KEY))){
+                        if(!StringUtils.isBlank(brandingPreference.getJSONObject(CUSTOM_CONTENT_KEY).getString(CSS_CONTENT_KEY))){
+                            if(!StringUtils.isBlank(brandingPreference.getJSONObject(CUSTOM_CONTENT_KEY).getString(JS_CONTENT_KEY))){
+                                isCustomContentAdded = true;
+                            }
+                        }
+                    }
+
                 }
 
                 // Configs

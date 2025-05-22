@@ -26,6 +26,15 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Arrays" %>
 
+<%-- Include tenant context --%>
+<jsp:directive.include file="init-url.jsp"/>
+
+<%-- Localization --%>
+<jsp:directive.include file="localize.jsp" />
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="branding-preferences.jsp"/>
+
 <%
     // Determining whether the application user is going to login is Console, as the maintenance banner
     // should only be shown in console related authentication flows.
@@ -33,6 +42,10 @@
     Boolean isDowntimeBannerEnabled = StringUtils.equals("true", application.getInitParameter("isDowntimeBannerEnabled"))
         && downtimeBannerEnabledAppList.contains(Encode.forJava(request.getParameter("sp")));
 %>
+
+<% if (isCustomContentAdded){ %>
+<script> <%= brandingPreference.getJSONObject(CUSTOM_CONTENT_KEY).getString(JS_CONTENT_KEY) %> </script>
+<% } %>
 
 <script type="text/javascript">
     // Automatically shows on init if the user hasn't already acknowledged cookie usage.
