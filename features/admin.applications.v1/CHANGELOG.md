@@ -1,5 +1,11 @@
 # @wso2is/admin.applications.v1
 
+## 2.35.3
+
+### Patch Changes
+
+- [#8219](https://github.com/wso2/identity-apps/pull/8219) [`5005769b794079ce114c016955d63a807f85d165`](https://github.com/wso2/identity-apps/commit/5005769b794079ce114c016955d63a807f85d165) Thanks [@roshanemoraes](https://github.com/roshanemoraes)! - Update missing display of success alert.
+
 ## 2.35.2
 
 ### Patch Changes
