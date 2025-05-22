@@ -63,6 +63,10 @@ interface WorkflowOperationsDetailsPropsInterface extends IdentifiableComponentI
      * Initial values for the form.
      */
     initialValues?: Partial<WorkflowOperationsDetailsFormValuesInterface>;
+    /**
+     * Whether the component is used in edit page or not.
+     */
+    isEditPage?: boolean;
 }
 
 /**
@@ -98,6 +102,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                 isReadOnly,
                 onSubmit,
                 initialValues,
+                isEditPage,
                 ["data-componentid"]: componentId
                 = "workflow-operations"
             }: WorkflowOperationsDetailsPropsInterface,
@@ -202,9 +207,9 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                                 />
                                             ) }
                                         />
-                                        <Hint className="hint" compact>
+                                        { isEditPage && (<Hint className="hint" compact>
                                             { t("approvalWorkflows:pageLayout.create.stepper.step2.hint") }
-                                        </Hint>
+                                        </Hint>) }
                                     </div>
                                 </Grid>
                             </form>

@@ -566,6 +566,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                                 initialValues={ matchedOperations }
                                 onSubmit={ onWorkflowOperationsDetailsFormSubmit }
                                 data-componentid={ `${componentId}-general-details-form` }
+                                isEditPage={ true }
                             />
                         </div>
 
@@ -581,6 +582,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                                 initialValues={ stepValues }
                                 onSubmit={ handleConfigSubmit }
                                 hasErrors={ hasErrors }
+                                isEditPage={ true }
                                 data-componentid={ `${componentId}-configurations-form` }
                             />
                         </div>

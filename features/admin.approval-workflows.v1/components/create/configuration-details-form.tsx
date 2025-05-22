@@ -48,21 +48,22 @@ export interface ConfigurationsPropsInterface extends IdentifiableComponentInter
      * Whether the form is in read-only mode.
      */
     isReadOnly?: boolean;
-
     /**
      * Whether the form has validation errors.
      */
     hasErrors?: boolean;
-
     /**
      * Callback to handle form submission.
      */
     onSubmit?: (values: ConfigurationsFormValuesInterface) => void;
-
     /**
      * Initial values for the form.
      */
     initialValues?: Partial<ConfigurationsFormValuesInterface>;
+    /**
+     * Whether the component is used in edit page or not.
+     */
+    isEditPage?: boolean;
 }
 
 export interface ConfigurationsFormRef {
@@ -90,6 +91,7 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                 onSubmit,
                 hasErrors,
                 initialValues,
+                isEditPage,
                 ["data-componentid"]: componentId = "workflow-model-configuration-details"
             }: ConfigurationsPropsInterface,
             ref: ForwardedRef<ConfigurationsFormRef>
@@ -298,9 +300,12 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                             )) }
                         </div>
                     </Box>
-                    <Hint className="hint" compact>
-                        { t("approvalWorkflows:pageLayout.create.stepper.step3.hint") }
-                    </Hint>
+                    { isEditPage && (<div className="approval-steps-hint">
+                        <Hint className="hint" compact>
+                            { t("approvalWorkflows:pageLayout.create.stepper.step3.hint") }
+                        </Hint>
+                    </div>) }
+
                 </>
             );
         }
