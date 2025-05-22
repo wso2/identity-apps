@@ -22,7 +22,7 @@
  * @param {*} captchaScriptURL
  * @returns
  */
-export function loadCaptchaApi(captchaScriptURL, captchaScriptId = "") {
+export function loadCaptchaApi(captchaScriptURL, captchaScriptId) {
     if (window.grecaptcha && window.grecaptcha.render) {
         return Promise.resolve(window.grecaptcha);
     }
@@ -36,8 +36,8 @@ export function loadCaptchaApi(captchaScriptURL, captchaScriptId = "") {
 
         const script = document.createElement("script");
 
-        script.id    = "recaptcha-v2-script";
-        script.src   = `${captchaScriptURL}?render=explicit`;
+        script.id    = captchaScriptId;
+        script.src   = captchaScriptURL;
         script.async = true;
         script.defer = true;
 

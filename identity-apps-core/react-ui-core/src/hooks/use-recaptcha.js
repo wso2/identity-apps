@@ -27,54 +27,78 @@ import { loadCaptchaApi } from "../utils/captcha-utils";
 /**
  * Hook to load and manage the Google reCAPTCHA V2 widget.
  */
-const useReCaptcha = (siteKey = "", reCaptchaScriptUrl) => {
+const useReCaptcha = (siteKey, reCaptchaScriptUrl) => {
     const containerRef = useRef(null);
     const widgetIdRef = useRef(null);
-    const [ scriptLoaded, setScriptLoaded ] = useState(false);
     const [ token, setToken ] = useState(null);
-    const [ widgetReady,  setWidgetReady  ] = useState(false);
+    const [ widgetReady, setWidgetReady ] = useState(false);
+    const resolveRef = useRef(null);
     const reCaptchaUrl = reCaptchaScriptUrl + DEFAULT_RECAPTCHA_SCRIPT_URL_PARAMS || DEFAULT_RECAPTCHA_SCRIPT_URL;
 
     useEffect(() => {
-        if (!siteKey) return;
+        if (!siteKey) {
+            return;
+        }
 
         loadCaptchaApi(reCaptchaUrl, RECAPTCHA_V2_SCRIPT_ID)
             .then((grecaptcha) => {
-                widgetIdRef.current = grecaptcha.render(containerRef.current, {
-                    callback: setToken,
-                    sitekey: siteKey,
-                    size:    "invisible"
-                });
-                setWidgetReady(true);
-                setScriptLoaded(true);
+                try {
+                    widgetIdRef.current = grecaptcha.render(containerRef.current, {
+                        callback: (recaptchaToken) => {
+                            console.log("Token from callback: ", recaptchaToken);
+                            setToken(recaptchaToken);
+                            if (resolveRef.current) {
+                                resolveRef.current(recaptchaToken);
+                                resolveRef.current = null;
+                            }
+                        },
+                        sitekey: siteKey,
+                        size: "invisible"
+                    });
+                    setWidgetReady(true);
+                } catch (error) {
+                    console.error("ReCAPTCHA: Failed to render widget", error);
+                }
+            })
+            .catch((error) => {
+                console.error("ReCAPTCHA: Failed to load", error);
             });
+
+        return () => {
+            if (widgetIdRef.current !== null) {
+                try {
+                    window.grecaptcha?.reset(widgetIdRef.current);
+                } catch (error) {
+                    console.error("ReCAPTCHA: Failed to cleanup widget", error);
+                }
+                widgetIdRef.current = null;
+                setWidgetReady(false);
+            }
+        };
     }, [ siteKey ]);
 
     const execute = useCallback(() => {
-        if (scriptLoaded && widgetIdRef.current !== null) {
-            window.grecaptcha.execute(widgetIdRef.current);
-
+        if (widgetReady && typeof widgetIdRef.current === 'number') {
             return new Promise((resolve) => {
-                const checkToken = setInterval(() => {
-                    if (token) {
-                        clearInterval(checkToken);
-                        resolve(token);
-                    }
-                }, 100);
+                resolveRef.current = resolve;
+                window.grecaptcha.execute(widgetIdRef.current);
             });
         }
 
         return Promise.reject("ReCAPTCHA not ready");
-    }, [ widgetReady, token ]);
+    }, [ widgetReady ]);
 
     const reset = useCallback(() => {
-        if (scriptLoaded && widgetIdRef.current !== null) {
+        if (widgetReady && widgetIdRef.current !== null) {
             window.grecaptcha.reset(widgetIdRef.current);
             setToken(null);
+            resolveRef.current = null;
         }
     }, [ widgetReady ]);
 
-    return { execute, reset, containerRef, scriptLoaded, token };
+    console.log("widgetReady", widgetReady);
+
+    return { containerRef, ready: widgetReady, execute, reset, token };
 };
 
 export default useReCaptcha;
