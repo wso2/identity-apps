@@ -282,8 +282,109 @@
             "label": "Continue with SMS OTP",
             "description": "Registration experience with SMS OTP",
             "image": "https://www.svgrepo.com/show/381137/transaction-password-otp-verification-code-security.svg",
-            "showOnResourcePanel": false
+            "showOnResourcePanel": true
         },
-        "config": {}
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "replacers": [
+                        {
+                            "key": "SMS_OTP_VERIFICATION_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "__generationMeta__": {
+                            "strategy": "MERGE_WITH_DROP_POINT"
+                        },
+                        "type": "VIEW",
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "ACTION",
+                                    "type": "BUTTON",
+                                    "variant": "PRIMARY",
+                                    "config": {
+                                        "type": "button",
+                                        "text": "Continue with SMS OTP"
+                                    },
+                                    "action": {
+                                        "next": "{{SMS_OTP_VERIFICATION_STEP_ID}}",
+                                        "type": "NEXT"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{SMS_OTP_VERIFICATION_STEP_ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 343
+                        },
+                        "position": {
+                            "x": 690,
+                            "y": 20
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Verify OTP"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "OTP",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "identifier": "otp",
+                                                "label": "Enter the OTP code",
+                                                "required": true,
+                                                "placeholder": ""
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Verify"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "SMSOTPExecutor"
+                                                },
+                                                "next": "USER_ONBOARD"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
     }
 ]
