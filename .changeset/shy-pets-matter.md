@@ -2,4 +2,4 @@
 "@wso2is/console": patch
 ---
 
-Bump console for changeset
+Fix missing display of success alert in application sharing.
