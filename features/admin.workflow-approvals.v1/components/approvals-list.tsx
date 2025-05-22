@@ -311,6 +311,20 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
 
     };
 
+    function formatApprovalName(name: string): string {
+        // "Association for ADD_USER" → "User Addition Request"
+        const [ , action ] = name.split(" for ");
+
+        switch (action) {
+            case "ADD_USER":
+                return "user creation request";
+            case "DELETE_USER":
+                return "user removal request";
+            default:
+                return "approval request";
+        }
+    }
+
 
     /**
      * Resolves data table columns.
@@ -342,10 +356,15 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                                 hoverable={ false }
                                 icon={ getTableIcons().header.default } />
                             <Header.Content>
-                                { approval.presentationName + ":" }
+                                { "Approval Required" + ":" }
                                 <Label circular>
-                                    { approval.name }
+                                    { /* { "You have a new user creation request awaiting your approval." } */ }
+
+                                You have a new{ " " }
+                                    <strong>{ formatApprovalName(approval.name) }</strong>{ " " }
+                                awaiting your approval.
                                 </Label>
+
                                 <Header.Subheader data-testid={ `${testId}-item-sub-heading` }>
                                     <div className="pb-2">
                                         <Label
