@@ -407,7 +407,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                 showCollapsibleHamburger
                 onCollapsibleHamburgerClick={ onCollapsibleHamburgerClick }
                 position="fixed"
-                leftAlignedElements={ [ isOrgSwitcherEnabled ? <OrganizationSwitchBreadcrumb /> : null ] }
+                // leftAlignedElements={ [ isOrgSwitcherEnabled ? <OrganizationSwitchBreadcrumb /> : null ] }
                 rightAlignedElements={ generateHeaderButtons() }
                 userDropdownMenu={ {
                     actionIcon: <LogoutIcon />,
