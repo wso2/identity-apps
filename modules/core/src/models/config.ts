@@ -146,6 +146,11 @@ export interface CommonDeploymentConfigInterface<T = Record<string, unknown>, S 
      */
     tenant: string;
     /**
+     * Tenant context information.
+     * ex: `enableTenantQualifiedUrls`
+     */
+    tenantContext: TenantContextInterface;
+    /**
      * Tenant path.
      * ex: `/t/wso2.com`
      */
@@ -155,6 +160,24 @@ export interface CommonDeploymentConfigInterface<T = Record<string, unknown>, S 
      * ex: `t`
      */
     tenantPrefix: string;
+}
+
+/**
+ * Tenant context interface.
+ */
+export interface TenantContextInterface {
+    /**
+     * Enable tenant qualified URLs.
+     */
+    enableTenantQualifiedUrls: boolean;
+    /**
+     * Require super tenant in app URLs.
+     */
+    requireSuperTenantInAppUrls: boolean;
+    /**
+     * Require super tenant in URLs.
+     */
+    requireSuperTenantInUrls: boolean;
 }
 
 /**

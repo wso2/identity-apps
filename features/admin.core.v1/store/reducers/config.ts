@@ -78,6 +78,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             serverOrigin: "",
             superTenant: "",
             tenant: "",
+            tenantContext: null,
             tenantPath: "",
             tenantPrefix: ""
         },
