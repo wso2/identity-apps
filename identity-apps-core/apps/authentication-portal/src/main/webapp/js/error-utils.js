@@ -75,6 +75,13 @@ function getI18nKeyForError(errorCode) {
                 description: "sign.up.error.request.processing.failed.description"
             };
 
+        case "RFE-60008":
+
+            return {
+                message: "sign.up.error.registration.failed.message",
+                description: "sign.up.error.invalid.user.input.description"
+            };
+
         default:
 
             return {
