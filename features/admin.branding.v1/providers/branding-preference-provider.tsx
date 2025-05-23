@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,6 +23,7 @@ import { OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/mo
 import useGetBrandingPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-branding-preference-resolve";
 import {
     BrandingPreferenceAPIResponseInterface,
+    BrandingPreferenceCustomContentInterface,
     BrandingPreferenceTypes,
     BrandingSubFeatures,
     PreviewScreenType,
@@ -42,6 +43,7 @@ import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, u
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import { updateBrandingPreference } from "../api/branding-preferences";
 import deleteCustomTextPreference from "../api/delete-custom-text-preference";
 import updateCustomTextPreference from "../api/update-custom-text-preference";
 import useGetCustomTextPreferenceFallbacks from "../api/use-get-custom-text-preference-fallbacks";
@@ -113,6 +115,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     const [ isCustomTextPreferenceConfigured, setIsCustomTextPreferenceConfigured ] = useState<boolean>(true);
     const [ selectedApplication, setSelectedApplication ] = useState<string>(null);
     const [ brandingMode, setBrandingMode ] = useState<BrandingModes>(BrandingModes.ORGANIZATION);
+    const [ customLayoutMode, setCustomLayoutMode ] = useState<boolean>(false);
 
     const resolvedName: string = (brandingMode === BrandingModes.APPLICATION && selectedApplication)
         ? selectedApplication : tenantDomain;
@@ -270,6 +273,48 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
 
         setBrandingPreference(originalBrandingPreference);
     }, [ originalBrandingPreference ]);
+
+    /**
+     * Add or Update the Custom Content of the branding preference.
+     */
+    const updateBrandingCustomContent = (
+        updatedContent: BrandingPreferenceCustomContentInterface
+    ): void => {
+        if (!brandingPreference) return;
+
+        const updated: BrandingPreferenceAPIResponseInterface = {
+            ...brandingPreference,
+            preference: {
+                ...brandingPreference.preference,
+                customContent: updatedContent
+            }
+        };
+
+        const isConfigured: boolean = brandingPreference?.preference?.configs?.isBrandingEnabled ?? false;
+
+        updateBrandingPreference(
+            isConfigured,
+            updated.name,
+            updated.preference,
+            updated.type,
+            updated.locale
+        ).then((response: BrandingPreferenceAPIResponseInterface) => {
+            setBrandingPreference(response);
+
+            dispatch(addAlert({
+                description: "Your changes have been saved and published.",
+                level: AlertLevels.SUCCESS,
+                message: "Branding layout updated successfully."
+            }));
+        }).catch((_error: unknown) => {
+
+            dispatch(addAlert({
+                description: "An error occurred while saving. Please try again.",
+                level: AlertLevels.ERROR,
+                message: "Branding layout update failed."
+            }));
+        });
+    };
 
     /**
      * Moderates the Custom Text Preference response.
@@ -436,6 +481,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 activeCustomTextConfigurationMode,
                 activeTab,
                 brandingMode,
+                customLayoutMode,
                 customText: customTextFormSubscription?.values ?? resolvedCustomText?.preference?.text,
                 customTextDefaults: customTextFallbacks?.preference?.text,
                 customTextFormSubscription: customTextFormSubscription ?? {
@@ -510,6 +556,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 selectedScreen,
                 selectedScreenVariation,
                 setBrandingMode,
+                setCustomLayoutMode,
                 setSelectedApplication,
                 updateActiveCustomTextConfigurationMode: setActiveCustomTextConfigurationMode,
                 updateActiveTab: (tab: string) => {
@@ -521,6 +568,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
 
                     setActiveTab(tab);
                 },
+                updateBrandingCustomContent,
                 updateCustomTextFormSubscription: (
                     subscription: FormState<CustomTextInterface, CustomTextInterface>
                 ): void => {

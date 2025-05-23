@@ -546,7 +546,8 @@
             "branding": {
                 "disabledFeatures": [
                     "branding.hostnameUrlBranding",
-                    "branding.stylesAndText.application.text"
+                    "branding.stylesAndText.application.text",
+                    "branding.stylesAndText.customLayoutConfig"
                 ],
                 "enabled": true,
                 "featureFlags": [

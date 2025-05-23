@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,6 +26,7 @@ import {
     EmptyPlaceholder,
     Iframe,
     Link,
+    PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
 import get from "lodash-es/get";
@@ -35,6 +36,7 @@ import React, {
     FunctionComponent,
     MutableRefObject,
     ReactElement,
+    useContext,
     useEffect,
     useRef,
     useState
@@ -51,6 +53,7 @@ import { ReactComponent as CustomLayoutWarningImg } from
     "../../../themes/wso2is/assets/images/branding/custom-layout-warning.svg";
 import { useLayout, useLayoutStyle } from "../../api/layout";
 import { usePreviewContent, usePreviewStyle } from "../../api/preview-skeletons";
+import BrandingPreferenceContext from "../../context/branding-preference-context";
 import { BrandingPreferenceMeta } from "../../meta/branding-preference-meta";
 import { LAYOUT_DATA, PredefinedLayouts } from "../../meta/layouts";
 
@@ -87,6 +90,13 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
     props: BrandingPreferencePreviewInterface
 ): ReactElement => {
 
+    // const isLayoutCustomizationDisabled: boolean = useSelector((state: AppState) => {
+    //     return state?.config?.ui?.features?.branding?.disabledFeatures
+    //         ?.includes("branding.stylesAndText.customLayoutConfig");
+    // });
+
+    const isLayoutCustomizationDisabled: boolean = false;
+
     const {
         ["data-componentid"]: componentId,
         brandingPreference,
@@ -110,6 +120,8 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
     const [ layoutContext, setLayoutContext ] = useState<string[]>([ "", "", "", "", "", "" ]);
     const [ isLayoutResolving, setIsLayoutResolving ] = useState<boolean>(true);
     const [ isErrorOccured, setIsErrorOccured ] = useState<boolean>(false);
+
+    const { setCustomLayoutMode } = useContext(BrandingPreferenceContext);
 
     const {
         data: layoutBlob,
@@ -330,6 +342,24 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
         return layoutContext[4];
     };
 
+    const floatingButtonStyles = () => [
+        `
+        .floating-editor-button {
+            position: fixed;
+            bottom: 50px;
+            right: 20px;
+            z-index: 1000;
+            padding: 10px 16px;
+            border: none;
+            cursor: pointer;
+            width: 200px;
+            height: 70px;
+            font-size: 22px !important;
+            border-radius: 35px !important;
+        }
+        `
+    ];
+
     return (
         <div
             className="branding-preference-preview-container"
@@ -350,7 +380,9 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
             <Iframe
                 cloneParentStyleSheets
                 injectStyleNodeAfterParentStyles
-                styles={ resolveIframeStyles() }
+                styles={ layoutContext[0] === PredefinedLayouts.CUSTOM
+                    ? [ ...resolveIframeStyles(), ...floatingButtonStyles() ].join("")
+                    : resolveIframeStyles() }
                 styleNodeInjectionStrategy="prepend"
                 stylesheets={
                     isErrorOccured || layoutContext[0] === PredefinedLayouts.CUSTOM
@@ -368,8 +400,8 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
                 id="branding-preference-preview-iframe"
             >
                 {
-                    !isLoading && isIframeReady && !isLayoutResolving && !isPreviewScreenSkeletonContentLoading
-                        ? (
+                    !isLoading && isIframeReady && !isLayoutResolving && !isPreviewScreenSkeletonContentLoading ? (
+                        isLayoutCustomizationDisabled ? (
                             commonConfig.enableDefaultBrandingPreviewSection
                                 && layoutContext[0] === PredefinedLayouts.CUSTOM ? (
                                     <div className="branding-preference-preview-message" >
@@ -442,10 +474,45 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
                                                     }
                                                 />
                                             </div>
-                                        )
-                                        : resolvePreviewScreen()
+                                        ) : resolvePreviewScreen()
                                 )
-                        ) : <ContentLoader data-componentid={ `${ componentId }-loader` } />
+                        ) : (
+                            commonConfig.enableDefaultBrandingPreviewSection
+                                && layoutContext[0] === PredefinedLayouts.CUSTOM ? (
+                                    <div className="branding-preference-preview-message" >
+                                        <EmptyPlaceholder
+                                            image={ CustomLayoutSuccessImg }
+                                            imageSize="small"
+                                            subtitle={
+                                                [
+                                                    t("extensions:develop.branding.tabs.preview."
+                                                        + "info.layout.activatedMessage.subTitle"),
+                                                    <>
+                                                        { t("extensions:develop.branding.tabs.preview."
+                                                            + "info.layout.activatedMessage.description") }
+                                                        <DocumentationLink
+                                                            link={ getLink("develop.branding.layout.custom.learnMore") }
+                                                        >
+                                                            { t("common:learnMore") }
+                                                        </DocumentationLink>
+                                                    </>
+                                                ]
+                                            }
+                                            title={ t("extensions:develop.branding.tabs.preview."
+                                                + "info.layout.activatedMessage.title") }
+                                        />
+                                        <PrimaryButton
+                                            className="floating-editor-button"
+                                            onClick={ () => setCustomLayoutMode(true) }
+                                        >
+                                            Create
+                                        </PrimaryButton>
+                                    </div>
+                                ) : resolvePreviewScreen()
+                        )
+                    ) : (
+                        <ContentLoader data-componentid={ `${componentId}-loader` } />
+                    )
                 }
             </Iframe>
         </div>
