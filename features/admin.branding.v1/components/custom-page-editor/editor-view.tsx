@@ -35,7 +35,7 @@ interface EditorViewTabsProps {
         css: string;
         js: string;
     }) => void;
-    "data-testid"?: string;
+    "data-componentid"?: string;
 }
 
 export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = (
@@ -47,7 +47,7 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = (
         js,
         readOnly,
         onContentUpdate,
-        "data-testid": testId = "layout-editor-tabs"
+        "data-componentid": componentId = "layout-editor-tabs"
     } = props;
 
     const htmlContent: React.MutableRefObject<string> = useRef<string>(html);
@@ -83,7 +83,7 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = (
                 {
                     menuItem: "HTML",
                     render: () => (
-                        <ResourceTab.Pane attached = { false } data-testid={ `${ testId }-html-tab` }>
+                        <ResourceTab.Pane attached = { false } data-componentid={ `${ componentId }-html-tab` }>
                             <CodeEditor
                                 language = "htmlmixed"
                                 sourceCode = { html }
@@ -98,7 +98,7 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = (
                                 }) }
                                 readOnly = { readOnly }
                                 theme = "light"
-                                data-testid = { `${ testId }-html-editor` }
+                                data-componentid = { `${ componentId }-html-editor` }
                             />
                         </ResourceTab.Pane>
                     )
@@ -106,7 +106,7 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = (
                 {
                     menuItem: "CSS",
                     render: () => (
-                        <ResourceTab.Pane attached = { false } data-testid = { `${ testId }-css-tab` }>
+                        <ResourceTab.Pane attached = { false } data-componentid = { `${ componentId }-css-tab` }>
                             <CodeEditor
                                 language = "css"
                                 sourceCode = { css }
@@ -121,7 +121,7 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = (
                                 }) }
                                 readOnly = { readOnly }
                                 theme = "light"
-                                data-testid = { `${ testId }-css-editor` }
+                                data-componentid = { `${ componentId }-css-editor` }
                             />
                         </ResourceTab.Pane>
                     )
@@ -129,7 +129,7 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = (
                 {
                     menuItem: "JavaScript",
                     render: () => (
-                        <ResourceTab.Pane attached = { false } data-testid = { `${ testId }-js-tab` }>
+                        <ResourceTab.Pane attached = { false } data-componentid = { `${ componentId }-js-tab` }>
                             <CodeEditor
                                 language = "javascript"
                                 sourceCode = { js }
@@ -144,13 +144,13 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = (
                                 }) }
                                 readOnly = { readOnly }
                                 theme = "light"
-                                data-testid = { `${ testId }-js-editor` }
+                                data-componentid = { `${ componentId }-js-editor` }
                             />
                         </ResourceTab.Pane>
                     )
                 }
             ] }
-            data-testid = { `${ testId }-tabs` }
+            data-componentid = { `${ componentId }-tabs` }
         />
     );
 };
@@ -159,7 +159,7 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = (
  * Default props for the component.
  */
 EditorViewTabs.defaultProps = {
-    "data-testid" : "layout-editor-tabs",
+    "data-componentid" : "layout-editor-tabs",
     readOnly: false
 };
 

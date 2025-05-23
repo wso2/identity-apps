@@ -184,6 +184,14 @@ export interface BrandingPreferenceContextProps {
     * @param updatedContent - HTML, CSS, JS content.
     */
     updateBrandingCustomContent: (updatedContent: BrandingPreferenceCustomContentInterface) => void;
+    /**
+     * The custom branding layout editor mode.
+     */
+    customLayoutMode: boolean;
+    /**
+     * Sets the custom branding layout editor mode.
+     */
+    setCustomLayoutMode: (mode: boolean) => void;
 }
 
 /**

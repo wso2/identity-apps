@@ -115,6 +115,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     const [ isCustomTextPreferenceConfigured, setIsCustomTextPreferenceConfigured ] = useState<boolean>(true);
     const [ selectedApplication, setSelectedApplication ] = useState<string>(null);
     const [ brandingMode, setBrandingMode ] = useState<BrandingModes>(BrandingModes.ORGANIZATION);
+    const [ customLayoutMode, setCustomLayoutMode ] = useState<boolean>(false);
 
     const resolvedName: string = (brandingMode === BrandingModes.APPLICATION && selectedApplication)
         ? selectedApplication : tenantDomain;
@@ -480,6 +481,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 activeCustomTextConfigurationMode,
                 activeTab,
                 brandingMode,
+                customLayoutMode,
                 customText: customTextFormSubscription?.values ?? resolvedCustomText?.preference?.text,
                 customTextDefaults: customTextFallbacks?.preference?.text,
                 customTextFormSubscription: customTextFormSubscription ?? {
@@ -554,6 +556,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 selectedScreen,
                 selectedScreenVariation,
                 setBrandingMode,
+                setCustomLayoutMode,
                 setSelectedApplication,
                 updateActiveCustomTextConfigurationMode: setActiveCustomTextConfigurationMode,
                 updateActiveTab: (tab: string) => {

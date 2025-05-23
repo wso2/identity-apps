@@ -36,6 +36,7 @@ import React, {
     FunctionComponent,
     MutableRefObject,
     ReactElement,
+    useContext,
     useEffect,
     useRef,
     useState
@@ -52,6 +53,7 @@ import { ReactComponent as CustomLayoutWarningImg } from
     "../../../themes/wso2is/assets/images/branding/custom-layout-warning.svg";
 import { useLayout, useLayoutStyle } from "../../api/layout";
 import { usePreviewContent, usePreviewStyle } from "../../api/preview-skeletons";
+import BrandingPreferenceContext from "../../context/branding-preference-context";
 import { BrandingPreferenceMeta } from "../../meta/branding-preference-meta";
 import { LAYOUT_DATA, PredefinedLayouts } from "../../meta/layouts";
 
@@ -75,14 +77,6 @@ interface BrandingPreferencePreviewInterface extends IdentifiableComponentInterf
      * On preview resize callback.
      */
     onPreviewResize: (width: number) => void;
-    /**
-     * Custom Layout Mode.
-     */
-    customLayoutMode?: boolean;
-    /**
-     * Set custom layout mode.
-     */
-    setCustomLayoutMode?: (value: boolean) => void;
 }
 
 /**
@@ -96,19 +90,19 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
     props: BrandingPreferencePreviewInterface
 ): ReactElement => {
 
-    const isLayoutCustomizationDisabled: boolean = useSelector((state: AppState) => {
-        return state?.config?.ui?.features?.branding?.disabledFeatures
-            ?.includes("branding.stylesAndText.customLayoutConfig");
-    });
+    // const isLayoutCustomizationDisabled: boolean = useSelector((state: AppState) => {
+    //     return state?.config?.ui?.features?.branding?.disabledFeatures
+    //         ?.includes("branding.stylesAndText.customLayoutConfig");
+    // });
+
+    const isLayoutCustomizationDisabled: boolean = false;
 
     const {
         ["data-componentid"]: componentId,
         brandingPreference,
         isLoading,
         screenType,
-        onPreviewResize,
-        customLayoutMode,
-        setCustomLayoutMode
+        onPreviewResize
     } = props;
 
     const { t } = useTranslation();
@@ -126,6 +120,8 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
     const [ layoutContext, setLayoutContext ] = useState<string[]>([ "", "", "", "", "", "" ]);
     const [ isLayoutResolving, setIsLayoutResolving ] = useState<boolean>(true);
     const [ isErrorOccured, setIsErrorOccured ] = useState<boolean>(false);
+
+    const { setCustomLayoutMode } = useContext(BrandingPreferenceContext);
 
     const {
         data: layoutBlob,
@@ -507,7 +503,7 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
                                         />
                                         <PrimaryButton
                                             className="floating-editor-button"
-                                            onClick={ () => setCustomLayoutMode(!customLayoutMode) }
+                                            onClick={ () => setCustomLayoutMode(true) }
                                         >
                                             Create
                                         </PrimaryButton>

@@ -32,21 +32,9 @@ import { Segment } from "semantic-ui-react";
 import { EditorViewTabs } from "./custom-page-editor/editor-view";
 import { StickyTabPaneActionPanel } from "./sticky-tab-pane-action-panel";
 import BrandingPreferenceContext from "../context/branding-preference-context";
+import "./custom-page-editor.scss";
 
-interface CustomPageEditorPageLayoutPropsInterface {
-    /**
-     * The test id for the component.
-     */
-    "data-testid"?: string;
-    /**
-     * Custom Layout Mode.
-     */
-    customLayoutMode?: boolean;
-    /**
-     * Set custom layout mode.
-     */
-    setCustomLayoutMode?: (value: boolean) => void;
-}
+type CustomPageEditorPropsInterface = IdentifiableComponentInterface;
 
 interface RouteParams {
     templateTypeId: string;
@@ -59,7 +47,11 @@ interface UpdatedContent {
     js: string;
 }
 
-interface CustomPageEditorPageLayoutInterface extends IdentifiableComponentInterface{
+interface CustomPageEditorInterface extends IdentifiableComponentInterface{
+    /**
+     * Component id for the component.
+     */
+    "data-componentid": string;
     /**
      * Is the form is loading.
      */
@@ -74,19 +66,18 @@ interface CustomPageEditorPageLayoutInterface extends IdentifiableComponentInter
     readOnly: boolean;
 }
 
-const CustomPageEditorPageLayout: FunctionComponent<CustomPageEditorPageLayoutPropsInterface> = (
-    props: CustomPageEditorPageLayoutPropsInterface &
-    CustomPageEditorPageLayoutInterface & RouteComponentProps<RouteParams>
+const CustomPageEditorPageLayout: FunctionComponent<CustomPageEditorPropsInterface> = (
+    props: CustomPageEditorInterface & RouteComponentProps<RouteParams>
 ): ReactElement => {
 
     const {
-        [ "data-testid" ]: testId,
-        customLayoutMode,
-        setCustomLayoutMode
+        [ "data-componentid" ]: componentId
     } = props;
 
+    const { setCustomLayoutMode } = useContext(BrandingPreferenceContext);
+
     const handleBackButtonClick = (): void => {
-        setCustomLayoutMode(!customLayoutMode);
+        setCustomLayoutMode(false);
     };
 
     const { preference: brandingPreference } = useContext(BrandingPreferenceContext);
@@ -116,20 +107,17 @@ const CustomPageEditorPageLayout: FunctionComponent<CustomPageEditorPageLayoutPr
     };
 
     return (
-        <div>
+        <div className="custom-page-editor">
             <div
                 className = "back-button"
-                data-testid = "user-mgt-edit-user-back-button"
+                data-componentid = { `${ componentId }-back-button` }
                 onClick = { handleBackButtonClick }
-                style = { {
-                    cursor: "pointer"
-                } }
             >
                 <i aria-hidden="true" className="arrow left icon"></i>
                     Go back
             </div>
-            <div style = { { position: "relative" } }>
-                <Segment style = { { paddingBottom: "0", paddingLeft: "0", paddingRight: "0" } }>
+            <div className="main-container">
+                <Segment className="editor-container">
                     <EditorViewTabs
                         html = { html }
                         css = { css }
@@ -143,7 +131,7 @@ const CustomPageEditorPageLayout: FunctionComponent<CustomPageEditorPageLayoutPr
                     <StickyTabPaneActionPanel
                         formRef={ formRef }
                         saveButton={ {
-                            "data-testid": `${ testId }-save-button`,
+                            "data-componentid": `${ componentId }-save-button`,
                             isDisabled: false,
                             isLoading: false,
                             onClick: () => {
@@ -151,7 +139,7 @@ const CustomPageEditorPageLayout: FunctionComponent<CustomPageEditorPageLayoutPr
                             },
                             readOnly: false
                         } }
-                        data-componentid="sticky-tab-action-panel"
+                        data-componentid={ `${ componentId }-sticky-tab-action-panel` }
                     >
                     </StickyTabPaneActionPanel>
                 </Segment>
@@ -164,7 +152,7 @@ const CustomPageEditorPageLayout: FunctionComponent<CustomPageEditorPageLayoutPr
  * Default props for the component.
  */
 CustomPageEditorPageLayout.defaultProps = {
-    "data-testid": "layout-editor-page-layout"
+    "data-componentid": "custom-page-editor"
 };
 
 /**
