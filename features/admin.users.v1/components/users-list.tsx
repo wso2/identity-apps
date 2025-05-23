@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,20 +16,13 @@
  * under the License.
  */
 
-import { useRequiredScopes } from "@wso2is/access-control";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
-import { userConfig } from "@wso2is/admin.extensions.v1/configs/user";
-import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1";
-import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
-import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     LoadableComponentInterface,
@@ -37,13 +30,11 @@ import {
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { CommonUtils } from "@wso2is/core/utils";
 import {
     ConfirmationModal,
     DataTable,
     EmptyPlaceholder,
     LinkButton,
-    Popup,
     TableActionsInterface,
     TableColumnInterface,
     UserAvatar
@@ -52,19 +43,11 @@ import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Header, Icon, Label, ListItemProps, SemanticICONS } from "semantic-ui-react";
-import {
-    ReactComponent as RemoveCircleSolidIcon
-} from "../../themes/default/assets/images/icons/solid-icons/remove-circle.svg";
-import {
-    ReactComponent as RoundedLockSolidIcon
-} from "../../themes/default/assets/images/icons/solid-icons/rounded-lock.svg";
+import { Header, ListItemProps, SemanticICONS } from "semantic-ui-react";
 import { deleteUser } from "../api";
-import { ACCOUNT_LOCK_REASON_MAP, UserManagementConstants, UserSharedType } from "../constants";
-import { UserBasicInterface, UserListInterface } from "../models/user";
-import { UserManagementUtils } from "../utils/user-management-utils";
+import { UserBasicInterface } from "../models/user";
 
 /**
  * Prop types for the liked accounts component.
@@ -130,7 +113,7 @@ interface UsersListProps extends SBACInterface<FeatureConfigInterface>, Loadable
     /**
      * Users list.
      */
-    usersList: UserListInterface;
+    usersList: any;
     /**
      * Indicates whether the currently selected user store is read-only or not.
      */
@@ -149,15 +132,11 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         defaultListItemLimit,
         onUserDelete,
         isLoading,
-        featureConfig,
         onColumnSelectionChange,
         onListItemClick,
         onSearchQueryClear,
         searchQuery,
         selection,
-        showListItemActions,
-        showMetaContent,
-        userMetaListContent,
         usersList,
         isReadOnlyUserStore,
         [ "data-testid" ]: testId
@@ -165,27 +144,10 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { isSubOrganization } = useGetCurrentOrganizationType();
-
-    const { readOnlyUserStoreNamesList: readOnlyUserStores } = useUserStores();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface>(undefined);
     const [ loading, setLoading ] = useState(false);
-
-    const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
-    const isAuthUserPrivileged: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
-    const isUpdatingSharedProfilesEnabled: boolean = !featureConfig?.users?.disabledFeatures?.includes(
-        UserManagementConstants.FEATURE_DICTIONARY.get("USER_SHARED_PROFILES")
-    );
-
-    const hasUsersUpdatePermissions: boolean = useRequiredScopes(
-        featureConfig?.users?.scopes?.update
-    );
-
-    const hasUsersDeletePermissions: boolean = useRequiredScopes(
-        featureConfig?.users?.scopes?.delete
-    );
 
     const handleUserEdit = (userId: string) => {
         history.push(AppConstants.getPaths().get("USER_EDIT").replace(":id", userId));
@@ -231,88 +193,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             });
     };
 
-    const renderUserIdp = (user: UserBasicInterface): string => {
-        if (user[SCIMConfigs?.scim?.systemSchema]?.managedOrg) {
-            return UserManagementConstants.MANAGED_BY_PARENT_TEXT;
-        }
-
-        const userStore: string = user?.userName?.split("/").length > 1
-            ? user?.userName?.split("/")[0]?.toUpperCase()
-            : userstoresConfig.primaryUserstoreName;
-
-        const userIdp: string = user[ SCIMConfigs.scim.systemSchema ]?.idpType;
-
-        if (!userIdp) {
-            return "N/A";
-        }
-
-        if (userIdp.split("/").length > 1) {
-            if (readOnlyUserStores?.includes(userStore.toString())) {
-                // For remote userstores.
-                return userIdp.split("/")[1] + "-remote";
-            } else {
-                // For default userstore.
-                return userIdp.split("/")[1];
-            }
-        } else {
-            return userIdp;
-        }
-    };
-
-    /**
-     * Returns a locked icon if the account is locked.
-     * Returns a cross icon if the account is disabled.
-     *
-     * @param user - each admin user belonging to a row of the table.
-     * @returns the locked icon.
-     */
-    const resolveAccountStatus = (user: UserBasicInterface): ReactNode => {
-        const accountLocked: boolean = user[userConfig.userProfileSchema]?.accountLocked === "true" ||
-            user[userConfig.userProfileSchema]?.accountLocked === true;
-        const accountDisabled: boolean = user[userConfig.userProfileSchema]?.accountDisabled === "true" ||
-            user[userConfig.userProfileSchema]?.accountDisabled === true;
-        const accountLockedReason: string = user[userConfig.userProfileSchema]?.lockedReason;
-
-        const accountLockedReasonContent: string = ACCOUNT_LOCK_REASON_MAP[accountLockedReason]
-            ?? ACCOUNT_LOCK_REASON_MAP["DEFAULT"];
-
-        if (accountDisabled) {
-            return (
-                <Popup
-                    trigger={ (
-                        <Icon
-                            className="disabled-icon"
-                            size="small"
-                        >
-                            <RemoveCircleSolidIcon/>
-                        </Icon>
-                    ) }
-                    content={ t("user:profile.accountDisabled") }
-                    inverted
-                />
-            );
-        }
-
-        if (accountLocked) {
-            return (
-                <Popup
-                    trigger={ (
-                        <Icon
-                            className="locked-icon"
-                            size="small"
-                        >
-                            <RoundedLockSolidIcon/>
-                        </Icon>
-                    ) }
-                    content={ t(accountLockedReasonContent) }
-                    inverted
-                />
-            );
-        }
-
-        return null;
-    };
-
     /**
      * Resolves data table columns.
      *
@@ -322,14 +202,13 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         const defaultColumns: TableColumnInterface[] = [
             {
                 allowToggleVisibility: false,
-                dataIndex: "name",
-                id: "name",
-                key: "name",
-                render: (user: UserBasicInterface): ReactNode => {
-                    const header: string = getUserNameWithoutDomain(user?.userName);
-                    const subHeader: string = UserManagementUtils.resolveUserListSubheader(user);
-                    const isNameAvailable: boolean = user.name?.familyName === undefined &&
-                        user.name?.givenName === undefined;
+                dataIndex: "id",
+                id: "id",
+                key: "id",
+                render: (user: any): ReactNode => {
+                    const header: string = user?.attributes?.username ?? user?.id;
+                    const firstName: string = user?.attributes?.name?.givenname;
+                    const givenName: string = user?.attributes?.name?.lastname;
 
                     return (
                         <Header
@@ -340,32 +219,22 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         >
                             <UserAvatar
                                 data-componentid="users-list-item-image"
-                                name={ UserManagementUtils.resolveAvatarUsername(user) }
+                                name={ user?.id }
                                 size="mini"
                                 image={ user.profileUrl }
                                 spaced="right"
                                 data-suppress=""
                             />
-                            { resolveAccountStatus(user) }
                             <Header.Content className="pl-0">
                                 <div>
                                     { header as ReactNode }
-                                    {
-                                        userConfig?.disableManagedByColumn
-                                            && user[SCIMConfigs?.scim?.systemSchema]?.managedOrg
-                                            && (
-                                                <Label size="mini" className="client-id-label">
-                                                    { t("parentOrgInvitations:invitedUserLabel") }
-                                                </Label>
-                                            )
-                                    }
                                 </div>
                                 {
-                                    (!isNameAvailable) &&
+                                    (!isEmpty(firstName) || !isEmpty(givenName)) &&
                                         (<Header.Subheader
                                             data-componentid={ `${ testId }-item-sub-heading` }
                                         >
-                                            { subHeader }
+                                            { `${ firstName && firstName } ${ givenName && givenName }` }
                                         </Header.Subheader>)
                                 }
                             </Header.Content>
@@ -375,37 +244,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 title: "User"
             }
         ];
-
-        !userConfig.disableManagedByColumn && defaultColumns.push(
-            {
-                allowToggleVisibility: false,
-                dataIndex: "idpType",
-                id: "idpType",
-                key: "idpType",
-                render: (user: UserBasicInterface): ReactNode => renderUserIdp(user),
-                title: (
-                    <>
-                        <div className={ "header-with-popup" }>
-                            <span>
-                                { t("extensions:manage.users.list.columns.idpType") }
-                            </span>
-                            <Popup
-                                trigger={ (
-                                    <div className="inline" >
-                                        <Icon disabled name="info circle" className="link pointing pl-1" />
-                                    </div>
-                                ) }
-                                content={ t("extensions:manage.users.list.popups.content.idpTypeContent") }
-                                position="top center"
-                                size="mini"
-                                hideOnScroll
-                                inverted
-                            />
-                        </div>
-                    </>
-                )
-            }
-        );
 
         defaultColumns.push(
             {
@@ -418,48 +256,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             }
         );
 
-        if (!showMetaContent || !userMetaListContent) {
-            return defaultColumns;
-        }
-
-        const dynamicColumns: TableColumnInterface[]= [];
-
-        for (const [ key, value ] of userMetaListContent.entries()) {
-            if (key === "name" || key === "emails" || key === "profileUrl" || value === "") {
-                continue;
-            }
-
-            let dynamicColumn: TableColumnInterface = {
-                allowToggleVisibility: true,
-                dataIndex: value,
-                id: key,
-                key: key,
-                title: value
-            };
-
-            if (key === "meta.lastModified") {
-                dynamicColumn = {
-                    ...dynamicColumn,
-                    render: (user: UserBasicInterface): ReactNode =>
-                        CommonUtils.humanizeDateDifference(user?.meta?.lastModified)
-                };
-            }
-
-            if(key === "userName") {
-                dynamicColumn = {
-                    ...dynamicColumn,
-                    render: (user: UserBasicInterface): ReactNode =>
-                        getUserNameWithoutDomain(user?.userName)
-                };
-            }
-
-            dynamicColumns.push(dynamicColumn);
-        }
-
-        dynamicColumns.unshift(defaultColumns[0]);
-        dynamicColumns.push(defaultColumns[1]);
-
-        return dynamicColumns;
+        return defaultColumns;
     };
 
     /**
@@ -468,69 +265,19 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
      * @returns Table actions.
      */
     const resolveTableActions = (): TableActionsInterface[] => {
-        if (!showListItemActions) {
-            return;
-        }
-
         const actions: TableActionsInterface[] = [
             {
                 "data-componentid": "users-list-item-edit-button",
-                "data-testid": "users-list-item-edit-button",
-                hidden: (): boolean => !isFeatureEnabled(featureConfig?.users,
-                    UserManagementConstants.FEATURE_DICTIONARY.get("USER_READ")),
-                icon: (user: UserBasicInterface): SemanticICONS => {
-                    const userStore: string = user?.userName?.split("/").length > 1
-                        ? user?.userName?.split("/")[0]
-                        : userstoresConfig.primaryUserstoreName;
-
-                    return !hasUsersUpdatePermissions
-                    || !isFeatureEnabled(featureConfig?.users,
-                        UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
-                    || readOnlyUserStores?.includes(userStore.toString())
-                    || (!isUpdatingSharedProfilesEnabled && user[SCIMConfigs.scim.systemSchema]?.managedOrg)
-                        ? "eye"
-                        : "pencil alternate";
-                },
+                icon: (): SemanticICONS => "pencil alternate",
                 onClick: (e: SyntheticEvent, user: UserBasicInterface): void =>
                     handleUserEdit(user?.id),
-                popupText: (user: UserBasicInterface): string => {
-                    const userStore: string = user?.userName?.split("/").length > 1
-                        ? user?.userName?.split("/")[0]
-                        : userstoresConfig.primaryUserstoreName;
-
-                    return !hasUsersUpdatePermissions
-                    || !isFeatureEnabled(featureConfig?.users,
-                        UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
-                    || readOnlyUserStores?.includes(userStore.toString())
-                    || (!isUpdatingSharedProfilesEnabled && user[SCIMConfigs.scim.systemSchema]?.managedOrg)
-                        ? t("common:view")
-                        : t("common:edit");
-                },
+                popupText: () => t("common:edit"),
                 renderer: "semantic-icon"
             }
         ];
 
         actions.push({
             "data-componentid": "users-list-item-delete-button",
-            "data-testid": "users-list-item-delete-button",
-            hidden: (user: UserBasicInterface): boolean => {
-                const userStore: string = user?.userName?.split("/").length > 1
-                    ? user?.userName?.split("/")[0]
-                    : userstoresConfig.primaryUserstoreName;
-
-                if (isSubOrganization()
-                        && user[SCIMConfigs?.scim?.systemSchema]?.sharedType
-                        && user[SCIMConfigs?.scim?.systemSchema]?.sharedType!=UserSharedType.INVITED
-                ) {
-                    return true;
-                }
-
-                return !isFeatureEnabled(featureConfig?.users,
-                    UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))
-                    || !hasUsersDeletePermissions
-                    || readOnlyUserStores?.includes(userStore.toString())
-                    || authenticatedUser === getUserNameWithoutDomain(user?.userName) && isAuthUserPrivileged;
-            },
             icon: (): SemanticICONS => "trash alternate",
             onClick: (e: SyntheticEvent, user: UserBasicInterface): void => {
                 setShowDeleteConfirmationModal(true);
@@ -611,7 +358,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 } }
                 actions={ resolveTableActions() }
                 columns={ resolveTableColumns() }
-                data={ usersList?.Resources }
+                data={ usersList }
                 onColumnSelectionChange={ onColumnSelectionChange }
                 onRowClick={ (e: SyntheticEvent, user: UserBasicInterface): void => {
                     handleUserEdit(user?.id);

@@ -35,6 +35,7 @@ import { organizationConfigs } from "@wso2is/admin.extensions.v1";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { OrganizationSwitchBreadcrumb } from "@wso2is/admin.organizations.v1/components/organization-switch";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
@@ -166,6 +167,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
      *  - the organization management feature is enabled by the backend
      *  - the user is logged in to a non-super-tenant account
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const isOrgSwitcherEnabled: boolean = useMemo(() => (
         isOrganizationManagementEnabled &&
         (organizationType === OrganizationType.SUPER_ORGANIZATION ||
@@ -407,7 +409,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                 showCollapsibleHamburger
                 onCollapsibleHamburgerClick={ onCollapsibleHamburgerClick }
                 position="fixed"
-                leftAlignedElements={ [ isOrgSwitcherEnabled ? <OrganizationSwitchBreadcrumb /> : null ] }
+                // leftAlignedElements={ [ isOrgSwitcherEnabled ? <OrganizationSwitchBreadcrumb /> : null ] }
                 rightAlignedElements={ generateHeaderButtons() }
                 userDropdownMenu={ {
                     actionIcon: <LogoutIcon />,
@@ -460,7 +462,10 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                 </MenuItem>
                             </Show>
                         ),
-                        <Show featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
+                        <Show
+                            key={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }
+                            featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }
+                        >
                             <Show
                                 when={ loginAndRegistrationFeatureConfig?.scopes?.update }
                                 featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }

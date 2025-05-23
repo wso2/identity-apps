@@ -502,3 +502,16 @@ export const USER_ACCOUNT_STATUS_FILTER_OPTIONS: DropdownChild[] = [
         value: "urn:scim:wso2:schema:accountState eq PENDING_AP"
     }
 ];
+
+export const hiddenSchemas: string[] = [
+    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT"),
+    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ACTIVE"),
+    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("GROUPS"),
+    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL"),
+    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED"),
+    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_DISABLED"),
+    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD"),
+    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PREFERRED_MFA_OPTION"),
+    "department",
+    "dateOfBirth"
+];
