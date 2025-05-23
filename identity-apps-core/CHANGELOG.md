@@ -1,5 +1,15 @@
 # @wso2is/identity-apps-core
 
+## 2.25.0
+
+### Minor Changes
+
+- [#8112](https://github.com/wso2/identity-apps/pull/8112) [`3aefb2449ac79bdddf9e6f74f31e293307abfcf2`](https://github.com/wso2/identity-apps/commit/3aefb2449ac79bdddf9e6f74f31e293307abfcf2) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce ReCaptcha support in the new dynamic registration portal
+
+### Patch Changes
+
+- [#8229](https://github.com/wso2/identity-apps/pull/8229) [`0d24dfd7c7ceeb04cafd1f98f0280bdf9d916b8c`](https://github.com/wso2/identity-apps/commit/0d24dfd7c7ceeb04cafd1f98f0280bdf9d916b8c) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce new error for invalid user inputs
+
 ## 2.24.10
 
 ### Patch Changes
