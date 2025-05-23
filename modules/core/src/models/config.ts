@@ -171,7 +171,7 @@ export interface TenantContextInterface {
      */
     enableTenantQualifiedUrls: boolean;
     /**
-     * Require super tenant in app URLs.
+     * Require super tenant in /app URLs.
      */
     requireSuperTenantInAppUrls: boolean;
     /**

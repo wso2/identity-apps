@@ -127,7 +127,6 @@ export class Config {
         }
     }
 
-
     /**
      * This method checks if tenant qualified URLs are enabled.
      *
