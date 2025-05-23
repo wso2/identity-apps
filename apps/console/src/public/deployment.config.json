@@ -185,7 +185,9 @@
     "i18nResourcePath": "",
     "idpConfigs": {
         "authorizeEndpointURL": "${serverOrigin}/oauth2/authorize",
-        "baseUrls": [],
+        "baseUrls": [
+            "https://localhost:8090"
+        ],
         "clockTolerance": 300,
         "enableOIDCSessionManagement": true,
         "logoutEndpointURL": "${serverOrigin}/oidc/logout",
@@ -227,7 +229,7 @@
         "appCopyright": "${copyright} ${year} WSO2 LLC.",
         "appFaviconPath": "/assets/images/branding/favicon.ico",
         "appLogoPath": "/assets/images/branding/logo.svg",
-        "appName": "Console",
+        "appName": "Thunder",
         "appTitle": "WSO2 Identity Server Console",
         "appWhiteLogoPath": "/assets/images/branding/logo-inverted.svg",
         "asyncOperationStatusPollingInterval": 5000,
@@ -245,7 +247,7 @@
         "features": {
             "accountLogin": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "update": [
@@ -255,7 +257,7 @@
             },
             "accountRecovery": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [],
@@ -273,7 +275,7 @@
             },
             "accountSecurity": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [],
@@ -294,7 +296,7 @@
                     "actions.types.list.preRegistration",
                     "actions.types.list.preUpdateProfile"
                 ],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [
                     {
                         "feature": "actions",
@@ -337,7 +339,7 @@
             },
             "adminAdvisoryBanner": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {}
             },
@@ -375,7 +377,7 @@
             },
             "analytics": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [],
@@ -393,7 +395,7 @@
             },
             "apiResources": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
@@ -428,7 +430,7 @@
                 "disabledFeatures": [
                     "applications.loginFlow.legacyEditor"
                 ],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [
                     {
                         "feature": "applications",
@@ -489,7 +491,7 @@
             },
             "attributeDialects": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
@@ -512,7 +514,7 @@
             },
             "attributeVerification": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [],
@@ -530,7 +532,7 @@
                 "disabledFeatures": [
                     "remote.log.publish"
                 ],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [
                     {
                         "feature": "remote.log.publish",
@@ -548,7 +550,7 @@
                     "branding.hostnameUrlBranding",
                     "branding.stylesAndText.application.text"
                 ],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [
                     {
                         "feature": "branding",
@@ -595,7 +597,7 @@
             },
             "bulkUserImport": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "fileImportTimeout": 90000,
                 "scopes": {
@@ -641,7 +643,7 @@
                     "consoleSettings.invitedExternalAdmins",
                     "consoleSettings.privilegedUsers"
                 ],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
@@ -670,7 +672,7 @@
             },
             "emailProviders": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
@@ -689,7 +691,7 @@
             },
             "emailTemplates": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
@@ -711,7 +713,7 @@
             },
             "eventPublishing": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
@@ -733,7 +735,7 @@
             },
             "gettingStarted": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "create": [
                         "internal_application_mgt_create",
@@ -754,7 +756,7 @@
             "governanceConnectors": {
                 "deprecatedFeaturesToShow": [],
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "create": [],
                     "delete": [],
@@ -773,7 +775,7 @@
             },
             "groups": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
@@ -799,7 +801,7 @@
             },
             "guestUser": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
@@ -819,7 +821,7 @@
             },
             "identityProviderGroups": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {}
             },
@@ -829,7 +831,7 @@
                     "identityProviders.saml.artifactBinding",
                     "identityProviders.saml.attributeConsumingServiceIndex"
                 ],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
@@ -853,7 +855,7 @@
                 }
             },
             "identityVerificationProviders": {
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
@@ -886,7 +888,7 @@
             },
             "internalNotificationSending": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [],
@@ -904,7 +906,7 @@
             },
             "loginAndRegistration": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [
                     {
                         "feature": "loginAndRegistration",
@@ -966,7 +968,7 @@
             },
             "notificationChannels": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
@@ -988,7 +990,7 @@
             },
             "oidcScopes": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
@@ -1011,7 +1013,7 @@
             },
             "organizationDiscovery": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
@@ -1038,7 +1040,7 @@
             },
             "organizations": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
@@ -1060,7 +1062,7 @@
             },
             "parentUserInvitation": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
@@ -1092,7 +1094,7 @@
             },
             "pushProviders": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [
                     {
                         "feature": "pushProviders",
@@ -1120,7 +1122,7 @@
              },
             "registrationFlowBuilder": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "create": [],
                     "delete": [],
@@ -1168,13 +1170,13 @@
             },
             "remoteLogging": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {}
             },
             "residentOutboundProvisioning": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [],
@@ -1193,7 +1195,7 @@
             },
             "ruleBasedPasswordExpiry": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [],
@@ -1213,7 +1215,7 @@
             },
             "saml2Configuration": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [],
@@ -1246,7 +1248,7 @@
             },
             "server": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [],
@@ -1264,7 +1266,7 @@
             },
             "sessionManagement": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [],
@@ -1277,7 +1279,7 @@
                 "disabledFeatures": [
                     "choreoAsSMSProvider"
                 ],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
@@ -1296,7 +1298,7 @@
             },
             "smsTemplates": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [
                     {
                         "feature": "smsTemplates",
@@ -1328,7 +1330,7 @@
                     "tenants.make.default",
                     "tenants.organizations.quick.nav.from.dropdown"
                 ],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
@@ -1347,7 +1349,7 @@
             },
             "tryIt": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
@@ -1371,7 +1373,7 @@
             },
             "userOnboarding": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [],
@@ -1389,7 +1391,7 @@
             },
             "userRoles": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [
                     {
                         "feature": "userRoles",
@@ -1424,7 +1426,7 @@
                 "disabledFeatures": [
                    "userStores.type.remote"
                 ],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
@@ -1446,7 +1448,7 @@
             },
             "userV1Roles": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
@@ -1503,7 +1505,7 @@
             },
             "wsFedConfiguration": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [],
@@ -1537,13 +1539,13 @@
         },
         "identityProviderTemplates": {
             "github": {
-                "enabled": true
+                "enabled": false
             },
             "hypr": {
-                "enabled": true
+                "enabled": false
             },
             "trustedTokenIssuer": {
-                "enabled": true
+                "enabled": false
             }
         },
         "isClaimUniquenessValidationEnabled": false,

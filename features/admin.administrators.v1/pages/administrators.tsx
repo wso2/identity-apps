@@ -43,10 +43,8 @@ import { useServerConfigs } from "@wso2is/admin.server-configurations.v1";
 import { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
 import { getAssociationType } from "@wso2is/admin.tenants.v1/utils/tenants";
 import { useInvitedUsersList, useUsersList } from "@wso2is/admin.users.v1/api";
-import { AddUserWizard } from "@wso2is/admin.users.v1/components/wizard/add-user-wizard";
 import {
     AdminAccountTypes,
-    UserAccountTypes,
     UserManagementConstants
 } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import {
@@ -1423,23 +1421,6 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                     />
                 );
             }
-
-            return (
-                <AddUserWizard
-                    data-componentid={ `${ componentId }-add-admin-wizard-modal` }
-                    closeWizard={ () => {
-                        setShowExtenalAdminWizard(false);
-                    } }
-                    listOffset={ listOffset }
-                    listItemLimit={ listItemLimit }
-                    updateList={ () => mutateGuestUserListFetchRequest() }
-                    rolesList={ [] }
-                    emailVerificationEnabled={ false }
-                    isAdminUser={ true }
-                    defaultUserTypeSelection={ UserAccountTypes.ADMINISTRATOR }
-                    onSuccessfulUserAddition={ () => null }
-                />
-            );
         }
 
         return null;

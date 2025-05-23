@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -32,7 +32,6 @@ import { UserManagementConstants } from "../constants";
 import { SCIMBulkEndpointInterface } from "../models/endpoints";
 import {
     ResendCodeRequestData,
-    UserDetailsInterface,
     UserListInterface,
     UserSessionsInterface
 } from "../models/user";
@@ -136,6 +135,8 @@ export const useUsersList = (
     };
 };
 
+const usersEndpoint: string = "https://localhost:8090/users";
+
 /**
  * Add new user.
  *
@@ -144,15 +145,14 @@ export const useUsersList = (
  * @returns `Promise<any>` a promise containing the response.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const addUser = (data: UserDetailsInterface): Promise<any> => {
+export const addUser = (data: any): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config.endpoints.users
+        url: usersEndpoint
     };
 
     return httpClient(requestConfig)
@@ -200,11 +200,10 @@ export const addBulkUsers = (data: SCIMBulkEndpointInterface): Promise<any> => {
 export const deleteUser = (userId: string): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
-            "Content-Type": "application/scim+json"
+            "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: store.getState().config.endpoints.users + "/" + userId
+        url: "https://localhost:8090/users/" + userId
     };
 
     return httpClient(requestConfig)
@@ -320,11 +319,10 @@ export const updateUserInfo = (userId: string, data: PatchRoleDataInterface): Pr
     const requestConfig: RequestConfigInterface = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
-        method: HttpMethods.PATCH,
-        url: store.getState().config.endpoints.users + "/" + userId
+        method: HttpMethods.PUT,
+        url: `${usersEndpoint}/${userId}`
     };
 
     return httpClient(requestConfig)
