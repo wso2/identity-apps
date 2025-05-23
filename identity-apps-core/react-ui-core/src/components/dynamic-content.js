@@ -17,12 +17,37 @@
  */
 
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useMemo, useRef } from "react";
 import { Message } from "semantic-ui-react";
 import Field from "./field";
 import Form from "./form";
 
-const DynamicContent = ({ elements, handleFlowRequest, error }) => {
+const DynamicContent = ({ contentData, handleFlowRequest, error }) => {
+    const recaptchaRef = useRef(null);
+
+    const captchaNode = useMemo(() => contentData.components.find(el => el.type === "CAPTCHA"),
+        [ contentData.components ]);
+
+    const isCaptchaEnabled = !!(
+        contentData.additionalData &&
+        contentData.additionalData.captchaEnabled &&
+        contentData.additionalData.captchaEnabled === "true"
+    );
+
+    const handleFlowExecution = async (actionId, formValues) => {
+        let finalValues = { ...formValues };
+
+        if (isCaptchaEnabled && captchaNode && recaptchaRef.current.ready) {
+            try {
+                const token = await recaptchaRef.current.execute();
+                finalValues = { ...finalValues, captchaResponse: token };
+            } catch (e) {
+                console.error("ReCAPTCHA failed", e);
+            }
+        }
+
+        return handleFlowRequest(actionId, finalValues);
+    };
 
     const renderForm = (form) => {
         if (!form) return null;
@@ -38,7 +63,8 @@ const DynamicContent = ({ elements, handleFlowRequest, error }) => {
                     <Form
                         key={ form.id }
                         formSchema={ form.components }
-                        onSubmit={ (action, formValues) => handleFlowRequest(action, formValues) }
+                        onSubmit={ (action, formValues) => handleFlowExecution(action, formValues) }
+                        recaptchaRef={ recaptchaRef }
                     />
                 </>
             );
@@ -52,18 +78,19 @@ const DynamicContent = ({ elements, handleFlowRequest, error }) => {
             <Field
                 key={ element.id }
                 component={ element }
-                flowActionHandler={ (action, formValues) => handleFlowRequest(action, formValues) }
+                flowActionHandler={ (action, formValues) => handleFlowExecution(action, formValues) }
+                recaptchaRef={ recaptchaRef }
             />
         );
     };
 
     const renderElements = () => {
-        return elements.map((element) => {
-            if (element.type === "FORM" && Array.isArray(element.components)) {
-                return renderForm(element);
+        return contentData.components && contentData.components.map((component) => {
+            if (component.type === "FORM" && Array.isArray(component.components)) {
+                return renderForm(component);
             }
 
-            return renderElement(element);
+            return renderElement(component);
         });
     };
 
@@ -71,7 +98,8 @@ const DynamicContent = ({ elements, handleFlowRequest, error }) => {
 };
 
 DynamicContent.propTypes = {
-    elements: PropTypes.array.isRequired,
+    contentData: PropTypes.object.isRequired,
+    error: PropTypes.string,
     handleFlowRequest: PropTypes.func.isRequired
 };
 
