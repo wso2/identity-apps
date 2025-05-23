@@ -35,6 +35,7 @@ class FlowBuilderElementConstants {
 
     public static readonly PASSWORD_IDENTIFIER: string = "password";
     public static readonly CONFIRM_PASSWORD_IDENTIFIER: string = "confirmPassword";
+    public static readonly DEFAULT_CAPTCHA_PROVIDER: string = "ReCAPTCHA V2";
 }
 
 export default FlowBuilderElementConstants;
