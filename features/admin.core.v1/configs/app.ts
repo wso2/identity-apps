@@ -82,6 +82,11 @@ export class Config {
      * @returns Server host.
      */
     public static resolveServerHost(enforceOrgPath?: boolean, skipAuthzRuntimePath?: boolean): string {
+        // If tenant qualified URLs are disabled, return the server origin.
+        if (!this.isTenantQualifiedURLsEnabled()) {
+            return this.getDeploymentConfig()?.serverOrigin;
+        }
+
         const serverOriginWithTenant: string = window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
 
         if (skipAuthzRuntimePath && serverOriginWithTenant?.slice(-2) === "/o") {
@@ -107,6 +112,28 @@ export class Config {
                 window[ "AppUtils" ]?.getConfig()?.serverOrigin }/t/${ store.getState().organization.organization.id
             }`;
         }
+    }
+
+    /**
+     * This method directly returns the server host read from the deployment config.
+     *
+     * @returns server host.
+     */
+    public static resolveServerHostFromConfig() {
+        if (this.isTenantQualifiedURLsEnabled()) {
+            return this.getDeploymentConfig()?.serverOrigin;
+        } else {
+            return this.getDeploymentConfig()?.serverHost;
+        }
+    }
+
+    /**
+     * This method checks if tenant qualified URLs are enabled.
+     *
+     * @returns true if tenant qualified URLs are enabled.
+     */
+    private static isTenantQualifiedURLsEnabled() {
+        return this.getDeploymentConfig()?.tenantContext?.enableTenantQualifiedUrls;
     }
 
     /**
@@ -141,6 +168,7 @@ export class Config {
             serverOrigin: window[ "AppUtils" ]?.getConfig()?.serverOrigin,
             superTenant: window[ "AppUtils" ]?.getConfig()?.superTenant,
             tenant: window[ "AppUtils" ]?.getConfig()?.tenant,
+            tenantContext: window[ "AppUtils" ]?.getConfig()?.tenantContext,
             tenantPath: window[ "AppUtils" ]?.getConfig()?.tenantPath,
             tenantPrefix: window[ "AppUtils" ]?.getConfig()?.tenantPrefix
         };
@@ -264,27 +292,27 @@ export class Config {
             ...getAPIResourceEndpoints(this.resolveServerHost()),
             ...getAdministratorsResourceEndpoints(this.resolveServerHost()),
             ...getApplicationsResourceEndpoints(this.resolveServerHost()),
-            ...getApprovalsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
+            ...getApprovalsResourceEndpoints(this.resolveServerHostFromConfig()),
             ...getBrandingResourceEndpoints(this.resolveServerHost()),
-            ...getClaimResourceEndpoints(this.getDeploymentConfig()?.serverHost, this.resolveServerHost()),
-            ...getCertificatesResourceEndpoints(this.getDeploymentConfig()?.serverHost),
+            ...getClaimResourceEndpoints(this.resolveServerHostFromConfig(), this.resolveServerHost()),
+            ...getCertificatesResourceEndpoints(this.resolveServerHostFromConfig()),
             ...getIDVPResourceEndpoints(this.resolveServerHost()),
             ...getEmailTemplatesResourceEndpoints(this.resolveServerHost()),
             ...getConnectionResourceEndpoints(this.resolveServerHost()),
-            ...getRolesResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig().serverHost),
+            ...getRolesResourceEndpoints(this.resolveServerHost(), this.resolveServerHostFromConfig()),
             ...getServerConfigurationsResourceEndpoints(this.resolveServerHost()),
             ...getUsersResourceEndpoints(this.resolveServerHost()),
             ...getUserstoreResourceEndpoints(this.resolveServerHost()),
-            ...getScopesResourceEndpoints(this.getDeploymentConfig()?.serverHost),
+            ...getScopesResourceEndpoints(this.resolveServerHostFromConfig()),
             ...getGroupsResourceEndpoints(this.resolveServerHost()),
             ...getValidationServiceEndpoints(this.resolveServerHost()),
-            ...getRemoteFetchConfigResourceEndpoints(this.getDeploymentConfig()?.serverHost),
-            ...getSecretsManagementEndpoints(this.getDeploymentConfig()?.serverHost),
+            ...getRemoteFetchConfigResourceEndpoints(this.resolveServerHostFromConfig()),
+            ...getSecretsManagementEndpoints(this.resolveServerHostFromConfig()),
             ...getExtendedFeatureResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig()),
-            ...getOrganizationsResourceEndpoints(this.resolveServerHost(true), this.getDeploymentConfig().serverHost),
+            ...getOrganizationsResourceEndpoints(this.resolveServerHost(true), this.resolveServerHostFromConfig()),
             ...getTenantResourceEndpoints(this.getDeploymentConfig().serverOrigin),
             ...getFeatureGateResourceEndpoints(this.resolveServerHostforFG(false)),
-            ...getInsightsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
+            ...getInsightsResourceEndpoints(this.resolveServerHostFromConfig()),
             ...getExtensionTemplatesEndpoints(this.resolveServerHost()),
             ...getApplicationTemplatesResourcesEndpoints(this.resolveServerHost()),
             ...getActionsResourceEndpoints(this.resolveServerHost()),
@@ -295,7 +323,7 @@ export class Config {
             ...getPushProviderTemplateEndpoints(this.resolveServerHost()),
             ...getRemoteLoggingEndpoints(this.resolveServerHost()),
             ...getRegistrationFlowBuilderResourceEndpoints(this.resolveServerHost()),
-            CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,
+            CORSOrigins: `${ this.resolveServerHostFromConfig() }/api/server/v1/cors/origins`,
             asyncStatus: `${ this.resolveServerHost(false, true) }/api/server/v1/async-operations`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,

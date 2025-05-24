@@ -63,6 +63,7 @@ export class Config {
             serverOrigin: window["AppUtils"]?.getConfig()?.serverOrigin,
             superTenant: window["AppUtils"]?.getConfig()?.superTenant,
             tenant: window["AppUtils"]?.getConfig()?.tenant,
+            tenantContext: window["AppUtils"]?.getConfig()?.tenantContext,
             tenantPath: window["AppUtils"]?.getConfig()?.tenantPath,
             tenantPrefix: window["AppUtils"]?.getConfig()?.tenantPrefix
         };
