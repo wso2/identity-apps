@@ -1099,11 +1099,19 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         } }
                         emailVerificationEnabled={ emailVerificationEnabled }
                         onSuccessfulUserAddition={ (id: string) => {
+                            if (!id) {
+                                history.push(AppConstants.getPaths().get("USERS"));
+
+                                return;
+                            }
+
                             mutateParentOrgUserInviteList();
                             mutateUserListFetchRequest();
                             eventPublisher.publish("manage-users-finish-creating-user");
-                            history.push(AppConstants.getPaths().get("USER_EDIT").replace(":id", id));
+
+                            history.push(AppConstants.getPaths().get("USER_EDIT")?.replace(":id", id));
                         } }
+
                         defaultUserTypeSelection={ selectedAddUserType }
                         userTypeSelection={ userType }
                         listOffset={ listOffset }
