@@ -278,6 +278,7 @@ const useSignIn = (): UseSignInInterface => {
 
         const orgIdIdToken: string = idToken.org_id;
         const orgName: string = idToken.org_name;
+        const orgHandle: string = idToken.org_handle;
         const userOrganizationId: string = idToken.user_org;
         const tenantDomainFromSubject: string = CommonAuthenticateUtils.deriveTenantDomainFromSubject(
             response.sub
@@ -345,6 +346,7 @@ const useSignIn = (): UseSignInInterface => {
                     id: orgId,
                     lastModified: new Date().toString(),
                     name: orgName,
+                    orgHandle: orgHandle,
                     parent: {
                         id: "",
                         ref: ""
