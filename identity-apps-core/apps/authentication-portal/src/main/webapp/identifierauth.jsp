@@ -201,14 +201,6 @@
                     userName.value = sanitizedUsername.toLowerCase();
                 }
 
-                var genericReCaptchaEnabled = "<%=genericReCaptchaEnabled%>";
-                if (genericReCaptchaEnabled === "true") {
-                    if (!grecaptcha.getResponse()) {
-                        grecaptcha.execute();
-                        return;
-                    }
-                }
-
                 if (username.value) {
                     trackEvent("authentication-portal-identifierauth-click-continue", {
                         "app": insightsAppIdentifier,
@@ -284,7 +276,7 @@
     <div class="field">
      <% if (StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT) &&
         Boolean.parseBoolean(request.getParameter(IS_SAAS_APP))) { %>
-        
+
             <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "email")%></label>
             <div class="ui fluid left icon input">
                 <input
@@ -334,7 +326,7 @@
     <% } %>
     </div>
     <%
-    if (genericReCaptchaEnabled) { 
+    if (genericReCaptchaEnabled) {
         String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
     %>
         <div class="field">
@@ -342,7 +334,8 @@
                 data-size="invisible"
                 data-callback="onCompleted"
                 data-action="login"
-                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>">
+                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                data-bind="identifier-auth-continue-button">
             </div>
         </div>
     <% } %>
