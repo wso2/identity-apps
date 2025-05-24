@@ -251,7 +251,7 @@ export const AdvancedConfigurationsFinalForm: FunctionComponent<AdvancedConfigur
                                 component={ CheckboxFieldAdapter }
                                 label={ t("applications:forms.advancedConfig.fields.skipConsentLogin" + ".label") }
                                 required={ false }
-                                value={ config?.skipLoginConsent ? [ "skipLoginConsent" ] : [] }
+                                value={ config?.skipLoginConsent }
                                 readOnly={ readOnly }
                                 data-testid={ `${testId}-skip-login-consent-checkbox` }
                                 data-componentid={ `${testId}-skip-login-consent-checkbox` }
@@ -269,7 +269,7 @@ export const AdvancedConfigurationsFinalForm: FunctionComponent<AdvancedConfigur
                                     label={ t("applications:forms.advancedConfig.fields" + ".skipConsentLogout.label") }
                                     component={ CheckboxFieldAdapter }
                                     required={ false }
-                                    value={ config?.skipLogoutConsent ? [ "skipLogoutConsent" ] : [] }
+                                    value={ config?.skipLogoutConsent }
                                     readOnly={ readOnly }
                                     data-testid={ `${testId}-skip-logout-consent-checkbox` }
                                     data-componentid={ `${testId}-skip-logout-consent-checkbox` }
@@ -292,7 +292,7 @@ export const AdvancedConfigurationsFinalForm: FunctionComponent<AdvancedConfigur
                                 }
                                 required={ false }
                                 component={ CheckboxFieldAdapter }
-                                value={ config?.returnAuthenticatedIdpList ? [ "returnAuthenticatedIdpList" ] : [] }
+                                value={ config?.returnAuthenticatedIdpList }
                                 readOnly={ readOnly }
                                 data-testid={ `${testId}-return-authenticated-idp-list-checkbox` }
                                 data-componentid={ `${testId}-return-authenticated-idp-list-checkbox` }
@@ -308,27 +308,31 @@ export const AdvancedConfigurationsFinalForm: FunctionComponent<AdvancedConfigur
                                     </Hint>)
                                 }
                             />
-                            <FinalFormField
-                                ariaLabel="Enable authorization"
-                                name="enableAuthorization"
-                                label={ t("applications:forms.advancedConfig.fields.enableAuthorization.label") }
-                                component={ CheckboxFieldAdapter }
-                                required={ false }
-                                value={ config?.enableAuthorization }
-                                readOnly={ readOnly }
-                                data-testid={ `${testId}-enable-authorization-checkbox` }
-                                data-componentid={ `${testId}-enable-authorization-checkbox` }
-                                hidden={
-                                    !applicationConfig.advancedConfigurations.showEnableAuthorization ||
-                                    !UIConfig?.isXacmlConnectorEnabled
-                                }
-                                hint={ (
-                                    <Hint className="hint" compact>
-                                        { t("applications:forms.advancedConfig.fields.enableAuthorization.hint") }
-                                    </Hint>
-                                ) }
-                            />
 
+                            {
+                                applicationConfig.advancedConfigurations.showEnableAuthorization ||
+                                UIConfig?.isXacmlConnectorEnabled && (
+                                    <FinalFormField
+                                        ariaLabel="Enable authorization"
+                                        name="enableAuthorization"
+                                        label={
+                                            t("applications:forms.advancedConfig.fields.enableAuthorization.label")
+                                        }
+                                        component={ CheckboxFieldAdapter }
+                                        required={ false }
+                                        value={ config?.enableAuthorization }
+                                        readOnly={ readOnly }
+                                        data-testid={ `${testId}-enable-authorization-checkbox` }
+                                        data-componentid={ `${testId}-enable-authorization-checkbox` }
+                                        hint={ (
+                                            <Hint className="hint" compact>
+                                                { t("applications:forms.advancedConfig.fields." +
+                                                    "enableAuthorization.hint") }
+                                            </Hint>
+                                        ) }
+                                    />
+                                )
+                            }
                             { isApplicationNativeAuthenticationEnabled &&
                                 (template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
                                     template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
@@ -358,11 +362,7 @@ export const AdvancedConfigurationsFinalForm: FunctionComponent<AdvancedConfigur
                                                 ) }
                                                 required={ false }
                                                 readOnly={ readOnly }
-                                                value={
-                                                    isEnableAPIBasedAuthentication
-                                                        ? [ "enableAPIBasedAuthentication" ]
-                                                        : []
-                                                }
+                                                value={ isEnableAPIBasedAuthentication }
                                                 listen={ handleEnableAPIBasedAuthentication }
                                                 data-testid={ `${testId}-enable-api-based-authentication` }
                                                 data-componentid={ `${testId}-enable-api-based-authentication` }
@@ -371,11 +371,13 @@ export const AdvancedConfigurationsFinalForm: FunctionComponent<AdvancedConfigur
                                                         .showEnableAuthorization
                                                 }
                                                 hint={
-                                                    t(
-                                                        "applications:forms.advancedConfig." +
-                                                            "sections.applicationNativeAuthentication.fields." +
-                                                            "enableAPIBasedAuthentication.hint"
-                                                    )
+                                                    (<Hint className="hint" compact>
+                                                        { t(
+                                                            "applications:forms.advancedConfig." +
+                                                                "sections.applicationNativeAuthentication.fields." +
+                                                                "enableAPIBasedAuthentication.hint"
+                                                        ) }
+                                                    </Hint>)
                                                 }
                                             />
                                         </Grid.Column>
@@ -421,8 +423,6 @@ export const AdvancedConfigurationsFinalForm: FunctionComponent<AdvancedConfigur
                                                 readOnly={ readOnly }
                                                 value={
                                                     config?.attestationMetaData?.enableClientAttestation
-                                                        ? [ "enableClientAttestation" ]
-                                                        : []
                                                 }
                                                 listen={ setIsEnableClientAttestation }
                                                 data-testid={ `${testId}-enable-client-attestation` }
@@ -479,16 +479,13 @@ export const AdvancedConfigurationsFinalForm: FunctionComponent<AdvancedConfigur
                                                 ) }
                                                 value={
                                                     config?.attestationMetaData
-                                                        ?.androidAttestationServiceCredentials
-                                                        ? [
-                                                            JSON.stringify(
-                                                                config?.attestationMetaData
-                                                                    ?.androidAttestationServiceCredentials,
-                                                                null,
-                                                                4
-                                                            )
-                                                        ]
-                                                        : []
+                                                        ?.androidAttestationServiceCredentials ?
+
+                                                        JSON.stringify(
+                                                            config?.
+                                                                attestationMetaData?.
+                                                                androidAttestationServiceCredentials,
+                                                            null, 4) :  null
                                                 }
                                                 hint={ t(
                                                     "applications:forms." +
@@ -542,7 +539,7 @@ export const AdvancedConfigurationsFinalForm: FunctionComponent<AdvancedConfigur
                                                 readOnly={ readOnly }
                                                 checked={ isFIDOTrustedAppsEnabled }
                                                 component={ CheckboxFieldAdapter }
-                                                value={ isFIDOTrustedAppsEnabled ? [ "isFIDOTrustedApp" ] : [] }
+                                                value={ isFIDOTrustedAppsEnabled }
                                                 listen={ handleFIDOActivation }
                                                 data-componentid={ `${componentId}-enable-fido-trusted-apps` }
                                                 hint={
@@ -664,7 +661,7 @@ export const AdvancedConfigurationsFinalForm: FunctionComponent<AdvancedConfigur
                                                 data-componentid={
                                                     `${componentId}-platform-settings-android-package-name`
                                                 }
-                                                disabled={ isPlatformSettingsUiDisabled }
+                                                disabled={ isPlatformSettingsUiDisabled || !isFIDOTrustedAppsEnabled }
                                             />
                                             <Hint disabled={ isPlatformSettingsUiDisabled }>
                                                 { t(
@@ -779,7 +776,7 @@ export const AdvancedConfigurationsFinalForm: FunctionComponent<AdvancedConfigur
                                                 minLength={ 3 }
                                                 width={ 16 }
                                                 data-componentid={ `${componentId}-platform-settings-apple-app-id` }
-                                                disabled={ isPlatformSettingsUiDisabled }
+                                                disabled={ isPlatformSettingsUiDisabled || !isFIDOTrustedAppsEnabled }
                                                 readOnly={ readOnly }
                                             />
                                             <Hint disabled={ isPlatformSettingsUiDisabled }>
@@ -794,9 +791,9 @@ export const AdvancedConfigurationsFinalForm: FunctionComponent<AdvancedConfigur
                             ) }
 
                             <PrimaryButton
-                                // size="small"
+                                size="small"
                                 ariaLabel="Update button"
-                                //name="update-button"
+                                name="update-button"
                                 data-testid={ `${testId}-submit-button` }
                                 data-componentid={ `${testId}-submit-button` }
                                 disabled={ isSubmitting }
