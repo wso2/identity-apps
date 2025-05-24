@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Property } from "./claim";
 import { RolesMemberInterface } from "./roles";
 
 /**
@@ -172,6 +173,10 @@ export interface ProfileSchemaInterface {
      * Name of the attribute.
      */
     name: string;
+    /**
+     * Available values for the attribute.
+     */
+    canonicalValues?: Property[];
     /**
      * Order to display.
      */
