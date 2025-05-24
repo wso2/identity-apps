@@ -2411,12 +2411,6 @@ export interface Extensions {
                     message: string,
                     content: string
                 }
-            },
-            dangerZone: {
-                heading: string;
-                message: string;
-                action: string;
-                actionDisabledHint: string;
             }
         };
     };
