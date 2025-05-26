@@ -85,6 +85,14 @@ const DynamicContent = ({ contentData, handleFlowRequest, error }) => {
     };
 
     const renderElements = () => {
+        if (!contentData || !contentData.components || contentData.components.length === 0) {
+            return (
+                <div className="content-container loading hidden">
+                    <div className="spinner"></div>
+                </div>
+            );
+        }
+
         return contentData.components && contentData.components.map((component) => {
             if (component.type === "FORM" && Array.isArray(component.components)) {
                 return renderForm(component);
