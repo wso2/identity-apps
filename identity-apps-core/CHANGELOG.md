@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.25.1
+
+### Patch Changes
+
+- [#8231](https://github.com/wso2/identity-apps/pull/8231) [`02d038ee919db50bb94b3aa5e16053c15596c58d`](https://github.com/wso2/identity-apps/commit/02d038ee919db50bb94b3aa5e16053c15596c58d) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix minor issue in registration portal
+
 ## 2.25.0
 
 ### Minor Changes
