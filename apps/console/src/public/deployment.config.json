@@ -1741,6 +1741,7 @@
         "theme": {
             "name": "wso2is"
         },
-        "useRoleClaimAsGroupClaim": false
+        "useRoleClaimAsGroupClaim": false,
+        "useSCIM2RoleAPIV3": true
     }
 }

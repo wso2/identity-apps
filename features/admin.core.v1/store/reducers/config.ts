@@ -314,6 +314,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 name: "",
                 path: "",
                 styleSheets: null
-            }
+            },
+            useSCIM2RoleAPIV3: undefined
         }
     };
