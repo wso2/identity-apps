@@ -235,6 +235,10 @@ export interface FeatureConfigInterface {
      */
     userRoles?: FeatureAccessConfigInterface;
     /**
+     * Entitlement configurations feature.
+     */
+    entitlement?: FeatureAccessConfigInterface;
+    /**
      * Secret Management Feature UI Access Scopes.
      */
     secretsManagement?: FeatureAccessConfigInterface;
@@ -552,6 +556,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Whether to consider the role claim as the group claim.
      */
     useRoleClaimAsGroupClaim?: boolean;
+    /**
+     * Whether to use the SCIM2 API v3 for user management.
+     */
+    useSCIM2RoleAPIV3?: boolean;
     /**
      * Feature configs related to governance connectors.
      */

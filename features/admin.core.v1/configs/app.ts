@@ -457,6 +457,7 @@ export class Config {
             termsOfUseUrl: window[ "AppUtils" ]?.getConfig()?.ui?.termsOfUseURL,
             theme: window[ "AppUtils" ]?.getConfig()?.ui?.theme,
             useRoleClaimAsGroupClaim: window[ "AppUtils" ]?.getConfig()?.ui?.useRoleClaimAsGroupClaim,
+            useSCIM2RoleAPIV3: window[ "AppUtils" ]?.getConfig()?.ui?.useSCIM2RoleAPIV3,
             userSchemaURI: window[ "AppUtils" ]?.getConfig()?.ui?.customUserSchemaURI
                 ?? ClaimManagementConstants.DEFAULT_SCIM2_CUSTOM_USER_SCHEMA_URI
         };
