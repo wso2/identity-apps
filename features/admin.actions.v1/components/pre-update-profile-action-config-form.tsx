@@ -228,7 +228,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
         }
 
         if (isCreateFormState) {
-            const actionValues: PreUpdateProfileActionInterface = pickBy( {
+            const actionValues: PreUpdateProfileActionInterface = {
                 attributes: userAttributeList,
                 endpoint: {
                     authentication: {
@@ -238,8 +238,8 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                     uri: values.endpointUri
                 },
                 name: values.name,
-                rule: payloadRule
-            });
+                rule: payloadRule ?? undefined
+            };
 
             setIsSubmitting(true);
             createAction(actionTypeApiPath, actionValues)

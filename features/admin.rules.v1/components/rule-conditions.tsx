@@ -391,9 +391,9 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         const [ resourceDetails, setResourceDetails ] = useState<ResourceInterface>(null);
         const [ inputValue, setInputValue ] = useState("");
         const [ claimList, setClaimList ] = useState<ValueInputAutocompleteOptionsInterface[]>([]);
+        const [ selectedValue, setSelectedValue ] = useState<string>(null);
         let valueReferenceAttribute: string = findMetaValuesAgainst?.value?.valueReferenceAttribute || "id";
         let valueDisplayAttribute: string = findMetaValuesAgainst?.value?.valueDisplayAttribute || "name";
-        const [ selectedValue, setSelectedValue ] = useState<string>(null);
 
         let resourceType: string;
         let shouldFetch: boolean = false;
