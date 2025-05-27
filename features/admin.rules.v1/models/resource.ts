@@ -26,6 +26,9 @@ export interface ResourceInterface {
     [key: string]: any;
 }
 
+/**
+ * Interface for the claim resource in rule.
+ */
 export interface ClaimResourceInterface {
     claimURI: string;
     displayName: string;

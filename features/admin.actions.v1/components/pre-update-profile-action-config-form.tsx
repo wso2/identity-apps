@@ -33,6 +33,7 @@ import {
     FormRenderProps } from "@wso2is/form";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";
+import pickBy from "lodash-es/pickBy";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -197,10 +198,8 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
 
         if (isHasRule) {
             payloadRule = rule;
-        } else {
-            if (!isCreateFormState && !rule) {
-                payloadRule = {};
-            }
+        } else if (!isCreateFormState && !rule) {
+            payloadRule = {};
         }
 
         const authProperties: Partial<AuthenticationPropertiesInterface> = {};
@@ -229,7 +228,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
         }
 
         if (isCreateFormState) {
-            const actionValues: PreUpdateProfileActionInterface = {
+            const actionValues: PreUpdateProfileActionInterface = pickBy( {
                 attributes: userAttributeList,
                 endpoint: {
                     authentication: {
@@ -239,8 +238,8 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                     uri: values.endpointUri
                 },
                 name: values.name,
-                ...(payloadRule !== null && { rule: payloadRule })
-            };
+                rule: payloadRule
+            });
 
             setIsSubmitting(true);
             createAction(actionTypeApiPath, actionValues)
@@ -255,7 +254,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                     setIsSubmitting(false);
                 });
         } else {
-            const updatingValues: PreUpdateProfileActionUpdateInterface = {
+            const updatingValues: PreUpdateProfileActionUpdateInterface = pickBy({
                 attributes: isUserAttributesChanged ? userAttributeList : undefined,
                 endpoint: isAuthenticationUpdateFormState || changedFields?.endpointUri ? {
                     authentication: isAuthenticationUpdateFormState ? {
@@ -265,8 +264,8 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                     uri: changedFields?.endpointUri ? values.endpointUri : undefined
                 } : undefined,
                 name: changedFields?.name ? values.name : undefined,
-                ...(payloadRule !== null && { rule: payloadRule })
-            };
+                rule: payloadRule
+            });
 
             setIsSubmitting(true);
             updateAction(actionTypeApiPath, initialValues.id, updatingValues)
