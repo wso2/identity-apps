@@ -20,6 +20,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
     DEFAULT_RECAPTCHA_SCRIPT_URL,
     DEFAULT_RECAPTCHA_SCRIPT_URL_PARAMS,
+    RECAPTCHA_ENTERPRISE_ID,
     RECAPTCHA_V2_SCRIPT_ID
 } from "../constants/captcha-constants";
 import { loadRecaptchaApi } from "../utils/captcha-utils";
@@ -42,7 +43,7 @@ const useReCaptcha = (recaptchaType, siteKey, reCaptchaScriptUrl) => {
             throw new Error("reCAPTCHA API not loaded");
         }
 
-        if (recaptchaType === "recaptcha-enterprise") {
+        if (recaptchaType === RECAPTCHA_ENTERPRISE_ID) {
             if (!window.grecaptcha.enterprise) {
                 throw new Error("reCAPTCHA Enterprise API not loaded");
             }
