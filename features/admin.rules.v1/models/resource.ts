@@ -26,6 +26,13 @@ export interface ResourceInterface {
     [key: string]: any;
 }
 
+export interface ClaimResourceInterface {
+    claimURI: string;
+    displayName: string;
+    isDisabled?: boolean;
+    [key: string]: any;
+}
+
 /**
  * Interface for the rule feature resource list.
  */

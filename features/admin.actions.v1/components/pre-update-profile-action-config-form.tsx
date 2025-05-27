@@ -24,7 +24,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
-import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
+import { RuleExecuteCollectionWithoutIdInterface, RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { RulesProvider } from "@wso2is/admin.rules.v1/providers/rules-provider";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -89,7 +89,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
     isReadOnly,
     actionTypeApiPath,
     isCreateFormState,
-    ["data-componentid"]: componentId = "pre-update-password-action-config-form"
+    ["data-componentid"]: componentId = "pre-update-profile-action-config-form"
 }: PreUpdateProfileActionConfigFormInterface): ReactElement => {
 
     const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
@@ -193,6 +193,16 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
         values: PreUpdatePasswordActionConfigFormPropertyInterface,
         changedFields: PreUpdatePasswordActionConfigFormPropertyInterface) => {
 
+        let payloadRule: RuleWithoutIdInterface | RuleExecuteCollectionWithoutIdInterface | Record<string, never>;
+
+        if (isHasRule) {
+            payloadRule = rule;
+        } else {
+            if (!isCreateFormState && !rule) {
+                payloadRule = {};
+            }
+        }
+
         const authProperties: Partial<AuthenticationPropertiesInterface> = {};
 
         if (isAuthenticationUpdateFormState || isCreateFormState) {
@@ -228,7 +238,8 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                     },
                     uri: values.endpointUri
                 },
-                name: values.name
+                name: values.name,
+                ...(payloadRule !== null && { rule: payloadRule })
             };
 
             setIsSubmitting(true);
@@ -253,7 +264,8 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                     } : undefined,
                     uri: changedFields?.endpointUri ? values.endpointUri : undefined
                 } : undefined,
-                name: changedFields?.name ? values.name : undefined
+                name: changedFields?.name ? values.name : undefined,
+                ...(payloadRule !== null && { rule: payloadRule })
             };
 
             setIsSubmitting(true);
