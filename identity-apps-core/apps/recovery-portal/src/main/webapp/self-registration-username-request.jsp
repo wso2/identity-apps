@@ -110,7 +110,7 @@
     PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
     boolean isSelfRegistrationLockOnCreationEnabled = preferenceRetrievalClient.checkSelfRegistrationLockOnCreation(tenantDomain);
     String callback = Encode.forHtmlAttribute(request.getParameter("callback"));
-    String backToUrl = callback;
+    String backToUrl = Encode.forHtmlAttribute(IdentityManagementEndpointUtil.encodeURL(request.getParameter("callback")));
     String sp = Encode.forHtmlAttribute(request.getParameter("sp"));
     String previousStep = Encode.forHtmlAttribute(request.getParameter("previous_step"));
     String username = request.getParameter("username");
