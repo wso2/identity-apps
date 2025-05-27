@@ -155,7 +155,8 @@
         "variant": "RECAPTCHA_V2",
         "display": {
             "label": "reCAPTCHA",
-            "image": "https://www.gstatic.com/recaptcha/api2/logo_48.png"
+            "image": "https://www.gstatic.com/recaptcha/api2/logo_48.png",
+            "showOnResourcePanel": false
         },
         "config": {
             "version": 2

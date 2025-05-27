@@ -1,5 +1,19 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.6.0
+
+### Minor Changes
+
+- [#8220](https://github.com/wso2/identity-apps/pull/8220) [`c85ddafae25af01e6230b2583b30f0c6a741c837`](https://github.com/wso2/identity-apps/commit/c85ddafae25af01e6230b2583b30f0c6a741c837) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce SMS OTP widget in registration flow composer
+
+* [#8216](https://github.com/wso2/identity-apps/pull/8216) [`19322a678f21fcc094ea10bbb276517f7fc5f3ce`](https://github.com/wso2/identity-apps/commit/19322a678f21fcc094ea10bbb276517f7fc5f3ce) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Inrtoduce recaptcha support in registration flow builder
+
+### Patch Changes
+
+- Updated dependencies [[`19322a678f21fcc094ea10bbb276517f7fc5f3ce`](https://github.com/wso2/identity-apps/commit/19322a678f21fcc094ea10bbb276517f7fc5f3ce)]:
+  - @wso2is/admin.flow-builder-core.v1@0.5.0
+  - @wso2is/admin.core.v1@2.45.1
+
 ## 0.5.8
 
 ### Patch Changes

@@ -1,5 +1,25 @@
 # @wso2is/console
 
+## 2.57.1
+
+### Patch Changes
+
+- [#8235](https://github.com/wso2/identity-apps/pull/8235) [`92916a5ee73558585380dfa6bf7405998b7506f2`](https://github.com/wso2/identity-apps/commit/92916a5ee73558585380dfa6bf7405998b7506f2) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Temporarily disable reCaptcha in composer
+
+## 2.57.0
+
+### Minor Changes
+
+- [#8220](https://github.com/wso2/identity-apps/pull/8220) [`c85ddafae25af01e6230b2583b30f0c6a741c837`](https://github.com/wso2/identity-apps/commit/c85ddafae25af01e6230b2583b30f0c6a741c837) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce SMS OTP widget in registration flow composer
+
+* [#8216](https://github.com/wso2/identity-apps/pull/8216) [`19322a678f21fcc094ea10bbb276517f7fc5f3ce`](https://github.com/wso2/identity-apps/commit/19322a678f21fcc094ea10bbb276517f7fc5f3ce) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Inrtoduce recaptcha support in registration flow builder
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.45.1
+  - @wso2is/admin.home.v1@1.7.3
+
 ## 2.56.4
 
 ### Patch Changes
