@@ -468,7 +468,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 const claimList: ValueInputAutocompleteOptionsInterface[] =
                 filterOutRoleClaimAttribute(sortedClaims);
 
-                const matchedClaim = claimList.find(
+                const matchedClaim: ValueInputAutocompleteOptionsInterface = claimList.find(
                     (claim: ValueInputAutocompleteOptionsInterface) => claim.id === expressionValue
                 );
 
