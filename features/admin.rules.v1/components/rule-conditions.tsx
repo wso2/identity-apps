@@ -403,7 +403,6 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             resourceType = "applications";
             shouldFetch = true;
         } else if (expressionField === "claim") {
-            resourceType = "claims";
             //TODO: these hardcoded values will be removed once the rule metadata api change PR is merged.
             valueReferenceAttribute = "claimURI";
             valueDisplayAttribute = "displayName";
