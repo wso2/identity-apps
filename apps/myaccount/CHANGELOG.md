@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.19.14
+
+### Patch Changes
+
+- [#8221](https://github.com/wso2/identity-apps/pull/8221) [`89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f`](https://github.com/wso2/identity-apps/commit/89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Resolve server origin when tenant qualified URLs are disabled
+
 ## 2.19.13
 
 ### Patch Changes
