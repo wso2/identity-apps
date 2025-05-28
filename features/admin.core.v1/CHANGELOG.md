@@ -1,5 +1,15 @@
 # @wso2is/admin.core.v1
 
+## 2.45.3
+
+### Patch Changes
+
+- [#8242](https://github.com/wso2/identity-apps/pull/8242) [`33ef4cb990d5df8d35fec85b33f43333118f5c6c`](https://github.com/wso2/identity-apps/commit/33ef4cb990d5df8d35fec85b33f43333118f5c6c) Thanks [@roshanemoraes](https://github.com/roshanemoraes)! - Fix error alert when navigating to the Shared Access tab in Application Share
+
+- Updated dependencies [[`33ef4cb990d5df8d35fec85b33f43333118f5c6c`](https://github.com/wso2/identity-apps/commit/33ef4cb990d5df8d35fec85b33f43333118f5c6c)]:
+  - @wso2is/admin.applications.v1@2.35.5
+  - @wso2is/i18n@2.23.4
+
 ## 2.45.2
 
 ### Patch Changes
