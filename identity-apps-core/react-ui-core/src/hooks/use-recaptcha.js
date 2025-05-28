@@ -77,8 +77,7 @@ const useReCaptcha = (recaptchaType, siteKey, reCaptchaScriptUrl) => {
                     widgetIdRef.current = grecaptcha.render(containerRef.current, {
                         callback: (recaptchaToken) => {
                             if (!mounted) return;
-                            console.log("Token from callback: ", recaptchaToken);
-                            setToken(recaptchaToken);
+                                setToken(recaptchaToken);
                             if (resolveRef.current) {
                                 resolveRef.current(recaptchaToken);
                                 resolveRef.current = null;
