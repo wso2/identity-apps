@@ -24,6 +24,7 @@
         "@wso2is/admin.branding.v1": "^2.28.60",
         "@wso2is/admin.core.v1": "^2.40.6",
         "@wso2is/common.branding.v1": "^2.26.60",
+        "@wso2is/common.templates.v1": "^0.0.0",
         "@wso2is/core": "^2.7.0",
         "@wso2is/dynamic-forms": "^2.4.40",
         "@wso2is/form": "^2.6.35",

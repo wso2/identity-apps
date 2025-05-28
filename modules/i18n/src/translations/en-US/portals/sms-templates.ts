@@ -20,18 +20,10 @@ import { SMSTemplatesNS } from "../../../models";
 
 export const smsTemplates: SMSTemplatesNS = {
     dangerZone: {
-        remove: {
-            action: "Remove Template",
-            heading: "Remove Template",
-            message: "This action will remove the selected template and you " +
-                "will lose any changes you've done to this template."
-        },
-        revert: {
-            action: "Revert",
-            heading: "Revert to default",
-            message: "This action will revert the selected template to " +
-                "default and you will lose any changes you've done to this template."
-        }
+        action: "Revert",
+        heading: "Revert to default",
+        message: "This action will revert the selected template to " +
+            "default and you will lose any changes you've done to this template."
     },
     form: {
         inputs: {
