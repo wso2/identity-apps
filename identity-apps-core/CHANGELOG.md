@@ -1,5 +1,15 @@
 # @wso2is/identity-apps-core
 
+## 2.25.3
+
+### Patch Changes
+
+- [#8241](https://github.com/wso2/identity-apps/pull/8241) [`9085dfe68cf212a6020cfc050398b2862949742e`](https://github.com/wso2/identity-apps/commit/9085dfe68cf212a6020cfc050398b2862949742e) Thanks [@BimsaraBodaragama](https://github.com/BimsaraBodaragama)! - Fix Sign-In Link Encoding in Self-Registration Page for Sub Organizations
+
+* [#8240](https://github.com/wso2/identity-apps/pull/8240) [`ed972b1a628e75db7c2fcf6e54874fbc3d8306d1`](https://github.com/wso2/identity-apps/commit/ed972b1a628e75db7c2fcf6e54874fbc3d8306d1) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Resolve recaptch provider account level when executing reCaptcha
+
+- [#8244](https://github.com/wso2/identity-apps/pull/8244) [`0eff2af4e7adb85baa381f03452be1a8cff4a58e`](https://github.com/wso2/identity-apps/commit/0eff2af4e7adb85baa381f03452be1a8cff4a58e) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Force trigger package release
+
 ## 2.25.2
 
 ### Patch Changes
