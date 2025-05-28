@@ -107,6 +107,14 @@ export const useAsyncOperationStatus = ({
     const fetchStatus = async (): Promise< { operationId: string, status: OperationStatus,
         summary: OperationStatusSummary } > => {
         const response: AxiosResponse = await getAsyncOperationStatus(params.after, null, params.filter, params.limit);
+
+        if (!response.data?.operations || response.data.operations.length === 0) {
+            return {
+                operationId: null,
+                status: OperationStatus.IDLE,
+                summary: { failedCount: 0, partiallyCompletedCount: 0, successCount: 0 }
+            };
+        }
         const operation: AsyncOperationStatusResponse = response.data?.operations[0];
         const newStatus: OperationStatus = operation?.status ?? OperationStatus.IDLE;
         const newOperationId: string = operation?.operationId ?? null;
@@ -185,10 +193,12 @@ export const useAsyncOperationStatus = ({
             const { operationId: newOperationId, status: initialStatus, summary: operationSummary }
                 = await fetchStatus();
 
+            if (initialStatus === OperationStatus.IDLE) {
+                return;
+            }
             if (initialStatus !== status) {
                 onStatusChange?.(newOperationId, initialStatus, operationSummary);
             }
-
             if (initialStatus === OperationStatus.IN_PROGRESS) {
                 setStatus(OperationStatus.IN_PROGRESS);
                 setCurrentOperationId(newOperationId);
