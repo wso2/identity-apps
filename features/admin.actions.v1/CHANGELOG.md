@@ -1,5 +1,24 @@
 # @wso2is/admin.actions.v1
 
+## 1.13.0
+
+### Minor Changes
+
+- [#8236](https://github.com/wso2/identity-apps/pull/8236) [`7c471b913de0fc2cb974ec4fc2dec2fed1da757e`](https://github.com/wso2/identity-apps/commit/7c471b913de0fc2cb974ec4fc2dec2fed1da757e) Thanks [@osandamaleesha](https://github.com/osandamaleesha)! - This change adds rule support for pre profile action
+
+### Patch Changes
+
+- [#8238](https://github.com/wso2/identity-apps/pull/8238) [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+- Updated dependencies [[`7c471b913de0fc2cb974ec4fc2dec2fed1da757e`](https://github.com/wso2/identity-apps/commit/7c471b913de0fc2cb974ec4fc2dec2fed1da757e), [`89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f`](https://github.com/wso2/identity-apps/commit/89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f), [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f)]:
+  - @wso2is/admin.rules.v1@0.5.0
+  - @wso2is/admin.core.v1@2.45.2
+  - @wso2is/admin.feature-gate.v1@1.6.2
+  - @wso2is/admin.extensions.v1@2.38.2
+  - @wso2is/admin.claims.v1@2.27.123
+  - @wso2is/react-components@2.9.16
+  - @wso2is/form@2.7.1
+
 ## 1.12.6
 
 ### Patch Changes
