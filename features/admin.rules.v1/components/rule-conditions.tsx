@@ -18,7 +18,8 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
-import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
+import Autocomplete, { AutocompleteInputChangeReason,
+    AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
@@ -32,9 +33,12 @@ import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
 import { MinusIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { Code } from "@wso2is/react-components";
 import debounce from "lodash-es/debounce";
-import React, { ChangeEvent, Dispatch, Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { ChangeEvent, Dispatch, Fragment, FunctionComponent, HTMLAttributes, ReactElement, useEffect,
+    useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { DropdownProps } from "semantic-ui-react";
 import useGetResourceListOrResourceDetails from "../api/use-get-resource-list-or-resource-details";
 import { useRulesContext } from "../hooks/use-rules-context";
 import {
@@ -43,7 +47,7 @@ import {
     LinkInterface,
     ListDataInterface
 } from "../models/meta";
-import { ResourceInterface } from "../models/resource";
+import { ClaimResourceInterface, ResourceInterface } from "../models/resource";
 import {
     AdjoiningOperatorTypes,
     ConditionExpressionInterface,
@@ -103,6 +107,7 @@ interface ValueInputAutocompleteProps extends ComponentCommonPropsInterface {
     resourceType: string;
     initialResourcesLoadUrl: string;
     filterBaseResourcesUrl: string;
+    shouldFetch: boolean;
 }
 
 /**
@@ -195,7 +200,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         filterBaseResourcesUrl,
         ruleId,
         conditionId,
-        expressionId
+        expressionId,
+        shouldFetch
     }: ValueInputAutocompleteProps) => {
 
         const [ inputValue, setInputValue ] = useState<string>(null);
@@ -211,9 +217,9 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             : initialResourcesLoadUrl;
 
         const { data: initialResources = [], isLoading: isInitialLoading } =
-            useGetResourceListOrResourceDetails(initialResourcesLoadUrl);
+            useGetResourceListOrResourceDetails(initialResourcesLoadUrl, shouldFetch);
         const { data: filteredResources = [], isLoading: isFiltering } =
-            useGetResourceListOrResourceDetails(filterUrl);
+            useGetResourceListOrResourceDetails(filterUrl, shouldFetch);
 
         useEffect(() => {
             if (resourceDetails) {
@@ -383,26 +389,36 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
     }: ResourceListSelectProps) => {
 
         const [ resourceDetails, setResourceDetails ] = useState<ResourceInterface>(null);
-        const valueReferenceAttribute: string = findMetaValuesAgainst?.value?.valueReferenceAttribute || "id";
-        const valueDisplayAttribute: string = findMetaValuesAgainst?.value?.valueDisplayAttribute || "name";
+        const [ inputValue, setInputValue ] = useState("");
+        const [ claimList, setClaimList ] = useState<ValueInputAutocompleteOptionsInterface[]>([]);
+        const [ selectedValue, setSelectedValue ] = useState<string>(null);
+        let valueReferenceAttribute: string = findMetaValuesAgainst?.value?.valueReferenceAttribute || "id";
+        let valueDisplayAttribute: string = findMetaValuesAgainst?.value?.valueDisplayAttribute || "name";
 
         let resourceType: string;
+        let shouldFetch: boolean = false;
 
         // TODO: Handle other resource types once the API is updated with the required data.
         if (expressionField === "application") {
             resourceType = "applications";
+            shouldFetch = true;
+        } else if (expressionField === "claim") {
+            //TODO: these hardcoded values will be removed once the rule metadata api change PR is merged.
+            valueReferenceAttribute = "claimURI";
+            valueDisplayAttribute = "displayName";
+            shouldFetch = false;
         }
 
         const {
             data: fetchedResourcesList,
             isLoading: isResourcesListLoading
-        } = useGetResourceListOrResourceDetails(initialResourcesLoadUrl);
+        } = useGetResourceListOrResourceDetails(initialResourcesLoadUrl, true);
 
         const {
             data: resourcesDetails,
             isLoading: isResourceDetailsLoading,
             error: resourceDetailsError
-        } = useGetResourceListOrResourceDetails(`/${resourceType}/${expressionValue}`);
+        } = useGetResourceListOrResourceDetails(`/${resourceType}/${expressionValue}`, shouldFetch);
 
         useEffect(() => {
             if (!isResourceDetailsLoading) {
@@ -415,7 +431,149 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             }
         }, [ isResourceDetailsLoading, resourceDetailsError ]);
 
-        if (fetchedResourcesList && !isResourcesListLoading) {
+        useEffect(() => {
+            if (expressionField === "claim" && fetchedResourcesList) {
+                const initialOptions: ValueInputAutocompleteOptionsInterface[] =
+                            fetchedResourcesList?.map((resource: ClaimResourceInterface) => ({
+                                id: resource[valueReferenceAttribute],
+                                label: resource[valueDisplayAttribute]
+                            }));
+
+                const sortedClaims: ValueInputAutocompleteOptionsInterface[] =
+                initialOptions?.sort((a: ValueInputAutocompleteOptionsInterface,
+                    b: ValueInputAutocompleteOptionsInterface) => {
+                    return a.label > b.label ? 1 : -1;
+                });
+
+                /**
+                 * Disables the role claim attribute.
+                 *
+                 * The role attribute is temporarily disabled until the ambiguities
+                 * related to the claim are resolved.
+                 * @param claimsList - List of claims.
+                 * @returns - Filtered claims list.
+                 */
+                const filterOutRoleClaimAttribute = (claimsList: ValueInputAutocompleteOptionsInterface[]):
+                ValueInputAutocompleteOptionsInterface[] => {
+
+                    const excludedClaims: Set<string> = new Set([
+                        "http://wso2.org/claims/roles",
+                        "http://wso2.org/claims/applicationRoles"
+                    ]);
+
+                    return claimsList?.filter((claim: ValueInputAutocompleteOptionsInterface) =>
+                        !excludedClaims.has(claim?.id));
+                };
+
+                const claimList: ValueInputAutocompleteOptionsInterface[] =
+                filterOutRoleClaimAttribute(sortedClaims);
+
+                const matchedClaim: ValueInputAutocompleteOptionsInterface = claimList.find(
+                    (claim: ValueInputAutocompleteOptionsInterface) => claim.id === expressionValue
+                );
+
+                setClaimList(claimList);
+                setInputValue(matchedClaim ? matchedClaim.label : "");
+                setSelectedValue(matchedClaim ? matchedClaim.id : null);
+
+            }
+        }, [ fetchedResourcesList ]);
+
+        if (isResourcesListLoading || !fetchedResourcesList) {
+            return;
+        }
+
+        if (expressionField == "claim") {
+
+            return (
+                <Autocomplete
+                    loading={ isResourcesListLoading }
+                    fullWidth
+                    aria-label="Attribute selection"
+                    className="pt-2"
+                    componentsProps={ {
+                        paper: {
+                            elevation: 2
+                        },
+                        popper: {
+                            modifiers: [
+                                {
+                                    enabled: false,
+                                    name: "flip"
+                                },
+                                {
+                                    enabled: false,
+                                    name: "preventOverflow"
+                                }
+                            ]
+                        }
+                    } }
+                    inputValue={ inputValue }
+                    value={ selectedValue ? { id: selectedValue, label: inputValue } : null }
+                    onInputChange={ (event: ChangeEvent, value: string, reason: AutocompleteInputChangeReason) => {
+
+                        if (reason === "reset") {
+                            setInputValue("");
+
+                            return;
+                        } else {
+                            setInputValue(value);
+                        }
+                    } }
+                    onChange={ (e: React.ChangeEvent, value: ValueInputAutocompleteOptionsInterface) => {
+
+                        if (value) {
+                            setSelectedValue(value?.id);
+                            setInputValue(value?.label);
+                            handleExpressionChangeDebounced(
+                                value.id,
+                                ruleId,
+                                conditionId,
+                                expressionId,
+                                ExpressionFieldTypes.Value,
+                                true
+                            );
+                        }
+                    } }
+                    options={ claimList }
+                    getOptionLabel={ (claim: DropdownProps) =>
+                        claim?.label
+                    }
+                    isOptionEqualToValue={
+                        (option: ValueInputAutocompleteOptionsInterface,
+                            value: ValueInputAutocompleteOptionsInterface) =>
+                            value?.id && option.id === value.id
+                    }
+                    renderOption={ (props: HTMLAttributes<HTMLLIElement>,
+                        option: ValueInputAutocompleteOptionsInterface) => (
+                        <li { ...props } key={ option.id }>
+                            <div className="multiline">
+                                <div>{ option?.label }</div>
+                                <div>
+                                    <Code className="description" compact withBackground={ false }>
+                                        { option?.id }
+                                    </Code>
+                                </div>
+                            </div>
+                        </li>
+                    ) }
+                    renderInput={ (params: AutocompleteRenderInputParams) => (
+                        <TextField
+                            { ...params }
+                            variant="outlined"
+                            placeholder={ t("rules:fields.autocomplete.placeholderText") }
+                            value={ inputValue }
+                            InputProps={ {
+                                ...params.InputProps
+                            } }
+                        />
+                    ) }
+                    key="autocompleteSearchWithList"
+                    data-componentid={ `${componentId}-select-attributes` }
+                />
+            );
+
+        } else if (resourceType == "applications") {
             // Set first value of the list if option is empty
             if (expressionValue === "") {
                 handleExpressionChangeDebounced(
@@ -441,6 +599,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         valueDisplayAttribute={ valueDisplayAttribute }
                         initialResourcesLoadUrl={ initialResourcesLoadUrl }
                         filterBaseResourcesUrl={ filterBaseResourcesUrl }
+                        shouldFetch={ shouldFetch }
                     />
                 );
             }
@@ -549,13 +708,15 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 );
             }
 
-            if (metaValue?.links?.length > 1) {
+            if (metaValue?.links?.length >= 1) {
                 const initialResourcesLoadUrl: string = metaValue?.links.find(
                     (link: LinkInterface) => link.rel === "values")?.href;
                 const filterBaseResourcesUrl: string = metaValue?.links.find(
                     (link: LinkInterface) => link.rel === "filter")?.href;
 
-                if (initialResourcesLoadUrl && filterBaseResourcesUrl) {
+                if ((expressionField === "application" && initialResourcesLoadUrl && filterBaseResourcesUrl) ||
+                    (expressionField === "claim" && initialResourcesLoadUrl)) {
+
                     return (
                         <ResourceListSelect
                             ruleId={ ruleId }

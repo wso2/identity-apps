@@ -36,7 +36,7 @@ import { HttpMethods } from "@wso2is/core/models";
  */
 const useGetResourceListOrResourceDetails = <Data = any, Error = RequestErrorInterface>(
     endpointPath: string,
-    shouldFetch: boolean = true
+    shouldFetch: boolean
 ): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
