@@ -100,7 +100,7 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
         onSubmit,
         onDeleteRequested,
         readOnly,
-        ["data-componentid"]: componentId = "email-customization-page"
+        ["data-componentid"]: componentId = "email-customization-form"
     } = props;
 
     const { t } = useTranslation();
