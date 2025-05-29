@@ -537,7 +537,7 @@ importers:
         specifier: ^2.25.210
         version: link:../../features/admin.console-settings.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.45.3
+        specifier: ^2.45.4
         version: link:../../features/admin.core.v1
       '@wso2is/admin.email-and-sms.v1':
         specifier: ^2.25.204
@@ -600,7 +600,7 @@ importers:
         specifier: ^2.25.205
         version: link:../../features/admin.roles.v1
       '@wso2is/admin.roles.v2':
-        specifier: ^2.27.154
+        specifier: ^2.27.155
         version: link:../../features/admin.roles.v2
       '@wso2is/admin.saml2-configuration.v1':
         specifier: ^2.25.205
@@ -5891,7 +5891,7 @@ importers:
         specifier: ^2.25.205
         version: link:../admin.roles.v1
       '@wso2is/admin.roles.v2':
-        specifier: ^2.27.154
+        specifier: ^2.27.155
         version: link:../admin.roles.v2
       '@wso2is/admin.rules.v1':
         specifier: ^0.5.0
@@ -14811,7 +14811,7 @@ importers:
         specifier: ^2.33.96
         version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.45.2
+        specifier: ^2.45.4
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.38.2

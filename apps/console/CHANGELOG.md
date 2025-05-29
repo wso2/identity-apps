@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.57.4
+
+### Patch Changes
+
+- [#8250](https://github.com/wso2/identity-apps/pull/8250) [`e41c4d70d85fe137f3a6be524b96630e34438782`](https://github.com/wso2/identity-apps/commit/e41c4d70d85fe137f3a6be524b96630e34438782) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Remove duplicate api resource endpoint URL resolution
+
+- Updated dependencies [[`e41c4d70d85fe137f3a6be524b96630e34438782`](https://github.com/wso2/identity-apps/commit/e41c4d70d85fe137f3a6be524b96630e34438782)]:
+  - @wso2is/admin.roles.v2@2.27.155
+  - @wso2is/admin.core.v1@2.45.4
+
 ## 2.57.3
 
 ### Patch Changes
