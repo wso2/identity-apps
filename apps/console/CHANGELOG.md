@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.57.6
+
+### Patch Changes
+
+- [#8111](https://github.com/wso2/identity-apps/pull/8111) [`e171844cbe0cf5829a3e71ce23a4d9695d05f4e5`](https://github.com/wso2/identity-apps/commit/e171844cbe0cf5829a3e71ce23a4d9695d05f4e5) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Data Type support for the attributes
+
+- Updated dependencies [[`4b3b589d2b0dbbe651855efe39ab64d8da1adc31`](https://github.com/wso2/identity-apps/commit/4b3b589d2b0dbbe651855efe39ab64d8da1adc31)]:
+  - @wso2is/admin.claims.v1@2.27.124
+  - @wso2is/i18n@2.23.5
+
 ## 2.57.5
 
 ### Patch Changes
