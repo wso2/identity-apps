@@ -522,8 +522,8 @@ export interface ClaimsNS {
                 options: {
                     text: string;
                     options: string;
-                    number: string;
-                    fraction: string;
+                    integer: string;
+                    decimal: string;
                     boolean: string;
                     date: string;
                     object: string;

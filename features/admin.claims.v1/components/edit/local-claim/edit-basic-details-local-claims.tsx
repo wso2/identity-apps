@@ -210,11 +210,11 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             value: DataType.OPTIONS
         },
         {
-            text: t("claims:local.forms.dataType.options.number"),
+            text: t("claims:local.forms.dataType.options.integer"),
             value: DataType.INTEGER
         },
         {
-            text: t("claims:local.forms.dataType.options.fraction"),
+            text: t("claims:local.forms.dataType.options.decimal"),
             value: DataType.DECIMAL
         },
         {
@@ -280,10 +280,12 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     useEffect(() => {
 
         if (claim?.canonicalValues && Array.isArray(claim.canonicalValues)) {
-            setCanonicalValues(claim.canonicalValues.map((item: KeyValue) => ({
-                key: item.key,
-                value: item.value
-            })));
+            setCanonicalValues(
+                claim.canonicalValues.map((item: any) => ({
+                    key: item.label,
+                    value: item.value
+                }))
+            );
         } else {
             setCanonicalValues([]);
         }
@@ -652,8 +654,14 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             data = {
                 attributeMapping: claim.attributeMapping,
                 canonicalValues: values?.canonicalValues !== undefined
-                    ? values.canonicalValues as KeyValue[]
-                    : canonicalValues,
+                    ? (values.canonicalValues as KeyValue[]).map((item: KeyValue) => ({
+                        label: item.key,
+                        value: item.value
+                    }))
+                    : canonicalValues?.map((item: KeyValue) => ({
+                        label: item.key,
+                        value: item.value
+                    })),
                 claimURI: claim.claimURI,
                 dataType: dataType === DataType.TEXT || dataType === DataType.OPTIONS
                     ? DataType.STRING
@@ -694,8 +702,14 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             data = {
                 attributeMapping: claim.attributeMapping,
                 canonicalValues: values?.canonicalValues !== undefined
-                    ? values.canonicalValues as KeyValue[]
-                    : canonicalValues,
+                    ? (values.canonicalValues as KeyValue[]).map((item: KeyValue) => ({
+                        label: item.key,
+                        value: item.value
+                    }))
+                    : canonicalValues?.map((item: KeyValue) => ({
+                        label: item.key,
+                        value: item.value
+                    })),
                 claimURI: claim.claimURI,
                 dataType: dataType === DataType.TEXT || dataType === DataType.OPTIONS
                     ? DataType.STRING

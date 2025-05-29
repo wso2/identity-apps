@@ -466,8 +466,8 @@ export const claims: ClaimsNS = {
                 options: {
                     boolean: "Boolean",
                     date: "Date",
-                    fraction: "Fraction",
-                    number: "Number",
+                    decimal: "Decimal",
+                    integer: "Integer",
                     object: "Object",
                     options: "Options",
                     text: "Text"
