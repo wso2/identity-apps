@@ -16,20 +16,12 @@
  * under the License.
  */
 
-import { Typography } from "@mui/material";
-import { AppState } from "@wso2is/admin.core.v1/store";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { UserGroupsList } from "@wso2is/admin.users.v1/components/user-groups-edit";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
-import { RolesMemberInterface } from "@wso2is/core/models";
 import { AlertInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { StringUtils } from "@wso2is/core/utils";
-import { Button, EmphasizedSegment } from "@wso2is/react-components";
 import React from "react";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Grid, Icon, Input, Label, Table } from "semantic-ui-react";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import useGetAgent from "../../hooks/use-get-agent";
 
 interface AgentGroupViewProps {
@@ -37,8 +29,7 @@ interface AgentGroupViewProps {
 }
 
 export default function AgentGroups({ agentId }: AgentGroupViewProps) {
-    const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const {
         data: agentInfo
