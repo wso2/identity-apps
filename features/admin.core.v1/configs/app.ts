@@ -120,7 +120,7 @@ export class Config {
      * @returns server host.
      */
     public static resolveServerHostFromConfig() {
-        if (this.isTenantQualifiedURLsEnabled()) {
+        if (!this.isTenantQualifiedURLsEnabled()) {
             return this.getDeploymentConfig()?.serverOrigin;
         } else {
             return this.getDeploymentConfig()?.serverHost;
