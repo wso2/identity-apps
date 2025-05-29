@@ -18,6 +18,13 @@
 
 .add-tenant-modal-content.OxygenDialogContent-root {
     padding: 0 var(--oxygen-spacing-1) var(--oxygen-spacing-4);
+
+    .preview-feature-menu-card {
+        margin-bottom: 10px;
+        padding: 0;
+        width: 100%;
+        border: none;
+    }
 }
 
 .preview-features-modal-actions {
