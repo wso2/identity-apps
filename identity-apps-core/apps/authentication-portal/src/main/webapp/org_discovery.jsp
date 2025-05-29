@@ -1,7 +1,7 @@
 <%--
-   ~ Copyright (c) 2023, WSO2 Inc. (http://www.wso2.com).
+   ~ Copyright (c) 2023-2025, WSO2 LLC. (http://www.wso2.com).
    ~
-   ~ WSO2 Inc. licenses this file to you under the Apache License,
+   ~ WSO2 LLC. licenses this file to you under the Apache License,
    ~ Version 2.0 (the "License"); you may not use this file except
    ~ in compliance with the License.
    ~ You may obtain a copy of the License at
@@ -154,6 +154,10 @@
                      <input type="submit" id="orgNameButton" onclick="enterOrgName();" class="ui primary basic button link-button"
                            value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.organization.name")%>">
                   </div>
+                  <div class="social-login blurring social-dimmer">
+                     <input type="submit" id="orgHandleButton" onclick="enterOrgHandle();" class="ui primary basic button link-button"
+                           value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.organization.handle")%>">
+                  </div>
                   <%
                   }
                   %>
@@ -192,6 +196,12 @@
 
       <script type="text/javascript">
          function enterOrgName() {
+            document.getElementById("login_hint").disabled = true;
+            document.getElementById("org_form").submit();
+         }
+
+         function enterOrgHandle() {
+            document.getElementById("prompt").value = "orgHandle";
             document.getElementById("login_hint").disabled = true;
             document.getElementById("org_form").submit();
          }

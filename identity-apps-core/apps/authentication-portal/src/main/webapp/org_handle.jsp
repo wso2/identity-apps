@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2022-2025, WSO2 LLC. (http://www.wso2.com).
+  ~ Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -48,8 +48,8 @@
 
             if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
-            } else if (errorMessage.equalsIgnoreCase("Invalid Organization Name")) {
-                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "invalid.organization.name");
+            } else if (errorMessage.equalsIgnoreCase("Invalid Organization Handle")) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "invalid.organization.handle");
             } else if (isErrorFallbackLocale) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
             }
@@ -78,11 +78,6 @@
         <%
             }
         %>
-
-        <!--[if lt IE 9]>
-        <script src="js/html5shiv.min.js"></script>
-        <script src="js/respond.min.js"></script>
-        <![endif]-->
     </head>
 
     <body class="login-portal layout authentication-portal-layout">
@@ -120,23 +115,23 @@
                     <div id="alertDiv"></div>
 
 
-                    <form class="ui large form" id="pin_form" name="pin_form" action="<%=commonauthURL%>" method="GET">
+                    <form class="ui large form" id="org_form" name="org_form" action="<%=commonauthURL%>" method="GET">
                         <div class="field m-0 text-left required">
-                            <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "organization.name")%></label>
+                            <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "organization.handle")%></label>
                         </div>
-                        <input type="text" id='ORG_NAME' name="org" size='30'/>
-                        <div class="mt-1" id="emptyOrganizationNameError" style="display: none;">
+                        <input type="text" id='ORG_HANDLE' name="orgHandle" size='30'/>
+                        <div class="mt-1" id="emptyOrganizationHandleError" style="display: none;">
                             <i class="red exclamation circle fitted icon"></i>
-                            <span class="validation-error-message" id="emptyOrganizationNameErrorText">
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "organization.name.cannot.be.empty")%>
+                            <span class="validation-error-message" id="emptyOrganizationHandleErrorText">
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "organization.handle.cannot.be.empty")%>
                             </span>
                         </div>
-                        <input id="prompt" name="prompt" type="hidden" value="orgDiscovery">
+                        <input id="prompt" name="prompt" type="hidden" value="orgName">
                         <input id="idp" name="idp" type="hidden" value="<%=Encode.forHtmlAttribute(idp)%>"/>
                         <input id="authenticator" name="authenticator" type="hidden" value="<%=Encode.forHtmlAttribute(authenticator)%>"/>
                         <input id="sessionDataKey" name="sessionDataKey" type="hidden" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
                         <div class="ui divider hidden"></div>
-                        <input type="submit" id="submitButton" onclick="submitOrgName(); return false;"
+                        <input type="submit" id="submitButton" onclick="submitOrgHandle(); return false;"
                             value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "submit")%>"
                             class="ui primary large fluid button" />
                         <div class="mt-1 align-center">
@@ -145,16 +140,16 @@
                             </a>
                         </div>
                         <div class="ui horizontal divider"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%></div>
+                        <div class="social-login blurring social-dimmer">
+                            <input type="submit" id="orgNameButton" onclick="enterOrgName();" class="ui primary basic button link-button"
+                                  value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.organization.name")%>">
+                         </div>
                         <% if (isOrgDiscoveryEnabled) { %>
                             <div class="social-login blurring social-dimmer">
                                 <input type="submit" id="discoveryButton" onclick="promptDiscovery();" class="ui primary basic button link-button"
                                     value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.email.address")%>">
                             </div>
                         <% } %>
-                        <div class="social-login blurring social-dimmer">
-                            <input type="submit" id="orgHandleButton" onclick="enterOrgHandle();" class="ui primary basic button link-button"
-                                  value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.organization.handle")%>">
-                        </div>
                     </form>
 
                 </div>
@@ -199,30 +194,30 @@
             }
             
             function promptDiscovery() {
-                document.getElementById("ORG_NAME").disabled = true;
-                document.getElementById("pin_form").submit();
+                document.getElementById("prompt").value = "orgDiscovery";
+                document.getElementById("ORG_HANDLE").disabled = true;
+                document.getElementById("org_form").submit();
             }
 
-            function enterOrgHandle() {
-                document.getElementById("prompt").value = "orgHandle";
-                document.getElementById("ORG_NAME").disabled = true;
-                document.getElementById("pin_form").submit();
+            function enterOrgName() {
+                document.getElementById("ORG_HANDLE").disabled = true;
+                document.getElementById("org_form").submit();
             }
 
-            function submitOrgName() {
-                // Show error message when organization name is empty.
-                if (document.getElementById("ORG_NAME").value.length <= 0) {
-                    showEmptyOrganizationNameErrorMessage();
+            function submitOrgHandle() {
+                // Show error message when organization handle is empty.
+                if (document.getElementById("ORG_HANDLE").value.length <= 0) {
+                    showEmptyOrganizationHandleErrorMessage();
                     return;
                 }
                     document.getElementById("prompt").remove();
-                    document.getElementById("pin_form").submit();
+                    document.getElementById("org_form").submit();
                  }
 
-            // Function to show error message when organization name is empty.
-            function showEmptyOrganizationNameErrorMessage() {
-                var emptyOrganizationNameError = $("#emptyOrganizationNameError");
-                emptyOrganizationNameError.show();
+            // Function to show error message when organization handle is empty.
+            function showEmptyOrganizationHandleErrorMessage() {
+                var emptyOrganizationHandleError = $("#emptyOrganizationHandleError");
+                emptyOrganizationHandleError.show();
             }
         </script>
     </body>
