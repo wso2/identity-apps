@@ -1404,7 +1404,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     revokeTokensWhenIDPSessionTerminated: values.get("RevokeAccessToken")?.length > 0,
                     type: isMcpClientApplication ? JWT : values.get("type"),
                     userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds")),
-                    validateTokenBinding: values.get("ValidateTokenBinding")?.length > 0
+                    validateTokenBinding: isDPoPSelected || values.get("ValidateTokenBinding")?.length > 0
                 },
                 grantTypes: values.get("grant"),
                 idToken: {
