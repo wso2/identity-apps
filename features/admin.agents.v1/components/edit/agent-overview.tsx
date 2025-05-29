@@ -18,14 +18,15 @@
 
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, FormRenderProps, SelectFieldAdapter, TextFieldAdapter } from "@wso2is/form";
 import { DropdownChild } from "@wso2is/forms";
-import { DangerZone, DangerZoneGroup, EmphasizedSegment, Hint, PrimaryButton } from "@wso2is/react-components";
+import { DangerZone, DangerZoneGroup, EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { deleteAgent, updateAgent } from "../../api/agents";
 import useGetAgent from "../../hooks/use-get-agent";
@@ -87,6 +88,7 @@ const MODEL_TYPES: DropdownChild[] = [
 export default function AgentOverview({ agentId }: AgentOverviewProps) {
 
     const dispatch: any = useDispatch();
+    const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
 
     const [ initialValues, setInitialValues ] = useState<any>();
 
@@ -98,11 +100,11 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
         if (agentInfo) {
             setInitialValues({
                 description: agentInfo?.["urn:scim:schemas:extension:custom:User"]?.agentDescription,
+                languageModel: ModelType.GPT_4.toString(),
                 logo: agentInfo?.logo,
                 name: agentInfo.name?.givenName,
-                version: "1.0.0",
-                languageModel: ModelType.GPT_4.toString(),
-                owner: "admin@guardio.com"
+                owner: authenticatedUser,
+                version: "1.0.0"
             });
         }
     }, [ agentInfo ]);
@@ -220,13 +222,7 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
             <DangerZoneGroup
                 sectionHeader={ "Danger Zone" }
             >
-                {/* <DangerZone
-                    actionTitle={ "Transfer ownership" }
-                    header={ "Transfer Ownership" }
-                    subheader={ "Transfer ownership of this agent to another user in the organization." }
-                    onActionClick={ (): void => null }
-                    data-testid={ "danger-zone-disable" }
-                /> */}
+
 
                 <DangerZone
                     actionTitle={

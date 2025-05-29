@@ -41,9 +41,9 @@ export default function AddAgentWizard({
     const [ showSecret, setShowSecret ] = useState(false);
     const [ newAgent, setNewAgent ] = useState<UserDetailsInterface>();
 
-    const sanitizeAgentUsername = (str) => {
+    const sanitizeAgentUsername = (str: string) => {
         // Step 1: Remove disallowed characters
-        let cleaned = str.replace(/[^a-zA-Z0-9._\-|/]/g, "");
+        let cleaned: string = str.replace(/[^a-zA-Z0-9._\-|/]/g, "");
 
         // Step 2: Truncate to 30 characters
         cleaned = cleaned.slice(0, 30);
