@@ -1,5 +1,11 @@
 # @wso2is/admin.applications.v1
 
+## 2.35.6
+
+### Patch Changes
+
+- [#8248](https://github.com/wso2/identity-apps/pull/8248) [`1be0e54700689e7bbc7d6c023cb7399a98f397e7`](https://github.com/wso2/identity-apps/commit/1be0e54700689e7bbc7d6c023cb7399a98f397e7) Thanks [@adibmbrk](https://github.com/adibmbrk)! - Enable validate token bindings when DPoP is selected
+
 ## 2.35.5
 
 ### Patch Changes
