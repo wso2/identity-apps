@@ -23,18 +23,13 @@ import {
     AnimatedAvatar, AppAvatar, ResourceTab, ResourceTabPaneInterface, TabPageLayout
 } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
-import AgentConnectedApps from "../components/edit/agent-connected-apps";
 import AgentCredentials from "../components/edit/agent-credentials";
 import AgentGroups from "../components/edit/agent-groups";
-import AgentIntegrations from "../components/edit/agent-integrations";
-import AgentLogs from "../components/edit/agent-logs";
 import AgentOverview from "../components/edit/agent-overview";
 import AgentRoles from "../components/edit/agent-roles";
 import useGetAgent from "../hooks/use-get-agent";
 
-interface EditAgentPageProps extends IdentifiableComponentInterface {
-
-}
+interface EditAgentPageProps extends IdentifiableComponentInterface {}
 
 export default function EditAgent({
     [ "data-componentid" ]: componentId
@@ -94,21 +89,11 @@ export default function EditAgent({
             menuItem: "Roles",
             render: () =>  <ResourceTab.Pane><AgentRoles agentId={ agentId }/></ResourceTab.Pane>
         },
-        // {
-        //     componentId: "applications",
-        //     menuItem: "Applications",
-        //     render: () =>  <ResourceTab.Pane><AgentConnectedApps /></ResourceTab.Pane>
-        // },
         {
-            componentId: "connections",
-            menuItem: "Connections",
-            render: () =>  <ResourceTab.Pane><AgentIntegrations /></ResourceTab.Pane>
+            componentId: "logs",
+            menuItem: "Audit Logs",
+            render: () =>  <p>Coming Soon</p>
         }
-        // {
-        //     componentId: "logs",
-        //     menuItem: "Audit Logs",
-        //     render: () =>  <AgentLogs />
-        // }
     ];
 
     const handleBackButtonClick = () => {
