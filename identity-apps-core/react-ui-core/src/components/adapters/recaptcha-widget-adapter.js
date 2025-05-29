@@ -32,8 +32,8 @@ const RecaptchaAdapter = ({ component }, ref) => {
         ref,
         () => ({
             execute,
-            reset,
             ready,
+            reset,
             token
         }),
         [ execute, reset, ready, token ]
