@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.25.4
+
+### Patch Changes
+
+- [#8251](https://github.com/wso2/identity-apps/pull/8251) [`34c8b43fd54d2fd1623d646946bf254704015bbd`](https://github.com/wso2/identity-apps/commit/34c8b43fd54d2fd1623d646946bf254704015bbd) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Resolve recaptchaType in the recaptcha adapter
+
 ## 2.25.3
 
 ### Patch Changes
