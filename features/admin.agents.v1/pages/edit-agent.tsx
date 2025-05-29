@@ -88,11 +88,6 @@ export default function EditAgent({
             componentId: "roles",
             menuItem: "Roles",
             render: () =>  <ResourceTab.Pane><AgentRoles agentId={ agentId }/></ResourceTab.Pane>
-        },
-        {
-            componentId: "logs",
-            menuItem: "Audit Logs",
-            render: () =>  <p>Coming Soon</p>
         }
     ];
 
