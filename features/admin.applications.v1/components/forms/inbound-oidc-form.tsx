@@ -1622,7 +1622,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 bindingType: values.get("bindingType"),
                 revokeTokensWhenIDPSessionTerminated: getRevokeStateForSPA(values),
                 type: values.get("type"),
-                userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds"))
+                userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds")),
+                validateTokenBinding: isDPoPSelected || values.get("ValidateTokenBinding")?.length > 0
             },
             grantTypes: values.get("grant"),
             idToken: {
