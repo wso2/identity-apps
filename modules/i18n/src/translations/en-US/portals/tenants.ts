@@ -117,9 +117,9 @@ export const tenants: TenantsNS = {
                     }
                 },
                 organizationName: {
-                    helperText: "Enter a unique name for your organization.  The  valid characters are letters, numbers, spaces, '.', '-', and '_'.",
+                    helperText: "Enter a unique name for your organization. Valid characters include letters (a–z, A–Z), numbers, spaces, periods (.), hyphens (-), and underscores (_).",
                     label: "Organization Name",
-                    placeholder: "Enter an Organization name",
+                    placeholder: "Enter organization name",
                     validations: {
                         invalidCharPattern: "The organization name contains one or more illegal characters.",
                         required: "An organization name is required."
