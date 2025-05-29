@@ -18,9 +18,9 @@
 
 import { Grid, Typography } from "@mui/material";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Button, CopyInputField, EmphasizedSegment, Heading, Message, PrimaryButton } from "@wso2is/react-components";
-import React, { Fragment } from "react";
-import { Divider, Grid as SemanticGrid } from "semantic-ui-react";
+import { Button, CopyInputField, EmphasizedSegment, Message } from "@wso2is/react-components";
+import React from "react";
+import { Divider } from "semantic-ui-react";
 
 interface AgentCredentialsProps extends IdentifiableComponentInterface {
     agentId: string;
@@ -67,27 +67,6 @@ Use the agent secret to generate one time passwords for agent authentication.
                             </Button>
                         </div>
                     </Message>
-
-
-                    <>
-                        <Divider />
-                        <SemanticGrid.Row columns={ 1 }>
-                            <SemanticGrid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Typography variant="h5" className="mb-2">Certificate</Typography>
-                                <Button
-                                    basic
-                                    primary
-                                    size="small"
-                                    className="form-button"
-                                    data-testid={ `${componentId}-submit-button` }
-                                >
-                                    Generate Certificate
-                                </Button>
-                            </SemanticGrid.Column>
-                        </SemanticGrid.Row>
-                    </>
-
-                    <PrimaryButton className="mt-5">Update</PrimaryButton>
                 </Grid>
             </Grid>
         </EmphasizedSegment>

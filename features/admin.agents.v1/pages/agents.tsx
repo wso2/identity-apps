@@ -39,14 +39,14 @@ export default function Agents ({
 
     const { t } = useTranslation();
 
-    const [ agentListMetaData, setAgentListMetaData ] =  useState({
+    const agentListMetaData: any = {
         attributes: "",
         count: 10,
         domain: "AGENT",
         excludedAttributes: "password,secret,roles,groups",
         filter: "",
         startIndex: 1
-    });
+    };
 
     const {
         data: agentList,
