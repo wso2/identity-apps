@@ -1,5 +1,15 @@
 # @wso2is/admin.claims.v1
 
+## 2.27.125
+
+### Patch Changes
+
+- [#8267](https://github.com/wso2/identity-apps/pull/8267) [`8330b84a7033ee46c1fd13f2e6de58a6ecab93e7`](https://github.com/wso2/identity-apps/commit/8330b84a7033ee46c1fd13f2e6de58a6ecab93e7) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix attributes issue
+
+- Updated dependencies [[`8330b84a7033ee46c1fd13f2e6de58a6ecab93e7`](https://github.com/wso2/identity-apps/commit/8330b84a7033ee46c1fd13f2e6de58a6ecab93e7)]:
+  - @wso2is/admin.claims.v1@2.27.125
+  - @wso2is/admin.core.v1@2.45.5
+
 ## 2.27.124
 
 ### Patch Changes
