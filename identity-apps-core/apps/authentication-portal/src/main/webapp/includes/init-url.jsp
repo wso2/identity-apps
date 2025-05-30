@@ -176,7 +176,7 @@
     * <li>Ensures the URL is not the string "null" (case-insensitive).</li>
     * <li>Ensures the URL is not null, empty, or consists only of whitespace.</li>
     * <li>Prevents common trickery by disallowing URLs starting with "javascript:", "file:", "ftp:", or "data:"
-    * (case-insensitive), which could be used for XSS (Cross-Site Scripting) or local file access attacks.</li>
+    * (case-insensitive).</li>
     * </ul>
     *
     * @param url The URL string to be validated.
