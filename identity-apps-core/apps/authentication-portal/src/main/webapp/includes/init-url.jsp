@@ -183,7 +183,7 @@
     * @return {@code true} if the URL is considered safe and valid based on the defined criteria;
     * {@code false} otherwise.
     */
-    public boolean advancedSanitizedURL(String url) {
+    public boolean isAdvancedSanitizedURL(String url) {
         return !StringUtils.equalsIgnoreCase(url, "null") && 
                 !StringUtils.isBlank(url) &&
                 !url.toLowerCase().contains("javascript:") &&

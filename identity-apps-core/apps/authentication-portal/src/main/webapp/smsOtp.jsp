@@ -282,7 +282,7 @@
 
                                     <%
                                         String multiOptionURI = request.getParameter("multiOptionURI");
-                                        if (isMultiAuthAvailable(multiOptionURI) && advancedSanitizedURL(multiOptionURI)) {
+                                        if (isMultiAuthAvailable(multiOptionURI) && isAdvancedSanitizedURL(multiOptionURI)) {
                                     %>
                                         <div class="ui divider hidden"></div>
                                         <a
