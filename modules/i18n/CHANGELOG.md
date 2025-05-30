@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.23.6
+
+### Patch Changes
+
+- [#8187](https://github.com/wso2/identity-apps/pull/8187) [`5962ba551c617071d2ac744a52f05a08effc7f58`](https://github.com/wso2/identity-apps/commit/5962ba551c617071d2ac744a52f05a08effc7f58) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add support for user's filtering by pending primary email and mobile verification via console
+
 ## 2.23.5
 
 ### Patch Changes
