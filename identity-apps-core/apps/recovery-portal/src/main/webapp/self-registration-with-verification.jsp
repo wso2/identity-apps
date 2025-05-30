@@ -24,6 +24,7 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.constants.SelfRegistrationStatusCodes" %>
@@ -883,7 +884,7 @@
                                         <%=i18n(recoveryResourceBundle, customText, "sign.up.button")%>
                                     </button>
                                 </div>
-                                <% if (!skipSignUpEnableCheck) { %>
+                                <% if (!skipSignUpEnableCheck && AuthenticationEndpointUtil.isValidMultiOptionURI(callback)) { %>
                                     <div class="ui divider hidden"></div>
                                     <div class="buttons mt-2">
                                         <div class="field external-link-container text-small">
