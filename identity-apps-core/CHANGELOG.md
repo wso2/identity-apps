@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.25.6
+
+### Patch Changes
+
+- [#8263](https://github.com/wso2/identity-apps/pull/8263) [`e99bf79b5d96075d053b2f48bd497112089f87ba`](https://github.com/wso2/identity-apps/commit/e99bf79b5d96075d053b2f48bd497112089f87ba) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve code logic in smsOtp.jsp
+
 ## 2.25.5
 
 ### Patch Changes

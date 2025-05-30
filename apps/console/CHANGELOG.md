@@ -1,5 +1,20 @@
 # @wso2is/console
 
+## 2.58.0
+
+### Minor Changes
+
+- [#8247](https://github.com/wso2/identity-apps/pull/8247) [`6cf542b1d28fd5a1c2d52bf5642328d99c592182`](https://github.com/wso2/identity-apps/commit/6cf542b1d28fd5a1c2d52bf5642328d99c592182) Thanks [@osandamaleesha](https://github.com/osandamaleesha)! - Remove hardcoded rule metadata for pre update profile
+
+### Patch Changes
+
+- [#8267](https://github.com/wso2/identity-apps/pull/8267) [`141bfe176dc65c4830a5d1797ec7a00653267992`](https://github.com/wso2/identity-apps/commit/141bfe176dc65c4830a5d1797ec7a00653267992) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix user attributes issue
+
+- Updated dependencies [[`8330b84a7033ee46c1fd13f2e6de58a6ecab93e7`](https://github.com/wso2/identity-apps/commit/8330b84a7033ee46c1fd13f2e6de58a6ecab93e7)]:
+  - @wso2is/admin.claims.v1@2.27.125
+  - @wso2is/admin.actions.v1@1.13.1
+  - @wso2is/admin.core.v1@2.45.5
+
 ## 2.57.8
 
 ### Patch Changes
