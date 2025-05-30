@@ -18,6 +18,7 @@
 
 import Collapse from "@mui/material/Collapse";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
+import { OperationStatus } from "@wso2is/admin.core.v1/models/common";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     shareApplication,
@@ -31,12 +32,15 @@ import {
     OrganizationResponseInterface,
     ShareApplicationRequestInterface
 } from "@wso2is/admin.organizations.v1/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
+    FeatureAccessConfigInterface,
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
+    ConfirmationModal,
     ContentLoader,
     Heading,
     Hint,
@@ -53,6 +57,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, {
     FormEvent,
     FunctionComponent,
+    ReactElement,
     useCallback,
     useEffect,
     useMemo,
@@ -66,6 +71,7 @@ import {
     Grid,
     Radio
 } from "semantic-ui-react";
+import { ApplicationManagementConstants } from "../../constants/application-management";
 import { ApplicationInterface, additionalSpProperty } from "../../models/application";
 
 enum ShareType {
@@ -92,6 +98,18 @@ export interface ApplicationShareFormPropsInterface
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Specifies if there is an ongoing sharing process.
+     */
+    isSharingInProgress?: boolean;
+    /**
+     * Callback when application sharing starts.
+     */
+    onOperationStarted?: () => void;
+    /**
+     * Specifies the current sharing status of the application.
+     */
+    operationStatus?: OperationStatus;
 }
 
 export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsInterface> = (
@@ -103,7 +121,10 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
         triggerApplicationShare,
         onApplicationSharingCompleted,
         [ "data-componentid" ]: componentId,
-        readOnly
+        readOnly,
+        isSharingInProgress,
+        operationStatus,
+        onOperationStarted
     } = props;
 
     const dispatch: Dispatch = useDispatch();
@@ -112,6 +133,11 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
     const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
     );
+    const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.applications);
+    const isApplicationShareOperationStatusEnabled: boolean = isFeatureEnabled(
+        applicationFeatureConfig,
+        ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_SHARED_ACCESS_STATUS"));
 
     const [ subOrganizationList, setSubOrganizationList ] = useState<Array<OrganizationInterface>>([]);
     const [ sharedOrganizationList, setSharedOrganizationList ] = useState<Array<OrganizationInterface>>([]);
@@ -121,6 +147,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
     const [ sharedWithAll, setSharedWithAll ] = useState<boolean>(false);
     const [ filter, setFilter ] = useState<string>();
     const { isOrganizationManagementEnabled } = useGlobalVariables();
+    const [ showConfirmationModal, setShowConfirmationModal ] = useState(false);
 
     const {
         data: organizations,
@@ -166,6 +193,15 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
         isOrganizationsFetchRequestValidating,
         isSharedOrganizationsFetchRequestValidating
     ]);
+
+    /**
+     * Listen for status updates from the parent.
+     */
+    useEffect(() => {
+        if (operationStatus === OperationStatus.PARTIALLY_COMPLETED) {
+            onApplicationSharingCompleted?.();
+        }
+    }, [ operationStatus, onApplicationSharingCompleted ]);
 
     /**
      * Fetches the organization list.
@@ -301,7 +337,59 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
         }
     }, [ triggerApplicationShare ]);
 
+    /**
+     * Triggers the display of a confirmation modal when the user attempts to start a new share
+     * while one is ongoing, asking for confirmation to interrupt the current share.
+     */
+    const handleInterruptOngoingShare = () => {
+        setShowConfirmationModal(true);
+    };
+
+    /**
+     * Renders a confirmation modal asking the user to confirm if they want to interrupt the
+     * ongoing application share. Provides options to confirm or cancel the operation.
+     */
+    const renderConfirmationModal = (): ReactElement | null => {
+        return (
+            <>
+                <ConfirmationModal
+                    data-componentid={ `${componentId}-in-progress-reshare-confirmation-modal` }
+                    onClose={ (): void => {
+                        setShowConfirmationModal(false);
+                    } }
+                    type="warning"
+                    open={ showConfirmationModal }
+                    assertionHint={ t("applications:confirmations.inProgressReshare.assertionHint") }
+                    assertionType="checkbox"
+                    primaryAction={ t("common:confirm") }
+                    secondaryAction={ t("common:cancel") }
+                    onPrimaryActionClick={ (): void => {
+                        handleShareApplication();
+                        setShowConfirmationModal(false);
+                    } }
+                    onSecondaryActionClick={ (): void => {
+                        setShowConfirmationModal(false);
+                    } }
+                    closeOnDimmerClick={ false }
+                >
+                    <ConfirmationModal.Header>
+                        { t("applications:confirmations.inProgressReshare.header") }
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message attached warning>
+                        { t("applications:confirmations.inProgressReshare.message") }
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content>
+                        { t("applications:confirmations.inProgressReshare.content") }
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
+            </>
+        );
+    };
+
     const handleShareApplication: () => Promise<void> = useCallback(async () => {
+        if (isApplicationShareOperationStatusEnabled) {
+            handleAsyncSharingNotification(shareType);
+        }
         let shareAppData: ShareApplicationRequestInterface;
         let removedOrganization: OrganizationInterface[];
 
@@ -344,19 +432,21 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                 shareAppData
             )
                 .then(() => {
-                    dispatch(
-                        addAlert({
-                            description: t(
-                                "applications:edit.sections.shareApplication" +
-                                ".addSharingNotification.success.description"
-                            ),
-                            level: AlertLevels.SUCCESS,
-                            message: t(
-                                "applications:edit.sections.shareApplication" +
-                                ".addSharingNotification.success.message"
-                            )
-                        })
-                    );
+                    if (!isApplicationShareOperationStatusEnabled) {
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "applications:edit.sections.shareApplication" +
+                                    ".addSharingNotification.success.description"
+                                ),
+                                level: AlertLevels.SUCCESS,
+                                message: t(
+                                    "applications:edit.sections.shareApplication" +
+                                    ".addSharingNotification.success.message"
+                                )
+                            })
+                        );
+                    }
                 })
                 .catch((error: AxiosError) => {
                     if (error.response.data.message) {
@@ -560,6 +650,20 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
         checkedUnassignedListItems
     ]);
 
+    function handleAsyncSharingNotification(shareType: ShareType): void {
+        if (shareType === ShareType.SHARE_ALL || shareType === ShareType.SHARE_SELECTED) {
+            onOperationStarted?.();
+            dispatch(
+                addAlert({
+                    description: t("applications:edit.sections.shareApplication.addAsyncSharingNotification"
+                        + ".description"),
+                    level: AlertLevels.INFO,
+                    message: t("applications:edit.sections.shareApplication.addAsyncSharingNotification.message")
+                })
+            );
+        }
+    }
+
     if (isLoading) {
         return (
             <ContentLoader inline="centered" active/>
@@ -571,6 +675,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
             <Heading ellipsis as="h6">
                 { t("applications:edit.sections.sharedAccess.subTitle") }
             </Heading>
+            { renderConfirmationModal() }
             <Grid>
                 <Grid.Row>
                     <Grid.Column width={ 8 }>
@@ -723,7 +828,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                         <Divider hidden />
                         <PrimaryButton
                             data-componentid={ `${ componentId }-update-button` }
-                            onClick={ handleShareApplication }
+                            onClick={ isSharingInProgress ? handleInterruptOngoingShare : handleShareApplication }
                         >
                             { t("common:update") }
                         </PrimaryButton>

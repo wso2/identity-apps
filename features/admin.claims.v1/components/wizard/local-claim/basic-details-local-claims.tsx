@@ -19,7 +19,7 @@
 import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
-import { Claim, ClaimDataType, TestableComponentInterface } from "@wso2is/core/models";
+import { Claim, DataType, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { GenericIcon, Hint, InlineEditInput, Message, Popup } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
@@ -163,29 +163,31 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
     return (
         <Forms
             onSubmit={ (values: Map<string, FormValue>) => {
-                const data: Claim = {
-                    canonicalValues: values.get("canonicalValues")
-                        ? ((values.get("canonicalValues") as unknown) as { key: string; value: string }[])
-                            .map((item: { key: string; value: string }) => ({
-                                key: item.key,
-                                value: item.value
-                            }))
-                        : [],
-                    claimURI: claimURIBase + "/" + values.get("claimURI").toString().trim(),
-                    dataType: values.get("dataType")?.toString() === ClaimDataType.STRING
-                        ? ((values.get("canonicalValues") as string[]).length > 0
-                            ? ClaimDataType.OPTIONS
-                            : ClaimDataType.TEXT)
-                        : values.get("dataType")?.toString(),
-                    description: values.get("description")?.toString(),
-                    displayName: values.get("name").toString(),
-                    displayOrder: values.get("displayOrder") ? parseInt(values.get("displayOrder")?.toString()) : 0,
-                    multiValued: values.get("multiValued")?.length > 0,
-                    readOnly: values.get("readOnly")?.length > 0,
-                    regEx: values.get("regularExpression")?.toString(),
-                    required: values.get("required")?.length > 0,
-                    supportedByDefault: values.get("supportedByDefault")?.length > 0
-                };
+                const data: Claim
+                 = {
+                     canonicalValues: values.get("canonicalValues")
+                         ? ((values.get("canonicalValues") as unknown) as { key: string; value: string }[])
+                             .map((item: { key: string; value: string }) => ({
+                                 label: item.key,
+                                 value: item.value
+                             }))
+                         : [],
+                     claimURI: claimURIBase + "/" + values.get("claimURI").toString().trim(),
+                     dataType: values.get("dataType")?.toString() === DataType.STRING
+                         ? ((values.get("canonicalValues") as string[]).length > 0
+                             ? DataType.OPTIONS
+                             : DataType.TEXT)
+                         : values.get("dataType")?.toString(),
+                     description: values.get("description")?.toString(),
+                     displayName: values.get("name").toString(),
+                     displayOrder: values.get("displayOrder") ? parseInt(values.get("displayOrder")?.toString()) : 0,
+                     multiValued: values.get("multiValued")?.length > 0,
+                     readOnly: values.get("readOnly")?.length > 0,
+                     regEx: values.get("regularExpression")?.toString(),
+                     required: values.get("required")?.length > 0,
+                     subAttributes: values.get("subAttributes") as string[] || [],
+                     supportedByDefault: values.get("supportedByDefault")?.length > 0
+                 };
 
                 if (attributeConfig.localAttributes.createWizard.customWIzard) {
 

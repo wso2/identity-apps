@@ -113,7 +113,6 @@ type UsersPageInterface = IdentifiableComponentInterface & RouteComponentProps &
  * Temporary value to append to the list limit to figure out if the next button is there.
  */
 const TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET: number = 1;
-const NUMBER_OF_PAGES_FOR_LDAP: number = 100;
 
 /**
  * Users info page.
@@ -983,15 +982,15 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     };
 
     const resolveTotalPages = (): number => {
-        if (selectedUserStore === userstoresConfig.primaryUserstoreName) {
-            return Math.ceil(usersList?.totalResults / listItemLimit);
-        } else {
-            /** Response from the LDAP only contains the total items per page.
-             * No way to resolve the total number of items. So a large value will be set here and the
-             * next button will be disabled if there are no more items to fetch.
-            */
-            return NUMBER_OF_PAGES_FOR_LDAP;
-        }
+
+        /**
+         * The total number of pages is required for the pagination component.
+         *
+         * Based on the listOffset and listItemLimit, we can calculate the current page number.
+         * Setting the total number of pages to current page number + 1 ensures that the
+         * Next button in the pagination component is functioning properly.
+         */
+        return ((listOffset - 1) / listItemLimit) + 2;
     };
 
     const renderMultipleInviteConfirmationModel = (): ReactElement => {

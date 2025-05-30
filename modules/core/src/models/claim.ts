@@ -28,7 +28,7 @@ export interface Claim {
     multiValued: boolean;
     dataType: string;
     subAttributes?: string[];
-    canonicalValues?: Property[];
+    canonicalValues?: LabelValue[];
     displayName: string;
     readOnly: boolean;
     regEx: string;
@@ -67,6 +67,14 @@ export interface AttributeMapping {
  */
 export interface Property{
     key: string;
+    value: string;
+}
+
+/**
+ * Type of label-value pair.
+ */
+export interface LabelValue {
+    label: string;
     value: string;
 }
 
@@ -180,7 +188,7 @@ export enum SharedProfileValueResolvingMethod {
  * - DATE_TIME: A date and time value.
  * - COMPLEX: A complex value.
  */
-export enum ClaimDataType {
+export enum DataType {
     STRING = "string",
     INTEGER = "integer",
     DECIMAL = "decimal",

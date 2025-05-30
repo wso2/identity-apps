@@ -193,6 +193,8 @@ export interface usersNS {
                 locked: string;
                 pendingInitialPasswordSetup: string;
                 pendingPasswordReset: string;
+                pendingPrimaryEmailVerification: string;
+                pendingPrimaryMobileVerification: string;
             };
         };
         form: {

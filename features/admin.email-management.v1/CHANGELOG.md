@@ -1,5 +1,25 @@
 # @wso2is/admin.email-management.v1
 
+## 2.25.206
+
+### Patch Changes
+
+- [#8258](https://github.com/wso2/identity-apps/pull/8258) [`33bbe17fae050352d2643ee48ebf0cc153d0381b`](https://github.com/wso2/identity-apps/commit/33bbe17fae050352d2643ee48ebf0cc153d0381b) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Migrate email customization form to react-final-form
+
+## 2.25.205
+
+### Patch Changes
+
+- [#8238](https://github.com/wso2/identity-apps/pull/8238) [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+- Updated dependencies [[`89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f`](https://github.com/wso2/identity-apps/commit/89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f), [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f)]:
+  - @wso2is/admin.core.v1@2.45.2
+  - @wso2is/common.branding.v1@2.27.1
+  - @wso2is/admin.branding.v1@2.30.1
+  - @wso2is/react-components@2.9.16
+  - @wso2is/dynamic-forms@2.4.41
+  - @wso2is/form@2.7.1
+
 ## 2.25.204
 
 ### Patch Changes
