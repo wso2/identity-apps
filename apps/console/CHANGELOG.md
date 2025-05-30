@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.57.7
+
+### Patch Changes
+
+- [#8258](https://github.com/wso2/identity-apps/pull/8258) [`33bbe17fae050352d2643ee48ebf0cc153d0381b`](https://github.com/wso2/identity-apps/commit/33bbe17fae050352d2643ee48ebf0cc153d0381b) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Migrate email customization form to react-final-form
+
+- Updated dependencies [[`33bbe17fae050352d2643ee48ebf0cc153d0381b`](https://github.com/wso2/identity-apps/commit/33bbe17fae050352d2643ee48ebf0cc153d0381b)]:
+  - @wso2is/admin.email-management.v1@2.25.206
+
 ## 2.57.6
 
 ### Patch Changes
