@@ -184,7 +184,7 @@
     * {@code false} otherwise.
     */
     public boolean isAdvancedSanitizedURL(String url) {
-        return !StringUtils.equalsIgnoreCase(url, "null") && 
+        return !StringUtils.equalsIgnoreCase(url, "null") &&
                 !StringUtils.isBlank(url) &&
                 !url.toLowerCase().contains("javascript:") &&
                 !url.toLowerCase().contains("file:") &&
