@@ -392,8 +392,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         const [ inputValue, setInputValue ] = useState("");
         const [ claimList, setClaimList ] = useState<ValueInputAutocompleteOptionsInterface[]>([]);
         const [ selectedValue, setSelectedValue ] = useState<string>(null);
-        let valueReferenceAttribute: string = findMetaValuesAgainst?.value?.valueReferenceAttribute || "id";
-        let valueDisplayAttribute: string = findMetaValuesAgainst?.value?.valueDisplayAttribute || "name";
+        const valueReferenceAttribute: string = findMetaValuesAgainst?.value?.valueReferenceAttribute || "id";
+        const valueDisplayAttribute: string = findMetaValuesAgainst?.value?.valueDisplayAttribute || "name";
 
         let resourceType: string;
         let shouldFetch: boolean = false;
@@ -403,9 +403,6 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             resourceType = "applications";
             shouldFetch = true;
         } else if (expressionField === "claim") {
-            //TODO: these hardcoded values will be removed once the rule metadata api change PR is merged.
-            valueReferenceAttribute = "claimURI";
-            valueDisplayAttribute = "displayName";
             shouldFetch = false;
         }
 
