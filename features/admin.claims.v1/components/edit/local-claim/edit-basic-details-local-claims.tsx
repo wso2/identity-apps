@@ -290,7 +290,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             setCanonicalValues([]);
         }
 
-        if (claim.subAttributes && Array.isArray(claim.subAttributes)) {
+        if (claim && claim.subAttributes && Array.isArray(claim.subAttributes)) {
             setSubAttributes(claim.subAttributes);
         }
 
