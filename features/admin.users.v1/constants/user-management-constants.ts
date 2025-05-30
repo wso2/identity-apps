@@ -500,5 +500,15 @@ export const USER_ACCOUNT_STATUS_FILTER_OPTIONS: DropdownChild[] = [
         key: "PENDING_AP",
         text: "users:advancedSearch.accountStatusFilter.options.pendingInitialPasswordSetup",
         value: "urn:scim:wso2:schema:accountState eq PENDING_AP"
+    },
+    {
+        key: "PENDING_PRIMARY_EMAIL",
+        text: "users:advancedSearch.accountStatusFilter.options.pendingPrimaryEmailVerification",
+        value: "urn:scim:wso2:schema:emailVerified ne true"
+    },
+    {
+        key: "PENDING_PRIMARY_MOBILE",
+        text: "users:advancedSearch.accountStatusFilter.options.pendingPrimaryMobileVerification",
+        value: "urn:scim:wso2:schema:phoneVerified ne true"
     }
 ];
