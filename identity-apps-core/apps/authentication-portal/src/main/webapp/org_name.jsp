@@ -1,7 +1,7 @@
 <%--
-  ~ Copyright (c) 2022-2025, WSO2 LLC. (http://www.wso2.com).
+  ~ Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com).
   ~
-  ~ WSO2 LLC. licenses this file to you under the Apache License,
+  ~ WSO2 Inc. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
@@ -144,17 +144,13 @@
                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "cancel")%>
                             </a>
                         </div>
-                        <div class="ui horizontal divider"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%></div>
                         <% if (isOrgDiscoveryEnabled) { %>
+                            <div class="ui horizontal divider"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%></div>
                             <div class="social-login blurring social-dimmer">
                                 <input type="submit" id="discoveryButton" onclick="promptDiscovery();" class="ui primary basic button link-button"
                                     value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.email.address")%>">
                             </div>
                         <% } %>
-                        <div class="social-login blurring social-dimmer">
-                            <input type="submit" id="orgHandleButton" onclick="enterOrgHandle();" class="ui primary basic button link-button"
-                                  value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.organization.handle")%>">
-                        </div>
                     </form>
 
                 </div>
@@ -199,12 +195,6 @@
             }
             
             function promptDiscovery() {
-                document.getElementById("ORG_NAME").disabled = true;
-                document.getElementById("pin_form").submit();
-            }
-
-            function enterOrgHandle() {
-                document.getElementById("prompt").value = "orgHandle";
                 document.getElementById("ORG_NAME").disabled = true;
                 document.getElementById("pin_form").submit();
             }

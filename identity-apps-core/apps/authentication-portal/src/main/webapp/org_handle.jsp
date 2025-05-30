@@ -114,12 +114,11 @@
 
                     <div id="alertDiv"></div>
 
-
                     <form class="ui large form" id="org_form" name="org_form" action="<%=commonauthURL%>" method="GET">
                         <div class="field m-0 text-left required">
                             <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "organization.handle")%></label>
                         </div>
-                        <input type="text" id='ORG_HANDLE' name="orgHandle" size='30'/>
+                        <input type="text" id='org_handle' name="orgHandle" size='30'/>
                         <div class="mt-1" id="emptyOrganizationHandleError" style="display: none;">
                             <i class="red exclamation circle fitted icon"></i>
                             <span class="validation-error-message" id="emptyOrganizationHandleErrorText">
@@ -139,12 +138,8 @@
                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "cancel")%>
                             </a>
                         </div>
-                        <div class="ui horizontal divider"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%></div>
-                        <div class="social-login blurring social-dimmer">
-                            <input type="submit" id="orgNameButton" onclick="enterOrgName();" class="ui primary basic button link-button"
-                                  value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.organization.name")%>">
-                         </div>
                         <% if (isOrgDiscoveryEnabled) { %>
+                            <div class="ui horizontal divider"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%></div>
                             <div class="social-login blurring social-dimmer">
                                 <input type="submit" id="discoveryButton" onclick="promptDiscovery();" class="ui primary basic button link-button"
                                     value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.email.address")%>">
@@ -195,18 +190,13 @@
             
             function promptDiscovery() {
                 document.getElementById("prompt").value = "orgDiscovery";
-                document.getElementById("ORG_HANDLE").disabled = true;
-                document.getElementById("org_form").submit();
-            }
-
-            function enterOrgName() {
-                document.getElementById("ORG_HANDLE").disabled = true;
+                document.getElementById("org_handle").disabled = true;
                 document.getElementById("org_form").submit();
             }
 
             function submitOrgHandle() {
                 // Show error message when organization handle is empty.
-                if (document.getElementById("ORG_HANDLE").value.length <= 0) {
+                if (document.getElementById("org_handle").value.length <= 0) {
                     showEmptyOrganizationHandleErrorMessage();
                     return;
                 }
