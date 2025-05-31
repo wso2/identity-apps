@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -67,7 +67,8 @@ export type EditTenantFormProps = IdentifiableComponentInterface & {
     onSubmit?: () => void;
 };
 
-export type EditTenantFormValues = Pick<Tenant, "domain" | "id"> & Omit<TenantOwner, "additionalDetails">;
+export type EditTenantFormValues = Omit<Pick<Tenant, "domain" | "id">, "name"> & { organizationName: string }
+    & Omit<TenantOwner, "additionalDetails">;
 
 export type EditTenantFormErrors = Partial<EditTenantFormValues>;
 
@@ -111,7 +112,7 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
      */
     const handleSubmit = (values: EditTenantFormValues): void => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { domain, id, username, ...rest } = values;
+        const { domain, id, organizationName, username, ...rest } = values;
 
         updateTenantOwner(tenant?.id, { id: tenant?.owners[0]?.id, ...rest } as TenantOwner)
             .then(() => {
@@ -122,7 +123,6 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
                         message: t("tenants:editTenant.notifications.updateTenant.success.message")
                     })
                 );
-
                 mutateTenant();
                 mutateTenantOwner();
             })
@@ -147,6 +147,7 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
             email: undefined,
             firstname: undefined,
             lastname: undefined,
+            organizationName: undefined,
             password: undefined
         };
 
@@ -295,6 +296,7 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
                 firstname: tenant?.owners[0]?.firstname,
                 id: tenant?.id,
                 lastname: tenant?.owners[0]?.lastname,
+                organizationName: tenant?.name,
                 password: "",
                 username: tenant?.owners[0]?.username
             } }
@@ -330,6 +332,38 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
                         onSubmit={ handleSubmit }
                         className="edit-tenant-form"
                     >
+                        <FinalFormField
+                            key="organizationName"
+                            width={ 16 }
+                            className="text-field-container"
+                            ariaLabel="organizationName"
+                            required={ true }
+                            data-componentid={ `${componentId}-organization-name` }
+                            name="organizationName"
+                            type="text"
+                            label={ t("tenants:common.form.fields.organizationName.label") }
+                            component={ TextFieldAdapter }
+                            readOnly={ true }
+                            InputProps={ {
+                                endAdornment: (
+                                    <Tooltip title="Copy">
+                                        <div>
+                                            <IconButton
+                                                aria-label="Reset field to default"
+                                                className="reset-field-to-default-adornment"
+                                                onClick={ async () => {
+                                                    await CommonUtils.copyTextToClipboard(tenant?.name);
+                                                } }
+                                                edge="end"
+                                            >
+                                                <CopyIcon size={ 12 } />
+                                            </IconButton>
+                                        </div>
+                                    </Tooltip>
+                                ),
+                                readOnly: true
+                            } }
+                        />
                         <FinalFormField
                             key="domain"
                             width={ 16 }
