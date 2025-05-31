@@ -70,6 +70,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             },
             docSiteURL: "",
             extensions: null,
+            globalCentralEnabled: undefined,
             helpCenterURL: "",
             idpConfigs: null,
             loginCallbackUrl: "",

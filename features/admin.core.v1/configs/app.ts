@@ -161,6 +161,7 @@ export class Config {
             developerApp: window[ "AppUtils" ]?.getConfig()?.developerApp,
             docSiteURL: window[ "AppUtils" ]?.getConfig()?.docSiteUrl,
             extensions: window[ "AppUtils" ]?.getConfig()?.extensions,
+            globalCentralEnabled: window[ "AppUtils" ]?.getConfig()?.globalCentralEnabled,
             idpConfigs: window[ "AppUtils" ]?.getConfig()?.idpConfigs,
             loginCallbackUrl: window[ "AppUtils" ]?.getConfig()?.loginCallbackURL,
             organizationPrefix: window["AppUtils"]?.getConfig()?.organizationPrefix,

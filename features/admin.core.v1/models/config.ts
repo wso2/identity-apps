@@ -311,6 +311,10 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      * Configs of multiple application protocol.
      */
     allowMultipleAppProtocols?: boolean;
+    /**
+     * Global central enabled.
+     */
+    globalCentralEnabled?: boolean;
 }
 
 /**
