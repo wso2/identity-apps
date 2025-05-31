@@ -1124,7 +1124,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             setDataType(data.value);
                         } }
                     />
-                  
+
                     { dataType === ClaimDataType.COMPLEX && (
                         <>
                             <Field.Dropdown
