@@ -489,7 +489,7 @@ export const USER_ACCOUNT_STATUS_FILTER_OPTIONS: DropdownChild[] = [
     {
         key: "DISABLED",
         text: "users:advancedSearch.accountStatusFilter.options.disabled",
-        value: "urn:scim:wso2:schema:accountState eq DISABLED"
+        value: "urn:scim:wso2:schema:accountDisabled eq true"
     },
     {
         key: "PENDING_FUPR",
