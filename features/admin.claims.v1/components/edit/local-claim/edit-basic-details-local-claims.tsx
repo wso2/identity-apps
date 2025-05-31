@@ -602,6 +602,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     };
 
     const subAttributeDropdownOptions: DropDownItemInterface[] = useMemo(() => {
+        if (!props.claim) return [];
+
         return fetchedAttributes
             ?.filter((claim: Claim) => {
                 const isSystemClaim: boolean = claim.properties?.some(
@@ -620,8 +622,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             .sort(
                 (a: { text: string }, b: { text: string }) =>
                     a.text.localeCompare(b.text)
-            );
-    }, [ fetchedAttributes, subAttributes, claim?.claimURI ]);
+            ) ?? [];
+    }, [ fetchedAttributes, subAttributes, props.claim?.claimURI ]);
 
     const onSubmit = (values: Record<string, unknown>) => {
         let data: Claim;
