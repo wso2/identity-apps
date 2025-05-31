@@ -76,7 +76,6 @@
     private static final String IS_SAAS_APP = "isSaaSApp";
     private static final String BASIC_AUTHENTICATOR = "BasicAuthenticator";
     private static final String IDENTIFIER_EXECUTOR = "IdentifierExecutor";
-    private static final String OPEN_ID_AUTHENTICATOR = "OpenIDAuthenticator";
     private static final String JWT_BASIC_AUTHENTICATOR = "JWTBasicAuthenticator";
     private static final String X509_CERTIFICATE_AUTHENTICATOR = "x509CertificateAuthenticator";
     private static final String GOOGLE_AUTHENTICATOR = "GoogleOIDCAuthenticator";
@@ -186,7 +185,7 @@
     List<String> localAuthenticatorNames = new ArrayList<String>();
     List<String> registeredLocalAuthenticators = Arrays.asList(
         BACKUP_CODE_AUTHENTICATOR, TOTP_AUTHENTICATOR, EMAIL_OTP_AUTHENTICATOR,
-        MAGIC_LINK_AUTHENTICATOR,SMS_OTP_AUTHENTICATOR,OPEN_ID_AUTHENTICATOR,
+        MAGIC_LINK_AUTHENTICATOR,SMS_OTP_AUTHENTICATOR,
         IDENTIFIER_EXECUTOR,JWT_BASIC_AUTHENTICATOR,BASIC_AUTHENTICATOR,
         IWA_AUTHENTICATOR,X509_CERTIFICATE_AUTHENTICATOR,FIDO_AUTHENTICATOR,
         PUSH_NOTIFICATION_AUTHENTICATOR
@@ -543,12 +542,7 @@
                 <div class="segment-form">
                     <%
                         if (localAuthenticatorNames.size() > 0) {
-                            if (localAuthenticatorNames.contains(OPEN_ID_AUTHENTICATOR)) {
-                                hasLocalLoginOptions = true;
-                    %>
-                        <%@ include file="openid.jsp" %>
-                    <%
-                        } else if (localAuthenticatorNames.contains(IDENTIFIER_EXECUTOR)) {
+                            if (localAuthenticatorNames.contains(IDENTIFIER_EXECUTOR)) {
                             hasLocalLoginOptions = true;
                     %>
                         <%@ include file="identifierauth.jsp" %>
