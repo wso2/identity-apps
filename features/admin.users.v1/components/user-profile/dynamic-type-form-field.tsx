@@ -17,7 +17,7 @@
  */
 
 import { ProfileConstants } from "@wso2is/core/constants";
-import { ClaimDataType, IdentifiableComponentInterface, ProfileSchemaInterface, Property } from "@wso2is/core/models";
+import { ClaimDataType, IdentifiableComponentInterface, LabelValue, ProfileSchemaInterface } from "@wso2is/core/models";
 import { AutocompleteFieldAdapter, CheckboxFieldAdapter, FinalFormField, TextFieldAdapter } from "@wso2is/form";
 import isEmpty from "lodash-es/isEmpty";
 import React from "react";
@@ -100,7 +100,7 @@ const DynamicTypeFormField = (props: DynamicTypeFormFieldPropsInterface) => {
     }
 
     if (claimType === ClaimDataType.STRING) {
-        const options: Property[] = schema["canonicalValues"] ?? [];
+        const options: LabelValue[] = schema["canonicalValues"] ?? [];
 
         // If the claim is a string and has canonical values, render a dropdown.
         if (options.length > 0) {

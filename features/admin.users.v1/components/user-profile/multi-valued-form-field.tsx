@@ -37,10 +37,10 @@ import {
     AlertLevels,
     ClaimDataType,
     IdentifiableComponentInterface,
+    LabelValue,
     PatchOperationRequest,
     ProfileInfoInterface,
     ProfileSchemaInterface,
-    Property,
     SharedProfileValueResolvingMethod
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -547,7 +547,7 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
         );
 
         if (claimType === ClaimDataType.STRING) {
-            const options: Property[] = schema["canonicalValues"] ?? [];
+            const options: LabelValue[] = schema["canonicalValues"] ?? [];
 
             // This is a multi valued dropdown field.
             if (options.length > 0) {

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Property } from "./claim";
+import { LabelValue } from "./claim";
 import { RolesMemberInterface } from "./roles";
 
 /**
@@ -176,7 +176,7 @@ export interface ProfileSchemaInterface {
     /**
      * Available values for the attribute.
      */
-    canonicalValues?: Property[];
+    canonicalValues?: LabelValue[];
     /**
      * Order to display.
      */
