@@ -188,7 +188,7 @@ export enum SharedProfileValueResolvingMethod {
  * - DATE_TIME: A date and time value.
  * - COMPLEX: A complex value.
  */
-export enum DataType {
+export enum ClaimDataType {
     STRING = "string",
     INTEGER = "integer",
     DECIMAL = "decimal",
