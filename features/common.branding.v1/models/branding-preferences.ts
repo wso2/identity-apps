@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -81,6 +81,28 @@ export interface BrandingPreferenceInterface {
      * Configurations.
      */
     configs: BrandingPreferenceConfigInterface;
+    /**
+     * Custom Content for the branding preference.
+     */
+    customContent?: BrandingPreferenceCustomContentInterface;
+}
+
+/**
+ * Interface Branding preference custom content.
+ */
+export interface BrandingPreferenceCustomContentInterface {
+    /**
+     * HTML content.
+     */
+    htmlContent?: string;
+    /**
+     * CSS content.
+     */
+    cssContent?: string;
+    /**
+     * JS content.
+     */
+    jsContent?: string;
 }
 
 /**
