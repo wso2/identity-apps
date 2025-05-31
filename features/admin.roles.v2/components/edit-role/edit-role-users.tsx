@@ -20,6 +20,7 @@ import Box from "@oxygen-ui/react/Box";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { UserBasicInterface } from "@wso2is/admin.users.v1/models/user";
@@ -64,7 +65,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Dropdown, DropdownProps, Header, Icon, PaginationProps, SemanticICONS } from "semantic-ui-react";
 import { AddRoleUserModal } from "./add-role-user-modal";
-import { updateRoleDetails } from "../../api";
+import { updateRoleDetails, updateUsersForRole } from "../../api";
 import { CreateRoleMemberInterface, PatchRoleDataInterface, RoleEditSectionsInterface } from "../../models/roles";
 import "./edit-role.scss";
 
@@ -89,6 +90,11 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
 
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
+
+    const userRoleV3Config: FeatureAccessConfigInterface = useSelector(
+            (state: AppState) => state?.config?.ui?.features?.entitlement);
+    const hasRoleV3UpdateScopes: boolean = useRequiredScopes(userRoleV3Config?.scopes?.update);
+    const updateUserRoleAssignment = hasRoleV3UpdateScopes ? updateUsersForRole : updateRoleDetails;
 
     const consoleSettingsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consoleSettings
@@ -260,7 +266,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         };
 
         setIsSubmitting(true);
-        updateRoleDetails(role.id, roleData)
+        updateUserRoleAssignment(role.id, roleData)
             .then(() => {
                 dispatch(
                     addAlert({
@@ -314,7 +320,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         };
 
         setIsSubmitting(true);
-        updateRoleDetails(role.id, roleData)
+        updateUserRoleAssignment(role.id, roleData)
             .then(() => {
                 dispatch(
                     addAlert({
