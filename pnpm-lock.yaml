@@ -633,7 +633,7 @@ importers:
         specifier: ^1.5.204
         version: link:../../features/admin.username-validation.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.32.6
+        specifier: ^2.32.7
         version: link:../../features/admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.33
@@ -18411,7 +18411,7 @@ importers:
         specifier: ^2.29.11
         version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.32.6
+        specifier: ^2.32.7
         version: 'link:'
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.33
