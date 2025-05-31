@@ -884,7 +884,7 @@
                                         <%=i18n(recoveryResourceBundle, customText, "sign.up.button")%>
                                     </button>
                                 </div>
-                                <% if (!skipSignUpEnableCheck && AuthenticationEndpointUtil.isValidMultiOptionURI(callback)) { %>
+                                <% if (!skipSignUpEnableCheck && AuthenticationEndpointUtil.isSchemeSafeURL(callback)) { %>
                                     <div class="ui divider hidden"></div>
                                     <div class="buttons mt-2">
                                         <div class="field external-link-container text-small">
