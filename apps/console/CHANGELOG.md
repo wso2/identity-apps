@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.58.1
+
+### Patch Changes
+
+- [#8269](https://github.com/wso2/identity-apps/pull/8269) [`b108cde0b3aa77d8943ce0a7075db13c2ee5d9fd`](https://github.com/wso2/identity-apps/commit/b108cde0b3aa77d8943ce0a7075db13c2ee5d9fd) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix attributes view page issue
+
+- Updated dependencies [[`b108cde0b3aa77d8943ce0a7075db13c2ee5d9fd`](https://github.com/wso2/identity-apps/commit/b108cde0b3aa77d8943ce0a7075db13c2ee5d9fd)]:
+  - @wso2is/admin.claims.v1@2.27.126
+
 ## 2.58.0
 
 ### Minor Changes
