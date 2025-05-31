@@ -174,8 +174,8 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
     const [ defaultTenant, setDefaultTenant ] = useState<TenantInfo>(undefined);
     const [ currentTenant, setCurrentTenant ] = useState<TenantInfo>(undefined);
     const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
-    const [ organizationId, setOrganizationId ] = useState<string>("");
-    const [ organizationName, setOrganizationName ] = useState<string>("");
+    const [ organizationName, setOrganizationName] = useState<string>("");
+    const [ organizationHandle, setOrganizationHandle ] = useState<string>("");
     const [ isCopying, setIsCopying ] = useState<boolean>(false);
 
     const { organizationType } = useGetCurrentOrganizationType();
@@ -311,9 +311,9 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
     /**
      * This will copy the organization id to the clipboard.
      */
-    const copyOrganizationId = () => {
+    const copyOrganizationHandle = () => {
         setIsCopying(true);
-        navigator.clipboard.writeText(organizationId);
+        navigator.clipboard.writeText(organizationName);
         setTimeout(() => {
             setIsCopying(false);
         }, 1000);
@@ -325,8 +325,8 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
     const getOrganizationData = () => {
         AsgardeoSPAClient.getInstance().getDecodedIDToken()
             .then((decodedToken: DecodedIDTokenPayload) => {
-                setOrganizationId(decodedToken?.org_id);
                 setOrganizationName(decodedToken?.org_name);
+                setOrganizationHandle(decodedToken?.org_handle);
             }).catch(() => {
                 dispatch(
                     addAlert({
@@ -747,24 +747,24 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                 <Grid className="middle aligned content">
                                                     <Grid.Row>
                                                         <div
-                                                            className="org-id ellipsis"
+                                                            className="org-handle ellipsis"
                                                             data-componentId={
-                                                                "tenant-dropdown-organization-id"
+                                                                "tenant-dropdown-organization-handle"
                                                             }
                                                         >
-                                                            { organizationId }
+                                                            { organizationHandle }
                                                         </div>
                                                         <div>
                                                             <Button
                                                                 basic
                                                                 inline
-                                                                data-componentid="org-id-copy-icon"
+                                                                data-componentid="org-handle-copy-icon"
                                                                 data-inverted
                                                                 data-tooltip={ isCopying
                                                                     ? t("extensions:manage.features.tenant." +
                                                                         "header.copied")
                                                                     : t("extensions:manage.features.tenant." +
-                                                                        "header.copyOrganizationId")
+                                                                        "header.copyOrganizationHandle")
                                                                 }
                                                                 icon={ (
                                                                     <Icon
@@ -772,8 +772,8 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                                         color="grey"
                                                                     />
                                                                 ) }
-                                                                className="org-id-copy-btn"
-                                                                onClick={ () => copyOrganizationId() }
+                                                                className="org-handle-copy-btn"
+                                                                onClick={ () => copyOrganizationHandle() }
                                                             />
                                                         </div>
                                                     </Grid.Row>
