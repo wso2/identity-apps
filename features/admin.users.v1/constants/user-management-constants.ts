@@ -484,7 +484,7 @@ export const USER_ACCOUNT_STATUS_FILTER_OPTIONS: DropdownChild[] = [
     {
         key: "LOCKED",
         text: "users:advancedSearch.accountStatusFilter.options.locked",
-        value: "urn:scim:wso2:schema:accountState eq LOCKED"
+        value: "urn:scim:wso2:schema:accountLocked eq true"
     },
     {
         key: "DISABLED",
