@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.58.3
+
+### Patch Changes
+
+- [#8273](https://github.com/wso2/identity-apps/pull/8273) [`78b959ef447d5376e1814946cd06252999487378`](https://github.com/wso2/identity-apps/commit/78b959ef447d5376e1814946cd06252999487378) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Change account locked and disabled users filtering queries
+
+- Updated dependencies [[`78b959ef447d5376e1814946cd06252999487378`](https://github.com/wso2/identity-apps/commit/78b959ef447d5376e1814946cd06252999487378)]:
+  - @wso2is/admin.users.v1@2.32.8
+
 ## 2.58.2
 
 ### Patch Changes
