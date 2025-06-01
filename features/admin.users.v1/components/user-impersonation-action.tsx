@@ -43,6 +43,7 @@ import { ApplicationManagementConstants } from "../../admin.applications.v1/cons
 import { ApplicationListItemInterface } from "../../admin.applications.v1/models/application";
 import { useUserDetails } from "../api";
 import { UserManagementConstants } from "../constants";
+import useOrganizations from "@wso2is/admin.organizations.v1/hooks/use-organizations";
 
 /**
  * Props for Impersonate User Action component.
@@ -102,7 +103,6 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         = useState<boolean>(false);
 
     const consoleUrl: string = useSelector((state: AppState) => state?.config?.deployment?.clientHost);
-    const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
     const authenticatedUserProfileInfo: ProfileInfoInterface = useSelector((state: AppState) =>
         state?.profile?.profileInfo);
@@ -131,8 +131,9 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         data: authenticatedUserProfileInfoData,
         isLoading: isAuthenticatedUserFetchRequestLoading
     } = useUserDetails(getUserId(authenticatedUserProfileInfo?.id));
+    const { getUserOrgInLocalStorage } = useOrganizations();
 
-    const isSubOrgUser: boolean = (organizationType === OrganizationType.SUBORGANIZATION);
+    const isSwitchedFromRootOrg: boolean = getUserOrgInLocalStorage() === "undefined";
     const IMPERSONATION_ARTIFACTS: string = "impersonation_artifacts";
     let impersonation_artifacts: any = sessionStorage.getItem(IMPERSONATION_ARTIFACTS);
 
@@ -179,8 +180,8 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
      */
     useEffect(() => {
         if (impersonationInProgress) {
-            setTimeout(() => {
-                if (impersonationInProgress && idToken == undefined && subjectToken == undefined) {
+            const timer: any = setTimeout(() => {
+                if (impersonationInProgress) {
                     setImpersonationInProgress(false);
                     dispatch(addAlert({
                         description: t(
@@ -193,6 +194,8 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
                     }));
                 }
             }, 5000);
+
+            return () => clearTimeout(timer);
         }
     }, [ impersonationInProgress ]);
 
@@ -430,15 +433,19 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
      *
      * @param url - The URL to be modified.
      */
-    const getTenantAwareURL = (url: string): string => {
-
+    const getBasePath = (url: string): string => {
         const newURL: URL = new URL(url);
-        const newPathname: string = newURL.pathname.replace(/^\/t\/[^/]+/, "");
+
+        const newPathname: string = newURL.pathname
+            .replace(/^\/t\/[^/]+/, "")
+            .replace(/^\/o\/[^/]+/, "");
 
         newURL.pathname = newPathname;
 
         return newURL.toString();
     };
+
+    const userOrganizationId: string = useSelector((state: AppState) => state?.organization?.userOrganizationId);
 
     /**
      * This function resolves the iframe for the impersonation.
@@ -449,10 +456,11 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
             return (
                 <iframe
                     hidden
-                    src={ `${getTenantAwareURL(consoleUrl)}/resources/users/init-impersonate.html`
+                    src={ `${getBasePath(consoleUrl)}/resources/users/init-impersonate.html`
                         + `?userId=${encodeURIComponent(user.id)}`
                         + `&codeChallenge=${encodeURIComponent(codeChallenge)}`
                         + `&clientId=${encodeURIComponent(accountAppClientID)}`
+                        + `&orgId=${encodeURIComponent(userOrganizationId)}`
                     }
                 />
             );
@@ -492,16 +500,17 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     const resolveUserActions = (): ReactElement => {
 
         return (
-            !isSubOrgUser && !isUserCurrentLoggedInUser && isAuthenticatedUserInAnAllowedUserstore()
-                && isFeatureEnabled(userFeatureConfig,
-                    UserManagementConstants.FEATURE_DICTIONARY.get("USER_IMPERSONATION")) ?
+            !isUserCurrentLoggedInUser &&
+            !isSwitchedFromRootOrg &&
+            isAuthenticatedUserInAnAllowedUserstore() &&
+            isFeatureEnabled(userFeatureConfig, UserManagementConstants.FEATURE_DICTIONARY.get("USER_IMPERSONATION")) ?
                 (
                     <React.Fragment>
                         <DangerZoneGroup
                             className="action-zone"
                         >
                             {
-                                !isReadOnly && !isUserManagedByParentOrg && (
+                                !isReadOnly && (
                                     <DangerZone
                                         data-componentid={ `${ componentId }-danger-zone-button` }
                                         className="action-zone"
