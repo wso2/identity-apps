@@ -171,8 +171,8 @@
                 const defaultMyAccountUrl = "<%= myaccountUrl %>";
                 const authPortalURL = "<%= authenticationPortalURL %>";
                 const registrationFlowApiProxyPath = authPortalURL + "/util/self-registration-api.jsp";
-                const code = "<%= Encode.forJavaScriptAttribute(code) != null ? Encode.forJavaScriptAttribute(code) : null %>";
-                const state = "<%= Encode.forJavaScriptAttribute(state) != null ? Encode.forJavaScriptAttribute(state) : null %>";
+                const code = "<%= Encode.forJavaScript(code) != null ? Encode.forJavaScript(code) : null %>";
+                const state = "<%= Encode.forJavaScript(state) != null ? Encode.forJavaScript(state) : null %>";
                 
                 const locale = "en-US";
                 const translations = <%= translationsJson %>;
@@ -257,7 +257,7 @@
                         const errorDetails = getI18nKeyForError(error.code);
                         const errorPageURL = authPortalURL + "/registration_error.do?" + "ERROR_MSG="
                             + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID="
-                            + "<%= Encode.forJavaScriptAttribute(spId) %>" + "&" + "REG_PORTAL_URL=" + authPortalURL + "/register.do";
+                            + "<%= Encode.forJavaScript(spId) %>" + "&" + "REG_PORTAL_URL=" + authPortalURL + "/register.do";
                         
                         window.location.href = errorPageURL;
                     }
