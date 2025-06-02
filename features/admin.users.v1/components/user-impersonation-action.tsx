@@ -18,10 +18,11 @@
 
 import { HttpResponse, useAuthContext } from "@asgardeo/auth-react";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { userConfig } from "@wso2is/admin.extensions.v1/configs/user";
-import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import useOrganizations from "@wso2is/admin.organizations.v1/hooks/use-organizations";
 import { isMyAccountImpersonationRole } from "@wso2is/admin.roles.v2/components/role-utils";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -43,7 +44,6 @@ import { ApplicationManagementConstants } from "../../admin.applications.v1/cons
 import { ApplicationListItemInterface } from "../../admin.applications.v1/models/application";
 import { useUserDetails } from "../api";
 import { UserManagementConstants } from "../constants";
-import useOrganizations from "@wso2is/admin.organizations.v1/hooks/use-organizations";
 
 /**
  * Props for Impersonate User Action component.
@@ -65,10 +65,6 @@ interface UserImpersonationActionInterface extends IdentifiableComponentInterfac
      * Whether user is read only.
      */
     isReadOnly: boolean;
-    /**
-     * Whether the user is managed by the parent organization.
-     */
-    isUserManagedByParentOrg: boolean;
 }
 
 /**
@@ -83,8 +79,7 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         user,
         isLocked,
         isDisabled,
-        isReadOnly,
-        isUserManagedByParentOrg
+        isReadOnly
     } = props;
 
     const { httpRequest } = useAuthContext();
@@ -132,8 +127,8 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         isLoading: isAuthenticatedUserFetchRequestLoading
     } = useUserDetails(getUserId(authenticatedUserProfileInfo?.id));
     const { getUserOrgInLocalStorage } = useOrganizations();
-
     const isSwitchedFromRootOrg: boolean = getUserOrgInLocalStorage() === "undefined";
+    const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
     const IMPERSONATION_ARTIFACTS: string = "impersonation_artifacts";
     let impersonation_artifacts: any = sessionStorage.getItem(IMPERSONATION_ARTIFACTS);
 
@@ -394,8 +389,9 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         const authenticatedUserUserStore: string = authenticatedUserProfileInfo?.id?.split("/").length > 1
             ? authenticatedUserProfileInfo?.id?.split("/")[0]
             : (
-                userConfig?.allowImpersonationForPrimaryUserStore
-                    ? primaryUserStoreDomainName : UserManagementConstants.ASGARDEO_USERSTORE
+                orgType === OrganizationType.SUBORGANIZATION ? userstoresConfig?.primaryUserstoreName :
+                    (userConfig?.allowImpersonationForPrimaryUserStore
+                        ? primaryUserStoreDomainName : UserManagementConstants.ASGARDEO_USERSTORE)
             );
 
         return authenticatedUserUserStore !== UserManagementConstants.ASGARDEO_USERSTORE
@@ -501,7 +497,7 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
 
         return (
             !isUserCurrentLoggedInUser &&
-            !isSwitchedFromRootOrg &&
+            (orgType === OrganizationType.SUBORGANIZATION ? !isSwitchedFromRootOrg : true) &&
             isAuthenticatedUserInAnAllowedUserstore() &&
             isFeatureEnabled(userFeatureConfig, UserManagementConstants.FEATURE_DICTIONARY.get("USER_IMPERSONATION")) ?
                 (
