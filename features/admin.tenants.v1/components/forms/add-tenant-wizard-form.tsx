@@ -109,8 +109,8 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
         return state?.config?.deployment?.centralDeploymentEnabled;
     });
 
-    const isGlobalCentralEnabled: boolean = useSelector((state: AppState) => {
-        return state?.config?.deployment?.globalCentralEnabled;
+    const isRegionSelectionEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.deployment?.regionSelectionEnabled;
     });
 
     const { t } = useTranslation();
@@ -132,7 +132,7 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
     };
 
     const redirectingConsoleUrl = (): string => {
-        if (isCentralDeploymentEnabled && isGlobalCentralEnabled && selectedDeploymentUnit) {
+        if (isCentralDeploymentEnabled && isRegionSelectionEnabled && selectedDeploymentUnit) {
             return `${ deploymentUnits.find((deploymentUnit: DeploymentUnit) =>
                 deploymentUnit.name == selectedDeploymentUnit.name).consoleHostname }/${ tenantPrefix ?? "t" }/`;
         }
@@ -248,7 +248,7 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
                     (tenantDuplicate ||
                         newTenantName ===
                         TenantManagementConstants.TENANT_URI_PLACEHOLDER ||
-                        isCentralDeploymentEnabled && isGlobalCentralEnabled && !selectedDeploymentUnit) &&
+                        isCentralDeploymentEnabled && isRegionSelectionEnabled && !selectedDeploymentUnit) &&
                     validateForm
                 }
             >
@@ -404,7 +404,7 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
                     width={ 16 }
                     data-testid={ `${ testId }-type-input` }
                 />
-                { isCentralDeploymentEnabled && isGlobalCentralEnabled ? (
+                { isCentralDeploymentEnabled && isRegionSelectionEnabled ? (
                     <Field.Dropdown
                         ariaLabel="Region"
                         name="deploymentUnitName"

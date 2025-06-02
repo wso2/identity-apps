@@ -80,8 +80,8 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
         return state?.config?.deployment?.centralDeploymentEnabled;
     });
 
-    const isGlobalCentralEnabled: boolean = useSelector((state: AppState) => {
-        return state?.config?.deployment?.globalCentralEnabled;
+    const isRegionSelectionEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.deployment?.regionSelectionEnabled;
     });
 
     useEffect(() => {
@@ -113,7 +113,7 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
                     // Proceed to tenant creation if tenant does not exist.
                     addTenant(
                         submissionValue.tenantName,
-                        isCentralDeploymentEnabled && isGlobalCentralEnabled ?
+                        isCentralDeploymentEnabled && isRegionSelectionEnabled ?
                             deploymentUnits?.find((unit: DeploymentUnit) =>
                                 unit.name === submissionValue.deploymentUnitName) : undefined
                     );
@@ -182,7 +182,7 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
                         onCloseHandler();
                         handleTenantSwitch(
                             tenantName,
-                            isCentralDeploymentEnabled && isGlobalCentralEnabled ?
+                            isCentralDeploymentEnabled && isRegionSelectionEnabled ?
                                 deploymentUnit?.consoleHostname : undefined
                         );
                     }, 5000);

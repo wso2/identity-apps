@@ -121,8 +121,8 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
         return state?.config?.deployment?.centralDeploymentEnabled;
     });
 
-    const isGlobalCentralEnabled: boolean = useSelector((state: AppState) => {
-        return state?.config?.deployment?.globalCentralEnabled;
+    const isRegionSelectionEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.deployment?.regionSelectionEnabled;
     });
 
     const alternativeRegion: Region = useMemo(() => {
@@ -186,7 +186,7 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
         data: deploymentUnitResponse,
         isLoading: isDeploymentUnitsLoading,
         error: deploymentUnitFetchRequestError
-    } = useGetDeploymentUnits(isCentralDeploymentEnabled && isGlobalCentralEnabled);
+    } = useGetDeploymentUnits(isCentralDeploymentEnabled && isRegionSelectionEnabled);
 
     useEffect(() => {
         setDeploymentUnits(deploymentUnitResponse?.deploymentUnits);
@@ -268,7 +268,7 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
 
 
     const redirectingConsoleUrl = (): string => {
-        if (isCentralDeploymentEnabled && isGlobalCentralEnabled && selectedDeploymentUnit) {
+        if (isCentralDeploymentEnabled && isRegionSelectionEnabled && selectedDeploymentUnit) {
             return `${ deploymentUnits.find((deploymentUnit: DeploymentUnit) =>
                 deploymentUnit.name == selectedDeploymentUnit.name).consoleHostname }/${ tenantPrefix ?? "t" }/`;
         }
@@ -323,7 +323,7 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
                     // Proceed to tenant creation if tenant does not exist.
                     addTenant(
                         submissionValue.tenantName,
-                        isCentralDeploymentEnabled && isGlobalCentralEnabled ?
+                        isCentralDeploymentEnabled && isRegionSelectionEnabled ?
                             deploymentUnits?.find((deploymentUnit: DeploymentUnit) =>
                                 deploymentUnit.name == submissionValue.deploymentUnitName) : undefined
                     );
@@ -366,7 +366,7 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
                         // onCloseHandler();
                         handleTenantSwitch(
                             tenantName,
-                            isCentralDeploymentEnabled && isGlobalCentralEnabled ?
+                            isCentralDeploymentEnabled && isRegionSelectionEnabled ?
                                 deploymentUnit.consoleHostname : undefined
                         );
                     }, 5000);
@@ -635,7 +635,7 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
                                     onFocus={ () => setIsFocused(true) }
                                     data-testid={ `${ testId }-type-input` }
                                 />
-                                { isCentralDeploymentEnabled && isGlobalCentralEnabled ? (
+                                { isCentralDeploymentEnabled && isRegionSelectionEnabled ? (
                                     <Field.Dropdown
                                         ariaLabel="Region"
                                         name="deploymentUnitName"

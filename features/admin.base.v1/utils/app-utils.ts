@@ -251,7 +251,6 @@ export const AppUtils: any = (function() {
                 documentation: _config.documentation,
                 extensions: _config.extensions,
                 getProfileInfoFromIDToken: _config.getProfileInfoFromIDToken,
-                globalCentralEnabled: _config.globalCentralEnabled,
                 idpConfigs: this.resolveIdpConfigs(),
                 isSaas: this.isSaas(),
                 loginCallbackURL: this.constructRedirectURLs(_config.loginCallbackPath),
@@ -260,6 +259,7 @@ export const AppUtils: any = (function() {
                 organizationPrefix: this.getOrganizationPrefix(),
                 organizationType: this.getOrganizationType(),
                 productVersionConfig: _config.ui.productVersionConfig,
+                regionSelectionEnabled: _config.regionSelectionEnabled,
                 routes: {
                     home: this.constructAppPaths(_config.routePaths.home),
                     login: this.constructAppPaths(_config.routePaths.login),

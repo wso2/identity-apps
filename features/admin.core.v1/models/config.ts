@@ -312,9 +312,10 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      */
     allowMultipleAppProtocols?: boolean;
     /**
-     * Global central enabled.
+     * Region selection enabled.
+     * This is used to enable/disable the region selection in the organization creation page.
      */
-    globalCentralEnabled?: boolean;
+    regionSelectionEnabled?: boolean;
 }
 
 /**
