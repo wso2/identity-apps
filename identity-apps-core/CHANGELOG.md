@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.25.8
+
+### Patch Changes
+
+- [#8277](https://github.com/wso2/identity-apps/pull/8277) [`a759e3738b83ae361fae1046df7a862bb439c92d`](https://github.com/wso2/identity-apps/commit/a759e3738b83ae361fae1046df7a862bb439c92d) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve code logic in self-registration.jsp
+
 ## 2.25.7
 
 ### Patch Changes
