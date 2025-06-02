@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.25.9
+
+### Patch Changes
+
+- [#8265](https://github.com/wso2/identity-apps/pull/8265) [`1fd563123f45544ab3c0530281f25c8dca429ae1`](https://github.com/wso2/identity-apps/commit/1fd563123f45544ab3c0530281f25c8dca429ae1) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update the email regex pattern for self registration
+
+* [#8280](https://github.com/wso2/identity-apps/pull/8280) [`e295babc2b19e0c6f9af709f7b12ac9d472d7a12`](https://github.com/wso2/identity-apps/commit/e295babc2b19e0c6f9af709f7b12ac9d472d7a12) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve code logic in user-not-found.jsp
+
 ## 2.25.8
 
 ### Patch Changes
