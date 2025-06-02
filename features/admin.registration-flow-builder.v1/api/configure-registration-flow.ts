@@ -44,7 +44,10 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpReque
  */
 const configureRegistrationFlow = (payload: Payload): Promise<AxiosResponse> => {
     const requestConfig: RequestConfigInterface = {
-        data: payload,
+        data: {
+            flowType: RegistrationFlowBuilderConstants.REGISTRATION_FLOW_TYPE,
+            ...payload
+        },
         method: HttpMethods.PUT,
         url: store.getState().config.endpoints.registrationFlow
     };

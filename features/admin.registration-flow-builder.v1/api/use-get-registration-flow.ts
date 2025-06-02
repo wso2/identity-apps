@@ -23,6 +23,7 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
+import RegistrationFlowBuilderConstants from "../constants/registration-flow-builder-constants";
 
 /**
  * Hook to get the configured registration flow.
@@ -38,13 +39,18 @@ import { HttpMethods } from "@wso2is/core/models";
 const useGetRegistrationFlow = <Data = any, Error = RequestErrorInterface>(
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
+
+    const baseURL = store.getState().config.endpoints.registrationFlow;
+    const params = new URLSearchParams({ flowType: RegistrationFlowBuilderConstants.REGISTRATION_FLOW_TYPE });
+    const url = `${baseURL}?${params.toString()}`;
+
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.registrationFlow
+        url
     };
 
     const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(

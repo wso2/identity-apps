@@ -40,6 +40,9 @@ class RegistrationFlowBuilderConstants {
 
     public static readonly FLOW_CONFIG_UPDATE_ERROR: string =
         "An error occurred while configuring the registration flow.";
+
+    public static readonly REGISTRATION_FLOW_TYPE: string = 
+        "REGISTRATION";
 }
 
 export default RegistrationFlowBuilderConstants;
