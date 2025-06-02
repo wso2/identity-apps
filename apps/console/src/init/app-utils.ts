@@ -272,6 +272,7 @@ export const AppUtils: any = (function() {
                 organizationType: this.getOrganizationType(),
                 productVersionConfig: _config.ui.productVersionConfig,
                 proxyContextPath: this.getProxyContextPath(),
+                regionSelectionEnabled: _config.regionSelectionEnabled,
                 routes: {
                     home: this.constructAppPaths(_config.routePaths.home),
                     login: this.constructAppPaths(_config.routePaths.login),

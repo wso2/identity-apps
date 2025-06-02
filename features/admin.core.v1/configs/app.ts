@@ -164,6 +164,7 @@ export class Config {
             idpConfigs: window[ "AppUtils" ]?.getConfig()?.idpConfigs,
             loginCallbackUrl: window[ "AppUtils" ]?.getConfig()?.loginCallbackURL,
             organizationPrefix: window["AppUtils"]?.getConfig()?.organizationPrefix,
+            regionSelectionEnabled: window[ "AppUtils" ]?.getConfig()?.regionSelectionEnabled,
             serverHost: window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant,
             serverOrigin: window[ "AppUtils" ]?.getConfig()?.serverOrigin,
             superTenant: window[ "AppUtils" ]?.getConfig()?.superTenant,
