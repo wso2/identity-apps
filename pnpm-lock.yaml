@@ -537,7 +537,7 @@ importers:
         specifier: ^2.25.210
         version: link:../../features/admin.console-settings.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.45.5
+        specifier: ^2.45.6
         version: link:../../features/admin.core.v1
       '@wso2is/admin.email-and-sms.v1':
         specifier: ^2.25.204
@@ -627,7 +627,7 @@ importers:
         specifier: ^1.5.157
         version: link:../../features/admin.template-core.v1
       '@wso2is/admin.tenants.v1':
-        specifier: ^2.29.11
+        specifier: ^2.29.12
         version: link:../../features/admin.tenants.v1
       '@wso2is/admin.username-validation.v1':
         specifier: ^1.5.204
@@ -5921,7 +5921,7 @@ importers:
         specifier: ^1.5.157
         version: link:../admin.template-core.v1
       '@wso2is/admin.tenants.v1':
-        specifier: ^2.29.11
+        specifier: ^2.29.12
         version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
         specifier: ^2.32.5
@@ -17854,7 +17854,7 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.45.2
+        specifier: ^2.45.6
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.38.2

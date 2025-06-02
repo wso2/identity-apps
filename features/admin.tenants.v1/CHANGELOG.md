@@ -1,5 +1,14 @@
 # @wso2is/admin.tenants.v1
 
+## 2.29.12
+
+### Patch Changes
+
+- [#8254](https://github.com/wso2/identity-apps/pull/8254) [`e8553115e75ffa0e30709047fce984598367e795`](https://github.com/wso2/identity-apps/commit/e8553115e75ffa0e30709047fce984598367e795) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add a config to enable global central
+
+- Updated dependencies [[`e8553115e75ffa0e30709047fce984598367e795`](https://github.com/wso2/identity-apps/commit/e8553115e75ffa0e30709047fce984598367e795)]:
+  - @wso2is/admin.core.v1@2.45.6
+
 ## 2.29.11
 
 ### Patch Changes
