@@ -75,24 +75,6 @@ import useGenerateRegistrationFlow, {
 } from "../hooks/use-generate-registration-flow";
 
 /**
- * Enum for flow types
- */
-export enum FlowTypes {
-    /**
-     * Registration flow type
-     */
-    REGISTRATION = "REGISTRATION",
-    /**
-     * Ask password flow type
-     */
-    ASK_PASSWORD = "ASK_PASSWORD",
-    /**
-     * Password recovery flow type
-     */
-    PASSWORD_RECOVERY = "PASSWORD_RECOVERY"
-}
-
-/**
  * Props interface of {@link RegistrationFlowBuilderCore}
  */
 export type RegistrationFlowBuilderCorePropsInterface = IdentifiableComponentInterface;
