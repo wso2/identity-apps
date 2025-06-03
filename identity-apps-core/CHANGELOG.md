@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.25.12
+
+### Patch Changes
+
+- [#8283](https://github.com/wso2/identity-apps/pull/8283) [`56a2a390ba3bf0f98ea525e9da68de94688cefd0`](https://github.com/wso2/identity-apps/commit/56a2a390ba3bf0f98ea525e9da68de94688cefd0) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve the code logic in sms-and-email-otp.jsp
+
 ## 2.25.11
 
 ### Patch Changes
