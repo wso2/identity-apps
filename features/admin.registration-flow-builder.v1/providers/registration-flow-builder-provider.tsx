@@ -30,6 +30,7 @@ import ResourceProperties from "../components/resource-property-panel/resource-p
 import ElementFactory from "../components/resources/elements/element-factory";
 import RegistrationFlowBuilderContext from "../context/registration-flow-builder-context";
 import { Attribute } from "../models/attributes";
+import { FlowTypes } from "../components/registration-flow-builder-core";
 import transformFlow from "../utils/transform-flow";
 
 /**
@@ -93,7 +94,10 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
         }
 
         try {
-            await configureRegistrationFlow(transformFlow(flow) as any);
+            const registrationFlow = transformFlow(flow) as any;
+            registrationFlow.flowType = FlowTypes.REGISTRATION;
+
+            await configureRegistrationFlow(registrationFlow);
 
             dispatch(
                 addAlert({
