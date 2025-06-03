@@ -104,7 +104,7 @@
                <%
                   } else {
                %>
-               <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%= StringUtils.isNotBlank(idp) ? idp : AuthenticationEndpointUtil.i18n(resourceBundle, "organization.login") %></h2>
+               <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%= StringUtils.isNotBlank((idp)) ? Encode.forHtmlContent(idp) : AuthenticationEndpointUtil.i18n(resourceBundle, "organization.login") %></h2>
 
                <%
                   }
