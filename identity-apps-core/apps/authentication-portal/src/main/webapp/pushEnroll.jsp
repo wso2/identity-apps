@@ -75,7 +75,7 @@
         }
     }
 
-    String pushEnrollData = request.getParameter("pushEnrollData");
+    String pushEnrollData = Encode.forHtmlAttribute(request.getParameter("pushEnrollData"));
 %>
 
 <%!
