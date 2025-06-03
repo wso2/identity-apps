@@ -17,13 +17,16 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { EdgeLabelRenderer, EdgeProps, BaseEdge as _BaseEdge, getBezierPath } from "@xyflow/react";
-import React, { FunctionComponent, ReactElement } from "react";
+import { EdgeLabelRenderer, EdgeProps, BaseEdge as _BaseEdge, getBezierPath, useReactFlow } from "@xyflow/react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
+import "./base-edge.scss";
 
 /**
  * Props interface of {@link VisualFlow}
  */
-export interface BaseEdgePropsInterface extends EdgeProps, IdentifiableComponentInterface {}
+export interface BaseEdgePropsInterface extends EdgeProps, IdentifiableComponentInterface {
+    showDeleteButton?: boolean;
+}
 
 /**
  * A customized version of the BaseEdge component.
@@ -40,8 +43,12 @@ const BaseEdge: FunctionComponent<BaseEdgePropsInterface> = ({
     sourcePosition,
     targetPosition,
     label,
+    showDeleteButton = true,
+    style,
     ...rest
 }: BaseEdgePropsInterface): ReactElement => {
+    const { deleteElements } = useReactFlow();
+
     const [ edgePath, labelX, labelY ] = getBezierPath({
         sourcePosition,
         sourceX,
@@ -51,21 +58,44 @@ const BaseEdge: FunctionComponent<BaseEdgePropsInterface> = ({
         targetY
     });
 
+    const handleDelete = (event: SyntheticEvent) => {
+        event.stopPropagation();
+        deleteElements({ edges: [ { id } ] });
+    };
+
     return (
         <>
-            <_BaseEdge id={ id } path={ edgePath } { ...rest } />
-            <EdgeLabelRenderer>
-                <div
-                    style={ {
-                        pointerEvents: "all",
-                        position: "absolute",
-                        transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`
-                    } }
-                    className="edge-label-renderer__social-connection-edge nodrag nopan nodrag nopan"
-                >
-                    { label }
-                </div>
-            </EdgeLabelRenderer>
+            <_BaseEdge
+                id={ id }
+                path={ edgePath }
+                style={ {
+                    ...style,
+                    cursor: showDeleteButton ? "pointer" : "default"
+                } }
+                { ...rest }
+            />
+            { (label || showDeleteButton) && (
+                <EdgeLabelRenderer>
+                    <div
+                        style={ {
+                            pointerEvents: "all",
+                            position: "absolute",
+                            transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`
+                        } }
+                        className="edge-label-renderer__deletable-edge nodrag nopan"
+                    >
+                        { label }
+                        { showDeleteButton && (
+                            <div
+                                className="edge-delete-button"
+                                onClick={ handleDelete }
+                            >
+                                x
+                            </div>
+                        ) }
+                    </div>
+                </EdgeLabelRenderer>
+            ) }
         </>
     );
 };
