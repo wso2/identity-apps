@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.25.13
+
+### Patch Changes
+
+- [#8289](https://github.com/wso2/identity-apps/pull/8289) [`3b6fb45311e1610804b929f1d8bd36bbd4790fd7`](https://github.com/wso2/identity-apps/commit/3b6fb45311e1610804b929f1d8bd36bbd4790fd7) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve code logic in org_discovery.jsp
+
 ## 2.25.12
 
 ### Patch Changes
