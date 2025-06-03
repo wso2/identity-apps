@@ -273,6 +273,10 @@ export interface FeatureConfigInterface {
      * Notification sending feature.
      */
     internalNotificationSending?: FeatureAccessConfigInterface;
+    /**
+     * Registration flow builder feature.
+     */
+    registrationFlowBuilder?: FeatureAccessConfigInterface;
 }
 
 /**

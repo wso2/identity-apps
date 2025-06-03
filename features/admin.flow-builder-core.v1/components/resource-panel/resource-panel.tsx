@@ -247,7 +247,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                         </AccordionSummary>
                         <AccordionDetails className="flow-builder-element-panel-category-details">
                             <Typography variant="body2">
-                                Use these widgets to build up the flow using per-created flow blocks
+                                Use these widgets to build up the flow using pre-created flow blocks
                             </Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { widgets.map((widget: Widget, index: number) => (
