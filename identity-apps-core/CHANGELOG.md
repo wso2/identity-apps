@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.25.10
+
+### Patch Changes
+
+- [#8284](https://github.com/wso2/identity-apps/pull/8284) [`c4797c044ad2eadb4c304217112a0454bfa7ad05`](https://github.com/wso2/identity-apps/commit/c4797c044ad2eadb4c304217112a0454bfa7ad05) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve code logic in username-recovery-complete.jsp
+
 ## 2.25.9
 
 ### Patch Changes
