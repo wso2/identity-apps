@@ -22,6 +22,8 @@ import useRequest, {
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
+import { useSelector } from "react-redux";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { HttpMethods, RoleListInterface } from "@wso2is/core/models";
 
 /**
@@ -43,6 +45,14 @@ const useGetRolesList = <Data = RoleListInterface, Error = RequestErrorInterface
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
+    const useSCIM2RoleAPIV3: boolean = useSelector(
+        (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+    );
+
+    const rolesEndpoint = useSCIM2RoleAPIV3
+        ? store.getState().config.endpoints.rolesV3
+        : store.getState().config.endpoints.rolesV2;
+
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
@@ -55,7 +65,7 @@ const useGetRolesList = <Data = RoleListInterface, Error = RequestErrorInterface
             filter,
             startIndex
         },
-        url: store.getState().config.endpoints.rolesV3
+        url: rolesEndpoint
     };
 
     const {
