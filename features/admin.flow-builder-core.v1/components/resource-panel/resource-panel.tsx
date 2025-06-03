@@ -24,7 +24,7 @@ import Drawer, { DrawerProps } from "@oxygen-ui/react/Drawer";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
-import { ChevronRightIcon } from "@oxygen-ui/react-icons";
+import { ChevronDownIcon } from "@oxygen-ui/react-icons";
 import AICard from "@wso2is/common.ai.v1/components/ai-card";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
@@ -202,7 +202,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                     >
                         <AccordionSummary
                             className="flow-builder-element-panel-category-heading"
-                            expandIcon={ <ChevronRightIcon size={ 14 } /> }
+                            expandIcon={ <ChevronDownIcon size={ 14 } /> }
                             aria-controls="panel1-content"
                             id="panel1-header"
                         >
@@ -236,7 +236,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                     <Accordion square disableGutters className={ classNames("flow-builder-element-panel-categories") }>
                         <AccordionSummary
                             className="flow-builder-element-panel-category-heading"
-                            expandIcon={ <ChevronRightIcon size={ 14 } /> }
+                            expandIcon={ <ChevronDownIcon size={ 14 } /> }
                             aria-controls="panel1-content"
                             id="panel1-header"
                         >
@@ -263,7 +263,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                     <Accordion square disableGutters className={ classNames("flow-builder-element-panel-categories") }>
                         <AccordionSummary
                             className="flow-builder-element-panel-category-heading"
-                            expandIcon={ <ChevronRightIcon size={ 14 } /> }
+                            expandIcon={ <ChevronDownIcon size={ 14 } /> }
                             aria-controls="panel1-content"
                             id="panel1-header"
                         >
@@ -288,7 +288,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                     <Accordion square disableGutters className={ classNames("flow-builder-element-panel-categories") }>
                         <AccordionSummary
                             className="flow-builder-element-panel-category-heading"
-                            expandIcon={ <ChevronRightIcon size={ 14 } /> }
+                            expandIcon={ <ChevronDownIcon size={ 14 } /> }
                             aria-controls="panel1-content"
                             id="panel1-header"
                         >
