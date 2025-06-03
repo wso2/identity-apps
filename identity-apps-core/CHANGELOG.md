@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.25.11
+
+### Patch Changes
+
+- [#8268](https://github.com/wso2/identity-apps/pull/8268) [`119ce3084f1b51e1363c0ab504abd3b65d03a643`](https://github.com/wso2/identity-apps/commit/119ce3084f1b51e1363c0ab504abd3b65d03a643) Thanks [@sumedhe](https://github.com/sumedhe)! - Remove legacy openid authentication related files
+
+* [#8285](https://github.com/wso2/identity-apps/pull/8285) [`d58be2629380a6fc368bb99ba905a29c4d922704`](https://github.com/wso2/identity-apps/commit/d58be2629380a6fc368bb99ba905a29c4d922704) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve code logic in language-switcher.jsp
+
 ## 2.25.10
 
 ### Patch Changes
