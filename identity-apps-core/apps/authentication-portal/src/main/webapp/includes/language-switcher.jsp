@@ -44,7 +44,7 @@
         const localeFromCookie = getCookie("ui_lang");
         var localeFromUrlParams = null;
         if (urlParams.has('ui_locales')) {
-            localeFromUrlParams = "<%= Encode.forHtmlAttribute(request.getParameter("ui_locales")) %>";
+            localeFromUrlParams = "<%= Encode.forJavaScript(request.getParameter("ui_locales")) %>";
         }
         const browserLocale = "<%= userLocale %>"
         const computedLocale = computeLocale(localeFromCookie, localeFromUrlParams, browserLocale);
