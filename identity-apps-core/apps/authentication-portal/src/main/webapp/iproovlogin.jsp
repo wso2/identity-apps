@@ -147,7 +147,7 @@
                     }
                      if ( token != null) {
                         %>
-        <iproov-me token='<%=Encode.forHtml(token)%>'>
+        <iproov-me token='<%=Encode.forHtmlAttribute(token)%>'>
             <div slot="ready">
     				<h1 class="iproov-lang-heading">iProov Ready</h1>
   			</div>
