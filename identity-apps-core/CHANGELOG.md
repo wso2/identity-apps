@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.25.14
+
+### Patch Changes
+
+- [#8293](https://github.com/wso2/identity-apps/pull/8293) [`dc254abad3a9e2a91f143fa63bf3d6b8a0feecdd`](https://github.com/wso2/identity-apps/commit/dc254abad3a9e2a91f143fa63bf3d6b8a0feecdd) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve code logic in select_org.jsp
+
+* [#8292](https://github.com/wso2/identity-apps/pull/8292) [`6c3b5e3845b8a3ffe91c6cac70dbff673f055b9d`](https://github.com/wso2/identity-apps/commit/6c3b5e3845b8a3ffe91c6cac70dbff673f055b9d) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve code logic related to push authentication
+
 ## 2.25.13
 
 ### Patch Changes
