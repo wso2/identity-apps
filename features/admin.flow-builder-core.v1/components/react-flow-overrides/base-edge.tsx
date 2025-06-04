@@ -25,9 +25,7 @@ import "./base-edge.scss";
 /**
  * Props interface of {@link VisualFlow}
  */
-export interface BaseEdgePropsInterface extends EdgeProps, IdentifiableComponentInterface {
-    showDeleteButton?: boolean;
-}
+export interface BaseEdgePropsInterface extends EdgeProps, IdentifiableComponentInterface {}
 
 /**
  * A customized version of the BaseEdge component.
@@ -44,7 +42,6 @@ const BaseEdge: FunctionComponent<BaseEdgePropsInterface> = ({
     sourcePosition,
     targetPosition,
     label,
-    showDeleteButton = true,
     style,
     selected,
     ...rest
@@ -98,13 +95,12 @@ const BaseEdge: FunctionComponent<BaseEdgePropsInterface> = ({
                 path={ edgePath }
                 style={ {
                     ...style,
-                    cursor: showDeleteButton ? "pointer" : "default",
                     pointerEvents: "all"
                 } }
                 onClick={ handleEdgeClick }
                 { ...rest }
             />
-            { (label || showDeleteButton) && (
+            { (
                 <EdgeLabelRenderer>
                     <div
                         style={ {
@@ -115,7 +111,7 @@ const BaseEdge: FunctionComponent<BaseEdgePropsInterface> = ({
                         className="edge-label-renderer__deletable-edge nodrag nopan"
                     >
                         { label }
-                        { showDeleteButton && isEdgeSelected && (
+                        { isEdgeSelected && (
                             <div
                                 className="edge-delete-button"
                                 onClick={ handleDelete }
