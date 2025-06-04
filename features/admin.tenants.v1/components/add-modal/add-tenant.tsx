@@ -80,6 +80,10 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
         return state?.config?.deployment?.centralDeploymentEnabled;
     });
 
+    const isRegionSelectionEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.deployment?.regionSelectionEnabled;
+    });
+
     useEffect(() => {
         if (submissionValue && finishSubmit) {
             handleFormSubmit();
@@ -109,8 +113,9 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
                     // Proceed to tenant creation if tenant does not exist.
                     addTenant(
                         submissionValue.tenantName,
-                        isCentralDeploymentEnabled ? deploymentUnits?.find((unit: DeploymentUnit) =>
-                            unit.name === submissionValue.deploymentUnitName) : undefined
+                        isCentralDeploymentEnabled && isRegionSelectionEnabled ?
+                            deploymentUnits?.find((unit: DeploymentUnit) =>
+                                unit.name === submissionValue.deploymentUnitName) : undefined
                     );
                 } else {
                     setIsNewTenantLoading(false);
@@ -177,7 +182,8 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
                         onCloseHandler();
                         handleTenantSwitch(
                             tenantName,
-                            isCentralDeploymentEnabled ? deploymentUnit?.consoleHostname : undefined
+                            isCentralDeploymentEnabled && isRegionSelectionEnabled ?
+                                deploymentUnit?.consoleHostname : undefined
                         );
                     }, 5000);
                 }

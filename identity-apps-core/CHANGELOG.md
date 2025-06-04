@@ -1,5 +1,139 @@
 # @wso2is/identity-apps-core
 
+## 2.25.15
+
+### Patch Changes
+
+- [#8295](https://github.com/wso2/identity-apps/pull/8295) [`ec587d7ad6158ac0c5668d490670226df971989c`](https://github.com/wso2/identity-apps/commit/ec587d7ad6158ac0c5668d490670226df971989c) Thanks [@lashinijay](https://github.com/lashinijay)! - Add proper encoding for token
+
+## 2.25.14
+
+### Patch Changes
+
+- [#8293](https://github.com/wso2/identity-apps/pull/8293) [`dc254abad3a9e2a91f143fa63bf3d6b8a0feecdd`](https://github.com/wso2/identity-apps/commit/dc254abad3a9e2a91f143fa63bf3d6b8a0feecdd) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve code logic in select_org.jsp
+
+* [#8292](https://github.com/wso2/identity-apps/pull/8292) [`6c3b5e3845b8a3ffe91c6cac70dbff673f055b9d`](https://github.com/wso2/identity-apps/commit/6c3b5e3845b8a3ffe91c6cac70dbff673f055b9d) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve code logic related to push authentication
+
+## 2.25.13
+
+### Patch Changes
+
+- [#8289](https://github.com/wso2/identity-apps/pull/8289) [`3b6fb45311e1610804b929f1d8bd36bbd4790fd7`](https://github.com/wso2/identity-apps/commit/3b6fb45311e1610804b929f1d8bd36bbd4790fd7) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve code logic in org_discovery.jsp
+
+## 2.25.12
+
+### Patch Changes
+
+- [#8283](https://github.com/wso2/identity-apps/pull/8283) [`56a2a390ba3bf0f98ea525e9da68de94688cefd0`](https://github.com/wso2/identity-apps/commit/56a2a390ba3bf0f98ea525e9da68de94688cefd0) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve the code logic in sms-and-email-otp.jsp
+
+## 2.25.11
+
+### Patch Changes
+
+- [#8268](https://github.com/wso2/identity-apps/pull/8268) [`119ce3084f1b51e1363c0ab504abd3b65d03a643`](https://github.com/wso2/identity-apps/commit/119ce3084f1b51e1363c0ab504abd3b65d03a643) Thanks [@sumedhe](https://github.com/sumedhe)! - Remove legacy openid authentication related files
+
+* [#8285](https://github.com/wso2/identity-apps/pull/8285) [`d58be2629380a6fc368bb99ba905a29c4d922704`](https://github.com/wso2/identity-apps/commit/d58be2629380a6fc368bb99ba905a29c4d922704) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve code logic in language-switcher.jsp
+
+## 2.25.10
+
+### Patch Changes
+
+- [#8284](https://github.com/wso2/identity-apps/pull/8284) [`c4797c044ad2eadb4c304217112a0454bfa7ad05`](https://github.com/wso2/identity-apps/commit/c4797c044ad2eadb4c304217112a0454bfa7ad05) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve code logic in username-recovery-complete.jsp
+
+## 2.25.9
+
+### Patch Changes
+
+- [#8265](https://github.com/wso2/identity-apps/pull/8265) [`1fd563123f45544ab3c0530281f25c8dca429ae1`](https://github.com/wso2/identity-apps/commit/1fd563123f45544ab3c0530281f25c8dca429ae1) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update the email regex pattern for self registration
+
+* [#8280](https://github.com/wso2/identity-apps/pull/8280) [`e295babc2b19e0c6f9af709f7b12ac9d472d7a12`](https://github.com/wso2/identity-apps/commit/e295babc2b19e0c6f9af709f7b12ac9d472d7a12) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve code logic in user-not-found.jsp
+
+## 2.25.8
+
+### Patch Changes
+
+- [#8277](https://github.com/wso2/identity-apps/pull/8277) [`a759e3738b83ae361fae1046df7a862bb439c92d`](https://github.com/wso2/identity-apps/commit/a759e3738b83ae361fae1046df7a862bb439c92d) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve code logic in self-registration.jsp
+
+## 2.25.7
+
+### Patch Changes
+
+- [#8266](https://github.com/wso2/identity-apps/pull/8266) [`09dcba45a0a16ce5e9853a04e72ab194cc9b42c1`](https://github.com/wso2/identity-apps/commit/09dcba45a0a16ce5e9853a04e72ab194cc9b42c1) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve code logic in self-registration-with-verification.jsp
+
+## 2.25.6
+
+### Patch Changes
+
+- [#8263](https://github.com/wso2/identity-apps/pull/8263) [`e99bf79b5d96075d053b2f48bd497112089f87ba`](https://github.com/wso2/identity-apps/commit/e99bf79b5d96075d053b2f48bd497112089f87ba) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve code logic in smsOtp.jsp
+
+## 2.25.5
+
+### Patch Changes
+
+- [#8260](https://github.com/wso2/identity-apps/pull/8260) [`571137ed1a92cf404cf2339336d0ab66ee137187`](https://github.com/wso2/identity-apps/commit/571137ed1a92cf404cf2339336d0ab66ee137187) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve code logic in smsOtp.jsp
+
+## 2.25.4
+
+### Patch Changes
+
+- [#8251](https://github.com/wso2/identity-apps/pull/8251) [`34c8b43fd54d2fd1623d646946bf254704015bbd`](https://github.com/wso2/identity-apps/commit/34c8b43fd54d2fd1623d646946bf254704015bbd) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Resolve recaptchaType in the recaptcha adapter
+
+## 2.25.3
+
+### Patch Changes
+
+- [#8241](https://github.com/wso2/identity-apps/pull/8241) [`9085dfe68cf212a6020cfc050398b2862949742e`](https://github.com/wso2/identity-apps/commit/9085dfe68cf212a6020cfc050398b2862949742e) Thanks [@BimsaraBodaragama](https://github.com/BimsaraBodaragama)! - Fix Sign-In Link Encoding in Self-Registration Page for Sub Organizations
+
+* [#8240](https://github.com/wso2/identity-apps/pull/8240) [`ed972b1a628e75db7c2fcf6e54874fbc3d8306d1`](https://github.com/wso2/identity-apps/commit/ed972b1a628e75db7c2fcf6e54874fbc3d8306d1) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Resolve recaptch provider account level when executing reCaptcha
+
+- [#8244](https://github.com/wso2/identity-apps/pull/8244) [`0eff2af4e7adb85baa381f03452be1a8cff4a58e`](https://github.com/wso2/identity-apps/commit/0eff2af4e7adb85baa381f03452be1a8cff4a58e) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Force trigger package release
+
+## 2.25.2
+
+### Patch Changes
+
+- [#8233](https://github.com/wso2/identity-apps/pull/8233) [`32999f215383a9efde313c96b9f15d85d6a92ebf`](https://github.com/wso2/identity-apps/commit/32999f215383a9efde313c96b9f15d85d6a92ebf) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Bump identity.org.mgt.application.version.range
+
+## 2.25.1
+
+### Patch Changes
+
+- [#8231](https://github.com/wso2/identity-apps/pull/8231) [`02d038ee919db50bb94b3aa5e16053c15596c58d`](https://github.com/wso2/identity-apps/commit/02d038ee919db50bb94b3aa5e16053c15596c58d) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix minor issue in registration portal
+
+## 2.25.0
+
+### Minor Changes
+
+- [#8112](https://github.com/wso2/identity-apps/pull/8112) [`3aefb2449ac79bdddf9e6f74f31e293307abfcf2`](https://github.com/wso2/identity-apps/commit/3aefb2449ac79bdddf9e6f74f31e293307abfcf2) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce ReCaptcha support in the new dynamic registration portal
+
+### Patch Changes
+
+- [#8229](https://github.com/wso2/identity-apps/pull/8229) [`0d24dfd7c7ceeb04cafd1f98f0280bdf9d916b8c`](https://github.com/wso2/identity-apps/commit/0d24dfd7c7ceeb04cafd1f98f0280bdf9d916b8c) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce new error for invalid user inputs
+
+## 2.24.10
+
+### Patch Changes
+
+- [#8210](https://github.com/wso2/identity-apps/pull/8210) [`1aa8ee02b5c810cd745d6f82ec9721d4e9792a44`](https://github.com/wso2/identity-apps/commit/1aa8ee02b5c810cd745d6f82ec9721d4e9792a44) Thanks [@nilasini](https://github.com/nilasini)! - Change self registration orchestration endpoint
+
+* [#8223](https://github.com/wso2/identity-apps/pull/8223) [`b0bf58809dd2ffc999604f6b0111e6faa4efcce8`](https://github.com/wso2/identity-apps/commit/b0bf58809dd2ffc999604f6b0111e6faa4efcce8) Thanks [@BimsaraBodaragama](https://github.com/BimsaraBodaragama)! - Fix Callback URL Validation for Offline Onboarding Flow
+
+## 2.24.9
+
+### Patch Changes
+
+- [#8175](https://github.com/wso2/identity-apps/pull/8175) [`d290998ce34bc11acf2822f4394768c8238f81cf`](https://github.com/wso2/identity-apps/commit/d290998ce34bc11acf2822f4394768c8238f81cf) Thanks [@savindi7](https://github.com/savindi7)! - Resolve theme from query param/cookie in auth and recovery portals.
+
+## 2.24.8
+
+### Patch Changes
+
+- [#8203](https://github.com/wso2/identity-apps/pull/8203) [`ef2da53205586c3d40e6a9244c6b41061bb652c2`](https://github.com/wso2/identity-apps/commit/ef2da53205586c3d40e6a9244c6b41061bb652c2) Thanks [@BimsaraBodaragama](https://github.com/BimsaraBodaragama)! - Fix isAccessUrlAvailable Property Setting for Admin-Initiated Password Reset.
+
+* [#8183](https://github.com/wso2/identity-apps/pull/8183) [`529d543867227fc46a85796a22e69dbadc8d992d`](https://github.com/wso2/identity-apps/commit/529d543867227fc46a85796a22e69dbadc8d992d) Thanks [@BimsaraBodaragama](https://github.com/BimsaraBodaragama)! - Add changeset to Adding Locale Dropdown and Required Field Validation for Self-Registration Page
+
+- [#8202](https://github.com/wso2/identity-apps/pull/8202) [`9158880755d755c55c281d06e188315d2d7038b6`](https://github.com/wso2/identity-apps/commit/9158880755d755c55c281d06e188315d2d7038b6) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add impersonator role creation to app portal util.
+
 ## 2.24.7
 
 ### Patch Changes

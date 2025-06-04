@@ -37,8 +37,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import {
     FederatedAuthenticatorInterface,
-    GenericAuthenticatorInterface,
-    SupportedAuthenticators
+    GenericAuthenticatorInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { AlertLevels, FeatureAccessConfigInterface } from "@wso2is/core/models";
@@ -116,6 +115,8 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         hiddenAuthenticators,
         authenticationSequence: initialAuthenticationSequence
     } = props;
+
+    const LOCAL_AUTHENTICATOR_IDENTIFIER: string = "LOCAL";
     const { isAdaptiveAuthenticationAvailable } = useGlobalVariables();
     const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
         return state.config?.ui?.features?.applications;
@@ -336,21 +337,14 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         authenticator: GenericAuthenticatorInterface,
         options: AuthenticatorInterface[]
     ): boolean => {
-        let isDuplicate: boolean = options?.some((option: AuthenticatorInterface) => {
-            return option.authenticator === authenticator?.defaultAuthenticator?.name;
+        const isDuplicate: boolean = options?.some((option: AuthenticatorInterface) => {
+
+            if (option.idp === LOCAL_AUTHENTICATOR_IDENTIFIER) {
+                return option.authenticator === authenticator?.defaultAuthenticator?.name;
+            }
+
+            return option.idp === authenticator?.displayName;
         });
-
-        const isEIDP: boolean = ApplicationManagementConstants.EIDP_AUTHENTICATORS.includes(
-            authenticator?.defaultAuthenticator?.name as SupportedAuthenticators
-        );
-
-        // If the added option is EIDP, even-though the authenticator is same,
-        // we need to check if it's the same IDP. If it is, then mark as duplicate.
-        if (isDuplicate && isEIDP) {
-            isDuplicate = options?.some((option: AuthenticatorInterface) => {
-                return option.idp === authenticator?.idp;
-            });
-        }
 
         if (isDuplicate) {
             dispatch(

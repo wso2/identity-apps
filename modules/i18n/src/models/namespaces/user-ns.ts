@@ -94,6 +94,7 @@ export interface userNS {
                 buttonDisableHints: {
                     insufficientPermissions: string;
                     myAccountDisabled: string;
+                    myAccountLoginFlowIncompatible: string;
                     userAccountDisabled: string;
                     userAccountLocked: string;
                 };

@@ -1,5 +1,96 @@
 # @wso2is/admin.applications.v1
 
+## 2.35.6
+
+### Patch Changes
+
+- [#8248](https://github.com/wso2/identity-apps/pull/8248) [`1be0e54700689e7bbc7d6c023cb7399a98f397e7`](https://github.com/wso2/identity-apps/commit/1be0e54700689e7bbc7d6c023cb7399a98f397e7) Thanks [@adibmbrk](https://github.com/adibmbrk)! - Enable validate token bindings when DPoP is selected
+
+## 2.35.5
+
+### Patch Changes
+
+- [#8242](https://github.com/wso2/identity-apps/pull/8242) [`33ef4cb990d5df8d35fec85b33f43333118f5c6c`](https://github.com/wso2/identity-apps/commit/33ef4cb990d5df8d35fec85b33f43333118f5c6c) Thanks [@roshanemoraes](https://github.com/roshanemoraes)! - Fix error alert when navigating to the Shared Access tab in Application Share
+
+- Updated dependencies [[`33ef4cb990d5df8d35fec85b33f43333118f5c6c`](https://github.com/wso2/identity-apps/commit/33ef4cb990d5df8d35fec85b33f43333118f5c6c)]:
+  - @wso2is/admin.core.v1@2.45.3
+  - @wso2is/i18n@2.23.4
+
+## 2.35.4
+
+### Patch Changes
+
+- [#8238](https://github.com/wso2/identity-apps/pull/8238) [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+- Updated dependencies [[`89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f`](https://github.com/wso2/identity-apps/commit/89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f), [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f)]:
+  - @wso2is/admin.core.v1@2.45.2
+  - @wso2is/admin.server-configurations.v1@2.35.1
+  - @wso2is/admin.wsfed-configuration.v1@2.25.204
+  - @wso2is/admin.identity-providers.v1@2.26.206
+  - @wso2is/admin.login-flow-builder.v1@2.26.2
+  - @wso2is/admin.console-settings.v1@2.25.210
+  - @wso2is/admin.api-resources.v2@2.25.204
+  - @wso2is/admin.authorization.v1@2.25.89
+  - @wso2is/admin.impersonation.v1@1.6.204
+  - @wso2is/admin.login-flow.ai.v1@2.27.101
+  - @wso2is/admin.organizations.v1@2.26.205
+  - @wso2is/admin.feature-gate.v1@1.6.2
+  - @wso2is/admin.connections.v1@2.33.96
+  - @wso2is/admin.oidc-scopes.v1@2.25.204
+  - @wso2is/admin.extensions.v1@2.38.2
+  - @wso2is/admin.userstores.v1@2.27.33
+  - @wso2is/admin.branding.v1@2.30.1
+  - @wso2is/admin.secrets.v1@2.25.204
+  - @wso2is/admin.claims.v1@2.27.123
+  - @wso2is/react-components@2.9.16
+  - @wso2is/admin.roles.v2@2.27.154
+  - @wso2is/admin.users.v1@2.32.5
+  - @wso2is/form@2.7.1
+
+## 2.35.3
+
+### Patch Changes
+
+- [#8219](https://github.com/wso2/identity-apps/pull/8219) [`5005769b794079ce114c016955d63a807f85d165`](https://github.com/wso2/identity-apps/commit/5005769b794079ce114c016955d63a807f85d165) Thanks [@roshanemoraes](https://github.com/roshanemoraes)! - Update missing display of success alert.
+
+## 2.35.2
+
+### Patch Changes
+
+- [#8217](https://github.com/wso2/identity-apps/pull/8217) [`c25227533412e019643c4bdd27f8abe3ab9c0ea4`](https://github.com/wso2/identity-apps/commit/c25227533412e019643c4bdd27f8abe3ab9c0ea4) Thanks [@roshanemoraes](https://github.com/roshanemoraes)! - Disabling Async operation status feature banner
+
+- Updated dependencies [[`a4d837f3c5f9eab3e85d6b8d9c665285dad7a0ac`](https://github.com/wso2/identity-apps/commit/a4d837f3c5f9eab3e85d6b8d9c665285dad7a0ac)]:
+  - @wso2is/react-components@2.9.15
+  - @wso2is/admin.users.v1@2.32.4
+
+## 2.35.1
+
+### Patch Changes
+
+- [#8212](https://github.com/wso2/identity-apps/pull/8212) [`faf9fbe02e3ddd242685e1e9c600277baebd9be7`](https://github.com/wso2/identity-apps/commit/faf9fbe02e3ddd242685e1e9c600277baebd9be7) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix JWT access token type being not applied for mcp client apps
+
+## 2.35.0
+
+### Minor Changes
+
+- [#8138](https://github.com/wso2/identity-apps/pull/8138) [`2a689708a425b21ca765f319f8a86c6c5b38e727`](https://github.com/wso2/identity-apps/commit/2a689708a425b21ca765f319f8a86c6c5b38e727) Thanks [@roshanemoraes](https://github.com/roshanemoraes)! - Detailed Status Tracking for Application Sharing
+
+### Patch Changes
+
+- Updated dependencies [[`2a689708a425b21ca765f319f8a86c6c5b38e727`](https://github.com/wso2/identity-apps/commit/2a689708a425b21ca765f319f8a86c6c5b38e727)]:
+  - @wso2is/admin.core.v1@2.45.0
+  - @wso2is/core@2.8.1
+  - @wso2is/i18n@2.23.3
+
+## 2.34.11
+
+### Patch Changes
+
+- [#8182](https://github.com/wso2/identity-apps/pull/8182) [`e9855f0cb78df5d2609ed21bcc20aee8f535104e`](https://github.com/wso2/identity-apps/commit/e9855f0cb78df5d2609ed21bcc20aee8f535104e) Thanks [@adibmbrk](https://github.com/adibmbrk)! - Remove validate token bindings when DPoP enabled and fix minor inconsistencies in the ui
+
+- Updated dependencies [[`e9855f0cb78df5d2609ed21bcc20aee8f535104e`](https://github.com/wso2/identity-apps/commit/e9855f0cb78df5d2609ed21bcc20aee8f535104e)]:
+  - @wso2is/i18n@2.23.1
+
 ## 2.34.10
 
 ### Patch Changes

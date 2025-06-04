@@ -230,6 +230,7 @@
         "appName": "Console",
         "appTitle": "WSO2 Identity Server Console",
         "appWhiteLogoPath": "/assets/images/branding/logo-inverted.svg",
+        "asyncOperationStatusPollingInterval": 5000,
         "connectionResourcesUrl": "",
         "cookiePolicyUrl": "/authenticationendpoint/cookie_policy.do",
         "emailTemplates": {
@@ -290,8 +291,7 @@
             },
             "actions": {
                 "disabledFeatures": [
-                    "actions.types.list.preRegistration",
-                    "actions.types.list.preUpdateProfile"
+                    "actions.types.list.preRegistration"
                 ],
                 "enabled": true,
                 "featureFlags": [

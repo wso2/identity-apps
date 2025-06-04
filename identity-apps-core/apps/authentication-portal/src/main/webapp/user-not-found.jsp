@@ -180,7 +180,7 @@
                         <% } else { %>
                             <h3 class="ui header"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "account.not.found")%></h3>
                             <p style="text-align:left;"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "we.cannot.find.an.account.associated.with")%>
-                            <b><%=attemptedUser %></b>.
+                            <b><%= Encode.forHtml(attemptedUser) %></b>.
                             </p>
                             <div class="ui divider hidden"></div>
                         <% }

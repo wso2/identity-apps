@@ -2,4 +2,4 @@
 "@wso2is/identity-apps-core": patch
 ---
 
-Introduce new error for invalid user inputs
+Improve code logic to proper URL validation

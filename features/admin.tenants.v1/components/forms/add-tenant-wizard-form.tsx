@@ -109,6 +109,10 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
         return state?.config?.deployment?.centralDeploymentEnabled;
     });
 
+    const isRegionSelectionEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.deployment?.regionSelectionEnabled;
+    });
+
     const { t } = useTranslation();
 
     const checkTenantValidity = (tenantName: string): boolean => {
@@ -128,7 +132,7 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
     };
 
     const redirectingConsoleUrl = (): string => {
-        if (isCentralDeploymentEnabled && selectedDeploymentUnit) {
+        if (isCentralDeploymentEnabled && isRegionSelectionEnabled && selectedDeploymentUnit) {
             return `${ deploymentUnits.find((deploymentUnit: DeploymentUnit) =>
                 deploymentUnit.name == selectedDeploymentUnit.name).consoleHostname }/${ tenantPrefix ?? "t" }/`;
         }
@@ -244,7 +248,7 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
                     (tenantDuplicate ||
                         newTenantName ===
                         TenantManagementConstants.TENANT_URI_PLACEHOLDER ||
-                        isCentralDeploymentEnabled && !selectedDeploymentUnit) &&
+                        isCentralDeploymentEnabled && isRegionSelectionEnabled && !selectedDeploymentUnit) &&
                     validateForm
                 }
             >
@@ -400,7 +404,7 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
                     width={ 16 }
                     data-testid={ `${ testId }-type-input` }
                 />
-                { isCentralDeploymentEnabled  ? (
+                { isCentralDeploymentEnabled && isRegionSelectionEnabled ? (
                     <Field.Dropdown
                         ariaLabel="Region"
                         name="deploymentUnitName"

@@ -20,7 +20,6 @@
 <%@ page import="java.io.File" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.nio.file.Files, java.nio.file.Paths, java.io.IOException" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.SelfRegistrationMgtClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 
@@ -94,6 +93,12 @@
     <link rel="preload" href="${pageContext.request.contextPath}/libs/react/react.production.min.js" as="script" />
     <link rel="preload" href="${pageContext.request.contextPath}/libs/react/react-dom.production.min.js" as="script" />
     <link rel="preload" href="${pageContext.request.contextPath}/js/react-ui-core.min.js" as="script" />
+
+    <script>
+        window.onSubmit = function(token) {
+            console.log("Got recaptcha token:", token);
+        };
+    </script>
 </head>
 <body class="login-portal layout authentication-portal-layout">
   <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
@@ -166,8 +171,8 @@
                 const defaultMyAccountUrl = "<%= myaccountUrl %>";
                 const authPortalURL = "<%= authenticationPortalURL %>";
                 const registrationFlowApiProxyPath = authPortalURL + "/util/self-registration-api.jsp";
-                const code = "<%= code != null ? code : null %>";
-                const state = "<%= state != null ? state : null %>";
+                const code = "<%= Encode.forJavaScript(code) != null ? Encode.forJavaScript(code) : null %>";
+                const state = "<%= Encode.forJavaScript(state) != null ? Encode.forJavaScript(state) : null %>";
                 
                 const locale = "en-US";
                 const translations = <%= translationsJson %>;
@@ -252,7 +257,7 @@
                         const errorDetails = getI18nKeyForError(error.code);
                         const errorPageURL = authPortalURL + "/registration_error.do?" + "ERROR_MSG="
                             + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID="
-                            + "<%= spId %>" + "&" + "REG_PORTAL_URL=" + authPortalURL + "/register.do";
+                            + "<%= Encode.forJavaScript(spId) %>" + "&" + "REG_PORTAL_URL=" + authPortalURL + "/register.do";
                         
                         window.location.href = errorPageURL;
                     }
@@ -314,7 +319,7 @@
                     { className: "content-container loaded" },
                     createElement(
                         DynamicContent, {
-                            elements: components,
+                            contentData: flowData.data && flowData.data,
                             handleFlowRequest: (actionId, formValues) => {
                                 setComponents([]);
                                 localStorage.setItem("actionTrigger", actionId);

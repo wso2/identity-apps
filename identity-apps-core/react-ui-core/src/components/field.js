@@ -20,11 +20,20 @@ import PropTypes from "prop-types";
 import React from "react";
 
 import ButtonFieldAdapter from "./adapters/button-field-adapter";
+import CaptchaWidgetAdapter from "./adapters/captcha-widget-adapter";
 import InputFieldAdapter from "./adapters/input-field-adapter";
 import TypographyAdapter from "./adapters/typography-field-adapter";
 import DividerAdapter from "./divider";
 
-const Field = ({ component, formState, formStateHandler, formFieldError, flowActionHandler }) => {
+const Field = ({
+    component,
+    formState,
+    formStateHandler,
+    formFieldError,
+    flowActionHandler,
+    recaptchaRef
+}) => {
+
     switch (component.type) {
         case "TYPOGRAPHY":
             return <TypographyAdapter component={ component } />;
@@ -38,9 +47,11 @@ const Field = ({ component, formState, formStateHandler, formFieldError, flowAct
                 />
             );
         case "BUTTON":
-            return <ButtonFieldAdapter component={ component } handleButtonAction={ flowActionHandler }/>;
+            return <ButtonFieldAdapter component={ component } handleButtonAction={ flowActionHandler } />;
         case "DIVIDER":
             return <DividerAdapter component={ component } />;
+        case "CAPTCHA":
+            return <CaptchaWidgetAdapter component={ component } ref={ recaptchaRef } />;
         default:
             return (
                 <InputFieldAdapter
@@ -56,9 +67,10 @@ const Field = ({ component, formState, formStateHandler, formFieldError, flowAct
 Field.propTypes = {
     component: PropTypes.object.isRequired,
     flowActionHandler: PropTypes.func,
-    formFieldError: PropTypes.func.isRequired,
-    formState: PropTypes.isRequired,
-    formStateHandler: PropTypes.func.isRequired
+    formFieldError: PropTypes.func,
+    formState: PropTypes.object,
+    formStateHandler: PropTypes.func,
+    setRecaptchaRef: PropTypes.func
 };
 
 export default Field;

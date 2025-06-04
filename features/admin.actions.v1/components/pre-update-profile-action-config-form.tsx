@@ -24,7 +24,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
-import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
+import { RuleExecuteCollectionWithoutIdInterface, RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { RulesProvider } from "@wso2is/admin.rules.v1/providers/rules-provider";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -33,6 +33,7 @@ import {
     FormRenderProps } from "@wso2is/form";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";
+import pickBy from "lodash-es/pickBy";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -89,7 +90,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
     isReadOnly,
     actionTypeApiPath,
     isCreateFormState,
-    ["data-componentid"]: componentId = "pre-update-password-action-config-form"
+    ["data-componentid"]: componentId = "pre-update-profile-action-config-form"
 }: PreUpdateProfileActionConfigFormInterface): ReactElement => {
 
     const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
@@ -193,6 +194,14 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
         values: PreUpdatePasswordActionConfigFormPropertyInterface,
         changedFields: PreUpdatePasswordActionConfigFormPropertyInterface) => {
 
+        let payloadRule: RuleWithoutIdInterface | RuleExecuteCollectionWithoutIdInterface | Record<string, never>;
+
+        if (isHasRule) {
+            payloadRule = rule;
+        } else if (!isCreateFormState && !rule) {
+            payloadRule = {};
+        }
+
         const authProperties: Partial<AuthenticationPropertiesInterface> = {};
 
         if (isAuthenticationUpdateFormState || isCreateFormState) {
@@ -228,7 +237,8 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                     },
                     uri: values.endpointUri
                 },
-                name: values.name
+                name: values.name,
+                rule: payloadRule ?? undefined
             };
 
             setIsSubmitting(true);
@@ -244,7 +254,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                     setIsSubmitting(false);
                 });
         } else {
-            const updatingValues: PreUpdateProfileActionUpdateInterface = {
+            const updatingValues: PreUpdateProfileActionUpdateInterface = pickBy({
                 attributes: isUserAttributesChanged ? userAttributeList : undefined,
                 endpoint: isAuthenticationUpdateFormState || changedFields?.endpointUri ? {
                     authentication: isAuthenticationUpdateFormState ? {
@@ -253,8 +263,9 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                     } : undefined,
                     uri: changedFields?.endpointUri ? values.endpointUri : undefined
                 } : undefined,
-                name: changedFields?.name ? values.name : undefined
-            };
+                name: changedFields?.name ? values.name : undefined,
+                rule: payloadRule
+            });
 
             setIsSubmitting(true);
             updateAction(actionTypeApiPath, initialValues.id, updatingValues)
