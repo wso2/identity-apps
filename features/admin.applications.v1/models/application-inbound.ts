@@ -38,6 +38,7 @@ export interface MetadataPropertyInterface {
 export interface GrantTypeInterface {
     name?: string;
     displayName?: string;
+    publicClientAllowed?: boolean;
 }
 
 export interface GrantTypeMetaDataInterface {
