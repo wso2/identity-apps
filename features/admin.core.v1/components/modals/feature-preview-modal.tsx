@@ -223,7 +223,7 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
                     </DialogTitle>
                 )
             }
-            <DialogContent className="add-tenant-modal-content" dividers>
+            <DialogContent className="add-feature-preview-modal-content" dividers>
                 <Container sx={ { mt: 4 } }>
                     <Grid container spacing={ 2 }>
                         { (previewFeaturesList?.length > 1) && (
