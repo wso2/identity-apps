@@ -186,8 +186,7 @@ export const AddAPIResourceBasic: FunctionComponent<AddAPIResourceBasicInterface
                             data-testid={ `${componentId}-basic-form-displayName` }
                         />
                         <Hint className="mb-0">
-                            { t("extensions:develop.apiResource.wizard.addApiResource.steps.basic.form.fields." +
-                                "name.hint", { productName }) }
+                            { createResourceWizard?.displayNameHint }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>

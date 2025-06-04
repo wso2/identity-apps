@@ -17,9 +17,11 @@
  */
 
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { DocumentationLink, useDocumentation } from "@wso2is/react-components";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { APIResourcesConstants } from "../constants/api-resources-constants";
 import { AddAPIResourceWizardStepsFormTypes, ResourceServerType } from "../models";
 
@@ -27,6 +29,8 @@ const useApiResourcesPageContent = () => {
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+
+    const productName: string = useSelector((state: AppState) => state.config.ui.productName);
 
     const resourceServerType: ResourceServerType = window.location.pathname.includes("mcp-servers")
         ? ResourceServerType.MCP
@@ -37,8 +41,11 @@ const useApiResourcesPageContent = () => {
             addNewResourceButtonText: t("extensions:develop.apiResource.addApiResourceButton"),
             createResourceWizard: {
                 description: t("extensions:develop.apiResource.wizard.addApiResource.subtitle"),
+                displayNameHint: t("extensions:develop.apiResource.wizard.addApiResource.steps.basic.form.fields." +
+                                "name.hint", { productName }),
                 displayNamePlaceholder: t("extensions:develop.apiResource.wizard.addApiResource.steps.basic.form." +
                     "fields.name.placeholder"),
+
                 hiddenSteps: [],
                 identifierPlaceholder: t("extensions:develop.apiResource.wizard.addApiResource.steps.basic." +
                         "form.fields.identifier.placeholder"),
@@ -59,6 +66,7 @@ const useApiResourcesPageContent = () => {
             resourceEditBackButtonText: "Back to API Resources",
             resourceEditPath: AppConstants.getPaths().get("API_RESOURCE_EDIT"),
             resourceSearchBarPlaceholder: "Search API resources by name",
+            resourceServerEmptyListSubtitle: [ t("extensions:develop.apiResource.empty") ],
             resourceServerListDescription: (
                 <>
                     { t("extensions:develop.apiResource.pageHeader.description") }
@@ -71,11 +79,6 @@ const useApiResourcesPageContent = () => {
             ),
             resourceServerListPageTitle: t("extensions:develop.apiResource.pageHeader.title"),
             resourceServerListTitle: t("extensions:develop.apiResource.pageHeader.title"),
-
-
-
-
-
             scopesTabContent: {
                 subHeading: t("apiResources:tabs.scopes.subTitle")
             }
@@ -84,14 +87,16 @@ const useApiResourcesPageContent = () => {
         [ResourceServerType.MCP]: {
             addNewResourceButtonText: "New MCP Server",
             createResourceWizard: {
+                description: "Register an MCP server",
+                displayNameHint: "Meaningful name to identify your MCP server",
                 displayNamePlaceholder: "My MCP Server",
                 hiddenSteps: [
-                    AddAPIResourceWizardStepsFormTypes.PERMISSIONS,
                     AddAPIResourceWizardStepsFormTypes.AUTHORIZATION
                 ],
-                identifierPlaceholder: "mcp://my-mcp-server"
+                identifierPlaceholder: "mcp://my-mcp-server",
+                title: "Add new MCP server"
             },
-            defaultSearchFilter: "identifier sw mcp",
+            defaultSearchFilter: `type eq ${ APIResourcesConstants.MCP }`,
             deleteResourceWizardContent: {
                 buttonText: "Delete MCP Server",
                 heading: "Delete MCP Server",
@@ -103,14 +108,12 @@ const useApiResourcesPageContent = () => {
             resourceEditBackButtonText: "Back to MCP Servers",
             resourceEditPath: AppConstants.getPaths().get("MCP_SERVER_EDIT"),
             resourceSearchBarPlaceholder: "Search MCP servers by name",
+            resourceServerEmptyListSubtitle: [ "There are no MCP servers available" ],
             resourceServerListDescription:
                 "Create and manage the APIs that define resource models and access scopes, enabling " +
                 "fine-grained permission control for applications interacting with MCP servers.",
             resourceServerListPageTitle: "MCP Servers",
             resourceServerListTitle: "MCP Servers",
-
-
-
 
             scopesTabContent: {
                 subHeading: "Scopes the MCP server uses to verify the user's permissions."
@@ -119,7 +122,10 @@ const useApiResourcesPageContent = () => {
         }
     };
 
-    return content[resourceServerType];
+    return {
+        resourceServerType,
+        ...content[resourceServerType]
+    };
 };
 
 export default useApiResourcesPageContent;

@@ -47,7 +47,6 @@ import useApiResourcesPageContent from "./use-api-resources-page-content";
 import { useAPIResources } from "../api";
 import { APIResourcesList } from "../components";
 import { AddAPIResource } from "../components/wizard";
-import AddMcpServer from "../components/wizard/add-mcp-server";
 import { APIResourceType, APIResourcesConstants } from "../constants";
 import { APIResourceInterface } from "../models";
 import { APIResourceUtils } from "../utils/api-resource-utils";
@@ -80,7 +79,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
         resourceServerListPageTitle,
         addNewResourceButtonText,
         isApiServer,
-        isMcpServer,
+        resourceServerType,
         resourceServerListDescription,
         defaultSearchFilter,
         resourceSearchBarPlaceholder
@@ -449,19 +448,12 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
                 }
             </ListLayout>
             {
-                showWizard && isApiServer && (
+                showWizard && (
                     <AddAPIResource
                         data-testid= { `${componentId}-add-api-resource-wizard-modal` }
                         closeWizard={ () => setShowWizard(false) }
+                        resourceType={ resourceServerType }
                     />
-                )
-            }
-            {
-                showWizard && isMcpServer && (
-                    (<AddMcpServer
-                        data-componentid= { `${componentId}-add-mcp-server-wizard-modal` }
-                        closeWizard={ () => setShowWizard(false) }
-                    />)
                 )
             }
         </PageLayout>

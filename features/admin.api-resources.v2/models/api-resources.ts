@@ -83,6 +83,11 @@ export interface APIResourceInterface {
      * API resource properties.
      */
     properties?: Property[];
+    /**
+     * API resource type, valid values are BUSINESS and MCP. If none sent, it will be set
+     * to BUSINESS by default.
+     */
+    resourceType?: string;
 }
 
 /**
