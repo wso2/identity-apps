@@ -16,9 +16,10 @@
  * under the License.
  */
 
+import { TrashIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EdgeLabelRenderer, EdgeProps, BaseEdge as _BaseEdge, getBezierPath, useReactFlow } from "@xyflow/react";
-import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import "./base-edge.scss";
 
 /**
@@ -45,9 +46,31 @@ const BaseEdge: FunctionComponent<BaseEdgePropsInterface> = ({
     label,
     showDeleteButton = true,
     style,
+    selected,
     ...rest
 }: BaseEdgePropsInterface): ReactElement => {
     const { deleteElements } = useReactFlow();
+    const [ isEdgeSelected, setIsEdgeSelected ] = useState<boolean>(false);
+
+    useEffect(() => {
+        setIsEdgeSelected(selected || false);
+    }, [ selected ]);
+
+    useEffect(() => {
+        const handleGlobalClick = (event: MouseEvent): void => {
+            const target: HTMLElement = event.target as HTMLElement;
+
+            if (!target.closest(`[id="${id}"]`) && !target.closest(".edge-label-renderer__deletable-edge")) {
+                setIsEdgeSelected(false);
+            }
+        };
+
+        if (isEdgeSelected) {
+            document.addEventListener("click", handleGlobalClick);
+
+            return () => document.removeEventListener("click", handleGlobalClick);
+        }
+    }, [ isEdgeSelected, id ]);
 
     const [ edgePath, labelX, labelY ] = getBezierPath({
         sourcePosition,
@@ -63,6 +86,11 @@ const BaseEdge: FunctionComponent<BaseEdgePropsInterface> = ({
         deleteElements({ edges: [ { id } ] });
     };
 
+    const handleEdgeClick = (event: SyntheticEvent) => {
+        event.stopPropagation();
+        setIsEdgeSelected(!isEdgeSelected);
+    };
+
     return (
         <>
             <_BaseEdge
@@ -70,8 +98,10 @@ const BaseEdge: FunctionComponent<BaseEdgePropsInterface> = ({
                 path={ edgePath }
                 style={ {
                     ...style,
-                    cursor: showDeleteButton ? "pointer" : "default"
+                    cursor: showDeleteButton ? "pointer" : "default",
+                    pointerEvents: "all"
                 } }
+                onClick={ handleEdgeClick }
                 { ...rest }
             />
             { (label || showDeleteButton) && (
@@ -85,12 +115,15 @@ const BaseEdge: FunctionComponent<BaseEdgePropsInterface> = ({
                         className="edge-label-renderer__deletable-edge nodrag nopan"
                     >
                         { label }
-                        { showDeleteButton && (
+                        { showDeleteButton && isEdgeSelected && (
                             <div
                                 className="edge-delete-button"
                                 onClick={ handleDelete }
+                                style={ {
+                                    pointerEvents: "all"
+                                } }
                             >
-                                x
+                                <TrashIcon size={ 14 }/>
                             </div>
                         ) }
                     </div>
