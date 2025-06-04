@@ -22,6 +22,7 @@ import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
+import { flushSync } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -29,12 +30,14 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddAPIResourceAuthorization, AddAPIResourceBasic, AddAPIResourcePermissions } from "./add-api-resource-steps";
 import { createAPIResource } from "../../api";
 import { getAPIResourceWizardStepIcons } from "../../configs";
+import { APIResourceType } from "../../constants";
 import {
     APIResourceInterface,
     APIResourcePermissionInterface,
     APIResourceWizardStepInterface,
     AddAPIResourceWizardStepsFormTypes,
-    BasicAPIResourceInterface
+    BasicAPIResourceInterface,
+    ResourceServerType
 } from "../../models";
 import useApiResourcesPageContent from "../../pages/use-api-resources-page-content";
 
@@ -47,6 +50,7 @@ interface AddAPIResourcePropsInterface extends IdentifiableComponentInterface {
      * Current step.
      */
     currentStep?: number;
+    resourceType: ResourceServerType;
 }
 
 /**
@@ -96,13 +100,13 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
             case AddAPIResourceWizardStepsFormTypes.PERMISSIONS: {
                 if (latestPermissionFormValues?.get("displayName")?.toString().trim() !==
                     latestPermissionFormValues?.get("identifier")?.toString().trim()) {
-                    setAddPermission();
+                    flushSync(() => setAddPermission());
                 }
 
-                handleNext();
-
-                if (steps.length === currentStep) {
+                if (steps.length - 1 === currentWizardStep) {
                     handleCreateAPIResource(true);
+                } else {
+                    handleNext();
                 }
 
                 break;
@@ -122,14 +126,8 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
     const handleNext = () => {
         const newStep: number = currentWizardStep + 1;
 
-        if (currentWizardStep === 0 && isMcpServer) {
-            handleCreateAPIResource(true);
-        }
-
-        if (newStep < steps.length) {
-            setCurrentWizardStep(newStep);
-            setCurrentWizardFormType(steps[newStep].addAPIResourceWizardStepsFormType);
-        }
+        setCurrentWizardStep(newStep);
+        setCurrentWizardFormType(steps[newStep].addAPIResourceWizardStepsFormType);
     };
 
     /**
@@ -154,6 +152,10 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
             requiresAuthorization: requiresAuthorization,
             scopes: [ ...permissions.values() ]
         };
+
+        if (isMcpServer) {
+            apiResourceBody.resourceType = APIResourceType.MCP;
+        }
 
         createAPIResource(apiResourceBody)
             .then((apiResource: APIResourceInterface) => {

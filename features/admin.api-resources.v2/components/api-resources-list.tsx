@@ -112,7 +112,8 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
 
     const {
         addNewResourceButtonText,
-        resourceEditPath
+        resourceEditPath,
+        resourceServerEmptyListSubtitle
     } = useApiResourcesPageContent();
 
     const [ loading, setLoading ] = useState<boolean>(false);
@@ -323,7 +324,7 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
                 <EmptyPlaceholder
                     image={ getEmptyPlaceholderIllustrations().emptyList }
                     imageSize="tiny"
-                    subtitle={ [ t("extensions:develop.apiResource.empty") ] }
+                    subtitle={ resourceServerEmptyListSubtitle }
                     data-testid={ `${ componentId }-empty-search-placeholder-icon` }
                     action={ APIResourceUtils.isAPIResourceCreateAllowed(featureConfig, allowedScopes) &&
                         onEmptyListPlaceholderActionClicked
