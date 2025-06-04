@@ -791,7 +791,6 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
         // Handle BASIC_FEDERATED template case
         if (template.type === TemplateTypes.BasicFederated) {
-            // Find the Google redirection step
             const googleRedirectionStep = templateSteps.find(
                 (step: Node) => step.type === "REDIRECTION"
             );
