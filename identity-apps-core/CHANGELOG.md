@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.25.15
+
+### Patch Changes
+
+- [#8295](https://github.com/wso2/identity-apps/pull/8295) [`ec587d7ad6158ac0c5668d490670226df971989c`](https://github.com/wso2/identity-apps/commit/ec587d7ad6158ac0c5668d490670226df971989c) Thanks [@lashinijay](https://github.com/lashinijay)! - Add proper encoding for token
+
 ## 2.25.14
 
 ### Patch Changes
