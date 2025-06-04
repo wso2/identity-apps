@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.19.15
+
+### Patch Changes
+
+- [#8297](https://github.com/wso2/identity-apps/pull/8297) [`7f2e84f2210870eeee73879cb42a7085855d7fe8`](https://github.com/wso2/identity-apps/commit/7f2e84f2210870eeee73879cb42a7085855d7fe8) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Bump oxygen-ui version to 2.4.3
+
 ## 2.19.14
 
 ### Patch Changes
