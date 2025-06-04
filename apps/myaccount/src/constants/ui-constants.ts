@@ -80,4 +80,17 @@ export class UIConstants extends CommonUIConstants {
      * Constant to handle dashboard layout's desktop content top spacing.
      */
     public static readonly DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING: number = 50;
+
+    /**
+     * Constant use to handle the text direction attribute.
+     */
+    public static readonly TEXT_DIRECTION_ATTRIBUTE: string = "dir";
+}
+
+/**
+ * Enum to define two Text Directions LTR & RTL.
+ */
+export enum TextDirection {
+    "LTR" = "ltr",
+    "RTL" = "rtl"
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -282,6 +282,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     ? "<%@ page import=\"static org.wso2.carbon.identity.core.util.IdentityCoreConstants.PROXY_CONTEXT_PATH\" %>"
                     : "",
                 publicPath: baseHref,
+                rtlThemeHash: getRTLThemeConfigs(theme).styleSheetHash,
                 serverConfiguration: !isDeployedOnExternalTomcatServer
                     ? "<%@ page import=\"org.wso2.carbon.base.ServerConfiguration\" %>"
                     : "",
@@ -357,6 +358,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     "{request.getRequestDispatcher(\"/authenticate?code=\"+request.getParameter(\"code\")+" +
                     "\"&AuthenticatedIdPs=\"+request.getParameter(\"AuthenticatedIdPs\")" +
                     "+\"&session_state=\"+request.getParameter(\"session_state\")).forward(request, response);}",
+                rtlThemeHash: getRTLThemeConfigs(theme).styleSheetHash,
                 serverConfiguration: !isDeployedOnExternalTomcatServer
                     ? "<%@ page import=\"org.wso2.carbon.base.ServerConfiguration\" %>"
                     : "",
@@ -385,6 +387,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     isDeployedOnExternalStaticServer && process.env.APP_BASE_PATH
                         ? "/" + process.env.APP_BASE_PATH + "/"
                         : baseHref,
+                rtlThemeHash: getRTLThemeConfigs(theme).styleSheetHash,
                 template: isDeployedOnExternalStaticServer
                     ? ABSOLUTE_PATHS.authTemplateInSource
                     : ABSOLUTE_PATHS.indexTemplateInSource,
@@ -400,6 +403,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 inject: isDeployedOnExternalStaticServer,
                 minify: false,
                 publicPath: baseHref,
+                rtlThemeHash: getRTLThemeConfigs(theme).styleSheetHash,
                 template: ABSOLUTE_PATHS.indexTemplateInSource,
                 theme: theme,
                 themeHash: getThemeConfigs(theme).styleSheetHash
@@ -412,6 +416,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 hash: true,
                 minify: false,
                 publicPath: baseHref,
+                rtlThemeHash: getRTLThemeConfigs(theme).styleSheetHash,
                 template: ABSOLUTE_PATHS.indexTemplateInSource,
                 theme: theme,
                 themeHash: getThemeConfigs(theme).styleSheetHash
@@ -808,6 +813,32 @@ const getI18nConfigs = () => {
 
     return {
         metaFileHash: metaFile ? metaFile.split(".")[1] : null
+    };
+};
+
+/**
+ * Get the RTL theme configs.
+ *
+ * @param theme - Theme name.
+ * @returns RTL theme configs.
+ */
+const getRTLThemeConfigs = (theme: string) => {
+    const THEME_DIR: string = path.resolve(
+        __dirname,
+        "node_modules",
+        "@wso2is",
+        "theme",
+        "dist",
+        "lib",
+        "themes",
+        theme
+    );
+    const files: string[] = fs.readdirSync(THEME_DIR);
+
+    const file: string = files ? files.filter((file: string) => file.endsWith(".rtl.min.css"))[0] : null;
+
+    return {
+        styleSheetHash: file ? file.split(".")[1] : null
     };
 };
 

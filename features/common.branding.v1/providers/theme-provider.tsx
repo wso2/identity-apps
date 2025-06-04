@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,9 +16,13 @@
  * under the License.
  */
 
+import createCache from "@emotion/cache";
+import { CacheProvider } from "@emotion/react";
 import { ThemeProvider as OxygenThemeProvider } from "@oxygen-ui/react/theme";
-import React, { PropsWithChildren, ReactElement, useMemo } from "react";
+import React, { PropsWithChildren, ReactElement, useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet";
+import { prefixer } from "stylis";
+import rtlPlugin from "stylis-plugin-rtl";
 import { generateTheme } from "../branding/theme";
 import { ThemeProviderContext, ThemeProviderContextProps } from "../contexts/theme-provider-context";
 import { ThemePreferenceMeta } from "../meta";
@@ -49,6 +53,13 @@ export interface ThemeProviderProps {
      * This is an optional property.
      */
     appTitle?: string;
+
+    /**
+     * The CSS file for RTL (Right-to-Left) support.
+     *
+     * This is an optional property.
+     */
+    rtlCss?: string;
 }
 
 /**
@@ -66,7 +77,8 @@ export const ThemeProvider = (props: PropsWithChildren<ThemeProviderProps>): Rea
         appTitle,
         themePreference,
         defaultMode,
-        modeStorageKey
+        modeStorageKey,
+        rtlCss
     } = props;
 
     /**
@@ -81,6 +93,50 @@ export const ThemeProvider = (props: PropsWithChildren<ThemeProviderProps>): Rea
 
         return { themePreference };
     }, [ themePreference ]);
+
+    const [ direction, setDirection ] = useState<"ltr" | "rtl">(
+        () => document.documentElement.getAttribute("dir") === "rtl" ? "rtl" : "ltr"
+    );
+
+    useEffect(() => {
+        const observer: MutationObserver = new MutationObserver(() => {
+            const dir: "ltr" | "rtl" = document.documentElement.getAttribute("dir") as "ltr" | "rtl";
+
+            setDirection(dir);
+        });
+
+        observer.observe(document.documentElement, {
+            attributeFilter: [ "dir" ],
+            attributes: true
+        });
+
+        return () => {
+            observer.disconnect();
+        };
+    }, []);
+
+    /**
+     * Injects the branding CSS skeleton if branding is enabled.
+     *
+     * @returns A style element containing the branding CSS skeleton.
+     */
+    const injectCSSBasedOnDirection = () => {
+
+        if (direction != null && direction==="rtl") {
+            return <link href={ rtlCss } rel="stylesheet" type="text/css"></link>;
+        } else {
+            return;
+        }
+    };
+
+    const cacheRtl: import("@emotion/cache").EmotionCache = createCache({
+        key: "muirtl",
+        stylisPlugins: [ prefixer, rtlPlugin ]
+    });
+
+    function Rtl({ children }: PropsWithChildren): ReactElement {
+        return <CacheProvider value={ cacheRtl }>{ children }</CacheProvider>;
+    }
 
     /**
      * Memoizes the theme skeleton CSS based on the theme preferences.
@@ -122,13 +178,14 @@ export const ThemeProvider = (props: PropsWithChildren<ThemeProviderProps>): Rea
                 { <title>{ appTitle }</title> }
                 { favicon && <link rel="shortcut icon" href={ favicon } /> }
                 { injectBrandingCSSSkeleton() }
+                { injectCSSBasedOnDirection() }
             </Helmet>
             <OxygenThemeProvider
-                theme={ generateTheme(contextValues) }
+                theme={ generateTheme(contextValues, direction) }
                 defaultMode={ defaultMode }
                 modeStorageKey={ modeStorageKey }
             >
-                { children }
+                { direction === "rtl" ? <Rtl>{ children }</Rtl> : children }
             </OxygenThemeProvider>
         </ThemeProviderContext.Provider>
     );

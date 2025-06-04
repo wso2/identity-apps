@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -58,7 +58,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Action, AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import { Gravatar } from "./gravatar";
-import { AppConstants } from "../../constants";
+import { AppConstants, TextDirection, UIConstants } from "../../constants";
 import { commonConfig } from "../../extensions";
 import { history, resolveUserstore } from "../../helpers";
 import { AuthStateInterface, ConfigReducerStateInterface } from "../../models";
@@ -203,6 +203,23 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             URLUtils.getDomain(window.location.href),
             { secure: true }
         );
+    };
+
+    /**
+     * Handles the direction of the document based on the selected language.
+     *
+     * @param language - Selected language.
+     */
+    const handleDirection = (language: string): void => {
+
+        const supportedLanguage: LocaleMeta = supportedI18nLanguages[language];
+        const direction: string = supportedLanguage?.direction;
+
+        if (direction === TextDirection.RTL) {
+            document.documentElement.setAttribute(UIConstants.TEXT_DIRECTION_ATTRIBUTE, TextDirection.RTL);
+        } else {
+            document.documentElement.setAttribute(UIConstants.TEXT_DIRECTION_ATTRIBUTE, TextDirection.LTR);
+        }
     };
 
     /**
@@ -430,6 +447,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                         onClick={ () => {
                                             handleLanguageSwitch(value.code);
                                             setOpenLanguageSwitcher(false);
+                                            handleDirection(value.code);
                                         } }
                                     >
                                         <ListItem>
