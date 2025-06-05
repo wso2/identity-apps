@@ -21,6 +21,7 @@ import { LocaleMeta } from "../../models";
 
 export const meta: LocaleMeta = {
     code: "en-US",
+    direction: "ltr",
     flag: "us",
     name: "English (United States)",
     namespaces: [

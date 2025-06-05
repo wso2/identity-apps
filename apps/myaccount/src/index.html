@@ -27,6 +27,15 @@
             var tenantPrefixGlobal = startupConfig.tenantPrefix;
             var isAdaptiveAuthenticationAvailable;
             var isOrganizationManagementEnabled;
+            var themeGlobal = {
+                rtl: {
+                    stylesheets: [
+                        {
+                            themeHash: "<%= htmlWebpackPlugin.options.rtlThemeHash %>",
+                        }
+                    ]
+                }
+            };
         </script>
 
         <!-- Start of custom stylesheets -->

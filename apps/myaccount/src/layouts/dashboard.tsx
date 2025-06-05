@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,7 +35,7 @@ import {
     RouteUtils,
     URLUtils
 } from "@wso2is/core/utils";
-import { I18n, I18nModuleConstants, LanguageChangeException } from "@wso2is/i18n";
+import { I18n, I18nModuleConstants, LanguageChangeException, LocaleMeta, SupportedLanguagesMeta } from "@wso2is/i18n";
 import {
     Alert,
     ContentLoader,
@@ -58,7 +58,7 @@ import { fetchApplications } from "../api";
 import { Header, ProtectedRoute } from "../components";
 import { SystemNotificationAlert } from "../components/shared/system-notification-alert";
 import { getDashboardLayoutRoutes, getEmptyPlaceholderIllustrations } from "../configs";
-import { AppConstants, UIConstants } from "../constants";
+import { AppConstants, TextDirection, UIConstants } from "../constants";
 import { history } from "../helpers";
 import { Application, ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
@@ -112,6 +112,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
 
         if (localeCookie) {
             handleLanguageSwitch(localeCookie.replace("_", "-"));
+            handleDirection(localeCookie.replace("_", "-"));
         }
     }, []);
 
@@ -136,6 +137,26 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
         );
     };
 
+    const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
+        (state: AppState) => state?.global?.supportedI18nLanguages
+    );
+
+    /**
+     * Handles the direction of the document based on the selected language.
+     *
+     * @param language - Selected language.
+     */
+    const handleDirection = (language: string): void => {
+
+        const supportedLanguage: LocaleMeta = supportedI18nLanguages[language];
+        const direction: string = supportedLanguage?.direction;
+
+        if (direction === TextDirection.RTL) {
+            document.documentElement.setAttribute(UIConstants.TEXT_DIRECTION_ATTRIBUTE, TextDirection.RTL);
+        } else {
+            document.documentElement.setAttribute(UIConstants.TEXT_DIRECTION_ATTRIBUTE, TextDirection.LTR);
+        }
+    };
 
     /**
      * Performs pre-requisites for the side panel items visibility.

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -251,7 +251,13 @@ export const AppUtils: AppUtilsInterface = (function() {
                 tenant: (this.isSuperTenant()) ? this.getSuperTenant() : this.getTenantName(),
                 tenantPath: this.getTenantPath(),
                 tenantPrefix: this.getTenantPrefix(),
-                ui: _config.ui
+                ui: {
+                    ..._config.ui,
+                    theme: {
+                        ..._config.ui.theme,
+                        ..._config.theme
+                    }
+                }
             };
         },
 
@@ -465,7 +471,8 @@ export const AppUtils: AppUtilsInterface = (function() {
                 "consoleAppOrigin": _args.consoleAppOrigin || _args.serverOrigin || fallbackServerOrigin,
                 "contextPath": _args.contextPath,
                 "proxyContextPath": _args.proxyContextPath || proxyContextPathFallback,
-                "serverOrigin": _args.serverOrigin || fallbackServerOrigin
+                "serverOrigin": _args.serverOrigin || fallbackServerOrigin,
+                "theme": _args.theme || {}
             };
 
             _config = _default;
