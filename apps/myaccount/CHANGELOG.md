@@ -1,5 +1,16 @@
 # @wso2is/myaccount
 
+## 2.19.16
+
+### Patch Changes
+
+- [#8301](https://github.com/wso2/identity-apps/pull/8301) [`b29ed7869a11e35df46b23027e7302ae64fabc39`](https://github.com/wso2/identity-apps/commit/b29ed7869a11e35df46b23027e7302ae64fabc39) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Provide RTL Support for MyAccount
+
+- Updated dependencies [[`b29ed7869a11e35df46b23027e7302ae64fabc39`](https://github.com/wso2/identity-apps/commit/b29ed7869a11e35df46b23027e7302ae64fabc39)]:
+  - @wso2is/common.branding.v1@2.27.2
+  - @wso2is/react-components@2.9.17
+  - @wso2is/i18n@2.23.7
+
 ## 2.19.15
 
 ### Patch Changes
