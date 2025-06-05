@@ -1,5 +1,11 @@
 # @wso2is/admin.core.v1
 
+## 2.45.7
+
+### Patch Changes
+
+- [#8256](https://github.com/wso2/identity-apps/pull/8256) [`567350d132adca64bb5856432dfb14799a7823e8`](https://github.com/wso2/identity-apps/commit/567350d132adca64bb5856432dfb14799a7823e8) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve feature preview modal
+
 ## 2.45.6
 
 ### Patch Changes
