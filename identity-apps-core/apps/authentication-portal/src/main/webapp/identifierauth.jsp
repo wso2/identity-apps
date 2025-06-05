@@ -37,6 +37,7 @@
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL" %>
 <%@ page import="org.wso2.carbon.identity.core.URLBuilderException" %>
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
+<%@ page import="org.wso2.carbon.identity.captcha.provider_mgt.util.CaptchaFEUtils" %>
 <%@ page import="org.json.JSONArray" %>
 <%@ page import="org.json.JSONObject" %>
 
@@ -327,14 +328,24 @@
     </div>
     <%
     if (genericReCaptchaEnabled) {
-        String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+        String captchaKey = CaptchaFEUtils.getCaptchaSiteKey();
     %>
         <div class="field">
-            <div class="g-recaptcha"
-                data-size="invisible"
-                data-callback="onCompleted"
+            <div
+                <%
+                    Map<String, String> captchaAttributes = CaptchaFEUtils.getWidgetAttributes();
+                    if (captchaAttributes != null) {
+                        for (Map.Entry<String, String> entry : captchaAttributes.entrySet()) {
+                            String key = entry.getKey();
+                            String value = entry.getValue();
+                %>
+                            <%= key %>="<%= Encode.forHtmlAttribute(value) %>"
+                <%
+                        }
+                    }
+                %>
                 data-action="login"
-                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                data-sitekey="<%=Encode.forHtmlContent(captchaKey)%>"
                 data-bind="identifier-auth-continue-button">
             </div>
         </div>
@@ -345,7 +356,7 @@
 
     <div class="mt-4">
         <div class="buttons">
-            <button type="submit" class="ui primary fluid large button" role="button" data-testid="identifier-auth-continue-button">
+            <button id="identifier-auth-continue-button" type="submit" class="ui primary fluid large button" role="button" data-testid="identifier-auth-continue-button">
                 <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "continue"))%>
             </button>
         </div>
