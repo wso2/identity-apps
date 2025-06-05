@@ -32,6 +32,7 @@
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ENABLE_AUTHENTICATION_WITH_REST_API" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ERROR_WHILE_BUILDING_THE_ACCOUNT_RECOVERY_ENDPOINT_URL" %>
 <%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
+<%@ page import="org.wso2.carbon.identity.captcha.provider_mgt.util.CaptchaFEUtils" %>
 <%@ page import="org.wso2.carbon.CarbonConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.AuthenticatorDataRetrievalClient" %>
@@ -465,10 +466,22 @@
     <%
         boolean genericReCaptchaEnabled = CaptchaUtil.isGenericRecaptchaEnabledAuthenticator("IdentifierExecutor");
         if (reCaptchaEnabled || reCaptchaResendEnabled || genericReCaptchaEnabled) {
-            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
+            List<Map<String, String>> scriptAttributesList = (List<Map<String, String>>) CaptchaFEUtils.getScriptAttributes();
+                if (scriptAttributesList != null) {
+                    for (Map<String, String> scriptAttributes : scriptAttributesList) {
     %>
-        <script src='<%=(reCaptchaAPI)%>'></script>
+        <script
+            <%
+                for (Map.Entry<String, String> entry : scriptAttributes.entrySet()) {
+            %>
+                <%= entry.getKey() %> = "<%= entry.getValue() %>"
+            <%
+                }
+            %>
+        ></script>
     <%
+                }
+            }
         }
     %>
 </head>
@@ -1431,7 +1444,7 @@
                 var error_msg = $("#error-msg");
 
                 $("#loginForm").submit(function (e) {
-                    var resp = $("[name='g-recaptcha-response']")[0].value;
+                    var resp = $("[name="+ CaptchaFEUtils.getCaptchaResponseIdentifier() +"]")[0].value;
                     if (resp.trim() == '') {
                         error_msg.text("<%=AuthenticationEndpointUtil.i18n(resourceBundle,"please.select.recaptcha")%>");
                         error_msg.show();

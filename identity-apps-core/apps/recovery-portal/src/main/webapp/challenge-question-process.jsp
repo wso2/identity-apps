@@ -31,6 +31,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.RetryError" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.SecurityAnswer" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
+<%@ page import="org.wso2.carbon.identity.captcha.provider_mgt.util.CaptchaFEUtils" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
@@ -42,6 +43,7 @@
     String userName = request.getParameter("username");
     String securityQuestionAnswer = request.getParameter("securityQuestionAnswer");
     String sessionDataKey = request.getParameter("sessionDataKey");
+    String captchaResponseIdentifier = CaptchaFEUtils.getCaptchaResponseIdentifier();
 
     if ( request.getParameter("callback") != null) {
         session.setAttribute("callback", request.getParameter("callback"));
@@ -62,14 +64,14 @@
 
         try {
             Map<String, String> requestHeaders = new HashedMap();
-            if (request.getParameter("g-recaptcha-response") != null) {
-                requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
+            if (request.getParameter(captchaResponseIdentifier) != null) {
+                requestHeaders.put(captchaResponseIdentifier, request.getParameter(captchaResponseIdentifier));
             }
 
             SecurityQuestionApi securityQuestionApi = new SecurityQuestionApi();
             InitiateQuestionResponse initiateQuestionResponse = securityQuestionApi.securityQuestionGet(
                     user.getUsername(), user.getRealm(), user.getTenantDomain(), requestHeaders);
-            IdentityManagementEndpointUtil.addReCaptchaHeaders(request, securityQuestionApi.getApiClient().getResponseHeaders());
+            CaptchaFEUtils.addCaptchaHeaders(request, securityQuestionApi.getApiClient().getResponseHeaders());
             session.setAttribute("initiateChallengeQuestionResponse", initiateQuestionResponse);
             request.getRequestDispatcher("/viewsecurityquestions.do").forward(request, response);
         } catch (ApiException e) {
@@ -82,7 +84,7 @@
                 request.getRequestDispatcher("error.jsp").forward(request, response);
                 return;
             }
-            IdentityManagementEndpointUtil.addReCaptchaHeaders(request, e.getResponseHeaders());
+            CaptchaFEUtils.addCaptchaHeaders(request, e.getResponseHeaders());
             IdentityManagementEndpointUtil.addErrorInformation(request, e);
             request.setAttribute("username", userName);
             request.getRequestDispatcher("error.jsp").forward(request, response);
@@ -107,8 +109,8 @@
         answerVerificationRequest.setAnswers(securityAnswers);
 
         Map<String, String> requestHeaders = new HashedMap();
-        if(request.getParameter("g-recaptcha-response") != null) {
-            requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
+        if(request.getParameter(captchaResponseIdentifier) != null) {
+            requestHeaders.put(captchaResponseIdentifier, request.getParameter(captchaResponseIdentifier));
         }
 
         try {
@@ -133,7 +135,7 @@
         } catch (ApiException e) {
             RetryError retryError = IdentityManagementEndpointUtil.buildRetryError(e);
             if (retryError != null && "20008".equals(retryError.getCode())) {
-                IdentityManagementEndpointUtil.addReCaptchaHeaders(request, e.getResponseHeaders());
+                CaptchaFEUtils.addCaptchaHeaders(request, e.getResponseHeaders());
                 request.setAttribute("errorResponse", retryError);
                 request.getRequestDispatcher("/viewsecurityquestions.do").forward(request, response);
                 return;
@@ -170,8 +172,8 @@
         }
 
         Map<String, String> requestHeaders = new HashedMap();
-        if(request.getParameter("g-recaptcha-response") != null) {
-            requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
+        if(request.getParameter(captchaResponseIdentifier) != null) {
+            requestHeaders.put(captchaResponseIdentifier, request.getParameter(captchaResponseIdentifier));
         }
 
 
@@ -191,7 +193,7 @@
         } catch (ApiException e) {
             RetryError retryError = IdentityManagementEndpointUtil.buildRetryError(e);
             if (retryError != null && "20008".equals(retryError.getCode())) {
-                IdentityManagementEndpointUtil.addReCaptchaHeaders(request, e.getResponseHeaders());
+                CaptchaFEUtils.addCaptchaHeaders(request, e.getResponseHeaders());
                 request.setAttribute("errorResponse", retryError);
                 request.getRequestDispatcher("challenge-questions-view-all.jsp").forward(request, response);
                 return;

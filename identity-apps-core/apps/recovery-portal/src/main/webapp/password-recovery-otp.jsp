@@ -47,14 +47,15 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.user.core.util.UserCoreUtil" %>
+<%@ page import="org.wso2.carbon.identity.captcha.provider_mgt.util.CaptchaFEUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 
 <%-- Include tenant context --%>
 <%@ include file="tenant-resolve.jsp"%>
 
-<%! 
+<%!
     /**
-     * RecoveryStage represents the four steps of recovery in the 
+     * RecoveryStage represents the four steps of recovery in the
      * PasswordRecoveryAPI V2.
      */
     public enum RecoveryStage {
@@ -67,7 +68,7 @@
         private final String value;
 
         RecoveryStage(String value) {
-            
+
             this.value = value;
         }
 
@@ -98,10 +99,10 @@
         }
     }
 %>
-<%! 
+<%!
     /**
     * This generates a random number to provide a sample number for a invalid username
-    * to avoid letting external entities learning of the existing usernames. The same 
+    * to avoid letting external entities learning of the existing usernames. The same
     * random number string will be generated for the same username each time.
     */
     public static String getRandomNumberString(int len, String seed) {
@@ -120,9 +121,9 @@
     /**
      * This redirects the flow to the error page with the provided error message.
      */
-    public void redirectToErrorPageWithMessage(HttpServletRequest request, 
+    public void redirectToErrorPageWithMessage(HttpServletRequest request,
         HttpServletResponse response, String errorMsg) throws ServletException, IOException {
-        
+
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", errorMsg);
         request.getRequestDispatcher("error.jsp").forward(request, response);
@@ -132,7 +133,8 @@
     String userIdentifierClaimKey = "http://wso2.org/claims/username";
     final String MULTI_ATTRIBUTE_USER_IDENTIFIER_CLAIM_URI = "internal.user.identifier.claim.uri";
     final RecoveryApiV2 recoveryApiV2 = new RecoveryApiV2();
-    
+    String captchaResponseIdentifier = CaptchaFEUtils.getCaptchaResponseIdentifier();
+
     try {
         PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
         if (preferenceRetrievalClient.checkMultiAttributeLogin(tenantDomain)) {
@@ -153,7 +155,7 @@
     if (RecoveryStage.INITIATE.equalsValue(recoveryStage)) {
         // If otp is supported by a new channel update this value assignment. null means unsupported.
         final String targetChannel =IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP
-            .equals((String) request.getAttribute("channel")) 
+            .equals((String) request.getAttribute("channel"))
                 ? "SMS"
                 : IdentityManagementEndpointConstants.PasswordRecoveryOptions.EMAIL
                 .equals((String) request.getAttribute("channel"))
@@ -183,15 +185,15 @@
             RecoveryInitRequest recoveryInitRequest = new RecoveryInitRequest();
             recoveryInitRequest.setClaims(userClaims);
             Map<String, String> requestHeaders = new HashedMap();
-            if (request.getParameter("g-recaptcha-response") != null) {
-                requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
+            if (request.getParameter(captchaResponseIdentifier) != null) {
+                requestHeaders.put(captchaResponseIdentifier, request.getParameter(captchaResponseIdentifier));
             }
-            List<AccountRecoveryType> resp = 
+            List<AccountRecoveryType> resp =
                 recoveryApiV2.initiatePasswordRecovery(recoveryInitRequest, tenantDomain, requestHeaders);
             if (resp == null) {
-                /** Handle invalid username scenario. proceeds to next level without warning to 
+                /** Handle invalid username scenario. proceeds to next level without warning to
                 avoid an attacker bruteforcing to learn the usernames. */
-                
+
                 request.setAttribute("screenValue", "******" + getRandomNumberString(4, username));
                 request.setAttribute("resendCode", UUID.randomUUID().toString());
                 request.setAttribute("flowConfirmationCode", UUID.randomUUID().toString());
@@ -233,7 +235,7 @@
             RecoveryRequest recoveryRequest = new RecoveryRequest();
             recoveryRequest.setChannelId(channelId);
             recoveryRequest.setRecoveryCode(recoveryCode);
-            RecoveryResponse recoveryResponse = 
+            RecoveryResponse recoveryResponse =
                 recoveryApiV2.recoverPassword(recoveryRequest, tenantDomain, requestHeaders);
             request.setAttribute("screenValue", screenValue);
             request.setAttribute("resendCode", recoveryResponse.getResendCode());
@@ -251,14 +253,14 @@
         // Sending resend request
         try {
             Map<String, String> requestHeaders = new HashedMap();
-            if (request.getParameter("g-recaptcha-response") != null) {
-                requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
+            if (request.getParameter(captchaResponseIdentifier) != null) {
+                requestHeaders.put(captchaResponseIdentifier, request.getParameter(captchaResponseIdentifier));
             }
             ResendRequest resendRequest = new ResendRequest();
             resendRequest.setResendCode(resendCode);
-            ResendResponse resendResponse = 
+            ResendResponse resendResponse =
                 recoveryApiV2.resendPasswordNotification(resendRequest, tenantDomain, requestHeaders);
-            
+
             /** Resend code re-attached to the reqeust to avoid value being missed after the page refresh that
              *  happens after the resend operation. */
             resendCode = resendResponse.getResendCode();
@@ -280,18 +282,18 @@
         request.setAttribute("flowConfirmationCode", flowConfirmationCode);
         request.getRequestDispatcher("sms-and-email-otp.jsp").forward(request, response);
     } else if (RecoveryStage.CONFIRM.equalsValue(recoveryStage)) {
-        String flowConfirmationCode = request.getParameter("flowConfirmationCode"); 
+        String flowConfirmationCode = request.getParameter("flowConfirmationCode");
         String OTPcode = request.getParameter("OTPcode");
         try {
             Map<String, String> requestHeaders = new HashedMap();
-            if (request.getParameter("g-recaptcha-response") != null) {
-                requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
+            if (request.getParameter(captchaResponseIdentifier) != null) {
+                requestHeaders.put(captchaResponseIdentifier, request.getParameter(captchaResponseIdentifier));
             }
             ConfirmRequest confirmRequest = new ConfirmRequest();
             /** For local notification channels flowConfirmationCode is used as confirmation code. */
             confirmRequest.setConfirmationCode(flowConfirmationCode);
             confirmRequest.setOtp(OTPcode);
-            ConfirmResponse confirmResponse = 
+            ConfirmResponse confirmResponse =
                 recoveryApiV2.confirmPasswordRecovery(confirmRequest, tenantDomain, requestHeaders);
             request.setAttribute("resetCode", confirmResponse.getResetCode());
         } catch (ApiException e) {
