@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.25.16
+
+### Patch Changes
+
+- [#8298](https://github.com/wso2/identity-apps/pull/8298) [`d0a35130af297135f7e61c2277ec6b12288ac3bf`](https://github.com/wso2/identity-apps/commit/d0a35130af297135f7e61c2277ec6b12288ac3bf) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve code logic to proper URL validation
+
 ## 2.25.15
 
 ### Patch Changes
