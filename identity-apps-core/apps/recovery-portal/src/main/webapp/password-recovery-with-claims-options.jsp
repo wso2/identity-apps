@@ -33,6 +33,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
+<%@ page import="org.wso2.carbon.identity.captcha.provider_mgt.util.CaptchaFEUtils" %>
 <%@ page import="java.net.URISyntaxException" %>
 <%@ page import="java.io.File" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
@@ -50,8 +51,9 @@
     String username = IdentityManagementEndpointUtil.getStringValue(request.getParameter("username"));
     String callback = IdentityManagementEndpointUtil.getStringValue(request.getParameter("callback"));
     String sessionDataKey = IdentityManagementEndpointUtil.getStringValue(request.getParameter("sessionDataKey"));
+    String captchaResponseIdentifier = CaptchaFEUtils.getCaptchaResponseIdentifier();
 
-    String recaptchaResponse = request.getParameter("g-recaptcha-response");
+    String recaptchaResponse = request.getParameter(captchaResponseIdentifier);
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
@@ -119,7 +121,7 @@
     try {
         Map<String, String> requestHeaders = new HashedMap();
         if (recaptchaResponse != null) {
-            requestHeaders.put("g-recaptcha-response", recaptchaResponse);
+            requestHeaders.put(captchaResponseIdentifier, recaptchaResponse);
         }
         List<AccountRecoveryType> accountRecoveryTypes = recoveryApiV2.
                 initiatePasswordRecovery(recoveryInitRequest, tenantDomain, requestHeaders);
@@ -285,7 +287,7 @@
                         </div>
 
                         <input type="hidden" name="username" value="<%=Encode.forHtmlAttribute(username)%>"/>
-                        <input type="hidden" name="g-recaptcha-response" value="<%=Encode.forHtmlAttribute(recaptchaResponse)%>"/>
+                        <input type="hidden" name="<%=captchaResponseIdentifier %>" value="<%=Encode.forHtmlAttribute(recaptchaResponse)%>"/>
                         <%
                             }
                             if (sessionDataKey != null) {

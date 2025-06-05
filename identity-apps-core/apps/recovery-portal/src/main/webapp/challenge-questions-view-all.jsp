@@ -24,6 +24,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.InitiateAllQuestionResponse" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Question" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.RetryError" %>
+<%@ page import="org.wso2.carbon.identity.captcha.provider_mgt.util.CaptchaFEUtils" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.List" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
@@ -65,10 +66,22 @@
 
     <%
         if (reCaptchaEnabled) {
-            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
+            List<Map<String, String>> scriptAttributesList = (List<Map<String, String>>) CaptchaFEUtils.getScriptAttributes();
+                if (scriptAttributesList != null) {
+                    for (Map<String, String> scriptAttributes : scriptAttributesList) {
     %>
-    <script src='<%=(reCaptchaAPI)%>'></script>
+        <script
+            <%
+                for (Map.Entry<String, String> entry : scriptAttributes.entrySet()) {
+            %>
+                <%= entry.getKey() %> = "<%= entry.getValue() %>"
+            <%
+                }
+            %>
+        ></script>
     <%
+                }
+            }
         }
     %>
 </head>
@@ -122,14 +135,24 @@
                         %>
                         <%
                             if (reCaptchaEnabled) {
-                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                                String captchaKey = CaptchaFEUtils.getCaptchaSiteKey();
                         %>
                         <div class="field">
-                            <div class="g-recaptcha"
-                                data-size="invisible"
-                                data-callback="onCompleted"
+                            <div
+                                <%
+                                    Map<String, String> captchaAttributes = CaptchaFEUtils.getWidgetAttributes();
+                                    if (captchaAttributes != null) {
+                                        for (Map.Entry<String, String> entry : captchaAttributes.entrySet()) {
+                                            String key = entry.getKey();
+                                            String value = entry.getValue();
+                                %>
+                                            <%= key %>="<%= Encode.forHtmlAttribute(value) %>"
+                                <%
+                                        }
+                                    }
+                                %>
                                 data-action="securityQuestion"
-                                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                                data-sitekey="<%=Encode.forHtmlContent(captchaKey)%>"
                                 data-bind="answerSubmit"
                             >
                             </div>
@@ -186,7 +209,7 @@
                 <%
                     if (reCaptchaEnabled) {
                 %>
-                        var resp = $("[name='g-recaptcha-response']")[0].value;
+                        var resp = $("[name="+ "<%=CaptchaFEUtils.getCaptchaResponseIdentifier() %>" +"]")[0].value;
                         if (resp.trim() == '') {
                             errorMessage.text("<%=i18n(recoveryResourceBundle, customText, "Please.select.reCaptcha")%>");
                             errorMessage.show();

@@ -59,10 +59,22 @@
 
     <%
         if (reCaptchaResendEnabled) {
-            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
+            List<Map<String, String>> scriptAttributesList = (List<Map<String, String>>) CaptchaFEUtils.getScriptAttributes();
+                if (scriptAttributesList != null) {
+                    for (Map<String, String> scriptAttributes : scriptAttributesList) {
     %>
-        <script src='<%=(Encode.forJavaScriptSource(reCaptchaAPI))%>'></script>
+        <script
+            <%
+                for (Map.Entry<String, String> entry : scriptAttributes.entrySet()) {
+            %>
+                <%= entry.getKey() %> = "<%= entry.getValue() %>"
+            <%
+                }
+            %>
+        ></script>
     <%
+                }
+            }
         }
     %>
 
@@ -95,12 +107,24 @@
 
                     <div class="resend-captcha-container ui hidden" id="resend-captcha-container">
                         <%
-                             String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                            String captchaKey = CaptchaFEUtils.getCaptchaSiteKey();
                         %>
                         <div class="field">
                             <div class="text-center>">
-                                <div class="g-recaptcha inline"
-                                    data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                                <div
+                                    <%
+                                        Map<String, String> captchaAttributes = CaptchaFEUtils.getWidgetAttributes();
+                                        if (captchaAttributes != null) {
+                                            for (Map.Entry<String, String> entry : captchaAttributes.entrySet()) {
+                                                String key = entry.getKey();
+                                                String value = entry.getValue();
+                                    %>
+                                                <%= key %>="<%= Encode.forHtmlAttribute(value) %>"
+                                    <%
+                                            }
+                                        }
+                                    %>
+                                    data-sitekey="<%=Encode.forHtmlContent(captchaKey)%>"
                                     data-testid="login-page-g-recaptcha-resend"
                                 >
                                 </div>
@@ -162,7 +186,7 @@
                 errorMessage.hide();
 
                 $( "#recoverySubmit" ).click(function() {
-                    var reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
+                    var reCaptchaResponse = $("[name="+ CaptchaFEUtils.getCaptchaResponseIdentifier() +"]")[0].value;
 
                     if (reCaptchaResponse.trim() == '') {
                         errorMessage.text("<%=pleaseSelectRecaptchaText%>");

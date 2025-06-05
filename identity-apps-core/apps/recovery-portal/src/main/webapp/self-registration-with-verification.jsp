@@ -42,6 +42,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ValidationConfigurationRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="org.wso2.carbon.utils.multitenancy.MultitenantUtils" %>
+<%@ page import="org.wso2.carbon.identity.captcha.provider_mgt.util.CaptchaFEUtils" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.List" %>
@@ -246,7 +247,7 @@
             claims = uniquePIIs.values().toArray(new Claim[0]);
             piisConfigured = true;
         }
-        IdentityManagementEndpointUtil.addReCaptchaHeaders(request, usernameRecoveryApi.getApiClient().getResponseHeaders());
+        CaptchaFEUtils.addCaptchaHeaders(request, usernameRecoveryApi.getApiClient().getResponseHeaders());
 
     } catch (ApiException e) {
         IdentityManagementEndpointUtil.addErrorInformation(request, e);
@@ -258,29 +259,16 @@
     }
 
     /**
-    * Temporarily read recapcha status from password recovery endpoint.
+    * Temporarily read recapcha status from captcha frontend utils.
     */
-    ReCaptchaApi reCaptchaApi = new ReCaptchaApi();
-    try {
-        ReCaptchaProperties reCaptchaProperties = reCaptchaApi.getReCaptcha(tenantDomain, true, "ReCaptcha",
-                "password-recovery");
-
-        if (reCaptchaProperties.getReCaptchaEnabled()) {
-            Map<String, List<String>> headers = new HashMap<>();
-            headers.put("reCaptcha", Arrays.asList(String.valueOf(true)));
-            headers.put("reCaptchaAPI", Arrays.asList(reCaptchaProperties.getReCaptchaAPI()));
-            headers.put("reCaptchaKey", Arrays.asList(reCaptchaProperties.getReCaptchaKey()));
-            IdentityManagementEndpointUtil.addReCaptchaHeaders(request, headers);
-        }
-    } catch (ApiException e) {
-        request.setAttribute("error", true);
-        request.setAttribute("errorMsg", e.getMessage());
-        if (!StringUtils.isBlank(username)) {
-            request.setAttribute("username", username);
-        }
-        request.getRequestDispatcher("error.jsp").forward(request, response);
-        return;
+    if (CaptchaFEUtils.isCaptchaEnabled()) {
+        Map<String, List<String>> headers = new HashMap<>();
+        headers.put("reCaptcha", Arrays.asList(String.valueOf(true)));
+        headers.put("reCaptchaAPI", Arrays.asList(CaptchaFEUtils.getCaptchaApiUrl()));
+        headers.put("reCaptchaKey", Arrays.asList(CaptchaFEUtils.getCaptchaSiteKey()));
+        CaptchaFEUtils.addCaptchaHeaders(request, headers);
     }
+
 %>
 <%
     boolean reCaptchaEnabled = false;
@@ -328,13 +316,24 @@
     <% } else { %>
     <jsp:include page="includes/header.jsp"/>
     <% } %>
-
     <%
         if (reCaptchaEnabled) {
-            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
+            List<Map<String, String>> scriptAttributesList = (List<Map<String, String>>) CaptchaFEUtils.getScriptAttributes();
+                if (scriptAttributesList != null) {
+                    for (Map<String, String> scriptAttributes : scriptAttributesList) {
     %>
-    <script src='<%=(reCaptchaAPI)%>' async defer></script>
+        <script
+            <%
+                for (Map.Entry<String, String> entry : scriptAttributes.entrySet()) {
+            %>
+                <%= entry.getKey() %> = "<%= entry.getValue() %>"
+            <%
+                }
+            %>
+        ></script>
     <%
+                }
+            }
         }
     %>
     <link rel="stylesheet" href="libs/addons/calendar.min.css"/>
@@ -845,15 +844,25 @@
                             <div class="field">
                                 <%
                                     if (reCaptchaEnabled) {
-                                        String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                                        String captchaKey = CaptchaFEUtils.getCaptchaSiteKey();
                                 %>
                                 <div class="ui divider hidden"></div>
                                 <div class="field">
-                                    <div class="g-recaptcha"
-                                        data-size="invisible"
+                                    <div
+                                        <%
+                                            Map<String, String> captchaAttributes = CaptchaFEUtils.getWidgetAttributes();
+                                            if (captchaAttributes != null) {
+                                                for (Map.Entry<String, String> entry : captchaAttributes.entrySet()) {
+                                                    String key = entry.getKey();
+                                                    String value = entry.getValue();
+                                        %>
+                                                    <%= key %>="<%= Encode.forHtmlAttribute(value) %>"
+                                        <%
+                                                }
+                                            }
+                                        %>
                                         data-bind="registrationSubmit"
-                                        data-callback="onCompleted"
-                                        data-sitekey="<%=Encode.forHtmlAttribute(reCaptchaKey)%>"
+                                        data-sitekey="<%=Encode.forHtmlAttribute(captchaKey)%>"
                                         data-theme="light"
                                     >
                                     </div>
@@ -1295,7 +1304,7 @@
                 <%
                 if(reCaptchaEnabled) {
                 %>
-                var resp = $("[name='g-recaptcha-response']")[0].value;
+                var resp = $("[name="+ "<%=CaptchaFEUtils.getCaptchaResponseIdentifier() %>"+"]")[0].value;
                 if (resp.trim() == '') {
                     error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                         "Please.select.reCaptcha")%>");
