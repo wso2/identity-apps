@@ -34,7 +34,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
         <meta name="referrer" content="no-referrer" />
 
-        <link href="<%= htmlWebpackPlugin.options.publicPath %>libs/themes/<%= htmlWebpackPlugin.options.theme %>/theme.<%= htmlWebpackPlugin.options.themeHash %>.min.css" rel="stylesheet" type="text/css"/>
+        <link id="ltr-stylesheet" href="<%= htmlWebpackPlugin.options.publicPath %>libs/themes/<%= htmlWebpackPlugin.options.theme %>/theme.<%= htmlWebpackPlugin.options.themeHash %>.min.css" rel="stylesheet" type="text/css"/>
         <link rel="shortcut icon" href="<%= htmlWebpackPlugin.options.publicPath %>libs/themes/<%= htmlWebpackPlugin.options.theme %>/assets/images/branding/favicon.ico" data-react-helmet="true" />
 
         <%= htmlWebpackPlugin.options.cookieproEnabledCheck %>
@@ -154,6 +154,13 @@
                     stylesheets: [
                         {
                             themeHash: "<%= htmlWebpackPlugin.options.rtlThemeHash %>",
+                        }
+                    ]
+                },
+                ltr: {
+                    stylesheets: [
+                        {
+                            themeHash: "<%= htmlWebpackPlugin.options.themeHash %>",
                         }
                     ]
                 }
