@@ -964,7 +964,7 @@ importers:
         specifier: ^2.26.205
         version: link:../../features/admin.organizations.v1
       '@wso2is/common.branding.v1':
-        specifier: ^2.27.1
+        specifier: ^2.27.2
         version: link:../../features/common.branding.v1
       '@wso2is/common.ui.v1':
         specifier: ^0.2.0
@@ -976,10 +976,10 @@ importers:
         specifier: ^2.3.23
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.23.0
+        specifier: ^2.23.7
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.9.16
+        specifier: ^2.9.17
         version: link:../../modules/react-components
       '@wso2is/theme':
         specifier: ^2.7.8
