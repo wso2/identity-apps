@@ -70,6 +70,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const appBaseNameWithoutTenant: string = useSelector(
         (state: AppState) => state?.config?.deployment?.appBaseNameWithoutTenant
     );
+    const ltrThemeHash: string = useSelector(
+        (state: AppState) => state?.config?.ui?.theme?.ltr?.stylesheets[ 0 ]?.themeHash
+    );
     const rtlThemeHash: string = useSelector(
         (state: AppState) => state?.config?.ui?.theme?.rtl?.stylesheets[ 0 ]?.themeHash
     );
@@ -205,6 +208,21 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
 
     /**
+     * Get the LTR CSS file path.
+     * This function uses Webpack's require.context to dynamically load the LTR CSS file.
+     */
+    const getLtrCssFile = (): string | null => {
+        try {
+            return `${window?.origin
+            }/${appBaseNameWithoutTenant
+            }/libs/themes/${theme
+            }/theme.${ ltrThemeHash }.min.css`;
+        } catch (error) {
+            return null;
+        }
+    };
+
+    /**
      * Get the RTL CSS file path.
      * This function uses Webpack's require.context to dynamically load the RTL CSS file.
      */
@@ -225,6 +243,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             defaultMode={ "light" }
             modeStorageKey={ "myaccount-oxygen-mode" }
             appTitle={ appTitle }
+            ltrCss={ getLtrCssFile() }
             rtlCss={ getRtlCssFile() }
         >
             <SecureApp

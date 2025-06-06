@@ -55,6 +55,13 @@ export interface ThemeProviderProps {
     appTitle?: string;
 
     /**
+     * The CSS file for LTR (Left-to-Right) support.
+     *
+     * This is an optional property.
+     */
+    ltrCss?: string;
+
+    /**
      * The CSS file for RTL (Right-to-Left) support.
      *
      * This is an optional property.
@@ -78,6 +85,7 @@ export const ThemeProvider = (props: PropsWithChildren<ThemeProviderProps>): Rea
         themePreference,
         defaultMode,
         modeStorageKey,
+        ltrCss,
         rtlCss
     } = props;
 
@@ -116,16 +124,43 @@ export const ThemeProvider = (props: PropsWithChildren<ThemeProviderProps>): Rea
     }, []);
 
     /**
-     * Injects the branding CSS skeleton if branding is enabled.
+     * Injects the appropriate CSS based on the text direction (LTR or RTL).
      *
-     * @returns A style element containing the branding CSS skeleton.
+     * @returns A link element for the appropriate CSS based on the direction.
      */
     const injectCSSBasedOnDirection = () => {
 
+        const existingLtrLink: HTMLLinkElement | null =
+                document.getElementById("ltr-stylesheet") as HTMLLinkElement | null;
+        const existingRtlLink: HTMLLinkElement | null =
+                document.getElementById("rtl-stylesheet") as HTMLLinkElement | null;
+
         if (direction != null && direction==="rtl") {
-            return <link href={ rtlCss } rel="stylesheet" type="text/css"></link>;
+            if (existingLtrLink) {
+                existingLtrLink.disabled = true;
+            }
+            if (existingRtlLink) {
+                if (existingRtlLink.disabled) {
+                    existingRtlLink.disabled = false;
+                }
+
+                return;
+            }
+
+            return <link id="rtl-stylesheet" href={ rtlCss } rel="stylesheet" type="text/css"></link>;
         } else {
-            return;
+            if (existingRtlLink) {
+                existingRtlLink.disabled = true;
+            }
+            if (existingLtrLink) {
+                if (existingLtrLink.disabled) {
+                    existingLtrLink.disabled = false;
+                }
+
+                return;
+            }
+
+            return <link id="ltr-stylesheet" href={ ltrCss } rel="stylesheet" type="text/css"></link>;
         }
     };
 
