@@ -37,6 +37,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ResetPasswordRequest" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
+<%@ page import="org.wso2.carbon.identity.captcha.provider_mgt.util.CaptchaFEUtils" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URISyntaxException" %>
 <%@ page import="java.net.URLEncoder" %>
@@ -161,8 +162,9 @@
 
         try {
             Map<String, String> requestHeaders = new HashedMap();
-            if (request.getParameter("g-recaptcha-response") != null) {
-                requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
+            String captchaResponseIdentifier = CaptchaFEUtils.getCaptchaResponseIdentifier();
+            if (request.getParameter(captchaResponseIdentifier) != null) {
+                requestHeaders.put(captchaResponseIdentifier, request.getParameter(captchaResponseIdentifier));
             }
             ResetRequest resetRequest = new ResetRequest();
             // For local notification channels flowConfirmationCode is used as confirmation code

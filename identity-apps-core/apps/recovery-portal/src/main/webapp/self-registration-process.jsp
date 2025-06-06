@@ -38,6 +38,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.*" %>
 <%@ page import="org.wso2.carbon.identity.recovery.util.Utils" %>
 <%@ page import="org.wso2.carbon.identity.base.IdentityRuntimeException" %>
+<%@ page import="org.wso2.carbon.identity.captcha.provider_mgt.util.CaptchaFEUtils" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.util.ArrayList" %>
@@ -370,8 +371,9 @@
         selfUserRegistrationRequest.setProperties(properties);
 
         Map<String, String> requestHeaders = new HashedMap();
-        if (request.getParameter("g-recaptcha-response") != null) {
-            requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
+        String captchaResponseIdentifier = CaptchaFEUtils.getCaptchaResponseIdentifier();
+        if (request.getParameter(captchaResponseIdentifier) != null) {
+            requestHeaders.put(captchaResponseIdentifier, request.getParameter(captchaResponseIdentifier));
         }
 
         SelfRegisterApi selfRegisterApi = new SelfRegisterApi();

@@ -183,6 +183,11 @@
         <% } %>
     }
 
+    function onCompleted() {
+
+        submitForm();
+    }
+
     function submitForm() {
 
         var userName = document.getElementById("username");
@@ -214,13 +219,8 @@
         if (validInput) {
             document.getElementById("loginForm").submit();
         } else {
-            // Reset the recaptcha to allow another submission.
-            var reCaptchaType = "<%= CaptchaUtil.getReCaptchaType()%>"
-            if ("recaptcha-enterprise" == reCaptchaType) {
-                grecaptcha.enterprise.reset();
-            } else {
-                grecaptcha.reset();
-            }
+            // Reset the captcha to allow another submission.
+            CaptchaFEUtils.getCaptchaFunctions().get("reset");
         }
     }
 </script>
@@ -362,11 +362,12 @@
         byte[] encoding = Base64.encodeBase64(toEncode.getBytes());
         String authHeader = new String(encoding, Charset.defaultCharset());
         String header = "Client " + authHeader;
+        String captchaResponseIdentifier = CaptchaFEUtils.getCaptchaResponseIdentifier();
 
         SelfUserRegistrationResource selfUserRegistrationResource = JAXRSClientFactory
                 .create(url, SelfUserRegistrationResource.class, providers);
-        String reCaptchaResponse = request.getParameter("g-recaptcha-response");
-        WebClient.client(selfUserRegistrationResource).header("g-recaptcha-response", reCaptchaResponse);
+        String captchaResponse = request.getParameter(captchaResponseIdentifier);
+        WebClient.client(selfUserRegistrationResource).header(captchaResponseIdentifier, captchaResponse);
         WebClient.client(selfUserRegistrationResource).header("Authorization", header);
         Response selfRegistrationResponse = selfUserRegistrationResource.regenerateCode(selfRegistrationRequest);
         if (selfRegistrationResponse != null &&  selfRegistrationResponse.getStatus() == HttpStatus.SC_CREATED) {
@@ -439,11 +440,23 @@
     <div class="ui divider hidden"></div>
     <%
         if (reCaptchaResendEnabled) {
-            String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+            String captchaKey = CaptchaFEUtils.getCaptchaSiteKey();
     %>
         <div class="field">
-            <div class="g-recaptcha"
-                data-sitekey="<%=Encode.forHtmlAttribute(reCaptchaKey)%>"
+            <div
+                <%
+                    Map<String, String> captchaAttributes = CaptchaFEUtils.getWidgetAttributes();
+                    if (captchaAttributes != null) {
+                        for (Map.Entry<String, String> entry : captchaAttributes.entrySet()) {
+                            String key = entry.getKey();
+                            String value = entry.getValue();
+                %>
+                            <%= key %>="<%= Encode.forHtmlAttribute(value) %>"
+                <%
+                        }
+                    }
+                %>
+                data-sitekey="<%=Encode.forHtmlAttribute(captchaKey)%>"
                 data-testid="register-page-g-recaptcha"
                 data-bind="registerLink"
                 data-callback="showResendReCaptcha"
@@ -760,14 +773,25 @@
 
     <%
         if (reCaptchaEnabled) {
-            String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+            String captchaKey = CaptchaFEUtils.getCaptchaSiteKey();
     %>
         <div class="field">
-            <div class="g-recaptcha"
-                data-sitekey="<%=Encode.forHtmlAttribute(reCaptchaKey)%>"
+            <div
+                <%
+                    Map<String, String> captchaAttributes = CaptchaFEUtils.getWidgetAttributes();
+                    if (captchaAttributes != null) {
+                        for (Map.Entry<String, String> entry : captchaAttributes.entrySet()) {
+                            String key = entry.getKey();
+                            String value = entry.getValue();
+                %>
+                            <%= key %>="<%= Encode.forHtmlAttribute(value) %>"
+                <%
+                        }
+                    }
+                %>
+                data-sitekey="<%=Encode.forHtmlAttribute(captchaKey)%>"
                 data-testid="login-page-g-recaptcha"
                 data-bind="sign-in-button"
-                data-callback="submitForm"
                 data-theme="light"
                 data-tabindex="-1"
             >
@@ -820,8 +844,8 @@
         });
     }
 
-    // Removing the recaptcha UI from the keyboard tab order
-    Array.prototype.forEach.call(document.getElementsByClassName("g-recaptcha"), function (element) {
+    // Removing the captcha UI from the keyboard tab order
+    Array.prototype.forEach.call(document.getElementsByClassName(CaptchaFEUtils.getCaptchaIdentifier()), function (element) {
             //Add a load event listener to each wrapper, using capture.
             element.addEventListener("load", function (e) {
                 //Get the data-tabindex attribute value from the wrapper.

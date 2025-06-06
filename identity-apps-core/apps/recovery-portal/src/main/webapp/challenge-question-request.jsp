@@ -28,6 +28,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.InitiateAllQuestionResponse" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.RetryError" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
+<%@ page import="org.wso2.carbon.identity.captcha.provider_mgt.util.CaptchaFEUtils" %>
 <%@ page import="java.util.Map" %>
 
 <%-- Localization --%>
@@ -50,14 +51,15 @@
 
             try {
                 Map<String, String> requestHeaders = new HashedMap();
-                if (request.getParameter("g-recaptcha-response") != null) {
-                    requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
+                String captchaResponseIdentifier = CaptchaFEUtils.getCaptchaResponseIdentifier();
+                if (request.getParameter(captchaResponseIdentifier) != null) {
+                    requestHeaders.put(captchaResponseIdentifier, request.getParameter(captchaResponseIdentifier));
                 }
 
                 SecurityQuestionApi securityQuestionApi = new SecurityQuestionApi();
                 InitiateAllQuestionResponse initiateAllQuestionResponse = securityQuestionApi.securityQuestionsGet(
                         user.getUsername(), user.getRealm(), user.getTenantDomain(), requestHeaders);
-                IdentityManagementEndpointUtil.addReCaptchaHeaders(request, securityQuestionApi.getApiClient().getResponseHeaders());
+                CaptchaFEUtils.addCaptchaHeaders(request, securityQuestionApi.getApiClient().getResponseHeaders());
                 session.setAttribute("initiateAllQuestionResponse", initiateAllQuestionResponse);
                 request.getRequestDispatcher("challenge-questions-view-all.jsp").forward(request, response);
             } catch (ApiException e) {
@@ -74,7 +76,7 @@
                     return;
 
                 }
-                IdentityManagementEndpointUtil.addReCaptchaHeaders(request, e.getResponseHeaders());
+                CaptchaFEUtils.addCaptchaHeaders(request, e.getResponseHeaders());
                 IdentityManagementEndpointUtil.addErrorInformation(request, e);
                 request.setAttribute("username", username);
                 request.getRequestDispatcher("error.jsp").forward(request, response);
