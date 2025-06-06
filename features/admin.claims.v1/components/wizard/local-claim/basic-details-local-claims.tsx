@@ -19,7 +19,7 @@
 import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
-import { Claim, DataType, TestableComponentInterface } from "@wso2is/core/models";
+import { Claim, ClaimDataType, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { GenericIcon, Hint, InlineEditInput, Message, Popup } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
@@ -173,10 +173,10 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                              }))
                          : [],
                      claimURI: claimURIBase + "/" + values.get("claimURI").toString().trim(),
-                     dataType: values.get("dataType")?.toString() === DataType.STRING
+                     dataType: values.get("dataType")?.toString() === ClaimDataType.STRING
                          ? ((values.get("canonicalValues") as string[]).length > 0
-                             ? DataType.OPTIONS
-                             : DataType.TEXT)
+                             ? ClaimDataType.OPTIONS
+                             : ClaimDataType.TEXT)
                          : values.get("dataType")?.toString(),
                      description: values.get("description")?.toString(),
                      displayName: values.get("name").toString(),

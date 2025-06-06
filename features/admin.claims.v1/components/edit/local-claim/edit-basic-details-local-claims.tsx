@@ -48,8 +48,8 @@ import {
     AlertInterface,
     AlertLevels,
     Claim,
+    ClaimDataType,
     ClaimDialect,
-    DataType,
     ExternalClaim,
     ProfileSchemaInterface,
     SharedProfileValueResolvingMethod,
@@ -58,6 +58,7 @@ import {
 } from "@wso2is/core/models";
 import { Property } from "@wso2is/core/src/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
+
 import { Field, Form } from "@wso2is/form";
 import { DropDownItemInterface } from "@wso2is/form/src";
 import { DynamicField , KeyValue } from "@wso2is/forms";
@@ -203,31 +204,31 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const dataTypeOptions: DropDownItemInterface[] = [
         {
             text: t("claims:local.forms.dataType.options.text"),
-            value: DataType.TEXT
+            value: ClaimDataType.TEXT
         },
         {
             text: t("claims:local.forms.dataType.options.options"),
-            value: DataType.OPTIONS
+            value: ClaimDataType.OPTIONS
         },
         {
             text: t("claims:local.forms.dataType.options.integer"),
-            value: DataType.INTEGER
+            value: ClaimDataType.INTEGER
         },
         {
             text: t("claims:local.forms.dataType.options.decimal"),
-            value: DataType.DECIMAL
+            value: ClaimDataType.DECIMAL
         },
         {
             text: t("claims:local.forms.dataType.options.boolean"),
-            value: DataType.BOOLEAN
+            value: ClaimDataType.BOOLEAN
         },
         {
             text: t("claims:local.forms.dataType.options.date"),
-            value: DataType.DATE_TIME
+            value: ClaimDataType.DATE_TIME
         },
         {
             text: t("claims:local.forms.dataType.options.object"),
-            value: DataType.COMPLEX
+            value: ClaimDataType.COMPLEX
         }
     ];
 
@@ -294,12 +295,12 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             setSubAttributes(claim.subAttributes);
         }
 
-        if (claim?.dataType === DataType.STRING && claim?.canonicalValues?.length > 0) {
-            setDataType(DataType.OPTIONS);
-        } else if (claim?.dataType === DataType.STRING) {
-            setDataType(DataType.TEXT);
+        if (claim?.dataType === ClaimDataType.STRING && claim?.canonicalValues?.length > 0) {
+            setDataType(ClaimDataType.OPTIONS);
+        } else if (claim?.dataType === ClaimDataType.STRING) {
+            setDataType(ClaimDataType.TEXT);
         } else {
-            setDataType(claim?.dataType || DataType.STRING);
+            setDataType(claim?.dataType || ClaimDataType.STRING);
         }
 
         setIsConsoleRequired(claim?.profiles?.console?.required ?? claim?.required);
@@ -628,7 +629,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const onSubmit = (values: Record<string, unknown>) => {
         let data: Claim;
 
-        if (dataType === DataType.COMPLEX && subAttributes.length === 0) {
+        if (dataType === ClaimDataType.COMPLEX && subAttributes.length === 0) {
             dispatch(
                 addAlert({
                     description: t("claims:local.forms.subAttributes.validationError"),
@@ -640,7 +641,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             return;
         }
 
-        if (dataType === DataType.OPTIONS && canonicalValues.length === 0) {
+        if (dataType === ClaimDataType.OPTIONS && canonicalValues.length === 0) {
             dispatch(
                 addAlert({
                     description: t("claims:local.forms.canonicalValues.validationError"),
@@ -665,8 +666,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         value: item.value
                     })),
                 claimURI: claim.claimURI,
-                dataType: dataType === DataType.TEXT || dataType === DataType.OPTIONS
-                    ? DataType.STRING
+                dataType: dataType === ClaimDataType.TEXT || dataType === ClaimDataType.OPTIONS
+                    ? ClaimDataType.STRING
                     : dataType,
                 description: values?.description !== undefined
                     ? values.description?.toString()
@@ -691,7 +692,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 sharedProfileValueResolvingMethod: values?.sharedProfileValueResolvingMethod !== undefined
                     ? values?.sharedProfileValueResolvingMethod as SharedProfileValueResolvingMethod
                     : claim?.sharedProfileValueResolvingMethod,
-                subAttributes: dataType === DataType.COMPLEX ? subAttributes : undefined,
+                subAttributes: dataType === ClaimDataType.COMPLEX ? subAttributes : undefined,
                 supportedByDefault: values?.supportedByDefault !== undefined
                     ? !!values.supportedByDefault
                     : claim?.supportedByDefault,
@@ -713,8 +714,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         value: item.value
                     })),
                 claimURI: claim.claimURI,
-                dataType: dataType === DataType.TEXT || dataType === DataType.OPTIONS
-                    ? DataType.STRING
+                dataType: dataType === ClaimDataType.TEXT || dataType === ClaimDataType.OPTIONS
+                    ? ClaimDataType.STRING
                     : dataType,
                 description: values?.description !== undefined
                     ? values.description?.toString()
@@ -768,7 +769,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 sharedProfileValueResolvingMethod: values?.sharedProfileValueResolvingMethod !== undefined
                     ? values?.sharedProfileValueResolvingMethod as SharedProfileValueResolvingMethod
                     : claim?.sharedProfileValueResolvingMethod,
-                subAttributes: dataType === DataType.COMPLEX ? subAttributes : undefined,
+                subAttributes: dataType === ClaimDataType.COMPLEX ? subAttributes : undefined,
                 supportedByDefault: values?.supportedByDefault !== undefined
                     ? !!values.supportedByDefault : claim?.supportedByDefault,
                 uniquenessScope: values?.uniquenessScope !== undefined
@@ -1125,7 +1126,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             setDataType(data.value);
                         } }
                     />
-                    { dataType === DataType.COMPLEX && (
+
+                    { dataType === ClaimDataType.COMPLEX && (
                         <>
                             <Field.Dropdown
                                 ariaLabel="subAttributes-dropdown"
@@ -1171,7 +1173,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         </>
                     ) }
 
-                    { dataType === DataType.OPTIONS && (
+                    { dataType === ClaimDataType.OPTIONS && (
                         <>
                             <p>{ t("claims:local.forms.canonicalValues.hint") }</p>
                             <DynamicField
@@ -1194,7 +1196,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         </>
                     ) }
 
-                    { dataType !== DataType.BOOLEAN && (
+                    { dataType !== ClaimDataType.BOOLEAN && (
                         <Field.Checkbox
                             ariaLabel={ t("claims:local.forms.multiValued.label") }
                             name="multiValued"
