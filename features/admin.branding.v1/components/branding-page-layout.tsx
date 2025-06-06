@@ -34,16 +34,18 @@ import { AlertLevels, FeatureFlagsInterface, IdentifiableComponentInterface } fr
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
 import { AnimatePresence, LayoutGroup, Variants, motion } from "framer-motion";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import BrandingCore from "./branding-core";
+import CustomPageEditorPageLayout from "./custom-page-editor";
 import { useApplicationList } from "../../admin.applications.v1/api/application";
 import { ApplicationManagementConstants } from "../../admin.applications.v1/constants/application-management";
 import { ApplicationListItemInterface } from "../../admin.applications.v1/models/application";
 import { AI_BRANDING_FEATURE_ID } from "../constants/ai-branding-constants";
 import { BrandingModes, BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
+import BrandingPreferenceContext from "../context/branding-preference-context";
 import useBrandingPreference from "../hooks/use-branding-preference";
 import "./branding-page-layout.scss";
 
@@ -90,6 +92,8 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         (state: AppState) => state.config.ui.features?.branding?.featureFlags);
 
     const [ isBrandingAppsRedirect, setIsBrandingAppsRedirect ] = useState<boolean>(false);
+
+    const { customLayoutMode } = useContext(BrandingPreferenceContext);
 
     const animationVariants: Variants = {
         enter: {
@@ -413,15 +417,21 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
             className="branding-page"
         >
             <LayoutGroup>
-                {
-                    !brandingDisabledFeatures?.includes(AI_BRANDING_FEATURE_ID) &&
+                { customLayoutMode ? (
+                    <CustomPageEditorPageLayout />
+                ) : (
+                    <>
+                        {
+                            !brandingDisabledFeatures?.includes(AI_BRANDING_FEATURE_ID) &&
                     !isSubOrganization() && (
-                        <BrandingAIBanner
-                            readonly={ brandingMode === BrandingModes.APPLICATION && !selectedApplication }
-                        />
-                    )
-                }
-                <BrandingCore />
+                                <BrandingAIBanner
+                                    readonly={ brandingMode === BrandingModes.APPLICATION && !selectedApplication }
+                                />
+                            )
+                        }
+                        <BrandingCore />
+                    </>
+                ) }
             </LayoutGroup>
         </PageLayout>
     );
