@@ -16,11 +16,14 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Stack from "@oxygen-ui/react/Stack";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import { AuthenticatorInterface } from "@wso2is/admin.connections.v1/models/authenticators";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
@@ -54,6 +57,10 @@ const FederationProperties: FunctionComponent<FederationPropertiesPropsInterface
         );
     }, [ resource?.data?.action?.executor?.meta?.idpName, socialAuthenticators ]);
 
+    const handleCreateConnection = (): void => {
+        history.push(AppConstants.getPaths().get("CONNECTION_TEMPLATES"));
+    };
+
     return (
         <Stack gap={ 2 } data-componentid={ componentId }>
             <Typography variant="body2">
@@ -70,11 +77,19 @@ const FederationProperties: FunctionComponent<FederationPropertiesPropsInterface
                 renderInput={ (params: AutocompleteRenderInputParams) => (
                     <TextField { ...params } label="Connection" placeholder="Select a connection" />
                 ) }
+                placeholder="Select a connection"
                 value={ selectedValue }
                 onChange={ (_: ChangeEvent<HTMLInputElement>, authenticator: AuthenticatorInterface) => {
                     onChange("action.executor.meta.idpName", authenticator?.name, resource);
                 } }
             />
+            { !socialAuthenticators?.length && (
+                <Alert severity="warning" data-componentid={ `${componentId}-no-connections-warning` }>
+                    No connections available. Please create a
+                    <a style={ { cursor: "pointer" } } onClick={ handleCreateConnection }> connection </a>
+                    to link with the registration flow.
+                </Alert>
+            ) }
         </Stack>
     );
 };
