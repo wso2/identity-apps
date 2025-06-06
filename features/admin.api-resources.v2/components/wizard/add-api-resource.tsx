@@ -22,6 +22,7 @@ import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
+import { flushSync } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -29,14 +30,16 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddAPIResourceAuthorization, AddAPIResourceBasic, AddAPIResourcePermissions } from "./add-api-resource-steps";
 import { createAPIResource } from "../../api";
 import { getAPIResourceWizardStepIcons } from "../../configs";
-import { APIResourcesConstants } from "../../constants";
+import { APIResourceType } from "../../constants";
 import {
     APIResourceInterface,
     APIResourcePermissionInterface,
     APIResourceWizardStepInterface,
     AddAPIResourceWizardStepsFormTypes,
-    BasicAPIResourceInterface
+    BasicAPIResourceInterface,
+    ResourceServerType
 } from "../../models";
+import useApiResourcesPageContent from "../../pages/use-api-resources-page-content";
 
 interface AddAPIResourcePropsInterface extends IdentifiableComponentInterface {
     /**
@@ -47,10 +50,7 @@ interface AddAPIResourcePropsInterface extends IdentifiableComponentInterface {
      * Current step.
      */
     currentStep?: number;
-    /**
-     * Last step form type.
-     */
-    lastStepFormType?: AddAPIResourceWizardStepsFormTypes;
+    resourceType: ResourceServerType;
 }
 
 /**
@@ -63,12 +63,13 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
     const {
         closeWizard,
         currentStep,
-        lastStepFormType,
         ["data-componentid"]: componentId
     } = props;
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+
+    const { isMcpServer, createResourceWizard, resourceEditPath } = useApiResourcesPageContent();
 
     //External trigger to submit the authorization step.
     let submitAuthorization: () => void;
@@ -99,9 +100,14 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
             case AddAPIResourceWizardStepsFormTypes.PERMISSIONS: {
                 if (latestPermissionFormValues?.get("displayName")?.toString().trim() !==
                     latestPermissionFormValues?.get("identifier")?.toString().trim()) {
-                    setAddPermission();
+                    flushSync(() => setAddPermission());
                 }
-                handleNext();
+
+                if (steps.length - 1 === currentWizardStep) {
+                    handleCreateAPIResource(true);
+                } else {
+                    handleNext();
+                }
 
                 break;
             }
@@ -147,6 +153,10 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
             scopes: [ ...permissions.values() ]
         };
 
+        if (isMcpServer) {
+            apiResourceBody.resourceType = APIResourceType.MCP;
+        }
+
         createAPIResource(apiResourceBody)
             .then((apiResource: APIResourceInterface) => {
                 dispatch(addAlert<AlertInterface>({
@@ -157,7 +167,7 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
                 }));
 
                 // Open the created API resource.
-                history.push(APIResourcesConstants.getPaths().get("API_RESOURCE_EDIT").replace(":id", apiResource.id));
+                history.push(resourceEditPath.replace(":id", apiResource.id));
             })
             .catch(() => {
                 dispatch(addAlert<AlertInterface>({
@@ -225,7 +235,10 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
             icon: getAPIResourceWizardStepIcons().authorize,
             title: t("extensions:develop.apiResource.wizard.addApiResource.steps.authorization.stepTitle")
         }
-    ];
+    ].filter(
+        (step: APIResourceWizardStepInterface) =>
+            !createResourceWizard?.hiddenSteps?.includes(step.addAPIResourceWizardStepsFormType)
+    ).filter(Boolean);
 
     return (
         <Modal
@@ -238,22 +251,24 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
             closeOnEscape
         >
             <Modal.Header className="wizard-header">
-                { t("extensions:develop.apiResource.wizard.addApiResource.title") }
-                <Heading as="h6">{ t("extensions:develop.apiResource.wizard.addApiResource.subtitle") }</Heading>
+                { createResourceWizard?.title }
+                <Heading as="h6">{ createResourceWizard?.description }</Heading>
             </Modal.Header>
-            <Modal.Content scrolling className="steps-container">
-                <Steps.Group
-                    current={ currentWizardStep }
-                >
-                    { steps.map((step: APIResourceWizardStepInterface) => (
-                        <Steps.Step
-                            key={ step.title }
-                            icon={ step.icon }
-                            title={ step.title }
-                        />
-                    )) }
-                </Steps.Group>
-            </Modal.Content>
+            { steps.length > 1 && (
+                <Modal.Content scrolling className="steps-container">
+                    <Steps.Group
+                        current={ currentWizardStep }
+                    >
+                        { steps.map((step: APIResourceWizardStepInterface) => (
+                            <Steps.Step
+                                key={ step.title }
+                                icon={ step.icon }
+                                title={ step.title }
+                            />
+                        )) }
+                    </Steps.Group>
+                </Modal.Content>
+            ) }
             <Modal.Content className="content-container" scrolling>
                 { steps[currentWizardStep].content }
             </Modal.Content>
@@ -271,7 +286,7 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
                             </LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            { currentWizardFormType !== lastStepFormType && (
+                            { currentWizardStep !== steps.length - 1 && (
                                 <PrimaryButton
                                     tabIndex={ 7 }
                                     data-testid={ `${componentId}-next-button` }
@@ -284,7 +299,7 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
                                     <Icon name="arrow right" />
                                 </PrimaryButton>
                             ) }
-                            { currentWizardFormType === lastStepFormType && (
+                            { currentWizardStep === steps.length - 1 && (
                                 <PrimaryButton
                                     tabIndex={ 8 }
                                     data-testid={ `${componentId}-finish-button` }
@@ -320,6 +335,5 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
  */
 AddAPIResource.defaultProps = {
     currentStep: 0,
-    "data-componentid": "add-api-resource",
-    lastStepFormType: AddAPIResourceWizardStepsFormTypes.AUTHORIZATION
+    "data-componentid": "add-api-resource"
 };
