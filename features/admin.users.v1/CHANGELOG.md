@@ -1,5 +1,14 @@
 # @wso2is/admin.users.v1
 
+## 2.32.9
+
+### Patch Changes
+
+- [#8275](https://github.com/wso2/identity-apps/pull/8275) [`5f2b24b179f498fd0a6f1845d9a0a7a78da911c6`](https://github.com/wso2/identity-apps/commit/5f2b24b179f498fd0a6f1845d9a0a7a78da911c6) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add sub org impersonation.
+
+- Updated dependencies [[`5f2b24b179f498fd0a6f1845d9a0a7a78da911c6`](https://github.com/wso2/identity-apps/commit/5f2b24b179f498fd0a6f1845d9a0a7a78da911c6)]:
+  - @wso2is/admin.users.v1@2.32.9
+
 ## 2.32.8
 
 ### Patch Changes

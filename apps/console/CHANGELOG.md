@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.58.7
+
+### Patch Changes
+
+- [#8275](https://github.com/wso2/identity-apps/pull/8275) [`5f2b24b179f498fd0a6f1845d9a0a7a78da911c6`](https://github.com/wso2/identity-apps/commit/5f2b24b179f498fd0a6f1845d9a0a7a78da911c6) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add sub org impersonation.
+
+* [#8302](https://github.com/wso2/identity-apps/pull/8302) [`1ec791a7e3b40addf37631d6f4a58d7aded62569`](https://github.com/wso2/identity-apps/commit/1ec791a7e3b40addf37631d6f4a58d7aded62569) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Add support for showing public client checkbox based on the publicClientAllowed configuration on selected grant types.
+
+* Updated dependencies [[`5f2b24b179f498fd0a6f1845d9a0a7a78da911c6`](https://github.com/wso2/identity-apps/commit/5f2b24b179f498fd0a6f1845d9a0a7a78da911c6), [`1ec791a7e3b40addf37631d6f4a58d7aded62569`](https://github.com/wso2/identity-apps/commit/1ec791a7e3b40addf37631d6f4a58d7aded62569)]:
+  - @wso2is/admin.users.v1@2.32.9
+  - @wso2is/admin.applications.v1@2.35.7
+
 ## 2.58.6
 
 ### Patch Changes

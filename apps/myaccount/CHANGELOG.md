@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.19.17
+
+### Patch Changes
+
+- [#8275](https://github.com/wso2/identity-apps/pull/8275) [`5f2b24b179f498fd0a6f1845d9a0a7a78da911c6`](https://github.com/wso2/identity-apps/commit/5f2b24b179f498fd0a6f1845d9a0a7a78da911c6) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add sub org impersonation.
+
 ## 2.19.16
 
 ### Patch Changes
