@@ -1904,11 +1904,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         && !isMobileApplication
         && !isFAPIApplication
         && (
-            selectedGrantTypes?.includes(
-                ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)
-            || selectedGrantTypes?.includes(ApplicationManagementConstants.DEVICE_GRANT)
-            || selectedGrantTypes?.includes(
-                ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE)
+            selectedGrantTypes?.some((grantType: string) => {
+                const grantTypeOption: GrantTypeInterface = metadata?.allowedGrantTypes?.options?.find(
+                    (option: GrantTypeInterface) => option.name === grantType
+                );
+
+                return grantTypeOption?.publicClientAllowed === true;
+            })
         )
         && !isSystemApplication
         && !isDefaultApplication;
