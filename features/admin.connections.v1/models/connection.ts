@@ -40,9 +40,11 @@ export interface StrictConnectionInterface {
     name?: string;
     description?: string;
     isEnabled?: boolean;
+    amrValue?:string;
     image?: string;
     self?: string;
     federatedAuthenticators?: FederatedAuthenticatorListResponseInterface;
+    localAuthenticators?:FederatedAuthenticatorListResponseInterface;
     templateId?: string;
     comingSoon?: boolean;
 }
@@ -190,6 +192,7 @@ export interface FederatedAuthenticatorMetaInterface extends CommonPluggableComp
     authenticatorId?: string;
     name?: string;
     displayName?: string;
+    amrValue?: string;
 }
 
 export interface OutboundProvisioningConnectorWithMetaInterface {
@@ -263,6 +266,7 @@ export interface FederatedAuthenticatorInterface extends CommonPluggableComponen
     name?: string;
     isEnabled?: boolean;
     isDefault?: boolean;
+    amrValue?: string;
     tags?: string[];
     endpoint?: ExternalEndpoint;
 }
@@ -274,6 +278,7 @@ export interface CustomAuthConnectionInterface extends ConnectionInterface {
     id?: string;
     name: string;
     displayName: string;
+    amrValue?: string;
     isEnabled?: boolean;
     isDefault?: boolean;
     endpoint: ExternalEndpoint;
@@ -307,6 +312,8 @@ export interface ExternalEndpointAuthentication {
  */
 export interface CommonPluggableComponentInterface {
     properties?: CommonPluggableComponentPropertyInterface[];
+    name?:string;
+    amrValue?: string;
 }
 
 /**
@@ -769,6 +776,8 @@ export interface CustomAuthGeneralDetailsFormValuesInterface {
      * Set is enabled connection
      */
     isEnabled?: boolean;
+
+    amrValue?: string;
 }
 
 export interface OutboundProvisioningConnectorMetaDataInterface {
