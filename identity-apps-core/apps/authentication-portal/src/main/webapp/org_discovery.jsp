@@ -56,6 +56,7 @@
             }
        }
    }
+   String defaultDiscoveryParam = request.getParameter("defaultParam");
 %>
 <%-- Data for the layout from the page --%>
 <%
@@ -147,16 +148,30 @@
                   <%
                   if (!isSelfRegistration) {
                   %>
-                  <div class="ui horizontal divider">
-                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%>
-                  </div>
-                  <div class="social-login blurring social-dimmer">
-                     <input type="submit" id="orgNameButton" onclick="enterOrgName();" class="ui primary basic button link-button"
-                           value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.organization.name")%>">
-                  </div>
-                  <%
+                     <div class="ui horizontal divider">
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%>
+                     </div>
+                     <%
+                     if ("orgHandle".equals(defaultDiscoveryParam)) {
+                     %>
+                        <div class="social-login blurring social-dimmer">
+                           <input type="submit" id="orgHandleButton" onclick="enterOrgHandle();" 
+                                  class="ui primary basic button link-button"
+                                  value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.organization.handle")%>">
+                        </div>
+                     <%
+                     } else {
+                     %>
+                        <div class="social-login blurring social-dimmer">
+                           <input type="submit" id="orgNameButton" onclick="enterOrgName();" 
+                                  class="ui primary basic button link-button"
+                                  value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.organization.name")%>">
+                        </div>
+                     <%
+                     }
                   }
                   %>
+               </form>
                </form>
             </div>
          </layout:component>
@@ -192,6 +207,12 @@
 
       <script type="text/javascript">
          function enterOrgName() {
+            document.getElementById("login_hint").disabled = true;
+            document.getElementById("org_form").submit();
+         }
+
+         function enterOrgHandle() {
+            document.getElementById("prompt").value = "orgHandle";
             document.getElementById("login_hint").disabled = true;
             document.getElementById("org_form").submit();
          }
