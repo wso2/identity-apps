@@ -533,8 +533,8 @@
                             class="ellipsis"
                             data-position="top left"
                             data-variation="inverted"
-                            data-content="<%=sanitizeUserName%>">
-                        <%=sanitizeUserName%>
+                            data-content="<%=Encode.forHtmlAttribute(sanitizeUserName)%>">
+                        <%=Encode.forHtmlContent(sanitizeUserName)%>
                     </span>
                 </div>
                 <% } %>
@@ -1473,7 +1473,7 @@
                 var baseLocation = "<%=commonauthURL%>?idp=" + key + "&authenticator=" + value +
                     "&sessionDataKey=<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))%>";
 
-                if ("<%=username%>" !== "null" && "<%=username%>".length > 0) {
+                if ("<%=Encode.forJavaScript(username)%>" !== "null" && "<%=Encode.forJavaScript(username)%>".length > 0) {
                     document.location = baseLocation + "&username=" + "<%=Encode.forUriComponent(username)%>" + "<%=multiOptionURIParam%>";
                 } else {
                     document.location = baseLocation + "<%=multiOptionURIParam%>";
