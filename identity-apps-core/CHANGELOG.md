@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.25.18
+
+### Patch Changes
+
+- [#8310](https://github.com/wso2/identity-apps/pull/8310) [`fd7cdecfe0c364cf12a01412f1dcec486fe68f8a`](https://github.com/wso2/identity-apps/commit/fd7cdecfe0c364cf12a01412f1dcec486fe68f8a) Thanks [@BimsaraBodaragama](https://github.com/BimsaraBodaragama)! - Encode login_hint parameter before rendering on the login page
+
+* [#8288](https://github.com/wso2/identity-apps/pull/8288) [`17da1bb35af9a716c8db88c47b442b9d18e64106`](https://github.com/wso2/identity-apps/commit/17da1bb35af9a716c8db88c47b442b9d18e64106) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve code logic in mobile.jsp
+
 ## 2.25.17
 
 ### Patch Changes
