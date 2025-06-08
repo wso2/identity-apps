@@ -465,7 +465,8 @@ export const users: usersNS = {
                 clearButton: "Clear search query",
                 subTitle: {
                     0: "We couldn't find any results for {{query}}",
-                    1: "Please try a different search term."
+                    1: "Please try a different search query.",
+                    2: "We couldn't find any results."
                 },
                 title: "No results found"
             }
