@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.23.8
+
+### Patch Changes
+
+- [#8312](https://github.com/wso2/identity-apps/pull/8312) [`bb4685024a2af3ae0134a3e1be74dd3325636968`](https://github.com/wso2/identity-apps/commit/bb4685024a2af3ae0134a3e1be74dd3325636968) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Simplify Users not found message by excluding search query
+
 ## 2.23.7
 
 ### Patch Changes

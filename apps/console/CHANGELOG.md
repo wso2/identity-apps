@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.58.8
+
+### Patch Changes
+
+- [#8312](https://github.com/wso2/identity-apps/pull/8312) [`bb4685024a2af3ae0134a3e1be74dd3325636968`](https://github.com/wso2/identity-apps/commit/bb4685024a2af3ae0134a3e1be74dd3325636968) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Simplify Users not found message by excluding search query
+
+- Updated dependencies [[`bb4685024a2af3ae0134a3e1be74dd3325636968`](https://github.com/wso2/identity-apps/commit/bb4685024a2af3ae0134a3e1be74dd3325636968)]:
+  - @wso2is/admin.users.v1@2.32.10
+  - @wso2is/i18n@2.23.8
+
 ## 2.58.7
 
 ### Patch Changes
