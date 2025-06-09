@@ -28,7 +28,7 @@ import { loadRecaptchaApi } from "../utils/captcha-utils";
 /**
  * Hook to load and manage the Google reCAPTCHA V2 widget.
  */
-const useReCaptcha = (recaptchaType = RECAPTCHA_ENTERPRISE_ID, siteKey, reCaptchaScriptUrl) => {
+const useReCaptcha = (recaptchaType, siteKey, reCaptchaScriptUrl) => {
     const containerRef = useRef(null);
     const widgetIdRef = useRef(null);
     const [ token, setToken ] = useState(null);
