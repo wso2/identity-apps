@@ -340,6 +340,11 @@ export class I18nModuleConstants {
     public static readonly ACTIONS_NAMESPACE: string = "actions";
 
     /**
+     * Webhooks namespace.
+     */
+    public static readonly WEBHOOKS_NAMESPACE: string = "webhooks";
+
+    /**
      * Tenants namespace.
      */
     public static readonly TENANTS_NAMESPACE: string = "tenants";

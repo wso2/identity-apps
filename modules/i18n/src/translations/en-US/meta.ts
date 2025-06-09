@@ -77,6 +77,7 @@ export const meta: LocaleMeta = {
         I18nModuleConstants.REMOTE_USER_STORES_NAMESPACE,
         I18nModuleConstants.RULES_NAMESPACE,
         I18nModuleConstants.PUSH_PROVIDERS_NAMESPACE,
-        I18nModuleConstants.EMAIL_PROVIDERS_NAMESPACE
+        I18nModuleConstants.EMAIL_PROVIDERS_NAMESPACE,
+        I18nModuleConstants.WEBHOOKS_NAMESPACE
     ]
 };

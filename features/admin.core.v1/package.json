@@ -95,7 +95,8 @@
         "styled-components": "^4.4.1",
         "swr": "^2.0.0",
         "@wso2is/admin.application-templates.v1": "^1.4.203",
-        "@wso2is/admin.template-core.v1": "^1.5.157"
+        "@wso2is/admin.template-core.v1": "^1.5.157",
+        "@wso2is/admin.webhooks.v1": "^1.0.0"
     },
     "peerDependencies": {
         "@asgardeo/auth-react": "^5.1.2",
