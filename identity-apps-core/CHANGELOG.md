@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.25.19
+
+### Patch Changes
+
+- [#8315](https://github.com/wso2/identity-apps/pull/8315) [`f6a445f319c869dbad0497212bf4d3d6157c1e25`](https://github.com/wso2/identity-apps/commit/f6a445f319c869dbad0497212bf4d3d6157c1e25) Thanks [@nilasini](https://github.com/nilasini)! - Update to new flow execution API endpoint
+
 ## 2.25.18
 
 ### Patch Changes
