@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { useRequiredScopes } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
@@ -85,9 +85,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
 
     const applicationFeatureConfig: FeatureConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.applications);
-    const registrationFlowBuilderFeatureConfig: FeatureConfigInterface = useSelector(
-        (state: AppState) => state.config.ui.features.registrationFlowBuilder
-    );
+    const registrationFlowBuilderFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.registrationFlowBuilder);
 
     const [ isConnectorRequestLoading, setConnectorRequestLoading ] = useState<boolean>(false);
     const [ connector, setConnector ] = useState<GovernanceConnectorInterface>(undefined);
@@ -100,7 +99,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
     const hasGovernanceConnectorsUpdatePermissions: boolean
         = useRequiredScopes(applicationFeatureConfig?.governanceConnectors?.scopes?.update);
     const hasRegistrationFlowBuilderViewPermissions: boolean
-        = useRequiredScopes(registrationFlowBuilderFeatureConfig?.scopes?.view);
+        = useRequiredScopes(registrationFlowBuilderFeatureConfig?.scopes?.read);
     const path: string[] = history.location.pathname.split("/");
     const type: string = path[ path.length - 3 ];
 
