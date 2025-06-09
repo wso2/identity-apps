@@ -302,7 +302,6 @@ public class AppPortalUtils {
             addAPIResourceToApplication(appId, tenantDomain, IMPERSONATION_ORG_API_RESOURCE,
                 APIResourceManagementConstants.APIResourceTypes.ORGANIZATION);
             addImpersonatorRole(appOwner, appId, tenantId, tenantDomain);
-            shareApplication(tenantDomain, tenantId, appId, appName, appOwner);
         }
     }
 
