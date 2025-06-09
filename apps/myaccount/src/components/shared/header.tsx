@@ -42,7 +42,14 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CookieStorageUtils, StringUtils, URLUtils } from "@wso2is/core/utils";
-import { I18n, I18nModuleConstants, LanguageChangeException, LocaleMeta, SupportedLanguagesMeta } from "@wso2is/i18n";
+import {
+    I18n,
+    I18nModuleConstants,
+    LanguageChangeException,
+    LocaleMeta,
+    SupportedLanguagesMeta,
+    TextDirection
+} from "@wso2is/i18n";
 import { useMediaContext } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
@@ -58,7 +65,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Action, AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import { Gravatar } from "./gravatar";
-import { AppConstants, TextDirection, UIConstants } from "../../constants";
+import { AppConstants } from "../../constants";
 import { commonConfig } from "../../extensions";
 import { history, resolveUserstore } from "../../helpers";
 import { AuthStateInterface, ConfigReducerStateInterface } from "../../models";
@@ -216,9 +223,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         const direction: string = supportedLanguage?.direction;
 
         if (direction === TextDirection.RTL) {
-            document.documentElement.setAttribute(UIConstants.TEXT_DIRECTION_ATTRIBUTE, TextDirection.RTL);
+            document.documentElement.setAttribute(I18nModuleConstants.TEXT_DIRECTION_ATTRIBUTE, TextDirection.RTL);
         } else {
-            document.documentElement.setAttribute(UIConstants.TEXT_DIRECTION_ATTRIBUTE, TextDirection.LTR);
+            document.documentElement.setAttribute(I18nModuleConstants.TEXT_DIRECTION_ATTRIBUTE, TextDirection.LTR);
         }
     };
 

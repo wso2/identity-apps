@@ -374,4 +374,18 @@ export class I18nModuleConstants {
      * Email Provider namespace.
      */
     public static readonly EMAIL_PROVIDERS_NAMESPACE: string = "emailProviders";
+
+    /**
+     * Constant representing the text direction handling attribute.
+     */
+    public static readonly TEXT_DIRECTION_ATTRIBUTE: string = "dir";
+
+}
+
+/**
+* Enum to define two Text Directions LTR & RTL.
+*/
+export enum TextDirection {
+    "LTR" = "ltr",
+    "RTL" = "rtl"
 }

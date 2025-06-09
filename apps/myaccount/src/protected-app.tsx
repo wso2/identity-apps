@@ -66,13 +66,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const { onSignIn } = useSignIn();
 
     const tenantDomain: string = useSelector((state: AppState) => state.authenticationInformation.tenantDomain);
-    const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
-    const appBaseNameWithoutTenant: string = useSelector(
-        (state: AppState) => state?.config?.deployment?.appBaseNameWithoutTenant
-    );
-    const rtlThemeHash: string = useSelector(
-        (state: AppState) => state?.config?.ui?.theme?.rtl?.stylesheets[ 0 ]?.themeHash
-    );
 
     useEffect(() => {
         on(Hooks.HttpRequestError, onHttpRequestError);
@@ -204,28 +197,12 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
      */
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
 
-    /**
-     * Get the RTL CSS file path.
-     * This function uses Webpack's require.context to dynamically load the RTL CSS file.
-     */
-    const getRtlCssFile = (): string | null => {
-        try {
-            return `${window?.origin
-            }/${appBaseNameWithoutTenant
-            }/libs/themes/${theme
-            }/theme.${ rtlThemeHash }.rtl.min.css`;
-        } catch (error) {
-            return null;
-        }
-    };
-
     return (
         <ThemeProvider
             themePreference={ themePreference }
             defaultMode={ "light" }
             modeStorageKey={ "myaccount-oxygen-mode" }
             appTitle={ appTitle }
-            rtlCss={ getRtlCssFile() }
         >
             <SecureApp
                 fallback={ <PreLoader /> }
