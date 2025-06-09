@@ -1,5 +1,15 @@
 # @wso2is/myaccount
 
+## 2.19.18
+
+### Patch Changes
+
+- [#8306](https://github.com/wso2/identity-apps/pull/8306) [`619fecf8e12e3fcca3e6710b4cd78b20ab07dd0a`](https://github.com/wso2/identity-apps/commit/619fecf8e12e3fcca3e6710b4cd78b20ab07dd0a) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Fix RTL alignment issues by disabling LTR stylesheet before applying RTL stylesheet
+
+- Updated dependencies [[`619fecf8e12e3fcca3e6710b4cd78b20ab07dd0a`](https://github.com/wso2/identity-apps/commit/619fecf8e12e3fcca3e6710b4cd78b20ab07dd0a), [`a9b49f91ab8047a590fbc6ffa3e631ae2077e63f`](https://github.com/wso2/identity-apps/commit/a9b49f91ab8047a590fbc6ffa3e631ae2077e63f)]:
+  - @wso2is/common.branding.v1@2.27.3
+  - @wso2is/i18n@2.23.9
+
 ## 2.19.17
 
 ### Patch Changes

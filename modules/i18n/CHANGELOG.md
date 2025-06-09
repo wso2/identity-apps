@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.23.9
+
+### Patch Changes
+
+- [#8149](https://github.com/wso2/identity-apps/pull/8149) [`a9b49f91ab8047a590fbc6ffa3e631ae2077e63f`](https://github.com/wso2/identity-apps/commit/a9b49f91ab8047a590fbc6ffa3e631ae2077e63f) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add tenant name to root organization creation/edit forms
+
 ## 2.23.8
 
 ### Patch Changes
