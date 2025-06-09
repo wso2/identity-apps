@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.25.20
+
+### Patch Changes
+
+- [#8319](https://github.com/wso2/identity-apps/pull/8319) [`a90d75ab6278939da8dfc4cecbdb37ca955dd8c3`](https://github.com/wso2/identity-apps/commit/a90d75ab6278939da8dfc4cecbdb37ca955dd8c3) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Remove default my account share capability.
+
 ## 2.25.19
 
 ### Patch Changes
