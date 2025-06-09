@@ -251,13 +251,7 @@ export const AppUtils: AppUtilsInterface = (function() {
                 tenant: (this.isSuperTenant()) ? this.getSuperTenant() : this.getTenantName(),
                 tenantPath: this.getTenantPath(),
                 tenantPrefix: this.getTenantPrefix(),
-                ui: {
-                    ..._config.ui,
-                    theme: {
-                        ..._config.ui.theme,
-                        ..._config.theme
-                    }
-                }
+                ui: _config.ui
             };
         },
 
@@ -471,8 +465,7 @@ export const AppUtils: AppUtilsInterface = (function() {
                 "consoleAppOrigin": _args.consoleAppOrigin || _args.serverOrigin || fallbackServerOrigin,
                 "contextPath": _args.contextPath,
                 "proxyContextPath": _args.proxyContextPath || proxyContextPathFallback,
-                "serverOrigin": _args.serverOrigin || fallbackServerOrigin,
-                "theme": _args.theme || {}
+                "serverOrigin": _args.serverOrigin || fallbackServerOrigin
             };
 
             _config = _default;

@@ -29,8 +29,7 @@ if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
         proxyContextPath: proxyContextPathGlobal,
         serverOrigin: serverOriginGlobal,
         superTenant: superTenantGlobal,
-        tenantPrefix: tenantPrefixGlobal,
-        theme: themeGlobal
+        tenantPrefix: tenantPrefixGlobal
     });
 
     window["AppUtils"] = AppUtils;

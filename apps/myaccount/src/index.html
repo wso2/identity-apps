@@ -15,6 +15,7 @@
         <meta name="referrer" content="no-referrer" />
 
         <link id="ltr-stylesheet" href="<%= htmlWebpackPlugin.options.publicPath %>libs/themes/<%= htmlWebpackPlugin.options.theme %>/theme.<%= htmlWebpackPlugin.options.themeHash %>.min.css" rel="stylesheet" type="text/css"/>
+        <link id="rtl-stylesheet" href="<%= htmlWebpackPlugin.options.publicPath %>libs/themes/<%= htmlWebpackPlugin.options.theme %>/theme.<%= htmlWebpackPlugin.options.rtlThemeHash %>.rtl.min.css" rel="stylesheet" type="text/css" disabled/>
         <link rel="shortcut icon" href="<%= htmlWebpackPlugin.options.publicPath %>libs/themes/<%= htmlWebpackPlugin.options.theme %>/assets/images/branding/favicon.ico" data-react-helmet="true" />
 
         <script src="<%= htmlWebpackPlugin.options.publicPath %>startup-config.js"></script>
@@ -27,22 +28,6 @@
             var tenantPrefixGlobal = startupConfig.tenantPrefix;
             var isAdaptiveAuthenticationAvailable;
             var isOrganizationManagementEnabled;
-            var themeGlobal = {
-                rtl: {
-                    stylesheets: [
-                        {
-                            themeHash: "<%= htmlWebpackPlugin.options.rtlThemeHash %>",
-                        }
-                    ]
-                },
-                ltr: {
-                    stylesheets: [
-                        {
-                            themeHash: "<%= htmlWebpackPlugin.options.themeHash %>",
-                        }
-                    ]
-                }
-            };
         </script>
 
         <!-- Start of custom stylesheets -->

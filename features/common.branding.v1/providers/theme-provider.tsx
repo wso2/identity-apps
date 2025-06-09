@@ -53,20 +53,6 @@ export interface ThemeProviderProps {
      * This is an optional property.
      */
     appTitle?: string;
-
-    /**
-     * The CSS file for LTR (Left-to-Right) support.
-     *
-     * This is an optional property.
-     */
-    ltrCss?: string;
-
-    /**
-     * The CSS file for RTL (Right-to-Left) support.
-     *
-     * This is an optional property.
-     */
-    rtlCss?: string;
 }
 
 /**
@@ -84,9 +70,7 @@ export const ThemeProvider = (props: PropsWithChildren<ThemeProviderProps>): Rea
         appTitle,
         themePreference,
         defaultMode,
-        modeStorageKey,
-        ltrCss,
-        rtlCss
+        modeStorageKey
     } = props;
 
     /**
@@ -111,6 +95,7 @@ export const ThemeProvider = (props: PropsWithChildren<ThemeProviderProps>): Rea
             const dir: "ltr" | "rtl" = document.documentElement.getAttribute("dir") as "ltr" | "rtl";
 
             setDirection(dir);
+            enableCSSBasedOnDirection(dir);
         });
 
         observer.observe(document.documentElement, {
@@ -124,18 +109,18 @@ export const ThemeProvider = (props: PropsWithChildren<ThemeProviderProps>): Rea
     }, []);
 
     /**
-     * Injects the appropriate CSS based on the text direction (LTR or RTL).
+     * Enable/Disable the appropriate CSS based on the text direction (LTR or RTL).
      *
      * @returns A link element for the appropriate CSS based on the direction.
      */
-    const injectCSSBasedOnDirection = () => {
+    const enableCSSBasedOnDirection = (dir: string) => {
 
         const existingLtrLink: HTMLLinkElement | null =
                 document.getElementById("ltr-stylesheet") as HTMLLinkElement | null;
         const existingRtlLink: HTMLLinkElement | null =
                 document.getElementById("rtl-stylesheet") as HTMLLinkElement | null;
 
-        if (direction != null && direction==="rtl") {
+        if (dir != null && dir==="rtl") {
             if (existingLtrLink) {
                 existingLtrLink.disabled = true;
             }
@@ -143,11 +128,7 @@ export const ThemeProvider = (props: PropsWithChildren<ThemeProviderProps>): Rea
                 if (existingRtlLink.disabled) {
                     existingRtlLink.disabled = false;
                 }
-
-                return;
             }
-
-            return <link id="rtl-stylesheet" href={ rtlCss } rel="stylesheet" type="text/css"></link>;
         } else {
             if (existingRtlLink) {
                 existingRtlLink.disabled = true;
@@ -156,11 +137,7 @@ export const ThemeProvider = (props: PropsWithChildren<ThemeProviderProps>): Rea
                 if (existingLtrLink.disabled) {
                     existingLtrLink.disabled = false;
                 }
-
-                return;
             }
-
-            return <link id="ltr-stylesheet" href={ ltrCss } rel="stylesheet" type="text/css"></link>;
         }
     };
 
@@ -213,7 +190,6 @@ export const ThemeProvider = (props: PropsWithChildren<ThemeProviderProps>): Rea
                 { <title>{ appTitle }</title> }
                 { favicon && <link rel="shortcut icon" href={ favicon } /> }
                 { injectBrandingCSSSkeleton() }
-                { injectCSSBasedOnDirection() }
             </Helmet>
             <OxygenThemeProvider
                 theme={ generateTheme(contextValues, direction) }
