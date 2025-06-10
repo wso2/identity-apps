@@ -28,10 +28,10 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Segment } from "semantic-ui-react";
-import { EditorViewTabs } from "./custom-page-editor/editor-view";
-import { StickyTabPaneActionPanel } from "./sticky-tab-pane-action-panel";
-import useBrandingPreference from "../hooks/use-branding-preference";
+import { Icon, Segment } from "semantic-ui-react";
+import { EditorViewTabs } from "./editor-view";
+import useBrandingPreference from "../../hooks/use-branding-preference";
+import { StickyTabPaneActionPanel } from "../sticky-tab-pane-action-panel";
 import "./custom-page-editor.scss";
 
 type CustomPageEditorInterface = IdentifiableComponentInterface;
@@ -51,10 +51,10 @@ export const CustomPageEditor: FunctionComponent<CustomPageEditorInterface> = ({
         updateBrandingCustomContent
     } = useBrandingPreference();
 
-    const [ html, setHtml ] = useState("");
-    const [ css, setCss ] = useState("");
-    const [ js, setJs ] = useState("");
-    const [ isSubmitting, setIsSubmitting ] = useState(false);
+    const [ html, setHtml ] = useState<string>("");
+    const [ css, setCss ] = useState<string>("");
+    const [ js, setJs ] = useState<string>("");
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     /**
      * Effect to initialize the editor with the current custom content.
@@ -93,7 +93,7 @@ export const CustomPageEditor: FunctionComponent<CustomPageEditorInterface> = ({
                 data-componentid = { `${ componentId }-back-button` }
                 onClick = { handleBackButtonClick }
             >
-                <i aria-hidden="true" className="arrow left icon"></i>
+                <Icon name="arrow left"/>
                 { t("branding:customPageEditor.backButton") }
             </div>
             <div className="main-container">

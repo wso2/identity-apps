@@ -39,7 +39,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import BrandingCore from "./branding-core";
-import { CustomPageEditor } from "./custom-page-editor";
+import { CustomPageEditor } from "./custom-page-editor/custom-page-editor";
 import { useApplicationList } from "../../admin.applications.v1/api/application";
 import { ApplicationManagementConstants } from "../../admin.applications.v1/constants/application-management";
 import { ApplicationListItemInterface } from "../../admin.applications.v1/models/application";
