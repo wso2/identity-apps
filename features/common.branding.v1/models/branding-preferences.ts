@@ -529,7 +529,7 @@ export interface BrandingPreferenceCustomLayoutInterface {
     /**
      * Custom layout content.
      */
-    content: BrandingCustomLayoutContentInterface;
+    content?: BrandingCustomLayoutContentInterface;
 }
 
 /**
