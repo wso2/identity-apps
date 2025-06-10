@@ -232,8 +232,8 @@ export class GovernanceConnectorUtils {
             {
                 connectors: [
                     {
-                        description: "Configure multiple attributes as the login identifier.",
-                        header: "Multi Attribute Login",
+                        description: "Configure alternative login identifier settings.",
+                        header: "Alternative Login Identifiers",
                         id: ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID,
                         route: AppConstants.getPaths()
                             .get("GOVERNANCE_CONNECTOR_EDIT")
@@ -245,7 +245,7 @@ export class GovernanceConnectorUtils {
                     },
                     {
                         description: "Configure alternative login identifier settings.",
-                        header: "Alternative Login Identifier",
+                        header: "Alternative Login Identifiers",
                         id: ServerConfigurationsConstants.ALTERNATIVE_LOGIN_IDENTIFIER,
                         route: AppConstants.getPaths()
                             .get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT"),

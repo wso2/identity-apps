@@ -1,5 +1,56 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.5.2
+
+### Patch Changes
+
+- [#8238](https://github.com/wso2/identity-apps/pull/8238) [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+- Updated dependencies [[`89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f`](https://github.com/wso2/identity-apps/commit/89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f), [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f)]:
+  - @wso2is/admin.core.v1@2.45.2
+  - @wso2is/common.ai.v1@2.27.3
+
+## 0.5.1
+
+### Patch Changes
+
+- [#8235](https://github.com/wso2/identity-apps/pull/8235) [`92916a5ee73558585380dfa6bf7405998b7506f2`](https://github.com/wso2/identity-apps/commit/92916a5ee73558585380dfa6bf7405998b7506f2) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Temporarily disable reCaptcha in composer
+
+## 0.5.0
+
+### Minor Changes
+
+- [#8216](https://github.com/wso2/identity-apps/pull/8216) [`19322a678f21fcc094ea10bbb276517f7fc5f3ce`](https://github.com/wso2/identity-apps/commit/19322a678f21fcc094ea10bbb276517f7fc5f3ce) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Inrtoduce recaptcha support in registration flow builder
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.45.1
+
+## 0.4.5
+
+### Patch Changes
+
+- [#8042](https://github.com/wso2/identity-apps/pull/8042) [`7a7541c1c12150815af396417c4318e402f15cb2`](https://github.com/wso2/identity-apps/commit/7a7541c1c12150815af396417c4318e402f15cb2) Thanks [@brionmario](https://github.com/brionmario)! - Fix dnd issues in the sortable
+
+- Updated dependencies [[`f93070869e72ecdd12393fc3a46fd9a13eaf56f3`](https://github.com/wso2/identity-apps/commit/f93070869e72ecdd12393fc3a46fd9a13eaf56f3)]:
+  - @wso2is/admin.core.v1@2.43.4
+
+## 0.4.4
+
+### Patch Changes
+
+- [#8034](https://github.com/wso2/identity-apps/pull/8034) [`9bd84635ada11909ad1d285cb85e94b7a47cb112`](https://github.com/wso2/identity-apps/commit/9bd84635ada11909ad1d285cb85e94b7a47cb112) Thanks [@brionmario](https://github.com/brionmario)! - Fix the initial zoom issue in the registration flow builder
+
+- Updated dependencies [[`913fa68968a319095b93afaa24e8f71a1a7642a6`](https://github.com/wso2/identity-apps/commit/913fa68968a319095b93afaa24e8f71a1a7642a6)]:
+  - @wso2is/core@2.7.2
+
+## 0.4.3
+
+### Patch Changes
+
+- [#8023](https://github.com/wso2/identity-apps/pull/8023) [`16be5ce6f85edd3e7b635b1256916f7d34ce17d7`](https://github.com/wso2/identity-apps/commit/16be5ce6f85edd3e7b635b1256916f7d34ce17d7) Thanks [@brionmario](https://github.com/brionmario)! - Add `fitViewOptions`
+
 ## 0.4.2
 
 ### Patch Changes

@@ -189,6 +189,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
                         id={ userStoreId }
                         properties={ properties?.connection }
                         data-testid={ `${ testId }-userstore-connection-details-edit` }
+                        userStore={ userStore }
                     />
                 </ResourceTab.Pane>
             )

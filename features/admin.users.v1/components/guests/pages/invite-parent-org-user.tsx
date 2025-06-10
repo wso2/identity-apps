@@ -66,7 +66,14 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
 
     const {
         data: groupList
-    } = useGroupList(userstoresConfig?.primaryUserstoreName, "members", null, true);
+    } = useGroupList(
+        null,
+        null,
+        null,
+        userstoresConfig?.primaryUserstoreName,
+        "members",
+        true
+    );
 
     const groupsAutocompleteOptions: GroupsAutoCompleteOption[] = useMemo(() => {
 

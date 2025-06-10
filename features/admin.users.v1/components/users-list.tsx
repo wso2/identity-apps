@@ -49,6 +49,7 @@ import {
     UserAvatar
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
+import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -561,15 +562,14 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     imageSize="tiny"
                     title={ t("users:usersList.search.emptyResultPlaceholder.title") }
                     subtitle={ [
-                        t("users:usersList.search.emptyResultPlaceholder.subTitle.0",
-                            { query: searchQuery }),
+                        t("users:usersList.search.emptyResultPlaceholder.subTitle.2"),
                         t("users:usersList.search.emptyResultPlaceholder.subTitle.1")
                     ] }
                 />
             );
         }
 
-        if (usersList?.totalResults === 0) {
+        if (isEmpty(usersList) || usersList.totalResults === 0) {
             return (
                 <EmptyPlaceholder
                     data-testid={ `${testId}-empty-placeholder` }

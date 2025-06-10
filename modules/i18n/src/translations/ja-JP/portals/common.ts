@@ -39,6 +39,10 @@ export const common: CommonNS = {
     "apps": "アプリ",
     "assignee": "譲受人",
     "assignees": "譲受人",
+    "asyncOperationErrorMessage": {
+        "description": "問題が発生しました",
+        "message": "予期しないエラーが発生しました。しばらくしてからもう一度ご確認ください。"
+    },
     "authentication": "認証",
     "authenticator": "認証者",
     "authenticator_plural": "認証者",
@@ -69,6 +73,7 @@ export const common: CommonNS = {
     "dangerZone": "危険区域",
     "darkMode": "ダークモード",
     "delete": "消去",
+    "deprecated": "この構成は非推奨であり、今後のリリースで削除される予定です。",
     "description": "説明",
     "deviceModel": "デバイスモデル",
     "disable": "無効にします",

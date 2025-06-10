@@ -129,13 +129,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                 const mappedClaims: string[] = [];
 
                 response.forEach((claim: ExternalClaim[]) => {
-                    // Hide identity claims in SCIM
-                    const claims: ExternalClaim[] = attributeConfig.attributeMappings.getExternalAttributes(
-                        type,
-                        claim
-                    );
-
-                    mappedClaims.push(...claims.map((claim: ExternalClaim) => claim.mappedLocalClaimURI));
+                    mappedClaims.push(...claim.map((claim: ExternalClaim) => claim.mappedLocalClaimURI));
                 });
                 setMappedLocalClaims(mappedClaims);
             }).catch((error: IdentityAppsApiException) => {

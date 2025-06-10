@@ -16,12 +16,12 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     DeprecatedFeatureInterface,
@@ -33,7 +33,7 @@ import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
 import { EmphasizedSegment, PageLayout, PrimaryButton, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -67,18 +67,15 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
     const gonvernanConnectorsConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.governanceConnectors);
     const saml2WebSSO: DeprecatedFeatureInterface = gonvernanConnectorsConfig
-        .deprecatedFeaturesToShow.find((feature: any) => {
+        .deprecatedFeaturesToShow?.find((feature: any) => {
             return feature?.name === "saml2";
         });
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
-    const isReadOnly: boolean = useMemo(() => !hasRequiredScopes(
-        featureConfig?.governanceConnectors,
-        featureConfig?.governanceConnectors?.scopes?.update,
-        allowedScopes
-    ), [ featureConfig, allowedScopes ]);
+    const isReadOnly: boolean = !useRequiredScopes(
+        featureConfig?.governanceConnectors?.scopes?.update
+    );
 
     const dispatch: Dispatch<any> = useDispatch();
 

@@ -230,7 +230,13 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const {
         data: groupList,
         error: groupsError
-    } = useGroupList(selectedUserStore, "members", null, true);
+    } = useGroupList(
+        null,
+        null,
+        null,
+        selectedUserStore,
+        "members"
+    );
 
     useEffect(() => {
         if (groupsError) {
@@ -255,7 +261,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
         if (userStoresList?.length > 0) {
             userStoresList.forEach((item: UserStoreListItem, index: number) => {
-                const isReadOnly: boolean = !isUserStoreReadOnly(item.name);
+                const isReadOnly: boolean = isUserStoreReadOnly(item.name);
                 const isEnabled: boolean = item.enabled;
 
                 if (isEnabled && !isReadOnly && isBulkImportSupportedUserStore(item)) {

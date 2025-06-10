@@ -91,7 +91,7 @@ const PasswordRecoveryMultiOptionFragment: FunctionComponent<PasswordRecoveryMul
                                 <input type="radio" name="recoveryOption" value="SMSOTP" />
                                 <label>{ i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.PASSWORD_RECOVERY
                                     .RADIO_BUTTON.SMS_OTP,
-                                "Send code via SMS.") }
+                                "Send OTP via SMS.") }
                                 </label>
                             </div>
                         </div>

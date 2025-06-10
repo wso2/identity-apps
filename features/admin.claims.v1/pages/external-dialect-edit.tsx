@@ -206,13 +206,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                 offset,
                 sort
             })
-                .then((response: ExternalClaim[]) => {
-                    // Hide identity claims in SCIM
-                    const claims: ExternalClaim[] = attributeConfig.attributeMappings.getExternalAttributes(
-                        attributeType,
-                        response
-                    );
-
+                .then((claims: ExternalClaim[]) => {
                     setClaims(sortList(claims, "claimURI", true));
                 })
                 .catch((error: any) => {

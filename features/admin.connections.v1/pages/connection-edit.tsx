@@ -700,7 +700,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                 description={ resolveConnectorDescription(connector) }
                 image={ resolveConnectorImage(connector) }
                 backButton={ {
-                    "data-testid": `${testId}-page-back-button`,
+                    "data-testid": `${testId}-back-button`,
                     onClick: handleBackButtonClick,
                     text: t("console:develop.pages.authenticationProviderTemplate.backButton")
                 } }

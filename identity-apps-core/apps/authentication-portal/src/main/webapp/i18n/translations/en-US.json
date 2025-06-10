@@ -1,4 +1,8 @@
 {
+    "sign.up.error.username.already.exists.message": "Username already exists",
+    "sign.up.error.invalid.username.message": "Invalid username",
+    "sign.up.error.username.already.exists.description": "The provided username already exists in the organization.",
+    "sign.up.error.invalid.username.description": "The given username is not in the required format.",
     "sign.up.form.title": "Sign Up",
     "sign.up.form.password.title": "Enter Your Password",
     "sign.up.form.email.title": "Enter Your Email",

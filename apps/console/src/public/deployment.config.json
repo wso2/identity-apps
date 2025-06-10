@@ -120,6 +120,16 @@
                 "description": "This email informs the user that the email address is updated",
                 "displayName": "Email Update Notification",
                 "id": "bm90aWZ5T25FeGlzdGluZ0VtYWlsVXBkYXRl"
+            },
+            {
+                "description": "This email sends an Email OTP to a user for password reset",
+                "displayName": "Password Reset Email OTP",
+                "id": "UGFzc3dvcmRSZXNldE9UUA"
+            },
+            {
+                "description": "This email resends an Email OTP to a user for password reset",
+                "displayName": "Resend Password Reset Email OTP",
+                "id": "cmVzZW5kUGFzc3dvcmRSZXNldE9UUA"
             }
         ],
         "outboundProvisioningConnectors": [],
@@ -158,6 +168,16 @@
                 "description": "This SMS is sent to verify the user's mobile number after an update.",
                 "displayName": "Verify Mobile On Update",
                 "id": "dmVyaWZ5TW9iaWxlT25VcGRhdGU"
+            },
+            {
+                "description": "This SMS is sent to provide a one-time password when admin initiates a password reset for a user",
+                "displayName": "Admin Forced Password Reset",
+                "id": "YWRtaW5Gb3JjZWRQYXNzd29yZFJlc2V0"
+            },
+            {
+                "description": "This SMS is sent to provide a one-time password when admin resends a password reset request",
+                "displayName": "Admin Resend Forced Password Reset",
+                "id": "cmVzZW5kQWRtaW5Gb3JjZWRQYXNzd29yZFJlc2V0"
             }
         ]
     },
@@ -210,6 +230,7 @@
         "appName": "Console",
         "appTitle": "WSO2 Identity Server Console",
         "appWhiteLogoPath": "/assets/images/branding/logo-inverted.svg",
+        "asyncOperationStatusPollingInterval": 5000,
         "connectionResourcesUrl": "",
         "cookiePolicyUrl": "/authenticationendpoint/cookie_policy.do",
         "emailTemplates": {
@@ -220,6 +241,7 @@
         "enableCustomSmsTemplates": true,
         "enableEmailDomain": false,
         "enableIdentityClaims": true,
+        "enableOldUIForEmailProvider": false,
         "features": {
             "accountLogin": {
                 "disabledFeatures": [],
@@ -269,8 +291,7 @@
             },
             "actions": {
                 "disabledFeatures": [
-                    "actions.types.list.preRegistration",
-                    "actions.types.list.preUpdateProfile"
+                    "actions.types.list.preRegistration"
                 ],
                 "enabled": true,
                 "featureFlags": [
@@ -505,9 +526,16 @@
                 }
             },
             "auditLogs": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "remote.log.publish"
+                ],
                 "enabled": true,
-                "featureFlags": [],
+                "featureFlags": [
+                    {
+                        "feature": "remote.log.publish",
+                        "flag": ""
+                    }
+                ],
                 "scopes": {
                     "update": [
                         "internal_application_mgt_view"
@@ -796,7 +824,11 @@
                 "scopes": {}
             },
             "identityProviders": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "identityProviders.federationHub",
+                    "identityProviders.saml.artifactBinding",
+                    "identityProviders.saml.attributeConsumingServiceIndex"
+                ],
                 "enabled": true,
                 "featureFlags": [],
                 "scopes": {
@@ -1576,6 +1608,7 @@
         },
         "selfAppIdentifier": "Console",
         "showAppSwitchButton": true,
+        "showPasswordOfEmailProvider": true,
         "showSmsOtpPwdRecoveryFeatureStatusChip": false,
         "showStatusLabelForNewAuthzRuntimeFeatures": false,
         "systemAppsIdentifiers": [

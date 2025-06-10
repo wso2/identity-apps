@@ -16,6 +16,8 @@
   ~ under the License.
 --%>
 
+<%@ page import="org.apache.commons.httpclient.HttpURL" %>
+<%@ page import="org.apache.commons.httpclient.HttpsURL" %>
 <%@ page import="org.apache.cxf.jaxrs.client.JAXRSClientFactory" %>
 <%@ page import="org.apache.cxf.jaxrs.provider.json.JSONProvider" %>
 <%@ page import="org.apache.cxf.jaxrs.client.WebClient" %>
@@ -300,7 +302,7 @@
     String resendUsername = request.getParameter("resend_username");
     String spProp = "sp";
     String spIdProp = "spId";
-    String sp = request.getParameter("sp");
+    String sp = Encode.forJava(request.getParameter("sp"));
     String spId = "";
 
     try {
@@ -503,7 +505,7 @@
                     aria-required="true"
                 >
                 <i aria-hidden="true" class="user fill icon"></i>
-                <input id="username" name="username" type="hidden" value="<%=username%>">
+                <input id="username" name="username" type="hidden" value="<%=Encode.forHtmlAttribute(username)%>">
             </div>
         </div>
         <div class="mt-1" id="usernameError" style="display: none;">
@@ -513,7 +515,7 @@
             </span>
         </div>
     <% } else { %>
-        <input id="username" name="username" type="hidden" data-testid="login-page-username-input" value="<%=username%>">
+        <input id="username" name="username" type="hidden" data-testid="login-page-username-input" value="<%=Encode.forHtmlAttribute(username)%>">
     <% } %>
         <div class="field mt-3 mb-0">
             <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "password")%></label>
@@ -565,8 +567,7 @@
             String urlWithoutEncoding = null;
             try {
                 ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
-                urlWithoutEncoding = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain,
-                        request.getParameter("sp"));
+                urlWithoutEncoding = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, sp);
             } catch (ApplicationDataRetrievalClientException e) {
                 //ignored and fallback to login page url
             }
@@ -576,8 +577,12 @@
                 String serverName = request.getServerName();
                 int serverPort = request.getServerPort();
                 String uri = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_REQUEST_URI);
-                String prmstr = URLDecoder.decode(((String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING)), UTF_8);
-                urlWithoutEncoding = scheme + "://" +serverName + ":" + serverPort + uri + "?" + prmstr;
+                String paramStr = URLDecoder.decode(((String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING)), UTF_8);
+                if ((scheme == "http" && serverPort == HttpURL.DEFAULT_PORT) || (scheme == "https" && serverPort == HttpsURL.DEFAULT_PORT)) {
+                    urlWithoutEncoding = scheme + "://" + serverName + uri + "?" + paramStr;
+                } else {
+                    urlWithoutEncoding = scheme + "://" + serverName + ":" + serverPort + uri + "?" + paramStr;
+                }
             }
             urlWithoutEncoding = IdentityManagementEndpointUtil.replaceUserTenantHintPlaceholder(
                     urlWithoutEncoding, userTenantDomain);

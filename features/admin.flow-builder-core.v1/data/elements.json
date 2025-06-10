@@ -148,6 +148,22 @@
     },
     {
         "resourceType": "ELEMENT",
+        "category": "CAPTCHA",
+        "type": "CAPTCHA",
+        "version": "0.1.0",
+        "deprecated": false,
+        "variant": "RECAPTCHA_V2",
+        "display": {
+            "label": "reCAPTCHA",
+            "image": "https://www.gstatic.com/recaptcha/api2/logo_48.png",
+            "showOnResourcePanel": false
+        },
+        "config": {
+            "version": 2
+        }
+    },
+    {
+        "resourceType": "ELEMENT",
         "category": "FIELD",
         "type": "INPUT",
         "version": "0.1.0",

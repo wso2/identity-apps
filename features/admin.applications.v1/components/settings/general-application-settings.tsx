@@ -139,6 +139,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         readOnly,
         isManagementApp,
         application,
+        template,
         isBrandingSectionHidden,
         [ "data-componentid" ]: componentId
     } = props;
@@ -386,6 +387,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                             data-testid={ `${ componentId }-form` }
                             isSubmitting={ isSubmitting }
                             isManagementApp={ isManagementApp }
+                            template={ template }
                         />
                     </EmphasizedSegment>
                     <Divider hidden />

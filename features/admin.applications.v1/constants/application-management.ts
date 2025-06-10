@@ -85,7 +85,10 @@ export class ApplicationManagementConstants {
         .set("APPLICATIONS_SETTINGS", "applications.settings")
         .set("TRUSTED_APPS", "applications.trustedApps")
         .set("APPLICATION_ACCESSTOKEN_ATTRIBUTES", "applications.accessTokenAttributes")
-        .set("APPLICATION_OUTDATED_APP_BANNER", "applications.outdatedAppBanner");
+        .set("APPLICATION_OUTDATED_APP_BANNER", "applications.outdatedAppBanner")
+        .set("APPLICATION_EDIT_ACCESS_CONFIG_BACK_CHANNEL_LOGOUT",
+            "applications.edit.accessConfiguration.backChannelLogout")
+        .set("APPLICATION_SHARED_ACCESS_STATUS", "applications.sharedAccess.status");
 
     /**
      * Key for the URL search param for application state.
@@ -184,6 +187,9 @@ export class ApplicationManagementConstants {
     public static readonly UMA_TICKET: string = "urn:ietf:params:oauth:grant-type:uma-ticket";
     public static readonly DEVICE_GRANT: string = "urn:ietf:params:oauth:grant-type:device_code";
     public static readonly OAUTH2_TOKEN_EXCHANGE: string = "urn:ietf:params:oauth:grant-type:token-exchange";
+    public static readonly TOKEN_TYPE_ACCESS_TOKEN: string = "urn:ietf:params:oauth:token-type:access_token";
+    public static readonly TOKEN_TYPE_JWT_TOKEN: string = "urn:ietf:params:oauth:token-type:jwt";
+    public static readonly TOKEN_TYPE_ID_TOKEN: string = "urn:ietf:params:oauth:token-type:id_token";
     public static readonly ACCOUNT_SWITCH_GRANT: string = "account_switch";
     public static readonly CODE_TOKEN: string = "code token";
     public static readonly CODE_IDTOKEN: string = "code id_token";
@@ -539,10 +545,22 @@ export class ApplicationManagementConstants {
         ApplicationManagementConstants.DEFAULT_NAME_ATTRIBUTE_FORMAT,
         "urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
     ];
+
+    /**
+     * Application share type to send to async operation status poller.
+     */
+    public static readonly B2B_APPLICATION_SHARE: string = "B2B_APPLICATION_SHARE";
 }
 
 export enum ShareWithOrgStatus {
     TRUE,
     FALSE,
     UNDEFINED
+}
+
+export enum ApplicationShareUnitStatus {
+    FAILED = "FAILED",
+    SUCCESS = "SUCCESS",
+    PARTIALLY_COMPLETED = "PARTIALLY_COMPLETED",
+    ALL = "ALL"
 }

@@ -39,6 +39,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             __experimental__platformIdP: null,
             accountApp: {
                 basePath: "",
+                centralAppPath: "",
                 displayName: "",
                 path: "",
                 tenantQualifiedPath: ""
@@ -73,10 +74,12 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             idpConfigs: null,
             loginCallbackUrl: "",
             organizationPrefix: "",
+            regionSelectionEnabled: undefined,
             serverHost: "",
             serverOrigin: "",
             superTenant: "",
             tenant: "",
+            tenantContext: null,
             tenantPath: "",
             tenantPrefix: ""
         },
@@ -91,6 +94,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             applicationTemplate: "",
             applicationTemplateMetadata: "",
             applications: "",
+            asyncStatus: "",
             authenticatorTags: "",
             authenticators: "",
             brandingPreference: "",
@@ -143,8 +147,10 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             passwordPolicy: "",
             permission: "",
             publicCertificates: "",
+            remoteLogPublishEndpoint: "",
             remoteLogging: "",
             requestPathAuthenticators: "",
+            resendCode: "",
             resourceTypes: "",
             roles: "",
             rolesV2: "",
@@ -202,6 +208,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             appName: "",
             appTitle: "",
             applicationTemplateLoadingStrategy: undefined,
+            asyncOperationStatusPollingInterval: null,
             connectionResourcesUrl: "",
             cookiePolicyUrl: "",
             emailTemplates: {
@@ -209,6 +216,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 defaultWhiteLogoUrl: ""
             },
             enableCustomEmailTemplates: undefined,
+            enableOldUIForEmailProvider: undefined,
             features: {
                 applications: null,
                 approvals: null,
@@ -293,6 +301,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             },
             selfAppIdentifier: "",
             showAppSwitchButton: undefined,
+            showPasswordOfEmailProvider: undefined,
             showSmsOtpPwdRecoveryFeatureStatusChip: undefined,
             showStatusLabelForNewAuthzRuntimeFeatures: undefined,
             systemAppsIdentifiers: [],

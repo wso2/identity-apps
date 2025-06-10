@@ -218,6 +218,7 @@ export const AppUtils: any = (function() {
             return {
                 __experimental__platformIdP: _config.__experimental__platformIdP,
                 accountApp: {
+                    centralAppPath: _config.accountApp.centralAppOrigin + _config.accountApp.path,
                     commonPostLogoutUrl : commonPostLogoutUrl,
                     path: skipTenant ?
                         _config.accountAppOrigin + _config.accountApp.path:
@@ -258,6 +259,7 @@ export const AppUtils: any = (function() {
                 organizationPrefix: this.getOrganizationPrefix(),
                 organizationType: this.getOrganizationType(),
                 productVersionConfig: _config.ui.productVersionConfig,
+                regionSelectionEnabled: _config.regionSelectionEnabled,
                 routes: {
                     home: this.constructAppPaths(_config.routePaths.home),
                     login: this.constructAppPaths(_config.routePaths.login),

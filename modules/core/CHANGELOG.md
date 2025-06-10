@@ -1,5 +1,69 @@
 # @wso2is/core
 
+## 2.8.1
+
+### Patch Changes
+
+- [#8138](https://github.com/wso2/identity-apps/pull/8138) [`2a689708a425b21ca765f319f8a86c6c5b38e727`](https://github.com/wso2/identity-apps/commit/2a689708a425b21ca765f319f8a86c6c5b38e727) Thanks [@roshanemoraes](https://github.com/roshanemoraes)! - Detailed Status Tracking for Application Sharing
+
+## 2.8.0
+
+### Minor Changes
+
+- [#8174](https://github.com/wso2/identity-apps/pull/8174) [`15a063f9e5c1b3e14b1fbb2e1c1a0697d98f53e1`](https://github.com/wso2/identity-apps/commit/15a063f9e5c1b3e14b1fbb2e1c1a0697d98f53e1) Thanks [@lashinijay](https://github.com/lashinijay)! - Introduce client credential authentication for email providers
+
+### Patch Changes
+
+- [#8177](https://github.com/wso2/identity-apps/pull/8177) [`709983b9893e6922dc0c9066f0af61d35d1fa1cc`](https://github.com/wso2/identity-apps/commit/709983b9893e6922dc0c9066f0af61d35d1fa1cc) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Improve code verifier function.
+
+## 2.7.8
+
+### Patch Changes
+
+- [#8116](https://github.com/wso2/identity-apps/pull/8116) [`09d8b338d4b54547c052364326779f2575ac365f`](https://github.com/wso2/identity-apps/commit/09d8b338d4b54547c052364326779f2575ac365f) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Onboard impersonation feature.
+
+## 2.7.7
+
+### Patch Changes
+
+- [#8137](https://github.com/wso2/identity-apps/pull/8137) [`9dc89862d531695ca95fbfe63f6790f8eca1883f`](https://github.com/wso2/identity-apps/commit/9dc89862d531695ca95fbfe63f6790f8eca1883f) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Prevent implicit verification of primary email/mobile without user verification
+
+## 2.7.6
+
+### Patch Changes
+
+- [#8118](https://github.com/wso2/identity-apps/pull/8118) [`c4aee527f3dad357cd7a62293d67ef6e884d927a`](https://github.com/wso2/identity-apps/commit/c4aee527f3dad357cd7a62293d67ef6e884d927a) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix identity claims display based on config
+
+## 2.7.5
+
+### Patch Changes
+
+- [#8101](https://github.com/wso2/identity-apps/pull/8101) [`113a190bd422fc412db1ae38aa1ff721a66942e6`](https://github.com/wso2/identity-apps/commit/113a190bd422fc412db1ae38aa1ff721a66942e6) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add support to dynamically display attributes in user creation wizard
+
+## 2.7.4
+
+### Patch Changes
+
+- [#8071](https://github.com/wso2/identity-apps/pull/8071) [`988621e009d2cfb65e7a3200f82eaa7a10fdd716`](https://github.com/wso2/identity-apps/commit/988621e009d2cfb65e7a3200f82eaa7a10fdd716) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Notify users of unverified accounts in MyAccount
+
+## 2.7.3
+
+### Patch Changes
+
+- [#7968](https://github.com/wso2/identity-apps/pull/7968) [`43bde29076aefa01ee70595cb7d63588034d750e`](https://github.com/wso2/identity-apps/commit/43bde29076aefa01ee70595cb7d63588034d750e) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Provide first class support to configure claims as multi valued
+
+## 2.7.2
+
+### Patch Changes
+
+- [#8027](https://github.com/wso2/identity-apps/pull/8027) [`913fa68968a319095b93afaa24e8f71a1a7642a6`](https://github.com/wso2/identity-apps/commit/913fa68968a319095b93afaa24e8f71a1a7642a6) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Support multivalued attributes in console user profile
+
+## 2.7.1
+
+### Patch Changes
+
+- [#7942](https://github.com/wso2/identity-apps/pull/7942) [`35e540cbc7983691a759254f9c647cd126c37092`](https://github.com/wso2/identity-apps/commit/35e540cbc7983691a759254f9c647cd126c37092) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix organization dropdown searching issue
+
 ## 2.7.0
 
 ### Minor Changes

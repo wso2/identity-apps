@@ -44,7 +44,6 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import {
     AlertInterface,
     AlertLevels,
-    TenantAssociationsInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert, setTenants } from "@wso2is/core/store";
@@ -80,6 +79,7 @@ import {
     TenantRequestResponse,
     TriggerPropTypesInterface
 } from "../../models";
+import { TenantAssociationsInterface } from "../../models/saas/tenants";
 import { handleTenantSwitch } from "../../utils";
 import { AddTenantWizard } from "../add-modal";
 import "./tenant-dropdown.scss";
@@ -137,6 +137,10 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
 
     const isCentralDeploymentEnabled: boolean = useSelector((state: AppState) => {
         return state?.config?.deployment?.centralDeploymentEnabled;
+    });
+
+    const isRegionSelectionEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.deployment?.regionSelectionEnabled;
     });
 
     const hasOrganizationReadPermissions: boolean = useRequiredScopes(organizationsFeatureConfig?.scopes?.read);
@@ -264,7 +268,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
         data: deploymentUnitResponse,
         isLoading: isDeploymentUnitsLoading,
         error: deploymentUnitFetchRequestError
-    } = useGetDeploymentUnits(isCentralDeploymentEnabled);
+    } = useGetDeploymentUnits(isCentralDeploymentEnabled && isRegionSelectionEnabled);
 
     useEffect(() => {
         setDeploymentUnits(deploymentUnitResponse?.deploymentUnits);
@@ -396,7 +400,8 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                     className="tenant-account"
                     key={ index }
                     onClick={ () => handleTenantSwitch(tempTenantAssociation.domain,
-                        isCentralDeploymentEnabled ? tempTenantAssociation.consoleHostname: undefined) }
+                        isCentralDeploymentEnabled && isRegionSelectionEnabled ?
+                            tempTenantAssociation.consoleHostname: undefined) }
                 >
                     <GenericIcon
                         icon={ getMiscellaneousIcons().tenantIcon }
@@ -410,7 +415,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                             className="name"
                             data-testid={ `${ tempTenantAssociation?.domain }-tenant-la-name` }
                         >
-                            { tempTenantAssociation?.domain + (isCentralDeploymentEnabled ?
+                            { tempTenantAssociation?.domain + (isCentralDeploymentEnabled && isRegionSelectionEnabled ?
                                 " (" + tempTenantAssociation?.deploymentUnitName + ")" : "") }
                         </div>
                     </Item.Content>
@@ -527,11 +532,11 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
         const changeValue: string = event.target.value;
 
         if (tenantAssociations && Array.isArray(tenantAssociations.associatedTenants)) {
-            let result: TenantInfo | TenantInfo[];
+            let result: TenantInfo[];
 
             if (changeValue.length > 0) {
-                result = tenantAssociations.associatedTenants.filter((item: string) =>
-                    item.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+                result = tenantAssociations.associatedTenants.filter((tenantInfo: TenantInfo) =>
+                    tenantInfo.domain?.toLowerCase()?.indexOf(changeValue.toLowerCase()) !== -1);
             } else {
                 result = tenantAssociations.associatedTenants;
             }
@@ -675,7 +680,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
 
         if (tenantAssociations) {
             const { currentTenant } = tenantAssociations;
-            const deploymentUnitName: string = isCentralDeploymentEnabled
+            const deploymentUnitName: string = isCentralDeploymentEnabled && isRegionSelectionEnabled
                 ? ` (${currentTenant?.deploymentUnitName})`
                 : "";
 

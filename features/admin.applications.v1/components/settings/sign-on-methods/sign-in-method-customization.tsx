@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
 import { getMultiFactorAuthenticatorDetails } from "@wso2is/admin.connections.v1/api/authenticators";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -26,6 +25,7 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
+import useAuthenticationFlow from "@wso2is/admin.login-flow-builder.v1/hooks/use-authentication-flow";
 import useAILoginFlow from "@wso2is/admin.login-flow.ai.v1/hooks/use-ai-login-flow";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import {

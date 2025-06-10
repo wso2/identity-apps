@@ -33,11 +33,7 @@
 
         if (requestBody.length() > 0) {
             JSONObject requestJson = new JSONObject(requestBody.toString());
-            if (requestJson.has("applicationId")) {
-                endpoint = "/api/server/v1/registration/initiate"; 
-            } else {
-                endpoint = "/api/server/v1/registration/submit";
-            } 
+            endpoint = "/api/server/v1/flow/execute";
         }
     } catch (Exception e) {
         out.print("{\"error\": \"Error reading request: " + e.getMessage() + "\"}");
@@ -45,9 +41,9 @@
     }
 
     StringBuilder apiResponse = new StringBuilder();
-    HttpURLConnection connection = null;    
+    HttpURLConnection connection = null;
     String apiURL = identityServerEndpointContextParam + endpoint;
-    
+
     try {
         URL url = new URL(apiURL);
         connection = (HttpURLConnection) url.openConnection();
@@ -76,8 +72,19 @@
 
             JSONObject responseObject = new JSONObject(apiResponse.toString());
             out.print(responseObject.toString(2));
+        } else if (responseCode == HttpURLConnection.HTTP_INTERNAL_ERROR) {
+            out.print("{\"error\": {\"code\": \"500\"}}");
         } else {
-            out.print("{\"error\": \"Failed to fetch data. Response Code: " + responseCode + "\"}");
+            BufferedReader errorReader = new BufferedReader(new InputStreamReader(connection.getErrorStream(), "utf-8"));
+            StringBuilder errorResponse = new StringBuilder();
+            String errorLine;
+            while ((errorLine = errorReader.readLine()) != null) {
+                errorResponse.append(errorLine);
+            }
+            errorReader.close();
+
+            JSONObject errorObject = new JSONObject(errorResponse.toString());
+            out.print("{\"error\": " + errorObject.toString(2) + "}");
         }
     } catch (Exception e) {
         out.print("{\"error\": \"Exception: " + e.getMessage() + "\"}");

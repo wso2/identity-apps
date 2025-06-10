@@ -609,6 +609,7 @@ export enum PreviewScreenType {
 export enum PreviewScreenVariationType {
     BASE = "base",
     SMS_OTP = "sms-otp",
+    EMAIL_OTP = "email-otp",
     EMAIL_LINK = "email-link",
     MULTI = "multi",
     EMAIL = "email",

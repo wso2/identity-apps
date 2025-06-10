@@ -1,5 +1,29 @@
 # @wso2is/admin.home.v1
 
+## 1.7.4
+
+### Patch Changes
+
+- [#8238](https://github.com/wso2/identity-apps/pull/8238) [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+- Updated dependencies [[`89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f`](https://github.com/wso2/identity-apps/commit/89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f), [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f)]:
+  - @wso2is/admin.core.v1@2.45.2
+  - @wso2is/admin.registration-flow-builder.v1@0.6.1
+  - @wso2is/admin.organizations.v1@2.26.205
+  - @wso2is/admin.applications.v1@2.35.4
+  - @wso2is/admin.feature-gate.v1@1.6.2
+  - @wso2is/admin.extensions.v1@2.38.2
+  - @wso2is/react-components@2.9.16
+  - @wso2is/common.ai.v1@2.27.3
+
+## 1.7.3
+
+### Patch Changes
+
+- Updated dependencies [[`c85ddafae25af01e6230b2583b30f0c6a741c837`](https://github.com/wso2/identity-apps/commit/c85ddafae25af01e6230b2583b30f0c6a741c837), [`19322a678f21fcc094ea10bbb276517f7fc5f3ce`](https://github.com/wso2/identity-apps/commit/19322a678f21fcc094ea10bbb276517f7fc5f3ce)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.6.0
+  - @wso2is/admin.core.v1@2.45.1
+
 ## 1.7.2
 
 ### Patch Changes

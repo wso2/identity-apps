@@ -1,5 +1,173 @@
 # @wso2is/admin.extensions.v1
 
+## 2.38.2
+
+### Patch Changes
+
+- [#8238](https://github.com/wso2/identity-apps/pull/8238) [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+- Updated dependencies [[`89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f`](https://github.com/wso2/identity-apps/commit/89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f), [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f)]:
+  - @wso2is/admin.core.v1@2.45.2
+  - @wso2is/admin.server-configurations.v1@2.35.1
+  - @wso2is/admin.identity-providers.v1@2.26.206
+  - @wso2is/admin.remote-userstores.v1@1.7.160
+  - @wso2is/admin.api-resources.v1@2.25.204
+  - @wso2is/admin.authorization.v1@2.25.89
+  - @wso2is/admin.organizations.v1@2.26.205
+  - @wso2is/admin.sms-providers.v1@2.25.204
+  - @wso2is/admin.applications.v1@2.35.4
+  - @wso2is/admin.feature-gate.v1@1.6.2
+  - @wso2is/admin.provisioning.v1@2.25.204
+  - @wso2is/admin.connections.v1@2.33.96
+  - @wso2is/admin.userstores.v1@2.27.33
+  - @wso2is/admin.validation.v1@2.27.144
+  - @wso2is/admin.tenants.v1@2.29.11
+  - @wso2is/admin.claims.v1@2.27.123
+  - @wso2is/admin.groups.v1@2.27.119
+  - @wso2is/react-components@2.9.16
+  - @wso2is/admin.roles.v2@2.27.154
+  - @wso2is/admin.users.v1@2.32.5
+  - @wso2is/dynamic-forms@2.4.41
+  - @wso2is/form@2.7.1
+
+## 2.38.1
+
+### Patch Changes
+
+- [#8204](https://github.com/wso2/identity-apps/pull/8204) [`186f06c1a3364687cbf9e91a841da97538f06336`](https://github.com/wso2/identity-apps/commit/186f06c1a3364687cbf9e91a841da97538f06336) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add impersonation UX improvements.
+
+- Updated dependencies [[`186f06c1a3364687cbf9e91a841da97538f06336`](https://github.com/wso2/identity-apps/commit/186f06c1a3364687cbf9e91a841da97538f06336)]:
+  - @wso2is/admin.users.v1@2.32.3
+  - @wso2is/i18n@2.23.2
+
+## 2.38.0
+
+### Minor Changes
+
+- [#8174](https://github.com/wso2/identity-apps/pull/8174) [`15a063f9e5c1b3e14b1fbb2e1c1a0697d98f53e1`](https://github.com/wso2/identity-apps/commit/15a063f9e5c1b3e14b1fbb2e1c1a0697d98f53e1) Thanks [@lashinijay](https://github.com/lashinijay)! - Introduce client credential authentication for email providers
+
+### Patch Changes
+
+- Updated dependencies [[`7c7082aaf820c0e390f2e3b5d3224d9cfa0da10e`](https://github.com/wso2/identity-apps/commit/7c7082aaf820c0e390f2e3b5d3224d9cfa0da10e), [`15a063f9e5c1b3e14b1fbb2e1c1a0697d98f53e1`](https://github.com/wso2/identity-apps/commit/15a063f9e5c1b3e14b1fbb2e1c1a0697d98f53e1), [`709983b9893e6922dc0c9066f0af61d35d1fa1cc`](https://github.com/wso2/identity-apps/commit/709983b9893e6922dc0c9066f0af61d35d1fa1cc)]:
+  - @wso2is/admin.users.v1@2.32.0
+  - @wso2is/i18n@2.23.0
+  - @wso2is/admin.core.v1@2.44.0
+  - @wso2is/core@2.8.0
+  - @wso2is/form@2.7.0
+
+## 2.37.12
+
+### Patch Changes
+
+- [#8163](https://github.com/wso2/identity-apps/pull/8163) [`bea9f2c4f90ec88e005d823e348ba16767c00e4d`](https://github.com/wso2/identity-apps/commit/bea9f2c4f90ec88e005d823e348ba16767c00e4d) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - enable delete icon for mapped identity claims in custom scim2 schema
+
+## 2.37.11
+
+### Patch Changes
+
+- [#8157](https://github.com/wso2/identity-apps/pull/8157) [`6dfa562fcaa06bdd446d4d62f5089e6dc07019a9`](https://github.com/wso2/identity-apps/commit/6dfa562fcaa06bdd446d4d62f5089e6dc07019a9) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide client credentials grant type in MCP client app template if the client is not marked as a public client
+
+- Updated dependencies [[`6dfa562fcaa06bdd446d4d62f5089e6dc07019a9`](https://github.com/wso2/identity-apps/commit/6dfa562fcaa06bdd446d4d62f5089e6dc07019a9)]:
+  - @wso2is/admin.applications.v1@2.34.9
+
+## 2.37.10
+
+### Patch Changes
+
+- [#8132](https://github.com/wso2/identity-apps/pull/8132) [`0149b3e586fb181b1f79ed6cf000e0f8b07f7e4a`](https://github.com/wso2/identity-apps/commit/0149b3e586fb181b1f79ed6cf000e0f8b07f7e4a) Thanks [@lashinijay](https://github.com/lashinijay)! - Revert onboarding multiple authentication schemes for email provider
+
+- Updated dependencies [[`0149b3e586fb181b1f79ed6cf000e0f8b07f7e4a`](https://github.com/wso2/identity-apps/commit/0149b3e586fb181b1f79ed6cf000e0f8b07f7e4a)]:
+  - @wso2is/admin.core.v1@2.43.6
+  - @wso2is/form@2.6.36
+  - @wso2is/i18n@2.22.18
+
+## 2.37.9
+
+### Patch Changes
+
+- [#8104](https://github.com/wso2/identity-apps/pull/8104) [`f09d6502a5796e8bbddbb0c17b113d3c3dd95360`](https://github.com/wso2/identity-apps/commit/f09d6502a5796e8bbddbb0c17b113d3c3dd95360) Thanks [@savindi7](https://github.com/savindi7)! - Remove unnecessary extension configs in Connections.
+
+- Updated dependencies [[`f09d6502a5796e8bbddbb0c17b113d3c3dd95360`](https://github.com/wso2/identity-apps/commit/f09d6502a5796e8bbddbb0c17b113d3c3dd95360), [`54903f70d0f1e8cc35d964b0b16a3c0ee7b1175b`](https://github.com/wso2/identity-apps/commit/54903f70d0f1e8cc35d964b0b16a3c0ee7b1175b)]:
+  - @wso2is/admin.connections.v1@2.33.94
+  - @wso2is/admin.core.v1@2.43.5
+  - @wso2is/i18n@2.22.17
+
+## 2.37.8
+
+### Patch Changes
+
+- [#8098](https://github.com/wso2/identity-apps/pull/8098) [`ad35a9374eb80a5d4556c8922764d507e1613768`](https://github.com/wso2/identity-apps/commit/ad35a9374eb80a5d4556c8922764d507e1613768) Thanks [@savindi7](https://github.com/savindi7)! - Update deprecated feature names.
+
+- Updated dependencies [[`ad35a9374eb80a5d4556c8922764d507e1613768`](https://github.com/wso2/identity-apps/commit/ad35a9374eb80a5d4556c8922764d507e1613768)]:
+  - @wso2is/admin.connections.v1@2.33.93
+  - @wso2is/i18n@2.22.16
+
+## 2.37.7
+
+### Patch Changes
+
+- [#8095](https://github.com/wso2/identity-apps/pull/8095) [`1aeb47990369ab1ccb4bc271a078d8115c210fb1`](https://github.com/wso2/identity-apps/commit/1aeb47990369ab1ccb4bc271a078d8115c210fb1) Thanks [@savindi7](https://github.com/savindi7)! - Deprecate configs in Connections.
+
+- Updated dependencies [[`1aeb47990369ab1ccb4bc271a078d8115c210fb1`](https://github.com/wso2/identity-apps/commit/1aeb47990369ab1ccb4bc271a078d8115c210fb1)]:
+  - @wso2is/admin.connections.v1@2.33.92
+  - @wso2is/i18n@2.22.15
+
+## 2.37.6
+
+### Patch Changes
+
+- [#8047](https://github.com/wso2/identity-apps/pull/8047) [`65f16ea68c15ad70f7be5db409bad7f45ab32aed`](https://github.com/wso2/identity-apps/commit/65f16ea68c15ad70f7be5db409bad7f45ab32aed) Thanks [@hwupathum](https://github.com/hwupathum)! - Update email template endpoint to use notification template API
+
+- Updated dependencies [[`aea8528039221e26e5e115ce6426948c5e3f1a2b`](https://github.com/wso2/identity-apps/commit/aea8528039221e26e5e115ce6426948c5e3f1a2b)]:
+  - @wso2is/admin.roles.v2@2.27.151
+
+## 2.37.5
+
+### Patch Changes
+
+- [#8052](https://github.com/wso2/identity-apps/pull/8052) [`1ad5333659787e995776dc6062050052f6ec8812`](https://github.com/wso2/identity-apps/commit/1ad5333659787e995776dc6062050052f6ec8812) Thanks [@brionmario](https://github.com/brionmario)! - Refactor files
+
+- Updated dependencies [[`1ad5333659787e995776dc6062050052f6ec8812`](https://github.com/wso2/identity-apps/commit/1ad5333659787e995776dc6062050052f6ec8812)]:
+  - @wso2is/admin.connections.v1@2.33.91
+
+## 2.37.4
+
+### Patch Changes
+
+- [#7997](https://github.com/wso2/identity-apps/pull/7997) [`84e52eb60374cdbe0a7f76adf760e676148db380`](https://github.com/wso2/identity-apps/commit/84e52eb60374cdbe0a7f76adf760e676148db380) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improvements to MCP client application template
+
+- Updated dependencies [[`84e52eb60374cdbe0a7f76adf760e676148db380`](https://github.com/wso2/identity-apps/commit/84e52eb60374cdbe0a7f76adf760e676148db380)]:
+  - @wso2is/admin.applications.v1@2.34.2
+
+## 2.37.3
+
+### Patch Changes
+
+- [#8005](https://github.com/wso2/identity-apps/pull/8005) [`43088ae8e3ef6aee49e7ed6f60ee3bd520a11e25`](https://github.com/wso2/identity-apps/commit/43088ae8e3ef6aee49e7ed6f60ee3bd520a11e25) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add support to show back channel logout URL based on feature config
+
+- Updated dependencies [[`43088ae8e3ef6aee49e7ed6f60ee3bd520a11e25`](https://github.com/wso2/identity-apps/commit/43088ae8e3ef6aee49e7ed6f60ee3bd520a11e25)]:
+  - @wso2is/admin.applications.v1@2.34.1
+
+## 2.37.2
+
+### Patch Changes
+
+- [#7990](https://github.com/wso2/identity-apps/pull/7990) [`5161765cb3777121c140698e69908a25196fbb62`](https://github.com/wso2/identity-apps/commit/5161765cb3777121c140698e69908a25196fbb62) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Introduce MCP client application template
+
+- Updated dependencies [[`5161765cb3777121c140698e69908a25196fbb62`](https://github.com/wso2/identity-apps/commit/5161765cb3777121c140698e69908a25196fbb62), [`22c135c791784fc9a235aa21c5593e90aa4ddf29`](https://github.com/wso2/identity-apps/commit/22c135c791784fc9a235aa21c5593e90aa4ddf29)]:
+  - @wso2is/admin.applications.v1@2.34.0
+  - @wso2is/admin.groups.v1@2.27.117
+  - @wso2is/admin.users.v1@2.30.120
+
+## 2.37.1
+
+### Patch Changes
+
+- [#7978](https://github.com/wso2/identity-apps/pull/7978) [`f12dba0c158f03e179396e2eec3e480007164eb4`](https://github.com/wso2/identity-apps/commit/f12dba0c158f03e179396e2eec3e480007164eb4) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in M2M applications' guide tab
+
+- Updated dependencies [[`2abed5bc378997ca7e3f790d38019390e24aab6f`](https://github.com/wso2/identity-apps/commit/2abed5bc378997ca7e3f790d38019390e24aab6f)]:
+  - @wso2is/admin.connections.v1@2.33.89
+
 ## 2.37.0
 
 ### Minor Changes
