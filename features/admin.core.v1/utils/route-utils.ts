@@ -491,8 +491,14 @@ export class RouteUtils {
             },
             {
                 category: extensions,
+                id: "webhooks",
+                order: 1,
+                selected: history.location.pathname.includes("/webhooks")
+            },
+            {
+                category: extensions,
                 id: "eventPublishing",
-                order: 1
+                order: 2
             }
         ];
 

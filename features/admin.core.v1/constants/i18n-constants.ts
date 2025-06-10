@@ -280,6 +280,11 @@ export class I18nConstants {
     public static readonly ACTIONS_NAMESPACE: string = I18nModuleConstants.ACTIONS_NAMESPACE;
 
     /**
+     * Webhooks namespace.
+     */
+    public static readonly WEBHOOKS_NAMESPACE: string = I18nModuleConstants.WEBHOOKS_NAMESPACE;
+
+    /**
      * Tenants namespace.
      */
     public static readonly TENANTS_NAMESPACE: string = I18nModuleConstants.TENANTS_NAMESPACE;
@@ -357,6 +362,7 @@ export class I18nConstants {
         [ I18nConstants.TEMPLATE_CORE_NAMESPACE, "portals" ],
         [ I18nConstants.IMPERSONATION_CONFIGURATION_NAMESPACE, "portals" ],
         [ I18nConstants.ACTIONS_NAMESPACE, "portals" ],
+        [ I18nConstants.WEBHOOKS_NAMESPACE, "portals" ],
         [ I18nConstants.TENANTS_NAMESPACE, "portals" ],
         [ I18nConstants.CUSTOM_AUTHENTICATOR_NAMESPACE, "portals" ],
         [ I18nConstants.POLICY_ADMINISTRATION_NAMESPACE, "portals" ],
