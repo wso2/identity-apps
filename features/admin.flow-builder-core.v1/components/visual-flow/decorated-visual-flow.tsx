@@ -59,7 +59,7 @@ export interface DecoratedVisualFlowPropsInterface extends VisualFlowPropsInterf
      * Callback to be fired when node data is updated.
      */
     mutateComponents: (components: Element[]) => Element[];
-    onTemplateLoad: (template: Template) => [Node[], Edge[]];
+    onTemplateLoad: (template: Template) => [Node[], Edge[], Resource?, string?];
     onWidgetLoad: (
         widget: Widget,
         targetResource: Resource,
@@ -332,7 +332,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
             return;
         }
 
-        const [ newNodes, newEdges ] = onTemplateLoad(resource);
+        const [ newNodes, newEdges, defaultPropertySelector, defaultPropertySectorStepId ] = onTemplateLoad(resource);
 
         // TODO: Figure-out a better way to handle this debounce.
         // Tracker: https://github.com/xyflow/xyflow/issues/2405
@@ -361,7 +361,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
             setEdges(() => [ ...newEdges ]);
         }, 500);
 
-        onResourceDropOnCanvas(resource, null);
+        onResourceDropOnCanvas(defaultPropertySelector ?? resource, defaultPropertySectorStepId ?? null);
     };
 
     return (

@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import AuthenticationFlowBuilderCoreProvider from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
+import AuthenticationFlowBuilderCoreProvider
+    from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useReactFlow } from "@xyflow/react";

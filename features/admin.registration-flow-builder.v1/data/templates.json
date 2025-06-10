@@ -100,7 +100,7 @@
         "deprecated": false,
         "display": {
             "label": "Basic Details",
-            "description": "Basic registration experience with minimal data collect",
+            "description": "Basic registration experience with minimal data collection",
             "image": "https://www.svgrepo.com/show/390092/security-protection-password.svg",
             "showOnResourcePanel": true
         },
@@ -259,6 +259,7 @@
         "config": {
             "data": {
                 "__generationMeta__": {
+                    "defaultPropertySelectorId": "{{GOOGLE_REDIRECTION_STEP_ID}}",
                     "replacers": [
                         {
                             "key": "GOOGLE_REDIRECTION_STEP_ID",
@@ -275,8 +276,8 @@
                             "height": 291
                         },
                         "position": {
-                            "x": 300,
-                            "y": 200
+                            "x": 0,
+                            "y": 330
                         },
                         "data": {
                             "components": [
@@ -367,7 +368,7 @@
                             "height": 291
                         },
                         "position": {
-                            "x": 780,
+                            "x": 580,
                             "y": 730
                         },
                         "data": {
@@ -391,7 +392,7 @@
                             "height": 56
                         },
                         "position": {
-                            "x": 1200,
+                            "x": 900,
                             "y": 408
                         },
                         "data": {}
