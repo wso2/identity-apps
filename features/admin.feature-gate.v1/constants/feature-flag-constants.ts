@@ -58,7 +58,8 @@ class FeatureFlagConstants {
         REMOTE_LOG_PUBLISH: "remote.log.publish",
         SMS_TEMPLATES: "smsTemplates",
         USER_ROLES: "userRoles",
-        USER_STORES: "userStores"
+        USER_STORES: "userStores",
+        WEBHOOKS: "webhooks"
     };
 }
 
