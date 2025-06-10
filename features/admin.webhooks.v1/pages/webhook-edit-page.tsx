@@ -16,9 +16,10 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, Show, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     ConfirmationModal,
@@ -32,6 +33,7 @@ import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Checkbox, CheckboxProps, Grid } from "semantic-ui-react";
 import changeWebhookStatus from "../api/change-webhook-status";
 import createWebhook from "../api/create-webhook";
@@ -57,6 +59,15 @@ type WebhookEditPageInterface = IdentifiableComponentInterface;
 const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
     ["data-componentid"]: _componentId = "webhook-edit-page"
 }: WebhookEditPageInterface): ReactElement => {
+
+    const webhooksFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.webhooks
+    );
+
+    const hasWebhookUpdatePermissions: boolean = useRequiredScopes(webhooksFeatureConfig?.scopes?.update);
+    const hasWebhookCreatePermissions: boolean = useRequiredScopes(webhooksFeatureConfig?.scopes?.create);
+    const hasWebhookDeletePermissions: boolean = useRequiredScopes(webhooksFeatureConfig?.scopes?.delete);
+
     const pathParts: string[] = history.location.pathname.split("/");
     const webhookId: string = pathParts[pathParts.length - 1];
     const isCreateMode: boolean = !webhookId || webhookId === "new" || webhookId === "";
@@ -170,13 +181,29 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
         return selectedChannelUris;
     };
 
+    const isReadOnly = (): boolean => {
+        if (isCreateMode) {
+            return !hasWebhookCreatePermissions;
+        } else {
+            return !hasWebhookUpdatePermissions;
+        }
+    };
+
     /**
      * Handles webhook creation/update submission
      */
     const handleWebhookSubmit = (formData: WebhookConfigFormPropertyInterface): void => {
+        if (isReadOnly()) {
+            return;
+        }
+
         const selectedChannelUris: string[] = mapFormDataToChannels(formData);
 
         if (isCreateMode) {
+            if (!hasWebhookCreatePermissions) {
+                return;
+            }
+
             const webhookCreatePayload: WebhookCreateRequestInterface = {
                 channelsSubscribed: selectedChannelUris,
                 endpoint: formData.endpoint || "",
@@ -202,6 +229,10 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
                     setIsSubmitting(false);
                 });
         } else {
+            if (!hasWebhookUpdatePermissions) {
+                return;
+            }
+
             const webhookUpdatePayload: WebhookUpdateRequestInterface = {
                 channelsSubscribed: selectedChannelUris,
                 endpoint: formData.endpoint || "",
@@ -237,6 +268,10 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
      * Handles webhook status toggle
      */
     const handleStatusToggle = (event: SyntheticEvent<Element, Event>, data: CheckboxProps): void => {
+        if (!hasWebhookUpdatePermissions && !isCreateMode) {
+            return;
+        }
+
         const newStatus: boolean = !!data.checked;
 
         if (!isCreateMode && webhookId && webhook) {
@@ -246,7 +281,7 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
             changeWebhookStatus(webhookId, action)
                 .then(() => {
                     setIsActive(newStatus);
-                    handleSuccess("updateWebhookStatus", { "status": newStatus ? "active" : "inactive" });
+                    handleSuccess("updateWebhookStatus", { status: newStatus ? "active" : "inactive" });
                     mutateWebhook();
                 })
                 .catch((error: AxiosError) => {
@@ -265,6 +300,10 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
      * Handles webhook deletion
      */
     const handleWebhookDelete = (): void => {
+        if (!hasWebhookDeletePermissions) {
+            return;
+        }
+
         setIsDeletingWebhook(true);
         deleteWebhook(webhookId)
             .then(() => {
@@ -281,18 +320,21 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
     };
 
     /**
-     * This renders the toggle button for webhook status.
+     * This renders the toggle button for webhook status with permission checks.
      */
     const webhooksActivateDeactivateToggle = (): ReactElement => {
         return (
-            <Checkbox
-                label={ isActive ? t("webhooks:common.status.active") : t("webhooks:common.status.inactive") }
-                toggle
-                onChange={ handleStatusToggle }
-                checked={ isActive }
-                readOnly={ isStatusChanging && !isCreateMode }
-                disabled={ isStatusChanging && !isCreateMode }
-            />
+            !isLoading && (
+                <Checkbox
+                    label={ isActive ? t("webhooks:common.status.active") : t("webhooks:common.status.inactive") }
+                    toggle
+                    onChange={ handleStatusToggle }
+                    checked={ isActive }
+                    readOnly={ !hasWebhookUpdatePermissions || (isStatusChanging && !isCreateMode) }
+                    disabled={ !hasWebhookUpdatePermissions || (isStatusChanging && !isCreateMode) }
+                    data-componentId={ `${_componentId}-webhook-enable-toggle` }
+                />
+            )
         );
     };
 
@@ -341,7 +383,7 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
                             initialValues={ webhookInitialValues }
                             channelConfigs={ channelConfigs }
                             isLoading={ isLoading }
-                            isReadOnly={ false }
+                            isReadOnly={ isReadOnly() }
                             isCreateFormState={ isCreateMode }
                             onSubmit={ handleWebhookSubmit }
                             isSubmitting={ isSubmitting || isDeletingWebhook }
@@ -350,7 +392,7 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
                 </Grid.Row>
             </Grid>
             { !isWebhookLoading && !isCreateMode && !isEmpty(webhook) && (
-                <Show>
+                <Show when={ webhooksFeatureConfig?.scopes?.delete }>
                     <DangerZoneGroup sectionHeader={ t("webhooks:dangerZone.heading") }>
                         <DangerZone
                             data-componentid={ `${_componentId}-danger-zone` }
@@ -358,7 +400,9 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
                             header={ t("webhooks:dangerZone.delete.heading") }
                             subheader={ t("webhooks:dangerZone.delete.subHeading") }
                             onActionClick={ (): void => {
-                                setShowDeleteConfirmationModal(true);
+                                if (hasWebhookDeletePermissions) {
+                                    setShowDeleteConfirmationModal(true);
+                                }
                             } }
                         />
                     </DangerZoneGroup>

@@ -16,13 +16,15 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, Show, useRequiredScopes } from "@wso2is/access-control";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DocumentationLink, ListLayout, PageLayout, PrimaryButton, useDocumentation } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Icon } from "semantic-ui-react";
 import deleteWebhook from "../api/delete-webhook";
 import useGetWebhooks from "../api/use-get-webhooks";
@@ -41,9 +43,15 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
+    const webhooksFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.webhooks
+    );
+
+    const hasWebhookCreatePermissions: boolean = useRequiredScopes(webhooksFeatureConfig?.scopes?.create);
+    const hasWebhookDeletePermissions: boolean = useRequiredScopes(webhooksFeatureConfig?.scopes?.delete);
+
     const [ isDeletingWebhook, setIsDeletingWebhook ] = useState<boolean>(false);
 
-    // Data fetching using the new hook
     const {
         data: webhookListResponse,
         isLoading: isWebhookListFetchRequestLoading,
@@ -90,7 +98,14 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
         }
     }, [ webhookListFetchRequestError, handleError ]);
 
+    /**
+     * Handles the deletion of a webhook with permission checks.
+     */
     const handleWebhookDelete = (webhook: WebhookListItemInterface): void => {
+        if (!hasWebhookDeletePermissions) {
+            return;
+        }
+
         setIsDeletingWebhook(true);
         deleteWebhook(webhook.id)
             .then(() => {
@@ -105,6 +120,23 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
             });
     };
 
+    /**
+     * Handles webhook edit navigation with permission check.
+     */
+    const handleWebhookEdit = (webhook: WebhookListItemInterface): void => {
+        // Allow to navigage to edit page if the user has view permissions
+        navigateToWebhookEdit(webhook);
+    };
+
+    /**
+     * Handles webhook creation navigation with permission check.
+     */
+    const handleWebhookCreate = (): void => {
+        if (hasWebhookCreatePermissions) {
+            navigateToWebhookCreation();
+        }
+    };
+
     const enhancedWebhookList: WebhookListInterface = useMemo(
         () => ({
             totalResults: filteredWebhooks.length,
@@ -113,11 +145,12 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
         [ paginatedWebhooks, filteredWebhooks.length ]
     );
 
-    const renderAddButton = () =>
+    const renderAddButton = (): ReactElement | null =>
         enhancedWebhookList?.totalResults > 0 ? (
-            <Show>
+            <Show when={ webhooksFeatureConfig?.scopes?.create }>
                 <PrimaryButton
-                    onClick={ navigateToWebhookCreation }
+                    onClick={ handleWebhookCreate }
+                    disabled={ !hasWebhookCreatePermissions }
                     data-componentid={ `${_componentId}-list-layout-add-button` }
                 >
                     <Icon name="add" />
@@ -126,7 +159,10 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
             </Show>
         ) : null;
 
-    const renderAdvancedSearch = () => (
+    /**
+     * Renders the advanced search component.
+     */
+    const renderAdvancedSearch = (): ReactElement => (
         <AdvancedSearchWithBasicFilters
             onFilter={ handleWebhookFilter }
             filterAttributeOptions={ [
@@ -189,10 +225,11 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
                     isLoading={ isWebhookListFetchRequestLoading || isDeletingWebhook }
                     list={ enhancedWebhookList }
                     onWebhookDelete={ handleWebhookDelete }
-                    onWebhookEdit={ navigateToWebhookEdit }
-                    onEmptyListPlaceholderActionClick={ navigateToWebhookCreation }
+                    onWebhookEdit={ handleWebhookEdit }
+                    onEmptyListPlaceholderActionClick={ handleWebhookCreate }
                     onSearchQueryClear={ handleSearchQueryClear }
                     searchQuery={ searchQuery }
+                    data-componentid={ `${_componentId}-webhook-list` }
                 />
             </ListLayout>
         </PageLayout>

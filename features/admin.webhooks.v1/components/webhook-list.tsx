@@ -16,9 +16,10 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, Show, useRequiredScopes } from "@wso2is/access-control";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     AnimatedAvatar,
@@ -33,6 +34,7 @@ import {
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticCOLORS } from "semantic-ui-react";
 import { WebhookListInterface, WebhookListItemInterface, WebhookStatus } from "../models/webhooks";
 
@@ -93,6 +95,14 @@ const WebhookList: FunctionComponent<WebhookListPropsInterface> = ({
 }: WebhookListPropsInterface & { ["data-componentid"]?: string }): ReactElement => {
     const { t } = useTranslation();
 
+    const webhooksFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.webhooks
+    );
+
+    const hasWebhookUpdatePermissions: boolean = useRequiredScopes(webhooksFeatureConfig?.scopes?.update);
+    const hasWebhookDeletePermissions: boolean = useRequiredScopes(webhooksFeatureConfig?.scopes?.delete);
+    const hasWebhookCreatePermissions: boolean = useRequiredScopes(webhooksFeatureConfig?.scopes?.create);
+
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingWebhook, setDeletingWebhook ] = useState<WebhookListItemInterface | undefined>(undefined);
 
@@ -111,6 +121,10 @@ const WebhookList: FunctionComponent<WebhookListPropsInterface> = ({
      * @param webhook - Webhook which needs to be deleted.
      */
     const handleWebhookDelete = (webhook: WebhookListItemInterface): void => {
+        if (!hasWebhookDeletePermissions) {
+            return;
+        }
+
         setDeletingWebhook(webhook);
         setShowDeleteConfirmationModal(true);
     };
@@ -119,6 +133,10 @@ const WebhookList: FunctionComponent<WebhookListPropsInterface> = ({
      * Handles the webhook delete confirmation.
      */
     const handleWebhookDeleteConfirm = (): void => {
+        if (!hasWebhookDeletePermissions) {
+            return;
+        }
+
         onWebhookDelete(deletingWebhook);
         setShowDeleteConfirmationModal(false);
         setDeletingWebhook(undefined);
@@ -189,24 +207,25 @@ const WebhookList: FunctionComponent<WebhookListPropsInterface> = ({
     };
 
     /**
-     * Resolves data table actions.
-     *
-     * @returns Table actions.
+     * Resolves data table actions based on permissions.
      */
     const resolveTableActions = (): TableActionsInterface[] => {
-        return [
-            {
-                "data-componentid": `${_componentId}-item-edit-button`,
-                icon: () => "pencil alternate",
-                onClick: (e: React.SyntheticEvent<Element, Event>, item: Record<string, any>): void => {
-                    const webhook: WebhookListItemInterface = item as WebhookListItemInterface;
+        const actions: TableActionsInterface[] = [];
 
-                    handleWebhookEdit(webhook);
-                },
-                popupText: (): string => t("common:edit"),
-                renderer: "semantic-icon"
+        actions.push({
+            "data-componentid": `${_componentId}-item-edit-button`,
+            icon: () => (hasWebhookUpdatePermissions ? "pencil alternate" : "eye"),
+            onClick: (e: React.SyntheticEvent<Element, Event>, item: Record<string, any>): void => {
+                const webhook: WebhookListItemInterface = item as WebhookListItemInterface;
+
+                handleWebhookEdit(webhook);
             },
-            {
+            popupText: (): string => (hasWebhookUpdatePermissions ? t("common:edit") : t("common:view")),
+            renderer: "semantic-icon"
+        });
+
+        if (hasWebhookDeletePermissions) {
+            actions.push({
                 "data-componentid": `${_componentId}-item-delete-button`,
                 icon: () => "trash alternate",
                 onClick: (e: React.SyntheticEvent<Element, Event>, item: Record<string, any>): void => {
@@ -216,8 +235,10 @@ const WebhookList: FunctionComponent<WebhookListPropsInterface> = ({
                 },
                 popupText: (): string => t("common:delete"),
                 renderer: "semantic-icon"
-            }
-        ];
+            });
+        }
+
+        return actions;
     };
 
     /**
@@ -226,7 +247,6 @@ const WebhookList: FunctionComponent<WebhookListPropsInterface> = ({
      * @returns Placeholder component.
      */
     const showPlaceholders = (): ReactElement => {
-        // When the search returns empty.
         if (searchQuery && list?.webhooks?.length === 0) {
             return (
                 <EmptyPlaceholder
@@ -251,8 +271,11 @@ const WebhookList: FunctionComponent<WebhookListPropsInterface> = ({
             return (
                 <EmptyPlaceholder
                     action={
-                        (<Show>
-                            <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
+                        (<Show when={ webhooksFeatureConfig?.scopes?.create }>
+                            <PrimaryButton
+                                onClick={ onEmptyListPlaceholderActionClick }
+                                disabled={ !hasWebhookCreatePermissions }
+                            >
                                 <Icon name="add" />
                                 { t("webhooks:pages.list.buttons.add") }
                             </PrimaryButton>
@@ -261,6 +284,7 @@ const WebhookList: FunctionComponent<WebhookListPropsInterface> = ({
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     subtitle={ [ t("webhooks:pages.list.emptyList.subHeading") ] }
+                    data-componentid={ `${_componentId}-empty-list-placeholder` }
                 />
             );
         }
@@ -288,7 +312,7 @@ const WebhookList: FunctionComponent<WebhookListPropsInterface> = ({
                 transparent={ !isLoading && showPlaceholders() !== null }
                 data-componentid={ `${_componentId}-data-table` }
             />
-            { deletingWebhook && (
+            { deletingWebhook && hasWebhookDeletePermissions && (
                 <ConfirmationModal
                     onClose={ (): void => setShowDeleteConfirmationModal(false) }
                     type="negative"
@@ -304,12 +328,19 @@ const WebhookList: FunctionComponent<WebhookListPropsInterface> = ({
                     } }
                     onPrimaryActionClick={ (): void => handleWebhookDeleteConfirm() }
                     closeOnDimmerClick={ false }
+                    data-componentid={ `${_componentId}-delete-confirmation-modal` }
                 >
-                    <ConfirmationModal.Header>{ t("webhooks:confirmations.delete.heading") }</ConfirmationModal.Header>
-                    <ConfirmationModal.Message attached negative>
+                    <ConfirmationModal.Header data-componentid={ `${_componentId}-delete-confirmation-modal-header` }>
+                        { t("webhooks:confirmations.delete.heading") }
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message
+                        attached
+                        negative
+                        data-componentid={ `${_componentId}-delete-confirmation-modal-message` }
+                    >
                         { t("webhooks:confirmations.delete.message") }
                     </ConfirmationModal.Message>
-                    <ConfirmationModal.Content>
+                    <ConfirmationModal.Content data-componentid={ `${_componentId}-delete-confirmation-modal-content` }>
                         { t("webhooks:confirmations.delete.content") }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
