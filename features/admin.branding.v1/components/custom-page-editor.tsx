@@ -16,94 +16,74 @@
  * under the License.
  */
 
-import { BrandingPreferenceCustomContentInterface } from "@wso2is/common.branding.v1/models/branding-preferences";
+import { useRequiredScopes } from "@wso2is/access-control";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { FormPropsInterface } from "@wso2is/form/src/components/form";
 import React, {
     FunctionComponent,
-    MutableRefObject,
     ReactElement,
-    useContext,
     useEffect,
-    useRef,
-    useState } from "react";
-import { RouteComponentProps } from "react-router";
+    useState
+} from "react";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Segment } from "semantic-ui-react";
 import { EditorViewTabs } from "./custom-page-editor/editor-view";
 import { StickyTabPaneActionPanel } from "./sticky-tab-pane-action-panel";
-import BrandingPreferenceContext from "../context/branding-preference-context";
+import useBrandingPreference from "../hooks/use-branding-preference";
 import "./custom-page-editor.scss";
 
-type CustomPageEditorPropsInterface = IdentifiableComponentInterface;
+type CustomPageEditorInterface = IdentifiableComponentInterface;
 
-interface RouteParams {
-    templateTypeId: string;
-    templateId: string;
-}
+export const CustomPageEditor: FunctionComponent<CustomPageEditorInterface> = ({
+    [ "data-componentid" ]: componentId = "custom-page-editor"
+}: CustomPageEditorInterface): ReactElement => {
 
-interface UpdatedContent {
-    html: string;
-    css: string;
-    js: string;
-}
+    const { t } = useTranslation();
 
-interface CustomPageEditorInterface extends IdentifiableComponentInterface{
-    /**
-     * Component id for the component.
-     */
-    "data-componentid": string;
-    /**
-     * Is the form is loading.
-     */
-    isLoading: boolean;
-    /**
-     * Is the form in a submitting state.
-     */
-    isSubmitting: boolean;
-    /**
-     * Is the form read only.
-     */
-    readOnly: boolean;
-}
-
-const CustomPageEditorPageLayout: FunctionComponent<CustomPageEditorPropsInterface> = (
-    props: CustomPageEditorInterface & RouteComponentProps<RouteParams>
-): ReactElement => {
+    const featureConfig: ExtendedFeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const hasBrandingUpdatePermissions: boolean = useRequiredScopes(featureConfig?.apiResources?.scopes?.update);
 
     const {
-        [ "data-componentid" ]: componentId
-    } = props;
-
-    const { setCustomLayoutMode } = useContext(BrandingPreferenceContext);
-
-    const handleBackButtonClick = (): void => {
-        setCustomLayoutMode(false);
-    };
-
-    const { preference: brandingPreference } = useContext(BrandingPreferenceContext);
-    const customContent: BrandingPreferenceCustomContentInterface =
-        brandingPreference?.preference?.customContent?? {};
+        setIsCustomLayoutEditorEnabled,
+        preference: brandingPreference,
+        updateBrandingCustomContent
+    } = useBrandingPreference();
 
     const [ html, setHtml ] = useState("");
     const [ css, setCss ] = useState("");
     const [ js, setJs ] = useState("");
+    const [ isSubmitting, setIsSubmitting ] = useState(false);
 
+    /**
+     * Effect to initialize the editor with the current custom content.
+     */
     useEffect(() => {
-        setHtml(customContent.htmlContent ?? "");
-        setCss(customContent.cssContent ?? "");
-        setJs(customContent.jsContent ?? "");
-    }, [ customContent ]);
 
-    const formRef: MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
+        if (!brandingPreference?.preference?.layout?.content) {
+            return;
+        }
 
-    const { updateBrandingCustomContent } = useContext(BrandingPreferenceContext);
+        setHtml(brandingPreference.preference.layout.content?.html ?? "");
+        setCss(brandingPreference.preference.layout.content?.css ?? "");
+        setJs(brandingPreference.preference.layout.content?.js ?? "");
+    }, [ brandingPreference ]);
 
+    /**
+     * Handles the save and publish button click event.
+     */
     const handleSaveAndPublish = (): void => {
-        updateBrandingCustomContent({
-            cssContent: css,
-            htmlContent: html,
-            jsContent: js
-        });
+
+        setIsSubmitting(true);
+        updateBrandingCustomContent({ css, html, js }, () => setIsSubmitting(false));
+    };
+
+    /**
+     * Handles the back button click event to disable the custom layout editor.
+     */
+    const handleBackButtonClick = (): void => {
+        setIsCustomLayoutEditorEnabled(false);
     };
 
     return (
@@ -114,30 +94,27 @@ const CustomPageEditorPageLayout: FunctionComponent<CustomPageEditorPropsInterfa
                 onClick = { handleBackButtonClick }
             >
                 <i aria-hidden="true" className="arrow left icon"></i>
-                    Go back
+                { t("branding:customPageEditor.backButton") }
             </div>
             <div className="main-container">
                 <Segment className="editor-container">
                     <EditorViewTabs
                         html = { html }
+                        setHtml = { setHtml }
                         css = { css }
+                        setCss = { setCss }
                         js = { js }
-                        onContentUpdate = { ( updated: UpdatedContent ) => {
-                            setHtml(updated.html);
-                            setCss(updated.css);
-                            setJs(updated.js);
-                        } }
+                        setJs = { setJs }
+                        readOnly = { !hasBrandingUpdatePermissions }
                     />
                     <StickyTabPaneActionPanel
-                        formRef={ formRef }
+                        formRef={ undefined }
                         saveButton={ {
                             "data-componentid": `${ componentId }-save-button`,
-                            isDisabled: false,
-                            isLoading: false,
-                            onClick: () => {
-                                handleSaveAndPublish();
-                            },
-                            readOnly: false
+                            isDisabled: isSubmitting || !hasBrandingUpdatePermissions,
+                            isLoading: isSubmitting,
+                            onClick: handleSaveAndPublish,
+                            readOnly: !hasBrandingUpdatePermissions
                         } }
                         data-componentid={ `${ componentId }-sticky-tab-action-panel` }
                     >
@@ -147,17 +124,3 @@ const CustomPageEditorPageLayout: FunctionComponent<CustomPageEditorPropsInterfa
         </div>
     );
 };
-
-/**
- * Default props for the component.
- */
-CustomPageEditorPageLayout.defaultProps = {
-    "data-componentid": "custom-page-editor"
-};
-
-/**
- * A default export was added to support React.lazy.
- * TODO: Change this to a named export once react starts supporting named exports for code splitting.
- * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
- */
-export default CustomPageEditorPageLayout;

@@ -22,8 +22,8 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import { OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models/organizations";
 import useGetBrandingPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-branding-preference-resolve";
 import {
+    BrandingCustomLayoutContentInterface,
     BrandingPreferenceAPIResponseInterface,
-    BrandingPreferenceCustomContentInterface,
     BrandingPreferenceTypes,
     BrandingSubFeatures,
     PreviewScreenType,
@@ -115,7 +115,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     const [ isCustomTextPreferenceConfigured, setIsCustomTextPreferenceConfigured ] = useState<boolean>(true);
     const [ selectedApplication, setSelectedApplication ] = useState<string>(null);
     const [ brandingMode, setBrandingMode ] = useState<BrandingModes>(BrandingModes.ORGANIZATION);
-    const [ customLayoutMode, setCustomLayoutMode ] = useState<boolean>(false);
+    const [ isCustomLayoutEditorEnabled, setIsCustomLayoutEditorEnabled ] = useState<boolean>(false);
 
     const resolvedName: string = (brandingMode === BrandingModes.APPLICATION && selectedApplication)
         ? selectedApplication : tenantDomain;
@@ -275,10 +275,14 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     }, [ originalBrandingPreference ]);
 
     /**
-     * Add or Update the Custom Content of the branding preference.
+     * Updates the custom layout content in the branding preference.
+     *
+     * @param updatedContent - Updated custom layout content.
+     * @param callback - Callback function to be called after the update is complete.
      */
     const updateBrandingCustomContent = (
-        updatedContent: BrandingPreferenceCustomContentInterface
+        updatedContent: BrandingCustomLayoutContentInterface,
+        callback: () => void
     ): void => {
         if (!brandingPreference) return;
 
@@ -286,7 +290,13 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
             ...brandingPreference,
             preference: {
                 ...brandingPreference.preference,
-                customContent: updatedContent
+                layout: {
+                    ...brandingPreference.preference.layout,
+                    content: {
+                        ...brandingPreference.preference.layout.content,
+                        ...updatedContent
+                    }
+                }
             }
         };
 
@@ -300,20 +310,18 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
             updated.locale
         ).then((response: BrandingPreferenceAPIResponseInterface) => {
             setBrandingPreference(response);
-
             dispatch(addAlert({
-                description: "Your changes have been saved and published.",
+                description: t("branding:customPageEditor.notifications.successContentUpdate.description"),
                 level: AlertLevels.SUCCESS,
-                message: "Branding layout updated successfully."
+                message: t("branding:customPageEditor.notifications.successContentUpdate.message")
             }));
         }).catch((_error: unknown) => {
-
             dispatch(addAlert({
-                description: "An error occurred while saving. Please try again.",
+                description: t("branding:customPageEditor.notifications.errorContentUpdate.description"),
                 level: AlertLevels.ERROR,
-                message: "Branding layout update failed."
+                message: t("branding:customPageEditor.notifications.errorContentUpdate.message")
             }));
-        });
+        }).finally(() => callback());
     };
 
     /**
@@ -481,7 +489,6 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 activeCustomTextConfigurationMode,
                 activeTab,
                 brandingMode,
-                customLayoutMode,
                 customText: customTextFormSubscription?.values ?? resolvedCustomText?.preference?.text,
                 customTextDefaults: customTextFallbacks?.preference?.text,
                 customTextFormSubscription: customTextFormSubscription ?? {
@@ -532,6 +539,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                     return meta;
                 },
                 i18n,
+                isCustomLayoutEditorEnabled,
                 isCustomTextConfigured: customText && !isEqual(customText, customTextFallbacks),
                 isCustomTextPreferenceFetching: isCustomTextPreferenceFetching,
                 onSelectedLocaleChange: (locale: string): void => {
@@ -556,7 +564,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 selectedScreen,
                 selectedScreenVariation,
                 setBrandingMode,
-                setCustomLayoutMode,
+                setIsCustomLayoutEditorEnabled,
                 setSelectedApplication,
                 updateActiveCustomTextConfigurationMode: setActiveCustomTextConfigurationMode,
                 updateActiveTab: (tab: string) => {

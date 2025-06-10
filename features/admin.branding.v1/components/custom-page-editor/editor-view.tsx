@@ -16,86 +16,77 @@
  * under the License.
  */
 
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CodeEditor, ResourceTab } from "@wso2is/react-components";
 import { Editor } from "codemirror";
-import React, {
-    FunctionComponent,
-    ReactElement,
-    useEffect,
-    useRef
-} from "react";
+import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 
-interface EditorViewTabsProps {
+/**
+ * Props interface for the EditorViewTabs component.
+ */
+interface EditorViewTabsProps extends IdentifiableComponentInterface {
+    /**
+     * HTML content to be displayed in the HTML editor tab.
+     */
     html: string;
+    /**
+     * Sets the HTML content.
+     *
+     * @param html - HTML content to set.
+     */
+    setHtml: (html: string) => void;
+    /**
+     * CSS content to be displayed in the CSS editor tab.
+     */
     css: string;
+    /**
+     * Sets the CSS content.
+     *
+     * @param css - CSS content to set.
+     */
+    setCss: (css: string) => void;
+    /**
+     * JavaScript content to be displayed in the JavaScript editor tab.
+     */
     js: string;
-    readOnly?: boolean;
-    onContentUpdate?: (content: {
-        html: string;
-        css: string;
-        js: string;
-    }) => void;
-    "data-componentid"?: string;
+    /**
+     * Sets the JavaScript content.
+     *
+     * @param js - JavaScript content to set.
+     */
+    setJs: (js: string) => void;
+    /**
+     * Indicates whether the editor is in read-only mode.
+     */
+    readOnly: boolean;
 }
 
-export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = (
-    props: EditorViewTabsProps
-): ReactElement => {
-    const {
-        html,
-        css,
-        js,
-        readOnly,
-        onContentUpdate,
-        "data-componentid": componentId = "layout-editor-tabs"
-    } = props;
+export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = ({
+    html,
+    setHtml,
+    css,
+    setCss,
+    js,
+    setJs,
+    readOnly,
+    [ "data-componentid" ]: componentId = "layout-editor-tabs"
+}: EditorViewTabsProps): ReactElement => {
 
-    const htmlContent: React.MutableRefObject<string> = useRef<string>(html);
-    const cssContent: React.MutableRefObject<string> = useRef<string>(css);
-    const jsContent: React.MutableRefObject<string> = useRef<string>(js);
-
-    // Keep refs in sync when props change
-    useEffect(() => {
-        htmlContent.current = html;
-    }, [ html ]);
-
-    useEffect(() => {
-        cssContent.current = css;
-    }, [ css ]);
-
-    useEffect(() => {
-        jsContent.current = js;
-    }, [ js ]);
-
-
-    const handleTabChange = () => {
-        onContentUpdate?.({
-            css: cssContent.current,
-            html: htmlContent.current,
-            js: jsContent.current
-        });
-    };
+    const { t } = useTranslation();
 
     return (
         <ResourceTab
-            onTabChange = { handleTabChange }
             panes = { [
                 {
-                    menuItem: "HTML",
+                    menuItem: t("branding:customPageEditor.tabs.html.label"),
                     render: () => (
                         <ResourceTab.Pane attached = { false } data-componentid={ `${ componentId }-html-tab` }>
                             <CodeEditor
                                 language = "htmlmixed"
                                 sourceCode = { html }
                                 options = { { lineWrapping: true } }
-                                onChange = { (_editor: Editor, _data: any, value: string) => {
-                                    htmlContent.current = value;
-                                } }
-                                onBlur = { () => onContentUpdate?.({
-                                    css: cssContent.current,
-                                    html: htmlContent.current,
-                                    js: jsContent.current
-                                }) }
+                                onChange = { (_editor: Editor, _data: any, value: string) => setHtml(value) }
                                 readOnly = { readOnly }
                                 theme = "light"
                                 data-componentid = { `${ componentId }-html-editor` }
@@ -104,21 +95,14 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = (
                     )
                 },
                 {
-                    menuItem: "CSS",
+                    menuItem: t("branding:customPageEditor.tabs.css.label"),
                     render: () => (
                         <ResourceTab.Pane attached = { false } data-componentid = { `${ componentId }-css-tab` }>
                             <CodeEditor
                                 language = "css"
                                 sourceCode = { css }
                                 options = { { lineWrapping: true } }
-                                onChange = { (_editor: Editor, _data: any, value: string) => {
-                                    cssContent.current = value;
-                                } }
-                                onBlur = { () => onContentUpdate?.({
-                                    css: cssContent.current,
-                                    html: htmlContent.current,
-                                    js: jsContent.current
-                                }) }
+                                onChange = { (_editor: Editor, _data: any, value: string) => setCss(value) }
                                 readOnly = { readOnly }
                                 theme = "light"
                                 data-componentid = { `${ componentId }-css-editor` }
@@ -127,21 +111,14 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = (
                     )
                 },
                 {
-                    menuItem: "JavaScript",
+                    menuItem: t("branding:customPageEditor.tabs.js.label"),
                     render: () => (
                         <ResourceTab.Pane attached = { false } data-componentid = { `${ componentId }-js-tab` }>
                             <CodeEditor
                                 language = "javascript"
                                 sourceCode = { js }
                                 options = { { lineWrapping: true } }
-                                onChange = { (_editor: Editor, _data: any, value: string) => {
-                                    jsContent.current = value;
-                                } }
-                                onBlur={ () => onContentUpdate?.({
-                                    css: cssContent.current,
-                                    html: htmlContent.current,
-                                    js: jsContent.current
-                                }) }
+                                onChange = { (_editor: Editor, _data: any, value: string) => setJs(value) }
                                 readOnly = { readOnly }
                                 theme = "light"
                                 data-componentid = { `${ componentId }-js-editor` }
@@ -154,12 +131,3 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = (
         />
     );
 };
-
-/**
- * Default props for the component.
- */
-EditorViewTabs.defaultProps = {
-    "data-componentid" : "layout-editor-tabs",
-    readOnly: false
-};
-

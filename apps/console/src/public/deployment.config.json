@@ -544,9 +544,9 @@
             },
             "branding": {
                 "disabledFeatures": [
+                    "branding.customLayoutEditor",
                     "branding.hostnameUrlBranding",
-                    "branding.stylesAndText.application.text",
-                    "branding.stylesAndText.customLayoutConfig"
+                    "branding.stylesAndText.application.text"
                 ],
                 "enabled": true,
                 "featureFlags": [

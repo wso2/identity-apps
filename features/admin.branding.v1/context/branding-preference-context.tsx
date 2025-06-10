@@ -17,8 +17,8 @@
  */
 
 import {
+    BrandingCustomLayoutContentInterface,
     BrandingPreferenceAPIResponseInterface,
-    BrandingPreferenceCustomContentInterface,
     BrandingSubFeatures,
     PreviewScreenType,
     PreviewScreenVariationType
@@ -180,18 +180,21 @@ export interface BrandingPreferenceContextProps {
      */
     setSelectedApplication: (application: string) => void;
     /**
-    * Updates the custom branding layout content.
-    * @param updatedContent - HTML, CSS, JS content.
-    */
-    updateBrandingCustomContent: (updatedContent: BrandingPreferenceCustomContentInterface) => void;
-    /**
-     * The custom branding layout editor mode.
+     * Updates the custom branding layout content.
+     *
+     * @param updatedContent - HTML, CSS, JS content.
      */
-    customLayoutMode: boolean;
+    updateBrandingCustomContent: (updatedContent: BrandingCustomLayoutContentInterface, callback: () => void) => void;
     /**
-     * Sets the custom branding layout editor mode.
+     * Whether the custom layout editor is enabled or not.
      */
-    setCustomLayoutMode: (mode: boolean) => void;
+    isCustomLayoutEditorEnabled: boolean;
+    /**
+     * Sets the custom layout editor enabled or disabled.
+     *
+     * @param enable - Boolean to enable or disable the custom layout editor.
+     */
+    setIsCustomLayoutEditorEnabled: (enable: boolean) => void;
 }
 
 /**

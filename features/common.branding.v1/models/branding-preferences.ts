@@ -81,28 +81,6 @@ export interface BrandingPreferenceInterface {
      * Configurations.
      */
     configs: BrandingPreferenceConfigInterface;
-    /**
-     * Custom Content for the branding preference.
-     */
-    customContent?: BrandingPreferenceCustomContentInterface;
-}
-
-/**
- * Interface Branding preference custom content.
- */
-export interface BrandingPreferenceCustomContentInterface {
-    /**
-     * HTML content.
-     */
-    htmlContent?: string;
-    /**
-     * CSS content.
-     */
-    cssContent?: string;
-    /**
-     * JS content.
-     */
-    jsContent?: string;
 }
 
 /**
@@ -528,6 +506,7 @@ export interface StrictBrandingPreferenceLayoutInterface {
 export type DynamicBrandingPreferenceLayoutInterface =
     BrandingPreferenceSideImageLayoutInterface
     & BrandingPreferenceSideAlignedLayoutInterface
+    & BrandingPreferenceCustomLayoutInterface
 
 /**
  * Left Image and Right Image layouts preference interface.
@@ -541,6 +520,34 @@ export interface BrandingPreferenceSideImageLayoutInterface {
  */
 export interface BrandingPreferenceSideAlignedLayoutInterface {
     productTagLine: string;
+}
+
+/**
+ * Interface for the custom layout configurations in the Branding Preference.
+ */
+export interface BrandingPreferenceCustomLayoutInterface {
+    /**
+     * Custom layout content.
+     */
+    content: BrandingCustomLayoutContentInterface;
+}
+
+/**
+ * Interface for the custom layout content in the Branding Preference.
+ */
+export interface BrandingCustomLayoutContentInterface {
+    /**
+     * HTML content for the custom layout.
+     */
+    html: string;
+    /**
+     * CSS content for the custom layout.
+     */
+    css: string;
+    /**
+     * JS content for the custom layout.
+     */
+    js: string;
 }
 
 /**
