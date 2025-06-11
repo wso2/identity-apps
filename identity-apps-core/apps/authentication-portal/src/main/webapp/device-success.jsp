@@ -32,6 +32,7 @@
 
 <% request.setAttribute("pageName","device-success"); %>
 
+<%-- Data for the layout from the page --%>
 <%
     layoutData.put("isResponsePage", true);
     layoutData.put("isErrorResponse", request.getParameter("app_name") == null);
@@ -45,7 +46,6 @@
         responseType = "success";
     }
 %>
-
 
 <!doctype html>
 <html>
