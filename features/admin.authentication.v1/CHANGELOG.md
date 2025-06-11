@@ -1,5 +1,15 @@
 # @wso2is/admin.authentication.v1
 
+## 2.25.204
+
+### Patch Changes
+
+- [#7942](https://github.com/wso2/identity-apps/pull/7942) [`35e540cbc7983691a759254f9c647cd126c37092`](https://github.com/wso2/identity-apps/commit/35e540cbc7983691a759254f9c647cd126c37092) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix organization dropdown searching issue
+
+- Updated dependencies [[`35e540cbc7983691a759254f9c647cd126c37092`](https://github.com/wso2/identity-apps/commit/35e540cbc7983691a759254f9c647cd126c37092)]:
+  - @wso2is/admin.tenants.v1@2.29.8
+  - @wso2is/core@2.7.1
+
 ## 2.25.203
 
 ### Patch Changes

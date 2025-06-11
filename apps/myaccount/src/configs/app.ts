@@ -63,6 +63,7 @@ export class Config {
             serverOrigin: window["AppUtils"]?.getConfig()?.serverOrigin,
             superTenant: window["AppUtils"]?.getConfig()?.superTenant,
             tenant: window["AppUtils"]?.getConfig()?.tenant,
+            tenantContext: window["AppUtils"]?.getConfig()?.tenantContext,
             tenantPath: window["AppUtils"]?.getConfig()?.tenantPath,
             tenantPrefix: window["AppUtils"]?.getConfig()?.tenantPrefix
         };
@@ -121,7 +122,6 @@ export class Config {
             push: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/push`,
             revoke: `${this.getDeploymentConfig()?.serverHost}/oauth2/revoke`,
             sessions: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/sessions`,
-            smsOtpResend: `${this.getDeploymentConfig()?.serverHost}/api/identity/user/v1.0/me/resend-code`,
             smsOtpValidate: `${this.getDeploymentConfig()?.serverHost}/api/identity/user/v1.0/me/validate-code`,
             token: `${this.getDeploymentConfig()?.serverHost}/oauth2/token`,
             totp: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/totp`,
@@ -134,6 +134,7 @@ export class Config {
             validationMgt: `${AppUtils.getOrganizationName()
                 ? window["AppUtils"]?.getConfig()?.serverOriginWithOrganization
                 : this.getDeploymentConfig()?.serverHost}/api/server/v1/validation-rules`,
+            verificationResend: `${this.getDeploymentConfig()?.serverHost}/api/identity/user/v1.0/me/resend-code`,
             wellKnown: `${this.getDeploymentConfig()?.serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
         };
     }

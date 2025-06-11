@@ -55,6 +55,7 @@ class VisualFlowConstants {
         ElementTypes.RichText,
         ElementTypes.Divider,
         ElementTypes.Image,
+        ElementTypes.Captcha,
         WidgetTypes.EmailOTP,
         WidgetTypes.GoogleFederation,
         WidgetTypes.IdentifierPassword,

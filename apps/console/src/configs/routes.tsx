@@ -1091,6 +1091,48 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             category: "extensions:develop.sidePanel.categories.monitor",
+            children: [
+                {
+                    children: [
+                        {
+                            component: lazy(() =>
+                                import("@wso2is/admin.logs.v1/pages/logs-settings-configuration-page")),
+                            exact: true,
+                            icon: {
+                                icon: getSidePanelIcons().childIcon
+                            },
+                            id: "auditLogsSettings",
+                            name: "Audit Logs Settings",
+                            path: AppConstants.getPaths().get("LOG_SETTINGS_AUDIT"),
+                            protected: true,
+                            showOnSidePanel: false
+                        },
+                        {
+                            component: lazy(() =>
+                                import("@wso2is/admin.logs.v1/pages/logs-settings-configuration-page")),
+                            exact: true,
+                            icon: {
+                                icon: getSidePanelIcons().childIcon
+                            },
+                            id: "diagnosticLogsSettings",
+                            name: "Diagnostic Logs Settings",
+                            path: AppConstants.getPaths().get("LOG_SETTINGS_DIAGNOSTICS"),
+                            protected: true,
+                            showOnSidePanel: false
+                        }
+                    ],
+                    component: lazy(() => import("@wso2is/admin.logs.v1/pages/logs-settings-page")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "logSettings",
+                    name: "Log Settings",
+                    path: AppConstants.getPaths().get("LOG_SETTINGS"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
             component: lazy(() => import("@wso2is/admin.logs.v1/pages/logs-page")),
             exact: true,
             featureGateIds: [ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER ],
@@ -1175,6 +1217,53 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             name: "console:manage.features.sidePanel.approvals",
             order: 26,
             path: AppConstants.getPaths().get("APPROVALS"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            category: "extensions:manage.sidePanel.categories.approvalWorkflows",
+            children: [
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.approval-workflows.v1/pages/approval-workflow-edit-page")
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "approvalWorkflowEdit",
+                    name: "console:manage.features.sidePanel.editApprovalWorkflow",
+                    path: AppConstants.getPaths().get("APPROVAL_WORKFLOW_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import(
+                            "@wso2is/admin.approval-workflows.v1/pages/" +
+                            "approval-workflow-create-page"
+                        )
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "approvalWorkflowCreate",
+                    name: "console:manage.features.sidePanel.createApprovalWorkflows",
+                    path: AppConstants.getPaths().get("APPROVAL_WORKFLOW_CREATE"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("@wso2is/admin.approval-workflows.v1/pages/approval-workflows")),
+            exact: true,
+            icon: {
+                icon: <DocumentCheckIcon fill="black" className="icon" />
+            },
+            id: "workflows",
+            name: "console:manage.features.sidePanel.approvalWorkflows",
+            order: 8,
+            path: AppConstants.getPaths().get("APPROVAL_WORKFLOWS"),
             protected: true,
             showOnSidePanel: true
         },
@@ -1390,6 +1479,39 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             protected: true,
             showOnSidePanel: true
         },
+        {
+            category: "extensions:manage.sidePanel.categories.extensions",
+            children: [
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.webhooks.v1/pages/webhook-edit-page")
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "webhookEdit",
+                    name: "Webhook Edit",
+                    path: AppConstants.getPaths().get("WEBHOOK_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() =>
+                import("@wso2is/admin.webhooks.v1/pages/webhook-list-page")
+            ),
+            exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.WEBHOOKS,
+            icon: {
+                icon: <ProgressFlowIcon className="icon" fill="black" />
+            },
+            id: "webhooks",
+            name: "webhooks:sidePanel.name",
+            order: 31,
+            path: AppConstants.getPaths().get("WEBHOOKS"),
+            protected: true,
+            showOnSidePanel: true
+        },
         // the following routes are not onboarded to the side panel
         {
             category: "console:manage.features.sidePanel.categories.configurations",
@@ -1491,15 +1613,6 @@ export const getFullScreenViewRoutes = (): RouteInterface[] => {
  */
 export const getDefaultLayoutRoutes = (): RouteInterface[] => {
     return [
-        {
-            component: lazy(() => import("@wso2is/admin.core.v1/pages/privacy")),
-            icon: null,
-            id: "privacy",
-            name: "console:common.sidePanel.privacy",
-            path: AppConstants.getPaths().get("PRIVACY"),
-            protected: true,
-            showOnSidePanel: false
-        },
         {
             children: [
                 {

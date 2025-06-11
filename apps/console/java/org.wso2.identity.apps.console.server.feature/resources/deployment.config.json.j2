@@ -190,6 +190,9 @@
         {% if console.ui.application_template_loading_strategy is defined %}
         "applicationTemplateLoadingStrategy": "{{ console.ui.application_template_loading_strategy }}",
         {% endif %}
+        {% if console.ui.application_sharing_status_polling_interval is defined %}
+        "asyncOperationStatusPollingInterval": {{ console.ui.application_sharing_status_polling_interval }},
+        {% endif %}
         {% if console.ui.identity_provider_template_loading_strategy is defined %}
         "identityProviderTemplateLoadingStrategy": "{{ console.ui.identity_provider_template_loading_strategy }}",
         {% endif %}
@@ -474,7 +477,7 @@
                 "enabled": {% if console.ai.enabled is defined %} {{ console.ai.enabled }},
                     {% else %}
                         {% if ai_services.key is defined and ai_services.key|length > 0 %} true,
-                        {% else %} false,                     
+                        {% else %} false,
                         {% endif %}
                 {% endif %}
                 "scopes": {
@@ -1954,6 +1957,36 @@
                 }
             }
             {% endif %}
+            {% if console.webhooks is defined %}
+            "webhooks": {
+                "disabledFeatures": [
+                    {% if console.webhooks.disabled_features is defined %}
+                    {% for feature in console.webhooks.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.webhooks.enabled is defined %} {{ console.webhooks.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.webhooks.scopes is defined %}
+                    {% for operation, scopes in console.webhooks.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
         },
         "gravatarConfig": {
            {% if console.gravatar.configs is defined %}
@@ -2022,8 +2055,10 @@
         {% if console.ui.is_feature_gate_enabled is defined %}
         "isFeatureGateEnabled": {{ console.ui.is_feature_gate_enabled }},
         {% endif %}
-        {% if console.ui.is_cookie_consent_banner_enabled is defined %}
-        "isCookieConsentBannerEnabled": {{ console.ui.is_cookie_consent_banner_enabled }},
+        {% set cookie_consent = console.ui.is_cookie_consent_banner_enabled if console.ui.is_cookie_consent_banner_enabled is defined
+            else ui.is_cookie_consent_banner_enabled %}
+        {% if cookie_consent is defined %}
+        "isCookieConsentBannerEnabled": {{ cookie_consent }},
         {% endif %}
         {% if console.ui.cookie_policy_url is defined %}
         "cookiePolicyUrl": "{{ console.ui.cookie_policy_url }}",
@@ -2060,6 +2095,16 @@
             "enableCustomEmailTemplates": {{ console.ui.enable_custom_email_templates }},
         {% else %}
             "enableCustomEmailTemplates": true,
+        {% endif %}
+        {% if console.ui.enable_old_ui_for_email_provider is defined %}
+            "enableOldUIForEmailProvider": {{ console.ui.enable_old_ui_for_email_provider }},
+        {% else %}
+            "enableOldUIForEmailProvider": false,
+        {% endif %}
+        {% if console.ui.show_password_of_email_provider is defined %}
+            "showPasswordOfEmailProvider": {{ console.ui.show_password_of_email_provider }},
+        {% else %}
+            "showPasswordOfEmailProvider": true,
         {% endif %}
         {% if console.ui.enable_custom_sms_templates is defined %}
             "enableCustomSmsTemplates": {{ console.ui.enable_custom_sms_templates }},

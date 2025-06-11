@@ -25,6 +25,10 @@ export interface Claim {
     dialectURI?: string;
     description: string;
     displayOrder: number;
+    multiValued: boolean;
+    dataType: string;
+    subAttributes?: string[];
+    canonicalValues?: LabelValue[];
     displayName: string;
     readOnly: boolean;
     regEx: string;
@@ -67,6 +71,14 @@ export interface Property{
 }
 
 /**
+ * Type of label-value pair.
+ */
+export interface LabelValue {
+    label: string;
+    value: string;
+}
+
+/**
  * Type of claim dialect
  */
 export interface ClaimDialect {
@@ -105,6 +117,7 @@ export interface ClaimsGetParams {
     sort: string;
     attributes?: string;
     "exclude-identity-claims"?: boolean;
+    "exclude-hidden-claims"?: boolean;
 }
 
 /**
@@ -164,4 +177,24 @@ export enum SharedProfileValueResolvingMethod {
     FROM_ORIGIN = "FromOrigin",
     FROM_SHARED_PROFILE = "FromSharedProfile",
     FROM_FIRST_FOUND_IN_HIERARCHY = "FromFirstFoundInHierarchy"
+}
+
+/**
+ * Enum representing the data types of claims.
+ * - STRING: A string value.
+ * - INTEGER: An integer value.
+ * - DECIMAL: A decimal value.
+ * - BOOLEAN: A boolean value.
+ * - DATE_TIME: A date and time value.
+ * - COMPLEX: A complex value.
+ */
+export enum DataType {
+    STRING = "string",
+    INTEGER = "integer",
+    DECIMAL = "decimal",
+    BOOLEAN = "boolean",
+    DATE_TIME = "date_time",
+    COMPLEX = "complex",
+    OPTIONS = "options",
+    TEXT = "text"
 }

@@ -1,5 +1,5 @@
 <!--
-~    Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+~    Copyright (c) 2022-2025, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
 ~
 ~    This software is the property of WSO2 Inc. and its suppliers, if any.
 ~    Dissemination of any information or reproduction of any material contained
@@ -34,7 +34,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
         <meta name="referrer" content="no-referrer" />
 
-        <link href="<%= htmlWebpackPlugin.options.publicPath %>libs/themes/<%= htmlWebpackPlugin.options.theme %>/theme.<%= htmlWebpackPlugin.options.themeHash %>.min.css" rel="stylesheet" type="text/css"/>
+        <link id="ltr-stylesheet" href="<%= htmlWebpackPlugin.options.publicPath %>libs/themes/<%= htmlWebpackPlugin.options.theme %>/theme.<%= htmlWebpackPlugin.options.themeHash %>.min.css" rel="stylesheet" type="text/css"/>
+        <link id="rtl-stylesheet" href="<%= htmlWebpackPlugin.options.publicPath %>libs/themes/<%= htmlWebpackPlugin.options.theme %>/theme.<%= htmlWebpackPlugin.options.rtlThemeHash %>.rtl.min.css" rel="stylesheet" type="text/css" disabled/>
         <link rel="shortcut icon" href="<%= htmlWebpackPlugin.options.publicPath %>libs/themes/<%= htmlWebpackPlugin.options.theme %>/assets/images/branding/favicon.ico" data-react-helmet="true" />
 
         <%= htmlWebpackPlugin.options.cookieproEnabledCheck %>
@@ -156,7 +157,12 @@
         <!-- End of custom stylesheets -->
 
         <!-- Start of custom scripts added to the head -->
-        <script type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>extensions/head-script.js"></script>
+        <script
+            id="head-script"
+            type="text/javascript"
+            src="<%= htmlWebpackPlugin.options.publicPath %>extensions/head-script.js"
+            data-page-id="home"
+        ></script>
         <!-- End of custom scripts added to the head -->
     </head>
     <body>

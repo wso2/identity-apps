@@ -183,9 +183,9 @@
                         document.getElementById('alertDiv').innerHTML
                             = '<div id="error-msg" class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "please.enter.mobile.number")%></div>'
                               +'<div class="ui divider hidden"></div>';
-                    } else if (<%=validateMobileNumberFormat%> && !(mobileNumber.match("<%=mobileRegex%>"))) {
+                    } else if (<%=validateMobileNumberFormat%> && !(mobileNumber.match("<%=Encode.forJavaScript(mobileRegex)%>"))) {
                        document.getElementById('alertDiv').innerHTML
-                          = '<div id="error-msg" class="ui negative message"><%=mobileRegexPolicyValidationErrorMessage%></div>'
+                          = '<div id="error-msg" class="ui negative message"><%=Encode.forHtml(mobileRegexPolicyValidationErrorMessage)%></div>'
                             +'<div class="ui divider hidden"></div>';
                     } else {
                         $('#pin_form').submit();

@@ -200,14 +200,13 @@
                         <% } %>
                     </div>
                 <% } %>
-                <div class="ui negative message" id="error-msg" hidden="hidden"></div>
 
                 <%=i18n(recoveryResourceBundle, customText, "username.recovery.body")%>
 
                 <div class="ui divider hidden"></div>
 
                 <div class="segment-form">
-                    <form class="ui large form" method="post" action="verify.do" id="recoverDetailsForm">
+                    <form novalidate class="ui large form" method="post" action="verify.do" id="recoverDetailsForm">
                         <% if (isFirstNameInClaims || isLastNameInClaims) { %>
                         <div class="two fields">
                             <% if (isFirstNameInClaims) { %>
@@ -218,7 +217,14 @@
                                 <input id="first-name" type="text"
                                     <%= isFirstNameRequired ? "required" : "" %>
                                     name="http://wso2.org/claims/givenname"
-                                    placeholder="<%=i18n(recoveryResourceBundle, customText, "First.name")%>" />
+                                    placeholder="<%=i18n(recoveryResourceBundle, customText, "First.name")%>" 
+                                />
+                                <div class="ui list mb-5 field-validation-error-description" id="error-msg-first-name">
+                                    <i class="exclamation circle icon"></i>
+                                    <span>
+                                        <%=i18n(recoveryResourceBundle, customText, "fill.the.first.name" )%>
+                                    </span>
+                                </div>
                             </div>
                             <% } %>
                             <% if (isLastNameInClaims) { %>
@@ -259,6 +265,11 @@
                             <input id="contact" type="text" name="contact"
                                placeholder="<%=i18n(recoveryResourceBundle, customText, "contact")%>"
                                     required class="form-control" />
+                        </div>
+                        <div class="ui list mb-5 field-validation-error-description" id="error-msg-contact">
+                            <i class="exclamation circle icon"></i>
+                            <span id="error-msg-contact-text">
+                            </span>
                         </div>
                         <% } %>
 
@@ -370,6 +381,12 @@
             $("#recoverDetailsForm").submit();
         }
 
+        $(window).on("pageshow", function (event) {
+            if (event.originalEvent.persisted) {
+                $("#recoverySubmit").removeClass("loading").attr("disabled", false);;
+            }
+        });
+
         $(document).ready(function () {
             $("#recoverDetailsForm").submit(function (e) {
                 <%
@@ -389,20 +406,22 @@
                 const submitButton = $("#recoverySubmit");
                 submitButton.addClass("loading").attr("disabled", true);
 
-                const errorMessage = $("#error-msg");
-                errorMessage.hide();
+                const errorMessageFirstName = $("#error-msg-first-name");
+                errorMessageFirstName.hide();
 
                 <% if (isFirstNameInClaims && isFirstNameRequired) { %>
                     const firstName = $("#first-name").val();
 
                     if (firstName === "") {
-                        errorMessage.text("<%=i18n(recoveryResourceBundle, customText, "fill.the.first.name")%>");
-                        errorMessage.show();
-                        $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
+                        errorMessageFirstName.show();
+                        $("html, body").animate({scrollTop: errorMessageFirstName.offset().top}, "slow");
                         submitButton.removeClass("loading").attr("disabled", false);
                         return false;
                     }
                 <% } %>
+
+                const errorMessageContact = $("#error-msg-contact");
+                const errorMessageContactText = $("#error-msg-contact-text");
 
                 // Contact input validation.
                 const contact = $("#contact").val();
@@ -410,18 +429,21 @@
                 const emailClaimRegex = new RegExp("<%=emailClaimRegex%>");
 
                 if (contact === "") {
-                    errorMessage.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Contact.cannot.be.empty")%>");
-                    errorMessage.show();
-                    $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
+                    errorMessageContactText.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Contact.cannot.be.empty")%>");
+                    errorMessageContact.show();
+                    $("html, body").animate({scrollTop: errorMessageContact.offset().top}, "slow");
                     submitButton.removeClass("loading").attr("disabled", false);
                     return false;
                 } else if (!contact.match(mobileClaimRegex) && !contact.match(emailClaimRegex)) {
-                    errorMessage.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Invalid.contact")%>");
-                    errorMessage.show();
-                    $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
+                    errorMessageContactText.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Invalid.contact")%>");
+                    errorMessageContact.show();
+                    $("html, body").animate({scrollTop: errorMessageContact.offset().top}, "slow");
                     submitButton.removeClass("loading").attr("disabled", false);
                     return false;
                 }
+
+                errorMessageFirstName.hide();
+                errorMessageContact.hide();
                 return true;
             });
         });

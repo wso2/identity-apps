@@ -1,5 +1,102 @@
 # @wso2is/admin.connections.v1
 
+## 2.33.96
+
+### Patch Changes
+
+- [#8238](https://github.com/wso2/identity-apps/pull/8238) [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+- Updated dependencies [[`7c471b913de0fc2cb974ec4fc2dec2fed1da757e`](https://github.com/wso2/identity-apps/commit/7c471b913de0fc2cb974ec4fc2dec2fed1da757e), [`89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f`](https://github.com/wso2/identity-apps/commit/89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f), [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f)]:
+  - @wso2is/admin.actions.v1@1.13.0
+  - @wso2is/admin.core.v1@2.45.2
+  - @wso2is/admin.identity-verification-providers.v1@2.27.204
+  - @wso2is/admin.identity-providers.v1@2.26.206
+  - @wso2is/admin.console-settings.v1@2.25.210
+  - @wso2is/admin.organizations.v1@2.26.205
+  - @wso2is/admin.applications.v1@2.35.4
+  - @wso2is/admin.feature-gate.v1@1.6.2
+  - @wso2is/admin.connections.v1@2.33.96
+  - @wso2is/admin.extensions.v1@2.38.2
+  - @wso2is/admin.userstores.v1@2.27.33
+  - @wso2is/admin.claims.v1@2.27.123
+  - @wso2is/react-components@2.9.16
+  - @wso2is/admin.roles.v2@2.27.154
+  - @wso2is/dynamic-forms@2.4.41
+  - @wso2is/form@2.7.1
+
+## 2.33.95
+
+### Patch Changes
+
+- [#8117](https://github.com/wso2/identity-apps/pull/8117) [`56e7b6a4fb3ef7b538f0c3a13d4f7a832194d9aa`](https://github.com/wso2/identity-apps/commit/56e7b6a4fb3ef7b538f0c3a13d4f7a832194d9aa) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Replace Switcher component with RadioGroups
+
+- Updated dependencies [[`56e7b6a4fb3ef7b538f0c3a13d4f7a832194d9aa`](https://github.com/wso2/identity-apps/commit/56e7b6a4fb3ef7b538f0c3a13d4f7a832194d9aa)]:
+  - @wso2is/admin.connections.v1@2.33.95
+
+## 2.33.94
+
+### Patch Changes
+
+- [#8104](https://github.com/wso2/identity-apps/pull/8104) [`f09d6502a5796e8bbddbb0c17b113d3c3dd95360`](https://github.com/wso2/identity-apps/commit/f09d6502a5796e8bbddbb0c17b113d3c3dd95360) Thanks [@savindi7](https://github.com/savindi7)! - Remove unnecessary extension configs in Connections.
+
+- Updated dependencies [[`f09d6502a5796e8bbddbb0c17b113d3c3dd95360`](https://github.com/wso2/identity-apps/commit/f09d6502a5796e8bbddbb0c17b113d3c3dd95360), [`54903f70d0f1e8cc35d964b0b16a3c0ee7b1175b`](https://github.com/wso2/identity-apps/commit/54903f70d0f1e8cc35d964b0b16a3c0ee7b1175b)]:
+  - @wso2is/admin.connections.v1@2.33.94
+  - @wso2is/admin.extensions.v1@2.37.9
+  - @wso2is/admin.core.v1@2.43.5
+  - @wso2is/i18n@2.22.17
+
+## 2.33.93
+
+### Patch Changes
+
+- [#8098](https://github.com/wso2/identity-apps/pull/8098) [`ad35a9374eb80a5d4556c8922764d507e1613768`](https://github.com/wso2/identity-apps/commit/ad35a9374eb80a5d4556c8922764d507e1613768) Thanks [@savindi7](https://github.com/savindi7)! - Update deprecated feature names.
+
+- Updated dependencies [[`ad35a9374eb80a5d4556c8922764d507e1613768`](https://github.com/wso2/identity-apps/commit/ad35a9374eb80a5d4556c8922764d507e1613768)]:
+  - @wso2is/admin.connections.v1@2.33.93
+  - @wso2is/admin.extensions.v1@2.37.8
+  - @wso2is/i18n@2.22.16
+
+## 2.33.92
+
+### Patch Changes
+
+- [#8095](https://github.com/wso2/identity-apps/pull/8095) [`1aeb47990369ab1ccb4bc271a078d8115c210fb1`](https://github.com/wso2/identity-apps/commit/1aeb47990369ab1ccb4bc271a078d8115c210fb1) Thanks [@savindi7](https://github.com/savindi7)! - Deprecate configs in Connections.
+
+- Updated dependencies [[`1aeb47990369ab1ccb4bc271a078d8115c210fb1`](https://github.com/wso2/identity-apps/commit/1aeb47990369ab1ccb4bc271a078d8115c210fb1)]:
+  - @wso2is/admin.connections.v1@2.33.92
+  - @wso2is/admin.extensions.v1@2.37.7
+  - @wso2is/i18n@2.22.15
+
+## 2.33.91
+
+### Patch Changes
+
+- [#8052](https://github.com/wso2/identity-apps/pull/8052) [`1ad5333659787e995776dc6062050052f6ec8812`](https://github.com/wso2/identity-apps/commit/1ad5333659787e995776dc6062050052f6ec8812) Thanks [@brionmario](https://github.com/brionmario)! - Refactor files
+
+- Updated dependencies [[`1ad5333659787e995776dc6062050052f6ec8812`](https://github.com/wso2/identity-apps/commit/1ad5333659787e995776dc6062050052f6ec8812)]:
+  - @wso2is/admin.connections.v1@2.33.91
+  - @wso2is/admin.extensions.v1@2.37.5
+
+## 2.33.90
+
+### Patch Changes
+
+- [#8018](https://github.com/wso2/identity-apps/pull/8018) [`f2e6bfadec1e4ef53cc1c713b1285b0c6b3bfaa5`](https://github.com/wso2/identity-apps/commit/f2e6bfadec1e4ef53cc1c713b1285b0c6b3bfaa5) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Improve the certificates section of the identity provider to state the flows where certificate validation is applicable.
+
+- Updated dependencies [[`f2e6bfadec1e4ef53cc1c713b1285b0c6b3bfaa5`](https://github.com/wso2/identity-apps/commit/f2e6bfadec1e4ef53cc1c713b1285b0c6b3bfaa5)]:
+  - @wso2is/admin.connections.v1@2.33.90
+  - @wso2is/i18n@2.22.8
+
+## 2.33.89
+
+### Patch Changes
+
+- [#7979](https://github.com/wso2/identity-apps/pull/7979) [`2abed5bc378997ca7e3f790d38019390e24aab6f`](https://github.com/wso2/identity-apps/commit/2abed5bc378997ca7e3f790d38019390e24aab6f) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Update component IDs of the custom local authenticator create wizard
+
+- Updated dependencies [[`2abed5bc378997ca7e3f790d38019390e24aab6f`](https://github.com/wso2/identity-apps/commit/2abed5bc378997ca7e3f790d38019390e24aab6f), [`f12dba0c158f03e179396e2eec3e480007164eb4`](https://github.com/wso2/identity-apps/commit/f12dba0c158f03e179396e2eec3e480007164eb4)]:
+  - @wso2is/admin.connections.v1@2.33.89
+  - @wso2is/admin.extensions.v1@2.37.1
+
 ## 2.33.88
 
 ### Patch Changes

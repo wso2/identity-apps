@@ -33,7 +33,7 @@ const ValidationError = ({ name, errors }) => {
     const formError = errors.formStateErrors.length > 0 &&
             errors.formStateErrors.filter(error => error.label === name);
     const fieldError = formError[0] && formError[0].error ||
-        (errors.fieldErrors.length > 0 ? errors.fieldErrors[0] : null);
+        (errors.fieldErrors.length > 0 ? errors.fieldErrors[errors.fieldErrors.length - 1] : null);
 
     return (
         <>

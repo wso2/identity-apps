@@ -44,7 +44,7 @@
         const localeFromCookie = getCookie("ui_lang");
         var localeFromUrlParams = null;
         if (urlParams.has('ui_locales')) {
-            localeFromUrlParams = "<%= Encode.forHtmlAttribute(request.getParameter("ui_locales")) %>";
+            localeFromUrlParams = "<%= Encode.forJavaScript(request.getParameter("ui_locales")) %>";
         }
         const browserLocale = "<%= userLocale %>"
         const computedLocale = computeLocale(localeFromCookie, localeFromUrlParams, browserLocale);
@@ -150,7 +150,7 @@
     }
 %>
 
-<div id="language-selector-dropdown" class="ui fluid search selection dropdown language-selector-dropdown" data-testid="language-selector-dropdown">
+<div id="language-selector-dropdown" class="ui fluid selection dropdown language-selector-dropdown" data-testid="language-selector-dropdown">
     <input type="hidden" id="language-selector-input" onChange="onLangChange()" name="language-select" />
     <i class="dropdown icon"></i>
     <div id="language-selector-selected-text" class="default text">

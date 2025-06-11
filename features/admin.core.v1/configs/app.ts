@@ -21,6 +21,10 @@ import { getAdministratorsResourceEndpoints } from "@wso2is/admin.administrators
 import { getAPIResourceEndpoints } from "@wso2is/admin.api-resources.v2/configs/endpoint";
 import { getApplicationTemplatesResourcesEndpoints } from "@wso2is/admin.application-templates.v1/configs/endpoints";
 import { getApplicationsResourceEndpoints } from "@wso2is/admin.applications.v1/configs/endpoints";
+import {
+    getWorkflowAssociationsResourceEndpoints,
+    getWorkflowsResourceEndpoints
+} from "@wso2is/admin.approval-workflows.v1/configs/endpoints";
 import { getBrandingResourceEndpoints } from "@wso2is/admin.branding.v1/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "@wso2is/admin.certificates.v1";
 import { getClaimResourceEndpoints } from "@wso2is/admin.claims.v1/configs/endpoints";
@@ -31,6 +35,7 @@ import { getExtendedFeatureResourceEndpoints } from "@wso2is/admin.extensions.v1
 import { getFeatureGateResourceEndpoints } from "@wso2is/admin.feature-gate.v1/configs/endpoints";
 import { getGroupsResourceEndpoints } from "@wso2is/admin.groups.v1/configs/endpoints";
 import { getIDVPResourceEndpoints } from "@wso2is/admin.identity-verification-providers.v1/configs/endpoints";
+import { getRemoteLoggingEndpoints } from "@wso2is/admin.logs.v1/configs/endpoints";
 import { getScopesResourceEndpoints } from "@wso2is/admin.oidc-scopes.v1";
 import { getInsightsResourceEndpoints } from "@wso2is/admin.org-insights.v1/config/org-insights";
 import { getOrganizationsResourceEndpoints } from "@wso2is/admin.organizations.v1/configs";
@@ -54,6 +59,7 @@ import { getUsersResourceEndpoints } from "@wso2is/admin.users.v1/configs/endpoi
 import { getUserstoreResourceEndpoints } from "@wso2is/admin.userstores.v1/configs/endpoints";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { getValidationServiceEndpoints } from "@wso2is/admin.validation.v1/configs";
+import { getWebhooksResourceEndpoints } from "@wso2is/admin.webhooks.v1/configs/endpoints";
 import { getApprovalsResourceEndpoints } from "@wso2is/admin.workflow-approvals.v1";
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
 import { AppConstants } from "../constants/app-constants";
@@ -81,6 +87,11 @@ export class Config {
      * @returns Server host.
      */
     public static resolveServerHost(enforceOrgPath?: boolean, skipAuthzRuntimePath?: boolean): string {
+        // If tenant qualified URLs are disabled, return the server origin.
+        if (!this.isTenantQualifiedURLsEnabled()) {
+            return this.getDeploymentConfig()?.serverOrigin;
+        }
+
         const serverOriginWithTenant: string = window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
 
         if (skipAuthzRuntimePath && serverOriginWithTenant?.slice(-2) === "/o") {
@@ -106,6 +117,28 @@ export class Config {
                 window[ "AppUtils" ]?.getConfig()?.serverOrigin }/t/${ store.getState().organization.organization.id
             }`;
         }
+    }
+
+    /**
+     * This method directly returns the server host read from the deployment config.
+     *
+     * @returns server host.
+     */
+    public static resolveServerHostFromConfig() {
+        if (!this.isTenantQualifiedURLsEnabled()) {
+            return this.getDeploymentConfig()?.serverOrigin;
+        } else {
+            return this.getDeploymentConfig()?.serverHost;
+        }
+    }
+
+    /**
+     * This method checks if tenant qualified URLs are enabled.
+     *
+     * @returns true if tenant qualified URLs are enabled.
+     */
+    private static isTenantQualifiedURLsEnabled() {
+        return this.getDeploymentConfig()?.tenantContext?.enableTenantQualifiedUrls;
     }
 
     /**
@@ -136,10 +169,12 @@ export class Config {
             idpConfigs: window[ "AppUtils" ]?.getConfig()?.idpConfigs,
             loginCallbackUrl: window[ "AppUtils" ]?.getConfig()?.loginCallbackURL,
             organizationPrefix: window["AppUtils"]?.getConfig()?.organizationPrefix,
+            regionSelectionEnabled: window[ "AppUtils" ]?.getConfig()?.regionSelectionEnabled,
             serverHost: window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant,
             serverOrigin: window[ "AppUtils" ]?.getConfig()?.serverOrigin,
             superTenant: window[ "AppUtils" ]?.getConfig()?.superTenant,
             tenant: window[ "AppUtils" ]?.getConfig()?.tenant,
+            tenantContext: window[ "AppUtils" ]?.getConfig()?.tenantContext,
             tenantPath: window[ "AppUtils" ]?.getConfig()?.tenantPath,
             tenantPrefix: window[ "AppUtils" ]?.getConfig()?.tenantPrefix
         };
@@ -228,7 +263,10 @@ export class Config {
                 I18nConstants.POLICY_ADMINISTRATION_NAMESPACE,
                 I18nConstants.REMOTE_USER_STORES_NAMESPACE,
                 I18nConstants.RULES_NAMESPACE,
-                I18nConstants.PUSH_PROVIDERS_NAMESPACE
+                I18nConstants.PUSH_PROVIDERS_NAMESPACE,
+                I18nConstants.EMAIL_PROVIDERS_NAMESPACE,
+                I18nConstants.WEBHOOKS_NAMESPACE,
+                I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE
             ],
             preload: []
         };
@@ -262,27 +300,27 @@ export class Config {
             ...getAPIResourceEndpoints(this.resolveServerHost()),
             ...getAdministratorsResourceEndpoints(this.resolveServerHost()),
             ...getApplicationsResourceEndpoints(this.resolveServerHost()),
-            ...getApprovalsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
+            ...getApprovalsResourceEndpoints(this.resolveServerHostFromConfig()),
             ...getBrandingResourceEndpoints(this.resolveServerHost()),
-            ...getClaimResourceEndpoints(this.getDeploymentConfig()?.serverHost, this.resolveServerHost()),
-            ...getCertificatesResourceEndpoints(this.getDeploymentConfig()?.serverHost),
+            ...getClaimResourceEndpoints(this.resolveServerHostFromConfig(), this.resolveServerHost()),
+            ...getCertificatesResourceEndpoints(this.resolveServerHostFromConfig()),
             ...getIDVPResourceEndpoints(this.resolveServerHost()),
             ...getEmailTemplatesResourceEndpoints(this.resolveServerHost()),
             ...getConnectionResourceEndpoints(this.resolveServerHost()),
-            ...getRolesResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig().serverHost),
+            ...getRolesResourceEndpoints(this.resolveServerHost(), this.resolveServerHostFromConfig()),
             ...getServerConfigurationsResourceEndpoints(this.resolveServerHost()),
             ...getUsersResourceEndpoints(this.resolveServerHost()),
             ...getUserstoreResourceEndpoints(this.resolveServerHost()),
-            ...getScopesResourceEndpoints(this.getDeploymentConfig()?.serverHost),
+            ...getScopesResourceEndpoints(this.resolveServerHostFromConfig()),
             ...getGroupsResourceEndpoints(this.resolveServerHost()),
             ...getValidationServiceEndpoints(this.resolveServerHost()),
-            ...getRemoteFetchConfigResourceEndpoints(this.getDeploymentConfig()?.serverHost),
-            ...getSecretsManagementEndpoints(this.getDeploymentConfig()?.serverHost),
+            ...getRemoteFetchConfigResourceEndpoints(this.resolveServerHostFromConfig()),
+            ...getSecretsManagementEndpoints(this.resolveServerHostFromConfig()),
             ...getExtendedFeatureResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig()),
-            ...getOrganizationsResourceEndpoints(this.resolveServerHost(true), this.getDeploymentConfig().serverHost),
+            ...getOrganizationsResourceEndpoints(this.resolveServerHost(true), this.resolveServerHostFromConfig()),
             ...getTenantResourceEndpoints(this.getDeploymentConfig().serverOrigin),
             ...getFeatureGateResourceEndpoints(this.resolveServerHostforFG(false)),
-            ...getInsightsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
+            ...getInsightsResourceEndpoints(this.resolveServerHostFromConfig()),
             ...getExtensionTemplatesEndpoints(this.resolveServerHost()),
             ...getApplicationTemplatesResourcesEndpoints(this.resolveServerHost()),
             ...getActionsResourceEndpoints(this.resolveServerHost()),
@@ -291,8 +329,13 @@ export class Config {
             ...getPolicyAdministrationResourceEndpoints(this.resolveServerHost()),
             ...getPushProviderResourceEndpoints(this.resolveServerHost()),
             ...getPushProviderTemplateEndpoints(this.resolveServerHost()),
+            ...getRemoteLoggingEndpoints(this.resolveServerHost()),
+            ...getWorkflowsResourceEndpoints(this.resolveServerHost()),
+            ...getWorkflowAssociationsResourceEndpoints(this.resolveServerHost()),
             ...getRegistrationFlowBuilderResourceEndpoints(this.resolveServerHost()),
-            CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,
+            ...getWebhooksResourceEndpoints(this.resolveServerHost()),
+            CORSOrigins: `${ this.resolveServerHostFromConfig() }/api/server/v1/cors/origins`,
+            asyncStatus: `${ this.resolveServerHost(false, true) }/api/server/v1/async-operations`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,
             saml2Meta: `${ this.resolveServerHost(false, true) }/identity/metadata/saml2`,
@@ -323,6 +366,8 @@ export class Config {
             appTitle: window[ "AppUtils" ]?.getConfig()?.ui?.appTitle,
             applicationTemplateLoadingStrategy:
                 window[ "AppUtils" ]?.getConfig()?.ui?.applicationTemplateLoadingStrategy,
+            asyncOperationStatusPollingInterval:
+                window[ "AppUtils" ]?.getConfig()?.ui?.asyncOperationStatusPollingInterval,
             connectionResourcesUrl: window[ "AppUtils" ]?.getConfig()?.ui?.connectionResourcesUrl,
             cookiePolicyUrl: window[ "AppUtils" ]?.getConfig()?.ui?.cookiePolicyUrl,
             emailTemplates: {
@@ -332,6 +377,7 @@ export class Config {
             enableCustomEmailTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.enableCustomEmailTemplates,
             enableEmailDomain: window[ "AppUtils" ]?.getConfig()?.ui?.enableEmailDomain ?? false,
             enableIdentityClaims: window[ "AppUtils" ]?.getConfig()?.ui?.enableIdentityClaims ?? true,
+            enableOldUIForEmailProvider: window[ "AppUtils" ]?.getConfig()?.ui?.enableOldUIForEmailProvider,
             features: window[ "AppUtils" ]?.getConfig()?.ui?.features,
             googleOneTapEnabledTenants: window["AppUtils"]?.getConfig()?.ui?.googleOneTapEnabledTenants,
             governanceConnectors: window["AppUtils"]?.getConfig()?.ui?.governanceConnectors,
@@ -380,6 +426,7 @@ export class Config {
             },
             selfAppIdentifier: window[ "AppUtils" ]?.getConfig()?.ui?.selfAppIdentifier,
             showAppSwitchButton: window[ "AppUtils" ]?.getConfig()?.ui?.showAppSwitchButton,
+            showPasswordOfEmailProvider: window[ "AppUtils" ]?.getConfig()?.ui?.showPasswordOfEmailProvider,
             showSmsOtpPwdRecoveryFeatureStatusChip:
                 window[ "AppUtils" ]?.getConfig()?.ui?.showSmsOtpPwdRecoveryFeatureStatusChip,
             showStatusLabelForNewAuthzRuntimeFeatures:

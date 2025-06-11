@@ -16,12 +16,14 @@
  * under the License.
  */
 
-import { useRequiredScopes } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import {  AppState  } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
+import RegistrationFlowBuilderBanner
+    from "@wso2is/admin.registration-flow-builder.v1/components/registration-flow-builder-banner";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -83,6 +85,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
 
     const applicationFeatureConfig: FeatureConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.applications);
+    const registrationFlowBuilderFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.registrationFlowBuilder);
 
     const [ isConnectorRequestLoading, setConnectorRequestLoading ] = useState<boolean>(false);
     const [ connector, setConnector ] = useState<GovernanceConnectorInterface>(undefined);
@@ -92,13 +96,16 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ enableBackButton, setEnableBackButton ] = useState<boolean>(true);
 
-    const isReadOnly: boolean = !useRequiredScopes(applicationFeatureConfig?.governanceConnectors?.scopes?.update);
+    const hasGovernanceConnectorsUpdatePermissions: boolean
+        = useRequiredScopes(applicationFeatureConfig?.governanceConnectors?.scopes?.update);
+    const hasRegistrationFlowBuilderViewPermissions: boolean
+        = useRequiredScopes(registrationFlowBuilderFeatureConfig?.scopes?.read);
     const path: string[] = history.location.pathname.split("/");
     const type: string = path[ path.length - 3 ];
 
     useEffect(() => {
-        // If Governance Connector read permission is not available, prevent from trying to load the connectors.
-        if (isReadOnly) {
+        // If Governance Connector update permission is not available, prevent from trying to load the connectors.
+        if (!hasGovernanceConnectorsUpdatePermissions) {
             return;
         }
 
@@ -383,7 +390,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             case ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_CONNECTOR_ID:
                 return "Admin Initiated Password Reset";
             case ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID:
-                return "Multi Attribute Login";
+                return "Alternative Login Identifiers";
             case ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID:
                 return "Invite User to Set Password";
             case ServerConfigurationsConstants.SIFT_CONNECTOR_ID:
@@ -443,8 +450,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 return "Enable self-service username recovery for users on the login page." +
                     "The user will receive a usernmae reset link via email upon request.";
             case ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID:
-                return "Manage and configure settings related configuring "
-                    + "multiple attributes as the login identifier.";
+                return "Configure alternative login identifiers and allow users to use username or configured" +
+                    " login identifier in login and recovery flows.";
             case ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID:
                 return "Allow users to set their own passwords during admin-initiated onboarding" +
                     " and configure related settings.";
@@ -575,7 +582,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                     toggle
                     onChange={ ssoLoginConnectorId ? handleBotDetectionToggle : handleToggle }
                     checked={ enableForm }
-                    readOnly={ isReadOnly }
+                    readOnly={ !hasGovernanceConnectorsUpdatePermissions }
                     data-testId={ `${ testId }-${ connectorId }-enable-toggle` }
                 />
             </>
@@ -669,6 +676,22 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
         ) : null;
     };
 
+    /**
+     * Renders a feature enhancement banner showcasing additional information about the feature.
+     * @returns Feature enhancement banner.
+     */
+    const renderFeatureEnhancementBanner = (): ReactElement => {
+        if (connector.id === ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID) {
+            if (!registrationFlowBuilderFeatureConfig?.enabled || !hasRegistrationFlowBuilderViewPermissions) {
+                return null;
+            }
+
+            return <RegistrationFlowBuilderBanner />;
+        }
+
+        return null;
+    };
+
     return !isConnectorRequestLoading && connectorId ? (
         <PageLayout
             title={ resolveConnectorTitle(connector) }
@@ -683,6 +706,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             pageHeaderMaxWidth={ true }
             data-testid={ `${ testId }-${ connectorId }-page-layout` }
         >
+            { renderFeatureEnhancementBanner() }
             { resolveConnectorToggleProperty(connector) ? connectorToggle() : null }
             { pageInfo(connector) }
             { !(connectorId === ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID) ? (

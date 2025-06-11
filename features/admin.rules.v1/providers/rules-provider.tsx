@@ -39,7 +39,7 @@ interface RuleContextRefInterface extends RuleExecuteCollectionInterface {
     isMultipleRules: boolean;
 }
 
-// Refference to hold the latest context value
+// Reference to hold the latest context value
 const RuleContextRef: { ruleInstance: RuleContextRefInterface | undefined } = {
     ruleInstance: undefined
 };

@@ -158,6 +158,7 @@
         "appTitle": "{{ myaccount.ui.app_title }}",
         "appName": "{{ myaccount.ui.app_name }}",
         "appLogoPath": "{{ myaccount.ui.app_logo_path }}",
+        "appMobileLogoPath": "{{ myaccount.ui.app_mobile_logo_path }}",
         "appWhiteLogoPath": "{{ myaccount.ui.app_white_logo_path }}",
         {% if myaccount.disable_mfa_for_super_tenant_user is defined %}
         "disableMFAforSuperTenantUser": "{{ myaccount.disable_mfa_for_super_tenant_user }}",
@@ -355,8 +356,10 @@
                 }
             }
         },
-        {% if myaccount.ui.is_cookie_consent_banner_enabled is defined %}
-        "isCookieConsentBannerEnabled": {{ myaccount.ui.is_cookie_consent_banner_enabled }},
+        {% set cookie_consent = myaccount.ui.is_cookie_consent_banner_enabled if myaccount.ui.is_cookie_consent_banner_enabled is defined
+            else ui.is_cookie_consent_banner_enabled %}
+        {% if cookie_consent is defined %}
+        "isCookieConsentBannerEnabled": {{ cookie_consent }},
         {% endif %}
         {% if myaccount.ui.cookie_policy_url is defined %}
         "cookiePolicyUrl": "{{ myaccount.ui.cookie_policy_url }}",

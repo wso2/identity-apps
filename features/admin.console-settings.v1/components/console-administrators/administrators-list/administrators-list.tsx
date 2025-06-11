@@ -183,6 +183,8 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
                 ? primaryUserStoreDomainName
                 : userstoresConfig?.primaryUserstoreName
         );
+        // Resets the invitation status option when the selected administrator group changes.
+        setInvitationStatusOption(InvitationStatus.ACCEPTED);
     },[ isPrivilegedUsersInConsoleSettingsEnabled, selectedAdministratorGroup ]);
 
     const {
@@ -605,6 +607,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
                 <AddExistingUserWizard
                     onSuccess={ () => mutateAdministratorsListFetchRequest() }
                     onClose={ () => setShowAddExistingUserWizard(false) }
+                    selectedUserStore={ selectedUserStore }
                 />
             ) }
             { showInviteNewAdministratorModal && (

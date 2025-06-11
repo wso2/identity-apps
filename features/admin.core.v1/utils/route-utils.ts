@@ -289,6 +289,11 @@ export class RouteUtils {
             order: 2
         };
 
+        const workflows: NavCategory = {
+            id: "workflows",
+            order: 3
+        };
+
         const organizations: NavCategory = {
             id: "organizations",
             order: 3
@@ -366,6 +371,11 @@ export class RouteUtils {
                 category: organizations,
                 id: "organizations",
                 selected: history.location.pathname.includes("/organizations")
+            },
+            {
+                category: workflows,
+                id: "workflows",
+                selected: history.location.pathname.includes("/workflows")
             },
             {
                 category: manage,
@@ -491,8 +501,14 @@ export class RouteUtils {
             },
             {
                 category: extensions,
+                id: "webhooks",
+                order: 1,
+                selected: history.location.pathname.includes("/webhooks")
+            },
+            {
+                category: extensions,
                 id: "eventPublishing",
-                order: 1
+                order: 2
             }
         ];
 

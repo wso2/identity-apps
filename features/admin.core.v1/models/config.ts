@@ -23,11 +23,16 @@ import {
     ApplicationTemplateLoadingStrategies
 } from "@wso2is/admin.applications.v1/models/application";
 import { ApplicationsResourceEndpointsInterface } from "@wso2is/admin.applications.v1/models/endpoints";
+import {
+    WorkflowAssociationsResourceEndpointsInterface,
+    WorkflowsResourceEndpointsInterface
+} from "@wso2is/admin.approval-workflows.v1/models/endpoints";
 import { BrandingPreferenceResourceEndpointsInterface } from "@wso2is/admin.branding.v1/models/endpoints";
 import { CertificatesResourceEndpointsInterface } from "@wso2is/admin.certificates.v1";
 import { ClaimResourceEndpointsInterface } from "@wso2is/admin.claims.v1/models/endpoints";
 import { ConnectionResourceEndpointsInterface } from "@wso2is/admin.connections.v1";
 import { GroupsResourceEndpointsInterface } from "@wso2is/admin.groups.v1/models/endpoints";
+import { RemoteLoggingResourceEndpointsInterface } from "@wso2is/admin.logs.v1/models/endpoints";
 import { ScopesResourceEndpointsInterface } from "@wso2is/admin.oidc-scopes.v1";
 import { OrganizationResourceEndpointsInterface } from "@wso2is/admin.organizations.v1/models";
 import { PolicyAdministrationEndpointsInterface } from "@wso2is/admin.policy-administration.v1/models/endpoints";
@@ -272,6 +277,10 @@ export interface FeatureConfigInterface {
      * Notification sending feature.
      */
     internalNotificationSending?: FeatureAccessConfigInterface;
+    /**
+     * Registration flow builder feature.
+     */
+    registrationFlowBuilder?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -310,12 +319,21 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      * Configs of multiple application protocol.
      */
     allowMultipleAppProtocols?: boolean;
+    /**
+     * Region selection enabled.
+     * This is used to enable/disable the region selection in the organization creation page.
+     */
+    regionSelectionEnabled?: boolean;
 }
 
 /**
  * Interface for defining settings and configs of an external app.
  */
 interface ExternalAppConfigInterface {
+    /**
+     * Access URL for the central app.
+     */
+    centralAppPath?: string;
     /**
      * App base path. ex: `/account`, `/admin` etc.
      */
@@ -440,6 +458,14 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isSAASDeployment: boolean;
     /**
+     * Enable old UI of email provider.
+     */
+    enableOldUIForEmailProvider: boolean;
+    /**
+     * Show password of email provider.
+     */
+    showPasswordOfEmailProvider: boolean;
+    /**
      * Enable/Disable custom email template feature
      */
     enableCustomEmailTemplates: boolean;
@@ -543,6 +569,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Multi-tenancy related configurations.
      */
     multiTenancy: MultiTenancyConfigInterface;
+    /**
+     * Async Operation Polling Interval.
+     */
+    asyncOperationStatusPollingInterval: number;
 }
 
 /**
@@ -622,13 +652,17 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     SMSTemplateResourceEndpointsInterface,
     ActionsResourceEndpointsInterface,
     PolicyAdministrationEndpointsInterface,
-    RulesEndpointsInterface {
+    WorkflowsResourceEndpointsInterface,
+    WorkflowAssociationsResourceEndpointsInterface,
+    RulesEndpointsInterface,
+    RemoteLoggingResourceEndpointsInterface {
 
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details
     me: string;
     saml2Meta: string;
     wellKnown: string;
+    asyncStatus: string;
 }
 
 export interface ResourceEndpointsInterface {

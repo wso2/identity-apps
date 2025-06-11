@@ -150,7 +150,7 @@
                     <div id="ui visible negative message" hidden="hidden"></div>
 
                     <div class="segment-form">
-                        <form class="ui large form" method="post" action="<%= isForgotPasswordFlow?"passwordrecoveryotp.do":"completepasswordreset.do" %>" id="passwordResetForm">
+                        <form novalidate class="ui large form" method="post" action="<%= isForgotPasswordFlow?"passwordrecoveryotp.do":"completepasswordreset.do" %>" id="passwordResetForm">
                             <%
                             if (StringUtils.isNotBlank(spId)) {
                             %>
@@ -500,6 +500,15 @@
                 }
             }
 
+            function disableSubmitBtn() {
+                if ($("#reset-password-container").hasClass("error") ||
+                    $("#reset-password2-container").hasClass("error")) {
+                    $("#submit").attr("disabled", true);
+                } else {
+                    $("#submit").attr("disabled", false);
+                }
+            }
+
             /**
              * Util function to validate password
              */
@@ -572,6 +581,8 @@
                     $("#password-validation-check-repeated-chr").css("display", "none");
                     $("#password-validation-cross-repeated-chr").css("display", "none");
                 }
+
+                disableSubmitBtn();
             }
 
             /**
@@ -589,6 +600,8 @@
                     $("#password-validation-check-match").css("display", "none");
                     $("#password-validation-cross-match").css("display", "none");
                 }
+
+                disableSubmitBtn();
             }
 
             /**
@@ -648,11 +661,6 @@
                 var displayError = false;
 
                 $("#reset-password-container").removeClass("error");
-
-                // Prevent validation from happening when the password is empty
-                if (passwordField.val().length <= 0) {
-                    return false;
-                }
 
                 if ((!passwordConfig.minLength || passwordField.val().length >= passwordConfig.minLength) &&
                     (!passwordConfig.maxLength || passwordField.val().length <= passwordConfig.maxLength)) {
@@ -728,6 +736,8 @@
                 if (displayError) {
                     $("#reset-password-container").addClass("error");
                 }
+
+                disableSubmitBtn();
             }
 
             /**
@@ -779,11 +789,6 @@
             function displayConfirmPasswordCross() {
                 $("#reset-password2-container").removeClass("error");
 
-                // Prevent validation from happening when the password is empty
-                if (passwordConfirmField.val().length <= 0) {
-                    return false;
-                }
-
                 if (passwordField.val() !== "" && passwordField.val() === passwordConfirmField.val()) {
                     $("#password-validation-check-match").css("display", "block");
                     $("#password-validation-neutral-match").css("display", "none");
@@ -794,6 +799,8 @@
                     $("#password-validation-check-match").css("display", "none");
                     $("#password-validation-neutral-match").css("display", "none");
                 }
+
+                disableSubmitBtn();
             }
         </script>
     </body>

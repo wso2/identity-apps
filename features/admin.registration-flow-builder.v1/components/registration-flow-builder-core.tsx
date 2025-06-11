@@ -21,6 +21,7 @@ import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/vi
 import {
     BlockTypes,
     ButtonTypes,
+    ButtonVariants,
     Element,
     ElementTypes,
     InputVariants
@@ -46,7 +47,16 @@ import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
 import mergeWith from "lodash-es/mergeWith";
 import unionWith from "lodash-es/unionWith";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, {
+    FunctionComponent,
+    MutableRefObject,
+    ReactElement,
+    useEffect,
+    useLayoutEffect,
+    useMemo,
+    useRef,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -80,6 +90,8 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     ...rest
 }: RegistrationFlowBuilderCorePropsInterface): ReactElement => {
     const updateNodeInternals: UpdateNodeInternals = useUpdateNodeInternals();
+    const flowUpdatesInProgress: MutableRefObject<boolean> = useRef<boolean>(false);
+    const nodesUpdatedRef: MutableRefObject<boolean> = useRef<boolean>(false);
 
     const [ showAIGenerationModal, setShowAIGenerationModal ] = useState(false);
 
@@ -184,7 +196,6 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     }, [ registrationFlowFetchRequestError ]);
 
     const handleAIFlowGeneration = async () => {
-
         const traceID: string = uuidv4();
 
         await generateAIRegistrationFlow(userPrompt, traceID);
@@ -241,7 +252,23 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         );
     };
 
-    const defaultTemplateComponents = useMemo(() => getBlankTemplateComponents(), [ resources ]);
+    const getBasicTemplateComponents = (): Element[] => {
+        const basicTemplate: Template = cloneDeep(
+            templates.find((template: Template) => template.type === TemplateTypes.Basic)
+        );
+
+        if (basicTemplate?.config?.data?.steps?.length > 0) {
+            basicTemplate.config.data.steps[0].id = INITIAL_FLOW_START_STEP_ID;
+        }
+
+        return resolveComponentMetadata(
+            resources,
+            generateIdsForResources<Template>(basicTemplate)?.config?.data?.steps[0]?.data?.components
+        );
+    };
+
+    const initialTemplateComponents = useMemo(() => getBasicTemplateComponents(), [ resources ]);
+    const blankTemplateComponents = useMemo(() => getBlankTemplateComponents(), [ resources ]);
 
     const generateSteps = (steps: Node[]): Node[] => {
         const START_STEP: Node = {
@@ -250,7 +277,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             },
             deletable: false,
             id: INITIAL_FLOW_START_STEP_ID,
-            position: { x: -50, y: 330 },
+            position: { x: -300, y: 330 },
             type: StaticStepTypes.Start
         };
 
@@ -271,6 +298,25 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 };
             })
         ]) as Step[]) as Node[];
+    };
+
+    /**
+     * Validate edges based on the nodes.
+     *
+     * @param edges - Edges to validate.
+     * @param nodes - Nodes to validate against.
+     * @returns Validated edges.
+     */
+    const validateEdges = (edges: Edge[], nodes: Node[]): Edge[] => {
+        const nodeIds: Set<string> = new Set(nodes.map((node: Node) => node.id));
+
+        return edges.filter((edge: Edge) => {
+            if (!nodeIds.has(edge.source) || !nodeIds.has(edge.target)) {
+                return false;
+            }
+
+            return true;
+        });
     };
 
     const generateEdges = (steps: Step[]): Edge[] => {
@@ -294,17 +340,19 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 firstStep = steps[1];
             }
 
-            edges.push({
-                animated: false,
-                id: `${INITIAL_FLOW_START_STEP_ID}-${firstStep.id}`,
-                markerEnd: {
-                    type: MarkerType.Arrow
-                },
-                source: INITIAL_FLOW_START_STEP_ID,
-                sourceHandle: `${ INITIAL_FLOW_START_STEP_ID }${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
-                target: firstStep.id,
-                type: "base-edge"
-            });
+            if (firstStep) {
+                edges.push({
+                    animated: false,
+                    id: `${INITIAL_FLOW_START_STEP_ID}-${firstStep.id}`,
+                    markerEnd: {
+                        type: MarkerType.Arrow
+                    },
+                    source: INITIAL_FLOW_START_STEP_ID,
+                    sourceHandle: `${INITIAL_FLOW_START_STEP_ID}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
+                    target: firstStep.id,
+                    type: "base-edge"
+                });
+            }
         }
 
         // Flag to track if we've already created an edge to the user onboard step
@@ -475,7 +523,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                     source: lastViewStep.id,
                     ...(buttonId
                         ? { sourceHandle: `${buttonId}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}` }
-                        : {}),
+                        : { sourceHandle: `${lastViewStep.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}` }),
                     target: userOnboardStepId,
                     type: "base-edge"
                 });
@@ -489,123 +537,105 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         return generateSteps([
             {
                 data: {
-                    components: defaultTemplateComponents
+                    components: initialTemplateComponents
                 },
                 deletable: true,
                 id: INITIAL_FLOW_VIEW_STEP_ID,
-                position: { x: 300, y: 200 },
+                position: { x: 0, y: 330 },
                 type: StepTypes.View
             },
             {
                 data: {},
                 deletable: false,
                 id: INITIAL_FLOW_USER_ONBOARD_STEP_ID,
-                position: { x: 850, y: 408 },
+                position: { x: 500, y: 408 },
                 type: StaticStepTypes.UserOnboard
             }
         ]);
-    }, [ defaultTemplateComponents, generateSteps ]);
-
-    const initialEdges: Edge[] = useMemo<Edge[]>(() => {
-        // Default fallback if no registration flow is found
-        const defaultTemplateActionId: string = defaultTemplateComponents
-            ?.map((component: Element) => {
-                if (component.type === BlockTypes.Form) {
-                    return component.components.find((element: Element) => element.type === ElementTypes.Button)?.id;
-                }
-
-                return null;
-            })
-            .filter(Boolean)[0];
-
-        return [
-            {
-                animated: false,
-                id: `${INITIAL_FLOW_START_STEP_ID}-${INITIAL_FLOW_VIEW_STEP_ID}`,
-                markerEnd: {
-                    type: MarkerType.Arrow
-                },
-                source: INITIAL_FLOW_START_STEP_ID,
-                sourceHandle: `${ INITIAL_FLOW_START_STEP_ID }${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
-                target: INITIAL_FLOW_VIEW_STEP_ID,
-                type: "base-edge"
-            },
-            {
-                animated: false,
-                id: defaultTemplateActionId,
-                markerEnd: {
-                    type: MarkerType.Arrow
-                },
-                source: INITIAL_FLOW_VIEW_STEP_ID,
-                sourceHandle: `${defaultTemplateActionId}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
-                target: INITIAL_FLOW_USER_ONBOARD_STEP_ID,
-                type: "base-edge"
-            }
-        ];
-    }, [ defaultTemplateComponents ]);
+    }, [ initialTemplateComponents, generateSteps ]);
 
     const [ nodes, setNodes, onNodesChange ] = useNodesState([]);
     const [ edges, setEdges, onEdgesChange ] = useEdgesState([]);
 
-    useEffect(() => {
-        if (!isEmpty(registrationFlow?.steps)) {
-            const steps: Node[] =  generateSteps(registrationFlow.steps);
+    /**
+     * Helper function to update node internals for a given node and its components.
+     *
+     * @param nodes - Set of nodes to update.
+     */
+    const updateAllNodeInternals = (nodes: Node[]): void => {
+        nodes.forEach((node: Node) => {
+            updateNodeInternals(node.id);
 
-            // TODO: Figure-out a better way to handle this debounce.
-            // Tracker: https://github.com/xyflow/xyflow/issues/2405
-            setTimeout(() => {
-                setEdges(() => generateEdges(steps as any));
+            if (node.data?.components) {
+                (node.data.components as Element[]).forEach((component: Element) => {
+                    updateNodeInternals(component.id);
 
-                // Letting React Flow know of the programmatic updates to node for re-drawing edges.
-                setNodes(() => {
-                    steps.forEach((node: Node) => {
-                        updateNodeInternals(node.id);
-
-                        if (node.data?.components) {
-                            (node.data.components as Element[]).forEach((component: Element) => {
-                                updateNodeInternals(component.id);
-
-                                if (component?.components) {
-                                    component.components.forEach((nestedComponent: Element) => {
-                                        updateNodeInternals(nestedComponent.id);
-                                    });
-                                }
-                            });
-                        }
-                    });
-
-                    return steps;
+                    if (component?.components) {
+                        component.components.forEach((nestedComponent: Element) => {
+                            updateNodeInternals(nestedComponent.id);
+                        });
+                    }
                 });
-            }, 500);
-        } else {
-            // TODO: Figure-out a better way to handle this debounce.
-            // Tracker: https://github.com/xyflow/xyflow/issues/2405
-            setTimeout(() => {
-                setEdges(() => initialEdges);
+            }
+        });
+    };
 
-                // Letting React Flow know of the programmatic updates to node for re-drawing edges.
-                setNodes(() => {
-                    initialNodes.forEach((node: Node) => {
-                        updateNodeInternals(node.id);
-
-                        if (node.data?.components) {
-                            (node.data.components as Element[]).forEach((component: Element) => {
-                                updateNodeInternals(component.id);
-
-                                if (component?.components) {
-                                    component.components.forEach((nestedComponent: Element) => {
-                                        updateNodeInternals(nestedComponent.id);
-                                    });
-                                }
-                            });
-                        }
-                    });
-
-                    return initialNodes;
-                });
-            }, 500);
+    /**
+     * Uses a sequence of state updates and RAF calls.
+     *
+     * @param steps - Steps to update the flow with.
+     */
+    const updateFlowWithSequence = (steps: Node[]): void => {
+        if (flowUpdatesInProgress.current) {
+            // "Flow update already in progress, skipping..
+            return;
         }
-    }, [ registrationFlow?.steps ]);
+
+        flowUpdatesInProgress.current = true;
+        nodesUpdatedRef.current = false;
+
+        setNodes(() => {
+            nodesUpdatedRef.current = true;
+
+            return steps;
+        });
+
+        const updateSequence = () => {
+            if (!nodesUpdatedRef.current) {
+                requestAnimationFrame(updateSequence);
+
+                return;
+            }
+
+            updateAllNodeInternals(steps);
+
+            requestAnimationFrame(() => {
+                const generatedEdges: Edge[] = generateEdges(steps as any);
+                const validatedEdges: Edge[] = validateEdges(generatedEdges, steps);
+
+                setEdges(() => validatedEdges);
+
+                flowUpdatesInProgress.current = false;
+            });
+        };
+
+        requestAnimationFrame(updateSequence);
+    };
+
+    /**
+     * Effect that updates the flow with the registration flow steps.
+     */
+    useLayoutEffect(() => {
+        if (!isRegistrationFlowFetchRequestLoading && !isRegistrationFlowFetchRequestValidating) {
+            if (!isEmpty(registrationFlow?.steps)) {
+                const steps: Node[] = generateSteps(registrationFlow.steps);
+
+                updateFlowWithSequence(steps);
+            } else {
+                updateFlowWithSequence(initialNodes);
+            }
+        }
+    }, [ registrationFlow?.steps, isRegistrationFlowFetchRequestLoading, isRegistrationFlowFetchRequestValidating ]);
 
     const generateNodeTypes = (): NodeTypes => {
         if (!steps) {
@@ -636,10 +666,48 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     const handleMutateComponents = (components: Element[]): Element[] => {
         let modifiedComponents: Element[] = cloneDeep(components);
 
+        const formCount: number = modifiedComponents.filter(c => c.type === BlockTypes.Form).length;
+
+        if (formCount > 1) {
+            let firstFormFound: boolean = false;
+
+            modifiedComponents = modifiedComponents.filter(c => {
+                if (c.type === BlockTypes.Form) {
+                    if (!firstFormFound) {
+                        firstFormFound = true;
+
+                        return true;
+                    }
+
+                    return false;
+                }
+
+                return true;
+            });
+        }
+
         // Check inside `forms`, if there is a form with a password field and there's only one submit button,
         // Set the `"action": { "type": "EXECUTOR", "executor": { "name": "PasswordOnboardExecutor"}, "next": "" }`
         modifiedComponents = modifiedComponents.map((component: Element) => {
             if (component.type === BlockTypes.Form) {
+                // Set all the `PRIMARY` buttons inside the form type to `submit`.
+                component.components = component?.components?.map((formComponent: Element) => {
+                    if (
+                        formComponent.type === ElementTypes.Button &&
+                                        formComponent.variant === ButtonVariants.Primary
+                    ) {
+                        return {
+                            ...formComponent,
+                            config: {
+                                ...formComponent.config,
+                                type: ButtonTypes.Submit
+                            }
+                        };
+                    }
+
+                    return formComponent;
+                });
+
                 const hasPasswordField: boolean = component.components?.some(
                     (formComponent: Element) =>
                         formComponent.type === ElementTypes.Input && formComponent.variant === InputVariants.Password
@@ -698,15 +766,15 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         return modifiedComponents;
     };
 
-    const handleTemplateLoad = (template: Template): [Node[], Edge[]] => {
+    const handleTemplateLoad = (template: Template): [Node[], Edge[], Resource?, string?] => {
         if (template?.type === "GENERATE_WITH_AI") {
             setShowAIGenerationModal(true);
 
-            return [ [], [] ];
+            return [ [], [], null, null ];
         }
 
         if (!template?.config?.data?.steps) {
-            return [ [], [] ];
+            return [ [], [], null, null ];
         }
 
         const replacers = template?.config?.data?.__generationMeta__?.replacers;
@@ -715,9 +783,24 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             generateSteps(template.config.data.steps as any),
             replacers
         );
-        const templateEdges = generateEdges(templateSteps as any);
 
-        return [ templateSteps, templateEdges ];
+        const templateEdges: Edge[] = validateEdges(
+            generateEdges(templateSteps as any),
+            templateSteps
+        ) as Edge[];
+
+        // Handle BASIC_FEDERATED template case
+        if (template.type === TemplateTypes.BasicFederated) {
+            const googleRedirectionStep = templateSteps.find(
+                (step: Node) => step.type === "REDIRECTION"
+            );
+
+            if (googleRedirectionStep) {
+                return [ templateSteps, templateEdges, googleRedirectionStep as Resource, googleRedirectionStep.id ];
+            }
+        }
+
+        return [ templateSteps, templateEdges, null, null ];
     };
 
     const generateUnconnectedEdges = (currentEdges: Edge[], currentNodes: Node[]): Edge[] => {
@@ -912,7 +995,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                     ...step,
                     data: {
                         ...step.data,
-                        components: defaultTemplateComponents
+                        components: blankTemplateComponents
                     }
                 };
             }

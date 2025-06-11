@@ -20,6 +20,7 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.IdentityRecoveryException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="java.io.File" %>
@@ -94,7 +95,7 @@
                     <%=i18n(recoveryResourceBundle, customText, successMessageDescrition)%>
                     <br><br>
                     <%
-                        if(StringUtils.isNotBlank(callback)) {
+                        if(StringUtils.isNotBlank(callback) && AuthenticationEndpointUtil.isSchemeSafeURL(callback)) {
                     %>
                         <br/><br/>
                         <i class="caret left icon primary"></i>

@@ -46,6 +46,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
+<%@ page import="org.wso2.carbon.user.core.util.UserCoreUtil" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 
 <%-- Include tenant context --%>
@@ -150,11 +151,15 @@
     String recoveryStage = request.getParameter("recoveryStage");
 
     if (RecoveryStage.INITIATE.equalsValue(recoveryStage)) {
-        // if otp is supported by a new channel (eg: email) update this value assignment. null means unsupported.
-        final String targetChannel = IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP
-            .equals((String)request.getAttribute("channel"))
+        // If otp is supported by a new channel update this value assignment. null means unsupported.
+        final String targetChannel =IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP
+            .equals((String) request.getAttribute("channel")) 
                 ? "SMS"
-                : null;
+                : IdentityManagementEndpointConstants.PasswordRecoveryOptions.EMAIL
+                .equals((String) request.getAttribute("channel"))
+                    ? "EMAIL"
+                    : null;
+
         // Manage unsupported channel
         if (StringUtils.isBlank(targetChannel)) {
             redirectToErrorPageWithMessage(request, response, "Unknown.channel");
@@ -186,10 +191,11 @@
             if (resp == null) {
                 /** Handle invalid username scenario. proceeds to next level without warning to 
                 avoid an attacker bruteforcing to learn the usernames. */
+                
                 request.setAttribute("screenValue", "******" + getRandomNumberString(4, username));
                 request.setAttribute("resendCode", UUID.randomUUID().toString());
                 request.setAttribute("flowConfirmationCode", UUID.randomUUID().toString());
-                request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
+                request.getRequestDispatcher("sms-and-email-otp.jsp").forward(request, response);
                 return;
             }
             for(AccountRecoveryType recoveryType: resp) {
@@ -238,7 +244,7 @@
             return;
         }
         // Redirect to enter the OTP.
-        request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
+        request.getRequestDispatcher("sms-and-email-otp.jsp").forward(request, response);
     } else if (RecoveryStage.RESEND.equalsValue(recoveryStage)) {
         String resendCode = request.getParameter("resendCode");
         String flowConfirmationCode = request.getParameter("flowConfirmationCode");
@@ -272,7 +278,7 @@
         request.setAttribute("resendCode", resendCode);
         request.setAttribute("sp", request.getParameter("sp"));
         request.setAttribute("flowConfirmationCode", flowConfirmationCode);
-        request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
+        request.getRequestDispatcher("sms-and-email-otp.jsp").forward(request, response);
     } else if (RecoveryStage.CONFIRM.equalsValue(recoveryStage)) {
         String flowConfirmationCode = request.getParameter("flowConfirmationCode"); 
         String OTPcode = request.getParameter("OTPcode");
@@ -301,7 +307,7 @@
             request.setAttribute("resendCode", request.getParameter("resendCode"));
             request.setAttribute("sp", request.getParameter("sp"));
             request.setAttribute("flowConfirmationCode", flowConfirmationCode);
-            request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
+            request.getRequestDispatcher("sms-and-email-otp.jsp").forward(request, response);
             return;
         }
         String spId = Encode.forJava(request.getParameter("spId"));

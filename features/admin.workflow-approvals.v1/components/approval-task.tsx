@@ -302,7 +302,9 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                 className="micro spaced-right"
                                 color={ resolveApprovalTagColor(approval?.taskStatus) }
                             />
-                            { approval?.id + " " + approval?.subject + " " }
+
+                            { "Your approval is needed to proceed with the request."
+                            }
                         </Header.Subheader>
                     </Header.Content>
                 </Header>

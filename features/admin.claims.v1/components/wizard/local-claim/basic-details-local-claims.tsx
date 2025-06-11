@@ -19,7 +19,7 @@
 import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
-import { Claim, TestableComponentInterface } from "@wso2is/core/models";
+import { Claim, DataType, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { GenericIcon, Hint, InlineEditInput, Message, Popup } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
@@ -165,13 +165,27 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
             onSubmit={ (values: Map<string, FormValue>) => {
                 const data: Claim
                  = {
+                     canonicalValues: values.get("canonicalValues")
+                         ? ((values.get("canonicalValues") as unknown) as { key: string; value: string }[])
+                             .map((item: { key: string; value: string }) => ({
+                                 label: item.key,
+                                 value: item.value
+                             }))
+                         : [],
                      claimURI: claimURIBase + "/" + values.get("claimURI").toString().trim(),
+                     dataType: values.get("dataType")?.toString() === DataType.STRING
+                         ? ((values.get("canonicalValues") as string[]).length > 0
+                             ? DataType.OPTIONS
+                             : DataType.TEXT)
+                         : values.get("dataType")?.toString(),
                      description: values.get("description")?.toString(),
                      displayName: values.get("name").toString(),
                      displayOrder: values.get("displayOrder") ? parseInt(values.get("displayOrder")?.toString()) : 0,
+                     multiValued: values.get("multiValued")?.length > 0,
                      readOnly: values.get("readOnly")?.length > 0,
                      regEx: values.get("regularExpression")?.toString(),
                      required: values.get("required")?.length > 0,
+                     subAttributes: values.get("subAttributes") as string[] || [],
                      supportedByDefault: values.get("supportedByDefault")?.length > 0
                  };
 
@@ -221,8 +235,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                         loading={ validateMapping }
                                         listen={ (values: Map<string, FormValue>) => {
                                             setClaimID(values.get("claimURI").toString());
-                                            setOidcMapping(values.get("claimURI").toString().replace(/\./g,""));
-                                            setScimMapping(values.get("claimURI").toString().replace(/\./g,""));
+                                            setOidcMapping(values.get("claimURI").toString());
+                                            setScimMapping(values.get("claimURI").toString());
                                             setIsScimMappingRemoved(false);
                                         } }
                                         onMouseOver={ () => {
@@ -241,7 +255,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                             let isAttributeValid: boolean = true;
 
                                             // TODO : Discuss on max characters for attribute name
-                                            if (!value.match(/^\w+$/) || value.length > 30) {
+                                            if (!value.match(/^\w+(\.\w+)?$/) || value.length > 30) {
                                                 isAttributeValid = false;
                                             }
 

@@ -106,17 +106,18 @@
 
     if (StringUtils.isNotBlank(callback) &&
         StringUtils.isNotBlank(userStoreDomain)) {
-        if (StringUtils.isNotBlank(sp)) {
+        if (StringUtils.isNotBlank(sp) && !StringUtils.equalsIgnoreCase(sp, "null")) {
             applicationName = sp;
         } else if (callback.contains(CONSOLE_APP_NAME.toLowerCase())) {
             applicationName = CONSOLE_APP_NAME;
-        } else if (callback.contains(MY_ACCOUNT_APP_NAME.toLowerCase().replaceAll("\\s+", ""))) {
+        } else if (callback.contains(MY_ACCOUNT_APP_NAME.toLowerCase().replaceAll("\\s+", "")) ||
+                isUserPortalUrl(callback, tenantDomain, application)) {
             applicationName = MY_ACCOUNT_APP_NAME;
         }
     } else {
             if (StringUtils.isNotBlank(spId)) {
             try {
-                if (spId.equals(MY_ACCOUNT_APP_ID)) {
+                if (spId.equals(MY_ACCOUNT_APP_ID) || isUserPortalUrl(callback, tenantDomain, application)) {
                     applicationName = MY_ACCOUNT_APP_NAME;
                 } else {
                     applicationName = applicationDataRetrieval.getApplicationName(tenantDomain,spId);
@@ -287,6 +288,22 @@
 %>
 
 <% request.setAttribute("pageName", "password-reset-complete"); %>
+<%!
+    private boolean isUserPortalUrl(String callback, String tenantDomain, ServletContext application) {
+
+        String userPortalUrl = IdentityManagementEndpointUtil.getUserPortalUrl(
+                application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL),
+                tenantDomain);
+        return StringUtils.equals(callback, userPortalUrl);
+    }
+%>
+
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("isResponsePage", true);
+    layoutData.put("isSuccessResponse", true);
+    layoutData.put("isPasswordResetCompletePage", true);
+%>
 
 <!doctype html>
 <html lang="en-US">

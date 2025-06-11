@@ -182,6 +182,7 @@ export const branding: BrandingNS = {
     },
     variations: {
         "sms-otp": "SMS OTP",
+        "email-otp": "Email OTP",
         "email-link": "Email Link",
         "base": "Base",
         "multi": "Multi Option",

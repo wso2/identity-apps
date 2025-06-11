@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2018-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2018-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -105,7 +105,7 @@
     PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
     boolean isSelfRegistrationLockOnCreationEnabled = preferenceRetrievalClient.checkSelfRegistrationLockOnCreation(tenantDomain);
     String callback = Encode.forHtmlAttribute(request.getParameter("callback"));
-    String backToUrl = callback;
+    String backToUrl = Encode.forHtmlAttribute(IdentityManagementEndpointUtil.encodeURL(request.getParameter("callback")));
     String sp = Encode.forHtmlAttribute(request.getParameter("sp"));
     String previousStep = Encode.forHtmlAttribute(request.getParameter("previous_step"));
     String username = request.getParameter("username");
@@ -1067,6 +1067,35 @@
                                                 </c:forEach>
                                             </div>
                                         </div>
+                                    <% } else if (StringUtils.equals(claim.getUri(), "http://wso2.org/claims/local")) { %>
+                                        <div class="ui fluid search selection dropdown" id="local-dropdown" data-testid="local-dropdown">
+                                            <input type="hidden"
+                                                id="local-input"
+                                                name="<%= Encode.forHtmlAttribute(claimURI) %>"
+                                                <% if (claim.getRequired()) { %>
+                                                    required
+                                                <% }%>
+                                                <% if(skipSignUpEnableCheck && StringUtils.isNotEmpty(claimValue)) {%>
+                                                    value="<%= Encode.forHtmlAttribute(claimValue)%>" disabled<%}%>
+                                            />
+                                            <i class="dropdown icon"></i>
+                                            <div class="default text">
+                                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter.local")%>
+                                            </div>
+                                            <div class="menu">
+                                                <%
+                                                    List<Map<String, String>> localeList = getLocaleList(application);
+                                                    for (Map<String, String> localeItem : localeList) {
+                                                %>
+                                                    <div class="item" data-value="<%= localeItem.get(LOCALE_CODE_KEY) %>">
+                                                        <i class="<%= localeItem.get(FLAG_CODE_KEY).toLowerCase() %> flag"></i>
+                                                        <%= localeItem.get(DISPLAY_NAME_KEY) %>
+                                                    </div>
+                                                <%
+                                                    }
+                                                %>
+                                            </div>
+                                        </div>
                                     <% } else if (StringUtils.equals(claim.getUri(), "http://wso2.org/claims/dob")) { %>
                                         <div class="ui calendar" id="date_picker">
                                             <div class="ui input right icon" style="width: 100%;">
@@ -1530,6 +1559,11 @@
             showCountryValidationStatus();
         });
 
+        // Fires when local field lose focus.
+        $('#local-input').bind('blur', function () {
+            showLocalValidationStatus();
+        });
+
         // Fires on username field input.
         $('#usernameUserInput').bind('input', function () {
             hideUsernameValidationStatus();
@@ -1870,9 +1904,16 @@
 
             var agreementChk = $(".agreement-checkbox input");
             var countryDropdown = $("#country-dropdown");
+            var localDropdown = $("#local-dropdown");
 
             countryDropdown.dropdown('hide');
             $("> input.search", countryDropdown).attr("role", "presentation");
+
+            localDropdown.dropdown({
+                onChange: function (value) {
+                    $("#local-input").val(value);
+                }
+            });
 
             $("#date_picker").calendar({
                 type: 'date',
@@ -2125,6 +2166,11 @@
                             validInput = false;
                         }
 
+                        // Local validation
+                        if (!showLocalValidationStatus()) {
+                            validInput = false;
+                        }
+
                         // Validate the custom input fields.
                         // If at least one of the fields return false,
                         // the input will be invalid.
@@ -2233,6 +2279,10 @@
                 }
                 // Country validation
                 if (!showCountryValidationStatus()) {
+                    validInput = false;
+                }
+                // Local validation
+                if (!showLocalValidationStatus()) {
                     validInput = false;
                 }
                 // Validate the custom input fields.
@@ -2491,7 +2541,7 @@
 
                     return false;
             } else {
-                var usernamePattern = /(^[\u00C0-\u00FFa-zA-Z0-9](?:(?![!#$'+=^_.{|}~\-&]{2})[\u00C0-\u00FF\w!#$'+=^_.{|}~\-&]){0,63}(?=[\u00C0-\u00FFa-zA-Z0-9_]).\@(?![+.\-_])(?:(?![.+\-_]{2})[\w.+\-]){0,245}(?=[\u00C0-\u00FFa-zA-Z0-9]).\.[a-zA-Z]{2,10})$/;
+                var usernamePattern = /(^[\u00C0-\u00FFa-zA-Z0-9](?:(?![!#$'+=^_.{|}~\-&]{2})[\u00C0-\u00FF\w!#$'+=^_.{|}~\-&]){0,63}(?<=[\u00C0-\u00FFa-zA-Z0-9_])@(?![+.\-_])(?:(?![.+\-_]{2})[\w.+\-]){0,245}(?=[\u00C0-\u00FFa-zA-Z0-9]).\.[a-zA-Z]{2,10})$/;
                 if (!usernamePattern.test(usernameUserInput.value.trim()) && (emailRequired || !isAlphanumericUsernameEnabled())) {
                     username_error_msg_text.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Please.enter.valid.email")%>")
                     username_error_msg.show();
@@ -3022,6 +3072,28 @@
 
             country_error.hide();
             country_field.removeClass("error");
+        }
+
+        function showLocalValidationStatus() {
+            var local = document.getElementById("local-input");
+            var local_error = $("#local_error");
+            var local_error_msg_text = $("#local_error_text");
+            var local_field = $("#local_field");
+            if (local != null && local.value == "" && local.required) {
+                local_error_msg_text.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "For.required.fields.cannot.be.empty")%>")
+                local_error.show();
+                local_field.addClass("error");
+                return false;
+            }
+            hideLocalValidationStatus();
+            return true;
+        }
+
+        function hideLocalValidationStatus() {
+            var local_error = $("#local_error");
+            var local_field = $("#local_field");
+            local_error.hide();
+            local_field.removeClass("error");
         }
 
         function showMobileNumberValidationStatus() {

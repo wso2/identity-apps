@@ -25,6 +25,7 @@ import React, { ChangeEvent, FunctionComponent, ReactElement } from "react";
 import RichText from "./rich-text/rich-text";
 import { ElementTypes } from "../../models/elements";
 import { Resource } from "../../models/resources";
+import FlowBuilderElementConstants from "../../constants/flow-builder-element-constants";
 
 /**
  * Props interface of {@link CommonElementPropertyFactory}
@@ -100,6 +101,22 @@ const CommonElementPropertyFactory: FunctionComponent<CommonElementPropertyFacto
                 }
                 placeholder={ `Enter ${startCase(propertyKey)}` }
                 data-componentid={ `${componentId}-${propertyKey}` }
+                { ...rest }
+            />
+        );
+    }
+
+    if (resource.type == ElementTypes.Captcha) {
+        return (
+            <TextField
+                fullWidth
+                label="Provider"
+                defaultValue={ FlowBuilderElementConstants.DEFAULT_CAPTCHA_PROVIDER }
+                data-componentid={ `${ componentId }-${ propertyKey }` }
+                inputProps={ {
+                    disabled: true,
+                    readOnly: true
+                } }
                 { ...rest }
             />
         );

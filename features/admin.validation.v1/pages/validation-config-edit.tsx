@@ -168,8 +168,10 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         isLoading: isGroupListLoading
     } = useGroupList(
         null,
-        "members,roles",
         null,
+        null,
+        null,
+        "members,roles",
         !isRuleBasedPasswordExpiryDisabled
     );
 
@@ -703,7 +705,11 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
 
     const resolveLegacyPasswordValidation: () => ReactElement = (): ReactElement => {
         return (
-            <>
+            <div className="validation-configurations-form">
+                <Divider className="heading-divider" />
+                <Heading as="h4">
+                    { t("extensions:manage.serverConfigurations.passwordValidation.heading") }
+                </Heading>
                 <Field.Checkbox
                     className="toggle mb-4"
                     ariaLabel="passwordPolicy.enable"
@@ -785,7 +791,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         />
                         <label>and</label>
                         <Field.Input
-                            ariaLabel="Minimum length of the password"
+                            ariaLabel="Maximum length of the password"
                             inputType="number"
                             name={
                                 GovernanceConnectorUtils.encodeConnectorPropertyName("passwordPolicy.max.length")
@@ -855,10 +861,12 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     type="text"
                     width={ 12 }
                     required
-                    placeholder={ "Enter password pattern regex" }
+                    placeholder={ t(
+                        "extensions:manage.serverConfigurations.passwordValidation.passwordValidationRegexPlaceholder"
+                    ) }
                     labelPosition="top"
                     minLength={ 3 }
-                    maxLength={ 100 }
+                    maxLength={ 255 }
                     readOnly={ isReadOnly }
                     listen={ (
                         value: string
@@ -876,7 +884,8 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         GovernanceConnectorUtils.resolveFieldLabel(
                             "Password Validation",
                             "passwordPolicy.pattern",
-                            "Password pattern regex")
+                            t("extensions:manage.serverConfigurations.passwordValidation.passwordValidationRegexLabel")
+                        )
                     }
                     disabled={ !isLegacyPasswordPolicyEnabled }
                 />
@@ -885,9 +894,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         GovernanceConnectorUtils.resolveFieldHint(
                             "Password Validation",
                             "passwordPolicy.pattern",
-                            "Length of the OTP for SMS and" +
-                            " e-mail verifications. OTP length" +
-                            " must be 4-10."
+                            t("extensions:manage.serverConfigurations.passwordValidation.passwordValidationRegexHint")
                         )
                     }
                 </Hint>
@@ -900,10 +907,13 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     type="text"
                     width={ 12 }
                     required
-                    placeholder={ "Enter password pattern regex" }
+                    placeholder={ t(
+                        "extensions:manage.serverConfigurations.passwordValidation." +
+                        "passwordValidationErrorPlaceholder"
+                    ) }
                     labelPosition="top"
                     minLength={ 3 }
-                    maxLength={ 100 }
+                    maxLength={ 255 }
                     readOnly={ isReadOnly }
                     listen={ (
                         value: string
@@ -921,7 +931,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         GovernanceConnectorUtils.resolveFieldLabel(
                             "Password Validation",
                             "passwordPolicy.errorMsg",
-                            "Error message on pattern violation")
+                            t("extensions:manage.serverConfigurations.passwordValidation.passwordValidationErrorLabel"))
                     }
                     disabled={ !isLegacyPasswordPolicyEnabled }
                 />
@@ -930,12 +940,11 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         GovernanceConnectorUtils.resolveFieldHint(
                             "Password Validation",
                             "passwordPolicy.errorMsg",
-                            "This error message will be displayed" +
-                            " when a pattern violation is detected."
+                            t("extensions:manage.serverConfigurations.passwordValidation.passwordValidationErrorHint")
                         )
                     }
                 </Hint>
-            </>
+            </div>
         );
     };
 
@@ -983,7 +992,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             <div className="validation-configurations-form">
                 <Divider className="heading-divider" />
                 <Heading as="h4">
-                    { t("extensions:manage.serverConfigurations.passwordValidationHeading") }
+                    { t("extensions:manage.serverConfigurations.passwordValidation.heading") }
                 </Heading>
                 <div className="criteria">
                     <label>
