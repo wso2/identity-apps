@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.25.21
+
+### Patch Changes
+
+- [#8326](https://github.com/wso2/identity-apps/pull/8326) [`c462a608167fb245480903a64bf64240f02b7429`](https://github.com/wso2/identity-apps/commit/c462a608167fb245480903a64bf64240f02b7429) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Remove fidp param in impersonation cb url.
+
+* [#8318](https://github.com/wso2/identity-apps/pull/8318) [`a6e03011c95713b1ab4fafef29aee10d8694ad5b`](https://github.com/wso2/identity-apps/commit/a6e03011c95713b1ab4fafef29aee10d8694ad5b) Thanks [@savindi7](https://github.com/savindi7)! - Fix button loading and localization issues.
+
 ## 2.25.20
 
 ### Patch Changes
