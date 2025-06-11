@@ -1,5 +1,18 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.35.2
+
+### Patch Changes
+
+- [#8303](https://github.com/wso2/identity-apps/pull/8303) [`b620bda0c39d43594a60b96579d54a645a877696`](https://github.com/wso2/identity-apps/commit/b620bda0c39d43594a60b96579d54a645a877696) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add fixes and improvements to registration orchestration flow
+
+- Updated dependencies [[`6427079247040e4ca2fae0edf2f2e4c570487b79`](https://github.com/wso2/identity-apps/commit/6427079247040e4ca2fae0edf2f2e4c570487b79), [`b620bda0c39d43594a60b96579d54a645a877696`](https://github.com/wso2/identity-apps/commit/b620bda0c39d43594a60b96579d54a645a877696)]:
+  - @wso2is/admin.feature-gate.v1@1.6.3
+  - @wso2is/admin.extensions.v1@2.38.3
+  - @wso2is/admin.core.v1@2.45.8
+  - @wso2is/i18n@2.23.10
+  - @wso2is/admin.server-configurations.v1@2.35.2
+
 ## 2.35.1
 
 ### Patch Changes
