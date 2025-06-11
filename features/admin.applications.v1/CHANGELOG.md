@@ -1,5 +1,67 @@
 # @wso2is/admin.applications.v1
 
+## 2.35.7
+
+### Patch Changes
+
+- [#8302](https://github.com/wso2/identity-apps/pull/8302) [`1ec791a7e3b40addf37631d6f4a58d7aded62569`](https://github.com/wso2/identity-apps/commit/1ec791a7e3b40addf37631d6f4a58d7aded62569) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Add support for showing public client checkbox based on the publicClientAllowed configuration on selected grant types.
+
+- Updated dependencies [[`5f2b24b179f498fd0a6f1845d9a0a7a78da911c6`](https://github.com/wso2/identity-apps/commit/5f2b24b179f498fd0a6f1845d9a0a7a78da911c6)]:
+  - @wso2is/admin.users.v1@2.32.9
+
+## 2.35.6
+
+### Patch Changes
+
+- [#8248](https://github.com/wso2/identity-apps/pull/8248) [`1be0e54700689e7bbc7d6c023cb7399a98f397e7`](https://github.com/wso2/identity-apps/commit/1be0e54700689e7bbc7d6c023cb7399a98f397e7) Thanks [@adibmbrk](https://github.com/adibmbrk)! - Enable validate token bindings when DPoP is selected
+
+## 2.35.5
+
+### Patch Changes
+
+- [#8242](https://github.com/wso2/identity-apps/pull/8242) [`33ef4cb990d5df8d35fec85b33f43333118f5c6c`](https://github.com/wso2/identity-apps/commit/33ef4cb990d5df8d35fec85b33f43333118f5c6c) Thanks [@roshanemoraes](https://github.com/roshanemoraes)! - Fix error alert when navigating to the Shared Access tab in Application Share
+
+- Updated dependencies [[`33ef4cb990d5df8d35fec85b33f43333118f5c6c`](https://github.com/wso2/identity-apps/commit/33ef4cb990d5df8d35fec85b33f43333118f5c6c)]:
+  - @wso2is/admin.core.v1@2.45.3
+  - @wso2is/i18n@2.23.4
+
+## 2.35.4
+
+### Patch Changes
+
+- [#8238](https://github.com/wso2/identity-apps/pull/8238) [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+- Updated dependencies [[`89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f`](https://github.com/wso2/identity-apps/commit/89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f), [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f)]:
+  - @wso2is/admin.core.v1@2.45.2
+  - @wso2is/admin.server-configurations.v1@2.35.1
+  - @wso2is/admin.wsfed-configuration.v1@2.25.204
+  - @wso2is/admin.identity-providers.v1@2.26.206
+  - @wso2is/admin.login-flow-builder.v1@2.26.2
+  - @wso2is/admin.console-settings.v1@2.25.210
+  - @wso2is/admin.api-resources.v2@2.25.204
+  - @wso2is/admin.authorization.v1@2.25.89
+  - @wso2is/admin.impersonation.v1@1.6.204
+  - @wso2is/admin.login-flow.ai.v1@2.27.101
+  - @wso2is/admin.organizations.v1@2.26.205
+  - @wso2is/admin.feature-gate.v1@1.6.2
+  - @wso2is/admin.connections.v1@2.33.96
+  - @wso2is/admin.oidc-scopes.v1@2.25.204
+  - @wso2is/admin.extensions.v1@2.38.2
+  - @wso2is/admin.userstores.v1@2.27.33
+  - @wso2is/admin.branding.v1@2.30.1
+  - @wso2is/admin.secrets.v1@2.25.204
+  - @wso2is/admin.claims.v1@2.27.123
+  - @wso2is/react-components@2.9.16
+  - @wso2is/admin.roles.v2@2.27.154
+  - @wso2is/admin.users.v1@2.32.5
+  - @wso2is/form@2.7.1
+
+## 2.35.3
+
+### Patch Changes
+
+- [#8219](https://github.com/wso2/identity-apps/pull/8219) [`5005769b794079ce114c016955d63a807f85d165`](https://github.com/wso2/identity-apps/commit/5005769b794079ce114c016955d63a807f85d165) Thanks [@roshanemoraes](https://github.com/roshanemoraes)! - Update missing display of success alert.
+
 ## 2.35.2
 
 ### Patch Changes

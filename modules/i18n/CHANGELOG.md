@@ -1,5 +1,41 @@
 # @wso2is/i18n
 
+## 2.23.9
+
+### Patch Changes
+
+- [#8149](https://github.com/wso2/identity-apps/pull/8149) [`a9b49f91ab8047a590fbc6ffa3e631ae2077e63f`](https://github.com/wso2/identity-apps/commit/a9b49f91ab8047a590fbc6ffa3e631ae2077e63f) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add tenant name to root organization creation/edit forms
+
+## 2.23.8
+
+### Patch Changes
+
+- [#8312](https://github.com/wso2/identity-apps/pull/8312) [`bb4685024a2af3ae0134a3e1be74dd3325636968`](https://github.com/wso2/identity-apps/commit/bb4685024a2af3ae0134a3e1be74dd3325636968) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Simplify Users not found message by excluding search query
+
+## 2.23.7
+
+### Patch Changes
+
+- [#8301](https://github.com/wso2/identity-apps/pull/8301) [`b29ed7869a11e35df46b23027e7302ae64fabc39`](https://github.com/wso2/identity-apps/commit/b29ed7869a11e35df46b23027e7302ae64fabc39) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Provide RTL Support for MyAccount
+
+## 2.23.6
+
+### Patch Changes
+
+- [#8187](https://github.com/wso2/identity-apps/pull/8187) [`5962ba551c617071d2ac744a52f05a08effc7f58`](https://github.com/wso2/identity-apps/commit/5962ba551c617071d2ac744a52f05a08effc7f58) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add support for user's filtering by pending primary email and mobile verification via console
+
+## 2.23.5
+
+### Patch Changes
+
+- [#8111](https://github.com/wso2/identity-apps/pull/8111) [`4b3b589d2b0dbbe651855efe39ab64d8da1adc31`](https://github.com/wso2/identity-apps/commit/4b3b589d2b0dbbe651855efe39ab64d8da1adc31) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Data Type support for the attributes
+
+## 2.23.4
+
+### Patch Changes
+
+- [#8242](https://github.com/wso2/identity-apps/pull/8242) [`33ef4cb990d5df8d35fec85b33f43333118f5c6c`](https://github.com/wso2/identity-apps/commit/33ef4cb990d5df8d35fec85b33f43333118f5c6c) Thanks [@roshanemoraes](https://github.com/roshanemoraes)! - Fix error alert when navigating to the Shared Access tab in Application Share
+
 ## 2.23.3
 
 ### Patch Changes

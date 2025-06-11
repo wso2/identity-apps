@@ -846,7 +846,12 @@ export interface ApplicationsNS {
                         heading: string,
                         description: string
                     },
-                    completed: {
+                    failed: {
+                        heading: string,
+                        description: string,
+                        actionText: string
+                    },
+                    partiallyCompleted: {
                         heading: string,
                         description: string,
                         actionText: string

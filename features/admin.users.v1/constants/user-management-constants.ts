@@ -484,12 +484,12 @@ export const USER_ACCOUNT_STATUS_FILTER_OPTIONS: DropdownChild[] = [
     {
         key: "LOCKED",
         text: "users:advancedSearch.accountStatusFilter.options.locked",
-        value: "urn:scim:wso2:schema:accountState eq LOCKED"
+        value: "urn:scim:wso2:schema:accountLocked eq true"
     },
     {
         key: "DISABLED",
         text: "users:advancedSearch.accountStatusFilter.options.disabled",
-        value: "urn:scim:wso2:schema:accountState eq DISABLED"
+        value: "urn:scim:wso2:schema:accountDisabled eq true"
     },
     {
         key: "PENDING_FUPR",
@@ -500,5 +500,15 @@ export const USER_ACCOUNT_STATUS_FILTER_OPTIONS: DropdownChild[] = [
         key: "PENDING_AP",
         text: "users:advancedSearch.accountStatusFilter.options.pendingInitialPasswordSetup",
         value: "urn:scim:wso2:schema:accountState eq PENDING_AP"
+    },
+    {
+        key: "PENDING_PRIMARY_EMAIL",
+        text: "users:advancedSearch.accountStatusFilter.options.pendingPrimaryEmailVerification",
+        value: "urn:scim:wso2:schema:emailVerified ne true"
+    },
+    {
+        key: "PENDING_PRIMARY_MOBILE",
+        text: "users:advancedSearch.accountStatusFilter.options.pendingPrimaryMobileVerification",
+        value: "urn:scim:wso2:schema:phoneVerified ne true"
     }
 ];

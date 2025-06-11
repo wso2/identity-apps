@@ -1479,6 +1479,39 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             protected: true,
             showOnSidePanel: true
         },
+        {
+            category: "extensions:manage.sidePanel.categories.extensions",
+            children: [
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.webhooks.v1/pages/webhook-edit-page")
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "webhookEdit",
+                    name: "Webhook Edit",
+                    path: AppConstants.getPaths().get("WEBHOOK_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() =>
+                import("@wso2is/admin.webhooks.v1/pages/webhook-list-page")
+            ),
+            exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.WEBHOOKS,
+            icon: {
+                icon: <ProgressFlowIcon className="icon" fill="black" />
+            },
+            id: "webhooks",
+            name: "webhooks:sidePanel.name",
+            order: 31,
+            path: AppConstants.getPaths().get("WEBHOOKS"),
+            protected: true,
+            showOnSidePanel: true
+        },
         // the following routes are not onboarded to the side panel
         {
             category: "console:manage.features.sidePanel.categories.configurations",

@@ -68,6 +68,11 @@ export const OperationStatusBanner: React.FC<OperationStatusBannerPropsInterface
         setShowStatusModal(isVisible);
     };
 
+    const statusToBannerText: Map<OperationStatus, string> = new Map<OperationStatus, string>([
+        [ OperationStatus.FAILED, "failed" ],
+        [ OperationStatus.PARTIALLY_COMPLETED, "partiallyCompleted" ]
+    ]);
+
     return (
         <div className="banner-wrapper">
             { status === OperationStatus.IN_PROGRESS && (
@@ -93,20 +98,20 @@ export const OperationStatusBanner: React.FC<OperationStatusBannerPropsInterface
                                 <Button
                                     className="banner-view-hide-details"
                                     onClick={ () => handleStatusModalVisibility(true) }>
-                                    { t("applications:edit.sections.shareApplication.asyncOperationStatus"
-                                        + ".completed.actionText") }
+                                    { t("applications:edit.sections.shareApplication.asyncOperationStatus."
+                                        + statusToBannerText.get(status) + ".actionText") }
                                 </Button>
                             </Box>
                         ) }
                     >
                         <AlertTitle className="alert-title">
                             <Trans components={ { strong: <strong/> } } >
-                                { t("applications:edit.sections.shareApplication.asyncOperationStatus"
-                                + ".completed.heading") }
+                                { t("applications:edit.sections.shareApplication.asyncOperationStatus."
+                                + statusToBannerText.get(status) + ".heading") }
                             </Trans>
                         </AlertTitle>
-                        { t("applications:edit.sections.shareApplication.asyncOperationStatus"
-                            + ".completed.description") }
+                        { t("applications:edit.sections.shareApplication.asyncOperationStatus."
+                            + statusToBannerText.get(status) + ".description") }
                     </Alert>
                 </div>
             ) }

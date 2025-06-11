@@ -1,5 +1,55 @@
 # @wso2is/myaccount
 
+## 2.19.18
+
+### Patch Changes
+
+- [#8306](https://github.com/wso2/identity-apps/pull/8306) [`619fecf8e12e3fcca3e6710b4cd78b20ab07dd0a`](https://github.com/wso2/identity-apps/commit/619fecf8e12e3fcca3e6710b4cd78b20ab07dd0a) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Fix RTL alignment issues by disabling LTR stylesheet before applying RTL stylesheet
+
+- Updated dependencies [[`619fecf8e12e3fcca3e6710b4cd78b20ab07dd0a`](https://github.com/wso2/identity-apps/commit/619fecf8e12e3fcca3e6710b4cd78b20ab07dd0a), [`a9b49f91ab8047a590fbc6ffa3e631ae2077e63f`](https://github.com/wso2/identity-apps/commit/a9b49f91ab8047a590fbc6ffa3e631ae2077e63f)]:
+  - @wso2is/common.branding.v1@2.27.3
+  - @wso2is/i18n@2.23.9
+
+## 2.19.17
+
+### Patch Changes
+
+- [#8275](https://github.com/wso2/identity-apps/pull/8275) [`5f2b24b179f498fd0a6f1845d9a0a7a78da911c6`](https://github.com/wso2/identity-apps/commit/5f2b24b179f498fd0a6f1845d9a0a7a78da911c6) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add sub org impersonation.
+
+## 2.19.16
+
+### Patch Changes
+
+- [#8301](https://github.com/wso2/identity-apps/pull/8301) [`b29ed7869a11e35df46b23027e7302ae64fabc39`](https://github.com/wso2/identity-apps/commit/b29ed7869a11e35df46b23027e7302ae64fabc39) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Provide RTL Support for MyAccount
+
+- Updated dependencies [[`b29ed7869a11e35df46b23027e7302ae64fabc39`](https://github.com/wso2/identity-apps/commit/b29ed7869a11e35df46b23027e7302ae64fabc39)]:
+  - @wso2is/common.branding.v1@2.27.2
+  - @wso2is/react-components@2.9.17
+  - @wso2is/i18n@2.23.7
+
+## 2.19.15
+
+### Patch Changes
+
+- [#8297](https://github.com/wso2/identity-apps/pull/8297) [`7f2e84f2210870eeee73879cb42a7085855d7fe8`](https://github.com/wso2/identity-apps/commit/7f2e84f2210870eeee73879cb42a7085855d7fe8) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Bump oxygen-ui version to 2.4.3
+
+## 2.19.14
+
+### Patch Changes
+
+- [#8221](https://github.com/wso2/identity-apps/pull/8221) [`89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f`](https://github.com/wso2/identity-apps/commit/89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Resolve server origin when tenant qualified URLs are disabled
+
+* [#8244](https://github.com/wso2/identity-apps/pull/8244) [`0eff2af4e7adb85baa381f03452be1a8cff4a58e`](https://github.com/wso2/identity-apps/commit/0eff2af4e7adb85baa381f03452be1a8cff4a58e) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Force trigger package release
+
+- [#8243](https://github.com/wso2/identity-apps/pull/8243) [`0f9690363184ec2d0f165756a9623cb5e0cddfcf`](https://github.com/wso2/identity-apps/commit/0f9690363184ec2d0f165756a9623cb5e0cddfcf) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+* [#8238](https://github.com/wso2/identity-apps/pull/8238) [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+* Updated dependencies [[`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f)]:
+  - @wso2is/admin.organizations.v1@2.26.205
+  - @wso2is/common.branding.v1@2.27.1
+  - @wso2is/react-components@2.9.16
+
 ## 2.19.13
 
 ### Patch Changes

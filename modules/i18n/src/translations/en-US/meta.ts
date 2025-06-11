@@ -21,6 +21,7 @@ import { LocaleMeta } from "../../models";
 
 export const meta: LocaleMeta = {
     code: "en-US",
+    direction: "ltr",
     flag: "us",
     name: "English (United States)",
     namespaces: [
@@ -77,6 +78,7 @@ export const meta: LocaleMeta = {
         I18nModuleConstants.RULES_NAMESPACE,
         I18nModuleConstants.PUSH_PROVIDERS_NAMESPACE,
         I18nModuleConstants.EMAIL_PROVIDERS_NAMESPACE,
+        I18nModuleConstants.WEBHOOKS_NAMESPACE,
         I18nModuleConstants.APPROVAL_WORKFLOWS_NAMESPACE
     ]
 };

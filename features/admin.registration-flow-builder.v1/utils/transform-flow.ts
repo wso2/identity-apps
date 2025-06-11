@@ -19,7 +19,6 @@
 import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/visual-flow-constants";
 import { ActionTypes } from "@wso2is/admin.flow-builder-core.v1/models/actions";
 import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
-import { Resource } from "@wso2is/admin.flow-builder-core.v1/models/resources";
 import { StaticStepTypes, Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { Node } from "@xyflow/react";
 import cloneDeep from "lodash-es/cloneDeep";

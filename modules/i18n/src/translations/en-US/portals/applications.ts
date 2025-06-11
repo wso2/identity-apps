@@ -672,7 +672,12 @@ export const applications: ApplicationsNS = {
                         heading: "Update In Progress.",
                         description: "Updating shared access is in progress."
                     },
-                    completed: {
+                    failed: {
+                        heading: "Update Failed.",
+                        description: "Updating shared access failed.",
+                        actionText: "View"
+                    },
+                    partiallyCompleted: {
                         heading: "Update Partialy Successful.",
                         description: "Updating shared access completed with partial success.",
                         actionText: "View"

@@ -1,5 +1,77 @@
 # @wso2is/admin.users.v1
 
+## 2.32.10
+
+### Patch Changes
+
+- [#8312](https://github.com/wso2/identity-apps/pull/8312) [`bb4685024a2af3ae0134a3e1be74dd3325636968`](https://github.com/wso2/identity-apps/commit/bb4685024a2af3ae0134a3e1be74dd3325636968) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Simplify Users not found message by excluding search query
+
+- Updated dependencies [[`bb4685024a2af3ae0134a3e1be74dd3325636968`](https://github.com/wso2/identity-apps/commit/bb4685024a2af3ae0134a3e1be74dd3325636968)]:
+  - @wso2is/admin.users.v1@2.32.10
+  - @wso2is/i18n@2.23.8
+
+## 2.32.9
+
+### Patch Changes
+
+- [#8275](https://github.com/wso2/identity-apps/pull/8275) [`5f2b24b179f498fd0a6f1845d9a0a7a78da911c6`](https://github.com/wso2/identity-apps/commit/5f2b24b179f498fd0a6f1845d9a0a7a78da911c6) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add sub org impersonation.
+
+- Updated dependencies [[`5f2b24b179f498fd0a6f1845d9a0a7a78da911c6`](https://github.com/wso2/identity-apps/commit/5f2b24b179f498fd0a6f1845d9a0a7a78da911c6)]:
+  - @wso2is/admin.users.v1@2.32.9
+
+## 2.32.8
+
+### Patch Changes
+
+- [#8273](https://github.com/wso2/identity-apps/pull/8273) [`78b959ef447d5376e1814946cd06252999487378`](https://github.com/wso2/identity-apps/commit/78b959ef447d5376e1814946cd06252999487378) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Change account locked and disabled users filtering queries
+
+- Updated dependencies [[`78b959ef447d5376e1814946cd06252999487378`](https://github.com/wso2/identity-apps/commit/78b959ef447d5376e1814946cd06252999487378)]:
+  - @wso2is/admin.users.v1@2.32.8
+
+## 2.32.7
+
+### Patch Changes
+
+- [#8271](https://github.com/wso2/identity-apps/pull/8271) [`d348e53c1f9ae50f1041dcf7cef67ebb1c1707b9`](https://github.com/wso2/identity-apps/commit/d348e53c1f9ae50f1041dcf7cef67ebb1c1707b9) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Change account locked and disabled users filtering queries
+
+- Updated dependencies [[`d348e53c1f9ae50f1041dcf7cef67ebb1c1707b9`](https://github.com/wso2/identity-apps/commit/d348e53c1f9ae50f1041dcf7cef67ebb1c1707b9)]:
+  - @wso2is/admin.users.v1@2.32.7
+
+## 2.32.6
+
+### Patch Changes
+
+- [#8187](https://github.com/wso2/identity-apps/pull/8187) [`5962ba551c617071d2ac744a52f05a08effc7f58`](https://github.com/wso2/identity-apps/commit/5962ba551c617071d2ac744a52f05a08effc7f58) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add support for user's filtering by pending primary email and mobile verification via console
+
+- Updated dependencies [[`5962ba551c617071d2ac744a52f05a08effc7f58`](https://github.com/wso2/identity-apps/commit/5962ba551c617071d2ac744a52f05a08effc7f58)]:
+  - @wso2is/admin.users.v1@2.32.6
+  - @wso2is/i18n@2.23.6
+
+## 2.32.5
+
+### Patch Changes
+
+- [#8238](https://github.com/wso2/identity-apps/pull/8238) [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+- Updated dependencies [[`89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f`](https://github.com/wso2/identity-apps/commit/89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f), [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f)]:
+  - @wso2is/admin.core.v1@2.45.2
+  - @wso2is/admin.server-configurations.v1@2.35.1
+  - @wso2is/admin.identity-providers.v1@2.26.206
+  - @wso2is/admin.authorization.v1@2.25.89
+  - @wso2is/admin.organizations.v1@2.26.205
+  - @wso2is/admin.feature-gate.v1@1.6.2
+  - @wso2is/admin.extensions.v1@2.38.2
+  - @wso2is/admin.userstores.v1@2.27.33
+  - @wso2is/admin.validation.v1@2.27.144
+  - @wso2is/admin.tenants.v1@2.29.11
+  - @wso2is/admin.claims.v1@2.27.123
+  - @wso2is/admin.groups.v1@2.27.119
+  - @wso2is/react-components@2.9.16
+  - @wso2is/admin.roles.v2@2.27.154
+  - @wso2is/admin.users.v1@2.32.5
+  - @wso2is/dynamic-forms@2.4.41
+  - @wso2is/form@2.7.1
+
 ## 2.32.4
 
 ### Patch Changes

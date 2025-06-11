@@ -277,6 +277,10 @@ export interface FeatureConfigInterface {
      * Notification sending feature.
      */
     internalNotificationSending?: FeatureAccessConfigInterface;
+    /**
+     * Registration flow builder feature.
+     */
+    registrationFlowBuilder?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -315,6 +319,11 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      * Configs of multiple application protocol.
      */
     allowMultipleAppProtocols?: boolean;
+    /**
+     * Region selection enabled.
+     * This is used to enable/disable the region selection in the organization creation page.
+     */
+    regionSelectionEnabled?: boolean;
 }
 
 /**

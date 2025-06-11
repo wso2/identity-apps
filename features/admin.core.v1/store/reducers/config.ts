@@ -74,10 +74,12 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             idpConfigs: null,
             loginCallbackUrl: "",
             organizationPrefix: "",
+            regionSelectionEnabled: undefined,
             serverHost: "",
             serverOrigin: "",
             superTenant: "",
             tenant: "",
+            tenantContext: null,
             tenantPath: "",
             tenantPrefix: ""
         },

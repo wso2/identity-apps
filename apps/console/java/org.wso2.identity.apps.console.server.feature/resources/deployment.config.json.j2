@@ -1957,6 +1957,36 @@
                 }
             }
             {% endif %}
+            {% if console.webhooks is defined %}
+            "webhooks": {
+                "disabledFeatures": [
+                    {% if console.webhooks.disabled_features is defined %}
+                    {% for feature in console.webhooks.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.webhooks.enabled is defined %} {{ console.webhooks.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.webhooks.scopes is defined %}
+                    {% for operation, scopes in console.webhooks.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
         },
         "gravatarConfig": {
            {% if console.gravatar.configs is defined %}

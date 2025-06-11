@@ -128,5 +128,9 @@ export const pages: pagesNS = {
         backButton: "Go back to {{type}}",
         subTitle: "{{name}}",
         title: "{{email}}"
+    },
+    webhooks: {
+        subTitle: "Create webhooks to notify external services when certain events happen.",
+        title: "Webhooks"
     }
 };

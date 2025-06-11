@@ -1,5 +1,253 @@
 # @wso2is/console
 
+## 2.58.9
+
+### Patch Changes
+
+- [#8149](https://github.com/wso2/identity-apps/pull/8149) [`a9b49f91ab8047a590fbc6ffa3e631ae2077e63f`](https://github.com/wso2/identity-apps/commit/a9b49f91ab8047a590fbc6ffa3e631ae2077e63f) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add tenant name to root organization creation/edit forms
+
+- Updated dependencies [[`a9b49f91ab8047a590fbc6ffa3e631ae2077e63f`](https://github.com/wso2/identity-apps/commit/a9b49f91ab8047a590fbc6ffa3e631ae2077e63f)]:
+  - @wso2is/admin.tenants.v1@2.29.13
+  - @wso2is/i18n@2.23.9
+
+## 2.58.8
+
+### Patch Changes
+
+- [#8312](https://github.com/wso2/identity-apps/pull/8312) [`bb4685024a2af3ae0134a3e1be74dd3325636968`](https://github.com/wso2/identity-apps/commit/bb4685024a2af3ae0134a3e1be74dd3325636968) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Simplify Users not found message by excluding search query
+
+- Updated dependencies [[`bb4685024a2af3ae0134a3e1be74dd3325636968`](https://github.com/wso2/identity-apps/commit/bb4685024a2af3ae0134a3e1be74dd3325636968)]:
+  - @wso2is/admin.users.v1@2.32.10
+  - @wso2is/i18n@2.23.8
+
+## 2.58.7
+
+### Patch Changes
+
+- [#8275](https://github.com/wso2/identity-apps/pull/8275) [`5f2b24b179f498fd0a6f1845d9a0a7a78da911c6`](https://github.com/wso2/identity-apps/commit/5f2b24b179f498fd0a6f1845d9a0a7a78da911c6) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add sub org impersonation.
+
+* [#8302](https://github.com/wso2/identity-apps/pull/8302) [`1ec791a7e3b40addf37631d6f4a58d7aded62569`](https://github.com/wso2/identity-apps/commit/1ec791a7e3b40addf37631d6f4a58d7aded62569) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Add support for showing public client checkbox based on the publicClientAllowed configuration on selected grant types.
+
+* Updated dependencies [[`5f2b24b179f498fd0a6f1845d9a0a7a78da911c6`](https://github.com/wso2/identity-apps/commit/5f2b24b179f498fd0a6f1845d9a0a7a78da911c6), [`1ec791a7e3b40addf37631d6f4a58d7aded62569`](https://github.com/wso2/identity-apps/commit/1ec791a7e3b40addf37631d6f4a58d7aded62569)]:
+  - @wso2is/admin.users.v1@2.32.9
+  - @wso2is/admin.applications.v1@2.35.7
+
+## 2.58.6
+
+### Patch Changes
+
+- [#8256](https://github.com/wso2/identity-apps/pull/8256) [`567350d132adca64bb5856432dfb14799a7823e8`](https://github.com/wso2/identity-apps/commit/567350d132adca64bb5856432dfb14799a7823e8) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve feature preview modal
+
+- Updated dependencies [[`567350d132adca64bb5856432dfb14799a7823e8`](https://github.com/wso2/identity-apps/commit/567350d132adca64bb5856432dfb14799a7823e8)]:
+  - @wso2is/admin.core.v1@2.45.7
+
+## 2.58.5
+
+### Patch Changes
+
+- [#8297](https://github.com/wso2/identity-apps/pull/8297) [`7f2e84f2210870eeee73879cb42a7085855d7fe8`](https://github.com/wso2/identity-apps/commit/7f2e84f2210870eeee73879cb42a7085855d7fe8) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Bump oxygen-ui version to 2.4.3
+
+## 2.58.4
+
+### Patch Changes
+
+- [#8254](https://github.com/wso2/identity-apps/pull/8254) [`e8553115e75ffa0e30709047fce984598367e795`](https://github.com/wso2/identity-apps/commit/e8553115e75ffa0e30709047fce984598367e795) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add a config to enable global central
+
+- Updated dependencies [[`e8553115e75ffa0e30709047fce984598367e795`](https://github.com/wso2/identity-apps/commit/e8553115e75ffa0e30709047fce984598367e795)]:
+  - @wso2is/admin.tenants.v1@2.29.12
+  - @wso2is/admin.core.v1@2.45.6
+
+## 2.58.3
+
+### Patch Changes
+
+- [#8273](https://github.com/wso2/identity-apps/pull/8273) [`78b959ef447d5376e1814946cd06252999487378`](https://github.com/wso2/identity-apps/commit/78b959ef447d5376e1814946cd06252999487378) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Change account locked and disabled users filtering queries
+
+- Updated dependencies [[`78b959ef447d5376e1814946cd06252999487378`](https://github.com/wso2/identity-apps/commit/78b959ef447d5376e1814946cd06252999487378)]:
+  - @wso2is/admin.users.v1@2.32.8
+
+## 2.58.2
+
+### Patch Changes
+
+- [#8271](https://github.com/wso2/identity-apps/pull/8271) [`d348e53c1f9ae50f1041dcf7cef67ebb1c1707b9`](https://github.com/wso2/identity-apps/commit/d348e53c1f9ae50f1041dcf7cef67ebb1c1707b9) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Change account locked and disabled users filtering queries
+
+- Updated dependencies [[`d348e53c1f9ae50f1041dcf7cef67ebb1c1707b9`](https://github.com/wso2/identity-apps/commit/d348e53c1f9ae50f1041dcf7cef67ebb1c1707b9)]:
+  - @wso2is/admin.users.v1@2.32.7
+
+## 2.58.1
+
+### Patch Changes
+
+- [#8269](https://github.com/wso2/identity-apps/pull/8269) [`b108cde0b3aa77d8943ce0a7075db13c2ee5d9fd`](https://github.com/wso2/identity-apps/commit/b108cde0b3aa77d8943ce0a7075db13c2ee5d9fd) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix attributes view page issue
+
+- Updated dependencies [[`b108cde0b3aa77d8943ce0a7075db13c2ee5d9fd`](https://github.com/wso2/identity-apps/commit/b108cde0b3aa77d8943ce0a7075db13c2ee5d9fd)]:
+  - @wso2is/admin.claims.v1@2.27.126
+
+## 2.58.0
+
+### Minor Changes
+
+- [#8247](https://github.com/wso2/identity-apps/pull/8247) [`6cf542b1d28fd5a1c2d52bf5642328d99c592182`](https://github.com/wso2/identity-apps/commit/6cf542b1d28fd5a1c2d52bf5642328d99c592182) Thanks [@osandamaleesha](https://github.com/osandamaleesha)! - Remove hardcoded rule metadata for pre update profile
+
+### Patch Changes
+
+- [#8267](https://github.com/wso2/identity-apps/pull/8267) [`141bfe176dc65c4830a5d1797ec7a00653267992`](https://github.com/wso2/identity-apps/commit/141bfe176dc65c4830a5d1797ec7a00653267992) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix user attributes issue
+
+- Updated dependencies [[`8330b84a7033ee46c1fd13f2e6de58a6ecab93e7`](https://github.com/wso2/identity-apps/commit/8330b84a7033ee46c1fd13f2e6de58a6ecab93e7)]:
+  - @wso2is/admin.claims.v1@2.27.125
+  - @wso2is/admin.actions.v1@1.13.1
+  - @wso2is/admin.core.v1@2.45.5
+
+## 2.57.8
+
+### Patch Changes
+
+- [#8187](https://github.com/wso2/identity-apps/pull/8187) [`5962ba551c617071d2ac744a52f05a08effc7f58`](https://github.com/wso2/identity-apps/commit/5962ba551c617071d2ac744a52f05a08effc7f58) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add support for user's filtering by pending primary email and mobile verification via console
+
+- Updated dependencies [[`5962ba551c617071d2ac744a52f05a08effc7f58`](https://github.com/wso2/identity-apps/commit/5962ba551c617071d2ac744a52f05a08effc7f58)]:
+  - @wso2is/admin.users.v1@2.32.6
+  - @wso2is/i18n@2.23.6
+
+## 2.57.7
+
+### Patch Changes
+
+- [#8258](https://github.com/wso2/identity-apps/pull/8258) [`33bbe17fae050352d2643ee48ebf0cc153d0381b`](https://github.com/wso2/identity-apps/commit/33bbe17fae050352d2643ee48ebf0cc153d0381b) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Migrate email customization form to react-final-form
+
+- Updated dependencies [[`33bbe17fae050352d2643ee48ebf0cc153d0381b`](https://github.com/wso2/identity-apps/commit/33bbe17fae050352d2643ee48ebf0cc153d0381b)]:
+  - @wso2is/admin.email-management.v1@2.25.206
+
+## 2.57.6
+
+### Patch Changes
+
+- [#8111](https://github.com/wso2/identity-apps/pull/8111) [`e171844cbe0cf5829a3e71ce23a4d9695d05f4e5`](https://github.com/wso2/identity-apps/commit/e171844cbe0cf5829a3e71ce23a4d9695d05f4e5) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Data Type support for the attributes
+
+- Updated dependencies [[`4b3b589d2b0dbbe651855efe39ab64d8da1adc31`](https://github.com/wso2/identity-apps/commit/4b3b589d2b0dbbe651855efe39ab64d8da1adc31)]:
+  - @wso2is/admin.claims.v1@2.27.124
+  - @wso2is/i18n@2.23.5
+
+## 2.57.5
+
+### Patch Changes
+
+- [#8248](https://github.com/wso2/identity-apps/pull/8248) [`1be0e54700689e7bbc7d6c023cb7399a98f397e7`](https://github.com/wso2/identity-apps/commit/1be0e54700689e7bbc7d6c023cb7399a98f397e7) Thanks [@adibmbrk](https://github.com/adibmbrk)! - Enable validate token bindings when DPoP is selected
+
+- Updated dependencies [[`1be0e54700689e7bbc7d6c023cb7399a98f397e7`](https://github.com/wso2/identity-apps/commit/1be0e54700689e7bbc7d6c023cb7399a98f397e7)]:
+  - @wso2is/admin.applications.v1@2.35.6
+
+## 2.57.4
+
+### Patch Changes
+
+- [#8250](https://github.com/wso2/identity-apps/pull/8250) [`e41c4d70d85fe137f3a6be524b96630e34438782`](https://github.com/wso2/identity-apps/commit/e41c4d70d85fe137f3a6be524b96630e34438782) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Remove duplicate api resource endpoint URL resolution
+
+- Updated dependencies [[`e41c4d70d85fe137f3a6be524b96630e34438782`](https://github.com/wso2/identity-apps/commit/e41c4d70d85fe137f3a6be524b96630e34438782)]:
+  - @wso2is/admin.roles.v2@2.27.155
+  - @wso2is/admin.core.v1@2.45.4
+
+## 2.57.3
+
+### Patch Changes
+
+- [#8242](https://github.com/wso2/identity-apps/pull/8242) [`33ef4cb990d5df8d35fec85b33f43333118f5c6c`](https://github.com/wso2/identity-apps/commit/33ef4cb990d5df8d35fec85b33f43333118f5c6c) Thanks [@roshanemoraes](https://github.com/roshanemoraes)! - Fix error alert when navigating to the Shared Access tab in Application Share
+
+- Updated dependencies [[`33ef4cb990d5df8d35fec85b33f43333118f5c6c`](https://github.com/wso2/identity-apps/commit/33ef4cb990d5df8d35fec85b33f43333118f5c6c)]:
+  - @wso2is/admin.applications.v1@2.35.5
+  - @wso2is/admin.core.v1@2.45.3
+  - @wso2is/i18n@2.23.4
+
+## 2.57.2
+
+### Patch Changes
+
+- [#8221](https://github.com/wso2/identity-apps/pull/8221) [`89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f`](https://github.com/wso2/identity-apps/commit/89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Resolve server origin when tenant qualified URLs are disabled
+
+* [#8244](https://github.com/wso2/identity-apps/pull/8244) [`0eff2af4e7adb85baa381f03452be1a8cff4a58e`](https://github.com/wso2/identity-apps/commit/0eff2af4e7adb85baa381f03452be1a8cff4a58e) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Force trigger package release
+
+- [#8243](https://github.com/wso2/identity-apps/pull/8243) [`0f9690363184ec2d0f165756a9623cb5e0cddfcf`](https://github.com/wso2/identity-apps/commit/0f9690363184ec2d0f165756a9623cb5e0cddfcf) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+* [#8238](https://github.com/wso2/identity-apps/pull/8238) [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+* Updated dependencies [[`7c471b913de0fc2cb974ec4fc2dec2fed1da757e`](https://github.com/wso2/identity-apps/commit/7c471b913de0fc2cb974ec4fc2dec2fed1da757e), [`89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f`](https://github.com/wso2/identity-apps/commit/89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f), [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f)]:
+  - @wso2is/admin.actions.v1@1.13.0
+  - @wso2is/admin.core.v1@2.45.2
+  - @wso2is/admin.identity-verification-providers.v1@2.27.204
+  - @wso2is/admin.remote-repository-configuration.v1@2.25.204
+  - @wso2is/admin.alternative-login-identifier.v1@1.5.205
+  - @wso2is/admin.organization-discovery.v1@2.25.204
+  - @wso2is/admin.policy-administration.v1@1.0.121
+  - @wso2is/admin.server-configurations.v1@2.35.1
+  - @wso2is/admin.saml2-configuration.v1@2.25.205
+  - @wso2is/admin.username-validation.v1@1.5.204
+  - @wso2is/admin.wsfed-configuration.v1@2.25.204
+  - @wso2is/admin.session-management.v1@2.25.204
+  - @wso2is/admin.workflow-approvals.v1@2.25.204
+  - @wso2is/admin.remote-userstores.v1@1.7.160
+  - @wso2is/admin.console-settings.v1@2.25.210
+  - @wso2is/admin.email-management.v1@2.25.205
+  - @wso2is/admin.email-providers.v1@2.27.2
+  - @wso2is/admin.private-key-jwt.v1@2.25.204
+  - @wso2is/admin.administrators.v1@2.29.204
+  - @wso2is/admin.api-resources.v1@2.25.204
+  - @wso2is/admin.api-resources.v2@2.25.204
+  - @wso2is/admin.authorization.v1@2.25.89
+  - @wso2is/admin.email-and-sms.v1@2.25.204
+  - @wso2is/admin.impersonation.v1@1.6.204
+  - @wso2is/admin.organizations.v1@2.26.205
+  - @wso2is/admin.sms-providers.v1@2.25.204
+  - @wso2is/admin.sms-templates.v1@1.0.203
+  - @wso2is/admin.applications.v1@2.35.4
+  - @wso2is/admin.certificates.v1@2.25.204
+  - @wso2is/admin.feature-gate.v1@1.6.2
+  - @wso2is/admin.org-insights.v1@2.25.204
+  - @wso2is/admin.subscription.v1@1.5.204
+  - @wso2is/admin.connections.v1@2.33.96
+  - @wso2is/admin.oidc-scopes.v1@2.25.204
+  - @wso2is/admin.extensions.v1@2.38.2
+  - @wso2is/admin.userstores.v1@2.27.33
+  - @wso2is/admin.validation.v1@2.27.144
+  - @wso2is/admin.branding.v1@2.30.1
+  - @wso2is/admin.secrets.v1@2.25.204
+  - @wso2is/admin.tenants.v1@2.29.11
+  - @wso2is/admin.claims.v1@2.27.123
+  - @wso2is/admin.groups.v1@2.27.119
+  - @wso2is/react-components@2.9.16
+  - @wso2is/admin.roles.v1@2.25.205
+  - @wso2is/admin.roles.v2@2.27.154
+  - @wso2is/admin.users.v1@2.32.5
+  - @wso2is/admin.home.v1@1.7.4
+  - @wso2is/admin.logs.v1@1.6.3
+  - @wso2is/dynamic-forms@2.4.41
+  - @wso2is/form@2.7.1
+
+## 2.57.1
+
+### Patch Changes
+
+- [#8235](https://github.com/wso2/identity-apps/pull/8235) [`92916a5ee73558585380dfa6bf7405998b7506f2`](https://github.com/wso2/identity-apps/commit/92916a5ee73558585380dfa6bf7405998b7506f2) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Temporarily disable reCaptcha in composer
+
+## 2.57.0
+
+### Minor Changes
+
+- [#8220](https://github.com/wso2/identity-apps/pull/8220) [`c85ddafae25af01e6230b2583b30f0c6a741c837`](https://github.com/wso2/identity-apps/commit/c85ddafae25af01e6230b2583b30f0c6a741c837) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce SMS OTP widget in registration flow composer
+
+* [#8216](https://github.com/wso2/identity-apps/pull/8216) [`19322a678f21fcc094ea10bbb276517f7fc5f3ce`](https://github.com/wso2/identity-apps/commit/19322a678f21fcc094ea10bbb276517f7fc5f3ce) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Inrtoduce recaptcha support in registration flow builder
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.45.1
+  - @wso2is/admin.home.v1@1.7.3
+
+## 2.56.4
+
+### Patch Changes
+
+- [#8224](https://github.com/wso2/identity-apps/pull/8224) [`63a4d1d386f124317adbe23264c92eca993a7588`](https://github.com/wso2/identity-apps/commit/63a4d1d386f124317adbe23264c92eca993a7588) Thanks [@roshanemoraes](https://github.com/roshanemoraes)! - Fix missing display of success alert in application sharing.
+
 ## 2.56.3
 
 ### Patch Changes

@@ -291,8 +291,7 @@
             },
             "actions": {
                 "disabledFeatures": [
-                    "actions.types.list.preRegistration",
-                    "actions.types.list.preUpdateProfile"
+                    "actions.types.list.preRegistration"
                 ],
                 "enabled": true,
                 "featureFlags": [
@@ -1501,25 +1500,29 @@
                     ]
                 }
             },
-            "workflows": {
-                "disabledFeatures": [],
+            "webhooks": {
+                "disabledFeatures": [
+                ],
                 "enabled": false,
-                "featureFlags": [],
+                "featureFlags": [
+                    {
+                        "feature": "webhooks",
+                        "flag": "BETA"
+                    }
+                ],
                 "scopes": {
                     "create": [
-                        "internal_humantask_view"
+                            "internal_webhook_mgt_create"
                     ],
                     "delete": [
-                        "internal_humantask_view"
-                    ],
-                    "feature": [
-                        "console:workflowApprovals"
+                            "internal_webhook_mgt_delete"
                     ],
                     "read": [
-                        "internal_humantask_view"
+                            "internal_webhook_meta_view",
+                            "internal_webhook_mgt_view"
                     ],
                     "update": [
-                        "internal_humantask_view"
+                            "internal_webhook_mgt_update"
                     ]
                 }
             },

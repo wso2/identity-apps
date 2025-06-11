@@ -16,6 +16,10 @@
  * under the License.
  */
 export interface pagesNS {
+    webhooks: {
+        title: string;
+        subTitle: string;
+    };
     actions: {
         title: string;
         subTitle: string;

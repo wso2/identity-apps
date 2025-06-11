@@ -117,7 +117,7 @@
     } else {
             if (StringUtils.isNotBlank(spId)) {
             try {
-                if (spId.equals(MY_ACCOUNT_APP_ID)) {
+                if (spId.equals(MY_ACCOUNT_APP_ID) || isUserPortalUrl(callback, tenantDomain, application)) {
                     applicationName = MY_ACCOUNT_APP_NAME;
                 } else {
                     applicationName = applicationDataRetrieval.getApplicationName(tenantDomain,spId);
