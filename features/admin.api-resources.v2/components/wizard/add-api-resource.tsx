@@ -31,6 +31,7 @@ import { AddAPIResourceAuthorization, AddAPIResourceBasic, AddAPIResourcePermiss
 import { createAPIResource } from "../../api";
 import { getAPIResourceWizardStepIcons } from "../../configs";
 import { APIResourceType } from "../../constants";
+import useApiResourcesPageContent from "../../hooks/use-api-resources-page-content";
 import {
     APIResourceInterface,
     APIResourcePermissionInterface,
@@ -39,7 +40,6 @@ import {
     BasicAPIResourceInterface,
     ResourceServerType
 } from "../../models";
-import useApiResourcesPageContent from "../../pages/use-api-resources-page-content";
 
 interface AddAPIResourcePropsInterface extends IdentifiableComponentInterface {
     /**

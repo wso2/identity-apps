@@ -102,4 +102,5 @@ export enum APIResourceCategories {
     CONSOLE_ORG_LEVEL = "CONSOLE_ORG_LEVEL",
     SYSTEM = "SYSTEM",
     TENANT = "TENANT",
+    MCP = "MCP"
 }

@@ -104,6 +104,8 @@ export class APIResourceUtils {
                 return "Organization APIs";
             case APIResourceCategories.BUSINESS:
                 return "Business APIs";
+            case APIResourceCategories.MCP:
+                return "MCP (Model Context Protocol) Servers";
             default:
                 return groupName;
         }
