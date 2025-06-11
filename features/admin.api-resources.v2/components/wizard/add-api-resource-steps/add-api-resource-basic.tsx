@@ -27,8 +27,8 @@ import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { getAPIResourcesForIdenitifierValidation } from "../../../api";
 import { APIResourcesConstants } from "../../../constants";
+import useApiResourcesPageContent from "../../../hooks/use-api-resources-page-content";
 import { APIResourcesListInterface, BasicAPIResourceInterface } from "../../../models";
-import useApiResourcesPageContent from "../../../pages/use-api-resources-page-content";
 
 /**
  * Prop-types for the API resources page component.

@@ -33,9 +33,9 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { Icon, Input } from "semantic-ui-react";
 import { PermissionListAPIResource } from "./permission-list-api-resource";
+import useApiResourcesPageContent from "../../hooks/use-api-resources-page-content";
 import { APIResourcePanesCommonPropsInterface, APIResourcePermissionInterface } from "../../models";
 import { AddAPIResourcePermission } from "../wizard";
-import useApiResourcesPageContent from "../../pages/use-api-resources-page-content";
 
 /**
  * Prop-types for the API resources page component.
@@ -75,6 +75,7 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
     const {
         scopesTabContent
     } = useApiResourcesPageContent();
+
     /**
      * Set the permission list.
      */

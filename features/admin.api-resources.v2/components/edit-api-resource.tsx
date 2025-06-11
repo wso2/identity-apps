@@ -25,10 +25,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { AuthorizationAPIResource, GeneralAPIResource, PermissionAPIResource } from "./api-resource-panes";
-import McpServerTools from "./api-resource-panes/mcp-server-tools";
 import { deleteScopeFromAPIResource, updateAPIResource } from "../api";
+import useApiResourcesPageContent from "../hooks/use-api-resources-page-content";
 import { APIResourceInterface, UpdatedAPIResourceInterface } from "../models";
-import useApiResourcesPageContent from "../pages/use-api-resources-page-content";
 
 /**
  * Prop-types for the API resources page component.

@@ -40,8 +40,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { deleteAPIResource } from "../api";
+import useApiResourcesPageContent from "../hooks/use-api-resources-page-content";
 import { APIResourceInterface } from "../models";
-import useApiResourcesPageContent from "../pages/use-api-resources-page-content";
 import { APIResourceUtils } from "../utils/api-resource-utils";
 
 /**

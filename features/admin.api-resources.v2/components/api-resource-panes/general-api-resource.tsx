@@ -38,13 +38,13 @@ import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import { deleteAPIResource } from "../../api/api-resources";
 import { APIResourcesConstants } from "../../constants/api-resources-constants";
+import useApiResourcesPageContent from "../../hooks/use-api-resources-page-content";
 import {
     APIResourceInterface,
     APIResourcePanesCommonPropsInterface,
     GeneralErrorAPIResourceInterface,
     GeneralUpdateAPIResourceInterface
 } from "../../models";
-import useApiResourcesPageContent from "../../pages/use-api-resources-page-content";
 
 /**
  * Prop-types for the API resources page component.

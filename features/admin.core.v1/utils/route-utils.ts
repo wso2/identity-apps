@@ -274,7 +274,7 @@ export class RouteUtils {
         const resourceServers: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: ResourceServersIcon,
             id: "resourceServers",
-            name: "Resource Servers",
+            name: "Resources",
             order: 2
         };
 

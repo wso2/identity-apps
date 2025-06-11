@@ -27,10 +27,10 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import useApiResourcesPageContent from "./use-api-resources-page-content";
 import { useAPIResourceDetails } from "../api";
 import { EditAPIResource } from "../components";
 import { APIResourceType, APIResourcesConstants } from "../constants";
+import useApiResourcesPageContent from "../hooks/use-api-resources-page-content";
 import { APIResourceUtils } from "../utils/api-resource-utils";
 
 /**
@@ -57,6 +57,7 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const {
+        resourceEditPageTitle,
         resourceEditBackButtonText,
         resourceEditBackButtonLink
     } = useApiResourcesPageContent();
@@ -148,7 +149,7 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
             : (<TabPageLayout
                 isLoading={ isAPIResourceDatatLoading }
                 title={ apiResourceData?.name }
-                pageTitle={ t("extensions:develop.apiResource.tabs.title") }
+                pageTitle={ resourceEditPageTitle }
                 loadingStateOptions={ {
                     count: 5,
                     imageType: "circular"

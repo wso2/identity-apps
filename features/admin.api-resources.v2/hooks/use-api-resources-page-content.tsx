@@ -64,6 +64,7 @@ const useApiResourcesPageContent = () => {
             isMcpServer: false,
             resourceEditBackButtonLink: AppConstants.getPaths().get("API_RESOURCES"),
             resourceEditBackButtonText: "Back to API Resources",
+            resourceEditPageTitle: t("extensions:develop.apiResource.tabs.title"),
             resourceEditPath: AppConstants.getPaths().get("API_RESOURCE_EDIT"),
             resourceSearchBarPlaceholder: "Search API resources by name",
             resourceServerEmptyListSubtitle: [ t("extensions:develop.apiResource.empty") ],
@@ -85,38 +86,40 @@ const useApiResourcesPageContent = () => {
 
         },
         [ResourceServerType.MCP]: {
-            addNewResourceButtonText: "New MCP Server",
+            addNewResourceButtonText: t("apiResources:mcpServers.newMcpServer"),
             createResourceWizard: {
-                description: "Register an MCP server",
-                displayNameHint: "Meaningful name to identify your MCP server",
-                displayNamePlaceholder: "My MCP Server",
+                description: t("apiResources:mcpServers.wizards.addMcpServer.description"),
+                displayNameHint: t("apiResources:mcpServers.wizards.addMcpServer.steps.general.fields" +
+                    ".displayName.hint"),
+                displayNamePlaceholder: t("apiResources:mcpServers.wizards.addMcpServer.steps.general.fields" +
+                    ".displayName.placeholder"),
                 hiddenSteps: [
                     AddAPIResourceWizardStepsFormTypes.AUTHORIZATION
                 ],
-                identifierPlaceholder: "mcp://my-mcp-server",
-                title: "Add new MCP server"
+                identifierPlaceholder: t(
+                    "apiResources:mcpServers.wizards.addMcpServer.steps.general.fields" +
+                    ".identifier.placeholder"),
+                title: t("apiResources:mcpServers.wizards.addMcpServer.title")
             },
             defaultSearchFilter: `type eq ${ APIResourcesConstants.MCP }`,
             deleteResourceWizardContent: {
-                buttonText: "Delete MCP Server",
-                heading: "Delete MCP Server",
-                subHeading: "This action will permanently delete the MCP server. Please be certain before you proceed"
+                buttonText: t("apiResources:mcpServers.deleteMcpServer.actionText"),
+                heading: t("apiResources:mcpServers.deleteMcpServer.heading"),
+                subHeading: t("apiResources:mcpServers.deleteMcpServer.subHeading")
             },
             isApiServer: false,
             isMcpServer: true,
             resourceEditBackButtonLink: AppConstants.getPaths().get("MCP_SERVERS"),
-            resourceEditBackButtonText: "Back to MCP Servers",
+            resourceEditBackButtonText: t("apiResources:mcpServers.backButtonText"),
+            resourceEditPageTitle: t("apiResources:mcpServers.editPageTitle"),
             resourceEditPath: AppConstants.getPaths().get("MCP_SERVER_EDIT"),
-            resourceSearchBarPlaceholder: "Search MCP servers by name",
-            resourceServerEmptyListSubtitle: [ "There are no MCP servers available" ],
-            resourceServerListDescription:
-                "Create and manage the APIs that define resource models and access scopes, enabling " +
-                "fine-grained permission control for applications interacting with MCP servers.",
-            resourceServerListPageTitle: "MCP Servers",
-            resourceServerListTitle: "MCP Servers",
-
+            resourceSearchBarPlaceholder: t("apiResources:mcpServers.searchBarPlaceholder"),
+            resourceServerEmptyListSubtitle: [ t("apiResources:mcpServers.emptyListPlaceholderText") ],
+            resourceServerListDescription: t("apiResources:mcpServers.description"),
+            resourceServerListPageTitle: t("apiResources:mcpServers.title"),
+            resourceServerListTitle: t("apiResources:mcpServers.title"),
             scopesTabContent: {
-                subHeading: "Scopes the MCP server uses to verify the user's permissions."
+                subHeading: t("apiResources:mcpScopes.subHeading")
             }
 
         }
