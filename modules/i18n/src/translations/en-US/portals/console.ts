@@ -6524,6 +6524,7 @@ export const console: ConsoleNS = {
                 addEmailTemplate: "Add Email Template",
                 addEmailTemplateLocale: "Add Email Template Locale",
                 approvals: "Approvals",
+                approvalWorkflows: "Approval Workflows",
                 attributeDialects: "Attributes",
                 categories: {
                     attributes: "User Attributes",
@@ -6536,12 +6537,14 @@ export const console: ConsoleNS = {
                 },
                 certificates: "Certificates",
                 configurations: "Configurations",
+                createApprovalWorkflows: "Create Approval Workflow",
                 editEmailTemplate: "Email Templates",
                 editExternalDialect: "Edit Attribute Mapping",
                 editGroups: "Edit Group",
                 editLocalClaims: "Edit Attributes",
                 editRoles: "Edit Role",
                 editUsers: "Edit User",
+                editApprovalWorkflow: "Edit Approval Workflow",
                 editUserstore: "Edit User Store",
                 emailDomainDiscovery: "Email Domain Discovery",
                 emailTemplateTypes: "",
@@ -8254,6 +8257,164 @@ export const console: ConsoleNS = {
                             description: "Successfully updated the sms provider configurations."
                         }
                     }
+                }
+            },
+            approvalWorkflows: {
+                advancedSearch: {
+                    placeholder: "Search by approval workflow name"
+                },
+                confirmation: {
+                    confirm: "Confirm",
+                    content: "If you delete this approval workflow, the data in this approval workflow will also be deleted. "
+                        + "Please proceed with caution.",
+                    header: "Are you sure?",
+                    hint: "Please confirm your action.",
+                    message: "This action is irreversible and will permanently delete the"
+                        + " selected approval workflow and the data in it."
+                },
+                dangerZone: {
+                    delete: {
+                        actionTitle: "Delete Approval Workflow",
+                        header: "Delete Approval Workflow",
+                        subheader: "Once you delete an approval workflow, there is no going back. "
+                            + "Please be certain."
+                    }
+                },
+                forms: {
+                    general: {
+                        description: {
+                            label: "Description",
+                            placeholder: "Describe the purpose of this approval workflow",
+                            validationErrorMessages: {
+                                invalidInputErrorMessage: "Description cannot contain the pattern {{invalidString}}."
+                            }
+                        },
+                        name: {
+                            label: "Name",
+                            placeholder: "Sample Approval Workflow",
+                            requiredErrorMessage: "Name is a required field",
+                            validationErrorMessages: {
+                                alreadyExistsErrorMessage: "An approval workflow with this name already exists.",
+                                maxCharLimitErrorMessage: "Approval Workflow name cannot exceed {{maxLength}} characters.",
+                                invalidInputErrorMessage: "Approval Workflow name cannot contain the pattern {{invalidString}}."
+                            }
+                        }
+                    }
+                },
+                notifications: {
+                    addApprovalWorkflow: {
+                        genericError: {
+                            description: "There was an error while creating the approval workflow.",
+                            message: "Something went wrong!"
+                        },
+                        success: {
+                            description: "The approval workflow has been added successfully!",
+                            message: "approval workflow added successfully!"
+                        }
+                    },
+                    apiLimitReachedError: {
+                        error: {
+                            description: "You have reached the maximum number of approval workflows allowed.",
+                            message: "Failed to create the approval workflow"
+                        }
+                    },
+                    delay: {
+                        description: "It may take a while for the approval workflow list to be updated. "
+                            + "Refresh in a few seconds to get the updated approval workflow list.",
+                        message: "Updating approval workflow list takes time"
+                    },
+                    deleteApprovalWorkflow: {
+                        genericError: {
+                            description: "There was an error while deleting the approval workflow.",
+                            message: "Something went wrong!"
+                        },
+                        success: {
+                            description: "The approval workflow has been deleted successfully!",
+                            message: "Approval workflow deleted successfully!"
+                        }
+                    },
+                    fetchApprovalWorkflows: {
+                        genericError: {
+                            description: "An error occurred while fetching approval workflows.",
+                            message: "Something went wrong"
+                        }
+                    },
+                    testConnection: {
+                        genericError: {
+                            description: "An error occurred while testing the connection to the approval workflow",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The connection is healthy.",
+                            message: "Connection successful!"
+                        }
+                    },
+                    updateDelay: {
+                        description: "It might take some time for the updated properties to appear.",
+                        message: "Updating properties takes time"
+                    },
+                    updateApprovalWorkflow: {
+                        genericError: {
+                            description: "An error occurred while updating the approval workflow.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "This approval workflow has been updated successfully!",
+                            message: "approval workflow updated successfully!"
+                        }
+                    }
+                },
+                pageLayout: {
+                    edit: {
+                        back: "Go back to approval workflows",
+                        description: "Edit approval workflow",
+                        tabs: {
+                            connection: "Connection",
+                            general: "General",
+                            group: "Group",
+                            user: "User"
+                        }
+                    },
+                    list: {
+                        description: "Create and manage approval workflows.",
+                        primaryAction: "New approval workflow",
+                        title: "Approval workflows"
+                    },
+                    templates: {
+                        back: "Go back to approval workflows",
+                        description: "Please choose one of the following approval workflow types.",
+                        templateHeading: "Quick Setup",
+                        templateSubHeading: "Predefined set of templates to speed up your approval workflow creation.",
+                        title: "Select Approval Workflow Type"
+                    }
+                },
+                placeholders: {
+                    emptyList: {
+                        action: "New Approval Workflow",
+                        subtitles: "There are currently no approval workflows available. "
+                            + "You can add a new approval workflow easily by following the "
+                            + "steps in the approval workflow creation wizard.",
+                        title: "Add a new approval workflow"
+                    },
+                    emptyListReadOnly: {
+                        subtitles: "There are currently no approval workflows available.",
+                        title: "No approval workflows"
+                    },
+                    emptySearch: {
+                        action: "Clear search query",
+                        subtitles: "We couldn't find any results for {{searchQuery}}. "
+                            + "Please try a different search term.",
+                        title: "No results found"
+                    }
+                },
+                sqlEditor: {
+                    create: "Create",
+                    darkMode: "Dark Mode",
+                    delete: "Delete",
+                    read: "Read",
+                    reset: "Reset Changes",
+                    title: "SQL Query Types",
+                    update: "Update"
                 }
             }
         },

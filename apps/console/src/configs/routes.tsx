@@ -1221,6 +1221,53 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
+            category: "extensions:manage.sidePanel.categories.approvalWorkflows",
+            children: [
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.approval-workflows.v1/pages/approval-workflow-edit-page")
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "approvalWorkflowEdit",
+                    name: "console:manage.features.sidePanel.editApprovalWorkflow",
+                    path: AppConstants.getPaths().get("APPROVAL_WORKFLOW_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import(
+                            "@wso2is/admin.approval-workflows.v1/pages/" +
+                            "approval-workflow-create-page"
+                        )
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "approvalWorkflowCreate",
+                    name: "console:manage.features.sidePanel.createApprovalWorkflows",
+                    path: AppConstants.getPaths().get("APPROVAL_WORKFLOW_CREATE"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("@wso2is/admin.approval-workflows.v1/pages/approval-workflows")),
+            exact: true,
+            icon: {
+                icon: <DocumentCheckIcon fill="black" className="icon" />
+            },
+            id: "workflows",
+            name: "console:manage.features.sidePanel.approvalWorkflows",
+            order: 8,
+            path: AppConstants.getPaths().get("APPROVAL_WORKFLOWS"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
             category: "console:manage.features.sidePanel.categories.legacy",
             component: lazy(() => import("@wso2is/admin.certificates.v1/pages/certificates-keystore")),
             icon: {

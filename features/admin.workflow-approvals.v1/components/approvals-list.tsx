@@ -44,6 +44,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Header, Label, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { ApprovalTaskComponent } from "./approval-task";
 import { fetchPendingApprovalDetails } from "../api";
@@ -59,7 +60,7 @@ interface ApprovalsListPropsInterface extends SBACInterface<FeatureConfigInterfa
     /**
      * Resolve the label color of the task.
      *
-     * @param status
+     * @param status - Approval status to resolve the tag color for.
      */
     resolveApprovalTagColor?: (
         status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED
@@ -67,8 +68,8 @@ interface ApprovalsListPropsInterface extends SBACInterface<FeatureConfigInterfa
     /**
      * Handles updating the status of the task.
      *
-     * @param id
-     * @param status
+     * @param id - The ID of the approval task.
+     * @param status - The new status to update the approval task to.
      */
     updateApprovalStatus?: (
         id: string,
@@ -119,8 +120,8 @@ interface ApprovalsListPropsInterface extends SBACInterface<FeatureConfigInterfa
 /**
  * Approvals list component.
  *
- * @param {ApprovalsListPropsInterface} props - Props injected to the approvals list component.
- * @return {JSX.Element}]
+ * @param props - Props injected to the approvals list component.
+ * @returns JSX.Element
  */
 export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
     props: ApprovalsListPropsInterface
@@ -128,7 +129,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const {
         getApprovalsList,
@@ -162,17 +163,17 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
         setApprovalTaskDetailsLoading(true);
 
         fetchPendingApprovalDetails(approval.id)
-            .then((response) => {
-                let selectedApprovalTask = response;
+            .then((response: ApprovalTaskDetails) => {
+                let selectedApprovalTask: ApprovalTaskDetails = response;
 
                 selectedApprovalTask = {
                     ...selectedApprovalTask,
-                    taskStatus: approval?.status,
-                    createdTimeInMillis: approval.createdTimeInMillis
+                    createdTimeInMillis: approval.createdTimeInMillis,
+                    taskStatus: approval?.status
                 };
                 setApproval(selectedApprovalTask);
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -200,7 +201,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
     /**
      * Handler for the approval detail button click.
      *
-     * @param approval
+     * @param approval - The approval task list item to get details for.
      */
     const handleApprovalDetailClick = (approval: ApprovalTaskListItemInterface): void => {
         getApprovalTaskDetails(approval);
@@ -209,7 +210,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
     /**
      * Resolve the relevant placeholder.
      *
-     * @return {React.ReactElement}
+     * @returns React.ReactElement
      */
     const showPlaceholders = (): ReactElement => {
         if (searchResult === 0) {
@@ -278,7 +279,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
     /**
      * Resolves data table actions.
      *
-     * @return {TableActionsInterface[]}
+     * @returns TableActionsInterface[]
      */
     const resolveTableActions = (): TableActionsInterface[] => {
         if (!showListItemActions) {
@@ -310,11 +311,25 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
 
     };
 
+    function formatApprovalName(name: string): string {
+        // "Association for ADD_USER" → "User Addition Request"
+        const [ , action ] = name.split(" for ");
+
+        switch (action) {
+            case "ADD_USER":
+                return "user creation request";
+            case "DELETE_USER":
+                return "user removal request";
+            default:
+                return "approval request";
+        }
+    }
+
 
     /**
      * Resolves data table columns.
      *
-     * @return {TableColumnInterface[]}
+     * @returns TableColumnInterface[]
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
         return [
@@ -329,7 +344,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                             image
                             as="h6"
                             className="header-with-icon"
-                            data-testid={ `${ testId }-item-heading` }
+                            data-testid={ `${testId}-item-heading` }
                         >
                             <GenericIcon
                                 bordered
@@ -339,21 +354,24 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                                 shape="rounded"
                                 spaced="right"
                                 hoverable={ false }
-                                icon={ getTableIcons().header.default }
-                            />
+                                icon={ getTableIcons().header.default } />
                             <Header.Content>
-                                { approval.id + " " + approval.presentationSubject + " " }
-                                <Label circular size="tiny">
-                                    { approval.presentationName }
+                                { "Approval Required" + ":" }
+                                <Label circular>
+                                    { /* { "You have a new user creation request awaiting your approval." } */ }
+
+                                You have a new{ " " }
+                                    <strong>{ formatApprovalName(approval.name) }</strong>{ " " }
+                                awaiting your approval.
                                 </Label>
-                                <Header.Subheader data-testid={ `${ testId }-item-sub-heading` }>
+
+                                <Header.Subheader data-testid={ `${testId}-item-sub-heading` }>
                                     <div className="pb-2">
                                         <Label
                                             circular
                                             size="mini"
                                             className="micro mr-2 ml-0 vertical-aligned-baseline"
-                                            color={ resolveApprovalTagColor(approval.status) }
-                                        />
+                                            color={ resolveApprovalTagColor(approval.status) } />
                                         { approval.status }
                                     </div>
                                 </Header.Subheader>
