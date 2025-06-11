@@ -42,8 +42,8 @@
     String confCode = request.getParameter("code");
     String acceptApiResponse = "";
 
-    // Some mail providers send a HEAD request to verify invite links, which can invalidate them.  
-    // To prevent this, HEAD requests to this page are ignored.  
+    // Some mail providers send a HEAD request to verify invite links, which can invalidate them.
+    // To prevent this, HEAD requests to this page are ignored.
     String httpMethod = request.getMethod();
     if (StringUtils.equals(httpMethod, HttpMethod.HEAD)) {
         response.setStatus(response.SC_OK);
@@ -95,9 +95,20 @@
 
 <%-- Data for the layout from the page --%>
 <%
+    layoutData.put("isResponsePage", true);
+    if(acceptApiResponse.equalsIgnoreCase("SUCCESS")) {
+        layoutData.put("isSuccessResponse", true);
+    } else {
+        layoutData.put("isErrorResponse", true);
+    }
+    layoutData.put("isAcceptInvitationPage", true);
+%>
+
+<%
     String responseType = "error";
     if(acceptApiResponse.equalsIgnoreCase("SUCCESS")) {
         responseType = "success";
+    }
 %>
 
 <% request.setAttribute("pageName", "accept-invitation"); %>
@@ -114,7 +125,7 @@
         <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout" data-responsetype="<%= responseType%>" data-page="<%= request.getAttribute("pageName") %>">
+<body class="login-portal layout" data-response-type="<%= responseType %>" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader" >
             <%-- product-title --%>

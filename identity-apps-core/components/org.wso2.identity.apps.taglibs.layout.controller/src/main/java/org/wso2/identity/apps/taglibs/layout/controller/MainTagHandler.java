@@ -22,7 +22,6 @@ import org.wso2.identity.apps.taglibs.layout.controller.core.LocalTemplateEngine
 import org.wso2.identity.apps.taglibs.layout.controller.processor.LayoutContentProcessor;
 import org.wso2.identity.apps.taglibs.layout.controller.processor.LegacyLayoutFileProcessor;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +40,6 @@ public class MainTagHandler extends TagSupport {
     private Map<String, Object> data = new HashMap<>();
     private boolean compile = false;
     private LocalTemplateEngine engine = null;
-    Context context = new Context();
 
     private LayoutContentProcessor layoutProcessor;
     private LegacyLayoutFileProcessor legacyProcessor;
@@ -87,23 +85,6 @@ public class MainTagHandler extends TagSupport {
     }
 
     /**
-     * Context for handling layout rendering.
-     *
-     * - reader: BufferedReader instance used for reading layout or tags content.
-     * - endContent: String value to specify the content or marker indicating the end of layout processing.
-     */
-    private static class Context {
-
-        private BufferedReader reader;
-        private String endContent;
-
-        public Context() {
-            this.reader = new BufferedReader(new java.io.StringReader(""));
-            this.endContent = "";
-        }
-    }
-
-    /**
      * This method will execute when the starting point of the "main" tag is reached.
      * based on the nature of layout content switches between legacy or the default rendering.
      *
@@ -117,12 +98,11 @@ public class MainTagHandler extends TagSupport {
                 layoutName, layoutFileRelativePath, data);
             return legacyProcessor.startLegacyLayoutRendering();
         } else {
-            layoutProcessor = new LayoutContentProcessor(pageContext, layoutFileRelativePath,
-                context.endContent, context.reader);
+            layoutProcessor = new LayoutContentProcessor(pageContext, layoutFileRelativePath);
             try {
                 return layoutProcessor.processLayoutUntilNextComponent();
             } catch (IOException e) {
-                throw new JspException("Error processing layout HTML", e);
+                throw new JspException("Error processing layout HTML.", e);
             }
         }
     }
@@ -137,17 +117,17 @@ public class MainTagHandler extends TagSupport {
 
         if (isLikelyRelativePath(layoutFileRelativePath)) {
             if (legacyProcessor == null) {
-                throw new IllegalStateException("legacyProcessor not initialized");
+                throw new IllegalStateException("Legacy layout processor not initialized.");
             }
             return legacyProcessor.continueLegacyLayoutRendering();
         } else {
             if (layoutProcessor == null) {
-                throw new IllegalStateException("layoutProcessor not initialized");
+                throw new IllegalStateException("Layout content processor not initialized.");
             }
             try {
                 return layoutProcessor.processRemainingLayoutAfterComponent();
             } catch (IOException e) {
-                throw new JspException("Error processing layout after component", e);
+                throw new JspException("Error processing layout HTML.", e);
             }
         }
     }
@@ -168,7 +148,9 @@ public class MainTagHandler extends TagSupport {
         layoutFileRelativePath = null;
         data = null;
         engine = null;
-        context = null;
+        if (layoutProcessor != null) {
+            layoutProcessor.release();
+        }
         legacyProcessor = null;
         layoutProcessor = null;
         super.release();

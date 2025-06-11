@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2020-2024, WSO2 LLC. (http://www.wso2.com).
+  ~ Copyright (c) 2020-2025, WSO2 LLC. (http://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -93,6 +93,12 @@
 
 <% request.setAttribute("pageName", "x509certificate-error"); %>
 
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("isResponsePage", true);
+    layoutData.put("isErrorResponse", true);
+%>
+
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -111,7 +117,7 @@
     <script src="js/respond.min.js"></script>
     <![endif]-->
 </head>
-<body class="login-portal layout x509-certificate-portal-layout" data-responsetype="error" data-page="<%= request.getAttribute("pageName") %>">
+<body class="login-portal layout x509-certificate-portal-layout" data-response-type="error" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader" >
             <!-- product-title -->

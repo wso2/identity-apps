@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2014-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2014-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -100,6 +100,12 @@
 
 <% request.setAttribute("pageName", "generic-exception-response"); %>
 
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("isResponsePage", true);
+    layoutData.put("isErrorResponse", true);
+%>
+
 <!doctype html>
 <html>
 <head>
@@ -131,7 +137,7 @@
         });
     </script>
 </head>
-<body class="login-portal layout authentication-portal-layout" data-responsetype="error" data-page="<%= request.getAttribute("pageName") %>">
+<body class="login-portal layout authentication-portal-layout" data-response-type="error" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>

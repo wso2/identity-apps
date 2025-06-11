@@ -90,6 +90,13 @@
 
 <% request.setAttribute("pageName", "push-auth-error"); %>
 
+
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("isResponsePage", true);
+    layoutData.put("isErrorResponse", true);
+%>
+
 <html>
     <head>
         <%-- header --%>
@@ -107,7 +114,7 @@
         <script src="js/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body class="login-portal layout push-auth-portal-layout" data-responsetype="error" data-page="<%= request.getAttribute("pageName") %>">
+    <body class="login-portal layout push-auth-portal-layout" data-response-type="error" data-page="<%= request.getAttribute("pageName") %>">
 
         <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
 

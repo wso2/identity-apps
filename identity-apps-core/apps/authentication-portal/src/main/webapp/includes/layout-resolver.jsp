@@ -74,26 +74,34 @@
             String SIDE_IMAGE_ALT_KEY = "sideImgAltText";
             String PRODUCT_TAG_LINE_KEY = "productTagLine";
 
+            // Custom layout content keys.
+            String CUSTOM_CONTENT_KEY = "content";
+            String HTML_CONTENT_KEY = "html";
+            String CSS_CONTENT_KEY = "css";
+            String JS_CONTENT_KEY = "js";
+
             // Layout resolving logic.
             if (brandingPreference.has(LAYOUT_KEY)) {
                 if (brandingPreference.getJSONObject(LAYOUT_KEY).has(ACTIVE_LAYOUT_KEY)) {
                     if (!StringUtils.isBlank(brandingPreference.getJSONObject(LAYOUT_KEY).getString(ACTIVE_LAYOUT_KEY))){
                         String temp = brandingPreference.getJSONObject(LAYOUT_KEY).getString(ACTIVE_LAYOUT_KEY);
                         if (StringUtils.equals(temp, PREFIX_FOR_CUSTOM_LAYOUT_NAME)) {
-
-                            if(brandingPreference.has(CUSTOM_CONTENT_KEY)){
-                                if (brandingPreference.getJSONObject(CUSTOM_CONTENT_KEY).has(HTML_CONTENT_KEY)) {
-                                    if (!StringUtils.isBlank(brandingPreference.getJSONObject(CUSTOM_CONTENT_KEY)
-                                        .getString(HTML_CONTENT_KEY))) {
-                                        if (isCustomContentAdded) {
-                                            layout = temp;
-                                            layoutFileRelativePath =
-                                                brandingPreference.getJSONObject(CUSTOM_CONTENT_KEY)
-                                                    .getString(HTML_CONTENT_KEY);
-                                        }
+                            if (brandingPreference.getJSONObject(LAYOUT_KEY).has(CUSTOM_CONTENT_KEY)) {
+                                JSONObject customContent = brandingPreference.getJSONObject(LAYOUT_KEY).getJSONObject(CUSTOM_CONTENT_KEY);
+                                if (customContent != null) {
+                                    if (customContent.has(HTML_CONTENT_KEY) && !StringUtils.isBlank(customContent.getString(HTML_CONTENT_KEY))) {
+                                        layout = temp;
+                                        htmlContent = customContent.getString(HTML_CONTENT_KEY);
+                                        layoutFileRelativePath = htmlContent;
+                                    }
+                                    if (customContent.has(CSS_CONTENT_KEY) && !StringUtils.isBlank(customContent.getString(CSS_CONTENT_KEY))) {
+                                        cssContent = customContent.getString(CSS_CONTENT_KEY);
+                                    }
+                                    if (customContent.has(JS_CONTENT_KEY) && !StringUtils.isBlank(customContent.getString(JS_CONTENT_KEY))) {
+                                        jsContent = customContent.getString(JS_CONTENT_KEY);
                                     }
                                 }
-                            }else{
+                            } else {
                                 // App-wise and tenant-wise custom layout resolving logic.
                                 if (StringUtils.equals(preferenceResourceType, APP_PREFERENCE_RESOURCE_TYPE)) {
                                     layout = temp + CUSTOM_LAYOUT_NAME_SEPERATOR + tenantRequestingPreferences + CUSTOM_LAYOUT_NAME_SEPERATOR + convertApplicationName(applicationRequestingPreferences);
@@ -105,7 +113,6 @@
                                     layoutData.put("BASE_URL", layoutStoreURL.replace("${tenantDomain}", preferenceResolvedFromResourceName));
                                 }
                             }
-
                         } else {
                             // Pre-added layouts
                             String layoutFilePath = "includes/layouts/" + temp + "/body.ser";

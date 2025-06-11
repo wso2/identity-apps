@@ -44,17 +44,14 @@ public class LayoutContentProcessor {
      * Constructs a LayoutContentProcessor instance.
      *
      * @param pageContext The current page context.
-     * @param layoutHtml The HTML content of the layout to be processed.
-     * @param endContent The content that marks the end of processing for a specific layout section.
-     * @param reader A BufferedReader to read content from the layout file or stream.
+     * @param layoutHtml  The HTML content of the layout to be processed.
      */
-    public LayoutContentProcessor(PageContext pageContext, String layoutHtml, String endContent,
-                                  BufferedReader reader) {
+    public LayoutContentProcessor(PageContext pageContext, String layoutHtml) {
 
         this.pageContext = pageContext;
         this.layoutHtml = layoutHtml;
-        this.endContent = endContent;
-        this.reader = reader;
+        this.endContent = null;
+        this.reader = null;
     }
 
     /**
@@ -63,19 +60,13 @@ public class LayoutContentProcessor {
      * @return An integer constant indicating the action to be taken:
      *  - EVAL_BODY_INCLUDE: If a component tag is found and the body content needs to be included for processing.
      *  - SKIP_BODY: If no further component tags are found in the layout content.
-     * @throws IOException .
+     * @throws IOException If an I/O error occurs while reading the layout content.
      */
     public int processLayoutUntilNextComponent() throws IOException {
 
         PrintWriter writer = new PrintWriter(pageContext.getOut());
 
-        if (reader == null) {
-            reader = new BufferedReader(new StringReader(layoutHtml));
-        }
-        if (endContent != null) {
-            writer.write(endContent);
-            endContent = null;
-        }
+        reader = new BufferedReader(new StringReader(layoutHtml));
         String line;
         while ((line = reader.readLine()) != null) {
             if (line.contains("{{{")) {
@@ -107,12 +98,12 @@ public class LayoutContentProcessor {
 
         PrintWriter writer = new PrintWriter(pageContext.getOut());
 
-        if (reader == null) {
-            reader = new BufferedReader(new StringReader(layoutHtml));
-        }
         if (endContent != null) {
             writer.write(endContent);
             endContent = null;
+        }
+        if (reader == null) {
+            throw new IllegalStateException("Layout content reader is not initialized.");
         }
         String line;
         while ((line = reader.readLine()) != null) {
@@ -131,5 +122,20 @@ public class LayoutContentProcessor {
             writer.write(line);
         }
         return SKIP_BODY;
+    }
+
+    /**
+     * Releases the resources held by this processor.
+     * This method should be called to clean up resources when they are no longer needed.
+     */
+    public void release() {
+
+        if (reader != null) {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                // Ignore the exception as this is a cleanup operation.
+            }
+        }
     }
 }

@@ -47,15 +47,15 @@ public class LegacyLayoutFileProcessor {
     /**
      * Processing and rendering a layout using the relative file path.
      *
-     * @param engine                  The template engine used to process the layout file.
-     * @param compile                 A boolean flag indicating whether the layout file should be
-     *                                 compiled or processed without compilation.
-     * @param pageContext             The context of the current JSP page where the layout is rendered.
-     * @param layoutName              The name of the layout being processed.
-     * @param layoutFileRelativePath  The relative path to the layout file, which can be either a
-     *                                 compiled or raw layout file.
-     * @param data                    A map of data objects required as input while processing
-     *                                 the layout file.
+     * @param engine                 The template engine used to process the layout file.
+     * @param compile                A boolean flag indicating whether the layout file should be
+     *                               compiled or processed without compilation.
+     * @param pageContext            The context of the current JSP page where the layout is rendered.
+     * @param layoutName             The name of the layout being processed.
+     * @param layoutFileRelativePath The relative path to the layout file, which can be either a
+     *                               compiled or raw layout file.
+     * @param data                   A map of data objects required as input while processing
+     *                               the layout file.
      */
     public LegacyLayoutFileProcessor(LocalTemplateEngine engine, boolean compile, PageContext pageContext,
                                  String layoutName, String layoutFileRelativePath, Map<String, Object> data) {
@@ -72,9 +72,9 @@ public class LegacyLayoutFileProcessor {
      * Depending on the compile flag, the method either processes a compiled layout file directly or compiles
      * a raw layout file before processing.
      *
-     * @throws JspException .
+     * @throws JspException If an error occurs during the processing of the layout file.
      */
-    public void processLegacyLayoutTemplateFile() throws JspException {
+    private void processLegacyLayoutTemplateFile() throws JspException {
 
         PrintWriter writer = new PrintWriter(pageContext.getOut());
 
@@ -100,7 +100,7 @@ public class LegacyLayoutFileProcessor {
      * @return An integer constant indicating the next step in processing:
      *  - EVAL_BODY_INCLUDE: If component execution is enabled and body content should be included.
      *  - SKIP_BODY: If component execution is not enabled and no body content should be processed.
-     * @throws JspException .
+     * @throws JspException If an error occurs during the rendering of the layout file.
      */
     public int startLegacyLayoutRendering() throws JspException {
 
@@ -120,7 +120,7 @@ public class LegacyLayoutFileProcessor {
      * @return An integer constant indicating the next processing step:
      *         - EVAL_BODY_AGAIN: If component execution is active and the body content should be processed again.
      *         - SKIP_BODY: If component execution is not active and the body content should be skipped.
-     * @throws JspException .
+     * @throws JspException If an error occurs during the rendering of the layout file.
      */
     public int continueLegacyLayoutRendering() throws JspException {
 

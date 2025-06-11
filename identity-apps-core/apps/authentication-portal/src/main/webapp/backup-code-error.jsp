@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -67,6 +67,12 @@
 
 <% request.setAttribute("pageName","backup-code-error"); %>
 
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("isResponsePage", true);
+    layoutData.put("isErrorResponse", true);
+%>
+
 <html lang="en-US">
     <head>
         <%-- header --%>
@@ -104,7 +110,7 @@
         <![endif]-->
     </head>
 
-    <body class="login-portal layout backup-code-portal-layout" onload="getLoginDiv()" data-responsetype="error" data-page="<%= request.getAttribute("pageName") %>">
+    <body class="login-portal layout backup-code-portal-layout" onload="getLoginDiv()" data-response-type="error" data-page="<%= request.getAttribute("pageName") %>">
         <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
             <layout:component componentName="ProductHeader">
                 <%

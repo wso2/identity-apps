@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2018-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2018-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -47,6 +47,13 @@
 %>
 
 <% request.setAttribute("pageName","dynamic-prompt"); %>
+
+<%-- Data for the layout from the page --%>
+<%
+    String templateIdCapitalized = templateId.substring(0, 1).toUpperCase() + templateId.substring(1);
+    layoutData.put("is" + templateIdCapitalized + "DynamicPrompt", true);
+    layoutData.put("isDynamicPrompt", true);
+%>
 
 <!doctype html>
 <html lang="en-US">

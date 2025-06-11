@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2016-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -217,7 +217,7 @@
                                 <input id="first-name" type="text"
                                     <%= isFirstNameRequired ? "required" : "" %>
                                     name="http://wso2.org/claims/givenname"
-                                    placeholder="<%=i18n(recoveryResourceBundle, customText, "First.name")%>" 
+                                    placeholder="<%=i18n(recoveryResourceBundle, customText, "First.name")%>"
                                 />
                                 <div class="ui list mb-5 field-validation-error-description" id="error-msg-first-name">
                                     <i class="exclamation circle icon"></i>

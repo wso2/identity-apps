@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2018-2023, WSO2 LLC. (http://www.wso2.com).
+  ~ Copyright (c) 2018-2025, WSO2 LLC. (http://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -31,6 +31,8 @@
 
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
+
+<% request.setAttribute("pageName","add-security-questions"); %>
 
 <%
     String urlData = request.getParameter("data");
@@ -65,7 +67,10 @@
     }
 %>
 
-<% request.setAttribute("pageName","add-security-questions"); %>
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("containerSize", "medium");
+%>
 
 <!doctype html>
 <html lang="en-US">

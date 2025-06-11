@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2018-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2018-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -29,6 +29,11 @@
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <% request.setAttribute("pageName","cookie-policy"); %>
+
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("isPolicyPage", true);
+%>
 
 <!doctype html>
 <html lang="en-US">

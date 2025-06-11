@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2016-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -222,6 +222,13 @@
 
 <% request.setAttribute("pageName", "self-registration-complete"); %>
 
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("isResponsePage", true);
+    layoutData.put("isSuccessResponse", true);
+    layoutData.put("isSelfRegistrationCompletePage", true);
+%>
+
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -234,7 +241,7 @@
     <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout" data-responsetype="success" data-page="<%= request.getAttribute("pageName") %>">
+<body class="login-portal layout" data-response-type="success" data-page="<%= request.getAttribute("pageName") %>">
     <script>
         function redirect(redirectURL) {
             var url = redirectURL;

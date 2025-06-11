@@ -1,7 +1,7 @@
 <%--
-  ~ Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
   ~
-  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
@@ -14,7 +14,7 @@
   ~ KIND, either express or implied.  See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
-  --%>
+--%>
 
 <script src="libs/themes/default/semantic.min.js"></script>
 <script src="libs/tldts-6.1.73.umd.min.js" async></script>
@@ -42,10 +42,6 @@
     Boolean isDowntimeBannerEnabled = StringUtils.equals("true", application.getInitParameter("isDowntimeBannerEnabled"))
         && downtimeBannerEnabledAppList.contains(Encode.forJava(request.getParameter("sp")));
 %>
-
-<% if (isCustomContentAdded){ %>
-<script> <%= brandingPreference.getJSONObject(CUSTOM_CONTENT_KEY).getString(JS_CONTENT_KEY) %> </script>
-<% } %>
 
 <script type="text/javascript">
     // Automatically shows on init if the user hasn't already acknowledged cookie usage.
@@ -128,3 +124,7 @@
         return false;
     }
 </script>
+
+<% if (StringUtils.isNotBlank(jsContent)){ %>
+<script type="text/javascript"><%= jsContent %></script>
+<% } %>
