@@ -163,7 +163,7 @@ public class AppPortalUtils {
                 consoleCallbackUrl = ApplicationMgtUtil.resolveOriginUrlFromPlaceholders(consoleCallbackUrl,
                     CONSOLE_APP);
                 appendedConsoleCallBackURLRegex = "|" + consoleCallbackUrl.replace(
-                    consolePortalPath, consolePortalPath + "/resources/users/init-impersonate.html");
+                    consolePortalPath, portalPath + "/resources/users/init-impersonate.html");
             }
         } catch (URLBuilderException e) {
             throw new IdentityOAuthAdminException("Server encountered an error while building callback URL with " +
