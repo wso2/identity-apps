@@ -92,10 +92,15 @@ public class MainTagHandler extends TagSupport {
      * - reader: BufferedReader instance used for reading layout or tags content.
      * - endContent: String value to specify the content or marker indicating the end of layout processing.
      */
-    private static class Context{
+    private static class Context {
 
         private BufferedReader reader;
         private String endContent;
+
+        public Context() {
+            this.reader = new BufferedReader(new java.io.StringReader(""));
+            this.endContent = "";
+        }
     }
 
     /**
@@ -131,8 +136,14 @@ public class MainTagHandler extends TagSupport {
     public int doAfterBody() throws JspException {
 
         if (isLikelyRelativePath(layoutFileRelativePath)) {
+            if (legacyProcessor == null) {
+                throw new IllegalStateException("legacyProcessor not initialized");
+            }
             return legacyProcessor.continueLegacyLayoutRendering();
         } else {
+            if (layoutProcessor == null) {
+                throw new IllegalStateException("layoutProcessor not initialized");
+            }
             try {
                 return layoutProcessor.processRemainingLayoutAfterComponent();
             } catch (IOException e) {
@@ -143,7 +154,7 @@ public class MainTagHandler extends TagSupport {
 
     private boolean isLikelyRelativePath(String input) {
 
-        return input != null && ( input.startsWith("http") || input.startsWith("https") ||
+        return input != null && (input.startsWith("http") || input.startsWith("https") ||
             input.endsWith(".html") || input.endsWith(".ser")
         );
     }
