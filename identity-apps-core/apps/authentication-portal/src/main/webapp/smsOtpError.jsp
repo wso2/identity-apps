@@ -93,7 +93,6 @@
 
 <% request.setAttribute("pageName", "sms-otp-error"); %>
 
-
 <%-- Data for the layout from the page --%>
 <%
     layoutData.put("isResponsePage", true);

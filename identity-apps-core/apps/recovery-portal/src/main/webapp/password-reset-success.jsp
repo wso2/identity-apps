@@ -47,7 +47,6 @@
 
 <% request.setAttribute("pageName", "password-reset-success"); %>
 
-
 <%-- Data for the layout from the page --%>
 <%
     layoutData.put("isResponsePage", true);

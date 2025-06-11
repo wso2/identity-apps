@@ -90,7 +90,6 @@
 
 <% request.setAttribute("pageName", "push-auth-error"); %>
 
-
 <%-- Data for the layout from the page --%>
 <%
     layoutData.put("isResponsePage", true);
