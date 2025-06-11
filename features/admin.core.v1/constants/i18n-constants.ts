@@ -312,6 +312,12 @@ export class I18nConstants {
         I18nModuleConstants.CUSTOM_AUTHENTICATOR_NAMESPACE;
 
     /**
+     * Approval Workflow namespace.
+     */
+    public static readonly APPROVAL_WORKFLOWS_NAMESPACE: string =
+        I18nModuleConstants.APPROVAL_WORKFLOWS_NAMESPACE;
+
+    /**
      * Locations of the I18n namespaces.
      */
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
@@ -369,7 +375,8 @@ export class I18nConstants {
         [ I18nConstants.REMOTE_USER_STORES_NAMESPACE, "portals" ],
         [ I18nConstants.RULES_NAMESPACE, "portals" ],
         [ I18nConstants.PUSH_PROVIDERS_NAMESPACE, "portals" ],
-        [ I18nConstants.EMAIL_PROVIDERS_NAMESPACE, "portals" ]
+        [ I18nConstants.EMAIL_PROVIDERS_NAMESPACE, "portals" ],
+        [ I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE, "portals" ]
     ]);
 
     /**

@@ -370,6 +370,11 @@ export class I18nModuleConstants {
     public static readonly RULES_NAMESPACE: string = "rules";
 
     /**
+     * Approval Workflows namespace.
+     */
+    public static readonly APPROVAL_WORKFLOWS_NAMESPACE: string = "approvalWorkflows";
+
+    /**
      * Constant representing the locale preference key.
      * This key is used to store the user's language preference in cookies or local storage.
      */

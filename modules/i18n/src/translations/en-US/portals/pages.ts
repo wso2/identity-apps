@@ -30,6 +30,10 @@ export const pages: pagesNS = {
         subTitle: null,
         title: "Add New Template"
     },
+    approvalWorkflows: {
+        subTitle: "Create and manage approval workflows.",
+        title: "Approval Workflows"
+    },
     approvalsPage: {
         subTitle: "Review operational tasks that requires your approval",
         title: "Approvals"
