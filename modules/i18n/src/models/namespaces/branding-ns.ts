@@ -258,6 +258,7 @@ export interface BrandingNS {
     };
     customPageEditor: {
         backButton: string;
+        brandingNotConfiguredTooltip: string;
         tabs: {
             html: {
                 label: string;

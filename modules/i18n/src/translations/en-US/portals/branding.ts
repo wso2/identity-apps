@@ -268,6 +268,8 @@ export const branding: BrandingNS = {
     },
     customPageEditor: {
         backButton: "Go back",
+        brandingNotConfiguredTooltip: "Branding is not enabled. Please configure and save the branding settings to " +
+            "enable the custom layout editor.",
         tabs: {
             html: {
                 label: "HTML"
