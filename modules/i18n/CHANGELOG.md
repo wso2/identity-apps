@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.23.10
+
+### Patch Changes
+
+- [#8314](https://github.com/wso2/identity-apps/pull/8314) [`6427079247040e4ca2fae0edf2f2e4c570487b79`](https://github.com/wso2/identity-apps/commit/6427079247040e4ca2fae0edf2f2e4c570487b79) Thanks [@malithie](https://github.com/malithie)! - Add webhook management UI
+
 ## 2.23.9
 
 ### Patch Changes
