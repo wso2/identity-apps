@@ -64,7 +64,7 @@ import {
 import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
-import React, { FunctionComponent, MouseEvent, ReactElement, useCallback, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -312,6 +312,52 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             }
         }
     }, [ profileInfo, usernameConfig ]);
+
+    /**
+     * This useMemo identifies external claims that are mapped to the same local claim
+     * between the Enterprise schema and the WSO2 System schema.
+     *
+     * These dual mappings occur only in migrated environments due to the SCIM2 schema restructuring
+     * introduced in https://github.com/wso2/product-is/issues/20850.
+     *
+     * As claim management APIs are not available in My Account, this effect uses a value-based heuristic:
+     * - A hardcoded list of attributes known to exist in both schemas is maintained.
+     * - If both schema versions of a claim are present and have the same value, it is treated as a duplicate.
+     *
+     * Identified Enterprise claims are then excluded from the user profile UI to avoid redundancy.
+     */
+    const duplicatedUserClaims: string[] = useMemo(() => {
+        if (isEmpty(profileInfo) || isEmpty(profileSchema)) {
+            return;
+        }
+
+        const duplicatedEnterpriseClaims: string[] = [];
+
+        ProfileConstants.MIGRATED_ENTERPRISE_SCIM_ATTRIBUTES.forEach((attrName: string) => {
+            const enterpriseClaim: ProfileSchema = profileSchema.find((schema: ProfileSchema) =>
+                schema.name === attrName &&
+                schema?.schemaId === ProfileConstants.SCIM2_ENT_USER_SCHEMA
+            );
+
+            const systemClaim: ProfileSchema = profileSchema.find((schema: ProfileSchema) =>
+                schema.name === attrName &&
+                schema?.schemaId === ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA
+            );
+
+            if (!enterpriseClaim || !systemClaim) {
+                return;
+            }
+
+            const enterpriseValue: string = profileInfo.get(enterpriseClaim.name) ?? null;
+            const systemValue: string = profileInfo.get(systemClaim.name) ?? null;
+
+            if (enterpriseValue === systemValue) {
+                duplicatedEnterpriseClaims.push(enterpriseClaim.name);
+            }
+        });
+
+        return duplicatedEnterpriseClaims;
+    }, [ profileSchema, profileInfo ]);
 
     /**
      * Check if multiple emails and mobile numbers feature is enabled.
@@ -1437,6 +1483,16 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         // Hide the field if any of the relevant attributes match the schema name.
         if (attributesToHide.some((name: string) => schema.name === name)) {
+            return;
+        }
+
+        if (
+            duplicatedUserClaims?.some(
+                (claim: string) =>
+                    claim === schema.name &&
+                    schema.schemaId === ProfileConstants.SCIM2_ENT_USER_SCHEMA
+            )
+        ) {
             return;
         }
 

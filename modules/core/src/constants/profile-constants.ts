@@ -132,4 +132,16 @@ export class ProfileConstants {
     // Self sign up
     public static readonly SELF_SIGN_UP_CONNECTOR: string = "self-sign-up";
     public static readonly SELF_SIGN_UP_ENABLE_SEND_OTP_IN_EMAIL: string = "SelfRegistration.OTP.SendOTPInEmail";
+
+    public static readonly MIGRATED_ENTERPRISE_SCIM_ATTRIBUTES: string[] = [
+        "askPassword", "verifyEmail", "pendingEmails.value", "accountLocked", "accountState",
+        "emailOTPDisabled", "emailVerified", "failedEmailOTPAttempts", "failedLoginAttempts",
+        "failedLoginAttemptsBeforeSuccess", "failedLoginLockoutCount", "failedPasswordRecoveryAttempts",
+        "failedSMSOTPAttempts", "failedTOTPAttempts", "isLiteUser", "lastLoginTime", "lastLogonTime",
+        "lastPasswordUpdateTime", "lockedReason", "phoneVerified", "preferredChannel", "smsOTPDisabled",
+        "tenantAdminAskPassword", "unlockTime", "accountDisabled", "dateOfBirth", "isReadOnlyUser",
+        "pendingMobileNumber", "forcePasswordReset", "oneTimePassword", "verifyMobile", "country",
+        "userSourceId", "totpEnabled", "backupCodeEnabled", "failedBackupCodeAttempts", "managedOrg",
+        "preferredMFAOption"
+    ];
 }
