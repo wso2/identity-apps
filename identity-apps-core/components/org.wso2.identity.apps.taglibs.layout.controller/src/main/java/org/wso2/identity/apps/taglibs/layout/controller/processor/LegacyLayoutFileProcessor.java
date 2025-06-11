@@ -21,12 +21,12 @@ package org.wso2.identity.apps.taglibs.layout.controller.processor;
 import org.wso2.identity.apps.taglibs.layout.controller.Constant;
 import org.wso2.identity.apps.taglibs.layout.controller.core.LocalTemplateEngine;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.PageContext;
 
 import static javax.servlet.jsp.tagext.IterationTag.EVAL_BODY_AGAIN;
 import static javax.servlet.jsp.tagext.Tag.EVAL_BODY_INCLUDE;
@@ -45,7 +45,7 @@ public class LegacyLayoutFileProcessor {
     private final Map<String, Object> data;
 
     /**
-     * processing and rendering a layout using the relative file path
+     * Processing and rendering a layout using the relative file path.
      *
      * @param engine                  The template engine used to process the layout file.
      * @param compile                 A boolean flag indicating whether the layout file should be
