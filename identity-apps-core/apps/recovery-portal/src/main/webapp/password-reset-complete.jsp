@@ -298,13 +298,6 @@
     }
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("isResponsePage", true);
-    layoutData.put("isSuccessResponse", true);
-    layoutData.put("isPasswordResetCompletePage", true);
-%>
-
 <!doctype html>
 <html lang="en-US">
 <head>

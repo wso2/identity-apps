@@ -31,11 +31,7 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="../includes/branding-preferences.jsp"/>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("isResponsePage", true);
-    layoutData.put("isErrorResponse", true);
-%>
+<% request.setAttribute("pageName","error-405"); %>
 
 <%
     String stat = AuthenticationEndpointUtil.i18n(resourceBundle, "error.405");
@@ -72,7 +68,7 @@
         });
     </script>
 </head>
-<body class="login-portal layout authentication-portal-layout">
+<body class="login-portal layout authentication-portal-layout" data-responsetype="error" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>

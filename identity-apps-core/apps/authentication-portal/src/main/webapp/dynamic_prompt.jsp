@@ -46,12 +46,6 @@
     String templatePath = templateMap.get(templateId);
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    String templateIdCapitalized = templateId.substring(0, 1).toUpperCase() + templateId.substring(1);
-    layoutData.put("is" + templateIdCapitalized + "DynamicPrompt", true);
-%>
-
 <% request.setAttribute("pageName","dynamic-prompt"); %>
 
 <!doctype html>
@@ -67,7 +61,7 @@
         <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
+<body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>" data-dynamic-prompt-template-id="<%= Encode.forHtmlAttribute(templateId) %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>

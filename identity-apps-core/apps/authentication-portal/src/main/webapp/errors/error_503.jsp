@@ -31,14 +31,10 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="../includes/branding-preferences.jsp"/>
 
+<% request.setAttribute("pageName","error-503"); %>
+
 <%
     String stat = AuthenticationEndpointUtil.i18n(resourceBundle, "error.503");
-%>
-
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("isResponsePage", true);
-    layoutData.put("isErrorResponse", true);
 %>
 
 <!doctype html>
@@ -63,7 +59,7 @@
     <% } else { %>
         <jsp:include page="../includes/analytics.jsp"/>
     <% } %>
-    
+
     <script type="text/javascript">
         trackEvent("authentication-portal-error", {
             "type": "error-response",
@@ -72,7 +68,7 @@
         });
     </script>
 </head>
-<body class="login-portal layout authentication-portal-layout">
+<body class="login-portal layout authentication-portal-layout" data-responsetype="error" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
