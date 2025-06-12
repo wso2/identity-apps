@@ -29,7 +29,8 @@ import {
     NodesIcon,
     ProgressFlowIcon,
     UserCircleDotIcon,
-    UserGroupIcon
+    UserGroupIcon,
+    WebhookIcon
 } from "@oxygen-ui/react-icons";
 import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -1503,7 +1504,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             exact: true,
             featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.WEBHOOKS,
             icon: {
-                icon: <ProgressFlowIcon className="icon" fill="black" />
+                icon: <WebhookIcon className="icon" fill="black" />
             },
             id: "webhooks",
             name: "webhooks:sidePanel.name",
