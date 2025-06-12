@@ -83,8 +83,6 @@ const MODEL_TYPES: DropdownChild[] = [
     }
 ];
 
-
-
 export default function AgentOverview({ agentId }: AgentOverviewProps) {
 
     const dispatch: any = useDispatch();
