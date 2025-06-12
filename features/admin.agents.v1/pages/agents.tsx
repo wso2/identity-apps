@@ -195,9 +195,8 @@ export default function Agents ({
 
             <AddAgentWizard
                 isOpen={ isAddAgentWizardOpen }
-                onClose={ (id: string) => {
+                onClose={ () => {
                     setIsAddAgentWizardOpen(false);
-                    history.push(AppConstants.getPaths().get("AGENT_EDIT").replace(":id", id));
                 } }
             />
         </PageLayout>

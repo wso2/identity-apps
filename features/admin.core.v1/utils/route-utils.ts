@@ -257,7 +257,7 @@ export class RouteUtils {
         const userManagement: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: SquareUserIcon,
             id: "userManagement",
-            name: "Identities",
+            name: "Identity Management",
             order: 1
         };
 
