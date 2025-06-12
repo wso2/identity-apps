@@ -368,6 +368,9 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
                             width={ 16 }
                             listen={ (value: boolean) => {
                                 setAuthenticationRequired(value);
+                                if (!value) {
+                                    setMandateSSA(true);
+                                }
                             }
                             }
                             data-componentid={ `${componentId}-authenticationRequired-checkbox` }
@@ -379,6 +382,7 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
                             hint={ t("applications:forms.applicationsSettings.fields.mandateSSA.hint") }
                             tabIndex={ 3 }
                             width={ 16 }
+                            readOnly={ !isAuthenticationRequired }
                             listen={ (value: boolean) => setMandateSSA(value) }
                             data-componentid={ `${componentId}-mandateSSA-checkbox` }
                         />
