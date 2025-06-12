@@ -355,12 +355,14 @@
                 }
             },
             "agents": {
-                "disabledFeatures": [
-                    "agents.groups",
-                    "agents.roles"
-                ],
+                "disabledFeatures": [],
                 "enabled": true,
-                "featureFlags": [],
+                "featureFlags": [
+                    {
+                        "feature": "agents",
+                        "flag": "EXPERIMENTAL"
+                    }
+                ],
                 "scopes": {
                     "create": [],
                     "delete": [],
@@ -1643,7 +1645,7 @@
             "hypr-idp",
             "swe-idp"
         ],
-        "hiddenUserStores": [],
+        "hiddenUserStores": ["AGENT"],
         "i18nConfigs": {
             "langAutoDetectEnabled": false,
             "showLanguageSwitcher": false
