@@ -320,6 +320,7 @@ export class AppConstants {
             [ "SMS_PROVIDER", `${ AppConstants.getDeveloperViewBasePath() }/sms-provider` ],
             [ "SMS_MANAGEMENT", `${ AppConstants.getDeveloperViewBasePath() }/sms-management` ],
             [ "PUSH_PROVIDER", `${ AppConstants.getDeveloperViewBasePath() }/push-provider` ],
+            [ "FLOWS", `${ AppConstants.getDeveloperViewBasePath() }/flows` ],
             [ "EMAIL_TEMPLATE_TYPES", `${ AppConstants.getAdminViewBasePath() }/email-templates` ],
             [ "EMAIL_TEMPLATES", `${ AppConstants.getAdminViewBasePath() }/email-templates/:templateTypeId` ],
             [

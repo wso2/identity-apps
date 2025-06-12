@@ -476,6 +476,11 @@ export class RouteUtils {
             },
             {
                 category: preferences,
+                id: "flows",
+                selected: history.location.pathname.includes("flows")
+            },
+            {
+                category: preferences,
                 id: "loginAndRegistration",
                 selected: loginAndRegPathsToCheck.some((path: string) => history.location.pathname.startsWith(path))
             },
