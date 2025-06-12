@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -206,7 +206,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                         data-componentid={ `${ componentId }-${ type }-animated-icon` }
                         data-testid={ `${ testId }-${ type }-animated-icon` }
                     >
-                        <svg className="circular positive-stroke">
+                        <svg className="circular positive-stroke" viewBox="0 0 150 150">
                             <circle
                                 className="path"
                                 cx="75"
@@ -235,7 +235,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                         data-componentid={ `${ componentId }-${ type }-animated-icon` }
                         data-testid={ `${ testId }-${ type }-animated-icon` }
                     >
-                        <svg className="circular negative-stroke">
+                        <svg className="circular negative-stroke" viewBox="0 0 150 150">
                             <circle
                                 className="path"
                                 cx="75"
@@ -263,7 +263,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                         data-componentid={ `${ componentId }-${ type }-animated-icon` }
                         data-testid={ `${ testId }-${ type }-animated-icon` }
                     >
-                        <svg className="circular warning-stroke">
+                        <svg className="circular warning-stroke" viewBox="0 0 150 150">
                             <circle
                                 className="path"
                                 cx="75"

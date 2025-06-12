@@ -1,5 +1,11 @@
 # @wso2is/react-components
 
+## 2.9.17
+
+### Patch Changes
+
+- [#8301](https://github.com/wso2/identity-apps/pull/8301) [`b29ed7869a11e35df46b23027e7302ae64fabc39`](https://github.com/wso2/identity-apps/commit/b29ed7869a11e35df46b23027e7302ae64fabc39) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Provide RTL Support for MyAccount
+
 ## 2.9.16
 
 ### Patch Changes

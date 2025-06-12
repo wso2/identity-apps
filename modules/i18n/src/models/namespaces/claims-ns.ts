@@ -507,6 +507,34 @@ export interface ClaimsNS {
                 label: string;
                 placeholder: string;
             };
+            canonicalValues: {
+                hint: string;
+                keyLabel: string;
+                valueLabel: string;
+                keyRequiredErrorMessage: string;
+                valueRequiredErrorMessage: string;
+                validationError: string;
+                validationErrorMessage: string;
+            };
+            dataType: {
+                hint: string;
+                label: string;
+                options: {
+                    text: string;
+                    options: string;
+                    integer: string;
+                    decimal: string;
+                    boolean: string;
+                    date: string;
+                    object: string;
+                };
+            };
+            subAttributes: {
+                label: string;
+                placeholder: string;
+                validationError: string;
+                validationErrorMessage: string;
+            };
             multiValued: {
                 label: string;
                 placeholder: string;

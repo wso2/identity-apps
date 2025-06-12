@@ -111,6 +111,9 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     const isCentralDeploymentEnabled: boolean = useSelector((state: AppState) => {
         return state?.config?.deployment?.centralDeploymentEnabled;
     });
+    const isRegionSelectionEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.deployment?.regionSelectionEnabled;
+    });
 
     const hasGettingStartedViewPermission: boolean = useRequiredScopes(
         gettingStartedFeatureConfig?.scopes?.feature
@@ -356,7 +359,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
             return consumerAccountURL;
         }
 
-        if (isCentralDeploymentEnabled) {
+        if (isCentralDeploymentEnabled && isRegionSelectionEnabled) {
             return centralAppURL;
         }
 

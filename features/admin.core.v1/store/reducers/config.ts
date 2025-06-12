@@ -74,6 +74,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             idpConfigs: null,
             loginCallbackUrl: "",
             organizationPrefix: "",
+            regionSelectionEnabled: undefined,
             serverHost: "",
             serverOrigin: "",
             superTenant: "",
@@ -177,7 +178,9 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             usersSuperOrganization: "",
             validationServiceMgt: "",
             validationServiceMgtSubOrg: "",
-            wellKnown: ""
+            wellKnown: "",
+            workflowAssociations: "",
+            workflows: ""
         },
         features: {
             applications: null,

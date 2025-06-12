@@ -1,0 +1,87 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.webhook-channel-config-form {
+    .heading-container {
+        margin-bottom: 8px !important;
+    }
+
+    .section-description {
+        margin-top: 0;
+        margin-bottom: 24px;
+    }
+
+    .channel-checkbox-container {
+        margin-bottom: 24px;
+
+        .MuiFormControlLabel-root {
+            align-items: flex-start !important;
+            margin: 0;
+            width: 100%;
+        }
+
+        .MuiFormControlLabel-labelPlacementEnd {
+            .MuiFormControlLabel-label {
+                padding-top: 0;
+                margin-top: 0;
+                line-height: 1;
+            }
+        }
+
+        .checkbox-control {
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: flex-start;
+
+            .MuiCheckbox-root {
+                padding: 0 !important;
+                margin: 0 !important;
+                margin-right: 8px !important;
+            }
+        }
+
+        .checkbox-label {
+            flex: 1;
+            margin-top: 0;
+            padding-top: 0;
+
+            .channel-name {
+                line-height: 1.2;
+                margin: 0;
+                padding: 0;
+                font-size: 14px;
+            }
+
+            .channel-description {
+                color: rgba(0, 0, 0, 0.6);
+                font-size: 12.25px;
+                line-height: 1.4;
+                margin-top: 4px;
+                word-wrap: break-word;
+                hyphens: auto;
+            }
+        }
+    }
+
+    .channel-grid {
+        .MuiGrid-container {
+            gap: 24px;
+        }
+    }
+}

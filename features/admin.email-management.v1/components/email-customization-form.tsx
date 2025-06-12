@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,30 +16,30 @@
  * under the License.
  */
 
+import Grid from "@oxygen-ui/react/Grid";
+import Typography from "@oxygen-ui/react/Typography";
 import { Show } from "@wso2is/access-control";
 import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Field, Form } from "@wso2is/form";
+import { FinalForm, FinalFormField, FormRenderProps, FormSpy, TextFieldAdapter } from "@wso2is/form";
 import {
     CodeEditor,
     ContentLoader, DangerZone,
     DocumentationLink,
     Heading,
+    Hint,
     Message,
     useDocumentation
 } from "@wso2is/react-components";
 import * as codemirror from "codemirror";
 import React, {
     FunctionComponent,
-    ReactElement,
-    useEffect,
-    useState
+    ReactElement
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Grid } from "semantic-ui-react";
 import { EmailTemplate } from "../models";
 
 interface EmailCustomizationFormPropsInterface extends IdentifiableComponentInterface {
@@ -47,37 +47,36 @@ interface EmailCustomizationFormPropsInterface extends IdentifiableComponentInte
      * Is email templates list loading.
      */
     isEmailTemplatesListLoading: boolean;
-
     /**
      * Selected email template
      */
     selectedEmailTemplate: EmailTemplate;
-
     /**
      * Selected locale
      */
     selectedLocale: string;
-
     /**
      * Callback to be called when the template is changed.
      * @param template - Email template
      */
     onTemplateChanged: (updatedTemplateAttributes: Partial<EmailTemplate>) => void;
-
     /**
      * Callback to be called when the form is submitted.
      */
     onSubmit: () => void;
-
     /**
      * Callback to be called when the template delete requested
      */
     onDeleteRequested: () => void;
-
     /**
      * Is readonly.
      */
     readOnly?: boolean;
+}
+
+interface EmailCustomizationFormValuesInterface {
+    emailSubject: string;
+    emailFooter: string;
 }
 
 const FORM_ID: string = "email-customization-content-form";
@@ -101,96 +100,81 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
         onSubmit,
         onDeleteRequested,
         readOnly,
-        ["data-componentid"]: componentId
+        ["data-componentid"]: componentId = "email-customization-form"
     } = props;
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
-    /**
-     * Following `key` state and the use of the useEffect are temporary
-     * fixes for the issue of the input not re-rendering when the props change.
-     * The ideal solution is to use Final Form directly without employing
-     * the Final Form wrapper component.
-     */
-    const [ key, setKey ] = useState<number>(0);
-
-    useEffect(() => {
-        setKey((key + 1) % 100);
-    }, [ selectedEmailTemplate ]);
+    if (isEmailTemplatesListLoading) {
+        return (
+            <ContentLoader/>
+        );
+    }
 
     return (
-        (isEmailTemplatesListLoading) ? (
-            <ContentLoader/>
-        ) : (
-            <>
-                <Form
-                    id={ FORM_ID }
-                    uncontrolledForm={ true }
-                    onSubmit={ onSubmit }
-                    data-componentid={ componentId }
-                >
-                    <Grid>
-                        <Grid.Row>
-                            <Grid.Column
-                                mobile={ 16 }
-                                computer={ 8 }
-                            >
-                                <Field.Input
-                                    ariaLabel="Email Subject Input"
-                                    inputType="default"
-                                    name="emailSubject"
-                                    label={ t("extensions:develop.emailTemplates.form.inputs.subject.label") }
-                                    placeholder={ t("extensions:develop.emailTemplates.form.inputs" +
-                                        ".subject.placeholder") }
-                                    hint={ t("extensions:develop.emailTemplates.form.inputs.subject.hint") }
-                                    required={ true }
-                                    value={ selectedEmailTemplate?.subject }
-                                    maxLength={ 255 }
-                                    minLength={ 1 }
-                                    data-componentid={ `${ componentId }-email-subject` }
-                                    listen={ (value: string) => {
-                                        onTemplateChanged({
-                                            subject: value
-                                        });
-                                    } }
-                                    readOnly={ readOnly }
-                                    key={ key }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
+        <>
+            <FinalForm
+                keepDirtyOnReinitialize={ false }
+                initialValues={ {
+                    emailFooter: selectedEmailTemplate?.footer,
+                    emailSubject: selectedEmailTemplate?.subject
+                } }
+                onSubmit={ onSubmit }
+                data-componentid={ componentId }
+                render={ ({ onSubmit }: FormRenderProps) => {
 
-                        <Grid.Row>
-                            <Grid.Column
-                                mobile={ 16 }
-                                computer={ 8 }
-                            >
-                                <Heading as="h6">
-                                    { t("extensions:develop.emailTemplates.form.inputs.body.label") }
-                                </Heading>
-                                <Message
-                                    type="info"
-                                    content={ (
-                                        <>
-                                            { t("extensions:develop.emailTemplates.form.inputs.body.hint") }
-                                            <DocumentationLink
-                                                link={ getLink("develop.emailCustomization.form.emailBody.learnMore") }
-                                            >
-                                                { t("common:learnMore") }
-                                            </DocumentationLink>
-                                        </>
-                                    ) }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-
-                        <Grid.Row>
-                            <Grid.Column
-                                mobile={ 16 }
-                                computer={ 16 }
-                            >
-                                <div className="code-editor-wrapper">
+                    return (
+                        <form
+                            id={ FORM_ID }
+                            onSubmit={ onSubmit }
+                        >
+                            <Grid rowSpacing={ 2 } container>
+                                <Grid xs={ 8 }>
+                                    <FinalFormField
+                                        key="emailSubject"
+                                        width={ 16 }
+                                        ariaLabel="Email Subject Input"
+                                        required={ true }
+                                        data-componentid={ `${ componentId }-email-subject` }
+                                        name="emailSubject"
+                                        type="text"
+                                        helperText={
+                                            (<Hint>
+                                                <Typography variant="inherit">
+                                                    { t("extensions:develop.emailTemplates.form.inputs.subject.hint") }
+                                                </Typography>
+                                            </Hint>)
+                                        }
+                                        label={ t("extensions:develop.emailTemplates.form.inputs.subject.label") }
+                                        placeholder={ t("extensions:develop.emailTemplates.form.inputs" +
+                                            ".subject.placeholder") }
+                                        component={ TextFieldAdapter }
+                                        maxLength={ 255 }
+                                        minLength={ 1 }
+                                        readOnly={ readOnly }
+                                    />
+                                    <Heading as="h6">
+                                        { t("extensions:develop.emailTemplates.form.inputs.body.label") }
+                                    </Heading>
+                                    <Message
+                                        type="info"
+                                        content={ (
+                                            <>
+                                                { t("extensions:develop.emailTemplates.form.inputs.body.hint") }
+                                                <DocumentationLink
+                                                    link={
+                                                        getLink("develop.emailCustomization.form.emailBody.learnMore") }
+                                                >
+                                                    { t("common:learnMore") }
+                                                </DocumentationLink>
+                                            </>
+                                        ) }
+                                    />
+                                </Grid>
+                                <Grid xs={ 16 }>
                                     <CodeEditor
                                         lint
                                         allowFullScreen
@@ -219,62 +203,59 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
                                         data-componentId={ `${ componentId }-email-body-editor` }
                                         readOnly={ readOnly }
                                     />
-                                </div>
-                            </Grid.Column>
-                        </Grid.Row>
-
-                        <Grid.Row>
-                            <Grid.Column
-                                mobile={ 16 }
-                                computer={ 8 }
-                            >
-                                <Field.Input
-                                    ariaLabel="Email Footer Input"
-                                    inputType="default"
-                                    name="emailFooter"
-                                    label={ t("extensions:develop.emailTemplates.form.inputs.footer.label") }
-                                    placeholder={ t("extensions:develop.emailTemplates.form.inputs" +
-                                        ".footer.placeholder") }
-                                    hint={ t("extensions:develop.emailTemplates.form.inputs.footer.hint") }
-                                    required={ false }
-                                    value={ selectedEmailTemplate?.footer }
-                                    maxLength={ 255 }
-                                    minLength={ 1 }
-                                    data-componentid={ `${ componentId }-email-footer` }
-                                    listen={ (value: string) => {
-                                        onTemplateChanged({
-                                            footer: value
-                                        });
-                                    } }
-                                    readOnly={ readOnly }
-                                    key={ key }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                </Form>
-
-                <Show
-                    when={ featureConfig?.emailTemplates?.scopes?.delete }
-                >
-                    <DangerZone
-                        data-componentid={ `${ componentId }-revert-email-provider-config` }
-                        actionTitle={ t("extensions:develop.emailTemplates.dangerZone.action") }
-                        header={ t("extensions:develop.emailTemplates.dangerZone.heading") }
-                        subheader={ t("extensions:develop.emailTemplates.dangerZone.message") }
-                        isButtonDisabled={ selectedLocale === I18nConstants.DEFAULT_FALLBACK_LANGUAGE }
-                        buttonDisableHint={ t("extensions:develop.emailTemplates.dangerZone.actionDisabledHint") }
-                        onActionClick={ onDeleteRequested }
-                    />
-                </Show>
-            </>
-        )
+                                </Grid>
+                                <Grid xs={ 8 }>
+                                    <FinalFormField
+                                        key="emailFooter"
+                                        width={ 16 }
+                                        ariaLabel="Email Footer Input"
+                                        required={ false }
+                                        data-componentid={ `${ componentId }-email-footer` }
+                                        name="emailFooter"
+                                        type="text"
+                                        helperText={
+                                            (<Hint>
+                                                <Typography variant="inherit">
+                                                    { t("extensions:develop.emailTemplates.form.inputs.footer.hint") }
+                                                </Typography>
+                                            </Hint>)
+                                        }
+                                        label={ t("extensions:develop.emailTemplates.form.inputs.footer.label") }
+                                        placeholder={ t("extensions:develop.emailTemplates.form.inputs" +
+                                            ".footer.placeholder") }
+                                        component={ TextFieldAdapter }
+                                        maxLength={ 255 }
+                                        minLength={ 1 }
+                                        readOnly={ readOnly }
+                                    />
+                                </Grid>
+                            </Grid>
+                            <FormSpy
+                                subscription={ { values: true } }
+                                onChange={ ({ values }: { values: EmailCustomizationFormValuesInterface }) => {
+                                    onTemplateChanged({
+                                        footer: values.emailFooter,
+                                        subject: values.emailSubject
+                                    });
+                                } }
+                            />
+                        </form>
+                    );
+                } }
+            />
+            <Show
+                when={ featureConfig?.emailTemplates?.scopes?.delete }
+            >
+                <DangerZone
+                    data-componentid={ `${ componentId }-revert-email-provider-config` }
+                    actionTitle={ t("extensions:develop.emailTemplates.dangerZone.action") }
+                    header={ t("extensions:develop.emailTemplates.dangerZone.heading") }
+                    subheader={ t("extensions:develop.emailTemplates.dangerZone.message") }
+                    isButtonDisabled={ selectedLocale === I18nConstants.DEFAULT_FALLBACK_LANGUAGE }
+                    buttonDisableHint={ t("extensions:develop.emailTemplates.dangerZone.actionDisabledHint") }
+                    onActionClick={ onDeleteRequested }
+                />
+            </Show>
+        </>
     );
-};
-
-/**
- * Default props for the component.
- */
-EmailCustomizationForm.defaultProps = {
-    "data-componentid": "email-customization-form"
 };

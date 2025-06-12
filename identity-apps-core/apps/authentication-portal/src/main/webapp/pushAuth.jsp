@@ -185,7 +185,7 @@
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "push.notification.sent.msg.with.challenge")%>
                                     </p>
                                     <h3 class="text-center">
-                                        <%=numberChallengeValue%>
+                                        <%= Encode.forHtmlContent(numberChallengeValue) %>
                                     </h3>
                                     <% } else { %>
                                     <p class="text-center">
@@ -212,7 +212,7 @@
 
                                 <%
                                     String multiOptionURI = request.getParameter("multiOptionURI");
-                                    if (isMultiAuthAvailable(multiOptionURI)) {
+                                    if (isMultiAuthAvailable(multiOptionURI) && AuthenticationEndpointUtil.isValidMultiOptionURI(multiOptionURI)) {
                                 %>
                                     <div class="ui divider hidden"></div>
                                     <a

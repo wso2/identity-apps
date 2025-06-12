@@ -33,7 +33,7 @@
 
         if (requestBody.length() > 0) {
             JSONObject requestJson = new JSONObject(requestBody.toString());
-            endpoint = "/api/server/v1/registration/execute";
+            endpoint = "/api/server/v1/flow/execute";
         }
     } catch (Exception e) {
         out.print("{\"error\": \"Error reading request: " + e.getMessage() + "\"}");

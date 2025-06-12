@@ -29,7 +29,8 @@ import {
     NodesIcon,
     ProgressFlowIcon,
     UserCircleDotIcon,
-    UserGroupIcon
+    UserGroupIcon,
+    WebhookIcon
 } from "@oxygen-ui/react-icons";
 import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -1221,6 +1222,53 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
+            category: "extensions:manage.sidePanel.categories.approvalWorkflows",
+            children: [
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.approval-workflows.v1/pages/approval-workflow-edit-page")
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "approvalWorkflowEdit",
+                    name: "console:manage.features.sidePanel.editApprovalWorkflow",
+                    path: AppConstants.getPaths().get("APPROVAL_WORKFLOW_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import(
+                            "@wso2is/admin.approval-workflows.v1/pages/" +
+                            "approval-workflow-create-page"
+                        )
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "approvalWorkflowCreate",
+                    name: "console:manage.features.sidePanel.createApprovalWorkflows",
+                    path: AppConstants.getPaths().get("APPROVAL_WORKFLOW_CREATE"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("@wso2is/admin.approval-workflows.v1/pages/approval-workflows")),
+            exact: true,
+            icon: {
+                icon: <DocumentCheckIcon fill="black" className="icon" />
+            },
+            id: "workflows",
+            name: "console:manage.features.sidePanel.approvalWorkflows",
+            order: 8,
+            path: AppConstants.getPaths().get("APPROVAL_WORKFLOWS"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
             category: "console:manage.features.sidePanel.categories.legacy",
             component: lazy(() => import("@wso2is/admin.certificates.v1/pages/certificates-keystore")),
             icon: {
@@ -1429,6 +1477,39 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             name: "pages:actions.title",
             order: 30,
             path: AppConstants.getPaths().get("ACTIONS"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            category: "extensions:manage.sidePanel.categories.extensions",
+            children: [
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.webhooks.v1/pages/webhook-edit-page")
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "webhookEdit",
+                    name: "Webhook Edit",
+                    path: AppConstants.getPaths().get("WEBHOOK_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() =>
+                import("@wso2is/admin.webhooks.v1/pages/webhook-list-page")
+            ),
+            exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.WEBHOOKS,
+            icon: {
+                icon: <WebhookIcon className="icon" fill="black" />
+            },
+            id: "webhooks",
+            name: "webhooks:sidePanel.name",
+            order: 31,
+            path: AppConstants.getPaths().get("WEBHOOKS"),
             protected: true,
             showOnSidePanel: true
         },

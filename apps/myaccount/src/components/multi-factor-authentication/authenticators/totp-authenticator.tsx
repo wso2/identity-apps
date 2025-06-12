@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -552,7 +552,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
         return (
             <Segment className="totp">
                 <div className="svg-box">
-                    <svg className="circular positive-stroke">
+                    <svg className="circular positive-stroke" viewBox="0 0 150 150">
                         <circle
                             className="path"
                             cx="75"
@@ -804,7 +804,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 return (
                     <Segment className="totp">
                         <div className="svg-box">
-                            <svg className="circular positive-stroke">
+                            <svg className="circular positive-stroke" viewBox="0 0 150 150">
                                 <circle
                                     className="path"
                                     cx="75"

@@ -1404,7 +1404,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     revokeTokensWhenIDPSessionTerminated: values.get("RevokeAccessToken")?.length > 0,
                     type: isMcpClientApplication ? JWT : values.get("type"),
                     userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds")),
-                    validateTokenBinding: values.get("ValidateTokenBinding")?.length > 0
+                    validateTokenBinding: isDPoPSelected || values.get("ValidateTokenBinding")?.length > 0
                 },
                 grantTypes: values.get("grant"),
                 idToken: {
@@ -1622,7 +1622,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 bindingType: values.get("bindingType"),
                 revokeTokensWhenIDPSessionTerminated: getRevokeStateForSPA(values),
                 type: values.get("type"),
-                userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds"))
+                userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds")),
+                validateTokenBinding: isDPoPSelected || values.get("ValidateTokenBinding")?.length > 0
             },
             grantTypes: values.get("grant"),
             idToken: {
@@ -1903,11 +1904,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         && !isMobileApplication
         && !isFAPIApplication
         && (
-            selectedGrantTypes?.includes(
-                ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)
-            || selectedGrantTypes?.includes(ApplicationManagementConstants.DEVICE_GRANT)
-            || selectedGrantTypes?.includes(
-                ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE)
+            selectedGrantTypes?.some((grantType: string) => {
+                const grantTypeOption: GrantTypeInterface = metadata?.allowedGrantTypes?.options?.find(
+                    (option: GrantTypeInterface) => option.name === grantType
+                );
+
+                return grantTypeOption?.publicClientAllowed === true;
+            })
         )
         && !isSystemApplication
         && !isDefaultApplication;

@@ -573,6 +573,13 @@ interface AccountDisableDocumentationLinksInterface {
 }
 
 /**
+ * Interface for the webhooks section documentation structure.
+ */
+interface WebhooksDocumentationLinksInterface {
+    learnMore: string;
+}
+
+/**
  * Interface for the console documentation structure.
  */
 export interface DocumentationLinksExtensionInterface {
@@ -624,6 +631,10 @@ export interface DocumentationLinksExtensionInterface {
          * Documentation links for SMS customization UI elements.
          */
         smsCustomization: SmsCustomizationLinksInterface;
+        /**
+         * Documentation links for webhooks section elements.
+         */
+        webhooks: WebhooksDocumentationLinksInterface;
     }
     /**
      * Documentation links for manage section elements.

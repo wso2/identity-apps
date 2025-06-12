@@ -643,6 +643,19 @@
                 .blur(validateUsername);
         });
 
+        $(window).on("pageshow", function (event) {
+            if (event.originalEvent.persisted) {
+                // The page was restored from bfcache.
+                $("#recoverySubmit").removeClass("loading");
+                const usernameInput = $("#usernameUserInput").val();
+                if (!usernameInput || usernameInput.trim().length === 0) {
+                    submitBtnState( { disabled: true } );
+                } else {
+                    submitBtnState( { disabled: false } );
+                }
+            }
+        });
+
         // Removing the recaptcha UI from the keyboard tab order
         Array.prototype.forEach.call(document.getElementsByClassName("g-recaptcha"), function (element) {
             //Add a load event listener to each wrapper, using capture.

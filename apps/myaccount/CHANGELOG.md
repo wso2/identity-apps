@@ -1,5 +1,49 @@
 # @wso2is/myaccount
 
+## 2.19.19
+
+### Patch Changes
+
+- [#8324](https://github.com/wso2/identity-apps/pull/8324) [`be1290007bf3b01b905512422d9f4017a2c32351`](https://github.com/wso2/identity-apps/commit/be1290007bf3b01b905512422d9f4017a2c32351) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix SCIM2 claim migration issue with user profiles
+
+* [#8327](https://github.com/wso2/identity-apps/pull/8327) [`0737a9b661223683516180b03b7946568d7ca0ea`](https://github.com/wso2/identity-apps/commit/0737a9b661223683516180b03b7946568d7ca0ea) Thanks [@malithie](https://github.com/malithie)! - Update oxygen ui version to 2.4.4
+
+* Updated dependencies [[`be1290007bf3b01b905512422d9f4017a2c32351`](https://github.com/wso2/identity-apps/commit/be1290007bf3b01b905512422d9f4017a2c32351)]:
+  - @wso2is/core@2.8.2
+
+## 2.19.18
+
+### Patch Changes
+
+- [#8306](https://github.com/wso2/identity-apps/pull/8306) [`619fecf8e12e3fcca3e6710b4cd78b20ab07dd0a`](https://github.com/wso2/identity-apps/commit/619fecf8e12e3fcca3e6710b4cd78b20ab07dd0a) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Fix RTL alignment issues by disabling LTR stylesheet before applying RTL stylesheet
+
+- Updated dependencies [[`619fecf8e12e3fcca3e6710b4cd78b20ab07dd0a`](https://github.com/wso2/identity-apps/commit/619fecf8e12e3fcca3e6710b4cd78b20ab07dd0a), [`a9b49f91ab8047a590fbc6ffa3e631ae2077e63f`](https://github.com/wso2/identity-apps/commit/a9b49f91ab8047a590fbc6ffa3e631ae2077e63f)]:
+  - @wso2is/common.branding.v1@2.27.3
+  - @wso2is/i18n@2.23.9
+
+## 2.19.17
+
+### Patch Changes
+
+- [#8275](https://github.com/wso2/identity-apps/pull/8275) [`5f2b24b179f498fd0a6f1845d9a0a7a78da911c6`](https://github.com/wso2/identity-apps/commit/5f2b24b179f498fd0a6f1845d9a0a7a78da911c6) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add sub org impersonation.
+
+## 2.19.16
+
+### Patch Changes
+
+- [#8301](https://github.com/wso2/identity-apps/pull/8301) [`b29ed7869a11e35df46b23027e7302ae64fabc39`](https://github.com/wso2/identity-apps/commit/b29ed7869a11e35df46b23027e7302ae64fabc39) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Provide RTL Support for MyAccount
+
+- Updated dependencies [[`b29ed7869a11e35df46b23027e7302ae64fabc39`](https://github.com/wso2/identity-apps/commit/b29ed7869a11e35df46b23027e7302ae64fabc39)]:
+  - @wso2is/common.branding.v1@2.27.2
+  - @wso2is/react-components@2.9.17
+  - @wso2is/i18n@2.23.7
+
+## 2.19.15
+
+### Patch Changes
+
+- [#8297](https://github.com/wso2/identity-apps/pull/8297) [`7f2e84f2210870eeee73879cb42a7085855d7fe8`](https://github.com/wso2/identity-apps/commit/7f2e84f2210870eeee73879cb42a7085855d7fe8) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Bump oxygen-ui version to 2.4.3
+
 ## 2.19.14
 
 ### Patch Changes

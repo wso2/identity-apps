@@ -106,7 +106,7 @@
                <%
                   } else {
                %>
-               <h2><%=i18n(resourceBundle, customText, "sign.in.with")%> <%= StringUtils.isNotBlank(idp) ? idp : i18n(resourceBundle, customText, "organization.login") %></h2>
+               <h2><%=i18n(resourceBundle, customText, "sign.in.with")%> <%= StringUtils.isNotBlank(idp) ? Encode.forHtmlContent(idp) : i18n(resourceBundle, customText, "organization.login") %></h2>
 
                <%
                   }

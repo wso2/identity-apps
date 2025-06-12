@@ -292,7 +292,7 @@
                             <input type='hidden' name='resendFlagElement' id='resendFlagElement' value='false'/>
                             <input type="hidden" name="isMultiRecoveryOptionsAvailable"
                                 value='<%=isMultiRecoveryOptionsAvailable%>' />
-                            <input type="hidden" name="urlQuery" value='<%=urlQuery%>'/>
+                            <input type="hidden" name="urlQuery" value='<%=Encode.forHtmlAttribute(urlQuery)%>'/>
 
                             <div class="ui divider hidden"></div>
 
@@ -367,7 +367,7 @@
                                     }
                                 %>
                                 <a class="ui primary basic button link-button" id="goBackLink"
-                                    href=<%=baseUrl + "?" + multiOptionPathWithQuery %>>
+                                    href=<%=Encode.forHtmlAttribute(baseUrl + "?" + multiOptionPathWithQuery)%>>
                                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                             "choose.other.option")%>
                                 </a>

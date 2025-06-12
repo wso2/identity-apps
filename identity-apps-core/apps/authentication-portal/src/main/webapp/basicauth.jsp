@@ -505,7 +505,7 @@
                     aria-required="true"
                 >
                 <i aria-hidden="true" class="user fill icon"></i>
-                <input id="username" name="username" type="hidden" value="<%=username%>">
+                <input id="username" name="username" type="hidden" value="<%=Encode.forHtmlAttribute(username)%>">
             </div>
         </div>
         <div class="mt-1" id="usernameError" style="display: none;">
@@ -515,7 +515,7 @@
             </span>
         </div>
     <% } else { %>
-        <input id="username" name="username" type="hidden" data-testid="login-page-username-input" value="<%=username%>">
+        <input id="username" name="username" type="hidden" data-testid="login-page-username-input" value="<%=Encode.forHtmlAttribute(username)%>">
     <% } %>
         <div class="field mt-3 mb-0">
             <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "password")%></label>

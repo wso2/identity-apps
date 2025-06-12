@@ -23,6 +23,7 @@ import useReCaptcha from "../../hooks/use-recaptcha";
 
 const RecaptchaAdapter = ({ component }, ref) => {
     const { containerRef, ready, execute, reset, token } = useReCaptcha(
+        component.config.recaptchaType,
         component.config.captchaKey,
         component.config.captchaURL
     );
@@ -31,8 +32,8 @@ const RecaptchaAdapter = ({ component }, ref) => {
         ref,
         () => ({
             execute,
-            reset,
             ready,
+            reset,
             token
         }),
         [ execute, reset, ready, token ]

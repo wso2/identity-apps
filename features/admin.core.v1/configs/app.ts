@@ -21,6 +21,10 @@ import { getAdministratorsResourceEndpoints } from "@wso2is/admin.administrators
 import { getAPIResourceEndpoints } from "@wso2is/admin.api-resources.v2/configs/endpoint";
 import { getApplicationTemplatesResourcesEndpoints } from "@wso2is/admin.application-templates.v1/configs/endpoints";
 import { getApplicationsResourceEndpoints } from "@wso2is/admin.applications.v1/configs/endpoints";
+import {
+    getWorkflowAssociationsResourceEndpoints,
+    getWorkflowsResourceEndpoints
+} from "@wso2is/admin.approval-workflows.v1/configs/endpoints";
 import { getBrandingResourceEndpoints } from "@wso2is/admin.branding.v1/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "@wso2is/admin.certificates.v1";
 import { getClaimResourceEndpoints } from "@wso2is/admin.claims.v1/configs/endpoints";
@@ -55,6 +59,7 @@ import { getUsersResourceEndpoints } from "@wso2is/admin.users.v1/configs/endpoi
 import { getUserstoreResourceEndpoints } from "@wso2is/admin.userstores.v1/configs/endpoints";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { getValidationServiceEndpoints } from "@wso2is/admin.validation.v1/configs";
+import { getWebhooksResourceEndpoints } from "@wso2is/admin.webhooks.v1/configs/endpoints";
 import { getApprovalsResourceEndpoints } from "@wso2is/admin.workflow-approvals.v1";
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
 import { AppConstants } from "../constants/app-constants";
@@ -120,7 +125,7 @@ export class Config {
      * @returns server host.
      */
     public static resolveServerHostFromConfig() {
-        if (this.isTenantQualifiedURLsEnabled()) {
+        if (!this.isTenantQualifiedURLsEnabled()) {
             return this.getDeploymentConfig()?.serverOrigin;
         } else {
             return this.getDeploymentConfig()?.serverHost;
@@ -164,6 +169,7 @@ export class Config {
             idpConfigs: window[ "AppUtils" ]?.getConfig()?.idpConfigs,
             loginCallbackUrl: window[ "AppUtils" ]?.getConfig()?.loginCallbackURL,
             organizationPrefix: window["AppUtils"]?.getConfig()?.organizationPrefix,
+            regionSelectionEnabled: window[ "AppUtils" ]?.getConfig()?.regionSelectionEnabled,
             serverHost: window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant,
             serverOrigin: window[ "AppUtils" ]?.getConfig()?.serverOrigin,
             superTenant: window[ "AppUtils" ]?.getConfig()?.superTenant,
@@ -258,7 +264,9 @@ export class Config {
                 I18nConstants.REMOTE_USER_STORES_NAMESPACE,
                 I18nConstants.RULES_NAMESPACE,
                 I18nConstants.PUSH_PROVIDERS_NAMESPACE,
-                I18nConstants.EMAIL_PROVIDERS_NAMESPACE
+                I18nConstants.EMAIL_PROVIDERS_NAMESPACE,
+                I18nConstants.WEBHOOKS_NAMESPACE,
+                I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE
             ],
             preload: []
         };
@@ -322,7 +330,10 @@ export class Config {
             ...getPushProviderResourceEndpoints(this.resolveServerHost()),
             ...getPushProviderTemplateEndpoints(this.resolveServerHost()),
             ...getRemoteLoggingEndpoints(this.resolveServerHost()),
+            ...getWorkflowsResourceEndpoints(this.resolveServerHost()),
+            ...getWorkflowAssociationsResourceEndpoints(this.resolveServerHost()),
             ...getRegistrationFlowBuilderResourceEndpoints(this.resolveServerHost()),
+            ...getWebhooksResourceEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.resolveServerHostFromConfig() }/api/server/v1/cors/origins`,
             asyncStatus: `${ this.resolveServerHost(false, true) }/api/server/v1/async-operations`,
             // TODO: Remove this endpoint and use ID token to get the details

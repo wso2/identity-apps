@@ -1,5 +1,67 @@
 # @wso2is/admin.core.v1
 
+## 2.45.9
+
+### Patch Changes
+
+- [#8325](https://github.com/wso2/identity-apps/pull/8325) [`8b14783c90f4a5e5f8a1a9026f3b95dbaabe4f5e`](https://github.com/wso2/identity-apps/commit/8b14783c90f4a5e5f8a1a9026f3b95dbaabe4f5e) Thanks [@Malith-19](https://github.com/Malith-19)! - Onboard approval workflow feature to the console
+
+- Updated dependencies [[`8b14783c90f4a5e5f8a1a9026f3b95dbaabe4f5e`](https://github.com/wso2/identity-apps/commit/8b14783c90f4a5e5f8a1a9026f3b95dbaabe4f5e)]:
+  - @wso2is/admin.approval-workflows.v1@1.0.0
+  - @wso2is/admin.workflow-approvals.v1@2.26.0
+  - @wso2is/admin.users.v1@2.32.11
+  - @wso2is/i18n@2.23.11
+
+## 2.45.8
+
+### Patch Changes
+
+- [#8314](https://github.com/wso2/identity-apps/pull/8314) [`6427079247040e4ca2fae0edf2f2e4c570487b79`](https://github.com/wso2/identity-apps/commit/6427079247040e4ca2fae0edf2f2e4c570487b79) Thanks [@malithie](https://github.com/malithie)! - Add webhook management UI
+
+* [#8303](https://github.com/wso2/identity-apps/pull/8303) [`b620bda0c39d43594a60b96579d54a645a877696`](https://github.com/wso2/identity-apps/commit/b620bda0c39d43594a60b96579d54a645a877696) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add fixes and improvements to registration orchestration flow
+
+* Updated dependencies [[`6427079247040e4ca2fae0edf2f2e4c570487b79`](https://github.com/wso2/identity-apps/commit/6427079247040e4ca2fae0edf2f2e4c570487b79), [`b620bda0c39d43594a60b96579d54a645a877696`](https://github.com/wso2/identity-apps/commit/b620bda0c39d43594a60b96579d54a645a877696)]:
+  - @wso2is/admin.feature-gate.v1@1.6.3
+  - @wso2is/admin.extensions.v1@2.38.3
+  - @wso2is/admin.webhooks.v1@1.0.1
+  - @wso2is/i18n@2.23.10
+  - @wso2is/admin.registration-flow-builder.v1@0.6.3
+  - @wso2is/admin.server-configurations.v1@2.35.2
+
+## 2.45.7
+
+### Patch Changes
+
+- [#8256](https://github.com/wso2/identity-apps/pull/8256) [`567350d132adca64bb5856432dfb14799a7823e8`](https://github.com/wso2/identity-apps/commit/567350d132adca64bb5856432dfb14799a7823e8) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve feature preview modal
+
+## 2.45.6
+
+### Patch Changes
+
+- [#8254](https://github.com/wso2/identity-apps/pull/8254) [`e8553115e75ffa0e30709047fce984598367e795`](https://github.com/wso2/identity-apps/commit/e8553115e75ffa0e30709047fce984598367e795) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add a config to enable global central
+
+- Updated dependencies [[`e8553115e75ffa0e30709047fce984598367e795`](https://github.com/wso2/identity-apps/commit/e8553115e75ffa0e30709047fce984598367e795)]:
+  - @wso2is/admin.tenants.v1@2.29.12
+
+## 2.45.5
+
+### Patch Changes
+
+- Updated dependencies [[`6cf542b1d28fd5a1c2d52bf5642328d99c592182`](https://github.com/wso2/identity-apps/commit/6cf542b1d28fd5a1c2d52bf5642328d99c592182), [`8330b84a7033ee46c1fd13f2e6de58a6ecab93e7`](https://github.com/wso2/identity-apps/commit/8330b84a7033ee46c1fd13f2e6de58a6ecab93e7)]:
+  - @wso2is/admin.rules.v1@0.6.0
+  - @wso2is/admin.claims.v1@2.27.125
+  - @wso2is/admin.actions.v1@1.13.1
+  - @wso2is/admin.registration-flow-builder.v1@0.6.2
+
+## 2.45.4
+
+### Patch Changes
+
+- [#8250](https://github.com/wso2/identity-apps/pull/8250) [`e41c4d70d85fe137f3a6be524b96630e34438782`](https://github.com/wso2/identity-apps/commit/e41c4d70d85fe137f3a6be524b96630e34438782) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Remove duplicate api resource endpoint URL resolution
+
+- Updated dependencies [[`e41c4d70d85fe137f3a6be524b96630e34438782`](https://github.com/wso2/identity-apps/commit/e41c4d70d85fe137f3a6be524b96630e34438782)]:
+  - @wso2is/admin.roles.v2@2.27.155
+
 ## 2.45.3
 
 ### Patch Changes

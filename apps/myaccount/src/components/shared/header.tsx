@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -42,7 +42,14 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CookieStorageUtils, StringUtils, URLUtils } from "@wso2is/core/utils";
-import { I18n, I18nModuleConstants, LanguageChangeException, LocaleMeta, SupportedLanguagesMeta } from "@wso2is/i18n";
+import {
+    I18n,
+    I18nModuleConstants,
+    LanguageChangeException,
+    LocaleMeta,
+    SupportedLanguagesMeta,
+    TextDirection
+} from "@wso2is/i18n";
 import { useMediaContext } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
@@ -203,6 +210,23 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             URLUtils.getDomain(window.location.href),
             { secure: true }
         );
+    };
+
+    /**
+     * Handles the direction of the document based on the selected language.
+     *
+     * @param language - Selected language.
+     */
+    const handleDirection = (language: string): void => {
+
+        const supportedLanguage: LocaleMeta = supportedI18nLanguages[language];
+        const direction: string = supportedLanguage?.direction;
+
+        if (direction === TextDirection.RTL) {
+            document.documentElement.setAttribute(I18nModuleConstants.TEXT_DIRECTION_ATTRIBUTE, TextDirection.RTL);
+        } else {
+            document.documentElement.setAttribute(I18nModuleConstants.TEXT_DIRECTION_ATTRIBUTE, TextDirection.LTR);
+        }
     };
 
     /**
@@ -430,6 +454,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                         onClick={ () => {
                                             handleLanguageSwitch(value.code);
                                             setOpenLanguageSwitcher(false);
+                                            handleDirection(value.code);
                                         } }
                                     >
                                         <ListItem>
