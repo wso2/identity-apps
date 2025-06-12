@@ -18,7 +18,6 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CodeEditor, ResourceTab } from "@wso2is/react-components";
-import { Editor } from "codemirror";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -83,13 +82,13 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = ({
                     render: () => (
                         <ResourceTab.Pane attached = { false } data-componentid={ `${ componentId }-html-tab` }>
                             <CodeEditor
-                                language = "htmlmixed"
-                                sourceCode = { html }
-                                options = { { lineWrapping: true } }
-                                onChange = { (_editor: Editor, _data: any, value: string) => setHtml(value) }
-                                readOnly = { readOnly }
-                                theme = "light"
-                                data-componentid = { `${ componentId }-html-editor` }
+                                language="htmlmixed"
+                                sourceCode={ html }
+                                options={ { lineWrapping: true } }
+                                onBlur={ (value: string) => setHtml(value) }
+                                readOnly={ readOnly }
+                                theme="light"
+                                data-componentid={ `${ componentId }-html-editor` }
                             />
                         </ResourceTab.Pane>
                     )
@@ -99,13 +98,13 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = ({
                     render: () => (
                         <ResourceTab.Pane attached = { false } data-componentid = { `${ componentId }-css-tab` }>
                             <CodeEditor
-                                language = "css"
-                                sourceCode = { css }
-                                options = { { lineWrapping: true } }
-                                onChange = { (_editor: Editor, _data: any, value: string) => setCss(value) }
-                                readOnly = { readOnly }
-                                theme = "light"
-                                data-componentid = { `${ componentId }-css-editor` }
+                                language="css"
+                                sourceCode={ css }
+                                options={ { lineWrapping: true } }
+                                onBlur={ (value: string) => setCss(value) }
+                                readOnly={ readOnly }
+                                theme="light"
+                                data-componentid={ `${ componentId }-css-editor` }
                             />
                         </ResourceTab.Pane>
                     )
@@ -115,13 +114,13 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = ({
                     render: () => (
                         <ResourceTab.Pane attached = { false } data-componentid = { `${ componentId }-js-tab` }>
                             <CodeEditor
-                                language = "javascript"
-                                sourceCode = { js }
-                                options = { { lineWrapping: true } }
-                                onChange = { (_editor: Editor, _data: any, value: string) => setJs(value) }
-                                readOnly = { readOnly }
-                                theme = "light"
-                                data-componentid = { `${ componentId }-js-editor` }
+                                language="javascript"
+                                sourceCode={ js }
+                                options={ { lineWrapping: true } }
+                                onBlur={ (value: string) => setJs(value) }
+                                readOnly={ readOnly }
+                                theme="light"
+                                data-componentid={ `${ componentId }-js-editor` }
                             />
                         </ResourceTab.Pane>
                     )
