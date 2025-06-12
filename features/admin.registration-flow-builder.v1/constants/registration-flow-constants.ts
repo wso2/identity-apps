@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,17 +16,25 @@
  * under the License.
  */
 
-import { RegistrationFlowBuilderResourceEndpointsInterface } from "../models/endpoints";
-
 /**
- * Get the resource endpoints for the Registration flow builder related features.
+ * Constants related to the tenant management operations.
  *
- * @returns Registration flow builder resource endpoints.
+ * @remarks
+ * This class is not meant to be instantiated. It only provides static constants.
+ *
+ * @example
+ * ```typescript
+ * const errorMessage = TenantConstants.TENANT_ACTIVATION_UPDATE_ERROR;
+ * ```
  */
-export const getRegistrationFlowBuilderResourceEndpoints = (
-    serverOrigin: string
-): RegistrationFlowBuilderResourceEndpointsInterface => {
-    return {
-        registrationFlow: `${ serverOrigin }/api/server/v1/flow`
-    };
-};
+class RegistrationFlowConstants {
+    /**
+     * Private constructor to avoid object instantiation from outside the class.
+     */
+    private constructor() {}
+
+    public static readonly REGISTRATION_FLOW_TYPE: string = "REGISTRATION";
+
+}
+
+export default RegistrationFlowConstants;

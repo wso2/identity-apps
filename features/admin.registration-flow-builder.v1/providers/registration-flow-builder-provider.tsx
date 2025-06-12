@@ -31,6 +31,7 @@ import ResourceProperties from "../components/resource-property-panel/resource-p
 import ElementFactory from "../components/resources/elements/element-factory";
 import RegistrationFlowBuilderContext from "../context/registration-flow-builder-context";
 import { Attribute } from "../models/attributes";
+import RegistrationFlowConstants from "../constants/registration-flow-constants";
 import transformFlow from "../utils/transform-flow";
 
 /**
@@ -94,7 +95,10 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
         }
 
         try {
-            await configureRegistrationFlow(transformFlow(flow) as any);
+            const registrationFlow = transformFlow(flow) as any;
+            registrationFlow.flowType = RegistrationFlowConstants.REGISTRATION_FLOW_TYPE;
+
+            await configureRegistrationFlow(registrationFlow);
 
             dispatch(
                 addAlert({
