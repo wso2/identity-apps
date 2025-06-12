@@ -33,6 +33,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { Icon, Input } from "semantic-ui-react";
 import { PermissionListAPIResource } from "./permission-list-api-resource";
+import useApiResourcesPageContent from "../../hooks/use-api-resources-page-content";
 import { APIResourcePanesCommonPropsInterface, APIResourcePermissionInterface } from "../../models";
 import { AddAPIResourcePermission } from "../wizard";
 
@@ -70,6 +71,10 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
         = useState<APIResourcePermissionInterface>(null);
     const [ triggerAddAPIResourcePermissionModal, setTriggerAddAPIResourcePermissionModal ] = useTrigger();
     const [ permissionSearchQuery, setPermissionSearchQuery ] = useState<string>("");
+
+    const {
+        scopesTabContent
+    } = useApiResourcesPageContent();
 
     /**
      * Set the permission list.
@@ -133,7 +138,7 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
                             { t("apiResources:tabs.scopes.title") }
                         </Heading>
                         <Heading as="h6" color="grey" subHeading className="mb-5">
-                            { t("apiResources:tabs.scopes.subTitle") }
+                            { scopesTabContent?.subHeading }
                         </Heading>
                     </Grid>
                     <Grid xs={ 4 } alignItems="flex-end">

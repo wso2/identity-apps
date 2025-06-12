@@ -133,5 +133,43 @@ export const apiResources: ApiResourcesNS = {
                 }
             }
         }
+    },
+    mcpServers: {
+        newMcpServer: "New MCP Server",
+        wizards: {
+            addMcpServer: {
+                title: "Add new MCP server",
+                description: "Register an MCP server",
+                steps: {
+                    general: {
+                        fields: {
+                            displayName: {
+                                hint: "Meaningful name to identify your MCP server",
+                                placeholder: "My MCP Server"
+                            },
+                            identifier: {
+                                placeholder: "mcp://my-mcp-server"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        deleteMcpServer: {
+            actionText: "Delete MCP Server",
+            heading: "Delete MCP Server",
+            subheading: "This action will permanently delete the MCP server. Please be certain before you proceed"
+        },
+        title: "MCP Servers",
+        description: "Create and manage the APIs that define resource models and access scopes, enabling " +
+                "fine-grained permission control for applications interacting with MCP servers.",
+        searchBarPlaceholder: "Search MCP servers by name",
+        backButtonText: "Back to MCP Servers",
+        scopes: {
+            subHeading: "Scopes the MCP server uses to verify the user's permissions to access " +
+                "its tools, resources, and prompts."
+        },
+        editPageTitle: "Edit MCP Server",
+        emptyListPlaceholderText: "There are no MCP servers available"
     }
 };

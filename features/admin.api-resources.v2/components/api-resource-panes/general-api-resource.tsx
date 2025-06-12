@@ -38,6 +38,7 @@ import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import { deleteAPIResource } from "../../api/api-resources";
 import { APIResourcesConstants } from "../../constants/api-resources-constants";
+import useApiResourcesPageContent from "../../hooks/use-api-resources-page-content";
 import {
     APIResourceInterface,
     APIResourcePanesCommonPropsInterface,
@@ -74,6 +75,10 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+
+    const {
+        deleteResourceWizardContent
+    } = useApiResourcesPageContent();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -136,13 +141,9 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
                             >
                                 <DangerZone
                                     data-testid={ `${componentId}-danger-zone` }
-                                    actionTitle={ t("extensions:develop.apiResource.tabs.general.dangerZoneGroup" +
-                                        ".deleteApiResource.button") }
-                                    header={ t("extensions:develop.apiResource.tabs.general.dangerZoneGroup" +
-                                        ".deleteApiResource.header") }
-                                    subheader={ t("extensions:develop.apiResource.tabs.general.dangerZoneGroup" +
-                                        ".deleteApiResource.subHeading")
-                                    }
+                                    actionTitle={ deleteResourceWizardContent?.buttonText }
+                                    header={ deleteResourceWizardContent?.heading }
+                                    subheader={ deleteResourceWizardContent?.subHeading }
                                     onActionClick={ (): void => {
                                         setShowDeleteConfirmationModal(true);
                                         setDeletingAPIResource(apiResourceData);
