@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.8.2
+
+### Patch Changes
+
+- [#8324](https://github.com/wso2/identity-apps/pull/8324) [`be1290007bf3b01b905512422d9f4017a2c32351`](https://github.com/wso2/identity-apps/commit/be1290007bf3b01b905512422d9f4017a2c32351) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix SCIM2 claim migration issue with user profiles
+
 ## 2.8.1
 
 ### Patch Changes
