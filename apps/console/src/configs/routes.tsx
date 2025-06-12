@@ -432,6 +432,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             ],
             component: lazy(() => import("@wso2is/admin.agents.v1/pages/agents")),
             exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.AGENTS,
             icon: {
                 icon: getSidePanelIcons().agents
             },
