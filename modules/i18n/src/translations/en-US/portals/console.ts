@@ -351,7 +351,7 @@ export const console: ConsoleNS = {
                 description: "Configure login and registration settings."
             },
             userAttributesAndStores: "User Attributes & Stores",
-            userManagement: "User Management",
+            userManagement: "Identity Management",
             branding: "Branding",
             tenants: "Root Organizations",
             policyAdministration: "Policy Administration"

@@ -351,6 +351,22 @@
                     "update": []
                 }
             },
+            "agents": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [
+                    {
+                        "feature": "agents",
+                        "flag": "EXPERIMENTAL"
+                    }
+                ],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "read": [],
+                    "update": []
+                }
+            },
             "ai": {
                 "disabledFeatures": [],
                 "enabled": false,
@@ -1577,7 +1593,7 @@
             "hypr-idp",
             "swe-idp"
         ],
-        "hiddenUserStores": [],
+        "hiddenUserStores": ["AGENT"],
         "i18nConfigs": {
             "langAutoDetectEnabled": false,
             "showLanguageSwitcher": false
