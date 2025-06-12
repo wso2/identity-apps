@@ -35,14 +35,17 @@ import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/moda
 import { getCertificateIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { UserStoreProperty } from "@wso2is/admin.core.v1/models/user-store";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { userConfig, userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
 import { getGroupList, useGroupList } from "@wso2is/admin.groups.v1/api/groups";
 import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import { useGetUserStore } from "@wso2is/admin.userstores.v1/api/use-get-user-store";
+import { PRIMARY_USERSTORE, USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants";
 import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
@@ -176,6 +179,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
     const { t } = useTranslation();
     const { isSubOrganization } = useGetCurrentOrganizationType();
+    const { UIConfig } = useUIConfig();
     const {
         isLoading: isUserStoresFetchRequestLoading,
         isUserStoreReadOnly,
@@ -277,6 +281,21 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         setReadWriteUserStoresList(userStoreArray);
     }, [ isUserStoresFetchRequestLoading, userStoresList ]);
 
+    const {
+        data: originalUserStore
+    } = useGetUserStore(
+        userstore.toLowerCase()
+    );
+
+    const userStoreUsernameRegEx: string = useMemo(() => {
+
+        if (originalUserStore) {
+
+            return originalUserStore?.properties?.find(
+                (property: UserStoreProperty) => property.name === USERSTORE_REGEX_PROPERTIES.UsernameRegEx)?.value;
+        }
+    }, [ originalUserStore ]);
+
     /**
      * Check the given user store is bulk import supported.
      *
@@ -341,7 +360,16 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     // Validate the input string is an email address.
     const validateEmail = (emailList: string[]) => {
 
-        const emailValidation: boolean = FormValidation.email(emailList[emailList.length-1]);
+        let emailValidation: boolean = undefined;
+
+        if (UIConfig?.enableEmailDomain) {
+            emailValidation = SharedUserStoreUtils.validateInputAgainstRegEx(
+                emailList[emailList.length - 1],
+                userStoreUsernameRegEx
+            );
+        } else {
+            emailValidation = FormValidation.email(emailList[emailList.length - 1]);
+        }
 
         if (!emailValidation) {
             setIsEmailDataError(true);
