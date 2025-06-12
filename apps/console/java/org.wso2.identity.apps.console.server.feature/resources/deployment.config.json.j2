@@ -648,6 +648,37 @@
                 }
             },
             {% endif %}
+            {% if console.workflows is defined %}
+            "workflows": {
+                "disabledFeatures": [
+                    {% if console.workflows.disabled_features is defined %}
+                    {% for feature in console.workflows.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.workflows.enabled is defined %} {{ console.workflows.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.workflows.scopes is defined %}
+                    {% for operation, scopes in console.workflows.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "feature": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
             {% if console.attribute_dialects is defined %}
             "attributeDialects": {
                 "disabledFeatures": [
