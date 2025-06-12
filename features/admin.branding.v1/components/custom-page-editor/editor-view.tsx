@@ -83,6 +83,7 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = ({
                     render: () => (
                         <ResourceTab.Pane attached = { false } data-componentid={ `${ componentId }-html-tab` }>
                             <CodeEditor
+                                key={ `${ componentId }-html-editor` }
                                 language="htmlmixed"
                                 sourceCode={ html }
                                 options={ { lineWrapping: true } }
@@ -99,6 +100,7 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = ({
                     render: () => (
                         <ResourceTab.Pane attached = { false } data-componentid = { `${ componentId }-css-tab` }>
                             <CodeEditor
+                                key={ `${ componentId }-css-editor` }
                                 language="css"
                                 sourceCode={ css }
                                 options={ { lineWrapping: true } }
@@ -115,6 +117,7 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = ({
                     render: () => (
                         <ResourceTab.Pane attached = { false } data-componentid = { `${ componentId }-js-tab` }>
                             <CodeEditor
+                                key={ `${ componentId }-js-editor` }
                                 language="javascript"
                                 sourceCode={ js }
                                 options={ { lineWrapping: true } }
