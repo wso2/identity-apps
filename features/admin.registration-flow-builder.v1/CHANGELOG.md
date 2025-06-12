@@ -1,5 +1,16 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.7.0
+
+### Minor Changes
+
+- [#8282](https://github.com/wso2/identity-apps/pull/8282) [`6852d804057d84ff63397a305b085bce761143b6`](https://github.com/wso2/identity-apps/commit/6852d804057d84ff63397a305b085bce761143b6) Thanks [@KD23243](https://github.com/KD23243)! - Update flow composer to support configurable flow types
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.45.10
+
 ## 0.6.3
 
 ### Patch Changes
