@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.59.2
+
+### Patch Changes
+
+- [#8335](https://github.com/wso2/identity-apps/pull/8335) [`abc5605ba50df38535291563b6d7ca70219305d8`](https://github.com/wso2/identity-apps/commit/abc5605ba50df38535291563b6d7ca70219305d8) Thanks [@Sachin-Mamoru](https://github.com/Sachin-Mamoru)! - Fix template typo
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.45.10
+  - @wso2is/admin.home.v1@1.7.5
+
 ## 2.59.1
 
 ### Patch Changes
