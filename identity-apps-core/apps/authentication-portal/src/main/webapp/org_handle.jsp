@@ -20,6 +20,7 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
@@ -34,7 +35,7 @@
     String authenticator = request.getParameter("authenticator");
     String sessionDataKey = request.getParameter(Constants.SESSION_DATA_KEY);
 
-    String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
+    String errorMessage = i18n(resourceBundle, customText, "error.retry");
     String authenticationFailed = "false";
 
     // Log the actual error for localized error fallbacks
@@ -47,11 +48,11 @@
             errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
 
             if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
-                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
-            } else if (errorMessage.equalsIgnoreCase("Invalid Organization Handle")) {
-                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "invalid.organization.handle");
+                errorMessage = i18n(resourceBundle, customText, "error.retry");
+            } else if (errorMessage.equalsIgnoreCase("invalid.organization.handle")) {
+                errorMessage = i18n(resourceBundle, customText, "invalid.organization.handle");
             } else if (isErrorFallbackLocale) {
-                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
+                errorMessage = i18n(resourceBundle, customText, "error.retry");
             }
         }
     }
@@ -100,7 +101,7 @@
             <layout:component componentName="MainSection">
                 <div class="ui segment">
                     <%-- page content --%>
-                    <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%= StringUtils.isNotBlank(idp) ? Encode.forHtmlContent(idp) : AuthenticationEndpointUtil.i18n(resourceBundle, "organization.login") %></h2>
+                    <h2><%=i18n(resourceBundle, customText, "sign.in.with")%> <%= StringUtils.isNotBlank(idp) ? Encode.forHtmlContent(idp) : i18n(resourceBundle, customText, "organization.login") %></h2>
                     <div class="ui divider hidden"></div>
 
                     <%
@@ -116,13 +117,13 @@
 
                     <form class="ui large form" id="org_form" name="org_form" action="<%=commonauthURL%>" method="GET">
                         <div class="field m-0 text-left required">
-                            <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "organization.handle")%></label>
+                            <label><%=i18n(resourceBundle, customText, "organization.handle")%></label>
                         </div>
                         <input type="text" id='org_handle' name="orgHandle" size='30'/>
                         <div class="mt-1" id="emptyOrganizationHandleError" style="display: none;">
                             <i class="red exclamation circle fitted icon"></i>
                             <span class="validation-error-message" id="emptyOrganizationHandleErrorText">
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "organization.handle.cannot.be.empty")%>
+                                <%=i18n(resourceBundle, customText, "organization.handle.cannot.be.empty")%>
                             </span>
                         </div>
                         <input id="prompt" name="prompt" type="hidden" value="orgName">
@@ -131,18 +132,18 @@
                         <input id="sessionDataKey" name="sessionDataKey" type="hidden" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
                         <div class="ui divider hidden"></div>
                         <input type="submit" id="submitButton" onclick="submitOrgHandle(); return false;"
-                            value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "submit")%>"
+                            value="<%=i18n(resourceBundle, customText, "submit")%>"
                             class="ui primary large fluid button" />
                         <div class="mt-1 align-center">
                             <a href="javascript:goBack()" class="ui button secondary large fluid">
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "cancel")%>
+                                <%=i18n(resourceBundle, customText, "cancel")%>
                             </a>
                         </div>
                         <% if (isOrgDiscoveryEnabled) { %>
-                            <div class="ui horizontal divider"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%></div>
+                            <div class="ui horizontal divider"><%=i18n(resourceBundle, customText, "or")%></div>
                             <div class="social-login blurring social-dimmer">
                                 <input type="submit" id="discoveryButton" onclick="promptDiscovery();" class="ui primary basic button link-button"
-                                    value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.email.address")%>">
+                                    value="<%=i18n(resourceBundle, customText, "provide.email.address")%>">
                             </div>
                         <% } %>
                     </form>
@@ -200,9 +201,10 @@
                     showEmptyOrganizationHandleErrorMessage();
                     return;
                 }
-                    document.getElementById("prompt").remove();
-                    document.getElementById("org_form").submit();
-                 }
+                
+                document.getElementById("prompt").remove();
+                document.getElementById("org_form").submit();
+            }
 
             // Function to show error message when organization handle is empty.
             function showEmptyOrganizationHandleErrorMessage() {

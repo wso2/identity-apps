@@ -1,20 +1,21 @@
 <%--
-   ~ Copyright (c) 2023, WSO2 Inc. (http://www.wso2.com).
-   ~
-   ~ WSO2 Inc. licenses this file to you under the Apache License,
-   ~ Version 2.0 (the "License"); you may not use this file except
-   ~ in compliance with the License.
-   ~ You may obtain a copy of the License at
-   ~
-   ~ http://www.apache.org/licenses/LICENSE-2.0
-   ~
-   ~ Unless required by applicable law or agreed to in writing,
-   ~ software distributed under the License is distributed on an
-   ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-   ~ KIND, either express or implied.  See the License for the
-   ~ specific language governing permissions and limitations
-   ~ under the License.
-   --%>
+  ~ Copyright (c) 2023-2025, WSO2 LLC. (http://www.wso2.com).
+  ~
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  --%>
+
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="java.io.File" %>
@@ -32,7 +33,7 @@
    String sessionDataKey = request.getParameter(Constants.SESSION_DATA_KEY);
    boolean isSelfRegistration = Boolean.parseBoolean(request.getParameter("isSelfRegistration"));
 
-   String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
+   String errorMessage = i18n(resourceBundle, customText, "error.retry");
    String authenticationFailed = "false";
 
    // Log the actual error for localized error fallbacks
@@ -43,20 +44,20 @@
        if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
            errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
            if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
-               errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
+               errorMessage = i18n(resourceBundle, customText, "error.retry");
             } else if (isSelfRegistration && (errorMessage.equalsIgnoreCase("Can't identify organization") 
                || errorMessage.equalsIgnoreCase("Organization is not associated with this application."))) {
-               errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "invalid.organization.discovery.input.self.registration");
+               errorMessage = i18n(resourceBundle, customText, "invalid.organization.discovery.input.self.registration");
             } else if (errorMessage.equalsIgnoreCase("Can't identify organization")) {
-               errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "invalid.organization.discovery.input");
+               errorMessage = i18n(resourceBundle, customText, "invalid.organization.discovery.input");
             } else if (errorMessage.equalsIgnoreCase("invalid.organization.discovery.type")) {
-               errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "invalid.organization.discovery.type");
+               errorMessage = i18n(resourceBundle, customText, "invalid.organization.discovery.type");
             } else if (isErrorFallbackLocale) {
-                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
+                errorMessage = i18n(resourceBundle, customText,"error.retry");
             }
        }
    }
-   String defaultDiscoveryParam = request.getParameter("defaultParam");
+   String defaultDiscoveryParam = Encode.forHtmlAttribute(request.getParameter("defaultParam"));
 %>
 <%-- Data for the layout from the page --%>
 <%
@@ -101,11 +102,11 @@
                <%
                   if (isSelfRegistration) {
                %>
-               <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue.with")%> <%= AuthenticationEndpointUtil.i18n(resourceBundle, "organization.email") %></h2>
+               <h2><%=i18n(resourceBundle, customText, "continue.with")%> <%= i18n(resourceBundle, customText, "organization.email") %></h2>
                <%
                   } else {
                %>
-               <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%= StringUtils.isNotBlank(idp) ? idp : AuthenticationEndpointUtil.i18n(resourceBundle, "organization.login") %></h2>
+               <h2><%=i18n(resourceBundle, customText, "sign.in.with")%> <%= StringUtils.isNotBlank(idp) ? Encode.forHtmlContent(idp) : i18n(resourceBundle, customText, "organization.login") %></h2>
 
                <%
                   }
@@ -122,14 +123,14 @@
                <div id="alertDiv"></div>
                <form class="ui large form" id="org_form" name="org_form" action="<%=commonauthURL%>" method="POST">
                   <div class="field m-0 text-left required">
-                     <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "organization.email")%></label>
+                     <label><%=i18n(resourceBundle, customText, "organization.email")%></label>
                   </div>
                   <input type="text" id='login_hint' name="login_hint" size='30'/>
 
                   <div class="mt-1" id="discoveryInputError" style="display: none;">
                      <i class="red exclamation circle fitted icon"></i>
                      <span class="validation-error-message" id="discoveryInputErrorText">
-                           <%=AuthenticationEndpointUtil.i18n(resourceBundle, "discovery.input.cannot.be.empty")%>
+                           <%=i18n(resourceBundle, customText, "discovery.input.cannot.be.empty")%>
                      </span>
                   </div>
                   <input id="prompt" name="prompt" type="hidden" value="orgName">
@@ -138,18 +139,18 @@
                   <input id="sessionDataKey" name="sessionDataKey" type="hidden" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
                   <div class="ui divider hidden"></div>
                   <input type="submit" id="submitButton" onclick="submitDiscovery(); return false;"
-                     value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "submit")%>"
+                     value="<%=i18n(resourceBundle, customText, "submit")%>"
                      class="ui primary large fluid button" />
                   <div class="mt-1 align-center">
                      <a href="javascript:navigateBackToLoginPage()" class="ui button secondary large fluid">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "cancel")%>
+                        <%=i18n(resourceBundle, customText, "cancel")%>
                      </a>
                   </div>
                   <%
                   if (!isSelfRegistration) {
                   %>
                      <div class="ui horizontal divider">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%>
+                        <%=i18n(resourceBundle, customText, "or")%>
                      </div>
                      <%
                      if ("orgHandle".equals(defaultDiscoveryParam)) {
@@ -157,7 +158,7 @@
                         <div class="social-login blurring social-dimmer">
                            <input type="submit" id="orgHandleButton" onclick="enterOrgHandle();" 
                                   class="ui primary basic button link-button"
-                                  value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.organization.handle")%>">
+                                  value="<%=i18n(resourceBundle, customText, "provide.organization.handle", "Provide organization handle")%>"
                         </div>
                      <%
                      } else {
@@ -165,7 +166,7 @@
                         <div class="social-login blurring social-dimmer">
                            <input type="submit" id="orgNameButton" onclick="enterOrgName();" 
                                   class="ui primary basic button link-button"
-                                  value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.organization.name")%>">
+                                  value="<%=i18n(resourceBundle, customText, "provide.organization.name", "Provide organization name")%>"
                         </div>
                      <%
                      }
