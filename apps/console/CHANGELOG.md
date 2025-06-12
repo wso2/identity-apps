@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.59.1
+
+### Patch Changes
+
+- [#8329](https://github.com/wso2/identity-apps/pull/8329) [`fd8780f2141e1a47fa86e4134cfbbdd5429ca531`](https://github.com/wso2/identity-apps/commit/fd8780f2141e1a47fa86e4134cfbbdd5429ca531) Thanks [@malithie](https://github.com/malithie)! - Add icon for webhook management menu in side panel.
+
+* [#8327](https://github.com/wso2/identity-apps/pull/8327) [`0737a9b661223683516180b03b7946568d7ca0ea`](https://github.com/wso2/identity-apps/commit/0737a9b661223683516180b03b7946568d7ca0ea) Thanks [@malithie](https://github.com/malithie)! - Update oxygen ui version to 2.4.4
+
+* Updated dependencies [[`be1290007bf3b01b905512422d9f4017a2c32351`](https://github.com/wso2/identity-apps/commit/be1290007bf3b01b905512422d9f4017a2c32351)]:
+  - @wso2is/admin.users.v1@2.32.12
+  - @wso2is/core@2.8.2
+
 ## 2.59.0
 
 ### Minor Changes
