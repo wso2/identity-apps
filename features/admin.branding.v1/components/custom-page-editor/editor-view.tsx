@@ -18,6 +18,7 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CodeEditor, ResourceTab } from "@wso2is/react-components";
+import { Editor } from "codemirror";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -85,7 +86,7 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = ({
                                 language="htmlmixed"
                                 sourceCode={ html }
                                 options={ { lineWrapping: true } }
-                                onBlur={ (value: string) => setHtml(value) }
+                                onBlur={ (editor: Editor) => setHtml(editor.getValue()) }
                                 readOnly={ readOnly }
                                 theme="light"
                                 data-componentid={ `${ componentId }-html-editor` }
@@ -101,7 +102,7 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = ({
                                 language="css"
                                 sourceCode={ css }
                                 options={ { lineWrapping: true } }
-                                onBlur={ (value: string) => setCss(value) }
+                                onBlur={ (editor: Editor) => setCss(editor.getValue()) }
                                 readOnly={ readOnly }
                                 theme="light"
                                 data-componentid={ `${ componentId }-css-editor` }
@@ -117,7 +118,7 @@ export const EditorViewTabs: FunctionComponent<EditorViewTabsProps> = ({
                                 language="javascript"
                                 sourceCode={ js }
                                 options={ { lineWrapping: true } }
-                                onBlur={ (value: string) => setJs(value) }
+                                onBlur={ (editor: Editor) => setJs(editor.getValue()) }
                                 readOnly={ readOnly }
                                 theme="light"
                                 data-componentid={ `${ componentId }-js-editor` }
