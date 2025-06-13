@@ -437,6 +437,7 @@
     }
 %>
 
+<% request.setAttribute("pageName", "sign-in"); %>
 
 <!doctype html>
 <html lang="en-US">
@@ -470,16 +471,18 @@
     <%
         }
     %>
+
 </head>
-<body class="login-portal layout authentication-portal-layout" onload="checkSessionKey()">
-    <% request.setAttribute("pageName", "sign-in"); %>
+
+<body class="login-portal layout authentication-portal-layout" onload="checkSessionKey()" data-page="<%= request.getAttribute("pageName") %>">
+
     <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
         <jsp:include page="extensions/timeout.jsp"/>
     <% } else { %>
         <jsp:include page="util/timeout.jsp"/>
     <% } %>
 
-    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>">
         <layout:component componentName="ProductHeader">
             <%
                 if (StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT) &&

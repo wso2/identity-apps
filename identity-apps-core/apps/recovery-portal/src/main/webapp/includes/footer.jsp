@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -26,6 +26,15 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Arrays" %>
+
+<%-- Localization --%>
+<jsp:directive.include file="localize.jsp" />
+
+<%-- Include tenant context --%>
+<jsp:directive.include file="../tenant-resolve.jsp"/>
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="branding-preferences.jsp"/>
 
 <%
     // Determining whether the application user is going to login is Console, as the maintenance banner
@@ -116,3 +125,7 @@
         return false;
     }
 </script>
+
+<% if (StringUtils.isNotBlank(jsContent)){ %>
+<script type="text/javascript"><%= jsContent %></script>
+<% } %>

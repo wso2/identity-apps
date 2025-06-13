@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2020-2024, WSO2 LLC. (http://www.wso2.com).
+  ~ Copyright (c) 2020-2025, WSO2 LLC. (http://www.wso2.com).
   ~
   ~  WSO2 LLC. licenses this file to you under the Apache License,
   ~  Version 2.0 (the "License"); you may not use this file except
@@ -21,6 +21,15 @@
 <script src="util/url-utils.js" async></script>
 
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+
+<%-- Include tenant context --%>
+<jsp:directive.include file="../tenant-resolve.jsp"/>
+
+<%-- Localization --%>
+<jsp:directive.include file="localize.jsp" />
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="branding-preferences.jsp"/>
 
 <%
     String isDowntimeBannerEnabled = application.getInitParameter("isDowntimeBannerEnabled");
@@ -107,3 +116,7 @@
         return false;
     }
 </script>
+
+<% if (StringUtils.isNotBlank(jsContent)){ %>
+<script type="text/javascript"><%= jsContent %></script>
+<% } %>

@@ -1,5 +1,5 @@
 <%--
-~ Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+~ Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
 ~
 ~ WSO2 LLC. licenses this file to you under the Apache License,
 ~ Version 2.0 (the "License"); you may not use this file except
@@ -116,6 +116,8 @@
     }
 %>
 
+<% request.setAttribute("pageName", "sms-otp"); %>
+
 <html>
     <head>
         <%-- header --%>
@@ -134,7 +136,7 @@
         <![endif]-->
     </head>
 
-    <body class="login-portal layout sms-otp-portal-layout">
+    <body class="login-portal layout sms-otp-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
 
         <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
             <jsp:include page="extensions/timeout.jsp"/>

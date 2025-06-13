@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2018-2024, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2018-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -74,10 +74,7 @@
     }
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "medium");
-%>
+<% request.setAttribute("pageName", "password-recovery-username-request"); %>
 
 <!doctype html>
 <html lang="en-US">
@@ -97,7 +94,7 @@
         <![endif]-->
     </head>
 
-    <body class="login-portal layout recovery-layout">
+    <body class="login-portal layout recovery-layout" data-page="<%= request.getAttribute("pageName") %>">
         <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
             <layout:component componentName="ProductHeader">
                 <%-- product-title --%>
@@ -171,8 +168,8 @@
                             %>
                             <div class="ui divider hidden"></div>
                             <div class="align-right buttons">
-                                <button id="registrationSubmit" 
-                                        class="ui primary button large fluid" 
+                                <button id="registrationSubmit"
+                                        class="ui primary button large fluid"
                                         type="submit">
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                             "Proceed.password.recovery")%>
