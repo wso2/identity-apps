@@ -107,7 +107,6 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (props: LogsPageInterface
                     menuItem: (
                         <MenuItem key="text" className="item-with-chip">
                             { t("extensions:develop.monitor.logs.tabs.audit") }
-                            <Chip size="small" label={ t("common:beta") } className="oxygen-chip-beta" />
                         </MenuItem>
                     ),
                     render: renderLogContentAuditNew

@@ -126,7 +126,6 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
             mode: AuthenticationFlowBuilderModes.Classic
         },
         {
-            extra: <Chip size="small" label="Beta" className="oxygen-chip-beta" />,
             id: 1,
             label: t("authenticationFlow:modes.visual.label"),
             mode: AuthenticationFlowBuilderModes.Visual
@@ -398,7 +397,6 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                                                     <Typography sx={ { fontWeight: 500 } }>
                                                         { mode.label }
                                                     </Typography>
-                                                    { isSAASDeployment && mode.extra }
                                                 </div>
                                             ) }
                                             data-componentid={ `${componentId}-${ mode.id }-tab` }
