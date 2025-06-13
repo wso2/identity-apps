@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.60.1
+
+### Patch Changes
+
+- [#8343](https://github.com/wso2/identity-apps/pull/8343) [`aa729fd629c8589f9df3f9204169112334c68653`](https://github.com/wso2/identity-apps/commit/aa729fd629c8589f9df3f9204169112334c68653) Thanks [@Malith-19](https://github.com/Malith-19)! - Fix the user list not showing intermittently in workflow edit page.
+
+- Updated dependencies [[`aa729fd629c8589f9df3f9204169112334c68653`](https://github.com/wso2/identity-apps/commit/aa729fd629c8589f9df3f9204169112334c68653)]:
+  - @wso2is/admin.approval-workflows.v1@1.0.1
+
 ## 2.60.0
 
 ### Minor Changes
