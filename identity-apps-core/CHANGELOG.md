@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.25.23
+
+### Patch Changes
+
+- [#8316](https://github.com/wso2/identity-apps/pull/8316) [`08cd3175c8dacb5cfaae06577a0d51da294c3d7d`](https://github.com/wso2/identity-apps/commit/08cd3175c8dacb5cfaae06577a0d51da294c3d7d) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix enterprise reCaptcha issue
+
 ## 2.25.22
 
 ### Patch Changes

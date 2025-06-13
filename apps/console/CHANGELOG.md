@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.60.3
+
+### Patch Changes
+
+- [#8305](https://github.com/wso2/identity-apps/pull/8305) [`c0497876a952c41514ddfae3c4088e04df67bb11`](https://github.com/wso2/identity-apps/commit/c0497876a952c41514ddfae3c4088e04df67bb11) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with deleting edges in Registration flow composer
+
 ## 2.60.2
 
 ### Patch Changes
