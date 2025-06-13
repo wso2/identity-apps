@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.7.9
+
+### Patch Changes
+
+- [#8345](https://github.com/wso2/identity-apps/pull/8345) [`9705a6126e9c839c053a199f1c41e96b7928da1f`](https://github.com/wso2/identity-apps/commit/9705a6126e9c839c053a199f1c41e96b7928da1f) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Change registration portal class name
+
 ## 2.7.8
 
 ### Patch Changes
