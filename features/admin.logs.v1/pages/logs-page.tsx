@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import Chip from "@oxygen-ui/react/Chip";
 import { GearIcon } from "@oxygen-ui/react-icons";
 import { useRequiredScopes } from "@wso2is/access-control";
 import { getMiscellaneousIcons } from "@wso2is/admin.core.v1/configs/ui";

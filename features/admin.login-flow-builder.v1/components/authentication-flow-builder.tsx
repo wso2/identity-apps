@@ -17,7 +17,6 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
-import Chip from "@oxygen-ui/react/Chip";
 import Tab from "@oxygen-ui/react/Tab";
 import TabPanel from "@oxygen-ui/react/TabPanel";
 import Tabs from "@oxygen-ui/react/Tabs";
@@ -132,7 +131,6 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         }
     ];
 
-    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
     const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
 
     const [ activeFlowMode, setActiveFlowMode ] = useState<AuthenticationFlowBuilderModesInterface>(FlowModes[0]);
