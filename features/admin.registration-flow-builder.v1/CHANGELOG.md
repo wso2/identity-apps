@@ -1,5 +1,11 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.7.1
+
+### Patch Changes
+
+- [#8305](https://github.com/wso2/identity-apps/pull/8305) [`c0497876a952c41514ddfae3c4088e04df67bb11`](https://github.com/wso2/identity-apps/commit/c0497876a952c41514ddfae3c4088e04df67bb11) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with deleting edges in Registration flow composer
+
 ## 0.7.0
 
 ### Minor Changes
