@@ -17,6 +17,10 @@
  */
 
 .user-profile-form {
+    .form-field-container {
+        margin-bottom: 1.5rem;
+    }
+
     .multi-value-table {
         .multi-value-table-data-row {
             &:last-child td, &:last-child th {

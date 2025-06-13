@@ -36,7 +36,14 @@ import { DropdownChild } from "@wso2is/forms";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
-import { LocaleJoiningSymbol, UserManagementConstants } from "../constants/user-management-constants";
+import {
+    EMAIL_ADDRESSES_ATTRIBUTE,
+    EMAIL_ATTRIBUTE,
+    LocaleJoiningSymbol,
+    MOBILE_ATTRIBUTE,
+    MOBILE_NUMBERS_ATTRIBUTE,
+    UserManagementConstants
+} from "../constants/user-management-constants";
 import { MultipleInviteMode, MultipleInvitesDisplayNames, UserBasicInterface } from "../models/user";
 
 /**
@@ -594,4 +601,56 @@ export const groupByTopLevelKey = <T extends Record<string, JsonValue>>(inputArr
     }
 
     return grouped as T;
+};
+
+/**
+ * Flattens a nested object into a map with dot-separated keys.
+ *
+ * @param obj - The object to flatten.
+ * @param prefix - The prefix for the keys (used for recursion).
+ * @returns A map with dot-separated keys and their corresponding values.
+ */
+export const flattenValues = (obj: Record<string, any>, prefix: string = ""): Map<string, string> => {
+    const map: Map<string, string> = new Map<string, string>();
+
+    for (const key in obj) {
+        if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
+
+        const value: any = obj[key];
+        const path: string = prefix ? `${prefix}.${key}` : key;
+
+        if (typeof value === "object" && !isEmpty(value) && !Array.isArray(value)) {
+            const subMap: Map<string, string> = flattenValues(value, path);
+
+            subMap.forEach((v: string, k: string) => map.set(k, v));
+        } else {
+            map.set(path, value);
+        }
+    }
+
+    return map;
+};
+
+/**
+ * This function returns the verification pending attribute value for email and mobile attributes.
+ * @param schemaName - Schema name.
+ * @returns Verification pending attribute value.
+ */
+export const getVerificationPendingAttributeValue = (schemaName: string, user: ProfileInfoInterface): string | null => {
+    if (schemaName === EMAIL_ATTRIBUTE || schemaName === EMAIL_ADDRESSES_ATTRIBUTE) {
+        const pendingAttributes: Array<{value: string}> | undefined =
+        user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.["pendingEmails"];
+
+        return Array.isArray(pendingAttributes)
+            && pendingAttributes.length > 0
+            && pendingAttributes[0]?.value !== undefined
+            ? pendingAttributes[0].value
+            : null;
+    } else if (schemaName === MOBILE_ATTRIBUTE || schemaName === MOBILE_NUMBERS_ATTRIBUTE) {
+        return !isEmpty(user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.["pendingMobileNumber"])
+            ? user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.["pendingMobileNumber"]
+            : null;
+    }
+
+    return null;
 };

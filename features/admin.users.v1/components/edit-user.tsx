@@ -22,20 +22,28 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import { ServerConfigurationsInterface, getServerConfigs } from "@wso2is/admin.server-configurations.v1";
 import { ConnectorPropertyInterface } from "@wso2is/admin.server-configurations.v1/models";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import {
+    AlertInterface,
+    AlertLevels,
+    FeatureAccessConfigInterface,
+    IdentifiableComponentInterface,
+    ProfileInfoInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Message, ResourceTab } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, TabProps } from "semantic-ui-react";
 import { UserGroupsList } from "./user-groups-edit";
 import { UserProfile } from "./user-profile";
+import { UserProfileUpdated } from "./user-profile-updated";
 import { UserRolesList } from "./user-roles-list";
 import { UserSessions } from "./user-sessions";
-import { AdminAccountTypes, UserManagementConstants } from "../constants";
+import { AdminAccountTypes, UserFeatureDictionaryKeys, UserManagementConstants } from "../constants";
 import useUserManagement from "../hooks/use-user-management";
 
 interface EditUserPropsInterface extends IdentifiableComponentInterface {
@@ -100,9 +108,17 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const [ adminUsername, setAdminUsername ] = useState<string|null>(null);
     const [ isUserManagedByParentOrg, setIsUserManagedByParentOrg ] = useState<boolean>(false);
 
-    const userRolesDisabledFeatures: string[] = useSelector((state: AppState) => {
-        return state.config.ui.features?.users?.disabledFeatures;
+    const usersFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
+        return state.config.ui.features?.users;
     });
+    const isLegacyUserProfileEnabled: boolean = isFeatureEnabled(
+        usersFeatureConfig,
+        UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.UserLegacyProfile)
+    );
+    const isUserGroupsEnabled: boolean = isFeatureEnabled(
+        usersFeatureConfig,
+        UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.UserGroups)
+    );
 
     useEffect(() => {
         if (!isSuperOrganization()) {
@@ -177,60 +193,111 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             });
     };
 
-    const panes = () => ([
-        {
-            menuItem: t("users:editUser.tab.menuItems.0"),
-            render: () => (
-                <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <UserProfile
-                        adminUsername={ adminUsername }
-                        onAlertFired={ handleAlerts }
-                        user={ user }
-                        handleUserUpdate={ handleUserUpdate }
-                        isReadOnly={ isReadOnly }
-                        connectorProperties={ connectorProperties }
-                        isReadOnlyUserStoresLoading={ isUserStoresLoading }
-                        isReadOnlyUserStore={ isReadOnlyUserStore }
-                        isUserManagedByParentOrg={ isUserManagedByParentOrg }
-                        adminUserType={ AdminAccountTypes.INTERNAL }
-                        allowDeleteOnly={
-                            user[ SCIMConfigs.scim.systemSchema ]?.isReadOnlyUser === "true"
-                        }
-                        editUserDisclaimerMessage={ (
-                            <Grid>
-                                <Grid.Row columns={ 1 }>
-                                    <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
-                                        <Message
-                                            type="info"
-                                            content={ t("extensions:manage.users.editUserProfile.disclaimerMessage") }
-                                        />
-                                        <Divider hidden />
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        ) }
-                    />
-                </ResourceTab.Pane>
-            )
-        },
-        (
-            !userRolesDisabledFeatures?.includes(UserManagementConstants.FEATURE_DICTIONARY.get("USER_GROUPS"))
-            || user?.userName?.split("/").length !== 1
-        )
-        && {
-            menuItem: t("users:editUser.tab.menuItems.1"),
-            render: () => (
-                <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <UserGroupsList
-                        onAlertFired={ handleAlerts }
-                        user={ user }
-                        handleUserUpdate={ handleUserUpdate }
-                        isReadOnly={ isReadOnly }
-                    />
-                </ResourceTab.Pane>
-            )
-        },
-        {
+    /**
+     * This useMemo construct the array of tab panes based on the feature configurations.
+     */
+    const panes: {
+        menuItem: string;
+        render: () => ReactElement;
+    }[] = useMemo(() => {
+        const _panes: {
+            menuItem: string;
+            render: () => ReactElement;
+        } [] = [];
+
+        if (isLegacyUserProfileEnabled) {
+            _panes.push({
+                menuItem: t("users:editUser.tab.menuItems.0"),
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <UserProfile
+                            adminUsername={ adminUsername }
+                            onAlertFired={ handleAlerts }
+                            user={ user }
+                            handleUserUpdate={ handleUserUpdate }
+                            isReadOnly={ isReadOnly }
+                            connectorProperties={ connectorProperties }
+                            isReadOnlyUserStoresLoading={ isUserStoresLoading }
+                            isReadOnlyUserStore={ isReadOnlyUserStore }
+                            isUserManagedByParentOrg={ isUserManagedByParentOrg }
+                            adminUserType={ AdminAccountTypes.INTERNAL }
+                            allowDeleteOnly={
+                                user[ SCIMConfigs.scim.systemSchema ]?.isReadOnlyUser === "true"
+                            }
+                            editUserDisclaimerMessage={ (
+                                <Grid>
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
+                                            <Message
+                                                type="info"
+                                                content={
+                                                    t("extensions:manage.users.editUserProfile.disclaimerMessage") }
+                                            />
+                                            <Divider hidden />
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </Grid>
+                            ) }
+                        />
+                    </ResourceTab.Pane>
+                )
+            });
+        } else {
+            _panes.push({
+                menuItem: t("users:editUser.tab.menuItems.0"),
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <UserProfileUpdated
+                            adminUsername={ adminUsername }
+                            onAlertFired={ handleAlerts }
+                            user={ user }
+                            handleUserUpdate={ handleUserUpdate }
+                            isReadOnly={ isReadOnly }
+                            connectorProperties={ connectorProperties }
+                            isReadOnlyUserStoresLoading={ isUserStoresLoading }
+                            isReadOnlyUserStore={ isReadOnlyUserStore }
+                            isUserManagedByParentOrg={ isUserManagedByParentOrg }
+                            adminUserType={ AdminAccountTypes.INTERNAL }
+                            allowDeleteOnly={
+                                user[ SCIMConfigs.scim.systemSchema ]?.isReadOnlyUser === "true"
+                            }
+                            editUserDisclaimerMessage={ (
+                                <Grid>
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
+                                            <Message
+                                                type="info"
+                                                content={
+                                                    t("extensions:manage.users.editUserProfile.disclaimerMessage") }
+                                            />
+                                            <Divider hidden />
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </Grid>
+                            ) }
+                        />
+                    </ResourceTab.Pane>
+                )
+            });
+        }
+
+        if (isUserGroupsEnabled || user?.userName?.split("/").length !== 1) {
+            _panes.push({
+                menuItem: t("users:editUser.tab.menuItems.1"),
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <UserGroupsList
+                            onAlertFired={ handleAlerts }
+                            user={ user }
+                            handleUserUpdate={ handleUserUpdate }
+                            isReadOnly={ isReadOnly }
+                        />
+                    </ResourceTab.Pane>
+                )
+            });
+        }
+
+        _panes.push({
             menuItem: t("users:editUser.tab.menuItems.2"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
@@ -251,8 +318,10 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         } />
                 </ResourceTab.Pane>
             )
-        }
-    ]);
+        });
+
+        return _panes;
+    }, [ user, isLegacyUserProfileEnabled, isUserGroupsEnabled ]);
 
     return (
         <ResourceTab
@@ -261,7 +330,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             onTabChange={ (event: React.MouseEvent<HTMLDivElement>, data: TabProps) => {
                 updateActiveTab(data.activeIndex as number);
             } }
-            panes={ panes() }
+            panes={ panes }
         />
     );
 };
