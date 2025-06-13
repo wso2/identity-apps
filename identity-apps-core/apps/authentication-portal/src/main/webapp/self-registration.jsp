@@ -307,7 +307,7 @@
                 if (loading || (!components || components.length === 0)) {
                     return createElement(
                         "div",
-                        { className: `content-container loading ${!loading ? "hidden" : ""}` },
+                        { className: `registration-content-container loading ${!loading ? "hidden" : ""}` },
                         createElement(
                             "div",
                             { className: "spinner" }
@@ -317,7 +317,7 @@
 
                 return createElement(
                     "div",
-                    { className: "content-container loaded" },
+                    { className: "registration-content-container loaded" },
                     createElement(
                         DynamicContent, {
                             contentData: flowData.data && flowData.data,
