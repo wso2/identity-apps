@@ -21211,7 +21211,7 @@ importers:
   identity-apps-core:
     dependencies:
       '@wso2is/theme':
-        specifier: ^2.7.8
+        specifier: ^2.7.9
         version: link:../modules/theme
       react:
         specifier: ^18.2.0
