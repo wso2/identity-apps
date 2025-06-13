@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.59.3
+
+### Patch Changes
+
+- [#8334](https://github.com/wso2/identity-apps/pull/8334) [`18e6baa35e49e997ce8f4e6a184015ef11e9e678`](https://github.com/wso2/identity-apps/commit/18e6baa35e49e997ce8f4e6a184015ef11e9e678) Thanks [@Malith-19](https://github.com/Malith-19)! - Add the config retrival for workflow related config.
+
 ## 2.59.2
 
 ### Patch Changes
