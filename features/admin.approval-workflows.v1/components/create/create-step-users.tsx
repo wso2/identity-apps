@@ -197,7 +197,7 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
         );
 
         setSelectedUsersFromUserStore(matchedUsers);
-    }, [ initialValues ]);
+    }, [ initialValues, userResponse ]);
 
     /**
      * Set available to select users.
