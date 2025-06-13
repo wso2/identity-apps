@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.60.2
+
+### Patch Changes
+
+- [#8347](https://github.com/wso2/identity-apps/pull/8347) [`72ed71f74e4c5bb2688d04810fa8ab21a937077b`](https://github.com/wso2/identity-apps/commit/72ed71f74e4c5bb2688d04810fa8ab21a937077b) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Bump Console version
+
 ## 2.60.1
 
 ### Patch Changes
