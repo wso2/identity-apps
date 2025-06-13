@@ -136,7 +136,7 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                         );
 
                         setSteps(parsedSteps);
-                        temporarySteps.current.approvalSteps = [...parsedSteps];
+                        temporarySteps.current.approvalSteps = [ ...parsedSteps ];
                     } else {
                         const defaultStep: MultiStepApprovalTemplate = {
                             id: `step${Date.now()}-1`,
