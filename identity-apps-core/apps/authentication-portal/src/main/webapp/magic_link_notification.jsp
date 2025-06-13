@@ -38,7 +38,6 @@
 
 <% request.setAttribute("pageName", "magic-link-notification"); %>
 
-
 <%-- Data for the layout from the page --%>
 <%
     layoutData.put("isResponsePage", true);
