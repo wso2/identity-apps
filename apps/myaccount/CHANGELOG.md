@@ -1,5 +1,18 @@
 # @wso2is/myaccount
 
+## 2.20.0
+
+### Minor Changes
+
+- [#8309](https://github.com/wso2/identity-apps/pull/8309) [`238533137505979cccd4f75d9de2c26ce8d20b50`](https://github.com/wso2/identity-apps/commit/238533137505979cccd4f75d9de2c26ce8d20b50) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add data types support for user profile UI and refactor user profile codebase
+
+### Patch Changes
+
+- [#8341](https://github.com/wso2/identity-apps/pull/8341) [`aae236698f6cc807209d44944c3f676761f3e16e`](https://github.com/wso2/identity-apps/commit/aae236698f6cc807209d44944c3f676761f3e16e) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Bump oxygen-ui version to 2.4.5
+
+- Updated dependencies [[`238533137505979cccd4f75d9de2c26ce8d20b50`](https://github.com/wso2/identity-apps/commit/238533137505979cccd4f75d9de2c26ce8d20b50)]:
+  - @wso2is/core@2.9.0
+
 ## 2.19.19
 
 ### Patch Changes
