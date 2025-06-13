@@ -290,7 +290,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const userStoreUsernameRegEx: string = useMemo(() => {
 
         if (originalUserStore) {
-
             return originalUserStore?.properties?.find(
                 (property: UserStoreProperty) => property.name === USERSTORE_REGEX_PROPERTIES.UsernameRegEx)?.value;
         }
