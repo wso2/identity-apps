@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,6 +28,7 @@ import {
     SetOrganizationActionInterface,
     SetOrganizationTypeInterface,
     SetSuperAdminTypeInterface,
+    SetUserOrganizationHandleInterface,
     SetUserOrganizationIdInterface
 } from "./types/organization";
 
@@ -70,6 +71,20 @@ export const setUserOrganizationId = (orgId: string): SetUserOrganizationIdInter
     return {
         payload: orgId,
         type: OrganizationActionTypes.SET_USER_ORGANIZATION_ID
+    };
+};
+
+/**
+ * This action sets the user organization handle in the redux store.
+ *
+ * @param orgHandle - The user organization handle.
+ *
+ * @returns - A set user organization handle action.
+ */
+export const setUserOrganizationHandle = (orgHandle: string): SetUserOrganizationHandleInterface => {
+    return {
+        payload: orgHandle,
+        type: OrganizationActionTypes.SET_USER_ORGANIZATION_HANDLE
     };
 };
 

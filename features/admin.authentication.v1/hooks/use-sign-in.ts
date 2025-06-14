@@ -37,6 +37,7 @@ import {
     setIsFirstLevelOrganization,
     setOrganization,
     setOrganizationType,
+    setUserOrganizationHandle,
     setUserOrganizationId
 } from "@wso2is/admin.core.v1/store/actions/organization";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
@@ -279,6 +280,7 @@ const useSignIn = (): UseSignInInterface => {
         const orgIdIdToken: string = idToken.org_id;
         const orgName: string = idToken.org_name;
         const userOrganizationId: string = idToken.user_org;
+        const userOrganizationHandle: string = idToken.org_handle;
         const tenantDomainFromSubject: string = CommonAuthenticateUtils.deriveTenantDomainFromSubject(
             response.sub
         );
@@ -330,6 +332,7 @@ const useSignIn = (): UseSignInInterface => {
         dispatch(setOrganizationType(orgType));
         window["AppUtils"].updateOrganizationType(orgType);
         dispatch(setUserOrganizationId(userOrganizationId));
+        dispatch(setUserOrganizationHandle(userOrganizationHandle));
 
         if (window["AppUtils"].getConfig().organizationName || isFirstLevelOrg) {
             // We are actually getting the orgId here rather than orgName
