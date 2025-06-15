@@ -15,18 +15,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import {
+    FeatureAccessConfigInterface,
+    AlertInterface,
+    AlertLevels,
+    IdentifiableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
-import { deleteRoleById, updateRoleDetails } from "../../api";
+import { deleteRoleById, updateRoleDetails, updateRoleV3Details } from "../../api";
 import useGetRolesList from "../../api/use-get-roles-list";
 import { RoleAudienceTypes, RoleConstants, Schemas } from "../../constants";
 import { PatchRoleDataInterface, RoleBasicInterface, RoleEditSectionsInterface } from "../../models/roles";
@@ -63,6 +70,11 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
         enableDeleteErrorConnetedAppsModal,
         [ "data-componentid" ]: componentid
     } = props;
+
+    const userRoleV3Config: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userV3Roles);
+    const hasRoleV3UpdateScopes: boolean = useRequiredScopes(userRoleV3Config?.scopes?.update);
+    const patchRoleDetails = hasRoleV3UpdateScopes ? updateRoleV3Details : updateRoleDetails;
 
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ showDeleteErrorConnectedAppsModal, setShowDeleteErrorConnectedAppsModal ] = useState<boolean>(false);
@@ -165,7 +177,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
 
         setIsSubmitting(true);
 
-        updateRoleDetails(role.id, roleData)
+        patchRoleDetails(role.id, roleData)
             .then(() => {
                 onRoleUpdate(tabIndex);
                 handleAlerts({
