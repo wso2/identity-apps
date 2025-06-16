@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,6 +22,7 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import { OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models/organizations";
 import useGetBrandingPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-branding-preference-resolve";
 import {
+    BrandingCustomLayoutContentInterface,
     BrandingPreferenceAPIResponseInterface,
     BrandingPreferenceTypes,
     BrandingSubFeatures,
@@ -42,6 +43,7 @@ import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, u
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import { updateBrandingPreference } from "../api/branding-preferences";
 import deleteCustomTextPreference from "../api/delete-custom-text-preference";
 import updateCustomTextPreference from "../api/update-custom-text-preference";
 import useGetCustomTextPreferenceFallbacks from "../api/use-get-custom-text-preference-fallbacks";
@@ -113,6 +115,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     const [ isCustomTextPreferenceConfigured, setIsCustomTextPreferenceConfigured ] = useState<boolean>(true);
     const [ selectedApplication, setSelectedApplication ] = useState<string>(null);
     const [ brandingMode, setBrandingMode ] = useState<BrandingModes>(BrandingModes.ORGANIZATION);
+    const [ isCustomLayoutEditorEnabled, setIsCustomLayoutEditorEnabled ] = useState<boolean>(false);
 
     const resolvedName: string = (brandingMode === BrandingModes.APPLICATION && selectedApplication)
         ? selectedApplication : tenantDomain;
@@ -270,6 +273,56 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
 
         setBrandingPreference(originalBrandingPreference);
     }, [ originalBrandingPreference ]);
+
+    /**
+     * Updates the custom layout content in the branding preference.
+     *
+     * @param updatedContent - Updated custom layout content.
+     * @param callback - Callback function to be called after the update is complete.
+     */
+    const updateBrandingCustomContent = (
+        updatedContent: BrandingCustomLayoutContentInterface,
+        callback: () => void
+    ): void => {
+        if (!brandingPreference) return;
+
+        const updated: BrandingPreferenceAPIResponseInterface = {
+            ...brandingPreference,
+            preference: {
+                ...brandingPreference.preference,
+                layout: {
+                    ...brandingPreference.preference.layout,
+                    content: {
+                        ...brandingPreference.preference.layout.content,
+                        ...updatedContent
+                    }
+                }
+            }
+        };
+
+        const isConfigured: boolean = brandingPreference?.preference?.configs?.isBrandingEnabled ?? false;
+
+        updateBrandingPreference(
+            isConfigured,
+            updated.name,
+            updated.preference,
+            updated.type,
+            updated.locale
+        ).then((response: BrandingPreferenceAPIResponseInterface) => {
+            setBrandingPreference(response);
+            dispatch(addAlert({
+                description: t("branding:customPageEditor.notifications.successContentUpdate.description"),
+                level: AlertLevels.SUCCESS,
+                message: t("branding:customPageEditor.notifications.successContentUpdate.message")
+            }));
+        }).catch((_error: unknown) => {
+            dispatch(addAlert({
+                description: t("branding:customPageEditor.notifications.errorContentUpdate.description"),
+                level: AlertLevels.ERROR,
+                message: t("branding:customPageEditor.notifications.errorContentUpdate.message")
+            }));
+        }).finally(() => callback());
+    };
 
     /**
      * Moderates the Custom Text Preference response.
@@ -486,6 +539,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                     return meta;
                 },
                 i18n,
+                isCustomLayoutEditorEnabled,
                 isCustomTextConfigured: customText && !isEqual(customText, customTextFallbacks),
                 isCustomTextPreferenceFetching: isCustomTextPreferenceFetching,
                 onSelectedLocaleChange: (locale: string): void => {
@@ -510,6 +564,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 selectedScreen,
                 selectedScreenVariation,
                 setBrandingMode,
+                setIsCustomLayoutEditorEnabled,
                 setSelectedApplication,
                 updateActiveCustomTextConfigurationMode: setActiveCustomTextConfigurationMode,
                 updateActiveTab: (tab: string) => {
@@ -521,6 +576,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
 
                     setActiveTab(tab);
                 },
+                updateBrandingCustomContent,
                 updateCustomTextFormSubscription: (
                     subscription: FormState<CustomTextInterface, CustomTextInterface>
                 ): void => {
