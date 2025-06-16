@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.26.0
+
+### Minor Changes
+
+- [#8227](https://github.com/wso2/identity-apps/pull/8227) [`6e933b10207856a63155df2a148d1c0a0526f6da`](https://github.com/wso2/identity-apps/commit/6e933b10207856a63155df2a148d1c0a0526f6da) Thanks [@SamudraUduwaka](https://github.com/SamudraUduwaka)! - Custom page editor for end user facing portals
+
 ## 2.25.23
 
 ### Patch Changes
