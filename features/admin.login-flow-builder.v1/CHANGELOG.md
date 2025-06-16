@@ -1,5 +1,11 @@
 # @wso2is/admin.login-flow-builder.v1
 
+## 2.26.3
+
+### Patch Changes
+
+- [#8340](https://github.com/wso2/identity-apps/pull/8340) [`27736180cccaf3da49cfde52ff2ce80d6c35f15a`](https://github.com/wso2/identity-apps/commit/27736180cccaf3da49cfde52ff2ce80d6c35f15a) Thanks [@sandushi](https://github.com/sandushi)! - Remove the label from the visual editor and audit logs
+
 ## 2.26.2
 
 ### Patch Changes
