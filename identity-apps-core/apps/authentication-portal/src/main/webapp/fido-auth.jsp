@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2015-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2015-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -31,10 +31,7 @@
     String authRequest = request.getParameter("data");
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "medium");
-%>
+<% request.setAttribute("pageName", "fido-auth"); %>
 
 <!doctype html>
 <html lang="en-US">
@@ -49,7 +46,7 @@
     <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout authentication-portal-layout" onload="talkToDevice();">
+<body class="login-portal layout authentication-portal-layout" onload="talkToDevice();" data-page="<%= request.getAttribute("pageName") %>">
 
     <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
         <jsp:include page="extensions/timeout.jsp"/>

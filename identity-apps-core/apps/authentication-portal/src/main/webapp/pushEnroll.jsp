@@ -101,10 +101,12 @@
                 }
             }
         }
-        
+
         return isMultiAuthAvailable;
     }
 %>
+
+<% request.setAttribute("pageName", "push-enroll"); %>
 
 <html lang="en-US">
     <head>
@@ -125,7 +127,7 @@
         <![endif]-->
     </head>
 
-    <body class="login-portal layout totp-portal-layout">
+    <body class="login-portal layout totp-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
         <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>">
             <layout:component componentName="ProductHeader">
                 <%-- product-title --%>

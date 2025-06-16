@@ -93,6 +93,9 @@
         reCaptchaEnabled = true;
     }
 %>
+
+<% request.setAttribute("pageName","email-otp"); %>
+
 <html lang="en-US">
 <head>
     <%-- header --%>
@@ -151,7 +154,7 @@
     </script>
 </head>
 
-<body class="login-portal layout email-otp-portal-layout">
+<body class="login-portal layout email-otp-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
     <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
         <jsp:include page="extensions/timeout.jsp"/>
     <% } else { %>
