@@ -28,16 +28,16 @@ export const apiResources: ApiResourcesNS = {
     confirmations: {
         deleteAPIResource: {
             assertionHint: "Please confirm your action.",
-            content: "This action is irreversible and will permanently delete the API resource.",
+            content: "This action is irreversible and will permanently delete the {{ resourceType }}.",
             header: "Are you sure?",
             message: "If you delete this API resource, some functionalities may not work properly. " +
                 "Please proceed with caution."
         },
         deleteAPIResourcePermission: {
             assertionHint: "Please confirm your action.",
-            content: "This action is irreversible and will permanently remove the scope from the API resource.",
+            content: "This action is irreversible and will permanently remove the scope from the {{ resourceType }}.",
             header: "Are you sure?",
-            message: "If you remove this scope from the API resource, some functionalities may not work properly. " +
+            message: "If you remove this scope from the {{ resourceType }}, some functionalities may not work properly. " +
                 "Please proceed with caution."
         }
     },
@@ -161,8 +161,7 @@ export const apiResources: ApiResourcesNS = {
             subheading: "This action will permanently delete the MCP server. Please be certain before you proceed"
         },
         title: "MCP Servers",
-        description: "Create and manage the APIs that define resource models and access scopes, enabling " +
-                "fine-grained permission control for applications interacting with MCP servers.",
+        description: "Define resource models and scopes for MCP servers to enable fine-grained access control over server resources.",
         searchBarPlaceholder: "Search MCP servers by name",
         backButtonText: "Back to MCP Servers",
         scopes: {

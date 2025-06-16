@@ -73,7 +73,8 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
     const [ permissionSearchQuery, setPermissionSearchQuery ] = useState<string>("");
 
     const {
-        scopesTabContent
+        scopesTabContent,
+        resourceServerTypeDisplayName
     } = useApiResourcesPageContent();
 
     /**
@@ -244,13 +245,17 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
                             data-testid={ `${componentId}-delete-confirmation-modal-message` }
                         >
                             { t("apiResources:confirmations.deleteAPIResourcePermission." +
-                                        "message") }
+                                        "message", {
+                                resourceType: resourceServerTypeDisplayName
+                            }) }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content
                             data-testid={ `${componentId}-delete-confirmation-modal-content` }
                         >
                             { t("apiResources:confirmations.deleteAPIResourcePermission." +
-                                        "content") }
+                                        "content", {
+                                resourceType: resourceServerTypeDisplayName
+                            }) }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

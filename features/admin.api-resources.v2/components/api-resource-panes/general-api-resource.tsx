@@ -100,9 +100,13 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
                     description: t("extensions:develop.apiResource.notifications.deleteAPIResource.success" +
-                        ".description"),
+                        ".description", {
+                        resourceType: resourceServerTypeDisplayName
+                    }),
                     level: AlertLevels.SUCCESS,
-                    message: t("extensions:develop.apiResource.notifications.deleteAPIResource.success.message")
+                    message: t("extensions:develop.apiResource.notifications.deleteAPIResource.success.message", {
+                        resourceType: resourceServerTypeDisplayName
+                    })
                 }));
 
                 setShowDeleteConfirmationModal(false);
@@ -111,7 +115,9 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
             .catch(() => {
                 dispatch(addAlert<AlertInterface>({
                     description: t("extensions:develop.apiResource.notifications.deleteAPIResource" +
-                        ".genericError.description"),
+                        ".genericError.description", {
+                        resourceType: resourceServerTypeDisplayName
+                    }),
                     level: AlertLevels.ERROR,
                     message: t("extensions:develop.apiResource.notifications.deleteAPIResource" +
                         ".genericError.message")
@@ -295,13 +301,15 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
                                     negative
                                     data-testid={ `${componentId}-delete-confirmation-modal-message` }
                                 >
-                                    { t("extensions:develop.apiResource.confirmations.deleteAPIResource.message") }
+                                    { t("extensions:develop.apiResource.confirmations.deleteAPIResource.message", {
+                                        resourceType: resourceServerTypeDisplayName
+                                    }) }
                                 </ConfirmationModal.Message>
                                 <ConfirmationModal.Content
                                     data-testid={ `${componentId}-delete-confirmation-modal-content` }
                                 >
                                     { t("extensions:develop.apiResource.confirmations.deleteAPIResource.content", {
-                                        resourceName: resourceServerTypeDisplayName
+                                        resourceType: resourceServerTypeDisplayName
                                     }) }
                                 </ConfirmationModal.Content>
                             </ConfirmationModal>

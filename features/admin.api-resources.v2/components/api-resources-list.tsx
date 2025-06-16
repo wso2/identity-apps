@@ -357,9 +357,13 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
                     description: t("extensions:develop.apiResource.notifications.deleteAPIResource.success" +
-                        ".description"),
+                        ".description", {
+                        resourceType: resourceServerTypeDisplayName
+                    }),
                     level: AlertLevels.SUCCESS,
-                    message: t("extensions:develop.apiResource.notifications.deleteAPIResource.success.message")
+                    message: t("extensions:develop.apiResource.notifications.deleteAPIResource.success.message", {
+                        resourceType: resourceServerTypeDisplayName
+                    })
                 }));
 
                 setShowDeleteConfirmationModal(false);
@@ -370,7 +374,9 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
             .catch(() => {
                 dispatch(addAlert<AlertInterface>({
                     description: t("extensions:develop.apiResource.notifications.deleteAPIResource" +
-                        ".genericError.description"),
+                        ".genericError.description", {
+                        resourceType: resourceServerTypeDisplayName
+                    }),
                     level: AlertLevels.ERROR,
                     message: t("extensions:develop.apiResource.notifications.deleteAPIResource" +
                         ".genericError.message")
