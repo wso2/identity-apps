@@ -19,11 +19,53 @@
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { DocumentationLink, useDocumentation } from "@wso2is/react-components";
-import React from "react";
+import React, { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { APIResourcesConstants } from "../constants/api-resources-constants";
 import { AddAPIResourceWizardStepsFormTypes, ResourceServerType } from "../models";
+
+type CreateResourceWizard = {
+    description: string;
+    displayNameHint: string;
+    displayNamePlaceholder: string;
+    hiddenSteps: string[];
+    identifierPlaceholder: string;
+    title: string;
+};
+
+type DeleteResourceWizardContent = {
+    buttonText: string;
+    heading: string;
+    subHeading: string;
+};
+
+type ScopesTabContent = {
+    subHeading: string;
+};
+
+type ResourceServerConfig = {
+    addNewResourceButtonText: string;
+    createResourceWizard: CreateResourceWizard;
+    defaultSearchFilter: string;
+    deleteResourceWizardContent: DeleteResourceWizardContent;
+    isApiServer: boolean;
+    isMcpServer: boolean;
+    resourceEditBackButtonLink: string;
+    resourceEditBackButtonText: string;
+    resourceEditPageTitle: string;
+    resourceEditPath: string;
+    resourceSearchBarPlaceholder: string;
+    resourceServerEmptyListSubtitle: string[];
+    resourceServerListDescription: ReactNode;
+    resourceServerListPageTitle: string;
+    resourceServerListTitle: string;
+    scopesTabContent: ScopesTabContent;
+};
+
+type ResourceServerConfigMap = {
+    [key in ResourceServerType]: ResourceServerConfig;
+};
 
 const useApiResourcesPageContent = () => {
 
@@ -45,7 +87,7 @@ const useApiResourcesPageContent = () => {
         }
     }
 
-    const content: any = {
+    const content: Partial<ResourceServerConfigMap> = {
         [ResourceServerType.API]: {
             addNewResourceButtonText: t("extensions:develop.apiResource.addApiResourceButton"),
             createResourceWizard: {
