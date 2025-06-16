@@ -525,7 +525,7 @@ export interface ClaimsNS {
                     integer: string;
                     decimal: string;
                     boolean: string;
-                    date: string;
+                    dateTime: string;
                     object: string;
                 };
             };
@@ -540,7 +540,7 @@ export interface ClaimsNS {
                 placeholder: string;
             };
             multiValuedHint: string;
-            multiValuedDisabledHint: string;
+            multiValuedSystemClaimHint: string;
             displayOrderHint: string;
             required: {
                 label: string;

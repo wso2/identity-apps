@@ -223,7 +223,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             value: ClaimDataType.BOOLEAN
         },
         {
-            text: t("claims:local.forms.dataType.options.date"),
+            text: t("claims:local.forms.dataType.options.dateTime"),
             value: ClaimDataType.DATE_TIME
         },
         {
@@ -1205,7 +1205,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             defaultValue={ claim?.multiValued }
                             data-testid={ `${testId}-form-multi-valued-input` }
                             hint={ isSystemClaim
-                                ? t("claims:local.forms.multiValuedDisabledHint")
+                                ? t("claims:local.forms.multiValuedSystemClaimHint")
                                 : t("claims:local.forms.multiValuedHint") }
                             readOnly={ isSubOrganization() || isSystemClaim || isReadOnly }
                         />
