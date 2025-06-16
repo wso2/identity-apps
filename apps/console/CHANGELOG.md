@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.60.4
+
+### Patch Changes
+
+- [#8350](https://github.com/wso2/identity-apps/pull/8350) [`de96d36e86d954e9f55591c9adf2fdcde6ba5917`](https://github.com/wso2/identity-apps/commit/de96d36e86d954e9f55591c9adf2fdcde6ba5917) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Change date data type to dateTime
+
+- Updated dependencies [[`27736180cccaf3da49cfde52ff2ce80d6c35f15a`](https://github.com/wso2/identity-apps/commit/27736180cccaf3da49cfde52ff2ce80d6c35f15a), [`de96d36e86d954e9f55591c9adf2fdcde6ba5917`](https://github.com/wso2/identity-apps/commit/de96d36e86d954e9f55591c9adf2fdcde6ba5917)]:
+  - @wso2is/admin.logs.v1@1.6.4
+  - @wso2is/admin.claims.v1@2.28.1
+  - @wso2is/i18n@2.23.12
+
 ## 2.60.3
 
 ### Patch Changes
