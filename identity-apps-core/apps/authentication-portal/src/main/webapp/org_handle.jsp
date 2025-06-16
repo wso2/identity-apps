@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2022-2025, WSO2 LLC. (http://www.wso2.com).
+  ~ Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -49,10 +49,10 @@
 
             if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
                 errorMessage = i18n(resourceBundle, customText, "error.retry");
-            } else if (errorMessage.equalsIgnoreCase("invalid.organization.name")) {
-                errorMessage = i18n(resourceBundle, customText, "invalid.organization.name");
+            } else if (errorMessage.equalsIgnoreCase("invalid.organization.handle")) {
+                errorMessage = i18n(resourceBundle, customText, "invalid.organization.handle");
             } else if (isErrorFallbackLocale) {
-                errorMessage = i18n(resourceBundle, customText,"error.retry");
+                errorMessage = i18n(resourceBundle, customText, "error.retry");
             }
         }
     }
@@ -79,11 +79,6 @@
         <%
             }
         %>
-
-        <!--[if lt IE 9]>
-        <script src="js/html5shiv.min.js"></script>
-        <script src="js/respond.min.js"></script>
-        <![endif]-->
     </head>
 
     <body class="login-portal layout authentication-portal-layout">
@@ -106,7 +101,7 @@
             <layout:component componentName="MainSection">
                 <div class="ui segment">
                     <%-- page content --%>
-                    <h2><%= i18n(resourceBundle, customText, "sign.in.with") %><%= StringUtils.isNotBlank(idp) ? Encode.forHtmlContent(idp) : i18n(resourceBundle, customText, "organization.login") %></h2>
+                    <h2><%=i18n(resourceBundle, customText, "sign.in.with")%> <%= StringUtils.isNotBlank(idp) ? Encode.forHtmlContent(idp) : i18n(resourceBundle, customText, "organization.login") %></h2>
                     <div class="ui divider hidden"></div>
 
                     <%
@@ -120,36 +115,35 @@
 
                     <div id="alertDiv"></div>
 
-
-                    <form class="ui large form" id="pin_form" name="pin_form" action="<%=commonauthURL%>" method="GET">
+                    <form class="ui large form" id="org_form" name="org_form" action="<%=commonauthURL%>" method="GET">
                         <div class="field m-0 text-left required">
-                            <label><%= i18n(resourceBundle, customText, "organization.name") %></label>
+                            <label><%=i18n(resourceBundle, customText, "organization.handle")%></label>
                         </div>
-                        <input type="text" id='ORG_NAME' name="org" size='30'/>
-                        <div class="mt-1" id="emptyOrganizationNameError" style="display: none;">
+                        <input type="text" id='org_handle' name="orgHandle" size='30'/>
+                        <div class="mt-1" id="emptyOrganizationHandleError" style="display: none;">
                             <i class="red exclamation circle fitted icon"></i>
-                            <span class="validation-error-message" id="emptyOrganizationNameErrorText">
-                                <%= i18n(resourceBundle, customText, "organization.name.cannot.be.empty") %>
+                            <span class="validation-error-message" id="emptyOrganizationHandleErrorText">
+                                <%=i18n(resourceBundle, customText, "organization.handle.cannot.be.empty")%>
                             </span>
                         </div>
-                        <input id="prompt" name="prompt" type="hidden" value="orgDiscovery">
+                        <input id="prompt" name="prompt" type="hidden" value="orgName">
                         <input id="idp" name="idp" type="hidden" value="<%=Encode.forHtmlAttribute(idp)%>"/>
                         <input id="authenticator" name="authenticator" type="hidden" value="<%=Encode.forHtmlAttribute(authenticator)%>"/>
                         <input id="sessionDataKey" name="sessionDataKey" type="hidden" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
                         <div class="ui divider hidden"></div>
-                        <input type="submit" id="submitButton" onclick="submitOrgName(); return false;"
-                            value="<%= i18n(resourceBundle, customText, "submit") %>"
+                        <input type="submit" id="submitButton" onclick="submitOrgHandle(); return false;"
+                            value="<%=i18n(resourceBundle, customText, "submit")%>"
                             class="ui primary large fluid button" />
                         <div class="mt-1 align-center">
                             <a href="javascript:goBack()" class="ui button secondary large fluid">
-                                <%= i18n(resourceBundle, customText, "cancel") %>
+                                <%=i18n(resourceBundle, customText, "cancel")%>
                             </a>
                         </div>
                         <% if (isOrgDiscoveryEnabled) { %>
-                            <div class="ui horizontal divider"><%= i18n(resourceBundle, customText, "or")%></div>
+                            <div class="ui horizontal divider"><%=i18n(resourceBundle, customText, "or")%></div>
                             <div class="social-login blurring social-dimmer">
                                 <input type="submit" id="discoveryButton" onclick="promptDiscovery();" class="ui primary basic button link-button"
-                                    value="<%= i18n(resourceBundle, customText, "provide.email.address")%>">
+                                    value="<%=i18n(resourceBundle, customText, "provide.email.address")%>">
                             </div>
                         <% } %>
                     </form>
@@ -196,25 +190,26 @@
             }
             
             function promptDiscovery() {
-                document.getElementById("ORG_NAME").disabled = true;
-                document.getElementById("pin_form").submit();
+                document.getElementById("prompt").value = "orgDiscovery";
+                document.getElementById("org_handle").disabled = true;
+                document.getElementById("org_form").submit();
             }
 
-            function submitOrgName() {
-                // Show error message when organization name is empty.
-                if (document.getElementById("ORG_NAME").value.length <= 0) {
-                    showEmptyOrganizationNameErrorMessage();
+            function submitOrgHandle() {
+                // Show error message when organization handle is empty.
+                if (document.getElementById("org_handle").value.length <= 0) {
+                    showEmptyOrganizationHandleErrorMessage();
                     return;
                 }
-
+                
                 document.getElementById("prompt").remove();
-                document.getElementById("pin_form").submit();
+                document.getElementById("org_form").submit();
             }
 
-            // Function to show error message when organization name is empty.
-            function showEmptyOrganizationNameErrorMessage() {
-                var emptyOrganizationNameError = $("#emptyOrganizationNameError");
-                emptyOrganizationNameError.show();
+            // Function to show error message when organization handle is empty.
+            function showEmptyOrganizationHandleErrorMessage() {
+                var emptyOrganizationHandleError = $("#emptyOrganizationHandleError");
+                emptyOrganizationHandleError.show();
             }
         </script>
     </body>
