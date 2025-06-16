@@ -19,6 +19,9 @@
 import { LinkInterface } from "@wso2is/core/models";
 import { FunctionComponent, SVGProps } from "react";
 
+/**
+ * Enum for resource server types.
+ */
 export enum ResourceServerType {
     API = "API",
     MCP = "MCP",
