@@ -257,7 +257,7 @@ export class RouteUtils {
         const userManagement: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: SquareUserIcon,
             id: "userManagement",
-            name: "User Management",
+            name: "Identity Management",
             order: 1
         };
 
@@ -385,8 +385,15 @@ export class RouteUtils {
             },
             {
                 category: manage,
-                id: "groups",
+                id: "agents",
                 order: 1,
+                parent: userManagement,
+                selected: history.location.pathname.includes("/agents")
+            },
+            {
+                category: manage,
+                id: "groups",
+                order: 2,
                 parent: userManagement
             },
             {
@@ -398,13 +405,13 @@ export class RouteUtils {
             {
                 category: manage,
                 id: "userRoles",
-                order: 2,
+                order: 3,
                 parent: userManagement
             },
             {
                 category: manage,
                 id: "userV1Roles",
-                order: 2,
+                order: 3,
                 parent: userManagement
             },
             {
