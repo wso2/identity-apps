@@ -28,7 +28,7 @@ import groupBy from "lodash-es/groupBy";
 import sortBy from "lodash-es/sortBy";
 import {
     ReactComponent as ResourceServersIcon
-} from "../../themes/wso2is/assets/images/icons/outline-icons/resource-servers-outline.svg"
+} from "../../themes/wso2is/assets/images/icons/outline-icons/resource-servers-outline.svg";
 import { AppConstants } from "../constants/app-constants";
 import { history } from "../helpers/history";
 
@@ -257,6 +257,9 @@ export class RouteUtils {
 
     public static groupNavbarRoutes(routes: RouteInterface[], saasFeatureStatus?: FeatureStatus): NavRouteInterface[] {
 
+        const isMcpServersFeatureEnabled: boolean =
+            window["AppUtils"]?.getConfig()?.ui?.features?.mcpServers?.enabled;
+
         const userManagement: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: SquareUserIcon,
             id: "userManagement",
@@ -375,15 +378,15 @@ export class RouteUtils {
                 category: build,
                 id: "apiResources",
                 order: 2,
-                selected: history.location.pathname.includes("/api-resources"),
-                parent: resourceServers
+                parent: isMcpServersFeatureEnabled ? resourceServers : null,
+                selected: history.location.pathname.includes("/api-resources")
             },
             {
                 category: build,
                 id: "mcpServers",
                 order: 2,
-                selected: history.location.pathname.includes("/mcp-servers"),
-                parent: resourceServers
+                parent: resourceServers,
+                selected: history.location.pathname.includes("/mcp-servers")
             },
             {
                 category: organizations,

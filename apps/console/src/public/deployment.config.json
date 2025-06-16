@@ -952,6 +952,33 @@
                     ]
                 }
             },
+            "mcpServers": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [
+                    {
+                        "feature": "mcpServers",
+                        "flag": "NEW"
+                    }
+                ],
+                "scopes": {
+                    "create": [
+                        "internal_api_resource_create"
+                    ],
+                    "delete": [
+                        "internal_api_resource_delete"
+                    ],
+                    "feature": [
+                        "console:apiResources"
+                    ],
+                    "read": [
+                        "internal_api_resource_view"
+                    ],
+                    "update": [
+                        "internal_api_resource_update"
+                    ]
+                }
+            },
             "myAccount": {
                 "disabledFeatures": [],
                 "enabled": false,

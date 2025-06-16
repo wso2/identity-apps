@@ -75,6 +75,8 @@ export const getAppViewRoutes = (): RouteInterface[] => {
 
     const isPushProviderFeatureEnabled: boolean =
         window["AppUtils"]?.getConfig()?.ui?.features?.pushProviders?.enabled;
+    const isMcpServersFeatureEnabled: boolean =
+        window["AppUtils"]?.getConfig()?.ui?.features?.mcpServers?.enabled;
 
     const defaultRoutes: RouteInterface[] = [
         {
@@ -179,35 +181,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             name: "extensions:develop.sidePanel.apiResources",
             order: 2,
             path: AppConstants.getPaths().get("API_RESOURCES"),
-            protected: true,
-            showOnSidePanel: true
-        },
-        {
-            category: "console:develop.features.sidePanel.categories.application",
-            children: [
-                {
-                    component: lazy(() =>
-                        import("@wso2is/admin.api-resources.v2/pages/api-resource-edit")
-                    ),
-                    exact: true,
-                    id: "mcpServers-edit",
-                    name: "extensions:develop.sidePanel.apiResources",
-                    path: AppConstants.getPaths().get("MCP_SERVER_EDIT"),
-                    protected: true,
-                    showOnSidePanel: false
-                }
-            ],
-            component: lazy(() =>
-                import("@wso2is/admin.api-resources.v2/pages/api-resources")
-            ),
-            exact: true,
-            icon: {
-                icon: getSidePanelIcons().mcpServers
-            },
-            id: "mcpServers",
-            name: "MCP Servers",
-            order: 2,
-            path: AppConstants.getPaths().get("MCP_SERVERS"),
             protected: true,
             showOnSidePanel: true
         },
@@ -1586,6 +1559,40 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         }
     ];
 
+    if (isMcpServersFeatureEnabled) {
+        defaultRoutes.push(
+            {
+                category: "console:develop.features.sidePanel.categories.application",
+                children: [
+                    {
+                        component: lazy(() =>
+                            import("@wso2is/admin.api-resources.v2/pages/api-resource-edit")
+                        ),
+                        exact: true,
+                        id: "mcpServers-edit",
+                        name: "extensions:develop.sidePanel.apiResources",
+                        path: AppConstants.getPaths().get("MCP_SERVER_EDIT"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() =>
+                    import("@wso2is/admin.api-resources.v2/pages/api-resources")
+                ),
+                exact: true,
+                featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.MCP_SERVERS,
+                icon: {
+                    icon: getSidePanelIcons().mcpServers
+                },
+                id: "mcpServers",
+                name: "MCP Servers",
+                order: 2,
+                path: AppConstants.getPaths().get("MCP_SERVERS"),
+                protected: true,
+                showOnSidePanel: true
+            }
+        );
+    }
 
 
     const routes: RouteInterface[] = values(
