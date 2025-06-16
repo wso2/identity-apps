@@ -48,12 +48,17 @@ import useScopesOfAPIResources from "../../../api/use-scopes-of-api-resources";
 import { Policy, PolicyInfo, policyDetails } from "../../../constants/api-authorization";
 import { AuthorizedAPIListItemInterface } from "../../../models/api-authorization";
 import { ApplicationTemplateIdTypes } from "../../../models/application";
+import startCase from "lodash-es/startCase";
 
 interface AuthorizeAPIResourcePropsInterface extends IdentifiableComponentInterface {
     /**
      * Template ID.
      */
     templateId: string,
+    /**
+     * Original Template ID.
+     */
+    originalTemplateId?: string,
     /**
      * List of subscribed API Resources
      */
@@ -77,6 +82,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
 
     const {
         templateId,
+        originalTemplateId,
         subscribedAPIResourcesListData,
         closeWizard,
         handleCreateAPIResource,
@@ -86,6 +92,10 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
     const { getLink } = useDocumentation();
+
+    const resourceText: string = originalTemplateId === "mcp-client-application"
+        ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.genericResource")
+        : t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.apiResource");
 
     const [ allAPIResourcesListData, setAllAPIResourcesListData ] = useState<APIResourceInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -139,10 +149,14 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
         if (currentAPIResourcesFetchRequestError || currentAPIResourceScopeListFetchError) {
             dispatch(addAlert<AlertInterface>({
                 description: t("extensions:develop.apiResource.notifications.getAPIResources" +
-                    ".genericError.description"),
+                    ".genericError.description", {
+                    resourceText: resourceText
+                }),
                 level: AlertLevels.ERROR,
                 message: t("extensions:develop.apiResource.notifications.getAPIResources" +
-                    ".genericError.message")
+                    ".genericError.message", {
+                    resourceText: resourceText
+                })
             }));
             closeWizard();
         }
@@ -380,10 +394,14 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
         >
             <Modal.Header className="wizard-header">
                 { t("extensions:develop.applications.edit.sections.apiAuthorization.sections.apiSubscriptions." +
-                    "wizards.authorizeAPIResource.title") }
+                    "wizards.authorizeAPIResource.title", {
+                    resourceText: resourceText
+                }) }
                 <Heading as="h6">
                     { t("extensions:develop.applications.edit.sections.apiAuthorization.sections.apiSubscriptions." +
-                        "wizards.authorizeAPIResource.subTitle") }
+                        "wizards.authorizeAPIResource.subTitle", {
+                        resourceText: resourceText
+                    }) }
                 </Heading>
             </Modal.Header>
             <Modal.Content className="content-container" scrolling>
@@ -431,9 +449,12 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                     (<div { ...props }>
                                                         <Header.Content>
                                                             { apiResourcesListOption.text }
-                                                            { apiResourcesListOption.type ==
-                                                            APIResourcesConstants.BUSINESS
-                                                            && (
+                                                            { (
+                                                                apiResourcesListOption.type ===
+                                                                    APIResourcesConstants.BUSINESS
+                                                                || apiResourcesListOption.type ==
+                                                                    APIResourcesConstants.MCP
+                                                            ) && (
                                                                 <Header.Subheader>
                                                                     <Code
                                                                         className="inline-code compact transparent"
@@ -446,7 +467,9 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                                         size="mini"
                                                                         className="client-id-label">
                                                                         { t("extensions:develop.apiResource.table." +
-                                                                            "identifier.label") }
+                                                                            "identifier.label", {
+                                                                            resourceText: resourceText
+                                                                        }) }
                                                                     </Label>
                                                                 </Header.Subheader>
                                                             ) }
@@ -457,11 +480,22 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                         item?.type === APIResourceCategories.TENANT ||
                                                         item?.type === APIResourceCategories.ORGANIZATION ||
                                                         item?.type === APIResourceCategories.BUSINESS ||
-                                                        item?.type === APIResourceCategories.MCP
-                                                    ).sort((a: DropdownItemProps, b: DropdownItemProps) =>
-                                                        APIResourceUtils.resolveApiResourceGroup(a?.type)
-                                                            ?.localeCompare(APIResourceUtils
-                                                                .resolveApiResourceGroup(b?.type))
+                                                        (originalTemplateId === "mcp-client-application" &&
+                                                            item?.type === APIResourceCategories.MCP)
+                                                    ).sort((a: DropdownItemProps, b: DropdownItemProps) => {
+                                                        const apiResourceSortingOrder: APIResourceCategories[] = [
+                                                            APIResourceCategories.BUSINESS,
+                                                            APIResourceCategories.MCP,
+                                                            APIResourceCategories.TENANT,
+                                                            APIResourceCategories.ORGANIZATION
+                                                        ];
+                                                        const aIndex: number = apiResourceSortingOrder.indexOf(a?.type);
+                                                        const bIndex: number = apiResourceSortingOrder.indexOf(b?.type);
+
+                                                        return (aIndex === -1 ? apiResourceSortingOrder.length : aIndex)
+                                                            - (bIndex === -1 ? apiResourceSortingOrder.length : bIndex);
+                                                    }
+
                                                     )
                                                 }
                                                 onChange={ (
@@ -472,13 +506,17 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                 renderInput={ (params: AutocompleteRenderInputParams) => (
                                                     <TextField
                                                         { ...params }
-                                                        label={ t("extensions:develop.applications.edit." +
+                                                        label={ startCase(t("extensions:develop.applications.edit." +
                                                             "sections.apiAuthorization.sections.apiSubscriptions." +
-                                                            "wizards.authorizeAPIResource.fields.apiResource.label") }
+                                                            "wizards.authorizeAPIResource.fields.apiResource.label", {
+                                                            resourceText: resourceText
+                                                        })) }
                                                         placeholder={ t("extensions:develop.applications.edit." +
                                                             "sections.apiAuthorization.sections.apiSubscriptions." +
                                                             "wizards.authorizeAPIResource.fields.apiResource." +
-                                                            "placeholder") }
+                                                            "placeholder", {
+                                                            resourceText: resourceText
+                                                        }) }
                                                         size="small"
                                                         variant="outlined"
                                                     />
@@ -541,7 +579,9 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                                         ".edit.sections." +
                                                                         "apiAuthorization.sections.apiSubscriptions" +
                                                                         ".wizards.authorizeAPIResource.fields" +
-                                                                        ".scopes.label")
+                                                                        ".scopes.label", {
+                                                                        resourceText: resourceText
+                                                                    })
                                                                     }
                                                                 </Typography>
                                                                 {
@@ -620,11 +660,13 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                             <Hint disabled={ !selectedAPIResource }>
                                                 { t("extensions:develop.applications.edit.sections." +
                                                     "apiAuthorization.sections.apiSubscriptions.wizards." +
-                                                    "authorizeAPIResource.fields.scopes.hint") }
+                                                    "authorizeAPIResource.fields.scopes.hint", {
+                                                    resourceText: resourceText
+                                                }) }
                                             </Hint>
                                         </Grid.Row>
                                         {
-                                            !m2mApplication && (
+                                            !m2mApplication && originalTemplateId !== "mcp-client-application" && (
                                                 <Grid.Row columns={ 1 } className="pt-2">
                                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
                                                         <Autocomplete

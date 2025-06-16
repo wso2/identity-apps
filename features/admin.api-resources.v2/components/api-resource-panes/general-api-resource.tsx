@@ -77,7 +77,8 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
     const dispatch: Dispatch = useDispatch();
 
     const {
-        deleteResourceWizardContent
+        deleteResourceWizardContent,
+        resourceServerTypeDisplayName
     } = useApiResourcesPageContent();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -299,7 +300,9 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
                                 <ConfirmationModal.Content
                                     data-testid={ `${componentId}-delete-confirmation-modal-content` }
                                 >
-                                    { t("extensions:develop.apiResource.confirmations.deleteAPIResource.content") }
+                                    { t("extensions:develop.apiResource.confirmations.deleteAPIResource.content", {
+                                        resourceName: resourceServerTypeDisplayName
+                                    }) }
                                 </ConfirmationModal.Content>
                             </ConfirmationModal>
                         )

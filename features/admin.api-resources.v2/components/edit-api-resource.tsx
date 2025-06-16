@@ -76,8 +76,8 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const {
-        isMcpServer,
-        isApiServer
+        isApiServer,
+        resourceServerTypeDisplayName
     } = useApiResourcesPageContent();
 
     /**
@@ -138,9 +138,13 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
                     description: t("extensions:develop.apiResource.notifications.updateAPIResource.success" +
-                        ".description"),
+                        ".description", {
+                        resourceType: resourceServerTypeDisplayName
+                    }),
                     level: AlertLevels.SUCCESS,
-                    message: t("extensions:develop.apiResource.notifications.updateAPIResource.success.message")
+                    message: t("extensions:develop.apiResource.notifications.updateAPIResource.success.message", {
+                        resourceType: resourceServerTypeDisplayName
+                    })
                 }));
                 mutateAPIResource();
             })
@@ -174,16 +178,22 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
                     description: t("extensions:develop.apiResource.notifications.updateAPIResource.success" +
-                        ".description"),
+                        ".description", {
+                        resourceType: resourceServerTypeDisplayName
+                    }),
                     level: AlertLevels.SUCCESS,
-                    message: t("extensions:develop.apiResource.notifications.updateAPIResource.success.message")
+                    message: t("extensions:develop.apiResource.notifications.updateAPIResource.success.message", {
+                        resourceType: resourceServerTypeDisplayName
+                    })
                 }));
                 mutateAPIResource();
             })
             .catch(() => {
                 dispatch(addAlert<AlertInterface>({
                     description: t("extensions:develop.apiResource.notifications.updateAPIResource" +
-                        ".genericError.description"),
+                        ".genericError.description", {
+                        resourceType: resourceServerTypeDisplayName
+                    }),
                     level: AlertLevels.ERROR,
                     message: t("extensions:develop.apiResource.notifications.updateAPIResource" +
                         ".genericError.message")

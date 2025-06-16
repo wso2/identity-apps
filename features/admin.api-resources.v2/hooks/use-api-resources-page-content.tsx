@@ -36,6 +36,15 @@ const useApiResourcesPageContent = () => {
         ? ResourceServerType.MCP
         : ResourceServerType.API;
 
+    function getResourceServerTypeDisplayName(resourceServerType: ResourceServerType) {
+        switch(resourceServerType) {
+            case ResourceServerType.API:
+                return t("extensions:develop.apiResource.resourceTypes.api");
+            case ResourceServerType.MCP:
+                return t("extensions:develop.apiResource.resourceTypes.mcp");
+        }
+    }
+
     const content: any = {
         [ResourceServerType.API]: {
             addNewResourceButtonText: t("extensions:develop.apiResource.addApiResourceButton"),
@@ -105,7 +114,7 @@ const useApiResourcesPageContent = () => {
             deleteResourceWizardContent: {
                 buttonText: t("apiResources:mcpServers.deleteMcpServer.actionText"),
                 heading: t("apiResources:mcpServers.deleteMcpServer.heading"),
-                subHeading: t("apiResources:mcpServers.deleteMcpServer.subHeading")
+                subHeading: t("apiResources:mcpServers.deleteMcpServer.subheading")
             },
             isApiServer: false,
             isMcpServer: true,
@@ -119,7 +128,7 @@ const useApiResourcesPageContent = () => {
             resourceServerListPageTitle: t("apiResources:mcpServers.title"),
             resourceServerListTitle: t("apiResources:mcpServers.title"),
             scopesTabContent: {
-                subHeading: t("apiResources:mcpScopes.subHeading")
+                subHeading: t("apiResources:mcpServers.scopes.subHeading")
             }
 
         }
@@ -127,6 +136,7 @@ const useApiResourcesPageContent = () => {
 
     return {
         resourceServerType,
+        resourceServerTypeDisplayName: getResourceServerTypeDisplayName(resourceServerType),
         ...content[resourceServerType]
     };
 };

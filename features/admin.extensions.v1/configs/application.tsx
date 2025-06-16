@@ -26,6 +26,7 @@ import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/co
 import {
     ApplicationInterface,
     ApplicationTabTypes,
+    ApplicationTemplateIdTypes,
     additionalSpProperty
 } from "@wso2is/admin.applications.v1/models/application";
 import { SupportedAuthProtocolTypes } from "@wso2is/admin.applications.v1/models/application-inbound";
@@ -241,6 +242,7 @@ export const applicationConfig: ApplicationConfig = {
             features: FeatureConfigInterface,
             isReadOnly: boolean
         ): ResourceTabPaneInterface[] => {
+
             const extendedFeatureConfig: ExtendedFeatureConfigInterface = features as ExtendedFeatureConfigInterface;
             const apiResourceFeatureEnabled: boolean = extendedFeatureConfig?.apiResources?.enabled;
 
@@ -269,13 +271,16 @@ export const applicationConfig: ApplicationConfig = {
                         index: application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
                             ? M2M_API_AUTHORIZATION_INDEX + tabExtensions.length
                             : API_AUTHORIZATION_INDEX + tabExtensions.length,
-                        menuItem: I18n.instance.t(
-                            "extensions:develop.applications.edit.sections.apiAuthorization.title"
-                        ),
+                        menuItem: application?.originalTemplateId === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION
+                            ? "Authorization"
+                            : I18n.instance.t(
+                                "extensions:develop.applications.edit.sections.apiAuthorization.title"
+                            ),
                         render: () => (
                             <ResourceTab.Pane controlledSegmentation>
                                 <APIAuthorization
                                     templateId={ application?.templateId }
+                                    originalTemplateId={ application?.originalTemplateId }
                                     readOnly={ isReadOnly }
                                 />
                             </ResourceTab.Pane>

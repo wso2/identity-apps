@@ -166,7 +166,7 @@ export const apiResources: ApiResourcesNS = {
         searchBarPlaceholder: "Search MCP servers by name",
         backButtonText: "Back to MCP Servers",
         scopes: {
-            subHeading: "Scopes the MCP server uses to verify the user's permissions to access " +
+            subHeading: "Scopes that the MCP server uses to verify the user's permissions to access " +
                 "its tools, resources, and prompts."
         },
         editPageTitle: "Edit MCP Server",

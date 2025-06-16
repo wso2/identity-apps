@@ -113,7 +113,8 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
     const {
         addNewResourceButtonText,
         resourceEditPath,
-        resourceServerEmptyListSubtitle
+        resourceServerEmptyListSubtitle,
+        resourceServerTypeDisplayName
     } = useApiResourcesPageContent();
 
     const [ loading, setLoading ] = useState<boolean>(false);
@@ -444,12 +445,16 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
                             negative
                             data-testid={ `${componentId}-delete-confirmation-modal-message` }
                         >
-                            { t("extensions:develop.apiResource.confirmations.deleteAPIResource.message") }
+                            { t("extensions:develop.apiResource.confirmations.deleteAPIResource.message", {
+                                resourceType: resourceServerTypeDisplayName
+                            }) }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content
                             data-testid={ `${componentId}-delete-confirmation-modal-content` }
                         >
-                            { t("extensions:develop.apiResource.confirmations.deleteAPIResource.content") }
+                            { t("extensions:develop.apiResource.confirmations.deleteAPIResource.content", {
+                                resourceType: resourceServerTypeDisplayName
+                            }) }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

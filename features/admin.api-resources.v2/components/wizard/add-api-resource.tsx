@@ -69,7 +69,7 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const { isMcpServer, createResourceWizard, resourceEditPath } = useApiResourcesPageContent();
+    const { isMcpServer, createResourceWizard, resourceEditPath, resourceServerTypeDisplayName } = useApiResourcesPageContent();
 
     //External trigger to submit the authorization step.
     let submitAuthorization: () => void;
@@ -161,9 +161,13 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
             .then((apiResource: APIResourceInterface) => {
                 dispatch(addAlert<AlertInterface>({
                     description: t("extensions:develop.apiResource.notifications.addAPIResource.success" +
-                        ".description"),
+                        ".description", {
+                        resourceType: resourceServerTypeDisplayName
+                    }),
                     level: AlertLevels.SUCCESS,
-                    message: t("extensions:develop.apiResource.notifications.addAPIResource.success.message")
+                    message: t("extensions:develop.apiResource.notifications.addAPIResource.success.message", {
+                        resourceType: resourceServerTypeDisplayName
+                    })
                 }));
 
                 // Open the created API resource.
@@ -172,10 +176,14 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
             .catch(() => {
                 dispatch(addAlert<AlertInterface>({
                     description: t("extensions:develop.apiResource.notifications.addAPIResource" +
-                        ".genericError.description"),
+                        ".genericError.description", {
+                        resourceType: resourceServerTypeDisplayName
+                    }),
                     level: AlertLevels.ERROR,
                     message: t("extensions:develop.apiResource.notifications.addAPIResource" +
-                        ".genericError.message")
+                        ".genericError.message", {
+                        resourceType: resourceServerTypeDisplayName
+                    })
                 }));
             })
             .finally(() => {
