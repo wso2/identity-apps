@@ -1,7 +1,7 @@
 <%--
-  ~ Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
   ~
-  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
@@ -14,7 +14,7 @@
   ~ KIND, either express or implied.  See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
-  --%>
+--%>
 
 <script src="libs/themes/default/semantic.min.js"></script>
 <script src="libs/tldts-6.1.73.umd.min.js" async></script>
@@ -25,6 +25,15 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Arrays" %>
+
+<%-- Include tenant context --%>
+<jsp:directive.include file="init-url.jsp"/>
+
+<%-- Localization --%>
+<jsp:directive.include file="localize.jsp" />
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="branding-preferences.jsp"/>
 
 <%
     // Determining whether the application user is going to login is Console, as the maintenance banner
@@ -115,3 +124,7 @@
         return false;
     }
 </script>
+
+<% if (StringUtils.isNotBlank(jsContent)){ %>
+<script type="text/javascript"><%= jsContent %></script>
+<% } %>

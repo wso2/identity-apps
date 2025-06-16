@@ -235,6 +235,9 @@
     String productWhiteLogoAlt = "WSO2 Identity Server Logo White Variation";
     String poweredByLogoURL = "";
     boolean enableDefaultPreLoader = true;
+    String htmlContent = null;
+    String cssContent = null;
+    String jsContent = null;
 
     final String BRANDING_PREFERENCE_CACHE_KEY = "BrandingPreferenceCache";
     final String BRANDING_TEXT_PREFERENCE_CACHE_KEY = "BrandingTextPreferenceCache";
@@ -535,11 +538,11 @@
 
                     // Write cookie only if resolved value is non-blank and different from cookie
                     if (StringUtils.isNotBlank(resolvedUiTheme) && !resolvedUiTheme.equals(themeFromCookie)) {
-                        
+
                         String cookieName = UI_THEME;
                         String cookieValue = resolvedUiTheme;
                         int maxAge = 2592000;
-                    
+
                         String headerValue = cookieName + "=" + cookieValue + "; Path=/; Max-Age=" + maxAge + "; Secure";
                         response.setHeader("Set-Cookie", headerValue);
                     }
@@ -645,7 +648,7 @@
                                     if (theme.getJSONObject(IMAGES_KEY).has(FAVICON_KEY) && theme.getJSONObject(IMAGES_KEY).getJSONObject(FAVICON_KEY) != null) {
                                 if (theme.getJSONObject(IMAGES_KEY).getJSONObject(FAVICON_KEY).has(IMAGE_URL_KEY)
                                         && !StringUtils.isBlank(theme.getJSONObject(IMAGES_KEY).getJSONObject(FAVICON_KEY).getString(IMAGE_URL_KEY))) {
-                
+
                                     faviconURL = theme.getJSONObject(IMAGES_KEY).getJSONObject(FAVICON_KEY).getString(IMAGE_URL_KEY);
                                 }
                             }

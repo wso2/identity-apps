@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -119,6 +119,8 @@
     }
 %>
 
+<% request.setAttribute("pageName", "retry"); %>
+
 <%-- Data for the layout from the page --%>
 <%
     layoutData.put("isResponsePage", true);
@@ -138,7 +140,7 @@
         <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout authentication-portal-layout">
+<body class="login-portal layout authentication-portal-layout" data-response-type="error" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
