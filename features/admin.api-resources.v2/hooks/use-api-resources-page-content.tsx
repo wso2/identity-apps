@@ -130,7 +130,6 @@ const useApiResourcesPageContent = () => {
             scopesTabContent: {
                 subHeading: t("apiResources:mcpServers.scopes.subHeading")
             }
-
         }
     };
 
