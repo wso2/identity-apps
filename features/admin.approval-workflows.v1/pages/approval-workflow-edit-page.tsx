@@ -99,7 +99,7 @@ const ApprovalWorkflowEditPage: FunctionComponent<ApprovalWorkflowEditPagePropsI
 
         <PageLayout
             data-componentid={ `${componentId}-page-layout` }
-            pageTitle={ t("pages:actions.title") }
+            pageTitle={ t("approvalWorkflows:pageLayout.edit.title") }
             title={ <>{ approvalWorkflowDetails?.name }</> }
             description={ <>{ approvalWorkflowDetails?.description }</> }
             backButton={ {
