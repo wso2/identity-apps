@@ -136,6 +136,7 @@ export interface approvalWorkflowsNS {
             }
         };
         edit: {
+            title: string;
             description: string;
             back: string;
         };
