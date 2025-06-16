@@ -955,12 +955,7 @@
             "mcpServers": {
                 "disabledFeatures": [],
                 "enabled": true,
-                "featureFlags": [
-                    {
-                        "feature": "mcpServers",
-                        "flag": "NEW"
-                    }
-                ],
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_api_resource_create"
