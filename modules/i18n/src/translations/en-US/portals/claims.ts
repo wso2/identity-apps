@@ -495,8 +495,8 @@ export const claims: ClaimsNS = {
                 label: "Allow multiple values for this attribute",
                 placeholder: "Select a user attribute"
             },
-            multiValuedDisabledHint: "Specify whether the attribute supports multiple values.",
             multiValuedHint: "Select this option if the attribute can have multiple values.",
+            multiValuedSystemClaimHint: "Indicate whether the attribute supports multiple values.",
             name: {
                 label: "Attribute Display Name",
                 placeholder: "Enter the display name",

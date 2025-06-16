@@ -1205,7 +1205,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             defaultValue={ claim?.multiValued }
                             data-testid={ `${testId}-form-multi-valued-input` }
                             hint={ isSystemClaim
-                                ? t("claims:local.forms.multiValuedDisabledHint")
+                                ? t("claims:local.forms.multiValuedSystemClaimHint")
                                 : t("claims:local.forms.multiValuedHint") }
                             readOnly={ isSubOrganization() || isSystemClaim || isReadOnly }
                         />

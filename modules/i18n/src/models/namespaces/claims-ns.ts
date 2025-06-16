@@ -540,7 +540,7 @@ export interface ClaimsNS {
                 placeholder: string;
             };
             multiValuedHint: string;
-            multiValuedDisabledHint: string;
+            multiValuedSystemClaimHint: string;
             displayOrderHint: string;
             required: {
                 label: string;
