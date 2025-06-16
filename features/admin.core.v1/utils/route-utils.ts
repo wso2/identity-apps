@@ -26,6 +26,9 @@ import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/featur
 import { NavCategory, NavRouteInterface, RouteInterface } from "@wso2is/core/models";
 import groupBy from "lodash-es/groupBy";
 import sortBy from "lodash-es/sortBy";
+import {
+    ReactComponent as ResourceServersIcon
+} from "../../themes/wso2is/assets/images/icons/outline-icons/resource-servers-outline.svg"
 import { AppConstants } from "../constants/app-constants";
 import { history } from "../helpers/history";
 
@@ -268,6 +271,13 @@ export class RouteUtils {
             order: 2
         };
 
+        const resourceServers: Omit<RouteInterface, "showOnSidePanel"> = {
+            icon: ResourceServersIcon,
+            id: "resourceServers",
+            name: "Resources",
+            order: 2
+        };
+
         const branding: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: PaletteIcon,
             id: "customization",
@@ -365,7 +375,15 @@ export class RouteUtils {
                 category: build,
                 id: "apiResources",
                 order: 2,
-                selected: history.location.pathname.includes("/api-resources")
+                selected: history.location.pathname.includes("/api-resources"),
+                parent: resourceServers
+            },
+            {
+                category: build,
+                id: "mcpServers",
+                order: 2,
+                selected: history.location.pathname.includes("/mcp-servers"),
+                parent: resourceServers
             },
             {
                 category: organizations,

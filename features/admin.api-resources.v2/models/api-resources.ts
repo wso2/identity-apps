@@ -19,6 +19,12 @@
 import { LinkInterface } from "@wso2is/core/models";
 import { FunctionComponent, SVGProps } from "react";
 
+export enum ResourceServerType {
+    API = "API",
+    MCP = "MCP",
+    NONE = "NONE"
+}
+
 /**
  *  Captures API resources list properties.
  */
@@ -77,6 +83,11 @@ export interface APIResourceInterface {
      * API resource properties.
      */
     properties?: Property[];
+    /**
+     * API resource type, valid values are BUSINESS and MCP. If none sent, it will be set
+     * to BUSINESS by default.
+     */
+    resourceType?: string;
 }
 
 /**

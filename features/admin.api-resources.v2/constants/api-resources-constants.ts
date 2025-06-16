@@ -42,6 +42,7 @@ export class APIResourcesConstants {
     public static readonly SYSTEM_ORG: string = "SYSTEM_ORG";
     public static readonly SYSTEM_FEATURE: string = "SYSTEM_FEATURE";
     public static readonly BUSINESS: string = "BUSINESS";
+    public static readonly MCP: string = "MCP";
 
     // API Resource required attributes
     public static readonly PROPERTIES: string = "properties";
@@ -77,7 +78,8 @@ export class APIResourcesConstants {
 export enum APIResourceType {
     MANAGEMENT = "management",
     ORGANIZATION = "organization",
-    BUSINESS = "business"
+    BUSINESS = "business",
+    MCP = "MCP"
 }
 
 /*
@@ -100,4 +102,5 @@ export enum APIResourceCategories {
     CONSOLE_ORG_LEVEL = "CONSOLE_ORG_LEVEL",
     SYSTEM = "SYSTEM",
     TENANT = "TENANT",
+    MCP = "MCP"
 }
