@@ -39,6 +39,7 @@ import {
     Text,
     useDocumentation
 } from "@wso2is/react-components";
+import startCase from "lodash-es/startCase";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -48,7 +49,6 @@ import useScopesOfAPIResources from "../../../api/use-scopes-of-api-resources";
 import { Policy, PolicyInfo, policyDetails } from "../../../constants/api-authorization";
 import { AuthorizedAPIListItemInterface } from "../../../models/api-authorization";
 import { ApplicationTemplateIdTypes } from "../../../models/application";
-import startCase from "lodash-es/startCase";
 
 interface AuthorizeAPIResourcePropsInterface extends IdentifiableComponentInterface {
     /**

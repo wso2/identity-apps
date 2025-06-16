@@ -30,7 +30,7 @@ export const apiResources: ApiResourcesNS = {
             assertionHint: "Please confirm your action.",
             content: "This action is irreversible and will permanently delete the {{ resourceType }}.",
             header: "Are you sure?",
-            message: "If you delete this API resource, some functionalities may not work properly. " +
+            message: "If you delete this {{ resourceType }}, some functionalities may not work properly. " +
                 "Please proceed with caution."
         },
         deleteAPIResourcePermission: {

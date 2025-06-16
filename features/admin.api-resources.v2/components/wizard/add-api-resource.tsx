@@ -69,7 +69,12 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const { isMcpServer, createResourceWizard, resourceEditPath, resourceServerTypeDisplayName } = useApiResourcesPageContent();
+    const {
+        isMcpServer,
+        createResourceWizard,
+        resourceEditPath,
+        resourceServerTypeDisplayName
+    } = useApiResourcesPageContent();
 
     //External trigger to submit the authorization step.
     let submitAuthorization: () => void;
