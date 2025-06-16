@@ -465,7 +465,7 @@ export const claims: ClaimsNS = {
                 label: "Data Type",
                 options: {
                     boolean: "Boolean",
-                    date: "Date",
+                    dateTime: "DateTime",
                     decimal: "Decimal",
                     integer: "Integer",
                     object: "Object",
@@ -495,7 +495,7 @@ export const claims: ClaimsNS = {
                 label: "Allow multiple values for this attribute",
                 placeholder: "Select a user attribute"
             },
-            multiValuedDisabledHint: "This setting cannot be modified for system claims.",
+            multiValuedDisabledHint: "Specify whether the attribute supports multiple values.",
             multiValuedHint: "Select this option if the attribute can have multiple values.",
             name: {
                 label: "Attribute Display Name",

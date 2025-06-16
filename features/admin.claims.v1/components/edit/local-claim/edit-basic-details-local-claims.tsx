@@ -223,7 +223,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             value: ClaimDataType.BOOLEAN
         },
         {
-            text: t("claims:local.forms.dataType.options.date"),
+            text: t("claims:local.forms.dataType.options.dateTime"),
             value: ClaimDataType.DATE_TIME
         },
         {
