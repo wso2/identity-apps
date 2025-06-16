@@ -276,9 +276,9 @@ export const approvalWorkflows: approvalWorkflowsNS = {
             title: "Create an Approval Workflow"
         },
         edit: {
-            title: "Edit Approval Workflow",
             back: "Go back to approval workflows",
-            description: "Edit approval workflow"
+            description: "Edit approval workflow",
+            title: "Edit Approval Workflow",
         },
         list: {
             description: "Create and manage approval workflows.",
