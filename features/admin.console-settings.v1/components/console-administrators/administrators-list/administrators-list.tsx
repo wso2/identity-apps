@@ -561,7 +561,9 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
                     defaultListItemLimit={ defaultListItemLimit }
                     administrators={ administrators }
                     onUserEdit={ handleUserEdit }
-                    onUserDelete={ isCentralDeploymentEnabled ? handleGuestUserDelete : handleUserDelete }
+                    onUserDelete={ isCentralDeploymentEnabled &&
+                        selectedUserStore !== userstoresConfig?.primaryUserstoreName  ?
+                        handleGuestUserDelete : handleUserDelete }
                     isLoading={ loading }
                     readOnlyUserStores={ readOnlyUserStores }
                     onSearchQueryClear={ handleSearchQueryClear }
