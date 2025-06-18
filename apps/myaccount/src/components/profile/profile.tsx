@@ -84,7 +84,7 @@ import {
     ProfileConstants as MyAccountProfileConstants,
     UIConstants
 } from "../../constants";
-import { commonConfig, profileConfig } from "../../extensions";
+import { profileConfig } from "../../extensions";
 import {
     AlertInterface,
     AlertLevels,
@@ -169,7 +169,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
-    const [ showEmail, setShowEmail ] = useState<boolean>(false);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isMultipleEmailsAndMobileConfigEnabled: boolean = config?.ui?.isMultipleEmailsAndMobileNumbersEnabled;
@@ -301,17 +300,20 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     }, []);
 
     /**
-     * Check if email address is displayed as a separated attribute.
+     * Check if email address is displayed as a separate field.
      */
-    useEffect(() => {
+    const isEmailFieldVisible: boolean = useMemo(() => {
         if (!isEmpty(profileInfo)) {
-            if ((commonConfig.userProfilePage.showEmail && usernameConfig?.enableValidator === "true")
-                    || getUserNameWithoutDomain(profileInfo.get("userName")) !== profileInfo.get("emails")) {
-                setShowEmail(true);
-            } else {
-                setShowEmail(false);
+            // Condition 1: If the custom username validation is enabled.
+            // Condition 2: If the username is different from the email address. Handles the scenario
+            // of username validation switched from custom username to email.
+            if (usernameConfig?.enableValidator === "true"
+                || getUserNameWithoutDomain(profileInfo.get("userName")) !== profileInfo.get("emails")) {
+                return true;
             }
         }
+
+        return false;
     }, [ profileInfo, usernameConfig ]);
 
     /**
@@ -1497,7 +1499,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             return;
         }
 
-        if (!showEmail && schema?.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+        if (!isEmailFieldVisible && schema?.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             return;
         }
 
@@ -1697,7 +1699,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 <Grid.Row columns={ 3 }>
                     <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
                         <List.Content className="vertical-align-center">{
-                            !showEmail && fieldName.toLowerCase() === "username"
+                            !isEmailFieldVisible && fieldName.toLowerCase() === "username"
                                 ? fieldName + " (Email)"
                                 : fieldName }
                         </List.Content>
@@ -3239,8 +3241,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                     || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("RESROUCE_TYPE")
                                     || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EXTERNAL_ID")
                                     || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_DATA")
-                                    || (!showEmail && schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY
-                                        .get("EMAILS"))
+                                    || (!isEmailFieldVisible
+                                        && schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"))
                                         )) {
                                             return (
                                                 <>
