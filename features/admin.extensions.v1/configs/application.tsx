@@ -242,7 +242,6 @@ export const applicationConfig: ApplicationConfig = {
             features: FeatureConfigInterface,
             isReadOnly: boolean
         ): ResourceTabPaneInterface[] => {
-
             const extendedFeatureConfig: ExtendedFeatureConfigInterface = features as ExtendedFeatureConfigInterface;
             const apiResourceFeatureEnabled: boolean = extendedFeatureConfig?.apiResources?.enabled;
 
