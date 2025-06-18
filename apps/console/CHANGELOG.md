@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.62.1
+
+### Patch Changes
+
+- [#8356](https://github.com/wso2/identity-apps/pull/8356) [`728a8eb3bcc0cd4d6f5d61ed8199f2c1a60bc275`](https://github.com/wso2/identity-apps/commit/728a8eb3bcc0cd4d6f5d61ed8199f2c1a60bc275) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Fix priviladge admin deletion in ADU setup
+
+- Updated dependencies [[`728a8eb3bcc0cd4d6f5d61ed8199f2c1a60bc275`](https://github.com/wso2/identity-apps/commit/728a8eb3bcc0cd4d6f5d61ed8199f2c1a60bc275)]:
+  - @wso2is/admin.console-settings.v1@2.25.211
+
 ## 2.62.0
 
 ### Minor Changes
