@@ -309,7 +309,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         !isEmpty(profileInfo) &&
         (
             usernameConfig?.enableValidator === "true" ||
-            getUserNameWithoutDomain(profileInfo.get("userName")) !== profileInfo.get("emails")
+            getUserNameWithoutDomain(profileInfo.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")))
+                !== profileInfo.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"))
         );
 
     /**
