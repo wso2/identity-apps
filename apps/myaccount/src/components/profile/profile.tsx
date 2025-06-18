@@ -1738,7 +1738,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             return generateMultiValuedField(schema, fieldName);
         }
 
-        if (claimType === ClaimDataType.STRING) {
+        if (claimType === ClaimDataType.STRING
+            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")) {
             return generateTextField(schema, fieldName);
         }
 
