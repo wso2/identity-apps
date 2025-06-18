@@ -176,7 +176,7 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
                 }));
 
                 // Open the created API resource.
-                history.push(resourceEditPath.replace(":id", apiResource.id));
+                history.push(resourceEditPath?.replace(":id", apiResource.id));
             })
             .catch(() => {
                 dispatch(addAlert<AlertInterface>({
