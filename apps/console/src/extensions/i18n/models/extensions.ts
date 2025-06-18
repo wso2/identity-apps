@@ -24,7 +24,7 @@ export interface Extensions {
         apiResource: {
             resourceTypes: {
                 api: string;
-                mcp: string
+                mcp: string;
             },
             pageHeader: {
                 description: string;
