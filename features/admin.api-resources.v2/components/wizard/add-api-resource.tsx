@@ -70,7 +70,7 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
     const dispatch: Dispatch = useDispatch();
 
     const {
-        isMcpServer,
+        resourceServerType,
         createResourceWizard,
         resourceEditPath,
         resourceServerTypeDisplayName
@@ -158,7 +158,7 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
             scopes: [ ...permissions.values() ]
         };
 
-        if (isMcpServer) {
+        if (resourceServerType === ResourceServerType.MCP) {
             apiResourceBody.resourceType = APIResourceType.MCP;
         }
 
