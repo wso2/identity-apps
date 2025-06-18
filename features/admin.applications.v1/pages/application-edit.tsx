@@ -279,6 +279,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
                 if (extensionTemplate?.id === "mcp-client-application") {
                     template["originalTemplateId"] = extensionTemplate?.id;
+                    applicationData["originalTemplateId"] = extensionTemplate?.id;
                 }
             }
         }
