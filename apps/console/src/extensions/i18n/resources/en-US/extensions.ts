@@ -2429,6 +2429,7 @@ export const extensions: Extensions = {
         },
         sidePanel: {
             apiResources: "API Resources",
+            mcpServers: "MCP Servers",
             branding: "Branding",
             stylesAndText: "Styles & Text",
             monitor: "Logs",

@@ -2280,6 +2280,7 @@ export interface Extensions {
         };
         sidePanel: {
             apiResources: string;
+            mcpServers: string;
             branding: string;
             stylesAndText: string;
             monitor: string;

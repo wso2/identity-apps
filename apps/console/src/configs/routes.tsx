@@ -1570,7 +1570,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         ),
                         exact: true,
                         id: "mcpServers-edit",
-                        name: "extensions:develop.sidePanel.apiResources",
+                        name: "extensions:develop.sidePanel.mcpServers",
                         path: AppConstants.getPaths().get("MCP_SERVER_EDIT"),
                         protected: true,
                         showOnSidePanel: false
@@ -1585,7 +1585,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     icon: getSidePanelIcons().mcpServers
                 },
                 id: "mcpServers",
-                name: "MCP Servers",
+                name: "extensions:develop.sidePanel.mcpServers",
                 order: 2,
                 path: AppConstants.getPaths().get("MCP_SERVERS"),
                 protected: true,
