@@ -139,7 +139,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         isNonLocalCredentialUser,
         onAlertFired,
         featureConfig,
-        ["data-testid"]: testId
+        ["data-testid"]: testId = "profile"
     } = props;
 
     const { t } = useTranslation();
@@ -176,8 +176,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
     const [ isMobileVerificationEnabled, setIsMobileVerificationEnabled ] = useState<boolean>(false);
     const [ isEmailVerificationEnabled, setIsEmailVerificationEnabled ] = useState<boolean>(false);
-    const [ isMultipleEmailAndMobileNumberEnabled, setIsMultipleEmailAndMobileNumberEnabled ] =
-        useState<boolean>(false);
 
     // Multi-valued attribute delete confirmation modal related states.
     const [ selectedAttributeInfo, setSelectedAttributeInfo ] =
@@ -362,13 +360,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     /**
      * Check if multiple emails and mobile numbers feature is enabled.
      */
-    const isMultipleEmailsAndMobileNumbersEnabled = (): void => {
-
-        if (isEmpty(profileDetails) || isEmpty(profileSchema)) return;
-        if (!isMultipleEmailsAndMobileConfigEnabled) {
-            setIsMultipleEmailAndMobileNumberEnabled(false);
-
-            return;
+    const isMultipleEmailsAndMobileNumbersEnabled: boolean = useMemo(() => {
+        if (isEmpty(profileDetails) || isEmpty(profileSchema) || !isMultipleEmailsAndMobileConfigEnabled) {
+            return false;
         }
 
         const multipleEmailsAndMobileFeatureRelatedAttributes: string[] = [
@@ -382,7 +376,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         const username: string = profileDetails?.profileInfo["userName"];
 
-        if (!username) return;
+        if (!username) {
+            return false;
+        }
+
         const userStoreDomain: string = resolveUserstore(username, primaryUserStoreDomainName)?.toUpperCase();
         // Check each required attribute exists and domain is not excluded in the excluded user store list.
         const attributeCheck: boolean = multipleEmailsAndMobileFeatureRelatedAttributes.every(
@@ -407,12 +404,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 return !excludedUserStores.includes(userStoreDomain);
             });
 
-        setIsMultipleEmailAndMobileNumberEnabled(attributeCheck);
-    };
-
-    useEffect(() => {
-        isMultipleEmailsAndMobileNumbersEnabled();
-    }, [ profileSchema, profileDetails ]);
+        return attributeCheck;
+    }, [ profileDetails, profileSchema ]);
 
     /**
      * Get the configurations.
@@ -1475,7 +1468,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         const { displayName, name } = schema;
 
         // Define schemas to hide.
-        const attributesToHide: string[] = isMultipleEmailAndMobileNumberEnabled === true
+        const attributesToHide: string[] = isMultipleEmailsAndMobileNumbersEnabled
             ? [ EMAIL_ATTRIBUTE, MOBILE_ATTRIBUTE, VERIFIED_MOBILE_NUMBERS_ATTRIBUTE,
                 VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE ]
             : [ EMAIL_ADDRESSES_ATTRIBUTE, MOBILE_NUMBERS_ATTRIBUTE,
@@ -3171,7 +3164,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      */
     const showMobileVerification = (schema: ProfileSchema): boolean =>
         showMobileUpdateWizard && (
-            isMultipleEmailAndMobileNumberEnabled === true
+            isMultipleEmailsAndMobileNumbersEnabled
                 ? schema.name === MOBILE_NUMBERS_ATTRIBUTE
                 : schema.name === MOBILE_ATTRIBUTE
         );
@@ -3265,8 +3258,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                     isMobileRequired={ resolvedRequiredValue }
                                                                     isMultipleEmailAndMobileNumberEnabled =
                                                                         {
-                                                                            isMultipleEmailAndMobileNumberEnabled
-                                                                        === true
+                                                                            isMultipleEmailsAndMobileNumbersEnabled
                                                                         }
                                                                     subAttributes={
                                                                         extractSubAttributes(
@@ -3310,12 +3302,4 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             { showMultiValuedFieldDeleteConfirmationModal && generateDeleteConfirmationModal() }
         </>
     );
-};
-
-/**
- * Default properties for the {@link Profile} component.
- * See type definitions in {@link ProfileProps}
- */
-Profile.defaultProps = {
-    "data-testid": "profile"
 };
