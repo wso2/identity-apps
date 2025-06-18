@@ -48,7 +48,7 @@ import { APIResourcesList } from "../components";
 import { AddAPIResource } from "../components/wizard";
 import { APIResourceType, APIResourcesConstants } from "../constants";
 import useApiResourcesPageContent from "../hooks/use-api-resources-page-content";
-import { APIResourceInterface } from "../models";
+import { APIResourceInterface, ResourceServerType } from "../models";
 import { APIResourceUtils } from "../utils/api-resource-utils";
 
 /**
@@ -78,7 +78,6 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
         resourceServerListTitle,
         resourceServerListPageTitle,
         addNewResourceButtonText,
-        isApiServer,
         resourceServerType,
         resourceServerListDescription,
         defaultSearchFilter,
@@ -283,7 +282,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
             actionColumnWidth="5"
         >
             {
-                isApiServer && !isAPIResourcesListLoading ? (
+                resourceServerType === ResourceServerType.API && !isAPIResourcesListLoading ? (
                     <>
                         {
                             organizationType !== OrganizationType.SUBORGANIZATION &&

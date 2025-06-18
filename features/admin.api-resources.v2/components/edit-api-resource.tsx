@@ -27,7 +27,7 @@ import { Dispatch } from "redux";
 import { AuthorizationAPIResource, GeneralAPIResource, PermissionAPIResource } from "./api-resource-panes";
 import { deleteScopeFromAPIResource, updateAPIResource } from "../api";
 import useApiResourcesPageContent from "../hooks/use-api-resources-page-content";
-import { APIResourceInterface, UpdatedAPIResourceInterface } from "../models";
+import { APIResourceInterface, ResourceServerType, UpdatedAPIResourceInterface } from "../models";
 
 /**
  * Prop-types for the API resources page component.
@@ -76,7 +76,7 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const {
-        isApiServer,
+        resourceServerType,
         resourceServerTypeDisplayName
     } = useApiResourcesPageContent();
 
@@ -113,7 +113,7 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
                 </ResourceTab.Pane>
             )
         },
-        isApiServer && {
+        resourceServerType === ResourceServerType.API && {
             menuItem: t("extensions:develop.apiResource.tabs.authorization.label"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>

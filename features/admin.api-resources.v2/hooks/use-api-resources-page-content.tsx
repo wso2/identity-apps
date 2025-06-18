@@ -49,8 +49,6 @@ type ResourceServerConfig = {
     createResourceWizard: CreateResourceWizard;
     defaultSearchFilter: string;
     deleteResourceWizardContent: DeleteResourceWizardContent;
-    isApiServer: boolean;
-    isMcpServer: boolean;
     resourceEditBackButtonLink: string;
     resourceEditBackButtonText: string;
     resourceEditPageTitle: string;
@@ -111,8 +109,6 @@ const useApiResourcesPageContent = () => {
                 subHeading: t("extensions:develop.apiResource.tabs.general.dangerZoneGroup" +
                     ".deleteApiResource.subHeading")
             },
-            isApiServer: true,
-            isMcpServer: false,
             resourceEditBackButtonLink: AppConstants.getPaths().get("API_RESOURCES"),
             resourceEditBackButtonText: "Back to API Resources",
             resourceEditPageTitle: t("extensions:develop.apiResource.tabs.title"),
@@ -158,8 +154,6 @@ const useApiResourcesPageContent = () => {
                 heading: t("apiResources:mcpServers.deleteMcpServer.heading"),
                 subHeading: t("apiResources:mcpServers.deleteMcpServer.subheading")
             },
-            isApiServer: false,
-            isMcpServer: true,
             resourceEditBackButtonLink: AppConstants.getPaths().get("MCP_SERVERS"),
             resourceEditBackButtonText: t("apiResources:mcpServers.backButtonText"),
             resourceEditPageTitle: t("apiResources:mcpServers.editPageTitle"),
