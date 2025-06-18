@@ -411,6 +411,9 @@ export const extensions: Extensions = {
                             }
                         }
                     },
+                    resourceAuthorization: {
+                        title: "Authorization"
+                    },
                     apiAuthorization: {
                         title: "API Authorization",
                         resourceText: {

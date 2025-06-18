@@ -271,7 +271,9 @@ export const applicationConfig: ApplicationConfig = {
                             ? M2M_API_AUTHORIZATION_INDEX + tabExtensions.length
                             : API_AUTHORIZATION_INDEX + tabExtensions.length,
                         menuItem: application?.originalTemplateId === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION
-                            ? "Authorization"
+                            ? I18n.instance.t(
+                                "extensions:develop.applications.edit.sections.resourceAuthorization.title"
+                            )
                             : I18n.instance.t(
                                 "extensions:develop.applications.edit.sections.apiAuthorization.title"
                             ),

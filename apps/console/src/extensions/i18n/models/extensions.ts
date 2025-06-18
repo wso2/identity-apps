@@ -398,9 +398,12 @@ export interface Extensions {
                             };
                         };
                     };
+                    resourceAuthorization: {
+                        title: string;
+                    };
                     apiAuthorization: {
                         title: string;
-                         resourceText: {
+                        resourceText: {
                             apiResource: string;
                             genericResource: string;
                         };
