@@ -301,20 +301,16 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
     /**
      * Check if email address is displayed as a separate field.
+     * Condition 1: If the custom username validation is enabled.
+     * Condition 2: If the username is different from the email address. Handles the scenario
+     * of username validation switched from custom username to email.
      */
-    const isEmailFieldVisible: boolean = useMemo(() => {
-        if (!isEmpty(profileInfo)) {
-            // Condition 1: If the custom username validation is enabled.
-            // Condition 2: If the username is different from the email address. Handles the scenario
-            // of username validation switched from custom username to email.
-            if (usernameConfig?.enableValidator === "true"
-                || getUserNameWithoutDomain(profileInfo.get("userName")) !== profileInfo.get("emails")) {
-                return true;
-            }
-        }
-
-        return false;
-    }, [ profileInfo, usernameConfig ]);
+    const isEmailFieldVisible: boolean =
+        !isEmpty(profileInfo) &&
+        (
+            usernameConfig?.enableValidator === "true" ||
+            getUserNameWithoutDomain(profileInfo.get("userName")) !== profileInfo.get("emails")
+        );
 
     /**
      * This useMemo identifies external claims that are mapped to the same local claim
