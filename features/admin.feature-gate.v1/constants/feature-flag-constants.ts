@@ -52,6 +52,7 @@ class FeatureFlagConstants {
         LOGIN_AND_REGISTRATION_ORGANIZATION_IMPERSONATION: "loginAndRegistration.organizationSettings.impersonation",
         LOGIN_AND_REGISTRATION_SELF_REGISTRATION_FLOW_BUILDER:
             "loginAndRegistration.userOnboarding.registrationFlowBuilder",
+        MCP_SERVERS: "mcpServers",
         ORGANIZATION_BRANDING_TEXT: "branding.stylesAndText.organization.text",
         PUSH_PROVIDERS: "pushProviders",
         PUSH_PROVIDER_TEMPLATES: "pushProviders.templates",

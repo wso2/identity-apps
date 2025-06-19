@@ -1353,6 +1353,37 @@
                 }
             },
             {% endif %}
+            {% if console.mcp_servers is defined %}
+            "mcpServers": {
+                "disabledFeatures": [
+                    {% if console.mcp_servers.disabled_features is defined %}
+                    {% for feature in console.mcp_servers.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.mcp_servers.enabled is defined %} {{ console.mcp_servers.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.mcp_servers.scopes is defined %}
+                    {% for operation, scopes in console.mcp_servers.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "feature": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
             {% if console.my_account is defined %}
             "myAccount": {
                 "disabledFeatures": [

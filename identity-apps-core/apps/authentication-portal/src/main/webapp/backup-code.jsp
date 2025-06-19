@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -67,6 +67,8 @@
     }
 %>
 
+<% request.setAttribute("pageName","backup-code"); %>
+
 <html>
     <head>
         <%-- header --%>
@@ -127,7 +129,7 @@
         </script>
     </head>
 
-    <body class="login-portal layout backup-code-portal-layout">
+    <body class="login-portal layout backup-code-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
         <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
             <jsp:include page="extensions/timeout.jsp"/>
         <% } else { %>

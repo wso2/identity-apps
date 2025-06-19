@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,13 +19,16 @@
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
 import { BrandingPreferenceInterface, PreviewScreenType } from "@wso2is/common.branding.v1/models";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
     DocumentationLink,
     EmptyPlaceholder,
     Iframe,
     Link,
+    PrimaryButton,
+    Tooltip,
     useDocumentation
 } from "@wso2is/react-components";
 import get from "lodash-es/get";
@@ -51,6 +54,7 @@ import { ReactComponent as CustomLayoutWarningImg } from
     "../../../themes/wso2is/assets/images/branding/custom-layout-warning.svg";
 import { useLayout, useLayoutStyle } from "../../api/layout";
 import { usePreviewContent, usePreviewStyle } from "../../api/preview-skeletons";
+import useBrandingPreference from "../../hooks/use-branding-preference";
 import { BrandingPreferenceMeta } from "../../meta/branding-preference-meta";
 import { LAYOUT_DATA, PredefinedLayouts } from "../../meta/layouts";
 
@@ -98,6 +102,8 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
+    const brandingFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.branding);
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
     const supportEmail: string = useSelector((state: AppState) =>
         state.config.deployment.extensions?.supportEmail as string);
@@ -110,6 +116,13 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
     const [ layoutContext, setLayoutContext ] = useState<string[]>([ "", "", "", "", "", "" ]);
     const [ isLayoutResolving, setIsLayoutResolving ] = useState<boolean>(true);
     const [ isErrorOccured, setIsErrorOccured ] = useState<boolean>(false);
+
+    const { preference, setIsCustomLayoutEditorEnabled } = useBrandingPreference();
+    const isLayoutCustomizationFeatureDisabled: boolean = isFeatureEnabled(
+        brandingFeatureConfig,
+        "branding.customLayoutEditor"
+    );
+    const [ wrapperElement, setWrapperElement ] = useState<HTMLDivElement>(null);
 
     const {
         data: layoutBlob,
@@ -330,6 +343,46 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
         return layoutContext[4];
     };
 
+    const floatingButtonStyles = () => (
+        `
+        .floating-editor-button-container > div:nth-of-type(2) {
+            width: 360px;
+        }
+        .floating-editor-button-container > div:nth-of-type(2) > .ui.popup {
+            max-width: 360px;
+        }
+        .floating-editor-button-container {
+            position: absolute;
+            width: 200px;
+            height: 70px;
+            bottom: 20px;
+            right: 20px;
+        }
+        .floating-editor-button {
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 16px;
+            border: none;
+            cursor: pointer;
+            width: 200px;
+            height: 70px;
+            font-size: 22px !important;
+            border-radius: 35px !important;
+        }
+        `
+    );
+
+    /**
+     * Handle the wrapper ref to set the wrapper element.
+     *
+     * @param node - HTMLDivElement to set as the wrapper element.
+     */
+    const handleWrapperRef = (node: HTMLDivElement): void => {
+        if (node) {
+            setWrapperElement(node);
+        }
+    };
+
     return (
         <div
             className="branding-preference-preview-container"
@@ -350,7 +403,7 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
             <Iframe
                 cloneParentStyleSheets
                 injectStyleNodeAfterParentStyles
-                styles={ resolveIframeStyles() }
+                styles={ resolveIframeStyles() + floatingButtonStyles() }
                 styleNodeInjectionStrategy="prepend"
                 stylesheets={
                     isErrorOccured || layoutContext[0] === PredefinedLayouts.CUSTOM
@@ -394,6 +447,40 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
                                             title={ t("extensions:develop.branding.tabs.preview."
                                                 + "info.layout.activatedMessage.title") }
                                         />
+                                        {
+                                            isLayoutCustomizationFeatureDisabled ? (
+                                                <div
+                                                    ref={ handleWrapperRef }
+                                                    className="floating-editor-button-container"
+                                                >
+                                                    {
+                                                        wrapperElement && (
+                                                            <Tooltip
+                                                                position="top right"
+                                                                disabled={ !!preference }
+                                                                content={ t("branding:customPageEditor" +
+                                                                    ".brandingNotConfiguredTooltip") }
+                                                                trigger={ (
+                                                                    <div>
+                                                                        <PrimaryButton
+                                                                            className="floating-editor-button"
+                                                                            onClick={ () =>
+                                                                                setIsCustomLayoutEditorEnabled(true) }
+                                                                            disabled={ !preference }
+                                                                        >
+                                                                            { t("common:create") }
+                                                                        </PrimaryButton>
+                                                                    </div>
+                                                                ) }
+                                                                context={ wrapperElement }
+                                                                mountNode={ wrapperElement }
+                                                                size="large"
+                                                            />
+                                                        )
+                                                    }
+                                                </div>
+                                            ) : null
+                                        }
                                     </div>
                                 ) : (
                                     isErrorOccured
@@ -442,10 +529,9 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
                                                     }
                                                 />
                                             </div>
-                                        )
-                                        : resolvePreviewScreen()
+                                        ) : resolvePreviewScreen()
                                 )
-                        ) : <ContentLoader data-componentid={ `${ componentId }-loader` } />
+                        ) : <ContentLoader data-componentid={ `${componentId}-loader` } />
                 }
             </Iframe>
         </div>

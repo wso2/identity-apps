@@ -1,5 +1,17 @@
 # @wso2is/i18n
 
+## 2.24.0
+
+### Minor Changes
+
+- [#8146](https://github.com/wso2/identity-apps/pull/8146) [`1f6bfbf48ade538c207b704f037f6273259215f4`](https://github.com/wso2/identity-apps/commit/1f6bfbf48ade538c207b704f037f6273259215f4) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add new UI to configure MCP servers
+
+## 2.23.13
+
+### Patch Changes
+
+- [#8139](https://github.com/wso2/identity-apps/pull/8139) [`9fa035a625a4620d73db099adab8179fdc9014ab`](https://github.com/wso2/identity-apps/commit/9fa035a625a4620d73db099adab8179fdc9014ab) Thanks [@SamudraUduwaka](https://github.com/SamudraUduwaka)! - Introduce a Custom Page Editor in the product Console for page customizations in end user facing portals
+
 ## 2.23.12
 
 ### Patch Changes

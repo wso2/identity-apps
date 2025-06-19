@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -506,6 +506,7 @@ export interface StrictBrandingPreferenceLayoutInterface {
 export type DynamicBrandingPreferenceLayoutInterface =
     BrandingPreferenceSideImageLayoutInterface
     & BrandingPreferenceSideAlignedLayoutInterface
+    & BrandingPreferenceCustomLayoutInterface
 
 /**
  * Left Image and Right Image layouts preference interface.
@@ -519,6 +520,34 @@ export interface BrandingPreferenceSideImageLayoutInterface {
  */
 export interface BrandingPreferenceSideAlignedLayoutInterface {
     productTagLine: string;
+}
+
+/**
+ * Interface for the custom layout configurations in the Branding Preference.
+ */
+export interface BrandingPreferenceCustomLayoutInterface {
+    /**
+     * Custom layout content.
+     */
+    content?: BrandingCustomLayoutContentInterface;
+}
+
+/**
+ * Interface for the custom layout content in the Branding Preference.
+ */
+export interface BrandingCustomLayoutContentInterface {
+    /**
+     * HTML content for the custom layout.
+     */
+    html: string;
+    /**
+     * CSS content for the custom layout.
+     */
+    css: string;
+    /**
+     * JS content for the custom layout.
+     */
+    js: string;
 }
 
 /**

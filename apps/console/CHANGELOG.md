@@ -1,5 +1,43 @@
 # @wso2is/console
 
+## 2.62.1
+
+### Patch Changes
+
+- [#8356](https://github.com/wso2/identity-apps/pull/8356) [`728a8eb3bcc0cd4d6f5d61ed8199f2c1a60bc275`](https://github.com/wso2/identity-apps/commit/728a8eb3bcc0cd4d6f5d61ed8199f2c1a60bc275) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Fix priviladge admin deletion in ADU setup
+
+- Updated dependencies [[`728a8eb3bcc0cd4d6f5d61ed8199f2c1a60bc275`](https://github.com/wso2/identity-apps/commit/728a8eb3bcc0cd4d6f5d61ed8199f2c1a60bc275)]:
+  - @wso2is/admin.console-settings.v1@2.25.211
+
+## 2.62.0
+
+### Minor Changes
+
+- [#8146](https://github.com/wso2/identity-apps/pull/8146) [`1f6bfbf48ade538c207b704f037f6273259215f4`](https://github.com/wso2/identity-apps/commit/1f6bfbf48ade538c207b704f037f6273259215f4) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add new UI to configure MCP servers
+
+### Patch Changes
+
+- Updated dependencies [[`1f6bfbf48ade538c207b704f037f6273259215f4`](https://github.com/wso2/identity-apps/commit/1f6bfbf48ade538c207b704f037f6273259215f4)]:
+  - @wso2is/admin.api-resources.v2@2.26.0
+  - @wso2is/admin.applications.v1@2.36.0
+  - @wso2is/admin.feature-gate.v1@1.7.0
+  - @wso2is/admin.extensions.v1@2.39.0
+  - @wso2is/admin.core.v1@2.46.0
+  - @wso2is/theme@2.8.0
+  - @wso2is/i18n@2.24.0
+
+## 2.61.0
+
+### Minor Changes
+
+- [#8139](https://github.com/wso2/identity-apps/pull/8139) [`9fa035a625a4620d73db099adab8179fdc9014ab`](https://github.com/wso2/identity-apps/commit/9fa035a625a4620d73db099adab8179fdc9014ab) Thanks [@SamudraUduwaka](https://github.com/SamudraUduwaka)! - Introduce a Custom Page Editor in the product Console for page customizations in end user facing portals
+
+### Patch Changes
+
+- Updated dependencies [[`9fa035a625a4620d73db099adab8179fdc9014ab`](https://github.com/wso2/identity-apps/commit/9fa035a625a4620d73db099adab8179fdc9014ab)]:
+  - @wso2is/admin.branding.v1@2.31.0
+  - @wso2is/i18n@2.23.13
+
 ## 2.60.4
 
 ### Patch Changes
