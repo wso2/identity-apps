@@ -68,14 +68,13 @@ const useGetOrganizations = <
         }/organizations`
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch? requestConfig : null, {
-        shouldRetryOnError: false
-    });
+    const { data, error, isLoading, isValidating, mutate } =
+        useRequest<Data, Error>(shouldFetch? requestConfig : null, { shouldRetryOnError: false });
 
     return {
         data,
         error,
-        isLoading: !error && !data,
+        isLoading,
         isValidating,
         mutate
     };
