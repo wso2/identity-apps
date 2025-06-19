@@ -70,6 +70,15 @@ export interface FeatureGateInterface {
             },
             status: FeatureStatus
         },
+        branding: {
+            design: {
+                layout: {
+                    custom: {
+                        status: FeatureStatus
+                    }
+                }
+            }
+        }
         previewFeatures: {
             status: FeatureStatus
         },

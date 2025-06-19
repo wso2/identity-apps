@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -866,6 +866,11 @@ export class BrandingPreferencesConstants {
     };
 
     public static readonly APP_WISE_BRANDING_FEATURE_TAG: string = "branding.applicationLevelBranding";
+
+    /**
+     * This is the feature id for the self service custom layout feature.
+     */
+    public static readonly CUSTOM_PAGE_EDITOR_FEATURE_ID: string = "branding.design.layout.custom";
 }
 
 export enum BrandingModes {

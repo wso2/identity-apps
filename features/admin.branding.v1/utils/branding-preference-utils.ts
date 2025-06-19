@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TextEncoder } from "util";
 import {
     BrandingPreferenceInterface,
     BrandingPreferenceLayoutInterface,
@@ -371,4 +372,21 @@ export class BrandingPreferenceUtils {
                 return false;
         }
     }
+
+    /**
+     * Checks if the given string is under 1MB.
+     *
+     * @param content - String to check.
+     * @returns boolean indicating whether the string is under 1MB.
+     */
+    public static isStringUnder1MB = (content: string): boolean => {
+        if (!content) {
+            return false;
+        }
+
+        const encoder: TextEncoder = new TextEncoder();
+        const bytes: Uint8Array = encoder.encode(content);
+
+        return bytes.length <= 1048576;
+    };
 }

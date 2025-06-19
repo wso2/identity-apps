@@ -288,7 +288,12 @@ export const branding: BrandingNS = {
             },
             errorContentUpdate: {
                 description: "An error occurred while saving. Please try again.",
-                message: "Custom layout content update failed."
+                message: "Custom layout content update failed"
+            },
+            errorContentSizeLimit: {
+                description: "The content size exceeds the allowed limit (1 MB). Please reduce the content size " +
+                    "and try again.",
+                message: "Content size limit exceeded"
             }
         }
     }

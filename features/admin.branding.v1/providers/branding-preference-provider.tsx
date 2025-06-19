@@ -61,6 +61,7 @@ import {
     CustomTextPreferenceInterface
 } from "../models/custom-text-preference";
 import BrandingPreferenceMigrationClient from "../utils/branding-preference-migration-client";
+import { BrandingPreferenceUtils } from "../utils/branding-preference-utils";
 import processCustomTextTemplateLiterals from "../utils/process-custom-text-template-literals";
 
 /**
@@ -285,6 +286,20 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
         callback: () => void
     ): void => {
         if (!brandingPreference) return;
+
+        if (!BrandingPreferenceUtils.isStringUnder1MB(updatedContent?.html)
+            || !BrandingPreferenceUtils.isStringUnder1MB(updatedContent?.css)
+            || !BrandingPreferenceUtils.isStringUnder1MB(updatedContent?.js)) {
+
+            dispatch(addAlert<AlertInterface>({
+                description: t("branding:customPageEditor.notifications.errorContentSizeLimit.description"),
+                level: AlertLevels.ERROR,
+                message: t("branding:customPageEditor.notifications.errorContentSizeLimit.message")
+            }));
+            callback();
+
+            return;
+        }
 
         const updated: BrandingPreferenceAPIResponseInterface = {
             ...brandingPreference,
