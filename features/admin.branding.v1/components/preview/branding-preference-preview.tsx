@@ -420,6 +420,7 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
                     <div
                         ref={ handleWrapperRef }
                         className="floating-editor-button-container"
+                        data-componentid={ "custom-page-editor-button-container" }
                     >
                         {
                             wrapperElement && (

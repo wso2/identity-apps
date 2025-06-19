@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { TextEncoder } from "util";
 import {
     BrandingPreferenceInterface,
     BrandingPreferenceLayoutInterface,
@@ -381,7 +380,7 @@ export class BrandingPreferenceUtils {
      */
     public static isStringUnder1MB = (content: string): boolean => {
         if (!content) {
-            return false;
+            return true;
         }
 
         const encoder: TextEncoder = new TextEncoder();
