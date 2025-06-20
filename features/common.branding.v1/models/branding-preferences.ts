@@ -647,13 +647,3 @@ export enum BrandingSubFeatures {
     DESIGN = "DESIGN",
     CUSTOM_TEXT = "CUSTOM_TEXT"
 }
-
-/**
- * Interface for custom content configurations.
- */
-export interface CustomContentConfigInterface {
-    /**
-     * Maximum file size allowed for custom content.
-     */
-    maxFileSize?: number;
-}

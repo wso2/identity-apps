@@ -380,7 +380,7 @@ export class BrandingPreferenceUtils {
      * @returns boolean indicating whether the string is under 1MB.
      */
     public static isStringUnder1MB = (content: string, maxLimit: number): boolean => {
-        if (!content) {
+        if (!content || !maxLimit) {
             return true;
         }
 

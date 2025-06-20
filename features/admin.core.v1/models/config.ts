@@ -46,7 +46,6 @@ import { TenantResourceEndpointsInterface } from "@wso2is/admin.tenants.v1/model
 import { UsersResourceEndpointsInterface } from "@wso2is/admin.users.v1/models/endpoints";
 import { UserstoreResourceEndpointsInterface } from "@wso2is/admin.userstores.v1/models/endpoints";
 import { ValidationServiceEndpointsInterface } from "@wso2is/admin.validation.v1/models";
-import { CustomContentConfigInterface } from "@wso2is/common.branding.v1/models/branding-preferences";
 import {
     CommonConfigInterface,
     CommonDeploymentConfigInterface,
@@ -676,4 +675,14 @@ export interface ResourceEndpointsInterface {
 
 export interface RouteConfigInterface {
     organizationEnabledRoutes: string[];
+}
+
+/**
+ * Interface for custom content configurations.
+ */
+export interface CustomContentConfigInterface {
+    /**
+     * Maximum file size allowed for custom content.
+     */
+    maxFileSize?: number;
 }
