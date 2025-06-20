@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,7 @@
  */
 
 import {
+    BrandingCustomLayoutContentInterface,
     BrandingPreferenceAPIResponseInterface,
     BrandingSubFeatures,
     PreviewScreenType,
@@ -178,6 +179,22 @@ export interface BrandingPreferenceContextProps {
      * Sets the selected application.
      */
     setSelectedApplication: (application: string) => void;
+    /**
+     * Updates the custom branding layout content.
+     *
+     * @param updatedContent - HTML, CSS, JS content.
+     */
+    updateBrandingCustomContent: (updatedContent: BrandingCustomLayoutContentInterface, callback: () => void) => void;
+    /**
+     * Whether the custom layout editor is enabled or not.
+     */
+    isCustomLayoutEditorEnabled: boolean;
+    /**
+     * Sets the custom layout editor enabled or disabled.
+     *
+     * @param enable - Boolean to enable or disable the custom layout editor.
+     */
+    setIsCustomLayoutEditorEnabled: (enable: boolean) => void;
 }
 
 /**

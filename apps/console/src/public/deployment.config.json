@@ -425,7 +425,8 @@
             },
             "applications": {
                 "disabledFeatures": [
-                    "applications.loginFlow.legacyEditor"
+                    "applications.loginFlow.legacyEditor",
+                    "applications.sharedAccess.status"
                 ],
                 "enabled": true,
                 "featureFlags": [
@@ -949,6 +950,28 @@
                 "scopes": {
                     "update": [
                         "internal_application_mgt_view"
+                    ]
+                }
+            },
+            "mcpServers": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [
+                        "internal_api_resource_create"
+                    ],
+                    "delete": [
+                        "internal_api_resource_delete"
+                    ],
+                    "feature": [
+                        "console:apiResources"
+                    ],
+                    "read": [
+                        "internal_api_resource_view"
+                    ],
+                    "update": [
+                        "internal_api_resource_update"
                     ]
                 }
             },

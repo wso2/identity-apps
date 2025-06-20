@@ -16,11 +16,14 @@
  * under the License.
  */
 
+import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Checkbox, Table, TableProps } from "semantic-ui-react";
+import { useInfiniteScroll } from "../../hooks";
 import { ContentLoader } from "../loader";
 import { EmptyPlaceholder } from "../placeholder";
+import "./transfer-list.scss";
 
 interface TransferListItemInterface {
     itemName: string;
@@ -51,6 +54,14 @@ export interface TransferListPropsInterface extends TableProps, IdentifiableComp
     emptyPlaceholderDefaultContent?: string;
     disabled?: boolean;
     bordered?: boolean;
+    /**
+     * Flag indicating if there are more items to load.
+     */
+    hasMore?: boolean;
+    /**
+     * Callback to load more items when triggered.
+     */
+    loadMore?: () => void;
 }
 
 /**
@@ -75,9 +86,13 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
         isLoading,
         emptyPlaceholderDefaultContent,
         disabled,
+        hasMore = false,
+        loadMore,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
+
+    const { observe } = useInfiniteScroll(hasMore, loadMore);
 
     if (isLoading) {
         return <ContentLoader/>;
@@ -121,6 +136,18 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
                             }
                             <Table.Body>
                                 { children }
+                                <Table.Row className="no-top-border">
+                                    <Table.Cell colSpan={ listHeaders?.length || 1 }>
+                                        <div ref={ observe } />
+                                    </Table.Cell>
+                                </Table.Row>
+                                { hasMore && (
+                                    <Table.Row className="no-top-border">
+                                        <Table.Cell colSpan={ listHeaders?.length || 1 }>
+                                            <CircularProgress size={ 22 } className="transfer-list-loader"/>
+                                        </Table.Cell>
+                                    </Table.Row>
+                                ) }
                             </Table.Body>
                         </Table>
                     ) : (

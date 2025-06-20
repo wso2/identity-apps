@@ -1,5 +1,14 @@
 # @wso2is/admin.approval-workflows.v1
 
+## 1.0.2
+
+### Patch Changes
+
+- [#8352](https://github.com/wso2/identity-apps/pull/8352) [`6f7979d5efcde8fcc76fba3b66649e71302f8e32`](https://github.com/wso2/identity-apps/commit/6f7979d5efcde8fcc76fba3b66649e71302f8e32) Thanks [@Malith-19](https://github.com/Malith-19)! - Update the approval workflow edit page title.
+
+- Updated dependencies [[`de96d36e86d954e9f55591c9adf2fdcde6ba5917`](https://github.com/wso2/identity-apps/commit/de96d36e86d954e9f55591c9adf2fdcde6ba5917), [`6f7979d5efcde8fcc76fba3b66649e71302f8e32`](https://github.com/wso2/identity-apps/commit/6f7979d5efcde8fcc76fba3b66649e71302f8e32)]:
+  - @wso2is/i18n@2.23.12
+
 ## 1.0.1
 
 ### Patch Changes

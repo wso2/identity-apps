@@ -438,7 +438,9 @@ export class AppConstants {
             [ "EDIT_TENANT", `${AppConstants.getDefaultLayoutBasePath()}/organizations/:id` ],
             [ "SYSTEM_SETTINGS", `${AppConstants.getDefaultLayoutBasePath()}/organizations/system-settings` ],
             [ "POLICY_ADMINISTRATION", `${AppConstants.getAdminViewBasePath()}/policy-administration` ],
-            [ "EDIT_POLICY", `${AppConstants.getAdminViewBasePath()}/policy-administration/edit-policy/:id` ]
+            [ "EDIT_POLICY", `${AppConstants.getAdminViewBasePath()}/policy-administration/edit-policy/:id` ],
+            [ "MCP_SERVERS", `${ AppConstants.getDeveloperViewBasePath() }/mcp-servers` ],
+            [ "MCP_SERVER_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/mcp-servers/:id` ]
         ]);
 
         return paths;

@@ -84,7 +84,7 @@ import {
     ProfileConstants as MyAccountProfileConstants,
     UIConstants
 } from "../../constants";
-import { commonConfig, profileConfig } from "../../extensions";
+import { profileConfig } from "../../extensions";
 import {
     AlertInterface,
     AlertLevels,
@@ -139,7 +139,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         isNonLocalCredentialUser,
         onAlertFired,
         featureConfig,
-        ["data-testid"]: testId
+        ["data-testid"]: testId = "profile"
     } = props;
 
     const { t } = useTranslation();
@@ -169,7 +169,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
-    const [ showEmail, setShowEmail ] = useState<boolean>(false);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isMultipleEmailsAndMobileConfigEnabled: boolean = config?.ui?.isMultipleEmailsAndMobileNumbersEnabled;
@@ -177,8 +176,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
     const [ isMobileVerificationEnabled, setIsMobileVerificationEnabled ] = useState<boolean>(false);
     const [ isEmailVerificationEnabled, setIsEmailVerificationEnabled ] = useState<boolean>(false);
-    const [ isMultipleEmailAndMobileNumberEnabled, setIsMultipleEmailAndMobileNumberEnabled ] =
-        useState<boolean>(false);
 
     // Multi-valued attribute delete confirmation modal related states.
     const [ selectedAttributeInfo, setSelectedAttributeInfo ] =
@@ -301,18 +298,18 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     }, []);
 
     /**
-     * Check if email address is displayed as a separated attribute.
+     * Check if email address is displayed as a separate field.
+     * Condition 1: If the custom username validation is enabled.
+     * Condition 2: If the username is different from the email address. Handles the scenario
+     * of username validation switched from custom username to email.
      */
-    useEffect(() => {
-        if (!isEmpty(profileInfo)) {
-            if ((commonConfig.userProfilePage.showEmail && usernameConfig?.enableValidator === "true")
-                    || getUserNameWithoutDomain(profileInfo.get("userName")) !== profileInfo.get("emails")) {
-                setShowEmail(true);
-            } else {
-                setShowEmail(false);
-            }
-        }
-    }, [ profileInfo, usernameConfig ]);
+    const isEmailFieldVisible: boolean =
+        !isEmpty(profileInfo) &&
+        (
+            usernameConfig?.enableValidator === "true" ||
+            getUserNameWithoutDomain(profileInfo.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")))
+                !== profileInfo.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"))
+        );
 
     /**
      * This useMemo identifies external claims that are mapped to the same local claim
@@ -363,13 +360,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     /**
      * Check if multiple emails and mobile numbers feature is enabled.
      */
-    const isMultipleEmailsAndMobileNumbersEnabled = (): void => {
-
-        if (isEmpty(profileDetails) || isEmpty(profileSchema)) return;
-        if (!isMultipleEmailsAndMobileConfigEnabled) {
-            setIsMultipleEmailAndMobileNumberEnabled(false);
-
-            return;
+    const isMultipleEmailsAndMobileNumbersEnabled: boolean = useMemo(() => {
+        if (isEmpty(profileDetails) || isEmpty(profileSchema) || !isMultipleEmailsAndMobileConfigEnabled) {
+            return false;
         }
 
         const multipleEmailsAndMobileFeatureRelatedAttributes: string[] = [
@@ -383,7 +376,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         const username: string = profileDetails?.profileInfo["userName"];
 
-        if (!username) return;
+        if (!username) {
+            return false;
+        }
+
         const userStoreDomain: string = resolveUserstore(username, primaryUserStoreDomainName)?.toUpperCase();
         // Check each required attribute exists and domain is not excluded in the excluded user store list.
         const attributeCheck: boolean = multipleEmailsAndMobileFeatureRelatedAttributes.every(
@@ -408,12 +404,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 return !excludedUserStores.includes(userStoreDomain);
             });
 
-        setIsMultipleEmailAndMobileNumberEnabled(attributeCheck);
-    };
-
-    useEffect(() => {
-        isMultipleEmailsAndMobileNumbersEnabled();
-    }, [ profileSchema, profileDetails ]);
+        return attributeCheck;
+    }, [ profileDetails, profileSchema ]);
 
     /**
      * Get the configurations.
@@ -1476,7 +1468,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         const { displayName, name } = schema;
 
         // Define schemas to hide.
-        const attributesToHide: string[] = isMultipleEmailAndMobileNumberEnabled === true
+        const attributesToHide: string[] = isMultipleEmailsAndMobileNumbersEnabled
             ? [ EMAIL_ATTRIBUTE, MOBILE_ATTRIBUTE, VERIFIED_MOBILE_NUMBERS_ATTRIBUTE,
                 VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE ]
             : [ EMAIL_ADDRESSES_ATTRIBUTE, MOBILE_NUMBERS_ATTRIBUTE,
@@ -1497,7 +1489,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             return;
         }
 
-        if (!showEmail && schema?.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+        if (!isEmailFieldVisible && schema?.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             return;
         }
 
@@ -1697,7 +1689,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 <Grid.Row columns={ 3 }>
                     <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
                         <List.Content className="vertical-align-center">{
-                            !showEmail && fieldName.toLowerCase() === "username"
+                            !isEmailFieldVisible && fieldName.toLowerCase() === "username"
                                 ? fieldName + " (Email)"
                                 : fieldName }
                         </List.Content>
@@ -1746,7 +1738,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             return generateMultiValuedField(schema, fieldName);
         }
 
-        if (claimType === ClaimDataType.STRING) {
+        if (claimType === ClaimDataType.STRING
+            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")) {
             return generateTextField(schema, fieldName);
         }
 
@@ -3172,7 +3165,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      */
     const showMobileVerification = (schema: ProfileSchema): boolean =>
         showMobileUpdateWizard && (
-            isMultipleEmailAndMobileNumberEnabled === true
+            isMultipleEmailsAndMobileNumbersEnabled
                 ? schema.name === MOBILE_NUMBERS_ATTRIBUTE
                 : schema.name === MOBILE_ATTRIBUTE
         );
@@ -3239,8 +3232,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                     || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("RESROUCE_TYPE")
                                     || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EXTERNAL_ID")
                                     || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_DATA")
-                                    || (!showEmail && schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY
-                                        .get("EMAILS"))
+                                    || (!isEmailFieldVisible
+                                        && schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"))
                                         )) {
                                             return (
                                                 <>
@@ -3266,8 +3259,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                     isMobileRequired={ resolvedRequiredValue }
                                                                     isMultipleEmailAndMobileNumberEnabled =
                                                                         {
-                                                                            isMultipleEmailAndMobileNumberEnabled
-                                                                        === true
+                                                                            isMultipleEmailsAndMobileNumbersEnabled
                                                                         }
                                                                     subAttributes={
                                                                         extractSubAttributes(
@@ -3311,12 +3303,4 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             { showMultiValuedFieldDeleteConfirmationModal && generateDeleteConfirmationModal() }
         </>
     );
-};
-
-/**
- * Default properties for the {@link Profile} component.
- * See type definitions in {@link ProfileProps}
- */
-Profile.defaultProps = {
-    "data-testid": "profile"
 };

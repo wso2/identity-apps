@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2018-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2018-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -28,6 +28,8 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
+<% request.setAttribute("pageName","cookie-policy"); %>
+
 <%-- Data for the layout from the page --%>
 <%
     layoutData.put("isPolicyPage", true);
@@ -46,7 +48,7 @@
         <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout authentication-portal-layout policy-page-layout cookie-policy-page-layout">
+<body class="login-portal layout authentication-portal-layout policy-page-layout cookie-policy-page-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>

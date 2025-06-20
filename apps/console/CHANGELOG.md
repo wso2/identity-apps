@@ -1,5 +1,69 @@
 # @wso2is/console
 
+## 2.62.2
+
+### Patch Changes
+
+- [#8361](https://github.com/wso2/identity-apps/pull/8361) [`a9880345857174580b19327b59ad2a194c0b59e2`](https://github.com/wso2/identity-apps/commit/a9880345857174580b19327b59ad2a194c0b59e2) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Support infinite scrolling in organization list in application share
+
+- Updated dependencies [[`a9880345857174580b19327b59ad2a194c0b59e2`](https://github.com/wso2/identity-apps/commit/a9880345857174580b19327b59ad2a194c0b59e2), [`3ad08b51afe0e8279e8c708fb8822c265da773b2`](https://github.com/wso2/identity-apps/commit/3ad08b51afe0e8279e8c708fb8822c265da773b2)]:
+  - @wso2is/admin.organizations.v1@2.26.206
+  - @wso2is/admin.applications.v1@2.36.1
+  - @wso2is/react-components@2.9.18
+  - @wso2is/admin.organization-discovery.v1@2.25.205
+
+## 2.62.1
+
+### Patch Changes
+
+- [#8356](https://github.com/wso2/identity-apps/pull/8356) [`728a8eb3bcc0cd4d6f5d61ed8199f2c1a60bc275`](https://github.com/wso2/identity-apps/commit/728a8eb3bcc0cd4d6f5d61ed8199f2c1a60bc275) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Fix priviladge admin deletion in ADU setup
+
+- Updated dependencies [[`728a8eb3bcc0cd4d6f5d61ed8199f2c1a60bc275`](https://github.com/wso2/identity-apps/commit/728a8eb3bcc0cd4d6f5d61ed8199f2c1a60bc275)]:
+  - @wso2is/admin.console-settings.v1@2.25.211
+
+## 2.62.0
+
+### Minor Changes
+
+- [#8146](https://github.com/wso2/identity-apps/pull/8146) [`1f6bfbf48ade538c207b704f037f6273259215f4`](https://github.com/wso2/identity-apps/commit/1f6bfbf48ade538c207b704f037f6273259215f4) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add new UI to configure MCP servers
+
+### Patch Changes
+
+- Updated dependencies [[`1f6bfbf48ade538c207b704f037f6273259215f4`](https://github.com/wso2/identity-apps/commit/1f6bfbf48ade538c207b704f037f6273259215f4)]:
+  - @wso2is/admin.api-resources.v2@2.26.0
+  - @wso2is/admin.applications.v1@2.36.0
+  - @wso2is/admin.feature-gate.v1@1.7.0
+  - @wso2is/admin.extensions.v1@2.39.0
+  - @wso2is/admin.core.v1@2.46.0
+  - @wso2is/theme@2.8.0
+  - @wso2is/i18n@2.24.0
+
+## 2.61.0
+
+### Minor Changes
+
+- [#8139](https://github.com/wso2/identity-apps/pull/8139) [`9fa035a625a4620d73db099adab8179fdc9014ab`](https://github.com/wso2/identity-apps/commit/9fa035a625a4620d73db099adab8179fdc9014ab) Thanks [@SamudraUduwaka](https://github.com/SamudraUduwaka)! - Introduce a Custom Page Editor in the product Console for page customizations in end user facing portals
+
+### Patch Changes
+
+- Updated dependencies [[`9fa035a625a4620d73db099adab8179fdc9014ab`](https://github.com/wso2/identity-apps/commit/9fa035a625a4620d73db099adab8179fdc9014ab)]:
+  - @wso2is/admin.branding.v1@2.31.0
+  - @wso2is/i18n@2.23.13
+
+## 2.60.4
+
+### Patch Changes
+
+- [#8350](https://github.com/wso2/identity-apps/pull/8350) [`de96d36e86d954e9f55591c9adf2fdcde6ba5917`](https://github.com/wso2/identity-apps/commit/de96d36e86d954e9f55591c9adf2fdcde6ba5917) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Change date data type to dateTime
+
+* [#8352](https://github.com/wso2/identity-apps/pull/8352) [`6f7979d5efcde8fcc76fba3b66649e71302f8e32`](https://github.com/wso2/identity-apps/commit/6f7979d5efcde8fcc76fba3b66649e71302f8e32) Thanks [@Malith-19](https://github.com/Malith-19)! - Update the approval workflow edit page title.
+
+* Updated dependencies [[`27736180cccaf3da49cfde52ff2ce80d6c35f15a`](https://github.com/wso2/identity-apps/commit/27736180cccaf3da49cfde52ff2ce80d6c35f15a), [`de96d36e86d954e9f55591c9adf2fdcde6ba5917`](https://github.com/wso2/identity-apps/commit/de96d36e86d954e9f55591c9adf2fdcde6ba5917), [`6f7979d5efcde8fcc76fba3b66649e71302f8e32`](https://github.com/wso2/identity-apps/commit/6f7979d5efcde8fcc76fba3b66649e71302f8e32)]:
+  - @wso2is/admin.logs.v1@1.6.4
+  - @wso2is/admin.claims.v1@2.28.1
+  - @wso2is/i18n@2.23.12
+  - @wso2is/admin.approval-workflows.v1@1.0.2
+
 ## 2.60.3
 
 ### Patch Changes

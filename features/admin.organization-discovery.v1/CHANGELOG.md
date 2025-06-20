@@ -1,5 +1,15 @@
 # @wso2is/admin.organization-discovery.v1
 
+## 2.25.205
+
+### Patch Changes
+
+- [#8361](https://github.com/wso2/identity-apps/pull/8361) [`3ad08b51afe0e8279e8c708fb8822c265da773b2`](https://github.com/wso2/identity-apps/commit/3ad08b51afe0e8279e8c708fb8822c265da773b2) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Define generic interface for get organizations api params
+
+- Updated dependencies [[`a9880345857174580b19327b59ad2a194c0b59e2`](https://github.com/wso2/identity-apps/commit/a9880345857174580b19327b59ad2a194c0b59e2)]:
+  - @wso2is/admin.organizations.v1@2.26.206
+  - @wso2is/react-components@2.9.18
+
 ## 2.25.204
 
 ### Patch Changes

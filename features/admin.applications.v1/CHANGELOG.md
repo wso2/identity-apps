@@ -1,5 +1,30 @@
 # @wso2is/admin.applications.v1
 
+## 2.36.1
+
+### Patch Changes
+
+- [#8361](https://github.com/wso2/identity-apps/pull/8361) [`a9880345857174580b19327b59ad2a194c0b59e2`](https://github.com/wso2/identity-apps/commit/a9880345857174580b19327b59ad2a194c0b59e2) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Support infinite scrolling in organization list in application share
+
+- Updated dependencies [[`a9880345857174580b19327b59ad2a194c0b59e2`](https://github.com/wso2/identity-apps/commit/a9880345857174580b19327b59ad2a194c0b59e2)]:
+  - @wso2is/admin.organizations.v1@2.26.206
+  - @wso2is/react-components@2.9.18
+
+## 2.36.0
+
+### Minor Changes
+
+- [#8146](https://github.com/wso2/identity-apps/pull/8146) [`1f6bfbf48ade538c207b704f037f6273259215f4`](https://github.com/wso2/identity-apps/commit/1f6bfbf48ade538c207b704f037f6273259215f4) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add new UI to configure MCP servers
+
+### Patch Changes
+
+- Updated dependencies [[`1f6bfbf48ade538c207b704f037f6273259215f4`](https://github.com/wso2/identity-apps/commit/1f6bfbf48ade538c207b704f037f6273259215f4)]:
+  - @wso2is/admin.api-resources.v2@2.26.0
+  - @wso2is/admin.feature-gate.v1@1.7.0
+  - @wso2is/admin.extensions.v1@2.39.0
+  - @wso2is/admin.core.v1@2.46.0
+  - @wso2is/i18n@2.24.0
+
 ## 2.35.7
 
 ### Patch Changes

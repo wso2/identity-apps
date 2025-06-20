@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.20.1
+
+### Patch Changes
+
+- [#8357](https://github.com/wso2/identity-apps/pull/8357) [`5ca670808ca6c672e563c6aae8c73ddfb50c7914`](https://github.com/wso2/identity-apps/commit/5ca670808ca6c672e563c6aae8c73ddfb50c7914) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Remove unnecessary extension config in My Account
+
 ## 2.20.0
 
 ### Minor Changes
