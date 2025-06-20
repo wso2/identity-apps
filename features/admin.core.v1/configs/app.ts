@@ -26,6 +26,7 @@ import {
     getWorkflowsResourceEndpoints
 } from "@wso2is/admin.approval-workflows.v1/configs/endpoints";
 import { getBrandingResourceEndpoints } from "@wso2is/admin.branding.v1/configs/endpoints";
+import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants/branding-preferences-constants";
 import { getCertificatesResourceEndpoints } from "@wso2is/admin.certificates.v1";
 import { getClaimResourceEndpoints } from "@wso2is/admin.claims.v1/configs/endpoints";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
@@ -370,6 +371,8 @@ export class Config {
                 window[ "AppUtils" ]?.getConfig()?.ui?.asyncOperationStatusPollingInterval,
             connectionResourcesUrl: window[ "AppUtils" ]?.getConfig()?.ui?.connectionResourcesUrl,
             cookiePolicyUrl: window[ "AppUtils" ]?.getConfig()?.ui?.cookiePolicyUrl,
+            customContent: window[ "AppUtils" ]?.getConfig()?.ui?.customContent
+                ?? BrandingPreferencesConstants.DEFAULT_CUSTOM_CONTENT_CONFIG,
             emailTemplates: {
                 defaultLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultLogoUrl,
                 defaultWhiteLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultWhiteLogoUrl

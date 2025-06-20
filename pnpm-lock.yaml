@@ -6038,6 +6038,9 @@ importers:
       '@wso2is/admin.wsfed-configuration.v1':
         specifier: ^2.25.204
         version: link:../admin.wsfed-configuration.v1
+      '@wso2is/common.branding.v1':
+        specifier: ^2.28.0
+        version: link:../common.branding.v1
       '@wso2is/core':
         specifier: ^2.8.1
         version: link:../../modules/core
@@ -26129,7 +26132,6 @@ packages:
   /@mui/base@5.0.0-alpha.108(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-KjzRUts2i/ODlMfywhFTqTzQl+Cr9nlDSZxJcnYjrbOV/iRyQNBTDoiFJt+XEdRi0fZBHnk74AFbnP56ehybsA==}
     engines: {node: '>=12.0.0'}
-    deprecated: This package has been replaced by @base-ui-components/react
     peerDependencies:
       '@types/react': 18.0.18
       react: ^17.0.0 || ^18.0.0

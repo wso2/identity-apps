@@ -18,6 +18,9 @@
     },
     "appBaseName": "console",
     "clientID": "CONSOLE",
+    "customContent": {
+        "maxFileSize": 1048576
+    },
     "debug": false,
     "developerApp": {
         "basePath": "",

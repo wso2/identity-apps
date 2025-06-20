@@ -17,7 +17,12 @@
  */
 
 import { commonConfig } from "@wso2is/admin.extensions.v1";
-import { BrandingPreferenceInterface, PredefinedThemes, ThemeConfigInterface } from "@wso2is/common.branding.v1/models";
+import {
+    BrandingPreferenceInterface,
+    CustomContentConfigInterface,
+    PredefinedThemes,
+    ThemeConfigInterface
+} from "@wso2is/common.branding.v1/models";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { PredefinedLayouts } from "../meta/layouts";
 
@@ -871,6 +876,10 @@ export class BrandingPreferencesConstants {
      * This is the feature id for the self service custom layout feature.
      */
     public static readonly CUSTOM_PAGE_EDITOR_FEATURE_ID: string = "branding.design.layout.custom";
+
+    public static readonly DEFAULT_CUSTOM_CONTENT_CONFIG: CustomContentConfigInterface = {
+        maxFileSize: 1048576 // 1 MB
+    };
 }
 
 export enum BrandingModes {
