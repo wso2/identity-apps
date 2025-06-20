@@ -22,7 +22,10 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { ApplicationManagementConstants } from "../constants/application-management";
-import { ShareApplicationWithAllOrganizationsDataInterface } from "../models/application";
+import {
+    ShareApplicationWithAllOrganizationsDataInterface,
+    ShareApplicationWithSelectedOrganizationsAndRolesDataInterface
+} from "../models/application";
 
 /**
  * Get an axios instance.
@@ -33,7 +36,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .bind(AsgardeoSPAClient.getInstance());
 
 /**
- *   Share an application with all organizations with given roles.
+ * Share an application with all organizations with given roles.
  *
  * @param id - ID of the application.
  * @returns A promise containing the response.
@@ -49,6 +52,49 @@ export const shareApplicationWithAllOrganizations = <T>(
         },
         method: HttpMethods.POST,
         url: `${ store.getState().config.endpoints.applications }/share-with-all`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    ApplicationManagementConstants.APPLICATION_STATUS_UPDATE_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data as T);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ApplicationManagementConstants.APPLICATION_STATUS_UPDATE_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Share an application with selected organizations with selected roles.
+ *
+ * @param id - ID of the application.
+ * @returns A promise containing the response.
+ * @throws IdentityAppsApiException
+ */
+export const shareApplicationWithSelectedOrganizationsAndRoles = <T>(
+    data: ShareApplicationWithSelectedOrganizationsAndRolesDataInterface): Promise<T> => {
+    const requestConfig: AxiosRequestConfig = {
+        data,
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: `${ store.getState().config.endpoints.applications }/share`
     };
 
     return httpClient(requestConfig)

@@ -70,7 +70,7 @@ export const consoleSettings: ConsoleSettingsNS = {
         tabLabel: "Role Sharing",
         modes: {
             doNotShare: "Do not share any roles",
-            shareWithAll: "hare a common set of roles with all organizations",
+            shareWithAll: "Share a common set of roles with all organizations",
             shareWithSelected: "Share different set of roles with each organization",
             shareAllRolesWithAllOrgs: "Share all roles with all organizations"
         }

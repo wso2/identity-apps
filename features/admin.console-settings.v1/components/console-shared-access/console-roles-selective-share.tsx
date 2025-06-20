@@ -27,13 +27,25 @@ import Table from "@oxygen-ui/react/Table";
 import TableCell from "@oxygen-ui/react/TableCell";
 import TableRow from "@oxygen-ui/react/TableRow";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
-import { OrganizationInterface, OrganizationRoleInterface } from "@wso2is/admin.organizations.v1/models/organizations";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import {
+    OrganizationInterface,
+    OrganizationRoleInterface,
+    SelectedOrganizationRoleInterface
+} from "@wso2is/admin.organizations.v1/models/organizations";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { Heading, LinkButton } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
+import React, {
+    ChangeEvent,
+    Dispatch as ReactDispatch,
+    SetStateAction,
+    SyntheticEvent,
+    useEffect,
+    useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Modal } from "semantic-ui-react";
 import useGetApplicationShare from "../../api/use-get-application-share";
 import useConsoleRoles from "../../hooks/use-console-roles";
@@ -43,23 +55,25 @@ import "./console-roles-selective-share.scss";
 interface ConsoleRolesSelectiveShareProps extends IdentifiableComponentInterface {
     open: boolean;
     closeWizard: () => void;
-}
-
-interface SelectedOrganizationRoleInterface extends OrganizationRoleInterface {
-    selected: boolean;
+    roleSelections: Record<string, SelectedOrganizationRoleInterface[]>;
+    setRoleSelections: ReactDispatch<SetStateAction<Record<string, SelectedOrganizationRoleInterface[]>>>;
 }
 
 const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
     const {
         [ "data-componentid" ]: componentId = "console-roles-selective-share-modal",
         open,
-        closeWizard
+        closeWizard,
+        roleSelections,
+        setRoleSelections
     } = props;
 
     const organizationName: string = store.getState().auth.tenantDomain;
     const organizationId: string = useSelector((state: AppState) => state?.organization?.organization?.id);
 
     const { t } = useTranslation();
+
+    const dispatch: Dispatch = useDispatch();
 
     const { consoleId } = useConsoleSettings();
 
@@ -72,12 +86,11 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
             label: organizationName
         }
     ]);
-    const [ roleSelections, setRoleSelections ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
 
     const {
         data: originalOrganizationTree,
-        isLoading: isSharedTopLevelOrganizationsFetchRequestLoading,
-        error: sharedTopLevelOrganizationsFetchRequestError
+        isLoading: isOrganizationTreeFetchRequestLoading,
+        error:  originalOrganizationTreeFetchRequestError
     } = useGetApplicationShare(
         consoleId,
         !isEmpty(consoleId)
@@ -85,8 +98,7 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
 
     const {
         consoleRoles,
-        consoleRolesFetchRequestError,
-        isConsoleRolesFetchRequestLoading
+        consoleRolesFetchRequestError
     } = useConsoleRoles(true, null, null, null);
 
     useEffect(() => {
@@ -109,6 +121,31 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
             });
         }
     }, [ consoleRoles ]);
+
+    useEffect(() => {
+        if (originalOrganizationTreeFetchRequestError) {
+            dispatch(
+                addAlert({
+                    description: t("consoleSettings:sharedAccess.notifications.fetchOrgTree.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("consoleSettings:sharedAccess.notifications.fetchOrgTree.genericError.message")
+                })
+            );
+        }
+    }, [ isOrganizationTreeFetchRequestLoading ]);
+
+    useEffect(() => {
+        if (consoleRolesFetchRequestError) {
+            dispatch(
+                addAlert({
+                    description: t("consoleSettings:sharedAccess.notifications.fetchConsoleRoles." +
+                        "genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("consoleSettings:sharedAccess.notifications.fetchConsoleRoles.genericError.message")
+                })
+            );
+        }
+    }, [ consoleRolesFetchRequestError ]);
 
     const buildTree = (data: OrganizationInterface[]): TreeViewBaseItem[] => {
         const nodeMap: Record<string, TreeViewBaseItem> = {};

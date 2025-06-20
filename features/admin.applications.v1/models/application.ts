@@ -957,3 +957,23 @@ export interface ShareApplicationWithAllOrganizationsDataInterface {
         roles: RoleSharingRoleInterface[];
     }
 }
+
+/**
+ * Interface for shared organization and roles.
+ */
+export interface SharedOrganizationAndRolesInterface {
+    orgId: string;
+    policy: string;
+    roleSharing: {
+        mode: string;
+        roles: RoleSharingRoleInterface[];
+    }
+}
+
+/**
+ * Interface for sharing the application with selected organization and roles.
+ */
+export interface ShareApplicationWithSelectedOrganizationsAndRolesDataInterface {
+    applicationId: string;
+    organizations: SharedOrganizationAndRolesInterface[];
+}

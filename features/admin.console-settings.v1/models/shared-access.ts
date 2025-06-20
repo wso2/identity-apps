@@ -20,9 +20,16 @@ export enum RoleSharedAccessModes {
     DO_NOT_SHARE = "do-not-share",
     SHARE_ALL_ROLES_WITH_ALL_ORGS = "share-all-roles-with-all-orgs",
     SHARE_WITH_ALL_ORGS = "share-with-all-orgs",
-    SHARE_WITH_SELECTED = "share-with-selected"
+    SHARE_WITH_SELECTED_ORGS_AND_ROLES = "share-with-selected-orgs-and-roles"
 }
 
 export enum ApplicationSharingPolicy {
     ALL_EXISTING_AND_FUTURE_ORGS = "ALL_EXISTING_AND_FUTURE_ORGS",
+    SELECTED_ORG_ONLY = "SELECTED_ORG_ONLY",
+    SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN = "SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN"
+}
+
+export enum RoleSharingModes {
+    ALL = "ALL",
+    SELECTED = "SELECTED"
 }

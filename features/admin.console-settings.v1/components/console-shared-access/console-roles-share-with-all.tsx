@@ -52,9 +52,12 @@ import { DropdownProps } from "semantic-ui-react";
 import useConsoleRoles from "../../hooks/use-console-roles";
 
 /**
- * Props interface of {@link ConsoleSharedAccess}
+ * Props interface for the ConsoleRolesShareWithAll component.
  */
-type ConsoleRolesShareWithAllPropsInterface = IdentifiableComponentInterface;
+interface ConsoleRolesShareWithAllPropsInterface extends IdentifiableComponentInterface {
+    selectedRoles: RolesInterface[];
+    setSelectedRoles: (roles: RolesInterface[]) => void;
+}
 
 /**
  *
@@ -65,7 +68,9 @@ const ConsoleRolesShareWithAll: FunctionComponent<ConsoleRolesShareWithAllPropsI
     props: ConsoleRolesShareWithAllPropsInterface
 ): ReactElement => {
     const {
-        ["data-componentid"]: componentId = "console-roles-share-with-all"
+        ["data-componentid"]: componentId = "console-roles-share-with-all",
+        selectedRoles,
+        setSelectedRoles
     } = props;
 
     const applicationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
@@ -92,7 +97,6 @@ const ConsoleRolesShareWithAll: FunctionComponent<ConsoleRolesShareWithAllPropsI
     );
 
     const [ searchQuery, setSearchQuery ] = useState<string>(undefined);
-    const [ selectedRoles, setSelectedRoles ] = useState<RolesInterface[]>([]);
     const [ isSearching, setIsSearching ] = useState<boolean>(false);
 
     const {
@@ -107,11 +111,11 @@ const ConsoleRolesShareWithAll: FunctionComponent<ConsoleRolesShareWithAllPropsI
     );
 
     const isSelectNoneDisabled: boolean = useMemo((): boolean => {
-        return selectedRoles.length === 0;
+        return selectedRoles?.length === 0;
     }, [ selectedRoles ]);
 
     const isSelectAllDisabled: boolean = useMemo((): boolean => {
-        return consoleRoles?.Resources?.length === 0 || selectedRoles.length === consoleRoles?.Resources?.length;
+        return consoleRoles?.Resources?.length === 0 || selectedRoles?.length === consoleRoles?.Resources?.length;
     }, [ consoleRoles?.Resources, selectedRoles ]);
 
 
@@ -181,6 +185,7 @@ const ConsoleRolesShareWithAll: FunctionComponent<ConsoleRolesShareWithAllPropsI
                 onChange={ (event: SyntheticEvent, value: RolesInterface[]) => {
                     handleRolesOnChange(value);
                 } }
+                disableClearable={ true }
                 disabled={ isReadOnly }
                 noOptionsText={ t("common:noResultsFound") }
                 getOptionLabel={ (dropdownOption: DropdownProps) =>
@@ -207,20 +212,23 @@ const ConsoleRolesShareWithAll: FunctionComponent<ConsoleRolesShareWithAllPropsI
                 renderTags={ (
                     value: RolesInterface[],
                     getTagProps: AutocompleteRenderGetTagProps
-                ) => value.map((option: RolesInterface, index: number) => (
-                    <Chip
-                        { ...getTagProps({ index }) }
-                        key={ index }
-                        label={ option.displayName }
-                        variant={
-                            selectedRoles?.find(
-                                (claim: RolesInterface) => claim.id === option.id
-                            )
-                                ? "filled"
-                                : "outlined"
-                        }
-                    />
-                )) }
+                ) => value.map((option: RolesInterface, index: number) => {
+                    return (
+                        <Chip
+                            { ...getTagProps({ index }) }
+                            key={ index }
+                            label={ option.displayName }
+                            variant={
+                                selectedRoles?.find(
+                                    (claim: RolesInterface) => claim.id === option.id
+                                )
+                                    ? "filled"
+                                    : "outlined"
+                            }
+                        />
+                    );
+                }
+                ) }
             />
         </>
     );

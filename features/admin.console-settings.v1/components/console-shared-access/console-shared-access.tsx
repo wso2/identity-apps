@@ -23,20 +23,34 @@ import Grid from "@oxygen-ui/react/Grid";
 import Radio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import { useRequiredScopes } from "@wso2is/access-control";
-import { shareApplicationWithAllOrganizations } from "@wso2is/admin.applications.v1/api/application-roles";
-import { ShareApplicationWithAllOrganizationsDataInterface } from "@wso2is/admin.applications.v1/models/application";
+import {
+    shareApplicationWithAllOrganizations,
+    shareApplicationWithSelectedOrganizationsAndRoles } from "@wso2is/admin.applications.v1/api/application-roles";
+import {
+    RoleSharingRoleInterface,
+    ShareApplicationWithAllOrganizationsDataInterface,
+    ShareApplicationWithSelectedOrganizationsAndRolesDataInterface,
+    SharedOrganizationAndRolesInterface
+} from "@wso2is/admin.applications.v1/models/application";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { SelectedOrganizationRoleInterface } from "@wso2is/admin.organizations.v1/models";
+import { AlertLevels,
+    FeatureAccessConfigInterface,
+    IdentifiableComponentInterface,
+    RolesInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, Text } from "@wso2is/react-components";
-import React, { ChangeEvent, FunctionComponent, ReactElement, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import ConsoleRolesSelectiveShare from "./console-roles-selective-share";
 import ConsoleRolesShareWithAll from "./console-roles-share-with-all";
+import useConsoleRoles from "../../hooks/use-console-roles";
 import useConsoleSettings from "../../hooks/use-console-settings";
-import { ApplicationSharingPolicy, RoleSharedAccessModes } from "../../models/shared-access";
+import { ApplicationSharingPolicy, RoleSharedAccessModes, RoleSharingModes } from "../../models/shared-access";
 
 /**
  * Props interface of {@link ConsoleSharedAccess}
@@ -63,20 +77,56 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
 
     const dispatch: Dispatch = useDispatch();
 
+    const { consoleId } = useConsoleSettings();
+
     const isReadOnly: boolean = !(useRequiredScopes(applicationsFeatureConfig?.scopes?.update));
+
+    const {
+        consoleRoles: administratorRole,
+        consoleRolesFetchRequestError
+    } = useConsoleRoles(
+        true,
+        UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+        null,
+        "displayName eq Administrator"
+    );
 
     const [ sharedAccessMode, setSharedAccessMode ] = useState<RoleSharedAccessModes>(
         RoleSharedAccessModes.SHARE_ALL_ROLES_WITH_ALL_ORGS);
     const [ isManageSharingModalOpen, setIsManageSharingModalOpen ] = useState<boolean>(false);
+    const [ selectedRoles, setSelectedRoles ] = useState<RolesInterface[]>([]);
+    const [ selectedOrgsAndRoles, setSelectedOrgsAndRoles ]
+        = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
 
-    const { consoleId } = useConsoleSettings();
+    /**
+     * If the Administrator role is not fetched, show an error.
+     */
+    useEffect(() => {
+        if (consoleRolesFetchRequestError) {
+            dispatch(addAlert({
+                description: t("consoleSettings:sharedAccess.notifications.fetchRoles.error.description",
+                    { error: consoleRolesFetchRequestError.message }),
+                level: AlertLevels.ERROR,
+                message: t("consoleSettings:sharedAccess.notifications.fetchRoles.error.message")
+            }));
+        }
+    }, [ consoleRolesFetchRequestError ]);
+
+    /**
+     * If the Administrator role is fetched, set it as the selected role.
+     */
+    useEffect(() => {
+        if (administratorRole?.Resources?.length > 0) {
+            setSelectedRoles([ administratorRole?.Resources[0] ]);
+        }
+    }, [ administratorRole ]);
 
     const shareAllRolesWithAllOrgs = (): void => {
         const data: ShareApplicationWithAllOrganizationsDataInterface = {
             applicationId: consoleId,
             policy: ApplicationSharingPolicy.ALL_EXISTING_AND_FUTURE_ORGS,
             roleSharing: {
-                mode: "ALL",
+                mode: RoleSharingModes.ALL,
                 roles: []
             }
         };
@@ -85,30 +135,112 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
             .then(() => {
                 dispatch(addAlert({
                     description: t("consoleSettings:sharedAccess.notifications." +
-                        "shareAllRolesWithAllOrgs.success.description"),
+                        "shareRoles.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("consoleSettings:sharedAccess.notifications.shareAllRolesWithAllOrgs.success.message")
+                    message: t("consoleSettings:sharedAccess.notifications.shareRoles.success.message")
                 }));
             })
             .catch((error: Error) => {
                 dispatch(addAlert({
                     description: t("consoleSettings:sharedAccess.notifications." +
-                        "shareAllRolesWithAllOrgs.error.description",
+                        "shareRoles.error.description",
                     { error: error.message }),
                     level: AlertLevels.ERROR,
-                    message: t("consoleSettings:sharedAccess.notifications.shareAllRolesWithAllOrgs.error.message")
+                    message: t("consoleSettings:sharedAccess.notifications.shareRoles.error.message")
                 }));
+            });
+    };
+
+    const shareSelectedRolesWithAllOrgs = (): void => {
+        const data: ShareApplicationWithAllOrganizationsDataInterface = {
+            applicationId: consoleId,
+            policy: ApplicationSharingPolicy.ALL_EXISTING_AND_FUTURE_ORGS,
+            roleSharing: {
+                mode: RoleSharingModes.SELECTED,
+                roles: selectedRoles.map((role: RolesInterface) => {
+                    return {
+                        audience: {
+                            display: role.audience.display,
+                            type: role.audience.type
+                        },
+                        displayName: role.displayName
+                    };
+                })
             }
-            );
+        };
+
+        shareApplicationWithAllOrganizations(data)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t("consoleSettings:sharedAccess.notifications." +
+                        "shareRoles.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("consoleSettings:sharedAccess.notifications.shareRoles.success.message")
+                }));
+            })
+            .catch((error: Error) => {
+                dispatch(addAlert({
+                    description: t("consoleSettings:sharedAccess.notifications." +
+                        "shareRoles.error.description",
+                    { error: error.message }),
+                    level: AlertLevels.ERROR,
+                    message: t("consoleSettings:sharedAccess.notifications.shareRoles.error.message")
+                }));
+            });
+    };
+
+    const shareSelectedRolesWithSelectedOrgs = (): void => {
+        const organizations: SharedOrganizationAndRolesInterface[] = Object.entries(selectedOrgsAndRoles)
+            .map(([ orgId, roles ]: [string, SelectedOrganizationRoleInterface[]]) => {
+                const selectedRoles: RoleSharingRoleInterface[] = roles
+                    .filter((role: SelectedOrganizationRoleInterface) => role.selected)
+                    .map((role: SelectedOrganizationRoleInterface) => ({
+                        audience: role.audience,
+                        displayName: role.displayName
+                    }));
+
+                return {
+                    orgId,
+                    policy: ApplicationSharingPolicy.ALL_EXISTING_AND_FUTURE_ORGS, // To be updated
+                    roleSharing: {
+                        mode: RoleSharingModes.SELECTED,
+                        roles: selectedRoles
+                    }
+                };
+            });
+
+        const data: ShareApplicationWithSelectedOrganizationsAndRolesDataInterface = {
+            applicationId: consoleId,
+            organizations: organizations
+        };
+
+        shareApplicationWithSelectedOrganizationsAndRoles(data)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t("consoleSettings:sharedAccess.notifications." +
+                        "shareRoles.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("consoleSettings:sharedAccess.notifications.shareRoles.success.message")
+                }));
+            })
+            .catch((error: Error) => {
+                dispatch(addAlert({
+                    description: t("consoleSettings:sharedAccess.notifications." +
+                        "shareRoles.error.description",
+                    { error: error.message }),
+                    level: AlertLevels.ERROR,
+                    message: t("consoleSettings:sharedAccess.notifications.shareRoles.error.message")
+                }));
+            });
     };
 
     const submitSharedRoles = () : void => {
         if (sharedAccessMode === RoleSharedAccessModes.SHARE_ALL_ROLES_WITH_ALL_ORGS) {
             shareAllRolesWithAllOrgs();
-        }
-
-        if (sharedAccessMode === RoleSharedAccessModes.SHARE_WITH_SELECTED) {
-            // Logic to update shared roles with selected organizations
+        } else if (sharedAccessMode === RoleSharedAccessModes.SHARE_WITH_ALL_ORGS) {
+            shareSelectedRolesWithAllOrgs();
+        } else if (sharedAccessMode === RoleSharedAccessModes.SHARE_WITH_SELECTED_ORGS_AND_ROLES) {
+            shareSelectedRolesWithSelectedOrgs();
         }
     };
 
@@ -143,17 +275,21 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                                 />
                                 {
                                     sharedAccessMode === RoleSharedAccessModes.SHARE_WITH_ALL_ORGS && (
-                                        <ConsoleRolesShareWithAll />
+                                        <ConsoleRolesShareWithAll
+                                            selectedRoles={ selectedRoles }
+                                            setSelectedRoles={ setSelectedRoles }
+                                            administratorRole={ administratorRole?.Resources[0] }
+                                        />
                                     )
                                 }
                                 <FormControlLabel
-                                    value={ RoleSharedAccessModes.SHARE_WITH_SELECTED }
+                                    value={ RoleSharedAccessModes.SHARE_WITH_SELECTED_ORGS_AND_ROLES }
                                     label={ t("consoleSettings:sharedAccess.modes.shareWithSelected") }
                                     control={ <Radio /> }
                                     disabled={ isReadOnly }
                                 />
                                 {
-                                    sharedAccessMode === RoleSharedAccessModes.SHARE_WITH_SELECTED && (
+                                    sharedAccessMode === RoleSharedAccessModes.SHARE_WITH_SELECTED_ORGS_AND_ROLES && (
                                         <Grid xs={ 8 }>
                                             <Button
                                                 variant="outlined"
@@ -168,6 +304,8 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                                                     <ConsoleRolesSelectiveShare
                                                         open={ isManageSharingModalOpen }
                                                         closeWizard={ () => setIsManageSharingModalOpen(false) }
+                                                        roleSelections={ selectedOrgsAndRoles }
+                                                        setRoleSelections={ setSelectedOrgsAndRoles }
                                                     />
                                                 )
                                             }
