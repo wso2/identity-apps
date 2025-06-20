@@ -376,9 +376,10 @@ export class BrandingPreferenceUtils {
      * Checks if the given string is under 1MB.
      *
      * @param content - String to check.
+     * @param maxLimit - Maximum limit in bytes.
      * @returns boolean indicating whether the string is under 1MB.
      */
-    public static isStringUnder1MB = (content: string): boolean => {
+    public static isStringUnder1MB = (content: string, maxLimit: number): boolean => {
         if (!content) {
             return true;
         }
@@ -386,6 +387,6 @@ export class BrandingPreferenceUtils {
         const encoder: TextEncoder = new TextEncoder();
         const bytes: Uint8Array = encoder.encode(content);
 
-        return bytes.length <= 1048576;
+        return bytes.length <= maxLimit;
     };
 }

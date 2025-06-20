@@ -99,6 +99,8 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
         (state: AppState) => state?.organization?.organization
     );
     const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
+    const customContentMaxFileLimit: number = useSelector(
+        (state: AppState) => state?.config?.ui?.customContent?.maxFileSize);
 
     const [ selectedScreen, setSelectedPreviewScreen ] = useState<PreviewScreenType>(PreviewScreenType.COMMON);
     const [ selectedScreenVariation, setSelectedPreviewScreenVariation ]
@@ -287,9 +289,9 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     ): void => {
         if (!brandingPreference) return;
 
-        if (!BrandingPreferenceUtils.isStringUnder1MB(updatedContent?.html)
-            || !BrandingPreferenceUtils.isStringUnder1MB(updatedContent?.css)
-            || !BrandingPreferenceUtils.isStringUnder1MB(updatedContent?.js)) {
+        if (!BrandingPreferenceUtils.isStringUnder1MB(updatedContent?.html, customContentMaxFileLimit)
+            || !BrandingPreferenceUtils.isStringUnder1MB(updatedContent?.css, customContentMaxFileLimit)
+            || !BrandingPreferenceUtils.isStringUnder1MB(updatedContent?.js, customContentMaxFileLimit)) {
 
             dispatch(addAlert<AlertInterface>({
                 description: t("branding:customPageEditor.notifications.errorContentSizeLimit.description"),
