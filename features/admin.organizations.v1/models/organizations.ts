@@ -22,7 +22,10 @@ export interface OrganizationInterface {
     id: string;
     name: string;
     ref: string;
-    status: "ACTIVE" | "DISABLED"
+    status: "ACTIVE" | "DISABLED",
+    hasChildren?: boolean;
+    parentId?: string;
+    roles?: OrganizationRoleInterface[];
 }
 
 export interface OrganizationLinkInterface {
@@ -128,4 +131,8 @@ export interface GetOrganizationsParamsInterface {
     before?: string;
     recursive?: boolean;
     isRoot?: boolean;
+}
+
+export interface SelectedOrganizationRoleInterface extends OrganizationRoleInterface {
+    selected: boolean;
 }

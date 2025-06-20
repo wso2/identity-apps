@@ -932,3 +932,48 @@ export enum SubjectTypes {
     PUBLIC = "public",
     PAIRWISE = "pairwise"
 }
+
+/**
+ * Interface to contain role audiences information
+ */
+export interface RoleAudiencesInterface {
+    display: string;
+    type: string;
+}
+
+export interface RoleSharingRoleInterface {
+    displayName: string;
+    audience:  RoleAudiencesInterface;
+};
+
+/**
+ * Interface for sharing the application with all organizations.
+ */
+export interface ShareApplicationWithAllOrganizationsDataInterface {
+    applicationId: string;
+    policy: string;
+    roleSharing: {
+        mode: string;
+        roles: RoleSharingRoleInterface[];
+    }
+}
+
+/**
+ * Interface for shared organization and roles.
+ */
+export interface SharedOrganizationAndRolesInterface {
+    orgId: string;
+    policy: string;
+    roleSharing: {
+        mode: string;
+        roles: RoleSharingRoleInterface[];
+    }
+}
+
+/**
+ * Interface for sharing the application with selected organization and roles.
+ */
+export interface ShareApplicationWithSelectedOrganizationsAndRolesDataInterface {
+    applicationId: string;
+    organizations: SharedOrganizationAndRolesInterface[];
+}
