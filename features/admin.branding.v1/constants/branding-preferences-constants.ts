@@ -870,11 +870,6 @@ export class BrandingPreferencesConstants {
     };
 
     public static readonly APP_WISE_BRANDING_FEATURE_TAG: string = "branding.applicationLevelBranding";
-
-    /**
-     * This is the feature id for the self service custom layout feature.
-     */
-    public static readonly CUSTOM_PAGE_EDITOR_FEATURE_ID: string = "branding.design.layout.custom";
 }
 
 export enum BrandingModes {

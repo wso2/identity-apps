@@ -45,6 +45,7 @@ class FeatureFlagConstants {
         ATTRIBUTE_DIALECTS: "attributeDialects",
         BRANDING: "branding",
         BRANDING_STYLES_AND_TEXT_TITLE: "branding.stylesAndText.application.title",
+        CUSTOM_PAGE_EDITOR_FEATURE_ID: "branding.design.layout.custom",
         INSIGHTS: "insights",
         LOGIN_AND_REGISTRATION: "loginAndRegistration",
         LOGIN_AND_REGISTRATION_FRAUD_DETECTION: "loginAndRegistration.loginSecurity.fraudDetection",

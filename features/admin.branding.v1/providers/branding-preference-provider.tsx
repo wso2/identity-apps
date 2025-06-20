@@ -289,9 +289,9 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     ): void => {
         if (!brandingPreference) return;
 
-        if (!BrandingPreferenceUtils.isStringUnder1MB(updatedContent?.html, customContentMaxFileLimit)
-            || !BrandingPreferenceUtils.isStringUnder1MB(updatedContent?.css, customContentMaxFileLimit)
-            || !BrandingPreferenceUtils.isStringUnder1MB(updatedContent?.js, customContentMaxFileLimit)) {
+        if (!BrandingPreferenceUtils.isContentWithinMaxSize(updatedContent?.html, customContentMaxFileLimit)
+            || !BrandingPreferenceUtils.isContentWithinMaxSize(updatedContent?.css, customContentMaxFileLimit)
+            || !BrandingPreferenceUtils.isContentWithinMaxSize(updatedContent?.js, customContentMaxFileLimit)) {
 
             dispatch(addAlert<AlertInterface>({
                 description: t("branding:customPageEditor.notifications.errorContentSizeLimit.description"),

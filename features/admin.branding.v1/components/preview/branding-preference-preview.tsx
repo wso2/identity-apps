@@ -19,6 +19,7 @@
 import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { BrandingPreferenceInterface, PreviewScreenType } from "@wso2is/common.branding.v1/models";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -126,7 +127,7 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
     );
     const [ wrapperElement, setWrapperElement ] = useState<HTMLDivElement>(null);
     const customPageEditorFeatureStatus: FeatureStatus = useCheckFeatureStatus(
-        BrandingPreferencesConstants.CUSTOM_PAGE_EDITOR_FEATURE_ID);
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP["CUSTOM_PAGE_EDITOR_FEATURE_ID"]);
 
     const {
         data: layoutBlob,

@@ -373,13 +373,13 @@ export class BrandingPreferenceUtils {
     }
 
     /**
-     * Checks if the given string is under 1MB.
+     * Checks if the given content is within the maximum size limit.
      *
      * @param content - String to check.
      * @param maxLimit - Maximum limit in bytes.
-     * @returns boolean indicating whether the string is under 1MB.
+     * @returns boolean indicating whether the content is within the limit.
      */
-    public static isStringUnder1MB = (content: string, maxLimit: number): boolean => {
+    public static isContentWithinMaxSize = (content: string, maxLimit: number): boolean => {
         if (!content || !maxLimit) {
             return true;
         }
