@@ -291,7 +291,7 @@ export const branding: BrandingNS = {
                 message: "Custom layout content update failed"
             },
             errorContentSizeLimit: {
-                description: "The content size exceeds the allowed limit (1 MB). Please reduce the content size " +
+                description: "The content size exceeds the allowed limit. Please reduce the content size " +
                     "and try again.",
                 message: "Content size limit exceeded"
             }
