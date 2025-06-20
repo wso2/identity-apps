@@ -119,3 +119,13 @@ export interface OrganizationsMetaAttributesListInterface {
     links?: OrganizationLinkInterface[];
     attributes: string[];
 }
+
+export interface GetOrganizationsParamsInterface {
+    shouldFetch?: boolean,
+    filter?: string;
+    limit?: number;
+    after?: string;
+    before?: string;
+    recursive?: boolean;
+    isRoot?: boolean;
+}

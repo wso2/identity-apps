@@ -425,7 +425,8 @@
             },
             "applications": {
                 "disabledFeatures": [
-                    "applications.loginFlow.legacyEditor"
+                    "applications.loginFlow.legacyEditor",
+                    "applications.sharedAccess.status"
                 ],
                 "enabled": true,
                 "featureFlags": [

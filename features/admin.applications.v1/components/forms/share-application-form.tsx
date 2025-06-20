@@ -28,7 +28,9 @@ import {
 import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
 import useSharedOrganizations from "@wso2is/admin.organizations.v1/api/use-shared-organizations";
 import {
+    GetOrganizationsParamsInterface,
     OrganizationInterface,
+    OrganizationLinkInterface,
     OrganizationResponseInterface,
     ShareApplicationRequestInterface
 } from "@wso2is/admin.organizations.v1/models";
@@ -51,9 +53,8 @@ import {
     TransferListItem
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
+import debounce from "lodash-es/debounce";
 import differenceBy from "lodash-es/differenceBy";
-import escapeRegExp from "lodash-es/escapeRegExp";
-import isEmpty from "lodash-es/isEmpty";
 import React, {
     FormEvent,
     FunctionComponent,
@@ -141,13 +142,18 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
 
     const [ subOrganizationList, setSubOrganizationList ] = useState<Array<OrganizationInterface>>([]);
     const [ sharedOrganizationList, setSharedOrganizationList ] = useState<Array<OrganizationInterface>>([]);
-    const [ tempOrganizationList, setTempOrganizationList ] = useState<OrganizationInterface[]>([]);
     const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<OrganizationInterface[]>([]);
     const [ shareType, setShareType ] = useState<ShareType>(ShareType.UNSHARE);
     const [ sharedWithAll, setSharedWithAll ] = useState<boolean>(false);
-    const [ filter, setFilter ] = useState<string>();
     const { isOrganizationManagementEnabled } = useGlobalVariables();
     const [ showConfirmationModal, setShowConfirmationModal ] = useState(false);
+
+    const [ hasMoreOrganizations, setHasMoreOrganizations ] = useState(true);
+    const [ filter, setFilter ] = useState<string>("");
+    const [ afterCursor, setAfterCursor ] = useState<string | null>(null);
+    const [ params, setParams ] =
+        useState<GetOrganizationsParamsInterface>({ after: null, limit: 15, shouldFetch: true });
+    const queryPrefix: string = "name co ";
 
     const {
         data: organizations,
@@ -155,10 +161,10 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
         isValidating: isOrganizationsFetchRequestValidating,
         error: organizationsFetchRequestError
     } = useGetOrganizations(
-        isOrganizationManagementEnabled,
-        null,
-        null,
-        null,
+        isOrganizationManagementEnabled && params.shouldFetch,
+        params.filter,
+        params.limit,
+        params.after,
         null,
         true,
         false
@@ -183,14 +189,10 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
             return false;
         }
 
-        return isOrganizationsFetchRequestLoading ||
-            isSharedOrganizationsFetchRequestLoading ||
-            isOrganizationsFetchRequestValidating ||
+        return isSharedOrganizationsFetchRequestLoading ||
             isSharedOrganizationsFetchRequestValidating;
     }, [
-        isOrganizationsFetchRequestLoading,
         isSharedOrganizationsFetchRequestLoading,
-        isOrganizationsFetchRequestValidating,
         isSharedOrganizationsFetchRequestValidating
     ]);
 
@@ -207,8 +209,34 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
      * Fetches the organization list.
      */
     useEffect(() => {
-        if (organizations?.organizations) {
-            setSubOrganizationList(organizations.organizations);
+        if (!organizations || isOrganizationsFetchRequestLoading || isOrganizationsFetchRequestValidating) {
+            return;
+        }
+
+        setParams((prevParams: GetOrganizationsParamsInterface) => ({ ...prevParams, shouldFetch: false }));
+
+        const updatedOrganizationList: OrganizationInterface[] = (organizations.organizations);
+
+        setSubOrganizationList((prevOrganizations: OrganizationInterface[]) => [
+            ...prevOrganizations,
+            ...(updatedOrganizationList || [])
+        ]);
+
+        let nextFound: boolean = false;
+
+        organizations?.links?.forEach((link: OrganizationLinkInterface) => {
+            if (link.rel === "next") {
+                const nextCursor: string = link.href.split("after=")[1];
+
+                setAfterCursor(nextCursor);
+                setHasMoreOrganizations(!!nextCursor);
+                nextFound = true;
+            }
+        });
+
+        if (!nextFound) {
+            setAfterCursor("");
+            setHasMoreOrganizations(false);
         }
     }, [ organizations ]);
 
@@ -288,10 +316,6 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
             })
         );
     }, [ sharedOrganizationsFetchRequestError ]);
-
-    useEffect(() => setTempOrganizationList(subOrganizationList || []),
-        [ subOrganizationList ]
-    );
 
     useEffect(() => setCheckedUnassignedListItems(sharedOrganizationList || []),
         [ sharedOrganizationList ]
@@ -599,27 +623,61 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
         shareType
     ]);
 
-    const handleUnselectedListSearch = (e: FormEvent<HTMLInputElement>, { value }: { value: string }) => {
-        let isMatch: boolean = false;
-        const filteredOrganizationList: OrganizationInterface[] = [];
 
-        if (!isEmpty(value)) {
-            setFilter(value);
-            const re: RegExp = new RegExp(escapeRegExp(value), "i");
-
-            subOrganizationList &&
-                subOrganizationList.map((organization: OrganizationInterface) => {
-                    isMatch = re.test(organization.name);
-                    if (isMatch) {
-                        filteredOrganizationList.push(organization);
-                    }
-                });
-
-            setTempOrganizationList(filteredOrganizationList);
-        } else {
-            setTempOrganizationList(subOrganizationList);
-        }
+    /**
+     * Update the params state whenever filter or cursor changes.
+     */
+    const updateParams = (cursor: string, filter: string) => {
+        setAfterCursor(cursor);
+        setFilter(filter);
+        setParams((prevParams: GetOrganizationsParamsInterface) => ({
+            ...prevParams,
+            after: cursor || null,
+            filter: filter ? `${queryPrefix}${filter}` : "",
+            shouldFetch: true
+        }));
     };
+
+    /**
+     * Loads more organization options when scrolled to the bottom.
+     */
+    const loadMoreOrganizations: () => void = useCallback(() => {
+        if (!hasMoreOrganizations) return;
+
+        const filterValue: string = filter ? `${queryPrefix}${filter}` : "";
+
+        setParams((prev: GetOrganizationsParamsInterface) => {
+            if (prev.after === afterCursor && prev.filter === filterValue) {
+                return prev;
+            }
+
+            setAfterCursor(afterCursor);
+            setFilter(filter);
+
+            return {
+                ...prev,
+                after: afterCursor || "",
+                filter: filterValue,
+                shouldFetch: true
+            };
+        });
+    }, [ afterCursor, filter, hasMoreOrganizations ]);
+
+    /**
+     * Handles the search input change for the unselected list.
+     * Debounces the search input to avoid excessive API calls.
+     *
+     * @param e - The form event.
+     * @param value - The value of the search field.
+     */
+    const handleUnselectedListSearch: (e: FormEvent<HTMLInputElement>, { value }: { value: string }) => void =
+        useCallback(
+            debounce((e: FormEvent<HTMLInputElement>, { value }: { value: string }) => {
+                setSubOrganizationList([]);
+                updateParams("", value);
+            }, 500),
+            [ updateParams ]
+        );
 
     const handleUnassignedItemCheckboxChange = (organization: OrganizationInterface) => {
         const checkedOrganizations: OrganizationInterface[] = [ ...checkedUnassignedListItems ];
@@ -646,9 +704,37 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
         setCheckedUnassignedListItems(subOrganizationList);
     }, [
         subOrganizationList,
-        setTempOrganizationList,
         checkedUnassignedListItems
     ]);
+
+    /**
+     * Handles the empty placeholder content for the transfer list.
+     * @returns - The content to be displayed in the empty placeholder.
+     */
+    const handleEmptyPlaceholderContent = (): string => {
+        if (filter !== "") {
+            return t("console:develop.placeholders.emptySearchResult.subtitles.0", { query: filter }) + ". " +
+                t("console:develop.placeholders.emptySearchResult.subtitles.1");
+        }
+        if (subOrganizationList?.length === 0) {
+            return t("organizations:placeholders.emptyList.subtitles.0");
+        }
+
+        return null;
+    };
+
+    /**
+     * Determines if the organizations are currently loading.
+     * Note: Disregards the after cursor state as initial values are already loaded.
+     * @returns - True if organizations are loading, false otherwise.
+     */
+    const handleIsLoadingOrganizations = (): boolean => {
+        const isOrganizationsFetching: boolean =
+            isOrganizationsFetchRequestLoading || isOrganizationsFetchRequestValidating;
+
+        return afterCursor === "" && isOrganizationsFetching;
+
+    };
 
     function handleAsyncSharingNotification(shareType: ShareType): void {
         if (shareType === ShareType.SHARE_ALL || shareType === ShareType.SHARE_SELECTED) {
@@ -741,7 +827,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                                             shareType !== ShareType.SHARE_SELECTED
                                         }
                                         isListEmpty={
-                                            !(tempOrganizationList?.length > 0)
+                                            !(subOrganizationList?.length > 0)
                                         }
                                         handleHeaderCheckboxChange={
                                             handleHeaderCheckboxChange
@@ -757,22 +843,16 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                                             ),
                                             ""
                                         ] }
-                                        emptyPlaceholderContent={
-                                            !subOrganizationList || subOrganizationList?.length === 0
-                                                ? t("organizations:placeholders.emptyList.subtitles.0")
-                                                : filter
-                                                    ? t("console:develop.placeholders.emptySearchResult.subtitles.0",
-                                                        { query: filter }) + ". " +
-                                                      t("console:develop.placeholders.emptySearchResult.subtitles.1")
-                                                    : null
-
-                                        }
+                                        emptyPlaceholderContent={ handleEmptyPlaceholderContent() }
                                         data-testid="application-share-modal-organization-transfer-component-all-items"
                                         emptyPlaceholderDefaultContent={ t(
                                             "organizations:placeholders.emptyList.subtitles.0"
                                         ) }
+                                        hasMore={ hasMoreOrganizations }
+                                        loadMore={ loadMoreOrganizations }
+                                        isLoading={ handleIsLoadingOrganizations() }
                                     >
-                                        { tempOrganizationList?.map(
+                                        { subOrganizationList?.map(
                                             (organization: OrganizationInterface, index: number) => {
                                                 const organizationName: string =
                                                     organization?.name;
