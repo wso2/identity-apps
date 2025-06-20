@@ -58,4 +58,13 @@ export interface ConsoleSettingsNS {
             view: string;
         };
     };
+    sharedAccess: {
+        tabLabel: string;
+        modes: {
+            doNotShare: string;
+            shareWithAll: string;
+            shareWithSelected: string;
+            shareAllRolesWithAllOrgs: string;
+        };
+    };
 }

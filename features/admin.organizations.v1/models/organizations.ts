@@ -22,7 +22,10 @@ export interface OrganizationInterface {
     id: string;
     name: string;
     ref: string;
-    status: "ACTIVE" | "DISABLED"
+    status: "ACTIVE" | "DISABLED",
+    hasChildren?: boolean;
+    parentId?: string;
+    roles?: OrganizationRoleInterface[];
 }
 
 export interface OrganizationLinkInterface {
