@@ -28,6 +28,7 @@ import {
 import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
 import useSharedOrganizations from "@wso2is/admin.organizations.v1/api/use-shared-organizations";
 import {
+    GetOrganizationsParamsInterface,
     OrganizationInterface,
     OrganizationLinkInterface,
     OrganizationResponseInterface,
@@ -112,16 +113,6 @@ export interface ApplicationShareFormPropsInterface
     operationStatus?: OperationStatus;
 }
 
-interface Params {
-    shouldFetch?: boolean,
-    filter?: string;
-    limit?: number;
-    after?: string;
-    before?: string;
-    recursive?: boolean;
-    isRoot?: boolean;
-}
-
 export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsInterface> = (
     props: ApplicationShareFormPropsInterface
 ) => {
@@ -160,7 +151,8 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
     const [ hasMoreOrganizations, setHasMoreOrganizations ] = useState(true);
     const [ filter, setFilter ] = useState<string>("");
     const [ afterCursor, setAfterCursor ] = useState<string | null>(null);
-    const [ params, setParams ] = useState<Params>({ after: null, limit: 15, shouldFetch: true });
+    const [ params, setParams ] =
+        useState<GetOrganizationsParamsInterface>({ after: null, limit: 15, shouldFetch: true });
     const queryPrefix: string = "name co ";
 
     const {
@@ -221,7 +213,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
             return;
         }
 
-        setParams((prevParams: Params) => ({ ...prevParams, shouldFetch: false }));
+        setParams((prevParams: GetOrganizationsParamsInterface) => ({ ...prevParams, shouldFetch: false }));
 
         const updatedOrganizationList: OrganizationInterface[] = (organizations.organizations);
 
@@ -638,7 +630,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
     const updateParams = (cursor: string, filter: string) => {
         setAfterCursor(cursor);
         setFilter(filter);
-        setParams((prevParams: Params) => ({
+        setParams((prevParams: GetOrganizationsParamsInterface) => ({
             ...prevParams,
             after: cursor || null,
             filter: filter ? `${queryPrefix}${filter}` : "",
@@ -654,7 +646,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
 
         const filterValue: string = filter ? `${queryPrefix}${filter}` : "";
 
-        setParams((prev: Params) => {
+        setParams((prev: GetOrganizationsParamsInterface) => {
             if (prev.after === afterCursor && prev.filter === filterValue) {
                 return prev;
             }

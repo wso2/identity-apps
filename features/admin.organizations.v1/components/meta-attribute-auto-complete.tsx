@@ -41,7 +41,7 @@ import { Dispatch } from "redux";
 import "./meta-attribute-auto-complete.scss";
 import { Header, Item } from "semantic-ui-react";
 import { useGetOrganizationsMetaAttributes } from "../api/use-get-organizations-meta-attributes";
-import { OrganizationLinkInterface } from "../models";
+import { GetOrganizationsParamsInterface, OrganizationLinkInterface } from "../models";
 
 /**
  * Prop types for the meta attribute autocomplete component.
@@ -56,15 +56,6 @@ export interface MetaAttributeAutoCompleteProps extends IdentifiableComponentInt
      * Boolean indicating validation errors for the meta attribute.
      */
     hasErrors?: boolean;
-}
-
-interface Params {
-    after?: string;
-    before?: string;
-    filter?: string;
-    isRoot?: boolean;
-    limit?: number;
-    recursive?: boolean;
 }
 
 type MetaAttributeOption = {
@@ -91,7 +82,8 @@ const MetaAttributeAutoComplete: FunctionComponent<MetaAttributeAutoCompleteProp
     const [ inputValue, setInputValue ] = useState<string>("");
     const [ hasNextPage, setHasNextPage ] = useState(true);
     const [ cursor, setCursor ] = useState(null);
-    const [ params, setParams ] = useState<Params>({ after: undefined, filter: undefined, limit: 10 });
+    const [ params, setParams ] =
+        useState<GetOrganizationsParamsInterface>({ after: undefined, filter: undefined, limit: 10 });
 
     const {
         data: metaAttributes,
@@ -153,7 +145,7 @@ const MetaAttributeAutoComplete: FunctionComponent<MetaAttributeAutoCompleteProp
     const updateParams = (newCursor: string, newInputValue: string) => {
         setCursor(newCursor);
         setInputValue(newInputValue);
-        setParams((prevParams: Params) => ({
+        setParams((prevParams: GetOrganizationsParamsInterface) => ({
             ...prevParams,
             after: newCursor,
             filter: newInputValue ? `${queryPrefix}${newInputValue}` : ""
