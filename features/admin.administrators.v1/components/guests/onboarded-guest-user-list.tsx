@@ -199,7 +199,7 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
     const useSCIM2RoleAPIV3: boolean = useSelector(
-        (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+        (state: AppState) => state?.config?.ui?.useSCIM2RoleAPIV3
     );
 
     const updateUsersForRoleFunction: (roleId: string, data: PatchRoleDataInterface) => Promise<any> =
