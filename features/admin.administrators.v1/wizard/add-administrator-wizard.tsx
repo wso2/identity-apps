@@ -21,7 +21,7 @@ import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/co
 import {  UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
-import { updateUsersForRole, updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
+import { updateRoleDetails, updateUsersForRole } from "@wso2is/admin.roles.v2/api/roles";
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { getUsersList, sendInvite } from "@wso2is/admin.users.v1/api";
@@ -101,7 +101,8 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
     const useSCIM2RoleAPIV3: boolean = useSelector(
         (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
     );
-    const updateUsersForRoleFunction = useSCIM2RoleAPIV3 ? updateUsersForRole : updateRoleDetails;
+    const updateUsersForRoleFunction: (roleId: string, data: PatchRoleDataInterface) => Promise<any> = 
+        useSCIM2RoleAPIV3 ? updateUsersForRole : updateRoleDetails;
 
     /**
      * Retrieve the application data for the console application, filtering by name.
