@@ -20,6 +20,7 @@ import Box from "@oxygen-ui/react/Box";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { UserBasicInterface } from "@wso2is/admin.users.v1/models/user";
@@ -64,7 +65,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Dropdown, DropdownProps, Header, Icon, PaginationProps, SemanticICONS } from "semantic-ui-react";
 import { AddRoleUserModal } from "./add-role-user-modal";
-import { updateRoleDetails } from "../../api";
+import { updateUsersForRole, updateRoleDetails } from "../../api";
 import { CreateRoleMemberInterface, PatchRoleDataInterface, RoleEditSectionsInterface } from "../../models/roles";
 import "./edit-role.scss";
 
@@ -110,6 +111,13 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const [ paginatedUsers, setPaginatedUsers ] = useState<UserBasicInterface[]>([]);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ showAddNewUserModal, setShowAddNewUserModal ] = useState<boolean>(false);
+
+    const useSCIM2RoleAPIV3: boolean = useSelector(
+            (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+        );
+
+    const updateUserRole = useSCIM2RoleAPIV3 ? updateUsersForRole : updateRoleDetails;
+
 
     const {
         isLoading: isUserStoresLoading,
@@ -260,7 +268,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         };
 
         setIsSubmitting(true);
-        updateRoleDetails(role.id, roleData)
+        updateUserRole(role.id, roleData)
             .then(() => {
                 dispatch(
                     addAlert({
@@ -314,7 +322,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         };
 
         setIsSubmitting(true);
-        updateRoleDetails(role.id, roleData)
+        updateUserRole(role.id, roleData)
             .then(() => {
                 dispatch(
                     addAlert({

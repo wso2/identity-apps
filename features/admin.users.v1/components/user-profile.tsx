@@ -35,7 +35,7 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs, commonConfig, userConfig } from "@wso2is/admin.extensions.v1";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
-import { searchRoleList, updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
+import { searchRoleList, updateUsersForRole, updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
 import {
     OperationValueInterface,
     PatchRoleDataInterface,
@@ -49,6 +49,7 @@ import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { getUserNameWithoutDomain, resolveUserstore } from "@wso2is/core/helpers";
 import {
+    FeatureAccessConfigInterface,
     AlertInterface,
     AlertLevels,
     ExternalClaim,
@@ -229,6 +230,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const hasUsersUpdatePermissions: boolean = useRequiredScopes(
         featureConfig?.users?.scopes?.update
     );
+
+    const entitlementConfig: FeatureAccessConfigInterface = useSelector(
+                (state: AppState) => state?.config?.ui?.features?.entitlement);
+    const hasRoleV3UpdateScopes: boolean = useRequiredScopes(entitlementConfig?.scopes?.update);
+
+    const updateUserRoleAssignmentFunction = hasRoleV3UpdateScopes ? updateUsersForRole : updateRoleDetails;
 
     const isDistinctAttributeProfilesDisabled: boolean = featureConfig?.attributeDialects?.disabledFeatures?.includes(
         ClaimManagementConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG
@@ -940,7 +947,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
-        updateRoleDetails(adminRoleId, roleData)
+        updateUserRoleAssignment(adminRoleId, roleData)
             .then(() => {
                 dispatch(addAlert({
                     description: t(

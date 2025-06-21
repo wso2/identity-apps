@@ -129,6 +129,10 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
 
+    const useSCIM2RoleAPIV3: boolean = useSelector(
+        (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+    );
+
     /**
      * Initializes the permission tree with any initial values.
      */
@@ -164,6 +168,11 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
             cloneDeep(tenantAPIResourceCollections);
         const filteringAPIResourceCollectionNames: string[] = [];
 
+        if(!useSCIM2RoleAPIV3) {
+            filteringAPIResourceCollectionNames.push(
+                ConsoleRolesOnboardingConstants.ENTITLEMENT_MANAGEMENT_ROLE_ID);
+        }
+
         filteringAPIResourceCollectionNames.push(
             ConsoleRolesOnboardingConstants.ROLE_V1_API_RESOURCES_COLLECTION_NAME);
 
@@ -190,6 +199,11 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
         const clonedOrganizationAPIResourceCollections: APIResourceCollectionResponseInterface =
             cloneDeep(organizationAPIResourceCollections);
         const filteringAPIResourceCollectionNames: string[] = [];
+
+        if(!useSCIM2RoleAPIV3) {
+            filteringAPIResourceCollectionNames.push(
+                ConsoleRolesOnboardingConstants.ORG_ENTITLEMENT_MANAGEMENT_ROLE_ID);
+        }
 
         filteringAPIResourceCollectionNames.push(
             ConsoleRolesOnboardingConstants.ORG_ROLE_V1_API_RESOURCES_COLLECTION_NAME);

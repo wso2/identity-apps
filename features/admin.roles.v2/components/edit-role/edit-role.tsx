@@ -80,12 +80,18 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
         (state: AppState) => state?.config?.ui?.features?.userRoles);
     const usersFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.users);
+    const entitlementConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.entitlement);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const administratorRoleDisplayName: string = useSelector(
         (state: AppState) => state?.config?.ui?.administratorRoleDisplayName);
     const userRolesDisabledFeatures: string[] = useSelector((state: AppState) => {
         return state.config.ui.features?.userRoles?.disabledFeatures;
     });
+    const useSCIM2RoleAPIV3: boolean = useSelector(
+        (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+    );
+
     const isSharedRole: boolean = useMemo(() => roleObject?.properties?.some(
         (property: RolePropertyInterface) =>
             property?.name === LocalRoleConstants.IS_SHARED_ROLE && property?.value === "true"), [ roleObject ]);
@@ -104,6 +110,35 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
             !hasRequiredScopes(usersFeatureConfig,
                 usersFeatureConfig?.scopes?.update, allowedScopes);
     }, [ usersFeatureConfig, allowedScopes ]);
+
+    const isGroupReadOnly: boolean = useMemo(() => {
+
+        if (useSCIM2RoleAPIV3) {
+            return !hasRequiredScopes(entitlementConfig,
+                entitlementConfig?.scopes?.update,
+                allowedScopes
+            );
+        }
+
+        return !isFeatureEnabled(featureConfig,
+                LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE"))
+            || !hasRequiredScopes(featureConfig,
+                featureConfig?.scopes?.update,
+                allowedScopes)
+            || roleObject?.meta?.systemRole;
+    }, [ useSCIM2RoleAPIV3, entitlementConfig, featureConfig, allowedScopes, roleObject ]);
+
+    const isUserTabReadOnly: boolean = useMemo(() => {
+        if (useSCIM2RoleAPIV3) {
+            return !hasRequiredScopes(
+                entitlementConfig,
+                entitlementConfig?.scopes?.update,
+                allowedScopes
+            );
+        }
+
+        return isReadOnly || isUserReadOnly;
+    }, [ useSCIM2RoleAPIV3, entitlementConfig, allowedScopes, isReadOnly, isUserReadOnly ]);
 
     const [ isAdminRole, setIsAdminRole ] = useState<boolean>(false);
     const [ isEveryoneRole, setIsEveryoneRole ] = useState<boolean>(false);
@@ -158,7 +193,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <RoleGroupsList
-                            isReadOnly={ isReadOnly }
+                            isReadOnly={ isGroupReadOnly }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 2 }
@@ -177,7 +212,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                     render: () => (
                         <ResourceTab.Pane controlledSegmentation attached={ false }>
                             <RoleUsersList
-                                isReadOnly={ isReadOnly || isUserReadOnly }
+                                isReadOnly={ isUserTabReadOnly }
                                 role={ roleObject }
                                 onRoleUpdate={ onRoleUpdate }
                                 tabIndex={ 3 }

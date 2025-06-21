@@ -154,6 +154,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             resourceTypes: "",
             roles: "",
             rolesV2: "",
+            rolesV3: "",
             rolesWithoutOrgPath: "",
             rootOrganization: "",
             rootUsersOrganization: "",
@@ -311,6 +312,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 name: "",
                 path: "",
                 styleSheets: null
-            }
+            },
+            useSCIM2RoleAPIV3: undefined
         }
     };

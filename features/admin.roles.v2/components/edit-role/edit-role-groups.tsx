@@ -27,7 +27,10 @@ import {
 } from "@wso2is/admin.groups.v1/models/groups";
 import { useIdentityProviderList } from "@wso2is/admin.identity-providers.v1/api/identity-provider";
 import { IdentityProviderInterface, StrictIdentityProviderInterface } from "@wso2is/admin.identity-providers.v1/models";
-import { AlertLevels, IdentifiableComponentInterface, RoleGroupsInterface } from "@wso2is/core/models";
+import {
+    AlertLevels,
+    IdentifiableComponentInterface,
+    RoleGroupsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, Heading } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -38,15 +41,16 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import { EditRoleFederatedGroupsAccordion } from "./edit-role-federated-groups-accordion";
 import { EditRoleLocalGroupsAccordion } from "./edit-role-local-groups-accordion";
-import { updateRoleDetails } from "../../api";
+import { assignGroupstoRoles, updateRoleDetails } from "../../api";
 import { RoleAudienceTypes, Schemas } from "../../constants";
 import { PatchRoleDataInterface, RoleEditSectionsInterface } from "../../models/roles";
 import { RoleManagementUtils } from "../../utils";
+import { AppState } from "@wso2is/admin.core.v1/store";
 
 type RoleGroupsPropsInterface = IdentifiableComponentInterface & RoleEditSectionsInterface;
 
@@ -92,6 +96,12 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID,
         FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID
     ];
+
+    const useSCIM2RoleAPIV3: boolean = useSelector(
+            (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+    );
+
+    const assignGroupstoRole = useSCIM2RoleAPIV3 ? assignGroupstoRoles : updateRoleDetails;
 
     /**
      * Filter out the IDPs.
@@ -220,7 +230,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             schemas: [ Schemas.PATCH_OP ]
         };
 
-        updateRoleDetails(role.id, roleUpdateData)
+        assignGroupstoRole(role.id, roleUpdateData)
             .then(() => {
                 dispatch(
                     addAlert({
