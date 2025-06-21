@@ -74,6 +74,50 @@ export const getApplicationRolesByAudience = (
             filter,
             limit
         },
+        url:  `${ store.getState().config.endpoints.rolesV2 }`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data as RolesV2ResponseInterface);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Get the application roles by audience using SCIM2 Role API V3.
+ *
+ * @param audience - audience.
+ * @param before - Before link.
+ * @param after - After link.
+ * @param limit - Limit.
+ *
+ * @returns A promise containing the response.
+ */
+export const getApplicationRolesByAudienceV3 = (
+    audience: string,
+    appId: string,
+    before: string,
+    after: string,
+    limit: number,
+    excludedAttributes?: string
+):Promise<RolesV2ResponseInterface> => {
+
+    const filter: string = audience === RoleAudienceTypes.APPLICATION
+        ? `audience.value eq ${ appId }`
+        : `audience.type eq ${ audience.toLowerCase() }`;
+
+    const requestConfig: RequestConfigInterface = {
+        method: HttpMethods.GET,
+        params: {
+            after,
+            before,
+            excludedAttributes,
+            filter,
+            limit
+        },
         url:  `${ store.getState().config.endpoints.rolesV3 }`
     };
 
@@ -98,6 +142,47 @@ export const getApplicationRolesByAudience = (
  * @returns A promise containing the response.
  */
 export const getRoleByName = (
+    audienceId: string,
+    roleName: string,
+    before: string,
+    after: string,
+    limit: number
+):Promise<RolesV2ResponseInterface> => {
+
+    const filter: string = `audience.value eq ${ audienceId } and displayName eq ${ roleName }`;
+
+    const requestConfig: RequestConfigInterface = {
+        method: HttpMethods.GET,
+        params: {
+            after,
+            before,
+            filter,
+            limit
+        },
+        url:  `${ store.getState().config.endpoints.rolesV2 }`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data as RolesV2ResponseInterface);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Get the roles by name using SCIM2 Roles V3 API.
+ *
+ * @param audienceId - Organization ID or Application ID.
+ * @param roleName - Role name.
+ * @param before - Before link.
+ * @param after - After link.
+ * @param limit - Limit.
+ *
+ * @returns A promise containing the response.
+ */
+export const getRoleByNameV3 = (
     audienceId: string,
     roleName: string,
     before: string,
@@ -140,6 +225,30 @@ export const getRoleById = (roleId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
+        url: store.getState().config.endpoints.rolesV2 + "/" + roleId
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Retrieve Role details for a give role id using SCIM2 Roles V3 API.
+ *
+ * @param roleId - role id to retrieve role details
+ * @deprecated Use `useGetRoleById` instead.
+ */
+export const getRoleByIdV3 = (roleId: string): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
         url: store.getState().config.endpoints.rolesV3 + "/" + roleId
     };
 
@@ -157,6 +266,41 @@ export const getRoleById = (roleId: string): Promise<any> => {
  * @param roleId - role id to retrieve role details
  */
 export const useGetRoleById = <Data = RolesInterface, Error = RequestErrorInterface>(
+    roleId: string
+): RequestResultInterface<Data, Error> => {
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${store.getState().config.endpoints.rolesV2}/${roleId}`
+    };
+
+    const {
+        data,
+        error,
+        isValidating,
+        mutate,
+        response
+    } = useRequest<Data, Error>(roleId ? requestConfig : null);
+
+    return {
+        data,
+        error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate,
+        response
+    };
+};
+
+/**
+ * Retrieve Role details for a given role id using SCIM2 Roles V3 API.
+ *
+ * @param roleId - role id to retrieve role details
+ */
+export const useGetRoleByIdV3 = <Data = RolesInterface, Error = RequestErrorInterface>(
     roleId: string
 ): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
@@ -231,7 +375,7 @@ export const updateRoleDetails = (roleId: string, roleData: PatchRoleDataInterfa
  * @param roleId - role id to update role details
  * @param roleData - Data that needs to be updated.
  */
-export const updateRoleV3Details = (roleId: string, roleData: PatchRoleDataInterface): Promise<any> => {
+export const updateRoleDetailsUsingV3Api = (roleId: string, roleData: PatchRoleDataInterface): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         data: roleData,
         headers: {
@@ -313,7 +457,7 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store?.getState()?.config?.endpoints?.rolesV3 + "/.search"
+        url: store?.getState()?.config?.endpoints?.rolesV2 + "/.search"
     };
 
     return httpClient(requestConfig)
@@ -338,6 +482,31 @@ export const deleteRoleById = (roleId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
+        url: store.getState().config.endpoints.rolesV2 + "/" + roleId
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Delete a selected role with a given role ID.
+ * TODO:ROLEV2 Need to update the url once the API is ready.
+ *
+ * @param roleId - Id of the role which needs to be deleted.
+ * @returns A promise containing the status of the delete.
+ */
+export const deleteRoleByIdV3 = (roleId: string): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
         url: store.getState().config.endpoints.rolesV3 + "/" + roleId
     };
 
@@ -356,6 +525,31 @@ export const deleteRoleById = (roleId: string): Promise<any> => {
  * @param data - data object used to create the role
  */
 export const createRole = (data: CreateRoleInterface): Promise<AxiosResponse> => {
+    const requestConfig: RequestConfigInterface = {
+        data,
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.rolesV2
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Create a role in the system with role data given by user.
+ * TODO:ROLEV2 Need to update the url once the API is ready.
+ *
+ * @param data - data object used to create the role
+ */
+export const createRoleUsingV3Api = (data: CreateRoleInterface): Promise<AxiosResponse> => {
     const requestConfig: RequestConfigInterface = {
         data,
         headers: {
@@ -494,6 +688,45 @@ export const updateRolesBulk = (roleIds: string[], roleData: PatchRoleDataInterf
  * @throws `IdentityAppsApiException`
  */
 export const getRolesList = (domain: string, filter?: string): Promise<RoleListInterface | any> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        params: {
+            domain,
+            filter
+        },
+        url: store.getState().config.endpoints.rolesV2
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    RoleConstants.ROLES_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                RoleConstants.ROLES_FETCH_REQUEST_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+export const getRolesListUsingV3Api = (domain: string, filter?: string): Promise<RoleListInterface | any> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {

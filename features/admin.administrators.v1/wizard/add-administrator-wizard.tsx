@@ -20,7 +20,6 @@ import { useApplicationList } from "@wso2is/admin.applications.v1/api/applicatio
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import {  UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { useRequiredScopes } from "@wso2is/access-control";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { updateUsersForRole, updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
@@ -29,7 +28,6 @@ import { getUsersList, sendInvite } from "@wso2is/admin.users.v1/api";
 import { AdminAccountTypes, UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { UserInviteInterface, UserListInterface } from "@wso2is/admin.users.v1/models/user";
 import {
-    FeatureAccessConfigInterface,
     AlertLevels,
     IdentifiableComponentInterface,
     RolesInterface,
@@ -89,11 +87,6 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
 
-    const entitlementConfig: FeatureAccessConfigInterface = useSelector(
-                (state: AppState) => state?.config?.ui?.features?.entitlement);
-    const hasRoleV3UpdateScopes: boolean = useRequiredScopes(entitlementConfig?.scopes?.update);
-    const updateUserRoleAssignment = hasRoleV3UpdateScopes ? updateUsersForRole : updateRoleDetails;
-
     const adminUserBasicFormRef: MutableRefObject<AddAdminUserBasicFormRef> = useRef<AddAdminUserBasicFormRef>(null);
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -104,6 +97,11 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
     const [ selectedUser, setSelectedUser ] = useState<UserBasicInterface>(null);
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
+
+    const useSCIM2RoleAPIV3: boolean = useSelector(
+        (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+    );
+    const updateUsersForRoleFunction = useSCIM2RoleAPIV3 ? updateUsersForRole : updateRoleDetails;
 
     /**
      * Retrieve the application data for the console application, filtering by name.
@@ -268,7 +266,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
             for (const roleId of roleIds) {
                 setIsSubmitting(true);
 
-                await updateUserRoleAssignment(roleId, roleData)
+                await updateUsersForRoleFunction(roleId, roleData)
                     .catch((error: AxiosError) => {
                         if (!error.response || error.response.status === 401) {
                             setAlert({
@@ -351,7 +349,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
 
         setConfirmationModalLoading(true);
 
-        updateUserRoleAssignment(adminRoleId, roleData)
+        updateUsersForRoleFunction(adminRoleId, roleData)
             .then(() => {
                 dispatch(addAlert({
                     description: t(

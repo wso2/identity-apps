@@ -18,11 +18,9 @@
 
 import { useGetApplication } from "@wso2is/admin.applications.v1/api/use-get-application";
 import { AuthenticationStepInterface, AuthenticatorInterface } from "@wso2is/admin.applications.v1/models/application";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     FederatedAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
-import { useRequiredScopes } from "@wso2is/access-control";
 import {
     PatchGroupAddOpInterface,
     PatchGroupRemoveOpInterface
@@ -30,7 +28,6 @@ import {
 import { useIdentityProviderList } from "@wso2is/admin.identity-providers.v1/api/identity-provider";
 import { IdentityProviderInterface, StrictIdentityProviderInterface } from "@wso2is/admin.identity-providers.v1/models";
 import {
-    FeatureAccessConfigInterface,
     AlertLevels,
     IdentifiableComponentInterface,
     RoleGroupsInterface } from "@wso2is/core/models";
@@ -53,6 +50,7 @@ import { assignGroupstoRoles, updateRoleDetails } from "../../api";
 import { RoleAudienceTypes, Schemas } from "../../constants";
 import { PatchRoleDataInterface, RoleEditSectionsInterface } from "../../models/roles";
 import { RoleManagementUtils } from "../../utils";
+import { AppState } from "@wso2is/admin.core.v1/store";
 
 type RoleGroupsPropsInterface = IdentifiableComponentInterface & RoleEditSectionsInterface;
 
@@ -71,11 +69,6 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     const assignedGroups: Map<string, RoleGroupsInterface[]> = RoleManagementUtils
         .getRoleGroupsGroupedByIdp(role?.groups);
     const LOCAL_GROUPS_IDENTIFIER_ID: string = "LOCAL";
-
-    const userRoleV3Config: FeatureAccessConfigInterface = useSelector(
-            (state: AppState) => state?.config?.ui?.features?.entitlement);
-    const hasRoleV3UpdateScopes: boolean = useRequiredScopes(userRoleV3Config?.scopes?.update);
-    const updateGroupRoleAssignment = hasRoleV3UpdateScopes ? assignGroupstoRoles : updateRoleDetails;
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
@@ -103,6 +96,12 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID,
         FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID
     ];
+
+    const useSCIM2RoleAPIV3: boolean = useSelector(
+            (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+    );
+
+    const assignGroupstoRole = useSCIM2RoleAPIV3 ? assignGroupstoRoles : updateRoleDetails;
 
     /**
      * Filter out the IDPs.
@@ -231,7 +230,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             schemas: [ Schemas.PATCH_OP ]
         };
 
-        updateGroupRoleAssignment(role.id, roleUpdateData)
+        assignGroupstoRole(role.id, roleUpdateData)
             .then(() => {
                 dispatch(
                     addAlert({
