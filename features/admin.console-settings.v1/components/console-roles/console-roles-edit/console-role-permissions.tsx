@@ -40,7 +40,7 @@ import React, { FunctionComponent, ReactElement, useMemo, useState } from "react
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import useGetAPIResourceCollections from "../../../api/use-get-api-resource-collections"
+import useGetAPIResourceCollections from "../../../api/use-get-api-resource-collections";
 import { ConsoleRolesOnboardingConstants } from "../../../constants/console-roles-onboarding-constants";
 import {
     APIResourceCollectionInterface,
