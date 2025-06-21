@@ -101,7 +101,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
     const useSCIM2RoleAPIV3: boolean = useSelector(
         (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
     );
-    const updateUsersForRoleFunction: (roleId: string, data: PatchRoleDataInterface) => Promise<any> = 
+    const updateUsersForRoleFunction: (roleId: string, data: PatchRoleDataInterface) => Promise<any> =
         useSCIM2RoleAPIV3 ? updateUsersForRole : updateRoleDetails;
 
     /**
