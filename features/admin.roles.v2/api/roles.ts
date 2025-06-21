@@ -87,7 +87,7 @@ export const getApplicationRolesByAudience = (
 };
 
 /**
- * Get the application roles by audience using SCIM2 Role API V3.
+ * Get the application roles by audience using SCIM2 Role API v3.
  *
  * @param audience - audience.
  * @param before - Before link.
