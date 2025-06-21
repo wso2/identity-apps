@@ -118,7 +118,7 @@ export const getApplicationRolesByAudienceV3 = (
             filter,
             limit
         },
-        url:  `${ store.getState().config.endpoints.rolesV3 }`
+        url: `${ store.getState().config.endpoints.rolesV3 }`
     };
 
     return httpClient(requestConfig)
