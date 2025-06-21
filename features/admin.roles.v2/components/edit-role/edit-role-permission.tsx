@@ -26,11 +26,8 @@ import TextField from "@oxygen-ui/react/TextField";
 import { useAPIResources } from "@wso2is/admin.api-resources.v2/api";
 import { useGetAuthorizedAPIList } from "@wso2is/admin.api-resources.v2/api/useGetAuthorizedAPIList";
 import { APIResourceCategories, APIResourcesConstants } from "@wso2is/admin.api-resources.v2/constants";
-import { AppState } from "@wso2is/admin.core.v1/store";
-import { useRequiredScopes } from "@wso2is/access-control";
 import { APIResourceUtils } from "@wso2is/admin.api-resources.v2/utils/api-resource-utils";
 import {
-    FeatureAccessConfigInterface,
     AlertInterface,
     AlertLevels,
     IdentifiableComponentInterface,
@@ -56,8 +53,9 @@ import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps } from "semantic-ui-react";
 import { RenderChip } from "./edit-role-common/render-chip";
 import { RoleAPIResourcesListItem } from "./edit-role-common/role-api-resources-list-item";
-import { getAPIResourceDetailsBulk, updateRoleDetails, updateRoleV3Details, useAPIResourceDetails } from "../../api";
+import { getAPIResourceDetailsBulk, updateRoleDetails, useAPIResourceDetails, updateRoleDetailsUsingV3Api } from "../../api";
 import { RoleAudienceTypes, RoleConstants } from "../../constants/role-constants";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { APIResourceInterface, AuthorizedAPIListItemInterface, ScopeInterface } from "../../models/apiResources";
 import { PatchRoleDataInterface, PermissionUpdateInterface, SelectedPermissionsInterface } from "../../models/roles";
 
@@ -117,10 +115,11 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
     const shouldFetchAPIResources: boolean = role?.audience?.type?.
         toUpperCase() === RoleAudienceTypes.ORGANIZATION && !isSharedRole;
 
-    const userRoleV3Config: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.userV3Roles);
-    const hasRoleV3UpdateScopes: boolean = useRequiredScopes(userRoleV3Config?.scopes?.update);
-    const patchRolePermissions = hasRoleV3UpdateScopes ? updateRoleV3Details : updateRoleDetails;
+    const useSCIM2RoleAPIV3: boolean = useSelector(
+            (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+    );
+
+    const updateRoleDetailsFunction = useSCIM2RoleAPIV3 ? updateRoleDetailsUsingV3Api  : updateRoleDetails;
 
     const {
         data: currentAPIResourcesListData,
@@ -452,7 +451,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
-        patchRolePermissions(role?.id, roleData)
+        updateRoleDetailsFunction(role?.id, roleData)
             .then(() => {
                 onRoleUpdate(tabIndex);
                 handleAlerts({

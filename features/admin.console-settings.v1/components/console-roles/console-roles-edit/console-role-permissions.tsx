@@ -37,10 +37,11 @@ import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import useGetAPIResourceCollections from "../../../api/use-get-api-resource-collections";
 import { ConsoleRolesOnboardingConstants } from "../../../constants/console-roles-onboarding-constants";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     APIResourceCollectionInterface,
     APIResourceCollectionPermissionCategoryInterface,
@@ -111,11 +112,11 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
         "apiResources"
     );
 
-    const entitlementConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.entitlement);
-    const hasEntitlementPermission = useRequiredScopes(entitlementConfig?.scopes?.update);
-
     const [ permissions, setPermissions ] = useState<CreateRolePermissionInterface[]>(undefined);
+
+    const useSCIM2RoleAPIV3: boolean = useSelector(
+        (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+    );
 
     const filteredTenantAPIResourceCollections: APIResourceCollectionResponseInterface = useMemo(() => {
 
@@ -127,9 +128,9 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
             cloneDeep(tenantAPIResourceCollections);
         const filteringAPIResourceCollectionNames: string[] = [];
 
-        if(!hasEntitlementPermission) {
+        if(!useSCIM2RoleAPIV3) {
             filteringAPIResourceCollectionNames.push(
-                ConsoleRolesOnboardingConstants.ENTITLEMENT_MANAGEMENT_ROLE_ID);
+                ConsoleRolesOnboardingConstants.ENTITLEMENT_MANAGEMENT_ROLE_ID);   
         }
 
         filteringAPIResourceCollectionNames.push(
@@ -154,9 +155,10 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
             cloneDeep(organizationAPIResourceCollections);
         const filteringAPIResourceCollectionNames: string[] = [];
 
-        if(!hasEntitlementPermission) {
+        if(!useSCIM2RoleAPIV3) {
             filteringAPIResourceCollectionNames.push(
-                ConsoleRolesOnboardingConstants.ORG_ENTITLEMENT_MANAGEMENT_ROLE_ID);
+            ConsoleRolesOnboardingConstants.ORG_ENTITLEMENT_MANAGEMENT_ROLE_ID);
+
         }
 
         filteringAPIResourceCollectionNames.push(
