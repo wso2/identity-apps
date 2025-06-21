@@ -43,7 +43,6 @@ import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
-    FeatureAccessConfigInterface,
     AlertLevels,
     IdentifiableComponentInterface,
     LoadableComponentInterface,
@@ -197,12 +196,13 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
 
-    const entitlementConfig: FeatureAccessConfigInterface = useSelector(
-            (state: AppState) => state?.config?.ui?.features?.entitlement);
-    const hasRoleV3UpdateScopes: boolean = useRequiredScopes(entitlementConfig?.scopes?.update);
-    const updateUserRoleAssignment = hasRoleV3UpdateScopes ? updateUsersForRole : updateRoleDetails;
-
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
+
+    const useSCIM2RoleAPIV3: boolean = useSelector(
+        (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+    );
+
+    const updateUsersForRoleFunction = useSCIM2RoleAPIV3 ? updateUsersForRole : updateRoleDetails;
 
     /**
      * Set users list.
@@ -289,7 +289,7 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                 schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
             };
 
-            return updateUserRoleAssignment(adminRoleId, roleData)
+            return updateUsersForRoleFunction(adminRoleId, roleData)
                 .then(() => {
                     dispatch(addAlert({
                         description: t("users:notifications.revokeAdmin.success.description"),

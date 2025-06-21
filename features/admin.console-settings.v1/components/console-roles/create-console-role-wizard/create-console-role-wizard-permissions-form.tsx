@@ -128,11 +128,11 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
         tenant: {}
     });
 
-    const entitlementConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.entitlement);
-    const hasEntitlementPermission = useRequiredScopes(entitlementConfig?.scopes?.update);
-
     const { isSubOrganization } = useGetCurrentOrganizationType();
+
+    const useSCIM2RoleAPIV3: boolean = useSelector(
+        (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+    );
 
     /**
      * Initializes the permission tree with any initial values.
@@ -169,7 +169,7 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
             cloneDeep(tenantAPIResourceCollections);
         const filteringAPIResourceCollectionNames: string[] = [];
 
-        if(!hasEntitlementPermission) {
+        if(!useSCIM2RoleAPIV3) {
             filteringAPIResourceCollectionNames.push(
                 ConsoleRolesOnboardingConstants.ENTITLEMENT_MANAGEMENT_ROLE_ID);
         }
@@ -201,9 +201,9 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
             cloneDeep(organizationAPIResourceCollections);
         const filteringAPIResourceCollectionNames: string[] = [];
 
-        if(!hasEntitlementPermission) {
+        if(!useSCIM2RoleAPIV3) {
             filteringAPIResourceCollectionNames.push(
-                ConsoleRolesOnboardingConstants.ORG_ENTITLEMENT_MANAGEMENT_ROLE_ID);
+            ConsoleRolesOnboardingConstants.ORG_ENTITLEMENT_MANAGEMENT_ROLE_ID);
         }
 
         filteringAPIResourceCollectionNames.push(

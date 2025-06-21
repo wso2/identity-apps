@@ -41,10 +41,10 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Grid, Header, Label, Modal } from "semantic-ui-react";
-import { createRole } from "../../api";
+import { createRole, createRoleUsingV3Api } from "../../api";
 import useGetRolesList from "../../api/use-get-roles-list";
 import { RoleAudienceTypes, RoleConstants } from "../../constants";
 import { ScopeInterface } from "../../models/apiResources";
@@ -56,6 +56,7 @@ import {
     SelectedPermissionsInterface
 } from "../../models/roles";
 import { RoleAPIResourcesListItem } from "../edit-role/edit-role-common/role-api-resources-list-item";
+import { AppState } from "@wso2is/admin.core.v1/store";
 
 interface ApplicationRoleWizardPropsInterface extends IdentifiableComponentInterface {
     application: ApplicationInterface;
@@ -101,6 +102,12 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
     const appId: string = path[path.length - 1].split("#")[0];
     const FORM_ID: string = "application-role-creation-form";
     const formRef: MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
+
+    const useSCIM2RoleAPIV3: boolean = useSelector(
+            (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+    );
+
+    const createRoleFunction = useSCIM2RoleAPIV3 ? createRoleUsingV3Api : createRole;
 
     const {
         data: subscribedAPIResourcesListData,
@@ -242,7 +249,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
         };
 
         // Create Role API Call.
-        createRole(roleData)
+        createRoleFunction(roleData)
             .then((response: AxiosResponse) => {
                 if (response.status === 201) {
                     dispatch(addAlert({

@@ -58,7 +58,7 @@ import { Dispatch } from "redux";
 import { Grid, Icon } from "semantic-ui-react";
 import { AutoCompleteRenderOption } from "./auto-complete-render-option";
 import { ApplicationRoleWizard } from "./wizard-updated/application-role-wizard";
-import { getApplicationRolesByAudience } from "../api/roles";
+import { getApplicationRolesByAudience, getApplicationRolesByAudienceV3} from "../api/roles";
 import { RoleAudienceTypes } from "../constants/role-constants";
 import {
     AssociatedRolesPatchObjectInterface,
@@ -128,6 +128,12 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
 
     const hasRoleCreatePermissions: boolean = useRequiredScopes(featureConfig?.userRoles?.scopes?.create);
 
+    const useSCIM2RoleAPIV3: boolean = useSelector(
+        (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+    );
+
+    const getApplicationRolesAudience = useSCIM2RoleAPIV3 ? getApplicationRolesByAudienceV3 : getApplicationRolesByAudience;
+
     /**
      * Fetch application roles on component load and audience switch.
      */
@@ -165,7 +171,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
      * Fetch application roles.
      */
     const getApplicationRoles = (shouldUpdateSelectedRolesList?: boolean): void => {
-        getApplicationRolesByAudience(roleAudience, appId, null, null, null,
+        getApplicationRolesAudience(roleAudience, appId, null, null, null,
             "users,groups,permissions,associatedApplications")
             .then((response: RolesV2ResponseInterface) => {
                 const rolesArray: BasicRoleInterface[] = [];

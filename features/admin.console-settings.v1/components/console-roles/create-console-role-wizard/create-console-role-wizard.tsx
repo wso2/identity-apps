@@ -17,7 +17,7 @@
  */
 
 import Typography from "@oxygen-ui/react/Typography";
-import { createRole } from "@wso2is/admin.roles.v2/api/roles";
+import { createRole, createRoleUsingV3Api } from "@wso2is/admin.roles.v2/api/roles";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { CreateRoleInterface, CreateRolePermissionInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -28,13 +28,14 @@ import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, MouseEvent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Modal, ModalProps } from "semantic-ui-react";
 import CreateConsoleRoleWizardBasicInfoForm from "./create-console-role-wizard-basic-info-form";
 import CreateConsoleRoleWizardPermissionsForm from "./create-console-role-wizard-permissions-form";
 import { ConsoleRolesOnboardingConstants } from "../../../constants/console-roles-onboarding-constants";
 import useConsoleSettings from "../../../hooks/use-console-settings";
+import { AppState } from "@wso2is/admin.core.v1/store";
 
 export interface CreateConsoleRoleWizardPropsInterface extends IdentifiableComponentInterface, ModalProps {
     onClose: (e: MouseEvent<HTMLElement>, data: ModalProps) => void;
@@ -64,6 +65,12 @@ const CreateConsoleRoleWizard: FunctionComponent<CreateConsoleRoleWizardPropsInt
 
     const [ permissions, setPermissions ] = useState<CreateRolePermissionInterface[]>([]);
 
+    const useSCIM2RoleAPIV3: boolean = useSelector(
+            (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+    );
+
+    const createRoleFunction = useSCIM2RoleAPIV3 ? createRoleUsingV3Api : createRole;
+
     /**
      * Handles the API resource creation.
      */
@@ -73,7 +80,7 @@ const CreateConsoleRoleWizard: FunctionComponent<CreateConsoleRoleWizardPropsInt
             return;
         }
 
-        createRole({
+        createRoleFunction({
             audience: {
                 display: consoleDisplayName,
                 type: RoleAudienceTypes.APPLICATION,

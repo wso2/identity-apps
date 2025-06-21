@@ -15,12 +15,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import {
-    FeatureAccessConfigInterface,
     AlertInterface,
     AlertLevels,
     IdentifiableComponentInterface
@@ -33,10 +30,11 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
-import { deleteRoleById, updateRoleDetails, updateRoleV3Details } from "../../api";
+import { deleteRoleById, deleteRoleByIdV3, updateRoleDetails, updateRoleDetailsUsingV3Api } from "../../api";
 import useGetRolesList from "../../api/use-get-roles-list";
 import { RoleAudienceTypes, RoleConstants, Schemas } from "../../constants";
 import { PatchRoleDataInterface, RoleBasicInterface, RoleEditSectionsInterface } from "../../models/roles";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { isMyAccountImpersonationRole } from "../role-utils";
 import { RoleDeleteErrorConfirmation } from "../wizard/role-delete-error-confirmation";
 
@@ -71,16 +69,17 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
         [ "data-componentid" ]: componentid
     } = props;
 
-    const userRoleV3Config: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.userV3Roles);
-    const hasRoleV3UpdateScopes: boolean = useRequiredScopes(userRoleV3Config?.scopes?.update);
-    const patchRoleDetails = hasRoleV3UpdateScopes ? updateRoleV3Details : updateRoleDetails;
-
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ showDeleteErrorConnectedAppsModal, setShowDeleteErrorConnectedAppsModal ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isUpdateButtonDisabled, setIsUpdateButtonDisabled ] = useState<boolean>(true);
     const [ roleNameSearchQuery, setRoleNameSearchQuery ] = useState<string>(undefined);
+
+    const useSCIM2RoleAPIV3: boolean = useSelector(
+            (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+        );
+
+    const updateRoleInformation = useSCIM2RoleAPIV3 ? updateRoleDetailsUsingV3Api : updateRoleDetails;
 
     const {
         data: rolesList,
@@ -118,7 +117,10 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
      * @param id - Role ID which needs to be deleted
      */
     const handleOnDelete = (): void => {
-        deleteRoleById(role.id).then(() => {
+
+        const deleteRoleFunction = useSCIM2RoleAPIV3 ? deleteRoleByIdV3 : deleteRoleById;
+
+        deleteRoleFunction(role.id).then(() => {
             handleAlerts({
                 description: t("roles:notifications.deleteRole.success.description"),
                 level: AlertLevels.SUCCESS,
@@ -177,7 +179,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
 
         setIsSubmitting(true);
 
-        patchRoleDetails(role.id, roleData)
+        updateRoleInformation(role.id, roleData)
             .then(() => {
                 onRoleUpdate(tabIndex);
                 handleAlerts({
