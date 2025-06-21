@@ -232,7 +232,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const entitlementConfig: FeatureAccessConfigInterface = useSelector(
                 (state: AppState) => state?.config?.ui?.features?.entitlement);
     const hasRoleV3UpdateScopes: boolean = useRequiredScopes(entitlementConfig?.scopes?.update);
-    const updateUserRoleAssignment = hasRoleV3UpdateScopes ? updateUsersForRole : updateRoleDetails;
+
+    const updateUserRoleAssignmentFunction = hasRoleV3UpdateScopes ? updateUsersForRole : updateRoleDetails;
 
     const isDistinctAttributeProfilesDisabled: boolean = featureConfig?.attributeDialects?.disabledFeatures?.includes(
         ClaimManagementConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG
