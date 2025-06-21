@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { CustomContentConfigInterface } from "../models/config";
+
 /**
  * Class containing ui constants.
  */
@@ -100,5 +102,9 @@ export class UIConstants {
     public static readonly CONSOLE_FEATURE_MAP: Record<string, string> = {
         "connections": "identityProviders",
         "roles": "userRoles"
+    };
+
+    public static readonly DEFAULT_CUSTOM_CONTENT_CONFIGS: CustomContentConfigInterface = {
+        maxFileSize: 1048576
     };
 }

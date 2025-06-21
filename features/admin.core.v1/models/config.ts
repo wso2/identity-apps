@@ -573,6 +573,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Async Operation Polling Interval.
      */
     asyncOperationStatusPollingInterval: number;
+    /**
+     * Custom content configurations.
+     */
+    customContent: CustomContentConfigInterface;
 }
 
 /**
@@ -671,4 +675,14 @@ export interface ResourceEndpointsInterface {
 
 export interface RouteConfigInterface {
     organizationEnabledRoutes: string[];
+}
+
+/**
+ * Interface for custom content configurations.
+ */
+export interface CustomContentConfigInterface {
+    /**
+     * Maximum file size allowed for custom content.
+     */
+    maxFileSize?: number;
 }

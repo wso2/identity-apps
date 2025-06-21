@@ -16,8 +16,10 @@
  * under the License.
  */
 
+import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { BrandingPreferenceInterface, PreviewScreenType } from "@wso2is/common.branding.v1/models";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -123,6 +125,8 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
         "branding.customLayoutEditor"
     );
     const [ wrapperElement, setWrapperElement ] = useState<HTMLDivElement>(null);
+    const customPageEditorFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP["CUSTOM_PAGE_EDITOR_FEATURE_ID"]);
 
     const {
         data: layoutBlob,
@@ -383,6 +387,124 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
         }
     };
 
+    /**
+     * Render the custom page editor preview section when the custom layout is activated.
+     *
+     * @returns ReactElement - Custom page editor preview section.
+     */
+    const renderCustomPageEditorPreview = (): ReactElement => (
+        <div className="branding-preference-preview-message" >
+            <EmptyPlaceholder
+                image={ CustomLayoutSuccessImg }
+                imageSize="small"
+                subtitle={
+                    [
+                        t("extensions:develop.branding.tabs.preview."
+                            + "info.layout.activatedMessage.subTitle"),
+                        <>
+                            { t("extensions:develop.branding.tabs.preview."
+                                + "info.layout.activatedMessage.description") }
+                            <DocumentationLink
+                                link={ getLink("develop.branding.layout.custom.learnMore") }
+                            >
+                                { t("common:learnMore") }
+                            </DocumentationLink>
+                        </>
+                    ]
+                }
+                title={ t("extensions:develop.branding.tabs.preview."
+                    + "info.layout.activatedMessage.title") }
+            />
+            {
+                isLayoutCustomizationFeatureDisabled ? (
+                    <div
+                        ref={ handleWrapperRef }
+                        className="floating-editor-button-container"
+                        data-componentid={ "custom-page-editor-button-container" }
+                    >
+                        {
+                            wrapperElement && (
+                                <Tooltip
+                                    position="top right"
+                                    disabled={ !!preference }
+                                    content={ t("branding:customPageEditor" +
+                                        ".brandingNotConfiguredTooltip") }
+                                    trigger={ (
+                                        <div>
+                                            <PrimaryButton
+                                                className="floating-editor-button"
+                                                onClick={ () =>
+                                                    setIsCustomLayoutEditorEnabled(true) }
+                                                disabled={ !preference }
+                                            >
+                                                { t("common:create") }
+                                            </PrimaryButton>
+                                        </div>
+                                    ) }
+                                    context={ wrapperElement }
+                                    mountNode={ wrapperElement }
+                                    size="large"
+                                />
+                            )
+                        }
+                    </div>
+                ) : null
+            }
+        </div>
+    );
+
+    /**
+     * Render the custom layout contact us preview section when the custom layout is not found.
+     *
+     * @returns ReactElement - Custom layout contact us preview section.
+     */
+    const renderCustomLayoutContactUsPreview = (): ReactElement => (
+        <div className="branding-preference-preview-message" >
+            <EmptyPlaceholder
+                image={ CustomLayoutWarningImg }
+                imageSize="small"
+                subtitle={
+                    layoutContext[0] === PredefinedLayouts.CUSTOM
+                        ? [
+                            t("extensions:develop.branding.tabs.preview."
+                                + "errors.layout.notFoundWithSupport.subTitle"),
+                            <Trans
+                                key={ 1 }
+                                i18nKey={ "extensions:develop.branding."
+                                    + "tabs.preview.errors.layout."
+                                    + "notFoundWithSupport.description" }
+                                tOptions={ {
+                                    supportEmail
+                                } }
+                            >
+                                Need a fully customized layout for your
+                                organization? Reach us out at <Link
+                                    data-componentid=
+                                        { "branding-preference-"
+                                        + "custom-request-mail-trigger" }
+                                    link={ `mailto:${ supportEmail }` }
+                                >
+                                    { supportEmail }
+                                </Link>
+                            </Trans>
+                        ]
+                        : [
+                            t("extensions:develop.branding.tabs."
+                                + "preview.errors.layout.notFound.subTitle")
+                        ]
+
+                }
+                title={
+                    layoutContext[0] === PredefinedLayouts.CUSTOM
+                        ? t("extensions:develop.branding.tabs.preview.errors."
+                            + "layout.notFoundWithSupport.title")
+                        : t("extensions:develop.branding.tabs.preview.errors."
+                            + "layout.notFound.title")
+                }
+            />
+        </div>
+    );
+
     return (
         <div
             className="branding-preference-preview-container"
@@ -425,111 +547,14 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
                         ? (
                             commonConfig.enableDefaultBrandingPreviewSection
                                 && layoutContext[0] === PredefinedLayouts.CUSTOM ? (
-                                    <div className="branding-preference-preview-message" >
-                                        <EmptyPlaceholder
-                                            image={ CustomLayoutSuccessImg }
-                                            imageSize="small"
-                                            subtitle={
-                                                [
-                                                    t("extensions:develop.branding.tabs.preview."
-                                                        + "info.layout.activatedMessage.subTitle"),
-                                                    <>
-                                                        { t("extensions:develop.branding.tabs.preview."
-                                                            + "info.layout.activatedMessage.description") }
-                                                        <DocumentationLink
-                                                            link={ getLink("develop.branding.layout.custom.learnMore") }
-                                                        >
-                                                            { t("common:learnMore") }
-                                                        </DocumentationLink>
-                                                    </>
-                                                ]
-                                            }
-                                            title={ t("extensions:develop.branding.tabs.preview."
-                                                + "info.layout.activatedMessage.title") }
-                                        />
-                                        {
-                                            isLayoutCustomizationFeatureDisabled ? (
-                                                <div
-                                                    ref={ handleWrapperRef }
-                                                    className="floating-editor-button-container"
-                                                >
-                                                    {
-                                                        wrapperElement && (
-                                                            <Tooltip
-                                                                position="top right"
-                                                                disabled={ !!preference }
-                                                                content={ t("branding:customPageEditor" +
-                                                                    ".brandingNotConfiguredTooltip") }
-                                                                trigger={ (
-                                                                    <div>
-                                                                        <PrimaryButton
-                                                                            className="floating-editor-button"
-                                                                            onClick={ () =>
-                                                                                setIsCustomLayoutEditorEnabled(true) }
-                                                                            disabled={ !preference }
-                                                                        >
-                                                                            { t("common:create") }
-                                                                        </PrimaryButton>
-                                                                    </div>
-                                                                ) }
-                                                                context={ wrapperElement }
-                                                                mountNode={ wrapperElement }
-                                                                size="large"
-                                                            />
-                                                        )
-                                                    }
-                                                </div>
-                                            ) : null
-                                        }
-                                    </div>
+                                    renderCustomPageEditorPreview()
                                 ) : (
                                     isErrorOccured
                                         ? (
-                                            <div className="branding-preference-preview-message" >
-                                                <EmptyPlaceholder
-                                                    image={ CustomLayoutWarningImg }
-                                                    imageSize="small"
-                                                    subtitle={
-                                                        layoutContext[0] === PredefinedLayouts.CUSTOM
-                                                            ? [
-                                                                t("extensions:develop.branding.tabs.preview."
-                                                                    + "errors.layout.notFoundWithSupport.subTitle"),
-                                                                <Trans
-                                                                    key={ 1 }
-                                                                    i18nKey={ "extensions:develop.branding."
-                                                                        + "tabs.preview.errors.layout."
-                                                                        + "notFoundWithSupport.description" }
-                                                                    tOptions={ {
-                                                                        supportEmail
-                                                                    } }
-                                                                >
-                                                                    Need a fully customized layout for your
-                                                                    organization? Reach us out at <Link
-                                                                        data-componentid=
-                                                                            { "branding-preference-"
-                                                                            + "custom-request-mail-trigger" }
-                                                                        link={ `mailto:${ supportEmail }` }
-                                                                    >
-                                                                        { supportEmail }
-                                                                    </Link>
-                                                                </Trans>
-                                                            ]
-                                                            : [
-                                                                t("extensions:develop.branding.tabs."
-                                                                    + "preview.errors.layout.notFound.subTitle")
-                                                            ]
-
-                                                    }
-                                                    title={
-                                                        layoutContext[0] === PredefinedLayouts.CUSTOM
-                                                            ? t("extensions:develop.branding.tabs.preview.errors."
-                                                                + "layout.notFoundWithSupport.title")
-                                                            : t("extensions:develop.branding.tabs.preview.errors."
-                                                                + "layout.notFound.title")
-                                                    }
-                                                />
-                                            </div>
-                                        ) : resolvePreviewScreen()
+                                            customPageEditorFeatureStatus === FeatureStatus.ENABLED
+                                                ? renderCustomPageEditorPreview()
+                                                : renderCustomLayoutContactUsPreview()
+                                        ): resolvePreviewScreen()
                                 )
                         ) : <ContentLoader data-componentid={ `${componentId}-loader` } />
                 }

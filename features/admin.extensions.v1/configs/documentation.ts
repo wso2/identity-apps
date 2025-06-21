@@ -260,6 +260,9 @@ export const getDocumentationLinksExtension = (): DocumentationLinksExtensionInt
                 },
                 layout: {
                     custom: {
+                        editor: {
+                            learnMore: undefined
+                        },
                         learnMore: undefined
                     }
                 },
