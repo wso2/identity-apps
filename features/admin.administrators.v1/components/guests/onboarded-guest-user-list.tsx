@@ -25,7 +25,7 @@ import { UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
-import { updateUsersForRole, updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
+import { updateRoleDetails, updateUsersForRole } from "@wso2is/admin.roles.v2/api/roles";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1";
 import { deleteGuestUser } from "@wso2is/admin.users.v1/api";
@@ -202,7 +202,8 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
         (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
     );
 
-    const updateUsersForRoleFunction = useSCIM2RoleAPIV3 ? updateUsersForRole : updateRoleDetails;
+    const updateUsersForRoleFunction: (roleId: string, data: PatchRoleDataInterface) => Promise<any> =
+        useSCIM2RoleAPIV3 ? updateUsersForRole : updateRoleDetails;
 
     /**
      * Set users list.
