@@ -26,6 +26,7 @@ import {
     BrandingPreferenceAPIResponseInterface,
     BrandingPreferenceTypes,
     BrandingSubFeatures,
+    PredefinedLayouts,
     PreviewScreenType,
     PreviewScreenVariationType
 } from "@wso2is/common.branding.v1/models/branding-preferences";
@@ -309,6 +310,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 ...brandingPreference.preference,
                 layout: {
                     ...brandingPreference.preference.layout,
+                    activeLayout: PredefinedLayouts.CUSTOM,
                     content: {
                         ...brandingPreference.preference.layout.content,
                         ...updatedContent
