@@ -215,7 +215,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         totalResults: 0
     });
     const useSCIM2RoleAPIV3: boolean = useSelector(
-        (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+        (state: AppState) => state?.config?.ui?.useSCIM2RoleAPIV3
     );
     const getRole: (roleId: string) => Promise<AxiosResponse> = useSCIM2RoleAPIV3 ? getRoleByIdV3 : getRoleById;
 
