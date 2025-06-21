@@ -31,12 +31,11 @@ import Paper from "@oxygen-ui/react/Paper";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronDownIcon } from "@oxygen-ui/react-icons";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
-import { useRequiredScopes } from "@wso2is/access-control";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { CreateRolePermissionInterface } from "@wso2is/admin.roles.v2/models/roles";
-import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
@@ -203,7 +202,7 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
 
         if(!useSCIM2RoleAPIV3) {
             filteringAPIResourceCollectionNames.push(
-            ConsoleRolesOnboardingConstants.ORG_ENTITLEMENT_MANAGEMENT_ROLE_ID);
+                ConsoleRolesOnboardingConstants.ORG_ENTITLEMENT_MANAGEMENT_ROLE_ID);
         }
 
         filteringAPIResourceCollectionNames.push(
