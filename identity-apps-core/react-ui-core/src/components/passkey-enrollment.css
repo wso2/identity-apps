@@ -15,33 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-import { Payload } from "./api";
-import { Base } from "./base";
-
-export type Widget = Base<WidgetExtendedConfig>;
-
-/**
- * Interface for the properties of a widget.
- */
-export interface WidgetExtendedConfig {
-    /**
-     * Version of the widget.
-     */
-    version?: string;
-    data: any;
-}
-
-export enum WidgetCategories {
-    Composite = "COMPOSITE",
-    Flow = "FLOW",
-    Security = "SECURITY",
-}
-
-export enum WidgetTypes {
-    IdentifierPassword = "IDENTIFIER_PASSWORD",
-    EmailOTP = "EMAIL_OTP",
-    GoogleFederation = "GOOGLE_FEDERATION",
-    SMSOTP = "SMS_OTP",
-    PasskeyEnrollment = "PASSKEY_ENROLLMENT"
+ 
+.passkey-enrollment-container {
+    text-align: center;
 }

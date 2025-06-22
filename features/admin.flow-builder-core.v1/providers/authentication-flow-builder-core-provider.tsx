@@ -79,7 +79,8 @@ const AuthenticationFlowBuilderCoreProvider = ({
         if (
             (resource.category === ResourceTypes.Step && resource.type === StepTypes.View) ||
             resource.resourceType === ResourceTypes.Template ||
-            resource.resourceType === ResourceTypes.Widget
+            resource.resourceType === ResourceTypes.Widget ||
+            resource.data?.showProperyPanel === false
         ) {
             setIsOpenResourcePropertiesPanel(false);
 
