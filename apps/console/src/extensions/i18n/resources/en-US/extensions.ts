@@ -1637,7 +1637,7 @@ export const extensions: Extensions = {
                                 description: "You can now incorporate a custom layout for login, "
                                     + "registration, and recovery pages. Refer to our "
                                     + "documentation for detailed instructions.",
-                                subTitle: "The custom layout has been successfully enabled.",
+                                subTitle: "The custom layout is ready to be enabled.",
                                 title: "Custom Layout"
                             }
                         }

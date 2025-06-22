@@ -213,6 +213,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             asyncOperationStatusPollingInterval: null,
             connectionResourcesUrl: "",
             cookiePolicyUrl: "",
+            customContent: {},
             emailTemplates: {
                 defaultLogoUrl: "",
                 defaultWhiteLogoUrl: ""

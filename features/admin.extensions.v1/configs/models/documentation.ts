@@ -307,6 +307,9 @@ interface BrandingDocumentationLinksInterface {
     }
     layout: {
         custom: {
+            editor: {
+                learnMore: string;
+            }
             learnMore: string;
         }
     }

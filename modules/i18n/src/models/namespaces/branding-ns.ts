@@ -279,6 +279,10 @@ export interface BrandingNS {
                 description: string;
                 message: string;
             };
+            errorContentSizeLimit: {
+                description: string;
+                message: string;
+            }
         };
     };
 }

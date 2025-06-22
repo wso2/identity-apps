@@ -370,6 +370,8 @@ export class Config {
                 window[ "AppUtils" ]?.getConfig()?.ui?.asyncOperationStatusPollingInterval,
             connectionResourcesUrl: window[ "AppUtils" ]?.getConfig()?.ui?.connectionResourcesUrl,
             cookiePolicyUrl: window[ "AppUtils" ]?.getConfig()?.ui?.cookiePolicyUrl,
+            customContent: window[ "AppUtils" ]?.getConfig()?.ui?.customContent ??
+                UIConstants.DEFAULT_CUSTOM_CONTENT_CONFIGS,
             emailTemplates: {
                 defaultLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultLogoUrl,
                 defaultWhiteLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultWhiteLogoUrl
