@@ -24,6 +24,7 @@
         "@babel/core": "^7.25.9",
         "@babel/preset-env": "^7.25.9",
         "@babel/preset-react": "^7.25.9",
+        "@svgr/webpack": "^8.1.0",
         "babel-loader": "^9.2.1",
         "css-loader": "6.4.0",
         "rimraf": "^3.0.2",
