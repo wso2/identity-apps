@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -2009,7 +2009,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
         },
         trustedTokenIssuer: {
             addWizard: {
-                subtitle: "Register a trusted token issuer to exchange its token for a token issued by {{productName}}",
+                subtitle: "Register a trusted token issuer to exchange its token for a token issued by {{productName}} ",
                 title: "Trusted token issuer"
             },
             forms: {
