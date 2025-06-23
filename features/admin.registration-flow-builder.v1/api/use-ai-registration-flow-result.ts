@@ -31,7 +31,7 @@ import { useEffect } from "react";
  * @param operationId - Operation ID.
  * @param registrationFlowGenerationCompleted - Registration flow generation completion status.
  *
- * @returns { RequestResultInterface<any, RequestErrorInterface> } Response.
+ * @returns The result of the registration flow generation result request.
  */
 const useAIRegistrationFlowGenerationResult = (
     operationId: string,
