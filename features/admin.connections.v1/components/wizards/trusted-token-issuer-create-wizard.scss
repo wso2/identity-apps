@@ -16,6 +16,10 @@
  * under the License.
  */
 
-.sub-title {
-    white-space: normal !important;
+.trusted-token-issuer-modal {
+    .wizard-header {
+        .sub-title {
+            white-space: normal !important;
+        }
+    }
 }
