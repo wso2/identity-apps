@@ -35,6 +35,7 @@ export interface Claim {
     required: boolean;
     supportedByDefault: boolean;
     uniquenessScope?: UniquenessScope;
+    inputFormat?: InputFormat
     sharedProfileValueResolvingMethod?: SharedProfileValueResolvingMethod;
     attributeMapping?: AttributeMapping[];
     properties?: Property[];
@@ -76,6 +77,14 @@ export interface Property{
 export interface LabelValue {
     label: string;
     value: string;
+}
+
+/**
+ * Type of input format for claims in the UI.
+ * This is used to determine how the claim should be rendered in the UI.
+ */
+export interface InputFormat {
+    inputType: string;
 }
 
 /**
@@ -197,4 +206,29 @@ export enum ClaimDataType {
     COMPLEX = "complex",
     OPTIONS = "options",
     TEXT = "text"
+}
+
+/**
+ * Enum representing the input formats for claims in the UI.
+ * - DROPDOWN: A dropdown selection.
+ * - RADIO_GROUP: A group of radio buttons.
+ * - MULTI_SELECT_DROPDOWN: A multi-select dropdown.
+ * - CHECKBOX: A checkbox input.
+ * - TEXT_INPUT: A single-line text input.
+ * - TEXTAREA: A multi-line text input.
+ * - DATE_PICKER: A date picker input.
+ * - NUMBER_INPUT: A numeric input field.
+ * - TOGGLE: A toggle switch input.
+ */
+export enum ClaimInputFormat {
+    DROPDOWN = "dropdown",
+    RADIO_GROUP = "radio_group",
+    CHECKBOX_GROUP = "checkbox_group",
+    MULTI_SELECT_DROPDOWN = "multi_select_dropdown",
+    CHECKBOX = "checkbox",
+    TEXT_INPUT = "text_input",
+    TEXTAREA = "textarea",
+    DATE_PICKER = "date_picker",
+    NUMBER_INPUT = "number_input",
+    TOGGLE = "toggle"
 }

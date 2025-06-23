@@ -491,6 +491,22 @@ export const claims: ClaimsNS = {
                 disabledConfigInfo: "Please note that below section is disabled as there is no " +
                     "external claim mapping found for this claim attribute."
             },
+            inputFormat: {
+                hint: "The input format of the attribute.",
+                label: "Input Format",
+                options: {
+                    checkBoxGroup: "Checkbox Group",
+                    checkbox: "Checkbox",
+                    datePicker: "Date Picker",
+                    dropdown: "Dropdown",
+                    multiSelectDropdown: "Multi-Select Dropdown",
+                    numberInput: "Number Input",
+                    radioGroup: "Radio Group",
+                    textArea: "Text Area",
+                    textInput: "Text Input",
+                    toggle: "Toggle"
+                }
+            },
             multiValued: {
                 label: "Allow multiple values for this attribute",
                 placeholder: "Select a user attribute"

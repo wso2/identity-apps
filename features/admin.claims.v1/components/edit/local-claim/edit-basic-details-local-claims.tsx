@@ -50,6 +50,7 @@ import {
     Claim,
     ClaimDataType,
     ClaimDialect,
+    ClaimInputFormat,
     ExternalClaim,
     ProfileSchemaInterface,
     SharedProfileValueResolvingMethod,
@@ -142,6 +143,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const [ hasMapping, setHasMapping ] = useState<boolean>(false);
     const [ mappingChecked, setMappingChecked ] = useState<boolean>(false);
     const [ dataType, setDataType ] = useState<string>(claim?.dataType || "");
+    const [ inputType, setInputType ] = useState<string>(claim?.inputFormat?.inputType || ClaimInputFormat.TEXT_INPUT);
+    const [ multiValued, setMultiValued ] = useState<boolean>(claim?.multiValued || false);
     const [ subAttributes, setSubAttributes ] = useState<string[]>([]);
     const [ canonicalValues, setCanonicalValues ] = useState<KeyValue[]>();
 
@@ -303,6 +306,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             setDataType(claim?.dataType || ClaimDataType.STRING);
         }
 
+        setInputType(claim?.inputFormat?.inputType || ClaimInputFormat.TEXT_INPUT);
         setIsConsoleRequired(claim?.profiles?.console?.required ?? claim?.required);
         setIsEndUserRequired(claim?.profiles?.endUser?.required ?? claim?.required);
         setIsSelfRegistrationRequired(claim?.profiles?.selfRegistration?.required ?? claim?.required);
@@ -677,6 +681,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     : claim?.displayName,
                 displayOrder: attributeConfig.editAttributes.getDisplayOrder(
                     claim.displayOrder, values.displayOrder?.toString()),
+                inputFormat: inputType ? { inputType: inputType } : claim?.inputFormat,
                 multiValued: values?.multiValued !== undefined
                     ? !!values.multiValued : claim?.multiValued,
                 properties: claim?.properties,
@@ -725,6 +730,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     : claim?.displayName,
                 displayOrder: attributeConfig.editAttributes.getDisplayOrder(
                     claim.displayOrder, values.displayOrder?.toString()),
+                inputFormat: inputType ? { inputType: inputType } : claim?.inputFormat,
                 multiValued: values?.multiValued !== undefined
                     ? !!values.multiValued : claim?.multiValued,
                 profiles: {
@@ -891,6 +897,101 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 </TableCell>
             </TableRow>
         );
+    };
+
+    const setDefaultInputTypeForDataType = (dataType: ClaimDataType, multiValued: boolean): void => {
+
+        switch (dataType) {
+            case ClaimDataType.OPTIONS:
+                if (multiValued) {
+                    setInputType(ClaimInputFormat.MULTI_SELECT_DROPDOWN);
+                } else {
+                    setInputType(ClaimInputFormat.DROPDOWN);
+                }
+
+                break;
+            case ClaimDataType.INTEGER:
+                setInputType(ClaimInputFormat.NUMBER_INPUT);
+
+                break;
+            case ClaimDataType.BOOLEAN:
+                setInputType(ClaimInputFormat.CHECKBOX);
+
+                break;
+            case ClaimDataType.DATE_TIME:
+                setInputType(ClaimInputFormat.DATE_PICKER);
+
+                break;
+            default:
+                setInputType(ClaimInputFormat.TEXT_INPUT);
+        }
+    };
+
+    const getFieldTypeOptions = (dataType: ClaimDataType, multiValued: boolean): DropDownItemInterface[] => {
+        const base: DropDownItemInterface[] = [
+            { text: t("claims:local.forms.inputFormat.options.textInput"), value: ClaimInputFormat.TEXT_INPUT }
+        ];
+
+        if (dataType === ClaimDataType.DATE_TIME) {
+            return [
+                ...base,
+                {
+                    text: t("claims:local.forms.inputFormat.options.datePicker"),
+                    value: ClaimInputFormat.DATE_PICKER
+                }
+            ];
+        }
+
+        if (dataType === ClaimDataType.OPTIONS) {
+            if (multiValued) {
+                return [
+                    {
+                        text: t("claims:local.forms.inputFormat.options.multiSelectDropdown"),
+                        value: ClaimInputFormat.MULTI_SELECT_DROPDOWN
+                    },
+                    {
+                        text: t("claims:local.forms.inputFormat.options.checkBoxGroup"),
+                        value: ClaimInputFormat.CHECKBOX
+                    }
+                ];
+            }
+
+            return [
+                {
+                    text: t("claims:local.forms.inputFormat.options.radioGroup"),
+                    value: ClaimInputFormat.RADIO_GROUP
+                },
+                {
+                    text: t("claims:local.forms.inputFormat.options.dropdown"),
+                    value: ClaimInputFormat.DROPDOWN
+                }
+            ];
+        }
+
+        if (dataType === ClaimDataType.INTEGER) {
+            return [
+                ...base,
+                {
+                    text: t("claims:local.forms.inputFormat.options.numberInput"),
+                    value: ClaimInputFormat.NUMBER_INPUT
+                }
+            ];
+        }
+
+        if (dataType === ClaimDataType.BOOLEAN) {
+            return [
+                {
+                    text: t("claims:local.forms.inputFormat.options.checkbox"),
+                    value: ClaimInputFormat.CHECKBOX
+                },
+                {
+                    text: t("claims:local.forms.inputFormat.options.toggle"),
+                    value: ClaimInputFormat.TOGGLE
+                }
+            ];
+        }
+
+        return base;
     };
 
     const resolveAttributeRequiredRow = (): ReactElement => {
@@ -1124,6 +1225,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             setSubAttributes([]);
                             setCanonicalValues([]);
                             setDataType(data.value);
+                            setDefaultInputTypeForDataType(data.value as ClaimDataType, multiValued);
                         } }
                     />
 
@@ -1208,6 +1310,28 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 ? t("claims:local.forms.multiValuedSystemClaimHint")
                                 : t("claims:local.forms.multiValuedHint") }
                             readOnly={ isSubOrganization() || isSystemClaim || isReadOnly }
+                            listen={ (checked: boolean) => {
+                                setMultiValued(checked);
+                                setDefaultInputTypeForDataType(dataType as ClaimDataType, checked);
+                            } }
+                        />
+                    ) }
+                    { dataType !== ClaimDataType.COMPLEX && (
+                        <Field.Dropdown
+                            ariaLabel={ t("claims:local.forms.inputFormat.label") }
+                            name="inputFormat"
+                            label={ t("claims:local.forms.inputFormat.label") }
+                            data-testid={ `${testId}-form-input-format-input` }
+                            hint={ t("claims:local.forms.inputFormat.hint") }
+                            disabled={ isSubOrganization() || isReadOnly }
+                            options={ getFieldTypeOptions(dataType as ClaimDataType, multiValued) }
+                            value={ inputType }
+                            onChange={ (
+                                event: React.SyntheticEvent<HTMLElement, Event>,
+                                data: { value: string }
+                            ) => {
+                                setInputType(data.value);
+                            } }
                         />
                     ) }
                     { !attributeConfig.localAttributes.createWizard.showRegularExpression && !hideSpecialClaims
