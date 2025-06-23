@@ -43,7 +43,7 @@ const useAIRegistrationFlowGenerationResult = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ store.getState().config.endpoints.registrationFlow }/result/${ operationId }`
+        url: `${ store.getState().config.endpoints.registrationFlowAI }/result/${ operationId }`
     };
 
     const { data, error, isLoading, isValidating, mutate } = useRequest<any,
