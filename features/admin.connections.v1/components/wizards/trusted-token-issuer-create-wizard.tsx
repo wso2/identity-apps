@@ -632,7 +632,7 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                             { title }
                             { subTitle && (
                                 <Heading as="h6" className="sub-title">
-                                    { subTitle }
+                                    { subTitle }{ " " }
                                     { resolveDocumentationLink() }
                                 </Heading>
                             ) }

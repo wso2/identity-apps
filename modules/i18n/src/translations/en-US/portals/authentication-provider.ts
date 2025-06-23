@@ -2009,7 +2009,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
         },
         trustedTokenIssuer: {
             addWizard: {
-                subtitle: "Register a trusted token issuer to exchange its token for a token issued by {{productName}} ",
+                subtitle: "Register a trusted token issuer to exchange its token for a token issued by {{productName}}",
                 title: "Trusted token issuer"
             },
             forms: {
