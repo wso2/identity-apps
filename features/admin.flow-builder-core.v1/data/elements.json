@@ -156,7 +156,7 @@
         "display": {
             "label": "reCAPTCHA",
             "image": "https://www.gstatic.com/recaptcha/api2/logo_48.png",
-            "showOnResourcePanel": false
+            "showOnResourcePanel": true
         },
         "config": {
             "version": 2
