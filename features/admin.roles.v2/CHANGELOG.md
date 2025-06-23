@@ -1,5 +1,11 @@
 # @wso2is/admin.roles.v2
 
+## 2.27.156
+
+### Patch Changes
+
+- [#8368](https://github.com/wso2/identity-apps/pull/8368) [`83f5c5dd630c7c639f30b41fac3411481a19790e`](https://github.com/wso2/identity-apps/commit/83f5c5dd630c7c639f30b41fac3411481a19790e) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix broken i18n in role wizard
+
 ## 2.27.155
 
 ### Patch Changes

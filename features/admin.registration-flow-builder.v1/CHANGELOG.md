@@ -1,5 +1,11 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.7.2
+
+### Patch Changes
+
+- [#8367](https://github.com/wso2/identity-apps/pull/8367) [`dc3301d821fbe0e0775864696099c06edb5d6871`](https://github.com/wso2/identity-apps/commit/dc3301d821fbe0e0775864696099c06edb5d6871) Thanks [@KD23243](https://github.com/KD23243)! - Update registration ai endpoint url
+
 ## 0.7.1
 
 ### Patch Changes
