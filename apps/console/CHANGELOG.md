@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.62.5
+
+### Patch Changes
+
+- [#8373](https://github.com/wso2/identity-apps/pull/8373) [`a3907cedff3ec126cea2f5174221ddb71a0ad644`](https://github.com/wso2/identity-apps/commit/a3907cedff3ec126cea2f5174221ddb71a0ad644) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix text overflow issue in trusted token issuer sub header
+
+- Updated dependencies [[`a3907cedff3ec126cea2f5174221ddb71a0ad644`](https://github.com/wso2/identity-apps/commit/a3907cedff3ec126cea2f5174221ddb71a0ad644)]:
+  - @wso2is/admin.connections.v1@2.33.97
+
 ## 2.62.4
 
 ### Patch Changes
