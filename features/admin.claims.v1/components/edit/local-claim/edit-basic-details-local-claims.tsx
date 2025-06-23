@@ -927,7 +927,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         }
     };
 
-    const getFieldTypeOptions = (dataType: ClaimDataType, multiValued: boolean): DropDownItemInterface[] => {
+    const resolveInputFormatOptions = (dataType: ClaimDataType, multiValued: boolean): DropDownItemInterface[] => {
+
         const base: DropDownItemInterface[] = [
             { text: t("claims:local.forms.inputFormat.options.textInput"), value: ClaimInputFormat.TEXT_INPUT }
         ];
@@ -1324,7 +1325,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             data-testid={ `${testId}-form-input-format-input` }
                             hint={ t("claims:local.forms.inputFormat.hint") }
                             disabled={ isSubOrganization() || isReadOnly }
-                            options={ getFieldTypeOptions(dataType as ClaimDataType, multiValued) }
+                            options={ resolveInputFormatOptions(dataType as ClaimDataType, multiValued) }
                             value={ inputType }
                             onChange={ (
                                 event: React.SyntheticEvent<HTMLElement, Event>,

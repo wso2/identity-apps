@@ -212,6 +212,7 @@ export enum ClaimDataType {
  * Enum representing the input formats for claims in the UI.
  * - DROPDOWN: A dropdown selection.
  * - RADIO_GROUP: A group of radio buttons.
+ * - CHECKBOX_GROUP: A group of checkboxes.
  * - MULTI_SELECT_DROPDOWN: A multi-select dropdown.
  * - CHECKBOX: A checkbox input.
  * - TEXT_INPUT: A single-line text input.
