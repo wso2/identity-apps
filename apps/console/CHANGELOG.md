@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.62.4
+
+### Patch Changes
+
+- [#8368](https://github.com/wso2/identity-apps/pull/8368) [`83f5c5dd630c7c639f30b41fac3411481a19790e`](https://github.com/wso2/identity-apps/commit/83f5c5dd630c7c639f30b41fac3411481a19790e) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix broken i18n in role wizard
+
+* [#8367](https://github.com/wso2/identity-apps/pull/8367) [`dc3301d821fbe0e0775864696099c06edb5d6871`](https://github.com/wso2/identity-apps/commit/dc3301d821fbe0e0775864696099c06edb5d6871) Thanks [@KD23243](https://github.com/KD23243)! - Update registration ai endpoint url
+
+* Updated dependencies [[`83f5c5dd630c7c639f30b41fac3411481a19790e`](https://github.com/wso2/identity-apps/commit/83f5c5dd630c7c639f30b41fac3411481a19790e)]:
+  - @wso2is/admin.roles.v2@2.27.156
+
 ## 2.62.3
 
 ### Patch Changes
