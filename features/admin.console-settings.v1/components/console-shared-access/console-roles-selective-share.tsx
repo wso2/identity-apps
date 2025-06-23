@@ -108,19 +108,26 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
     }, [ originalOrganizationTree ]);
 
     useEffect(() => {
-        // If the console roles are fetched, that means they are already shared with the organization.
-        if (consoleRoles?.Resources?.length > 0) {
+        if (
+            originalOrganizationTree?.organizations?.length > 0 &&
+            consoleRoles?.Resources?.length > 0
+        ) {
             const rootRoles: SelectedOrganizationRoleInterface[] = consoleRoles.Resources.map(
-                (role: OrganizationRoleInterface) => ({
+                (role: SelectedOrganizationRoleInterface) => ({
                     ...role,
                     selected: true
                 }));
 
-            setRoleSelections({
-                [organizationId]: rootRoles
-            });
+            const computedRoleSelections: Record<string, SelectedOrganizationRoleInterface[]> =
+            computeInitialRoleSelections(
+                originalOrganizationTree.organizations,
+                organizationId,
+                rootRoles
+            );
+
+            setRoleSelections(computedRoleSelections);
         }
-    }, [ consoleRoles ]);
+    }, [ originalOrganizationTree, consoleRoles ]);
 
     useEffect(() => {
         if (originalOrganizationTreeFetchRequestError) {
@@ -215,74 +222,38 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
         });
     };
 
-    const resolveAvailableRoles = (orgId: string): void => {
-        setSelectedOrgId(orgId);
+    const computeInitialRoleSelections = (
+        orgs: OrganizationInterface[],
+        rootId: string,
+        rootRoles: SelectedOrganizationRoleInterface[]
+    ): Record<string, SelectedOrganizationRoleInterface[]> => {
+        const roleMap: Record<string, SelectedOrganizationRoleInterface[]> = {
+            [rootId]: rootRoles
+        };
 
-        const allOrgs: OrganizationInterface[] = [ ...originalOrganizationTree.organizations ];
+        const buildRolesForChildren = (parentId: string) => {
+            const parentRoles: SelectedOrganizationRoleInterface[] = roleMap[parentId];
 
-        const selectedOrg: OrganizationInterface = allOrgs.find((org: OrganizationInterface) => org.id === orgId);
+            orgs?.filter((org: OrganizationInterface) => org.parentId === parentId)
+                .forEach((childOrg:OrganizationInterface) => {
+                    const inheritedRoles: SelectedOrganizationRoleInterface[] = parentRoles.filter(
+                        (role: SelectedOrganizationRoleInterface) => role.selected);
 
-        if (!selectedOrg) return;
-
-        if (orgId === organizationId) {
-            setSelectedOrgName(organizationName);
-        } else {
-            setSelectedOrgName(selectedOrg.name);
-        }
-
-        const parentId: string = selectedOrg.parentId;
-        const parentRoles: SelectedOrganizationRoleInterface[] = roleSelections[parentId];
-
-        if (!parentRoles) return;
-
-        const inheritedRoles: SelectedOrganizationRoleInterface[] = parentRoles.filter(
-            (role: SelectedOrganizationRoleInterface) => role.selected);
-
-        // If the org is already present in roleSelections, cherry-pick the inherited roles
-        // If the roleSelections have roles which are not in inherited roles, remove them
-        // If the inherited roles have roles which are not in roleSelections, add them
-        if (roleSelections[orgId]) {
-            const currentRoles: SelectedOrganizationRoleInterface[] = roleSelections[orgId];
-
-            // Remove roles that are not in inherited roles
-            const updatedRoles: SelectedOrganizationRoleInterface[] = currentRoles.filter(
-                (role: SelectedOrganizationRoleInterface) => inheritedRoles.some(
-                    (inheritedRole: SelectedOrganizationRoleInterface) => inheritedRole.displayName === role.displayName
-                ));
-
-            // Add inherited roles that are not already selected
-            // If the organization has the role in roles array, it should be selected by default
-            inheritedRoles.forEach((inheritedRole: SelectedOrganizationRoleInterface) => {
-                if (!updatedRoles.some(
-                    (role: SelectedOrganizationRoleInterface) => role.displayName === inheritedRole.displayName)) {
-                    updatedRoles.push({
-                        ...inheritedRole,
-                        selected: selectedOrg.roles?.some(
-                            (role: OrganizationRoleInterface) => role.displayName === inheritedRole.displayName
+                    roleMap[childOrg.id] = inheritedRoles.map((role: SelectedOrganizationRoleInterface) => ({
+                        ...role,
+                        selected: childOrg.roles?.some(
+                            (orgRole: OrganizationRoleInterface) => orgRole.displayName === role.displayName
                         ) || false
-                    });
-                }
-            });
+                    }));
 
-            setRoleSelections((prev: Record<string, SelectedOrganizationRoleInterface[]>) => ({
-                ...prev,
-                [orgId]: updatedRoles
-            }));
+                    // Recursive call for next level
+                    buildRolesForChildren(childOrg.id);
+                });
+        };
 
-            return;
-        }
+        buildRolesForChildren(rootId);
 
-        // If the org is not present in roleSelections, assign inherited roles directly
-        // If the organization has the role in roles array, it should be selected by default
-        setRoleSelections((prev: Record<string, SelectedOrganizationRoleInterface[]>) => ({
-            ...prev,
-            [orgId]: inheritedRoles.map((roles: SelectedOrganizationRoleInterface) => ({
-                ...roles,
-                selected:  selectedOrg.roles?.some(
-                    (role: OrganizationRoleInterface) => role.displayName === roles.displayName
-                ) || false
-            }))
-        }));
+        return roleMap;
     };
 
     return (
@@ -296,18 +267,18 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
             closeOnEscape
         >
             <Modal.Header className="wizard-header">
-                Select Roles for Organization { selectedOrgName }
+                { `${t("consoleSettings:sharedAccess.selectRolesForOrganization")} - ${selectedOrgName}` }
             </Modal.Header>
             <Modal.Content className="roles-selective-share-modal-content" scrolling>
                 <Grid container rowSpacing={ 2 }>
                     <Grid xs={ 6 }>
                         <Heading as="h5" className="wizard-sub-header">
-                            Organizations
+                            { t("consoleSettings:sharedAccess.organizations") }
                         </Heading>
                     </Grid>
                     <Grid xs={ 6 }>
                         <Heading as="h5" className="wizard-sub-header">
-                            Available Roles
+                            { t("consoleSettings:sharedAccess.availableRoles") }
                         </Heading>
                     </Grid>
                     <Grid container xs={ 6 } paddingRight={ 2 } marginTop={ 1 }>
@@ -315,8 +286,12 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
                             <RichTreeView
                                 items={ organizationTree }
                                 defaultSelectedItems={ [ organizationName ] }
-                                onItemClick={ (event: SyntheticEvent, item: string) => {
-                                    resolveAvailableRoles(item);
+                                onItemClick={ (_e: SyntheticEvent, itemId: string) => {
+                                    setSelectedOrgId(itemId);
+                                    const org: OrganizationInterface = originalOrganizationTree?.organizations?.find(
+                                        (org: OrganizationInterface) => org.id === itemId);
+
+                                    setSelectedOrgName(org?.name || organizationName);
                                 } }
                             />
                         </Box>
@@ -331,7 +306,9 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
                                                 <TableCell>
                                                     <Checkbox
                                                         checked={ role.selected }
-                                                        onChange={ (_e: ChangeEvent<HTMLInputElement>) => {
+                                                        onChange={ (
+                                                            _e: ChangeEvent<HTMLInputElement>
+                                                        ) => {
                                                             const updatedRoles: SelectedOrganizationRoleInterface[]
                                                             = roleSelections[selectedOrgId].map(
                                                                 (r: SelectedOrganizationRoleInterface) => {

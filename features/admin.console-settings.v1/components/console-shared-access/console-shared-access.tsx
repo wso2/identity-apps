@@ -42,12 +42,14 @@ import { AlertLevels,
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, Text } from "@wso2is/react-components";
+import isEmpty from "lodash-es/isEmpty";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import ConsoleRolesSelectiveShare from "./console-roles-selective-share";
 import ConsoleRolesShareWithAll from "./console-roles-share-with-all";
+import useGetApplicationShare from "../../api/use-get-application-share";
 import useConsoleRoles from "../../hooks/use-console-roles";
 import useConsoleSettings from "../../hooks/use-console-settings";
 import { ApplicationSharingPolicy, RoleSharedAccessModes, RoleSharingModes } from "../../models/shared-access";
@@ -91,12 +93,30 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
         "displayName eq Administrator"
     );
 
+    const {
+        data: originalOrganizationTree,
+        isLoading: isOrganizationTreeFetchRequestLoading,
+        error:  originalOrganizationTreeFetchRequestError
+    } = useGetApplicationShare(
+        consoleId,
+        !isEmpty(consoleId)
+    );
+
     const [ sharedAccessMode, setSharedAccessMode ] = useState<RoleSharedAccessModes>(
         RoleSharedAccessModes.SHARE_ALL_ROLES_WITH_ALL_ORGS);
     const [ isManageSharingModalOpen, setIsManageSharingModalOpen ] = useState<boolean>(false);
     const [ selectedRoles, setSelectedRoles ] = useState<RolesInterface[]>([]);
     const [ selectedOrgsAndRoles, setSelectedOrgsAndRoles ]
         = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
+
+    /**
+     * If the Administrator role is fetched, set it as the selected role.
+     */
+    useEffect(() => {
+        if (administratorRole?.Resources?.length > 0) {
+            setSelectedRoles([ administratorRole?.Resources[0] ]);
+        }
+    }, [ administratorRole ]);
 
     /**
      * If the Administrator role is not fetched, show an error.
@@ -113,13 +133,19 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
     }, [ consoleRolesFetchRequestError ]);
 
     /**
-     * If the Administrator role is fetched, set it as the selected role.
+     * If the organization tree is not fetched, show an error.
      */
     useEffect(() => {
-        if (administratorRole?.Resources?.length > 0) {
-            setSelectedRoles([ administratorRole?.Resources[0] ]);
+        if (originalOrganizationTreeFetchRequestError) {
+            dispatch(
+                addAlert({
+                    description: t("consoleSettings:sharedAccess.notifications.fetchOrgTree.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("consoleSettings:sharedAccess.notifications.fetchOrgTree.genericError.message")
+                })
+            );
         }
-    }, [ administratorRole ]);
+    }, [ isOrganizationTreeFetchRequestLoading ]);
 
     const shareAllRolesWithAllOrgs = (): void => {
         const data: ShareApplicationWithAllOrganizationsDataInterface = {
@@ -195,13 +221,16 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                 const selectedRoles: RoleSharingRoleInterface[] = roles
                     .filter((role: SelectedOrganizationRoleInterface) => role.selected)
                     .map((role: SelectedOrganizationRoleInterface) => ({
-                        audience: role.audience,
+                        audience: {
+                            display: role.audience.display,
+                            type: role.audience.type
+                        },
                         displayName: role.displayName
                     }));
 
                 return {
                     orgId,
-                    policy: ApplicationSharingPolicy.ALL_EXISTING_AND_FUTURE_ORGS, // To be updated
+                    policy: ApplicationSharingPolicy.SELECTED_ORG_ONLY,
                     roleSharing: {
                         mode: RoleSharingModes.SELECTED,
                         roles: selectedRoles

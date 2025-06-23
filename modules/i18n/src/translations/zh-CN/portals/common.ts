@@ -170,6 +170,8 @@ export const common: CommonNS = {
     "search": "搜索",
     "searching": "搜索",
     "security": "安全",
+    "selectAll": "选择全部",
+    "selectNone": "选择无",
     "services": "服务",
     "settings": "设置",
     "setup": "设置",

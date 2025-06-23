@@ -24,7 +24,6 @@ import Button from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
 import TextField from "@oxygen-ui/react/TextField";
 import { useRequiredScopes } from "@wso2is/access-control";
-import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     AlertLevels,
@@ -49,7 +48,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps } from "semantic-ui-react";
+import { ConsoleRolesOnboardingConstants } from "../../constants/console-roles-onboarding-constants";
 import useConsoleRoles from "../../hooks/use-console-roles";
+import "./console-roles-share-with-all.scss";
 
 /**
  * Props interface for the ConsoleRolesShareWithAll component.
@@ -57,6 +58,7 @@ import useConsoleRoles from "../../hooks/use-console-roles";
 interface ConsoleRolesShareWithAllPropsInterface extends IdentifiableComponentInterface {
     selectedRoles: RolesInterface[];
     setSelectedRoles: (roles: RolesInterface[]) => void;
+    administratorRole: RolesInterface
 }
 
 /**
@@ -69,6 +71,7 @@ const ConsoleRolesShareWithAll: FunctionComponent<ConsoleRolesShareWithAllPropsI
 ): ReactElement => {
     const {
         ["data-componentid"]: componentId = "console-roles-share-with-all",
+        administratorRole,
         selectedRoles,
         setSelectedRoles
     } = props;
@@ -105,7 +108,7 @@ const ConsoleRolesShareWithAll: FunctionComponent<ConsoleRolesShareWithAllPropsI
         isConsoleRolesFetchRequestLoading
     } = useConsoleRoles(
         true,
-        UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+        100,
         null,
         searchQuery
     );
@@ -126,9 +129,9 @@ const ConsoleRolesShareWithAll: FunctionComponent<ConsoleRolesShareWithAllPropsI
         if (consoleRolesFetchRequestError) {
             dispatch(
                 addAlert({
-                    description: t("roles:notifications.fetchRoles.genericError.description"),
+                    description: consoleRolesFetchRequestError ?? t("roles:notifications.fetchRoles.error.description"),
                     level: AlertLevels.ERROR,
-                    message: t("roles:notifications.fetchRoles.genericError.message")
+                    message: t("roles:notifications.fetchRoles.error.message")
                 })
             );
         }
@@ -142,18 +145,30 @@ const ConsoleRolesShareWithAll: FunctionComponent<ConsoleRolesShareWithAllPropsI
         <>
             {
                 !isReadOnly && (
-                    <Text className="mb-0" muted subHeading size={ 12 }>
+                    <Text
+                        className="mb-0"
+                        subHeading
+                        size={ 12 }
+                        muted
+                    >
                         <Button
                             variant="text"
                             size="small"
                             tabIndex={ 6 }
                             disabled={ isSelectAllDisabled }
-                            onClick={ () => setSelectedRoles(consoleRoles?.Resources ?? []) }
+                            onClick={ () => {
+                                // combine the previous selected roles with the new roles
+                                const newRoles: RolesInterface[] = consoleRoles?.Resources?.filter(
+                                    (role: RolesInterface) => !selectedRoles.some(
+                                        (r: RolesInterface) => r.id === role.id)
+                                );
+
+                                // return the combined roles
+                                setSelectedRoles([ ...selectedRoles, ...newRoles ]);
+                            } }
                         >
                             {
-                                t("extensions:develop.applications.edit." +
-                                "sections.apiAuthorization.sections." +
-                                "apiSubscriptions.scopesSection.selectAll" )
+                                t("common:selectAll" )
                             }
                         </Button>
                         |
@@ -162,13 +177,12 @@ const ConsoleRolesShareWithAll: FunctionComponent<ConsoleRolesShareWithAllPropsI
                             size="small"
                             tabIndex={ 7 }
                             disabled={ isSelectNoneDisabled }
-                            onClick={ () => setSelectedRoles([]) }
+                            onClick={ () => setSelectedRoles(
+                                administratorRole ? [ administratorRole ] : []
+                            ) }
                         >
                             {
-                                t("extensions:develop.applications.edit." +
-                                "sections.apiAuthorization.sections." +
-                                "apiSubscriptions.scopesSection." +
-                                "selectNone" )
+                                t("common:selectNone" )
                             }
                         </Button>
                     </Text>
@@ -178,6 +192,7 @@ const ConsoleRolesShareWithAll: FunctionComponent<ConsoleRolesShareWithAllPropsI
                 fullWidth
                 multiple
                 data-componentid={ `${componentId}-autocomplete` }
+                className="console-roles-share-with-all-autocomplete"
                 loading={ isConsoleRolesFetchRequestLoading || isSearching }
                 placeholder={ t("consoleSettings:sharedAccess.modes.shareWithSelectedPlaceholder") }
                 options={ consoleRoles?.Resources ?? [] }
@@ -187,6 +202,9 @@ const ConsoleRolesShareWithAll: FunctionComponent<ConsoleRolesShareWithAllPropsI
                 } }
                 disableClearable={ true }
                 disabled={ isReadOnly }
+                getOptionDisabled={ (option: RolesInterface) => {
+                    return option.displayName === ConsoleRolesOnboardingConstants.ADMINISTRATOR;
+                } }
                 noOptionsText={ t("common:noResultsFound") }
                 getOptionLabel={ (dropdownOption: DropdownProps) =>
                     dropdownOption?.displayName }
@@ -199,7 +217,7 @@ const ConsoleRolesShareWithAll: FunctionComponent<ConsoleRolesShareWithAllPropsI
                     <TextField
                         { ...params }
                         size="medium"
-                        placeholder="Type to search for roles"
+                        placeholder={ t("consoleSettings:sharedAccess.searchAvailableRolesPlaceholder") }
                         data-componentid={ `${componentId}-role-search-input` }
                         onChange={ (event: ChangeEvent<HTMLInputElement>) => {
                             const value: string = event.target.value.trim();
@@ -220,11 +238,12 @@ const ConsoleRolesShareWithAll: FunctionComponent<ConsoleRolesShareWithAllPropsI
                             label={ option.displayName }
                             variant={
                                 selectedRoles?.find(
-                                    (claim: RolesInterface) => claim.id === option.id
+                                    (role: RolesInterface) => role.id === option.id
                                 )
                                     ? "filled"
                                     : "outlined"
                             }
+                            disabled={ option.displayName === ConsoleRolesOnboardingConstants.ADMINISTRATOR }
                         />
                     );
                 }

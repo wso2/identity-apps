@@ -170,6 +170,8 @@ export const common: CommonNS = {
     "search": "検索",
     "searching": "検索",
     "security": "安全",
+    "selectAll": "すべてを選択します",
+    "selectNone": "なしを選択します",
     "services": "サービス",
     "settings": "設定",
     "setup": "設定",

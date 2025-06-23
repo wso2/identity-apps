@@ -56,7 +56,7 @@ export const shareApplicationWithAllOrganizations = <T>(
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
-            if (response.status !== 200) {
+            if (response.status !== 200 && response.status !== 202) {
                 throw new IdentityAppsApiException(
                     ApplicationManagementConstants.APPLICATION_STATUS_UPDATE_INVALID_STATUS_CODE_ERROR,
                     null,
@@ -99,7 +99,7 @@ export const shareApplicationWithSelectedOrganizationsAndRoles = <T>(
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
-            if (response.status !== 200) {
+            if (response.status !== 200 && response.status !== 202) {
                 throw new IdentityAppsApiException(
                     ApplicationManagementConstants.APPLICATION_STATUS_UPDATE_INVALID_STATUS_CODE_ERROR,
                     null,

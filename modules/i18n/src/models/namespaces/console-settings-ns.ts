@@ -59,12 +59,40 @@ export interface ConsoleSettingsNS {
         };
     };
     sharedAccess: {
+        selectRolesForOrganization: string;
+        searchAvailableRolesPlaceholder: string;
+        organizations: string;
+        availableRoles: string;
         tabLabel: string;
         modes: {
             doNotShare: string;
             shareWithAll: string;
             shareWithSelected: string;
             shareAllRolesWithAllOrgs: string;
+        };
+        notifications: {
+            fetchRoles: {
+                error: {
+                    description: string;
+                    message: string;
+                };
+            };
+            fetchOrgTree: {
+                error: {
+                    description: string;
+                    message: string;
+                };
+            };
+            shareRoles: {
+                error: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
         };
     };
 }
