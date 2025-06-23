@@ -903,11 +903,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
         switch (dataType) {
             case ClaimDataType.OPTIONS:
-                if (multiValued) {
-                    setInputType(ClaimInputFormat.MULTI_SELECT_DROPDOWN);
-                } else {
-                    setInputType(ClaimInputFormat.DROPDOWN);
-                }
+                setInputType(multiValued ? ClaimInputFormat.MULTI_SELECT_DROPDOWN : ClaimInputFormat.DROPDOWN);
 
                 break;
             case ClaimDataType.INTEGER:
@@ -929,13 +925,16 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     const resolveInputFormatOptions = (dataType: ClaimDataType, multiValued: boolean): DropDownItemInterface[] => {
 
-        const base: DropDownItemInterface[] = [
-            { text: t("claims:local.forms.inputFormat.options.textInput"), value: ClaimInputFormat.TEXT_INPUT }
+        const textInputOption: DropDownItemInterface[] = [
+            {
+                text: t("claims:local.forms.inputFormat.options.textInput"),
+                value: ClaimInputFormat.TEXT_INPUT
+            }
         ];
 
         if (dataType === ClaimDataType.DATE_TIME) {
             return [
-                ...base,
+                ...textInputOption,
                 {
                     text: t("claims:local.forms.inputFormat.options.datePicker"),
                     value: ClaimInputFormat.DATE_PICKER
@@ -971,7 +970,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
         if (dataType === ClaimDataType.INTEGER) {
             return [
-                ...base,
+                ...textInputOption,
                 {
                     text: t("claims:local.forms.inputFormat.options.numberInput"),
                     value: ClaimInputFormat.NUMBER_INPUT
@@ -992,7 +991,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             ];
         }
 
-        return base;
+        return textInputOption;
     };
 
     const resolveAttributeRequiredRow = (): ReactElement => {
