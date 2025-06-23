@@ -1,5 +1,11 @@
 # @wso2is/admin.extensions.v1
 
+## 2.39.2
+
+### Patch Changes
+
+- [#8376](https://github.com/wso2/identity-apps/pull/8376) [`927910dfd0035c274da91e049b0c92edfbba0133`](https://github.com/wso2/identity-apps/commit/927910dfd0035c274da91e049b0c92edfbba0133) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Remove unused extension config
+
 ## 2.39.1
 
 ### Patch Changes

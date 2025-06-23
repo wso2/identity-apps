@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.62.6
+
+### Patch Changes
+
+- [#8376](https://github.com/wso2/identity-apps/pull/8376) [`927910dfd0035c274da91e049b0c92edfbba0133`](https://github.com/wso2/identity-apps/commit/927910dfd0035c274da91e049b0c92edfbba0133) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Remove unused extension config
+
+- Updated dependencies [[`927910dfd0035c274da91e049b0c92edfbba0133`](https://github.com/wso2/identity-apps/commit/927910dfd0035c274da91e049b0c92edfbba0133)]:
+  - @wso2is/admin.extensions.v1@2.39.2
+
 ## 2.62.5
 
 ### Patch Changes
