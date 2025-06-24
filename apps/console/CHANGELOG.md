@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.63.0
+
+### Minor Changes
+
+- [#8369](https://github.com/wso2/identity-apps/pull/8369) [`118a97a70ecdaa237f03a3c38a6ecf8409cf54f5`](https://github.com/wso2/identity-apps/commit/118a97a70ecdaa237f03a3c38a6ecf8409cf54f5) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Bump React DnD kit version
+
 ## 2.62.6
 
 ### Patch Changes

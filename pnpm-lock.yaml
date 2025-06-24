@@ -13824,7 +13824,7 @@ importers:
         specifier: ^1.6.3
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.flow-builder-core.v1':
-        specifier: ^0.5.3
+        specifier: ^0.6.0
         version: link:../admin.flow-builder-core.v1
       '@wso2is/admin.rules.v1':
         specifier: ^0.6.0
@@ -42316,6 +42316,8 @@ packages:
       webpack: '*'
     peerDependenciesMeta:
       webpack:
+        optional: true
+      webpack-sources:
         optional: true
     dependencies:
       webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@4.10.0)
