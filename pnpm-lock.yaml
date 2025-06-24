@@ -558,7 +558,7 @@ importers:
         specifier: ^1.7.1
         version: link:../../features/admin.feature-gate.v1
       '@wso2is/admin.flows.v1':
-        specifier: workspace:^
+        specifier: ^1.0.0
         version: link:../../features/admin.flows.v1
       '@wso2is/admin.groups.v1':
         specifier: ^2.27.119
@@ -8581,6 +8581,12 @@ importers:
       '@wso2is/admin.feature-gate.v1':
         specifier: workspace:^
         version: link:../admin.feature-gate.v1
+      '@wso2is/admin.registration-flow-builder.v1':
+        specifier: workspace:^0.7.0
+        version: link:../admin.registration-flow-builder.v1
+      '@wso2is/admin.server-configurations.v1':
+        specifier: workspace:^
+        version: link:../admin.server-configurations.v1
       '@wso2is/react-components':
         specifier: ^2.9.16
         version: link:../../modules/react-components
@@ -42388,8 +42394,6 @@ packages:
       webpack: '*'
     peerDependenciesMeta:
       webpack:
-        optional: true
-      webpack-sources:
         optional: true
     dependencies:
       webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@4.10.0)
