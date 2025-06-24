@@ -73,6 +73,35 @@
                 clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
                 -webkit-clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
             }
+
+            .status-tag {
+                display: inline-flex;
+                flex-direction: row;
+                align-content: center;
+                align-items: center;
+                
+                .icon-configured {
+                    color: rgb(52 146 86);
+                    font-size: 0.8em;
+                    width: 1em;
+                    height: 1em;
+                    margin-right: 5px; 
+                }
+        
+                .text-configured {
+                    color: rgb(52 146 86);
+                    font-size: 0.8em !important;
+                }
+        
+                .text-not-configured {
+                    color: rgb(128, 134, 130);
+                    font-size: 0.8em !important;
+                }
+            }
+
+            .action-button {
+                padding: 0;
+            }
         }
     }
 }

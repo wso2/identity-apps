@@ -17,22 +17,39 @@
  */
 
 import Avatar from "@oxygen-ui/react/Avatar";
+import Button from "@oxygen-ui/react/Button";
 import Card from "@oxygen-ui/react/Card";
+import CardActions from "@oxygen-ui/react/CardActions";
 import CardContent from "@oxygen-ui/react/CardContent";
 import Typography from "@oxygen-ui/react/Typography";
-import { UserAsteriskIcon, UserFlowIcon, UserKeyIcon, UserPlusIcon } from "@oxygen-ui/react-icons";
+import {
+    CircleCheckFilledIcon,
+    UserAsteriskIcon,
+    UserFlowIcon,
+    UserKeyIcon,
+    UserPlusIcon
+} from "@oxygen-ui/react-icons";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
-import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
+import useNewRegistrationPortalFeatureStatus from
+    "@wso2is/admin.registration-flow-builder.v1/api/use-new-registration-portal-feature-status";
+import {
+    ServerConfigurationsConstants,
+    updateGovernanceConnector,
+    useGetGovernanceConnectorById
+} from "@wso2is/admin.server-configurations.v1";
+import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon } from "@wso2is/react-components";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement } from "react";
-import { useSelector } from "react-redux";
+import React, { FunctionComponent, MouseEvent, ReactElement } from "react";
 import flowData from "../data/flows.json";
 import { FlowListItemInterface, FlowTypes } from "../models/flows";
 import "./flow-list.scss";
+import { addAlert } from "@wso2is/core/store";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 
 /**
  * Props interface of {@link FlowList}
@@ -52,6 +69,17 @@ const FlowList: FunctionComponent<FlowListProps> = ({
     const flowsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
         state.config.ui.features?.flows);
 
+    const dispatch: Dispatch = useDispatch();
+
+    const {
+        data: isNewRegistrationPortalEnabled
+    } = useNewRegistrationPortalFeatureStatus();
+
+    const { mutate: connectorDetailsMutate } = useGetGovernanceConnectorById(
+        ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+        ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID
+    );
+
     /**
      * Resolves the icon based on the flow type.
      * @param flowType - The type of the flow.
@@ -67,6 +95,103 @@ const FlowList: FunctionComponent<FlowListProps> = ({
                 return <UserAsteriskIcon size="small" className="icon" />;
             default:
                 return <UserKeyIcon size="small" className="icon" />;
+        }
+    };
+
+    const resolveFlowTypeName = (flowType: string): string => {
+        switch (flowType) {
+            case FlowTypes.REGISTRATION:
+                return "Registration";
+            case FlowTypes.PASSWORD_RECOVERY:
+                return "Password Recovery";
+            case FlowTypes.ADMIN_INITIATED_PASSWORD_RESET:
+                return "Admin Initiated Password Reset";
+            default:
+                return "Unknown Flow Type";
+        }
+    };
+
+    const handleUpdateSuccess = (flowType: string, isEnabled: boolean) => {
+        dispatch(
+            addAlert({
+                description: `The cutomized ${ flowType.toLowerCase() } flow has been successfully`
+                    + (isEnabled ? " enabled." : " disabled."),
+                level: AlertLevels.SUCCESS,
+                message: "Dynamic " + resolveFlowTypeName(flowType) + " Flow" + (isEnabled ? " Enabled" : " Disabled")
+            })
+        );
+    };
+
+    const handleFlowStatusUpdateError = (flowType: string, error: any) => {
+        dispatch(
+            addAlert({
+                description: `An error occurred while toggling the ${ flowType.toLowerCase() } flow status: `
+                    + `${ error?.description || error?.message }`,
+                level: AlertLevels.ERROR,
+                message: "Flow Status Update Error"
+            })
+        );
+    };
+
+
+    const resolveFlowTypeStatus = (flowType: string): boolean => {
+        switch (flowType) {
+            case FlowTypes.REGISTRATION:
+                return isNewRegistrationPortalEnabled;
+
+        }
+    };
+
+    const resolveFlowTypeStatusLabel = (flowType: string): ReactElement => {
+        switch (flowType) {
+            case FlowTypes.REGISTRATION:
+                return resolveFlowTypeStatus(flowType)
+                    ? (
+                        <div
+                            className="status-tag"
+                            data-componentid={ `${ componentId }-${ flowType }-configured-status-tag` }
+                        >
+                            <CircleCheckFilledIcon className="icon-configured"/>
+                            <Typography  className="text-configured" variant="h6">
+                            Enabled
+                            </Typography>
+                        </div>
+                    ) : (
+                        <div
+                            className="status-tag"
+                            data-componentid={ `${ componentId }-${ flowType }-not-configured-status-tag` }
+                        >
+                            <Typography className="text-not-configured" variant="h6">
+                            Disabled
+                            </Typography>
+                        </div>
+                    );
+
+        }
+    };
+
+    const handleFlowStatusToggle = async (e, flowType: string): Promise<void> => {
+        e.stopPropagation();
+        switch (flowType) {
+            case FlowTypes.REGISTRATION:
+                updateGovernanceConnector(
+                    {
+                        operation: "UPDATE",
+                        properties:[ {
+                            name: ServerConfigurationsConstants.SELF_REGISTRATION_FLOW_BUILDER_ENABLED,
+                            value: !isNewRegistrationPortalEnabled
+                        } ]
+                    },
+                    ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+                    ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID
+                ).then(() => {
+                    handleUpdateSuccess(flowType, !isNewRegistrationPortalEnabled);
+                    connectorDetailsMutate();
+                }).catch((error) => {
+                    handleFlowStatusUpdateError(flowType, error);
+                });
+
+                break;
         }
     };
 
@@ -104,6 +229,7 @@ const FlowList: FunctionComponent<FlowListProps> = ({
                                     <Typography variant="h6">
                                         { flow.heading }
                                     </Typography>
+                                    { resolveFlowTypeStatusLabel(flow.type) }
                                 </div>
                                 <FeatureFlagLabel
                                     featureFlags={ flowsFeatureConfig?.featureFlags }
@@ -116,6 +242,19 @@ const FlowList: FunctionComponent<FlowListProps> = ({
                                     {  flow.description }
                                 </Typography>
                             </CardContent>
+                            <CardActions>
+                                <Button
+                                    className="action-button"
+                                    onClick={
+                                        (e: MouseEvent<HTMLButtonElement>) => handleFlowStatusToggle(e, flow.type)
+                                    }
+                                >
+                                    { resolveFlowTypeStatus(flow.type)
+                                        ? "Disable"
+                                        : "Enable"
+                                    }
+                                </Button>
+                            </CardActions>
                         </Card>
                     )))
                 }
