@@ -906,16 +906,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 setInputType(multiValued ? ClaimInputFormat.MULTI_SELECT_DROPDOWN : ClaimInputFormat.DROPDOWN);
 
                 break;
-            case ClaimDataType.INTEGER:
-                setInputType(ClaimInputFormat.NUMBER_INPUT);
-
-                break;
             case ClaimDataType.BOOLEAN:
                 setInputType(ClaimInputFormat.CHECKBOX);
-
-                break;
-            case ClaimDataType.DATE_TIME:
-                setInputType(ClaimInputFormat.DATE_PICKER);
 
                 break;
             default:
