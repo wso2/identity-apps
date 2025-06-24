@@ -1305,7 +1305,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             label={ t("claims:local.forms.multiValued.label") }
                             required={ false }
                             defaultValue={ claim?.multiValued }
-                            data-testid={ `${testId}-form-multi-valued-input` }
+                            data-componentid={ `${testId}-form-multi-valued-input` }
                             hint={ isSystemClaim
                                 ? t("claims:local.forms.multiValuedSystemClaimHint")
                                 : t("claims:local.forms.multiValuedHint") }
@@ -1321,7 +1321,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             ariaLabel={ t("claims:local.forms.inputFormat.label") }
                             name="inputFormat"
                             label={ t("claims:local.forms.inputFormat.label") }
-                            data-testid={ `${testId}-form-input-format-input` }
+                            data-componentid={ `${testId}-form-input-format-input` }
                             hint={ t("claims:local.forms.inputFormat.hint") }
                             disabled={ isSubOrganization() || isReadOnly }
                             options={ resolveInputFormatOptions(dataType as ClaimDataType, multiValued) }
