@@ -1,5 +1,16 @@
 # @wso2is/admin.claims.v1
 
+## 2.28.2
+
+### Patch Changes
+
+- [#8378](https://github.com/wso2/identity-apps/pull/8378) [`f8c18f0cc7868399735ffc30391741b86cc80126`](https://github.com/wso2/identity-apps/commit/f8c18f0cc7868399735ffc30391741b86cc80126) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Attribute level input format support
+
+- Updated dependencies [[`edd0e0eae566daddfadff7877e1fba13f1daeba9`](https://github.com/wso2/identity-apps/commit/edd0e0eae566daddfadff7877e1fba13f1daeba9), [`f8c18f0cc7868399735ffc30391741b86cc80126`](https://github.com/wso2/identity-apps/commit/f8c18f0cc7868399735ffc30391741b86cc80126)]:
+  - @wso2is/core@2.9.1
+  - @wso2is/admin.claims.v1@2.28.2
+  - @wso2is/i18n@2.24.2
+
 ## 2.28.1
 
 ### Patch Changes
