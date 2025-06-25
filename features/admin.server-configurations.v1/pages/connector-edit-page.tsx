@@ -22,13 +22,8 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import {  AppState  } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
-import configureRegistrationFlow from "@wso2is/admin.registration-flow-builder.v1/api/configure-registration-flow";
-import useGetRegistrationFlow from "@wso2is/admin.registration-flow-builder.v1/api/use-get-registration-flow";
-import useNewRegistrationPortalFeatureStatus from
-    "@wso2is/admin.registration-flow-builder.v1/api/use-new-registration-portal-feature-status";
 import RegistrationFlowBuilderBanner
     from "@wso2is/admin.registration-flow-builder.v1/components/registration-flow-builder-banner";
-import defaultFlow from "@wso2is/admin.registration-flow-builder.v1/data/default-flows.json";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -87,11 +82,6 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
     const { t } = useTranslation();
 
     const { getLink } = useDocumentation();
-
-    const { data: existingRegistrationFlow } = useGetRegistrationFlow();
-    const {
-        data: isNewRegistrationPortalEnabled
-    } = useNewRegistrationPortalFeatureStatus();
 
     const applicationFeatureConfig: FeatureConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.applications);
@@ -204,21 +194,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             });
         }
 
-
-        const isSelfRegistration: boolean = connectorId === ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID;
-        const isEnabled: boolean = data.checked;
-
         updateGovernanceConnector(updateData, categoryId, connectorId)
             .then(() => {
-                if (isSelfRegistration && isEnabled && !existingRegistrationFlow && isNewRegistrationPortalEnabled) {
-                    configureRegistrationFlow(defaultFlow as any)
-                        .then(() => {
-                            // Default registration flow configured successfully
-                        })
-                        .catch((_error: Error) => {
-                            // Log error silently
-                        });
-                }
                 loadConnectorDetails();
                 handleUpdateSuccess();
             })
