@@ -636,7 +636,7 @@ importers:
         specifier: ^1.5.204
         version: link:../../features/admin.username-validation.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.33.0
+        specifier: ^2.33.1
         version: link:../../features/admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.33
@@ -672,7 +672,7 @@ importers:
         specifier: ^2.24.1
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.9.18
+        specifier: ^2.9.19
         version: link:../../modules/react-components
       '@wso2is/theme':
         specifier: ^2.8.0
@@ -13824,7 +13824,7 @@ importers:
         specifier: ^1.6.3
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.flow-builder-core.v1':
-        specifier: ^0.6.0
+        specifier: ^0.7.0
         version: link:../admin.flow-builder-core.v1
       '@wso2is/admin.rules.v1':
         specifier: ^0.6.0
@@ -18511,7 +18511,7 @@ importers:
         specifier: ^2.29.11
         version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.33.0
+        specifier: ^2.33.1
         version: 'link:'
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.33
@@ -18535,7 +18535,7 @@ importers:
         specifier: ^2.23.11
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.9.16
+        specifier: ^2.9.19
         version: link:../../modules/react-components
       '@wso2is/theme':
         specifier: ^2.7.8
