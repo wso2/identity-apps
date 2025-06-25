@@ -250,6 +250,9 @@ export const getDocumentationLinksExtension = (): DocumentationLinksExtensionInt
                         },
                         ssoIntegration: {
                             learnMore: undefined
+                        },
+                        technology: {
+                            learnMore: undefined
                         }
                     }
                 }
