@@ -943,7 +943,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     },
                     {
                         text: t("claims:local.forms.inputFormat.options.checkBoxGroup"),
-                        value: ClaimInputFormat.CHECKBOX
+                        value: ClaimInputFormat.CHECKBOX_GROUP
                     }
                 ];
             }
