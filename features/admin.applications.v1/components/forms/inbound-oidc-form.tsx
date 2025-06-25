@@ -2373,7 +2373,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             { /* Client Authentication*/ }
             {
                 isClientAuthenticationSectionEnabled && (
-                    <>
+                    <div data-componentid={ testId + "-client-authentication" }>
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Divider />
@@ -2576,7 +2576,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 </Grid.Row>
                             )
                         }
-                    </>
+                    </div>
                 )
             }
 
@@ -2966,7 +2966,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 && !isDefaultApplication
                 && !isMcpClientApplication
                 && (
-                    <>
+                    <div data-componentid={ testId + "-validate-token-binding-and-revokation" }>
                         { !isDPoPSelected && (
                             <Grid.Row columns={ 1 } data-componentid={ testId + "-validate-token-binding" }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -3044,7 +3044,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
-                    </>
+                    </div>
                 )
             }
             {
@@ -4016,7 +4016,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 && !isSubOrganization()
                 && !isDefaultApplication
                 && (
-                    <Grid.Row columns={ 1 }>
+                    <Grid.Row columns={ 1 } data-componentid={ testId + "-certificate" }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <ApplicationCertificateWrapper
                                 protocol={ SupportedAuthProtocolTypes.OIDC }

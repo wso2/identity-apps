@@ -307,6 +307,9 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
             case ApplicationTemplateCategories.DEFAULT:
                 return getLink("develop.applications.template." +
                     "categories.default.learnMore");
+            case ApplicationTemplateCategories.TECHNOLOGY:
+                return getLink("develop.applications.template." +
+                    "categories.technology.learnMore");
             case ApplicationTemplateCategories.SSO_INTEGRATION:
                 return getLink("develop.applications.template." +
                     "categories.ssoIntegration.learnMore");
@@ -368,15 +371,23 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
 
                                             return (
                                                 <div key={ category?.id } className="application-template-card-group">
-                                                    <Typography variant="h5">
-                                                        { t(category?.displayName) }
-                                                    </Typography>
+                                                    { /* Only render the topic/title if displayName is not empty */ }
+                                                    { t(category?.displayName).trim() !== "" && (
+                                                        <Typography variant="h5">
+                                                            { t(category?.displayName) }
+                                                        </Typography>
+                                                    ) }
                                                     {
                                                         category?.description
                                                             ? (
                                                                 <Typography
-                                                                    className=
-                                                                        "application-template-card-group-description"
+                                                                    className={
+                                                                        `application-template-card-group-description${
+                                                                            t(category?.displayName).trim() === ""
+                                                                                ? " application-template-card-group-empty-title"
+                                                                                : ""
+                                                                        }`
+                                                                    }
                                                                     variant="subtitle1"
                                                                 >
                                                                     { t(category?.description) }

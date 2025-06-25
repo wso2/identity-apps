@@ -1099,6 +1099,35 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
             );
         }
 
+        if (template?.["originalTemplateId"] === ApplicationTemplateIdTypes.REACT_APPLICATION ||
+            template?.["originalTemplateId"] === ApplicationTemplateIdTypes.NEXT_JS_APPLICATION) {
+            return (
+                <>
+                    <Header as="h3" className="display-flex">
+                        <GenericIcon
+                            transparent
+                            width="auto"
+                            icon={ getInboundProtocolLogos()[ SupportedAuthProtocolTypes.OIDC ] }
+                            size="x30"
+                            verticalAlign="middle"
+                        />
+                        <Header.Content
+                            className={ "mt-1" }
+                        >
+                            <strong>
+                                {
+                                    ApplicationManagementUtils
+                                        .resolveProtocolDisplayName(SupportedAuthProtocolTypes.OIDC)
+                                }
+                            </strong>
+                        </Header.Content>
+                    </Header>
+                    { resolveProtocolDescription() }
+                    <Divider hidden/>
+                </>
+            );
+        }
+
         return (
             <>
                 <Header as="h3" className="display-flex">
