@@ -410,6 +410,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     identityProviderTemplates: IdentityProviderTemplatesConfigInterface;
     /**
+     * Should the alert announcement feature be enabled.
+     */
+    isAlertAnnouncementEnabled?: boolean;
+    /**
      * Should default dialects be allowed for editing.
      */
     isDefaultDialectEditingEnabled?: boolean;

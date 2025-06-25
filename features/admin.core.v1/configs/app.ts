@@ -390,6 +390,7 @@ export class Config {
             hiddenUserStores: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenUserStores,
             i18nConfigs: window[ "AppUtils" ]?.getConfig()?.ui?.i18nConfigs,
             identityProviderTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.identityProviderTemplates,
+            isAlertAnnouncementEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isAlertAnnouncementEnabled,
             isClaimUniquenessValidationEnabled:
                 window[ "AppUtils" ]?.getConfig()?.ui?.isClaimUniquenessValidationEnabled ?? false,
             isClientSecretHashEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isClientSecretHashEnabled,
