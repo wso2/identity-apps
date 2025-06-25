@@ -1156,7 +1156,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                 // Check username validity against userstore regex.
                                 if (value && (
                                     !SharedUserStoreUtils.validateInputAgainstRegEx(
-                                        value, userStoreUsernameRegEx) &&
+                                        value, userStoreUsernameRegEx) ||
                                         !SharedUserStoreUtils.validateInputAgainstRegEx(value, emailClaimRegex))) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
@@ -1238,7 +1238,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                 // Check username validity against userstore regex.
                                 if (value && (
                                     !SharedUserStoreUtils.validateInputAgainstRegEx(
-                                        value, userStoreUsernameRegEx) &&
+                                        value, userStoreUsernameRegEx) ||
                                         !SharedUserStoreUtils.validateInputAgainstRegEx(value, emailClaimRegex))) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
