@@ -1238,6 +1238,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     }
                                 } }
                                 data-testid={ `${testId}-form-sub-attributes-dropdown` }
+                                disabled={ isSubOrganization() || isSystemClaim || isReadOnly }
                                 search
                             />
                             <div className="sub-attribute-list">
@@ -1246,21 +1247,23 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                         className="sub-attribute-row"
                                         key={ index }>
                                         <span>{ attribute }</span>
-                                        <IconButton
-                                            className="sub-attribute-delete-btn"
-                                            disabled={ isReadOnly }
-                                            onClick={ () => {
-                                                setSubAttributes(
-                                                    subAttributes.filter(
-                                                        (item: string) => item !== attribute
-                                                    )
-                                                );
-                                            } }
-                                            data-componentid={ `${testId}-delete-sub-attribute-${index}` }
-                                            style={ { marginLeft: "auto" } }
-                                        >
-                                            <TrashIcon />
-                                        </IconButton>
+                                        { !(isSubOrganization() || isSystemClaim || isReadOnly) && (
+                                            <IconButton
+                                                className="sub-attribute-delete-btn"
+                                                disabled={ isReadOnly }
+                                                onClick={ () => {
+                                                    setSubAttributes(
+                                                        subAttributes.filter(
+                                                            (item: string) => item !== attribute
+                                                        )
+                                                    );
+                                                } }
+                                                data-componentid={ `${testId}-delete-sub-attribute-${index}` }
+                                                style={ { marginLeft: "auto" } }
+                                            >
+                                                <TrashIcon />
+                                            </IconButton>
+                                        ) }
                                     </div>
                                 )) }
                             </div>
@@ -1285,7 +1288,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                         ({ key: item.key, value: item.value })));
                                 } }
                                 data-testid={ `${testId}-form-canonical-values-dynamic-field` }
-                                readOnly={ isReadOnly }
+                                readOnly={ isSubOrganization() || isReadOnly }
                             />
                         </>
                     ) }
