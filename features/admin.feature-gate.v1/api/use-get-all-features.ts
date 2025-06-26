@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -57,18 +57,9 @@ const useGetAllFeatures = <
         && orgIdentifier !== OrganizationManagementConstants.ROOT_ORGANIZATION.name;
 
     useEffect(() => {
-        getDecodedIDToken().then((response: DecodedIDTokenPayload)=>{
-            if (
-                organizationType === OrganizationType.SUPER_ORGANIZATION
-                || organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION
-            ) {
-                // Set org_name instead of org_uuid as the API expects org_name
-                // as it resolves tenant uuid from it.
-                setOrgIdentifier(response.org_name);
-            } else {
-                // Using the organization id, if the current organization is a suborganization.
-                setOrgIdentifier(response.org_id);
-            }
+        getDecodedIDToken().then((response: DecodedIDTokenPayload) => {
+            // Set tenant domain as organization identifier.
+            setOrgIdentifier(response.orgHandle);
         });
     }, [ organizationType ]);
 
