@@ -3413,16 +3413,16 @@ export interface ConsoleNS {
                 };
                 modals: {
                     approvalProperties: {
-                            Claims: string;
-                            "REQUEST ID": string;
-                            Roles: string;
-                            "User Store Domain": string;
-                            Username: string;
-                            "Role Name": string;
-                            Groups: string;
-                            "Tenant Domain": string;
-                            Permissions: string;
-                            Users: string;
+                        Claims: string;
+                        "REQUEST ID": string;
+                        Roles: string;
+                        "User Store Domain": string;
+                        Username: string;
+                        "Role Name": string;
+                        Groups: string;
+                        "Tenant Domain": string;
+                        Permissions: string;
+                        Users: string;
                     };
                     taskDetails: {
                         header: string;
