@@ -30,34 +30,31 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import "./new-alert-announcement.scss";
+import "./admin-data-separation-announcement.scss";
 
 /**
- * Props interface of {@link NewAlertAnnouncement}
+ * Props interface of {@link AdminDataSeparationNotice}
  */
-export interface NewAlertAnnouncementProps extends IdentifiableComponentInterface {
+export interface AdminDataSeparationNoticeProps extends IdentifiableComponentInterface {
 }
-
-/**
-     * Resolves the application banner view details section.
-     *
-     * @returns Alert banner details.
-     */
-
-
 
 /**
  * Section to display new feature announcements.
  *
  * @param props - Props injected to the component.
- * @returns NewAlertAnnouncement component.
+ * @returns AdminDataSeparationNotice component.
  */
-const NewAlertAnnouncement: FunctionComponent<NewAlertAnnouncementProps> = ({
-
+const AdminDataSeparationNotice: FunctionComponent<AdminDataSeparationNoticeProps> = ({
     ...rest
-}: NewAlertAnnouncementProps): ReactElement => {
+}: AdminDataSeparationNoticeProps): ReactElement => {
 
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
+
+    /**
+     * Function to resolve the details of the banner view.
+     *
+     * @returns ReactElement - The details of the banner view.
+     */
 
     const resolveBannerViewDetails = (): ReactElement => {
         return (
@@ -113,13 +110,13 @@ const NewAlertAnnouncement: FunctionComponent<NewAlertAnnouncementProps> = ({
 
     return (
         <Paper
-            className={ classNames("new-alert-announcement") }
+            className={ classNames("admin-data-separation-notice") }
             data-componentid="region-separation-announcement"
             variant="outlined"
             { ...rest }
         >
 
-            <Box className="new-alert-announcement-content">
+            <Box className="admin-data-separation-notice-content">
                 <Box>
                     <Typography variant="h3" display="flex" alignItems="center" gap={ 1 }>
                         <WarningAmberOutlinedIcon color="warning" sx={ { fontSize: 28, verticalAlign: "middle" } } />
@@ -143,4 +140,4 @@ const NewAlertAnnouncement: FunctionComponent<NewAlertAnnouncementProps> = ({
     );
 };
 
-export default NewAlertAnnouncement;
+export default AdminDataSeparationNotice;

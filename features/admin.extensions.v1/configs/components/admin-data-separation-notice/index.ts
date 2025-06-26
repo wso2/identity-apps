@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export * from "./new-alert-announcement";
+export * from "./admin-data-separation-notice";

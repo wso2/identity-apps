@@ -20,7 +20,7 @@
     --wso2is-home-section-padding: var(--oxygen-spacing-3);
 }
 
-.new-alert-announcement {
+.admin-data-separation-notice {
     display: flex;
     width: 100%;
     flex-direction: column;
@@ -32,7 +32,7 @@
     position: relative;
     overflow: hidden;
 
-    .new-alert-announcement-content {
+    .admin-data-separation-notice-content {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -54,7 +54,7 @@
         }
     }
 
-    .new-alert-announcement-actions {
+    .admin-data-separation-notice-actions {
         padding: 0 var(--wso2is-home-section-padding) var(--wso2is-home-section-padding) var(--wso2is-home-section-padding);
 
         svg {
@@ -71,8 +71,8 @@
 }
 
 @media (max-width: 968px) {
-    .new-alert-announcement {
-        .new-alert-announcement-content {
+    .admin-data-separation-notice {
+        .admin-data-separation-notice-content {
             max-width: 100%;
         }
     }

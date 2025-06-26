@@ -42,8 +42,8 @@ import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reduce
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import
-NewAlertAnnouncement
-    from "@wso2is/admin.extensions.v1/configs/components/new-alert-announcement/new-alert-announcement";
+AdminDataSeparationNotice
+    from "@wso2is/admin.extensions.v1/configs/components/admin-data-separation-notice/admin-data-separation-notice";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -106,8 +106,8 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
     const showFeatureAnnouncementBanner: boolean = !homeFeatureConfig?.disabledFeatures?.includes(
         HomeConstants.FEATURE_DICTIONARY.FEATURE_ANNOUNCEMENT
     );
-    const isAlertAnnouncementEnabled: boolean = useSelector((state: AppState) => {
-        return state?.config?.ui?.isAlertAnnouncementEnabled;
+    const isAdminDataSeparationNoticeEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.ui?.isAdminDataSeparationNoticeEnabled;
     });
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
@@ -471,8 +471,8 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                 </Heading>
             </div>
 
-            { isAlertAnnouncementEnabled && (
-                <NewAlertAnnouncement />
+            { isAdminDataSeparationNoticeEnabled && (
+                <AdminDataSeparationNotice />
             ) }
 
             { showFeatureAnnouncementBanner && (
