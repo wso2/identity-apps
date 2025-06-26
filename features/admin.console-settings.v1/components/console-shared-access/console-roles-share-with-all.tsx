@@ -20,7 +20,6 @@ import Autocomplete, {
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
 } from "@oxygen-ui/react/Autocomplete";
-import Button from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
 import TextField from "@oxygen-ui/react/TextField";
 import { useRequiredScopes } from "@wso2is/access-control";
@@ -32,7 +31,6 @@ import {
     RolesInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Text } from "@wso2is/react-components";
 import debounce from "lodash-es/debounce";
 import React, {
     ChangeEvent,
@@ -41,7 +39,6 @@ import React, {
     SyntheticEvent,
     useCallback,
     useEffect,
-    useMemo,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -113,15 +110,6 @@ const ConsoleRolesShareWithAll: FunctionComponent<ConsoleRolesShareWithAllPropsI
         searchQuery
     );
 
-    const isSelectNoneDisabled: boolean = useMemo((): boolean => {
-        return selectedRoles?.length === 0;
-    }, [ selectedRoles ]);
-
-    const isSelectAllDisabled: boolean = useMemo((): boolean => {
-        return consoleRoles?.Resources?.length === 0 || selectedRoles?.length === consoleRoles?.Resources?.length;
-    }, [ consoleRoles?.Resources, selectedRoles ]);
-
-
     /**
      * The following useEffect is used to handle if any error occurs while fetching the roles list.
      */
@@ -138,56 +126,14 @@ const ConsoleRolesShareWithAll: FunctionComponent<ConsoleRolesShareWithAllPropsI
     }, [ consoleRolesFetchRequestError ]);
 
     const handleRolesOnChange = (value: RolesInterface[]): void => {
-        setSelectedRoles(value);
+        setSelectedRoles([ administratorRole,
+            ...value.filter((role: RolesInterface) =>
+                role.displayName !== ConsoleRolesOnboardingConstants.ADMINISTRATOR)
+        ]);
     };
 
     return (
         <>
-            {
-                !isReadOnly && (
-                    <Text
-                        className="mb-0"
-                        subHeading
-                        size={ 12 }
-                        muted
-                    >
-                        <Button
-                            variant="text"
-                            size="small"
-                            tabIndex={ 6 }
-                            disabled={ isSelectAllDisabled }
-                            onClick={ () => {
-                                // combine the previous selected roles with the new roles
-                                const newRoles: RolesInterface[] = consoleRoles?.Resources?.filter(
-                                    (role: RolesInterface) => !selectedRoles.some(
-                                        (r: RolesInterface) => r.id === role.id)
-                                );
-
-                                // return the combined roles
-                                setSelectedRoles([ ...selectedRoles, ...newRoles ]);
-                            } }
-                        >
-                            {
-                                t("common:selectAll" )
-                            }
-                        </Button>
-                        |
-                        <Button
-                            variant="text"
-                            size="small"
-                            tabIndex={ 7 }
-                            disabled={ isSelectNoneDisabled }
-                            onClick={ () => setSelectedRoles(
-                                administratorRole ? [ administratorRole ] : []
-                            ) }
-                        >
-                            {
-                                t("common:selectNone" )
-                            }
-                        </Button>
-                    </Text>
-                )
-            }
             <Autocomplete
                 fullWidth
                 multiple
@@ -200,7 +146,6 @@ const ConsoleRolesShareWithAll: FunctionComponent<ConsoleRolesShareWithAllPropsI
                 onChange={ (event: SyntheticEvent, value: RolesInterface[]) => {
                     handleRolesOnChange(value);
                 } }
-                disableClearable={ true }
                 disabled={ isReadOnly }
                 getOptionDisabled={ (option: RolesInterface) => {
                     return option.displayName === ConsoleRolesOnboardingConstants.ADMINISTRATOR;

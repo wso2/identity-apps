@@ -42,6 +42,7 @@ import { AlertLevels,
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, Text } from "@wso2is/react-components";
+import { AnimatePresence, motion } from "framer-motion";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -104,7 +105,6 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
 
     const [ sharedAccessMode, setSharedAccessMode ] = useState<RoleSharedAccessModes>(
         RoleSharedAccessModes.SHARE_ALL_ROLES_WITH_ALL_ORGS);
-    const [ isManageSharingModalOpen, setIsManageSharingModalOpen ] = useState<boolean>(false);
     const [ selectedRoles, setSelectedRoles ] = useState<RolesInterface[]>([]);
     const [ selectedOrgsAndRoles, setSelectedOrgsAndRoles ]
         = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
@@ -280,7 +280,7 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                 <Grid container>
                     <Grid xs={ 8 }>
                         <Text className="mb-2" subHeading>
-                            Select the following options to share the roles with the organizations.
+                            Select the following options to share the application roles with the organizations.
                         </Text>
                         <FormControl fullWidth>
                             <RadioGroup
@@ -302,45 +302,53 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                                     control={ <Radio /> }
                                     disabled={ isReadOnly }
                                 />
-                                {
-                                    sharedAccessMode === RoleSharedAccessModes.SHARE_WITH_ALL_ORGS && (
-                                        <ConsoleRolesShareWithAll
-                                            selectedRoles={ selectedRoles }
-                                            setSelectedRoles={ setSelectedRoles }
-                                            administratorRole={ administratorRole?.Resources[0] }
-                                        />
-                                    )
-                                }
+                                <AnimatePresence mode="wait">
+                                    {
+                                        sharedAccessMode === RoleSharedAccessModes.SHARE_WITH_ALL_ORGS
+                                        && (
+                                            <motion.div
+                                                key="selected-orgs-block"
+                                                initial={ { height: 0, opacity: 0 } }
+                                                animate={ { height: "auto", opacity: 1 } }
+                                                exit={ { height: 0, opacity: 0 } }
+                                                transition={ { duration: 0.3 } }
+                                            >
+                                                <ConsoleRolesShareWithAll
+                                                    selectedRoles={ selectedRoles }
+                                                    setSelectedRoles={ setSelectedRoles }
+                                                    administratorRole={ administratorRole?.Resources[0] }
+                                                />
+                                            </motion.div>
+                                        )
+                                    }
+                                </AnimatePresence>
                                 <FormControlLabel
                                     value={ RoleSharedAccessModes.SHARE_WITH_SELECTED_ORGS_AND_ROLES }
                                     label={ t("consoleSettings:sharedAccess.modes.shareWithSelected") }
                                     control={ <Radio /> }
                                     disabled={ isReadOnly }
                                 />
-                                {
-                                    sharedAccessMode === RoleSharedAccessModes.SHARE_WITH_SELECTED_ORGS_AND_ROLES && (
-                                        <Grid xs={ 8 }>
-                                            <Button
-                                                variant="outlined"
-                                                size="small"
-                                                onClick={ () => setIsManageSharingModalOpen(true) }
-                                                data-componentid={ `${componentId}-manage-sharing-button` }
+                                <AnimatePresence mode="wait">
+                                    {
+                                        sharedAccessMode === RoleSharedAccessModes.SHARE_WITH_SELECTED_ORGS_AND_ROLES
+                                        && (
+                                            <motion.div
+                                                key="selected-orgs-block"
+                                                initial={ { height: 0, opacity: 0 } }
+                                                animate={ { height: "auto", opacity: 1 } }
+                                                exit={ { height: 0, opacity: 0 } }
+                                                transition={ { duration: 0.3 } }
                                             >
-                                                Manage Sharing
-                                            </Button>
-                                            {
-                                                isManageSharingModalOpen && (
+                                                <Grid xs={ 14 }>
                                                     <ConsoleRolesSelectiveShare
-                                                        open={ isManageSharingModalOpen }
-                                                        closeWizard={ () => setIsManageSharingModalOpen(false) }
                                                         roleSelections={ selectedOrgsAndRoles }
                                                         setRoleSelections={ setSelectedOrgsAndRoles }
                                                     />
-                                                )
-                                            }
-                                        </Grid>
-                                    )
-                                }
+                                                </Grid>
+                                            </motion.div>
+                                        )
+                                    }
+                                </AnimatePresence>
                             </RadioGroup>
                         </FormControl>
                         <Button

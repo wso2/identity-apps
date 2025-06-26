@@ -18,14 +18,14 @@
 
 import { TreeViewBaseItem } from "@mui/x-tree-view/models";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
-import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import Grid from "@oxygen-ui/react/Grid";
+import List from "@oxygen-ui/react/List";
+import ListItem from "@oxygen-ui/react/ListItem";
+import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
+import ListItemText from "@oxygen-ui/react/ListItemText";
 import Paper from "@oxygen-ui/react/Paper";
-import Table from "@oxygen-ui/react/Table";
-import TableCell from "@oxygen-ui/react/TableCell";
-import TableRow from "@oxygen-ui/react/TableRow";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import {
     OrganizationInterface,
@@ -34,7 +34,7 @@ import {
 } from "@wso2is/admin.organizations.v1/models/organizations";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Heading, LinkButton } from "@wso2is/react-components";
+import { Heading } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     ChangeEvent,
@@ -46,15 +46,13 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Modal } from "semantic-ui-react";
 import useGetApplicationShare from "../../api/use-get-application-share";
+import { ConsoleRolesOnboardingConstants } from "../../constants/console-roles-onboarding-constants";
 import useConsoleRoles from "../../hooks/use-console-roles";
 import useConsoleSettings from "../../hooks/use-console-settings";
 import "./console-roles-selective-share.scss";
 
 interface ConsoleRolesSelectiveShareProps extends IdentifiableComponentInterface {
-    open: boolean;
-    closeWizard: () => void;
     roleSelections: Record<string, SelectedOrganizationRoleInterface[]>;
     setRoleSelections: ReactDispatch<SetStateAction<Record<string, SelectedOrganizationRoleInterface[]>>>;
 }
@@ -62,8 +60,6 @@ interface ConsoleRolesSelectiveShareProps extends IdentifiableComponentInterface
 const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
     const {
         [ "data-componentid" ]: componentId = "console-roles-selective-share-modal",
-        open,
-        closeWizard,
         roleSelections,
         setRoleSelections
     } = props;
@@ -77,8 +73,9 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
 
     const { consoleId } = useConsoleSettings();
 
-    const [ selectedOrgId, setSelectedOrgId ] = useState<string>(organizationId);
-    const [ selectedOrgName, setSelectedOrgName ] = useState<string>(organizationName);
+    const [ selectedOrgId, setSelectedOrgId ] = useState<string>();
+    const [ readOnly, setReadOnly ] = useState<boolean>(true);
+    const [ selectedOrgName, setSelectedOrgName ] = useState<string>();
     const [ organizationTree, setOrganizationTree ] = useState<TreeViewBaseItem[]>([
         {
             children: [],
@@ -103,7 +100,13 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
 
     useEffect(() => {
         if (originalOrganizationTree?.organizations?.length > 0) {
-            setOrganizationTree(buildTree(originalOrganizationTree?.organizations));
+            const orgTree: TreeViewBaseItem[] = buildTree(originalOrganizationTree?.organizations);
+
+            if (orgTree.length > 0) {
+                setOrganizationTree(orgTree);
+                setSelectedOrgId(orgTree[0].id);
+                setSelectedOrgName(orgTree[0].label);
+            }
         }
     }, [ originalOrganizationTree ]);
 
@@ -157,19 +160,8 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
     const buildTree = (data: OrganizationInterface[]): TreeViewBaseItem[] => {
         const nodeMap: Record<string, TreeViewBaseItem> = {};
 
-        // Create the manually specified root node
-        const rootNode: TreeViewBaseItem = {
-            children: [],
-            id: organizationId,
-            label: organizationName
-        };
-
-        nodeMap[organizationId] = rootNode;
-
-        // Add all other nodes to nodeMap
+        // Add all nodes to nodeMap (except root)
         data.forEach((item: OrganizationInterface) => {
-            if (item.id === organizationId) return; // Ignore if it's the root
-
             nodeMap[item.id] = {
                 children: [],
                 id: item.id,
@@ -177,20 +169,25 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
             };
         });
 
-        // Build tree structure by assigning children to parents
+        // Build tree by assigning children to their parents
         data.forEach((item: OrganizationInterface) => {
-            if (item.id === organizationId) return; // Ignore the root
+            if (item.parentId === organizationId) {
+                // Top-level node, skip adding to a parent
+                return;
+            }
 
-            const node: TreeViewBaseItem = nodeMap[item.id];
             const parent: TreeViewBaseItem = nodeMap[item.parentId];
 
             if (parent) {
                 if (!parent.children) parent.children = [];
-                parent.children.push(node);
+                parent.children.push(nodeMap[item.id]);
             }
         });
 
-        return [ rootNode ];
+        // Return level 1 nodes (whose parent is the root)
+        return data
+            .filter((item: OrganizationInterface) => item.parentId === organizationId)
+            .map((item: OrganizationInterface) => nodeMap[item.id]);
     };
 
     const getChildrenOfOrganization = (parentId: string): string[] => {
@@ -218,6 +215,33 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
 
                 // Recursive cleanup down the tree
                 cascadeRoleRemoval(childId, removedRole);
+            }
+        });
+    };
+
+    const roleAdditionToChildren = (parentId: string, addedRole: SelectedOrganizationRoleInterface) => {
+        const children: string[] = getChildrenOfOrganization(parentId);
+
+        children.forEach((childId: string) => {
+            const existingRoles: SelectedOrganizationRoleInterface[] = roleSelections[childId] || [];
+
+            const alreadyHasRole: boolean = existingRoles.some(
+                (role: SelectedOrganizationRoleInterface) => role.displayName === addedRole.displayName
+            );
+
+            if (!alreadyHasRole) {
+                const updatedRoles: SelectedOrganizationRoleInterface[] = [
+                    ...existingRoles,
+                    {
+                        ...addedRole,
+                        selected: false
+                    }
+                ];
+
+                setRoleSelections((prev: Record<string, SelectedOrganizationRoleInterface[]>) => ({
+                    ...prev,
+                    [childId]: updatedRoles
+                }));
             }
         });
     };
@@ -257,114 +281,153 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
     };
 
     return (
-        <Modal
-            data-componentid={ componentId }
-            open={ open }
-            dimmer="blurring"
-            size="small"
-            onClose={ closeWizard }
-            closeOnDimmerClick={ false }
-            closeOnEscape
-        >
-            <Modal.Header className="wizard-header">
-                { `${t("consoleSettings:sharedAccess.selectRolesForOrganization")} - ${selectedOrgName}` }
-            </Modal.Header>
-            <Modal.Content className="roles-selective-share-modal-content" scrolling>
-                <Grid container rowSpacing={ 2 }>
-                    <Grid xs={ 6 }>
-                        <Heading as="h5" className="wizard-sub-header">
+        <>
+            <Button
+                variant="text"
+                size="small"
+                onClick={ () => setReadOnly(!readOnly) }
+            >
+                { readOnly
+                    ? "Manage Role Sharing"
+                    : "View Shared Roles"
+                }
+            </Button>
+            <Paper
+                variant="outlined"
+                className="roles-selective-share-container"
+            >
+                <Grid
+                    container
+                    xs={ 12 }
+                    className="roles-selective-share-header"
+                >
+                    <Grid
+                        xs={ 6 }
+                        md={ 8 }
+                        padding={ 2 }
+                        className="left-content"
+                    >
+                        <Heading as="h5">
                             { t("consoleSettings:sharedAccess.organizations") }
                         </Heading>
                     </Grid>
-                    <Grid xs={ 6 }>
-                        <Heading as="h5" className="wizard-sub-header">
-                            { t("consoleSettings:sharedAccess.availableRoles") }
+                    <Grid
+                        xs={ 6 }
+                        md={ 4 }
+                        padding={ 2 }
+                        style={ { backgroundColor: "rgb(250 249 248)" } }
+                    >
+                        <Heading as="h5" className="header-title">
+                            { readOnly
+                                ? "Selected Roles" + ` for ${ selectedOrgName }`
+                                : t("consoleSettings:sharedAccess.availableRoles") + ` for ${ selectedOrgName }`
+                            }
                         </Heading>
                     </Grid>
-                    <Grid container xs={ 6 } paddingRight={ 2 } marginTop={ 1 }>
-                        <Box width={ "100%" }>
-                            <RichTreeView
-                                items={ organizationTree }
-                                defaultSelectedItems={ [ organizationName ] }
-                                onItemClick={ (_e: SyntheticEvent, itemId: string) => {
-                                    setSelectedOrgId(itemId);
-                                    const org: OrganizationInterface = originalOrganizationTree?.organizations?.find(
-                                        (org: OrganizationInterface) => org.id === itemId);
+                </Grid>
+                <Grid
+                    container
+                    xs={ 12 }
+                    className="roles-selective-share-content-container"
+                >
+                    <Grid
+                        container
+                        xs={ 6 }
+                        md={ 8 }
+                        paddingRight={ 2 }
+                        className="roles-selective-share-content left-content"
+                    >
+                        <RichTreeView
+                            className="roles-selective-share-tree-view"
+                            items={ organizationTree }
+                            defaultSelectedItems={ [ organizationName ] }
+                            expansionTrigger="iconContainer"
+                            onItemClick={ (_e: SyntheticEvent, itemId: string) => {
+                                setSelectedOrgId(itemId);
+                                const org: OrganizationInterface = originalOrganizationTree?.organizations?.find(
+                                    (org: OrganizationInterface) => org.id === itemId);
 
-                                    setSelectedOrgName(org?.name || organizationName);
-                                } }
-                            />
-                        </Box>
+                                setSelectedOrgName(org?.name || organizationName);
+                            } }
+                            // selectionPropagation={ {
+                            //     parents: true
+                            // } }
+                            // checkboxSelection={ !readOnly }
+                            // multiSelect
+                        />
                     </Grid>
-                    <Grid container xs={ 6 }>
-                        <Paper elevation={ 0 } className="roles-selective-share-table-container">
-                            <Table size="small">
-                                { !isEmpty(roleSelections[selectedOrgId]) ? (
-                                    roleSelections[selectedOrgId]?.map(
+                    <Grid
+                        container
+                        xs={ 6 }
+                        md={ 4 }
+                        className="roles-selective-share-content"
+                        style={ { backgroundColor: "rgb(250 249 248)" } }
+                    >
+                        <List
+                            disablePadding
+                        >
+                            { !isEmpty(roleSelections[selectedOrgId]) && (
+                                roleSelections[selectedOrgId]?.filter((role: SelectedOrganizationRoleInterface) =>
+                                    readOnly ? role.selected : true)
+                                    .map(
                                         (role: SelectedOrganizationRoleInterface, index: number) => (
-                                            <TableRow key={ `role-${ index }` }>
-                                                <TableCell>
-                                                    <Checkbox
-                                                        checked={ role.selected }
-                                                        onChange={ (
-                                                            _e: ChangeEvent<HTMLInputElement>
-                                                        ) => {
-                                                            const updatedRoles: SelectedOrganizationRoleInterface[]
-                                                            = roleSelections[selectedOrgId].map(
-                                                                (r: SelectedOrganizationRoleInterface) => {
-                                                                    if (r.displayName === role.displayName) {
-                                                                        return { ...r, selected: !r.selected };
+                                            <ListItem
+                                                key={ `role-${ index }` }
+                                                className="roles-selective-share-list-item"
+                                                data-componentid={ `${componentId}-role-${ index }` }
+                                            >
+                                                { !readOnly && (
+                                                    <ListItemIcon>
+                                                        <Checkbox
+                                                            data-componentid={
+                                                                `${componentId}-role-checkbox-${ index }` }
+                                                            edge="start"
+                                                            checked={ role.selected }
+                                                            onChange={ (
+                                                                _e: ChangeEvent<HTMLInputElement>
+                                                            ) => {
+                                                                const updatedRoles: SelectedOrganizationRoleInterface[]
+                                                                = roleSelections[selectedOrgId].map(
+                                                                    (r: SelectedOrganizationRoleInterface) => {
+                                                                        if (r.displayName === role.displayName) {
+                                                                            return { ...r, selected: !r.selected };
+                                                                        }
+
+                                                                        return r;
                                                                     }
+                                                                );
 
-                                                                    return r;
+                                                                setRoleSelections((prev: Record<string,
+                                                                    SelectedOrganizationRoleInterface[]>) => ({
+                                                                    ...prev,
+                                                                    [selectedOrgId]: updatedRoles
+                                                                }));
+
+                                                                if (role.selected) {
+                                                                    // Role is being unchecked
+                                                                    cascadeRoleRemoval(selectedOrgId, role);
+                                                                } else {
+                                                                    // Role is being checked
+                                                                    roleAdditionToChildren(selectedOrgId, role);
                                                                 }
-                                                            );
-
-                                                            setRoleSelections((prev: Record<string,
-                                                                SelectedOrganizationRoleInterface[]>) => ({
-                                                                ...prev,
-                                                                [selectedOrgId]: updatedRoles
-                                                            }));
-
-                                                            // If deselected, propagate removal to children
-                                                            if (role.selected) {
-                                                                cascadeRoleRemoval(selectedOrgId, role);
-                                                            }
-                                                        } }
-                                                    />
-                                                    { role.displayName }
-                                                </TableCell>
-                                            </TableRow>
-                                        ))
-                                ) : null
-                                }
-                            </Table>
-                        </Paper>
+                                                            } }
+                                                            disabled={ role.displayName ===
+                                                                ConsoleRolesOnboardingConstants.ADMINISTRATOR }
+                                                        />
+                                                    </ListItemIcon>
+                                                ) }
+                                                <ListItemText
+                                                    primary={ role.displayName }
+                                                    data-componentid={ `${componentId}-role-text-${ index }` }
+                                                />
+                                            </ListItem>
+                                        )))
+                            }
+                        </List>
                     </Grid>
                 </Grid>
-            </Modal.Content>
-            <Modal.Actions>
-                <Grid container alignItems="center" justifyContent="space-between" marginX={ 1 }>
-                    <LinkButton
-                        data-componentid={ `${ componentId }-cancel-button` }
-                        floated="left"
-                        onClick={ () => {
-                            closeWizard();
-                        } }
-                    >
-                        { t("common:cancel") }
-                    </LinkButton>
-                    <Button
-                        data-componentid={ `${ componentId }-save-button` }
-                        variant="contained"
-                        size="small"
-                        onClick={ () => null }
-                    >
-                        { t("common:save") }
-                    </Button>
-                </Grid>
-            </Modal.Actions>
-        </Modal>
+            </Paper>
+        </>
     );
 };
 
