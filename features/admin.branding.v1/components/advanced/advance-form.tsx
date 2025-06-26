@@ -96,8 +96,8 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
     const [ privacyPolicyURL, setPrivacyPolicyURL ] = useState<string>(initialValues.urls.privacyPolicyURL);
     const [ termsOfUseURL, setTermsOfUseURL ] = useState<string>(initialValues.urls.termsOfUseURL);
     const [ cookiePolicyURL, setCookiePolicyURL ] = useState<string>(initialValues.urls.cookiePolicyURL);
-    const [ selfSignUpURL, setSelfSignUpURL ] = useState<string>(initialValues.urls.selfSignUpURL);
     const [ recoveryPortalURL, setRecoveryPortalURL ] = useState<string>(initialValues.urls.recoveryPortalURL);
+    const [ selfSignUpURL, setSelfSignUpURL ] = useState<string>(initialValues.urls.selfSignUpURL);
 
     /**
      * Broadcast values to the outside when internals change.
@@ -110,8 +110,8 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
                 ...initialValues.urls,
                 cookiePolicyURL: cookiePolicyURL,
                 privacyPolicyURL: privacyPolicyURL,
-                selfSignUpURL: selfSignUpURL,
                 recoveryPortalURL: recoveryPortalURL,
+                selfSignUpURL: selfSignUpURL,
                 termsOfUseURL: termsOfUseURL
             }
         });
@@ -264,6 +264,38 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
                 validation={ validateTemplatableURLs }
             />
             <Field.Input
+                ariaLabel="Branding preference recovery portal URL"
+                inputType="url"
+                name="urls.recoveryPortalURL"
+                label={ t("extensions:develop.branding.forms.advance.links.fields.recoveryPortalURL.label") }
+                placeholder={
+                    t("extensions:develop.branding.forms.advance.links.fields.recoveryPortalURL.placeholder")
+                }
+                hint={ (
+                    <Trans
+                        i18nKey="extensions:develop.branding.forms.advance.links.fields.recoveryPortalURL.hint"
+                    >
+                    Link to your organization&apos;s Recovery portal. You can use placeholders like
+                        <Code>&#123;&#123;lang&#125;&#125;</Code>, <Code>&#123;&#123;country&#125;&#125;</Code>,
+                    or <Code>&#123;&#123;locale&#125;&#125;</Code> to customize the URL for different
+                    regions or languages.
+                    </Trans>
+                ) }
+                required={ false }
+                value={ initialValues.urls.recoveryPortalURL }
+                readOnly={ readOnly }
+                maxLength={
+                    BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.COOKIE_POLICY_URL_MAX_LENGTH
+                }
+                minLength={
+                    BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.COOKIE_POLICY_URL_MIN_LENGTH
+                }
+                listen={ (value: string) =>  setRecoveryPortalURL(value) }
+                width={ 16 }
+                data-testid={ `${ componentId }-recovery-portal-url` }
+                validation={ validateTemplatableURLs }
+            />
+            <Field.Input
                 ariaLabel="Branding preference self signup URL"
                 inputType="url"
                 name="urls.selfSignUpURL"
@@ -295,38 +327,6 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
                 data-testid={ `${ componentId }-self-signup-url` }
                 validation={ validateTemplatableURLs }
             />
-            <Field.Input
-                            ariaLabel="Branding preference recovery portal URL"
-                            inputType="url"
-                            name="urls.recoveryPortalURL"
-                            label={ t("extensions:develop.branding.forms.advance.links.fields.recoveryPortalURL.label") }
-                            placeholder={
-                                t("extensions:develop.branding.forms.advance.links.fields.recoveryPortalURL.placeholder")
-                            }
-                            hint={ (
-                                <Trans
-                                    i18nKey="extensions:develop.branding.forms.advance.links.fields.recoveryPortalURL.hint"
-                                >
-                                Link to your organization&apos;s Recovery portal. You can use placeholders like
-                                    <Code>&#123;&#123;lang&#125;&#125;</Code>, <Code>&#123;&#123;country&#125;&#125;</Code>,
-                                or <Code>&#123;&#123;locale&#125;&#125;</Code> to customize the URL for different
-                                regions or languages.
-                                </Trans>
-                            ) }
-                            required={ false }
-                            value={ initialValues.urls.recoveryPortalURL }
-                            readOnly={ readOnly }
-                            maxLength={
-                                BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.COOKIE_POLICY_URL_MAX_LENGTH
-                            }
-                            minLength={
-                                BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.COOKIE_POLICY_URL_MIN_LENGTH
-                            }
-                            listen={ (value: string) =>  setRecoveryPortalURL(value) }
-                            width={ 16 }
-                            data-testid={ `${ componentId }-recovery-portal-url` }
-                            validation={ validateTemplatableURLs }
-                        />
         </Form>
     );
 });

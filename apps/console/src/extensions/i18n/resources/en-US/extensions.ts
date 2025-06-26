@@ -974,15 +974,15 @@ export const extensions: Extensions = {
                                 label: "Privacy Policy",
                                 placeholder: "https://myapp.com/{{locale}}/privacy-policy"
                             },
-                            selfSignUpURL: {
-                                hint: "Link to your organization's Self Signup webpage. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages.",
-                                label: "Self Signup",
-                                placeholder: "https://myapp.com/self-signup"
-                            },
                             recoveryPortalURL: {
                                 hint: "Link to your organization's recovery portal URL. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages.",
                                 label: "Recovery Portal",
                                 placeholder: "https://myapp.com/account-recovery"
+                            },
+                            selfSignUpURL: {
+                                hint: "Link to your organization's Self Signup webpage. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages.",
+                                label: "Self Signup",
+                                placeholder: "https://myapp.com/self-signup"
                             },
                             termsOfUseURL: {
                                 hint: "Link to an agreement that your customers must agree to and abide by in order to use your organization's applications or other services. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages.",

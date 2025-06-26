@@ -160,13 +160,13 @@ export interface BrandingPreferenceURLInterface {
      */
     cookiePolicyURL: string;
     /**
-     * Link for Self Sign Up.
-     */
-    selfSignUpURL?: string;
-    /**
      * Link for Recovery Portal
      */
     recoveryPortalURL?: string;
+    /**
+     * Link for Self Sign Up.
+     */
+    selfSignUpURL?: string;
 }
 
 /**

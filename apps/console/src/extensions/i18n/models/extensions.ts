@@ -918,12 +918,12 @@ export interface Extensions {
                                 label: string;
                                 placeholder: string;
                             };
-                            selfSignUpURL: {
+                            recoveryPortalURL: {
                                 hint: string;
                                 label: string;
                                 placeholder: string;
                             };
-                            recoveryPortalURL: {
+                            selfSignUpURL: {
                                 hint: string;
                                 label: string;
                                 placeholder: string;
