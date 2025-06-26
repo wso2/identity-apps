@@ -70,21 +70,7 @@ const AdminDataSeparationNotice: FunctionComponent<AdminDataSeparationNoticeProp
                                     Admin users can continue signing in to both the EU and US regions using
                                     the same credentials. However, <strong>password changes made in one region will
                                     not sync to the other</strong>. For example, if an admin resets their password
-                                    in the EU region, it will not update in the US region.
-                                </Trans>
-                            </Typography>
-                        </ListItemText>
-                    </ListItem>
-
-                    <ListItem
-                        component="li"
-                        sx={ { display: "list-item", listStyleType: "disc" } }
-                    >
-                        <ListItemText>
-                            <Typography variant="body2">
-                                <Trans>
-                                    <strong>During registration, users will need to select a region</strong> and proceed
-                                    through a <strong>region-specific portal</strong>, instead of using a shared portal.
+                                    in the EU region, it will not be updated in the US region.
                                 </Trans>
                             </Typography>
                         </ListItemText>
@@ -118,7 +104,7 @@ const AdminDataSeparationNotice: FunctionComponent<AdminDataSeparationNoticeProp
 
             <Box className="admin-data-separation-notice-content">
                 <Box>
-                    <Typography variant="h3" display="flex" alignItems="center" gap={ 1 }>
+                    <Typography variant="h3" display="flex" alignItems="center" gap={ 1 } mb={ 1 }>
                         <WarningAmberOutlinedIcon color="warning" sx={ { fontSize: 28, verticalAlign: "middle" } } />
                         Changes to Admin Data Handling
                     </Typography>
