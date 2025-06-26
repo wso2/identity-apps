@@ -1,5 +1,15 @@
 # @wso2is/admin.users.v1
 
+## 2.33.1
+
+### Patch Changes
+
+- [#8337](https://github.com/wso2/identity-apps/pull/8337) [`1a9bda2225edb908b27d6e53689e17fb35f8b2db`](https://github.com/wso2/identity-apps/commit/1a9bda2225edb908b27d6e53689e17fb35f8b2db) Thanks [@savindi7](https://github.com/savindi7)! - Remove FE Email validation in Console and improve validation consistency.
+
+- Updated dependencies [[`8a615eefa4248f2f55f5548e4e93a7f80a598c77`](https://github.com/wso2/identity-apps/commit/8a615eefa4248f2f55f5548e4e93a7f80a598c77), [`1a9bda2225edb908b27d6e53689e17fb35f8b2db`](https://github.com/wso2/identity-apps/commit/1a9bda2225edb908b27d6e53689e17fb35f8b2db)]:
+  - @wso2is/react-components@2.9.19
+  - @wso2is/admin.users.v1@2.33.1
+
 ## 2.33.0
 
 ### Minor Changes

@@ -52,7 +52,7 @@ export const DangerZoneGroup: FunctionComponent<PropsWithChildren<DangerZoneGrou
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
-    const defaultClassName = className ?? "danger-zone";
+    const defaultClassName = className ?? "danger-zone-group";
 
     return (
         <div className= { defaultClassName + "-wrapper" }>
@@ -65,7 +65,7 @@ export const DangerZoneGroup: FunctionComponent<PropsWithChildren<DangerZoneGrou
                 { sectionHeader }
             </Header>
             <Segment.Group
-                className={ defaultClassName + "-group" }
+                className={ defaultClassName }
                 data-componentid={ `${ componentId }` }
                 data-testid={ `${ testId }` }
             >

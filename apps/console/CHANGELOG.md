@@ -1,5 +1,32 @@
 # @wso2is/console
 
+## 2.64.1
+
+### Patch Changes
+
+- [#8378](https://github.com/wso2/identity-apps/pull/8378) [`edd0e0eae566daddfadff7877e1fba13f1daeba9`](https://github.com/wso2/identity-apps/commit/edd0e0eae566daddfadff7877e1fba13f1daeba9) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Input format support for the attributes
+
+- Updated dependencies [[`edd0e0eae566daddfadff7877e1fba13f1daeba9`](https://github.com/wso2/identity-apps/commit/edd0e0eae566daddfadff7877e1fba13f1daeba9), [`f8c18f0cc7868399735ffc30391741b86cc80126`](https://github.com/wso2/identity-apps/commit/f8c18f0cc7868399735ffc30391741b86cc80126)]:
+  - @wso2is/core@2.9.1
+  - @wso2is/admin.claims.v1@2.28.2
+  - @wso2is/i18n@2.24.2
+
+## 2.64.0
+
+### Minor Changes
+
+- [#8372](https://github.com/wso2/identity-apps/pull/8372) [`f90bee4c68608e5e989756546535a53bb6980016`](https://github.com/wso2/identity-apps/commit/f90bee4c68608e5e989756546535a53bb6980016) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce reCaptcha option in registration flow
+
+### Patch Changes
+
+- [#8386](https://github.com/wso2/identity-apps/pull/8386) [`8a615eefa4248f2f55f5548e4e93a7f80a598c77`](https://github.com/wso2/identity-apps/commit/8a615eefa4248f2f55f5548e4e93a7f80a598c77) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Fix danger zone styling issue.
+
+* [#8337](https://github.com/wso2/identity-apps/pull/8337) [`1a9bda2225edb908b27d6e53689e17fb35f8b2db`](https://github.com/wso2/identity-apps/commit/1a9bda2225edb908b27d6e53689e17fb35f8b2db) Thanks [@savindi7](https://github.com/savindi7)! - Remove FE Email validation in Console and improve validation consistency.
+
+* Updated dependencies [[`8a615eefa4248f2f55f5548e4e93a7f80a598c77`](https://github.com/wso2/identity-apps/commit/8a615eefa4248f2f55f5548e4e93a7f80a598c77), [`1a9bda2225edb908b27d6e53689e17fb35f8b2db`](https://github.com/wso2/identity-apps/commit/1a9bda2225edb908b27d6e53689e17fb35f8b2db)]:
+  - @wso2is/react-components@2.9.19
+  - @wso2is/admin.users.v1@2.33.1
+
 ## 2.63.0
 
 ### Minor Changes
