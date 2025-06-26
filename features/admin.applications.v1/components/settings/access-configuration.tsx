@@ -1070,7 +1070,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         }
 
         if (applicationTemplateId === ApplicationTemplateIdTypes.M2M_APPLICATION ||
-            template?.["originalTemplateId"] === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION
+            template?.[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY] ===
+                ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION
         ) {
             return (
                 <>
@@ -1099,8 +1100,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
             );
         }
 
-        if (template?.["originalTemplateId"] === ApplicationTemplateIdTypes.REACT_APPLICATION ||
-            template?.["originalTemplateId"] === ApplicationTemplateIdTypes.NEXT_JS_APPLICATION) {
+        if (template?.[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY] ===
+                ApplicationTemplateIdTypes.REACT_APPLICATION ||
+            template?.[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY] ===
+                ApplicationTemplateIdTypes.NEXT_JS_APPLICATION) {
             return (
                 <>
                     <Header as="h3" className="display-flex">
@@ -1168,6 +1171,27 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     };
 
     /**
+     * Resolves OAuth2/OIDC protocol type based on application template.
+     * @returns The appropriate OAuth2/OIDC protocol type.
+     */
+    const resolveOAuth2OIDCProtocolType = (): SupportedAuthProtocolTypes => {
+        if (applicationTemplateId === ApplicationTemplateIdTypes.M2M_APPLICATION ||
+            template?.[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY] ===
+                ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION) {
+            return SupportedAuthProtocolTypes.OAUTH2;
+        }
+
+        if (template?.[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY] ===
+                ApplicationTemplateIdTypes.REACT_APPLICATION ||
+            template?.[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY] ===
+                ApplicationTemplateIdTypes.NEXT_JS_APPLICATION) {
+            return SupportedAuthProtocolTypes.OIDC;
+        }
+
+        return SupportedAuthProtocolTypes.OAUTH2_OIDC;
+    };
+
+    /**
      * Resolves the corresponding protocol description and documentation link when a protocol is selected.
      * @returns Protocol description.
      */
@@ -1203,13 +1227,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                             "applications:forms.inboundOIDC.description",
                             {
                                 protocol: ApplicationManagementUtils
-                                    .resolveProtocolDisplayName(
-                                        applicationTemplateId === ApplicationTemplateIdTypes.M2M_APPLICATION ||
-                                        template?.["originalTemplateId"] ===
-                                            ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION
-                                            ? SupportedAuthProtocolTypes.OAUTH2
-                                            : SupportedAuthProtocolTypes.OAUTH2_OIDC
-                                    )
+                                    .resolveProtocolDisplayName(resolveOAuth2OIDCProtocolType())
                             }
                         )
                     }
