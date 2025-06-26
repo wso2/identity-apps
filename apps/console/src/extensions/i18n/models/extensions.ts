@@ -923,6 +923,11 @@ export interface Extensions {
                                 label: string;
                                 placeholder: string;
                             };
+                            recoveryPortalURL: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                            };
                             termsOfUseURL: {
                                 hint: string;
                                 label: string;

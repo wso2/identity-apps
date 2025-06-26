@@ -269,6 +269,7 @@
     String COOKIE_POLICY_URL_KEY = "cookiePolicyURL";
     String SELF_SIGN_UP_URL_KEY = "selfSignUpURL";
     String PASSWORD_RECOVERY_URL_KEY = "passwordRecoveryURL";
+    String RECOVERY_PORTAL_URL_KEY = "recoveryPortalURL";
     String CONFIGS_KEY = "configs";
     String IS_BRANDING_ENABLED_KEY= "isBrandingEnabled";
     String IS_SELF_SIGN_UP_ENABLED_KEY = "isSelfSignUpEnabled";
@@ -756,12 +757,20 @@
                             selfSignUpOverrideURL = selfSignUpURLInput;
                         }
                     }
-
+                    
                     if (brandingPreference.getJSONObject(URLS_KEY).has(PASSWORD_RECOVERY_URL_KEY)) {
                         String passwordRecoveryURLInput = brandingPreference.getJSONObject(URLS_KEY).getString(PASSWORD_RECOVERY_URL_KEY);
                         if (!StringUtils.isBlank(passwordRecoveryURLInput) && !passwordRecoveryURLInput.toLowerCase().contains("javascript:") &&
                             !passwordRecoveryURLInput.toLowerCase().contains("data:")) {
                             passwordRecoveryOverrideURL = passwordRecoveryURLInput;
+                        }
+                    }
+
+                    if (brandingPreference.getJSONObject(URLS_KEY).has(RECOVERY_PORTAL_URL_KEY)) {
+                        String recoveryPortalURLInput = brandingPreference.getJSONObject(URLS_KEY).getString(RECOVERY_PORTAL_URL_KEY);
+                        if (!StringUtils.isBlank(recoveryPortalURLInput) && !recoveryPortalURLInput.toLowerCase().contains("javascript:") &&
+                            !recoveryPortalURLInput.toLowerCase().contains("data:")) {
+                            passwordRecoveryOverrideURL = recoveryPortalURLInput;
                         }
                     }
                 }

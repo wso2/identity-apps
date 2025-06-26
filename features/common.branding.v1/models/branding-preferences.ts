@@ -163,6 +163,10 @@ export interface BrandingPreferenceURLInterface {
      * Link for Self Sign Up.
      */
     selfSignUpURL?: string;
+    /**
+     * Link for Recovery Portal
+     */
+    recoveryPortalURL?: string;
 }
 
 /**
