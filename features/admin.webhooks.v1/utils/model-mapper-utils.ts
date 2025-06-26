@@ -17,7 +17,11 @@
  */
 
 import { EventProfileMetadataApiResponseInterface, WebhookChannelConfigInterface } from "../models/event-profile";
-import { WebhookListInterface, WebhookListItemInterface } from "../models/webhooks";
+import {
+    WebhookConfigFormPropertyInterface,
+    WebhookListInterface,
+    WebhookListItemInterface
+} from "../models/webhooks";
 
 /**
  * Create webhook list interface for components
@@ -46,7 +50,29 @@ export const mapEventProfileApiToUI = (
     return eventProfile.channels.map((channel: { description: string; uri: string; name: string }) => ({
         channelUri: channel.uri,
         description: channel.description,
-        key: channel.name, // Use channel URI as a unique key
+        key: channel.name,
         name: channel.name
     }));
+};
+
+/**
+ * Maps form data to selected channel URIs.
+ *
+ * @param formData - The webhook form data.
+ * @param channelConfigs - Available channel configurations.
+ * @returns Array of selected channel URIs.
+ */
+export const mapFormDataToChannels = (
+    formData: WebhookConfigFormPropertyInterface,
+    channelConfigs: WebhookChannelConfigInterface[]
+): string[] => {
+    const selectedChannelUris: string[] = [];
+
+    channelConfigs.forEach((config: { key: string; channelUri: string }) => {
+        if (formData.channels[config.key]) {
+            selectedChannelUris.push(config.channelUri);
+        }
+    });
+
+    return selectedChannelUris;
 };

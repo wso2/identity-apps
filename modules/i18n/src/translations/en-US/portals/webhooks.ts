@@ -50,6 +50,12 @@ export const webhooks: webhooksNS = {
         },
         channels: {
             heading: "Select Events",
+            status: {
+                subscriptionAccepted: "subscription request sent",
+                subscriptionError: "suscription request error",
+                unsubscriptionAccepted: "unsubscription request sent",
+                unsubscriptionError: "unsubscription request error"
+            },
             subHeading: "Select the events you want to receive webhook notifications for.",
             validations: {
                 empty: "At least one event must be selected."
@@ -67,8 +73,7 @@ export const webhooks: webhooksNS = {
                 }
             },
             name: {
-                hint:
-                    "Must be a string containing only letters (a-z, A-Z), numbers (0-9), " +
+                hint: "Must be a string containing only letters (a-z, A-Z), numbers (0-9), " +
                     "spaces, underscore (_) and hyphen (-).",
                 label: "Name",
                 placeholder: "Sample Webhook",
@@ -80,12 +85,13 @@ export const webhooks: webhooksNS = {
             secret: {
                 hint: {
                     common: "Must be a string containing only letters (a-z, A-Z), numbers (0-9), symbols, and spaces. ",
-                    create: "Once added, the secret will not be displayed. You will only be able to reset it.",
-                    update: "Once updated, the secret will not be displayed. You will only be able to reset it again."
+                    create: "This secret is used to generate an HMAC signature so your endpoint can verify that events are secure and unchanged. Once added, the secret will not be displayed. You will only be able to reset it.",
+                    createWebSubHubMode: "This secret is used to generate an HMAC signature (X-Hub-Signature header) so your endpoint can verify that events are secure and unchanged. You cannot view or change the secret after creation.",
+                    update: "This secret is used to generate an HMAC signature so your endpoint can verify that events are secure and unchanged. Once updated, the secret will not be displayed. You will only be able to reset it again."
                 },
                 info: {
-                    message:
-                        "If you are changing the secret, remember to update it in your external service endpoint to maintain connectivity.",
+                    message: "This secret is used to generate an HMAC signature so your endpoint can verify that events are secure and unchanged. If you are changing the secret, remember to update it in your external service endpoint to maintain connectivity.",
+                    messageWebSubHubMode: "This secret is used to generate an HMAC signature (X-Hub-Signature header) so your endpoint can verify that events are secure and unchanged. You cannot view or change the secret after creation.",
                     title: "A <strong>secret</strong> is configured for this webhook."
                 },
                 label: "Secret",
@@ -100,8 +106,7 @@ export const webhooks: webhooksNS = {
     confirmations: {
         delete: {
             assertionHint: "Please confirm your action.",
-            content:
-                "If you delete this webhook configuration, the service endpoint defined will no longer receive event notifications." +
+            content: "If you delete this webhook configuration, the service endpoint defined will no longer receive event notifications." +
                 " Please proceed with caution.",
             heading: "Are you sure?",
             message: "This action is irreversible and will permanently delete the configured webhook."
@@ -111,8 +116,7 @@ export const webhooks: webhooksNS = {
         delete: {
             actionTitle: "Delete",
             heading: "Delete webhook",
-            subHeading:
-                "Once the webhook is deleted, it cannot be recovered and the service endpoint defined will no longer receive event notifications."
+            subHeading: "Once the webhook is deleted, it cannot be recovered and the service endpoint defined will no longer receive event notifications."
         },
         heading: "Danger Zone"
     },
@@ -160,6 +164,16 @@ export const webhooks: webhooksNS = {
                 message: "Failed to fetch webhooks."
             }
         },
+        retryWebhookState: {
+            error: {
+                description: "{{description}}",
+                message: "Failed to resend requests"
+            },
+            success: {
+                description: "Resent {{requestType}} requests.",
+                message: "Resent requests."
+            }
+        },
         updateWebhook: {
             error: {
                 description: "{{description}}",
@@ -188,7 +202,9 @@ export const webhooks: webhooksNS = {
         },
         edit: {
             heading: "Update Webhook",
-            subHeading: "Update webhook configurations."
+            headingWebSubHubMode: "Manage Webhook",
+            subHeading: "Update webhook configurations.",
+            subHeadingWebSubHubMode: "Activate, deactivate or delete webhook."
         },
         list: {
             buttons: {
@@ -207,6 +223,19 @@ export const webhooks: webhooksNS = {
     },
     sidePanel: {
         name: "Webhooks"
+    },
+    statusBanner: {
+        buttons: {
+            retry: "Resend requests"
+        },
+        pendingActivation: {
+            message: "Make sure your endpoint received and responded to the challenge. You can resend requests to attempt subscriptions again. Events will only be delivered for successfully verified channels.",
+            title: "Subscription requests sent."
+        },
+        pendingDeactivation: {
+            message: "Make sure your endpoint received and responded to the challenge. You can resend requests to attempt unsubscriptions again. Events may still be delivered to channels that are not yet unsubscribed.",
+            title: "Unsubscription requests sent."
+        }
     },
     subHeading: "Register a webhook for events of your interest."
 };

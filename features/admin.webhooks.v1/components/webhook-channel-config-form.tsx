@@ -23,7 +23,9 @@ import { FinalFormField } from "@wso2is/form/src";
 import CheckboxAdapter from "@wso2is/form/src/components/adapters/checkbox-field-adapter";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
+import { Icon } from "semantic-ui-react";
 import { WebhookChannelConfigInterface } from "../models/event-profile";
+import { ChannelStatus, WebhookChannelSubscriptionInterface } from "../models/webhooks";
 
 interface WebhookChannelConfigFormInterface extends IdentifiableComponentInterface {
     /**
@@ -34,16 +36,94 @@ interface WebhookChannelConfigFormInterface extends IdentifiableComponentInterfa
      * Specifies whether the form is read-only.
      */
     isReadOnly: boolean;
+    /**
+     * Current channel subscriptions with status.
+     */
+    channelSubscriptions?: WebhookChannelSubscriptionInterface[];
 }
 
 const WebhookChannelConfigForm: FunctionComponent<WebhookChannelConfigFormInterface> = ({
     channelConfigs,
     isReadOnly,
+    channelSubscriptions = [],
     ["data-componentid"]: _componentId = "webhook-channel-config-form"
 }: WebhookChannelConfigFormInterface): ReactElement => {
     const defaultChannels: WebhookChannelConfigInterface[] = channelConfigs;
 
     const { t } = useTranslation();
+
+    /**
+     * Get channel status for a given channel URI.
+     */
+    const getChannelStatus = (channelUri: string): ChannelStatus | null => {
+        const subscription: WebhookChannelSubscriptionInterface | undefined = channelSubscriptions.find(
+            (sub: WebhookChannelSubscriptionInterface) => sub.channelUri === channelUri
+        );
+
+        return subscription?.status || null;
+    };
+
+    /**
+     * Get status configuration including icon, color, and text.
+     */
+    const getStatusConfig = (status: ChannelStatus | null) => {
+        switch (status) {
+            case ChannelStatus.SUBSCRIPTION_ACCEPTED:
+                return {
+                    color: "success",
+                    icon: "check",
+                    iconColor: "green" as const,
+                    text: t("webhooks:configForm.channels.status.subscriptionAccepted")
+                };
+            case ChannelStatus.SUBSCRIPTION_ERROR:
+                return {
+                    color: "warning",
+                    icon: "exclamation triangle",
+                    iconColor: "orange" as const,
+                    text: t("webhooks:configForm.channels.status.subscriptionError")
+                };
+            case ChannelStatus.UNSUBSCRIPTION_ACCEPTED:
+                return {
+                    color: "success",
+                    icon: "check",
+                    iconColor: "green" as const,
+                    text: t("webhooks:configForm.channels.status.unsubscriptionAccepted")
+                };
+            case ChannelStatus.UNSUBSCRIPTION_ERROR:
+                return {
+                    color: "warning",
+                    icon: "exclamation triangle",
+                    iconColor: "orange" as const,
+                    text: t("webhooks:configForm.channels.status.unsubscriptionError")
+                };
+            default:
+                return null;
+        }
+    };
+
+    /**
+     * Render status indicator with icon and label.
+     */
+    const renderStatusIndicator = (channel: WebhookChannelConfigInterface): ReactElement | null => {
+        const channelStatus: ChannelStatus | null = getChannelStatus(channel.channelUri);
+        const statusConfig: ReturnType<typeof getStatusConfig> = getStatusConfig(channelStatus);
+
+        if (!statusConfig) {
+            return null;
+        }
+
+        return (
+            <span className={ `channel-status-inline ${statusConfig.color}` }>
+                <Icon
+                    className="status-icon"
+                    name={ statusConfig.icon as any }
+                    color={ statusConfig.iconColor }
+                    size="small"
+                />
+                { statusConfig.text }
+            </span>
+        );
+    };
 
     const renderChannelCheckbox = (channel: WebhookChannelConfigInterface): ReactElement => {
         return (
@@ -57,10 +137,13 @@ const WebhookChannelConfigForm: FunctionComponent<WebhookChannelConfigFormInterf
                         disabled={ isReadOnly }
                         label={
                             (<Box className="checkbox-label">
-                                <Typography variant="body1" component="div" className="channel-name">
-                                    { channel.name }
-                                </Typography>
-                                <Typography variant="caption" component="div" className="hint-text channel-description">
+                                <Box className="channel-name-container">
+                                    <Typography variant="body1" component="span" className="channel-name">
+                                        { channel.name }
+                                    </Typography>
+                                    { renderStatusIndicator(channel) }
+                                </Box>
+                                <Typography variant="caption" component="div" className="channel-description">
                                     { channel.description }
                                 </Typography>
                             </Box>)
