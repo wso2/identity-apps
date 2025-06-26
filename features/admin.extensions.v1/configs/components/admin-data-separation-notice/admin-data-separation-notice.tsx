@@ -66,10 +66,7 @@ const AdminDataSeparationNotice: FunctionComponent<AdminDataSeparationNoticeProp
                         <ListItemText>
                             <Typography variant="body2">
                                 <Trans>
-                                    Admin users can continue signing in to both the EU and US regions using
-                                    the same credentials. However, <strong>password changes made in one region will
-                                    not sync to the other</strong>. For example, if an admin resets their password
-                                    in the EU region, it will not be updated in the US region.
+                                    Admin users can continue to sign in to both the EU and US regions using the same credentials. However, <strong>password changes made in one region will not be synced with the other</strong>. For example, if an admin resets their password in the EU region, it will not be reflected in the US region.
                                 </Trans>
                             </Typography>
                         </ListItemText>
