@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -69,7 +69,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
 
     const linkedAccounts: LinkedAccountInterface[] = useSelector((state: AppState) => state.profile.linkedAccounts);
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
-    const userOrganizationId: string = useSelector((state: AppState) => state?.organization?.userOrganizationId);
+    const userOrganizationHandle: string = useSelector((state: AppState) => state?.organization?.userOrganizationHandle);
     const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
     const tenantDomain: string = useSelector((state: AppState) => state?.authenticationInformation?.tenantDomain);
 
@@ -95,8 +95,8 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
         let userId: string = username;
 
         if (organizationType === OrganizationType.SUBORGANIZATION) {
-            if (usernameSplit?.length >= 1 && !usernameSplit.includes(userOrganizationId)) {
-                userId = username + "@" + userOrganizationId;
+            if (usernameSplit?.length >= 1 && !usernameSplit.includes(userOrganizationHandle)) {
+                userId = username + "@" + userOrganizationHandle;
             }
 
         } else {
