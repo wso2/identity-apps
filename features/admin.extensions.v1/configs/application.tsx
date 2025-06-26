@@ -156,6 +156,18 @@ export const applicationConfig: ApplicationConfig = {
             ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
             ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
         ],
+        [ "nextjs-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
+        ],
+        [ "react-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT
+        ],
         [ "sub-organization-application" ]: [
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
             ApplicationManagementConstants.PASSWORD,

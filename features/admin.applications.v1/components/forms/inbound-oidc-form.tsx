@@ -331,6 +331,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ isMobileApplication, setMobileApplication ] = useState<boolean>(false);
     const [ isM2MApplication, setM2MApplication ] = useState<boolean>(false);
     const [ isMcpClientApplication, setIsMcpClientApplication ] = useState<boolean>(false);
+    const [ isReactApplication, setIsReactApplication ] = useState<boolean>(false);
+    const [ isNextJSApplication, setIsNextJSApplication ] = useState<boolean>(false);
 
     const [ isFormStale, setIsFormStale ] = useState<boolean>(false);
 
@@ -607,8 +609,20 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     }, [ template ]);
 
     useEffect(() => {
-        if (template?.["originalTemplateId"] === "mcp-client-application") {
+        if (template?.[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY] ===
+            ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION
+        ) {
             setIsMcpClientApplication(true);
+        }
+
+        if (template?.[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY] ===
+            ApplicationTemplateIdTypes.REACT_APPLICATION) {
+            setIsReactApplication(true);
+        }
+
+        if (template?.[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY] ===
+            ApplicationTemplateIdTypes.NEXT_JS_APPLICATION) {
+            setIsNextJSApplication(true);
         }
     }, [ template ]);
 
@@ -1024,7 +1038,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     });
                 // Cookie binding was hidden from the UI for SPAs & Traditional OIDC with
                 // https://github.com/wso2/identity-apps/pull/2254
-                } else if ((isSPAApplication || isOIDCWebApplication) && isBinding && ele === "cookie") {
+                // Also, hide the cookie binding option for React and Next.js applications,
+                // as they are analogous to SPA and OIDC web applications, respectively.
+                } else if ((isSPAApplication || isOIDCWebApplication || isReactApplication
+                    || isNextJSApplication) && isBinding && ele === "cookie") {
                     return false;
                 } else {
                     allowedList.push({
@@ -1244,8 +1261,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 }
 
                 if (
-                    template?.["originalTemplateId"] &&
-                    !applicationConfig.allowedGrantTypes[template["originalTemplateId"]]?.includes(name)
+                    template?.[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY] &&
+                    !applicationConfig.allowedGrantTypes[
+                        template[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY]]?.includes(name)
                 ) {
                     return;
                 }
@@ -1253,8 +1271,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 // Hide client credentials grant type in mcp client app template
                 // if the client is marked as public
                 if (
-                    template?.["originalTemplateId"] &&
-                    template?.["originalTemplateId"] === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION &&
+                    template?.[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY] &&
+                    template?.[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY] ===
+                        ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION &&
                     isPublicClient &&
                     name === ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
                 ) {
@@ -2236,7 +2255,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     type="checkbox"
                                     value={ initialValues?.pkce && findPKCE(initialValues.pkce) }
                                     listen={ pkceValuesChangeListener }
-                                    children={ (!isSPAApplication && !isMobileApplication && !isMcpClientApplication)
+                                    children={ (!isSPAApplication && !isMobileApplication && !isMcpClientApplication
+                                        && !isReactApplication)
                                         ? [
                                             {
                                                 label: t("applications:forms.inboundOIDC" +
@@ -2373,7 +2393,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             { /* Client Authentication*/ }
             {
                 isClientAuthenticationSectionEnabled && (
-                    <>
+                    <div data-componentid={ testId + "-client-authentication" }>
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Divider />
@@ -2576,7 +2596,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 </Grid.Row>
                             )
                         }
-                    </>
+                    </div>
                 )
             }
 
@@ -2966,7 +2986,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 && !isDefaultApplication
                 && !isMcpClientApplication
                 && (
-                    <>
+                    <div data-componentid={ testId + "-validate-token-binding-and-revokation" }>
                         { !isDPoPSelected && (
                             <Grid.Row columns={ 1 } data-componentid={ testId + "-validate-token-binding" }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -3044,7 +3064,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
-                    </>
+                    </div>
                 )
             }
             {
@@ -4016,7 +4036,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 && !isSubOrganization()
                 && !isDefaultApplication
                 && (
-                    <Grid.Row columns={ 1 }>
+                    <Grid.Row columns={ 1 } data-componentid={ testId + "-certificate" }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <ApplicationCertificateWrapper
                                 protocol={ SupportedAuthProtocolTypes.OIDC }
