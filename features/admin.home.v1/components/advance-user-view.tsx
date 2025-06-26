@@ -440,6 +440,58 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
         </Grid.Row>
     );
 
+    const renderFlowsCard = (): ReactElement => (
+        <Grid.Row>
+            <Grid.Column>
+                <Card
+                    fluid
+                    className="basic-card no-hover"
+                >
+                    <Card.Content>
+                        <div className="try-it-card">
+                            <div className="try-it-card-icon">
+                                <GenericIcon
+                                    style={ {
+                                        height: "91.3px",
+                                        width: "111.26px"
+                                    } }
+                                    floated="left"
+                                    transparent
+                                    icon={ getGettingStartedCardIllustrations().flowComposer }
+                                />
+                            </div>
+                            <div className="try-it-card-content">
+                                <div className="card-heading pt-3 mb-1">
+                                    <Heading as="h2">
+                                        Customize user flows
+                                    </Heading>
+                                </div>
+                                <Text muted>
+                                    Visually design and customize user flows with our no-code flow composer
+                                </Text>
+                            </div>
+                            <div className="try-it-card-actions">
+                                <Button
+                                    data-testid={
+                                        "develop-getting-started-page-cutomize-try-it"
+                                    }
+                                    data-componentid={
+                                        "develop-getting-started-page-cutomize-try-it"
+                                    }
+                                    onClick={ () => history.push(AppConstants.getPaths().get("FLOWS")) }
+                                    icon="angle right"
+                                    iconPlacement="right"
+                                    size="large"
+                                    className="primary-action-button ml-3"
+                                />
+                            </div>
+                        </div>
+                    </Card.Content>
+                </Card>
+            </Grid.Column>
+        </Grid.Row>
+    );
+
     return (
         <div className="advance-user-view-cards-wrapper">
             <div className="greeting">
@@ -532,6 +584,13 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                                     { renderConnectionsCard() }
                                 </Show>
                             </Grid.Row>
+                            {
+                                !featureConfig?.flows?.disabledFeatures.includes("flows.homePage.tile") && (
+                                    <Show when={ featureConfig?.flows?.scopes?.read }>
+                                        { renderFlowsCard() }
+                                    </Show>
+                                )
+                            }
                             {
                                 organizationType !== OrganizationType.SUBORGANIZATION && (
                                     <Show
