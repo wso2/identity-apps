@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import "./registration-flow-banner.scss";
 import { Collapse } from "@mui/material";
 import Alert from "@oxygen-ui/react/Alert";
 import IconButton from "@oxygen-ui/react/IconButton";
@@ -31,6 +30,7 @@ import useGetRegistrationFlowBuilderEnabledStatus from
 import React, { ReactElement, useState } from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
+import "./registration-flow-banner.scss";
 
 /**
  * Registration flow banner component.
@@ -86,8 +86,8 @@ const RegistrationFlowBanner = (): ReactElement => {
                     i18nKey="applications.edit.sections.signOnMethod.sections.landing.banners.registrationConfiguration"
                 >
                     Want to customize your organization&apos;s user <b>self-registration</b> flow?
-                    Click <Link className="registration-flow-banner-link" onClick={ handleConfigure }>configure </Link>
-                    to get started.
+                    Click <Link className="registration-flow-banner-link" onClick={ handleConfigure }>configure</Link>
+                    { " " } to get started.
                 </Trans>
             </Alert>
         </Collapse>
