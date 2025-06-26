@@ -62,7 +62,7 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
      */
     const handleBackButtonClick = (): void => {
 
-        let backPath: string = AppConstants.getPaths().get("LOGIN_AND_REGISTRATION");
+        let backPath: string = AppConstants.getPaths().get("FLOWS");
 
         if (history?.location?.state) {
             const state: PathStateInterface = history.location.state as PathStateInterface;
@@ -84,11 +84,7 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
             data-componentid={ componentId }
         >
             <Box display="flex" gap={ 3 } alignItems="center">
-<<<<<<< self-signup-banner
                 <IconButton onClick={ handleBackButtonClick }>
-=======
-                <IconButton onClick={ () => history.push(AppConstants.getPaths().get("FLOWS")) }>
->>>>>>> master
                     <ArrowLeftIcon />
                 </IconButton>
                 <Breadcrumbs aria-label="breadcrumb" className="registration-flow-builder-page-header-breadcrumbs">
