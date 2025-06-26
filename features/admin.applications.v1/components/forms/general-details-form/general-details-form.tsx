@@ -79,7 +79,7 @@ import { useMyAccountStatus } from "../../../api/application";
 import { useGetGroupsMetadata } from "../../../api/use-get-groups-metadata";
 import { ApplicationManagementConstants } from "../../../constants/application-management";
 import {
-    ApplicationInterface, ApplicationTemplateListItemInterface,
+    ApplicationInterface, ApplicationTemplateIdTypes, ApplicationTemplateListItemInterface,
     DiscoverableGroupInterface, GroupMetadataInterface
 } from "../../../models/application";
 import "./general-details-form.scss";
@@ -267,7 +267,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     const [ isMcpClientApplication, setIsMcpClientApplication ] = useState<boolean>();
 
     useEffect(() => {
-        if (template?.["originalTemplateId"] === "mcp-client-application") {
+        if (template?.[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY] ===
+            ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION) {
             setIsMcpClientApplication(true);
         }
     }, [ template ]);

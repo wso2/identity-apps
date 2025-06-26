@@ -371,8 +371,8 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
 
                                             return (
                                                 <div key={ category?.id } className="application-template-card-group">
-                                                    { /* Only render the topic/title if displayName is not empty */ }
-                                                    { t(category?.displayName).trim() !== "" && (
+                                                    { /* Only render the title if displayName is not empty */ }
+                                                    { category?.displayName && (
                                                         <Typography variant="h5">
                                                             { t(category?.displayName) }
                                                         </Typography>
@@ -383,8 +383,9 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
                                                                 <Typography
                                                                     className={
                                                                         `application-template-card-group-description${
-                                                                            t(category?.displayName).trim() === ""
-                                                                                ? " application-template-card-group-empty-title"
+                                                                            !category?.displayName
+                                                                                ? " application-template-card-group-" +
+                                                                                  "empty-title"
                                                                                 : ""
                                                                         }`
                                                                     }
