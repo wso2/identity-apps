@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.64.2
+
+### Patch Changes
+
+- [#8385](https://github.com/wso2/identity-apps/pull/8385) [`175ea7ca4298dcc397ef8259f508edc52c863efd`](https://github.com/wso2/identity-apps/commit/175ea7ca4298dcc397ef8259f508edc52c863efd) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add a alert announcement to console
+
+- Updated dependencies [[`175ea7ca4298dcc397ef8259f508edc52c863efd`](https://github.com/wso2/identity-apps/commit/175ea7ca4298dcc397ef8259f508edc52c863efd)]:
+  - @wso2is/admin.extensions.v1@2.39.3
+  - @wso2is/admin.core.v1@2.46.2
+  - @wso2is/admin.home.v1@1.7.6
+
 ## 2.64.1
 
 ### Patch Changes
