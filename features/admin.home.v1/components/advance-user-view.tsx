@@ -41,6 +41,9 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config"; //
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state"; // No specific rule found
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import
+AdminDataSeparationNotice
+    from "@wso2is/admin.extensions.v1/configs/components/admin-data-separation-notice/admin-data-separation-notice";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -103,6 +106,9 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
     const showFeatureAnnouncementBanner: boolean = !homeFeatureConfig?.disabledFeatures?.includes(
         HomeConstants.FEATURE_DICTIONARY.FEATURE_ANNOUNCEMENT
     );
+    const isAdminDataSeparationNoticeEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.ui?.isAdminDataSeparationNoticeEnabled;
+    });
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(null);
@@ -464,6 +470,11 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                     }
                 </Heading>
             </div>
+
+            { isAdminDataSeparationNoticeEnabled && (
+                <AdminDataSeparationNotice />
+            ) }
+
             { showFeatureAnnouncementBanner && (
                 <Show featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
                     <Show
