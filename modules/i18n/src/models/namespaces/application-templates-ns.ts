@@ -23,7 +23,7 @@ export interface applicationTemplatesNS {
             description: string;
         };
         technology: {
-            displayName: string;
+            displayName?: string;
             description: string;
         };
         ssoIntegration: {

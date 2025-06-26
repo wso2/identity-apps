@@ -28,8 +28,7 @@ export const applicationTemplates: applicationTemplatesNS = {
             displayName: "Select SSO Integration"
         },
         technology: {
-            description: "Choose the relevant application technology for easy configuration.",
-            displayName: ""
+            description: "Choose the relevant application technology for easy configuration."
         }
     },
     notifications: {

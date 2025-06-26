@@ -32,7 +32,6 @@ export class ApplicationTemplateConstants {
         },
         {
             description: "applicationTemplates:categories.technology.description",
-            displayName: "applicationTemplates:categories.technology.displayName",
             displayOrder: 1,
             id: "TECHNOLOGY"
         },
