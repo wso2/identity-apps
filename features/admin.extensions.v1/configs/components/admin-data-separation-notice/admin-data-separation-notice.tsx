@@ -55,7 +55,6 @@ const AdminDataSeparationNotice: FunctionComponent<AdminDataSeparationNoticeProp
      *
      * @returns ReactElement - The details of the banner view.
      */
-
     const resolveBannerViewDetails = (): ReactElement => {
         return (
             <Grid className="banner-grid">
