@@ -25,8 +25,6 @@ import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import useGetRegistrationFlowBuilderEnabledStatus from
-    "@wso2is/admin.server-configurations.v1/api/use-get-self-registration-enabled-status";
 import React, { ReactElement, useState } from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -39,9 +37,6 @@ const RegistrationFlowBanner = (): ReactElement => {
 
     const [ open, setOpen ] = useState<boolean>(true);
 
-    const {
-        data: isRegistrationFlowBuilderEnabled
-    } = useGetRegistrationFlowBuilderEnabledStatus();
     const registrationFlowBuilderFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features.registrationFlowBuilder
     );
@@ -59,7 +54,6 @@ const RegistrationFlowBanner = (): ReactElement => {
     };
 
     if (
-        !isRegistrationFlowBuilderEnabled ||
         !registrationFlowBuilderFeatureConfig?.enabled ||
         !hasRegistrationFlowBuilderViewPermissions
     ) {
