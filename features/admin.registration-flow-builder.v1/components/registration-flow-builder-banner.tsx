@@ -19,15 +19,16 @@
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Card from "@oxygen-ui/react/Card";
-import Chip from "@oxygen-ui/react/Chip";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
+import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FC } from "react";
-import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import BackgroundSprites from "../../themes/wso2is/assets/images/illustrations/ai-banner-background-white.svg";
 import "./registration-flow-builder-banner.scss";
 
@@ -45,7 +46,9 @@ export type RegistrationFlowBuilderBannerProps = IdentifiableComponentInterface;
 const RegistrationFlowBuilderBanner: FC<RegistrationFlowBuilderBannerProps> = ({
     "data-componentid": componentId = "registration-flow-builder-banner"
 }: RegistrationFlowBuilderBannerProps) => {
-    const { t } = useTranslation();
+
+    const flowsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.ai);
 
     return (
         <Card
@@ -63,14 +66,14 @@ const RegistrationFlowBuilderBanner: FC<RegistrationFlowBuilderBannerProps> = ({
                     <Typography variant="h5">
                         Construct your ideal self registration experience with our new{ " " }
                         <span className="text-gradient primary">Registration Flow Builder</span>
-                        <Chip
-                            size="small"
-                            label={ t(FeatureStatusLabel.PREVIEW) }
-                            className="oxygen-chip-experimental"
+                        <FeatureFlagLabel
+                            featureFlags={ flowsFeatureConfig?.featureFlags }
+                            featureKey={ FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.FLOWS_TYPES_REGISTRATION }
+                            type="chip"
                         />
                     </Typography>
                     <Typography variant="body1">
-                        Provide a seamless onboarding experience to your users by customizing the registration 
+                        Provide a seamless onboarding experience to your users by customizing the registration
                         flow to suit your organization&apos;s needs.
                     </Typography>
                 </Box>

@@ -21,6 +21,7 @@ import { ApplicationShareModal } from "@wso2is/admin.applications.v1/components/
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import useApplicationSharingEligibility from "@wso2is/admin.applications.v1/hooks/use-application-sharing-eligibility";
 import {
+    ApplicationTemplateIdTypes,
     InboundProtocolsInterface,
     MainApplicationInterface,
     URLFragmentTypes
@@ -183,7 +184,9 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
 
         const allowedOrigins: string[] = [];
 
-        if (values?.templateId === "mcp-client-application") {
+        if (values?.templateId === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION ||
+            values?.templateId === ApplicationTemplateIdTypes.REACT_APPLICATION ||
+            values?.templateId === ApplicationTemplateIdTypes.NEXT_JS_APPLICATION) {
             (values as unknown as MainApplicationInterface)?.inboundProtocolConfiguration?.oidc?.callbackURLs?.map(
                 (url: string) => {
                     try {

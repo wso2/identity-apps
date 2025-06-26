@@ -1,5 +1,11 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.7.0
+
+### Minor Changes
+
+- [#8372](https://github.com/wso2/identity-apps/pull/8372) [`f90bee4c68608e5e989756546535a53bb6980016`](https://github.com/wso2/identity-apps/commit/f90bee4c68608e5e989756546535a53bb6980016) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce reCaptcha option in registration flow
+
 ## 0.6.0
 
 ### Minor Changes

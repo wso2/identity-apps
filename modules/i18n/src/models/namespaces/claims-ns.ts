@@ -545,6 +545,22 @@ export interface ClaimsNS {
             required: {
                 label: string;
             };
+            inputFormat: {
+                label: string;
+                hint: string;
+                options: {
+                    textInput: string;
+                    dropdown: string;
+                    multiSelectDropdown: string;
+                    radioGroup: string;
+                    checkBoxGroup: string;
+                    checkbox: string;
+                    datePicker: string;
+                    textArea: string;
+                    toggle: string;
+                    numberInput: string;
+                }
+            }
             requiredHint: string;
             requiredWarning: string;
             readOnly: {

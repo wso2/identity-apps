@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.9.1
+
+### Patch Changes
+
+- [#8378](https://github.com/wso2/identity-apps/pull/8378) [`edd0e0eae566daddfadff7877e1fba13f1daeba9`](https://github.com/wso2/identity-apps/commit/edd0e0eae566daddfadff7877e1fba13f1daeba9) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Input format support for the attributes
+
 ## 2.9.0
 
 ### Minor Changes

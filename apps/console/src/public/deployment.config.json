@@ -734,6 +734,18 @@
                     ]
                 }
             },
+            "flows": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [],
+                    "update": []
+                }
+            },
             "gettingStarted": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -1150,14 +1162,8 @@
                     "create": [],
                     "delete": [],
                     "feature": [],
-                    "read": [
-                        "internal_authenticator_view",
-                        "internal_registration_flow_view"
-                    ],
-                    "update": [
-                        "internal_governance_update",
-                        "internal_registration_flow_update"
-                    ]
+                    "read": [],
+                    "update": []
                 }
             },
             "remoteFetchConfig": {

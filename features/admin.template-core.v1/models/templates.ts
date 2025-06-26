@@ -97,7 +97,7 @@ export interface ExtensionTemplateCategoryInterface {
     /**
      * Display name of the template category.
      */
-    displayName: string;
+    displayName?: string;
     /**
      * Description of the template category.
      */

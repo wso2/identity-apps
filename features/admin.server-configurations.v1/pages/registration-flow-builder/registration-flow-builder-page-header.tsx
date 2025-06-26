@@ -84,16 +84,20 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
             data-componentid={ componentId }
         >
             <Box display="flex" gap={ 3 } alignItems="center">
+<<<<<<< self-signup-banner
                 <IconButton onClick={ handleBackButtonClick }>
+=======
+                <IconButton onClick={ () => history.push(AppConstants.getPaths().get("FLOWS")) }>
+>>>>>>> master
                     <ArrowLeftIcon />
                 </IconButton>
                 <Breadcrumbs aria-label="breadcrumb" className="registration-flow-builder-page-header-breadcrumbs">
                     <Link
                         underline="hover"
                         color="inherit"
-                        onClick={ () => history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION")) }
+                        onClick={ () => history.push(AppConstants.getPaths().get("FLOWS")) }
                     >
-                        Login & Registration
+                        Flows
                     </Link>
                     <Typography sx={ { color: "text.primary" } }>Edit Registration Flow</Typography>
                 </Breadcrumbs>

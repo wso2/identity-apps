@@ -199,6 +199,20 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
+            children: [],
+            component: lazy(() => import("@wso2is/admin.flows.v1/pages/flows")),
+            exact: false,
+            icon: {
+                icon: <LinearNodesIcon />
+            },
+            id: "flows",
+            name: "Flows",
+            order: 0,
+            path: AppConstants.getPaths().get("FLOWS"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
             children: [
                 {
                     component: lazy(() =>

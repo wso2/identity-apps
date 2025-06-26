@@ -122,6 +122,10 @@ export interface FeatureConfigInterface {
      */
     emailProviders?: FeatureAccessConfigInterface;
     /**
+     * Flow orchestration feature.
+     */
+    flows?: FeatureAccessConfigInterface;
+    /**
      * Getting started feature.
      */
     gettingStarted?: FeatureAccessConfigInterface;
@@ -409,6 +413,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Configurations for IDP templates.
      */
     identityProviderTemplates: IdentityProviderTemplatesConfigInterface;
+    /**
+     * Should the admin data separation notice be enabled.
+     */
+    isAdminDataSeparationNoticeEnabled?: boolean;
     /**
      * Should default dialects be allowed for editing.
      */
