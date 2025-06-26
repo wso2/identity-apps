@@ -30,7 +30,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import "./admin-data-separation-announcement.scss";
+import "./admin-data-separation-notice.scss";
 
 /**
  * Props interface of {@link AdminDataSeparationNotice}
