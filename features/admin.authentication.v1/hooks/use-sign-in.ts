@@ -108,7 +108,6 @@ const useSignIn = (): UseSignInInterface => {
     const { setDeploymentConfig } = useDeploymentConfig();
 
     const {
-        transformTenantDomain,
         setUserOrgInLocalStorage,
         setOrgIdInLocalStorage,
         getUserOrgInLocalStorage,
@@ -278,15 +277,10 @@ const useSignIn = (): UseSignInInterface => {
 
         const orgIdIdToken: string = idToken.org_id;
         const orgName: string = idToken.org_name;
+        const orgHandle: string = idToken.org_handle;
         const userOrganizationId: string = idToken.user_org;
-        const tenantDomainFromSubject: string = CommonAuthenticateUtils.deriveTenantDomainFromSubject(
-            response.sub
-        );
-        const isFirstLevelOrg: boolean = !idToken.user_org
-            || idToken.org_name === tenantDomainFromSubject
-            || ((idToken.user_org === idToken.org_id) && idToken.org_name === tenantDomainFromSubject);
-
-        const tenantDomain: string = isFirstLevelOrg ? transformTenantDomain(orgName) : orgIdIdToken;
+        const isFirstLevelOrg: boolean = !userOrganizationId;
+        const tenantDomain: string = orgHandle;
 
         const firstName: string = idToken?.given_name;
         const lastName: string = idToken?.family_name;
