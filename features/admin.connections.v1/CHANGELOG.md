@@ -1,5 +1,16 @@
 # @wso2is/admin.connections.v1
 
+## 2.33.98
+
+### Patch Changes
+
+- [#8395](https://github.com/wso2/identity-apps/pull/8395) [`b15fb736d9f98de2f79ff10907da3f17e077b1c9`](https://github.com/wso2/identity-apps/commit/b15fb736d9f98de2f79ff10907da3f17e077b1c9) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add signicat template.
+
+- Updated dependencies [[`b15fb736d9f98de2f79ff10907da3f17e077b1c9`](https://github.com/wso2/identity-apps/commit/b15fb736d9f98de2f79ff10907da3f17e077b1c9), [`95a551badcc4414cea3f42eb8fd2de9fdb29dc26`](https://github.com/wso2/identity-apps/commit/95a551badcc4414cea3f42eb8fd2de9fdb29dc26)]:
+  - @wso2is/admin.connections.v1@2.33.98
+  - @wso2is/admin.applications.v1@2.36.3
+  - @wso2is/i18n@2.24.4
+
 ## 2.33.97
 
 ### Patch Changes

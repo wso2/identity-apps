@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 2.65.1
+
+### Patch Changes
+
+- [#8395](https://github.com/wso2/identity-apps/pull/8395) [`b15fb736d9f98de2f79ff10907da3f17e077b1c9`](https://github.com/wso2/identity-apps/commit/b15fb736d9f98de2f79ff10907da3f17e077b1c9) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add signicat template.
+
+* [#8391](https://github.com/wso2/identity-apps/pull/8391) [`95a551badcc4414cea3f42eb8fd2de9fdb29dc26`](https://github.com/wso2/identity-apps/commit/95a551badcc4414cea3f42eb8fd2de9fdb29dc26) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - add self registration info banner for application login flow tab
+
+* Updated dependencies [[`b15fb736d9f98de2f79ff10907da3f17e077b1c9`](https://github.com/wso2/identity-apps/commit/b15fb736d9f98de2f79ff10907da3f17e077b1c9), [`95a551badcc4414cea3f42eb8fd2de9fdb29dc26`](https://github.com/wso2/identity-apps/commit/95a551badcc4414cea3f42eb8fd2de9fdb29dc26)]:
+  - @wso2is/admin.connections.v1@2.33.98
+  - @wso2is/admin.server-configurations.v1@2.35.3
+  - @wso2is/admin.applications.v1@2.36.3
+  - @wso2is/i18n@2.24.4
+
 ## 2.65.0
 
 ### Minor Changes

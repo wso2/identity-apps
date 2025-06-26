@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.24.4
+
+### Patch Changes
+
+- [#8391](https://github.com/wso2/identity-apps/pull/8391) [`95a551badcc4414cea3f42eb8fd2de9fdb29dc26`](https://github.com/wso2/identity-apps/commit/95a551badcc4414cea3f42eb8fd2de9fdb29dc26) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - add self registration info banner for application login flow tab
+
 ## 2.24.3
 
 ### Patch Changes
