@@ -35,6 +35,18 @@ import React, { FunctionComponent, ReactElement } from "react";
 export type RegistrationFlowBuilderPageHeaderProps = IdentifiableComponentInterface;
 
 /**
+ * Interface for the path state.
+ */
+interface PathStateInterface {
+    from?: {
+        /**
+         * Path to navigate back to.
+         */
+        pathname?: string;
+    }
+}
+
+/**
  * Header for the Registration flow builder page.
  *
  * @param props - Props injected to the component.
@@ -45,6 +57,24 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
 }: RegistrationFlowBuilderPageHeaderProps): ReactElement => {
     const { isPublishing, onPublish } = useRegistrationFlowBuilder();
 
+    /**
+     * Handles the back button click event.
+     */
+    const handleBackButtonClick = (): void => {
+
+        let backPath: string = AppConstants.getPaths().get("LOGIN_AND_REGISTRATION");
+
+        if (history?.location?.state) {
+            const state: PathStateInterface = history.location.state as PathStateInterface;
+
+            if (state?.from?.pathname) {
+                backPath = state.from.pathname;
+            }
+        }
+
+        history.push(backPath);
+    };
+
     return (
         <Box
             display="flex"
@@ -54,7 +84,7 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
             data-componentid={ componentId }
         >
             <Box display="flex" gap={ 3 } alignItems="center">
-                <IconButton onClick={ () => history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION")) }>
+                <IconButton onClick={ handleBackButtonClick }>
                     <ArrowLeftIcon />
                 </IconButton>
                 <Breadcrumbs aria-label="breadcrumb" className="registration-flow-builder-page-header-breadcrumbs">

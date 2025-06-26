@@ -641,6 +641,9 @@ export interface ApplicationsNS {
                         };
                     };
                     landing: {
+                        banners: {
+                            registrationConfiguration: string;
+                        };
                         defaultConfig: {
                             description: {
                                 0: string;
