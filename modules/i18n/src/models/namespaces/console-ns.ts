@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import { StringIfPlural } from "react-i18next";
-
 /**
  * Model for the Console namespace
  */
