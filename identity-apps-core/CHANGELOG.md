@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.26.1
+
+### Patch Changes
+
+- [#8397](https://github.com/wso2/identity-apps/pull/8397) [`d21cdb4938bb7e9b34a25f5e8c6793ca2a4d46a2`](https://github.com/wso2/identity-apps/commit/d21cdb4938bb7e9b34a25f5e8c6793ca2a4d46a2) Thanks [@savindi7](https://github.com/savindi7)! - Update language property requirement for "?" with a default value.
+
 ## 2.26.0
 
 ### Minor Changes
