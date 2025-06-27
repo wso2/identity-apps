@@ -27,8 +27,8 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import WebhookChannelConfigForm from "./webhook-channel-config-form";
 import WebhookEndpointConfigForm from "./webhook-endpoint-config-form";
-import { EventProfileMetadataApiResponseInterface, WebhookChannelConfigInterface } from "../models/event-profile";
-import { WebhookConfigFormPropertyInterface } from "../models/webhooks";
+import { WebhookChannelConfigInterface } from "../models/event-profile";
+import { WebhookChannelSubscriptionInterface, WebhookConfigFormPropertyInterface } from "../models/webhooks";
 import { validateWebhookForm } from "../utils/form-field-validation-utils";
 import "./webhook-config-form.scss";
 
@@ -42,9 +42,9 @@ interface WebhookConfigFormInterface extends IdentifiableComponentInterface {
      */
     channelConfigs: WebhookChannelConfigInterface[];
     /**
-     * Event profile metadata for additional context.
+     * Current channel subscriptions with status.
      */
-    eventProfile?: EventProfileMetadataApiResponseInterface;
+    channelSubscriptions?: WebhookChannelSubscriptionInterface[];
     /**
      * Flag for loading state.
      */
@@ -65,16 +65,27 @@ interface WebhookConfigFormInterface extends IdentifiableComponentInterface {
      * Specifies if form is submitting.
      */
     isSubmitting?: boolean;
+    /**
+     * Hide the update/create button.
+     */
+    hideSubmitButton?: boolean;
+    /**
+     * Flag to indicate if the form is in WebSub Hub adopter mode.
+     */
+    isWebSubHubAdopterMode?: boolean;
 }
 
 const WebhookConfigForm: FunctionComponent<WebhookConfigFormInterface> = ({
     initialValues,
     channelConfigs,
+    channelSubscriptions,
     isLoading,
     isReadOnly,
     isCreateFormState,
     onSubmit,
     isSubmitting,
+    hideSubmitButton,
+    isWebSubHubAdopterMode,
     ["data-componentid"]: _componentId = "webhook-config-form"
 }: WebhookConfigFormInterface): ReactElement => {
     const { t } = useTranslation();
@@ -99,11 +110,13 @@ const WebhookConfigForm: FunctionComponent<WebhookConfigFormInterface> = ({
                     initialValues={ initialValues }
                     isCreateFormState={ isCreateFormState }
                     isReadOnly={ isReadOnly }
-                    data-componentid={ `${_componentId}-endpoint-form` }
+                    isWebSubHubAdopterMode={ isWebSubHubAdopterMode }
+                    data-componentid={ `${_componentId}-endpoint-config-form` }
                 />
                 <Divider className="divider-container" />
                 <WebhookChannelConfigForm
                     channelConfigs={ channelConfigs }
+                    channelSubscriptions={ channelSubscriptions }
                     isReadOnly={ isReadOnly }
                     data-componentid={ `${_componentId}-channel-config-form` }
                 />
@@ -120,21 +133,21 @@ const WebhookConfigForm: FunctionComponent<WebhookConfigFormInterface> = ({
     };
 
     return (
-        <div>
+        <Box>
             <FinalForm
                 onSubmit={ handleFormSubmit }
                 validate={ validateForm }
                 initialValues={ initialValues }
                 render={ ({ handleSubmit, submitting, invalid }: FormRenderProps) => (
-                    <form onSubmit={ handleSubmit }>
+                    <Box component="form" onSubmit={ handleSubmit }>
                         <EmphasizedSegment
                             className="form-wrapper"
                             padded="very"
                             data-componentid={ `${_componentId}-section` }
                         >
-                            <div className="form-container with-max-width">
+                            <Box className="form-container with-max-width">
                                 { renderFormFields() }
-                                { !isLoading && (
+                                { !isLoading && !hideSubmitButton && (
                                     <Button
                                         size="medium"
                                         variant="contained"
@@ -149,12 +162,12 @@ const WebhookConfigForm: FunctionComponent<WebhookConfigFormInterface> = ({
                                             : t("webhooks:configForm.buttons.update") }
                                     </Button>
                                 ) }
-                            </div>
+                            </Box>
                         </EmphasizedSegment>
-                    </form>
+                    </Box>
                 ) }
             />
-        </div>
+        </Box>
     );
 };
 
