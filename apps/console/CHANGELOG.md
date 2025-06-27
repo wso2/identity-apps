@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.65.2
+
+### Patch Changes
+
+- [#8399](https://github.com/wso2/identity-apps/pull/8399) [`6cd3709a83f510af1d60a1ffbb031efaffcf8589`](https://github.com/wso2/identity-apps/commit/6cd3709a83f510af1d60a1ffbb031efaffcf8589) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Fix danger zone styling issue.
+
+- Updated dependencies [[`6cd3709a83f510af1d60a1ffbb031efaffcf8589`](https://github.com/wso2/identity-apps/commit/6cd3709a83f510af1d60a1ffbb031efaffcf8589)]:
+  - @wso2is/react-components@2.9.20
+
 ## 2.65.1
 
 ### Patch Changes
