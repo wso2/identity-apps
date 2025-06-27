@@ -656,7 +656,7 @@
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%>
             </a>
             <% } %>
-            ?
+            <%= resourceBundle.containsKey("question.mark") ? resourceBundle.getString("question.mark") : "?" %>
         </div>
         <% } %>
     </div>

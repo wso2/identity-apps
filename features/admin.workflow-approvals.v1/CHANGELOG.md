@@ -1,5 +1,14 @@
 # @wso2is/admin.workflow-approvals.v1
 
+## 2.26.1
+
+### Patch Changes
+
+- [#8393](https://github.com/wso2/identity-apps/pull/8393) [`6b6898bf46bda36ee3a4fd58bb2734eda6822824`](https://github.com/wso2/identity-apps/commit/6b6898bf46bda36ee3a4fd58bb2734eda6822824) Thanks [@Malith-19](https://github.com/Malith-19)! - Add UI support for the add_role workflow.
+
+- Updated dependencies [[`6b6898bf46bda36ee3a4fd58bb2734eda6822824`](https://github.com/wso2/identity-apps/commit/6b6898bf46bda36ee3a4fd58bb2734eda6822824)]:
+  - @wso2is/i18n@2.24.5
+
 ## 2.26.0
 
 ### Minor Changes
