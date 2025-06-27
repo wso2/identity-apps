@@ -26,7 +26,7 @@ import { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalFormField, FormSpy, SelectFieldAdapter, TextFieldAdapter } from "@wso2is/form/src";
-import { Hint } from "@wso2is/react-components";
+import { Hint, URLInput } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon } from "semantic-ui-react";
@@ -428,6 +428,75 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
             renderAuthenticationSectionInfoBox() : renderAuthenticationUpdateWidget());
     };
 
+    const allowedHeadersSection = (props: any) => {
+        const { input } = props;
+        const headersCSV: string = Array.isArray(input.value) ? input.value.join(",") : "";
+
+        return (
+            <URLInput
+                isAllowEnabled={ false }
+                labelEnabled={ false }
+                urlState={ headersCSV }
+                setURLState={ (modifiedHeadersCSV: string) => {
+                    const modifiedHeadersList: string[] = modifiedHeadersCSV
+                        .split(",")
+                        .map((header: string) => header.trim())
+                        .filter((header: string) => header !== "");
+
+                    const headersUnmodified: boolean = modifiedHeadersList.length === input.value.length
+                        && modifiedHeadersList.every((value: string, i: number) => value === input.value[i]);
+
+                    if (!headersUnmodified) {
+                        input.onChange(modifiedHeadersList);
+                    }
+                }}
+                labelName={ "Request Headers" }
+                required={ false }
+                value={ headersCSV }
+                validation={ (value: string) => !value?.includes(",") }
+                placeholder={ "Enter request header key" }
+                validationErrorMsg={
+                    t("applications:forms.inboundOIDC.sections.idToken" +
+                                                    ".fields.audience.validations.invalid")
+                }
+                showError={ false }
+                hint={ "Request headers in the relevant flow to be shared with the external service." }
+                readOnly={ isReadOnly }
+                addURLTooltip={ t("common:addURL") }
+                duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                skipInternalValidation
+            />
+        );
+    };
+
+    const renderAllowedHeadersAndParamsSection = (): ReactElement => (
+        <>
+            <Typography variant="body1" className="heading-container" >
+                { t("Request Header & Parameters") }
+            </Typography>
+            <FinalFormField
+                key="allowedHeaders"
+                name="allowedHeaders"
+                className="text-field-container"
+                width={ 16 }
+                FormControlProps={ {
+                    margin: "dense"
+                } }
+                ariaLabel="allowedHeaders"
+                required={ false }
+                data-componentid={ `${_componentId}-action-allowedHeaders` }
+                type="text"
+                label={ "Request Headers" }
+                placeholder={ "Enter request header key" }
+                helperText={ "Hi my name is shenali jayakody" }
+                component={ allowedHeadersSection }
+                maxLength={ 100 }
+                minLength={ 0 }
+                disabled={ isReadOnly }
+            />
+        </>
+    );
+
     return (
         <>
             <FinalFormField
@@ -454,6 +523,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                 minLength={ 0 }
                 disabled={ isReadOnly }
             />
+            { renderAllowedHeadersAndParamsSection() }
             { isHttpEndpointUri && (
                 <Alert
                     severity="warning"

@@ -197,6 +197,8 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
         if (isCreateFormState) {
             const actionValues: ActionInterface = {
                 endpoint: {
+                    allowedHeaders: values?.allowedHeaders,
+                    allowedParameters: values?.allowedParameters,
                     authentication: {
                         properties: authProperties,
                         type: values.authenticationType as AuthenticationType
@@ -222,13 +224,18 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
         } else {
             // Updating the action
             const updatingValues: ActionUpdateInterface = {
-                endpoint: isAuthenticationUpdateFormState || changedFields?.endpointUri ? {
-                    authentication: isAuthenticationUpdateFormState ? {
-                        properties: authProperties,
-                        type: values.authenticationType as AuthenticationType
+                endpoint: isAuthenticationUpdateFormState ||
+                changedFields?.endpointUri ||
+                changedFields?.allowedHeaders ||
+                changedFields?.allowedParameters
+                    ? {
+                        allowedHeaders: changedFields?.allowedHeaders ? values.allowedHeaders : undefined,
+                        authentication: isAuthenticationUpdateFormState ? {
+                            properties: authProperties,
+                            type: values.authenticationType as AuthenticationType
+                        } : undefined,
+                        uri: changedFields?.endpointUri ? values.endpointUri : undefined
                     } : undefined,
-                    uri: changedFields?.endpointUri ? values.endpointUri : undefined
-                } : undefined,
                 name: changedFields?.name ? values.name : undefined,
                 ...(payloadRule !== null && { rule: payloadRule })
             };

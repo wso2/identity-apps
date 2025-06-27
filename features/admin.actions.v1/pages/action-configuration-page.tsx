@@ -137,6 +137,8 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
         useMemo(() => {
             if (action) {
                 return {
+                    allowedHeaders: action?.endpoint?.allowedHeaders,
+                    allowedParameters: action?.endpoint?.allowedParameters,
                     authenticationType: action?.endpoint?.authentication?.type?.toString(),
                     endpointUri: action?.endpoint?.uri,
                     id: action?.id,
