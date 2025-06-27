@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.65.4
+
+### Patch Changes
+
+- [#8404](https://github.com/wso2/identity-apps/pull/8404) [`f1fa3c8870805afe7f2f325410dfacd576bcfcfa`](https://github.com/wso2/identity-apps/commit/f1fa3c8870805afe7f2f325410dfacd576bcfcfa) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Hide impersonation for users managed by parent org.
+
+- Updated dependencies [[`f1fa3c8870805afe7f2f325410dfacd576bcfcfa`](https://github.com/wso2/identity-apps/commit/f1fa3c8870805afe7f2f325410dfacd576bcfcfa)]:
+  - @wso2is/admin.users.v1@2.33.2
+
 ## 2.65.3
 
 ### Patch Changes
