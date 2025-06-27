@@ -297,7 +297,7 @@
                                             type="text"
                                             inputmode="numeric">
                                     </div>
-                                </div>
+                            </div>
 
                             <input id="sessionDataKey" type="hidden" name="sessionDataKey"
                                 value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>' />
@@ -423,16 +423,28 @@
                 e.preventDefault();
                 // Get pasted data via clipboard API
                 clipboardData = e.clipboardData || window.clipboardData;
-                value = clipboardData.getData('Text');
+                value = clipboardData.getData('Text').trim();
                 const reg = new RegExp(/^\d+$/);
                 if (reg.test(value)) {
-                    for (n = 0; n < 6; ++n) {
+                    value = value.substring(0, 6);
+                    
+                    for (let n = 0; n < value.length && n < 6; ++n) {
                         $("#pincode-" + (n+1)).val(value[n]);
-                        $("#pincode-" + (n+1)).focus();
+                    }
+                    
+                    if (value.length < 6) {
+                        $("#pincode-" + (value.length + 1)).focus();
+                    } else {
+                        $("#pincode-6").focus();
+                        $('#subButton').attr('disabled', false);
                     }
                 }
             }
-        document.getElementById('pincode-1').addEventListener('paste', handlePaste);
+            
+            // Add paste event listener to all input fields
+            for (let i = 1; i <= 6; i++) {
+                document.getElementById('pincode-' + i).addEventListener('paste', handlePaste);
+            }
             $('#subButton').attr('disabled', true);
             $('#pincode-6').on('keyup', function() {
                 if ($('#pincode-1').val() != '' && $('#pincode-2').val() != ''
