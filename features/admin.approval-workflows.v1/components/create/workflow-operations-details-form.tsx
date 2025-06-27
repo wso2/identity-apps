@@ -74,14 +74,14 @@ interface WorkflowOperationsDetailsPropsInterface extends IdentifiableComponentI
  */
 export const operations: DropdownPropsInterface[] = [
     { key: "operation1", text: "Create User", value: "ADD_USER" },
-    { key: "operation2", text: "Create Role", value: "ADD_ROLE" },
-    { key: "operation3", text: "Remove Role", value: "DELETE_ROLE" },
-    { key: "operation4", text: "Remove User Claims", value: "DELETE_USER_CLAIMS" },
-    { key: "operation5", text: "Remove User", value: "DELETE_USER" },
-    { key: "operation6", text: "Update Role Name", value: "UPDATE_ROLENAME" },
-    { key: "operation7", text: "Assign or Remove User Roles", value: "UPDATE_ROLES_OF_USERS" },
-    { key: "operation8", text: "Update User Attributes", value: "UPDATE_USER_CLAIMS" },
-    { key: "operation9", text: "Manage Users in a Role", value: "UPDATE_USERS_OF_ROLES" }
+    { key: "operation2", text: "Remove User", value: "DELETE_USER" },
+    { key: "operation3", text: "Create Role", value: "ADD_ROLE" }
+    // { key: "operation3", text: "Remove Role", value: "DELETE_ROLE" },
+    // { key: "operation4", text: "Remove User Claims", value: "DELETE_USER_CLAIMS" },
+    // { key: "operation6", text: "Update Role Name", value: "UPDATE_ROLE_NAME" },
+    // { key: "operation7", text: "Assign or Remove User Roles", value: "UPDATE_ROLES_OF_USERS" },
+    // { key: "operation8", text: "Update User Attributes", value: "UPDATE_USER_CLAIMS" }
+    // { key: "operation9", text: "Manage Users in a Role", value: "UPDATE_USERS_OF_ROLES" }
 ];
 
 export interface WorkflowOperationsDetailsFormRef {

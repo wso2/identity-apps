@@ -2661,11 +2661,16 @@ export const console: ConsoleNS = {
                 },
                 modals: {
                     approvalProperties: {
-                        "Claims": "Claims",
+                        Claims: "Claims",
                         "REQUEST ID": "Request ID",
-                        "Roles": "Roles",
+                        Roles: "Roles",
                         "User Store Domain": "User Store Domain",
-                        "Username": "Username"
+                        Username: "Username",
+                        "Role Name": "Role Name",
+                        Groups: "Groups",
+                        "Tenant Domain": "Tenant Domain",
+                        Permissions: "Permissions",
+                        Users: "Users"
                     },
                     taskDetails: {
                         description: "You have a request to approve an operational action of a user.",

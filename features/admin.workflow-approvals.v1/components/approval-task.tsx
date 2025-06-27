@@ -133,7 +133,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
             );
         }
 
-        if (key === "Roles") {
+        if (key === "Roles" || key == "Permissions" || key === "Groups" || key === "Users") {
 
             try {
                 const roles: string[] = value.split(",");

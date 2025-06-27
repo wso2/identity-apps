@@ -3418,6 +3418,11 @@ export interface ConsoleNS {
                         Roles: string;
                         "User Store Domain": string;
                         Username: string;
+                        "Role Name": string;
+                        Groups: string;
+                        "Tenant Domain": string;
+                        Permissions: string;
+                        Users: string;
                     };
                     taskDetails: {
                         header: string;
