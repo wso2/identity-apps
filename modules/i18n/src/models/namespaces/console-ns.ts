@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { StringIfPlural } from "react-i18next";
+
 /**
  * Model for the Console namespace
  */
@@ -3423,6 +3425,8 @@ export interface ConsoleNS {
                         "Tenant Domain": string;
                         Permissions: string;
                         Users: string;
+                        Audience: string;
+                        "Audience ID": string;
                     };
                     taskDetails: {
                         header: string;

@@ -16,14 +16,11 @@
  * under the License.
  */
 
-import { SelectChangeEvent } from "@mui/material/Select";
 import Autocomplete, {
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
 } from "@oxygen-ui/react/Autocomplete";
 import Grid from "@oxygen-ui/react/Grid";
-import MenuItem from "@oxygen-ui/react/MenuItem";
-import Select from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
@@ -93,7 +90,6 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
         userstoresConfig.primaryUserstoreName
     );
     const [ selectedUsersFromUserStore, setSelectedUsersFromUserStore ] = useState<UserBasicInterface[]>([]);
-    const [ selectedAllUsers, setSelectedAllUsers ] = useState<Record<string, UserBasicInterface[] | undefined>>({});
     const [ validationError, setValidationError ] = useState<boolean>(false);
 
     const { data: userStores, isLoading: isUserStoresLoading } = useGetUserStores(null);
@@ -243,25 +239,6 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
     // }, [ selectedUsersFromUserStore ]);
 
     /**
-     * Handles temporarily storing the users selected from the specified user store.
-     */
-    const updateSelectedAllUsers = () => {
-
-        if (Array.isArray(selectedUsersFromUserStore)) {
-            const tempSelectedAllUsers: Record<string, UserBasicInterface[]> = selectedAllUsers;
-
-            tempSelectedAllUsers[selectedUserStoreDomainName] = selectedUsersFromUserStore;
-
-            setSelectedAllUsers(tempSelectedAllUsers);
-            onUsersChange(
-                Object.values(selectedAllUsers)
-                    .filter((users: UserBasicInterface[]) => (users !== undefined))
-                    .flat()
-            );
-        }
-    };
-
-    /**
      * Handles the search query for the users list.
      */
     const searchUsers: DebouncedFunc<(query: string) => void> = useCallback(
@@ -290,47 +267,12 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
                             >
                                 <label>{ t("approvalWorkflows:forms.configurations.template.users.label") }</label>
                             </Grid>
-                            <Grid
-                                xs={ 12 }
-                                sm={ 4 }
-                                md={ 3.5 }
-                                alignItems="center"
-                                data-componentid={ `${componentId}-field-userstore-select` }
-                            >
-                                <Select
-                                    value={ selectedUserStoreDomainName }
-                                    onChange={ (e: SelectChangeEvent<unknown>) => {
-                                        updateSelectedAllUsers();
-                                        setSelectedUsersFromUserStore([]);
-                                        setSelectedUserStoreDomainName(e.target.value as string);
-                                    } }
-                                    fullWidth
-                                    disabled={ isReadOnly }
-                                    sx={ { height: 38 } }
-                                    data-componentid={ `${componentId}-dropdown-userstore-select` }
-                                >
-                                    { isUserStoresLoading ? (
-                                        <p>{ t("common:loading") }</p>
-                                    ) : (
-                                        availableUserStores?.map((userstore: UserStoreDropdownItem) => (
-                                            <MenuItem
-                                                key={ userstore.key }
-                                                value={ userstore.value }
-                                                data-componentid=
-                                                    { `${componentId}-dropdown-userstore-option-${userstore.key}` }
-                                            >
-                                                { userstore.text }
-                                            </MenuItem>
-                                        ))
-                                    ) }
-                                </Select>
-                            </Grid>
                         </>
                     ) }
                     <Grid
                         xs={ 12 }
-                        sm={ 6.5 }
-                        md={ 7 }
+                        sm={ 8 }
+                        md={ 10 }
                         data-componentid={ `${componentId}-field-user-autocomplete` }
                     >
                         <Autocomplete
