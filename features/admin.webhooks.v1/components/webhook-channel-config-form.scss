@@ -30,8 +30,8 @@
         margin-bottom: 24px;
 
         .MuiFormControlLabel-root {
-            align-items: flex-start !important;
-            margin: 0 !important;
+            align-items: flex-start;
+            margin: 0;
             width: 100%;
         }
 
@@ -52,9 +52,9 @@
             width: 100%;
 
             .MuiCheckbox-root {
-                padding: 0 !important;
-                margin: 0 !important;
-                margin-right: 8px !important;
+                padding: 0;
+                margin: 0;
+                margin-right: 8px;
                 flex-shrink: 0;
             }
         }
@@ -92,11 +92,11 @@
                     white-space: nowrap;
 
                     &.success {
-                        color: "var(--oxygen-palette-success-main)";
+                        color: var(--oxygen-palette-success-main);
                     }
 
                     &.warning {
-                        color: "var(--oxygen-palette-warning-main)";
+                        color: var(--oxygen-palette-success-main);
                     }
 
                     .status-icon {

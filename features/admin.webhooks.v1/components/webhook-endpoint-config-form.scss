@@ -31,13 +31,13 @@
 
     .alert-nutral,
     .MuiAlert-root {
-        margin-top: 0 !important;
-        margin-bottom: 0 !important;
+        margin-top: 0;
+        margin-bottom: 0;
     }
 
     .endpoint-uri-alert {
-        margin-top: 10px !important;
-        margin-bottom: 0 !important;
+        margin-top: 10px;
+        margin-bottom: 0;
     }
 }
 
@@ -48,5 +48,5 @@
 }
 
 .alert-nutral {
-    background-color: var(--oxygen-palette-grey-100) !important;
+    background-color: var(--oxygen-palette-grey-100);
 }
