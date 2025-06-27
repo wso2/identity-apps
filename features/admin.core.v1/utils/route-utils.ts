@@ -263,7 +263,7 @@ export class RouteUtils {
         const userManagement: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: SquareUserIcon,
             id: "userManagement",
-            name: "Identity Management",
+            name: "User Management",
             order: 1
         };
 
@@ -389,13 +389,6 @@ export class RouteUtils {
                 selected: history.location.pathname.includes("/mcp-servers")
             },
             {
-                category: manage,
-                id: "agents",
-                order: 2,
-                parent: userManagement,
-                selected: history.location.pathname.includes("/agents")
-            },
-            {
                 category: organizations,
                 id: "organizations",
                 selected: history.location.pathname.includes("/organizations")
@@ -410,13 +403,6 @@ export class RouteUtils {
                 id: "users",
                 order: 0,
                 parent: userManagement
-            },
-            {
-                category: manage,
-                id: "agents",
-                order: 1,
-                parent: userManagement,
-                selected: history.location.pathname.includes("/agents")
             },
             {
                 category: manage,
@@ -447,6 +433,12 @@ export class RouteUtils {
                 id: "roles",
                 order: 2,
                 parent: userManagement
+            },
+            {
+                category: manage,
+                id: "agents",
+                order: 1,
+                selected: history.location.pathname.includes("/agents")
             },
             {
                 category: manage,
