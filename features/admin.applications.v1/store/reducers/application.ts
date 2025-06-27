@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,7 +28,8 @@ const initialState: ApplicationReducerStateInterface = {
         customInboundProtocolChecked: false,
         customInboundProtocols: [],
         inboundProtocols: [],
-        protocolMeta: {}
+        protocolMeta: {},
+        scopes: undefined
     },
     oidcConfigurations: undefined,
     samlConfigurations: undefined,
@@ -100,6 +101,14 @@ export const applicationReducer = (state: ApplicationReducerStateInterface = ini
             return {
                 ...state,
                 samlConfigurations: action.payload
+            };
+        case ApplicationActionTypes.SET_SCOPES:
+            return {
+                ...state,
+                meta: {
+                    ...state.meta,
+                    scopes: action.payload
+                }
             };
         default:
             return state;

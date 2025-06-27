@@ -62,6 +62,7 @@ import {
     SubjectConfigInterface
 } from "../../../models/application";
 import { OIDCDataInterface, SupportedAuthProtocolTypes } from "../../../models/application-inbound";
+import { setApplicationScopes } from "../../../store/actions/application";
 
 export interface SelectedDialectInterface {
     dialectURI: string;
@@ -428,6 +429,19 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                 selected: isScopelessClaimRequested
             });
         }
+
+        // Derive scopes for markdown guide.
+        if (onlyOIDCConfigured) {
+            const derivedScopesList: string[] = [ "openid" ];
+
+            updatedScopes.forEach((scope: OIDCScopesClaimsListInterface) => {
+                if (scope.selected && scope.name !== "openid" && scope.name !== "scopeless") {
+                    derivedScopesList.push(scope.name);
+                }
+            });
+            dispatch(setApplicationScopes(derivedScopesList.join(" ")));
+        }
+
         setUnfilteredExternalClaimsGroupedByScopes(sortBy(updatedScopes, "name"));
         setExternalClaimsGroupedByScopes(sortBy(updatedScopes, "name"));
         setIsScopeExternalClaimMappingLoading(false);
