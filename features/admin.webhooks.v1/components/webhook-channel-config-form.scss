@@ -92,7 +92,7 @@
                     white-space: nowrap;
 
                     &.success {
-                        color: #4caf50;
+                        color: "var(--oxygen-palette-success-main)";
                     }
 
                     &.warning {
