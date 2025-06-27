@@ -17,6 +17,8 @@
  */
 
 import Code from "@oxygen-ui/react/Code";
+import useGetRegistrationFlowBuilderEnabledStatus
+    from "@wso2is/admin.server-configurations.v1/api/use-get-self-registration-enabled-status";
 import { BrandingPreferenceInterface } from "@wso2is/common.branding.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
@@ -98,6 +100,9 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
     const [ cookiePolicyURL, setCookiePolicyURL ] = useState<string>(initialValues.urls.cookiePolicyURL);
     const [ recoveryPortalURL, setRecoveryPortalURL ] = useState<string>(initialValues.urls.recoveryPortalURL);
     const [ selfSignUpURL, setSelfSignUpURL ] = useState<string>(initialValues.urls.selfSignUpURL);
+
+    const { data: isDynamicPortalEnabled } = useGetRegistrationFlowBuilderEnabledStatus();
+
 
     /**
      * Broadcast values to the outside when internals change.
@@ -263,7 +268,7 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
                 data-testid={ `${ componentId }-cookie-policy-url` }
                 validation={ validateTemplatableURLs }
             />
-            <Field.Input
+            { isDynamicPortalEnabled && ( <Field.Input
                 ariaLabel="Branding preference recovery portal URL"
                 inputType="url"
                 name="urls.recoveryPortalURL"
@@ -294,7 +299,7 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
                 width={ 16 }
                 data-testid={ `${ componentId }-recovery-portal-url` }
                 validation={ validateTemplatableURLs }
-            />
+            /> ) }
             <Field.Input
                 ariaLabel="Branding preference self signup URL"
                 inputType="url"

@@ -223,6 +223,7 @@
     String cookiePolicyURL = "/authenticationendpoint/cookie_policy.do";
     String selfSignUpOverrideURL = "";
     String passwordRecoveryOverrideURL = "";
+    String recoveryPortalOverrideURL = "";
     String layout = "centered";
     String layoutFileRelativePath = "includes/layouts/" + layout + "/body.ser";
     String layoutStoreURL = "extensions/layouts/custom/${tenantDomain}";
@@ -404,13 +405,17 @@
         if (overrideFallbackValues.containsKey(COOKIE_POLICY_URL_KEY)) {
             cookiePolicyURL = (String) overrideFallbackValues.get(COOKIE_POLICY_URL_KEY);
         }
-
+        
         if (overrideFallbackValues.containsKey(SELF_SIGN_UP_URL_KEY)) {
             selfSignUpOverrideURL = (String) overrideFallbackValues.get(SELF_SIGN_UP_URL_KEY);
         }
 
         if (overrideFallbackValues.containsKey(PASSWORD_RECOVERY_URL_KEY)) {
             passwordRecoveryOverrideURL = (String) overrideFallbackValues.get(PASSWORD_RECOVERY_URL_KEY);
+        }
+
+        if (overrideFallbackValues.containsKey(RECOVERY_PORTAL_URL_KEY)) {
+            recoveryPortalOverrideURL = (String) overrideFallbackValues.get(RECOVERY_PORTAL_URL_KEY);
         }
     }
 
@@ -770,7 +775,7 @@
                         String recoveryPortalURLInput = brandingPreference.getJSONObject(URLS_KEY).getString(RECOVERY_PORTAL_URL_KEY);
                         if (!StringUtils.isBlank(recoveryPortalURLInput) && !recoveryPortalURLInput.toLowerCase().contains("javascript:") &&
                             !recoveryPortalURLInput.toLowerCase().contains("data:")) {
-                            passwordRecoveryOverrideURL = recoveryPortalURLInput;
+                            recoveryPortalOverrideURL = recoveryPortalURLInput;
                         }
                     }
                 }
