@@ -116,7 +116,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
             const claims: string[] = value.split(",");
 
             return (
-                <List className="values-list" items={ claims } overflow-x="auto">
+                <List className="values-list" items={ claims }>
                     { claims.map((claim: string, index: number) => (
                         <Popup
                             inverted

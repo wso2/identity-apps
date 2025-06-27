@@ -197,7 +197,7 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
                     { !activeRoleType && (
                         <>
                             <Grid
-                                md={ 1.5 }
+                                md={ 2 }
                                 data-componentid={ `${testId}-field-role-type-label` }
                             >
                                 <label>{ t("approvalWorkflows:forms.configurations.template.roles.label") }</label>

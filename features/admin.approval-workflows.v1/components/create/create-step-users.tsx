@@ -262,7 +262,7 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
                     { !activeUserStore && (
                         <>
                             <Grid
-                                md={ 1.5 }
+                                md={ 2 }
                                 data-componentid={ `${componentId}-field-userstore-label` }
                             >
                                 <label>{ t("approvalWorkflows:forms.configurations.template.users.label") }</label>
