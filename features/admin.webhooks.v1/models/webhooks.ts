@@ -36,7 +36,6 @@ export enum ChannelStatus {
     UNSUBSCRIPTION_ERROR = "UNSUBSCRIPTION_ERROR",
 }
 
-
 /**
  * Interface for webhook event profile.
  */
