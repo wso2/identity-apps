@@ -62,6 +62,10 @@ interface UserImpersonationActionInterface extends IdentifiableComponentInterfac
      */
     isDisabled: boolean;
     /**
+     * Whether the user is managed by parent org.
+     */
+    isUserManagedByParentOrg: boolean;
+    /**
      * Whether user is read only.
      */
     isReadOnly: boolean;
@@ -79,6 +83,7 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         user,
         isLocked,
         isDisabled,
+        isUserManagedByParentOrg,
         isReadOnly
     } = props;
 
@@ -496,7 +501,7 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     const resolveUserActions = (): ReactElement => {
 
         return (
-            !isUserCurrentLoggedInUser &&
+            !isUserCurrentLoggedInUser && !isUserManagedByParentOrg &&
             (orgType === OrganizationType.SUBORGANIZATION ? !isSwitchedFromRootOrg : true) &&
             isAuthenticatedUserInAnAllowedUserstore() &&
             isFeatureEnabled(userFeatureConfig, UserManagementConstants.FEATURE_DICTIONARY.get("USER_IMPERSONATION")) ?
