@@ -263,7 +263,7 @@
             if (action && action !== 'success') {
                 var actionInput = document.createElement('input');
                 actionInput.type = 'hidden';
-                actionInput.name = 'action.' + action; // e.g., 'action.fail'
+                actionInput.name = 'action.' + action;
                 actionInput.value = 'true';
                 form.appendChild(actionInput);
             }
