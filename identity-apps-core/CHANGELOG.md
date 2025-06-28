@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.26.2
+
+### Patch Changes
+
+- [#8401](https://github.com/wso2/identity-apps/pull/8401) [`14caebcc26ca43c9f496e0910b82440a78a17cda`](https://github.com/wso2/identity-apps/commit/14caebcc26ca43c9f496e0910b82440a78a17cda) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issues with OTP fields on mobile devices
+
 ## 2.26.1
 
 ### Patch Changes

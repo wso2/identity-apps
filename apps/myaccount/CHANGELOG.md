@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.20.3
+
+### Patch Changes
+
+- [#8405](https://github.com/wso2/identity-apps/pull/8405) [`8bb032d47f2e830c5434665bfdf0db9ffeb6d3d8`](https://github.com/wso2/identity-apps/commit/8bb032d47f2e830c5434665bfdf0db9ffeb6d3d8) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Revert to deriving tenant domain from subject instead of using org_handle
+
+- Updated dependencies [[`615709472c3c0ac89783f37a8cb3b07d414b5d75`](https://github.com/wso2/identity-apps/commit/615709472c3c0ac89783f37a8cb3b07d414b5d75)]:
+  - @wso2is/i18n@2.24.6
+
 ## 2.20.2
 
 ### Patch Changes
