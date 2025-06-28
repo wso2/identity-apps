@@ -1,5 +1,11 @@
 # @wso2is/admin.flows.v1
 
+## 1.0.2
+
+### Patch Changes
+
+- [#8412](https://github.com/wso2/identity-apps/pull/8412) [`5c238289ef5f6734d2f88efe9f7a6b88357b6a6b`](https://github.com/wso2/identity-apps/commit/5c238289ef5f6734d2f88efe9f7a6b88357b6a6b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improvements for the flows feature
+
 ## 1.0.1
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.65.6
+
+### Patch Changes
+
+- [#8412](https://github.com/wso2/identity-apps/pull/8412) [`5c238289ef5f6734d2f88efe9f7a6b88357b6a6b`](https://github.com/wso2/identity-apps/commit/5c238289ef5f6734d2f88efe9f7a6b88357b6a6b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improvements for the flows feature
+
+- Updated dependencies [[`5c238289ef5f6734d2f88efe9f7a6b88357b6a6b`](https://github.com/wso2/identity-apps/commit/5c238289ef5f6734d2f88efe9f7a6b88357b6a6b)]:
+  - @wso2is/admin.applications.v1@2.36.4
+  - @wso2is/admin.flows.v1@1.0.2
+
 ## 2.65.5
 
 ### Patch Changes
