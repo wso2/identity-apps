@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -69,6 +69,10 @@ export interface ApplicationMarkdownGuidePropsInterface extends IdentifiableComp
  */
 interface ModeratedData {
     pemCertificate?: string;
+    scopes?: {
+        spaceSeperatedList?: string;
+        commaSeperatedList?: string;
+    };
 }
 
 /**
@@ -112,6 +116,7 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
         (state: AppState) => state?.application?.samlConfigurations);
     const oidcConfigurations: SAMLApplicationConfigurationInterface = useSelector(
         (state: AppState) => state?.application?.oidcConfigurations);
+    const scopes: string = useSelector((state: AppState) => state?.application?.meta?.scopes);
     const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
     const clientOrigin: string = useSelector((state: AppState) => state?.config?.deployment?.clientOrigin);
     const serverOrigin: string = useSelector((state: AppState) => state?.config?.deployment?.idpConfigs?.serverOrigin);
@@ -144,6 +149,25 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
 
         if (samlConfigurations?.certificate) {
             data.pemCertificate = btoa(getPemFormatCertificate(samlConfigurations?.certificate));
+        }
+
+        if (scopes) {
+            const scopeArray: string[] = scopes.trim().split(/\s+/);
+
+            data.scopes = {
+                // Comma separated list with single quotes around the scope values.
+                // Example: "'openid', 'profile', 'email'"
+                commaSeperatedList: scopeArray.map((scope: string) => `'${scope}'`).join(", "),
+                // Space separated list of the scope values.
+                // Example: "openid profile email"
+                spaceSeperatedList: scopeArray.join(" ")
+            };
+        } else {
+            // If no scopes are available, use the default OAuth 2.0 scopes.
+            data.scopes = {
+                commaSeperatedList: "'openid', 'profile'",
+                spaceSeperatedList: "openid profile"
+            };
         }
 
         return data;
@@ -189,6 +213,7 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
         inboundProtocolConfigurations,
         samlConfigurations,
         oidcConfigurations,
+        scopes,
         tenantDomain,
         clientOrigin,
         serverOrigin

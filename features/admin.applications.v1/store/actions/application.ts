@@ -24,7 +24,8 @@ import {
     SetAvailableCustomInboundProtocolsMetaInterface,
     SetAvailableInboundProtocolsMetaInterface,
     SetOIDCApplicationConfigurationsActionInterface,
-    SetSAMLApplicationConfigurationsActionInterface
+    SetSAMLApplicationConfigurationsActionInterface,
+    SetScopesActionInterface
 } from "./types/application";
 import {
     ApplicationTemplateListItemInterface,
@@ -136,4 +137,17 @@ export const setSAMLApplicationConfigs = (
 ): SetSAMLApplicationConfigurationsActionInterface => ({
     payload: samlConfigurations,
     type: ApplicationActionTypes.SET_SAML_APPLICATION_CONFIGURATIONS
+});
+
+/**
+ * Redux action to set the scopes for an application.
+ *
+ * @param scopes - Scopes string
+ * @returns An action of type `ApplicationActionTypes.SET_SCOPES`
+ */
+export const setApplicationScopes = (
+    scopes: string
+): SetScopesActionInterface => ({
+    payload: scopes,
+    type: ApplicationActionTypes.SET_SCOPES
 });

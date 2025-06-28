@@ -68,8 +68,11 @@ export enum ApplicationActionTypes {
      * Action type to set saml application configurations.
      *
      */
-    SET_SAML_APPLICATION_CONFIGURATIONS = "SET_SAML_APPLICATION_CONFIGURATIONS"
-
+    SET_SAML_APPLICATION_CONFIGURATIONS = "SET_SAML_APPLICATION_CONFIGURATIONS",
+    /**
+     * Action type to set the scopes for an application.
+     */
+    SET_SCOPES = "SET_SCOPES"
 }
 
 /**
@@ -137,6 +140,14 @@ export interface SetSAMLApplicationConfigurationsActionInterface extends Applica
 }
 
 /**
+ * Set scopes action interface.
+ */
+export interface SetScopesActionInterface extends ApplicationBaseActionInterface {
+    payload: string;
+    type: ApplicationActionTypes.SET_SCOPES;
+}
+
+/**
  * Export action interfaces.
  */
 export type ApplicationActions = CheckAvailableCustomInboundProtocolsMetaInterface
@@ -145,4 +156,5 @@ export type ApplicationActions = CheckAvailableCustomInboundProtocolsMetaInterfa
     | SetApplicationTemplatesActionInterface
     | SetAvailableCustomInboundProtocolsMetaInterface
     | SetOIDCApplicationConfigurationsActionInterface
-    | SetSAMLApplicationConfigurationsActionInterface;
+    | SetSAMLApplicationConfigurationsActionInterface
+    | SetScopesActionInterface;
