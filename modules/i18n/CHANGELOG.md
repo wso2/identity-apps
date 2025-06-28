@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.24.6
+
+### Patch Changes
+
+- [#8396](https://github.com/wso2/identity-apps/pull/8396) [`615709472c3c0ac89783f37a8cb3b07d414b5d75`](https://github.com/wso2/identity-apps/commit/615709472c3c0ac89783f37a8cb3b07d414b5d75) Thanks [@malithie](https://github.com/malithie)! - Update webhooks ui to support websubhub behavior.
+
 ## 2.24.5
 
 ### Patch Changes
