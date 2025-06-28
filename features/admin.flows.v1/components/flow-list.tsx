@@ -40,16 +40,18 @@ import {
     updateGovernanceConnector,
     useGetGovernanceConnectorById
 } from "@wso2is/admin.server-configurations.v1";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { GenericIcon } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import flowData from "../data/flows.json";
 import { FlowListItemInterface, FlowTypes } from "../models/flows";
 import "./flow-list.scss";
-import { addAlert } from "@wso2is/core/store";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
 
 /**
  * Props interface of {@link FlowList}
@@ -153,7 +155,7 @@ const FlowList: FunctionComponent<FlowListProps> = ({
                         >
                             <CircleCheckFilledIcon className="icon-configured"/>
                             <Typography  className="text-configured" variant="h6">
-                            Enabled
+                                Enabled
                             </Typography>
                         </div>
                     ) : (
@@ -162,7 +164,7 @@ const FlowList: FunctionComponent<FlowListProps> = ({
                             data-componentid={ `${ componentId }-${ flowType }-not-configured-status-tag` }
                         >
                             <Typography className="text-not-configured" variant="h6">
-                            Disabled
+                                Disabled
                             </Typography>
                         </div>
                     );
@@ -170,7 +172,7 @@ const FlowList: FunctionComponent<FlowListProps> = ({
         }
     };
 
-    const handleFlowStatusToggle = async (e, flowType: string): Promise<void> => {
+    const handleFlowStatusToggle = async (e: MouseEvent<HTMLButtonElement>, flowType: string): Promise<void> => {
         e.stopPropagation();
         switch (flowType) {
             case FlowTypes.REGISTRATION:
@@ -187,7 +189,7 @@ const FlowList: FunctionComponent<FlowListProps> = ({
                 ).then(() => {
                     handleUpdateSuccess(flowType, !isNewRegistrationPortalEnabled);
                     connectorDetailsMutate();
-                }).catch((error) => {
+                }).catch((error: IdentityAppsApiException) => {
                     handleFlowStatusUpdateError(flowType, error);
                 });
 
@@ -199,64 +201,70 @@ const FlowList: FunctionComponent<FlowListProps> = ({
         <div className="flow-list-grid-wrapper" data-componentid={ `${ componentId }-grid` }>
             <div className="flow-list-grid">
                 { flowData && flowData.flows.length > 0 && (
-                    flowData.flows.map((flow: FlowListItemInterface) => (
-                        <Card
-                            key={ flow.id }
-                            className={ classNames("flow-type", { "disabled": flow.disabled }) }
-                            data-componentid={ `${ flow.id }-flow-type-card` }
-                            onClick={ () => history.push(AppConstants.getPaths().get(flow.path)) }
-                        >
-                            <CardContent className="flow-type-header">
-                                <div>
-                                    <GenericIcon
-                                        size="micro"
-                                        icon={ (
-                                            <Avatar
-                                                variant="square"
-                                                randomBackgroundColor
-                                                backgroundColorRandomizer={ flow.id }
-                                                className="flow-type-icon-container"
-                                            >
-                                                { resolveFlowTypeIcon(flow.type) }
-                                            </Avatar>
-                                        ) }
-                                        inline
-                                        transparent
-                                        shape="square"
+                    flowData.flows.map((flow: FlowListItemInterface) =>
+                        isFeatureEnabled(flowsFeatureConfig, flow.featureStatusKey) && (
+                            <Card
+                                key={ flow.id }
+                                className={ classNames("flow-type", { "disabled": flow.disabled }) }
+                                data-componentid={ `${ flow.id }-flow-type-card` }
+                                onClick={ () => history.push(AppConstants.getPaths().get(flow.path)) }
+                            >
+                                <CardContent className="flow-type-header">
+                                    <div>
+                                        <GenericIcon
+                                            size="micro"
+                                            icon={ (
+                                                <Avatar
+                                                    variant="square"
+                                                    randomBackgroundColor
+                                                    backgroundColorRandomizer={ flow.id }
+                                                    className="flow-type-icon-container"
+                                                >
+                                                    { resolveFlowTypeIcon(flow.type) }
+                                                </Avatar>
+                                            ) }
+                                            inline
+                                            transparent
+                                            shape="square"
+                                        />
+                                    </div>
+                                    <div>
+                                        <Typography variant="h6">
+                                            { flow.heading }
+                                        </Typography>
+                                        { resolveFlowTypeStatusLabel(flow.type) }
+                                    </div>
+                                    <FeatureFlagLabel
+                                        featureFlags={ flowsFeatureConfig?.featureFlags }
+                                        featureKey={ flow.featureStatusKey }
+                                        type="ribbon"
                                     />
-                                </div>
-                                <div>
-                                    <Typography variant="h6">
-                                        { flow.heading }
+                                </CardContent>
+                                <CardContent>
+                                    <Typography variant="body2" color="text.secondary">
+                                        {  flow.description }
                                     </Typography>
-                                    { resolveFlowTypeStatusLabel(flow.type) }
-                                </div>
-                                <FeatureFlagLabel
-                                    featureFlags={ flowsFeatureConfig?.featureFlags }
-                                    featureKey={ flow.featureStatusKey }
-                                    type="ribbon"
-                                />
-                            </CardContent>
-                            <CardContent>
-                                <Typography variant="body2" color="text.secondary">
-                                    {  flow.description }
-                                </Typography>
-                            </CardContent>
-                            <CardActions>
-                                <Button
-                                    className="action-button"
-                                    onClick={
-                                        (e: MouseEvent<HTMLButtonElement>) => handleFlowStatusToggle(e, flow.type)
-                                    }
-                                >
-                                    { resolveFlowTypeStatus(flow.type)
-                                        ? "Disable"
-                                        : "Enable"
-                                    }
-                                </Button>
-                            </CardActions>
-                        </Card>
-                    )))
+                                </CardContent>
+                                {
+                                    !flow.disabled && (
+                                        <CardActions>
+                                            <Button
+                                                className="action-button"
+                                                onClick={
+                                                    (e: MouseEvent<HTMLButtonElement>) =>
+                                                        handleFlowStatusToggle(e, flow.type)
+                                                }
+                                            >
+                                                { resolveFlowTypeStatus(flow.type)
+                                                    ? "Disable"
+                                                    : "Enable"
+                                                }
+                                            </Button>
+                                        </CardActions>
+                                    )
+                                }
+                            </Card>
+                        )))
                 }
             </div>
         </div>
