@@ -8,6 +8,24 @@
             "path": "REGISTRATION_FLOW_BUILDER",
             "type": "REGISTRATION",
             "disabled": false
+        },
+        {
+            "id": "password-recovery",
+            "heading": "Password Recovery Flow",
+            "description": "Design and customize the user password recovery journey with a flexible, no-code flow composer.",
+            "featureStatusKey": "flows.types.list.passwordRecovery",
+            "path": "PASSWORD_RECOVERY_FLOW_BUILDER",
+            "type": "PASSWORD_RECOVERY",
+            "disabled": true
+        },
+        {
+            "id": "password-recovery",
+            "heading": "Admin Initiated Password Reset Flow",
+            "description": "Design and customize the admin initiated user password reset journey with a flexible, no-code flow composer.",
+            "featureStatusKey": "flows.types.list.adminInitiatedPasswordReset",
+            "path": "ADMIN_INITIATED_PASSWORD_RESET_FLOW_BUILDER",
+            "type": "ADMIN_INITIATED_PASSWORD_RESET",
+            "disabled": true
         }
     ]
 }

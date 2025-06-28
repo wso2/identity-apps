@@ -735,9 +735,29 @@
                 }
             },
             "flows": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "flows.types.list.adminInitiatedPasswordReset",
+                    "flows.types.list.passwordRecovery"
+                ],
                 "enabled": true,
-                "featureFlags": [],
+                "featureFlags": [
+                    {
+                        "feature": "flows",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "flows.types.list.registration",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "flows.types.list.passwordRecovery",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "flows.types.list.adminInitiatedPasswordReset",
+                        "flag": ""
+                    }
+                ],
                 "scopes": {
                     "create": [],
                     "delete": [],
