@@ -576,6 +576,10 @@
                     {
                         "feature": "branding.stylesAndText.organization.text",
                         "flag": ""
+                    },
+                    {
+                        "feature": "console.branding.design.layout.custom",
+                        "flag": "BETA"
                     }
                 ],
                 "scopes": {

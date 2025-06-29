@@ -19,6 +19,8 @@
 import { useRequiredScopes } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1";
+import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, {
     FunctionComponent,
@@ -43,7 +45,7 @@ export const CustomPageEditor: FunctionComponent<CustomPageEditorInterface> = ({
     const { t } = useTranslation();
 
     const featureConfig: ExtendedFeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const hasBrandingUpdatePermissions: boolean = useRequiredScopes(featureConfig?.apiResources?.scopes?.update);
+    const hasBrandingUpdatePermissions: boolean = useRequiredScopes(featureConfig?.branding?.scopes?.update);
 
     const {
         setIsCustomLayoutEditorEnabled,
@@ -119,6 +121,13 @@ export const CustomPageEditor: FunctionComponent<CustomPageEditorInterface> = ({
                         data-componentid={ `${ componentId }-sticky-tab-action-panel` }
                     >
                     </StickyTabPaneActionPanel>
+                    <div className="feature-flag-label">
+                        <FeatureFlagLabel
+                            featureFlags={ featureConfig?.branding?.featureFlags }
+                            featureKey={ FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CUSTOM_PAGE_EDITOR_FEATURE_ID }
+                            type="chip"
+                        />
+                    </div>
                 </Segment>
             </div>
         </div>
