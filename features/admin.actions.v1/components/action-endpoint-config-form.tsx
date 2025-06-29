@@ -449,7 +449,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                     if (!headersUnmodified) {
                         input.onChange(modifiedHeadersList);
                     }
-                }}
+                } }
                 labelName={ "Request Headers" }
                 required={ false }
                 value={ headersCSV }
@@ -460,7 +460,47 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                                                     ".fields.audience.validations.invalid")
                 }
                 showError={ false }
-                hint={ "Request headers in the relevant flow to be shared with the external service." }
+                showPredictions={ false }
+                readOnly={ isReadOnly }
+                addURLTooltip={ t("common:addURL") }
+                duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                skipInternalValidation
+            />
+        );
+    };
+
+    const allowedParametersSection = (props: any) => {
+        const { input } = props;
+        const parametersCSV: string = Array.isArray(input.value) ? input.value.join(",") : "";
+
+        return (
+            <URLInput
+                isAllowEnabled={ false }
+                labelEnabled={ false }
+                urlState={ parametersCSV }
+                setURLState={ (modifiedParamsCSV: string) => {
+                    const modifiedParamsList: string[] = modifiedParamsCSV
+                        .split(",")
+                        .map((param: string) => param.trim())
+                        .filter((param: string) => param !== "");
+
+                    const paramsUnmodified: boolean = modifiedParamsList.length === input.value.length
+                        && modifiedParamsList.every((value: string, i: number) => value === input.value[i]);
+
+                    if (!paramsUnmodified) {
+                        input.onChange(modifiedParamsList);
+                    }
+                } }
+                labelName={ "Request Params" }
+                required={ false }
+                value={ parametersCSV }
+                validation={ (value: string) => !value?.includes(",") }
+                placeholder={ "Enter request parameter name" }
+                validationErrorMsg={
+                    t("applications:forms.inboundOIDC.sections.idToken.fields.audience.validations.invalid")
+                }
+                showError={ false }
+                showPredictions={ false }
                 readOnly={ isReadOnly }
                 addURLTooltip={ t("common:addURL") }
                 duplicateURLErrorMessage={ t("common:duplicateURLError") }
@@ -471,9 +511,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
 
     const renderAllowedHeadersAndParamsSection = (): ReactElement => (
         <>
-            <Typography variant="body1" className="heading-container" >
-                { t("Request Header & Parameters") }
-            </Typography>
+            <Divider className="divider-container"/>
             <FinalFormField
                 key="allowedHeaders"
                 name="allowedHeaders"
@@ -486,14 +524,35 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                 required={ false }
                 data-componentid={ `${_componentId}-action-allowedHeaders` }
                 type="text"
-                label={ "Request Headers" }
                 placeholder={ "Enter request header key" }
-                helperText={ "Hi my name is shenali jayakody" }
                 component={ allowedHeadersSection }
                 maxLength={ 100 }
                 minLength={ 0 }
                 disabled={ isReadOnly }
             />
+            <Hint className="endpoint-hint" compact>
+                Request headers in the relevant flow to be shared with the external service.
+            </Hint>
+            <FinalFormField
+                key="allowedParameters"
+                name="allowedParameters"
+                className="text-field-container"
+                width={ 16 }
+                FormControlProps={ {
+                    margin: "dense"
+                } }
+                ariaLabel="allowedParameters"
+                required={ false }
+                data-componentid={ `${_componentId}-action-allowedHeaders` }
+                type="text"
+                component={ allowedParametersSection }
+                maxLength={ 100 }
+                minLength={ 0 }
+                disabled={ isReadOnly }
+            />
+            <Hint className="endpoint-hint" compact>
+                Request parameters in the relevant flow to be shared with the external service.
+            </Hint>
         </>
     );
 
@@ -523,7 +582,6 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                 minLength={ 0 }
                 disabled={ isReadOnly }
             />
-            { renderAllowedHeadersAndParamsSection() }
             { isHttpEndpointUri && (
                 <Alert
                     severity="warning"
@@ -537,6 +595,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                     </Trans>
                 </Alert>
             ) }
+            { renderAllowedHeadersAndParamsSection() }
             <Divider className="divider-container"/>
             <Typography variant="h6" className="heading-container" >
                 { t("actions:fields.authentication.label") }

@@ -230,6 +230,7 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                 changedFields?.allowedParameters
                     ? {
                         allowedHeaders: changedFields?.allowedHeaders ? values.allowedHeaders : undefined,
+                        allowedParameters: changedFields?.allowedParameters ? values.allowedParameters : undefined,
                         authentication: isAuthenticationUpdateFormState ? {
                             properties: authProperties,
                             type: values.authenticationType as AuthenticationType
