@@ -23,9 +23,9 @@ import countryData from "../../data/country-data.js";
 import useFieldValidation from "../../hooks/use-field-validations";
 import { useTranslations } from "../../hooks/use-translations";
 import { resolveElementText } from "../../utils/i18n-utils";
+import Hint from "../hint.js";
 import ValidationCriteria from "../validation-criteria";
 import ValidationError from "../validation-error";
-import Hint from "../hint.js";
 
 const CountryFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHandler }) => {
 
