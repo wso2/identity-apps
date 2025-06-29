@@ -27,9 +27,9 @@ import Hint from "../hint";
 import ValidationError from "../validation-error";
 
 const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHandler, validations }) => {
-    const { placeholder, identifier, label, length, required, hint } = component.config;
+    const { hint, identifier, label, length, placeholder, required } = component.config;
 
-    const [ otpLength, ] = useState(length ? length : 6);
+    const [ otpLength ] = useState(length ? length : 6);
     const [ otpValues, setOtpValues ] = useState(Array(otpLength).fill(""));
     const [ showOTP, setShowOTP ] = useState(false);
 
@@ -85,11 +85,12 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
         const currentValue = event.target.value;
 
         if ((key === 8 || key === 46) && !currentValue && index > 0) {
-            document.getElementById(`otp-field-${ index - 1 }`)?.focus();
+            document.getElementById(`otp-field-${ index - 1 }`).focus();
+
             return;
         }
         if (currentValue && index < otpLength - 1) {
-            document.getElementById(`otp-field-${ index + 1 }`)?.focus();
+            document.getElementById(`otp-field-${ index + 1 }`).focus();
         }
     };
 
@@ -114,7 +115,7 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
                     <div
                         className="sms-otp-fields equal width fields"
                         onPaste={ handlePaste }
-                        style={{ display: "flex", gap: "0.8rem", margin: "auto 0" }}
+                        style={ { display: "flex", gap: "0.8rem", margin: "auto 0" } }
                     >
                         <input
                             hidden
@@ -136,10 +137,10 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
                                         onKeyUp={ (e) => movetoNext(e, i) }
                                         placeholder="·"
                                         maxLength="1"
-                                        style={{
-                                            width: "3.1rem",
-                                            textAlign: "center"
-                                        }}
+                                        style={ {
+                                            textAlign: "center",
+                                            width: "3.1rem"
+                                        } }
                                     />
                                 );
                             })
@@ -171,7 +172,7 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
             {
                 <ValidationError
                     name={ identifier }
-                    errors={ { formStateErrors: formState ? formState.errors : [], fieldErrors: fieldErrors } }
+                    errors={ { fieldErrors: fieldErrors, formStateErrors: formState ? formState.errors : [] } }
                 />
             }
         </>
@@ -182,12 +183,18 @@ OTPFieldAdapter.propTypes = {
     component: PropTypes.shape({
         config: PropTypes.shape({
             hint: PropTypes.string,
+            identifier: PropTypes.string,
             label: PropTypes.string,
-            identifier: PropTypes.string
+            length: PropTypes.number,
+            placeholder: PropTypes.string,
+            required: PropTypes.bool
         }).isRequired
     }).isRequired,
+    fieldErrorHandler: PropTypes.func,
+    formState: PropTypes.object,
     formStateHandler: PropTypes.func.isRequired,
-    otpLength: PropTypes.number
+    otpLength: PropTypes.number,
+    validations: PropTypes.object
 };
 
 export default OTPFieldAdapter;
