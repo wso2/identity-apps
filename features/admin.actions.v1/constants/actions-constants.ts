@@ -38,6 +38,7 @@ export class ActionsConstants {
 
     public static readonly ACTION_NAME_REGEX: RegExp = /^[a-zA-Z0-9-_][a-zA-Z0-9-_ ]*[a-zA-Z0-9-_]$/;
     public static readonly API_HEADER_REGEX: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9-.]+$/;
+    public static readonly REQUEST_PARAMETER_REGEX: RegExp = /[:/?#[\]@]/;
 
     public static readonly ACTIONS_DIR: string = "actions";
     public static readonly TYPES_DIR: string = "types";

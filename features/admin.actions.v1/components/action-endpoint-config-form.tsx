@@ -437,8 +437,8 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                 isAllowEnabled={ false }
                 labelEnabled={ false }
                 urlState={ headersCSV }
-                setURLState={ (modifiedHeadersCSV: string) => {
-                    const modifiedHeadersList: string[] = modifiedHeadersCSV
+                setURLState={ (value: string) => {
+                    const modifiedHeadersList: string[] = value
                         .split(",")
                         .map((header: string) => header.trim())
                         .filter((header: string) => header !== "");
@@ -450,16 +450,20 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                         input.onChange(modifiedHeadersList);
                     }
                 } }
-                labelName={ "Request Headers" }
+                labelName={ t("actions:fields.allowedHeaders.label") }
                 required={ false }
                 value={ headersCSV }
-                validation={ (value: string) => !value?.includes(",") }
-                placeholder={ "Enter request header key" }
-                validationErrorMsg={
-                    t("applications:forms.inboundOIDC.sections.idToken" +
-                                                    ".fields.audience.validations.invalid")
-                }
-                showError={ false }
+                validation={ (value: string) => {
+                    const modifiedHeadersList: string[] = value
+                        .split(",")
+                        .map((header: string) => header.trim())
+                        .filter((header: string) => header !== "");
+
+                    return modifiedHeadersList.every((header: string) =>
+                        ActionsConstants.API_HEADER_REGEX.test(header));
+                } }
+                placeholder={ t("actions:fields.allowedHeaders.placeholder") }
+                validationErrorMsg={  t("actions:fields.allowedHeaders.validations.invalid") }
                 showPredictions={ false }
                 readOnly={ isReadOnly }
                 addURLTooltip={ t("common:addURL") }
@@ -491,19 +495,24 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                         input.onChange(modifiedParamsList);
                     }
                 } }
-                labelName={ "Request Params" }
+                labelName={ t("actions:fields.allowedParameters.label") }
                 required={ false }
                 value={ parametersCSV }
-                validation={ (value: string) => !value?.includes(",") }
-                placeholder={ "Enter request parameter name" }
-                validationErrorMsg={
-                    t("applications:forms.inboundOIDC.sections.idToken.fields.audience.validations.invalid")
-                }
+                validation={ (value: string) => {
+                    const modifiedParamsList: string[] = value
+                        .split(",")
+                        .map((param: string) => param.trim())
+                        .filter((param: string) => param !== "");
+
+                    return modifiedParamsList.every((param: string) =>
+                        ActionsConstants.REQUEST_PARAMETER_REGEX.test(param));
+                } }
+                placeholder={ t("actions:fields.allowedParameters.placeholder") }
+                validationErrorMsg={  t("actions:fields.allowedParameters.validations.invalid") }
                 showError={ false }
                 showPredictions={ false }
                 readOnly={ isReadOnly }
-                addURLTooltip={ t("common:addURL") }
-                duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                duplicateURLErrorMessage={ t("") }
                 skipInternalValidation
             />
         );
@@ -524,14 +533,13 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                 required={ false }
                 data-componentid={ `${_componentId}-action-allowedHeaders` }
                 type="text"
-                placeholder={ "Enter request header key" }
                 component={ allowedHeadersSection }
                 maxLength={ 100 }
                 minLength={ 0 }
                 disabled={ isReadOnly }
             />
             <Hint className="endpoint-hint" compact>
-                Request headers in the relevant flow to be shared with the external service.
+                { t("actions:fields.allowedHeaders.hint") }
             </Hint>
             <FinalFormField
                 key="allowedParameters"
@@ -551,7 +559,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                 disabled={ isReadOnly }
             />
             <Hint className="endpoint-hint" compact>
-                Request parameters in the relevant flow to be shared with the external service.
+                { t("actions:fields.allowedParameters.hint") }
             </Hint>
         </>
     );
