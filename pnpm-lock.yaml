@@ -558,7 +558,7 @@ importers:
         specifier: ^1.7.2
         version: link:../../features/admin.feature-gate.v1
       '@wso2is/admin.flows.v1':
-        specifier: ^1.0.2
+        specifier: ^1.0.3
         version: link:../../features/admin.flows.v1
       '@wso2is/admin.groups.v1':
         specifier: ^2.27.119
