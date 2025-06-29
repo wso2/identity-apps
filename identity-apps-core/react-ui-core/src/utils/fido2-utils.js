@@ -16,6 +16,13 @@
  * under the License.
  */
 
+/**
+ * Executes the FIDO2 flow for creating a passkey.
+ *
+ * @param {Object} flow - The flow object containing webAuthnData.
+ * @param {Function} handleSubmit - Function to handle the form submission.
+ * @param {Function} setPasskeyError - Function to set the passkey error message.
+ */
 export const executeFido2FLow = (flow, handleSubmit, setPasskeyError) => {
 
     if (flow.data.webAuthnData) {
@@ -44,6 +51,13 @@ export const executeFido2FLow = (flow, handleSubmit, setPasskeyError) => {
     }
 };
 
+/**
+ * Converts an ArrayBuffer to a Base64 URL-encoded string.
+ *
+ * @param {ArrayBuffer} buffer - The ArrayBuffer to convert.
+ *
+ * @returns {string} The Base64 URL-encoded string.
+ */
 export const arrayBufferToBase64url = (buffer) => {
     const bytes = new Uint8Array(buffer);
     let binary = "";
@@ -53,6 +67,13 @@ export const arrayBufferToBase64url = (buffer) => {
     return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 };
 
+/**
+ * Encodes a PublicKeyCredential response into a format suitable for transmission.
+ *
+ * @param {PublicKeyCredential} response - The PublicKeyCredential response to encode.
+ *
+ * @returns {Object} The encoded credential object.
+ */
 export const encodeCredential = (response) =>{
     if (response.u2fResponse) {
         return response;
@@ -93,6 +114,13 @@ export const encodeCredential = (response) =>{
     }
 };
 
+/**
+ * Converts a Base64 URL-encoded string to a Uint8Array.
+ *
+ * @param {string} base64url - The Base64 URL-encoded string to convert.
+ *
+ * @returns {Uint8Array} The resulting Uint8Array.
+ */
 export const base64urlToUint8Array = (base64url) => {
     const base64 = base64url.replace(/-/g, "+").replace(/_/g, "/");
     const pad = base64.length % 4 === 0 ? "" : "=".repeat(4 - (base64.length % 4));
@@ -117,6 +145,13 @@ export const decodePublicKeyCredentialOptions = (request) => {
     };
 };
 
+/**
+ * Creates a passkey using the WebAuthn API.
+ *
+ * @param {Object} webAuthnData - The WebAuthn data containing publicKeyCredentialCreationOptions.
+ *
+ * @returns {Promise<Object>} A promise that resolves with the credential response.
+ */
 export const createPasskey = async (webAuthnData) => {
     const options = decodePublicKeyCredentialOptions(webAuthnData.publicKeyCredentialCreationOptions);
     const credential = await navigator.credentials.create({ publicKey: options });

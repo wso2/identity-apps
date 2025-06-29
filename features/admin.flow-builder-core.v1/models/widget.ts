@@ -42,6 +42,5 @@ export enum WidgetTypes {
     IdentifierPassword = "IDENTIFIER_PASSWORD",
     EmailOTP = "EMAIL_OTP",
     GoogleFederation = "GOOGLE_FEDERATION",
-    SMSOTP = "SMS_OTP",
-    PasskeyEnrollment = "PASSKEY_ENROLLMENT"
+    SMSOTP = "SMS_OTP"
 }

@@ -24,7 +24,7 @@ import {
 import { FieldKey, FieldValue } from "@wso2is/admin.flow-builder-core.v1/models/base";
 import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { Resource } from "@wso2is/admin.flow-builder-core.v1/models/resources";
-import { StepCategories, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
+import { RedirectionTypes, StepCategories, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "react";
@@ -144,7 +144,7 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
 
             break;
         case StepCategories.Workflow:
-            if (resource?.data?.action?.executor?.name === "FIDO2Executor") {
+            if (resource?.data?.action?.executor?.name === RedirectionTypes.PasskeyEnrollment) {
                 renderElementId();
 
                 break;
