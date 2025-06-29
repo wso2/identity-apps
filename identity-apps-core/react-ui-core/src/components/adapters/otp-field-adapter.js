@@ -23,15 +23,16 @@ import { Input } from "semantic-ui-react";
 import useFieldValidation from "../../hooks/use-field-validations";
 import { useTranslations } from "../../hooks/use-translations";
 import { resolveElementText } from "../../utils/i18n-utils";
+import Hint from "../hint";
 import ValidationError from "../validation-error";
 
 const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHandler, validations }) => {
-    const { placeholder, identifier, label, length, required } = component.config;
-    
+    const { placeholder, identifier, label, length, required, hint } = component.config;
+
     const [ otpLength, ] = useState(length ? length : 6);
     const [ otpValues, setOtpValues ] = useState(Array(otpLength).fill(""));
     const [ showOTP, setShowOTP ] = useState(false);
-    
+
     const { translations } = useTranslations();
     const { fieldErrors, validate } = useFieldValidation(validations,
         otpValues ? (otpLength <= 6 ? otpValues.join("") : otpValues) : "");
@@ -165,6 +166,9 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
                 )
             }
             {
+                hint && ( <Hint hint={ hint } /> )
+            }
+            {
                 <ValidationError
                     name={ identifier }
                     errors={ { formStateErrors: formState ? formState.errors : [], fieldErrors: fieldErrors } }
@@ -177,6 +181,7 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
 OTPFieldAdapter.propTypes = {
     component: PropTypes.shape({
         config: PropTypes.shape({
+            hint: PropTypes.string,
             label: PropTypes.string,
             identifier: PropTypes.string
         }).isRequired

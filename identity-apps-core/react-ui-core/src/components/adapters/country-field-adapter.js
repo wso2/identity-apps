@@ -25,10 +25,11 @@ import { useTranslations } from "../../hooks/use-translations";
 import { resolveElementText } from "../../utils/i18n-utils";
 import ValidationCriteria from "../validation-criteria";
 import ValidationError from "../validation-error";
+import Hint from "../hint.js";
 
 const CountryFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHandler }) => {
 
-    const { required, identifier, placeholder, label, validations } = component.config;
+    const { required, identifier, placeholder, label, validations, hint } = component.config;
 
     const { translations } = useTranslations();
     const { fieldErrors, validate } = useFieldValidation(validations, selectedCountry);
@@ -74,6 +75,9 @@ const CountryFieldAdapter = ({ component, formState, formStateHandler, fieldErro
                 selection
             />
             {
+                hint && ( <Hint hint={ hint } /> )
+            }
+            {
                 validations && validations.type === "RULE" && (
                     <ValidationCriteria
                         validationConfig={ validations }
@@ -95,6 +99,7 @@ const CountryFieldAdapter = ({ component, formState, formStateHandler, fieldErro
 CountryFieldAdapter.propTypes = {
     component: PropTypes.shape({
         config: PropTypes.shape({
+            hint: PropTypes.string,
             identifier: PropTypes.string.isRequired,
             label: PropTypes.string.isRequired,
             placeholder: PropTypes.string.isRequired,
