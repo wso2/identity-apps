@@ -2,7 +2,7 @@
     "flows": [
         {
             "id": "registration",
-            "heading": "Registration Flow",
+            "heading": "Self Registration",
             "description": "Design and customize the user registration journey with a flexible, no-code flow composer.",
             "featureStatusKey": "flows.types.list.registration",
             "path": "REGISTRATION_FLOW_BUILDER",
@@ -11,7 +11,7 @@
         },
         {
             "id": "password-recovery",
-            "heading": "Password Recovery Flow",
+            "heading": "Password Recovery",
             "description": "Design and customize the user password recovery journey with a flexible, no-code flow composer.",
             "featureStatusKey": "flows.types.list.passwordRecovery",
             "path": "PASSWORD_RECOVERY_FLOW_BUILDER",
@@ -19,12 +19,12 @@
             "disabled": true
         },
         {
-            "id": "password-recovery",
-            "heading": "Admin Initiated Password Reset Flow",
-            "description": "Design and customize the admin initiated user password reset journey with a flexible, no-code flow composer.",
-            "featureStatusKey": "flows.types.list.adminInitiatedPasswordReset",
-            "path": "ADMIN_INITIATED_PASSWORD_RESET_FLOW_BUILDER",
-            "type": "ADMIN_INITIATED_PASSWORD_RESET",
+            "id": "invite-user-to-set-password",
+            "heading": "Invite User to Set Password",
+            "description": "Design and customize the invite-user password setup journey with a flexible, no-code flow composer.",
+            "featureStatusKey": "flows.types.list.inviteUserToSetPassword",
+            "path": "INVITE_USER_PASSWORD_SETUP_FLOW_BUILDER",
+            "type": "INVITE_USER_PASSWORD_SETUP",
             "disabled": true
         }
     ]

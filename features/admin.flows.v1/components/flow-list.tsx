@@ -93,7 +93,7 @@ const FlowList: FunctionComponent<FlowListProps> = ({
                 return <UserPlusIcon size="small" className="icon" />;
             case FlowTypes.PASSWORD_RECOVERY:
                 return <UserFlowIcon size="small" className="icon" />;
-            case FlowTypes.ADMIN_INITIATED_PASSWORD_RESET:
+            case FlowTypes.INVITE_USER_PASSWORD_SETUP:
                 return <UserAsteriskIcon size="small" className="icon" />;
             default:
                 return <UserKeyIcon size="small" className="icon" />;
@@ -106,8 +106,8 @@ const FlowList: FunctionComponent<FlowListProps> = ({
                 return "Registration";
             case FlowTypes.PASSWORD_RECOVERY:
                 return "Password Recovery";
-            case FlowTypes.ADMIN_INITIATED_PASSWORD_RESET:
-                return "Admin Initiated Password Reset";
+            case FlowTypes.INVITE_USER_PASSWORD_SETUP:
+                return "Invite User Password Setup";
             default:
                 return "Unknown Flow Type";
         }
