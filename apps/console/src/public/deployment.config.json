@@ -736,7 +736,7 @@
             },
             "flows": {
                 "disabledFeatures": [
-                    "flows.types.list.adminInitiatedPasswordReset",
+                    "flows.types.list.inviteUserToSetPassword",
                     "flows.types.list.passwordRecovery"
                 ],
                 "enabled": true,
@@ -754,7 +754,7 @@
                         "flag": ""
                     },
                     {
-                        "feature": "flows.types.list.adminInitiatedPasswordReset",
+                        "feature": "flows.types.list.inviteUserToSetPassword",
                         "flag": ""
                     }
                 ],
