@@ -41,6 +41,7 @@ export class WebhooksConstants {
         FETCH_EVENT_PROFILE_INVALID_STATUS_CODE: "Failed to fetch event profile. Unexpected response status.",
         FETCH_WEBHOOKS_INVALID_STATUS_CODE: "Failed to fetch webhooks. Unexpected response status.",
         FETCH_WEBHOOK_INVALID_STATUS_CODE: "Failed to fetch webhook. Unexpected response status.",
+        RETRY_WEBHOOK_INVALID_STATUS_CODE: "Failed to resend requests. Unexpected response status.",
         UPDATE_WEBHOOK_INVALID_STATUS_CODE: "Failed to update webhook. Unexpected response status.",
         UPDATE_WEBHOOK_STATUS_INVALID_STATUS_CODE: "Failed to update webhook status. Unexpected response status."
     };

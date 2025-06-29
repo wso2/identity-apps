@@ -202,6 +202,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             children: [],
             component: lazy(() => import("@wso2is/admin.flows.v1/pages/flows")),
             exact: false,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.FLOWS,
             icon: {
                 icon: <LinearNodesIcon />
             },

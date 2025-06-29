@@ -79,6 +79,7 @@ const useSignIn = (): UseSignInInterface => {
     const { getDecodedIDToken, getOIDCServiceEndpoints, updateConfig } = useAuthContext();
 
     const {
+        transformTenantDomain,
         setUserOrgInLocalStorage,
         setOrgIdInLocalStorage,
         getUserOrgInLocalStorage,
@@ -114,7 +115,9 @@ const useSignIn = (): UseSignInInterface => {
 
         dispatchEvent(event);
 
-        const tenantDomain: string = idToken.org_handle;
+        const tenantDomain: string = transformTenantDomain(
+            AuthenticateUtils.deriveTenantDomainFromSubject(response.sub)
+        );
         const userOrganizationId: string = idToken.user_org;
         const isFirstLevelOrg: boolean = !userOrganizationId;
 

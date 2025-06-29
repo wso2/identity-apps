@@ -43,12 +43,17 @@ interface WebhookEndpointConfigFormInterface extends IdentifiableComponentInterf
      * Specifies whether the form is read-only.
      */
     isReadOnly: boolean;
+    /**
+     * Specifies whether the form is in WebSub Hub adopter mode.
+     */
+    isWebSubHubAdopterMode?: boolean;
 }
 
 const WebhookEndpointConfigForm: FunctionComponent<WebhookEndpointConfigFormInterface> = ({
     initialValues,
     isCreateFormState,
     isReadOnly,
+    isWebSubHubAdopterMode,
     ["data-componentid"]: _componentId = "webhook-endpoint-config-form"
 }: WebhookEndpointConfigFormInterface): ReactElement => {
     const [ isShowSecret, setShowSecret ] = useState<boolean>(false);
@@ -97,19 +102,27 @@ const WebhookEndpointConfigForm: FunctionComponent<WebhookEndpointConfigFormInte
                             components={ { strong: <strong /> } }
                         />
                     </AlertTitle>
-                    <Trans i18nKey={ t("webhooks:configForm.fields.secret.info.message") } />
-                    <div>
-                        <Button
-                            onClick={ handleSecretChange }
-                            variant="outlined"
-                            size="small"
-                            className={ "secondary-button" }
-                            data-componentid={ `${_componentId}-change-secret-button` }
-                            disabled={ isReadOnly }
-                        >
-                            { t("webhooks:configForm.buttons.changeSecret") }
-                        </Button>
-                    </div>
+                    <Trans
+                        i18nKey={
+                            isWebSubHubAdopterMode
+                                ? t("webhooks:configForm.fields.secret.info.messageWebSubHubMode")
+                                : t("webhooks:configForm.fields.secret.info.message")
+                        }
+                    />
+                    { !isWebSubHubAdopterMode && (
+                        <div>
+                            <Button
+                                onClick={ handleSecretChange }
+                                variant="outlined"
+                                size="small"
+                                className="secondary-button"
+                                data-componentid={ `${_componentId}-change-secret-button` }
+                                disabled={ isReadOnly }
+                            >
+                                { t("webhooks:configForm.buttons.changeSecret") }
+                            </Button>
+                        </div>
+                    ) }
                 </Alert>
             );
         };
@@ -118,11 +131,12 @@ const WebhookEndpointConfigForm: FunctionComponent<WebhookEndpointConfigFormInte
             const renderWebhookSecretPropertyField = (): ReactElement => {
                 const showSecretHint = (): ReactElement => (
                     <Hint className="hint-text" compact>
-                        { `${t("webhooks:configForm.fields.secret.hint.common")}${
-                            isCreateFormState
-                                ? t("webhooks:configForm.fields.secret.hint.create")
-                                : t("webhooks:configForm.fields.secret.hint.update")
-                        }` }
+                        { t("webhooks:configForm.fields.secret.hint.common") }
+                        { isCreateFormState
+                            ? isWebSubHubAdopterMode
+                                ? t("webhooks:configForm.fields.secret.hint.createWebSubHubMode")
+                                : t("webhooks:configForm.fields.secret.hint.create")
+                            : t("webhooks:configForm.fields.secret.hint.update") }
                     </Hint>
                 );
 
@@ -179,74 +193,78 @@ const WebhookEndpointConfigForm: FunctionComponent<WebhookEndpointConfigFormInte
     };
 
     return (
-        <>
-            <FinalFormField
-                key="name"
-                className="text-field-container"
-                width={ 16 }
-                FormControlProps={ {
-                    margin: "dense"
-                } }
-                ariaLabel="webhookName"
-                required={ true }
-                data-componentid={ `${_componentId}-webhook-name` }
-                name="name"
-                type="text"
-                label={ t("webhooks:configForm.fields.name.label") }
-                placeholder={ t("webhooks:configForm.fields.name.placeholder") }
-                helperText={
-                    (<Hint className="hint" compact>
-                        { t("webhooks:configForm.fields.name.hint") }
-                    </Hint>)
-                }
-                component={ TextFieldAdapter }
-                maxLength={ 100 }
-                minLength={ 0 }
-                disabled={ isReadOnly }
-            />
-            <FinalFormField
-                key="uri"
-                className="text-field-container"
-                width={ 16 }
-                FormControlProps={ {
-                    margin: "dense"
-                } }
-                ariaLabel="endpoint"
-                required={ true }
-                data-componentid={ `${_componentId}-webhook-endpointUri` }
-                name="endpoint"
-                type="text"
-                label={ t("webhooks:configForm.fields.endpoint.label") }
-                placeholder={ t("webhooks:configForm.fields.endpoint.placeholder") }
-                helperText={
-                    (<Hint className="hint" compact>
-                        { t("webhooks:configForm.fields.endpoint.hint") }
-                    </Hint>)
-                }
-                component={ TextFieldAdapter }
-                maxLength={ 100 }
-                minLength={ 0 }
-                disabled={ isReadOnly }
-            />
+        <div className="webhook-endpoint-config-form">
+            <div className="form-field-wrapper">
+                <FinalFormField
+                    key="name"
+                    width={ 16 }
+                    FormControlProps={ {
+                        margin: "dense"
+                    } }
+                    ariaLabel="webhookName"
+                    required={ true }
+                    data-componentid={ `${_componentId}-webhook-name` }
+                    name="name"
+                    type="text"
+                    label={ t("webhooks:configForm.fields.name.label") }
+                    placeholder={ t("webhooks:configForm.fields.name.placeholder") }
+                    helperText={
+                        (<Hint className="hint" compact>
+                            { t("webhooks:configForm.fields.name.hint") }
+                        </Hint>)
+                    }
+                    component={ TextFieldAdapter }
+                    maxLength={ 100 }
+                    minLength={ 0 }
+                    disabled={ isReadOnly }
+                />
+            </div>
+            <div className="form-field-wrapper">
+                <FinalFormField
+                    key="uri"
+                    width={ 16 }
+                    FormControlProps={ {
+                        margin: "dense"
+                    } }
+                    ariaLabel="endpoint"
+                    required={ true }
+                    data-componentid={ `${_componentId}-webhook-endpointUri` }
+                    name="endpoint"
+                    type="text"
+                    label={ t("webhooks:configForm.fields.endpoint.label") }
+                    placeholder={ t("webhooks:configForm.fields.endpoint.placeholder") }
+                    helperText={
+                        (<Hint className="hint" compact>
+                            { t("webhooks:configForm.fields.endpoint.hint") }
+                        </Hint>)
+                    }
+                    component={ TextFieldAdapter }
+                    maxLength={ 100 }
+                    minLength={ 0 }
+                    disabled={ isReadOnly }
+                />
 
-            <Field name="endpoint" subscription={ { value: true } }>
-                { ({ input }: { input: { value: string } }) => {
-                    const isHttpEndpointUri: boolean = input.value?.startsWith("http://");
+                <Field name="endpoint" subscription={ { value: true } }>
+                    { ({ input }: { input: { value: string } }) => {
+                        const isHttpEndpointUri: boolean = input.value?.startsWith("http://");
 
-                    return isHttpEndpointUri ? (
-                        <Alert
-                            severity="warning"
-                            className="endpoint-uri-alert"
-                            data-componentid={ `${_componentId}-endpoint-uri-alert` }
-                        >
-                            <Trans i18nKey={ t("webhooks:configForm.fields.endpoint.validations.notHttps") } />
-                        </Alert>
-                    ) : null;
-                } }
-            </Field>
+                        return isHttpEndpointUri ? (
+                            <Alert
+                                severity="warning"
+                                className="endpoint-uri-alert"
+                                data-componentid={ `${_componentId}-endpoint-uri-alert` }
+                            >
+                                <Trans i18nKey={ t("webhooks:configForm.fields.endpoint.validations.notHttps") } />
+                            </Alert>
+                        ) : null;
+                    } }
+                </Field>
+            </div>
 
-            { renderWebhookSecretSection() }
-        </>
+            <div className="form-field-wrapper">
+                { renderWebhookSecretSection() }
+            </div>
+        </div>
     );
 };
 

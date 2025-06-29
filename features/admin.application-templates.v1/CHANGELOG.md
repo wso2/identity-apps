@@ -1,5 +1,11 @@
 # @wso2is/admin.application-templates.v1
 
+## 1.5.5
+
+### Patch Changes
+
+- [#8411](https://github.com/wso2/identity-apps/pull/8411) [`0b3ab014fe4662ed00912e8638f9a7fb221f19c0`](https://github.com/wso2/identity-apps/commit/0b3ab014fe4662ed00912e8638f9a7fb221f19c0) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add application scopes in application markdown guide
+
 ## 1.5.4
 
 ### Patch Changes

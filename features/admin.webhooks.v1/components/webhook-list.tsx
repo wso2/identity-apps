@@ -107,6 +107,14 @@ const WebhookList: FunctionComponent<WebhookListPropsInterface> = ({
     const [ deletingWebhook, setDeletingWebhook ] = useState<WebhookListItemInterface | undefined>(undefined);
 
     /**
+     * Check if webhook uses WebSubHub adapter.
+     */
+    const isWebSubHubAdapterMode = (): boolean => {
+        // todo: Make this dynamic based on the system configured adapter from metadata.
+        return true;
+    };
+
+    /**
      * Redirects to the webhook edit page when the edit webhook is clicked.
      *
      * @param webhook - Webhook object.
@@ -175,7 +183,8 @@ const WebhookList: FunctionComponent<WebhookListPropsInterface> = ({
                 id: "status",
                 key: "status",
                 render: (webhook: WebhookListItemInterface): ReactNode => {
-                    const isActive: boolean = webhook.status === WebhookStatus.ACTIVE;
+                    const isActive: boolean =
+                        webhook.status === WebhookStatus.ACTIVE || webhook.status === WebhookStatus.PENDING_ACTIVATION;
                     const labelColor: SemanticCOLORS = isActive ? "green" : "grey";
                     const labelText: string = isActive
                         ? t("webhooks:common.status.active")
@@ -224,9 +233,22 @@ const WebhookList: FunctionComponent<WebhookListPropsInterface> = ({
             renderer: "semantic-icon"
         });
 
+        const isDeleteEnabled = (webhook: WebhookListItemInterface): boolean => {
+            if (!isWebSubHubAdapterMode) {
+                return true;
+            }
+
+            return webhook?.status === WebhookStatus.INACTIVE || webhook?.status === WebhookStatus.PENDING_DEACTIVATION;
+        };
+
         if (hasWebhookDeletePermissions) {
             actions.push({
                 "data-componentid": `${_componentId}-item-delete-button`,
+                hidden: (item: Record<string, any>): boolean => {
+                    const webhook: WebhookListItemInterface = item as WebhookListItemInterface;
+
+                    return !isDeleteEnabled(webhook);
+                },
                 icon: () => "trash alternate",
                 onClick: (e: React.SyntheticEvent<Element, Event>, item: Record<string, any>): void => {
                     const webhook: WebhookListItemInterface = item as WebhookListItemInterface;

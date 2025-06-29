@@ -510,10 +510,10 @@ importers:
         specifier: ^2.26.0
         version: link:../../features/admin.api-resources.v2
       '@wso2is/admin.application-templates.v1':
-        specifier: ^1.5.4
+        specifier: ^1.5.5
         version: link:../../features/admin.application-templates.v1
       '@wso2is/admin.applications.v1':
-        specifier: ^2.36.3
+        specifier: ^2.36.4
         version: link:../../features/admin.applications.v1
       '@wso2is/admin.approval-workflows.v1':
         specifier: ^1.0.3
@@ -558,7 +558,7 @@ importers:
         specifier: ^1.7.2
         version: link:../../features/admin.feature-gate.v1
       '@wso2is/admin.flows.v1':
-        specifier: ^1.0.1
+        specifier: ^1.0.2
         version: link:../../features/admin.flows.v1
       '@wso2is/admin.groups.v1':
         specifier: ^2.27.119
@@ -639,7 +639,7 @@ importers:
         specifier: ^1.5.204
         version: link:../../features/admin.username-validation.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.33.0
+        specifier: ^2.33.2
         version: link:../../features/admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.33
@@ -648,7 +648,7 @@ importers:
         specifier: ^2.27.144
         version: link:../../features/admin.validation.v1
       '@wso2is/admin.webhooks.v1':
-        specifier: ^1.0.1
+        specifier: ^1.0.2
         version: link:../../features/admin.webhooks.v1
       '@wso2is/admin.workflow-approvals.v1':
         specifier: ^2.26.1
@@ -672,7 +672,7 @@ importers:
         specifier: ^2.3.22
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.24.5
+        specifier: ^2.24.6
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.20
@@ -985,7 +985,7 @@ importers:
         specifier: ^2.3.23
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.24.3
+        specifier: ^2.24.6
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.17
@@ -18611,7 +18611,7 @@ importers:
         specifier: ^2.29.11
         version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.33.1
+        specifier: ^2.33.2
         version: 'link:'
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.33
@@ -19754,7 +19754,7 @@ importers:
         specifier: ^2.6.35
         version: link:../../modules/form
       '@wso2is/i18n':
-        specifier: ^2.23.10
+        specifier: ^2.24.6
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.12

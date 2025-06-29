@@ -1,5 +1,37 @@
 # @wso2is/console
 
+## 2.65.6
+
+### Patch Changes
+
+- [#8412](https://github.com/wso2/identity-apps/pull/8412) [`5c238289ef5f6734d2f88efe9f7a6b88357b6a6b`](https://github.com/wso2/identity-apps/commit/5c238289ef5f6734d2f88efe9f7a6b88357b6a6b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improvements for the flows feature
+
+- Updated dependencies [[`5c238289ef5f6734d2f88efe9f7a6b88357b6a6b`](https://github.com/wso2/identity-apps/commit/5c238289ef5f6734d2f88efe9f7a6b88357b6a6b)]:
+  - @wso2is/admin.applications.v1@2.36.4
+  - @wso2is/admin.flows.v1@1.0.2
+
+## 2.65.5
+
+### Patch Changes
+
+- [#8411](https://github.com/wso2/identity-apps/pull/8411) [`0b3ab014fe4662ed00912e8638f9a7fb221f19c0`](https://github.com/wso2/identity-apps/commit/0b3ab014fe4662ed00912e8638f9a7fb221f19c0) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add application scopes in application markdown guide
+
+* [#8396](https://github.com/wso2/identity-apps/pull/8396) [`615709472c3c0ac89783f37a8cb3b07d414b5d75`](https://github.com/wso2/identity-apps/commit/615709472c3c0ac89783f37a8cb3b07d414b5d75) Thanks [@malithie](https://github.com/malithie)! - Update webhooks ui to support websubhub behavior.
+
+* Updated dependencies [[`0b3ab014fe4662ed00912e8638f9a7fb221f19c0`](https://github.com/wso2/identity-apps/commit/0b3ab014fe4662ed00912e8638f9a7fb221f19c0), [`615709472c3c0ac89783f37a8cb3b07d414b5d75`](https://github.com/wso2/identity-apps/commit/615709472c3c0ac89783f37a8cb3b07d414b5d75)]:
+  - @wso2is/admin.application-templates.v1@1.5.5
+  - @wso2is/admin.webhooks.v1@1.0.2
+  - @wso2is/i18n@2.24.6
+
+## 2.65.4
+
+### Patch Changes
+
+- [#8404](https://github.com/wso2/identity-apps/pull/8404) [`f1fa3c8870805afe7f2f325410dfacd576bcfcfa`](https://github.com/wso2/identity-apps/commit/f1fa3c8870805afe7f2f325410dfacd576bcfcfa) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Hide impersonation for users managed by parent org.
+
+- Updated dependencies [[`f1fa3c8870805afe7f2f325410dfacd576bcfcfa`](https://github.com/wso2/identity-apps/commit/f1fa3c8870805afe7f2f325410dfacd576bcfcfa)]:
+  - @wso2is/admin.users.v1@2.33.2
+
 ## 2.65.3
 
 ### Patch Changes
