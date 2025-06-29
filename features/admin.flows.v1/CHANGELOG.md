@@ -1,5 +1,11 @@
 # @wso2is/admin.flows.v1
 
+## 1.0.3
+
+### Patch Changes
+
+- [#8417](https://github.com/wso2/identity-apps/pull/8417) [`cc3b7bc4c63f7eb0c114dbadd17f6a67b514619b`](https://github.com/wso2/identity-apps/commit/cc3b7bc4c63f7eb0c114dbadd17f6a67b514619b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix minor content issues in the 'Invite User to Set Password' flow
+
 ## 1.0.2
 
 ### Patch Changes
