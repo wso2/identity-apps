@@ -28,5 +28,6 @@ export enum TemplateTypes {
     Blank = "BLANK",
     Basic = "BASIC",
     BasicFederated = "BASIC_FEDERATED",
-    GeneratedWithAI = "GENERATE_WITH_AI"
+    GeneratedWithAI = "GENERATE_WITH_AI",
+    BasicPasskey = "BASIC_PASSKEY",
 }

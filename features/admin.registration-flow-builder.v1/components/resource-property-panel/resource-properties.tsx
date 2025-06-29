@@ -144,6 +144,12 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
 
             break;
         case StepCategories.Workflow:
+            if (resource?.data?.action?.executor?.name === "FIDO2Executor") {
+                renderElementId();
+
+                break;
+            }
+
             return (
                 <FederationProperties
                     resource={ resource }
