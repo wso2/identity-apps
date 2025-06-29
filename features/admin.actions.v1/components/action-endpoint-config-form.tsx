@@ -505,7 +505,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                         .filter((param: string) => param !== "");
 
                     return modifiedParamsList.every((param: string) =>
-                        ActionsConstants.REQUEST_PARAMETER_REGEX.test(param));
+                        !ActionsConstants.REQUEST_PARAMETER_REGEX.test(param));
                 } }
                 placeholder={ t("actions:fields.allowedParameters.placeholder") }
                 validationErrorMsg={  t("actions:fields.allowedParameters.validations.invalid") }
