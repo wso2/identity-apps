@@ -45,8 +45,17 @@
 
         .feature-flag-label {
             position: absolute;
-            top: 5px;
-            left: 20px;
+            left: -35px;
+            top: 53px;
+            transform: rotate(-90deg);
+
+            .oxygen-chip-beta {
+                border-radius: 0;
+                width: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
         }
     }
 }

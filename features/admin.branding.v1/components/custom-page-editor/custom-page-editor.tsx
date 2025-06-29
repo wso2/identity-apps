@@ -125,7 +125,7 @@ export const CustomPageEditor: FunctionComponent<CustomPageEditorInterface> = ({
                         <FeatureFlagLabel
                             featureFlags={ featureConfig?.branding?.featureFlags }
                             featureKey={ FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CUSTOM_PAGE_EDITOR_FEATURE_ID }
-                            type="chip"
+                            type="ribbon"
                         />
                     </div>
                 </Segment>

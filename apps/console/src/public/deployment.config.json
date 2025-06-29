@@ -579,7 +579,7 @@
                     },
                     {
                         "feature": "console.branding.design.layout.custom",
-                        "flag": "BETA"
+                        "flag": ""
                     }
                 ],
                 "scopes": {
