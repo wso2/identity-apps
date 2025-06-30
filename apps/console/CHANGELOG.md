@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.65.8
+
+### Patch Changes
+
+- [#8398](https://github.com/wso2/identity-apps/pull/8398) [`6c44d0680d13bfdeb99f03d412516d5df9291984`](https://github.com/wso2/identity-apps/commit/6c44d0680d13bfdeb99f03d412516d5df9291984) Thanks [@nilasini](https://github.com/nilasini)! - Add recovery portal URL support in branding
+
+- Updated dependencies [[`6c44d0680d13bfdeb99f03d412516d5df9291984`](https://github.com/wso2/identity-apps/commit/6c44d0680d13bfdeb99f03d412516d5df9291984)]:
+  - @wso2is/admin.branding.v1@2.31.2
+
 ## 2.65.7
 
 ### Patch Changes
