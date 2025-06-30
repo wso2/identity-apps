@@ -1,5 +1,20 @@
 # @wso2is/console
 
+## 2.65.10
+
+### Patch Changes
+
+- [#8414](https://github.com/wso2/identity-apps/pull/8414) [`c53a0c23b5fc777e65040f93d6fec90b1e30efd2`](https://github.com/wso2/identity-apps/commit/c53a0c23b5fc777e65040f93d6fec90b1e30efd2) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for displaying hints in input fields in Composer
+
+* [#8427](https://github.com/wso2/identity-apps/pull/8427) [`fde0f35703d62c93d29001a601b6ed29823437cc`](https://github.com/wso2/identity-apps/commit/fde0f35703d62c93d29001a601b6ed29823437cc) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enhance the styling of the custom layout editor and add the feature status label
+
+- [#8422](https://github.com/wso2/identity-apps/pull/8422) [`f047e10bf194d35f2f79c7eda0a63a31ddc57a46`](https://github.com/wso2/identity-apps/commit/f047e10bf194d35f2f79c7eda0a63a31ddc57a46) Thanks [@malithie](https://github.com/malithie)! - Update UI to adhere to api changes.
+
+- Updated dependencies [[`fde0f35703d62c93d29001a601b6ed29823437cc`](https://github.com/wso2/identity-apps/commit/fde0f35703d62c93d29001a601b6ed29823437cc), [`f047e10bf194d35f2f79c7eda0a63a31ddc57a46`](https://github.com/wso2/identity-apps/commit/f047e10bf194d35f2f79c7eda0a63a31ddc57a46)]:
+  - @wso2is/admin.branding.v1@2.31.3
+  - @wso2is/admin.webhooks.v1@1.0.3
+  - @wso2is/i18n@2.24.8
+
 ## 2.65.9
 
 ### Patch Changes
