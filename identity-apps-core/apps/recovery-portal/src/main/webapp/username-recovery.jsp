@@ -421,6 +421,21 @@
                     }
                 %>
 
+                <%
+                    if (reCaptchaEnabled) {
+                %>
+                        var resp = $("[name="+ "<%CaptchaFEUtils.getCaptchaResponseIdentifier(); %>" +"]")[0].value;
+                        if (resp.trim() == '') {
+                            errorMessage.text("<%=i18n(recoveryResourceBundle, customText, "Please.select.recaptcha")%>");
+                            errorMessage.show();
+                            $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
+                            return false;
+                        }
+                        return true;
+                <%
+                    }
+                %>
+
                 <% if (isFirstNameInClaims && isFirstNameRequired) { %>
                     const firstName = $("#first-name").val();
 
