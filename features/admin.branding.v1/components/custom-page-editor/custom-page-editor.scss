@@ -42,20 +42,5 @@
             padding: 1em;
             margin-bottom: 0;
         }
-
-        .feature-flag-label {
-            position: absolute;
-            left: -35px;
-            top: 53px;
-            transform: rotate(-90deg);
-
-            .oxygen-chip-beta {
-                border-radius: 0;
-                width: 50px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-        }
     }
 }
