@@ -213,7 +213,7 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
             !isCreateMode &&
             !isEmpty(webhook) &&
             (isWebSubHubAdapterMode()
-                ? webhook?.status === WebhookStatus.INACTIVE || webhook?.status === WebhookStatus.PENDING_DEACTIVATION
+                ? webhook?.status === WebhookStatus.INACTIVE || webhook?.status === WebhookStatus.PARTIALLY_INACTIVE
                 : false)
         );
     }, [ isLoading, isCreateMode, webhook, isWebSubHubAdapterMode ]);
@@ -221,11 +221,11 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
     // Effects
     useEffect(() => {
         if (webhook) {
-            if (webhook.status === WebhookStatus.ACTIVE || webhook.status === WebhookStatus.PENDING_ACTIVATION) {
+            if (webhook.status === WebhookStatus.ACTIVE || webhook.status === WebhookStatus.PARTIALLY_ACTIVE) {
                 setIsActive(true);
             } else if (
                 webhook.status === WebhookStatus.INACTIVE ||
-                webhook.status === WebhookStatus.PENDING_DEACTIVATION
+                webhook.status === WebhookStatus.PARTIALLY_INACTIVE
             ) {
                 setIsActive(false);
             }
@@ -357,7 +357,7 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
         if (!webhookId || !webhook || !hasWebhookUpdatePermissions) return;
 
         const requestType: "subscription" | "unsubscription" =
-            webhook.status === WebhookStatus.PENDING_ACTIVATION ? "subscription" : "unsubscription";
+            webhook.status === WebhookStatus.PARTIALLY_ACTIVE ? "subscription" : "unsubscription";
 
         setIsRetrying(true);
         retrySubscriptionOrUnsubscription(webhookId)
@@ -400,13 +400,13 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
         if (!webhook) return null;
 
         switch (webhook.status) {
-            case WebhookStatus.PENDING_ACTIVATION:
+            case WebhookStatus.PARTIALLY_ACTIVE:
                 return {
                     message: t("webhooks:statusBanner.pendingActivation.message"),
                     severity: "warning",
                     title: t("webhooks:statusBanner.pendingActivation.title")
                 };
-            case WebhookStatus.PENDING_DEACTIVATION:
+            case WebhookStatus.PARTIALLY_INACTIVE:
                 return {
                     message: t("webhooks:statusBanner.pendingDeactivation.message"),
                     severity: "warning",
@@ -421,8 +421,7 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
         if (!webhook) return null;
 
         const canRetry: boolean =
-            webhook.status === WebhookStatus.PENDING_ACTIVATION ||
-            webhook.status === WebhookStatus.PENDING_DEACTIVATION;
+            webhook.status === WebhookStatus.PARTIALLY_ACTIVE || webhook.status === WebhookStatus.PARTIALLY_INACTIVE;
 
         if (!canRetry) return null;
 
@@ -467,8 +466,7 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
 
         const statusAlert: WebhookStatusAlert | null = getWebhookStatusAlert();
         const showStatusAlert: boolean =
-            webhook.status === WebhookStatus.PENDING_ACTIVATION ||
-            webhook.status === WebhookStatus.PENDING_DEACTIVATION;
+            webhook.status === WebhookStatus.PARTIALLY_ACTIVE || webhook.status === WebhookStatus.PARTIALLY_INACTIVE;
 
         return (
             <Box sx={ { mb: 3 } } className="webhook-status-section">
