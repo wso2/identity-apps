@@ -160,5 +160,8 @@ export class ActionsConstants {
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
         .set("PRE_ISSUE_ACCESS_TOKEN_RULE", "actions.types.preIssueAccessToken.edit.rule")
         .set("PRE_UPDATE_PASSWORD_RULE", "actions.types.preUpdatePassword.edit.rule")
-        .set("PRE_UPDATE_PROFILE_RULE", "actions.types.preUpdateProfile.edit.rule");
+        .set("PRE_UPDATE_PROFILE_RULE", "actions.types.preUpdateProfile.edit.rule")
+        .set("PRE_ISSUE_ACCESS_TOKEN_HEADERS_AND_PARAMS", "actions.types.list.preIssueAccessToken.headersAndParameters")
+        .set("PRE_UPDATE_PASSWORD_HEADERS_AND_PARAMS", "actions.types.list.preUpdatePassword.headersAndParameters")
+        .set("PRE_UPDATE_PROFILE_HEADERS_AND_PARAMS", "actions.types.list.preUpdateProfile.headersAndParameters");
 }

@@ -24,6 +24,8 @@ import Divider from "@oxygen-ui/react/Divider";
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import Typography from "@oxygen-ui/react/Typography";
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalFormField, FormSpy, SelectFieldAdapter, TextFieldAdapter } from "@wso2is/form/src";
 import { Hint, URLInput } from "@wso2is/react-components";
@@ -37,6 +39,8 @@ import {
     EndpointConfigFormPropertyInterface
 } from "../models/actions";
 import "./action-endpoint-config-form.scss";
+import { useSelector } from "react-redux";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 
 interface ActionEndpointConfigFormInterface extends IdentifiableComponentInterface {
     /**
@@ -47,6 +51,10 @@ interface ActionEndpointConfigFormInterface extends IdentifiableComponentInterfa
      * Specifies action creation state.
      */
     isCreateFormState: boolean;
+    /**
+     * Specifies whether the headers and parameters section should be show/hide.
+     */
+    showHeadersAndParams?: boolean;
     /**
      * Specifies whether the form is read-only.
      */
@@ -64,6 +72,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
     initialValues,
     isCreateFormState,
     isReadOnly,
+    showHeadersAndParams,
     onAuthenticationTypeChange,
     [ "data-componentid" ]: _componentId = "action-endpoint-config-form"
 }: ActionEndpointConfigFormInterface): ReactElement => {
@@ -603,7 +612,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                     </Trans>
                 </Alert>
             ) }
-            { renderAllowedHeadersAndParamsSection() }
+            { showHeadersAndParams && renderAllowedHeadersAndParamsSection() }
             <Divider className="divider-container"/>
             <Typography variant="h6" className="heading-container" >
                 { t("actions:fields.authentication.label") }

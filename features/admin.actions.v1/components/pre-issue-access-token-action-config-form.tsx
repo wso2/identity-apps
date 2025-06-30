@@ -116,6 +116,9 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
     // TODO: Temporary flag to show/hide the rule component.
     const showRuleComponent: boolean = isFeatureEnabled(
         actionsFeatureConfig, ActionsConstants.FEATURE_DICTIONARY.get("PRE_ISSUE_ACCESS_TOKEN_RULE"));
+    // TODO: Temporary flag to show/hide the allowedHeaders and allowedParameters section.
+    const showHeadersAndParams: boolean = isFeatureEnabled(
+        actionsFeatureConfig, ActionsConstants.FEATURE_DICTIONARY.get("PRE_ISSUE_ACCESS_TOKEN_HEADERS_AND_PARAMS"));
 
     /**
      * The following useEffect is used to set the current Action Authentication Type.
@@ -272,7 +275,9 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                     onAuthenticationTypeChange={ (updatedValue: AuthenticationType, change: boolean) => {
                         setAuthenticationType(updatedValue);
                         setIsAuthenticationUpdateFormState(change);
-                    } }/>
+                    } }
+                    showHeadersAndParams={ showHeadersAndParams }
+                />
                 { (RuleExpressionsMetaData && showRuleComponent) && (
                     <RuleConfigForm
                         readonly={ isReadOnly }
