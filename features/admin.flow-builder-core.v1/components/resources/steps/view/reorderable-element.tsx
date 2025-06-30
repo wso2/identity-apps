@@ -79,6 +79,18 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
         setIsOpenResourcePropertiesPanel
     } = useAuthenticationFlowBuilderCore();
 
+    /**
+     * Handles the opening of the property panel for the resource.
+     *
+     * @param event - MouseEvent triggered on element interaction.
+     */
+    const handlePropertyPanelOpen = (event: MouseEvent): void => {
+
+        event.stopPropagation();
+        setLastInteractedStepId(stepId);
+        setLastInteractedResource(element);
+    };
+
     return (
         <Sortable
             id={ id }
@@ -93,6 +105,7 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
                 alignItems="center"
                 className={ classNames("reorderable-component", className) }
                 data-componentid={ `${componentId}-${element.type}` }
+                onDoubleClick={ handlePropertyPanelOpen }
             >
                 <Box className="flow-builder-dnd-actions">
                     <Handle label="Drag" cursor="grab" ref={ handleRef }>
@@ -100,11 +113,7 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
                     </Handle>
                     <Handle
                         label="Edit"
-                        onClick={ (event: MouseEvent) => {
-                            event.stopPropagation();
-                            setLastInteractedStepId(stepId);
-                            setLastInteractedResource(element);
-                        } }
+                        onClick={ handlePropertyPanelOpen }
                     >
                         <PencilIcon />
                     </Handle>
