@@ -1,5 +1,14 @@
 # @wso2is/admin.branding.v1
 
+## 2.31.3
+
+### Patch Changes
+
+- [#8427](https://github.com/wso2/identity-apps/pull/8427) [`fde0f35703d62c93d29001a601b6ed29823437cc`](https://github.com/wso2/identity-apps/commit/fde0f35703d62c93d29001a601b6ed29823437cc) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enhance the styling of the custom layout editor and add the feature status label
+
+- Updated dependencies [[`f047e10bf194d35f2f79c7eda0a63a31ddc57a46`](https://github.com/wso2/identity-apps/commit/f047e10bf194d35f2f79c7eda0a63a31ddc57a46)]:
+  - @wso2is/i18n@2.24.8
+
 ## 2.31.2
 
 ### Patch Changes

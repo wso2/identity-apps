@@ -1,5 +1,14 @@
 # @wso2is/admin.webhooks.v1
 
+## 1.0.3
+
+### Patch Changes
+
+- [#8422](https://github.com/wso2/identity-apps/pull/8422) [`f047e10bf194d35f2f79c7eda0a63a31ddc57a46`](https://github.com/wso2/identity-apps/commit/f047e10bf194d35f2f79c7eda0a63a31ddc57a46) Thanks [@malithie](https://github.com/malithie)! - Update UI to adhere to api changes.
+
+- Updated dependencies [[`f047e10bf194d35f2f79c7eda0a63a31ddc57a46`](https://github.com/wso2/identity-apps/commit/f047e10bf194d35f2f79c7eda0a63a31ddc57a46)]:
+  - @wso2is/i18n@2.24.8
+
 ## 1.0.2
 
 ### Patch Changes

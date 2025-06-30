@@ -1,5 +1,11 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.7.1
+
+### Patch Changes
+
+- [#8414](https://github.com/wso2/identity-apps/pull/8414) [`c53a0c23b5fc777e65040f93d6fec90b1e30efd2`](https://github.com/wso2/identity-apps/commit/c53a0c23b5fc777e65040f93d6fec90b1e30efd2) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for displaying hints in input fields in Composer
+
 ## 0.7.0
 
 ### Minor Changes
