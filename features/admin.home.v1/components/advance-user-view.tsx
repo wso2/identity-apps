@@ -525,7 +525,8 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                 </Heading>
             </div>
 
-            { isAdminDataSeparationNoticeEnabled && isAdminDataSeparationBannerEnabled && (
+            { isAdminDataSeparationNoticeEnabled && isAdminDataSeparationBannerEnabled &&
+                organizationType !== OrganizationType.SUBORGANIZATION && (
                 <AdminDataSeparationNotice setDisplayBanner={ setIsAdminDataSeparationBannerEnabled } />
             ) }
 
