@@ -1,5 +1,14 @@
 # @wso2is/identity-apps-core
 
+## 2.26.4
+
+### Patch Changes
+
+- [#8408](https://github.com/wso2/identity-apps/pull/8408) [`d0782516d5637e15b1e1e35eefa32aaa74e9ee03`](https://github.com/wso2/identity-apps/commit/d0782516d5637e15b1e1e35eefa32aaa74e9ee03) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Make onFail callback invocation configurable in internalWait.jsp
+
+- Updated dependencies [[`16380763a69b363677a27dff0d71e8bb7f4bd006`](https://github.com/wso2/identity-apps/commit/16380763a69b363677a27dff0d71e8bb7f4bd006)]:
+  - @wso2is/theme@2.8.2
+
 ## 2.26.3
 
 ### Patch Changes

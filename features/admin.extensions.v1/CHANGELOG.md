@@ -1,5 +1,15 @@
 # @wso2is/admin.extensions.v1
 
+## 2.39.5
+
+### Patch Changes
+
+- [#8421](https://github.com/wso2/identity-apps/pull/8421) [`ef2fe33fed05a3b9cf2884b1fdb4f5f54f227bbf`](https://github.com/wso2/identity-apps/commit/ef2fe33fed05a3b9cf2884b1fdb4f5f54f227bbf) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Improve admin data separation banner to a alert type
+
+- Updated dependencies [[`16380763a69b363677a27dff0d71e8bb7f4bd006`](https://github.com/wso2/identity-apps/commit/16380763a69b363677a27dff0d71e8bb7f4bd006)]:
+  - @wso2is/theme@2.8.2
+  - @wso2is/i18n@2.24.7
+
 ## 2.39.4
 
 ### Patch Changes
