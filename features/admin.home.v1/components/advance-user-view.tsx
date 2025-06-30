@@ -115,6 +115,8 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
     const [ isPlaygroundExist, setisPlaygroundExist ] = useState(undefined);
     const [ showWizardLogin, setShowWizardLogin ] = useState<boolean>(false);
     const [ inboundProtocolConfig, setInboundProtocolConfig ] = useState<any>(undefined);
+    const [ isAdminDataSeparationBannerEnabled, setIsAdminDataSeparationBannerEnabled ] = useState<boolean>(true);
+
     const [
         isTryItApplicationSearchRequestLoading,
         setIsTryItApplicationSearchRequestLoading
@@ -523,9 +525,11 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                 </Heading>
             </div>
 
-            { isAdminDataSeparationNoticeEnabled && (
-                <AdminDataSeparationNotice />
+            { isAdminDataSeparationNoticeEnabled && isAdminDataSeparationBannerEnabled && (
+                <AdminDataSeparationNotice setDisplayBanner={ setIsAdminDataSeparationBannerEnabled } />
             ) }
+
+            <br />
 
             { showFeatureAnnouncementBanner && (
                 <Show featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
