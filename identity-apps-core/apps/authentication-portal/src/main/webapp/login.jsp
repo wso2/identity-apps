@@ -347,14 +347,7 @@
             selfSignUpOverrideURL = selfSignUpOverrideURL.concat("?ui_locales=" + localeString);
         }
     }
-
-    if (!StringUtils.isBlank(passwordRecoveryOverrideURL)) {
-        if (passwordRecoveryOverrideURL.contains("?")) {
-            passwordRecoveryOverrideURL = passwordRecoveryOverrideURL.concat("&ui_locales=" + localeString);
-        } else {
-            passwordRecoveryOverrideURL = passwordRecoveryOverrideURL.concat("?ui_locales=" + localeString);
-        }
-    }
+    passwordRecoveryOverrideURL = getRecoveryPortalUrl(passwordRecoveryOverrideURL, recoveryPortalOverrideURL, localeString);
 %>
 
 <%

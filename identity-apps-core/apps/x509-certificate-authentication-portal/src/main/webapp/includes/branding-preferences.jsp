@@ -223,6 +223,7 @@
     String cookiePolicyURL = "/authenticationendpoint/cookie_policy.do";
     String selfSignUpOverrideURL = "";
     String passwordRecoveryOverrideURL = "";
+    String recoveryPortalOverrideURL = "";
     String layout = "centered";
     String layoutFileRelativePath = "includes/layouts/" + layout + "/body.ser";
     String layoutStoreURL = "extensions/layouts/custom/${tenantDomain}";
@@ -269,6 +270,7 @@
     String COOKIE_POLICY_URL_KEY = "cookiePolicyURL";
     String SELF_SIGN_UP_URL_KEY = "selfSignUpURL";
     String PASSWORD_RECOVERY_URL_KEY = "passwordRecoveryURL";
+    String RECOVERY_PORTAL_URL_KEY = "recoveryPortalURL";
     String CONFIGS_KEY = "configs";
     String IS_BRANDING_ENABLED_KEY= "isBrandingEnabled";
     String IS_SELF_SIGN_UP_ENABLED_KEY = "isSelfSignUpEnabled";
@@ -405,9 +407,13 @@
         if (overrideFallbackValues.containsKey(SELF_SIGN_UP_URL_KEY)) {
             selfSignUpOverrideURL = (String) overrideFallbackValues.get(SELF_SIGN_UP_URL_KEY);
         }
-
+        
         if (overrideFallbackValues.containsKey(PASSWORD_RECOVERY_URL_KEY)) {
             passwordRecoveryOverrideURL = (String) overrideFallbackValues.get(PASSWORD_RECOVERY_URL_KEY);
+        }
+
+        if (overrideFallbackValues.containsKey(RECOVERY_PORTAL_URL_KEY)) {
+            recoveryPortalOverrideURL = (String) overrideFallbackValues.get(RECOVERY_PORTAL_URL_KEY);
         }
     }
 
@@ -760,6 +766,14 @@
                         if (!StringUtils.isBlank(passwordRecoveryURLInput) && !passwordRecoveryURLInput.toLowerCase().contains("javascript:") &&
                             !passwordRecoveryURLInput.toLowerCase().contains("data:")) {
                             passwordRecoveryOverrideURL = passwordRecoveryURLInput;
+                        }
+                    }
+
+                    if (brandingPreference.getJSONObject(URLS_KEY).has(RECOVERY_PORTAL_URL_KEY)) {
+                        String recoveryPortalURLInput = brandingPreference.getJSONObject(URLS_KEY).getString(RECOVERY_PORTAL_URL_KEY);
+                        if (!StringUtils.isBlank(recoveryPortalURLInput) && !recoveryPortalURLInput.toLowerCase().contains("javascript:") &&
+                            !recoveryPortalURLInput.toLowerCase().contains("data:")) {
+                                recoveryPortalOverrideURL = recoveryPortalURLInput;
                         }
                     }
                 }
