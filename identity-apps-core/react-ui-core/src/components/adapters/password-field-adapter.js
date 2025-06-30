@@ -22,6 +22,7 @@ import React, { useEffect, useState } from "react";
 import useFieldValidation from "../../hooks/use-field-validations";
 import { useTranslations } from "../../hooks/use-translations";
 import { resolveElementText } from "../../utils/i18n-utils";
+import Hint from "../hint";
 import ValidationCriteria from "../validation-criteria";
 import ValidationError from "../validation-error";
 
@@ -36,7 +37,7 @@ const PasswordFieldAdapter = ({ component, formState, formStateHandler, formErro
         "type": "RULE"
     } ];
 
-    const { identifier, required, label, placeholder, validations } = component.config;
+    const { identifier, required, label, placeholder, validations, hint } = component.config;
     const { translations } = useTranslations();
     const { fieldErrors: passwordErrors, validate } = useFieldValidation(validations);
     const {
@@ -128,6 +129,9 @@ const PasswordFieldAdapter = ({ component, formState, formStateHandler, formErro
                     onClick={ () => setShowPassword(!showPassword) }
                 />
             </div>
+            {
+                hint && ( <Hint hint={ hint } /> )
+            }
             { resolveFieldCriteria() }
         </>
     );
@@ -147,6 +151,7 @@ const PasswordFieldAdapter = ({ component, formState, formStateHandler, formErro
 PasswordFieldAdapter.propTypes = {
     component: PropTypes.shape({
         config: PropTypes.shape({
+            hint: PropTypes.string,
             identifier: PropTypes.string.isRequired,
             label: PropTypes.string.isRequired,
             name: PropTypes.string.isRequired,
