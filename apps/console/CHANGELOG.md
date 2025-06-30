@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.65.11
+
+### Patch Changes
+
+- [#8428](https://github.com/wso2/identity-apps/pull/8428) [`378ddf06da7ac5924c663a1b599679a1f6fdc6d7`](https://github.com/wso2/identity-apps/commit/378ddf06da7ac5924c663a1b599679a1f6fdc6d7) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for opening the property panel on double-clicking an element
+
 ## 2.65.10
 
 ### Patch Changes
