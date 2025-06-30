@@ -112,6 +112,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
      */
     const cleanupPropertyValues = (key: string, value: string): string | JSX.Element => {
         if (key === "Claims") {
+            value = value.replace(/^\{|\}$/g, "").trim();
             const claims: string[] = value.split(",");
 
             return (
@@ -134,11 +135,12 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
         }
 
         if (key === "Roles" || key == "Permissions" || key === "Groups" || key === "Users") {
+            value = value.replace(/^\[|\]$/g, "").trim();
 
             try {
-                const roles: string[] = value.split(",");
+                const valueList: string[] = value.split(",");
 
-                return <List className="values-list" items={ roles } />;
+                return <List className="values-list" items={ valueList } />;
             } catch(e) {
                 // Let it pass through and use the default behavior.
                 // Add debug logs here one a logger is added.
@@ -315,7 +317,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                         <List.Content>
                             <Grid padded>
                                 <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 4 }>
+                                    <Grid.Column width={ 3 }>
                                         { t("common:createdOn") }
                                     </Grid.Column>
                                     <Grid.Column width={ 12 }>
@@ -336,7 +338,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                         <List.Content>
                             <Grid padded>
                                 <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 4 }>
+                                    <Grid.Column width={ 3 }>
                                         { t("common:description") }
                                     </Grid.Column>
                                     <Grid.Column width={ 12 }>
@@ -359,7 +361,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                         <List.Content>
                             <Grid padded>
                                 <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 4 }>
+                                    <Grid.Column width={ 3 }>
                                         { t("common:priority") }
                                     </Grid.Column>
                                     <Grid.Column width={ 12 }>
@@ -377,7 +379,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                         <List.Content>
                             <Grid padded>
                                 <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 4 }>
+                                    <Grid.Column width={ 3 }>
                                         { t("common:initiator") }
                                     </Grid.Column>
                                     <Grid.Column width={ 12 }>
@@ -395,7 +397,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                         <List.Content>
                             <Grid padded>
                                 <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 4 }>
+                                    <Grid.Column width={ 3 }>
                                         { t("common:approvalStatus") }
                                     </Grid.Column>
                                     <Grid.Column width={ 12 }>
@@ -416,7 +418,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                     <List.Content>
                                         <Grid padded>
                                             <Grid.Row columns={ 2 }>
-                                                <Grid.Column width={ 4 }>
+                                                <Grid.Column width={ 3 }>
                                                     { t("common:assignees") }
                                                 </Grid.Column>
                                                 <Grid.Column mobile={ 16 } computer={ 12 }>
@@ -443,7 +445,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                     <List.Content>
                                         <Grid padded>
                                             <Grid.Row columns={ 2 }>
-                                                <Grid.Column width={ 4 }>
+                                                <Grid.Column width={ 3 }>
                                                     { t("common:properties") }
                                                 </Grid.Column>
                                                 <Grid.Column mobile={ 16 } computer={ 12 }>

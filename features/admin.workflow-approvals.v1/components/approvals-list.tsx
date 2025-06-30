@@ -320,6 +320,8 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                 return "user creation request";
             case "DELETE_USER":
                 return "user removal request";
+            case "ADD_ROLE":
+                return "role creation request";
             default:
                 return "approval request";
         }

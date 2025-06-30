@@ -2670,7 +2670,9 @@ export const console: ConsoleNS = {
                         Groups: "Groups",
                         "Tenant Domain": "Tenant Domain",
                         Permissions: "Permissions",
-                        Users: "Users"
+                        Users: "Users",
+                        Audience: "Audience",
+                        "Audience ID": "Audience ID"
                     },
                     taskDetails: {
                         description: "You have a request to approve an operational action of a user.",

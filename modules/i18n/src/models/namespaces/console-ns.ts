@@ -3423,6 +3423,8 @@ export interface ConsoleNS {
                         "Tenant Domain": string;
                         Permissions: string;
                         Users: string;
+                        Audience: string;
+                        "Audience ID": string;
                     };
                     taskDetails: {
                         header: string;

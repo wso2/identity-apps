@@ -22,7 +22,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { PageLayout } from "@wso2is/react-components";
+import { AnimatedAvatar, PageLayout } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -108,6 +108,11 @@ const ApprovalWorkflowEditPage: FunctionComponent<ApprovalWorkflowEditPagePropsI
                 },
                 text: t("approvalWorkflows:pageLayout.edit.back")
             } }
+            image={ (<AnimatedAvatar
+                name={ approvalWorkflowDetails?.name }
+                size="tiny"
+                floated="left"
+            />) }
             bottomMargin={ false }
             contentTopMargin={ true }
             pageHeaderMaxWidth={ false }
