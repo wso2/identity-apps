@@ -117,11 +117,11 @@
     }
 
     function computeLocale(localeFromCookie, localeFromUrlParams, browserLocale) {
-        if (localeFromCookie) {
-            return localeFromCookie;
-        } else if (localeFromUrlParams) {
+        if (localeFromUrlParams) {
             const firstLangFromUrlParams = localeFromUrlParams.split(" ")[0];
             return firstLangFromUrlParams;
+        } else if (localeFromCookie) {
+            return localeFromCookie;
         } else if (browserLocale) {
             return browserLocale;
         } else {
