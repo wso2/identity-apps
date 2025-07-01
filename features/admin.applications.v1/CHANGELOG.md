@@ -1,5 +1,11 @@
 # @wso2is/admin.applications.v1
 
+## 2.36.5
+
+### Patch Changes
+
+- [#8434](https://github.com/wso2/identity-apps/pull/8434) [`2a00fc63bb8c5df7a52877b4d5f532d54cbae659`](https://github.com/wso2/identity-apps/commit/2a00fc63bb8c5df7a52877b4d5f532d54cbae659) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Remove info in protocol tab for react and nextjst templates
+
 ## 2.36.4
 
 ### Patch Changes
