@@ -682,8 +682,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 displayOrder: attributeConfig.editAttributes.getDisplayOrder(
                     claim.displayOrder, values.displayOrder?.toString()),
                 inputFormat: inputType ? { inputType: inputType } : claim?.inputFormat,
-                multiValued: values?.multiValued !== undefined
-                    ? !!values.multiValued : claim?.multiValued,
+                multiValued: multiValued,
                 properties: claim?.properties,
                 readOnly: values?.readOnly !== undefined
                     ? !!values.readOnly
@@ -731,8 +730,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 displayOrder: attributeConfig.editAttributes.getDisplayOrder(
                     claim.displayOrder, values.displayOrder?.toString()),
                 inputFormat: inputType ? { inputType: inputType } : claim?.inputFormat,
-                multiValued: values?.multiValued !== undefined
-                    ? !!values.multiValued : claim?.multiValued,
+                multiValued: multiValued,
                 profiles: {
                     console: {
                         readOnly: values?.consoleReadOnly !== undefined ?
@@ -1218,7 +1216,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             setCanonicalValues([]);
                             setDataType(data.value);
                             setDefaultInputTypeForDataType(data.value as ClaimDataType, multiValued);
-                            if (data.value === ClaimDataType.COMPLEX) {
+                            if (data.value === ClaimDataType.COMPLEX || data.value === ClaimDataType.BOOLEAN) {
                                 setMultiValued(false);
                             }
                         } }
