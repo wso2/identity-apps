@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -69,6 +69,10 @@ export interface ApplicationMarkdownGuidePropsInterface extends IdentifiableComp
  */
 interface ModeratedData {
     pemCertificate?: string;
+    scopes?: {
+        spaceSeperatedList?: string;
+        commaSeperatedList?: string;
+    };
 }
 
 /**
@@ -145,6 +149,13 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
         if (samlConfigurations?.certificate) {
             data.pemCertificate = btoa(getPemFormatCertificate(samlConfigurations?.certificate));
         }
+
+        // TODO: Dynmically update the scopes based on the application configured scopes.
+        // Default to OAuth 2.0 scopes.
+        data.scopes = {
+            commaSeperatedList: "'openid', 'profile'",
+            spaceSeperatedList: "openid profile"
+        };
 
         return data;
     };

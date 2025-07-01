@@ -276,6 +276,9 @@ interface ApplicationsDocumentationLinksInterface {
             default: {
                 learnMore: string;
             }
+            technology: {
+                learnMore: string;
+            }
             ssoIntegration: {
                 learnMore: string;
             }
