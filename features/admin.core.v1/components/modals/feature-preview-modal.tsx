@@ -41,7 +41,7 @@ import {
     useGetGovernanceConnectorById
 } from "@wso2is/admin.server-configurations.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import NewSelfRegistrationImage from "../../assets/illustrations/preview-features/new-self-registration.png";
 import { AppConstants } from "../../constants/app-constants";
@@ -93,6 +93,11 @@ interface PreviewFeaturesListInterface {
     image?: string;
 
     /**
+     * Whether the feature is enabled
+     */
+    enabled?: boolean;
+
+    /**
      * Feature value.
      */
     value: string;
@@ -124,12 +129,30 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
         ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID
     );
 
+    const [ isEnableDynamicSelfRegistrationPortal, setIsEnableDynamicSelfRegistrationPortal ] = useState(false);
+    const [ isEnableAgentManagement, setIsEnableAgentManagement ] = useState(false);
+
     {/* TODO: Get this from an Organization Preferences API */}
-    const previewFeaturesList: PreviewFeaturesListInterface[] = [
+    const previewFeaturesList: PreviewFeaturesListInterface[] = useMemo(() => ([
+        {
+            action: "Go to Agent Management",
+            description: "Extend your identity management to autonomous agents with secure, dynamic authorization",
+            enabled: isEnableAgentManagement,
+            id: "agents",
+            image: NewSelfRegistrationImage,
+            message: {
+                content: "Enabling this feature will take about 2 minutes to complete. " +
+                    "Once enabled, you can manage the agents in your organization.",
+                type: "info"
+            },
+            name: "Identity for AI Agents",
+            value: "SelfRegistration.EnableDynamicPortal"
+        },
         {
             action: "Try Flow Composer",
             description: "This feature enables you to customize the user self-registration flow and " +
                 "secure your user onboarding experience with multiple authentication methods and verification steps.",
+            enabled: isEnableDynamicSelfRegistrationPortal,
             id: "self-registration-orchestration",
             image: NewSelfRegistrationImage,
             message: {
@@ -140,10 +163,9 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
             name: "Self-Registration Orchestration",
             value: "SelfRegistration.EnableDynamicPortal"
         }
-    ];
+    ]), [ isEnableAgentManagement, isEnableDynamicSelfRegistrationPortal ]);
 
     const [ selected, setSelected ] = useState(previewFeaturesList[0]);
-    const [ isEnableDynamicSelfRegistrationPortal, setIsEnableDynamicSelfRegistrationPortal ] = useState(false);
 
     useEffect(() => {
         if (connectorDetails) {
@@ -184,6 +206,10 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
                     ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID
                 );
                 connectorDetailsMutate();
+
+                break;
+            case "ai-agent-management":
+                setIsEnableAgentManagement(e.target.checked);
 
                 break;
             default:
@@ -262,10 +288,10 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
                                                             handleToggleChange(e, selected?.id)
                                                     }
                                                     value={ selected?.value }
-                                                    checked={ isEnableDynamicSelfRegistrationPortal }
+                                                    checked={ selected?.enabled }
                                                 />
                                             ) }
-                                            label={ isEnableDynamicSelfRegistrationPortal ?
+                                            label={ selected?.enabled ?
                                                 t("common:enabled") : t("common:disabled") }
                                             labelPlacement="start"
                                         />
