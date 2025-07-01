@@ -1299,7 +1299,6 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         name="multiValued"
                         label={ t("claims:local.forms.multiValued.label") }
                         required={ false }
-                        defaultValue={ claim?.multiValued }
                         checked={ multiValued }
                         data-componentid={ `${testId}-form-multi-valued-input` }
                         hint={ isSystemClaim
