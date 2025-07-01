@@ -92,8 +92,8 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     const userRolesDisabledFeatures: string[] = useSelector((state: AppState) => {
         return state.config.ui.features?.userRoles?.disabledFeatures;
     });
-    const useSCIM2RoleAPIV3: boolean = useSelector(
-        (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+    const enableScim2RolesV3Api: boolean = useSelector(
+        (state: AppState) => state.config.ui.enableScim2RolesV3Api
     );
 
     const isSharedRole: boolean = useMemo(() => roleObject?.properties?.some(
@@ -117,7 +117,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
 
     const isGroupReadOnly: boolean = useMemo(() => {
 
-        if (useSCIM2RoleAPIV3) {
+        if (enableScim2RolesV3Api) {
             return !hasRequiredScopes(entitlementConfig,
                 entitlementConfig?.scopes?.update,
                 allowedScopes
@@ -125,15 +125,15 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
         }
 
         return !isFeatureEnabled(featureConfig,
-                LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE"))
+            LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE"))
             || !hasRequiredScopes(featureConfig,
                 featureConfig?.scopes?.update,
                 allowedScopes)
             || roleObject?.meta?.systemRole;
-    }, [ useSCIM2RoleAPIV3, entitlementConfig, featureConfig, allowedScopes, roleObject ]);
+    }, [ enableScim2RolesV3Api, entitlementConfig, featureConfig, allowedScopes, roleObject ]);
 
     const isUserTabReadOnly: boolean = useMemo(() => {
-        if (useSCIM2RoleAPIV3) {
+        if (enableScim2RolesV3Api) {
             return !hasRequiredScopes(
                 entitlementConfig,
                 entitlementConfig?.scopes?.update,
@@ -142,7 +142,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
         }
 
         return isReadOnly || isUserReadOnly;
-    }, [ useSCIM2RoleAPIV3, entitlementConfig, allowedScopes, isReadOnly, isUserReadOnly ]);
+    }, [ enableScim2RolesV3Api, entitlementConfig, allowedScopes, isReadOnly, isUserReadOnly ]);
 
     const [ isAdminRole, setIsAdminRole ] = useState<boolean>(false);
     const [ isEveryoneRole, setIsEveryoneRole ] = useState<boolean>(false);

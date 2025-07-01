@@ -98,11 +98,11 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
-    const useSCIM2RoleAPIV3: boolean = useSelector(
-        (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+    const enableSCIM2RoleAPIV3: boolean = useSelector(
+        (state: AppState) => state.config.ui.enable_scim2_rolesV3_api
     );
     const updateUsersForRoleFunction: (roleId: string, data: PatchRoleDataInterface) => Promise<any> =
-        useSCIM2RoleAPIV3 ? updateUsersForRole : updateRoleDetails;
+        enableSCIM2RoleAPIV3 ? updateUsersForRole : updateRoleDetails;
 
     /**
      * Retrieve the application data for the console application, filtering by name.

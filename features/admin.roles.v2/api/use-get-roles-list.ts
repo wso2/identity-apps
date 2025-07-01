@@ -45,11 +45,11 @@ const useGetRolesList = <Data = RoleListInterface, Error = RequestErrorInterface
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
-    const useSCIM2RoleAPIV3: boolean = useSelector(
-        (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+    const enableScim2RolesV3Api: boolean = useSelector(
+        (state: AppState) => state.config.ui.enableScim2RolesV3Api
     );
 
-    const rolesEndpoint = useSCIM2RoleAPIV3
+    const rolesEndpoint: string = enableScim2RolesV3Api
         ? store.getState().config.endpoints.rolesV3
         : store.getState().config.endpoints.rolesV2;
 

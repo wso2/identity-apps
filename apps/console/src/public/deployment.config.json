@@ -256,6 +256,7 @@
         "enableEmailDomain": false,
         "enableIdentityClaims": true,
         "enableOldUIForEmailProvider": false,
+        "enableScim2RolesV3Api": false,
         "features": {
             "accountLogin": {
                 "disabledFeatures": [],
@@ -1774,7 +1775,6 @@
         "theme": {
             "name": "wso2is"
         },
-        "useRoleClaimAsGroupClaim": false,
-        "useSCIM2RoleAPIV3": false
+        "useRoleClaimAsGroupClaim": false
     }
 }

@@ -114,8 +114,8 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
 
     const [ permissions, setPermissions ] = useState<CreateRolePermissionInterface[]>(undefined);
 
-    const useSCIM2RoleAPIV3: boolean = useSelector(
-        (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+    const enableSCIM2RoleAPIV3: boolean = useSelector(
+        (state: AppState) => state.config.ui.enable_scim2_rolesV3_api
     );
 
     const filteredTenantAPIResourceCollections: APIResourceCollectionResponseInterface = useMemo(() => {
@@ -128,7 +128,7 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
             cloneDeep(tenantAPIResourceCollections);
         const filteringAPIResourceCollectionNames: string[] = [];
 
-        if(!useSCIM2RoleAPIV3) {
+        if(!enableSCIM2RoleAPIV3) {
             filteringAPIResourceCollectionNames.push(
                 ConsoleRolesOnboardingConstants.ENTITLEMENT_MANAGEMENT_ROLE_ID);
         }
@@ -155,7 +155,7 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
             cloneDeep(organizationAPIResourceCollections);
         const filteringAPIResourceCollectionNames: string[] = [];
 
-        if(!useSCIM2RoleAPIV3) {
+        if(!enableSCIM2RoleAPIV3) {
             filteringAPIResourceCollectionNames.push(
                 ConsoleRolesOnboardingConstants.ORG_ENTITLEMENT_MANAGEMENT_ROLE_ID);
 

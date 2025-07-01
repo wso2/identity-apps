@@ -69,11 +69,12 @@ const CreateRolePage: FunctionComponent<CreateRoleProps> = (props: CreateRolePro
     const [ selectedPermissions, setSelectedPermissions ] = useState<SelectedPermissionsInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
-    const useSCIM2RoleAPIV3: boolean = useSelector(
-            (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+    const enableScim2RolesV3Api: boolean = useSelector(
+        (state: AppState) => state.config.ui.enableScim2RolesV3Api
     );
 
-    const createRoleFunction = useSCIM2RoleAPIV3 ? createRoleUsingV3Api : createRole;
+    const createRoleFunction: (roleData: CreateRoleInterface) => Promise<AxiosResponse> =
+        enableScim2RolesV3Api ? createRoleUsingV3Api : createRole;
 
     // External trigger to submit the authorization step.
     let submitRoleBasic: () => void;

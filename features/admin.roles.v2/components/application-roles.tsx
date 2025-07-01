@@ -128,11 +128,13 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
 
     const hasRoleCreatePermissions: boolean = useRequiredScopes(featureConfig?.userRoles?.scopes?.create);
 
-    const useSCIM2RoleAPIV3: boolean = useSelector(
-        (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+    const enableScim2RolesV3Api: boolean = useSelector(
+        (state: AppState) => state.config.ui.enableScim2RolesV3Api
     );
 
-    const getApplicationRolesAudience = useSCIM2RoleAPIV3 ? getApplicationRolesByAudienceV3 : getApplicationRolesByAudience;
+    const getApplicationRolesAudience: typeof getApplicationRolesByAudience = enableScim2RolesV3Api
+        ? getApplicationRolesByAudienceV3
+        : getApplicationRolesByAudience;
 
     /**
      * Fetch application roles on component load and audience switch.

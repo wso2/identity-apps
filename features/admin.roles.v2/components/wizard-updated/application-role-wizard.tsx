@@ -103,11 +103,12 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
     const FORM_ID: string = "application-role-creation-form";
     const formRef: MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
 
-    const useSCIM2RoleAPIV3: boolean = useSelector(
-            (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+    const enableScim2RolesV3Api: boolean = useSelector(
+        (state: AppState) => state.config.ui.enableScim2RolesV3Api
     );
 
-    const createRoleFunction = useSCIM2RoleAPIV3 ? createRoleUsingV3Api : createRole;
+    const createRoleFunction: (role: CreateRoleInterface) => Promise<AxiosResponse> =
+        enableScim2RolesV3Api ? createRoleUsingV3Api : createRole;
 
     const {
         data: subscribedAPIResourcesListData,
