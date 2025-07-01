@@ -198,12 +198,12 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
-    const useSCIM2RoleAPIV3: boolean = useSelector(
-        (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+    const enableSCIM2RoleAPIV3: boolean = useSelector(
+        (state: AppState) => state.config.ui.enable_scim2_rolesV3_api
     );
 
     const updateUsersForRoleFunction: (roleId: string, data: PatchRoleDataInterface) => Promise<any> =
-        useSCIM2RoleAPIV3 ? updateUsersForRole : updateRoleDetails;
+        enableSCIM2RoleAPIV3 ? updateUsersForRole : updateRoleDetails;
 
     /**
      * Set users list.

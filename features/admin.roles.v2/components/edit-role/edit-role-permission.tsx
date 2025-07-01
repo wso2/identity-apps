@@ -115,11 +115,12 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
     const shouldFetchAPIResources: boolean = role?.audience?.type?.
         toUpperCase() === RoleAudienceTypes.ORGANIZATION && !isSharedRole;
 
-    const useSCIM2RoleAPIV3: boolean = useSelector(
-            (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+    const enableScim2RolesV3Api: boolean = useSelector(
+        (state: AppState) => state.config.ui.enableScim2RolesV3Api
     );
 
-    const updateRoleDetailsFunction = useSCIM2RoleAPIV3 ? updateRoleDetailsUsingV3Api  : updateRoleDetails;
+    const updateRoleDetailsFunction: (roleId: string, roleData: PatchRoleDataInterface) => Promise<any> = 
+        enableScim2RolesV3Api ? updateRoleDetailsUsingV3Api : updateRoleDetails;
 
     const {
         data: currentAPIResourcesListData,

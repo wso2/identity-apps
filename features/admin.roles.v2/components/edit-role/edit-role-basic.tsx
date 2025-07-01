@@ -75,11 +75,12 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     const [ isUpdateButtonDisabled, setIsUpdateButtonDisabled ] = useState<boolean>(true);
     const [ roleNameSearchQuery, setRoleNameSearchQuery ] = useState<string>(undefined);
 
-    const useSCIM2RoleAPIV3: boolean = useSelector(
-            (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
-        );
+    const enableScim2RolesV3Api: boolean = useSelector(
+        (state: AppState) => state.config.ui.enableScim2RolesV3Api
+    );
 
-    const updateRoleInformation = useSCIM2RoleAPIV3 ? updateRoleDetailsUsingV3Api : updateRoleDetails;
+    const updateRoleInformation: (roleId: string, roleData: PatchRoleDataInterface) => Promise<any> =
+        enableScim2RolesV3Api ? updateRoleDetailsUsingV3Api : updateRoleDetails;
 
     const {
         data: rolesList,
@@ -118,7 +119,8 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
      */
     const handleOnDelete = (): void => {
 
-        const deleteRoleFunction = useSCIM2RoleAPIV3 ? deleteRoleByIdV3 : deleteRoleById;
+        const deleteRoleFunction: (roleId: string) => Promise<any> =
+            enableScim2RolesV3Api ? deleteRoleByIdV3 : deleteRoleById;
 
         deleteRoleFunction(role.id).then(() => {
             handleAlerts({

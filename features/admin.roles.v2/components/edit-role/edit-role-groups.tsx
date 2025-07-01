@@ -97,11 +97,12 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID
     ];
 
-    const useSCIM2RoleAPIV3: boolean = useSelector(
-            (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
+    const enableScim2RolesV3Api: boolean = useSelector(
+        (state: AppState) => state.config.ui.enableScim2RolesV3Api
     );
 
-    const assignGroupstoRole = useSCIM2RoleAPIV3 ? assignGroupstoRoles : updateRoleDetails;
+    const assignGroupstoRole: (roleId: string, roleData: PatchRoleDataInterface) => Promise<any> =
+        enableScim2RolesV3Api ? assignGroupstoRoles : updateRoleDetails;
 
     /**
      * Filter out the IDPs.
