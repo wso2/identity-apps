@@ -3,4 +3,4 @@
 "@wso2is/console": patch
 ---
 
-Incorporate dynaminc portal config to list down email templates
+Incorporate dynamic portal config to list down email templates

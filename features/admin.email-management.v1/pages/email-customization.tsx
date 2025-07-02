@@ -150,34 +150,24 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         // the deployment.toml file. The below code will map the email template
         // types with the config's displayName and description.
         const blockedNames: string[] = [ "askpassword", "resendaskpassword" ];
+        const filterTemplates = (template: EmailTemplateType): boolean => {
+            const name: string = template.displayName?.toLowerCase() || "";
+
+            if (!isDynamicPortalEnabled && name.includes("orchestrated")) {
+                return false;
+            } else if (isDynamicPortalEnabled && blockedNames.includes(name)) {
+                return false;
+            }
+
+            return !enableCustomEmailTemplates
+                ? !!emailTemplates?.find(
+                    (emailTemplate: Record<string, string>) => emailTemplate.id === template.id
+                )
+                : true;
+        };
+
         const availableEmailTemplates: EmailTemplateType[] = emailTemplatesList
-            ? (!enableCustomEmailTemplates
-                ? emailTemplatesList.filter((template: EmailTemplateType) => {
-                    const found: Record<string, string> | undefined = emailTemplates?.find(
-                        (emailTemplate: Record<string, string>) => emailTemplate.id === template.id
-                    );
-                    const name: string = template.displayName?.toLowerCase() || "";
-
-                    if (!isDynamicPortalEnabled && name.includes("orchestrated")) {
-                        return false;
-                    } else if (isDynamicPortalEnabled && blockedNames.includes(name)) {
-                        return false;
-                    }
-
-                    return !!found;
-                })
-                : emailTemplatesList.filter((template: EmailTemplateType) => {
-                    const name : string= template.displayName?.toLowerCase() || "";
-
-                    if (!isDynamicPortalEnabled && name.includes("orchestrated")) {
-                        return false;
-                    } else if (isDynamicPortalEnabled && blockedNames.includes(name)) {
-                        return false;
-                    }
-
-                    return true;
-                })
-            ).map((template: EmailTemplateType) => {
+            ? emailTemplatesList.filter(filterTemplates).map((template: EmailTemplateType) => {
                 const mappedTemplate: Record<string, string> = emailTemplates?.find(
                     (emailTemplate: Record<string, string>) => emailTemplate.id === template.id
                 );
