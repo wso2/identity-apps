@@ -149,26 +149,32 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         // description from the email template types config defined in
         // the deployment.toml file. The below code will map the email template
         // types with the config's displayName and description.
-        const blockedNames = ["askpassword", "resendaskpassword"];
+        const blockedNames: string[] = [ "askpassword", "resendaskpassword" ];
         const availableEmailTemplates: EmailTemplateType[] = emailTemplatesList
             ? (!enableCustomEmailTemplates
                 ? emailTemplatesList.filter((template: EmailTemplateType) => {
-                    const found = emailTemplates?.find((emailTemplate: Record<string, string>) => emailTemplate.id === template.id);
-                    const name = template.displayName?.toLowerCase() || "";
+                    const found: Record<string, string> | undefined = emailTemplates?.find(
+                        (emailTemplate: Record<string, string>) => emailTemplate.id === template.id
+                    );
+                    const name: string = template.displayName?.toLowerCase() || "";
+
                     if (!isDynamicPortalEnabled && name.includes("orchestrated")) {
                         return false;
                     } else if (isDynamicPortalEnabled && blockedNames.includes(name)) {
                         return false;
                     }
+
                     return !!found;
                 })
                 : emailTemplatesList.filter((template: EmailTemplateType) => {
-                    const name = template.displayName?.toLowerCase() || "";
+                    const name : string= template.displayName?.toLowerCase() || "";
+
                     if (!isDynamicPortalEnabled && name.includes("orchestrated")) {
                         return false;
                     } else if (isDynamicPortalEnabled && blockedNames.includes(name)) {
                         return false;
                     }
+
                     return true;
                 })
             ).map((template: EmailTemplateType) => {
@@ -190,7 +196,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
             setSelectedEmailTemplateId(availableEmailTemplates?.[0]?.id);
             setSelectedEmailTemplateDescription(availableEmailTemplates?.[0]?.description);
         }
-    }, [emailTemplatesList]);
+    }, [ emailTemplatesList ]);
 
     useEffect(() => {
         setSelectedEmailTemplate({ ...emailTemplate });
