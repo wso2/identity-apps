@@ -66,10 +66,10 @@ const CreateConsoleRoleWizard: FunctionComponent<CreateConsoleRoleWizardPropsInt
     const [ permissions, setPermissions ] = useState<CreateRolePermissionInterface[]>([]);
 
     const enableSCIM2RoleAPIV3: boolean = useSelector(
-            (state: AppState) => state.config.ui.enable_scim2_rolesV3_api
+        (state: AppState) => state.config.ui.enableScim2RolesV3Api
     );
 
-    const createRoleFunction = enableSCIM2RoleAPIV3 ? createRoleUsingV3Api : createRole;
+    const createRoleFunction: typeof createRole = enableSCIM2RoleAPIV3 ? createRoleUsingV3Api : createRole;
 
     /**
      * Handles the API resource creation.
