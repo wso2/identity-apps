@@ -24,13 +24,14 @@ import Radio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import { useRequiredScopes } from "@wso2is/access-control";
 import {
-    shareApplicationWithAllOrganizations,
-    shareApplicationWithSelectedOrganizationsAndRoles } from "@wso2is/admin.applications.v1/api/application-roles";
+    editApplicationRolesOfExistingOrganizations,
+    shareApplicationWithAllOrganizations
+} from "@wso2is/admin.applications.v1/api/application-roles";
 import {
-    RoleSharingRoleInterface,
+    RoleSharingInterface,
     ShareApplicationWithAllOrganizationsDataInterface,
-    ShareApplicationWithSelectedOrganizationsAndRolesDataInterface,
-    SharedOrganizationAndRolesInterface
+    ShareOrganizationsAndRolesPatchDataInterface,
+    ShareOrganizationsAndRolesPatchOperationInterface
 } from "@wso2is/admin.applications.v1/models/application";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -106,8 +107,8 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
     const [ sharedAccessMode, setSharedAccessMode ] = useState<RoleSharedAccessModes>(
         RoleSharedAccessModes.SHARE_ALL_ROLES_WITH_ALL_ORGS);
     const [ selectedRoles, setSelectedRoles ] = useState<RolesInterface[]>([]);
-    const [ selectedOrgsAndRoles, setSelectedOrgsAndRoles ]
-        = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
+    const [ addedRoles, setAddedRoles ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
+    const [ removedRoles, setRemovedRoles ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
 
     /**
      * If the Administrator role is fetched, set it as the selected role.
@@ -216,34 +217,61 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
     };
 
     const shareSelectedRolesWithSelectedOrgs = (): void => {
-        const organizations: SharedOrganizationAndRolesInterface[] = Object.entries(selectedOrgsAndRoles)
+        const addOperations: ShareOrganizationsAndRolesPatchOperationInterface[] = Object.entries(addedRoles)
             .map(([ orgId, roles ]: [string, SelectedOrganizationRoleInterface[]]) => {
-                const selectedRoles: RoleSharingRoleInterface[] = roles
-                    .filter((role: SelectedOrganizationRoleInterface) => role.selected)
-                    .map((role: SelectedOrganizationRoleInterface) => ({
+                const roleData: RoleSharingInterface[] = roles.map(
+                    (role: SelectedOrganizationRoleInterface) => ({
                         audience: {
                             display: role.audience.display,
                             type: role.audience.type
                         },
                         displayName: role.displayName
-                    }));
+                    })
+                );
+
+                if (isEmpty(roleData)) {
+                    return null;
+                }
 
                 return {
-                    orgId,
-                    policy: ApplicationSharingPolicy.SELECTED_ORG_ONLY,
-                    roleSharing: {
-                        mode: RoleSharingModes.SELECTED,
-                        roles: selectedRoles
-                    }
+                    op: "add",
+                    path: `organizations[orgId eq "${orgId}"].roles`,
+                    value: roleData
                 };
-            });
+            }).filter((item: any) => item !== null);
 
-        const data: ShareApplicationWithSelectedOrganizationsAndRolesDataInterface = {
-            applicationId: consoleId,
-            organizations: organizations
+        const removeOperations: ShareOrganizationsAndRolesPatchOperationInterface[] = Object.entries(removedRoles)
+            .map(([ orgId, roles ]: [string, SelectedOrganizationRoleInterface[]]) => {
+                const roleData: RoleSharingInterface[] = roles.map(
+                    (role: SelectedOrganizationRoleInterface) => ({
+                        audience: {
+                            display: role.audience.display,
+                            type: role.audience.type
+                        },
+                        displayName: role.displayName
+                    })
+                );
+
+                if (isEmpty(roleData)) {
+                    return null;
+                }
+
+                return {
+                    op: "remove",
+                    path: `organizations[orgId eq "${orgId}"].roles`,
+                    value: roleData
+                };
+            }).filter((item: any) => item !== null);
+
+        const data: ShareOrganizationsAndRolesPatchDataInterface = {
+            Operations: [
+                ...addOperations,
+                ...removeOperations
+            ],
+            applicationId: consoleId
         };
 
-        shareApplicationWithSelectedOrganizationsAndRoles(data)
+        editApplicationRolesOfExistingOrganizations(data)
             .then(() => {
                 dispatch(addAlert({
                     description: t("consoleSettings:sharedAccess.notifications." +
@@ -272,7 +300,6 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
             shareSelectedRolesWithSelectedOrgs();
         }
     };
-
 
     return (
         <>
@@ -341,8 +368,10 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                                             >
                                                 <Grid xs={ 14 }>
                                                     <ConsoleRolesSelectiveShare
-                                                        roleSelections={ selectedOrgsAndRoles }
-                                                        setRoleSelections={ setSelectedOrgsAndRoles }
+                                                        addedRoles={ addedRoles }
+                                                        setAddedRoles={ setAddedRoles }
+                                                        removedRoles={ removedRoles }
+                                                        setRemovedRoles={ setRemovedRoles }
                                                     />
                                                 </Grid>
                                             </motion.div>

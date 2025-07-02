@@ -24,7 +24,8 @@ import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { ApplicationManagementConstants } from "../constants/application-management";
 import {
     ShareApplicationWithAllOrganizationsDataInterface,
-    ShareApplicationWithSelectedOrganizationsAndRolesDataInterface
+    ShareApplicationWithSelectedOrganizationsAndRolesDataInterface,
+    ShareOrganizationsAndRolesPatchDataInterface
 } from "../models/application";
 
 /**
@@ -94,6 +95,49 @@ export const shareApplicationWithSelectedOrganizationsAndRoles = <T>(
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
+        url: `${ store.getState().config.endpoints.applications }/share`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200 && response.status !== 202) {
+                throw new IdentityAppsApiException(
+                    ApplicationManagementConstants.APPLICATION_STATUS_UPDATE_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data as T);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ApplicationManagementConstants.APPLICATION_STATUS_UPDATE_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Add or remove roles from different organizations which the application is shared with.
+ *
+ * @param data - Data to be sent in the request body.
+ * @returns A promise containing the response.
+ * @throws IdentityAppsApiException
+ */
+export const editApplicationRolesOfExistingOrganizations = <T>(
+    data: ShareOrganizationsAndRolesPatchDataInterface): Promise<T> => {
+    const requestConfig: AxiosRequestConfig = {
+        data,
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
         url: `${ store.getState().config.endpoints.applications }/share`
     };
 
