@@ -21,6 +21,7 @@ import { AuthenticationStepInterface, AuthenticatorInterface } from "@wso2is/adm
 import {
     FederatedAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     PatchGroupAddOpInterface,
     PatchGroupRemoveOpInterface
@@ -50,7 +51,6 @@ import { assignGroupstoRoles, updateRoleDetails } from "../../api";
 import { RoleAudienceTypes, Schemas } from "../../constants";
 import { PatchRoleDataInterface, RoleEditSectionsInterface } from "../../models/roles";
 import { RoleManagementUtils } from "../../utils";
-import { AppState } from "@wso2is/admin.core.v1/store";
 
 type RoleGroupsPropsInterface = IdentifiableComponentInterface & RoleEditSectionsInterface;
 
@@ -208,23 +208,43 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
 
         const patchOperations: PatchGroupAddOpInterface[] | PatchGroupRemoveOpInterface[] = [];
 
-        patchOperations.push({
-            "op": "add",
-            "value": {
-                "groups": groupIDsToBeAdded?.map((groupID: string) => {
+        if (enableScim2RolesV3Api) {
+            // SCIM 2.0 Roles V3 API format
+            patchOperations.push({
+                "op": "add",
+                "value": groupIDsToBeAdded?.map((groupID: string) => {
                     return {
                         "value": groupID
                     };
                 })
-            }
-        });
-
-        groupIDsToBeRemoved.forEach((groupID: string) => {
-            patchOperations.push({
-                "op": "remove",
-                "path": `groups[value eq ${ groupID }]`
             });
-        });
+
+            groupIDsToBeRemoved.forEach((groupID: string) => {
+                patchOperations.push({
+                    "op": "remove",
+                    "path": `value eq ${groupID}`
+                });
+            });
+        } else {
+            // Legacy format
+            patchOperations.push({
+                "op": "add",
+                "value": {
+                    "groups": groupIDsToBeAdded?.map((groupID: string) => {
+                        return {
+                            "value": groupID
+                        };
+                    })
+                }
+            });
+
+            groupIDsToBeRemoved.forEach((groupID: string) => {
+                patchOperations.push({
+                    "op": "remove",
+                    "path": `groups[value eq ${groupID}]`
+                });
+            });
+        }
 
         const roleUpdateData: PatchRoleDataInterface = {
             Operations: patchOperations,
