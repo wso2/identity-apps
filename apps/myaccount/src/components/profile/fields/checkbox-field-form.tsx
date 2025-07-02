@@ -29,6 +29,7 @@ const CheckboxFieldForm: FunctionComponent<CheckBoxFieldFormPropsInterface> = ({
     fieldLabel,
     setIsProfileUpdating,
     handleSubmit,
+    isUpdating,
     ["data-componentid"]: testId
 }: CheckBoxFieldFormPropsInterface): ReactElement => {
 
@@ -73,6 +74,7 @@ const CheckboxFieldForm: FunctionComponent<CheckBoxFieldFormPropsInterface> = ({
                                                         value: schema.name
                                                     }
                                                 ] }
+                                                disabled={ isUpdating }
                                             />
                                         </Grid.Column>
                                     </Grid.Row>

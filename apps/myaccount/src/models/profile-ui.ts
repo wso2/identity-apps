@@ -17,7 +17,7 @@
  */
 
 import { IdentifiableComponentInterface, PatchOperationRequest, ProfileSchemaInterface } from "@wso2is/core/models";
-import { FormValue } from "@wso2is/forms";
+import { FormValue, Validation } from "@wso2is/forms";
 import { ProfilePatchOperationValue } from "./profile";
 
 export interface ProfileFieldFormRendererPropsInterface extends IdentifiableComponentInterface {
@@ -51,7 +51,10 @@ export interface ProfileFieldFormPropsInterface
     handleSubmit: (schemaName: string, value: FormValue) => void;
 }
 
-export interface TextFieldFormPropsInterface extends ProfileFieldFormPropsInterface {}
+export interface TextFieldFormPropsInterface extends ProfileFieldFormPropsInterface {
+    onValidate?: (value: string, validation: Validation) => void;
+    placeholderText?: string;
+}
 
 export interface CountryFieldFormPropsInterface extends ProfileFieldFormPropsInterface {}
 
@@ -68,4 +71,10 @@ export interface MobileFieldFormPropsInterface extends Omit<ProfileFieldFormProp
     flattenedProfileSchema: ProfileSchemaInterface[];
 }
 
-export interface CheckBoxFieldFormPropsInterface extends ProfileFieldFormPropsInterface {}
+export interface CheckBoxFieldFormPropsInterface
+    extends Omit<
+        ProfileFieldFormPropsInterface,
+        "isActive" | "isEditable" | "isRequired" | "profileInfo" | "onEditClicked" | "onEditCancelClicked"
+    > {}
+
+export interface DOBFieldFormPropsInterface extends ProfileFieldFormPropsInterface {}

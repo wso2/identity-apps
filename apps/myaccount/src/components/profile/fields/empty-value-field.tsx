@@ -26,12 +26,14 @@ import { setActiveForm } from "../../../store/actions";
 interface EmptyValueFieldPropsInterface extends IdentifiableComponentInterface {
     schema: ProfileSchemaInterface;
     fieldLabel: string;
+    placeholderText?: string;
 }
 
 const EmptyValueField: FunctionComponent<EmptyValueFieldPropsInterface> = (
     {
         schema,
-        fieldLabel
+        fieldLabel,
+        placeholderText
     }: EmptyValueFieldPropsInterface
 ): ReactElement => {
     const { t } = useTranslation();
@@ -54,7 +56,7 @@ const EmptyValueField: FunctionComponent<EmptyValueFieldPropsInterface> = (
             data-testid={
                 `profile-schema-mobile-editing-section-${schema.name.replace(".", "-")}-placeholder` }
         >
-            { t("myAccount:components.profile.forms.generic.inputs.placeholder", {
+            { placeholderText || t("myAccount:components.profile.forms.generic.inputs.placeholder", {
                 fieldName: fieldLabel.toLowerCase()
             }) }
         </a>

@@ -41,6 +41,8 @@ const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
     isRequired,
     setIsProfileUpdating,
     handleSubmit,
+    onValidate,
+    placeholderText,
     ["data-componentid"]: testId
 }: TextFieldFormPropsInterface): ReactElement => {
     const { isMobileViewport } = useMediaContext();
@@ -68,7 +70,9 @@ const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
     };
 
     const validateField = (value: string, validation: Validation): void => {
-        if (!RegExp(schema.regEx).test(value)) {
+        if (onValidate) {
+            onValidate(value, validation);
+        } else if (!RegExp(schema.regEx).test(value)) {
             validation.isValid = false;
             validation.errorMessages.push(
                 t("myAccount:components.profile.forms.generic.inputs.validations.invalidFormat", {
@@ -154,7 +158,7 @@ const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
                                                     ".",
                                                     "-"
                                                 )}-text-field` }
-                                                placeholder={ t(
+                                                placeholder={ placeholderText || t(
                                                     "myAccount:components.profile.forms.generic.inputs.placeholder",
                                                     { fieldName: fieldLabel.toLowerCase() }
                                                 ) }
@@ -221,7 +225,11 @@ const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
                     <List.Content>
                         <List.Description className="with-max-length">
                             { isEmpty(initialValue) ? (
-                                <EmptyValueField schema={ schema } fieldLabel={ fieldLabel } />
+                                <EmptyValueField
+                                    schema={ schema }
+                                    fieldLabel={ fieldLabel }
+                                    placeholderText={ placeholderText }
+                                />
                             ) : (
                                 resolveProfileInfoSchemaValue(schema)
                             ) }

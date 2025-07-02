@@ -16,12 +16,14 @@
  * under the License.
  */
 
+import { ProfileConstants } from "@wso2is/core/constants";
 import { ClaimDataType, PatchOperationRequest } from "@wso2is/core/models";
 import { FormValue } from "@wso2is/forms";
 import React, { Dispatch, FunctionComponent, ReactElement } from "react";
 import { useDispatch } from "react-redux";
 import CheckboxFieldForm from "./checkbox-field-form";
 import CountryFieldForm from "./country-field-form";
+import DOBFieldForm from "./dob-field-form";
 import EmailFieldForm from "./email-field-form";
 import MobileFieldForm from "./mobile-field-form";
 import TextFieldForm from "./text-field-form";
@@ -195,6 +197,26 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
         );
     }
 
+    if (fieldSchema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB")) {
+        return (
+            <DOBFieldForm
+                fieldSchema={ fieldSchema }
+                initialValue={ initialValue }
+                fieldLabel={ fieldLabel }
+                isActive={ isActive }
+                isEditable={ isEditable }
+                onEditClicked={ onEditClicked }
+                onEditCancelClicked={ onEditCancelClicked }
+                isRequired={ isRequired }
+                setIsProfileUpdating={ setIsProfileUpdating }
+                isLoading={ isLoading }
+                isUpdating={ isUpdating }
+                data-componentid={ componentId }
+                handleSubmit={ handleSubmit }
+            />
+        );
+    }
+
     if (canonicalValues?.length > 0) {
         fieldType = ClaimDataType.OPTIONS;
     }
@@ -206,11 +228,6 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
                     fieldSchema={ fieldSchema }
                     initialValue={ initialValue }
                     fieldLabel={ fieldLabel }
-                    isActive={ isActive }
-                    isEditable={ isEditable }
-                    onEditClicked={ onEditClicked }
-                    onEditCancelClicked={ onEditCancelClicked }
-                    isRequired={ isRequired }
                     setIsProfileUpdating={ setIsProfileUpdating }
                     isLoading={ isLoading }
                     isUpdating={ isUpdating }
