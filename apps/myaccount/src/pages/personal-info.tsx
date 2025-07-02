@@ -29,6 +29,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { FederatedAssociations, LinkedAccounts, Profile, ProfileExport } from "../components";
+import { Profile as ProfileV2 } from "../components/profile/profile-v2";
 import { AppConstants } from "../constants";
 import { commonConfig } from "../extensions";
 import { SCIMConfigs } from "../extensions/configs/scim";
@@ -69,6 +70,12 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
     const isReadOnlyUser: string = useSelector((state: AppState) => state
         .authenticationInformation.profileInfo.isReadOnly);
     const hasLocalAccount: boolean = useSelector((state: AppState) => state.authenticationInformation.hasLocalAccount);
+
+    const isLegacyProfileEnabled: boolean = isFeatureEnabled(
+        accessConfig?.personalInfo,
+        AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_LEGACY_PROFILE")
+    );
+
     // IDP by which the user initially signed up.
     const [ userSourceIdp, setUserSourceIdp ] = useState<string>("");
 
@@ -142,11 +149,19 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
                     && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 }>
-                                <Profile
-                                    isNonLocalCredentialUser={ isNonLocalCredentialUser }
-                                    featureConfig={ accessConfig }
-                                    onAlertFired={ handleAlerts }
-                                />
+                                { isLegacyProfileEnabled ? (
+                                    <Profile
+                                        isNonLocalCredentialUser={ isNonLocalCredentialUser }
+                                        featureConfig={ accessConfig }
+                                        onAlertFired={ handleAlerts }
+                                    />
+                                ) : (
+                                    <ProfileV2
+                                        isNonLocalCredentialUser={ isNonLocalCredentialUser }
+                                        featureConfig={ accessConfig }
+                                        onAlertFired={ handleAlerts }
+                                    />
+                                ) }
                             </Grid.Column>
                         </Grid.Row>
                     )
