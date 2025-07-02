@@ -116,9 +116,8 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         (state: AppState) => state.config.ui.enableScim2RolesV3Api
     );
 
-    const updateUserRole: (roleId: string, roleData: PatchRoleDataInterface) => Promise<any> = 
+    const updateUsersOfRole: (roleId: string, roleData: PatchRoleDataInterface) => Promise<any> = 
         enableScim2RolesV3Api ? updateUsersForRole : updateRoleDetails;
-
 
     const {
         isLoading: isUserStoresLoading,
@@ -256,7 +255,15 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             };
         });
 
-        const roleData: PatchRoleDataInterface = {
+        const roleData: PatchRoleDataInterface = enableScim2RolesV3Api ? {
+            Operations: [
+                {
+                    op: "add",
+                    value: addedUsers
+                }
+            ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        } : {
             Operations: [
                 {
                     op: "add",
@@ -269,7 +276,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         };
 
         setIsSubmitting(true);
-        updateUserRole(role.id, roleData)
+        updateUsersOfRole(role.id, roleData)
             .then(() => {
                 dispatch(
                     addAlert({
@@ -314,7 +321,13 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
      * @param user - user to be unassigned.
      */
     const unassignUserFromRole = (user: UserBasicInterface): void => {
-        const roleData: PatchRoleDataInterface = {
+        const roleData: PatchRoleDataInterface = enableScim2RolesV3Api ? {
+            Operations: [ {
+                "op": "remove",
+                "path": `value eq ${ user.id }`
+            } ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        } : {
             Operations: [ {
                 "op": "remove",
                 "path": `users[value eq ${ user.id }]`
@@ -323,7 +336,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         };
 
         setIsSubmitting(true);
-        updateUserRole(role.id, roleData)
+        updateUsersOfRole(role.id, roleData)
             .then(() => {
                 dispatch(
                     addAlert({
