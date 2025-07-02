@@ -173,7 +173,7 @@ const AdminDataSeparationNotice: FunctionComponent<AdminDataSeparationNoticeProp
             <Typography variant="body1" sx={ { mt: 1 } }>
                 <Trans>
                     As of <strong>June 27, 2025</strong>, we have
-                    implemented <strong>region-based separation of admin user data</strong> in { productName } to
+                    introduced <strong>region-based separation of admin user data</strong> in { productName } to
                     meet compliance and data residency requirements.
                 </Trans>
             </Typography>
