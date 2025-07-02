@@ -130,7 +130,7 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
     const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const enableSCIM2RoleAPIV3: boolean = useSelector(
-        (state: AppState) => state.config.ui.enable_scim2_rolesV3_api
+        (state: AppState) => state.config.ui.enableScim2RolesV3Api
     );
 
     /**
