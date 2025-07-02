@@ -48,7 +48,7 @@ import {
     TableColumnInterface,
     UserAvatar
 } from "@wso2is/react-components";
-import { AxiosError } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -193,9 +193,9 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
 
     const handleUserDelete = (userId: string): Promise<void> => {
         return deleteUser(userId)
-            .then(() => {
-                dispatch(
-                    addAlert({
+            .then((response: AxiosResponse) => {
+                if (response.status === 204) {
+                    dispatch(addAlert({
                         description: t(
                             "users:notifications.deleteUser.success.description"
                         ),
@@ -204,7 +204,19 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                             "users:notifications.deleteUser.success.message"
                         )
                     })
-                );
+                    );
+                } else if (response.status === 202) {
+                    dispatch(addAlert({
+                        description: t(
+                            "users:notifications.deleteUserPendingApproval.success.description"
+                        ),
+                        level: AlertLevels.WARNING,
+                        message: t(
+                            "users:notifications.deleteUserPendingApproval.success.message"
+                        )
+                    })
+                    );
+                }
                 onUserDelete();
             }).catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {
