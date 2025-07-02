@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.65.14
+
+### Patch Changes
+
+- [#8439](https://github.com/wso2/identity-apps/pull/8439) [`bcb6cd0f9f8d88e476141c679caec38517f4854b`](https://github.com/wso2/identity-apps/commit/bcb6cd0f9f8d88e476141c679caec38517f4854b) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Change wording to imply admin data separation implemented
+
+- Updated dependencies [[`bcb6cd0f9f8d88e476141c679caec38517f4854b`](https://github.com/wso2/identity-apps/commit/bcb6cd0f9f8d88e476141c679caec38517f4854b)]:
+  - @wso2is/admin.extensions.v1@2.39.6
+
 ## 2.65.13
 
 ### Patch Changes
