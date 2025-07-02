@@ -15,7 +15,7 @@
             "description": "Design and customize the user password recovery journey with a flexible, no-code flow composer.",
             "featureStatusKey": "flows.types.list.passwordRecovery",
             "path": "PASSWORD_RECOVERY_FLOW_BUILDER",
-            "type": "PASSWORD_RECOVERY",
+            "type": "PASSWORD_RESET",
             "disabled": true
         },
         {
@@ -24,7 +24,7 @@
             "description": "Design and customize the invite-user password setup journey with a flexible, no-code flow composer.",
             "featureStatusKey": "flows.types.list.inviteUserToSetPassword",
             "path": "INVITE_USER_PASSWORD_SETUP_FLOW_BUILDER",
-            "type": "INVITE_USER_PASSWORD_SETUP",
+            "type": "INVITED_USER_REGISTRATION",
             "disabled": true
         }
     ]
