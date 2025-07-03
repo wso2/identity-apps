@@ -31,7 +31,8 @@ import useNewRegistrationPortalFeatureStatus from
 import AIText from "@wso2is/common.ai.v1/components/ai-text";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import BackgroundBlob from "./background-blob.png";
 import SignUpBox from "./sign-up-box";
@@ -41,7 +42,13 @@ import "./new-feature-announcement.scss";
 /**
  * Props interface of {@link NewFeatureAnnouncement}
  */
-export interface NewFeatureAnnouncementProps extends IdentifiableComponentInterface {}
+export interface NewFeatureAnnouncementProps extends IdentifiableComponentInterface {
+    title: ReactElement;
+    description: ReactElement;
+    isEnabled: boolean;
+    isEnabledStatusLoading: boolean;
+    onTryOut: any;
+}
 
 /**
  * Section to display new feature announcements.
@@ -51,16 +58,16 @@ export interface NewFeatureAnnouncementProps extends IdentifiableComponentInterf
  */
 const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = ({
     "data-componentid": componentId = "new-feature-announcement",
+    title,
+    description,
+    isEnabled,
+    isEnabledStatusLoading,
+    onTryOut,
     ...rest
 }: NewFeatureAnnouncementProps): ReactElement => {
     const { t } = useTranslation();
 
     const { setShowPreviewFeaturesModal } = useFeatureGate();
-
-    const {
-        data: isNewRegistrationPortalEnabled,
-        isLoading: isNewRegistrationPortalEnabledRequestLoading
-    } = useNewRegistrationPortalFeatureStatus();
 
     return (
         <Paper
@@ -72,15 +79,14 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
             <Box className="new-feature-announcement-content">
                 <Box>
                     <Typography variant="h3">
-                        Design seamless self-registration experiences{ " " }
+                        { title }
                         <Chip
                             label={ t(FeatureStatusLabel.PREVIEW) }
                             className="oxygen-menu-item-chip oxygen-chip-experimental"
                         />
                     </Typography>
                     <Typography variant="body2">
-                        Effortlessly design your user self-registration flows with the{ " " }
-                        new AI-powered visual designer <AIText />
+                        { description }
                     </Typography>
                 </Box>
             </Box>
@@ -94,10 +100,10 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
                 <SignUpBox />
             </Box>
             <Box className="new-feature-announcement-actions">
-                { isNewRegistrationPortalEnabled ? (
+                { isEnabled ? (
                     <Button
                         variant="contained"
-                        onClick={ () => history.push(AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER")) }
+                        onClick={ onTryOut }
                     >
                         <Box display="flex" alignItems="center" gap={ 1 }>
                             Try Out <ChevronRightIcon />
@@ -107,7 +113,7 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
                     <Button
                         variant="contained"
                         onClick={ () => setShowPreviewFeaturesModal(true) }
-                        loading={ isNewRegistrationPortalEnabledRequestLoading }
+                        loading={ isEnabledStatusLoading }
                     >
                         <Box display="flex" alignItems="center" gap={ 1 }>
                             <PreviewFeaturesIcon /> Enable and try out
@@ -118,5 +124,107 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
         </Paper>
     );
 };
+
+const AUTO_SLIDE_INTERVAL = 5000;
+
+export const FeatureCarousel = () => {
+    const [ currentIndex, setCurrentIndex ] = useState(0);
+    const [ direction, setDirection ] = useState(1);
+
+    const {
+        data: isNewRegistrationPortalEnabled,
+        isLoading: isNewRegistrationPortalEnabledRequestLoading
+    } = useNewRegistrationPortalFeatureStatus();
+
+    const isAgentManagementFeatureEnabled: boolean = true;
+    const isAgentManagmentFeatureStatusRequestLoading: boolean = true;
+
+    const features: any = useMemo(() => [
+        {
+            description: "Extend your identity management to autonomous agents and AI systems",
+            isEnabled: isAgentManagementFeatureEnabled,
+            isEnabledStatusLoading: isAgentManagmentFeatureStatusRequestLoading,
+            onTryOut: () => {},
+            title: "Identity for AI Agents "
+        },
+        {
+            description: (
+                <>
+                    Effortlessly design your user self-registration flows with the{ " " }
+                    new AI-powered visual designer <AIText />
+                </>
+            ),
+            isEnabled: isNewRegistrationPortalEnabled,
+            isEnabledStatusLoading: isNewRegistrationPortalEnabledRequestLoading,
+            onTryOut: () => {
+                history.push(AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER"));
+            },
+            title: "Design seamless self-registration experiences "
+        }
+    ], [ isNewRegistrationPortalEnabled ]);
+
+    useEffect(() => {
+        const interval: any = setInterval(() => {
+            setDirection(1);
+            setCurrentIndex((prev: number) => (prev + 1) % features.length);
+        }, AUTO_SLIDE_INTERVAL);
+
+        return () => clearInterval(interval);
+    }, [ features.length ]);
+
+    const variants: any = {
+        center: {
+            opacity: 1,
+            x: 0
+        },
+        enter: (direction: number) => ({
+            opacity: 0.5,
+            x: direction > 0 ? 300 : -300
+        })
+    };
+
+    return (
+        <div
+            style={ {
+                height: "200px", // <-- Adjust height based on your banner height
+                overflow: "hidden",
+                position: "relative",
+                width: "100%",
+
+            } }
+        >
+            <AnimatePresence custom={ direction } mode="wait">
+                <motion.div
+                    key={ currentIndex }
+                    custom={ direction }
+                    variants={ variants }
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={ {
+                        opacity: { duration: 0.2 },
+                        x: { damping: 30,stiffness: 300, type: "spring" }
+                    } }
+                    style={ {
+                        height: "100%",
+                        position: "absolute",
+                        width: "100%"
+                    } }
+                >
+                    <NewFeatureAnnouncement
+                        title={ features[currentIndex]?.title }
+                        description={ features[currentIndex]?.description }
+                        isEnabled={ features[currentIndex]?.isEnabled }
+                        isEnabledStatusLoading={ features[currentIndex]?.isEnabledStatusLoading }
+                        onTryOut={ features[currentIndex]?.onTryOut }
+                    />
+                </motion.div>
+            </AnimatePresence>
+        </div>
+    );
+};
+
+
+
 
 export default NewFeatureAnnouncement;
