@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.65.16
+
+### Patch Changes
+
+- [#8448](https://github.com/wso2/identity-apps/pull/8448) [`344d2c5a41d426c9222f64336dc661ff9484ea49`](https://github.com/wso2/identity-apps/commit/344d2c5a41d426c9222f64336dc661ff9484ea49) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Fix organization identifier not setting correctly from token response
+
+- Updated dependencies [[`344d2c5a41d426c9222f64336dc661ff9484ea49`](https://github.com/wso2/identity-apps/commit/344d2c5a41d426c9222f64336dc661ff9484ea49)]:
+  - @wso2is/admin.feature-gate.v1@1.7.3
+  - @wso2is/admin.flows.v1@1.0.4
+
 ## 2.65.15
 
 ### Patch Changes
