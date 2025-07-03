@@ -16,6 +16,6 @@
  * under the License.
  */
 
-export const STATIC_CREDENTIAL_ENABLED_INTEGRATIONS: any = [
-    "GITHUB"
-];
+export const AGENT_FEATURE_DICTIONARY: Map<string, string> = new Map()
+    .set("AGENT_GROUPS", "agents.groups");
+
