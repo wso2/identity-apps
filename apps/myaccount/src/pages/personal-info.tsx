@@ -28,8 +28,9 @@ import React, { Dispatch, FunctionComponent, ReactElement, useEffect, useState }
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { FederatedAssociations, LinkedAccounts, Profile, ProfileExport } from "../components";
-import { Profile as ProfileV2 } from "../components/profile/profile-v2";
+import { FederatedAssociations, LinkedAccounts, ProfileExport } from "../components";
+import { LegacyProfile } from "../components/profile/legacy-profile";
+import { Profile } from "../components/profile/profile";
 import { AppConstants } from "../constants";
 import { commonConfig } from "../extensions";
 import { SCIMConfigs } from "../extensions/configs/scim";
@@ -150,13 +151,13 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 }>
                                 { isLegacyProfileEnabled ? (
-                                    <Profile
+                                    <LegacyProfile
                                         isNonLocalCredentialUser={ isNonLocalCredentialUser }
                                         featureConfig={ accessConfig }
                                         onAlertFired={ handleAlerts }
                                     />
                                 ) : (
-                                    <ProfileV2
+                                    <Profile
                                         isNonLocalCredentialUser={ isNonLocalCredentialUser }
                                         featureConfig={ accessConfig }
                                         onAlertFired={ handleAlerts }
