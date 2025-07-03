@@ -16,18 +16,23 @@
  * under the License.
  */
 
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     AnimatedAvatar, AppAvatar, ResourceTab, ResourceTabPaneInterface, TabPageLayout
 } from "@wso2is/react-components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
 import AgentCredentials from "../components/edit/agent-credentials";
 import AgentGroups from "../components/edit/agent-groups";
 import AgentOverview from "../components/edit/agent-overview";
 import AgentRoles from "../components/edit/agent-roles";
 import useGetAgent from "../hooks/use-get-agent";
+import { AGENT_FEATURE_DICTIONARY } from "../constants/agents";
 
 interface EditAgentPageProps extends IdentifiableComponentInterface {}
 
@@ -37,12 +42,17 @@ export default function EditAgent({
 
     const [ agentId, setAgentId ] = useState<string>();
 
+    const agentFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.agents);
+
+    console.log(agentFeatureConfig)
+
     /**
-     * Fetch the application details on initial component load.
+     * Fetch the agent details on initial component load.
      */
     useEffect(() => {
         const path: string[] = history?.location?.pathname?.split("/");
-        // Get the application ID from the URL. Remove the hash if it's present.
+        // Get the agent ID from the URL. Remove the hash if it's present.
         const id: string = path[ path?.length - 1 ]?.split("#")[ 0 ];
 
         setAgentId(id);
@@ -56,40 +66,50 @@ export default function EditAgent({
     /**
      * The list of tab panes rendered in the final render.
      */
-    const renderedTabPanes: ResourceTabPaneInterface[] = [
-        {
-            componentId: "general",
-            menuItem: "General",
-            render: () => (
-                <ResourceTab.Pane
-                    data-componentid="agent-overview"
-                    attached={ false }
-                    className="overview-tab-pane"
-                >
-                    <AgentOverview agentId={ agentId } />
-                </ResourceTab.Pane>
-            )
-        },
-        {
-            componentId: "credentials",
-            menuItem: "Credentials",
-            render: () => (
-                <ResourceTab.Pane>
-                    <AgentCredentials agentId={ agentId } data-componentid="agent-credentials" />
-                </ResourceTab.Pane>
-            )
-        },
-        {
-            componentId: "groups",
-            menuItem: "Groups",
-            render: () =>  <AgentGroups agentId={ agentId } />
-        },
-        {
-            componentId: "roles",
-            menuItem: "Roles",
-            render: () =>  <ResourceTab.Pane><AgentRoles agentId={ agentId }/></ResourceTab.Pane>
+    const renderedTabPanes: ResourceTabPaneInterface[] = useMemo(() => {
+        const tabPanes: ResourceTabPaneInterface[] = [
+            {
+                componentId: "general",
+                menuItem: "General",
+                render: () => (
+                    <ResourceTab.Pane
+                        data-componentid="agent-overview"
+                        attached={ false }
+                        className="overview-tab-pane"
+                    >
+                        <AgentOverview agentId={ agentId } />
+                    </ResourceTab.Pane>
+                )
+            },
+            {
+                componentId: "credentials",
+                menuItem: "Credentials",
+                render: () => (
+                    <ResourceTab.Pane>
+                        <AgentCredentials agentId={ agentId } data-componentid="agent-credentials" />
+                    </ResourceTab.Pane>
+                )
+            },
+            {
+                componentId: "roles",
+                menuItem: "Roles",
+                render: () =>  <ResourceTab.Pane><AgentRoles agentId={ agentId }/></ResourceTab.Pane>
+            }
+        ];
+
+        if (isFeatureEnabled(agentFeatureConfig, AGENT_FEATURE_DICTIONARY.get("AGENT_GROUPS"))) {
+
+            tabPanes.splice(2, 0, {
+                componentId: "groups",
+                menuItem: "Groups",
+                render: () =>  <AgentGroups agentId={ agentId } />
+            });
         }
-    ];
+
+        return tabPanes;
+
+    }, [ agentFeatureConfig ]);
+
 
     const handleBackButtonClick = () => {
         history.push(AppConstants.getPaths().get("AGENTS"));

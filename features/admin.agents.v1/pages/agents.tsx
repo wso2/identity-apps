@@ -17,8 +17,6 @@
  */
 
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
-import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
-import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import React, { useState } from "react";

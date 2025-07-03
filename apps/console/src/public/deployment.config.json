@@ -355,7 +355,9 @@
                 }
             },
             "agents": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "agents.groups"
+                ],
                 "enabled": true,
                 "featureFlags": [
                     {
