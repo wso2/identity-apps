@@ -16,10 +16,15 @@
  * under the License.
  */
 
+import FlashOnOutlinedIcon from "@mui/icons-material/FlashOnOutlined";
+import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
+import ShieldOutlinedIcon from "@mui/icons-material/ShieldOutlined";
+import VpnKeyOutlinedIcon from "@mui/icons-material/VpnKeyOutlined";
 import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Card from "@oxygen-ui/react/Card";
+import CardContent from "@oxygen-ui/react/CardContent";
 import Container from "@oxygen-ui/react/Container";
 import Dialog from "@oxygen-ui/react/Dialog";
 import DialogActions from "@oxygen-ui/react/DialogActions";
@@ -47,6 +52,8 @@ import NewSelfRegistrationImage from "../../assets/illustrations/preview-feature
 import { AppConstants } from "../../constants/app-constants";
 import "./feature-preview-modal.scss";
 import { history } from "../../helpers/history";
+
+
 
 /**
  * Feature preview modal component props interface. {@link FeaturePreviewModal}
@@ -76,6 +83,11 @@ interface PreviewFeaturesListInterface {
      * Feature name.
      */
     name: string;
+
+    /**
+     * React component to be rendered
+     */
+    component?: ReactElement;
 
     /**
      * Feature description.
@@ -110,6 +122,53 @@ interface PreviewFeaturesListInterface {
     };
 }
 
+const AgentFeatureAnnouncement = () => {
+    const features: any = [
+        {
+            icon: <ShieldOutlinedIcon fontSize="medium" />,
+            title: "Secure your agents with role-based access control",
+            subtitle: "Control what each agent can access and do"
+        },
+        {
+            icon: <VpnKeyOutlinedIcon fontSize="medium" />,
+            title: "Credential management and rotation",
+            subtitle: "Minimize risk with seamless secret lifecycle management."
+        },
+        {
+            icon: <FlashOnOutlinedIcon fontSize="medium" />,
+            title: "Integrate with your existing applications seamlessly",
+            subtitle: "Connect to APIs, resources, and MCP servers"
+        },
+        {
+            icon: <GroupsOutlinedIcon fontSize="medium" />,
+            title: "Enable human-in-the-loop and multi-agent workflows",
+            subtitle: "Secure interaction patterns for any use case"
+        }
+    ];
+
+    return (
+        <Box sx={ { flexGrow: 1, pb: 4, pt: 4 } }>
+            <Grid container spacing={ 2 }>
+                { features.map((feature, index) => (
+                    <Grid xs={ 12 } md={ 6 } key={ index }>
+                        <Card variant="outlined" sx={ { display: "flex", gap: 2, p: 2 } }>
+                            <Box sx={ { color: "secondary.main", pt: 1 } }>{ feature.icon }</Box>
+                            <CardContent sx={ { p: 0 } }>
+                                <Typography variant="subtitle1" fontWeight={ 600 }>
+                                    { feature.title }
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    { feature.subtitle }
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                )) }
+            </Grid>
+        </Box>
+    );
+};
+
 /**
  * Feature preview modal component.
  *
@@ -139,14 +198,9 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
             description: "Extend your identity management to autonomous agents with secure, dynamic authorization",
             enabled: isEnableAgentManagement,
             id: "agents",
-            image: NewSelfRegistrationImage,
-            message: {
-                content: "Enabling this feature will take about 2 minutes to complete. " +
-                    "Once enabled, you can manage the agents in your organization.",
-                type: "info"
-            },
             name: "Identity for AI Agents",
-            value: "SelfRegistration.EnableDynamicPortal"
+            value: "SelfRegistration.EnableDynamicPortal",
+            component: <AgentFeatureAnnouncement />
         },
         {
             action: "Try Flow Composer",
@@ -301,9 +355,12 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
                             <div>
                                 <p>{ selected?.description }</p>
                             </div>
-                            <Alert severity={ selected?.message?.type } sx={ { marginTop: "10px" } }>
-                                { selected?.message?.content }
-                            </Alert>
+                            { selected?.message?.type && selected?.message?.content && (
+                                <Alert severity={ selected?.message?.type } sx={ { marginTop: "10px" } }>
+                                    { selected?.message?.content }
+                                </Alert>
+                            ) }
+
                             { selected?.image &&
                                 (
                                     <img
@@ -312,6 +369,7 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
                                     />
                                 )
                             }
+                            { selected?.component && selected?.component }
                             {
                                 previewFeaturesList?.length > 1 && isEnableDynamicSelfRegistrationPortal && (
                                     <Stack direction="row" justifyContent="flex-end">
