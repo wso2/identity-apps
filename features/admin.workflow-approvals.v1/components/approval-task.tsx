@@ -411,33 +411,6 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                     </Grid.Column>
                 </Grid.Row>
                 {
-                    approval?.assignees
-                        ? (
-                            <Grid.Row>
-                                <Grid.Column>
-                                    <List.Content>
-                                        <Grid padded>
-                                            <Grid.Row columns={ 2 }>
-                                                <Grid.Column width={ 3 }>
-                                                    { t("common:assignees") }
-                                                </Grid.Column>
-                                                <Grid.Column mobile={ 16 } computer={ 12 }>
-                                                    <List.Description>
-                                                        <Media lessThan="tablet">
-                                                            <Divider hidden />
-                                                        </Media>
-                                                        { assigneesTable(approval?.assignees) }
-                                                    </List.Description>
-                                                </Grid.Column>
-                                            </Grid.Row>
-                                        </Grid>
-                                    </List.Content>
-                                </Grid.Column>
-                            </Grid.Row>
-                        )
-                        : null
-                }
-                {
                     approval?.properties
                         ? (
                             <Grid.Row>
