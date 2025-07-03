@@ -19,13 +19,16 @@
 import { ProfileConstants } from "@wso2is/core/constants";
 import { ClaimDataType, PatchOperationRequest } from "@wso2is/core/models";
 import { FormValue } from "@wso2is/forms";
+import isEmpty from "lodash-es/isEmpty";
 import React, { Dispatch, FunctionComponent, ReactElement } from "react";
 import { useDispatch } from "react-redux";
 import CheckboxFieldForm from "./checkbox-field-form";
 import CountryFieldForm from "./country-field-form";
 import DOBFieldForm from "./dob-field-form";
+import DropdownFieldForm from "./dropdown-field-form";
 import EmailFieldForm from "./email-field-form";
 import MobileFieldForm from "./mobile-field-form";
+import MultiValueFieldForm from "./multi-valued-field-form";
 import TextFieldForm from "./text-field-form";
 import { CommonConstants } from "../../../constants";
 import { SCIMConfigs as SCIMExtensionConfigs } from "../../../extensions/configs/scim";
@@ -53,7 +56,7 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
     }: ProfileFieldFormRendererPropsInterface
 ): ReactElement => {
 
-    const { type, canonicalValues } = fieldSchema;
+    const { type, canonicalValues, multiValued: isMultiValuedSchema, extended: isExtendedSchema } = fieldSchema;
     let fieldType: ClaimDataType = type?.toLocaleLowerCase() as ClaimDataType;
 
     const dispatch: Dispatch<any> = useDispatch();
@@ -221,6 +224,57 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
         fieldType = ClaimDataType.OPTIONS;
     }
 
+    if (isMultiValuedSchema && isExtendedSchema) {
+        switch (fieldType) {
+            case ClaimDataType.INTEGER: {
+                const valueList: number[] = isEmpty(initialValue)
+                    ? []
+                    : initialValue.split(",").map((value: string) => Number(value));
+
+                return (
+                    <MultiValueFieldForm<number>
+                        fieldSchema={ fieldSchema }
+                        initialValue={ valueList }
+                        fieldLabel={ fieldLabel }
+                        isActive={ isActive }
+                        isEditable={ isEditable }
+                        onEditClicked={ onEditClicked }
+                        onEditCancelClicked={ onEditCancelClicked }
+                        isRequired={ isRequired }
+                        setIsProfileUpdating={ setIsProfileUpdating }
+                        isLoading={ isLoading }
+                        isUpdating={ isUpdating }
+                        data-componentid={ componentId }
+                        handleSubmit={ handleSubmit }
+                        type="number"
+                    />
+                );
+            }
+
+            default: {
+                const valueList: string[] = isEmpty(initialValue) ? [] : initialValue.split(",");
+
+                return (
+                    <MultiValueFieldForm<string>
+                        fieldSchema={ fieldSchema }
+                        initialValue={ valueList }
+                        fieldLabel={ fieldLabel }
+                        isActive={ isActive }
+                        isEditable={ isEditable }
+                        onEditClicked={ onEditClicked }
+                        onEditCancelClicked={ onEditCancelClicked }
+                        isRequired={ isRequired }
+                        setIsProfileUpdating={ setIsProfileUpdating }
+                        isLoading={ isLoading }
+                        isUpdating={ isUpdating }
+                        data-componentid={ componentId }
+                        handleSubmit={ handleSubmit }
+                    />
+                );
+            }
+        }
+    }
+
     switch (fieldType) {
         case ClaimDataType.BOOLEAN:
             return (
@@ -235,6 +289,50 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
                     handleSubmit={ handleSubmit }
                 />
             );
+
+        case ClaimDataType.INTEGER:
+            return (
+                <TextFieldForm
+                    fieldSchema={ fieldSchema }
+                    initialValue={ initialValue }
+                    fieldLabel={ fieldLabel }
+                    isActive={ isActive }
+                    isEditable={ isEditable }
+                    onEditClicked={ onEditClicked }
+                    onEditCancelClicked={ onEditCancelClicked }
+                    isRequired={ isRequired }
+                    setIsProfileUpdating={ setIsProfileUpdating }
+                    isLoading={ isLoading }
+                    isUpdating={ isUpdating }
+                    data-componentid={ componentId }
+                    handleSubmit={ handleSubmit }
+                    type="number"
+                />
+            );
+
+        case ClaimDataType.DECIMAL:
+            return (
+                <TextFieldForm
+                    fieldSchema={ fieldSchema }
+                    initialValue={ initialValue }
+                    fieldLabel={ fieldLabel }
+                    isActive={ isActive }
+                    isEditable={ isEditable }
+                    onEditClicked={ onEditClicked }
+                    onEditCancelClicked={ onEditCancelClicked }
+                    isRequired={ isRequired }
+                    setIsProfileUpdating={ setIsProfileUpdating }
+                    isLoading={ isLoading }
+                    isUpdating={ isUpdating }
+                    data-componentid={ componentId }
+                    handleSubmit={ handleSubmit }
+                    type="number"
+                    step="any"
+                />
+            );
+
+        // As of now text field will be rendered for dates as well.
+        case ClaimDataType.DATE_TIME:
         case ClaimDataType.STRING:
             return (
                 <TextFieldForm
@@ -254,8 +352,43 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
                 />
             );
 
+        case ClaimDataType.OPTIONS:
+            return (
+                <DropdownFieldForm
+                    fieldSchema={ fieldSchema }
+                    initialValue={ initialValue }
+                    fieldLabel={ fieldLabel }
+                    isActive={ isActive }
+                    isEditable={ isEditable }
+                    onEditClicked={ onEditClicked }
+                    onEditCancelClicked={ onEditCancelClicked }
+                    isRequired={ isRequired }
+                    setIsProfileUpdating={ setIsProfileUpdating }
+                    isLoading={ isLoading }
+                    isUpdating={ isUpdating }
+                    data-componentid={ componentId }
+                    handleSubmit={ handleSubmit }
+                />
+            );
+
         default:
-            return <>{ fieldType } Pending</>;
+            return (
+                <TextFieldForm
+                    fieldSchema={ fieldSchema }
+                    initialValue={ initialValue }
+                    fieldLabel={ fieldLabel }
+                    isActive={ isActive }
+                    isEditable={ isEditable }
+                    onEditClicked={ onEditClicked }
+                    onEditCancelClicked={ onEditCancelClicked }
+                    isRequired={ isRequired }
+                    setIsProfileUpdating={ setIsProfileUpdating }
+                    isLoading={ isLoading }
+                    isUpdating={ isUpdating }
+                    data-componentid={ componentId }
+                    handleSubmit={ handleSubmit }
+                />
+            );
     }
 };
 

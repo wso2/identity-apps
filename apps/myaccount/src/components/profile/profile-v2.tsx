@@ -499,7 +499,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 }
             });
 
-            if (isArray(profileDetails.profileInfo.pendingEmails)) {
+            if (isArray(profileDetails.profileInfo.pendingEmails) && profileDetails.profileInfo.pendingEmails[0]) {
                 const { value: pendingEmail } = profileDetails.profileInfo.pendingEmails[0];
 
                 tempProfileInfo.set("pendingEmails.value", pendingEmail);

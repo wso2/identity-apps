@@ -16,21 +16,18 @@
  * under the License.
  */
 
-import { ProfileConstants } from "@wso2is/core/constants";
-import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
-import { ProfileSchemaInterface } from "@wso2is/core/models";
-import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import { LabelValue } from "@wso2is/core/models";
+import { Field, FormValue, Forms } from "@wso2is/forms";
 import { Popup, useMediaContext } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, List } from "semantic-ui-react";
 import EmptyValueField from "./empty-value-field";
-import { SCIMConfigs as SCIMExtensionConfigs } from "../../../extensions/configs/scim";
-import { TextFieldFormPropsInterface } from "../../../models/profile-ui";
+import { DropdownFieldFormPropsInterface } from "../../../models/profile-ui";
 import { EditSection } from "../../shared/edit-section";
 
-const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
+const DropdownFieldForm: FunctionComponent<DropdownFieldFormPropsInterface> = ({
     fieldSchema: schema,
     initialValue,
     fieldLabel,
@@ -41,102 +38,34 @@ const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
     isRequired,
     setIsProfileUpdating,
     handleSubmit,
-    onValidate,
-    placeholderText,
-    ["data-componentid"]: testId = "text-field-form",
-    ...fieldProps
-}: TextFieldFormPropsInterface): ReactElement => {
+    ["data-componentid"]: testId = "dropdown-field-form"
+}: DropdownFieldFormPropsInterface): ReactElement => {
     const { isMobileViewport } = useMediaContext();
     const { t } = useTranslation();
 
-    const usernameClaim: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME");
+    const options: {
+        key: string;
+        text: string;
+        value: string;
+    }[] = schema.canonicalValues.map(({ label, value }: LabelValue) => {
+        return {
+            key: value,
+            text: label,
+            value: value
+        };
+    });
 
-    /**
-     * Resolves the current schema value to the form value.
-     * @returns schema form value
-     */
-    const resolveProfileInfoSchemaValue = (schema: ProfileSchemaInterface): string => {
-        /**
-         * Remove the user-store-name prefix from the userName
-         * Match case applies only for secondary user-store.
-         *
-         * Transforms the value: -
-         * USER-STORE/userNameString to userNameString
-         */
-        if (schema.name === usernameClaim) {
-            return getUserNameWithoutDomain(initialValue);
-        }
-
-        return initialValue;
-    };
-
-    const validateField = (value: string, validation: Validation): void => {
-        if (onValidate) {
-            onValidate(value, validation);
-        } else if (!RegExp(schema.regEx).test(value)) {
-            validation.isValid = false;
-            validation.errorMessages.push(
-                t("myAccount:components.profile.forms.generic.inputs.validations.invalidFormat", {
-                    fieldName: fieldLabel
-                })
-            );
-        }
-    };
+    const selectedOption: {
+        text: string;
+        value: string;
+    } = options.find((option: { text: string; value: string }) => {
+        return option.value === initialValue;
+    });
 
     const onFormSubmit = (values: Map<string, FormValue>): void => {
         setIsProfileUpdating(true);
 
-        let modifiedSchemaName: string = schema.name;
-
-        // Special handling for Address Schemas.
-        // Need to be submitted as addresses: { type: "home", formatted: value }
-        // Refer to https://github.com/wso2/identity-apps/pull/2077
-        if (
-            [
-                SCIMExtensionConfigs.scimUserSchema.addressesHome,
-                SCIMExtensionConfigs.scimUserSchema.addressesWork
-            ].some(
-                (address: string) => !isEmpty(address) && address === schema.schemaUri
-            )
-        ) {
-            const schemaNames: string[] = schema.name.split(".");
-
-            modifiedSchemaName = `${schemaNames[0]}#${schemaNames[1]}.formatted`;
-
-        // Special handling for Email Schemas.
-        // Need to be submitted as emails: { type: "work", value: value }
-        } else if (
-            [
-                SCIMExtensionConfigs.scimUserSchema.emailsWork,
-                SCIMExtensionConfigs.scimUserSchema.emailsOther
-            ].some(
-                (email: string) => !isEmpty(email) && email === schema.schemaUri
-            )
-        ) {
-            const schemaNames: string[] = schema.name.split(".");
-
-            modifiedSchemaName = `${schemaNames[0]}#${schemaNames[1]}.value`;
-
-        // Special handling for Phone Number Schemas.
-        // Need to be submitted as phoneNumbers: { type: "work", value: value }
-        } else if (
-            [
-                SCIMExtensionConfigs.scimUserSchema.phoneNumbersMobile,
-                SCIMExtensionConfigs.scimUserSchema.phoneNumbersWork,
-                SCIMExtensionConfigs.scimUserSchema.phoneNumbersOther,
-                SCIMExtensionConfigs.scimUserSchema.phoneNumbersHome,
-                SCIMExtensionConfigs.scimUserSchema.phoneNumbersFax,
-                SCIMExtensionConfigs.scimUserSchema.phoneNumbersPager
-            ].some(
-                (phone: string) => !isEmpty(phone) && phone === schema.schemaUri
-            )
-        ) {
-            const schemaNames: string[] = schema.name.split(".");
-
-            modifiedSchemaName = `${schemaNames[0]}#${schemaNames[1]}.value`;
-        }
-
-        handleSubmit(modifiedSchemaName, values.get(schema.name));
+        handleSubmit(schema.name, values.get(schema.name));
     };
 
     if (isActive) {
@@ -151,15 +80,15 @@ const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
                                     <Grid.Row columns={ 2 } className="p-0">
                                         <Grid.Column width={ 10 }>
                                             <Field
-                                                autoFocus={ true }
                                                 label=""
                                                 name={ schema.name }
-                                                data-testid={ `${testId}-${schema.name.replace(".", "-")}-text-field` }
+                                                data-testid={ `${testId}-${schema.name.replace(
+                                                    ".", "-")}-select-field` }
                                                 data-componentid={ `${testId}-${schema.name.replace(
                                                     ".",
                                                     "-"
-                                                )}-text-field` }
-                                                placeholder={ placeholderText || t(
+                                                )}-select-field` }
+                                                placeholder={ t(
                                                     "myAccount:components.profile.forms.generic.inputs.placeholder",
                                                     { fieldName: fieldLabel.toLowerCase() }
                                                 ) }
@@ -169,15 +98,9 @@ const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
                                                         "validations.empty",
                                                     { fieldLabel }
                                                 ) }
-                                                type="text"
-                                                validation={ validateField }
-                                                value={ resolveProfileInfoSchemaValue(schema) }
-                                                maxLength={
-                                                    schema.maxLength
-                                                        ? schema.maxLength
-                                                        : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
-                                                }
-                                                { ...fieldProps }
+                                                type="dropdown"
+                                                value={ initialValue }
+                                                children={ options }
                                             />
                                         </Grid.Column>
                                         <Grid.Column width={ 6 }>
@@ -226,14 +149,13 @@ const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
                 <Grid.Column mobile={ 8 } computer={ 10 }>
                     <List.Content>
                         <List.Description className="with-max-length">
-                            { isEmpty(initialValue) ? (
+                            { isEmpty(selectedOption) ? (
                                 <EmptyValueField
                                     schema={ schema }
                                     fieldLabel={ fieldLabel }
-                                    placeholderText={ placeholderText }
                                 />
                             ) : (
-                                resolveProfileInfoSchemaValue(schema)
+                                selectedOption?.text
                             ) }
                         </List.Description>
                     </List.Content>
@@ -274,4 +196,4 @@ const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
     );
 };
 
-export default TextFieldForm;
+export default DropdownFieldForm;

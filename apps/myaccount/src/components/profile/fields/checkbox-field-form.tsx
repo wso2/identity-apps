@@ -59,7 +59,6 @@ const CheckboxFieldForm: FunctionComponent<CheckBoxFieldFormPropsInterface> = ({
                                     <Grid.Row columns={ 2 } className="p-0">
                                         <Grid.Column width={ 10 }>
                                             <Field
-                                                autoFocus={ true }
                                                 label=""
                                                 name={ schema.name }
                                                 data-testid= {

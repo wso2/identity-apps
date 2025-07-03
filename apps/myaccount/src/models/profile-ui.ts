@@ -54,6 +54,8 @@ export interface ProfileFieldFormPropsInterface
 export interface TextFieldFormPropsInterface extends ProfileFieldFormPropsInterface {
     onValidate?: (value: string, validation: Validation) => void;
     placeholderText?: string;
+    type?: "text" | "number";
+    step?: number | "any";
 }
 
 export interface CountryFieldFormPropsInterface extends ProfileFieldFormPropsInterface {}
@@ -78,3 +80,11 @@ export interface CheckBoxFieldFormPropsInterface
     > {}
 
 export interface DOBFieldFormPropsInterface extends ProfileFieldFormPropsInterface {}
+
+export interface DropdownFieldFormPropsInterface extends ProfileFieldFormPropsInterface {}
+
+export interface MultiValueFieldFormPropsInterface<T extends string | number>
+    extends Omit<ProfileFieldFormPropsInterface, "initialValue"> {
+    initialValue: T[];
+    type?: string;
+}
