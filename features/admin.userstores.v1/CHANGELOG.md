@@ -1,5 +1,14 @@
 # @wso2is/admin.userstores.v1
 
+## 2.27.34
+
+### Patch Changes
+
+- [#8447](https://github.com/wso2/identity-apps/pull/8447) [`4f6a234d2b0e2f77ece767b5a3e76dfb30049a1a`](https://github.com/wso2/identity-apps/commit/4f6a234d2b0e2f77ece767b5a3e76dfb30049a1a) Thanks [@BimsaraBodaragama](https://github.com/BimsaraBodaragama)! - Add console to the changeset
+
+- Updated dependencies [[`635b9c61911819182fb7685f32bc7942fd6b9af5`](https://github.com/wso2/identity-apps/commit/635b9c61911819182fb7685f32bc7942fd6b9af5)]:
+  - @wso2is/i18n@2.24.9
+
 ## 2.27.33
 
 ### Patch Changes
