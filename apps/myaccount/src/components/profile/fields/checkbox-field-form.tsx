@@ -30,7 +30,7 @@ const CheckboxFieldForm: FunctionComponent<CheckBoxFieldFormPropsInterface> = ({
     setIsProfileUpdating,
     handleSubmit,
     isUpdating,
-    ["data-componentid"]: testId
+    ["data-componentid"]: componentId
 }: CheckBoxFieldFormPropsInterface): ReactElement => {
 
     const onFormSubmit = (values: Map<string, FormValue>): void => {
@@ -62,9 +62,9 @@ const CheckboxFieldForm: FunctionComponent<CheckBoxFieldFormPropsInterface> = ({
                                                 label=""
                                                 name={ schema.name }
                                                 data-testid= {
-                                                    `${testId}-${schema.name.replace(".", "-")}-checkbox-field` }
+                                                    `${componentId}-${schema.name.replace(".", "-")}-checkbox-field` }
                                                 data-componentid= {
-                                                    `${testId}-${schema.name.replace(".", "-")}-checkbox-field` }
+                                                    `${componentId}-${schema.name.replace(".", "-")}-checkbox-field` }
                                                 type="checkbox"
                                                 value={ String(initialValue) === "true" ? [ schema.name ] : [] }
                                                 children={ [
@@ -101,9 +101,9 @@ const CheckboxFieldForm: FunctionComponent<CheckBoxFieldFormPropsInterface> = ({
                                             label=""
                                             name={ schema.name }
                                             data-testid= {
-                                                `${testId}-${schema.name.replace(".", "-")}-checkbox-field` }
+                                                `${componentId}-${schema.name.replace(".", "-")}-checkbox-field` }
                                             data-componentid= {
-                                                `${testId}-${schema.name.replace(".", "-")}-checkbox-field` }
+                                                `${componentId}-${schema.name.replace(".", "-")}-checkbox-field` }
                                             type="checkbox"
                                             value={ String(initialValue) === "true" ? [ schema.name ] : [] }
                                             children={ [
