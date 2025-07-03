@@ -219,27 +219,24 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 }
                 onUserDelete();
             }).catch((error: AxiosError) => {
-                if (error.response && error.response.data && error.response.data.description) {
+                if (error.response && error.response.data) {
+                    let errorDescription: string = t("users:notifications.deleteUser.genericError.description");
+
+                    if (error.response.data.description) {
+                        errorDescription = error.response.data.description;
+                    } else if (error.response.data.detail) {
+                        errorDescription = error.response.data.detail;
+                    }
                     dispatch(
                         addAlert({
-                            description: error.response.data.description,
+                            description: errorDescription,
                             level: AlertLevels.ERROR,
-                            message: t("users:" +
-                        "notifications.deleteUser.error.message")
+                            message: t("users:notifications.deleteUser.error.message")
                         })
                     );
 
                     return;
                 }
-                dispatch(
-                    addAlert({
-                        description: t("users:" +
-                            "notifications.deleteUser.genericError.description"),
-                        level: AlertLevels.ERROR,
-                        message: t("users:" +
-                            "notifications.deleteUser.genericError.message")
-                    })
-                );
             });
     };
 
