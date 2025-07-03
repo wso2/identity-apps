@@ -158,41 +158,6 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
     };
 
     /**
-     * Assignees table sub component.
-     *
-     * @param assignees - List of assignees.
-     * @returns - A table containing the list of assignees.
-     */
-    const assigneesTable = (assignees: { key: string, value: string }[]): JSX.Element => (
-        <Table celled compact className="edit-segment-table">
-            <Table.Header>
-                <Table.Row>
-                    <Table.HeaderCell>
-                        { t("common:type") }
-                    </Table.HeaderCell>
-                    <Table.HeaderCell>
-                        { t("common:assignee") }
-                    </Table.HeaderCell>
-                </Table.Row>
-            </Table.Header>
-            <Table.Body>
-                {
-                    assignees.map((assignee: { key: string, value: string }, i: number) => (
-                        <Table.Row key={ i }>
-                            <Table.Cell className="key-cell">
-                                { assignee.key }
-                            </Table.Cell>
-                            <Table.Cell className="values-cell">
-                                { assignee.value }
-                            </Table.Cell>
-                        </Table.Row>
-                    ))
-                }
-            </Table.Body>
-        </Table>
-    );
-
-    /**
      * Properties table sub component.
      *
      * @param properties - List of properties.
