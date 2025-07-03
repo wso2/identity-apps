@@ -555,10 +555,10 @@ importers:
         specifier: ^2.39.6
         version: link:../../features/admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
-        specifier: ^1.7.2
+        specifier: ^1.7.3
         version: link:../../features/admin.feature-gate.v1
       '@wso2is/admin.flows.v1':
-        specifier: ^1.0.3
+        specifier: ^1.0.4
         version: link:../../features/admin.flows.v1
       '@wso2is/admin.groups.v1':
         specifier: ^2.27.119
