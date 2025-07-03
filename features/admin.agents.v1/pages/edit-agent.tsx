@@ -25,14 +25,14 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     AnimatedAvatar, AppAvatar, ResourceTab, ResourceTabPaneInterface, TabPageLayout
 } from "@wso2is/react-components";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 import AgentCredentials from "../components/edit/agent-credentials";
 import AgentGroups from "../components/edit/agent-groups";
 import AgentOverview from "../components/edit/agent-overview";
 import AgentRoles from "../components/edit/agent-roles";
-import useGetAgent from "../hooks/use-get-agent";
 import { AGENT_FEATURE_DICTIONARY } from "../constants/agents";
+import useGetAgent from "../hooks/use-get-agent";
 
 interface EditAgentPageProps extends IdentifiableComponentInterface {}
 
@@ -40,23 +40,16 @@ export default function EditAgent({
     [ "data-componentid" ]: componentId
 }: EditAgentPageProps) {
 
-    const [ agentId, setAgentId ] = useState<string>();
-
-    const agentFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.agents);
-
-    console.log(agentFeatureConfig)
-
-    /**
-     * Fetch the agent details on initial component load.
-     */
-    useEffect(() => {
+    const agentId: string = useMemo(() => {
         const path: string[] = history?.location?.pathname?.split("/");
         // Get the agent ID from the URL. Remove the hash if it's present.
         const id: string = path[ path?.length - 1 ]?.split("#")[ 0 ];
 
-        setAgentId(id);
-    }, []);
+        return id;
+    }, [ history ]);
+
+    const agentFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.agents);
 
     const {
         data: agentInfo,
@@ -71,15 +64,7 @@ export default function EditAgent({
             {
                 componentId: "general",
                 menuItem: "General",
-                render: () => (
-                    <ResourceTab.Pane
-                        data-componentid="agent-overview"
-                        attached={ false }
-                        className="overview-tab-pane"
-                    >
-                        <AgentOverview agentId={ agentId } />
-                    </ResourceTab.Pane>
-                )
+                render: () => <AgentOverview agentId={ agentId } />
             },
             {
                 componentId: "credentials",
