@@ -1,5 +1,14 @@
 # @wso2is/admin.workflow-approvals.v1
 
+## 2.26.3
+
+### Patch Changes
+
+- [#8449](https://github.com/wso2/identity-apps/pull/8449) [`0f1a7e81b6513ee75a945dc7573d91d5f44faf9d`](https://github.com/wso2/identity-apps/commit/0f1a7e81b6513ee75a945dc7573d91d5f44faf9d) Thanks [@Malith-19](https://github.com/Malith-19)! - Remove the assigned property from the approval task since assignee always the current user.
+
+- Updated dependencies [[`635b9c61911819182fb7685f32bc7942fd6b9af5`](https://github.com/wso2/identity-apps/commit/635b9c61911819182fb7685f32bc7942fd6b9af5)]:
+  - @wso2is/i18n@2.24.9
+
 ## 2.26.2
 
 ### Patch Changes
