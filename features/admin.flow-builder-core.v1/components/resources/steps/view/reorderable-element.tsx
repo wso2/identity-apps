@@ -27,6 +27,8 @@ import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 import useComponentDelete from "../../../../hooks/use-component-delete";
 import { Element } from "../../../../models/elements";
+import { EventTypes } from "../../../../models/extension";
+import { executePlugins } from "../../../../plugins/plugin-registry";
 import Handle from "../../../dnd/handle";
 import Sortable, { SortableProps } from "../../../dnd/sortable";
 
@@ -112,6 +114,20 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
         setLastInteractedResource(element);
     };
 
+    /**
+     * Handles the deletion of the element.
+     */
+    const handleElementDelete = async (): Promise<void> => {
+
+        /**
+         * Execute plugins for ON_NODE_ELEMENT_DELETE event.
+         */
+        await executePlugins(EventTypes.ON_NODE_ELEMENT_DELETE, stepId, element);
+
+        deleteComponent(stepId, element);
+        setIsOpenResourcePropertiesPanel(false);
+    };
+
     return (
         <Sortable
             id={ id }
@@ -140,10 +156,7 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
                     </Handle>
                     <Handle
                         label="Delete"
-                        onClick={ () => {
-                            deleteComponent(stepId, element);
-                            setIsOpenResourcePropertiesPanel(false);
-                        } }
+                        onClick={ handleElementDelete }
                     >
                         <TrashIcon />
                     </Handle>
