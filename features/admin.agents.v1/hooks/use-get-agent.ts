@@ -35,7 +35,7 @@ Error = RequestErrorInterface> (id: string): RequestResultInterface<Data, Error>
         url: store.getState().config.endpoints.users + "/" + id
     };
 
-    const { data, isLoading, isValidating, error, mutate } = useRequest<Data, Error>(requestConfig);
+    const { data, isLoading, isValidating, error, mutate } = useRequest<Data, Error>(id ? requestConfig : null);
 
     return {
         data: data as Data,
