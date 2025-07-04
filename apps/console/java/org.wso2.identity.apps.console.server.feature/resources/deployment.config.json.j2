@@ -2266,8 +2266,8 @@
         {% else %}
             "enableCustomEmailTemplates": true,
         {% endif %}
-        {% if console.ui.enable_scim2_roles_v3_api is defined %}
-            "enableScim2RolesV3Api": {{ console.ui.enable_scim2_roles_v3_api }},
+        {% if scim2.enable_scim2_roles_v3_api is defined %}
+            "enableScim2RolesV3Api": {{ scim2.enable_scim2_roles_v3_api }},
         {% else %}
             "enableScim2RolesV3Api": false,
         {% endif %}
