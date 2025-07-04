@@ -573,7 +573,7 @@ importers:
         specifier: ^1.6.204
         version: link:../../features/admin.impersonation.v1
       '@wso2is/admin.logs.v1':
-        specifier: ^1.6.4
+        specifier: ^1.6.5
         version: link:../../features/admin.logs.v1
       '@wso2is/admin.oidc-scopes.v1':
         specifier: ^2.25.204
