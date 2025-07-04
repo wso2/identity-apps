@@ -490,7 +490,15 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                                             iconPosition="left"
                                             onChange={ searchSubscribedAPIResources }
                                             placeholder={ t("extensions:develop.applications.edit.sections." +
-                                                "apiAuthorization.sections.apiSubscriptions.search") }
+                                                "apiAuthorization.sections.apiSubscriptions.search", {
+                                                resourceText:  originalTemplateId ===
+                                                    ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION
+                                                    ? t("extensions:develop.applications.edit.sections.apiAuthorization"
+                                                        + ".resourceText.genericResource")
+                                                    : t("extensions:develop.applications.edit.sections.apiAuthorization"
+                                                        + ".resourceText.apiResource")
+
+                                            }) }
                                             floated="right"
                                             size="small"
                                             value={ searchQuery }
