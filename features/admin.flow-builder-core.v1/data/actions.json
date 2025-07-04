@@ -62,7 +62,7 @@
                 },
                 "display": {
                     "label": "Verify SMS OTP Code",
-                    "image": "https://www.svgrepo.com/show/325009/chat-bubble.svg",
+                    "image": "https://www.svgrepo.com/show/325390/message-text.svg",
                     "defaultVariant": "PRIMARY"
                 }
             }
