@@ -71,7 +71,7 @@ import { Dispatch } from "redux";
 import { CheckboxProps, Divider } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
 import { UserImpersonationAction } from "./user-impersonation-action";
-import UserProfileForm from "./user-profile/user-profile-form";
+import LegacyUserProfileForm from "./user-profile/legacy-user-profile-form";
 import { resendCode, updateUserInfo } from "../api";
 import {
     ACCOUNT_LOCK_REASON_MAP,
@@ -2026,7 +2026,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         && editUserDisclaimerMessage
                     }
 
-                    <UserProfileForm
+                    <LegacyUserProfileForm
                         profileData={ user }
                         flattenedProfileData={ profileInfo }
                         profileSchema={ profileSchema }
