@@ -23,6 +23,7 @@ import Button from "@oxygen-ui/react/Button";
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import Grid from "@oxygen-ui/react/Grid";
 import Typography from "@oxygen-ui/react/Typography";
+import useGetApplicationShare from "@wso2is/admin.applications.v1/api/use-get-application-share";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     OrganizationInterface,
@@ -43,7 +44,6 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import useGetApplicationShare from "../../api/use-get-application-share";
 import { ConsoleRolesOnboardingConstants } from "../../constants/console-roles-onboarding-constants";
 import useConsoleRoles from "../../hooks/use-console-roles";
 import useConsoleSettings from "../../hooks/use-console-settings";
@@ -94,7 +94,7 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
         false,
         `parentId eq '${ organizationId }'`,
         null,
-        100
+        10
     );
 
     const {
@@ -111,9 +111,20 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
     );
 
     const {
+        data: originalOrganizationTree1,
+    } = useGetApplicationShare(
+        consoleId,
+        !isEmpty(consoleId) &&
+        !isEmpty(selectedOrgId) &&
+        !resolvedOrgs.includes(selectedOrgId),
+        false,
+        `id eq '${ selectedOrgId }'`
+    );
+
+    const {
         consoleRoles,
         consoleRolesFetchRequestError
-    } = useConsoleRoles(true, null, null, null);
+    } = useConsoleRoles(true, 100, null, null);
 
     // This will populate the top-level organization tree.
     useEffect(() => {

@@ -994,3 +994,11 @@ export interface ShareOrganizationsAndRolesPatchDataInterface {
     applicationId: string;
     Operations: ShareOrganizationsAndRolesPatchOperationInterface[];
 }
+
+/**
+ * Interface for unsharing the application from organizations.
+ */
+export interface UnshareOrganizationsDataInterface {
+    applicationId: string;
+    orgIds: string[];
+}

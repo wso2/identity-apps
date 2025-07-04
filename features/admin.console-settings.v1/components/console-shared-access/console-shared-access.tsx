@@ -51,7 +51,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import ConsoleRolesSelectiveShare from "./console-roles-selective-share";
 import ConsoleRolesShareWithAll from "./console-roles-share-with-all";
-import useGetApplicationShare from "../../api/use-get-application-share";
+import useGetApplicationShare from "@wso2is/admin.applications.v1/api/use-get-application-share";
 import useConsoleRoles from "../../hooks/use-console-roles";
 import useConsoleSettings from "../../hooks/use-console-settings";
 import { ApplicationSharingPolicy, RoleSharedAccessModes, RoleSharingModes } from "../../models/shared-access";
@@ -279,6 +279,9 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                     level: AlertLevels.SUCCESS,
                     message: t("consoleSettings:sharedAccess.notifications.shareRoles.success.message")
                 }));
+
+                setAddedRoles({});
+                setRemovedRoles({});
             })
             .catch((error: Error) => {
                 dispatch(addAlert({

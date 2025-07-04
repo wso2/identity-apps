@@ -25,7 +25,8 @@ import { ApplicationManagementConstants } from "../constants/application-managem
 import {
     ShareApplicationWithAllOrganizationsDataInterface,
     ShareApplicationWithSelectedOrganizationsAndRolesDataInterface,
-    ShareOrganizationsAndRolesPatchDataInterface
+    ShareOrganizationsAndRolesPatchDataInterface,
+    UnshareOrganizationsDataInterface
 } from "../models/application";
 
 /**
@@ -139,6 +140,49 @@ export const editApplicationRolesOfExistingOrganizations = <T>(
         },
         method: HttpMethods.PATCH,
         url: `${ store.getState().config.endpoints.applications }/share`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200 && response.status !== 202) {
+                throw new IdentityAppsApiException(
+                    ApplicationManagementConstants.APPLICATION_STATUS_UPDATE_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data as T);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ApplicationManagementConstants.APPLICATION_STATUS_UPDATE_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Unshare an application from given organizations.
+ *
+ * @param id - ID of the application.
+ * @returns A promise containing the response.
+ * @throws IdentityAppsApiException
+ */
+export const unshareApplicationWithSelectedOrganizations = <T>(
+    data: UnshareOrganizationsDataInterface): Promise<T> => {
+    const requestConfig: AxiosRequestConfig = {
+        data,
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: `${ store.getState().config.endpoints.applications }/unshare`
     };
 
     return httpClient(requestConfig)
