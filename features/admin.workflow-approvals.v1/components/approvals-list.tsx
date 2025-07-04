@@ -63,7 +63,7 @@ interface ApprovalsListPropsInterface extends SBACInterface<FeatureConfigInterfa
      * @param status - Approval status to resolve the tag color for.
      */
     resolveApprovalTagColor?: (
-        status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED
+        status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.BLOCKED
     ) => SemanticCOLORS;
     /**
      * Handles updating the status of the task.
@@ -290,7 +290,8 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
             {
                 "data-testid": `${ testId }-item-claim-button`,
                 hidden: (approval: ApprovalTaskListItemInterface): boolean =>
-                    approval?.status === ApprovalStatus.COMPLETED || approval?.status === ApprovalStatus.RESERVED,
+                    approval?.status === ApprovalStatus.COMPLETED || approval?.status === ApprovalStatus.RESERVED ||
+                        approval?.status === ApprovalStatus.BLOCKED,
                 icon: (): SemanticICONS => "hand pointer outline",
                 onClick: (e: SyntheticEvent, approval: ApprovalTaskListItemInterface): void =>
                     updateApprovalStatus(approval?.id, ApprovalStatus.CLAIM),
@@ -300,7 +301,8 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
             {
                 "data-testid": `${ testId }-item-release-button`,
                 hidden: (approval: ApprovalTaskListItemInterface): boolean =>
-                    approval?.status === ApprovalStatus.COMPLETED|| approval?.status === ApprovalStatus.READY,
+                    approval?.status === ApprovalStatus.COMPLETED|| approval?.status === ApprovalStatus.READY ||
+                        approval?.status === ApprovalStatus.BLOCKED,
                 icon: (): SemanticICONS => "paper plane",
                 onClick: (e: SyntheticEvent, approval: ApprovalTaskListItemInterface): void =>
                     updateApprovalStatus(approval?.id, ApprovalStatus.RELEASE),

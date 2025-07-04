@@ -65,7 +65,7 @@ interface ApprovalTaskComponentPropsInterface extends TestableComponentInterface
      * @param status - Status of the approval.
      */
     resolveApprovalTagColor?: (
-        status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED
+        status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.BLOCKED
     ) => SemanticCOLORS;
     /**
      * Specifies if the form is submitting
@@ -211,33 +211,41 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                             { t("common:claim") }
                         </Button>
                     )
-                    : (
+                    : editingApproval?.taskStatus === ApprovalStatus.RESERVED
+                        ? (
+                            <Button
+                                default
+                                className="mb-1x"
+                                fluid={ isMobileViewport }
+                                onClick={ () => {
+                                    updateApprovalStatus(editingApproval.id, ApprovalStatus.RELEASE);
+                                    onCloseApprovalTaskModal();
+                                } }
+                            >
+                                { t("common:release") }
+                            </Button>
+                        )
+                        : null
+            }
+            {
+                editingApproval?.taskStatus != ApprovalStatus.BLOCKED
+                    ? (
                         <Button
-                            default
+                            primary
                             className="mb-1x"
                             fluid={ isMobileViewport }
                             onClick={ () => {
-                                updateApprovalStatus(editingApproval.id, ApprovalStatus.RELEASE);
+                                updateApprovalStatus(editingApproval.id, ApprovalStatus.APPROVE);
                                 onCloseApprovalTaskModal();
                             } }
+                            loading={ isSubmitting }
+                            disabled={ isSubmitting }
                         >
-                            { t("common:release") }
+                            { t("common:approve") }
                         </Button>
                     )
+                    : null
             }
-            <Button
-                primary
-                className="mb-1x"
-                fluid={ isMobileViewport }
-                onClick={ () => {
-                    updateApprovalStatus(editingApproval.id, ApprovalStatus.APPROVE);
-                    onCloseApprovalTaskModal();
-                } }
-                loading={ isSubmitting }
-                disabled={ isSubmitting }
-            >
-                { t("common:approve") }
-            </Button>
             <Button
                 negative
                 className="mb-1x"
