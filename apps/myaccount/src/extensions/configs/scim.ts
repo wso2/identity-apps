@@ -44,12 +44,28 @@ export const SCIMConfigs: SCIMConfigInterface = {
         profileUrl: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.profileUrl"
     },
 
+    /**
+     * The non-empty schemas defined here will be specially treated in system profile logic.
+     * Refer: https://github.com/wso2/identity-apps/pull/8452
+     * Ex: country - show country dropdown in the UI.
+     *    emailAddresses - show email addresses in the UI with primary, verified status.
+     */
     scimSystemSchema: {
         country: "urn:scim:wso2:schema:country",
         emailAddresses: "urn:scim:wso2:schema:emailAddresses",
         mobileNumbers: "urn:scim:wso2:schema:mobileNumbers"
     },
 
+    /**
+     * The non-empty schemas defined here will be specially treated in user profile logic.
+     * Refer: https://github.com/wso2/identity-apps/pull/8452
+     * Ex: phoneNumbers.mobile
+     *    should be submitted as `phoneNumbers: [ { type: "mobile", value: "1234567890" } ]`
+     *    instead of `phoneNumbers: { mobile: "1234567890" }`
+     * Ex: addresses.home
+     *    should be submitted as `addresses: [ { type: "home", formatted: "123 Main St" } ]`
+     *    instead of `addresses: { home: "123 Main St" }`
+     */
     scimUserSchema: {
         addressesHome: "urn:ietf:params:scim:schemas:core:2.0:User:addresses.home",
         addressesWork: "urn:ietf:params:scim:schemas:core:2.0:User:addresses.work",
