@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/console",
-    "version": "2.65.19",
+    "version": "2.65.20",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -73,7 +73,7 @@
         "@wso2is/admin.home.v1": "^1.7.8",
         "@wso2is/admin.identity-verification-providers.v1": "^2.27.204",
         "@wso2is/admin.impersonation.v1": "^1.6.204",
-        "@wso2is/admin.logs.v1": "^1.6.4",
+        "@wso2is/admin.logs.v1": "^1.6.5",
         "@wso2is/admin.oidc-scopes.v1": "^2.25.204",
         "@wso2is/admin.org-insights.v1": "^2.25.204",
         "@wso2is/admin.organization-discovery.v1": "^2.25.205",
