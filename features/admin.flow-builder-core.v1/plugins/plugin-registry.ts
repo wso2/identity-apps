@@ -44,7 +44,7 @@ class PluginRegistry {
      * @param eventName - The name of the event to register the plugin for.
      * @param handler - The handler function to be called when the event is triggered.
      */
-    registerPlugin(eventName: string, handler: (...args: any[]) => Promise<boolean>): void {
+    public registerPlugin(eventName: string, handler: (...args: any[]) => Promise<boolean>): void {
         if (!this.plugins.has(eventName)) {
             this.plugins.set(eventName, new Map());
         }
@@ -58,7 +58,7 @@ class PluginRegistry {
      * @param eventName - The name of the event to unregister the plugin from.
      * @param handlerName - The name of the handler function to be removed.
      */
-    unregisterPlugin(eventName: string, handlerName: string): void {
+    public unregisterPlugin(eventName: string, handlerName: string): void {
         if (this.plugins.has(eventName)) {
             const handlers = this.plugins.get(eventName);
             if (handlers && handlers.has(handlerName)) {
@@ -77,7 +77,7 @@ class PluginRegistry {
      * @param args - The arguments to pass to the plugin handlers.
      * @returns True if all plugins returned true, false otherwise.
      */
-    executePluginsWithDebounce (eventName: string, ...args: any[]): Promise<boolean> {
+    public executePluginsWithDebounce (eventName: string, ...args: any[]): Promise<boolean> {
         return debounce(() => {
             return this.execute(eventName, ...args);
         }, 500)(); // Debounce execution to avoid rapid calls.
@@ -90,7 +90,7 @@ class PluginRegistry {
      * @param args - The arguments to pass to the plugin handlers.
      * @returns True if all plugins returned true, false otherwise.
      */
-    executePlugins = (eventName: string, ...args: any[]): Promise<boolean> => {
+    public executePlugins = (eventName: string, ...args: any[]): Promise<boolean> => {
         return this.execute(eventName, ...args);
     }
 
@@ -101,7 +101,7 @@ class PluginRegistry {
      * @param args - The arguments to pass to the plugin handlers.
      * @returns True if all plugins returned true, false otherwise.
      */
-    async execute(eventName: string, ...args: any[]): Promise<boolean> {
+    public async execute(eventName: string, ...args: any[]): Promise<boolean> {
         const handlers = this.plugins.get(eventName)?.values();
         if (!handlers) {
             return true; // No plugins registered, consider it a success.
