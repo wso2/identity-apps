@@ -66,7 +66,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Dropdown, DropdownProps, Header, Icon, PaginationProps, SemanticICONS } from "semantic-ui-react";
 import { AddRoleUserModal } from "./add-role-user-modal";
-import { updateUsersForRole, updateRoleDetails } from "../../api";
+import { updateRoleDetails, updateUsersForRole } from "../../api";
 import { CreateRoleMemberInterface, PatchRoleDataInterface, RoleEditSectionsInterface } from "../../models/roles";
 import "./edit-role.scss";
 
