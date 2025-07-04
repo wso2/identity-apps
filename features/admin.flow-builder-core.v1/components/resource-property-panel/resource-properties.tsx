@@ -29,9 +29,11 @@ import ResourcePropertyPanelConstants from "../../constants/resource-property-pa
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import { Properties } from "../../models/base";
 import { Element } from "../../models/elements";
+import { EventTypes } from "../../models/extension";
 import { Resource } from "../../models/resources";
 import { StepData } from "../../models/steps";
 import "./resource-properties.scss";
+import PluginRegistry from "../../plugins/plugin-registry";
 
 /**
  * Props interface of {@link ResourceProperties}
@@ -136,16 +138,31 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
         });
     };
 
-    const filteredProperties: Properties = Object.keys(lastInteractedResource?.config || {}).reduce(
-        (acc: Properties, key: string) => {
-            if (!ResourcePropertyPanelConstants.EXCLUDED_PROPERTIES.includes(key)) {
-                acc[key] = lastInteractedResource?.config[key];
-            }
+    /**
+     * Get the filtered properties of the last interacted resource.
+     *
+     * @returns A promise that resolves to the filtered properties.
+     */
+    const getFilteredProperties = async (): Promise<Properties> => {
+        const filteredProperties: Properties = Object.keys(lastInteractedResource?.config || {}).reduce(
+            (acc: Properties, key: string) => {
+                if (!ResourcePropertyPanelConstants.EXCLUDED_PROPERTIES.includes(key)) {
+                    acc[key] = lastInteractedResource?.config[key];
+                }
 
-            return acc;
-        },
-        {} as Properties
-    );
+                return acc;
+            },
+            {} as Properties
+        );
+
+        /**
+         * Execute plugins for ON_PROPERTY_PANEL_OPEN event.
+         */
+        PluginRegistry.getInstance().execute(EventTypes.ON_PROPERTY_PANEL_OPEN,
+            lastInteractedResource, filteredProperties);
+
+        return filteredProperties;
+    };
 
     return (
         <div className="flow-builder-element-properties" data-componentid={ componentId }>
@@ -154,7 +171,7 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
                     { lastInteractedResource && (
                         <ResourceProperties
                             resource={ cloneDeep(lastInteractedResource) }
-                            properties={ cloneDeep(filteredProperties) }
+                            properties={ cloneDeep(getFilteredProperties()) }
                             onChange={ handlePropertyChange }
                             onVariantChange={ changeSelectedVariant }
                         />

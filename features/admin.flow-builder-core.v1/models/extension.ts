@@ -35,5 +35,9 @@ export enum EventTypes {
     /**
      * Event triggered when a the flow is updated.
      */
-    ON_FLOW_UPDATE = "onFlowUpdate"
+    ON_FLOW_UPDATE = "onFlowUpdate",
+    /**
+     * Event triggered when the property panel is opened.
+     */
+    ON_PROPERTY_PANEL_OPEN = "onPropertyPanelOpen"
 }
