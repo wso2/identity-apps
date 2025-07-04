@@ -90,9 +90,11 @@ export const getApplicationRolesByAudience = (
  * Get the application roles by audience using SCIM2 Role API V3.
  *
  * @param audience - audience.
+ * @param appId - Application ID.
  * @param before - Before link.
  * @param after - After link.
  * @param limit - Limit.
+ * @param excludedAttributes - Attributes to exclude from the response.
  *
  * @returns A promise containing the response.
  */
@@ -280,6 +282,7 @@ export const useGetRoleById = <Data = RolesInterface, Error = RequestErrorInterf
     const {
         data,
         error,
+        isLoading,
         isValidating,
         mutate,
         response
@@ -288,7 +291,7 @@ export const useGetRoleById = <Data = RolesInterface, Error = RequestErrorInterf
     return {
         data,
         error,
-        isLoading: !error && !data,
+        isLoading,
         isValidating,
         mutate,
         response
@@ -315,6 +318,7 @@ export const useGetRoleByIdV3 = <Data = RolesInterface, Error = RequestErrorInte
     const {
         data,
         error,
+        isLoading,
         isValidating,
         mutate,
         response
@@ -323,7 +327,7 @@ export const useGetRoleByIdV3 = <Data = RolesInterface, Error = RequestErrorInte
     return {
         data,
         error,
-        isLoading: !error && !data,
+        isLoading,
         isValidating,
         mutate,
         response
