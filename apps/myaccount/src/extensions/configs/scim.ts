@@ -42,5 +42,26 @@ export const SCIMConfigs: SCIMConfigInterface = {
         isReadOnlyUser: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.isReadOnlyUser",
         oneTimePassword: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.oneTimePassword",
         profileUrl: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.profileUrl"
+    },
+
+    scimSystemSchema: {
+        country: "urn:scim:wso2:schema:country",
+        emailAddresses: "urn:scim:wso2:schema:emailAddresses",
+        mobileNumbers: "urn:scim:wso2:schema:mobileNumbers"
+    },
+
+    scimUserSchema: {
+        addressesHome: "urn:ietf:params:scim:schemas:core:2.0:User:addresses.home",
+        addressesWork: "urn:ietf:params:scim:schemas:core:2.0:User:addresses.work",
+        emails: "urn:ietf:params:scim:schemas:core:2.0:User:emails",
+        emailsHome: "urn:ietf:params:scim:schemas:core:2.0:User:emails.home",
+        emailsOther: "urn:ietf:params:scim:schemas:core:2.0:User:emails.other",
+        emailsWork: "urn:ietf:params:scim:schemas:core:2.0:User:emails.work",
+        phoneNumbersFax: "urn:ietf:params:scim:schemas:core:2.0:User:phoneNumbers.fax",
+        phoneNumbersHome: "urn:ietf:params:scim:schemas:core:2.0:User:phoneNumbers.home",
+        phoneNumbersMobile: "urn:ietf:params:scim:schemas:core:2.0:User:phoneNumbers.mobile",
+        phoneNumbersOther: "urn:ietf:params:scim:schemas:core:2.0:User:phoneNumbers.other",
+        phoneNumbersPager: "urn:ietf:params:scim:schemas:core:2.0:User:phoneNumbers.pager",
+        phoneNumbersWork: "urn:ietf:params:scim:schemas:core:2.0:User:phoneNumbers.work"
     }
 };
