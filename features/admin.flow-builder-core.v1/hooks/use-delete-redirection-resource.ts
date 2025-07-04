@@ -32,7 +32,7 @@ import { registerPlugin, unregisterPlugin } from "../plugins/plugin-registry";
  * This hook registers an event listener for node deletion events and ensures that
  * any associated redirection action nodes are also deleted when a redirection node is removed.
  */
-const useDeleteRedirectionResource = () => {
+const useDeleteRedirectionResource = (): void => {
 
     const { setIsOpenResourcePropertiesPanel } = useAuthenticationFlowBuilderCore();
     const { getEdges, getNodes, updateNodeData, setNodes } = useReactFlow();
