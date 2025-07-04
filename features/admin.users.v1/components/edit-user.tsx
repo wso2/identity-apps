@@ -38,8 +38,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, TabProps } from "semantic-ui-react";
+import { LegacyUserProfile } from "./legacy-user-profile";
 import { UserGroupsList } from "./user-groups-edit";
-import { UserProfile } from "./user-profile";
 import { UserProfileUpdated } from "./user-profile-updated";
 import { UserRolesList } from "./user-roles-list";
 import { UserSessions } from "./user-sessions";
@@ -210,7 +210,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 menuItem: t("users:editUser.tab.menuItems.0"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
-                        <UserProfile
+                        <LegacyUserProfile
                             adminUsername={ adminUsername }
                             onAlertFired={ handleAlerts }
                             user={ user }

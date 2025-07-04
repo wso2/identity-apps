@@ -105,7 +105,6 @@ import {
     SchemaAttributeValueInterface,
     SubValueInterface
 } from "../models/user";
-import "./user-profile.scss";
 import {
     constructPatchOpValueForMultiValuedAttribute,
     constructPatchOperationForMultiValuedVerifiedAttribute,
@@ -113,6 +112,7 @@ import {
     isMultipleEmailsAndMobileNumbersEnabled,
     isSchemaReadOnly
 } from "../utils/user-management-utils";
+import "./legacy-user-profile.scss";
 
 const EMAIL_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
 const MOBILE_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE");
@@ -128,7 +128,7 @@ const PRIMARY_MOBILE_VERIFIED_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_
 /**
  * Prop types for the basic details component.
  */
-interface UserProfilePropsInterface extends TestableComponentInterface {
+interface LegacyUserProfilePropsInterface extends TestableComponentInterface {
     /**
      * System admin username
      */
@@ -189,8 +189,8 @@ interface UserProfilePropsInterface extends TestableComponentInterface {
  * @param props - Props injected to the basic details component.
  * @returns The react component for the user profile.
  */
-export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
-    props: UserProfilePropsInterface
+export const LegacyUserProfile: FunctionComponent<LegacyUserProfilePropsInterface> = (
+    props: LegacyUserProfilePropsInterface
 ): ReactElement => {
 
     const {

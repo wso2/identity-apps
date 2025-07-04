@@ -113,7 +113,6 @@ import {
     SchemaAttributeValueInterface,
     SubValueInterface
 } from "../models/user";
-import "./user-profile.scss";
 import {
     constructPatchOpValueForMultiValuedAttribute,
     constructPatchOperationForMultiValuedVerifiedAttribute,
@@ -123,6 +122,7 @@ import {
     isSchemaReadOnly,
     normalizeLocaleFormat
 } from "../utils/user-management-utils";
+import "./legacy-user-profile.scss";
 
 /**
  * Prop types for the basic details component.
