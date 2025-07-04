@@ -170,6 +170,8 @@ export const common: CommonNS = {
     search: "Pesquisar",
     searching: "Pesquisando",
     security: "Segurança",
+    selectAll: "Selecione tudo",
+    selectNone: "Selecione nenhum",
     services: "Serviços",
     settings: "Configurações",
     setup: "Configurar",
