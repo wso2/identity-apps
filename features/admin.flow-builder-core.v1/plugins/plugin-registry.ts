@@ -30,6 +30,7 @@ export const registerPlugin = (eventName: string, handler: (...args: any[]) => P
     if (!plugins.has(eventName)) {
         plugins.set(eventName, new Map());
     }
+
     plugins.get(eventName)!.set(handler.name, handler);
 };
 
