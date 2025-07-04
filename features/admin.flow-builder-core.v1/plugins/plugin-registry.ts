@@ -27,7 +27,7 @@ class PluginRegistry {
     private plugins: Map<string, Map<string, (...args: any[]) => Promise<boolean>>> = new Map();
 
     private constructor() {
-        // Private constructor to prevent instantiation
+        // Private constructor to prevent instantiation.
     }
 
     public static getInstance(): PluginRegistry {
