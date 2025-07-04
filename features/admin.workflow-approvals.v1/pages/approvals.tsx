@@ -220,7 +220,8 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
      * @returns A semantic color instance.
      */
     const resolveApprovalTagColor = (
-        status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.ALL
+        status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.BLOCKED |
+        ApprovalStatus.ALL
     ): SemanticCOLORS => {
         switch (status) {
             case ApprovalStatus.READY:
@@ -231,6 +232,8 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                 return "green";
             case ApprovalStatus.ALL:
                 return "blue";
+            case ApprovalStatus.BLOCKED:
+                return "red";
             default:
                 return "grey";
         }
@@ -327,7 +330,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
                 showPagination={ true }
-                showTopActionPanel={ isApprovalListRequestLoading || !(approvals?.length == 0) }
+                showTopActionPanel={ true }
                 totalPages={ Math.ceil(approvals.length / listItemLimit) }
                 totalListSize={ approvals.length }
                 isLoading={ isApprovalListRequestLoading }

@@ -97,7 +97,7 @@ export interface ApprovalTaskDetails {
     /**
      * Status of the Approval task
      */
-    taskStatus?: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED;
+    taskStatus?: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.BLOCKED;
     /**
      * The time that the operation for approval initiated
      */
@@ -137,6 +137,7 @@ export enum ApprovalStatus {
     RELEASE = "RELEASE",
     APPROVE = "APPROVE",
     REJECT = "REJECT",
+    BLOCKED = "BLOCKED",
     ALL = "ALL"
 }
 
@@ -164,7 +165,7 @@ export interface ApprovalTaskListItemInterface {
     /**
      * Status of the Approval Task
      */
-    status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED;
+    status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.BLOCKED;
     /**
      * Priority of the Approval task
      */
