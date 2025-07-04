@@ -28,7 +28,7 @@ import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authenticati
 import useComponentDelete from "../../../../hooks/use-component-delete";
 import { Element } from "../../../../models/elements";
 import { EventTypes } from "../../../../models/extension";
-import { executePlugins } from "../../../../plugins/plugin-registry";
+import PluginRegistry from "../../../../plugins/plugin-registry";
 import Handle from "../../../dnd/handle";
 import Sortable, { SortableProps } from "../../../dnd/sortable";
 
@@ -122,7 +122,7 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
         /**
          * Execute plugins for ON_NODE_ELEMENT_DELETE event.
          */
-        await executePlugins(EventTypes.ON_NODE_ELEMENT_DELETE, stepId, element);
+        await PluginRegistry.getInstance().executePlugins(EventTypes.ON_NODE_ELEMENT_DELETE, stepId, element);
 
         deleteComponent(stepId, element);
         setIsOpenResourcePropertiesPanel(false);
