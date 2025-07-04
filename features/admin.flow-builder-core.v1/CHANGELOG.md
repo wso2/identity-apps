@@ -1,5 +1,11 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.7.4
+
+### Patch Changes
+
+- [#8455](https://github.com/wso2/identity-apps/pull/8455) [`919027258d7cf1a151e7258e2236b842896984f5`](https://github.com/wso2/identity-apps/commit/919027258d7cf1a151e7258e2236b842896984f5) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - add SMS OTP executor to the action button’s resource panel
+
 ## 0.7.3
 
 ### Patch Changes
