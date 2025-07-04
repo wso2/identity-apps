@@ -271,11 +271,18 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                 });
         } else if (accountType === UserAccountTypes.CUSTOMER) {
             let pathValue: string;
+            let userId: string;
 
             if ("value" in user) {
-                pathValue = `users[value eq ${user?.value}]`;
+                userId = user?.value;
             } else if ("id" in user) {
-                pathValue = `users[value eq ${user?.id}]`;
+                userId = user?.id;
+            }
+
+            if (enableSCIM2RoleAPIV3) {
+                pathValue = `value eq ${userId}`;
+            } else {
+                pathValue = `users[value eq ${userId}]`;
             }
 
             // Payload for the update role request.

@@ -76,9 +76,10 @@ const useBulkAssignAdministratorRoles = (): UseBulkAssignAdministratorRolesInter
      */
 
     const entitlementConfig: FeatureAccessConfigInterface = useSelector(
-                (state: AppState) => state?.config?.ui?.features?.entitlement);
+        (state: AppState) => state?.config?.ui?.features?.entitlement);
     const hasRoleV3UpdateScopes: boolean = useRequiredScopes(entitlementConfig?.scopes?.update);
-    const updateUserRoleAssignment = hasRoleV3UpdateScopes ? updateUsersForRole : updateRoleDetails;
+    const updateUserRoleAssignment: (roleId: string, data: PayloadInterface | PatchRoleDataInterface) => Promise<void> =
+        hasRoleV3UpdateScopes ? updateUsersForRole : updateRoleDetails;
 
     const assignAdministratorRoles = async (
         user: UserBasicInterface,
@@ -86,7 +87,20 @@ const useBulkAssignAdministratorRoles = (): UseBulkAssignAdministratorRolesInter
         onAdministratorRoleAssignError: (error: AxiosError) => void,
         onAdministratorRoleAssignSuccess: () => void
     ) => {
-        const payload: PayloadInterface = {
+        const payload: PayloadInterface = hasRoleV3UpdateScopes ? {
+            Operations: [
+                {
+                    op: "add",
+                    value: [
+                        {
+                            display: user.userName,
+                            value: user.id
+                        }
+                    ]
+                }
+            ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        } : {
             Operations: [
                 {
                     op: "add",
@@ -131,7 +145,16 @@ const useBulkAssignAdministratorRoles = (): UseBulkAssignAdministratorRolesInter
         onAdministratorRoleUnassignError: (error: AxiosError) => void,
         onAdministratorRoleUnassignSuccess: () => void
     ) => {
-        const payload: PatchRoleDataInterface = {
+        const payload: PatchRoleDataInterface = hasRoleV3UpdateScopes ? {
+            Operations: [
+                {
+                    op: "remove",
+                    path: `value eq ${user.id}`,
+                    value: {}
+                }
+            ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        } : {
             Operations: [
                 {
                     op: "remove",
