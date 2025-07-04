@@ -303,7 +303,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     const onNodesDelete: OnNodesDelete<Node> = useCallback(
         async (deleted: Node[]) => {
             // Execute plugins for ON_NODE_DELETE event.
-            await PluginRegistry.getInstance().executePlugins(EventTypes.ON_NODE_DELETE, deleted);
+            await PluginRegistry.getInstance().execute(EventTypes.ON_NODE_DELETE, deleted);
 
             setEdges(
                 deleted?.reduce((acc: Edge[], node: Node) => {
@@ -336,7 +336,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     const onEdgesDelete: (deleted: Edge[]) => void = useCallback(
         async (deleted: Edge[]) => {
             // Execute plugins for ON_EDGE_DELETE event.
-            await PluginRegistry.getInstance().executePlugins(EventTypes.ON_EDGE_DELETE, deleted);
+            await PluginRegistry.getInstance().execute(EventTypes.ON_EDGE_DELETE, deleted);
         },
         []
     );

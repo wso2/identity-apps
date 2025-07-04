@@ -40,11 +40,12 @@ class PluginRegistry {
 
     /**
      * Registers a plugin with the given name and event.
+     * Note: First argument of the handler function should not be a number.
      *
      * @param eventName - The name of the event to register the plugin for.
      * @param handler - The handler function to be called when the event is triggered.
      */
-    public registerPlugin(eventName: string, handler: (...args: any[]) => Promise<boolean>): void {
+    public register(eventName: string, handler: (...args: any[]) => Promise<boolean>): void {
         if (!this.plugins.has(eventName)) {
             this.plugins.set(eventName, new Map());
         }
@@ -58,7 +59,7 @@ class PluginRegistry {
      * @param eventName - The name of the event to unregister the plugin from.
      * @param handlerName - The name of the handler function to be removed.
      */
-    public unregisterPlugin(eventName: string, handlerName: string): void {
+    public unregister(eventName: string, handlerName: string): void {
         if (this.plugins.has(eventName)) {
             const handlers = this.plugins.get(eventName);
             if (handlers && handlers.has(handlerName)) {
@@ -71,16 +72,35 @@ class PluginRegistry {
     };
 
     /**
-     * Executes all registered plugins for the given event with the provided arguments (Debounce).
+     * Executes all registered plugins for the given event with the provided arguments.
      *
      * @param eventName - The name of the event to execute plugins for.
      * @param args - The arguments to pass to the plugin handlers.
      * @returns True if all plugins returned true, false otherwise.
      */
-    public executePluginsWithDebounce (eventName: string, ...args: any[]): Promise<boolean> {
-        return debounce(() => {
-            return this.execute(eventName, ...args);
-        }, 500)(); // Debounce execution to avoid rapid calls.
+    public execute(eventName: string, ...args: any[]): Promise<boolean>;
+
+    /**
+     * Executes all registered plugins for the given event with the provided arguments and debounces the execution.
+     *
+     * @param eventName - The name of the event to execute plugins for.
+     * @param debounceTime - The time in milliseconds to debounce the execution of plugins.
+     * @param args - The arguments to pass to the plugin handlers.
+     * @returns True if all plugins returned true, false otherwise.
+     */
+    public execute(eventName: string, debounceTime: number, ...args: any[]): Promise<boolean>;
+
+    public execute(eventName: string, ...args: any[]): Promise<boolean> {
+        // Check if the first argument is a number (debounce time).
+        if (args.length > 1 && typeof args[0] === "number") {
+            const debounceTime: number = args.shift() as number;
+            return debounce(() => {
+                return this.executeAll(eventName, ...args);
+            }, debounceTime)(); // Debounce execution to avoid rapid calls.
+        } else {
+            // If no debounce time is provided, execute the plugins immediately.
+            return this.executeAll(eventName, ...args);
+        }
     }
 
     /**
@@ -90,18 +110,7 @@ class PluginRegistry {
      * @param args - The arguments to pass to the plugin handlers.
      * @returns True if all plugins returned true, false otherwise.
      */
-    public executePlugins = (eventName: string, ...args: any[]): Promise<boolean> => {
-        return this.execute(eventName, ...args);
-    }
-
-    /**
-     * Executes all registered plugins for the given event with the provided arguments.
-     *
-     * @param eventName - The name of the event to execute plugins for.
-     * @param args - The arguments to pass to the plugin handlers.
-     * @returns True if all plugins returned true, false otherwise.
-     */
-    public async execute(eventName: string, ...args: any[]): Promise<boolean> {
+    private async executeAll(eventName: string, ...args: any[]): Promise<boolean> {
         const handlers = this.plugins.get(eventName)?.values();
         if (!handlers) {
             return true; // No plugins registered, consider it a success.
