@@ -22,7 +22,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { ConnectorPropertyInterface, RealmConfigInterface } from "@wso2is/admin.server-configurations.v1/models";
-import { UserProfile } from "@wso2is/admin.users.v1/components/user-profile";
+import { LegacyUserProfile } from "@wso2is/admin.users.v1/components/legacy-user-profile";
 import { UserRolesList } from "@wso2is/admin.users.v1/components/user-roles-list";
 import { UserSessions } from "@wso2is/admin.users.v1/components/user-sessions";
 import { AdminAccountTypes, UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
@@ -158,7 +158,7 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
             menuItem: t("users:editUser.tab.menuItems.0"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <UserProfile
+                    <LegacyUserProfile
                         adminUsername={ realmConfigs?.adminUser }
                         tenantAdmin={ realmConfigs?.adminUser }
                         editUserDisclaimerMessage={ (
