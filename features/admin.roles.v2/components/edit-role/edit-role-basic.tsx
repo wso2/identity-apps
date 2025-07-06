@@ -17,6 +17,7 @@
  */
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     AlertInterface,
     AlertLevels,
@@ -34,7 +35,6 @@ import { deleteRoleById, deleteRoleByIdV3, updateRoleDetails, updateRoleDetailsU
 import useGetRolesList from "../../api/use-get-roles-list";
 import { RoleAudienceTypes, RoleConstants, Schemas } from "../../constants";
 import { PatchRoleDataInterface, RoleBasicInterface, RoleEditSectionsInterface } from "../../models/roles";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { isMyAccountImpersonationRole } from "../role-utils";
 import { RoleDeleteErrorConfirmation } from "../wizard/role-delete-error-confirmation";
 

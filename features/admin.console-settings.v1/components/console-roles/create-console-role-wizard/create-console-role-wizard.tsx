@@ -17,6 +17,7 @@
  */
 
 import Typography from "@oxygen-ui/react/Typography";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { createRole, createRoleUsingV3Api } from "@wso2is/admin.roles.v2/api/roles";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { CreateRoleInterface, CreateRolePermissionInterface } from "@wso2is/admin.roles.v2/models/roles";
@@ -35,7 +36,6 @@ import CreateConsoleRoleWizardBasicInfoForm from "./create-console-role-wizard-b
 import CreateConsoleRoleWizardPermissionsForm from "./create-console-role-wizard-permissions-form";
 import { ConsoleRolesOnboardingConstants } from "../../../constants/console-roles-onboarding-constants";
 import useConsoleSettings from "../../../hooks/use-console-settings";
-import { AppState } from "@wso2is/admin.core.v1/store";
 
 export interface CreateConsoleRoleWizardPropsInterface extends IdentifiableComponentInterface, ModalProps {
     onClose: (e: MouseEvent<HTMLElement>, data: ModalProps) => void;

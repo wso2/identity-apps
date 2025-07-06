@@ -18,10 +18,10 @@
 
 import { useRequiredScopes } from "@wso2is/access-control";
 import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
-import { updateUsersForRole, updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { updateRoleDetails, updateUsersForRole } from "@wso2is/admin.roles.v2/api/roles";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { PayloadInterface } from "@wso2is/admin.users.v1/models/user";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { FeatureAccessConfigInterface, RolesInterface } from "@wso2is/core/models";
 import { AxiosError } from "axios";
 import { useSelector } from "react-redux";
