@@ -54,7 +54,7 @@ import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps } from "semantic-ui-react";
 import { RenderChip } from "./edit-role-common/render-chip";
 import { RoleAPIResourcesListItem } from "./edit-role-common/role-api-resources-list-item";
-import { getAPIResourceDetailsBulk, updateRoleDetails, updateRoleDetailsUsingV3Api, 
+import { getAPIResourceDetailsBulk, updateRoleDetails, updateRoleDetailsUsingV3Api,
     useAPIResourceDetails } from "../../api";
 import { RoleAudienceTypes, RoleConstants } from "../../constants/role-constants";
 import { APIResourceInterface, AuthorizedAPIListItemInterface, ScopeInterface } from "../../models/apiResources";

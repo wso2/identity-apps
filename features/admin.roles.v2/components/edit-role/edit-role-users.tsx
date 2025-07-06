@@ -21,7 +21,6 @@ import { useGetAgents } from "@wso2is/admin.agents.v1/hooks/use-get-agents";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
-import { useRequiredScopes } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { UserBasicInterface } from "@wso2is/admin.users.v1/models/user";
@@ -141,7 +140,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         (state: AppState) => state.config.ui.enableScim2RolesV3Api
     );
 
-    const updateUsersOfRole: (roleId: string, roleData: PatchRoleDataInterface) => Promise<any> = 
+    const updateUsersOfRole: (roleId: string, roleData: PatchRoleDataInterface) => Promise<any> =
         enableScim2RolesV3Api ? updateUsersForRole : updateRoleDetails;
 
     const {

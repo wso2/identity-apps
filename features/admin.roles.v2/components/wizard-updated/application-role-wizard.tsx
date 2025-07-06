@@ -25,6 +25,7 @@ import useSubscribedAPIResources from "@wso2is/admin.applications.v1/api/use-sub
 import { AuthorizedAPIListItemInterface } from "@wso2is/admin.applications.v1/models/api-authorization";
 import { ApplicationInterface, ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models/application";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
@@ -56,7 +57,6 @@ import {
     SelectedPermissionsInterface
 } from "../../models/roles";
 import { RoleAPIResourcesListItem } from "../edit-role/edit-role-common/role-api-resources-list-item";
-import { AppState } from "@wso2is/admin.core.v1/store";
 
 interface ApplicationRoleWizardPropsInterface extends IdentifiableComponentInterface {
     application: ApplicationInterface;
