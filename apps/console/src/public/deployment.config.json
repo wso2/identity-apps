@@ -746,52 +746,21 @@
                     "create": [],
                     "delete": [],
                     "feature": [
-                        "console:entitlement:groupsForRole",
-                        "console:entitlement:usersForRole",
+                        "console:entitlement",
                         "console:roles"
                     ],
                     "read": [
                         "internal_api_resource_view",
                         "internal_application_mgt_view",
+                        "internal_group_mgt_view",
                         "internal_idp_view",
-                        "internal_role_view",
+                        "internal_role_mgt_view",
                         "internal_user_mgt_list",
+                        "internal_user_mgt_view",
                         "internal_userstore_view"
                     ],
                     "update": [
                         "internal_role_mgt_groups_update",
-                        "internal_role_mgt_users_update"
-                    ]
-                }
-            },
-            "entitlementGroupsOfRole": {
-                "disabledFeatures": [],
-                "enabled": true,
-                "featureFlags": [],
-                "scopes": {
-                    "create": [],
-                    "delete": [],
-                    "feature": [
-                        "console:entitlement:groupsForRole"
-                    ],
-                    "read": [],
-                    "update": [
-                        "internal_role_mgt_groups_update"
-                    ]
-                }
-            },
-            "entitlementUsersOfRole": {
-                "disabledFeatures": [],
-                "enabled": true,
-                "featureFlags": [],
-                "scopes": {
-                    "create": [],
-                    "delete": [],
-                    "feature": [
-                        "console:entitlement:usersForRole"
-                    ],
-                    "read": [],
-                    "update": [
                         "internal_role_mgt_users_update"
                     ]
                 }
