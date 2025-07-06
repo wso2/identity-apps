@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.65.23
+
+### Patch Changes
+
+- [#8468](https://github.com/wso2/identity-apps/pull/8468) [`8813a54e1329989eec28a10b21678bfdb0e6d11d`](https://github.com/wso2/identity-apps/commit/8813a54e1329989eec28a10b21678bfdb0e6d11d) Thanks [@ModithaM](https://github.com/ModithaM)! - Fix UI inconsistency in the Edit Organization view of Sub Orgs
+
+* [#8466](https://github.com/wso2/identity-apps/pull/8466) [`31252dcffe38616bb43dd605174e200f130242e0`](https://github.com/wso2/identity-apps/commit/31252dcffe38616bb43dd605174e200f130242e0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix broken i18n in api authorization section in application edit view
+
+* Updated dependencies [[`8813a54e1329989eec28a10b21678bfdb0e6d11d`](https://github.com/wso2/identity-apps/commit/8813a54e1329989eec28a10b21678bfdb0e6d11d), [`31252dcffe38616bb43dd605174e200f130242e0`](https://github.com/wso2/identity-apps/commit/31252dcffe38616bb43dd605174e200f130242e0)]:
+  - @wso2is/admin.organizations.v1@2.26.207
+  - @wso2is/admin.applications.v1@2.36.6
+
 ## 2.65.22
 
 ### Patch Changes
