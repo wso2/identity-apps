@@ -87,52 +87,6 @@ export const getApplicationRolesByAudience = (
 };
 
 /**
- * Get the application roles by audience using SCIM2 Role API V3.
- *
- * @param audience - audience.
- * @param appId - Application ID.
- * @param before - Before link.
- * @param after - After link.
- * @param limit - Limit.
- * @param excludedAttributes - Attributes to exclude from the response.
- *
- * @returns A promise containing the response.
- */
-export const getApplicationRolesByAudienceV3 = (
-    audience: string,
-    appId: string,
-    before: string,
-    after: string,
-    limit: number,
-    excludedAttributes?: string
-):Promise<RolesV2ResponseInterface> => {
-
-    const filter: string = audience === RoleAudienceTypes.APPLICATION
-        ? `audience.value eq ${ appId }`
-        : `audience.type eq ${ audience.toLowerCase() }`;
-
-    const requestConfig: RequestConfigInterface = {
-        method: HttpMethods.GET,
-        params: {
-            after,
-            before,
-            excludedAttributes,
-            filter,
-            limit
-        },
-        url:  `${ store.getState().config.endpoints.rolesV3 }`
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            return Promise.resolve(response.data as RolesV2ResponseInterface);
-        })
-        .catch((error: AxiosError) => {
-            return Promise.reject(error);
-        });
-};
-
-/**
  * Get the roles by name.
  *
  * @param audienceId - Organization ID or Application ID.
