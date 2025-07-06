@@ -39,5 +39,9 @@ export enum EventTypes {
     /**
      * Event triggered when the property panel is opened.
      */
-    ON_PROPERTY_PANEL_OPEN = "onPropertyPanelOpen"
+    ON_PROPERTY_PANEL_OPEN = "onPropertyPanelOpen",
+    /**
+     * Event triggered when a property is changed.
+     */
+    ON_PROPERTY_CHANGE = "onPropertyChange"
 }

@@ -31,7 +31,7 @@ import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement, SVGProps } from "react";
 import ResourcePanelDraggable from "./resource-panel-draggable";
 import ResourcePanelStatic from "./resource-panel-static";
-import { Element } from "../../models/elements";
+import { Element, ElementTypes } from "../../models/elements";
 import { Resource, Resources } from "../../models/resources";
 import { Step } from "../../models/steps";
 import { Template } from "../../models/templates";
@@ -303,7 +303,8 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                                 { elements.map((element: Element, index: number) => (
                                     <ResourcePanelDraggable
                                         id={ `${element.resourceType}-${element.type}-${index}` }
-                                        key={ element.type }
+                                        key={ element.type === ElementTypes.Input ?
+                                            `${element.type}_${element.variant}` : element.type }
                                         resource={ element }
                                     />
                                 )) }
