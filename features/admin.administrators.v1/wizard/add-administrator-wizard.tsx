@@ -247,7 +247,15 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
         }
 
         // Payload for the update role request.
-        const roleData: PatchRoleDataInterface = {
+        const roleData: PatchRoleDataInterface = enableSCIM2RoleAPIV3 ? {
+            Operations: [
+                {
+                    op: "add",
+                    value: userList
+                }
+            ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        } : {
             Operations: [
                 {
                     op: "add",
@@ -331,7 +339,20 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
         }
 
         // Payload for the update role request.
-        const roleData: PatchRoleDataInterface = {
+        const roleData: PatchRoleDataInterface = enableSCIM2RoleAPIV3 ? {
+            Operations: [
+                {
+                    op: "add",
+                    value: [
+                        {
+                            display: selectedUser?.userName,
+                            value: selectedUser?.id
+                        }
+                    ]
+                }
+            ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        } : {
             Operations: [
                 {
                     op: "add",
