@@ -6760,6 +6760,9 @@ importers:
       '@wso2is/admin.core.v1':
         specifier: ^2.45.2
         version: link:../admin.core.v1
+      '@wso2is/admin.server-configurations.v1':
+        specifier: ^2.35.1
+        version: link:../admin.server-configurations.v1
       '@wso2is/common.branding.v1':
         specifier: ^2.27.1
         version: link:../common.branding.v1
@@ -42416,8 +42419,6 @@ packages:
       webpack: '*'
     peerDependenciesMeta:
       webpack:
-        optional: true
-      webpack-sources:
         optional: true
     dependencies:
       webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@4.10.0)

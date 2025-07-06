@@ -21,6 +21,8 @@ import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/bran
 import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import useGetRegistrationFlowBuilderEnabledStatus
+    from "@wso2is/admin.server-configurations.v1/api/use-get-self-registration-enabled-status";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -120,6 +122,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
     }, [ emailTemplatesFeatureConfig, allowedScopes ]);
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
+    const { data: isDynamicPortalEnabled } = useGetRegistrationFlowBuilderEnabledStatus();
 
     const {
         data: emailTemplatesList,
@@ -146,13 +149,25 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         // description from the email template types config defined in
         // the deployment.toml file. The below code will map the email template
         // types with the config's displayName and description.
-        const availableEmailTemplates: EmailTemplateType[] = emailTemplatesList
-            ? (!enableCustomEmailTemplates
-                ? emailTemplatesList.filter((template: EmailTemplateType) =>
-                    emailTemplates?.find((emailTemplate: Record<string, string>) => emailTemplate.id === template.id)
+        const blockedNames: string[] = [ "askpassword", "resendaskpassword" ];
+        const filterTemplates = (template: EmailTemplateType): boolean => {
+            const name: string = template.displayName?.toLowerCase() || "";
+
+            if (!isDynamicPortalEnabled && name.includes("orchestrated")) {
+                return false;
+            } else if (isDynamicPortalEnabled && blockedNames.includes(name)) {
+                return false;
+            }
+
+            return !enableCustomEmailTemplates
+                ? !!emailTemplates?.find(
+                    (emailTemplate: Record<string, string>) => emailTemplate.id === template.id
                 )
-                : emailTemplatesList
-            ).map((template: EmailTemplateType) => {
+                : true;
+        };
+
+        const availableEmailTemplates: EmailTemplateType[] = emailTemplatesList
+            ? emailTemplatesList.filter(filterTemplates).map((template: EmailTemplateType) => {
                 const mappedTemplate: Record<string, string> = emailTemplates?.find(
                     (emailTemplate: Record<string, string>) => emailTemplate.id === template.id
                 );
