@@ -28,9 +28,7 @@ import { SCIMConfigs, commonConfig, userConfig } from "@wso2is/admin.extensions.
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { searchRoleList, updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
 import {
-    OperationValueInterface,
     PatchRoleDataInterface,
-    ScimOperationsInterface,
     SearchRoleInterface
 } from "@wso2is/admin.roles.v2/models/roles";
 import { ConnectorPropertyInterface, ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1";
@@ -47,12 +45,10 @@ import {
     ProfileInfoInterface,
     ProfileSchemaInterface,
     RolesMemberInterface,
-    SharedProfileValueResolvingMethod,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ProfileUtils } from "@wso2is/core/utils";
-import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import {
     ConfirmationModal,
     ContentLoader,
@@ -62,9 +58,9 @@ import {
     LinkButton,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -78,9 +74,7 @@ import {
     AccountLockedReason,
     AccountState,
     AdminAccountTypes,
-    AttributeDataType,
     CONNECTOR_PROPERTY_TO_CONFIG_STATUS_MAP,
-    LocaleJoiningSymbol,
     PASSWORD_RESET_PROPERTIES,
     RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP,
     RecoveryScenario,
@@ -89,26 +83,10 @@ import {
 import {
     AccountConfigSettingsInterface,
     ResendCodeRequestData,
-    SchemaAttributeValueInterface,
     SubValueInterface
 } from "../models/user";
-import {
-    constructPatchOpValueForMultiValuedAttribute,
-    constructPatchOperationForMultiValuedVerifiedAttribute,
-    getDisplayOrder,
-    isMultipleEmailsAndMobileNumbersEnabled,
-    isSchemaReadOnly
-} from "../utils/user-management-utils";
+import { getDisplayOrder } from "../utils/user-management-utils";
 import "./user-profile.scss";
-
-const EMAIL_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
-const MOBILE_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE");
-const EMAIL_ADDRESSES_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES");
-const MOBILE_NUMBERS_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS");
-const VERIFIED_MOBILE_NUMBERS_ATTRIBUTE: string =
-    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS");
-const VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE: string =
-    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES");
 
 /**
  * Prop types for the basic details component.
@@ -203,9 +181,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
     const currentOrganization: string =  useSelector((state: AppState) => state?.config?.deployment?.tenant);
     const authUserTenants: TenantInfo[] = useSelector((state: AppState) => state?.auth?.tenants);
-    const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
-        (state: AppState) => state.global.supportedI18nLanguages
-    );
     const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
@@ -215,14 +190,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         featureConfig?.users?.scopes?.update
     );
 
-    const isDistinctAttributeProfilesDisabled: boolean = featureConfig?.attributeDialects?.disabledFeatures?.includes(
-        ClaimManagementConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG
-    );
-
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchemaInterface[]>();
-    const [ simpleMultiValuedExtendedProfileSchema, setSimpleMultiValuedExtendedProfileSchema ]
-        = useState<ProfileSchemaInterface[]>();
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ showAdminRevokeConfirmationModal, setShowAdminRevokeConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<ProfileInfoInterface>(undefined);
@@ -250,14 +219,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         user[userConfig.userProfileSchema]?.accountDisabled === true;
     const isCurrentUserAdmin: boolean = user?.roles?.some((role: RolesMemberInterface) =>
         role.display === administratorConfig.adminRoleName) ?? false;
-    const [ multiValuedInputFieldValue, setMultiValuedInputFieldValue ] = useState<Record<string, string>>({});
-    const [ multiValuedAttributeValues, setMultiValuedAttributeValues ] =
-        useState<Record<string, string[]>>({});
-    const [ primaryValues, setPrimaryValues ] = useState<Record<string, string>>({}); // For multi-valued attributes.
-
-    const isMultipleEmailAndMobileNumberEnabled: boolean = useMemo(() => {
-        return isMultipleEmailsAndMobileNumbersEnabled(profileInfo, profileSchema);
-    }, [ profileSchema, profileInfo ]);
 
     const [ duplicatedUserClaims, setDuplicatedUserClaims ] = useState<ExternalClaim[]>([]);
 
@@ -300,15 +261,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     useEffect(() => {
         const META_VERSION: string = ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION");
         const filteredSchemas: ProfileSchemaInterface[] = [];
-        const simpleMultiValuedExtendedSchemas: ProfileSchemaInterface[] = [];
 
         for (const schema of ProfileUtils.flattenSchemas([ ...profileSchemas ])) {
             if (schema.name === META_VERSION) {
                 continue;
-            }
-            // Only simple multi-valued attributes in extended schemas are supported generally.
-            if (schema.extended && schema.multiValued && schema.type !== AttributeDataType.COMPLEX) {
-                simpleMultiValuedExtendedSchemas.push(schema);
             }
             filteredSchemas.push(schema);
         }
@@ -317,7 +273,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             getDisplayOrder(a) - getDisplayOrder(b));
 
         setProfileSchema(filteredSchemas);
-        setSimpleMultiValuedExtendedProfileSchema(simpleMultiValuedExtendedSchemas);
     }, [ profileSchemas ]);
 
     useEffect(() => {
@@ -678,51 +633,51 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
     };
 
-    useEffect(() => {
-        mapMultiValuedAttributeValues(profileInfo);
-    }, [ profileInfo ]);
+    // useEffect(() => {
+    //     mapMultiValuedAttributeValues(profileInfo);
+    // }, [ profileInfo ]);
 
-    /**
-     * The following function map multi-valued attribute values and their primary values from profile data.
-     *
-     * @param profileData - Profile data.
-     */
-    const mapMultiValuedAttributeValues = (profileData: Map<string, string>): void => {
+    // /**
+    //  * The following function map multi-valued attribute values and their primary values from profile data.
+    //  *
+    //  * @param profileData - Profile data.
+    //  */
+    // const mapMultiValuedAttributeValues = (profileData: Map<string, string>): void => {
 
-        const tempMultiValuedAttributeValues: Record<string, string[]> = {};
-        const tempPrimaryValues: Record<string, string> = {};
+    //     const tempMultiValuedAttributeValues: Record<string, string[]> = {};
+    //     const tempPrimaryValues: Record<string, string> = {};
 
-        simpleMultiValuedExtendedProfileSchema?.forEach((schema: ProfileSchemaInterface) => {
-            const attributeValue: string = profileData?.get(schema.name);
+    //     simpleMultiValuedExtendedProfileSchema?.forEach((schema: ProfileSchemaInterface) => {
+    //         const attributeValue: string = profileData?.get(schema.name);
 
-            tempMultiValuedAttributeValues[schema.name] = attributeValue ? attributeValue.split(",") : [];
-        });
+    //         tempMultiValuedAttributeValues[schema.name] = attributeValue ? attributeValue.split(",") : [];
+    //     });
 
-        if (isMultipleEmailAndMobileNumberEnabled) {
-            const primaryEmail: string = profileData?.get(EMAIL_ATTRIBUTE);
-            const primaryMobile: string = profileData?.get(MOBILE_ATTRIBUTE);
+    //     if (isMultipleEmailAndMobileNumberEnabled) {
+    //         const primaryEmail: string = profileData?.get(EMAIL_ATTRIBUTE);
+    //         const primaryMobile: string = profileData?.get(MOBILE_ATTRIBUTE);
 
-            if (!isEmpty(primaryEmail)) {
-                const emailAddresses: string[] = tempMultiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE]
-                    ?.filter((value: string) => !isEmpty(value) && value !== primaryEmail) ?? [];
+    //         if (!isEmpty(primaryEmail)) {
+    //             const emailAddresses: string[] = tempMultiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE]
+    //                 ?.filter((value: string) => !isEmpty(value) && value !== primaryEmail) ?? [];
 
-                emailAddresses.unshift(primaryEmail);
-                tempMultiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE] = emailAddresses;
-            }
-            if (!isEmpty(primaryMobile)) {
-                const mobileNumbers: string[] = tempMultiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE]
-                    ?.filter((value: string) => !isEmpty(value) && value !== primaryMobile) ?? [];
+    //             emailAddresses.unshift(primaryEmail);
+    //             tempMultiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE] = emailAddresses;
+    //         }
+    //         if (!isEmpty(primaryMobile)) {
+    //             const mobileNumbers: string[] = tempMultiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE]
+    //                 ?.filter((value: string) => !isEmpty(value) && value !== primaryMobile) ?? [];
 
-                mobileNumbers.unshift(primaryMobile);
-                tempMultiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE] = mobileNumbers;
-            }
-            tempPrimaryValues[EMAIL_ATTRIBUTE] = primaryEmail;
-            tempPrimaryValues[MOBILE_ATTRIBUTE] = primaryMobile;
-        }
+    //             mobileNumbers.unshift(primaryMobile);
+    //             tempMultiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE] = mobileNumbers;
+    //         }
+    //         tempPrimaryValues[EMAIL_ATTRIBUTE] = primaryEmail;
+    //         tempPrimaryValues[MOBILE_ATTRIBUTE] = primaryMobile;
+    //     }
 
-        setMultiValuedAttributeValues(tempMultiValuedAttributeValues);
-        setPrimaryValues(tempPrimaryValues);
-    };
+    //     setMultiValuedAttributeValues(tempMultiValuedAttributeValues);
+    //     setPrimaryValues(tempPrimaryValues);
+    // };
 
     /**
      * This function handles deletion of the user.
@@ -797,7 +752,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @param localeJoiningSymbol - symbol used to join language and region parts of locale.
      * @param updateSupportedLanguage - If supported languages needs to be updated with the given localString or not.
      */
-    const normalizeLocaleFormat = (
+    /*const normalizeLocaleFormat = (
         locale: string,
         localeJoiningSymbol: LocaleJoiningSymbol,
         updateSupportedLanguage: boolean
@@ -826,7 +781,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
 
         return normalizedLocale;
-    };
+    };*/
 
     /**
      * This function returns the ID of the administrator role.
@@ -871,7 +826,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @param schemaName - Schema name.
      * @returns Verification pending attribute value.
      */
-    const getVerificationPendingAttributeValue = (schemaName: string): string | null => {
+    /*const getVerificationPendingAttributeValue = (schemaName: string): string | null => {
         if (schemaName === EMAIL_ATTRIBUTE || schemaName === EMAIL_ADDRESSES_ATTRIBUTE) {
             const pendingAttributes: Array<{value: string}> | undefined =
             user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.["pendingEmails"];
@@ -888,7 +843,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
 
         return null;
-    };
+    };*/
 
     /**
      * This function handles deletion of the user.
@@ -946,7 +901,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      *
      * @param values - The Map of form values.
      */
-    const handlePrimaryEmailAndMobile = (values: Map<string, string | string[]>): void => {
+    /*const handlePrimaryEmailAndMobile = (values: Map<string, string | string[]>): void => {
 
         const mobileSchema: ProfileSchemaInterface = profileSchema.find(
             (schema: ProfileSchemaInterface) => schema.name === MOBILE_ATTRIBUTE
@@ -1026,41 +981,42 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         if (!operation) return;
         data.Operations.push(operation);
     };
+    */
 
     /**
      * Removes the email address from the form values if it is pending verification.
      * This prevents unnecessary retriggering of the verification process.
      * @param values - Form values.
      */
-    const handleVerificationPendingEmail = (values: Map<string, string | string[]>): void => {
+    /*const handleVerificationPendingEmail = (values: Map<string, string | string[]>): void => {
         if (isMultipleEmailAndMobileNumberEnabled
             || configSettings?.isEmailVerificationEnabled !== "true"
             || isEmpty(getVerificationPendingAttributeValue(EMAIL_ATTRIBUTE))
             || values.get(EMAIL_ATTRIBUTE) !== getVerificationPendingAttributeValue(EMAIL_ATTRIBUTE)) return;
 
         values.delete(EMAIL_ATTRIBUTE);
-    };
+    };*/
 
     /**
      * Removes the mobile number from the form values if it is pending verification.
      * This prevents unnecessary retriggering of the verification process.
      * @param values - Form values.
      */
-    const handleVerificationPendingMobile = (values: Map<string, string | string[]>): void => {
+    /*const handleVerificationPendingMobile = (values: Map<string, string | string[]>): void => {
         if (isMultipleEmailAndMobileNumberEnabled
             || configSettings?.isMobileVerificationEnabled !== "true"
             || isEmpty(getVerificationPendingAttributeValue(MOBILE_ATTRIBUTE))
             || values.get(MOBILE_ATTRIBUTE) !== getVerificationPendingAttributeValue(MOBILE_ATTRIBUTE)) return;
 
         values.delete(MOBILE_ATTRIBUTE);
-    };
+    };*/
 
     /**
      * The following method handles the `onSubmit` event of forms.
      *
      * @param values - submit values.
      */
-    const handleSubmit = (values: Map<string, string | string[]>): void => {
+    /*const handleSubmit = (values: Map<string, string | string[]>): void => {
 
         const data: PatchRoleDataInterface = {
             Operations: [],
@@ -1454,7 +1410,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             .finally(() => {
                 setIsSubmitting(false);
             });
-    };
+    };*/
 
     /**
      * Handle danger zone toggle actions.
@@ -1775,7 +1731,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @param schema - The profile schema to be validated.
      * @returns whether the field for the input schema should be displayed.
      */
-    const isFieldDisplayable = (schema: ProfileSchemaInterface): boolean => {
+    /*const isFieldDisplayable = (schema: ProfileSchemaInterface): boolean => {
         if (!isMultipleEmailAndMobileNumberEnabled) {
             if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE || schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
                 return false;
@@ -1814,7 +1770,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         return (!isEmpty(profileInfo.get(schema.name)) ||
             (!isReadOnly && (resolvedMutabilityValue !== ProfileConstants.READONLY_SCHEMA)));
-    };
+    };*/
 
     /**
      * Resolves the user account locked reason text.
@@ -2031,21 +1987,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         flattenedProfileData={ profileInfo }
                         profileSchema={ profileSchema }
                         isReadOnly={ isReadOnly }
-                        onSubmit={ handleSubmit }
+                        onUpdate={ handleUserUpdate }
                         isUpdating={ isSubmitting }
                         adminUserType={ adminUserType }
                         setIsUpdating={ (isUpdating: boolean): void => setIsSubmitting(isUpdating) }
                         onUserUpdate={ handleUserUpdate }
                         accountConfigSettings={ configSettings }
                         duplicatedUserClaims={ duplicatedUserClaims }
-                        multiValuedAttributeValues={ multiValuedAttributeValues }
-                        setMultiValuedAttributeValues={
-                            (values: Record<string, string[]>) => setMultiValuedAttributeValues(values) }
-                        multiValuedInputFieldValue={ multiValuedInputFieldValue }
-                        setMultiValuedInputFieldValue={
-                            (value: Record<string, string>) => setMultiValuedInputFieldValue(value) }
-                        primaryValues={ primaryValues }
-                        setPrimaryValues={ (values: Record<string, string>) => setPrimaryValues(values) }
                         data-componentid={ testId }
                     />
                 </EmphasizedSegment>

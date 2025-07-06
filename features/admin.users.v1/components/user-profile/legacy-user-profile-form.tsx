@@ -30,6 +30,11 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { commonConfig as commonExtensionConfig } from "@wso2is/admin.extensions.v1/configs/common";
 import { userConfig as userExtensionConfig } from "@wso2is/admin.extensions.v1/configs/user";
+import {
+    OperationValueInterface,
+    PatchRoleDataInterface,
+    ScimOperationsInterface
+} from "@wso2is/admin.roles.v2/models/roles";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -42,22 +47,36 @@ import {
     SharedProfileValueResolvingMethod
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { CommonUtils } from "@wso2is/core/utils";
+import { CommonUtils, ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import { Button, Popup } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
-import React, { FunctionComponent, ReactElement, useCallback, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, Form, Grid, Icon, Input } from "semantic-ui-react";
 import { updateUserInfo } from "../../api/users";
-import { LocaleJoiningSymbol, UserManagementConstants } from "../../constants/user-management-constants";
-import { AccountConfigSettingsInterface, PatchUserOperationValue } from "../../models/user";
-import { isMultipleEmailsAndMobileNumbersEnabled } from "../../utils/user-management-utils";
+import {
+    AdminAccountTypes,
+    AttributeDataType,
+    LocaleJoiningSymbol,
+    UserManagementConstants
+} from "../../constants/user-management-constants";
+import {
+    AccountConfigSettingsInterface,
+    PatchUserOperationValue,
+    SchemaAttributeValueInterface
+} from "../../models/user";
+import {
+    constructPatchOpValueForMultiValuedAttribute,
+    constructPatchOperationForMultiValuedVerifiedAttribute,
+    isMultipleEmailsAndMobileNumbersEnabled,
+    isSchemaReadOnly
+} from "../../utils/user-management-utils";
 
 const EMAIL_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
 const MOBILE_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE");
@@ -75,7 +94,6 @@ interface UserProfileFormPropsInterface extends IdentifiableComponentInterface {
     flattenedProfileData: Map<string, string>;
     profileSchema: ProfileSchemaInterface[];
     isReadOnly: boolean;
-    onSubmit: (values: Map<string, string | string[]>) => void;
     onUserUpdate: (userId: string) => void;
     isUpdating: boolean;
     adminUserType?: string;
@@ -83,12 +101,7 @@ interface UserProfileFormPropsInterface extends IdentifiableComponentInterface {
     setIsUpdating: (isUpdating: boolean) => void;
     accountConfigSettings: AccountConfigSettingsInterface;
     duplicatedUserClaims: ExternalClaim[];
-    multiValuedAttributeValues: Record<string, string[]>;
-    setMultiValuedAttributeValues: (multiValuedAttributeValues: Record<string, string[]>) => void;
-    multiValuedInputFieldValue: Record<string, string>;
-    setMultiValuedInputFieldValue: (multiValuedInputFieldValue: Record<string, string>) => void;
-    primaryValues: Record<string, string>;
-    setPrimaryValues: (primaryValues: Record<string, string>) => void;
+    onUpdate: (userId: string) => void;
 }
 
 const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
@@ -97,7 +110,6 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
         flattenedProfileData,
         profileSchema,
         isReadOnly,
-        onSubmit,
         isUpdating,
         adminUserType,
         isUserManagedByParentOrg,
@@ -105,12 +117,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
         onUserUpdate,
         accountConfigSettings,
         duplicatedUserClaims,
-        multiValuedAttributeValues,
-        setMultiValuedAttributeValues,
-        multiValuedInputFieldValue,
-        setMultiValuedInputFieldValue,
-        primaryValues,
-        setPrimaryValues,
+        onUpdate,
         ["data-componentid"]: componentId = "user-profile-form"
     }: UserProfileFormPropsInterface
 ): ReactElement => {
@@ -121,6 +128,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
     const modifiedDate: string = profileData?.meta?.lastModified;
     const oneTimePassword: string = profileData[userExtensionConfig.userProfileSchema]?.oneTimePassword;
 
+    const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages
     );
@@ -128,6 +136,12 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
 
     const [ isFormStale, setIsFormStale ] = useState<boolean>(false);
     const [ isMultiValuedItemInvalid, setIsMultiValuedItemInvalid ] =  useState<Record<string, boolean>>({});
+    const [ simpleMultiValuedExtendedProfileSchema, setSimpleMultiValuedExtendedProfileSchema ]
+            = useState<ProfileSchemaInterface[]>();
+    const [ multiValuedAttributeValues, setMultiValuedAttributeValues ] =
+            useState<Record<string, string[]>>({});
+    const [ multiValuedInputFieldValue, setMultiValuedInputFieldValue ] = useState<Record<string, string>>({});
+    const [ primaryValues, setPrimaryValues ] = useState<Record<string, string>>({});
 
     const isDistinctAttributeProfilesFeatureEnabled: boolean = isFeatureEnabled(featureConfig?.attributeDialects,
         ClaimManagementConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG);
@@ -151,6 +165,72 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
     const countryList: DropdownItemProps = useMemo(() => {
         return CommonUtils.getCountryList();
     }, []);
+
+    useEffect(() => {
+        mapMultiValuedAttributeValues(flattenedProfileData);
+    }, [ flattenedProfileData, simpleMultiValuedExtendedProfileSchema ]);
+
+    /**
+     *  Filters out simple multi-valued attributes from extended schemas.
+     */
+    useEffect(() => {
+        const META_VERSION: string = ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION");
+        const simpleMultiValuedExtendedSchemas: ProfileSchemaInterface[] = [];
+
+        for (const schema of ProfileUtils.flattenSchemas([ ...profileSchemas ])) {
+            if (schema.name === META_VERSION) {
+                continue;
+            }
+            // Only simple multi-valued attributes in extended schemas are supported generally.
+            if (schema.extended && schema.multiValued && schema.type !== AttributeDataType.COMPLEX) {
+                simpleMultiValuedExtendedSchemas.push(schema);
+            }
+        }
+
+        setSimpleMultiValuedExtendedProfileSchema(simpleMultiValuedExtendedSchemas);
+    }, [ profileSchemas ]);
+
+    /**
+     * The following function map multi-valued attribute values and their primary values from profile data.
+     *
+     * @param profileData - Profile data.
+     */
+    const mapMultiValuedAttributeValues = (profileData: Map<string, string>): void => {
+
+        const tempMultiValuedAttributeValues: Record<string, string[]> = {};
+        const tempPrimaryValues: Record<string, string> = {};
+
+        simpleMultiValuedExtendedProfileSchema?.forEach((schema: ProfileSchemaInterface) => {
+            const attributeValue: string = profileData?.get(schema.name);
+
+            tempMultiValuedAttributeValues[schema.name] = attributeValue ? attributeValue.split(",") : [];
+        });
+
+        if (isMultipleEmailAndMobileNumberEnabled) {
+            const primaryEmail: string = profileData?.get(EMAIL_ATTRIBUTE);
+            const primaryMobile: string = profileData?.get(MOBILE_ATTRIBUTE);
+
+            if (!isEmpty(primaryEmail)) {
+                const emailAddresses: string[] = tempMultiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE]
+                    ?.filter((value: string) => !isEmpty(value) && value !== primaryEmail) ?? [];
+
+                emailAddresses.unshift(primaryEmail);
+                tempMultiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE] = emailAddresses;
+            }
+            if (!isEmpty(primaryMobile)) {
+                const mobileNumbers: string[] = tempMultiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE]
+                    ?.filter((value: string) => !isEmpty(value) && value !== primaryMobile) ?? [];
+
+                mobileNumbers.unshift(primaryMobile);
+                tempMultiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE] = mobileNumbers;
+            }
+            tempPrimaryValues[EMAIL_ATTRIBUTE] = primaryEmail;
+            tempPrimaryValues[MOBILE_ATTRIBUTE] = primaryMobile;
+        }
+
+        setMultiValuedAttributeValues(tempMultiValuedAttributeValues);
+        setPrimaryValues(tempPrimaryValues);
+    };
 
     /**
      * The function returns the normalized format of locale.
@@ -223,10 +303,10 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
         const filteredValues: string[] =
             multiValuedAttributeValues[schema?.name]?.filter((value: string) => value !== attributeValue) || [];
 
-        setMultiValuedAttributeValues({
-            ...multiValuedAttributeValues,
+        setMultiValuedAttributeValues((prevValues: Record<string, string[]>) => ({
+            ...prevValues,
             [schema.name]: filteredValues
-        });
+        }));
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             if (primaryValues[EMAIL_ATTRIBUTE] === attributeValue) {
@@ -354,10 +434,10 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
 
         if (isEmpty(attributeValue)) return;
 
-        setMultiValuedAttributeValues({
-            ...multiValuedAttributeValues,
+        setMultiValuedAttributeValues((prevValues: Record<string, string[]>) => ({
+            ...prevValues,
             [schema.name]: [ ...(multiValuedAttributeValues[schema.name] || []), attributeValue ]
-        });
+        }));
 
         const updatePrimaryValue = (primaryKey: string) => {
             if (isEmpty(primaryValues[primaryKey])) {
@@ -399,7 +479,6 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
             </div>
         );
     };
-
 
     const resolveMultiValuedAttributesFormField = (
         schema: ProfileSchemaInterface,
@@ -812,6 +891,120 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
         }
 
         return null;
+    };
+
+    /**
+     * Handles updating the primary email and mobile values when multiple emails and mobile numbers are enabled.
+     *
+     * @param values - The Map of form values.
+     */
+    const handlePrimaryEmailAndMobile = (values: Map<string, string | string[]>): void => {
+
+        const mobileSchema: ProfileSchemaInterface = profileSchema.find(
+            (schema: ProfileSchemaInterface) => schema.name === MOBILE_ATTRIBUTE
+        );
+
+        if (!isSchemaReadOnly(mobileSchema, isUserManagedByParentOrg)) {
+            const tempPrimaryMobile: string = primaryValues[MOBILE_ATTRIBUTE];
+            const mobileNumbersInputFieldValue: string = multiValuedInputFieldValue[MOBILE_NUMBERS_ATTRIBUTE];
+
+            if (tempPrimaryMobile !== undefined && tempPrimaryMobile !== null) {
+                values.set(MOBILE_ATTRIBUTE, tempPrimaryMobile);
+            }
+
+            if (isEmpty(tempPrimaryMobile) && !isEmpty(mobileNumbersInputFieldValue)) {
+                values.set(MOBILE_ATTRIBUTE, mobileNumbersInputFieldValue);
+            }
+        }
+
+        const emailSchema: ProfileSchemaInterface = profileSchema.find(
+            (schema: ProfileSchemaInterface) => schema.name === EMAIL_ATTRIBUTE
+        );
+
+        if (!isSchemaReadOnly(emailSchema, isUserManagedByParentOrg)) {
+            const tempPrimaryEmail: string = primaryValues[EMAIL_ATTRIBUTE] ?? "";
+            const emailsInputFieldValue: string = multiValuedInputFieldValue[EMAIL_ADDRESSES_ATTRIBUTE];
+
+            if (tempPrimaryEmail !== undefined && tempPrimaryEmail !== null) {
+                values.set(EMAIL_ATTRIBUTE, tempPrimaryEmail);
+            }
+            if (isEmpty(tempPrimaryEmail) && !isEmpty(emailsInputFieldValue)) {
+                values.set(EMAIL_ATTRIBUTE, emailsInputFieldValue);
+            }
+        }
+    };
+
+    const handleVerifiedEmailAddresses = (data: PatchRoleDataInterface): void => {
+
+        const verifiedAttributeSchema: ProfileSchemaInterface | undefined = profileSchema.find(
+            (schema: ProfileSchemaInterface) => schema.name === VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE
+        );
+
+        if (!isMultipleEmailAndMobileNumberEnabled
+            || accountConfigSettings?.isEmailVerificationEnabled !== "true"
+            || isSchemaReadOnly(verifiedAttributeSchema, isUserManagedByParentOrg)) return;
+
+        const verifiedAttributeValueList: string[]
+            = flattenedProfileData?.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
+        const operation: ScimOperationsInterface = constructPatchOperationForMultiValuedVerifiedAttribute({
+            primaryValue: flattenedProfileData?.get(EMAIL_ATTRIBUTE),
+            valueList: multiValuedAttributeValues[EMAIL_ADDRESSES_ATTRIBUTE],
+            verifiedAttributeSchema,
+            verifiedValueList: verifiedAttributeValueList
+        });
+
+        if (!operation) return;
+        data.Operations.push(operation);
+    };
+
+    const handleVerifiedMobileNumbers = (data: PatchRoleDataInterface): void => {
+        const verifiedAttributeSchema: ProfileSchemaInterface | undefined = profileSchema.find(
+            (schema: ProfileSchemaInterface) => schema.name === VERIFIED_MOBILE_NUMBERS_ATTRIBUTE
+        );
+
+        if (!isMultipleEmailAndMobileNumberEnabled
+            || accountConfigSettings?.isMobileVerificationEnabled !== "true"
+            || isSchemaReadOnly(verifiedAttributeSchema, isUserManagedByParentOrg)) return;
+
+        const verifiedAttributeValueList: string[]
+            = flattenedProfileData?.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
+        const operation: ScimOperationsInterface = constructPatchOperationForMultiValuedVerifiedAttribute({
+            primaryValue: flattenedProfileData?.get(MOBILE_ATTRIBUTE),
+            valueList: multiValuedAttributeValues[MOBILE_NUMBERS_ATTRIBUTE],
+            verifiedAttributeSchema,
+            verifiedValueList: verifiedAttributeValueList
+        });
+
+        if (!operation) return;
+        data.Operations.push(operation);
+    };
+
+    /**
+     * Removes the email address from the form values if it is pending verification.
+     * This prevents unnecessary retriggering of the verification process.
+     * @param values - Form values.
+     */
+    const handleVerificationPendingEmail = (values: Map<string, string | string[]>): void => {
+        if (isMultipleEmailAndMobileNumberEnabled
+            || accountConfigSettings?.isEmailVerificationEnabled !== "true"
+            || isEmpty(getVerificationPendingAttributeValue(EMAIL_ATTRIBUTE))
+            || values.get(EMAIL_ATTRIBUTE) !== getVerificationPendingAttributeValue(EMAIL_ATTRIBUTE)) return;
+
+        values.delete(EMAIL_ATTRIBUTE);
+    };
+
+    /**
+     * Removes the mobile number from the form values if it is pending verification.
+     * This prevents unnecessary retriggering of the verification process.
+     * @param values - Form values.
+     */
+    const handleVerificationPendingMobile = (values: Map<string, string | string[]>): void => {
+        if (isMultipleEmailAndMobileNumberEnabled
+            || accountConfigSettings?.isMobileVerificationEnabled !== "true"
+            || isEmpty(getVerificationPendingAttributeValue(MOBILE_ATTRIBUTE))
+            || values.get(MOBILE_ATTRIBUTE) !== getVerificationPendingAttributeValue(MOBILE_ATTRIBUTE)) return;
+
+        values.delete(MOBILE_ATTRIBUTE);
     };
 
     const resolveFormField = (schema: ProfileSchemaInterface, fieldName: string, key: number): ReactElement => {
@@ -1236,10 +1429,411 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
         );
     };
 
+    /**
+     * The following method handles the `onSubmit` event of forms.
+     *
+     * @param values - submit values.
+     */
+    const handleSubmit = (values: Map<string, string | string[]>): void => {
+
+        const data: PatchRoleDataInterface = {
+            Operations: [],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        };
+
+        let operation: ScimOperationsInterface = {
+            op: "replace",
+            value: {}
+        };
+
+        if (isMultipleEmailAndMobileNumberEnabled) {
+            handlePrimaryEmailAndMobile(values);
+            handleVerifiedEmailAddresses(data);
+            handleVerifiedMobileNumbers(data);
+        } else {
+            handleVerificationPendingEmail(values);
+            handleVerificationPendingMobile(values);
+        }
+
+        if (adminUserType === AdminAccountTypes.INTERNAL) {
+            profileSchema.forEach((schema: ProfileSchemaInterface) => {
+                const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
+                const sharedProfileValueResolvingMethod: string = schema?.sharedProfileValueResolvingMethod;
+
+                if (resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA || (isUserManagedByParentOrg &&
+                    sharedProfileValueResolvingMethod == SharedProfileValueResolvingMethod.FROM_ORIGIN)) {
+                    return;
+                }
+                if (!isFieldDisplayable(schema)) return;
+
+                let opValue: OperationValueInterface = {};
+
+                const schemaNames: string[] = schema.name.split(".");
+
+                if (schema.name !== "roles.default") {
+                    if (values.get(schema.name) !== undefined && values.get(schema.name).toString() !== undefined) {
+
+                        if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0]) ||
+                            schemaNames[0] === "phoneNumbers") {
+
+                            const attributeValues: (string | string[] | SchemaAttributeValueInterface)[] = [];
+                            const attValues: Map<string, string | string []> = new Map();
+
+                            if (schemaNames.length === 1 || schemaNames.length === 2) {
+                                if (schema.extended) {
+                                    opValue = {
+                                        [schema.schemaId]: constructPatchOpValueForMultiValuedAttribute(
+                                            schema.name,
+                                            multiValuedAttributeValues[schema.name],
+                                            multiValuedInputFieldValue[schema.name]
+                                        )
+                                    };
+                                } else {
+                                    // Handle emails and phoneNumbers and their sub attributes.
+                                    // Extract the sub attributes from the form values.
+                                    for (const value of values.keys()) {
+                                        const subAttribute: string[] = value.split(".");
+
+                                        if (subAttribute[0] === schemaNames[0]) {
+                                            attValues.set(value, values.get(value));
+                                        }
+                                    }
+
+                                    for (const [ key, value ] of attValues) {
+                                        const attribute: string[] = key.split(".");
+
+                                        if (value && value !== "") {
+                                            if (attribute.length === 1) {
+                                                attributeValues.push(value);
+                                            } else {
+                                                attributeValues.push({
+                                                    type: attribute[1],
+                                                    value: value
+                                                });
+                                            }
+                                        }
+                                    }
+                                    opValue = {
+                                        [schemaNames[0]]: attributeValues
+                                    };
+                                }
+                            }
+                        } else {
+                            if (schemaNames.length === 1) {
+                                if (schema.extended) {
+                                    const schemaId: string = schema?.schemaId
+                                        ? schema.schemaId
+                                        : userExtensionConfig.userProfileSchema;
+
+                                    if (schema.name === "externalId") {
+                                        opValue = {
+                                            [schemaNames[0]]: values.get(schemaNames[0])
+                                        };
+                                    } else {
+                                        opValue = {
+                                            [schemaId]: {
+                                                [schemaNames[0]]: schema.type.toUpperCase() === "BOOLEAN" ?
+                                                    !!values.get(schema.name)?.includes(schema.name) :
+                                                    values.get(schemaNames[0])
+                                            }
+                                        };
+                                    }
+                                } else {
+                                    opValue = schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
+                                        .get("EMAILS")
+                                        ? { emails: [ values.get(schema.name) ] }
+                                        : schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
+                                            .get("LOCALE")
+                                            ? { [schemaNames[0]]: normalizeLocaleFormat(
+                                                values.get(schemaNames[0]) as string,
+                                                LocaleJoiningSymbol.UNDERSCORE,
+                                                false
+                                            ) }
+                                            : { [schemaNames[0]]: values.get(schemaNames[0]) };
+                                }
+                            } else {
+                                if (schema.extended && schema.multiValued) {
+                                    opValue = {
+                                        [schema.schemaId]: {
+                                            [schemaNames[0]]: constructPatchOpValueForMultiValuedAttribute(
+                                                schemaNames[1],
+                                                multiValuedAttributeValues[schema.name],
+                                                multiValuedInputFieldValue[schema.name]
+                                            )
+                                        }
+                                    };
+                                } else if (schema.extended) {
+                                    const schemaId: string = schema?.schemaId
+                                        ? schema.schemaId
+                                        : userExtensionConfig.userProfileSchema;
+
+                                    opValue = {
+                                        [schemaId]: {
+                                            [schemaNames[0]]: {
+                                                [schemaNames[1]]: schema.type.toUpperCase() === "BOOLEAN" ?
+                                                    !!values.get(schema.name)?.includes(schema.name) :
+                                                    values.get(schema.name)
+                                            }
+                                        }
+                                    };
+                                } else if (schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
+                                    .get("NAME")) {
+
+                                    if (values.get(schema.name) || values.get(schema.name) === "") {
+                                        opValue = {
+                                            name: { [schemaNames[1]]: values.get(schema.name) }
+                                        };
+                                    }
+                                } else {
+                                    if (schemaNames[0].includes("addresses")) {
+                                        if (schemaNames[0].split("#").length > 1) {
+                                            // Ex: addresses#home
+                                            const addressSchema: string = schemaNames[0]?.split("#")[0];
+                                            const addressType: string = schemaNames[0]?.split("#")[1];
+
+                                            opValue = {
+                                                [addressSchema]: [
+                                                    {
+                                                        type: addressType,
+                                                        [schemaNames[1]]: values.get(schema.name)
+                                                    }
+                                                ]
+                                            };
+                                        } else {
+                                            opValue = {
+                                                [schemaNames[0]]: [
+                                                    {
+                                                        formatted: values.get(schema.name),
+                                                        type: schemaNames[1]
+                                                    }
+                                                ]
+                                            };
+                                        }
+                                    } else if (schemaNames[0] !== "emails" && schemaNames[0] !== "phoneNumbers") {
+                                        opValue = {
+                                            [schemaNames[0]]: [
+                                                {
+                                                    type: schemaNames[1],
+                                                    value: schema.type.toUpperCase() === "BOOLEAN" ?
+                                                        !!values.get(schema.name)?.includes(schema.name) :
+                                                        values.get(schema.name)
+                                                }
+                                            ]
+                                        };
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                operation = {
+                    op: "replace",
+                    value: opValue
+                };
+                // This is required as the api doesn't support patching the address attributes at the
+                // sub attribute level using 'replace' operation.
+                if (schemaNames[0].includes("addresses")) {
+                    operation.op = "add";
+                }
+                data.Operations.push(operation);
+            });
+
+        } else {
+            profileSchema.forEach((schema: ProfileSchemaInterface) => {
+                const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
+
+                if (resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA) {
+                    return;
+                }
+
+                if (!isFieldDisplayable(schema)) return;
+
+                let opValue: OperationValueInterface = {};
+
+                const schemaNames: string[] = schema.name.split(".");
+
+                if (schema.name !== "roles.default") {
+                    if (values.get(schema.name) !== undefined && values.get(schema.name).toString() !== undefined) {
+                        if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0]) ||
+                            schemaNames[0] === "phoneNumbers") {
+
+                            const attributeValues: (string | string[] | SchemaAttributeValueInterface)[] = [];
+                            const attValues: Map<string, string | string []> = new Map();
+
+                            if (schemaNames.length === 1 || schemaNames.length === 2) {
+
+                                if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE
+                                    || schema.name == MOBILE_NUMBERS_ATTRIBUTE) {
+                                    opValue = {
+                                        [schema.schemaId]: constructPatchOpValueForMultiValuedAttribute(
+                                            schema.name,
+                                            multiValuedAttributeValues[schema.name],
+                                            multiValuedInputFieldValue[schema.name]
+                                        )
+                                    };
+                                } else {
+                                    // Extract the sub attributes from the form values.
+                                    for (const value of values.keys()) {
+                                        const subAttribute: string[] = value.split(".");
+
+                                        if (subAttribute[0] === schemaNames[0]) {
+                                            attValues.set(value, values.get(value));
+                                        }
+                                    }
+
+                                    for (const [ key, value ] of attValues) {
+                                        const attribute: string[] = key.split(".");
+
+                                        if (value && value !== "") {
+                                            if (attribute.length === 1) {
+                                                attributeValues.push(value);
+                                            } else {
+                                                attributeValues.push({
+                                                    type: attribute[1],
+                                                    value: value
+                                                });
+                                            }
+                                        }
+                                    }
+                                    opValue = {
+                                        [schemaNames[0]]: attributeValues
+                                    };
+                                }
+                            }
+                        } else {
+                            if (schemaNames.length === 1) {
+                                if (schema.extended) {
+                                    const schemaId: string = schema?.schemaId
+                                        ? schema.schemaId
+                                        : userExtensionConfig.userProfileSchema;
+
+                                    opValue = {
+                                        [schemaId]: {
+                                            [schemaNames[0]]: schema.type.toUpperCase() === "BOOLEAN" ?
+                                                !!values.get(schema.name)?.includes(schema.name) :
+                                                values.get(schemaNames[0])
+                                        }
+                                    };
+                                } else {
+                                    opValue = schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
+                                        .get("EMAILS")
+                                        ? { emails: [ values.get(schema.name) ] }
+                                        : schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
+                                            .get("LOCALE")
+                                            ? { [schemaNames[0]]: normalizeLocaleFormat(
+                                                values.get(schemaNames[0]) as string,
+                                                LocaleJoiningSymbol.UNDERSCORE,
+                                                false
+                                            ) }
+                                            : { [schemaNames[0]]: values.get(schemaNames[0]) };
+                                }
+                            } else {
+                                if(schema.extended) {
+                                    const schemaId: string = schema?.schemaId
+                                        ? schema.schemaId
+                                        : userExtensionConfig.userProfileSchema;
+
+                                    opValue = {
+                                        [schemaId]: {
+                                            [schemaNames[0]]: {
+                                                [schemaNames[1]]: schema.type.toUpperCase() === "BOOLEAN" ?
+                                                    !!values.get(schema.name)?.includes(schema.name) :
+                                                    values.get(schema.name)
+                                            }
+                                        }
+                                    };
+                                } else if (schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
+                                    .get("NAME")) {
+                                    opValue = {
+                                        name: { [schemaNames[1]]: values.get(schema.name) }
+                                    };
+                                } else {
+                                    if (schemaNames[0] === "addresses") {
+                                        opValue = {
+                                            [schemaNames[0]]: [
+                                                {
+                                                    formatted: values.get(schema.name),
+                                                    type: schemaNames[1]
+                                                }
+                                            ]
+                                        };
+                                    } else if (schemaNames[0] !== "emails" && schemaNames[0] !== "phoneNumbers") {
+                                        opValue = {
+                                            [schemaNames[0]]: [
+                                                {
+                                                    type: schemaNames[1],
+                                                    value: schema.type.toUpperCase() === "BOOLEAN" ?
+                                                        !!values.get(schema.name)?.includes(schema.name) :
+                                                        values.get(schema.name)
+                                                }
+                                            ]
+                                        };
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                operation = {
+                    op: "replace",
+                    value: opValue
+                };
+                // This is required as the api doesn't support patching the address attributes at the
+                // sub attribute level using 'replace' operation.
+                if (schemaNames[0] === "addresses") {
+                    operation.op = "add";
+                }
+                data.Operations.push(operation);
+            });
+        }
+
+        setIsUpdating(true);
+
+        updateUserInfo(profileData.id, data)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t(
+                        "user:profile.notifications.updateProfileInfo.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "user:profile.notifications.updateProfileInfo.success.message"
+                    )
+                }));
+
+                onUpdate(profileData.id);
+            })
+            .catch((error: AxiosError) => {
+                if (error?.response?.data?.detail || error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error?.response?.data?.detail || error?.response?.data?.description,
+                        level: AlertLevels.ERROR,
+                        message: t("user:profile.notifications.updateProfileInfo." +
+                            "error.message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("user:profile.notifications.updateProfileInfo." +
+                        "genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("user:profile.notifications.updateProfileInfo." +
+                        "genericError.message")
+                }));
+            })
+            .finally(() => {
+                setIsUpdating(false);
+            });
+    };
+
     return (
         <Forms
             data-testid={ `${ componentId }-form` }
-            onSubmit={ (values: Map<string, string | string[]>) => onSubmit(values) }
+            onSubmit={ (values: Map<string, string | string[]>) => handleSubmit(values) }
             onStaleChange={ (stale: boolean) => setIsFormStale(stale) }
         >
             <Grid className="user-profile-form form-container with-max-width">
