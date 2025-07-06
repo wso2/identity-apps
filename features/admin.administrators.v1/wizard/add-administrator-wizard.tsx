@@ -21,7 +21,7 @@ import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/co
 import {  UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
-import { updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
+import { updateRoleDetails, updateUsersForRole } from "@wso2is/admin.roles.v2/api/roles";
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { getUsersList, sendInvite } from "@wso2is/admin.users.v1/api";
@@ -97,6 +97,12 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
     const [ selectedUser, setSelectedUser ] = useState<UserBasicInterface>(null);
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
+
+    const enableSCIM2RoleAPIV3: boolean = useSelector(
+        (state: AppState) => state.config.ui.enableScim2RolesV3Api
+    );
+    const updateUsersForRoleFunction: (roleId: string, data: PatchRoleDataInterface) => Promise<any> =
+        enableSCIM2RoleAPIV3 ? updateUsersForRole : updateRoleDetails;
 
     /**
      * Retrieve the application data for the console application, filtering by name.
@@ -261,7 +267,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
             for (const roleId of roleIds) {
                 setIsSubmitting(true);
 
-                await updateRoleDetails(roleId, roleData)
+                await updateUsersForRoleFunction(roleId, roleData)
                     .catch((error: AxiosError) => {
                         if (!error.response || error.response.status === 401) {
                             setAlert({
@@ -344,7 +350,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
 
         setConfirmationModalLoading(true);
 
-        updateRoleDetails(adminRoleId, roleData)
+        updateUsersForRoleFunction(adminRoleId, roleData)
             .then(() => {
                 dispatch(addAlert({
                     description: t(

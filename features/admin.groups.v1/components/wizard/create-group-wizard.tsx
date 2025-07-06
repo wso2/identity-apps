@@ -25,7 +25,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
-import { updateRoleDetails } from "@wso2is/admin.roles.v2/api";
+import { updateRoleDetails, updateRoleDetailsUsingV3Api } from "@wso2is/admin.roles.v2/api";
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
 import { RoleConstants } from "@wso2is/admin.roles.v2/constants";
 import {
@@ -158,6 +158,13 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
     } = useApplicationList(null, null, null, "name eq Console");
 
     const consoleId: string = filteredApplicationList?.applications[0]?.id;
+
+    const enableScim2RolesV3Api: boolean = useSelector(
+        (state: AppState) => state.config.ui.enableScim2RolesV3Api
+    );
+
+    const roleUpdateFunction: (roleId: string, roleData: PatchRoleDataInterface) => Promise<AxiosResponse> =
+        enableScim2RolesV3Api ? updateRoleDetailsUsingV3Api : updateRoleDetails;
 
     const {
         data: fetchedRoleList,
@@ -322,7 +329,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
 
                 if (rolesList?.length > 0) {
                     Promise.all(rolesList.map((roleId: string) => {
-                        return updateRoleDetails(roleId, roleData);
+                        return roleUpdateFunction(roleId, roleData);
                     })).then(() => {
                         dispatch(
                             addAlert({

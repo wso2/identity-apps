@@ -48,13 +48,14 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps } from "semantic-ui-react";
 import { RenderChip } from "./edit-role-common/render-chip";
 import { RoleAPIResourcesListItem } from "./edit-role-common/role-api-resources-list-item";
-import { getAPIResourceDetailsBulk, updateRoleDetails, useAPIResourceDetails } from "../../api";
+import { getAPIResourceDetailsBulk, updateRoleDetails, useAPIResourceDetails, updateRoleDetailsUsingV3Api } from "../../api";
 import { RoleAudienceTypes, RoleConstants } from "../../constants/role-constants";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { APIResourceInterface, AuthorizedAPIListItemInterface, ScopeInterface } from "../../models/apiResources";
 import { PatchRoleDataInterface, PermissionUpdateInterface, SelectedPermissionsInterface } from "../../models/roles";
 
@@ -113,6 +114,13 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
             property?.name === RoleConstants.IS_SHARED_ROLE && property?.value === "true"), [ role ]);
     const shouldFetchAPIResources: boolean = role?.audience?.type?.
         toUpperCase() === RoleAudienceTypes.ORGANIZATION && !isSharedRole;
+
+    const enableScim2RolesV3Api: boolean = useSelector(
+        (state: AppState) => state.config.ui.enableScim2RolesV3Api
+    );
+
+    const updateRoleDetailsFunction: (roleId: string, roleData: PatchRoleDataInterface) => Promise<any> = 
+        enableScim2RolesV3Api ? updateRoleDetailsUsingV3Api : updateRoleDetails;
 
     const {
         data: currentAPIResourcesListData,
@@ -444,7 +452,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
-        updateRoleDetails(role?.id, roleData)
+        updateRoleDetailsFunction(role?.id, roleData)
             .then(() => {
                 onRoleUpdate(tabIndex);
                 handleAlerts({

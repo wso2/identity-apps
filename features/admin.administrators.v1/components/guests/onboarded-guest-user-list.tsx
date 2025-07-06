@@ -25,7 +25,7 @@ import { UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
-import { updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
+import { updateRoleDetails, updateUsersForRole } from "@wso2is/admin.roles.v2/api/roles";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1";
 import { deleteGuestUser } from "@wso2is/admin.users.v1/api";
@@ -198,6 +198,13 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
+    const enableSCIM2RoleAPIV3: boolean = useSelector(
+        (state: AppState) => state.config.ui.enableScim2RolesV3Api
+    );
+
+    const updateUsersForRoleFunction: (roleId: string, data: PatchRoleDataInterface) => Promise<any> =
+        enableSCIM2RoleAPIV3 ? updateUsersForRole : updateRoleDetails;
+
     /**
      * Set users list.
      */
@@ -264,11 +271,18 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                 });
         } else if (accountType === UserAccountTypes.CUSTOMER) {
             let pathValue: string;
+            let userId: string;
 
             if ("value" in user) {
-                pathValue = `users[value eq ${user?.value}]`;
+                userId = user?.value;
             } else if ("id" in user) {
-                pathValue = `users[value eq ${user?.id}]`;
+                userId = user?.id;
+            }
+
+            if (enableSCIM2RoleAPIV3) {
+                pathValue = `value eq ${userId}`;
+            } else {
+                pathValue = `users[value eq ${userId}]`;
             }
 
             // Payload for the update role request.
@@ -283,7 +297,7 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                 schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
             };
 
-            return updateRoleDetails(adminRoleId, roleData)
+            return updateUsersForRoleFunction(adminRoleId, roleData)
                 .then(() => {
                     dispatch(addAlert({
                         description: t("users:notifications.revokeAdmin.success.description"),

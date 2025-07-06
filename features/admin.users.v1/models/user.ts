@@ -343,7 +343,10 @@ export interface PayloadInterface {
             display: string;
             value: string;
           }[];
-        };
+        } | {
+            display: string;
+            value: string;
+        }[];
       }[];
       schemas: string[];
 }

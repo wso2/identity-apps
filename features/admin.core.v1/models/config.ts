@@ -230,6 +230,10 @@ export interface FeatureConfigInterface {
      */
     userRoles?: FeatureAccessConfigInterface;
     /**
+     * Entitlement configurations feature.
+     */
+    entitlement?: FeatureAccessConfigInterface;
+    /**
      * Secret Management Feature UI Access Scopes.
      */
     secretsManagement?: FeatureAccessConfigInterface;
@@ -453,6 +457,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Flag to check whether to enable the identity claims.
      */
     enableIdentityClaims?: boolean;
+    /**
+     * Flag to check whether to use the SCIM2 Roles V3 API in console.
+     */
+    enableScim2RolesV3Api?: boolean;
     /**
      * Flag to check whether email as a username feature is enabled.
      */
