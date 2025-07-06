@@ -2046,6 +2046,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             (value: Record<string, string>) => setMultiValuedInputFieldValue(value) }
                         primaryValues={ primaryValues }
                         setPrimaryValues={ (values: Record<string, string>) => setPrimaryValues(values) }
+                        data-componentid={ testId }
                     />
                 </EmphasizedSegment>
                 <Divider hidden />
