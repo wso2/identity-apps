@@ -510,3 +510,81 @@ export const getFederatedAuthenticatorsList = (): Promise<FederatedAuthenticator
             return Promise.reject(error);
         });
 };
+
+/**
+ * Get system defined local authenticators.
+ *
+ * @param authenticatorId - ID of the Authenticator.
+ * @returns A promise containing the response.
+ */
+export const getSystemDefinedLocalAuthenticator = (authenticatorId: string): Promise<any> => {
+
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${ store.getState().config.endpoints.authenticators }/system/${ authenticatorId }`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse<MultiFactorAuthenticatorInterface>) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    ConnectionUIConstants.ERROR_MESSAGES.SYSTEM_DEFINED_LOCAL_AUTHENTICATOR_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data as ConnectionInterface);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ConnectionUIConstants.ERROR_MESSAGES.SYSTEM_DEFINED_LOCAL_AUTHENTICATOR_FETCH_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Update a system defined local authenticator.
+ *
+ * @param authenticator - Authenticator.
+ * @returns A promise containing the response.
+ */
+export const updateSystemDefinedLocalAuthenticator = (
+    authenticatorId: string,
+    amrValue: string,
+): Promise<any> => {
+
+
+    const requestConfig: RequestConfigInterface = {
+        data: {
+            amrValue: amrValue
+        },
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: store.getState().config.endpoints.authenticators + "/system/" +authenticatorId
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to update connection"));
+            }
+
+            return Promise.resolve(response.data as ConnectionInterface);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
