@@ -21,10 +21,9 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
-import { store } from "@wso2is/admin.core.v1/store";
-import { useSelector } from "react-redux";
-import { AppState } from "@wso2is/admin.core.v1/store";
+import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods, RoleListInterface } from "@wso2is/core/models";
+import { useSelector } from "react-redux";
 
 /**
  * Hook to retrieve the list of roles.
