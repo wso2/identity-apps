@@ -1,5 +1,14 @@
 # @wso2is/admin.organizations.v1
 
+## 2.26.207
+
+### Patch Changes
+
+- [#8468](https://github.com/wso2/identity-apps/pull/8468) [`8813a54e1329989eec28a10b21678bfdb0e6d11d`](https://github.com/wso2/identity-apps/commit/8813a54e1329989eec28a10b21678bfdb0e6d11d) Thanks [@ModithaM](https://github.com/ModithaM)! - Fix UI inconsistency in the Edit Organization view of Sub Orgs
+
+- Updated dependencies [[`31252dcffe38616bb43dd605174e200f130242e0`](https://github.com/wso2/identity-apps/commit/31252dcffe38616bb43dd605174e200f130242e0)]:
+  - @wso2is/admin.applications.v1@2.36.6
+
 ## 2.26.206
 
 ### Patch Changes
