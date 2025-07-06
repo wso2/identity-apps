@@ -317,6 +317,8 @@ export class I18nConstants {
     public static readonly APPROVAL_WORKFLOWS_NAMESPACE: string =
         I18nModuleConstants.APPROVAL_WORKFLOWS_NAMESPACE;
 
+    public static readonly AGENTS_NAMESPACE: string = I18nModuleConstants.AGENTS_NAMESPACE
+
     /**
      * Locations of the I18n namespaces.
      */
