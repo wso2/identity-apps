@@ -107,7 +107,7 @@ const FlowList: FunctionComponent<FlowListProps> = ({
             case FlowTypes.PASSWORD_RECOVERY:
                 return "Password Recovery";
             case FlowTypes.INVITE_USER_PASSWORD_SETUP:
-                return "Invite User Password Setup";
+                return "Invite User Registration";
             default:
                 return "Unknown Flow Type";
         }
