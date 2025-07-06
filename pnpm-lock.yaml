@@ -513,7 +513,7 @@ importers:
         specifier: ^1.5.5
         version: link:../../features/admin.application-templates.v1
       '@wso2is/admin.applications.v1':
-        specifier: ^2.36.5
+        specifier: ^2.36.6
         version: link:../../features/admin.applications.v1
       '@wso2is/admin.approval-workflows.v1':
         specifier: ^1.0.4
@@ -585,7 +585,7 @@ importers:
         specifier: ^2.25.205
         version: link:../../features/admin.organization-discovery.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.26.206
+        specifier: ^2.26.207
         version: link:../../features/admin.organizations.v1
       '@wso2is/admin.policy-administration.v1':
         specifier: ^1.0.121
@@ -2662,7 +2662,7 @@ importers:
         specifier: ^2.25.204
         version: link:../admin.oidc-scopes.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.26.206
+        specifier: ^2.26.207
         version: link:../admin.organizations.v1
       '@wso2is/admin.roles.v2':
         specifier: ^2.27.154
@@ -12287,7 +12287,7 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.applications.v1':
-        specifier: ^2.36.1
+        specifier: ^2.36.6
         version: link:../admin.applications.v1
       '@wso2is/admin.authentication.v1':
         specifier: ^2.25.203
