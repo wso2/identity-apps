@@ -78,19 +78,17 @@ interface UserProfileFormPropsInterface extends IdentifiableComponentInterface {
     onSubmit: (values: Map<string, string | string[]>) => void;
     onUserUpdate: (userId: string) => void;
     isUpdating: boolean;
-    /**
-     * Admin user type
-     */
     adminUserType?: string;
-    /**
-     * Is user managed by parent organization.
-     */
     isUserManagedByParentOrg?: boolean;
     setIsUpdating: (isUpdating: boolean) => void;
     accountConfigSettings: AccountConfigSettingsInterface;
     duplicatedUserClaims: ExternalClaim[];
+    multiValuedAttributeValues: Record<string, string[]>;
+    setMultiValuedAttributeValues: (multiValuedAttributeValues: Record<string, string[]>) => void;
     multiValuedInputFieldValue: Record<string, string>;
     setMultiValuedInputFieldValue: (multiValuedInputFieldValue: Record<string, string>) => void;
+    primaryValues: Record<string, string>;
+    setPrimaryValues: (primaryValues: Record<string, string>) => void;
 }
 
 const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
@@ -107,8 +105,12 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
         onUserUpdate,
         accountConfigSettings,
         duplicatedUserClaims,
+        multiValuedAttributeValues,
+        setMultiValuedAttributeValues,
         multiValuedInputFieldValue,
         setMultiValuedInputFieldValue,
+        primaryValues,
+        setPrimaryValues,
         ["data-componentid"]: componentId = "user-profile-form"
     }: UserProfileFormPropsInterface
 ): ReactElement => {
@@ -125,9 +127,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ isFormStale, setIsFormStale ] = useState<boolean>(false);
-    const [ multiValuedAttributeValues, setMultiValuedAttributeValues ] = useState<Record<string, string[]>>({});
     const [ isMultiValuedItemInvalid, setIsMultiValuedItemInvalid ] =  useState<Record<string, boolean>>({});
-    const [ primaryValues, setPrimaryValues ] = useState<Record<string, string>>({});
 
     const isDistinctAttributeProfilesFeatureEnabled: boolean = isFeatureEnabled(featureConfig?.attributeDialects,
         ClaimManagementConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG);
@@ -223,24 +223,24 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
         const filteredValues: string[] =
             multiValuedAttributeValues[schema?.name]?.filter((value: string) => value !== attributeValue) || [];
 
-        setMultiValuedAttributeValues((prevValues: Record<string, string[]>) => ({
-            ...prevValues,
+        setMultiValuedAttributeValues({
+            ...multiValuedAttributeValues,
             [schema.name]: filteredValues
-        }));
+        });
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             if (primaryValues[EMAIL_ATTRIBUTE] === attributeValue) {
-                setPrimaryValues((prevPrimaryValues: Record<string, string>) => ({
-                    ...prevPrimaryValues,
+                setPrimaryValues({
+                    ...primaryValues,
                     [EMAIL_ATTRIBUTE]: ""
-                }));
+                });
             }
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             if (primaryValues[MOBILE_ATTRIBUTE] === attributeValue) {
-                setPrimaryValues((prevPrimaryValues: Record<string, string>) => ({
-                    ...prevPrimaryValues,
+                setPrimaryValues({
+                    ...primaryValues,
                     [MOBILE_ATTRIBUTE]: ""
-                }));
+                });
             }
         }
 
@@ -337,10 +337,10 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
      */
     const handleMakePrimary = (schemaName: string, attributeValue: string) => {
 
-        setPrimaryValues((prevPrimaryValues: Record<string, string>) => ({
-            ...prevPrimaryValues,
+        setPrimaryValues({
+            ...primaryValues,
             [schemaName]: attributeValue
-        }));
+        });
         setIsFormStale(true);
     };
 
@@ -354,17 +354,17 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
 
         if (isEmpty(attributeValue)) return;
 
-        setMultiValuedAttributeValues((prevValues: Record<string, string[]>) => ({
-            ...prevValues,
-            [schema.name]: [ ...(prevValues[schema.name] || []), attributeValue ]
-        }));
+        setMultiValuedAttributeValues({
+            ...multiValuedAttributeValues,
+            [schema.name]: [ ...(multiValuedAttributeValues[schema.name] || []), attributeValue ]
+        });
 
         const updatePrimaryValue = (primaryKey: string) => {
             if (isEmpty(primaryValues[primaryKey])) {
-                setPrimaryValues((prevPrimaryValues: Record<string, string>) => ({
-                    ...prevPrimaryValues,
+                setPrimaryValues({
+                    ...primaryValues,
                     [primaryKey]: attributeValue
-                }));
+                });
             }
         };
 

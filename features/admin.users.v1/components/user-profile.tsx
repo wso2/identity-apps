@@ -2038,8 +2038,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         onUserUpdate={ handleUserUpdate }
                         accountConfigSettings={ configSettings }
                         duplicatedUserClaims={ duplicatedUserClaims }
+                        multiValuedAttributeValues={ multiValuedAttributeValues }
+                        setMultiValuedAttributeValues={
+                            (values: Record<string, string[]>) => setMultiValuedAttributeValues(values) }
                         multiValuedInputFieldValue={ multiValuedInputFieldValue }
-                        setMultiValuedInputFieldValue={ setMultiValuedInputFieldValue }
+                        setMultiValuedInputFieldValue={
+                            (value: Record<string, string>) => setMultiValuedInputFieldValue(value) }
+                        primaryValues={ primaryValues }
+                        setPrimaryValues={ (values: Record<string, string>) => setPrimaryValues(values) }
                     />
                 </EmphasizedSegment>
                 <Divider hidden />
