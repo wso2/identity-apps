@@ -123,6 +123,10 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
         data: RuleExpressionsMetaData
     } = useGetRulesMeta(actionTypeApiPath, showRuleComponent);
 
+    // TODO: Temporary flag to show/hide the allowedHeaders and allowedParameters section.
+    const showHeadersAndParams: boolean = isFeatureEnabled(
+        actionsFeatureConfig, ActionsConstants.FEATURE_DICTIONARY.get("PRE_UPDATE_PASSWORD_HEADERS_AND_PARAMS"));
+
     /**
      * This sets the the current Action Authentication Type.
      */
@@ -302,7 +306,9 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                     onAuthenticationTypeChange={ (updatedValue: AuthenticationType, change: boolean) => {
                         setAuthenticationType(updatedValue);
                         setIsAuthenticationUpdateFormState(change);
-                    } } />
+                    } }
+                    showHeadersAndParams={ showHeadersAndParams }
+                />
                 <Divider className="divider-container" />
                 <Typography variant="h6" className="heading-container" >
                     { t("actions:fields.userAttributes.heading") }

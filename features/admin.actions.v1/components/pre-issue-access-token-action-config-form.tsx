@@ -116,6 +116,9 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
     // TODO: Temporary flag to show/hide the rule component.
     const showRuleComponent: boolean = isFeatureEnabled(
         actionsFeatureConfig, ActionsConstants.FEATURE_DICTIONARY.get("PRE_ISSUE_ACCESS_TOKEN_RULE"));
+    // TODO: Temporary flag to show/hide the allowedHeaders and allowedParameters section.
+    const showHeadersAndParams: boolean = isFeatureEnabled(
+        actionsFeatureConfig, ActionsConstants.FEATURE_DICTIONARY.get("PRE_ISSUE_ACCESS_TOKEN_HEADERS_AND_PARAMS"));
 
     /**
      * The following useEffect is used to set the current Action Authentication Type.
@@ -197,6 +200,8 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
         if (isCreateFormState) {
             const actionValues: ActionInterface = {
                 endpoint: {
+                    allowedHeaders: values?.allowedHeaders,
+                    allowedParameters: values?.allowedParameters,
                     authentication: {
                         properties: authProperties,
                         type: values.authenticationType as AuthenticationType
@@ -222,13 +227,19 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
         } else {
             // Updating the action
             const updatingValues: ActionUpdateInterface = {
-                endpoint: isAuthenticationUpdateFormState || changedFields?.endpointUri ? {
-                    authentication: isAuthenticationUpdateFormState ? {
-                        properties: authProperties,
-                        type: values.authenticationType as AuthenticationType
+                endpoint: isAuthenticationUpdateFormState ||
+                changedFields?.endpointUri ||
+                changedFields?.allowedHeaders ||
+                changedFields?.allowedParameters
+                    ? {
+                        allowedHeaders: changedFields?.allowedHeaders ? values.allowedHeaders : undefined,
+                        allowedParameters: changedFields?.allowedParameters ? values.allowedParameters : undefined,
+                        authentication: isAuthenticationUpdateFormState ? {
+                            properties: authProperties,
+                            type: values.authenticationType as AuthenticationType
+                        } : undefined,
+                        uri: changedFields?.endpointUri ? values.endpointUri : undefined
                     } : undefined,
-                    uri: changedFields?.endpointUri ? values.endpointUri : undefined
-                } : undefined,
                 name: changedFields?.name ? values.name : undefined,
                 ...(payloadRule !== null && { rule: payloadRule })
             };
@@ -264,7 +275,9 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                     onAuthenticationTypeChange={ (updatedValue: AuthenticationType, change: boolean) => {
                         setAuthenticationType(updatedValue);
                         setIsAuthenticationUpdateFormState(change);
-                    } }/>
+                    } }
+                    showHeadersAndParams={ showHeadersAndParams }
+                />
                 { (RuleExpressionsMetaData && showRuleComponent) && (
                     <RuleConfigForm
                         readonly={ isReadOnly }
