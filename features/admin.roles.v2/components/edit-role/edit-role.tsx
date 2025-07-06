@@ -27,6 +27,7 @@ import {
     RolesInterface,
     SBACInterface
 } from "@wso2is/core/models";
+import { AuthenticateUtils } from "@wso2is/core/utils";
 import { ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -88,10 +89,6 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
         (state: AppState) => state?.config?.ui?.features?.entitlement);
     const rolesV3featureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRolesV3);
-    const entitlementUserRolesFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.entitlementUsersOfRole);
-    const entitlementGroupsFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.entitlementGroupsOfRole);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const administratorRoleDisplayName: string = useSelector(
         (state: AppState) => state?.config?.ui?.administratorRoleDisplayName);
@@ -129,9 +126,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
         if (enableScim2RolesV3Api) {
             return !isFeatureEnabled(featureConfig,
                 LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE"))
-            || !hasRequiredScopes(entitlementGroupsFeatureConfig,
-                entitlementGroupsFeatureConfig?.scopes?.feature,
-                allowedScopes)
+            || !AuthenticateUtils.hasScope("internal_role_mgt_groups_update", allowedScopes)
             || roleObject?.meta?.systemRole;
         }
 
@@ -141,14 +136,13 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 featureConfig?.scopes?.update,
                 allowedScopes)
             || roleObject?.meta?.systemRole;
-    }, [ enableScim2RolesV3Api, entitlementGroupsFeatureConfig, featureConfig, allowedScopes, roleObject ]);
+    }, [ enableScim2RolesV3Api, featureConfig, allowedScopes, roleObject ]);
 
     const isUserReadOnly: boolean = useMemo(() => {
         if (enableScim2RolesV3Api) {
             return !isFeatureEnabled(featureConfig,
                 LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE")) ||
-                !hasRequiredScopes(entitlementUserRolesFeatureConfig,
-                    entitlementUserRolesFeatureConfig?.scopes?.feature, allowedScopes);
+                !AuthenticateUtils.hasScope("internal_role_mgt_users_update", allowedScopes);
         }
 
         return isReadOnly || !isFeatureEnabled(usersFeatureConfig,
@@ -157,7 +151,6 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 usersFeatureConfig?.scopes?.update, allowedScopes);
     }, [
         enableScim2RolesV3Api,
-        entitlementUserRolesFeatureConfig,
         featureConfig,
         allowedScopes,
         isReadOnly,
