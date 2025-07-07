@@ -48,6 +48,7 @@ export interface NewFeatureAnnouncementProps extends IdentifiableComponentInterf
     isEnabled: boolean;
     isEnabledStatusLoading: boolean;
     onTryOut: any;
+    illustration: any;
 }
 
 /**
@@ -63,6 +64,7 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
     isEnabled,
     isEnabledStatusLoading,
     onTryOut,
+    illustration,
     ...rest
 }: NewFeatureAnnouncementProps): ReactElement => {
     const { t } = useTranslation();
@@ -96,9 +98,7 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
                     backgroundImage: `url(${BackgroundBlob})`
                 } }
             ></Box>
-            <Box className="login-box">
-                <SignUpBox />
-            </Box>
+            { illustration }
             <Box className="new-feature-announcement-actions">
                 { isEnabled ? (
                     <Button
@@ -125,7 +125,7 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
     );
 };
 
-const AUTO_SLIDE_INTERVAL = 5000;
+const AUTO_SLIDE_INTERVAL: number = 5000;
 
 export const FeatureCarousel = () => {
     const [ currentIndex, setCurrentIndex ] = useState(0);
@@ -154,6 +154,9 @@ export const FeatureCarousel = () => {
                     new AI-powered visual designer <AIText />
                 </>
             ),
+            illustration: <Box className="login-box">
+                <SignUpBox />
+            </Box>,
             isEnabled: isNewRegistrationPortalEnabled,
             isEnabledStatusLoading: isNewRegistrationPortalEnabledRequestLoading,
             onTryOut: () => {
@@ -186,11 +189,10 @@ export const FeatureCarousel = () => {
     return (
         <div
             style={ {
-                height: "200px", // <-- Adjust height based on your banner height
+                height: "200px",
                 overflow: "hidden",
                 position: "relative",
-                width: "100%",
-
+                width: "100%"
             } }
         >
             <AnimatePresence custom={ direction } mode="wait">
@@ -214,6 +216,7 @@ export const FeatureCarousel = () => {
                     <NewFeatureAnnouncement
                         title={ features[currentIndex]?.title }
                         description={ features[currentIndex]?.description }
+                        illustration={ features[currentIndex]?.illustration }
                         isEnabled={ features[currentIndex]?.isEnabled }
                         isEnabledStatusLoading={ features[currentIndex]?.isEnabledStatusLoading }
                         onTryOut={ features[currentIndex]?.onTryOut }
@@ -223,8 +226,5 @@ export const FeatureCarousel = () => {
         </div>
     );
 };
-
-
-
 
 export default NewFeatureAnnouncement;
