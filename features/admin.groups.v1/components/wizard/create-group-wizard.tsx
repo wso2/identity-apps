@@ -25,7 +25,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
-import { updateRoleDetails, updateRoleDetailsUsingV3Api } from "@wso2is/admin.roles.v2/api";
+import { assignGroupstoRoles, updateRoleDetails } from "@wso2is/admin.roles.v2/api";
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
 import { RoleConstants } from "@wso2is/admin.roles.v2/constants";
 import {
@@ -164,7 +164,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
     );
 
     const roleUpdateFunction: (roleId: string, roleData: PatchRoleDataInterface) => Promise<AxiosResponse> =
-        enableScim2RolesV3Api ? updateRoleDetailsUsingV3Api : updateRoleDetails;
+        enableScim2RolesV3Api ? assignGroupstoRoles : updateRoleDetails;
 
     const {
         data: fetchedRoleList,
@@ -317,12 +317,17 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
                 const roleData: PatchRoleDataInterface = {
                     "Operations": [ {
                         "op": "add",
-                        "value": {
-                            "groups": [ {
+                        "value": enableScim2RolesV3Api
+                            ? [ {
                                 "display": createdGroup.displayName,
                                 "value": createdGroup.id
                             } ]
-                        }
+                            : {
+                                "groups": [ {
+                                    "display": createdGroup.displayName,
+                                    "value": createdGroup.id
+                                } ]
+                            }
                     } ],
                     "schemas": [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
                 };

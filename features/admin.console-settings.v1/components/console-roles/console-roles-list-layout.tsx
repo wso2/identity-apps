@@ -83,6 +83,14 @@ const ConsoleRolesListLayout: FunctionComponent<ConsoleRolesListLayoutPropsInter
     const { t } = useTranslation();
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
+    const enableScim2RolesV3Api: boolean = useSelector(
+        (state: AppState) => state.config.ui.enableScim2RolesV3Api
+    );
+
+    const userRolesV3FeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3
+    );
+
     const consoleSettingsFeatureConfig : FeatureAccessConfigInterface =
         useSelector((state: AppState) => state.config.ui.features.consoleSettings);
     const isConsoleRolesEditable: boolean = !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
@@ -206,7 +214,13 @@ const ConsoleRolesListLayout: FunctionComponent<ConsoleRolesListLayoutPropsInter
                 !isSubOrganization() &&
                 isConsoleRolesEditable &&
                 (
-                    <Show when={ featureConfig?.userRoles?.scopes?.create }>
+                    <Show
+                        when={
+                            enableScim2RolesV3Api
+                                ? userRolesV3FeatureConfig?.scopes?.create
+                                : featureConfig?.userRoles?.scopes?.create
+                        }
+                    >
                         <PrimaryButton
                             data-componentid={ `${componentId}-add-button` }
                             onClick={ () => onRoleCreate() }
