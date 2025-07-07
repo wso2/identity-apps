@@ -17,13 +17,13 @@
  */
 
 /**
- * Interface for the Registration Flow Builder feature resource endpoints.
+ * Interface for the Password Recovery Flow Builder feature resource endpoints.
  */
-export interface RegistrationFlowBuilderResourceEndpointsInterface {
+export interface PasswordRecoveryFlowBuilderResourceEndpointsInterface {
     /**
-     * API to configure the GET/UPDATE registration flow.
-     * @example `https://{serverUrl}/t/{tenantDomain}/api/server/v1/registration-flow`
+     * API to configure the GET/UPDATE password recovery flow.
+     * @example `https://{serverUrl}/t/{tenantDomain}/api/server/v1/password-recovery-flow`
     */
-    registrationFlow: string;
-    registrationFlowAI: string;
+    passwordRecoveryFlow: string;
+    passwordRecoveryFlowAI: string;
 }

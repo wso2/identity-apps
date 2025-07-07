@@ -130,7 +130,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
     const INITIAL_FLOW_START_STEP_ID: string = StaticStepTypes.Start.toLowerCase();
     const INITIAL_FLOW_VIEW_STEP_ID: string = generateResourceId(StepTypes.View.toLowerCase());
-    const INITIAL_FLOW_USER_ONBOARD_STEP_ID: string = StaticStepTypes.UserOnboard;
+    const INITIAL_FLOW_USER_ONBOARD_STEP_ID: string = StaticStepTypes.End;
     const SAMPLE_PROMPTS: string[] = [
         "Ask the user to supply an email address and choose a strong password to begin the sign-up.",
         "Prompt for a unique username and password, ensuring the password meets basic complexity rules.",
@@ -311,9 +311,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         const nodeIds: Set<string> = new Set(nodes.map((node: Node) => node.id));
 
         return edges.filter((edge: Edge) => {
-            if (!nodeIds.has(edge.source) || !nodeIds.has(edge.target)) {
-                return false;
-            }
+            // if (!nodeIds.has(edge.source) || !nodeIds.has(edge.target)) {
+            //     return false;
+            // }
 
             return true;
         });
@@ -326,7 +326,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         const stepIds = steps.map(step => step.id);
 
         // Find the user onboard step
-        const userOnboardStep = steps.find(step => step.type === StaticStepTypes.UserOnboard);
+        const userOnboardStep = steps.find(step => step.type === StaticStepTypes.End);
 
         // Get the ID of the user onboard step or use the default one
         const userOnboardStepId = userOnboardStep?.id || INITIAL_FLOW_USER_ONBOARD_STEP_ID;
@@ -380,7 +380,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                     if (button.action.next === userOnboardStepId) {
                         userOnboardEdgeCreated = true;
                     }
-                } else if (button.action.next === StaticStepTypes.UserOnboard) {
+                } else if (button.action.next === StaticStepTypes.End) {
                     // If next references a user onboard ID that's not in the steps
                     // but follows the naming pattern, connect to our actual user onboard step
                     edges.push({
@@ -419,7 +419,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         // Create edges based on the action configuration in each step
         steps.forEach((step: Step) => {
             // Skip processing for the user onboard step itself
-            if (step.type === StaticStepTypes.UserOnboard) {
+            if (step.type === StaticStepTypes.End) {
                 return;
             }
 
@@ -463,7 +463,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                     if (step.data.action.next === userOnboardStepId) {
                         userOnboardEdgeCreated = true;
                     }
-                } else if (step.data.action.next === StaticStepTypes.UserOnboard) {
+                } else if (step.data.action.next === StaticStepTypes.End) {
                     // If next references a user onboard ID that's not in the steps
                     // but follows the naming pattern, connect to our actual user onboard step
                     edges.push({
@@ -549,7 +549,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 deletable: false,
                 id: INITIAL_FLOW_USER_ONBOARD_STEP_ID,
                 position: { x: 500, y: 408 },
-                type: StaticStepTypes.UserOnboard
+                type: StaticStepTypes.End
             }
         ]);
     }, [ initialTemplateComponents, generateSteps ]);

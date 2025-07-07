@@ -22,4 +22,4 @@ export enum ExtendedActionTypes {
     Executor = "EXECUTOR",
 }
 
-export type RegistrationFlowActionTypes = ActionTypes | ExtendedActionTypes;
+export type FlowActionTypes = ActionTypes | ExtendedActionTypes;

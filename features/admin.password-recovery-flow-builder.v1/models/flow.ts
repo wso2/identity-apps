@@ -19,11 +19,11 @@
 import { Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 
 /**
- * Interface for a registration flow API schema.
+ * Interface for a password recovery flow API schema.
  */
-export interface RegistrationFlow {
+export interface PasswordRecoveryFlow {
     /**
-     * Steps of the registration flow.
+     * Steps of the password recovery flow.
      */
     steps: step[];
 }

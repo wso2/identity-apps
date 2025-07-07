@@ -137,10 +137,10 @@ const transformFlow = (flowState: any) => {
     });
 
     // TODO: Temp move the `UserOnboard` step to the last of the steps array.
-    const userOnboardStep: Step = payload.steps.find((step: Step) => step.type === StaticStepTypes.UserOnboard);
+    const userOnboardStep: Step = payload.steps.find((step: Step) => step.type === StaticStepTypes.End);
 
     if (userOnboardStep) {
-        payload.steps = payload.steps.filter((step: Step) => step.type !== StaticStepTypes.UserOnboard);
+        payload.steps = payload.steps.filter((step: Step) => step.type !== StaticStepTypes.End);
         payload.steps.push(userOnboardStep);
     }
 
