@@ -26,7 +26,7 @@ import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import merge from "lodash-es/merge";
 import set from "lodash-es/set";
-import React, { FunctionComponent, ReactElement, useEffect } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import ResourcePropertyPanelConstants from "../../constants/resource-property-panel-constants";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import { Properties } from "../../models/base";
@@ -78,14 +78,17 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
         lastInteractedStepId
     } = useAuthenticationFlowBuilderCore();
 
-    const [ filteredProperties, setFilteredProperties ] = React.useState<Properties>({});
-    const [ loading, setLoading ] = React.useState<boolean>(true);
+    const [ filteredProperties, setFilteredProperties ] = useState<Properties>({});
+    const [ triggerPropertyFilter, setTriggerPropertyFilter ] = useState<boolean>(true);
 
     /**
      * Resolves the properties of the last interacted resource.
      */
     useEffect(() => {
-        setLoading(true);
+        if (!lastInteractedResource || !triggerPropertyFilter) {
+            return;
+        }
+
         const filteredProperties: Properties = Object.keys(lastInteractedResource?.config || {}).reduce(
             (acc: Properties, key: string) => {
                 if (!ResourcePropertyPanelConstants.EXCLUDED_PROPERTIES.includes(key)) {
@@ -97,13 +100,13 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
             {} as Properties
         );
 
-        PluginRegistry.getInstance().execute(EventTypes.ON_PROPERTY_PANEL_OPEN,
+        PluginRegistry.getInstance().executeAsync(EventTypes.ON_PROPERTY_PANEL_OPEN,
             lastInteractedResource, filteredProperties)
             .finally(() => {
                 setFilteredProperties(filteredProperties);
-                setLoading(false);
+                setTriggerPropertyFilter(false);
             });
-    }, [ lastInteractedResource ]);
+    }, [ lastInteractedResource, triggerPropertyFilter ]);
 
     const changeSelectedVariant = (selected: string, element?: Partial<Element>) => {
         let selectedVariant: Element = lastInteractedResource?.variants?.find(
@@ -142,9 +145,11 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
     const handlePropertyChange = async (propertyKey: string, newValue: any, element: Element) => {
 
         // Execute plugins for ON_PROPERTY_CHANGE event.
-        if (!await PluginRegistry.getInstance().execute(
-            EventTypes.ON_PROPERTY_CHANGE, propertyKey, newValue, element
+        if (!await PluginRegistry.getInstance().executeAsync(
+            EventTypes.ON_PROPERTY_CHANGE, propertyKey, newValue, element, lastInteractedStepId
         )) {
+            setTriggerPropertyFilter(true);
+
             return;
         }
 
@@ -178,7 +183,7 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
     return (
         <div className="flow-builder-element-properties" data-componentid={ componentId }>
             { lastInteractedResource ? (
-                !loading ? (
+                !triggerPropertyFilter ? (
                     <Stack gap={ 1 }>
                         <ResourceProperties
                             resource={ cloneDeep(lastInteractedResource) }

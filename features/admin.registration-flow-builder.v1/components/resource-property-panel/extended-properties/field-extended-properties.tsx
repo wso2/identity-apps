@@ -55,29 +55,7 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
     }, [ resource.config.identifier, attributes ]);
 
     if (resource.variant === InputVariants.Password) {
-        return (
-            <FormControlLabel
-                control={
-                    (<Checkbox
-                        defaultChecked={
-                            resource?.config?.identifier ===
-                            FlowBuilderElementConstants.CONFIRM_PASSWORD_IDENTIFIER
-                        }
-                    />)
-                }
-                label="Confirmation"
-                onChange={ (e: ChangeEvent<HTMLInputElement>) =>
-                    onChange(
-                        "config.identifier",
-                        e.target.checked
-                            ? FlowBuilderElementConstants.CONFIRM_PASSWORD_IDENTIFIER
-                            : FlowBuilderElementConstants.PASSWORD_IDENTIFIER,
-                        resource
-                    )
-                }
-                data-componentid={ `${componentId}-confirm-password` }
-            />
-        );
+        return null;
     }
 
     return (

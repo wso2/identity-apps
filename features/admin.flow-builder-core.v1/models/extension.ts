@@ -43,5 +43,9 @@ export enum EventTypes {
     /**
      * Event triggered when a property is changed.
      */
-    ON_PROPERTY_CHANGE = "onPropertyChange"
+    ON_PROPERTY_CHANGE = "onPropertyChange",
+    /**
+     * Event triggered when a node element is rendered.
+     */
+    ON_NODE_ELEMENT_RENDER = "onNodeElementRender"
 }
