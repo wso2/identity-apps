@@ -37,6 +37,7 @@ import React, {
     SetStateAction,
     SyntheticEvent,
     useEffect,
+    useMemo,
     useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -46,6 +47,7 @@ import useGetApplicationShare from "../../api/use-get-application-share";
 import { ApplicationInterface } from "../../models/application";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
+import CircularProgress from "@oxygen-ui/react/CircularProgress";
 
 interface OrgSelectiveShareWithAllRolesProps extends IdentifiableComponentInterface {
     application: ApplicationInterface;
@@ -82,10 +84,6 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
 
     const { isOrganizationManagementEnabled } = useGlobalVariables();
 
-    const [ selectedOrgId, setSelectedOrgId ] = useState<string>();
-    const [ resolvedOrgs, setResolvedOrgs ] = useState<string[]>([]);
-    // This will store the shared organization tree of the application with the roles.
-    const [ applicationOrganizationTree, setApplicationOrganizationTree ] = useState<TreeViewBaseItemWithRoles[]>([]);
     // This will store the organization tree of the current organization.
     const [ organizationTree, setOrganizationTree ] = useState<TreeViewBaseItemWithRoles[]>([]);
     // This will store the flat map of organizations to easily access them by ID.
@@ -93,21 +91,9 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
     const [ isNextPageAvailable, setIsNextPageAvailable ] = useState<boolean>(false);
     const [ nextPageLink, setNextPageLink ] = useState<string>();
     const [ afterCursor, setAfterCursor ] = useState<string>();
-
-
-    const {
-        data: originalTopLevelApplicationOrganizationTree,
-        isLoading: isTopLevelApplicationOrganizationTreeFetchRequestLoading,
-        error:  originalTopLevelApplicationOrganizationTreeFetchRequestError
-    } = useGetApplicationShare(
-        application?.id,
-        !isEmpty(application?.id) &&
-        !isEmpty(organizationId),
-        false,
-        `parentId eq '${ organizationId }'`,
-        null,
-        100
-    );
+    const [ expandedOrgId, setExpandedOrgId ] = useState<string>();
+    const [ resolvedOrgs, setResolvedOrgs ] = useState<string[]>([]);
+    const [ roleSelections, setRoleSelections ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
 
     const {
         data: originalApplicationOrganizationTree,
@@ -115,13 +101,10 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
         error:  originalApplicationOrganizationTreeFetchRequestError
     } = useGetApplicationShare(
         application?.id,
-        !isEmpty(application?.id) &&
-        !isEmpty(selectedOrgId) &&
-        !resolvedOrgs.includes(selectedOrgId),
-        false,
-        `id eq d04f6218-3b51-4073-b5b0-ef859755c0fe`,
+        true,
+        true,
         null,
-        100
+        "roles"
     );
 
     const {
@@ -138,15 +121,35 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
         false
     );
 
+    const {
+        data: originalOrganizations,
+        error: organizationsFetchRequestError
+    } = useGetOrganizations(
+        isOrganizationManagementEnabled && !resolvedOrgs.includes(expandedOrgId),
+        `parentId eq '${ expandedOrgId }'`,
+        null,
+        null,
+        null,
+        false,
+        false
+    );
+
+    const isLoading: boolean = useMemo(() => {
+        return isApplicationOrganizationTreeFetchRequestLoading || isTopLevelOrganizationsFetchRequestLoading;
+    }, [
+        isApplicationOrganizationTreeFetchRequestLoading,
+        isTopLevelOrganizationsFetchRequestLoading
+    ]);
+
     // Get the shared organizations of the application
     useEffect(() => {
-        if (originalTopLevelApplicationOrganizationTree?.organizations?.length > 0) {
-            const applicationOrgIds: string[] = originalTopLevelApplicationOrganizationTree.organizations
+        if (originalApplicationOrganizationTree?.organizations?.length > 0) {
+            const applicationOrgIds: string[] = originalApplicationOrganizationTree.organizations
                 .map((org: OrganizationInterface) => org.id);
 
             setSelectedItems(applicationOrgIds);
         }
-    }, [ originalTopLevelApplicationOrganizationTree ]);
+    }, [ originalApplicationOrganizationTree ]);
 
     useEffect(() => {
         if (originalTopLevelOrganizations?.organizations?.length > 0) {
@@ -206,10 +209,40 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
         }
     }, [ originalTopLevelOrganizations ]);
 
+    // This will update the organization tree with the children of the selected organization.
+    useEffect(() => {
+        if (originalOrganizations) {
+            setResolvedOrgs((prev: string[]) => [ ...prev, expandedOrgId ]);
+        }
+
+        if (originalOrganizations?.organizations?.length > 0) {
+            const childOrgTree: TreeViewBaseItemWithRoles[] =
+                buildChildTree(originalOrganizations?.organizations);
+
+            const updatedTree: TreeViewBaseItemWithRoles[] =
+                updateTreeWithChildren(organizationTree, expandedOrgId, childOrgTree);
+
+            setOrganizationTree(updatedTree);
+        }
+    }, [ originalOrganizations ]);
+
 
     useEffect(() => {
-        if (originalApplicationOrganizationTreeFetchRequestError ||
-            originalTopLevelApplicationOrganizationTreeFetchRequestError) {
+        if (originalApplicationOrganizationTreeFetchRequestError) {
+            dispatch(
+                addAlert({
+                    description: t("applications:edit.sections.sharedAccess.notifications" +
+                        ".fetchApplicationOrgTree.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("applications:edit.sections.sharedAccess.notifications" +
+                        ".fetchApplicationOrgTree.genericError.message")
+                })
+            );
+        }
+    }, [ originalApplicationOrganizationTreeFetchRequestError ]);
+
+    useEffect(() => {
+        if (topLevelOrganizationsFetchRequestError || organizationsFetchRequestError) {
             dispatch(
                 addAlert({
                     description: t("applications:edit.sections.sharedAccess.notifications" +
@@ -220,24 +253,7 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                 })
             );
         }
-    }, [
-        originalApplicationOrganizationTreeFetchRequestError,
-        originalTopLevelApplicationOrganizationTreeFetchRequestError
-    ]);
-
-    useEffect(() => {
-        if (topLevelOrganizationsFetchRequestError) {
-            dispatch(
-                addAlert({
-                    description: t("applications:edit.sections.sharedAccess.notifications" +
-                        ".fetchTopLevelOrgs.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("applications:edit.sections.sharedAccess.notifications" +
-                        ".fetchTopLevelOrgs.genericError.message")
-                })
-            );
-        }
-    }, [ topLevelOrganizationsFetchRequestError ]);
+    }, [ topLevelOrganizationsFetchRequestError, organizationsFetchRequestError ]);
 
     const buildChildTree = (data: OrganizationInterface[]): TreeViewBaseItemWithRoles[] => {
         const nodeMap: Record<string, TreeViewBaseItemWithRoles> = {};
@@ -253,7 +269,7 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
             }
 
             nodeMap[item.id] = {
-                children: item.hasChildren ? [
+                children: item.hasChildren || item.name === "XYZ Builders" ? [
                     {
                         children: [],
                         id: `${item.name}-temp-child`,
@@ -262,7 +278,7 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                 ] : [],
                 id: item.id,
                 label: item.name,
-                parentId: item.parentId
+                parentId: item.parentId ?? expandedOrgId
             };
 
             // Add the organization to the flat map
@@ -281,6 +297,32 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
         setFlatOrganizationMap(tempFlatOrganizationMap);
 
         return data.map((item: OrganizationInterface) => nodeMap[item.id]);
+    };
+
+    // This function updates the tree with new children for a given parent ID.
+    // It recursively traverses the tree and updates the children of the specified parent.
+    const updateTreeWithChildren = (
+        nodes: TreeViewBaseItemWithRoles[],
+        parentId: string,
+        newChildren: TreeViewBaseItemWithRoles[]
+    ): TreeViewBaseItemWithRoles[] => {
+        return nodes.map((node: TreeViewBaseItemWithRoles) => {
+            if (node.id === parentId) {
+                return {
+                    ...node,
+                    children: newChildren
+                };
+            }
+
+            if (node.children && node.children.length > 0) {
+                return {
+                    ...node,
+                    children: updateTreeWithChildren(node.children, parentId, newChildren)
+                };
+            }
+
+            return node;
+        });
     };
 
     const getChildrenOfOrganization = (parentId: string): string[] => {
@@ -382,6 +424,53 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
         setAfterCursor(cursorFragments[1]);
     };
 
+    const computeInitialRoleSelections = (
+        orgs: OrganizationInterface[],
+        rootRoles: OrganizationRoleInterface[]
+    ): Record<string, SelectedOrganizationRoleInterface[]> => {
+        const roleMap: Record<string, SelectedOrganizationRoleInterface[]> = {};
+
+        orgs.forEach((org: OrganizationInterface) => {
+            const roles: SelectedOrganizationRoleInterface[] = rootRoles.map(
+                (role: OrganizationRoleInterface) => ({
+                    ...role,
+                    selected: org.roles?.some(
+                        (orgRole: OrganizationRoleInterface) => orgRole.displayName === role.displayName
+                    ) || false
+                })
+            );
+
+            roleMap[org.id] = roles;
+        });
+
+        return roleMap;
+    };
+
+    const computeChildRoleSelections = (
+        parentId: string,
+        children: OrganizationInterface[]
+    ): Record<string, SelectedOrganizationRoleInterface[]> => {
+        const parentRoles: SelectedOrganizationRoleInterface[] = roleSelections[parentId];
+
+        if (!parentRoles) return {};
+
+        const selectedParentRoles: SelectedOrganizationRoleInterface[] =
+            parentRoles.filter((role: SelectedOrganizationRoleInterface) => role.selected);
+
+        const updated: Record<string, SelectedOrganizationRoleInterface[]> = {};
+
+        children.forEach((childOrg: OrganizationInterface) => {
+            updated[childOrg.id] = selectedParentRoles.map((role: SelectedOrganizationRoleInterface) => ({
+                ...role,
+                selected: childOrg.roles?.some(
+                    (orgRole: OrganizationRoleInterface) => orgRole.displayName === role.displayName
+                ) || false
+            }));
+        });
+
+        return updated;
+    };
+
     return (
         <>
             <Grid
@@ -389,44 +478,61 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                 xs={ 12 }
                 className="roles-selective-share-container"
             >
-                <Grid
-                    xs={ 12 }
-                    padding={ 1 }
-                    className="roles-selective-share-left-panel"
-                    id="scrollableOrgContainer"
-                >
-                    <InfiniteScroll
-                        dataLength={ applicationOrganizationTree.length }
-                        next={ loadMoreOrganizations }
-                        hasMore={ isNextPageAvailable }
-                        loader={ (<LinearProgress/>) }
-                        scrollableTarget="scrollableOrgContainer"
-                    >
+                {
+                    isLoading ? (
+                        <Grid
+                            container
+                            xs={ 12 }
+                            padding={ 1 }
+                            className="roles-selective-share-left-panel"
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            <CircularProgress size={ 30 } />
+                        </Grid>
+                    ) : (
+                        <Grid
+                            xs={ 12 }
+                            padding={ 1 }
+                            className="roles-selective-share-left-panel"
+                            id="scrollableOrgContainer"
+                        >
+                            <InfiniteScroll
+                                dataLength={ organizationTree.length }
+                                next={ loadMoreOrganizations }
+                                hasMore={ isNextPageAvailable }
+                                loader={ (<LinearProgress/>) }
+                                scrollableTarget="scrollableOrgContainer"
+                            >
 
-                        <RichTreeView
-                            className="roles-selective-share-tree-view"
-                            items={ organizationTree }
-                            expansionTrigger="iconContainer"
-                            selectedItems={ selectedItems }
-                            onItemSelectionToggle={ (_e: SyntheticEvent, itemId: string, isSelected: boolean) =>
-                                resolveSelectedItems(itemId, isSelected) }
-                            onItemClick={ (_e: SyntheticEvent, itemId: string) => {
-                                setSelectedOrgId(itemId);
-                            } }
-                            onItemExpansionToggle={ (_e: SyntheticEvent, itemId: string, expanded: boolean) => {
-                                if (expanded && !resolvedOrgs.includes(itemId)) {
-                                    setSelectedOrgId(itemId);
-                                }
-                            } }
-                            selectionPropagation={ {
-                                descendants: false,
-                                parents: false
-                            } }
-                            multiSelect={ true }
-                            checkboxSelection={ true }
-                        />
-                    </InfiniteScroll>
-                </Grid>
+                                <RichTreeView
+                                    data-componentid={ `${ componentId }-tree-view` }
+                                    className="roles-selective-share-tree-view"
+                                    items={ organizationTree }
+                                    expansionTrigger="iconContainer"
+                                    selectedItems={ selectedItems }
+                                    onItemSelectionToggle={ (
+                                        _e: SyntheticEvent,
+                                        itemId: string,
+                                        isSelected: boolean
+                                    ) =>
+                                        resolveSelectedItems(itemId, isSelected) }
+                                    onItemExpansionToggle={ (_e: SyntheticEvent, itemId: string, expanded: boolean) => {
+                                        if (expanded) {
+                                            setExpandedOrgId(itemId);
+                                        }
+                                    } }
+                                    selectionPropagation={ {
+                                        descendants: false,
+                                        parents: false
+                                    } }
+                                    multiSelect={ true }
+                                    checkboxSelection={ true }
+                                />
+                            </InfiniteScroll>
+                        </Grid>
+                    )
+                }
             </Grid>
         </>
     );

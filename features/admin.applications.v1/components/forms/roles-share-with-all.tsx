@@ -50,7 +50,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps } from "semantic-ui-react";
 import { ApplicationInterface } from "../../models/application";
-import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 
 /**
  * Props interface for the ConsoleRolesShareWithAll component.
@@ -84,8 +83,6 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
     const { t } = useTranslation();
 
     const isReadOnly: boolean = !(useRequiredScopes(applicationsFeatureConfig?.scopes?.update));
-
-    const { isOrganizationManagementEnabled } = useGlobalVariables();
 
     const [ searchQuery, setSearchQuery ] = useState<string>();
     const [ isSearching, setIsSearching ] = useState<boolean>(false);

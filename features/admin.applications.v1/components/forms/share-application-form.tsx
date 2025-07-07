@@ -17,15 +17,6 @@
  */
 
 import Collapse from "@mui/material/Collapse";
-import Alert from "@oxygen-ui/react/Alert";
-import Button from "@oxygen-ui/react/Button";
-import FormControl from "@oxygen-ui/react/FormControl";
-import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
-import Grid from "@oxygen-ui/react/Grid";
-import Radio from "@oxygen-ui/react/Radio";
-import RadioGroup from "@oxygen-ui/react/RadioGroup";
-import Switch from "@oxygen-ui/react/Switch";
-import { ApplicationSharingPolicy, RoleSharingModes } from "@wso2is/admin.console-settings.v1/models/shared-access";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { OperationStatus } from "@wso2is/admin.core.v1/models/common";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -41,16 +32,13 @@ import {
     OrganizationInterface,
     OrganizationLinkInterface,
     OrganizationResponseInterface,
-    SelectedOrganizationRoleInterface,
     ShareApplicationRequestInterface
 } from "@wso2is/admin.organizations.v1/models";
-import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     FeatureAccessConfigInterface,
-    IdentifiableComponentInterface,
-    RolesInterface
+    IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -60,7 +48,6 @@ import {
     Hint,
     Message,
     PrimaryButton,
-    Text,
     TransferComponent,
     TransferList,
     TransferListItem
@@ -69,7 +56,6 @@ import { AxiosError } from "axios";
 import debounce from "lodash-es/debounce";
 import differenceBy from "lodash-es/differenceBy";
 import React, {
-    ChangeEvent,
     FormEvent,
     FunctionComponent,
     ReactElement,
@@ -81,18 +67,19 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Divider } from "semantic-ui-react";
+import {
+    Divider,
+    Grid,
+    Radio
+} from "semantic-ui-react";
 import { ApplicationManagementConstants } from "../../constants/application-management";
-import { ApplicationInterface, ShareApplicationWithAllOrganizationsDataInterface, ShareApplicationWithSelectedOrganizationsAndRolesDataInterface, UnshareOrganizationsDataInterface, additionalSpProperty } from "../../models/application";
-import { AnimatePresence, motion } from "framer-motion";
-import RolesShareWithAll from "./roles-share-with-all";
-import useGetApplicationRolesByAudience from "@wso2is/admin.roles.v2/api/use-get-application-roles-by-audience";
-import { RolesV2Interface } from "@wso2is/admin.roles.v2/models/roles";
-import RolesSelectiveShare from "./roles-selective-share";
-import { RoleShareType, ShareType } from "../../constants/application-roles";
-import OrgSelectiveShareWithAllRoles from "./org-selective-share-with-all-roles";
-import { shareApplicationWithAllOrganizations, shareApplicationWithSelectedOrganizationsAndRoles, unshareApplicationWithSelectedOrganizations } from "../../api/application-roles";
+import { ApplicationInterface, additionalSpProperty } from "../../models/application";
 
+enum ShareType {
+    SHARE_ALL,
+    SHARE_SELECTED,
+    UNSHARE
+}
 
 export interface ApplicationShareFormPropsInterface
     extends IdentifiableComponentInterface {
@@ -157,8 +144,6 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
     const [ sharedOrganizationList, setSharedOrganizationList ] = useState<Array<OrganizationInterface>>([]);
     const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<OrganizationInterface[]>([]);
     const [ shareType, setShareType ] = useState<ShareType>(ShareType.UNSHARE);
-    const [ roleShareTypeAll, setRoleShareTypeAll ] = useState<RoleShareType>(RoleShareType.SHARE_WITH_ALL);
-    const [ roleShareTypeSelected, setRoleShareTypeSelected ] = useState<RoleShareType>(RoleShareType.SHARE_WITH_ALL);
     const [ sharedWithAll, setSharedWithAll ] = useState<boolean>(false);
     const { isOrganizationManagementEnabled } = useGlobalVariables();
     const [ showConfirmationModal, setShowConfirmationModal ] = useState(false);
@@ -168,12 +153,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
     const [ afterCursor, setAfterCursor ] = useState<string | null>(null);
     const [ params, setParams ] =
         useState<GetOrganizationsParamsInterface>({ after: null, limit: 15, shouldFetch: true });
-    const [ selectedRoles, setSelectedRoles ] = useState<RolesInterface[]>([]);
-    const [ addedRoles, setAddedRoles ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
-    const [ removedRoles, setRemovedRoles ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
-    const [ selectedOrgIds, setSelectedOrgIds ] = useState<string[]>([]);
-    const [ addedOrgIds, setAddedOrgIds ] = useState<string[]>([]);
-    const [ removedOrgIds, setRemovedOrgIds ] = useState<string[]>([]);
+    const queryPrefix: string = "name co ";
 
     const {
         data: organizations,
@@ -643,184 +623,118 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
         shareType
     ]);
 
-    const handleApplicationSharing = (): void => {
-        if (shareType === ShareType.UNSHARE) {
-            // logic to handle unsharing the application
 
-            return;
-        }
-
-        if (shareType === ShareType.SHARE_ALL) {
-            if (roleShareTypeAll === RoleShareType.SHARE_SELECTED) {
-                // Share selected roles with all organizations
-                shareSelectedRolesWithAllOrgs();
-            }
-
-            if (roleShareTypeAll === RoleShareType.SHARE_WITH_ALL) {
-                // Share all roles with all organizations
-                shareAllRolesWithAllOrgs();
-            }
-
-            return;
-        }
-
-        if (shareType === ShareType.SHARE_SELECTED) {
-            // logic to handle sharing the application with selected organizations
-            if (roleShareTypeSelected === RoleShareType.SHARE_SELECTED) {
-                // Share selected roles with selected organizations
-                shareSelectedRolesWithSelectedOrgs();
-            }
-
-            if (roleShareTypeSelected === RoleShareType.SHARE_WITH_ALL) {
-                // Share all roles with selected organizations
-                shareAllRolesWithSelectedOrgs();
-            }
-
-            return;
-        }
+    /**
+     * Update the params state whenever filter or cursor changes.
+     */
+    const updateParams = (cursor: string, filter: string) => {
+        setAfterCursor(cursor);
+        setFilter(filter);
+        setParams((prevParams: GetOrganizationsParamsInterface) => ({
+            ...prevParams,
+            after: cursor || null,
+            filter: filter ? `${queryPrefix}${filter}` : "",
+            shouldFetch: true
+        }));
     };
 
-    const shareSelectedRolesWithSelectedOrgs = (): void => {
-        console.log(selectedOrgIds);
+    /**
+     * Loads more organization options when scrolled to the bottom.
+     */
+    const loadMoreOrganizations: () => void = useCallback(() => {
+        if (!hasMoreOrganizations) return;
 
-    };
+        const filterValue: string = filter ? `${queryPrefix}${filter}` : "";
 
-    const shareAllRolesWithSelectedOrgs = (): void => {
+        setParams((prev: GetOrganizationsParamsInterface) => {
+            if (prev.after === afterCursor && prev.filter === filterValue) {
+                return prev;
+            }
 
-        console.log(addedOrgIds);
-        console.log(removedOrgIds);
+            setAfterCursor(afterCursor);
+            setFilter(filter);
 
-        if (addedOrgIds.length > 0) {
-            const data: ShareApplicationWithSelectedOrganizationsAndRolesDataInterface = {
-                applicationId: application.id,
-                organizations: addedOrgIds.map((orgId: string) => {
-                    return {
-                        orgId: orgId,
-                        policy: ApplicationSharingPolicy.SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN,
-                        roleSharing: {
-                            mode: RoleSharingModes.ALL,
-                            roles: []
-                        }
-                    };
-                })
+            return {
+                ...prev,
+                after: afterCursor || "",
+                filter: filterValue,
+                shouldFetch: true
             };
+        });
+    }, [ afterCursor, filter, hasMoreOrganizations ]);
 
-            shareApplicationWithSelectedOrganizationsAndRoles(data)
-                .then(() => {
-                    dispatch(addAlert({
-                        description: t("consoleSettings:sharedAccess.notifications." +
-                            "shareRoles.success.description"),
-                        level: AlertLevels.SUCCESS,
-                        message: t("consoleSettings:sharedAccess.notifications.shareRoles.success.message")
-                    }));
-                })
-                .catch((error: Error) => {
-                    dispatch(addAlert({
-                        description: t("consoleSettings:sharedAccess.notifications." +
-                            "shareRoles.error.description",
-                        { error: error.message }),
-                        level: AlertLevels.ERROR,
-                        message: t("consoleSettings:sharedAccess.notifications.shareRoles.error.message")
-                    }));
-                });
-        }
+    /**
+     * Handles the search input change for the unselected list.
+     * Debounces the search input to avoid excessive API calls.
+     *
+     * @param e - The form event.
+     * @param value - The value of the search field.
+     */
+    const handleUnselectedListSearch: (e: FormEvent<HTMLInputElement>, { value }: { value: string }) => void =
+        useCallback(
+            debounce((e: FormEvent<HTMLInputElement>, { value }: { value: string }) => {
+                setSubOrganizationList([]);
+                updateParams("", value);
+            }, 500),
+            [ updateParams ]
+        );
 
-        // Call unshare API for removed organizations
-        if (removedOrgIds.length > 0) {
-            const data: UnshareOrganizationsDataInterface = {
-                applicationId: application.id,
-                orgIds: removedOrgIds
-            };
+    const handleUnassignedItemCheckboxChange = (organization: OrganizationInterface) => {
+        const checkedOrganizations: OrganizationInterface[] = [ ...checkedUnassignedListItems ];
+        const index: number = checkedOrganizations.findIndex(
+            (org: OrganizationInterface) => org.id === organization.id
+        );
 
-            unshareApplicationWithSelectedOrganizations(data)
-                .then(() => {
-                    dispatch(addAlert({
-                        description: t("consoleSettings:sharedAccess.notifications." +
-                            "shareRoles.success.description"),
-                        level: AlertLevels.SUCCESS,
-                        message: t("consoleSettings:sharedAccess.notifications.shareRoles.success.message")
-                    }));
-                })
-                .catch((error: Error) => {
-                    dispatch(addAlert({
-                        description: t("consoleSettings:sharedAccess.notifications." +
-                            "shareRoles.error.description",
-                        { error: error.message }),
-                        level: AlertLevels.ERROR,
-                        message: t("consoleSettings:sharedAccess.notifications.shareRoles.error.message")
-                    }));
-                });
+        if (index !== -1) {
+            checkedOrganizations.splice(index, 1);
+            setCheckedUnassignedListItems(checkedOrganizations);
+        } else {
+            checkedOrganizations.push(organization);
+            setCheckedUnassignedListItems(checkedOrganizations);
         }
     };
 
-    const shareAllRolesWithAllOrgs = (): void => {
-        const data: ShareApplicationWithAllOrganizationsDataInterface = {
-            applicationId: application.id,
-            policy: ApplicationSharingPolicy.ALL_EXISTING_AND_FUTURE_ORGS,
-            roleSharing: {
-                mode: RoleSharingModes.ALL,
-                roles: []
-            }
-        };
+    const handleHeaderCheckboxChange: () => void = useCallback(() => {
+        if (checkedUnassignedListItems.length === subOrganizationList.length) {
+            setCheckedUnassignedListItems([]);
 
-        shareApplicationWithAllOrganizations(data)
-            .then(() => {
-                dispatch(addAlert({
-                    description: t("consoleSettings:sharedAccess.notifications." +
-                        "shareRoles.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("consoleSettings:sharedAccess.notifications.shareRoles.success.message")
-                }));
-            })
-            .catch((error: Error) => {
-                dispatch(addAlert({
-                    description: t("consoleSettings:sharedAccess.notifications." +
-                        "shareRoles.error.description",
-                    { error: error.message }),
-                    level: AlertLevels.ERROR,
-                    message: t("consoleSettings:sharedAccess.notifications.shareRoles.error.message")
-                }));
-            });
+            return;
+        }
+
+        setCheckedUnassignedListItems(subOrganizationList);
+    }, [
+        subOrganizationList,
+        checkedUnassignedListItems
+    ]);
+
+    /**
+     * Handles the empty placeholder content for the transfer list.
+     * @returns - The content to be displayed in the empty placeholder.
+     */
+    const handleEmptyPlaceholderContent = (): string => {
+        if (filter !== "") {
+            return t("console:develop.placeholders.emptySearchResult.subtitles.0", { query: filter }) + ". " +
+                t("console:develop.placeholders.emptySearchResult.subtitles.1");
+        }
+        if (subOrganizationList?.length === 0) {
+            return t("organizations:placeholders.emptyList.subtitles.0");
+        }
+
+        return null;
     };
 
-    const shareSelectedRolesWithAllOrgs = (): void => {
-        const data: ShareApplicationWithAllOrganizationsDataInterface = {
-            applicationId: application.id,
-            policy: ApplicationSharingPolicy.ALL_EXISTING_AND_FUTURE_ORGS,
-            roleSharing: {
-                mode: RoleSharingModes.SELECTED,
-                roles: selectedRoles.map((role: RolesInterface) => {
-                    return {
-                        audience: {
-                            display: role.audience.display,
-                            type: role.audience.type
-                        },
-                        displayName: role.displayName
-                    };
-                })
-            }
-        };
+    /**
+     * Determines if the organizations are currently loading.
+     * Note: Disregards the after cursor state as initial values are already loaded.
+     * @returns - True if organizations are loading, false otherwise.
+     */
+    const handleIsLoadingOrganizations = (): boolean => {
+        const isOrganizationsFetching: boolean =
+            isOrganizationsFetchRequestLoading || isOrganizationsFetchRequestValidating;
 
-        shareApplicationWithAllOrganizations(data)
-            .then(() => {
-                dispatch(addAlert({
-                    description: t("consoleSettings:sharedAccess.notifications." +
-                        "shareRoles.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("consoleSettings:sharedAccess.notifications.shareRoles.success.message")
-                }));
-            })
-            .catch((error: Error) => {
-                dispatch(addAlert({
-                    description: t("consoleSettings:sharedAccess.notifications." +
-                        "shareRoles.error.description",
-                    { error: error.message }),
-                    level: AlertLevels.ERROR,
-                    message: t("consoleSettings:sharedAccess.notifications.shareRoles.error.message")
-                }));
-            });
+        return afterCursor === "" && isOrganizationsFetching;
+
     };
-
 
     function handleAsyncSharingNotification(shareType: ShareType): void {
         if (shareType === ShareType.SHARE_ALL || shareType === ShareType.SHARE_SELECTED) {
@@ -844,172 +758,163 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
 
     return (
         <>
-            <Grid container>
-                <Grid xs={ 8 }>
-                    <Heading ellipsis as="h6">
-                        { t("applications:edit.sections.sharedAccess.subTitle") }
-                    </Heading>
-                    <FormControl fullWidth>
-                        <RadioGroup
-                            value={ shareType }
-                            onChange={ (event: ChangeEvent<HTMLInputElement>) => {
-                                setShareType(event.target.value as ShareType);
-                            } }
-                            data-componentid={ `${componentId}-radio-group` }
-                        >
-                            <FormControlLabel
-                                value={ ShareType.UNSHARE }
-                                label={ (
-                                    <>
-                                        { t("organizations:unshareApplicationRadio") }
-                                        <Hint inline popup>
-                                            { t(
-                                                "organizations:unshareApplicationInfo"
-                                            ) }
-                                        </Hint>
-                                    </>
-                                ) }
-                                control={ <Radio /> }
-                                disabled={ readOnly }
-                                data-componentid={ `${ componentId }-share-with-all-checkbox` }
-                            />
-
-                            <FormControlLabel
-                                value={ ShareType.SHARE_SELECTED }
-                                label={ t("organizations:shareWithSelectedOrgsRadio") }
-                                control={ <Radio /> }
-                                disabled={ readOnly }
-                            />
-                            <AnimatePresence mode="wait">
-                                {
-                                    shareType === ShareType.SHARE_SELECTED
-                                    && (
-                                        <motion.div
-                                            key="selected-orgs-block"
-                                            initial={ { height: 0, opacity: 0 } }
-                                            animate={ { height: "auto", opacity: 1 } }
-                                            exit={ { height: 0, opacity: 0 } }
-                                            transition={ { duration: 0.3 } }
-                                            className="ml-5"
-                                        >
-                                            <FormControlLabel
-                                                control={ (
-                                                    <Switch
-                                                        checked={ roleShareTypeSelected ===
-                                                            RoleShareType.SHARE_SELECTED }
-                                                        onChange={ (_event: ChangeEvent, checked: boolean) => {
-                                                            if (checked) {
-                                                                setRoleShareTypeSelected(RoleShareType.SHARE_SELECTED);
-                                                            } else {
-                                                                setRoleShareTypeSelected(RoleShareType.SHARE_WITH_ALL);
-                                                            }
-                                                        } }
-                                                        data-componentid={
-                                                            `${ componentId }-share-with-selected-switch` }
-                                                    />
-                                                ) }
-                                                label={ "Share a subset of roles with selected organizations" }
-                                            />
-                                            <Grid xs={ 14 }>
-                                                {
-                                                    roleShareTypeSelected === RoleShareType.SHARE_WITH_ALL
-                                                        ? (
-                                                            <OrgSelectiveShareWithAllRoles
-                                                                application={ application }
-                                                                selectedItems={ selectedOrgIds }
-                                                                setSelectedItems={ setSelectedOrgIds }
-                                                                addedOrgs={ addedOrgIds }
-                                                                setAddedOrgs={ setAddedOrgIds }
-                                                                removedOrgs={ removedOrgIds }
-                                                                setRemovedOrgs={ setRemovedOrgIds }
-                                                            />
-                                                        ) : (
-                                                            <RolesSelectiveShare
-                                                                roleShareType={ roleShareTypeSelected }
-                                                                application={ application }
-                                                                addedRoles={ addedRoles }
-                                                                setAddedRoles={ setAddedRoles }
-                                                                removedRoles={ removedRoles }
-                                                                setRemovedRoles={ setRemovedRoles }
-                                                                selectedItems={ selectedOrgIds }
-                                                                setSelectedItems={ setSelectedOrgIds }
-                                                            />
-                                                        )
-                                                }
-                                            </Grid>
-                                        </motion.div>
-                                    )
-                                }
-                            </AnimatePresence>
-                            <FormControlLabel
-                                value={ ShareType.SHARE_ALL }
-                                label={ t("organizations:shareApplicationRadio") }
-                                control={ <Radio /> }
-                                disabled={ readOnly }
-                            />
-                            <AnimatePresence mode="wait">
-                                {
-                                    shareType === ShareType.SHARE_ALL
-                                    && (
-                                        <motion.div
-                                            key="selected-orgs-block"
-                                            initial={ { height: 0, opacity: 0 } }
-                                            animate={ { height: "auto", opacity: 1 } }
-                                            exit={ { height: 0, opacity: 0 } }
-                                            transition={ { duration: 0.3 } }
-                                            className="ml-5"
-                                        >
-                                            <FormControlLabel
-                                                control={ (
-                                                    <Switch
-                                                        checked={ roleShareTypeAll === RoleShareType.SHARE_SELECTED }
-                                                        onChange={ (_event: ChangeEvent, checked: boolean) => {
-                                                            if (checked) {
-                                                                setRoleShareTypeAll(RoleShareType.SHARE_SELECTED);
-                                                            } else {
-                                                                setRoleShareTypeAll(RoleShareType.SHARE_WITH_ALL);
-                                                            }
-                                                        } }
-                                                        data-componentid={
-                                                            `${ componentId }-share-with-selected-switch` }
-                                                    />
-                                                ) }
-                                                label={ "Share a subset of roles with all the organizations" }
-                                            />
-                                            <Divider hidden className="mb-0 mt-2" />
-                                            {
-                                                roleShareTypeAll === RoleShareType.SHARE_WITH_ALL
-                                                    ? (
-                                                        <Alert severity="info">
-                                                            All roles of the application will be shared with all the organizations.
-                                                        </Alert>
-                                                    ) : (
-                                                        <RolesShareWithAll
-                                                            application={ application }
-                                                            selectedRoles={ selectedRoles }
-                                                            setSelectedRoles={ setSelectedRoles }
-                                                        />
-                                                    )
-                                            }
-                                        </motion.div>
-                                    )
-                                }
-                            </AnimatePresence>
-                        </RadioGroup>
-                    </FormControl>
-                    <Button
-                        className="mt-5"
-                        variant="contained"
-                        size="small"
-                        disabled={ readOnly }
-                        data-componentid={ `${ componentId }-update-button` }
-                        onClick={ isSharingInProgress ? handleInterruptOngoingShare : handleApplicationSharing }
-                    >
-                        { t("common:save") }
-                    </Button>
-                </Grid>
-            </Grid>
+            <Heading ellipsis as="h6">
+                { t("applications:edit.sections.sharedAccess.subTitle") }
+            </Heading>
             { renderConfirmationModal() }
+            <Grid>
+                <Grid.Row>
+                    <Grid.Column width={ 8 }>
+                        <Radio
+                            disabled={ readOnly }
+                            label={ t(
+                                "organizations:unshareApplicationRadio"
+                            ) }
+                            onChange={ () => setShareType(ShareType.UNSHARE) }
+                            checked={ shareType === ShareType.UNSHARE }
+                            data-componentid={ `${ componentId }-share-with-all-checkbox` }
+                        />
+                        <Hint inline popup>
+                            { t(
+                                "organizations:unshareApplicationInfo"
+                            ) }
+                        </Hint>
+                        <Divider hidden className="mb-0 mt-0" />
+                        <Radio
+                            disabled={ readOnly }
+                            label={ t(
+                                "organizations:shareWithSelectedOrgsRadio"
+                            ) }
+                            onChange={ () => setShareType(ShareType.SHARE_SELECTED) }
+                            checked={ shareType === ShareType.SHARE_SELECTED }
+                            data-componentid={ `${ componentId }-share-with-all-checkbox` }
+                        />
+                        <Collapse
+                            in={ shareType === ShareType.SHARE_SELECTED }
+                            orientation="vertical"
+                            timeout="auto"
+                        >
+                            <>
+                                { sharedWithAll && (
+                                    <Message warning className="ml-4 mt-3">
+                                        <p>
+                                            {
+                                                t(
+                                                    "applications:edit."
+                                                    + "sections.shareApplication"
+                                                    + ".switchToSelectiveShareFromSharingWithAllSuborgsWarning"
+                                                )
+                                            }
+                                        </p>
+                                    </Message>
+                                ) }
+                                <TransferComponent
+                                    bordered={ false }
+                                    className="pl-2"
+                                    disabled={ shareType !== ShareType.SHARE_SELECTED }
+                                    selectionComponent
+                                    searchPlaceholder={ t(
+                                        "transferList:searchPlaceholder",
+                                        { type: "organizations" }
+                                    ) }
+                                    handleUnelectedListSearch={
+                                        handleUnselectedListSearch
+                                    }
+                                    data-componentId="application-share-modal-organization-transfer-component"
+                                >
+                                    <TransferList
+                                        disabled={
+                                            shareType !== ShareType.SHARE_SELECTED
+                                        }
+                                        isListEmpty={
+                                            !(subOrganizationList?.length > 0)
+                                        }
+                                        handleHeaderCheckboxChange={
+                                            handleHeaderCheckboxChange
+                                        }
+                                        isHeaderCheckboxChecked={
+                                            checkedUnassignedListItems?.length ===
+                                            subOrganizationList?.length
+                                        }
+                                        listType="unselected"
+                                        listHeaders={ [
+                                            t(
+                                                "transferList:list.headers.1"
+                                            ),
+                                            ""
+                                        ] }
+                                        emptyPlaceholderContent={ handleEmptyPlaceholderContent() }
+                                        data-testid="application-share-modal-organization-transfer-component-all-items"
+                                        emptyPlaceholderDefaultContent={ t(
+                                            "organizations:placeholders.emptyList.subtitles.0"
+                                        ) }
+                                        hasMore={ hasMoreOrganizations }
+                                        loadMore={ loadMoreOrganizations }
+                                        isLoading={ handleIsLoadingOrganizations() }
+                                    >
+                                        { subOrganizationList?.map(
+                                            (organization: OrganizationInterface, index: number) => {
+                                                const organizationName: string =
+                                                    organization?.name;
+                                                const isChecked: boolean =
+                                                    checkedUnassignedListItems.findIndex(
+                                                        (org: OrganizationInterface) =>
+                                                            org.id === organization.id
+                                                    ) !== -1;
+
+                                                return (
+                                                    <TransferListItem
+                                                        disabled={
+                                                            shareType !==
+                                                            ShareType.SHARE_SELECTED
+                                                        }
+                                                        handleItemChange={ () =>
+                                                            handleUnassignedItemCheckboxChange(
+                                                                organization
+                                                            )
+                                                        }
+                                                        key={ index }
+                                                        listItem={ organizationName }
+                                                        listItemId={ organization.id }
+                                                        listItemIndex={ index }
+                                                        isItemChecked={ isChecked }
+                                                        showSecondaryActions={ false }
+                                                        data-testid={ "application-share-modal-"
+                                                            + "organization-transfer-component"
+                                                            + "-unselected-organizations"
+                                                        }
+                                                    />
+                                                );
+                                            }
+                                        ) }
+                                    </TransferList>
+                                </TransferComponent>
+                            </>
+                        </Collapse>
+                        <Divider hidden className="mb-0 mt-0" />
+                        <Radio
+                            label={ t(
+                                "organizations:shareApplicationRadio"
+                            ) }
+                            onChange={ () => setShareType(ShareType.SHARE_ALL) }
+                            checked={ shareType === ShareType.SHARE_ALL }
+                            data-componentid={ `${ componentId }-share-with-all-checkbox` }
+                        />
+                        <Hint inline popup>
+                            { t(
+                                "organizations:shareApplicationInfo"
+                            ) }
+                        </Hint>
+                        <Divider hidden />
+                        <PrimaryButton
+                            data-componentid={ `${ componentId }-update-button` }
+                            onClick={ isSharingInProgress ? handleInterruptOngoingShare : handleShareApplication }
+                        >
+                            { t("common:update") }
+                        </PrimaryButton>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
         </>
     );
 };
