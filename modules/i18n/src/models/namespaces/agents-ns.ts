@@ -17,5 +17,18 @@
  */
 
 export interface AgentsNS {
-
+    title: string;
+    pageTitle: string;
+    description: string;
+    edit: {
+        credentials: {
+            title: string;
+        },
+        general: {
+            title: string;
+        },
+        roles: {
+            title: string;
+        }
+    }
 }
