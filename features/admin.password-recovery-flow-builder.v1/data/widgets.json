@@ -7,7 +7,7 @@
         "deprecated": false,
         "display": {
             "label": "Username + Password",
-            "description": "Basic registration experience with simple username & password",
+            "description": "Basic recovery experience with simple username & password",
             "image": "https://www.svgrepo.com/show/390092/security-protection-password.svg",
             "showOnResourcePanel": true
         },

@@ -23,20 +23,20 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import RegistrationFlowConstants from "../constants/registration-flow-constants";
+import PasswordRecoveryFlowConstants from "../constants/password-recovery-flow-constants";
 
 /**
- * Hook to get the configured registration flow.
+ * Hook to get the configured password recovery flow.
  *
- * This function calls the GET method of the following endpoint to get the registration flow of the organization.
- * - `https://{serverUrl}/t/{tenantDomain}/api/server/v1/registration-flow`
+ * This function calls the GET method of the following endpoint to get the password recovery flow of the organization.
+ * - `https://{serverUrl}/t/{tenantDomain}/api/server/v1/password-recovery-flow`
  * For more details, refer to the documentation:
  * {@link https://TODO:<fillthis>)}
  *
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useGetRegistrationFlow = <Data = any, Error = RequestErrorInterface>(
+const useGetPasswordRecoveryFlow = <Data = any, Error = RequestErrorInterface>(
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
@@ -46,7 +46,7 @@ const useGetRegistrationFlow = <Data = any, Error = RequestErrorInterface>(
         },
         method: HttpMethods.GET,
         // eslint-disable-next-line max-len
-        url: `${store.getState().config.endpoints.registrationFlow}?flowType=${RegistrationFlowConstants.PASSWORD_RECOVERY_FLOW_TYPE}`
+        url: `${store.getState().config.endpoints.passwordRecoveryFlow}?flowType=${PasswordRecoveryFlowConstants.PASSWORD_RECOVERY_FLOW_TYPE}`
     };
 
     const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
@@ -62,4 +62,4 @@ const useGetRegistrationFlow = <Data = any, Error = RequestErrorInterface>(
     };
 };
 
-export default useGetRegistrationFlow;
+export default useGetPasswordRecoveryFlow;

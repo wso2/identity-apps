@@ -61,34 +61,34 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { v4 as uuidv4 } from "uuid";
-import RegistrationFlowAILoader from "./ai-registration-flow-generation-loader";
+import PasswordRecoveryFlowAILoader from "./ai-password-recovery-flow-generation-loader";
 import StaticNodeFactory from "./resources/steps/static-step-factory";
 import StepFactory from "./resources/steps/step-factory";
-import useAIRegistrationFlowGenerationResult from "../api/use-ai-registration-flow-result";
-import useGetRegistrationFlow from "../api/use-get-registration-flow";
-import useGetRegistrationFlowBuilderResources from "../api/use-get-registration-flow-builder-resources";
-import { REGISTRATION_FLOW_AI_PROMPT_HISTORY_PREFERENCE_KEY } from "../constants/registration-flow-ai-constants";
-import RegistrationFlowExecutorConstants from "../constants/registration-flow-executor-constants";
-import useAIGeneratedRegistrationFlow from "../hooks/use-ai-generated-registration-flow";
-import useGenerateRegistrationFlow, {
-    UseGenerateRegistrationFlowFunction
-} from "../hooks/use-generate-registration-flow";
+import useAIPasswordRecoveryFlowGenerationResult from "../api/use-ai-password-recovery-flow-result";
+import useGetPasswordRecoveryFlow from "../api/use-get-password-recovery-flow";
+import useGetPasswordRecoveryFlowBuilderResources from "../api/use-get-password-recovery-flow-builder-resources";
+import { PASSWORD_RECOVERY_FLOW_AI_PROMPT_HISTORY_PREFERENCE_KEY } from "../constants/password-recovery-flow-ai-constants";
+import PasswordRecoveryFlowExecutorConstants from "../constants/password-recovery-flow-executor-constants";
+import useAIGeneratedPasswordRecoveryFlow from "../hooks/use-ai-generated-password-recovery-flow";
+import useGeneratePasswordRecoveryFlow, {
+    UseGeneratePasswordRecoveryFlowFunction
+} from "../hooks/use-generate-password-recovery-flow";
 
 /**
- * Props interface of {@link RegistrationFlowBuilderCore}
+ * Props interface of {@link PasswordRecoveryFlowBuilderCore}
  */
-export type RegistrationFlowBuilderCorePropsInterface = IdentifiableComponentInterface;
+export type PasswordRecoveryFlowBuilderCorePropsInterface = IdentifiableComponentInterface;
 
 /**
  * Main component that wraps the `FlowBuilder` from the flow builder core.
  *
  * @param props - Props injected to the component.
- * @returns RegistrationFlowBuilder component.
+ * @returns PasswordRecoveryFlowBuilder component.
  */
-const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCorePropsInterface> = ({
-    "data-componentid": componentId = "registration-flow-builder-core",
+const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBuilderCorePropsInterface> = ({
+    "data-componentid": componentId = "password-recovery-flow-builder-core",
     ...rest
-}: RegistrationFlowBuilderCorePropsInterface): ReactElement => {
+}: PasswordRecoveryFlowBuilderCorePropsInterface): ReactElement => {
     const updateNodeInternals: UpdateNodeInternals = useUpdateNodeInternals();
     const flowUpdatesInProgress: MutableRefObject<boolean> = useRef<boolean>(false);
     const nodesUpdatedRef: MutableRefObject<boolean> = useRef<boolean>(false);
@@ -108,23 +108,23 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         userPrompt,
         setAIGeneratedFlow,
         aiGeneratedFlow
-    } = useAIGeneratedRegistrationFlow();
+    } = useAIGeneratedPasswordRecoveryFlow();
 
     const {
         data: flowData,
         error: flowError
-    } = useAIRegistrationFlowGenerationResult(operationId, flowGenerationCompleted);
+    } = useAIPasswordRecoveryFlowGenerationResult(operationId, flowGenerationCompleted);
 
-    const generateAIRegistrationFlow: UseGenerateRegistrationFlowFunction = useGenerateRegistrationFlow();
+    const generateAIPasswordRecoveryFlow: UseGeneratePasswordRecoveryFlowFunction = useGeneratePasswordRecoveryFlow();
 
     const {
-        data: registrationFlow,
-        error: registrationFlowFetchRequestError,
-        isLoading: isRegistrationFlowFetchRequestLoading,
-        isValidating: isRegistrationFlowFetchRequestValidating
-    } = useGetRegistrationFlow();
+        data: passwordRecoveryFlow,
+        error: passwordRecoveryFlowFetchRequestError,
+        isLoading: isPasswordRecoveryFlowFetchRequestLoading,
+        isValidating: isPasswordRecoveryFlowFetchRequestValidating
+    } = useGetPasswordRecoveryFlow();
 
-    const { data: resources } = useGetRegistrationFlowBuilderResources();
+    const { data: resources } = useGetPasswordRecoveryFlowBuilderResources();
 
     const { steps, templates } = resources;
 
@@ -147,9 +147,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
             dispatch(
                 addAlert<AlertInterface>({
-                    description: t("ai:aiRegistrationFlow.notifications.generateResultError.description"),
+                    description: t("ai:aiPasswordRecoveryFlow.notifications.generateResultError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("ai:aiRegistrationFlow.notifications.generateResultError.message")
+                    message: t("ai:aiPasswordRecoveryFlow.notifications.generateResultError.message")
                 })
             );
 
@@ -162,13 +162,13 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
             // if data.data contains an object error then use that as the error message
             const errorMessage: string = "error" in flowData.data
-                ? flowData.data.error : t("ai:aiRegistrationFlow.notifications.generateResultFailed.message");
+                ? flowData.data.error : t("ai:aiPasswordRecoveryFlow.notifications.generateResultFailed.message");
 
             dispatch(
                 addAlert<AlertInterface>({
                     description: errorMessage,
                     level: AlertLevels.ERROR,
-                    message: t("ai:aiRegistrationFlow.notifications.generateResultFailed.message")
+                    message: t("ai:aiPasswordRecoveryFlow.notifications.generateResultFailed.message")
                 })
             );
 
@@ -184,21 +184,21 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
      * Dispatches an error alert if the flow fetch fails.
      */
     useEffect(() => {
-        if (registrationFlowFetchRequestError) {
+        if (passwordRecoveryFlowFetchRequestError) {
             dispatch(
                 addAlert({
-                    description: "An error occurred while fetching the registration flow.",
+                    description: "An error occurred while fetching the password recovery flow.",
                     level: AlertLevels.ERROR,
-                    message: "Couldn't retrieve  the registration flow."
+                    message: "Couldn't retrieve  the password recovery flow."
                 })
             );
         }
-    }, [ registrationFlowFetchRequestError ]);
+    }, [ passwordRecoveryFlowFetchRequestError ]);
 
     const handleAIFlowGeneration = async () => {
         const traceID: string = uuidv4();
 
-        await generateAIRegistrationFlow(userPrompt, traceID);
+        await generateAIPasswordRecoveryFlow(userPrompt, traceID);
         setShowAIGenerationModal(false);
     };
 
@@ -207,7 +207,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             return [ [], [] ];
         }
 
-        const aiGeneratedRegistrationFlow: any = {
+        const aiGeneratedPasswordRecoveryFlow: any = {
             "resourceType": "TEMPLATE",
             "category": "STARTER",
             "type": "AI",
@@ -224,15 +224,15 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             }
         };
 
-        setAIGeneratedFlow(aiGeneratedRegistrationFlow);
+        setAIGeneratedFlow(aiGeneratedPasswordRecoveryFlow);
         setShowAIGenerationModal(false);
         setIsFlowGenerating(false);
 
         dispatch(
             addAlert<AlertInterface>({
-                description: t("ai:aiRegistrationFlow.notifications.generateSuccess.description"),
+                description: t("ai:aiPasswordRecoveryFlow.notifications.generateSuccess.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("ai:aiRegistrationFlow.notifications.generateSuccess.message")
+                message: t("ai:aiPasswordRecoveryFlow.notifications.generateSuccess.message")
             })
         );
     };
@@ -396,7 +396,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                     });
                     userOnboardEdgeCreated = true;
                 }
-            } else if (button.action?.executor?.name === RegistrationFlowExecutorConstants.PASSWORD_ONBOARD_EXECUTOR) {
+            } else if (button.action?.executor?.name === PasswordRecoveryFlowExecutorConstants.PASSWORD_ONBOARD_EXECUTOR) {
                 // For PasswordOnboardExecutor buttons without explicit next,
                 // create an edge to the user onboard step
                 edges.push({
@@ -623,19 +623,19 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     };
 
     /**
-     * Effect that updates the flow with the registration flow steps.
+     * Effect that updates the flow with the password recovery flow steps.
      */
     useLayoutEffect(() => {
-        if (!isRegistrationFlowFetchRequestLoading && !isRegistrationFlowFetchRequestValidating) {
-            if (!isEmpty(registrationFlow?.steps)) {
-                const steps: Node[] = generateSteps(registrationFlow.steps);
+        if (!isPasswordRecoveryFlowFetchRequestLoading && !isPasswordRecoveryFlowFetchRequestValidating) {
+            if (!isEmpty(passwordRecoveryFlow?.steps)) {
+                const steps: Node[] = generateSteps(passwordRecoveryFlow.steps);
 
                 updateFlowWithSequence(steps);
             } else {
                 updateFlowWithSequence(initialNodes);
             }
         }
-    }, [ registrationFlow?.steps, isRegistrationFlowFetchRequestLoading, isRegistrationFlowFetchRequestValidating ]);
+    }, [ passwordRecoveryFlow?.steps, isPasswordRecoveryFlowFetchRequestLoading, isPasswordRecoveryFlowFetchRequestValidating ]);
 
     const generateNodeTypes = (): NodeTypes => {
         if (!steps) {
@@ -733,7 +733,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                                         ...(formComponent?.action ?? {}),
                                         type: "EXECUTOR",
                                         executor: {
-                                            name: RegistrationFlowExecutorConstants.PASSWORD_ONBOARD_EXECUTOR
+                                            name: PasswordRecoveryFlowExecutorConstants.PASSWORD_ONBOARD_EXECUTOR
                                         }
                                     }
                                 };
@@ -746,7 +746,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                                         ...(formComponent?.action ?? {}),
                                         type: "EXECUTOR",
                                         executor: {
-                                            name: RegistrationFlowExecutorConstants.EMAIL_OTP_EXECUTOR
+                                            name: PasswordRecoveryFlowExecutorConstants.EMAIL_OTP_EXECUTOR
                                         }
                                     }
                                 };
@@ -1013,7 +1013,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         }
     };
 
-    if (isRegistrationFlowFetchRequestLoading || isRegistrationFlowFetchRequestValidating) {
+    if (isPasswordRecoveryFlowFetchRequestLoading || isPasswordRecoveryFlowFetchRequestValidating) {
         return null;
     }
 
@@ -1047,13 +1047,13 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                         samplePrompts={ SAMPLE_PROMPTS }
                         userPrompt={ userPrompt }
                         showHistory={ true }
-                        promptHistoryPreferenceKey={ REGISTRATION_FLOW_AI_PROMPT_HISTORY_PREFERENCE_KEY }
+                        promptHistoryPreferenceKey={ PASSWORD_RECOVERY_FLOW_AI_PROMPT_HISTORY_PREFERENCE_KEY }
                     />
                 )
             }
-            { isFlowGenerating && <RegistrationFlowAILoader /> }
+            { isFlowGenerating && <PasswordRecoveryFlowAILoader /> }
         </>
     );
 };
 
-export default RegistrationFlowBuilderCore;
+export default PasswordRecoveryFlowBuilderCore;

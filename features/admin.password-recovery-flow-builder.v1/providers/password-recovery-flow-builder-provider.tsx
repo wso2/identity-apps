@@ -24,30 +24,30 @@ import { useReactFlow } from "@xyflow/react";
 import React, { FC, PropsWithChildren, ReactElement, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import configureRegistrationFlow from "../api/configure-registration-flow";
-import updateNewRegistrationPortalFeatureStatus from "../api/update-new-registration-portal-feature-status";
-import useNewRegistrationPortalFeatureStatus from "../api/use-new-registration-portal-feature-status";
+import configurePasswordRecoveryFlow from "../api/configure-password-recovery-flow";
+import updateNewPasswordRecoveryPortalFeatureStatus from "../api/update-new-password-recovery-portal-feature-status";
+import useNewPasswordRecoveryPortalFeatureStatus from "../api/use-new-password-recovery-portal-feature-status";
 import ResourceProperties from "../components/resource-property-panel/resource-properties";
 import ElementFactory from "../components/resources/elements/element-factory";
-import RegistrationFlowBuilderContext from "../context/registration-flow-builder-context";
+import PasswordRecoveryFlowBuilderContext from "../context/password-recovery-flow-builder-context";
 import { Attribute } from "../models/attributes";
-import RegistrationFlowConstants from "../constants/registration-flow-constants";
+import PasswordRecoveryFlowConstants from "../constants/password-recovery-flow-constants";
 import transformFlow from "../utils/transform-flow";
 
 /**
- * Props interface of {@link RegistrationFlowBuilderProvider}
+ * Props interface of {@link PasswordRecoveryFlowBuilderProvider}
  */
-export type RegistrationFlowBuilderProviderProps = PropsWithChildren<unknown>;
+export type PasswordRecoveryFlowBuilderProviderProps = PropsWithChildren<unknown>;
 
 /**
- * This component provides registration flow builder related context to its children.
+ * This component provides password recovery flow builder related context to its children.
  *
  * @param props - Props injected to the component.
- * @returns The RegistrationFlowBuilderProvider component.
+ * @returns The PasswordRecoveryFlowBuilderProvider component.
  */
-const RegistrationFlowBuilderProvider: FC<RegistrationFlowBuilderProviderProps> = ({
+const PasswordRecoveryFlowBuilderProvider: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
     children
-}: PropsWithChildren<RegistrationFlowBuilderProviderProps>): ReactElement => (
+}: PropsWithChildren<PasswordRecoveryFlowBuilderProviderProps>): ReactElement => (
     <AuthenticationFlowBuilderCoreProvider ElementFactory={ ElementFactory } ResourceProperties={ ResourceProperties }>
         <FlowContextWrapper>{ children }</FlowContextWrapper>
     </AuthenticationFlowBuilderCoreProvider>
@@ -59,16 +59,16 @@ const RegistrationFlowBuilderProvider: FC<RegistrationFlowBuilderProviderProps> 
  * @param props - Props injected to the component.
  * @returns The FlowContextWrapper component.
  */
-const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
+const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
     children
-}: PropsWithChildren<RegistrationFlowBuilderProviderProps>): ReactElement => {
+}: PropsWithChildren<PasswordRecoveryFlowBuilderProviderProps>): ReactElement => {
     const dispatch: Dispatch = useDispatch();
 
     const { toObject } = useReactFlow();
     const {
         data: isNewRegistrationPortalEnabled,
         mutate: mutateNewRegistrationPortalEnabledRequest
-    } = useNewRegistrationPortalFeatureStatus();
+    } = useNewPasswordRecoveryPortalFeatureStatus();
 
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Attribute[] }>({});
     const [ isPublishing, setIsPublishing ] = useState<boolean>(false);
@@ -80,11 +80,11 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
 
         if (!isNewRegistrationPortalEnabled) {
             try {
-                await updateNewRegistrationPortalFeatureStatus(true);
+                await updateNewPasswordRecoveryPortalFeatureStatus(true);
             } catch(error) {
                 dispatch(
                     addAlert({
-                        description: "Failed to enable the new registration flow experience.",
+                        description: "Failed to enable the new password recovery flow experience.",
                         level: AlertLevels.ERROR,
                         message: "Flow Update Failure"
                     })
@@ -95,14 +95,14 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
         }
 
         try {
-            const registrationFlow = transformFlow(flow) as any;
-            registrationFlow.flowType = RegistrationFlowConstants.PASSWORD_RECOVERY_FLOW_TYPE;
+            const passwordRecoveryFlow = transformFlow(flow) as any;
+            passwordRecoveryFlow.flowType = PasswordRecoveryFlowConstants.PASSWORD_RECOVERY_FLOW_TYPE;
 
-            await configureRegistrationFlow(registrationFlow);
+            await configurePasswordRecoveryFlow(passwordRecoveryFlow);
 
             dispatch(
                 addAlert({
-                    description: "Registration flow updated successfully.",
+                    description: "Password recovery flow updated successfully.",
                     level: AlertLevels.SUCCESS,
                     message: "Flow Updated Successfully"
                 })
@@ -110,7 +110,7 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
         } catch (error) {
             dispatch(
                 addAlert({
-                    description: "Failed to update the registration flow.",
+                    description: "Failed to update the password recovery flow.",
                     level: AlertLevels.ERROR,
                     message: "Flow Update Failure"
                 })
@@ -121,7 +121,7 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
     };
 
     return (
-        <RegistrationFlowBuilderContext.Provider
+        <PasswordRecoveryFlowBuilderContext.Provider
             value={ {
                 isNewRegistrationPortalEnabled,
                 isPublishing,
@@ -131,8 +131,8 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
             } }
         >
             { children }
-        </RegistrationFlowBuilderContext.Provider>
+        </PasswordRecoveryFlowBuilderContext.Provider>
     );
 };
 
-export default RegistrationFlowBuilderProvider;
+export default PasswordRecoveryFlowBuilderProvider;

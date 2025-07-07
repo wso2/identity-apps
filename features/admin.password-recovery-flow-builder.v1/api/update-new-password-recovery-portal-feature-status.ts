@@ -23,19 +23,19 @@ import {
 import {
     UpdateGovernanceConnectorConfigInterface
 } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
-import RegistrationFlowBuilderConstants from "../constants/registration-flow-builder-constants";
+import PasswordRecoveryFlowBuilderConstants from "../constants/password-recovery-flow-builder-constants";
 
 /**
- * Sets the Registration flow builder feature status.
+ * Sets the Password Recovery flow builder feature status.
  *
- * @param enable - Flag to enable or disable the registration flow builder.
+ * @param enable - Flag to enable or disable the password recovery flow builder.
  * @returns A promise that resolves when the update is complete.
  */
-const updateNewRegistrationPortalFeatureStatus = (enable: boolean = true): Promise<any> => {
+const updateNewPasswordRecoveryPortalFeatureStatus = (enable: boolean = true): Promise<any> => {
     const payload: UpdateGovernanceConnectorConfigInterface = {
         operation: "UPDATE",
         properties: [
-            { name: RegistrationFlowBuilderConstants.FLOW_BUILDER_STATUS_CONFIG_KEY, value: enable ? "true" : "false" }
+            { name: PasswordRecoveryFlowBuilderConstants.FLOW_BUILDER_STATUS_CONFIG_KEY, value: enable ? "true" : "false" }
         ]
     };
 
@@ -46,4 +46,4 @@ const updateNewRegistrationPortalFeatureStatus = (enable: boolean = true): Promi
     );
 };
 
-export default updateNewRegistrationPortalFeatureStatus;
+export default updateNewPasswordRecoveryPortalFeatureStatus;

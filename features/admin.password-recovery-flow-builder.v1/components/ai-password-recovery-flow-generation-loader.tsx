@@ -26,17 +26,17 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import AIBot
     from "../../themes/wso2is/assets/images/illustrations/ai-bot.svg";
-import useAIRegistrationFlowGenerationStatus from "../api/use-ai-registration-flow-status";
+import useAIPasswordRecoveryFlowGenerationStatus from "../api/use-ai-password-recovery-flow-status";
 import {
     FACTS_ROTATION_DELAY,
     PROGRESS_UPDATE_INTERVAL,
     statusProgressMap,
     useGetFacts,
     useGetStatusLabels
-} from "../constants/registration-flow-ai-constants";
-import useAIGeneratedRegistrationFlow from "../hooks/use-ai-generated-registration-flow";
+} from "../constants/password-recovery-flow-ai-constants";
+import useAIGeneratedPasswordRecoveryFlow from "../hooks/use-ai-generated-password-recovery-flow";
 
-const RegistrationFlowAILoader = (): ReactElement => {
+const PasswordRecoveryFlowAILoader = (): ReactElement => {
 
     const { t } = useTranslation();
 
@@ -47,9 +47,9 @@ const RegistrationFlowAILoader = (): ReactElement => {
     const {
         setIsFlowGenerating,
         setFlowGenerationCompleted
-    } = useAIGeneratedRegistrationFlow();
+    } = useAIGeneratedPasswordRecoveryFlow();
 
-    const { data, error } = useAIRegistrationFlowGenerationStatus();
+    const { data, error } = useAIPasswordRecoveryFlowGenerationStatus();
     const facts: string[] = useGetFacts();
 
     const [ currentProgress, setCurrentProgress ] = useState<number>(0);
@@ -88,9 +88,9 @@ const RegistrationFlowAILoader = (): ReactElement => {
         if (error) {
             dispatch(
                 addAlert<AlertInterface>({
-                    description: t("ai:aiRegistrationFlow.notifications.generateStatusError.description"),
+                    description: t("ai:aiPasswordRecoveryFlow.notifications.generateStatusError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("ai:aiRegistrationFlow.notifications.generateStatusError.message")
+                    message: t("ai:aiPasswordRecoveryFlow.notifications.generateStatusError.message")
                 })
             );
         }
@@ -122,8 +122,8 @@ const RegistrationFlowAILoader = (): ReactElement => {
      * @returns The current status.
      */
     const getCurrentStatus = () => {
-        if (!data) return t("ai:aiRegistrationFlow.states.0");
-        let currentStatusLabel: string = "ai:aiRegistrationFlow.states.0";
+        if (!data) return t("ai:aiPasswordRecoveryFlow.states.0");
+        let currentStatusLabel: string = "ai:aiPasswordRecoveryFlow.states.0";
 
         Object.entries(data.status).forEach(([ key, value ]: [string, boolean]) => {
             if (value && statusLabels[key]) {
@@ -196,4 +196,4 @@ const RegistrationFlowAILoader = (): ReactElement => {
     );
 };
 
-export default RegistrationFlowAILoader;
+export default PasswordRecoveryFlowAILoader;

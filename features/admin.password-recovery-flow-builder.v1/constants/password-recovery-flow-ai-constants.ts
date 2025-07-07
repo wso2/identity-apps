@@ -25,9 +25,9 @@ export const useGetFacts = (): string[] => {
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
 
     return [
-        t("ai:aiRegistrationFlow.screens.loading.facts.0", { productName }),
-        t("ai:aiRegistrationFlow.screens.loading.facts.1", { productName }),
-        t("ai:aiRegistrationFlow.screens.loading.facts.2", { productName })
+        t("ai:aiPasswordRecoveryFlow.screens.loading.facts.0", { productName }),
+        t("ai:aiPasswordRecoveryFlow.screens.loading.facts.1", { productName }),
+        t("ai:aiPasswordRecoveryFlow.screens.loading.facts.2", { productName })
     ];
 };
 
@@ -35,13 +35,13 @@ export const useGetStatusLabels = (): Record<string, string> => {
     const { t } = useTranslation();
 
     return {
-        generating_registration_flow: t("ai:aiRegistrationFlow.states.5"),
-        generation_of_registration_flow_complete: t("ai:aiRegistrationFlow.states.6"),
-        generation_of_registration_step_complete: t("ai:aiRegistrationFlow.states.10"),
-        optimization_and_validation_complete: t("ai:aiRegistrationFlow.states.2"),
-        optimizing_and_validating_user_query: t("ai:aiRegistrationFlow.states.1"),
-        retrieval_of_examples_complete: t("ai:aiRegistrationFlow.states.4"),
-        retrieving_examples: t("ai:aiRegistrationFlow.states.3")
+        generating_registration_flow: t("ai:aiPasswordRecoveryFlow.states.5"),
+        generation_of_registration_flow_complete: t("ai:aiPasswordRecoveryFlow.states.6"),
+        generation_of_registration_step_complete: t("ai:aiPasswordRecoveryFlow.states.10"),
+        optimization_and_validation_complete: t("ai:aiPasswordRecoveryFlow.states.2"),
+        optimizing_and_validating_user_query: t("ai:aiPasswordRecoveryFlow.states.1"),
+        retrieval_of_examples_complete: t("ai:aiPasswordRecoveryFlow.states.4"),
+        retrieving_examples: t("ai:aiPasswordRecoveryFlow.states.3")
     };
 };
 
@@ -59,4 +59,4 @@ export const INITIAL_PROGRESS: number = 5;
 export const INCREMENT: number = 0.5;
 export const FACTS_ROTATION_DELAY: number = 8000;
 export const PROGRESS_UPDATE_INTERVAL: number = 100;
-export const REGISTRATION_FLOW_AI_PROMPT_HISTORY_PREFERENCE_KEY: string = "registrationFlowAIPrompts";
+export const PASSWORD_RECOVERY_FLOW_AI_PROMPT_HISTORY_PREFERENCE_KEY: string = "passwordRecoveryFlowAIPrompts";
