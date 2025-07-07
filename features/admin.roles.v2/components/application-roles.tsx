@@ -25,7 +25,7 @@ import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import FormGroup from "@oxygen-ui/react/FormGroup";
 import Radio from "@oxygen-ui/react/Radio";
 import TextField from "@oxygen-ui/react/TextField";
-import { useRequiredScopes } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { updateApplicationDetails } from "@wso2is/admin.applications.v1/api/application";
 import { useGetApplication } from "@wso2is/admin.applications.v1/api/use-get-application";
 import { ApplicationInterface } from "@wso2is/admin.applications.v1/models/application";
@@ -126,11 +126,18 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
-
-    const hasRoleCreatePermissions: boolean = useRequiredScopes(featureConfig?.userRoles?.scopes?.create);
+    const userRolesV3FeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3
+    );
 
     const enableScim2RolesV3Api: boolean = useSelector(
         (state: AppState) => state.config.ui.enableScim2RolesV3Api
+    );
+
+    const hasRoleCreatePermissions: boolean = useRequiredScopes(
+        enableScim2RolesV3Api
+            ? userRolesV3FeatureConfig?.scopes?.create
+            : featureConfig?.userRoles?.scopes?.create
     );
 
     // Use the SWR hook for V3 API or fallback to direct API call for legacy

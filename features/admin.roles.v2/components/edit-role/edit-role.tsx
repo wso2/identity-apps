@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
@@ -98,6 +99,17 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     const enableScim2RolesV3Api: boolean = useSelector(
         (state: AppState) => state.config.ui.enableScim2RolesV3Api
     );
+    const hasGroupUpdatePermission: boolean = useRequiredScopes(
+        enableScim2RolesV3Api
+            ? [ LocalRoleConstants.ROLE_GROUPS_UPDATE ]
+            : featureConfig?.scopes?.update
+    );
+
+    const hasUserUpdatePermission: boolean = useRequiredScopes(
+        enableScim2RolesV3Api
+            ? [ LocalRoleConstants.ROLE_USERS_UPDATE ]
+            : usersFeatureConfig?.scopes?.update
+    );
 
     const isSharedRole: boolean = useMemo(() => roleObject?.properties?.some(
         (property: RolePropertyInterface) =>
@@ -123,36 +135,33 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
 
     const isGroupReadOnly: boolean = useMemo(() => {
 
-        if (enableScim2RolesV3Api) {
-            return !isFeatureEnabled(featureConfig,
-                LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE"))
-            || !AuthenticateUtils.hasScope(LocalRoleConstants.ROLE_GROUPS_UPDATE, allowedScopes)
-            || roleObject?.meta?.systemRole;
-        }
+        const featureEnabled: boolean = isFeatureEnabled(featureConfig,
+            LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE"));
 
-        return !isFeatureEnabled(featureConfig,
-            LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE"))
-            || !hasRequiredScopes(featureConfig,
-                featureConfig?.scopes?.update,
-                allowedScopes)
-            || roleObject?.meta?.systemRole;
-    }, [ enableScim2RolesV3Api, featureConfig, allowedScopes, roleObject ]);
+        const result: boolean = !featureEnabled || !hasGroupUpdatePermission || roleObject?.meta?.systemRole;
+
+        return result;
+    }, [ featureConfig, hasGroupUpdatePermission, roleObject ]);
 
     const isUserReadOnly: boolean = useMemo(() => {
+
         if (enableScim2RolesV3Api) {
-            return !isFeatureEnabled(featureConfig,
-                LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE")) ||
-                !AuthenticateUtils.hasScope(LocalRoleConstants.ROLE_USERS_UPDATE, allowedScopes);
+            const featureEnabled: boolean = isFeatureEnabled(featureConfig,
+                LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE"));
+            const result: boolean = !featureEnabled || !hasUserUpdatePermission;
+
+            return result;
         }
 
-        return isReadOnly || !isFeatureEnabled(usersFeatureConfig,
-            UserManagementConstants.FEATURE_DICTIONARY.get("USER_CREATE")) ||
-            !hasRequiredScopes(usersFeatureConfig,
-                usersFeatureConfig?.scopes?.update, allowedScopes);
+        const userFeatureEnabled: boolean = isFeatureEnabled(usersFeatureConfig,
+            UserManagementConstants.FEATURE_DICTIONARY.get("USER_CREATE"));
+        const result: boolean = isReadOnly || !userFeatureEnabled || !hasUserUpdatePermission;
+
+        return result;
     }, [
         enableScim2RolesV3Api,
         featureConfig,
-        allowedScopes,
+        hasUserUpdatePermission,
         isReadOnly,
         usersFeatureConfig
     ]);
