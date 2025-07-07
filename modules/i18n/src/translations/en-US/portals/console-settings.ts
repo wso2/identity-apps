@@ -67,11 +67,12 @@ export const consoleSettings: ConsoleSettingsNS = {
         }
     },
     sharedAccess: {
+        description: "Select the following options to share the application roles with the organizations.",
         selectRolesForOrganization: "Select roles for organization",
         organizations: "Organizations",
         availableRoles: "Available Roles",
         searchAvailableRolesPlaceholder: "Search available roles",
-        tabLabel: "Role Sharing",
+        tabLabel: "Shared Access",
         modes: {
             doNotShare: "Do not share any roles",
             shareWithAll: "Share a common set of roles with all organizations",

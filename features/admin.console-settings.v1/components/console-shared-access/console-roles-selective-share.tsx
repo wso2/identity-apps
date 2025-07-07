@@ -22,11 +22,13 @@ import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import Grid from "@oxygen-ui/react/Grid";
+import LinearProgress from "@oxygen-ui/react/LinearProgress";
 import Typography from "@oxygen-ui/react/Typography";
 import useGetApplicationShare from "@wso2is/admin.applications.v1/api/use-get-application-share";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     OrganizationInterface,
+    OrganizationLinkInterface,
     OrganizationRoleInterface,
     SelectedOrganizationRoleInterface
 } from "@wso2is/admin.organizations.v1/models/organizations";
@@ -42,6 +44,7 @@ import React, {
     useEffect,
     useState } from "react";
 import { useTranslation } from "react-i18next";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { ConsoleRolesOnboardingConstants } from "../../constants/console-roles-onboarding-constants";
@@ -79,10 +82,14 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
     const { consoleId } = useConsoleSettings();
 
     const [ selectedOrgId, setSelectedOrgId ] = useState<string>();
+    const [ expandedOrgId, setExpandedOrgId ] = useState<string>();
     const [ readOnly, setReadOnly ] = useState<boolean>(true);
     const [ resolvedOrgs, setResolvedOrgs ] = useState<string[]>([]);
     const [ organizationTree, setOrganizationTree ] = useState<TreeViewBaseItemWithRoles[]>([]);
     const [ roleSelections, setRoleSelections ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
+    const [ isNextPageAvailable, setIsNextPageAvailable ] = useState<boolean>(false);
+    const [ nextPageLink, setNextPageLink ] = useState<string>();
+    const [ afterCursor, setAfterCursor ] = useState<string>();
 
     const {
         data: originalTopLevelOrganizationTree,
@@ -94,7 +101,9 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
         false,
         `parentId eq '${ organizationId }'`,
         null,
-        10
+        15,
+        null,
+        afterCursor
     );
 
     const {
@@ -104,22 +113,14 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
     } = useGetApplicationShare(
         consoleId,
         !isEmpty(consoleId) &&
-        !isEmpty(selectedOrgId) &&
-        !resolvedOrgs.includes(selectedOrgId),
+        !isEmpty(expandedOrgId) &&
+        !resolvedOrgs.includes(expandedOrgId),
         false,
-        `parentId eq '${ selectedOrgId }'`
+        `parentId eq '${ expandedOrgId }'`
     );
 
-    const {
-        data: originalOrganizationTree1,
-    } = useGetApplicationShare(
-        consoleId,
-        !isEmpty(consoleId) &&
-        !isEmpty(selectedOrgId) &&
-        !resolvedOrgs.includes(selectedOrgId),
-        false,
-        `id eq '${ selectedOrgId }'`
-    );
+    console.log(originalOrganizationTree);
+
 
     const {
         consoleRoles,
@@ -149,6 +150,22 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
                 setSelectedOrgId(topLevelOrgTree[0].id);
             }
         }
+
+        // If there are links in the top-level organization tree, set the next page link.
+        // This is used for pagination.
+        if (originalTopLevelOrganizationTree?.links?.length > 0) {
+            const nextLink: OrganizationLinkInterface | undefined = originalTopLevelOrganizationTree
+                .links.find((link: OrganizationLinkInterface) => link.rel === "next");
+
+            if (nextLink) {
+                setNextPageLink(nextLink.href);
+                setIsNextPageAvailable(true);
+            } else {
+                setIsNextPageAvailable(false);
+            }
+        } else {
+            setIsNextPageAvailable(false);
+        }
     }, [ originalTopLevelOrganizationTree ]);
 
     // This will update the organization tree with the children of the selected organization.
@@ -157,14 +174,14 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
             const childOrgTree: TreeViewBaseItemWithRoles[] = buildChildTree(originalOrganizationTree?.organizations);
 
             const updatedTree: TreeViewBaseItemWithRoles[] =
-                updateTreeWithChildren(organizationTree, selectedOrgId, childOrgTree);
+                updateTreeWithChildren(organizationTree, expandedOrgId, childOrgTree);
 
-            setResolvedOrgs((prev: string[]) => [ ...prev, selectedOrgId ]);
+            setResolvedOrgs((prev: string[]) => [ ...prev, expandedOrgId ]);
             setOrganizationTree(updatedTree);
 
             // Compute role selections for the newly added children
             const childRoleMap: Record<string, SelectedOrganizationRoleInterface[]> = computeChildRoleSelections(
-                selectedOrgId,
+                expandedOrgId,
                 originalOrganizationTree.organizations
             );
 
@@ -447,6 +464,20 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
         return updated;
     };
 
+    // This function loads more organizations when the user scrolls to the bottom of the organization tree.
+    // It checks if there is a next page link and updates the after cursor for pagination.
+    const loadMoreOrganizations = (): void => {
+        const cursorFragments: string[] = nextPageLink?.split("after=");
+
+        if (cursorFragments.length < 2) {
+            setIsNextPageAvailable(false);
+
+            return;
+        }
+
+        setAfterCursor(cursorFragments[1]);
+    };
+
     return (
         <>
             <Button
@@ -469,22 +500,32 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
                     md={ 4 }
                     padding={ 1 }
                     className="roles-selective-share-left-panel"
+                    id="scrollableOrgContainer"
                 >
-                    <RichTreeView
-                        className="roles-selective-share-tree-view"
-                        items={ organizationTree }
-                        defaultSelectedItems={ selectedOrgId }
-                        expansionTrigger="iconContainer"
-                        onItemClick={ (_e: SyntheticEvent, itemId: string) => {
-                            setSelectedOrgId(itemId);
-                        } }
-                        onItemExpansionToggle={ (_e: SyntheticEvent, itemId: string, expanded: boolean) => {
-                            if (expanded && !resolvedOrgs.includes(itemId)) {
+                    <InfiniteScroll
+                        dataLength={ organizationTree.length }
+                        next={ loadMoreOrganizations }
+                        hasMore={ isNextPageAvailable }
+                        loader={ (<LinearProgress/>) }
+                        scrollableTarget="scrollableOrgContainer"
+                    >
+
+                        <RichTreeView
+                            className="roles-selective-share-tree-view"
+                            items={ organizationTree }
+                            defaultSelectedItems={ selectedOrgId }
+                            expansionTrigger="iconContainer"
+                            onItemClick={ (_e: SyntheticEvent, itemId: string) => {
                                 setSelectedOrgId(itemId);
-                            }
-                        } }
-                        multiSelect={ false }
-                    />
+                            } }
+                            onItemExpansionToggle={ (_e: SyntheticEvent, itemId: string, expanded: boolean) => {
+                                if (expanded) {
+                                    setExpandedOrgId(itemId);
+                                }
+                            } }
+                            multiSelect={ false }
+                        />
+                    </InfiniteScroll>
                 </Grid>
                 <Grid
                     xs={ 12 }
@@ -517,7 +558,10 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
                                             : (
                                                 <Checkbox
                                                     className="role-checkbox"
-                                                    checked={ role.selected }
+                                                    checked={ role.displayName ===
+                                                        ConsoleRolesOnboardingConstants.ADMINISTRATOR
+                                                        ? true
+                                                        : role.selected }
                                                     onChange={ (
                                                         _e: ChangeEvent<HTMLInputElement>,
                                                         checked: boolean

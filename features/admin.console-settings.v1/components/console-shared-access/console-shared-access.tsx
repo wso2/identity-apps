@@ -27,6 +27,7 @@ import {
     editApplicationRolesOfExistingOrganizations,
     shareApplicationWithAllOrganizations
 } from "@wso2is/admin.applications.v1/api/application-roles";
+import useGetApplicationShare from "@wso2is/admin.applications.v1/api/use-get-application-share";
 import {
     RoleSharingInterface,
     ShareApplicationWithAllOrganizationsDataInterface,
@@ -51,7 +52,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import ConsoleRolesSelectiveShare from "./console-roles-selective-share";
 import ConsoleRolesShareWithAll from "./console-roles-share-with-all";
-import useGetApplicationShare from "@wso2is/admin.applications.v1/api/use-get-application-share";
 import useConsoleRoles from "../../hooks/use-console-roles";
 import useConsoleSettings from "../../hooks/use-console-settings";
 import { ApplicationSharingPolicy, RoleSharedAccessModes, RoleSharingModes } from "../../models/shared-access";
@@ -101,7 +101,9 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
         error:  originalOrganizationTreeFetchRequestError
     } = useGetApplicationShare(
         consoleId,
-        !isEmpty(consoleId)
+        !isEmpty(consoleId),
+        false,
+        null
     );
 
     const [ sharedAccessMode, setSharedAccessMode ] = useState<RoleSharedAccessModes>(
@@ -146,7 +148,7 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                 })
             );
         }
-    }, [ isOrganizationTreeFetchRequestLoading ]);
+    }, [ originalOrganizationTreeFetchRequestError ]);
 
     const shareAllRolesWithAllOrgs = (): void => {
         const data: ShareApplicationWithAllOrganizationsDataInterface = {
@@ -271,27 +273,29 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
             applicationId: consoleId
         };
 
-        editApplicationRolesOfExistingOrganizations(data)
-            .then(() => {
-                dispatch(addAlert({
-                    description: t("consoleSettings:sharedAccess.notifications." +
-                        "shareRoles.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("consoleSettings:sharedAccess.notifications.shareRoles.success.message")
-                }));
+        if (data?.Operations?.length > 0) {
+            editApplicationRolesOfExistingOrganizations(data)
+                .then(() => {
+                    dispatch(addAlert({
+                        description: t("consoleSettings:sharedAccess.notifications." +
+                            "shareRoles.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("consoleSettings:sharedAccess.notifications.shareRoles.success.message")
+                    }));
 
-                setAddedRoles({});
-                setRemovedRoles({});
-            })
-            .catch((error: Error) => {
-                dispatch(addAlert({
-                    description: t("consoleSettings:sharedAccess.notifications." +
-                        "shareRoles.error.description",
-                    { error: error.message }),
-                    level: AlertLevels.ERROR,
-                    message: t("consoleSettings:sharedAccess.notifications.shareRoles.error.message")
-                }));
-            });
+                    setAddedRoles({});
+                    setRemovedRoles({});
+                })
+                .catch((error: Error) => {
+                    dispatch(addAlert({
+                        description: t("consoleSettings:sharedAccess.notifications." +
+                            "shareRoles.error.description",
+                        { error: error.message }),
+                        level: AlertLevels.ERROR,
+                        message: t("consoleSettings:sharedAccess.notifications.shareRoles.error.message")
+                    }));
+                });
+        }
     };
 
     const submitSharedRoles = () : void => {
@@ -310,7 +314,7 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                 <Grid container>
                     <Grid xs={ 8 }>
                         <Text className="mb-2" subHeading>
-                            Select the following options to share the application roles with the organizations.
+                            { t("consoleSettings:sharedAccess.description") }
                         </Text>
                         <FormControl fullWidth>
                             <RadioGroup
@@ -325,12 +329,14 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                                     label={ t("consoleSettings:sharedAccess.modes.shareAllRolesWithAllOrgs") }
                                     control={ <Radio /> }
                                     disabled={ isReadOnly }
+                                    data-componentid={ `${componentId}-share-all-roles-with-all-orgs-radio-btn` }
                                 />
                                 <FormControlLabel
                                     value={ RoleSharedAccessModes.SHARE_WITH_ALL_ORGS }
                                     label={ t("consoleSettings:sharedAccess.modes.shareWithAll") }
                                     control={ <Radio /> }
                                     disabled={ isReadOnly }
+                                    data-componentid={ `${componentId}-share-with-all-orgs-radio-btn` }
                                 />
                                 <AnimatePresence mode="wait">
                                     {
@@ -357,6 +363,7 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                                     label={ t("consoleSettings:sharedAccess.modes.shareWithSelected") }
                                     control={ <Radio /> }
                                     disabled={ isReadOnly }
+                                    data-componentid={ `${componentId}-share-with-selected-orgs-and-roles-radio-btn` }
                                 />
                                 <AnimatePresence mode="wait">
                                     {

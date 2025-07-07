@@ -38,9 +38,11 @@ const useGetApplicationShare = <
         applicationId: string,
         shouldFetch: boolean,
         recursive: boolean = true,
-        filter?: string,
+        filter: string,
         excludedAttributes?: string,
-        limit?: number
+        limit?: number,
+        before?: string,
+        after?: string
     ): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -49,6 +51,8 @@ const useGetApplicationShare = <
         },
         method: HttpMethods.GET,
         params: {
+            after,
+            before,
             excludedAttributes,
             filter,
             limit,

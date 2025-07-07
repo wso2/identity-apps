@@ -89,6 +89,8 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
         !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
             "consoleSettings.firstLevelOrgloginFlowConfiguration"
         );
+    const isSharedAccessDisabled: boolean =
+        consoleSettingsFeatureConfig?.disabledFeatures?.includes("consoleSettings.sharedAccess");
 
     const isLoginFlowEnabled: boolean = useMemo(() => {
         if (isSuperOrganization()) {
@@ -146,7 +148,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     pane: <ConsoleProtocol />,
                     value: ConsoleSettingsTabIDs.PROTOCOL
                 },
-                !isSubOrganization() && {
+                !isSubOrganization() && !isSharedAccessDisabled && {
                     className: "console-shared-access",
                     "data-componentid": `${componentId}-tab-shared-access`,
                     "data-tabid": ConsoleSettingsModes.SHARED_ACCESS,

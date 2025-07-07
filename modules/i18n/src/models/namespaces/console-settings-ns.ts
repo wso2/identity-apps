@@ -59,6 +59,7 @@ export interface ConsoleSettingsNS {
         };
     };
     sharedAccess: {
+        description: string;
         selectRolesForOrganization: string;
         searchAvailableRolesPlaceholder: string;
         organizations: string;
