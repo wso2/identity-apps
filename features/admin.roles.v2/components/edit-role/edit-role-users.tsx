@@ -140,7 +140,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         (state: AppState) => state.config.ui.enableScim2RolesV3Api
     );
 
-    const updateUsersOfRole: (roleId: string, roleData: PatchRoleDataInterface) => Promise<any> =
+    const updateUsersOfRoleFunction: (roleId: string, roleData: PatchRoleDataInterface) => Promise<any> =
         enableScim2RolesV3Api ? updateUsersForRole : updateRoleDetails;
 
     const {

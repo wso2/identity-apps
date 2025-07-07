@@ -327,7 +327,7 @@ export const updateRoleDetails = (roleId: string, roleData: PatchRoleDataInterfa
 };
 
 /**
- * Update Data of the matched ID or the role
+ * Update Data of the matched ID or the role using SCIM2 Roles V3 API.
  *
  * @param roleId - role id to update role details
  * @param roleData - Data that needs to be updated.
@@ -452,7 +452,6 @@ export const deleteRoleById = (roleId: string): Promise<any> => {
 
 /**
  * Delete a selected role with a given role ID.
- * TODO:ROLEV2 Need to update the url once the API is ready.
  *
  * @param roleId - Id of the role which needs to be deleted.
  * @returns A promise containing the status of the delete.
@@ -501,8 +500,7 @@ export const createRole = (data: CreateRoleInterface): Promise<AxiosResponse> =>
 };
 
 /**
- * Create a role in the system with role data given by user.
- * TODO:ROLEV2 Need to update the url once the API is ready.
+ * Create a roles using SCIM2 Roles V3 API.
  *
  * @param data - data object used to create the role
  */
