@@ -115,7 +115,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         (state: AppState) => state.config.ui.enableScim2RolesV3Api
     );
 
-    const updateUsersOfRole: (roleId: string, roleData: PatchRoleDataInterface) => Promise<any> =
+    const updateUsersOfRoleFunction: (roleId: string, roleData: PatchRoleDataInterface) => Promise<any> =
         enableScim2RolesV3Api ? updateUsersForRole : updateRoleDetails;
 
     const {
@@ -275,7 +275,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         };
 
         setIsSubmitting(true);
-        updateUsersOfRole(role.id, roleData)
+        updateUsersOfRoleFunction(role.id, roleData)
             .then(() => {
                 dispatch(
                     addAlert({
@@ -335,7 +335,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         };
 
         setIsSubmitting(true);
-        updateUsersOfRole(role.id, roleData)
+        updateUsersOfRoleFunction(role.id, roleData)
             .then(() => {
                 dispatch(
                     addAlert({

@@ -79,7 +79,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
         (state: AppState) => state.config.ui.enableScim2RolesV3Api
     );
 
-    const updateRoleInformation: (roleId: string, roleData: PatchRoleDataInterface) => Promise<any> =
+    const updateRoleInformationFunction: (roleId: string, roleData: PatchRoleDataInterface) => Promise<any> =
         enableScim2RolesV3Api ? updateRoleDetailsUsingV3Api : updateRoleDetails;
 
     const {
@@ -181,7 +181,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
 
         setIsSubmitting(true);
 
-        updateRoleInformation(role.id, roleData)
+        updateRoleInformationFunction(role.id, roleData)
             .then(() => {
                 onRoleUpdate(tabIndex);
                 handleAlerts({
