@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.65.24
+
+### Patch Changes
+
+- [#8469](https://github.com/wso2/identity-apps/pull/8469) [`d9bd2b38be9511fc6d8b7836a96e052efa515e9a`](https://github.com/wso2/identity-apps/commit/d9bd2b38be9511fc6d8b7836a96e052efa515e9a) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Fix issue in learn more button for api resources sub org description
+
+- Updated dependencies [[`d9bd2b38be9511fc6d8b7836a96e052efa515e9a`](https://github.com/wso2/identity-apps/commit/d9bd2b38be9511fc6d8b7836a96e052efa515e9a)]:
+  - @wso2is/admin.api-resources.v2@2.26.1
+
 ## 2.65.23
 
 ### Patch Changes
