@@ -315,6 +315,10 @@ export interface rolesNS {
                     message: string;
                     description: string;
                 };
+                pendingApproval: {
+                    message: string;
+                    description: string;
+                };
             };
             list: {
                 emptyPlaceholder: {
