@@ -18,6 +18,7 @@
 
 import { getActionsResourceEndpoints } from "@wso2is/admin.actions.v1/configs/endpoints";
 import { getAdministratorsResourceEndpoints } from "@wso2is/admin.administrators.v1/config/endpoints";
+import { getAgentsResourceEndpoints } from "@wso2is/admin.agents.v1/configs/endpoints";
 import { getAPIResourceEndpoints } from "@wso2is/admin.api-resources.v2/configs/endpoint";
 import { getApplicationTemplatesResourcesEndpoints } from "@wso2is/admin.application-templates.v1/configs/endpoints";
 import { getApplicationsResourceEndpoints } from "@wso2is/admin.applications.v1/configs/endpoints";
@@ -335,6 +336,7 @@ export class Config {
             ...getWorkflowAssociationsResourceEndpoints(this.resolveServerHost()),
             ...getRegistrationFlowBuilderResourceEndpoints(this.resolveServerHost()),
             ...getWebhooksResourceEndpoints(this.resolveServerHost()),
+            ...getAgentsResourceEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.resolveServerHostFromConfig() }/api/server/v1/cors/origins`,
             asyncStatus: `${ this.resolveServerHost(false, true) }/api/server/v1/async-operations`,
             // TODO: Remove this endpoint and use ID token to get the details

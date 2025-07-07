@@ -15,21 +15,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-export interface AddAgentInterface {
-    id?: string;
-    name: string;
-    description: string;
-    version: string;
-    url?: string;
-    owner?: string;
-}
-export interface AgentSchema {
-    agentUrl?: string;
-    agentDescription?: string;
-    agentDisplayName?: string;
-    [key: string]: any;
-}
 
-export interface AgentScimSchema {
-    "urn:scim:wso2:agent:schema": AgentSchema;
-}
+import { AgentsResourceEndpointsInterface } from "../models/endpoints";
+
+/**
+ * Returns the webhooks resource endpoints.
+ *
+ * @param serverHost - The server host URL.
+ * @returns The webhooks resource endpoints.
+ */
+export const getAgentsResourceEndpoints = (serverHost: string): AgentsResourceEndpointsInterface => {
+    return {
+        agentCredentials: `${serverHost}/scim2/Agents/credentials`,
+        agents: `${serverHost}/scim2/Agents`
+    };
+};

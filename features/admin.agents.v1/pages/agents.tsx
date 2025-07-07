@@ -41,7 +41,7 @@ export default function Agents ({
         attributes: "",
         count: 10,
         domain: "AGENT",
-        excludedAttributes: "password,secret,roles,groups",
+        excludedAttributes: "roles,groups",
         filter: "",
         startIndex: 1
     };
@@ -62,9 +62,9 @@ export default function Agents ({
 
     return (
         <PageLayout
-            pageTitle={ "Agents" }
-            title={ "Agents" }
-            description={ "Configure and manage AI agent identities for your organizaton" }
+            pageTitle={ t("agents:title") }
+            title={ t("agents:pageTitle") }
+            description={ t("agents:description") }
             data-componentid={ `${componentId}-page-layout` }
             bottomMargin={ false }
             contentTopMargin={ true }

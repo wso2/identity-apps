@@ -16,11 +16,19 @@
  * under the License.
  */
 
-import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
-import { addUser, deleteUser, updateUserInfo } from "@wso2is/admin.users.v1/api/users";
-import { UserDetailsInterface } from "@wso2is/admin.users.v1/models/user";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
+import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
+import { AgentScimSchema } from "../models/agents";
+
+/**
+ * Initialize an axios Http client.
+ *
+ */
+const httpClient: HttpClientInstance
+    = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Add an agent.
@@ -29,21 +37,23 @@ import { AxiosError, AxiosResponse } from "axios";
  *
  * @returns response.
  */
-export const addAgent = (data: UserDetailsInterface): Promise<any> => {
-    return addUser(data).then((response: AxiosResponse) => {
-        if (response.status !== 201) {
-            throw new IdentityAppsApiException(
-                "Error when creating the agent",
-                null,
-                response.status,
-                response.request
-            );
-        }
+export const addAgent = (data: AgentScimSchema): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
+        data,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.agents
+    };
 
-        return Promise.resolve(response?.data);
-    }).catch((error: AxiosError) => {
-        return Promise.reject(error?.response?.data);
-    });
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
 };
 
 /**
@@ -53,8 +63,23 @@ export const addAgent = (data: UserDetailsInterface): Promise<any> => {
  *
  * @returns response.
  */
-export const updateAgent = (agentId: string, data: PatchRoleDataInterface): Promise<any> => {
-    return updateUserInfo(agentId, data);
+export const updateAgent = (agentId: string, data: AgentScimSchema): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
+        data,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        url: store.getState().config.endpoints.agents + `/${agentId}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
 };
 
 /**
@@ -65,18 +90,19 @@ export const updateAgent = (agentId: string, data: PatchRoleDataInterface): Prom
  * @returns response.
  */
 export const deleteAgent = (agentId: string): Promise<AxiosResponse> => {
-    return deleteUser(agentId).then((response: AxiosResponse) => {
-        if (response.status !== 204) {
-            throw new IdentityAppsApiException(
-                "Error when deleting the agent",
-                null,
-                response.status,
-                response.request
-            );
-        }
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: store.getState().config.endpoints.agents + `/${agentId}`
+    };
 
-        return Promise.resolve(response);
-    }).catch((error: AxiosError) => {
-        return Promise.reject(error?.response?.data);
-    });
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
 };

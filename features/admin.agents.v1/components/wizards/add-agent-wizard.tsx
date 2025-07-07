@@ -16,15 +16,17 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { UserDetailsInterface } from "@wso2is/admin.users.v1/models/user";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form/src";
 import { Button, CopyInputField, Message } from "@wso2is/react-components";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "semantic-ui-react";
 import { addAgent } from "../../api/agents";
+import { AgentScimSchema } from "../../models/agents";
 
 interface AddAgentWizardProps extends IdentifiableComponentInterface {
     isOpen: boolean;
@@ -41,20 +43,9 @@ export default function AddAgentWizard({
     const [ showSecret, setShowSecret ] = useState(false);
     const [ newAgent, setNewAgent ] = useState<UserDetailsInterface>();
 
-    const sanitizeAgentUsername = (str: string) => {
-        // Step 1: Remove disallowed characters
-        let cleaned: string = str.replace(/[^a-zA-Z0-9._\-|/]/g, "");
+    const authenticatedUser: string = useSelector((state: AppState) => state?.auth);
 
-        // Step 2: Truncate to 30 characters
-        cleaned = cleaned.slice(0, 30);
-
-        // Step 3: Ensure minimum length of 3
-        if (cleaned.length < 3) {
-            throw new Error("Formatted string is shorter than 3 characters.");
-        }
-
-        return cleaned;
-    };
+    console.log(authenticatedUser);
 
     return (
         <Modal
@@ -73,19 +64,13 @@ export default function AddAgentWizard({
                 { !showSecret ?
                     (<FinalForm
                         onSubmit={ (values: any) => {
-                            const addAgentPayload: UserDetailsInterface = {
-                                emails: [],
-                                name: {
-                                    familyName: "",
-                                    givenName: values?.name
-                                },
-                                password: "Wso2@test123",
-                                "urn:scim:schemas:extension:custom:User": {
-                                    "agentDescription": values?.description,
-                                    "agentOwner": values?.owner,
-                                    "agentUrl": values?.url
-                                },
-                                userName: "AGENT/" + sanitizeAgentUsername(values?.name?.toLowerCase())
+                            const addAgentPayload: AgentScimSchema = {
+                                "urn:scim:wso2:agent:schema": {
+                                    agentDescription: values?.description,
+                                    // agentDisplayName: values?.name,
+                                    agentOwner: "",
+                                    agentUrl: values?.description
+                                }
                             };
 
                             addAgent(addAgentPayload)

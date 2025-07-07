@@ -19,7 +19,6 @@
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, FormRenderProps, SelectFieldAdapter, TextFieldAdapter } from "@wso2is/form";
@@ -30,6 +29,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { deleteAgent, updateAgent } from "../../api/agents";
 import useGetAgent from "../../hooks/use-get-agent";
+import { AgentScimSchema } from "../../models/agents";
 
 interface AgentOverviewProps extends IdentifiableComponentInterface {
     agentId: string;
@@ -113,29 +113,16 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
                 <FinalForm
                     onSubmit={ (values: any) => {
 
-                        const data: PatchRoleDataInterface = {
-                            Operations: [
-                                {
-                                    op: "replace",
-                                    value: {
-                                        name: {
-                                            givenName: values?.name
-                                        }
-                                    }
-                                },
-                                {
-                                    op: "replace",
-                                    value: {
-                                        "urn:scim:schemas:extension:custom:User": {
-                                            "agentDescription": values?.description
-                                        }
-                                    }
-                                }
-                            ],
-                            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+                        const updateAgentPayload: AgentScimSchema = {
+                            "urn:scim:wso2:agent:schema": {
+                                agentDescription: values?.description,
+                                // agentDisplayName: values?.name,
+                                agentOwner: "",
+                                agentUrl: values?.description
+                            }
                         };
 
-                        updateAgent(agentId, data).then((_response: any) => {
+                        updateAgent(agentId, updateAgentPayload).then((_response: any) => {
                             dispatch(addAlert({
                                 description: "Agent information updated successfully.",
                                 level: AlertLevels.SUCCESS,

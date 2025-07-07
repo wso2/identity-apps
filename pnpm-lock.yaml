@@ -6144,6 +6144,9 @@ importers:
       '@wso2is/admin.administrators.v1':
         specifier: ^2.29.204
         version: link:../admin.administrators.v1
+      '@wso2is/admin.agents.v1':
+        specifier: workspace:^
+        version: link:../admin.agents.v1
       '@wso2is/admin.api-resources.v1':
         specifier: ^2.25.204
         version: link:../admin.api-resources.v1
