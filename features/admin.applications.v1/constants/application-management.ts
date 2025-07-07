@@ -478,6 +478,8 @@ export class ApplicationManagementConstants {
 
     public static readonly IS_CHOREO_APP_SP_PROPERTY: string = "isChoreoApp";
 
+    public static readonly ORIGINAL_TEMPLATE_ID_PROPERTY: string = "originalTemplateId";
+
     public static readonly CUSTOM_APPLICATION_PROTOCOL_ORDER: Map<string, number> =
         new Map<string, number>([
             [ "oidc", 0 ],

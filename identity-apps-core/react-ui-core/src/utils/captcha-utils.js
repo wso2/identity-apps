@@ -19,8 +19,10 @@
 /**
  * Utility function to load the Captcha API.
  *
- * @param {*} captchaScriptURL
- * @returns
+ * @param {string} captchaScriptURL - The URL of the reCAPTCHA script
+ * @param {string} captchaScriptId - The ID for the script element
+ * @param {Object} recaptchaObject - The reCAPTCHA object if already loaded
+ * @returns {Promise} A promise that resolves when the reCAPTCHA API is ready
  */
 export function loadRecaptchaApi(captchaScriptURL, captchaScriptId, recaptchaObject) {
     if (recaptchaObject && recaptchaObject.render) {
@@ -31,7 +33,31 @@ export function loadRecaptchaApi(captchaScriptURL, captchaScriptId, recaptchaObj
         const existing = document.getElementById(captchaScriptId);
 
         if (existing) {
-            return recaptchaObject.ready(() => resolve(recaptchaObject));
+            if (window.grecaptcha) {
+                if (window.grecaptcha.enterprise && window.grecaptcha.enterprise.ready) {
+                    return window.grecaptcha.enterprise.ready(() => resolve(window.grecaptcha.enterprise));
+                } else if (window.grecaptcha.ready) {
+                    return window.grecaptcha.ready(() => resolve(window.grecaptcha));
+                }
+            }
+
+            const waitForRecaptcha = () => {
+                if (window.grecaptcha) {
+                    if (window.grecaptcha.enterprise && window.grecaptcha.enterprise.ready) {
+                        window.grecaptcha.enterprise.ready(() => resolve(window.grecaptcha.enterprise));
+                    } else if (window.grecaptcha.ready) {
+                        window.grecaptcha.ready(() => resolve(window.grecaptcha));
+                    } else {
+                        setTimeout(waitForRecaptcha, 100);
+                    }
+                } else {
+                    setTimeout(waitForRecaptcha, 100);
+                }
+            };
+
+            waitForRecaptcha();
+
+            return;
         }
 
         const script = document.createElement("script");
@@ -46,10 +72,15 @@ export function loadRecaptchaApi(captchaScriptURL, captchaScriptId, recaptchaObj
         };
 
         script.onload = () => {
-            if (!recaptchaObject || !recaptchaObject.ready) {
-                return reject(new Error("reCAPTCHA API loaded, but no grecaptcha.ready"));
+            if (!window.grecaptcha) {
+                return reject(new Error("reCAPTCHA API loaded, but grecaptcha is not available"));
             }
-            recaptchaObject.ready(() => resolve(recaptchaObject));
+
+            if (window.grecaptcha.enterprise) {
+                resolve(window.grecaptcha.enterprise);
+            } else {
+                resolve(window.grecaptcha);
+            }
         };
 
         document.head.appendChild(script);

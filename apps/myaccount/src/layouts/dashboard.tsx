@@ -35,7 +35,14 @@ import {
     RouteUtils,
     URLUtils
 } from "@wso2is/core/utils";
-import { I18n, I18nModuleConstants, LanguageChangeException, LocaleMeta, SupportedLanguagesMeta } from "@wso2is/i18n";
+import {
+    I18n,
+    I18nModuleConstants,
+    LanguageChangeException,
+    LocaleMeta,
+    SupportedLanguagesMeta,
+    TextDirection
+} from "@wso2is/i18n";
 import {
     Alert,
     ContentLoader,
@@ -58,7 +65,7 @@ import { fetchApplications } from "../api";
 import { Header, ProtectedRoute } from "../components";
 import { SystemNotificationAlert } from "../components/shared/system-notification-alert";
 import { getDashboardLayoutRoutes, getEmptyPlaceholderIllustrations } from "../configs";
-import { AppConstants, TextDirection, UIConstants } from "../constants";
+import { AppConstants, UIConstants } from "../constants";
 import { history } from "../helpers";
 import { Application, ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
@@ -152,9 +159,9 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
         const direction: string = supportedLanguage?.direction;
 
         if (direction === TextDirection.RTL) {
-            document.documentElement.setAttribute(UIConstants.TEXT_DIRECTION_ATTRIBUTE, TextDirection.RTL);
+            document.documentElement.setAttribute(I18nModuleConstants.TEXT_DIRECTION_ATTRIBUTE, TextDirection.RTL);
         } else {
-            document.documentElement.setAttribute(UIConstants.TEXT_DIRECTION_ATTRIBUTE, TextDirection.LTR);
+            document.documentElement.setAttribute(I18nModuleConstants.TEXT_DIRECTION_ATTRIBUTE, TextDirection.LTR);
         }
     };
 
@@ -194,7 +201,8 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
         const routes: RouteInterface[] = getDashboardLayoutRoutes().filter((route: RouteInterface) => {
 
             // Impersonation scope would indicate an impersonated session.
-            if (allowedScopes.includes("internal_user_impersonate")) {
+            if (allowedScopes.includes("internal_user_impersonate")
+                    || allowedScopes.includes("internal_org_user_impersonate")) {
                 if (route.path === "/") {
                     // During an impersonation, default route should redirect to the applications page.
                     route.redirectTo = AppConstants.getPaths().get("APPLICATIONS");

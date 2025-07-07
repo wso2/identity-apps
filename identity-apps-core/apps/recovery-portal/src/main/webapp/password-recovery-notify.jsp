@@ -30,6 +30,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.RecoveryInitiatingRequest" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
+<%@ page import="org.wso2.carbon.identity.captcha.provider.mgt.util.CaptchaFEUtils" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URISyntaxException" %>
@@ -103,13 +104,14 @@
     appIsAccessUrlAvailableProperty.setKey("isAccessUrlAvailable");
     appIsAccessUrlAvailableProperty.setValue(String.valueOf(StringUtils.isNotBlank(modifiedAccessUrl)));
     properties.add(appIsAccessUrlAvailableProperty);
- 
+
     recoveryInitiatingRequest.setProperties(properties);
 
     try {
         Map<String, String> requestHeaders = new HashedMap();
-        if (request.getParameter("g-recaptcha-response") != null) {
-            requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
+        String captchaResponseIdentifier = CaptchaFEUtils.getCaptchaResponseIdentifier();
+        if (request.getParameter(captchaResponseIdentifier) != null) {
+            requestHeaders.put(captchaResponseIdentifier, request.getParameter(captchaResponseIdentifier));
         }
         notificationApi.recoverPasswordPost(recoveryInitiatingRequest, null, null, requestHeaders);
         request.setAttribute("accessUrl", modifiedAccessUrl);

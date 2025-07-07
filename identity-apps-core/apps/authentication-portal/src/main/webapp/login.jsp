@@ -32,6 +32,7 @@
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ENABLE_AUTHENTICATION_WITH_REST_API" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ERROR_WHILE_BUILDING_THE_ACCOUNT_RECOVERY_ENDPOINT_URL" %>
 <%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
+<%@ page import="org.wso2.carbon.identity.captcha.provider.mgt.util.CaptchaFEUtils" %>
 <%@ page import="org.wso2.carbon.CarbonConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.AuthenticatorDataRetrievalClient" %>
@@ -347,14 +348,7 @@
             selfSignUpOverrideURL = selfSignUpOverrideURL.concat("?ui_locales=" + localeString);
         }
     }
-
-    if (!StringUtils.isBlank(passwordRecoveryOverrideURL)) {
-        if (passwordRecoveryOverrideURL.contains("?")) {
-            passwordRecoveryOverrideURL = passwordRecoveryOverrideURL.concat("&ui_locales=" + localeString);
-        } else {
-            passwordRecoveryOverrideURL = passwordRecoveryOverrideURL.concat("?ui_locales=" + localeString);
-        }
-    }
+    passwordRecoveryOverrideURL = getRecoveryPortalUrl(passwordRecoveryOverrideURL, recoveryPortalOverrideURL, localeString);
 %>
 
 <%
@@ -437,6 +431,7 @@
     }
 %>
 
+<% request.setAttribute("pageName", "sign-in"); %>
 
 <!doctype html>
 <html lang="en-US">
@@ -464,22 +459,36 @@
     <%
         boolean genericReCaptchaEnabled = CaptchaUtil.isGenericRecaptchaEnabledAuthenticator("IdentifierExecutor");
         if (reCaptchaEnabled || reCaptchaResendEnabled || genericReCaptchaEnabled) {
-            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
+            List<Map<String, String>> scriptAttributesList = (List<Map<String, String>>) CaptchaFEUtils.getScriptAttributes();
+            if (scriptAttributesList != null) {
+                for (Map<String, String> scriptAttributes : scriptAttributesList) {
     %>
-        <script src='<%=(reCaptchaAPI)%>'></script>
+        <script
+            <%
+                for (Map.Entry<String, String> entry : scriptAttributes.entrySet()) {
+            %>
+                <%= entry.getKey() %> = "<%= entry.getValue() %>"
+            <%
+                }
+            %>
+        ></script>
     <%
+                }
+            }
         }
     %>
+
 </head>
-<body class="login-portal layout authentication-portal-layout" onload="checkSessionKey()">
-    <% request.setAttribute("pageName", "sign-in"); %>
+
+<body class="login-portal layout authentication-portal-layout" onload="checkSessionKey()" data-page="<%= request.getAttribute("pageName") %>">
+
     <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
         <jsp:include page="extensions/timeout.jsp"/>
     <% } else { %>
         <jsp:include page="util/timeout.jsp"/>
     <% } %>
 
-    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>">
         <layout:component componentName="ProductHeader">
             <%
                 if (StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT) &&
@@ -533,8 +542,8 @@
                             class="ellipsis"
                             data-position="top left"
                             data-variation="inverted"
-                            data-content="<%=sanitizeUserName%>">
-                        <%=sanitizeUserName%>
+                            data-content="<%=Encode.forHtmlAttribute(sanitizeUserName)%>">
+                        <%=Encode.forHtmlContent(sanitizeUserName)%>
                     </span>
                 </div>
                 <% } %>
@@ -1425,7 +1434,7 @@
                 var error_msg = $("#error-msg");
 
                 $("#loginForm").submit(function (e) {
-                    var resp = $("[name='g-recaptcha-response']")[0].value;
+                    var resp = $("[name="+ CaptchaFEUtils.getCaptchaResponseIdentifier() +"]")[0].value;
                     if (resp.trim() == '') {
                         error_msg.text("<%=AuthenticationEndpointUtil.i18n(resourceBundle,"please.select.recaptcha")%>");
                         error_msg.show();
@@ -1473,7 +1482,7 @@
                 var baseLocation = "<%=commonauthURL%>?idp=" + key + "&authenticator=" + value +
                     "&sessionDataKey=<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))%>";
 
-                if ("<%=username%>" !== "null" && "<%=username%>".length > 0) {
+                if ("<%=Encode.forJavaScript(username)%>" !== "null" && "<%=Encode.forJavaScript(username)%>".length > 0) {
                     document.location = baseLocation + "&username=" + "<%=Encode.forUriComponent(username)%>" + "<%=multiOptionURIParam%>";
                 } else {
                     document.location = baseLocation + "<%=multiOptionURIParam%>";

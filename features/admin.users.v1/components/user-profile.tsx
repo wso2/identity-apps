@@ -27,6 +27,7 @@ import Chip from "@oxygen-ui/react/Chip";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
+import { getAllExternalClaims } from "@wso2is/admin.claims.v1/api";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -50,6 +51,7 @@ import { getUserNameWithoutDomain, resolveUserstore } from "@wso2is/core/helpers
 import {
     AlertInterface,
     AlertLevels,
+    ExternalClaim,
     MultiValueAttributeInterface,
     PatchOperationRequest,
     ProfileInfoInterface,
@@ -278,6 +280,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         return isMultipleEmailsAndMobileNumbersEnabled(profileInfo, profileSchema);
     }, [ profileSchema, profileInfo ]);
 
+    const [ duplicatedUserClaims, setDuplicatedUserClaims ] = useState<ExternalClaim[]>([]);
+
     useEffect(() => {
         if (connectorProperties && Array.isArray(connectorProperties) && connectorProperties?.length > 0) {
 
@@ -342,6 +346,54 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     useEffect(() => {
         mapUserToSchema(profileSchema, user);
     }, [ profileSchema, user ]);
+
+    /**
+     * This useEffect identifies external claims that are mapped to the same local claim
+     * between the Enterprise schema and the WSO2 System schema.
+     *
+     * These dual mappings occur only in migrated environments due to the SCIM2 schema restructuring
+     * introduced in https://github.com/wso2/product-is/issues/20850.
+     *
+     * The effect fetches both sets of external claims and detects overlaps by comparing their
+     * mappedLocalClaimURI values.
+     * Identified Enterprise claims are then excluded from the user profile UI to avoid redundancy.
+     */
+    useEffect(() => {
+        const fetchAllClaims = async () => {
+            try {
+                const [ enterpriseClaims, systemClaims ] = await Promise.all([
+                    getAllExternalClaims(
+                        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_ENT_USER"),
+                        null
+                    ),
+                    getAllExternalClaims(
+                        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_SYSTEM"),
+                        null
+                    )
+                ]);
+
+                const systemMappedClaimURIs: Set<string> = new Set(
+                    systemClaims.map((claim: ExternalClaim) => claim.mappedLocalClaimURI).filter(Boolean)
+                );
+                const duplicates: ExternalClaim[] = enterpriseClaims.filter(
+                    (claim: ExternalClaim) =>
+                        claim.mappedLocalClaimURI &&
+                        systemMappedClaimURIs.has(claim.mappedLocalClaimURI)
+                );
+
+                setDuplicatedUserClaims(duplicates);
+
+            } catch (error) {
+                dispatch(addAlert({
+                    description: t("claims:external.notifications.fetchExternalClaims.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("claims:external.notifications.fetchExternalClaims.genericError.message")
+                }));
+            }
+        };
+
+        fetchAllClaims();
+    }, []);
 
     /**
      * This will add role attribute to countries search input to prevent autofill suggestions.
@@ -2610,6 +2662,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE || schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             return !isEmpty(multiValuedAttributeValues[schema.name])
                 || (!isReadOnly && resolvedMutabilityValue !== ProfileConstants.READONLY_SCHEMA);
+        }
+
+        const schemaClaimURI: string = `${schema.schemaId}:${schema.name}`;
+
+        if (duplicatedUserClaims?.some((claim: ExternalClaim) => claim.claimURI === schemaClaimURI)) {
+            return false;
         }
 
         return (!isEmpty(profileInfo.get(schema.name)) ||

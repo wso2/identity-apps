@@ -37,6 +37,7 @@
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL" %>
 <%@ page import="org.wso2.carbon.identity.core.URLBuilderException" %>
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
+<%@ page import="org.wso2.carbon.identity.captcha.provider.mgt.util.CaptchaFEUtils" %>
 <%@ page import="org.json.JSONArray" %>
 <%@ page import="org.json.JSONObject" %>
 
@@ -201,14 +202,6 @@
                     userName.value = sanitizedUsername.toLowerCase();
                 }
 
-                var genericReCaptchaEnabled = "<%=genericReCaptchaEnabled%>";
-                if (genericReCaptchaEnabled === "true") {
-                    if (!grecaptcha.getResponse()) {
-                        grecaptcha.execute();
-                        return;
-                    }
-                }
-
                 if (username.value) {
                     trackEvent("authentication-portal-identifierauth-click-continue", {
                         "app": insightsAppIdentifier,
@@ -261,7 +254,7 @@
 
 </script>
 
-<form class="ui large form" action="<%= Encode.forHtmlAttribute(loginFormActionURL) %>" method="post" id="identifierForm">
+<form class="ui large form" action="<%= Encode.forHtmlAttribute(loginFormActionURL) %>" method="post" id="identifierForm" novalidate>
     <%
         if (loginFormActionURL.equals(samlssoURL) || loginFormActionURL.equals(oauth2AuthorizeURL)) {
     %>
@@ -284,7 +277,7 @@
     <div class="field">
      <% if (StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT) &&
         Boolean.parseBoolean(request.getParameter(IS_SAAS_APP))) { %>
-        
+
             <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "email")%></label>
             <div class="ui fluid left icon input">
                 <input
@@ -334,15 +327,26 @@
     <% } %>
     </div>
     <%
-    if (genericReCaptchaEnabled) { 
-        String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+    if (genericReCaptchaEnabled) {
+        String captchaKey = CaptchaFEUtils.getCaptchaSiteKey();
     %>
         <div class="field">
-            <div class="g-recaptcha"
-                data-size="invisible"
-                data-callback="onCompleted"
+            <div
+                <%
+                    Map<String, String> captchaAttributes = CaptchaFEUtils.getWidgetAttributes();
+                    if (captchaAttributes != null) {
+                        for (Map.Entry<String, String> entry : captchaAttributes.entrySet()) {
+                            String key = entry.getKey();
+                            String value = entry.getValue();
+                %>
+                            <%= key %>="<%= Encode.forHtmlAttribute(value) %>"
+                <%
+                        }
+                    }
+                %>
                 data-action="login"
-                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>">
+                data-sitekey="<%=Encode.forHtmlContent(captchaKey)%>"
+                data-bind="identifier-auth-continue-button">
             </div>
         </div>
     <% } %>
@@ -352,7 +356,7 @@
 
     <div class="mt-4">
         <div class="buttons">
-            <button type="submit" class="ui primary fluid large button" role="button" data-testid="identifier-auth-continue-button">
+            <button id="identifier-auth-continue-button" type="submit" class="ui primary fluid large button" role="button" data-testid="identifier-auth-continue-button">
                 <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "continue"))%>
             </button>
         </div>

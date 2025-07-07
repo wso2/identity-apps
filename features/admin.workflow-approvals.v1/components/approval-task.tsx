@@ -133,7 +133,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
             );
         }
 
-        if (key === "Roles") {
+        if (key === "Roles" || key == "Permissions" || key === "Groups" || key === "Users") {
 
             try {
                 const roles: string[] = value.split(",");
@@ -302,7 +302,9 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                 className="micro spaced-right"
                                 color={ resolveApprovalTagColor(approval?.taskStatus) }
                             />
-                            { approval?.id + " " + approval?.subject + " " }
+
+                            { "Your approval is needed to proceed with the request."
+                            }
                         </Header.Subheader>
                     </Header.Content>
                 </Header>

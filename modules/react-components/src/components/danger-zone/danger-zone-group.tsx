@@ -55,7 +55,7 @@ export const DangerZoneGroup: FunctionComponent<PropsWithChildren<DangerZoneGrou
     const defaultClassName = className ?? "danger-zone";
 
     return (
-        <div className= { defaultClassName + "-wrapper" }>
+        <div className= { defaultClassName + "-group-wrapper" }>
             <Header
                 as="h5"
                 className="bold-text"

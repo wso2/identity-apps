@@ -562,8 +562,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     imageSize="tiny"
                     title={ t("users:usersList.search.emptyResultPlaceholder.title") }
                     subtitle={ [
-                        t("users:usersList.search.emptyResultPlaceholder.subTitle.0",
-                            { query: searchQuery }),
+                        t("users:usersList.search.emptyResultPlaceholder.subTitle.2"),
                         t("users:usersList.search.emptyResultPlaceholder.subTitle.1")
                     ] }
                 />

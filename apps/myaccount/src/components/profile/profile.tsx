@@ -43,6 +43,7 @@ import { getUserNameWithoutDomain, hasRequiredScopes,
 } from "@wso2is/core/helpers";
 /* eslint-enable */
 import {
+    ClaimDataType,
     PatchOperationRequest,
     ProfileSchemaInterface,
     SBACInterface,
@@ -64,11 +65,11 @@ import {
 import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
-import React, { FunctionComponent, MouseEvent, ReactElement, useCallback, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Container, DropdownItemProps, Form, Grid, Icon, List, Placeholder } from "semantic-ui-react";
+import { Container, DropdownItemProps, Grid, Icon, List, Placeholder } from "semantic-ui-react";
 import {
     fetchPasswordValidationConfig,
     getPreference,
@@ -83,7 +84,7 @@ import {
     ProfileConstants as MyAccountProfileConstants,
     UIConstants
 } from "../../constants";
-import { commonConfig, profileConfig } from "../../extensions";
+import { profileConfig } from "../../extensions";
 import {
     AlertInterface,
     AlertLevels,
@@ -138,7 +139,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         isNonLocalCredentialUser,
         onAlertFired,
         featureConfig,
-        ["data-testid"]: testId
+        ["data-testid"]: testId = "profile"
     } = props;
 
     const { t } = useTranslation();
@@ -168,7 +169,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
-    const [ showEmail, setShowEmail ] = useState<boolean>(false);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isMultipleEmailsAndMobileConfigEnabled: boolean = config?.ui?.isMultipleEmailsAndMobileNumbersEnabled;
@@ -176,8 +176,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
     const [ isMobileVerificationEnabled, setIsMobileVerificationEnabled ] = useState<boolean>(false);
     const [ isEmailVerificationEnabled, setIsEmailVerificationEnabled ] = useState<boolean>(false);
-    const [ isMultipleEmailAndMobileNumberEnabled, setIsMultipleEmailAndMobileNumberEnabled ] =
-        useState<boolean>(false);
 
     // Multi-valued attribute delete confirmation modal related states.
     const [ selectedAttributeInfo, setSelectedAttributeInfo ] =
@@ -300,29 +298,71 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     }, []);
 
     /**
-     * Check if email address is displayed as a separated attribute.
+     * Check if email address is displayed as a separate field.
+     * Condition 1: If the custom username validation is enabled.
+     * Condition 2: If the username is different from the email address. Handles the scenario
+     * of username validation switched from custom username to email.
      */
-    useEffect(() => {
-        if (!isEmpty(profileInfo)) {
-            if ((commonConfig.userProfilePage.showEmail && usernameConfig?.enableValidator === "true")
-                    || getUserNameWithoutDomain(profileInfo.get("userName")) !== profileInfo.get("emails")) {
-                setShowEmail(true);
-            } else {
-                setShowEmail(false);
-            }
+    const isEmailFieldVisible: boolean =
+        !isEmpty(profileInfo) &&
+        (
+            usernameConfig?.enableValidator === "true" ||
+            getUserNameWithoutDomain(profileInfo.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")))
+                !== profileInfo.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"))
+        );
+
+    /**
+     * This useMemo identifies external claims that are mapped to the same local claim
+     * between the Enterprise schema and the WSO2 System schema.
+     *
+     * These dual mappings occur only in migrated environments due to the SCIM2 schema restructuring
+     * introduced in https://github.com/wso2/product-is/issues/20850.
+     *
+     * As claim management APIs are not available in My Account, this effect uses a value-based heuristic:
+     * - A hardcoded list of attributes known to exist in both schemas is maintained.
+     * - If both schema versions of a claim are present and have the same value, it is treated as a duplicate.
+     *
+     * Identified Enterprise claims are then excluded from the user profile UI to avoid redundancy.
+     */
+    const duplicatedUserClaims: string[] = useMemo(() => {
+        if (isEmpty(profileInfo) || isEmpty(profileSchema)) {
+            return;
         }
-    }, [ profileInfo, usernameConfig ]);
+
+        const duplicatedEnterpriseClaims: string[] = [];
+
+        ProfileConstants.MIGRATED_ENTERPRISE_SCIM_ATTRIBUTES.forEach((attrName: string) => {
+            const enterpriseClaim: ProfileSchema = profileSchema.find((schema: ProfileSchema) =>
+                schema.name === attrName &&
+                schema?.schemaId === ProfileConstants.SCIM2_ENT_USER_SCHEMA
+            );
+
+            const systemClaim: ProfileSchema = profileSchema.find((schema: ProfileSchema) =>
+                schema.name === attrName &&
+                schema?.schemaId === ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA
+            );
+
+            if (!enterpriseClaim || !systemClaim) {
+                return;
+            }
+
+            const enterpriseValue: string = profileInfo.get(enterpriseClaim.name) ?? null;
+            const systemValue: string = profileInfo.get(systemClaim.name) ?? null;
+
+            if (enterpriseValue === systemValue) {
+                duplicatedEnterpriseClaims.push(enterpriseClaim.name);
+            }
+        });
+
+        return duplicatedEnterpriseClaims;
+    }, [ profileSchema, profileInfo ]);
 
     /**
      * Check if multiple emails and mobile numbers feature is enabled.
      */
-    const isMultipleEmailsAndMobileNumbersEnabled = (): void => {
-
-        if (isEmpty(profileDetails) || isEmpty(profileSchema)) return;
-        if (!isMultipleEmailsAndMobileConfigEnabled) {
-            setIsMultipleEmailAndMobileNumberEnabled(false);
-
-            return;
+    const isMultipleEmailsAndMobileNumbersEnabled: boolean = useMemo(() => {
+        if (isEmpty(profileDetails) || isEmpty(profileSchema) || !isMultipleEmailsAndMobileConfigEnabled) {
+            return false;
         }
 
         const multipleEmailsAndMobileFeatureRelatedAttributes: string[] = [
@@ -336,7 +376,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         const username: string = profileDetails?.profileInfo["userName"];
 
-        if (!username) return;
+        if (!username) {
+            return false;
+        }
+
         const userStoreDomain: string = resolveUserstore(username, primaryUserStoreDomainName)?.toUpperCase();
         // Check each required attribute exists and domain is not excluded in the excluded user store list.
         const attributeCheck: boolean = multipleEmailsAndMobileFeatureRelatedAttributes.every(
@@ -361,12 +404,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 return !excludedUserStores.includes(userStoreDomain);
             });
 
-        setIsMultipleEmailAndMobileNumberEnabled(attributeCheck);
-    };
-
-    useEffect(() => {
-        isMultipleEmailsAndMobileNumbersEnabled();
-    }, [ profileSchema, profileDetails ]);
+        return attributeCheck;
+    }, [ profileDetails, profileSchema ]);
 
     /**
      * Get the configurations.
@@ -1429,7 +1468,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         const { displayName, name } = schema;
 
         // Define schemas to hide.
-        const attributesToHide: string[] = isMultipleEmailAndMobileNumberEnabled === true
+        const attributesToHide: string[] = isMultipleEmailsAndMobileNumbersEnabled
             ? [ EMAIL_ATTRIBUTE, MOBILE_ATTRIBUTE, VERIFIED_MOBILE_NUMBERS_ATTRIBUTE,
                 VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE ]
             : [ EMAIL_ADDRESSES_ATTRIBUTE, MOBILE_NUMBERS_ATTRIBUTE,
@@ -1440,7 +1479,17 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             return;
         }
 
-        if (!showEmail && schema?.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+        if (
+            duplicatedUserClaims?.some(
+                (claim: string) =>
+                    claim === schema.name &&
+                    schema.schemaId === ProfileConstants.SCIM2_ENT_USER_SCHEMA
+            )
+        ) {
+            return;
+        }
+
+        if (!isEmailFieldVisible && schema?.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             return;
         }
 
@@ -1496,7 +1545,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         const fieldName: string = getFieldName(schema);
 
-        if (activeForm === CommonConstants.PERSONAL_INFO + schema.name) {
+        if (activeForm === CommonConstants.PERSONAL_INFO + schema.name ||
+            schema.type === ClaimDataType.BOOLEAN
+        ) {
             return (
                 <List.Item
                     key={ index }
@@ -1638,7 +1689,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 <Grid.Row columns={ 3 }>
                     <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
                         <List.Content className="vertical-align-center">{
-                            !showEmail && fieldName.toLowerCase() === "username"
+                            !isEmailFieldVisible && fieldName.toLowerCase() === "username"
                                 ? fieldName + " (Email)"
                                 : fieldName }
                         </List.Content>
@@ -1673,16 +1724,49 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      * @returns The form fields.
      */
     const generateFormFields = (schema: ProfileSchema, fieldName: string): JSX.Element => {
+        const claimType: string = schema.type.toLowerCase();
 
         if (checkSchemaType(schema.name, "country")) {
             return generateCountryDropdown(schema, fieldName);
-        } else if (checkSchemaType(schema.name, "locale")) {
+        }
+
+        if (checkSchemaType(schema.name, "locale")) {
             return generateEditableLocaleField(schema, fieldName);
-        } else if (schema.extended && schema.multiValued) {
+        }
+
+        if (schema.extended && schema.multiValued) {
             return generateMultiValuedField(schema, fieldName);
-        } else {
+        }
+
+        if (claimType === ClaimDataType.STRING
+            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")) {
             return generateTextField(schema, fieldName);
         }
+
+        if (claimType === ClaimDataType.DECIMAL ||
+            claimType === ClaimDataType.INTEGER) {
+            return generateNumberField(schema, fieldName);
+        }
+
+        if (claimType === ClaimDataType.BOOLEAN) {
+            return generateCheckBoxField(schema, fieldName);
+        }
+
+        if (claimType === ClaimDataType.DATE_TIME) {
+            return generateDateTimeField(schema, fieldName);
+        }
+
+        if (claimType === ClaimDataType.OPTIONS) {
+            return generateSelectField(schema, fieldName);
+        }
+
+        // Don't show the field if the type is complex.
+        // Sub-attributes will be shown separately.
+        if (claimType === ClaimDataType.COMPLEX) {
+            return null;
+        }
+
+        return generateTextField(schema, fieldName);
     };
 
     const getExistingPrimaryEmail = (): string => {
@@ -1981,58 +2065,65 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         const resolvedRequiredValue: boolean = schema?.profiles?.endUser?.required ?? schema.required;
 
         return (
-            <>
-                <Field
-                    autoFocus={ true }
-                    label=""
-                    name={ schema.name }
-                    placeholder={ getPlaceholderText(schema, fieldName) }
-                    required={ resolvedRequiredValue }
-                    requiredErrorMessage={
-                        t("myAccount:components.profile.forms.generic.inputs.validations.empty", { fieldName }) }
-                    type="dropdown"
-                    children={ countryList ? countryList.map((list: DropdownItemProps) => ({
-                        "data-testid": `${testId}-${list.value as string}`,
-                        flag: list.flag,
-                        key: list.key as string,
-                        text: list.text as string,
-                        value: list.value as string
-                    })) : [] }
-                    value={ resolveProfileInfoSchemaValue(schema) }
-                    disabled={ false }
-                    clearable={ !resolvedRequiredValue }
-                    search
-                    selection
-                    fluid
-                />
-                <Field hidden={ true } type="divider" />
-                <Form.Group>
-                    <Field
-                        size="small"
-                        type="submit"
-                        value={ t("common:save").toString() }
-                        data-testid={
-                            `${testId}-schema-mobile-editing-section-${
-                                schema.name.replace(".", "-")
-                            }-save-button`
-                        }
-                    />
-                    <Field
-                        className="link-button"
-                        onClick={ () => {
-                            dispatch(setActiveForm(null));
-                        } }
-                        size="small"
-                        type="button"
-                        value={ t("common:cancel").toString() }
-                        data-testid={
-                            `${testId}-schema-mobile-editing-section-${
-                                schema.name.replace(".", "-")
-                            }-cancel-button`
-                        }
-                    />
-                </Form.Group>
-            </>
+            <Grid verticalAlign="middle" textAlign="right">
+                <Grid.Row columns={ 2 } className="p-0">
+                    <Grid.Column width={ 10 }>
+                        <Field
+                            autoFocus={ true }
+                            label=""
+                            name={ schema.name }
+                            placeholder={ getPlaceholderText(schema, fieldName) }
+                            required={ resolvedRequiredValue }
+                            requiredErrorMessage={
+                                t("myAccount:components.profile.forms.generic.inputs." +
+                                    "validations.empty", { fieldName }) }
+                            type="dropdown"
+                            children={ countryList ? countryList.map((list: DropdownItemProps) => ({
+                                "data-testid": `${testId}-${list.value as string}`,
+                                flag: list.flag,
+                                key: list.key as string,
+                                text: list.text as string,
+                                value: list.value as string
+                            })) : [] }
+                            value={ resolveProfileInfoSchemaValue(schema) }
+                            disabled={ false }
+                            clearable={ !resolvedRequiredValue }
+                            search
+                            selection
+                            fluid
+                        />
+                    </Grid.Column>
+                    <Grid.Column width={ 6 }>
+                        <div className="text-field-actions">
+                            <Field
+                                size="small"
+                                type="submit"
+                                className="m-0"
+                                value={ t("common:save").toString() }
+                                data-testid={
+                                    `${testId}-schema-mobile-editing-section-${
+                                        schema.name.replace(".", "-")
+                                    }-save-button`
+                                }
+                            />
+                            <Field
+                                className="link-button"
+                                onClick={ () => {
+                                    dispatch(setActiveForm(null));
+                                } }
+                                size="small"
+                                type="button"
+                                value={ t("common:cancel").toString() }
+                                data-testid={
+                                    `${testId}-schema-mobile-editing-section-${
+                                        schema.name.replace(".", "-")
+                                    }-cancel-button`
+                                }
+                            />
+                        </div>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
         );
     };
 
@@ -2040,72 +2131,268 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         const resolvedRequiredValue: boolean = schema?.profiles?.endUser?.required ?? schema.required;
 
         return (
-            <>
-                <Field
-                    autofocus={ true }
-                    name={ schema.name }
-                    placeholder={ getPlaceholderText(schema, fieldName) }
-                    required={ resolvedRequiredValue }
-                    requiredErrorMessage={
-                        t("myAccount:components.profile.forms.generic." +
-                            "inputs.validations.empty", { fieldName })
-                    }
-                    type="dropdown"
-                    value={ normalizeLocaleFormat(profileInfo.get(schema?.name), LocaleJoiningSymbol.HYPHEN, true) }
-                    children={
-                        supportedI18nLanguages
-                            ? Object.keys(supportedI18nLanguages).map((key: string) => {
-                                return {
-                                    "data-testid": `${ testId }-locale-dropdown-`
-                                        +  supportedI18nLanguages[key].code as string,
-                                    flag: supportedI18nLanguages[key].flag ?? MyAccountProfileConstants.GLOBE,
-                                    key: supportedI18nLanguages[key].code as string,
-                                    text: supportedI18nLanguages[key].name === MyAccountProfileConstants.GLOBE
-                                        ? supportedI18nLanguages[key].code
-                                        : `${supportedI18nLanguages[key].name as string},
-                                            ${supportedI18nLanguages[key].code as string}`,
-                                    value: supportedI18nLanguages[key].code as string
-                                };
-                            }) : []
-                    }
-                    disabled={ false }
-                    clearable={ !resolvedRequiredValue }
-                    search
-                    selection
-                    fluid
-                />
-                <Field hidden={ true } type="divider" />
-                <Form.Group>
-                    <Field
-                        size="small"
-                        type="submit"
-                        value={ t("common:save").toString() }
-                        data-testid={
-                            `${testId}-schema-mobile-editing-section-${
-                                schema.name.replace(".", "-")
-                            }-save-button`
-                        }
-                    />
-                    <Field
-                        className="link-button"
-                        onClick={ () => {
-                            dispatch(setActiveForm(null));
-                        } }
-                        size="small"
-                        type="button"
-                        value={ t("common:cancel").toString() }
-                        data-testid={
-                            `${testId}-schema-mobile-editing-section-${
-                                schema.name.replace(".", "-")
-                            }-cancel-button`
-                        }
-                    />
-                </Form.Group>
-            </>
+            <Grid verticalAlign="middle" textAlign="right">
+                <Grid.Row columns={ 2 } className="p-0">
+                    <Grid.Column width={ 10 }>
+                        <Field
+                            autofocus={ true }
+                            name={ schema.name }
+                            placeholder={ getPlaceholderText(schema, fieldName) }
+                            required={ resolvedRequiredValue }
+                            requiredErrorMessage={
+                                t("myAccount:components.profile.forms.generic." +
+                                    "inputs.validations.empty", { fieldName })
+                            }
+                            type="dropdown"
+                            value={ normalizeLocaleFormat(profileInfo.get(schema?.name),
+                                LocaleJoiningSymbol.HYPHEN, true) }
+                            children={
+                                supportedI18nLanguages
+                                    ? Object.keys(supportedI18nLanguages).map((key: string) => {
+                                        return {
+                                            "data-testid": `${ testId }-locale-dropdown-`
+                                                +  supportedI18nLanguages[key].code as string,
+                                            flag: supportedI18nLanguages[key].flag ??
+                                                MyAccountProfileConstants.GLOBE,
+                                            key: supportedI18nLanguages[key].code as string,
+                                            text: supportedI18nLanguages[key].name ===
+                                                MyAccountProfileConstants.GLOBE
+                                                ? supportedI18nLanguages[key].code
+                                                : `${supportedI18nLanguages[key].name as string},
+                                                    ${supportedI18nLanguages[key].code as string}`,
+                                            value: supportedI18nLanguages[key].code as string
+                                        };
+                                    }) : []
+                            }
+                            disabled={ false }
+                            clearable={ !resolvedRequiredValue }
+                            search
+                            selection
+                            fluid
+                        />
+                    </Grid.Column>
+                    <Grid.Column width={ 6 }>
+                        <div className="text-field-actions">
+                            <Field
+                                size="small"
+                                type="submit"
+                                className="m-0"
+                                value={ t("common:save").toString() }
+                                data-testid={
+                                    `${testId}-schema-mobile-editing-section-${
+                                        schema.name.replace(".", "-")
+                                    }-save-button`
+                                }
+                            />
+                            <Field
+                                className="link-button"
+                                onClick={ () => {
+                                    dispatch(setActiveForm(null));
+                                } }
+                                size="small"
+                                type="button"
+                                value={ t("common:cancel").toString() }
+                                data-testid={
+                                    `${testId}-schema-mobile-editing-section-${
+                                        schema.name.replace(".", "-")
+                                    }-cancel-button`
+                                }
+                            />
+                        </div>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
         );
     };
 
     const generateTextField = (schema: ProfileSchema, fieldName: string): JSX.Element => {
+        const resolvedRequiredValue: boolean = schema?.profiles?.endUser?.required ?? schema.required;
+
+        return (
+            <Grid verticalAlign="middle" textAlign="right">
+                <Grid.Row columns={ 2 } className="p-0">
+                    <Grid.Column width={ 10 }>
+                        <Field
+                            autoFocus={ true }
+                            label=""
+                            name={ schema.name }
+                            data-testid= { `${testId}-${schema.name.replace(".", "-")}-text-field` }
+                            data-componentid= { `${testId}-${schema.name.replace(".", "-")}-text-field` }
+                            placeholder={ getPlaceholderText(schema, fieldName) }
+                            required={ resolvedRequiredValue }
+                            requiredErrorMessage={ t("myAccount:components.profile.forms.generic.inputs." +
+                                "validations.empty", { fieldName }) }
+                            type="text"
+                            validation={ (value: string, validation: Validation) =>
+                                validateField(value, validation, schema, fieldName) }
+                            value={ resolveProfileInfoSchemaValue(schema) }
+                            maxLength={ schema.maxLength
+                                ? schema.maxLength
+                                : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
+                            }
+                        />
+                    </Grid.Column>
+                    <Grid.Column width={ 6 }>
+                        <div className="text-field-actions">
+                            <Field
+                                size="small"
+                                type="submit"
+                                className="m-0"
+                                value={ t("common:save").toString() }
+                                data-testid={
+                                    `${testId}-schema-mobile-editing-section-${
+                                        schema.name.replace(".", "-")
+                                    }-save-button`
+                                }
+                            />
+                            <Field
+                                className="link-button"
+                                onClick={ () => {
+                                    dispatch(setActiveForm(null));
+                                } }
+                                size="small"
+                                type="button"
+                                value={ t("common:cancel").toString() }
+                                data-testid={
+                                    `${testId}-schema-mobile-editing-section-${
+                                        schema.name.replace(".", "-")
+                                    }-cancel-button`
+                                }
+                            />
+                        </div>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        );
+    };
+
+    const generateNumberField = (schema: ProfileSchema, fieldName: string): JSX.Element => {
+        const resolvedRequiredValue: boolean = schema?.profiles?.endUser?.required ?? schema.required;
+
+        return (
+            <Grid verticalAlign="middle" textAlign="right">
+                <Grid.Row columns={ 2 } className="p-0">
+                    <Grid.Column width={ 10 }>
+                        <Field
+                            autoFocus={ true }
+                            label=""
+                            name={ schema.name }
+                            data-testid= { `${testId}-${schema.name.replace(".", "-")}-number-field` }
+                            data-componentid= { `${testId}-${schema.name.replace(".", "-")}-number-field` }
+                            placeholder={ getPlaceholderText(schema, fieldName) }
+                            required={ resolvedRequiredValue }
+                            requiredErrorMessage={
+                                t("myAccount:components.profile.forms.generic.inputs." +
+                                    "validations.empty", { fieldName }) }
+                            type="number"
+                            validation={
+                                (value: string, validation: Validation) =>
+                                    validateField(value, validation, schema, fieldName) }
+                            value={ resolveProfileInfoSchemaValue(schema) }
+                            maxLength={ schema.maxLength
+                                ? schema.maxLength
+                                : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
+                            }
+                        />
+                    </Grid.Column>
+                    <Grid.Column width={ 6 }>
+                        <div className="text-field-actions">
+                            <Field
+                                size="small"
+                                type="submit"
+                                className="m-0"
+                                value={ t("common:save").toString() }
+                                data-testid={
+                                    `${testId}-schema-mobile-editing-section-${
+                                        schema.name.replace(".", "-")
+                                    }-save-button`
+                                }
+                            />
+                            <Field
+                                className="link-button"
+                                onClick={ () => {
+                                    dispatch(setActiveForm(null));
+                                } }
+                                size="small"
+                                type="button"
+                                value={ t("common:cancel").toString() }
+                                data-testid={
+                                    `${testId}-schema-mobile-editing-section-${
+                                        schema.name.replace(".", "-")
+                                    }-cancel-button`
+                                }
+                            />
+                        </div>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        );
+    };
+
+    const generateDateTimeField = (schema: ProfileSchema, fieldName: string): JSX.Element => {
+        const resolvedRequiredValue: boolean = schema?.profiles?.endUser?.required ?? schema.required;
+
+        return (
+            <Grid verticalAlign="middle" textAlign="right">
+                <Grid.Row columns={ 2 } className="p-0">
+                    <Grid.Column width={ 10 }>
+                        <Field
+                            autoFocus={ true }
+                            label=""
+                            name={ schema.name }
+                            data-testid= { `${testId}-${schema.name.replace(".", "-")}-date-field` }
+                            data-componentid= { `${testId}-${schema.name.replace(".", "-")}-date-field` }
+                            placeholder={ getPlaceholderText(schema, fieldName) }
+                            required={ resolvedRequiredValue }
+                            requiredErrorMessage={
+                                t("myAccount:components.profile.forms.generic.inputs." +
+                                    "validations.empty", { fieldName }) }
+                            type="text"
+                            validation={
+                                (value: string, validation: Validation) =>
+                                    validateField(value, validation, schema, fieldName) }
+                            value={ resolveProfileInfoSchemaValue(schema) }
+                            maxLength={ schema.maxLength
+                                ? schema.maxLength
+                                : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
+                            }
+                        />
+                    </Grid.Column>
+                    <Grid.Column width={ 6 }>
+                        <div className="text-field-actions">
+                            <Field
+                                size="small"
+                                type="submit"
+                                className="m-0"
+                                value={ t("common:save").toString() }
+                                data-testid={
+                                    `${testId}-schema-mobile-editing-section-${
+                                        schema.name.replace(".", "-")
+                                    }-save-button`
+                                }
+                            />
+                            <Field
+                                className="link-button"
+                                onClick={ () => {
+                                    dispatch(setActiveForm(null));
+                                } }
+                                size="small"
+                                type="button"
+                                value={ t("common:cancel").toString() }
+                                data-testid={
+                                    `${testId}-schema-mobile-editing-section-${
+                                        schema.name.replace(".", "-")
+                                    }-cancel-button`
+                                }
+                            />
+                        </div>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        );
+    };
+
+    const generateCheckBoxField = (schema: ProfileSchema, fieldName: string): JSX.Element => {
         const resolvedRequiredValue: boolean = schema?.profiles?.endUser?.required ?? schema.required;
 
         return (
@@ -2114,55 +2401,83 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     autoFocus={ true }
                     label=""
                     name={ schema.name }
-                    data-testid= { `${testId}-${schema.name.replace(".", "-")}-text-field` }
-                    data-componentid= { `${testId}-${schema.name.replace(".", "-")}-text-field` }
-                    placeholder={ getPlaceholderText(schema, fieldName) }
+                    data-testid= { `${testId}-${schema.name.replace(".", "-")}-checkbox-field` }
+                    data-componentid= { `${testId}-${schema.name.replace(".", "-")}-checkbox-field` }
                     required={ resolvedRequiredValue }
                     requiredErrorMessage={
                         t("myAccount:components.profile.forms.generic.inputs.validations.empty", { fieldName }) }
-                    type="text"
-                    validation={
-                        (value: string, validation: Validation) => validateField(value, validation, schema, fieldName) }
-                    value={ resolveProfileInfoSchemaValue(schema) }
-                    maxLength={
-                        schema.name === EMAIL_ATTRIBUTE
-                            ? EMAIL_MAX_LENGTH
-                            : (fieldName.toLowerCase().includes("uri") || fieldName.toLowerCase().includes("url"))
-                                ? ProfileConstants.URI_CLAIM_VALUE_MAX_LENGTH
-                                : (schema.maxLength
-                                    ? schema.maxLength
-                                    : ProfileConstants.CLAIM_VALUE_MAX_LENGTH)
-                    }
+                    type="checkbox"
+                    value={ resolveProfileInfoSchemaValue(schema) ? [ schema.name ] : [] }
+                    children={ [
+                        {
+                            label: "",
+                            value: schema.name
+                        }
+                    ] }
                 />
-                <Field hidden={ true } type="divider" />
-                <Form.Group>
-                    <Field
-                        size="small"
-                        type="submit"
-                        value={ t("common:save").toString() }
-                        data-testid={
-                            `${testId}-schema-mobile-editing-section-${
-                                schema.name.replace(".", "-")
-                            }-save-button`
-                        }
-                    />
-                    <Field
-                        className="link-button"
-                        onClick={ () => {
-                            dispatch(setActiveForm(null));
-                        } }
-                        size="small"
-                        type="button"
-                        value={ t("common:cancel").toString() }
-                        data-testid={
-                            `${testId}-schema-mobile-editing-section-${
-                                schema.name.replace(".", "-")
-                            }-cancel-button`
-                        }
-                    />
-                </Form.Group>
             </>
 
+        );
+    };
+
+    const generateSelectField = (schema: ProfileSchema, fieldName: string): JSX.Element => {
+        const resolvedRequiredValue: boolean = schema?.profiles?.endUser?.required ?? schema.required;
+        const options: string[] = schema["canonicalValues"] ?? [];
+
+        return (
+            <Grid verticalAlign="middle" textAlign="right">
+                <Grid.Row columns={ 2 } className="p-0">
+                    <Grid.Column width={ 10 }>
+                        <Field
+                            autofocus={ true }
+                            name={ schema.name }
+                            placeholder={ getPlaceholderText(schema, fieldName) }
+                            required={ resolvedRequiredValue }
+                            requiredErrorMessage={
+                                t("myAccount:components.profile.forms.generic." +
+                                    "inputs.validations.empty", { fieldName })
+                            }
+                            type="dropdown"
+                            value={ resolveProfileInfoSchemaValue(schema) }
+                            children={ options }
+                            disabled={ false }
+                            clearable={ !resolvedRequiredValue }
+                            search
+                            selection
+                            fluid
+                        />
+                    </Grid.Column>
+                    <Grid.Column width={ 6 }>
+                        <div className="text-field-actions">
+                            <Field
+                                size="small"
+                                type="submit"
+                                className="m-0"
+                                value={ t("common:save").toString() }
+                                data-testid={
+                                    `${testId}-schema-mobile-editing-section-${
+                                        schema.name.replace(".", "-")
+                                    }-save-button`
+                                }
+                            />
+                            <Field
+                                className="link-button"
+                                onClick={ () => {
+                                    dispatch(setActiveForm(null));
+                                } }
+                                size="small"
+                                type="button"
+                                value={ t("common:cancel").toString() }
+                                data-testid={
+                                    `${testId}-schema-mobile-editing-section-${
+                                        schema.name.replace(".", "-")
+                                    }-cancel-button`
+                                }
+                            />
+                        </div>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
         );
     };
 
@@ -2176,7 +2491,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         if (isProfileInfoLoading || profileSchemaLoader) {
             return <Placeholder><Placeholder.Line /></Placeholder>;
-        } else if (profileInfo.get(schema.name)
+        }
+
+        if (profileInfo.get(schema.name)
             && schema.name === EMAIL_ATTRIBUTE
             && isEmailPending
             && isEmailVerificationEnabled) {
@@ -2203,13 +2520,17 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     />
                 </>
             );
-        } else if (schema.extended && schema.multiValued) {
-            return generateReadOnlyMultiValuedField(schema, fieldName);
-        } else if (profileInfo.get(schema.name)) {
-            return <>{ resolveProfileInfoSchemaValue(schema) }</>;
-        } else {
-            return generatePlaceholderLink(schema, fieldName);
         }
+
+        if (schema.extended && schema.multiValued) {
+            return generateReadOnlyMultiValuedField(schema, fieldName);
+        }
+
+        if (profileInfo.get(schema.name)) {
+            return <>{ resolveProfileInfoSchemaValue(schema) }</>;
+        }
+
+        return generatePlaceholderLink(schema, fieldName);
     };
 
     const generateReadOnlyMultiValuedField = (schema: ProfileSchema, fieldName: string): JSX.Element => {
@@ -2386,6 +2707,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         let attributeValueList: string[] = [];
         let primaryAttributeValue: string = "";
         const resolvedMutabilityValue: string = schema?.profiles?.endUser?.mutability ?? schema.mutability;
+
+        if (schema.type === ClaimDataType.BOOLEAN) {
+            return null;
+        }
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             attributeValueList = profileInfo.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
@@ -2840,7 +3165,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      */
     const showMobileVerification = (schema: ProfileSchema): boolean =>
         showMobileUpdateWizard && (
-            isMultipleEmailAndMobileNumberEnabled === true
+            isMultipleEmailsAndMobileNumbersEnabled
                 ? schema.name === MOBILE_NUMBERS_ATTRIBUTE
                 : schema.name === MOBILE_ATTRIBUTE
         );
@@ -2907,8 +3232,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                     || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("RESROUCE_TYPE")
                                     || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EXTERNAL_ID")
                                     || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_DATA")
-                                    || (!showEmail && schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY
-                                        .get("EMAILS"))
+                                    || (!isEmailFieldVisible
+                                        && schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"))
                                         )) {
                                             return (
                                                 <>
@@ -2934,8 +3259,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                     isMobileRequired={ resolvedRequiredValue }
                                                                     isMultipleEmailAndMobileNumberEnabled =
                                                                         {
-                                                                            isMultipleEmailAndMobileNumberEnabled
-                                                                        === true
+                                                                            isMultipleEmailsAndMobileNumbersEnabled
                                                                         }
                                                                     subAttributes={
                                                                         extractSubAttributes(
@@ -2979,12 +3303,4 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             { showMultiValuedFieldDeleteConfirmationModal && generateDeleteConfirmationModal() }
         </>
     );
-};
-
-/**
- * Default properties for the {@link Profile} component.
- * See type definitions in {@link ProfileProps}
- */
-Profile.defaultProps = {
-    "data-testid": "profile"
 };

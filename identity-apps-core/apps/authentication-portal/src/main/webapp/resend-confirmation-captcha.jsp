@@ -1,12 +1,12 @@
 <%--
-  ~ Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
   ~
-  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~    http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing,
   ~ software distributed under the License is distributed on an
@@ -14,7 +14,7 @@
   ~ KIND, either express or implied.  See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
-  --%>
+--%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="com.google.gson.Gson" %>
@@ -42,10 +42,7 @@
     }
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "medium");
-%>
+<% request.setAttribute("pageName", "resend-confirmation-captcha"); %>
 
 <!doctype html>
 <html lang="en-US">
@@ -62,15 +59,27 @@
 
     <%
         if (reCaptchaResendEnabled) {
-            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
+            List<Map<String, String>> scriptAttributesList = (List<Map<String, String>>) CaptchaFEUtils.getScriptAttributes();
+            if (scriptAttributesList != null) {
+                for (Map<String, String> scriptAttributes : scriptAttributesList) {
     %>
-        <script src='<%=(Encode.forJavaScriptSource(reCaptchaAPI))%>'></script>
+        <script
+            <%
+                for (Map.Entry<String, String> entry : scriptAttributes.entrySet()) {
+            %>
+                <%= entry.getKey() %> = "<%= entry.getValue() %>"
+            <%
+                }
+            %>
+        ></script>
     <%
+                }
+            }
         }
     %>
 
 </head>
-<body class="login-portal layout authentication-portal-layout">
+<body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
@@ -98,12 +107,24 @@
 
                     <div class="resend-captcha-container ui hidden" id="resend-captcha-container">
                         <%
-                             String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                            String captchaKey = CaptchaFEUtils.getCaptchaSiteKey();
                         %>
                         <div class="field">
                             <div class="text-center>">
-                                <div class="g-recaptcha inline"
-                                    data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                                <div
+                                    <%
+                                        Map<String, String> captchaAttributes = CaptchaFEUtils.getWidgetAttributes();
+                                        if (captchaAttributes != null) {
+                                            for (Map.Entry<String, String> entry : captchaAttributes.entrySet()) {
+                                                String key = entry.getKey();
+                                                String value = entry.getValue();
+                                    %>
+                                                <%= key %>="<%= Encode.forHtmlAttribute(value) %>"
+                                    <%
+                                            }
+                                        }
+                                    %>
+                                    data-sitekey="<%=Encode.forHtmlContent(captchaKey)%>"
                                     data-testid="login-page-g-recaptcha-resend"
                                 >
                                 </div>
@@ -165,7 +186,7 @@
                 errorMessage.hide();
 
                 $( "#recoverySubmit" ).click(function() {
-                    var reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
+                    var reCaptchaResponse = $("[name="+ CaptchaFEUtils.getCaptchaResponseIdentifier() +"]")[0].value;
 
                     if (reCaptchaResponse.trim() == '') {
                         errorMessage.text("<%=pleaseSelectRecaptchaText%>");

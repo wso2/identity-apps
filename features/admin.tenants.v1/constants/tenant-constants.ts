@@ -68,7 +68,9 @@ export default class TenantConstants {
 		"in the request.";
 
     public static readonly ADMIN_ADVISORY_BANNER_CONFIGS_UPDATE_REQUEST_ERROR: string = "An error occurred " +
-		"while updating the admin advisory banner configurations.";
+        "while updating the admin advisory banner configurations.";
+
+    public static readonly ORGANIZATION_NAME_REGEX: string = ".*[^a-zA-Z0-9._\\- ].*";
 
     public static readonly FEATURE_DICTIONARY: {
         ADD_TENANTS_FROM_DROPDOWN: string;
@@ -77,10 +79,11 @@ export default class TenantConstants {
         ORGANIZATIONS_QUICK_NAV_FROM_DROPDOWN: string;
         TENANT_DELETION: string;
     } = {
-        ADD_TENANTS_FROM_DROPDOWN: "tenants.add.tenant.from.dropdown",
-        MAKING_TENANTS_DEFAULT: "tenants.make.default",
-        MANAGING_TENANTS_FROM_DROPDOWN: "tenants.manage.tenants.from.dropdown",
-        ORGANIZATIONS_QUICK_NAV_FROM_DROPDOWN: "tenants.organizations.quick.nav.from.dropdown",
-        TENANT_DELETION: "tenants.deletion"
-    };
+            ADD_TENANTS_FROM_DROPDOWN: "tenants.add.tenant.from.dropdown",
+            MAKING_TENANTS_DEFAULT: "tenants.make.default",
+            MANAGING_TENANTS_FROM_DROPDOWN: "tenants.manage.tenants.from.dropdown",
+            ORGANIZATIONS_QUICK_NAV_FROM_DROPDOWN: "tenants.organizations.quick.nav.from.dropdown",
+            TENANT_DELETION: "tenants.deletion"
+        };
+
 }

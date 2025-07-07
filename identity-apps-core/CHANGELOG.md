@@ -1,5 +1,72 @@
 # @wso2is/identity-apps-core
 
+## 2.26.2
+
+### Patch Changes
+
+- [#8401](https://github.com/wso2/identity-apps/pull/8401) [`14caebcc26ca43c9f496e0910b82440a78a17cda`](https://github.com/wso2/identity-apps/commit/14caebcc26ca43c9f496e0910b82440a78a17cda) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issues with OTP fields on mobile devices
+
+## 2.26.1
+
+### Patch Changes
+
+- [#8397](https://github.com/wso2/identity-apps/pull/8397) [`d21cdb4938bb7e9b34a25f5e8c6793ca2a4d46a2`](https://github.com/wso2/identity-apps/commit/d21cdb4938bb7e9b34a25f5e8c6793ca2a4d46a2) Thanks [@savindi7](https://github.com/savindi7)! - Update language property requirement for "?" with a default value.
+
+## 2.26.0
+
+### Minor Changes
+
+- [#8227](https://github.com/wso2/identity-apps/pull/8227) [`6e933b10207856a63155df2a148d1c0a0526f6da`](https://github.com/wso2/identity-apps/commit/6e933b10207856a63155df2a148d1c0a0526f6da) Thanks [@SamudraUduwaka](https://github.com/SamudraUduwaka)! - Custom page editor for end user facing portals
+
+## 2.25.23
+
+### Patch Changes
+
+- [#8316](https://github.com/wso2/identity-apps/pull/8316) [`08cd3175c8dacb5cfaae06577a0d51da294c3d7d`](https://github.com/wso2/identity-apps/commit/08cd3175c8dacb5cfaae06577a0d51da294c3d7d) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix enterprise reCaptcha issue
+
+## 2.25.22
+
+### Patch Changes
+
+- [#8345](https://github.com/wso2/identity-apps/pull/8345) [`9705a6126e9c839c053a199f1c41e96b7928da1f`](https://github.com/wso2/identity-apps/commit/9705a6126e9c839c053a199f1c41e96b7928da1f) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Change registration portal class name
+
+- Updated dependencies [[`9705a6126e9c839c053a199f1c41e96b7928da1f`](https://github.com/wso2/identity-apps/commit/9705a6126e9c839c053a199f1c41e96b7928da1f)]:
+  - @wso2is/theme@2.7.9
+
+## 2.25.21
+
+### Patch Changes
+
+- [#8326](https://github.com/wso2/identity-apps/pull/8326) [`c462a608167fb245480903a64bf64240f02b7429`](https://github.com/wso2/identity-apps/commit/c462a608167fb245480903a64bf64240f02b7429) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Remove fidp param in impersonation cb url.
+
+* [#8318](https://github.com/wso2/identity-apps/pull/8318) [`a6e03011c95713b1ab4fafef29aee10d8694ad5b`](https://github.com/wso2/identity-apps/commit/a6e03011c95713b1ab4fafef29aee10d8694ad5b) Thanks [@savindi7](https://github.com/savindi7)! - Fix button loading and localization issues.
+
+## 2.25.20
+
+### Patch Changes
+
+- [#8319](https://github.com/wso2/identity-apps/pull/8319) [`a90d75ab6278939da8dfc4cecbdb37ca955dd8c3`](https://github.com/wso2/identity-apps/commit/a90d75ab6278939da8dfc4cecbdb37ca955dd8c3) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Remove default my account share capability.
+
+## 2.25.19
+
+### Patch Changes
+
+- [#8315](https://github.com/wso2/identity-apps/pull/8315) [`f6a445f319c869dbad0497212bf4d3d6157c1e25`](https://github.com/wso2/identity-apps/commit/f6a445f319c869dbad0497212bf4d3d6157c1e25) Thanks [@nilasini](https://github.com/nilasini)! - Update to new flow execution API endpoint
+
+## 2.25.18
+
+### Patch Changes
+
+- [#8310](https://github.com/wso2/identity-apps/pull/8310) [`fd7cdecfe0c364cf12a01412f1dcec486fe68f8a`](https://github.com/wso2/identity-apps/commit/fd7cdecfe0c364cf12a01412f1dcec486fe68f8a) Thanks [@BimsaraBodaragama](https://github.com/BimsaraBodaragama)! - Encode login_hint parameter before rendering on the login page
+
+* [#8288](https://github.com/wso2/identity-apps/pull/8288) [`17da1bb35af9a716c8db88c47b442b9d18e64106`](https://github.com/wso2/identity-apps/commit/17da1bb35af9a716c8db88c47b442b9d18e64106) Thanks [@lashinijay](https://github.com/lashinijay)! - Improve code logic in mobile.jsp
+
+## 2.25.17
+
+### Patch Changes
+
+- [#8275](https://github.com/wso2/identity-apps/pull/8275) [`5f2b24b179f498fd0a6f1845d9a0a7a78da911c6`](https://github.com/wso2/identity-apps/commit/5f2b24b179f498fd0a6f1845d9a0a7a78da911c6) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add sub org impersonation.
+
 ## 2.25.16
 
 ### Patch Changes

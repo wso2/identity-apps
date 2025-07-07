@@ -25,6 +25,7 @@ import Chip from "@oxygen-ui/react/Chip";
 import OxygenGrid from "@oxygen-ui/react/Grid";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
+import useGetAllLocalClaims from "@wso2is/admin.claims.v1/api/use-get-all-local-claims";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -47,16 +48,18 @@ import { ValidationDataInterface, ValidationFormInterface } from "@wso2is/admin.
 import { ProfileConstants } from "@wso2is/core/constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
+    AlertLevels,
+    Claim,
     IdentifiableComponentInterface,
     MultiValueAttributeInterface,
     ProfileInfoInterface,
     ProfileSchemaInterface
 } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { CommonUtils, ProfileUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import { Button, Hint, Link, PasswordValidation, Popup } from "@wso2is/react-components";
-import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     MutableRefObject,
@@ -69,7 +72,8 @@ import React, {
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon, Menu, Message, Radio } from "semantic-ui-react";
 import { getUsersList } from "../../../api/users";
 import {
@@ -153,6 +157,8 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     const { UIConfig } = useUIConfig();
 
     const { isUserStoreReadOnly, userStoresList } = useUserStores();
+
+    const dispatch: Dispatch = useDispatch();
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector(
         (state: AppState) => state.profile.profileSchemas);
@@ -256,6 +262,33 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         userStore
     );
 
+    const {
+        data: fetchedAttributes,
+        error: attributesRequestError,
+        isLoading: isAttributesRequestLoading
+    } = useGetAllLocalClaims({
+        "exclude-identity-claims": true,
+        filter: null,
+        limit: null,
+        offset: null,
+        sort: null
+    });
+
+    /**
+     * Handle the attributes fetch request error.
+     */
+    useEffect(() => {
+        if (attributesRequestError) {
+            dispatch(addAlert(
+                {
+                    description: t("claims:local.notifications.getClaims.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("claims:local.notifications.getClaims.genericError.message")
+                }
+            ));
+        }
+    }, [ attributesRequestError ]);
+
     const countryList: DropdownItemProps[] = useMemo(() => CommonUtils.getCountryList(), []);
 
     const userStoreUsernameRegEx: string = useMemo(() => {
@@ -271,6 +304,18 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                 (property: UserStoreProperty) => property.name === USERSTORE_REGEX_PROPERTIES.PasswordRegEx)?.value;
         }
     }, [ originalUserStore ]);
+
+    const emailClaimRegex: string = useMemo(() => {
+        if (fetchedAttributes && !isAttributesRequestLoading) {
+            const emailAttribute: Claim = fetchedAttributes?.find(
+                (attribute: Claim) =>
+                    attribute?.[ClaimManagementConstants.CLAIM_URI_ATTRIBUTE_KEY] ===
+                    ClaimManagementConstants.EMAIL_CLAIM_URI
+            );
+
+            return emailAttribute?.regEx;
+        }
+    }, [ fetchedAttributes ]);
 
     const readWriteUserStoresList: DropdownItemProps[] = useMemo(() => {
         const storeOptions: DropdownItemProps[] = [
@@ -1091,7 +1136,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                         <div ref={ emailRef } />
                         <Field
-                            loading={ isBasicDetailsLoading }
+                            loading={ isBasicDetailsLoading && isAttributesRequestLoading }
                             data-testid="user-mgt-add-user-form-email-input"
                             label={ t("extensions:manage.features.user.addUser.inputLabel" +
                                 ".emailUsername") }
@@ -1111,8 +1156,8 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                 // Check username validity against userstore regex.
                                 if (value && (
                                     !SharedUserStoreUtils.validateInputAgainstRegEx(
-                                        value, userStoreUsernameRegEx))
-                                        || !FormValidation.email(value)) {
+                                        value, userStoreUsernameRegEx) ||
+                                        !SharedUserStoreUtils.validateInputAgainstRegEx(value, emailClaimRegex))) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
                                     scrollToInValidField("email");
@@ -1193,8 +1238,8 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                 // Check username validity against userstore regex.
                                 if (value && (
                                     !SharedUserStoreUtils.validateInputAgainstRegEx(
-                                        value, userStoreUsernameRegEx))
-                                        || !FormValidation.email(value)) {
+                                        value, userStoreUsernameRegEx) ||
+                                        !SharedUserStoreUtils.validateInputAgainstRegEx(value, emailClaimRegex))) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
                                     scrollToInValidField("email");
@@ -1414,6 +1459,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
             <Field
                 data-testid={ emailFieldComponentId }
                 data-componentid={ emailFieldComponentId }
+                loading={ isAttributesRequestLoading }
                 label={ "Email" }
                 name="email"
                 placeholder={ t(
@@ -1428,7 +1474,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                 validation={ async (value: string, validation: Validation) => {
                     setBasicDetailsLoading(true);
 
-                    if (value && !FormValidation.email(value)) {
+                    if (value && !SharedUserStoreUtils.validateInputAgainstRegEx(value, emailClaimRegex)) {
                         validation.isValid = false;
                         validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
                         scrollToInValidField("email");

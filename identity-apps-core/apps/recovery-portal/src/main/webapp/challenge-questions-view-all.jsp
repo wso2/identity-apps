@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2018-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2018-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -24,6 +24,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.InitiateAllQuestionResponse" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Question" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.RetryError" %>
+<%@ page import="org.wso2.carbon.identity.captcha.provider.mgt.util.CaptchaFEUtils" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.List" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
@@ -49,6 +50,8 @@
     }
 %>
 
+<% request.setAttribute("pageName", "challenge-question-view-all"); %>
+
 <html lang="en-US">
 <head>
     <%-- header --%>
@@ -60,17 +63,29 @@
     <% } else { %>
             <jsp:include page="includes/header.jsp"/>
     <% } %>
-    
+
     <%
         if (reCaptchaEnabled) {
-            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
+            List<Map<String, String>> scriptAttributesList = (List<Map<String, String>>) CaptchaFEUtils.getScriptAttributes();
+            if (scriptAttributesList != null) {
+                for (Map<String, String> scriptAttributes : scriptAttributesList) {
     %>
-    <script src='<%=(reCaptchaAPI)%>'></script>
+        <script
+            <%
+                for (Map.Entry<String, String> entry : scriptAttributes.entrySet()) {
+            %>
+                <%= entry.getKey() %> = "<%= entry.getValue() %>"
+            <%
+                }
+            %>
+        ></script>
     <%
+                }
+            }
         }
     %>
 </head>
-<body class="login-portal layout recovery-layout">
+<body class="login-portal layout recovery-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
@@ -120,14 +135,25 @@
                         %>
                         <%
                             if (reCaptchaEnabled) {
-                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                                String captchaKey = CaptchaFEUtils.getCaptchaSiteKey();
                         %>
                         <div class="field">
-                            <div class="g-recaptcha"
-                                data-size="invisible"
-                                data-callback="onCompleted"
+                            <div
+                                <%
+                                    Map<String, String> captchaAttributes = CaptchaFEUtils.getWidgetAttributes();
+                                    if (captchaAttributes != null) {
+                                        for (Map.Entry<String, String> entry : captchaAttributes.entrySet()) {
+                                            String key = entry.getKey();
+                                            String value = entry.getValue();
+                                %>
+                                            <%= key %>="<%= Encode.forHtmlAttribute(value) %>"
+                                <%
+                                        }
+                                    }
+                                %>
                                 data-action="securityQuestion"
-                                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                                data-sitekey="<%=Encode.forHtmlContent(captchaKey)%>"
+                                data-bind="answerSubmit"
                             >
                             </div>
                         </div>
@@ -178,15 +204,19 @@
         }
         $(document).ready(function () {
             $("#securityQuestionForm").submit(function (e) {
+                var errorMessage = $("#error-msg");
+                errorMessage.hide();
                 <%
                     if (reCaptchaEnabled) {
                 %>
-                if (!grecaptcha.getResponse()) {
-                    e.preventDefault();
-                    grecaptcha.execute();
-
-                    return true;
-                }
+                        var resp = $("[name="+ "<%=CaptchaFEUtils.getCaptchaResponseIdentifier() %>" +"]")[0].value;
+                        if (resp.trim() == '') {
+                            errorMessage.text("<%=i18n(recoveryResourceBundle, customText, "Please.select.reCaptcha")%>");
+                            errorMessage.show();
+                            $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
+                            return false;
+                        }
+                        return true;
                 <%
                     }
                 %>

@@ -525,7 +525,7 @@ export interface ClaimsNS {
                     integer: string;
                     decimal: string;
                     boolean: string;
-                    date: string;
+                    dateTime: string;
                     object: string;
                 };
             };
@@ -540,11 +540,27 @@ export interface ClaimsNS {
                 placeholder: string;
             };
             multiValuedHint: string;
-            multiValuedDisabledHint: string;
+            multiValuedSystemClaimHint: string;
             displayOrderHint: string;
             required: {
                 label: string;
             };
+            inputFormat: {
+                label: string;
+                hint: string;
+                options: {
+                    textInput: string;
+                    dropdown: string;
+                    multiSelectDropdown: string;
+                    radioGroup: string;
+                    checkBoxGroup: string;
+                    checkbox: string;
+                    datePicker: string;
+                    textArea: string;
+                    toggle: string;
+                    numberInput: string;
+                }
+            }
             requiredHint: string;
             requiredWarning: string;
             readOnly: {

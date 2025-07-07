@@ -3418,6 +3418,11 @@ export interface ConsoleNS {
                         Roles: string;
                         "User Store Domain": string;
                         Username: string;
+                        "Role Name": string;
+                        Groups: string;
+                        "Tenant Domain": string;
+                        Permissions: string;
+                        Users: string;
                     };
                     taskDetails: {
                         header: string;
@@ -6537,6 +6542,7 @@ export interface ConsoleNS {
                 addEmailTemplate: string;
                 addEmailTemplateLocale: string;
                 approvals: string;
+                approvalWorkflows: string;
                 attributeDialects: string;
                 categories: {
                     attributes: string;
@@ -6549,6 +6555,7 @@ export interface ConsoleNS {
                 };
                 certificates: string;
                 configurations: string;
+                createApprovalWorkflows: string;
                 editEmailTemplate: string;
                 editExternalDialect: string;
                 editGroups: string;
@@ -6556,6 +6563,7 @@ export interface ConsoleNS {
                 editRoles: string;
                 editUsers: string;
                 editUserstore: string;
+                editApprovalWorkflow: string;
                 emailDomainDiscovery: string;
                 emailTemplateTypes: string;
                 emailTemplates: string;
@@ -8002,6 +8010,155 @@ export interface ConsoleNS {
                             message: string;
                         };
                     };
+                };
+            };
+            approvalWorkflows: {
+                advancedSearch: {
+                    placeholder: string;
+                };
+                notifications: {
+                    fetchApprovalWorkflows: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    deleteApprovalWorkflow: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    delay: {
+                        message: string;
+                        description: string;
+                    };
+                    updateApprovalWorkflow: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    testConnection: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    addApprovalWorkflow: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    apiLimitReachedError: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateDelay: {
+                        message: string;
+                        description: string;
+                    };
+                };
+                confirmation: {
+                    hint: string;
+                    header: string;
+                    message: string;
+                    content: string;
+                    confirm: string;
+                };
+                pageLayout: {
+                    list: {
+                        title: string;
+                        description: string;
+                        primaryAction: string;
+                    };
+                    templates: {
+                        title: string;
+                        description: string;
+                        back: string;
+                        templateHeading: string;
+                        templateSubHeading: string;
+                    };
+                    edit: {
+                        description: string;
+                        back: string;
+                        tabs: {
+                            general: string;
+                            connection: string;
+                            user: string;
+                            group: string;
+                        };
+                    };
+                };
+                forms: {
+                    general: {
+                        name: {
+                            label: string;
+                            placeholder: string;
+                            requiredErrorMessage: string;
+                            validationErrorMessages: {
+                                [key: string]: string;
+                            };
+                        };
+                        description: {
+                            label: string;
+                            placeholder: string;
+                            validationErrorMessages: {
+                                invalidInputErrorMessage: string;
+                            };
+                        };
+                    };
+                };
+                dangerZone: {
+                    delete: {
+                        actionTitle: string;
+                        header: string;
+                        subheader: string;
+                    };
+                };
+                placeholders: {
+                    emptySearch: {
+                        action: string;
+                        title: string;
+                        subtitles: string;
+                    };
+                    emptyList: {
+                        action: string;
+                        title: string;
+                        subtitles: string;
+                    };
+                    emptyListReadOnly: {
+                        title: string;
+                        subtitles: string;
+                    };
+                };
+                sqlEditor: {
+                    reset: string;
+                    title: string;
+                    create: string;
+                    update: string;
+                    read: string;
+                    delete: string;
+                    darkMode: string;
                 };
             };
         };

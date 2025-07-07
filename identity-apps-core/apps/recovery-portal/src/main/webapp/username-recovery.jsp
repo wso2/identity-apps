@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2016-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -31,6 +31,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ReCaptchaProperties" %>
 <%@ page import="org.wso2.carbon.identity.recovery.IdentityRecoveryConstants" %>
+<%@ page import="org.wso2.carbon.identity.captcha.provider.mgt.util.CaptchaFEUtils" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.HashMap" %>
@@ -61,27 +62,12 @@
 
     String username = request.getParameter("username");
 
-    ReCaptchaApi reCaptchaApi = new ReCaptchaApi();
-
-    try {
-        ReCaptchaProperties reCaptchaProperties = reCaptchaApi.getReCaptcha(tenantDomain, true, "ReCaptcha",
-                "username-recovery");
-
-        if (reCaptchaProperties != null && reCaptchaProperties.getReCaptchaEnabled()) {
-            Map<String, List<String>> headers = new HashMap<>();
-            headers.put("reCaptcha", Arrays.asList(String.valueOf(true)));
-            headers.put("reCaptchaAPI", Arrays.asList(reCaptchaProperties.getReCaptchaAPI()));
-            headers.put("reCaptchaKey", Arrays.asList(reCaptchaProperties.getReCaptchaKey()));
-            IdentityManagementEndpointUtil.addReCaptchaHeaders(request, headers);
-        }
-    } catch (ApiException e) {
-        request.setAttribute("error", true);
-        request.setAttribute("errorMsg", e.getMessage());
-        if (!StringUtils.isBlank(username)) {
-            request.setAttribute("username", username);
-        }
-        request.getRequestDispatcher("error.jsp").forward(request, response);
-        return;
+    if (CaptchaFEUtils.isCaptchaEnabled()) {
+        Map<String, List<String>> headers = new HashMap<>();
+        headers.put("reCaptcha", Arrays.asList(String.valueOf(true)));
+        headers.put("reCaptchaAPI", Arrays.asList(CaptchaFEUtils.getCaptchaApiUrl()));
+        headers.put("reCaptchaKey", Arrays.asList(CaptchaFEUtils.getCaptchaSiteKey()));
+        CaptchaFEUtils.addCaptchaHeaders(request, headers);
     }
 
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
@@ -147,10 +133,7 @@
     }
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "large");
-%>
+<% request.setAttribute("pageName", "username-recovery"); %>
 
 <!doctype html>
 <html lang="en-US">
@@ -167,14 +150,26 @@
 
     <%
         if (reCaptchaEnabled) {
-            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
+            List<Map<String, String>> scriptAttributesList = (List<Map<String, String>>) CaptchaFEUtils.getScriptAttributes();
+            if (scriptAttributesList != null) {
+                for (Map<String, String> scriptAttributes : scriptAttributesList) {
     %>
-    <script src='<%=(reCaptchaAPI)%>'></script>
+        <script
+            <%
+                for (Map.Entry<String, String> entry : scriptAttributes.entrySet()) {
+            %>
+                <%= entry.getKey() %> = "<%= entry.getValue() %>"
+            <%
+                }
+            %>
+        ></script>
     <%
+                }
+            }
         }
     %>
 </head>
-<body class="login-portal layout recovery-layout">
+<body class="login-portal layout recovery-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
@@ -203,14 +198,13 @@
                         <% } %>
                     </div>
                 <% } %>
-                <div class="ui negative message" id="error-msg" hidden="hidden"></div>
 
                 <%=i18n(recoveryResourceBundle, customText, "username.recovery.body")%>
 
                 <div class="ui divider hidden"></div>
 
                 <div class="segment-form">
-                    <form class="ui large form" method="post" action="verify.do" id="recoverDetailsForm">
+                    <form novalidate class="ui large form" method="post" action="verify.do" id="recoverDetailsForm">
                         <% if (isFirstNameInClaims || isLastNameInClaims) { %>
                         <div class="two fields">
                             <% if (isFirstNameInClaims) { %>
@@ -221,7 +215,14 @@
                                 <input id="first-name" type="text"
                                     <%= isFirstNameRequired ? "required" : "" %>
                                     name="http://wso2.org/claims/givenname"
-                                    placeholder="<%=i18n(recoveryResourceBundle, customText, "First.name")%>" />
+                                    placeholder="<%=i18n(recoveryResourceBundle, customText, "First.name")%>"
+                                />
+                                <div class="ui list mb-5 field-validation-error-description" id="error-msg-first-name">
+                                    <i class="exclamation circle icon"></i>
+                                    <span>
+                                        <%=i18n(recoveryResourceBundle, customText, "fill.the.first.name" )%>
+                                    </span>
+                                </div>
                             </div>
                             <% } %>
                             <% if (isLastNameInClaims) { %>
@@ -262,6 +263,11 @@
                             <input id="contact" type="text" name="contact"
                                placeholder="<%=i18n(recoveryResourceBundle, customText, "contact")%>"
                                     required class="form-control" />
+                        </div>
+                        <div class="ui list mb-5 field-validation-error-description" id="error-msg-contact">
+                            <i class="exclamation circle icon"></i>
+                            <span id="error-msg-contact-text">
+                            </span>
                         </div>
                         <% } %>
 
@@ -306,14 +312,25 @@
                         %>
                         <%
                             if (reCaptchaEnabled) {
-                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                                String captchaKey = CaptchaFEUtils.getCaptchaSiteKey();
                         %>
                         <div class="field">
-                            <div class="g-recaptcha"
-                                data-size="invisible"
-                                data-callback="onCompleted"
+                            <div
+                                <%
+                                    Map<String, String> captchaAttributes = CaptchaFEUtils.getWidgetAttributes();
+                                    if (captchaAttributes != null) {
+                                        for (Map.Entry<String, String> entry : captchaAttributes.entrySet()) {
+                                            String key = entry.getKey();
+                                            String value = entry.getValue();
+                                %>
+                                            <%= key %>="<%= Encode.forHtmlAttribute(value) %>"
+                                <%
+                                        }
+                                    }
+                                %>
                                 data-action="usernameRecovery"
-                                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                                data-sitekey="<%=Encode.forHtmlContent(captchaKey)%>"
+                                data-bind="recoverySubmit"
                             >
                             </div>
                         </div>
@@ -373,39 +390,65 @@
             $("#recoverDetailsForm").submit();
         }
 
+        $(window).on("pageshow", function (event) {
+            if (event.originalEvent.persisted) {
+                $("#recoverySubmit").removeClass("loading").attr("disabled", false);;
+            }
+        });
+
         $(document).ready(function () {
             $("#recoverDetailsForm").submit(function (e) {
-                <%
-                    if (reCaptchaEnabled) {
-                %>
-                if (!grecaptcha.getResponse()) {
-                    e.preventDefault();
-                    grecaptcha.execute();
-                    return true;
-                }
-                <%
-                    }
-                %>
-
                 // Prevent clicking multiple times, and notify the user something
                 // is happening in the background.
                 const submitButton = $("#recoverySubmit");
                 submitButton.addClass("loading").attr("disabled", true);
 
-                const errorMessage = $("#error-msg");
-                errorMessage.hide();
+                const errorMessageFirstName = $("#error-msg-first-name");
+                errorMessageFirstName.hide();
+
+                <%
+                    if (reCaptchaEnabled) {
+                %>
+                        var resp = $("[name="+ "<%CaptchaFEUtils.getCaptchaResponseIdentifier(); %>" +"]")[0].value;
+                        if (resp.trim() == '') {
+                            errorMessage.text("<%=i18n(recoveryResourceBundle, customText, "Please.select.recaptcha")%>");
+                            errorMessage.show();
+                            $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
+                            return false;
+                        }
+                        return true;
+                <%
+                    }
+                %>
+
+                <%
+                    if (reCaptchaEnabled) {
+                %>
+                        var resp = $("[name="+ "<%CaptchaFEUtils.getCaptchaResponseIdentifier(); %>" +"]")[0].value;
+                        if (resp.trim() == '') {
+                            errorMessage.text("<%=i18n(recoveryResourceBundle, customText, "Please.select.recaptcha")%>");
+                            errorMessage.show();
+                            $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
+                            return false;
+                        }
+                        return true;
+                <%
+                    }
+                %>
 
                 <% if (isFirstNameInClaims && isFirstNameRequired) { %>
                     const firstName = $("#first-name").val();
 
                     if (firstName === "") {
-                        errorMessage.text("<%=i18n(recoveryResourceBundle, customText, "fill.the.first.name")%>");
-                        errorMessage.show();
-                        $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
+                        errorMessageFirstName.show();
+                        $("html, body").animate({scrollTop: errorMessageFirstName.offset().top}, "slow");
                         submitButton.removeClass("loading").attr("disabled", false);
                         return false;
                     }
                 <% } %>
+
+                const errorMessageContact = $("#error-msg-contact");
+                const errorMessageContactText = $("#error-msg-contact-text");
 
                 // Contact input validation.
                 const contact = $("#contact").val();
@@ -413,18 +456,21 @@
                 const emailClaimRegex = new RegExp("<%=emailClaimRegex%>");
 
                 if (contact === "") {
-                    errorMessage.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Contact.cannot.be.empty")%>");
-                    errorMessage.show();
-                    $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
+                    errorMessageContactText.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Contact.cannot.be.empty")%>");
+                    errorMessageContact.show();
+                    $("html, body").animate({scrollTop: errorMessageContact.offset().top}, "slow");
                     submitButton.removeClass("loading").attr("disabled", false);
                     return false;
                 } else if (!contact.match(mobileClaimRegex) && !contact.match(emailClaimRegex)) {
-                    errorMessage.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Invalid.contact")%>");
-                    errorMessage.show();
-                    $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
+                    errorMessageContactText.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Invalid.contact")%>");
+                    errorMessageContact.show();
+                    $("html, body").animate({scrollTop: errorMessageContact.offset().top}, "slow");
                     submitButton.removeClass("loading").attr("disabled", false);
                     return false;
                 }
+
+                errorMessageFirstName.hide();
+                errorMessageContact.hide();
                 return true;
             });
         });

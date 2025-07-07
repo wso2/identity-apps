@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -47,7 +47,6 @@
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
-    ReCaptchaApi reCaptchaApi = new ReCaptchaApi();
     String username = request.getParameter("username");
 
     if (StringUtils.isNotEmpty(tenantDomain)) {
@@ -61,25 +60,12 @@
         }
     }
 
-    try {
-        ReCaptchaProperties reCaptchaProperties = reCaptchaApi.getReCaptcha(tenantDomain, true, "ReCaptcha",
-                "password-recovery");
-
-        if (reCaptchaProperties != null && reCaptchaProperties.getReCaptchaEnabled()) {
-            Map<String, List<String>> headers = new HashMap<>();
-            headers.put("reCaptcha", Arrays.asList(String.valueOf(true)));
-            headers.put("reCaptchaAPI", Arrays.asList(reCaptchaProperties.getReCaptchaAPI()));
-            headers.put("reCaptchaKey", Arrays.asList(reCaptchaProperties.getReCaptchaKey()));
-            IdentityManagementEndpointUtil.addReCaptchaHeaders(request, headers);
-        }
-    } catch (ApiException e) {
-        request.setAttribute("error", true);
-        request.setAttribute("errorMsg", e.getMessage());
-        if (!StringUtils.isBlank(username)) {
-            request.setAttribute("username", username);
-        }
-        request.getRequestDispatcher("error.jsp").forward(request, response);
-        return;
+    if (CaptchaFEUtils.isCaptchaEnabled()) {
+        Map<String, List<String>> headers = new HashMap<>();
+        headers.put("reCaptcha", Arrays.asList(String.valueOf(true)));
+        headers.put("reCaptchaAPI", Arrays.asList(CaptchaFEUtils.getCaptchaApiUrl()));
+        headers.put("reCaptchaKey", Arrays.asList(CaptchaFEUtils.getCaptchaSiteKey()));
+        CaptchaFEUtils.addCaptchaHeaders(request, headers);
     }
 
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
@@ -134,10 +120,7 @@
     }
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "large");
-%>
+<% request.setAttribute("pageName", "password-recovery-with-claims"); %>
 
 <!doctype html>
 <html lang="en-US">
@@ -154,14 +137,26 @@
 
     <%
         if (reCaptchaEnabled) {
-            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
+            List<Map<String, String>> scriptAttributesList = (List<Map<String, String>>) CaptchaFEUtils.getScriptAttributes();
+            if (scriptAttributesList != null) {
+                for (Map<String, String> scriptAttributes : scriptAttributesList) {
     %>
-    <script src='<%=(reCaptchaAPI)%>'></script>
+        <script
+            <%
+                for (Map.Entry<String, String> entry : scriptAttributes.entrySet()) {
+            %>
+                <%= entry.getKey() %> = "<%= entry.getValue() %>"
+            <%
+                }
+            %>
+        ></script>
     <%
+                }
+            }
         }
     %>
 </head>
-<body class="login-portal layout recovery-layout">
+<body class="login-portal layout recovery-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
@@ -243,7 +238,7 @@
                         <div class="field">
                             <label class="control-label"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                     "Email")%></label>
-                            <input id="email" type="email" name="http://wso2.org/claims/emailaddress" 
+                            <input id="email" type="email" name="http://wso2.org/claims/emailaddress"
                                 class="form-control claims" data-validate="email"
                                 placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Email")%>">
                         </div>
@@ -285,14 +280,25 @@
 
                         <%
                             if (reCaptchaEnabled) {
-                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                                String captchaKey = CaptchaFEUtils.getCaptchaSiteKey();
                         %>
                         <div class="field">
-                            <div class="g-recaptcha"
-                                data-size="invisible"
-                                data-callback="onCompleted"
+                            <div
+                                <%
+                                    Map<String, String> captchaAttributes = CaptchaFEUtils.getWidgetAttributes();
+                                    if (captchaAttributes != null) {
+                                        for (Map.Entry<String, String> entry : captchaAttributes.entrySet()) {
+                                            String key = entry.getKey();
+                                            String value = entry.getValue();
+                                %>
+                                            <%= key %>="<%= Encode.forHtmlAttribute(value) %>"
+                                <%
+                                        }
+                                    }
+                                %>
                                 data-action="passwordRecovery"
-                                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                                data-sitekey="<%=Encode.forHtmlContent(captchaKey)%>"
+                                data-bind="recoverySubmit"
                             >
                             </div>
                         </div>
@@ -358,20 +364,22 @@
 
             $("#recoverDetailsForm").submit(function (e) {
 
+                var errorMessage = $("#error-msg");
+                errorMessage.hide();
                 <%
                     if (reCaptchaEnabled) {
                 %>
-                if (!grecaptcha.getResponse()) {
-                    e.preventDefault();
-                    grecaptcha.execute();
-
-                    return true;
-                }
+                        var resp = $("[name="+ "<%=CaptchaFEUtils.getCaptchaResponseIdentifier() %>"+"]")[0].value;
+                        if (resp.trim() == '') {
+                            errorMessage.text("<%=i18n(recoveryResourceBundle, customText, "Please.select.reCaptcha")%>");
+                            errorMessage.show();
+                            $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
+                            return false;
+                        }
+                        return true;
                 <%
                     }
                 %>
-                var errorMessage = $("#error-msg");
-                errorMessage.hide();
 
                 var claimFields = document.querySelectorAll(".claims");
                 var filled = 0;

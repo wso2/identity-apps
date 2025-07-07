@@ -429,6 +429,12 @@ export interface rolesNS {
         };
     };
     notifications: {
+        createRolePendingApproval: {
+            success: {
+                description: string;
+                message: string;
+            }
+        },
         deleteRole: {
             error: {
                 message: string;

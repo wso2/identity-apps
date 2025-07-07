@@ -31,10 +31,7 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "medium");
-%>
+<% request.setAttribute("pageName", "self-registration"); %>
 
 <%
     String myaccountUrl = application.getInitParameter("MyAccountURL");
@@ -53,12 +50,12 @@
     String subPath = servletPath + contextPath;
     String baseURL = accessedURL.substring(0, accessedURL.length() - subPath.length());
     String authenticationPortalURL = baseURL + contextPath;
-    
-    if (tenantDomain != null 
+
+    if (tenantDomain != null
         && !tenantDomain.isEmpty()
         && !tenantDomain.equalsIgnoreCase(IdentityManagementEndpointConstants.SUPER_TENANT)) {
         authenticationPortalURL = baseURL + "/t/" + tenantDomain + contextPath;
-    } 
+    }
 %>
 
 <%
@@ -68,7 +65,7 @@
     String state = request.getParameter("state");
     String code = request.getParameter("code");
     String spId = request.getParameter("spId");
-    
+
     try {
         byte[] jsonData = Files.readAllBytes(Paths.get(jsonFilePath));
         translationsJson = new String(jsonData, "UTF-8");
@@ -100,7 +97,7 @@
         };
     </script>
 </head>
-<body class="login-portal layout authentication-portal-layout">
+<body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
   <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
       <layout:component componentName="ProductHeader">
           <%-- product-title --%>
@@ -173,10 +170,10 @@
                 const registrationFlowApiProxyPath = authPortalURL + "/util/self-registration-api.jsp";
                 const code = "<%= Encode.forJavaScript(code) != null ? Encode.forJavaScript(code) : null %>";
                 const state = "<%= Encode.forJavaScript(state) != null ? Encode.forJavaScript(state) : null %>";
-                
+
                 const locale = "en-US";
                 const translations = <%= translationsJson %>;
-                
+
                 const [ flowData, setFlowData ] = useState(null);
                 const [ components, setComponents ] = useState([]);
                 const [ loading, setLoading ] = useState(true);
@@ -190,10 +187,11 @@
                     if (code !== "null" && state !== "null") {
                         setPostBody({
                             flowId: savedFlowId,
+                            flowType: "REGISTRATION",
                             actionId: "",
-                            inputs: { 
+                            inputs: {
                                 code,
-                                state 
+                                state
                             }
                         });
                     }
@@ -201,7 +199,7 @@
 
                 useEffect(() => {
                     if (!postBody && code === "null") {
-                        setPostBody({ applicationId: "new-application" });
+                        setPostBody({ applicationId: "new-application", flowType: "REGISTRATION" });
                     }
                 }, []);
 
@@ -233,7 +231,7 @@
                         }
 
                         const isFlowEnded = handleFlowStatus(data);
-                        
+
                         if (isFlowEnded) {
                             return;
                         }
@@ -258,7 +256,7 @@
                         const errorPageURL = authPortalURL + "/registration_error.do?" + "ERROR_MSG="
                             + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID="
                             + "<%= Encode.forJavaScript(spId) %>" + "&" + "REG_PORTAL_URL=" + authPortalURL + "/register.do";
-                        
+
                         window.location.href = errorPageURL;
                     }
 
@@ -273,7 +271,7 @@
                     switch (flow.flowStatus) {
                         case "INCOMPLETE":
                             return false;
-                            
+
                         case "COMPLETE":
                             localStorage.clear();
 
@@ -306,17 +304,17 @@
                 if (loading || (!components || components.length === 0)) {
                     return createElement(
                         "div",
-                        { className: `content-container loading ${!loading ? "hidden" : ""}` },
+                        { className: `registration-content-container loading ${!loading ? "hidden" : ""}` },
                         createElement(
                             "div",
                             { className: "spinner" }
                         )
                     );
-                } 
+                }
 
                 return createElement(
                     "div",
-                    { className: "content-container loaded" },
+                    { className: "registration-content-container loaded" },
                     createElement(
                         DynamicContent, {
                             contentData: flowData.data && flowData.data,
@@ -326,6 +324,7 @@
                                 setPostBody({
                                     flowId: flowData.flowId,
                                     actionId,
+                                    flowType: "REGISTRATION",
                                     inputs: formValues
                                 });
                             },

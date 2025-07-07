@@ -88,9 +88,11 @@ import static org.wso2.identity.apps.common.util.AppPortalConstants.EMAIL_CLAIM_
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ACCOUNT_SWITCH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ORGANIZATION_SWITCH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_TOKEN_EXCHANGE;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.IMPERSONATE_ORG_SCOPE_NAME;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.IMPERSONATE_ROLE_NAME;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.IMPERSONATE_SCOPE_NAME;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.IMPERSONATION_API_RESOURCE;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.IMPERSONATION_ORG_API_RESOURCE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_AUTH2_TYPE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_CONFIG_TYPE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.MYACCOUNT_APP;
@@ -135,15 +137,18 @@ public class AppPortalUtils {
             StringUtils.isNotEmpty(IdentityUtil.getProperty(CONSOLE_PORTAL_PATH))) {
             portalPath = IdentityUtil.getProperty(CONSOLE_PORTAL_PATH);
         }
+        String consolePortalPath = portalPath;
         if (MYACCOUNT_APP.equals(applicationName) &&
             StringUtils.isNotEmpty(IdentityUtil.getProperty(MYACCOUNT_PORTAL_PATH))) {
             portalPath = IdentityUtil.getProperty(MYACCOUNT_PORTAL_PATH);
+            consolePortalPath = IdentityUtil.getProperty(CONSOLE_PORTAL_PATH);
         }
         if (!portalPath.startsWith("/")) {
             portalPath = "/" + portalPath;
+            consolePortalPath = "/" + consolePortalPath;
         }
         String callbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
-        String consoleCallbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
+        String consoleCallbackUrl = IdentityUtil.getServerURL(consolePortalPath, true, true);
         String appendedConsoleCallBackURLRegex = StringUtils.EMPTY;
         boolean isUserSessionImpersonationEnabled = Boolean.parseBoolean(IdentityUtil
             .getProperty(USER_SESSION_IMPERSONATION));
@@ -157,8 +162,8 @@ public class AppPortalUtils {
                 consoleCallbackUrl = ApplicationMgtUtil.replaceUrlOriginWithPlaceholders(consoleCallbackUrl);
                 consoleCallbackUrl = ApplicationMgtUtil.resolveOriginUrlFromPlaceholders(consoleCallbackUrl,
                     CONSOLE_APP);
-                appendedConsoleCallBackURLRegex = "|" + consoleCallbackUrl.replace(portalPath, portalPath
-                    + "/resources/users/init-impersonate.html");
+                appendedConsoleCallBackURLRegex = "|" + consoleCallbackUrl.replace(
+                    consolePortalPath, portalPath + "/resources/users/init-impersonate.html");
             }
         } catch (URLBuilderException e) {
             throw new IdentityOAuthAdminException("Server encountered an error while building callback URL with " +
@@ -291,8 +296,11 @@ public class AppPortalUtils {
             shareApplication(tenantDomain, tenantId, appId, appName, appOwner);
         }
         if (Boolean.parseBoolean(IdentityUtil.getProperty(USER_SESSION_IMPERSONATION)) &&
-                MYACCOUNT_APP.equals(appName)) {  
-            addAPIResourceToApplication(appId, tenantDomain);
+                MYACCOUNT_APP.equals(appName)) {
+            addAPIResourceToApplication(appId, tenantDomain, IMPERSONATION_API_RESOURCE,
+                APIResourceManagementConstants.APIResourceTypes.TENANT);
+            addAPIResourceToApplication(appId, tenantDomain, IMPERSONATION_ORG_API_RESOURCE,
+                APIResourceManagementConstants.APIResourceTypes.ORGANIZATION);
             addImpersonatorRole(appOwner, appId, tenantId, tenantDomain);
         }
     }
@@ -486,13 +494,13 @@ public class AppPortalUtils {
             return consumerKey + "_" + tenantDomain;
         }
     }
-    
+
     private static void addImpersonatorRole(String appOwner, String appId, int tenantId, String tenantDomain)
         throws IdentityApplicationManagementException {
 
         List<Permission> permissions = new ArrayList<>();
-        Permission permission = new Permission(IMPERSONATE_SCOPE_NAME);
-        permissions.add(permission);
+        permissions.add(new Permission(IMPERSONATE_SCOPE_NAME));
+        permissions.add(new Permission(IMPERSONATE_ORG_SCOPE_NAME));
 
         RoleManagementService roleManagementService = AppsCommonDataHolder.getInstance().getRoleManagementServiceV2();
         try {
@@ -503,17 +511,17 @@ public class AppPortalUtils {
         }
     }
 
-    private static void addAPIResourceToApplication(String appId, String tenantDomain)
-            throws IdentityApplicationManagementException {
+    private static void addAPIResourceToApplication(String appId, String tenantDomain, String apiResourceName,
+        String apiResourceType) throws IdentityApplicationManagementException {
 
-        APIResource apiResource = getImpersontionAPIResource(tenantDomain);
+        APIResource apiResource = getImpersontionAPIResource(tenantDomain, apiResourceName);
 
         AuthorizedAPI authorizedAPI = new AuthorizedAPI(
                 appId,
                 apiResource.getId(),
                 APIResourceManagementConstants.RBAC_AUTHORIZATION,
                 apiResource.getScopes(),
-                APIResourceManagementConstants.APIResourceTypes.TENANT
+                apiResourceType
         );
         try {
             AuthorizedAPIManagementService authorizedAPIManagementService = new AuthorizedAPIManagementServiceImpl();
@@ -523,13 +531,13 @@ public class AppPortalUtils {
         }
     }
 
-    private static APIResource getImpersontionAPIResource(String tenantDomain)
+    private static APIResource getImpersontionAPIResource(String tenantDomain, String apiResourceName)
             throws IdentityApplicationManagementException {
 
         APIResourceManager apiResourceManager = AppsCommonDataHolder.getInstance().getAPIResourceManager();
         APIResource apiResource = null;
         try {
-            apiResource = apiResourceManager.getAPIResourceByIdentifier(IMPERSONATION_API_RESOURCE, tenantDomain);
+            apiResource = apiResourceManager.getAPIResourceByIdentifier(apiResourceName, tenantDomain);
         } catch (APIResourceMgtException e) {
             throw new IdentityApplicationManagementException("Error occurred while retrieving API resource.");
         }

@@ -48,8 +48,9 @@ import {
     AlertInterface,
     AlertLevels,
     Claim,
+    ClaimDataType,
     ClaimDialect,
-    DataType,
+    ClaimInputFormat,
     ExternalClaim,
     ProfileSchemaInterface,
     SharedProfileValueResolvingMethod,
@@ -58,6 +59,7 @@ import {
 } from "@wso2is/core/models";
 import { Property } from "@wso2is/core/src/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
+
 import { Field, Form } from "@wso2is/form";
 import { DropDownItemInterface } from "@wso2is/form/src";
 import { DynamicField , KeyValue } from "@wso2is/forms";
@@ -141,6 +143,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const [ hasMapping, setHasMapping ] = useState<boolean>(false);
     const [ mappingChecked, setMappingChecked ] = useState<boolean>(false);
     const [ dataType, setDataType ] = useState<string>(claim?.dataType || "");
+    const [ inputType, setInputType ] = useState<string>(claim?.inputFormat?.inputType || ClaimInputFormat.TEXT_INPUT);
+    const [ multiValued, setMultiValued ] = useState<boolean>(claim?.multiValued || false);
     const [ subAttributes, setSubAttributes ] = useState<string[]>([]);
     const [ canonicalValues, setCanonicalValues ] = useState<KeyValue[]>();
 
@@ -203,31 +207,31 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const dataTypeOptions: DropDownItemInterface[] = [
         {
             text: t("claims:local.forms.dataType.options.text"),
-            value: DataType.TEXT
+            value: ClaimDataType.TEXT
         },
         {
             text: t("claims:local.forms.dataType.options.options"),
-            value: DataType.OPTIONS
+            value: ClaimDataType.OPTIONS
         },
         {
             text: t("claims:local.forms.dataType.options.integer"),
-            value: DataType.INTEGER
+            value: ClaimDataType.INTEGER
         },
         {
             text: t("claims:local.forms.dataType.options.decimal"),
-            value: DataType.DECIMAL
+            value: ClaimDataType.DECIMAL
         },
         {
             text: t("claims:local.forms.dataType.options.boolean"),
-            value: DataType.BOOLEAN
+            value: ClaimDataType.BOOLEAN
         },
         {
-            text: t("claims:local.forms.dataType.options.date"),
-            value: DataType.DATE_TIME
+            text: t("claims:local.forms.dataType.options.dateTime"),
+            value: ClaimDataType.DATE_TIME
         },
         {
             text: t("claims:local.forms.dataType.options.object"),
-            value: DataType.COMPLEX
+            value: ClaimDataType.COMPLEX
         }
     ];
 
@@ -294,14 +298,15 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             setSubAttributes(claim.subAttributes);
         }
 
-        if (claim?.dataType === DataType.STRING && claim?.canonicalValues?.length > 0) {
-            setDataType(DataType.OPTIONS);
-        } else if (claim?.dataType === DataType.STRING) {
-            setDataType(DataType.TEXT);
+        if (claim?.dataType === ClaimDataType.STRING && claim?.canonicalValues?.length > 0) {
+            setDataType(ClaimDataType.OPTIONS);
+        } else if (claim?.dataType === ClaimDataType.STRING) {
+            setDataType(ClaimDataType.TEXT);
         } else {
-            setDataType(claim?.dataType || DataType.STRING);
+            setDataType(claim?.dataType || ClaimDataType.STRING);
         }
 
+        setInputType(claim?.inputFormat?.inputType || ClaimInputFormat.TEXT_INPUT);
         setIsConsoleRequired(claim?.profiles?.console?.required ?? claim?.required);
         setIsEndUserRequired(claim?.profiles?.endUser?.required ?? claim?.required);
         setIsSelfRegistrationRequired(claim?.profiles?.selfRegistration?.required ?? claim?.required);
@@ -628,7 +633,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const onSubmit = (values: Record<string, unknown>) => {
         let data: Claim;
 
-        if (dataType === DataType.COMPLEX && subAttributes.length === 0) {
+        if (dataType === ClaimDataType.COMPLEX && subAttributes.length === 0) {
             dispatch(
                 addAlert({
                     description: t("claims:local.forms.subAttributes.validationError"),
@@ -640,7 +645,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             return;
         }
 
-        if (dataType === DataType.OPTIONS && canonicalValues.length === 0) {
+        if (dataType === ClaimDataType.OPTIONS && canonicalValues.length === 0) {
             dispatch(
                 addAlert({
                     description: t("claims:local.forms.canonicalValues.validationError"),
@@ -665,8 +670,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         value: item.value
                     })),
                 claimURI: claim.claimURI,
-                dataType: dataType === DataType.TEXT || dataType === DataType.OPTIONS
-                    ? DataType.STRING
+                dataType: dataType === ClaimDataType.TEXT || dataType === ClaimDataType.OPTIONS
+                    ? ClaimDataType.STRING
                     : dataType,
                 description: values?.description !== undefined
                     ? values.description?.toString()
@@ -676,6 +681,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     : claim?.displayName,
                 displayOrder: attributeConfig.editAttributes.getDisplayOrder(
                     claim.displayOrder, values.displayOrder?.toString()),
+                inputFormat: inputType ? { inputType: inputType } : claim?.inputFormat,
                 multiValued: values?.multiValued !== undefined
                     ? !!values.multiValued : claim?.multiValued,
                 properties: claim?.properties,
@@ -691,7 +697,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 sharedProfileValueResolvingMethod: values?.sharedProfileValueResolvingMethod !== undefined
                     ? values?.sharedProfileValueResolvingMethod as SharedProfileValueResolvingMethod
                     : claim?.sharedProfileValueResolvingMethod,
-                subAttributes: dataType === DataType.COMPLEX ? subAttributes : undefined,
+                subAttributes: dataType === ClaimDataType.COMPLEX ? subAttributes : undefined,
                 supportedByDefault: values?.supportedByDefault !== undefined
                     ? !!values.supportedByDefault
                     : claim?.supportedByDefault,
@@ -713,8 +719,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         value: item.value
                     })),
                 claimURI: claim.claimURI,
-                dataType: dataType === DataType.TEXT || dataType === DataType.OPTIONS
-                    ? DataType.STRING
+                dataType: dataType === ClaimDataType.TEXT || dataType === ClaimDataType.OPTIONS
+                    ? ClaimDataType.STRING
                     : dataType,
                 description: values?.description !== undefined
                     ? values.description?.toString()
@@ -724,6 +730,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     : claim?.displayName,
                 displayOrder: attributeConfig.editAttributes.getDisplayOrder(
                     claim.displayOrder, values.displayOrder?.toString()),
+                inputFormat: inputType ? { inputType: inputType } : claim?.inputFormat,
                 multiValued: values?.multiValued !== undefined
                     ? !!values.multiValued : claim?.multiValued,
                 profiles: {
@@ -768,7 +775,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 sharedProfileValueResolvingMethod: values?.sharedProfileValueResolvingMethod !== undefined
                     ? values?.sharedProfileValueResolvingMethod as SharedProfileValueResolvingMethod
                     : claim?.sharedProfileValueResolvingMethod,
-                subAttributes: dataType === DataType.COMPLEX ? subAttributes : undefined,
+                subAttributes: dataType === ClaimDataType.COMPLEX ? subAttributes : undefined,
                 supportedByDefault: values?.supportedByDefault !== undefined
                     ? !!values.supportedByDefault : claim?.supportedByDefault,
                 uniquenessScope: values?.uniquenessScope !== undefined
@@ -890,6 +897,93 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 </TableCell>
             </TableRow>
         );
+    };
+
+    const setDefaultInputTypeForDataType = (dataType: ClaimDataType, multiValued: boolean): void => {
+
+        switch (dataType) {
+            case ClaimDataType.OPTIONS:
+                setInputType(multiValued ? ClaimInputFormat.MULTI_SELECT_DROPDOWN : ClaimInputFormat.DROPDOWN);
+
+                break;
+            case ClaimDataType.BOOLEAN:
+                setInputType(ClaimInputFormat.CHECKBOX);
+
+                break;
+            default:
+                setInputType(ClaimInputFormat.TEXT_INPUT);
+        }
+    };
+
+    const resolveInputFormatOptions = (dataType: ClaimDataType, multiValued: boolean): DropDownItemInterface[] => {
+
+        const textInputOption: DropDownItemInterface[] = [
+            {
+                text: t("claims:local.forms.inputFormat.options.textInput"),
+                value: ClaimInputFormat.TEXT_INPUT
+            }
+        ];
+
+        if (dataType === ClaimDataType.DATE_TIME) {
+            return [
+                ...textInputOption,
+                {
+                    text: t("claims:local.forms.inputFormat.options.datePicker"),
+                    value: ClaimInputFormat.DATE_PICKER
+                }
+            ];
+        }
+
+        if (dataType === ClaimDataType.OPTIONS) {
+            if (multiValued) {
+                return [
+                    {
+                        text: t("claims:local.forms.inputFormat.options.multiSelectDropdown"),
+                        value: ClaimInputFormat.MULTI_SELECT_DROPDOWN
+                    },
+                    {
+                        text: t("claims:local.forms.inputFormat.options.checkBoxGroup"),
+                        value: ClaimInputFormat.CHECKBOX_GROUP
+                    }
+                ];
+            }
+
+            return [
+                {
+                    text: t("claims:local.forms.inputFormat.options.radioGroup"),
+                    value: ClaimInputFormat.RADIO_GROUP
+                },
+                {
+                    text: t("claims:local.forms.inputFormat.options.dropdown"),
+                    value: ClaimInputFormat.DROPDOWN
+                }
+            ];
+        }
+
+        if (dataType === ClaimDataType.INTEGER) {
+            return [
+                ...textInputOption,
+                {
+                    text: t("claims:local.forms.inputFormat.options.numberInput"),
+                    value: ClaimInputFormat.NUMBER_INPUT
+                }
+            ];
+        }
+
+        if (dataType === ClaimDataType.BOOLEAN) {
+            return [
+                {
+                    text: t("claims:local.forms.inputFormat.options.checkbox"),
+                    value: ClaimInputFormat.CHECKBOX
+                },
+                {
+                    text: t("claims:local.forms.inputFormat.options.toggle"),
+                    value: ClaimInputFormat.TOGGLE
+                }
+            ];
+        }
+
+        return textInputOption;
     };
 
     const resolveAttributeRequiredRow = (): ReactElement => {
@@ -1123,9 +1217,11 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             setSubAttributes([]);
                             setCanonicalValues([]);
                             setDataType(data.value);
+                            setDefaultInputTypeForDataType(data.value as ClaimDataType, multiValued);
                         } }
                     />
-                    { dataType === DataType.COMPLEX && (
+
+                    { dataType === ClaimDataType.COMPLEX && (
                         <>
                             <Field.Dropdown
                                 ariaLabel="subAttributes-dropdown"
@@ -1142,6 +1238,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     }
                                 } }
                                 data-testid={ `${testId}-form-sub-attributes-dropdown` }
+                                disabled={ isSubOrganization() || isSystemClaim || isReadOnly }
                                 search
                             />
                             <div className="sub-attribute-list">
@@ -1150,28 +1247,30 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                         className="sub-attribute-row"
                                         key={ index }>
                                         <span>{ attribute }</span>
-                                        <IconButton
-                                            className="sub-attribute-delete-btn"
-                                            disabled={ isReadOnly }
-                                            onClick={ () => {
-                                                setSubAttributes(
-                                                    subAttributes.filter(
-                                                        (item: string) => item !== attribute
-                                                    )
-                                                );
-                                            } }
-                                            data-componentid={ `${testId}-delete-sub-attribute-${index}` }
-                                            style={ { marginLeft: "auto" } }
-                                        >
-                                            <TrashIcon />
-                                        </IconButton>
+                                        { !(isSubOrganization() || isSystemClaim || isReadOnly) && (
+                                            <IconButton
+                                                className="sub-attribute-delete-btn"
+                                                disabled={ isReadOnly }
+                                                onClick={ () => {
+                                                    setSubAttributes(
+                                                        subAttributes.filter(
+                                                            (item: string) => item !== attribute
+                                                        )
+                                                    );
+                                                } }
+                                                data-componentid={ `${testId}-delete-sub-attribute-${index}` }
+                                                style={ { marginLeft: "auto" } }
+                                            >
+                                                <TrashIcon />
+                                            </IconButton>
+                                        ) }
                                     </div>
                                 )) }
                             </div>
                         </>
                     ) }
 
-                    { dataType === DataType.OPTIONS && (
+                    { dataType === ClaimDataType.OPTIONS && (
                         <>
                             <p>{ t("claims:local.forms.canonicalValues.hint") }</p>
                             <DynamicField
@@ -1189,23 +1288,45 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                         ({ key: item.key, value: item.value })));
                                 } }
                                 data-testid={ `${testId}-form-canonical-values-dynamic-field` }
-                                readOnly={ isReadOnly }
+                                readOnly={ isSubOrganization() || isReadOnly }
                             />
                         </>
                     ) }
 
-                    { dataType !== DataType.BOOLEAN && (
+                    { dataType !== ClaimDataType.BOOLEAN && (
                         <Field.Checkbox
                             ariaLabel={ t("claims:local.forms.multiValued.label") }
                             name="multiValued"
                             label={ t("claims:local.forms.multiValued.label") }
                             required={ false }
                             defaultValue={ claim?.multiValued }
-                            data-testid={ `${testId}-form-multi-valued-input` }
+                            data-componentid={ `${testId}-form-multi-valued-input` }
                             hint={ isSystemClaim
-                                ? t("claims:local.forms.multiValuedDisabledHint")
+                                ? t("claims:local.forms.multiValuedSystemClaimHint")
                                 : t("claims:local.forms.multiValuedHint") }
                             readOnly={ isSubOrganization() || isSystemClaim || isReadOnly }
+                            listen={ (checked: boolean) => {
+                                setMultiValued(checked);
+                                setDefaultInputTypeForDataType(dataType as ClaimDataType, checked);
+                            } }
+                        />
+                    ) }
+                    { dataType !== ClaimDataType.COMPLEX && (
+                        <Field.Dropdown
+                            ariaLabel={ t("claims:local.forms.inputFormat.label") }
+                            name="inputFormat"
+                            label={ t("claims:local.forms.inputFormat.label") }
+                            data-componentid={ `${testId}-form-input-format-input` }
+                            hint={ t("claims:local.forms.inputFormat.hint") }
+                            disabled={ isSubOrganization() || isReadOnly }
+                            options={ resolveInputFormatOptions(dataType as ClaimDataType, multiValued) }
+                            value={ inputType }
+                            onChange={ (
+                                event: React.SyntheticEvent<HTMLElement, Event>,
+                                data: { value: string }
+                            ) => {
+                                setInputType(data.value);
+                            } }
                         />
                     ) }
                     { !attributeConfig.localAttributes.createWizard.showRegularExpression && !hideSpecialClaims

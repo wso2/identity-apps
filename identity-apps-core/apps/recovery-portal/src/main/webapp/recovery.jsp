@@ -41,6 +41,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.recovery.v2.*" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
+<%@ page import="org.wso2.carbon.identity.captcha.provider.mgt.util.CaptchaFEUtils" %>
 
 <%-- Localization --%>
 <jsp:directive.include file="includes/localize.jsp"/>
@@ -59,7 +60,7 @@
         private final String value;
 
         UsernameRecoveryStage(String value) {
-            
+
             this.value = value;
         }
 
@@ -115,6 +116,7 @@
     String spId = request.getParameter("spId");
     String userTenantHint = request.getParameter("t");
     String applicationAccessUrl = "";
+    String captchaResponseIdentifier = CaptchaFEUtils.getCaptchaResponseIdentifier();
 
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
@@ -173,8 +175,8 @@
 
     if (isUsernameRecovery) {
         // Username recovery scenario.
-        String recoveryStage = request.getAttribute("recoveryStage") != null 
-                    ? (String) request.getAttribute("recoveryStage") 
+        String recoveryStage = request.getAttribute("recoveryStage") != null
+                    ? (String) request.getAttribute("recoveryStage")
                     : Encode.forJava(request.getParameter("recoveryStage"));
 
         if (StringUtils.isBlank(tenantDomain)) {
@@ -182,7 +184,7 @@
         }
 
         if (UsernameRecoveryStage.INITIATE.equalsValue(recoveryStage)) {
-            
+
             // Separate the contact to mobile or email.
             String contact = Encode.forJava(request.getParameter("contact"));
             if (contact.matches(IdentityManagementEndpointConstants.UserInfoRecovery.MOBILE_CLAIM_REGEX)) {
@@ -190,7 +192,7 @@
             } else {
                 request.setAttribute(IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM, contact);
             }
-            
+
 
             List<Claim> claims;
             UsernameRecoveryApi usernameRecoveryApi = new UsernameRecoveryApi();
@@ -231,15 +233,15 @@
 
             try {
                 Map<String, String> requestHeaders = new HashedMap();
-                if (request.getParameter("g-recaptcha-response") != null) {
-                    requestHeaders.put("g-recaptcha-response", Encode.forJava(request.getParameter("g-recaptcha-response")));
+                if (request.getParameter(captchaResponseIdentifier) != null) {
+                    requestHeaders.put(captchaResponseIdentifier, Encode.forJava(request.getParameter(captchaResponseIdentifier)));
                 }
 
                 request.setAttribute("callback", callback);
                 request.setAttribute("tenantDomain", tenantDomain);
                 request.setAttribute("isUserFound", true);
 
-                List<AccountRecoveryType> initiateUsernameRecoveryResponse = 
+                List<AccountRecoveryType> initiateUsernameRecoveryResponse =
                             recoveryApiV2.initiateUsernameRecovery(recoveryInitRequest, tenantDomain, requestHeaders);
 
                 if (initiateUsernameRecoveryResponse == null || initiateUsernameRecoveryResponse.isEmpty()) {
@@ -255,40 +257,40 @@
 
                 request.getRequestDispatcher("channelselection.do").forward(request, response);
                 return;
-            
+
             } catch (ApiException e) {
                 IdentityManagementEndpointUtil.addErrorInformation(request, e);
                 request.getRequestDispatcher("recoveraccountrouter.do").forward(request, response);
                 return;
             }
-            
+
         } else if (UsernameRecoveryStage.NOTIFY.equalsValue(recoveryStage)) {
             RecoveryApiV2 recoveryApiV2 = new RecoveryApiV2();
-            String recoveryCode = request.getAttribute("recoveryCode") != null 
-                        ? (String) request.getAttribute("recoveryCode") 
-                        : Encode.forJava(request.getParameter("recoveryCode")); 
+            String recoveryCode = request.getAttribute("recoveryCode") != null
+                        ? (String) request.getAttribute("recoveryCode")
+                        : Encode.forJava(request.getParameter("recoveryCode"));
 
-            String usernameRecoveryOption = request.getAttribute("usernameRecoveryOption") != null 
-                        ? (String) request.getAttribute("usernameRecoveryOption") 
+            String usernameRecoveryOption = request.getAttribute("usernameRecoveryOption") != null
+                        ? (String) request.getAttribute("usernameRecoveryOption")
                         : Encode.forJava(request.getParameter("usernameRecoveryOption"));
 
             String isUserFoundParam = request.getParameter("isUserFound");
-            Boolean isUserFound = (isUserFoundParam != null) 
-                        ? Boolean.parseBoolean(isUserFoundParam) 
+            Boolean isUserFound = (isUserFoundParam != null)
+                        ? Boolean.parseBoolean(isUserFoundParam)
                         : IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("isUserFound"));
 
             String recoveryChannelType = null;
             String recoveryChannelId = null;
-            
+
             // Extract the recovery channel name and id from the recovery option.
             if (usernameRecoveryOption != null) {
                 String[] parts = usernameRecoveryOption.split(":");
                 recoveryChannelId = parts[0];
                 recoveryChannelType = parts[1];
             }
-            
+
             request.setAttribute("recoveryChannelType", recoveryChannelType);
- 
+
             // Sending the notification if we only found a user.
             if (isUserFound){
                 RecoveryRequest recoveryRequest = new RecoveryRequest();
@@ -296,20 +298,20 @@
                 recoveryRequest.setChannelId(recoveryChannelId);
 
                 Map<String, String> requestHeaders = new HashedMap();
-                if (request.getParameter("g-recaptcha-response") != null) {
-                    requestHeaders.put("g-recaptcha-response", Encode.forJava(request.getParameter("g-recaptcha-response")));
+                if (request.getParameter(captchaResponseIdentifier) != null) {
+                    requestHeaders.put(captchaResponseIdentifier, Encode.forJava(request.getParameter(captchaResponseIdentifier)));
                 }
 
                 try{
                     recoveryApiV2.recoverUsername(recoveryRequest, tenantDomain, requestHeaders);
-                    
+
                 } catch (ApiException e) {
                     IdentityManagementEndpointUtil.addErrorInformation(request, e);
                     request.getRequestDispatcher("recoveraccountrouter.do").forward(request, response);
                     return;
                 }
             }
-            
+
             request.getRequestDispatcher("username-recovery-complete.jsp").forward(request, response);
             return;
 
@@ -331,7 +333,7 @@
             request.setAttribute("sessionDataKey", sessionDataKey);
             request.setAttribute("username", username);
             session.setAttribute("username", username);
-            IdentityManagementEndpointUtil.addReCaptchaHeaders(request, recoveryApiV2.
+            CaptchaFEUtils.addCaptchaHeaders(request, recoveryApiV2.
                     getApiClient().getResponseHeaders());
             request.getRequestDispatcher("challenge-question-request.jsp?username=" + username).forward(request,
                     response);

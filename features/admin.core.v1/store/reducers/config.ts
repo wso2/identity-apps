@@ -178,7 +178,9 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             usersSuperOrganization: "",
             validationServiceMgt: "",
             validationServiceMgtSubOrg: "",
-            wellKnown: ""
+            wellKnown: "",
+            workflowAssociations: "",
+            workflows: ""
         },
         features: {
             applications: null,
@@ -211,6 +213,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             asyncOperationStatusPollingInterval: null,
             connectionResourcesUrl: "",
             cookiePolicyUrl: "",
+            customContent: {},
             emailTemplates: {
                 defaultLogoUrl: "",
                 defaultWhiteLogoUrl: ""
@@ -268,6 +271,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                     enabled: false
                 }
             },
+            isAdminDataSeparationNoticeEnabled: undefined,
             isClaimUniquenessValidationEnabled: undefined,
             isClientSecretHashEnabled: undefined,
             isCookieConsentBannerEnabled: undefined,

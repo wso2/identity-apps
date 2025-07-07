@@ -465,7 +465,7 @@ export const claims: ClaimsNS = {
                 label: "Data Type",
                 options: {
                     boolean: "Boolean",
-                    date: "Date",
+                    dateTime: "DateTime",
                     decimal: "Decimal",
                     integer: "Integer",
                     object: "Object",
@@ -491,12 +491,28 @@ export const claims: ClaimsNS = {
                 disabledConfigInfo: "Please note that below section is disabled as there is no " +
                     "external claim mapping found for this claim attribute."
             },
+            inputFormat: {
+                hint: "The input format of the attribute.",
+                label: "Input Format",
+                options: {
+                    checkBoxGroup: "Checkbox Group",
+                    checkbox: "Checkbox",
+                    datePicker: "Date Picker",
+                    dropdown: "Dropdown",
+                    multiSelectDropdown: "Multi-Select Dropdown",
+                    numberInput: "Number Input",
+                    radioGroup: "Radio Group",
+                    textArea: "Text Area",
+                    textInput: "Text Input",
+                    toggle: "Toggle"
+                }
+            },
             multiValued: {
                 label: "Allow multiple values for this attribute",
                 placeholder: "Select a user attribute"
             },
-            multiValuedDisabledHint: "This setting cannot be modified for system claims.",
             multiValuedHint: "Select this option if the attribute can have multiple values.",
+            multiValuedSystemClaimHint: "Indicate whether the attribute supports multiple values.",
             name: {
                 label: "Attribute Display Name",
                 placeholder: "Enter the display name",

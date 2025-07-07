@@ -459,6 +459,12 @@ export const roles: rolesNS = {
                 message: "Role created successfully."
             }
         },
+        createRolePendingApproval: {
+            success: {
+                description: "New role creation was accepted and is pending approval.",
+                message: "Role accepted for creation"
+            }
+        },
         deleteRole: {
             error: {
                 description: "{{description}}",
