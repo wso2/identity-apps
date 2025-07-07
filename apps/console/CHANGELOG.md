@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.65.26
+
+### Patch Changes
+
+- [#8475](https://github.com/wso2/identity-apps/pull/8475) [`fa8fc079c3e1ccf25384881eb988c233994eb0dd`](https://github.com/wso2/identity-apps/commit/fa8fc079c3e1ccf25384881eb988c233994eb0dd) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Rename the Google Signup Executor to Google Executor
+
 ## 2.65.25
 
 ### Patch Changes
