@@ -195,9 +195,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
     const entitlementConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.entitlement);
-    const hasRoleV3UpdateScopes: boolean = useRequiredScopes(entitlementConfig?.scopes?.update);
-    const updateUserRoleAssignment: (roleId: string, data: PatchRoleDataInterface) => Promise<AxiosResponse> =
-        hasRoleV3UpdateScopes ? updateUsersForRole : updateRoleDetails;
+    const hasRoleV3UpdatePermissions: boolean = useRequiredScopes(entitlementConfig?.scopes?.update);
+    const updateUserRoleAssignmentFunction: (roleId: string, data: PatchRoleDataInterface) => Promise<AxiosResponse> =
+        hasRoleV3UpdatePermissions ? updateUsersForRole : updateRoleDetails;
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchemaInterface[]>();
@@ -761,7 +761,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      */
     const handleUserAdminRevoke = (deletingUser: ProfileInfoInterface): void => {
         // Payload for the update role request.
-        const roleData: PatchRoleDataInterface = hasRoleV3UpdateScopes ? {
+        const roleData: PatchRoleDataInterface = hasRoleV3UpdatePermissions ? {
             Operations: [
                 {
                     op: "remove",
@@ -781,7 +781,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
-        updateUserRoleAssignment(adminRoleId, roleData)
+        updateUserRoleAssignmentFunction(adminRoleId, roleData)
             .then(() => {
                 dispatch(addAlert({
                     description: t(
