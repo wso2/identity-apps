@@ -543,14 +543,16 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                             listen={ (values: Map<string, FormValue>): void => {
                                 const newPassword = values?.get("newPassword")?.toString();
                                 const confirmPassword = values?.get("confirmPassword")?.toString();
-                                
+
                                 if (newPassword === confirmPassword && confirmPassword !== "") {
                                     setIsConfirmPasswordMatch(true);
+
                                     return;
                                 }
 
                                 if (confirmPassword !== "" && newPassword !== confirmPassword) {
                                     setIsConfirmPasswordMatch(false);
+
                                     return;
                                 }
 
@@ -561,7 +563,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                             validation={
                                 (value: string, validation: Validation, formValues: Map<string, FormValue>) => {
                                     const newPassword = formValues?.get("newPassword")?.toString();
-                                    
+
                                     if (newPassword !== value) {
                                         validation.isValid = false;
                                         setIsConfirmPasswordMatch(false);
