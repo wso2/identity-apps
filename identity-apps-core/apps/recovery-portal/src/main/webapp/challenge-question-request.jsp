@@ -28,7 +28,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.InitiateAllQuestionResponse" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.RetryError" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
-<%@ page import="org.wso2.carbon.identity.captcha.provider_mgt.util.CaptchaFEUtils" %>
+<%@ page import="org.wso2.carbon.identity.captcha.provider.mgt.util.CaptchaFEUtils" %>
 <%@ page import="java.util.Map" %>
 
 <%-- Localization --%>

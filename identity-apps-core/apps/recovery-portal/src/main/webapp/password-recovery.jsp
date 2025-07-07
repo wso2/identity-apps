@@ -39,7 +39,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
 <%@ page import="org.wso2.carbon.utils.multitenancy.MultitenantUtils" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isEmailUsernameEnabled" %>
-<%@ page import="org.wso2.carbon.identity.captcha.provider_mgt.util.CaptchaFEUtils" %>
+<%@ page import="org.wso2.carbon.identity.captcha.provider.mgt.util.CaptchaFEUtils" %>
 
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
@@ -193,8 +193,8 @@
     <%
         if (reCaptchaEnabled) {
             List<Map<String, String>> scriptAttributesList = (List<Map<String, String>>) CaptchaFEUtils.getScriptAttributes();
-                if (scriptAttributesList != null) {
-                    for (Map<String, String> scriptAttributes : scriptAttributesList) {
+            if (scriptAttributesList != null) {
+                for (Map<String, String> scriptAttributes : scriptAttributesList) {
     %>
         <script
             <%
@@ -569,8 +569,6 @@
             <% if (reCaptchaEnabled) { %>
                 const errorMessage = $("#error-msg");
                 const reCaptchaResponse = $("[name="+ "<%=CaptchaFEUtils.getCaptchaResponseIdentifier() %>" +"]")[0].value;
-
-                console.log("reCaptcha response: " + reCaptchaResponse);
                 if (reCaptchaResponse.trim() === "") {
                     errorMessage.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                         "Please.select.reCaptcha")%>");

@@ -41,7 +41,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.recovery.v2.*" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
-<%@ page import="org.wso2.carbon.identity.captcha.provider_mgt.util.CaptchaFEUtils" %>
+<%@ page import="org.wso2.carbon.identity.captcha.provider.mgt.util.CaptchaFEUtils" %>
 
 <%-- Localization --%>
 <jsp:directive.include file="includes/localize.jsp"/>

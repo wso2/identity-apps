@@ -31,7 +31,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ReCaptchaProperties" %>
 <%@ page import="org.wso2.carbon.identity.recovery.IdentityRecoveryConstants" %>
-<%@ page import="org.wso2.carbon.identity.captcha.provider_mgt.util.CaptchaFEUtils" %>
+<%@ page import="org.wso2.carbon.identity.captcha.provider.mgt.util.CaptchaFEUtils" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.HashMap" %>
@@ -151,8 +151,8 @@
     <%
         if (reCaptchaEnabled) {
             List<Map<String, String>> scriptAttributesList = (List<Map<String, String>>) CaptchaFEUtils.getScriptAttributes();
-                if (scriptAttributesList != null) {
-                    for (Map<String, String> scriptAttributes : scriptAttributesList) {
+            if (scriptAttributesList != null) {
+                for (Map<String, String> scriptAttributes : scriptAttributesList) {
     %>
         <script
             <%

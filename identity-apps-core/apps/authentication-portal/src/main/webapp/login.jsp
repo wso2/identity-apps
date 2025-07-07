@@ -32,7 +32,7 @@
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ENABLE_AUTHENTICATION_WITH_REST_API" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ERROR_WHILE_BUILDING_THE_ACCOUNT_RECOVERY_ENDPOINT_URL" %>
 <%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
-<%@ page import="org.wso2.carbon.identity.captcha.provider_mgt.util.CaptchaFEUtils" %>
+<%@ page import="org.wso2.carbon.identity.captcha.provider.mgt.util.CaptchaFEUtils" %>
 <%@ page import="org.wso2.carbon.CarbonConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.AuthenticatorDataRetrievalClient" %>
@@ -460,8 +460,8 @@
         boolean genericReCaptchaEnabled = CaptchaUtil.isGenericRecaptchaEnabledAuthenticator("IdentifierExecutor");
         if (reCaptchaEnabled || reCaptchaResendEnabled || genericReCaptchaEnabled) {
             List<Map<String, String>> scriptAttributesList = (List<Map<String, String>>) CaptchaFEUtils.getScriptAttributes();
-                if (scriptAttributesList != null) {
-                    for (Map<String, String> scriptAttributes : scriptAttributesList) {
+            if (scriptAttributesList != null) {
+                for (Map<String, String> scriptAttributes : scriptAttributesList) {
     %>
         <script
             <%

@@ -37,7 +37,7 @@
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL" %>
 <%@ page import="org.wso2.carbon.identity.core.URLBuilderException" %>
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
-<%@ page import="org.wso2.carbon.identity.captcha.provider_mgt.util.CaptchaFEUtils" %>
+<%@ page import="org.wso2.carbon.identity.captcha.provider.mgt.util.CaptchaFEUtils" %>
 <%@ page import="org.json.JSONArray" %>
 <%@ page import="org.json.JSONObject" %>
 

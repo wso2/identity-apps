@@ -138,8 +138,8 @@
     <%
         if (reCaptchaEnabled) {
             List<Map<String, String>> scriptAttributesList = (List<Map<String, String>>) CaptchaFEUtils.getScriptAttributes();
-                if (scriptAttributesList != null) {
-                    for (Map<String, String> scriptAttributes : scriptAttributesList) {
+            if (scriptAttributesList != null) {
+                for (Map<String, String> scriptAttributes : scriptAttributesList) {
     %>
         <script
             <%
