@@ -19,27 +19,27 @@
 import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
-import RegistrationFlowBuilderPageHeader from "./registration-flow-builder-page-header";
-import RegistrationFlowBuilder from 
-"../components/registration-flow-builder";
-import RegistrationFlowBuilderProvider from
-    "../providers/registration-flow-builder-provider";
-import "./registration-flow-builder-page.scss";
+import PasswordRecoveryFlowBuilderPageHeader from "./password-recovery-flow-builder-page-header";
+import PasswordRecoveryFlowBuilder from 
+"../components/password-recovery-flow-builder";
+import PasswordRecoveryFlowBuilderProvider from
+    "../providers/password-recovery-flow-builder-provider";
+import "./password-recovery-flow-builder-page.scss";
 
 /**
- * Props interface of {@link RegistrationFlowBuilderPage}
+ * Props interface of {@link PasswordRecoveryFlowBuilderPage}
  */
-export type RegistrationFlowBuilderPageProps = IdentifiableComponentInterface;
+export type PasswordRecoveryFlowBuilderPageProps = IdentifiableComponentInterface;
 
 /**
- * Landing page for the Registration Flow Builder.
+ * Landing page for the Password Recovery Flow Builder.
  *
  * @param props - Props injected to the component.
- * @returns RegistrationFlowBuilderPage component.
+ * @returns PasswordRecoveryFlowBuilderPage component.
  */
-const RegistrationFlowBuilderPage: FunctionComponent<RegistrationFlowBuilderPageProps> = ({
-    ["data-componentid"]: componentId = "registration-flow-builder-page"
-}: RegistrationFlowBuilderPageProps): ReactElement => {
+const PasswordRecoveryFlowBuilderPage: FunctionComponent<PasswordRecoveryFlowBuilderPageProps> = ({
+    ["data-componentid"]: componentId = "password-recovery-flow-builder-page"
+}: PasswordRecoveryFlowBuilderPageProps): ReactElement => {
     const { setPreferences, leftNavbarCollapsed } = useUserPreferences();
 
     /**
@@ -53,15 +53,15 @@ const RegistrationFlowBuilderPage: FunctionComponent<RegistrationFlowBuilderPage
     }, [ leftNavbarCollapsed, setPreferences ]);
 
     return (
-        <RegistrationFlowBuilderProvider>
-            <div className="registration-flow-builder-page" data-componentid={ componentId }>
+        <PasswordRecoveryFlowBuilderProvider>
+            <div className="password-recovery-flow-builder-page" data-componentid={ componentId }>
                 <div className="page-layout">
-                    <RegistrationFlowBuilderPageHeader />
+                    <PasswordRecoveryFlowBuilderPageHeader />
                 </div>
-                <RegistrationFlowBuilder />
+                <PasswordRecoveryFlowBuilder />
             </div>
-        </RegistrationFlowBuilderProvider>
+        </PasswordRecoveryFlowBuilderProvider>
     );
 };
 
-export default RegistrationFlowBuilderPage;
+export default PasswordRecoveryFlowBuilderPage;

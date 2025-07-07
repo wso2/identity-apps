@@ -53,7 +53,7 @@ export interface ResourcePropertyFactoryPropsInterface extends IdentifiableCompo
 }
 
 /**
- * Factory to generate the property configurator for the given registration flow resource.
+ * Factory to generate the property configurator for the given password recovery flow resource.
  *
  * @param props - Props injected to the component.
  * @returns The ResourcePropertyFactory component.

@@ -27,12 +27,12 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import useRegistrationFlowBuilder from "../hooks/use-registration-flow-builder";
+import usePasswordRecoveryFlowBuilder from "../hooks/use-password-recovery-flow-builder";
 
 /**
- * Props interface of {@link RegistrationFlowBuilderPageHeader}
+ * Props interface of {@link PasswordRecoveryFlowBuilderPageHeader}
  */
-export type RegistrationFlowBuilderPageHeaderProps = IdentifiableComponentInterface;
+export type PasswordRecoveryFlowBuilderPageHeaderProps = IdentifiableComponentInterface;
 
 /**
  * Interface for the path state.
@@ -47,15 +47,15 @@ interface PathStateInterface {
 }
 
 /**
- * Header for the Registration flow builder page.
+ * Header for the Password Recovery flow builder page.
  *
  * @param props - Props injected to the component.
- * @returns RegistrationFlowBuilderPageHeader component.
+ * @returns PasswordRecoveryFlowBuilderPageHeader component.
  */
-const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuilderPageHeaderProps> = ({
-    ["data-componentid"]: componentId = "registration-flow-builder-page-header"
-}: RegistrationFlowBuilderPageHeaderProps): ReactElement => {
-    const { isPublishing, onPublish } = useRegistrationFlowBuilder();
+const PasswordRecoveryFlowBuilderPageHeader: FunctionComponent<PasswordRecoveryFlowBuilderPageHeaderProps> = ({
+    ["data-componentid"]: componentId = "password-recovery-flow-builder-page-header"
+}: PasswordRecoveryFlowBuilderPageHeaderProps): ReactElement => {
+    const { isPublishing, onPublish } = usePasswordRecoveryFlowBuilder();
 
     /**
      * Handles the back button click event.
@@ -87,7 +87,7 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
                 <IconButton onClick={ handleBackButtonClick }>
                     <ArrowLeftIcon />
                 </IconButton>
-                <Breadcrumbs aria-label="breadcrumb" className="registration-flow-builder-page-header-breadcrumbs">
+                <Breadcrumbs aria-label="breadcrumb" className="password-recovery-flow-builder-page-header-breadcrumbs">
                     <Link
                         underline="hover"
                         color="inherit"
@@ -111,4 +111,4 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
     );
 };
 
-export default RegistrationFlowBuilderPageHeader;
+export default PasswordRecoveryFlowBuilderPageHeader;

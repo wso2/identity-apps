@@ -23,7 +23,7 @@ import { Payload } from "@wso2is/admin.flow-builder-core.v1/models/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import RegistrationFlowBuilderConstants from "../constants/registration-flow-builder-constants";
+import PasswordRecoveryFlowBuilderConstants from "../constants/password-recovery-flow-builder-constants";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
     AsgardeoSPAClient.getInstance()
@@ -42,18 +42,18 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpReque
  * @returns A promise that resolves when the operation is complete.
  * @throws Error - Throws an error if the operation fails.
  */
-const configureRegistrationFlow = (payload: Payload): Promise<AxiosResponse> => {
+const configurePasswordRecoveryFlow = (payload: Payload): Promise<AxiosResponse> => {
     const requestConfig: RequestConfigInterface = {
         data: payload,
         method: HttpMethods.PUT,
-        url: store.getState().config.endpoints.registrationFlow
+        url: store.getState().config.endpoints.passwordRecoveryFlow
     };
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
-                    RegistrationFlowBuilderConstants.FLOW_CONFIG_INVALID_STATUS_ERROR,
+                    PasswordRecoveryFlowBuilderConstants.FLOW_CONFIG_INVALID_STATUS_ERROR,
                     null,
                     response.status,
                     response.request,
@@ -66,7 +66,7 @@ const configureRegistrationFlow = (payload: Payload): Promise<AxiosResponse> => 
         })
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                RegistrationFlowBuilderConstants.FLOW_CONFIG_UPDATE_ERROR,
+                PasswordRecoveryFlowBuilderConstants.FLOW_CONFIG_UPDATE_ERROR,
                 error.stack,
                 error.code,
                 error.request,
@@ -76,4 +76,4 @@ const configureRegistrationFlow = (payload: Payload): Promise<AxiosResponse> => 
         });
 };
 
-export default configureRegistrationFlow;
+export default configurePasswordRecoveryFlow;

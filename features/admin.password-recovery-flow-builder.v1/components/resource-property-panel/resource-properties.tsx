@@ -40,7 +40,7 @@ import FederationProperties from "./steps/redirection/federation-properties";
 export type ResourcePropertiesPropsInterface = CommonResourcePropertiesPropsInterface & IdentifiableComponentInterface;
 
 /**
- * Factory to generate the property configurator for the given registration flow resource.
+ * Factory to generate the property configurator for the given password recovery flow resource.
  *
  * @param props - Props injected to the component.
  * @returns The ResourceProperties component.

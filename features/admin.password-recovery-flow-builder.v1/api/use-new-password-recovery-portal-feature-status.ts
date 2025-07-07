@@ -24,10 +24,10 @@ import useGovernanceConnector from "@wso2is/admin.server-configurations.v1/api/u
 import {
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
-import RegistrationFlowBuilderConstants from "../constants/registration-flow-builder-constants";
+import PasswordRecoveryFlowBuilderConstants from "../constants/password-recovery-flow-builder-constants";
 
 /**
- * Hook to check if the new dynamic Registration portal is enabled or disabled.
+ * Hook to check if the new dynamic Password Recovery portal is enabled or disabled.
  *
  * This function calls the GET method of the following endpoint.
  * - `https://{serverUrl}/t/{tenantDomain}/api/server/v1/identity-governance/{categoryId}/connectors/{connectorId}`
@@ -37,7 +37,7 @@ import RegistrationFlowBuilderConstants from "../constants/registration-flow-bui
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useNewRegistrationPortalFeatureStatus = <Data = boolean, Error = RequestErrorInterface>(
+const useNewPasswordRecoveryPortalFeatureStatus = <Data = boolean, Error = RequestErrorInterface>(
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
     const { data, error, isLoading, isValidating, mutate } = useGovernanceConnector(
@@ -47,7 +47,7 @@ const useNewRegistrationPortalFeatureStatus = <Data = boolean, Error = RequestEr
     );
 
     const status: boolean = data?.properties?.find(
-        (prop: { name: string }) => prop.name === RegistrationFlowBuilderConstants.FLOW_BUILDER_STATUS_CONFIG_KEY
+        (prop: { name: string }) => prop.name === PasswordRecoveryFlowBuilderConstants.FLOW_BUILDER_STATUS_CONFIG_KEY
     )?.value === "true";
 
     return {
@@ -59,4 +59,4 @@ const useNewRegistrationPortalFeatureStatus = <Data = boolean, Error = RequestEr
     };
 };
 
-export default useNewRegistrationPortalFeatureStatus;
+export default useNewPasswordRecoveryPortalFeatureStatus;

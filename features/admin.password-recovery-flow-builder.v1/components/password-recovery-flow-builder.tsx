@@ -19,26 +19,26 @@
 import AIGeneratedFlowProvider from "@wso2is/admin.flow-builder-core.v1/providers/ai-generated-flow-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import RegistrationFlowBuilderCore from "./registration-flow-builder-core";
+import PasswordRecoveryFlowBuilderCore from "./password-recovery-flow-builder-core";
 
 /**
- * Props interface of {@link RegistrationFlowBuilder}
+ * Props interface of {@link PasswordRecoveryFlowBuilder}
  */
-export type RegistrationFlowBuilderPropsInterface = IdentifiableComponentInterface;
+export type PasswordRecoveryFlowBuilderPropsInterface = IdentifiableComponentInterface;
 
 /**
- * Entry point for the registration flow builder decorated with the necessary providers.
+ * Entry point for the password recovery flow builder decorated with the necessary providers.
  *
  * @param props - Props injected to the component.
- * @returns RegistrationFlowBuilder component.
+ * @returns PasswordRecoveryFlowBuilder component.
  */
-const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInterface> = ({
-    "data-componentid": componentId = "registration-flow-builder",
+const PasswordRecoveryFlowBuilder: FunctionComponent<PasswordRecoveryFlowBuilderPropsInterface> = ({
+    "data-componentid": componentId = "password-recovery-flow-builder",
     ...rest
-}: RegistrationFlowBuilderPropsInterface): ReactElement => (
+}: PasswordRecoveryFlowBuilderPropsInterface): ReactElement => (
     <AIGeneratedFlowProvider>
-        <RegistrationFlowBuilderCore { ...rest } />
+        <PasswordRecoveryFlowBuilderCore { ...rest } />
     </AIGeneratedFlowProvider>
 );
 
-export default RegistrationFlowBuilder;
+export default PasswordRecoveryFlowBuilder;

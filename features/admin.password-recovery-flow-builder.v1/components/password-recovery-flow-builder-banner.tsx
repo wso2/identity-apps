@@ -30,22 +30,22 @@ import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@w
 import React, { FC } from "react";
 import { useSelector } from "react-redux";
 import BackgroundSprites from "../../themes/wso2is/assets/images/illustrations/ai-banner-background-white.svg";
-import "./registration-flow-builder-banner.scss";
+import "./password-recovery-flow-builder-banner.scss";
 
 /**
- * Props interface of {@link RegistrationFlowBuilderBanner}
+ * Props interface of {@link PasswordRecoveryFlowBuilderBanner}
  */
-export type RegistrationFlowBuilderBannerProps = IdentifiableComponentInterface;
+export type PasswordRecoveryFlowBuilderBannerProps = IdentifiableComponentInterface;
 
 /**
- * Component to display the registration flow builder banner.
+ * Component to display the password recovery flow builder banner.
  *
  * @param props - Props injected to the component.
- * @returns The RegistrationFlowBuilderBanner component.
+ * @returns The PasswordRecoveryFlowBuilderBanner component.
  */
-const RegistrationFlowBuilderBanner: FC<RegistrationFlowBuilderBannerProps> = ({
-    "data-componentid": componentId = "registration-flow-builder-banner"
-}: RegistrationFlowBuilderBannerProps) => {
+const PasswordRecoveryFlowBuilderBanner: FC<PasswordRecoveryFlowBuilderBannerProps> = ({
+    "data-componentid": componentId = "password-recovery-flow-builder-banner"
+}: PasswordRecoveryFlowBuilderBannerProps) => {
 
     const flowsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features?.ai);
@@ -53,7 +53,7 @@ const RegistrationFlowBuilderBanner: FC<RegistrationFlowBuilderBannerProps> = ({
     return (
         <Card
             sx={ { backgroundImage: `url(${BackgroundSprites})` } }
-            className="registration-flow-builder-banner"
+            className="password-recovery-flow-builder-banner"
             data-componentid={ componentId }
         >
             <Stack
@@ -64,8 +64,8 @@ const RegistrationFlowBuilderBanner: FC<RegistrationFlowBuilderBannerProps> = ({
             >
                 <Box>
                     <Typography variant="h5">
-                        Construct your ideal self registration experience with our new{ " " }
-                        <span className="text-gradient primary">Registration Flow Builder</span>
+                        Construct your ideal recovery experience with our new{ " " }
+                        <span className="text-gradient primary">Password Recovery Flow Builder</span>
                         <FeatureFlagLabel
                             featureFlags={ flowsFeatureConfig?.featureFlags }
                             featureKey={ FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.FLOWS_TYPES_REGISTRATION }
@@ -73,8 +73,8 @@ const RegistrationFlowBuilderBanner: FC<RegistrationFlowBuilderBannerProps> = ({
                         />
                     </Typography>
                     <Typography variant="body1">
-                        Provide a seamless onboarding experience to your users by customizing the registration
-                        flow to suit your organization&apos;s needs.
+                        Provide a seamless account recovery experience to your users by customizing the
+                        recovery flow to suit your organization&apos;s needs.
                     </Typography>
                 </Box>
                 <Button
@@ -89,4 +89,4 @@ const RegistrationFlowBuilderBanner: FC<RegistrationFlowBuilderBannerProps> = ({
     );
 };
 
-export default RegistrationFlowBuilderBanner;
+export default PasswordRecoveryFlowBuilderBanner;

@@ -26,16 +26,16 @@ import { HttpMethods } from "@wso2is/core/models";
 import { useEffect } from "react";
 
 /**
- * This hook is used to get the registration flow generation result.
+ * This hook is used to get the password recovery flow generation result.
  *
  * @param operationId - Operation ID.
- * @param registrationFlowGenerationCompleted - Registration flow generation completion status.
+ * @param passwordRecoveryFlowGenerationCompleted - Password recovery flow generation completion status.
  *
- * @returns The result of the registration flow generation result request.
+ * @returns The result of the password recovery flow generation result request.
  */
-const useAIRegistrationFlowGenerationResult = (
+const useAIPasswordRecoveryFlowGenerationResult = (
     operationId: string,
-    registrationFlowGenerationCompleted: boolean
+    passwordRecoveryFlowGenerationCompleted: boolean
 ): RequestResultInterface<any, RequestErrorInterface> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -43,19 +43,19 @@ const useAIRegistrationFlowGenerationResult = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ store.getState().config.endpoints.registrationFlowAI }/result/${ operationId }`
+        url: `${ store.getState().config.endpoints.passwordRecoveryFlowAI }/result/${ operationId }`
     };
 
     const { data, error, isLoading, isValidating, mutate } = useRequest<any,
-        RequestErrorInterface>(registrationFlowGenerationCompleted ? requestConfig : null, {
+        RequestErrorInterface>(passwordRecoveryFlowGenerationCompleted ? requestConfig : null, {
             shouldRetryOnError: false
         });
 
     useEffect(() => {
-        if (registrationFlowGenerationCompleted) {
+        if (passwordRecoveryFlowGenerationCompleted) {
             mutate();
         }
-    }, [ registrationFlowGenerationCompleted ]);
+    }, [ passwordRecoveryFlowGenerationCompleted ]);
 
     return {
         data,
@@ -66,4 +66,4 @@ const useAIRegistrationFlowGenerationResult = (
     };
 };
 
-export default useAIRegistrationFlowGenerationResult;
+export default useAIPasswordRecoveryFlowGenerationResult;

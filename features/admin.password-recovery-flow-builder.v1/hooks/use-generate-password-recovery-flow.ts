@@ -22,15 +22,15 @@ import { addAlert } from "@wso2is/core/store";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import useAIGeneratedRegistrationFlow from "./use-ai-generated-registration-flow";
-import generateRegistrationFlow from "../api/generate-ai-registration-flow";
+import useAIGeneratedPasswordRecoveryFlow from "./use-ai-generated-password-recovery-flow";
+import generatePasswordRecoveryFlow from "../api/generate-ai-password-recovery-flow";
 
-export type UseGenerateRegistrationFlowFunction = (
+export type UseGeneratePasswordRecoveryFlowFunction = (
     userQuery: string,
     traceId: string
 ) => Promise<void>;
 
-const useGenerateRegistrationFlow = (): UseGenerateRegistrationFlowFunction => {
+const useGeneratePasswordRecoveryFlow = (): UseGeneratePasswordRecoveryFlowFunction => {
     const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
@@ -38,20 +38,20 @@ const useGenerateRegistrationFlow = (): UseGenerateRegistrationFlowFunction => {
     const {
         setIsFlowGenerating,
         setOperationId
-    } = useAIGeneratedRegistrationFlow();
+    } = useAIGeneratedPasswordRecoveryFlow();
 
     /**
-     * Generate AI registration flow API call function.
+     * Generate AI password recovery flow API call function.
      *
      * @param websiteUrl - Website URL.
      * @returns a promise containing the operation ID.
      */
-    const generateAIRegistrationFlow = async (
+    const generateAIPasswordRecoveryFlow = async (
         userQuery: string,
         traceId: string
     ): Promise<void> => {
 
-        return generateRegistrationFlow(userQuery, traceId)
+        return generatePasswordRecoveryFlow(userQuery, traceId)
             .then((data: any) => {
                 setOperationId(data.operation_id);
                 setIsFlowGenerating(true);
@@ -60,9 +60,9 @@ const useGenerateRegistrationFlow = (): UseGenerateRegistrationFlowFunction => {
                 if (error?.code === 422) {
                     dispatch(
                         addAlert<AlertInterface>({
-                            description: t("ai:aiRegistrationFlow.notifications.generateInputError.description"),
+                            description: t("ai:aiPasswordRecoveryFlow.notifications.generateInputError.description"),
                             level: AlertLevels.ERROR,
-                            message: t("ai:aiRegistrationFlow.notifications.generateInputError.message")
+                            message: t("ai:aiPasswordRecoveryFlow.notifications.generateInputError.message")
                         })
                     );
 
@@ -72,9 +72,9 @@ const useGenerateRegistrationFlow = (): UseGenerateRegistrationFlowFunction => {
                 if (error?.code === 429) {
                     dispatch(
                         addAlert<AlertInterface>({
-                            description: t("ai:aiRegistrationFlow.notifications.generateLimitError.description"),
+                            description: t("ai:aiPasswordRecoveryFlow.notifications.generateLimitError.description"),
                             level: AlertLevels.ERROR,
-                            message: t("ai:aiRegistrationFlow.notifications.generateLimitError.message")
+                            message: t("ai:aiPasswordRecoveryFlow.notifications.generateLimitError.message")
                         })
                     );
 
@@ -83,15 +83,15 @@ const useGenerateRegistrationFlow = (): UseGenerateRegistrationFlowFunction => {
 
                 dispatch(
                     addAlert<AlertInterface>({
-                        description: t("ai:aiRegistrationFlow.notifications.generateError.description"),
+                        description: t("ai:aiPasswordRecoveryFlow.notifications.generateError.description"),
                         level: AlertLevels.ERROR,
-                        message: error.message || t("ai:aiRegistrationFlow.notifications.generateError.message")
+                        message: error.message || t("ai:aiPasswordRecoveryFlow.notifications.generateError.message")
                     })
                 );
             });
     };
 
-    return generateAIRegistrationFlow;
+    return generateAIPasswordRecoveryFlow;
 };
 
-export default useGenerateRegistrationFlow;
+export default useGeneratePasswordRecoveryFlow;

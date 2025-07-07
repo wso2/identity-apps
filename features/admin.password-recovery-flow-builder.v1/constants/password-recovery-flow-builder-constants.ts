@@ -27,7 +27,7 @@
  * const errorMessage = TenantConstants.TENANT_ACTIVATION_UPDATE_ERROR;
  * ```
  */
-class RegistrationFlowBuilderConstants {
+class PasswordRecoveryFlowBuilderConstants {
     /**
      * Private constructor to avoid object instantiation from outside the class.
      */
@@ -36,10 +36,10 @@ class RegistrationFlowBuilderConstants {
     public static readonly FLOW_BUILDER_STATUS_CONFIG_KEY: string = "SelfRegistration.EnableDynamicPortal";
 
     public static readonly FLOW_CONFIG_INVALID_STATUS_ERROR: string =
-        "An invalid status code was received while configuring the registration flow.";
+        "An invalid status code was received while configuring the password recovery flow.";
 
     public static readonly FLOW_CONFIG_UPDATE_ERROR: string =
-        "An error occurred while configuring the registration flow.";
+        "An error occurred while configuring the password recovery flow.";
 }
 
-export default RegistrationFlowBuilderConstants;
+export default PasswordRecoveryFlowBuilderConstants;

@@ -17,24 +17,31 @@
  */
 
 /**
- * Constants related to the tenant management operations.
+ * Constants related to the Executors in the Password Recovery flow.
  *
  * @remarks
  * This class is not meant to be instantiated. It only provides static constants.
  *
  * @example
  * ```typescript
- * const errorMessage = TenantConstants.TENANT_ACTIVATION_UPDATE_ERROR;
+ * const executor = PasswordRecoveryFlowExecutorConstants.PASSWORD_ONBOARD_EXECUTOR;
  * ```
  */
-class RegistrationFlowConstants {
+class PasswordRecoveryFlowExecutorConstants {
     /**
      * Private constructor to avoid object instantiation from outside the class.
      */
     private constructor() {}
 
-    public static readonly PASSWORD_RECOVERY_FLOW_TYPE: string = "PASSWORD_RECOVERY";
+    public static readonly PASSWORD_ONBOARD_EXECUTOR: string = "PasswordOnboardExecutor";
 
+    public static readonly PASSWORD_PROVISIONING_EXECUTOR: string = "PasswordProvisioningExecutor";
+
+    public static readonly EMAIL_OTP_EXECUTOR: string = "EmailOTPExecutor";
+
+    public static readonly USER_RESOLVE_EXECUTOR: string = "UserResolveExecutor";
+
+    public static readonly GOOGLE_SIGNUP_EXECUTOR: string = "GoogleSignupExecutor";
 }
 
-export default RegistrationFlowConstants;
+export default PasswordRecoveryFlowExecutorConstants;

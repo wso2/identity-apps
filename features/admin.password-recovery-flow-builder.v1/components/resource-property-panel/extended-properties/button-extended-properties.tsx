@@ -35,7 +35,7 @@ import classNames from "classnames";
 import isEqual from "lodash-es/isEqual";
 import omit from "lodash-es/omit";
 import React, { FunctionComponent, ReactElement } from "react";
-import useGetRegistrationFlowCoreActions from "../../../api/use-get-registration-flow-builder-actions";
+import useGetPasswordRecoveryFlowCoreActions from "../../../api/use-get-password-recovery-flow-builder-actions";
 import "./button-extended-properties.scss";
 
 /**
@@ -55,7 +55,7 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
     resource,
     onChange
 }: ButtonExtendedPropertiesPropsInterface): ReactElement => {
-    const { data: actions } = useGetRegistrationFlowCoreActions();
+    const { data: actions } = useGetPasswordRecoveryFlowCoreActions();
     const { lastInteractedResource, setLastInteractedResource } = useAuthenticationFlowBuilderCore();
 
     return (

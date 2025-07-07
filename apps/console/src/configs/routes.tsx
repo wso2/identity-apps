@@ -203,7 +203,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 {
                     component: lazy(() =>
                         import(// eslint-disable-next-line max-len
-                            "@wso2is/admin.password-recovery-flow-builder.v1/pages/registration-flow-builder-page")),
+                            "@wso2is/admin.password-recovery-flow-builder.v1/pages/password-recovery-flow-builder-page")),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon

@@ -22,22 +22,22 @@ import AIGeneratedFlowContext, {
 import { useContext } from "react";
 
 /**
- * Interface for the return type of the `useAIGeneratedRegistrationFlow` hook.
+ * Interface for the return type of the `useAIGeneratedPasswordRecoveryFlow` hook.
  */
-export type UseAIGeneratedRegistrationFlowInterface = AIGeneratedFlowContextProps;
+export type UseAIGeneratedPasswordRecoveryFlowInterface = AIGeneratedFlowContextProps;
 
 /**
  * Hook that provides access to the ai generated flow context.
  * @returns An object containing the ai generated flow preference.
  */
-const useAIGeneratedRegistrationFlow = (): UseAIGeneratedRegistrationFlowInterface => {
+const useAIGeneratedPasswordRecoveryFlow = (): UseAIGeneratedPasswordRecoveryFlowInterface => {
     const context: AIGeneratedFlowContextProps = useContext(AIGeneratedFlowContext);
 
     if (context === undefined) {
-        throw new Error("useAIGeneratedRegistrationFlow must be used within a AIGeneratedFlowProvider.");
+        throw new Error("useAIGeneratedPasswordRecoveryFlow must be used within a AIGeneratedFlowProvider.");
     }
 
     return context;
 };
 
-export default useAIGeneratedRegistrationFlow;
+export default useAIGeneratedPasswordRecoveryFlow;

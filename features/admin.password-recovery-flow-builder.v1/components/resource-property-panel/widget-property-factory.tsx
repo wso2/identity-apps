@@ -27,7 +27,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 export type WidgetPropertyFactoryPropsInterface = CommonWidgetPropertyFactoryPropsInterface;
 
 /**
- * Factory to generate the property configurator for the given registration flow widget.
+ * Factory to generate the property configurator for the given password recovery flow widget.
  *
  * @param props - Props injected to the component.
  * @returns The WidgetPropertyFactory component.

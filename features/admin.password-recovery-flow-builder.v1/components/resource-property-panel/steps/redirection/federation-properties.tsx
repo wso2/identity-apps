@@ -64,7 +64,7 @@ const FederationProperties: FunctionComponent<FederationPropertiesPropsInterface
     return (
         <Stack gap={ 2 } data-componentid={ componentId }>
             <Typography variant="body2">
-                Select a connection from the following list to link it with the registration flow.
+                Select a connection from the following list to link it with the password recovery flow.
             </Typography>
             <Autocomplete
                 disablePortal
@@ -87,7 +87,7 @@ const FederationProperties: FunctionComponent<FederationPropertiesPropsInterface
                 <Alert severity="warning" data-componentid={ `${componentId}-no-connections-warning` }>
                     No connections available. Please create a
                     <a style={ { cursor: "pointer" } } onClick={ handleCreateConnection }> connection </a>
-                    to link with the registration flow.
+                    to link with the password recovery flow.
                 </Alert>
             ) }
         </Stack>

@@ -24,19 +24,19 @@ import useRequest, {
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import { useEffect, useState } from "react";
-import useGetRegistrationFlow from "../hooks/use-ai-generated-registration-flow";
+import useGetPasswordRecoveryFlow from "../hooks/use-ai-generated-password-recovery-flow";
 
 /**
- * This hook is used to get the registration flow generation status.
+ * This hook is used to get the password recovery flow generation status.
  *
- * @returns The result of the registration flow generation status request.
+ * @returns The result of the password recovery flow generation status request.
  */
-const useAIRegistrationFlowGenerationStatus = ():
+const useAIPasswordRecoveryFlowGenerationStatus = ():
     RequestResultInterface<any, RequestErrorInterface> =>{
 
     const [ isLoading, setIsLoading ] = useState<boolean>(true);
 
-    const { setFlowGenerationCompleted, operationId } = useGetRegistrationFlow();
+    const { setFlowGenerationCompleted, operationId } = useGetPasswordRecoveryFlow();
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -44,7 +44,7 @@ const useAIRegistrationFlowGenerationStatus = ():
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ store.getState().config.endpoints.registrationFlowAI }/status/${operationId}`
+        url: `${ store.getState().config.endpoints.passwordRecoveryFlowAI }/status/${operationId}`
     };
 
     const { data, error, isValidating, mutate } =
@@ -79,4 +79,4 @@ const useAIRegistrationFlowGenerationStatus = ():
     };
 };
 
-export default useAIRegistrationFlowGenerationStatus;
+export default useAIPasswordRecoveryFlowGenerationStatus;

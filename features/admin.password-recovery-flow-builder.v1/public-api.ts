@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export { default as RegistrationFlowBuilderWithProviders } from "./components/registration-flow-builder";
+export { default as PasswordRecoveryFlowBuilderWithProviders } from "./components/password-recovery-flow-builder";

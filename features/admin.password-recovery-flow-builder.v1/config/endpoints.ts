@@ -16,18 +16,18 @@
  * under the License.
  */
 
-import { RegistrationFlowBuilderResourceEndpointsInterface } from "../models/endpoints";
+import { PasswordRecoveryFlowBuilderResourceEndpointsInterface } from "../models/endpoints";
 
 /**
- * Get the resource endpoints for the Registration flow builder related features.
+ * Get the resource endpoints for the Password Recovery flow builder related features.
  *
- * @returns Registration flow builder resource endpoints.
+ * @returns Password Recovery flow builder resource endpoints.
  */
-export const getRegistrationFlowBuilderResourceEndpoints = (
+export const getPasswordRecoveryFlowBuilderResourceEndpoints = (
     serverOrigin: string
-): RegistrationFlowBuilderResourceEndpointsInterface => {
+): PasswordRecoveryFlowBuilderResourceEndpointsInterface => {
     return {
-        registrationFlow: `${ serverOrigin }/api/server/v1/flow`,
-        registrationFlowAI: `${ serverOrigin }/api/server/v1/registration-flow`
+        passwordRecoveryFlow: `${ serverOrigin }/api/server/v1/flow`,
+        passwordRecoveryFlowAI: `${ serverOrigin }/api/server/v1/password-recovery-flow`
     };
 };

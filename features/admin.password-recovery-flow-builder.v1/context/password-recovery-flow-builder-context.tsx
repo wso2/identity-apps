@@ -20,15 +20,15 @@ import { Context, Dispatch, SetStateAction, createContext } from "react";
 import { Attribute } from "../models/attributes";
 
 /**
- * Props interface of {@link RegistrationFlowBuilderContext}
+ * Props interface of {@link PasswordRecoveryFlowBuilderContext}
  */
-export interface RegistrationFlowBuilderContextProps {
+export interface PasswordRecoveryFlowBuilderContextProps {
     /**
-     * Flag denoting whether the registration flow builder is enabled or not.
+     * Flag denoting whether the password recovery flow builder is enabled or not.
      */
     isNewRegistrationPortalEnabled: boolean;
     /**
-     * Is the registration flow publishing.
+     * Is the password recovery flow publishing.
      */
     isPublishing: boolean;
     /**
@@ -48,11 +48,11 @@ export interface RegistrationFlowBuilderContextProps {
 }
 
 /**
- * Context object for managing the Registration flow builder context.
+ * Context object for managing the Password Recovery flow builder context.
  */
-const RegistrationFlowBuilderContext: Context<
-    RegistrationFlowBuilderContextProps
-> = createContext<null | RegistrationFlowBuilderContextProps>(
+const PasswordRecoveryFlowBuilderContext: Context<
+    PasswordRecoveryFlowBuilderContextProps
+> = createContext<null | PasswordRecoveryFlowBuilderContextProps>(
     {
         isNewRegistrationPortalEnabled: false,
         isPublishing: false,
@@ -62,6 +62,6 @@ const RegistrationFlowBuilderContext: Context<
     }
 );
 
-RegistrationFlowBuilderContext.displayName = "RegistrationFlowBuilderContext";
+PasswordRecoveryFlowBuilderContext.displayName = "PasswordRecoveryFlowBuilderContext";
 
-export default RegistrationFlowBuilderContext;
+export default PasswordRecoveryFlowBuilderContext;

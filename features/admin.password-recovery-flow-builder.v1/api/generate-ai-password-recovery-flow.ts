@@ -28,9 +28,9 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Generate registration flow.
+ * Generate password recovery flow.
  */
-const generateRegistrationFlow = (
+const generatePasswordRecoveryFlow = (
     userQuery: string,
     traceId: string
 ): Promise<any> => {
@@ -44,7 +44,7 @@ const generateRegistrationFlow = (
             "Trace-Id": traceId
         },
         method: HttpMethods.POST,
-        url: `${ store.getState().config.endpoints.registrationFlowAI }/generate/flow`
+        url: `${ store.getState().config.endpoints.passwordRecoveryFlowAI }/generate/flow`
     };
 
     return httpClient(requestConfig)
@@ -68,4 +68,4 @@ const generateRegistrationFlow = (
         });
 };
 
-export default generateRegistrationFlow;
+export default generatePasswordRecoveryFlow;
