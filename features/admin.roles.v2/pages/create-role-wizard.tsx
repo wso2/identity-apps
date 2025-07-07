@@ -20,7 +20,7 @@ import Grid from "@oxygen-ui/react/Grid";
 import { VerticalStepper, VerticalStepperStepInterface } from "@wso2is/admin.core.v1/components/vertical-stepper";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { AppState, store } from "@wso2is/admin.core.v1/store";\
+import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

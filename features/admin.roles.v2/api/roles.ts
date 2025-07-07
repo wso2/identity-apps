@@ -196,7 +196,6 @@ export const getRoleById = (roleId: string): Promise<any> => {
  * Retrieve Role details for a give role id using SCIM2 Roles V3 API.
  *
  * @param roleId - role id to retrieve role details
- * @deprecated Use `useGetRoleById` instead.
  */
 export const getRoleByIdV3 = (roleId: string): Promise<any> => {
     const requestConfig: RequestConfigInterface = {

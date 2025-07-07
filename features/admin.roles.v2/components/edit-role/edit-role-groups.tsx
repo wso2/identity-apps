@@ -101,7 +101,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         (state: AppState) => state.config.ui.enableScim2RolesV3Api
     );
 
-    const assignGroupstoRole: (roleId: string, roleData: PatchRoleDataInterface) => Promise<any> =
+    const assignGroupstoRoleFunction: (roleId: string, roleData: PatchRoleDataInterface) => Promise<any> =
         enableScim2RolesV3Api ? assignGroupstoRoles : updateRoleDetails;
 
     /**
@@ -251,7 +251,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             schemas: [ Schemas.PATCH_OP ]
         };
 
-        assignGroupstoRole(role.id, roleUpdateData)
+        assignGroupstoRoleFunction(role.id, roleUpdateData)
             .then(() => {
                 dispatch(
                     addAlert({

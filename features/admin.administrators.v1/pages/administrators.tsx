@@ -217,7 +217,8 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
     const enaleSCIM2RoleAPIV3: boolean = useSelector(
         (state: AppState) => state.config.ui.enableScim2RolesV3Api
     );
-    const getRole: (roleId: string) => Promise<AxiosResponse> = enaleSCIM2RoleAPIV3 ? getRoleByIdV3 : getRoleById;
+    const getRoleByIdFunction: (roleId: string) => Promise<AxiosResponse> =
+        enaleSCIM2RoleAPIV3 ? getRoleByIdV3 : getRoleById;
 
     const organizationName: string = store.getState().auth.tenantDomain;
 
@@ -934,7 +935,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
             totalResults: 0
         });
 
-        getRole(adminRoleId).then((response: AxiosResponse) => {
+        getRoleByIdFunction(adminRoleId).then((response: AxiosResponse) => {
             const adminList: UserRoleInterface[] = response?.data?.users;
 
             adminList.forEach((user: UserRoleInterface) => {

@@ -120,7 +120,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
         if (enableScim2RolesV3Api) {
             return !isFeatureEnabled(featureConfig,
                 LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE"))
-            || !AuthenticateUtils.hasScope("internal_role_mgt_groups_update", allowedScopes)
+            || !AuthenticateUtils.hasScope(LocalRoleConstants.ROLE_GROUPS_UPDATE, allowedScopes)
             || roleObject?.meta?.systemRole;
         }
 
@@ -136,7 +136,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
         if (enableScim2RolesV3Api) {
             return !isFeatureEnabled(featureConfig,
                 LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE")) ||
-                !AuthenticateUtils.hasScope("internal_role_mgt_users_update", allowedScopes);
+                !AuthenticateUtils.hasScope(LocalRoleConstants.ROLE_USERS_UPDATE, allowedScopes);
         }
 
         return isReadOnly || !isFeatureEnabled(usersFeatureConfig,
