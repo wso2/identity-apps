@@ -391,7 +391,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
 
         setPassword(password);
 
-        // Update confirm password match status when new password changes
+        // Update confirm password match status when new password changes.
         if (confirmPassword && confirmPassword !== "") {
             if (password === confirmPassword) {
                 setIsConfirmPasswordMatch(true);
