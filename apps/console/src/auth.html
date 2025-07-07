@@ -491,28 +491,26 @@
                                     .then((response) => {
                                         auth.getDecodedIDToken().then((token) => {
                                             let loginTenant = token["default_tenant"];
-                                            const associatedOrgJson = token["org_user_associations"]?.join(",");
-                                            const orgUserAssociations = associatedOrgJson ? JSON.parse(associatedOrgJson) : undefined;
+                                            const associatedTenants = token["associated_tenants"];
                                             const requestedTenant = localStorage.getItem("user_requested_tenant");
-
                                             localStorage.removeItem("user_requested_tenant");
 
-                                            let loginTenantAssociation;
+                                            let loginTenantDomain;
 
                                             if (requestedTenant) {
-                                                loginTenantAssociation = orgUserAssociations?.find((org) => org.orgHandle === requestedTenant);
-                                                if (loginTenantAssociation) {
+                                                loginTenantDomain = associatedTenants?.includes(requestedTenant) ? requestedTenant : undefined;
+                                                if (loginTenantDomain) {
                                                     loginTenant = requestedTenant;
                                                 }
                                             } else {
-                                                loginTenantAssociation = orgUserAssociations?.find((org) => org.orgHandle === loginTenant);
+                                                loginTenantDomain = associatedTenants?.includes(loginTenant) ? loginTenant : undefined;
                                             }
 
-                                            if (!loginTenantAssociation && orgUserAssociations?.length) {
-                                                loginTenantAssociation = orgUserAssociations[0];
+                                            if (!loginTenantDomain && associatedTenants?.length) {
+                                                loginTenantDomain = associatedTenants[0];
                                             }
 
-                                            if (!loginTenantAssociation) {
+                                            if (!loginTenantDomain) {
                                                 loginTenant = superTenantGlobal;
                                             }
 
