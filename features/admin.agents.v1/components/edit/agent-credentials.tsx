@@ -20,7 +20,7 @@ import { Grid, Typography } from "@mui/material";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Button, CopyInputField, EmphasizedSegment, Message, PrimaryButton } from "@wso2is/react-components";
 import React from "react";
-import { Divider, Grid as SemanticGrid } from "semantic-ui-react";
+import { Divider } from "semantic-ui-react";
 
 interface AgentCredentialsProps extends IdentifiableComponentInterface {
     agentId: string;
@@ -42,51 +42,23 @@ export default function AgentCredentials({
             </Typography>
             <Grid container>
                 <Grid xs={ 8 }>
-                    <div style={ { marginBottom: "20px" } }>
-                        <label>Agent ID</label>
-                        <CopyInputField value={ agentId } />
-                    </div>
-
+                    <Typography variant="body1" style={ { marginBottom: "2%" } }>Agent ID</Typography>
+                    <CopyInputField value={ agentId } />
                     <Divider />
-                    <Typography variant="h5">Agent secret</Typography>
-                    <Typography variant="body1" className="mb-3" style={ { color: "#9c9c9c" } }>
-Use the agent secret to generate one time passwords for agent authentication.
-                    </Typography>
+                    <Typography variant="body1">Agent secret</Typography>
                     <Message info>
-                        <div style={ { display: "flex", flexDirection: "row" } }>
                         If you’ve lost or forgotten the agent secret, you can regenerate it, but be aware that any
                         scripts or applications using the current agent secret will need to be updated.
-
-                            <Button
-                                color="red"
-                                onClick={ regenerateAgentScret }
-                                style={ { marginLeft: "10px" } }
-                                data-testid={ `${componentId}-oidc-regenerate-button` }
-                            >
-                            Regenerate
-                            </Button>
-                        </div>
                     </Message>
+                    <Button
+                        color="red"
+                        onClick={ regenerateAgentScret }
+                        data-componentid={ `${componentId}-agent-secret-regenerate-button` }
+                    >
+                        Regenerate
+                    </Button>
                 </Grid>
             </Grid>
-
-            <>
-                <Divider />
-                <SemanticGrid.Row columns={ 1 }>
-                    <SemanticGrid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                        <Typography variant="h5" className="mb-2">Certificate</Typography>
-                        <Button
-                            basic
-                            primary
-                            size="small"
-                            className="form-button"
-                            data-testid={ `${componentId}-submit-button` }
-                        >
-                                    Generate Certificate
-                        </Button>
-                    </SemanticGrid.Column>
-                </SemanticGrid.Row>
-            </>
 
             <PrimaryButton className="mt-5">Update</PrimaryButton>
         </EmphasizedSegment>

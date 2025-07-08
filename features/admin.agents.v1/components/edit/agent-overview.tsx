@@ -16,18 +16,20 @@
  * under the License.
  */
 
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FinalForm, FinalFormField, FormRenderProps, SelectFieldAdapter, TextFieldAdapter } from "@wso2is/form";
-import { DropdownChild } from "@wso2is/forms";
+import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
 import { DangerZone, DangerZoneGroup, EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { deleteAgent, updateAgent } from "../../api/agents";
+import { AGENT_FEATURE_DICTIONARY } from "../../constants/agents";
 import useGetAgent from "../../hooks/use-get-agent";
 import { AgentScimSchema } from "../../models/agents";
 
@@ -45,48 +47,13 @@ export enum ModelType {
     LLAMA_3 = "llama_3"
 }
 
-const MODEL_TYPES: DropdownChild[] = [
-    {
-        key: ModelType.GPT_4,
-        text: "GPT-4",
-        value: ModelType.GPT_4
-    },
-    {
-        key: ModelType.GPT_4_TURBO,
-        text: "GPT-4 Turbo",
-        value: ModelType.GPT_4_TURBO
-    },
-    {
-        key: ModelType.CLAUDE_3,
-        text: "Claude 3",
-        value: ModelType.CLAUDE_3
-    },
-    {
-        key: ModelType.GEMINI_1_5,
-        text: "Gemini 1.5",
-        value: ModelType.GEMINI_1_5
-    },
-    {
-        key: ModelType.MISTRAL_7B,
-        text: "Mistral 7B",
-        value: ModelType.MISTRAL_7B
-    },
-    {
-        key: ModelType.MIXTRAL,
-        text: "Mixtral",
-        value: ModelType.MIXTRAL
-    },
-    {
-        key: ModelType.LLAMA_3,
-        text: "LLaMA 3",
-        value: ModelType.LLAMA_3
-    }
-];
 
-export default function AgentOverview({ agentId }: AgentOverviewProps) {
+export default function AgentOverview({
+    agentId,
+    "data-componentid": componentId = "agent-overview"
+}: AgentOverviewProps) {
 
     const dispatch: any = useDispatch();
-    const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
 
     const [ initialValues, setInitialValues ] = useState<any>();
 
@@ -94,15 +61,22 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
         data: agentInfo
     } = useGetAgent(agentId);
 
+    const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
+
+    const agentFeatureConfig: FeatureAccessConfigInterface =
+        useSelector((state: AppState) => state?.config?.ui?.features?.agents);
+    const isAgentDisablingEnabled: boolean =
+        isFeatureEnabled(agentFeatureConfig, AGENT_FEATURE_DICTIONARY.get("DISABLE_AGENT"));
+
+    const hasAgentDeletePermissions: boolean = useRequiredScopes(agentFeatureConfig?.scopes?.delete);
+
     useEffect(() => {
         if (agentInfo) {
             setInitialValues({
-                description: agentInfo?.["urn:scim:schemas:extension:custom:User"]?.agentDescription,
-                languageModel: ModelType.GPT_4.toString(),
-                logo: agentInfo?.logo,
-                name: agentInfo.name?.givenName,
-                owner: authenticatedUser,
-                version: "1.0.0"
+                description: agentInfo?.["urn:scim:wso2:agent:schema"]?.agentDescription,
+                languageModel: agentInfo?.["urn:scim:wso2:agent:schema"]?.agentLanguageModel,
+                name: agentInfo?.["urn:scim:wso2:agent:schema"]?.agentDisplayName,
+                owner: agentInfo?.["urn:scim:wso2:agent:schema"]?.agentOwner
             });
         }
     }, [ agentInfo ]);
@@ -112,13 +86,12 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
             <EmphasizedSegment padded="very" style={ { border: "none", padding: "21px" } }>
                 <FinalForm
                     onSubmit={ (values: any) => {
-
                         const updateAgentPayload: AgentScimSchema = {
                             "urn:scim:wso2:agent:schema": {
                                 agentDescription: values?.description,
-                                // agentDisplayName: values?.name,
-                                agentOwner: "",
-                                agentUrl: values?.description
+                                agentDisplayName: values?.name,
+                                agentLanguageModel: values?.languageModel,
+                                agentOwner: authenticatedUser
                             }
                         };
 
@@ -140,7 +113,7 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
                         return (
                             <Grid>
                                 <Grid.Row>
-                                    <Grid.Column computer={ 12 }>
+                                    <Grid.Column computer={ 8 }>
                                         <form
                                             onSubmit={ handleSubmit }
                                             style={ { display: "flex", flexDirection: "column" } }
@@ -151,33 +124,13 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
                                                 component={ TextFieldAdapter }
                                             ></FinalFormField>
 
-                                            <div style={ { marginTop: "5%" } }>
-                                                <FinalFormField
-                                                    key="languageModel"
-                                                    width={ 16 }
-                                                    FormControlProps={ {
-                                                        margin: "dense"
-                                                    } }
-                                                    ariaLabel="Language Model"
+                                            <FinalFormField
+                                                name="languageModel"
+                                                label="Language model"
+                                                className="pt-3"
+                                                component={ TextFieldAdapter }
+                                            ></FinalFormField>
 
-                                                    name="languageModel"
-                                                    type={ "dropdown" }
-                                                    displayEmpty={ true }
-                                                    label={ "Language Model" }
-                                                    component={ SelectFieldAdapter }
-                                                    maxLength={ 100 }
-                                                    minLength={ 0 }
-                                                    options={
-                                                        [ ...MODEL_TYPES.map(
-                                                            (option: DropdownChild) => ({
-                                                                text: option.text,
-                                                                value: option.value.toString()
-                                                            }))
-                                                        ]
-                                                    }
-                                                    disabled={ false }
-                                                />
-                                            </div>
 
                                             <FinalFormField
                                                 name="description"
@@ -190,7 +143,7 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
                                             ></FinalFormField>
                                             <Form.Group>
                                                 <PrimaryButton type="submit" className="mt-5">
-                                    Update
+                                                    Update
                                                 </PrimaryButton>
                                             </Form.Group>
                                         </form>
@@ -208,33 +161,27 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
                 sectionHeader={ "Danger Zone" }
             >
 
-
-                <DangerZone
-                    actionTitle={
-                        "Disable agent"
-                    }
-                    header={
-                        "Disable agent"
-                    }
-                    subheader={
-                        "Once disabled, this agent will not be able to connect to any application or connection. " +
+                { isAgentDisablingEnabled && (
+                    <DangerZone
+                        actionTitle={
+                            "Disable agent"
+                        }
+                        header={
+                            "Disable agent"
+                        }
+                        subheader={
+                            "Once disabled, this agent will not be able to connect to any application or connection. " +
                         "Please be certain before you proceed"
-                    }
-                    onActionClick={ (): void => null }
-                    data-testid={ "-danger-zone" }
-                />
-
-                <DangerZone
-                    actionTitle={
-                        "Delete agent"
-                    }
-                    header={
-                        "Delete agent"
-                    }
-                    subheader={
-                        "This action will remove the agent's association with this organization. " +
-                        "Please be certain before you proceed"
-                    }
+                        }
+                        onActionClick={ (): void => null }
+                        data-componentid={ componentId + "-danger-zone" }
+                    />
+                ) }
+                { hasAgentDeletePermissions && (<DangerZone
+                    actionTitle={ "Delete agent" }
+                    header={ "Delete agent" }
+                    subheader={ "This action will remove the agent's association with this organization. " +
+                        "Please be certain before you proceed" }
                     onActionClick={ () => deleteAgent(agentId).then(() => {
                         dispatch(addAlert({
                             description: "Agent deleted successfully.",
@@ -250,8 +197,8 @@ export default function AgentOverview({ agentId }: AgentOverviewProps) {
                         }));
                     })
                     }
-                    data-testid={ "-danger-zone" }
-                />
+                    data-componentid={ componentId + "-danger-zone" }
+                />) }
 
             </DangerZoneGroup>
         </>

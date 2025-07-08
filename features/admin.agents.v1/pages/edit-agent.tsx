@@ -20,12 +20,13 @@ import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { getUserDetails } from "@wso2is/admin.users.v1/api/users";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
-    AnimatedAvatar, AppAvatar, ResourceTab, ResourceTabPaneInterface, TabPageLayout
+    AnimatedAvatar, ResourceTab, ResourceTabPaneInterface, TabPageLayout
 } from "@wso2is/react-components";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import AgentCredentials from "../components/edit/agent-credentials";
 import AgentGroups from "../components/edit/agent-groups";
@@ -95,6 +96,27 @@ export default function EditAgent({
 
     }, [ agentFeatureConfig ]);
 
+    const [ agentOwnerDisplayName, setAgentOwnerDisplayName ] = useState<string>("");
+
+    React.useEffect(() => {
+        const fetchOwnerDisplayName = async () => {
+            const [ agentOwnerUserId ] = agentInfo["urn:scim:wso2:agent:schema"]?.agentOwner?.split("@") || [];
+
+            if (!agentOwnerUserId) {
+                setAgentOwnerDisplayName("");
+
+                return;
+            }
+
+            const userInfo: any = await getUserDetails(agentOwnerUserId, null);
+
+            setAgentOwnerDisplayName(userInfo?.userName);
+        };
+
+        if (agentInfo?.["urn:scim:wso2:agent:schema"]?.agentOwner) {
+            fetchOwnerDisplayName();
+        }
+    }, [ agentInfo ]);
 
     const handleBackButtonClick = () => {
         history.push(AppConstants.getPaths().get("AGENTS"));
@@ -103,9 +125,9 @@ export default function EditAgent({
     return (
         <TabPageLayout
             pageTitle="Edit agent"
-            title={ agentInfo?.name?.givenName }
+            title={ agentInfo?.["urn:scim:wso2:agent:schema"]?.agentDisplayName }
             description={ (<>
-                <strong>Created by: </strong>admin@guardio.com
+                Created by <strong>{ agentOwnerDisplayName }</strong>
             </>) }
             isLoading={ isAgentInfoLoading }
             backButton={ {
@@ -113,22 +135,13 @@ export default function EditAgent({
                 onClick: handleBackButtonClick,
                 text: "Go back to Agents"
             } }
-            image={ agentInfo?.logo
-                ? (
-                    <AppAvatar
-                        name={ agentInfo?.name?.givenName }
-                        image={ agentInfo?.logo }
-                        size="tiny"
-                    />
-                )
-                : (
-                    <AnimatedAvatar
-                        name={ agentInfo?.name?.givenName }
-                        size="tiny"
-                        floated="left"
-                    />
-                )
-            }
+            image={ (
+                <AnimatedAvatar
+                    name={ agentInfo?.["urn:scim:wso2:agent:schema"]?.agentDisplayName }
+                    size="tiny"
+                    floated="left"
+                />
+            ) }
         >
 
             <ResourceTab

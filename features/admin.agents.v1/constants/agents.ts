@@ -17,5 +17,6 @@
  */
 
 export const AGENT_FEATURE_DICTIONARY: Map<string, string> = new Map()
-    .set("AGENT_GROUPS", "agents.groups");
+    .set("AGENT_GROUPS", "agents.groups")
+    .set("DISABLE_AGENT", "agents.disable");
 

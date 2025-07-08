@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { AuthenticatedUserInfo } from "@asgardeo/auth-react";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { UserDetailsInterface } from "@wso2is/admin.users.v1/models/user";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form/src";
@@ -41,11 +41,9 @@ export default function AddAgentWizard({
     const dispatch: any = useDispatch();
 
     const [ showSecret, setShowSecret ] = useState(false);
-    const [ newAgent, setNewAgent ] = useState<UserDetailsInterface>();
+    const [ newAgent, setNewAgent ] = useState<AgentScimSchema>();
 
-    const authenticatedUser: string = useSelector((state: AppState) => state?.auth);
-
-    console.log(authenticatedUser);
+    const authenticatedUserInfo: AuthenticatedUserInfo = useSelector((state: AppState) => state?.auth);
 
     return (
         <Modal
@@ -67,14 +65,13 @@ export default function AddAgentWizard({
                             const addAgentPayload: AgentScimSchema = {
                                 "urn:scim:wso2:agent:schema": {
                                     agentDescription: values?.description,
-                                    // agentDisplayName: values?.name,
-                                    agentOwner: "",
-                                    agentUrl: values?.description
+                                    agentDisplayName: values?.name,
+                                    agentOwner: authenticatedUserInfo?.username
                                 }
                             };
 
                             addAgent(addAgentPayload)
-                                .then((response: UserDetailsInterface) => {
+                                .then((response: AgentScimSchema) => {
                                     setNewAgent(response);
                                     setShowSecret(true);
                                 })
@@ -124,7 +121,7 @@ export default function AddAgentWizard({
                                 <CopyInputField
                                     className="agent-id-input"
                                     value={ newAgent?.id }
-                                    data-componentid={ "client-secret-readonly-input" }
+                                    data-componentid="agent-id-readonly-input"
                                 />
                             </div>
                             <div style={ { marginTop: "2%" } }></div>
@@ -133,10 +130,10 @@ export default function AddAgentWizard({
                                 <CopyInputField
                                     className="agent-secret-input"
                                     secret
-                                    value={ "VzP7d_.9qN|Y3LXtJWA-fUMbrgKo2x1/ETmlBcZ84.vsHnQy5u" }
+                                    value={ newAgent?.password }
                                     hideSecretLabel={ "Hide secret" }
                                     showSecretLabel={ "Show secret" }
-                                    data-componentid={ "client-secret-readonly-input" }
+                                    data-componentid={ "agent-secret-readonly-input" }
                                 />
                             </div>
 
@@ -152,8 +149,8 @@ export default function AddAgentWizard({
                             type="submit"
                             onClick={ () => {
                                 if (newAgent) {
+                                    setShowSecret(false);
                                     onClose(newAgent?.id);
-
                                     dispatch(
                                         addAlert({
                                             description: "Agent created successfully",

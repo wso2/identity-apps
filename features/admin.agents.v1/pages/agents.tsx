@@ -17,6 +17,8 @@
  */
 
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import React, { useState } from "react";
@@ -86,16 +88,6 @@ export default function Agents ({
                                 key: 0,
                                 text: t("common:name"),
                                 value: "name"
-                            },
-                            {
-                                key: 1,
-                                text: t("common:clientId"),
-                                value: "clientId"
-                            },
-                            {
-                                key: 2,
-                                text: t("common:issuer"),
-                                value: "issuer"
                             }
                         ] }
                         filterAttributePlaceholder={
@@ -193,8 +185,13 @@ export default function Agents ({
 
             <AddAgentWizard
                 isOpen={ isAddAgentWizardOpen }
-                onClose={ () => {
+                onClose={ (newAgentId: string) => {
                     setIsAddAgentWizardOpen(false);
+                    if (newAgentId) {
+                        history.push(
+                            AppConstants.getPaths().get("AGENT_EDIT").replace(":id", newAgentId )
+                        );
+                    }
                 } }
             />
         </PageLayout>
