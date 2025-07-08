@@ -47,6 +47,15 @@ export const RedirectionFactory: FC<RedirectionFactoryPropsInterface> = ({
         );
     }
 
+    if ((data?.action as any)?.executor?.name === RedirectionTypes.PasskeyEnrollment) {
+        return (
+            <Box display="flex" gap={ 1 } data-componentid={ componentId }>
+                <img src="https://www.svgrepo.com/show/246819/fingerprint.svg" height="20" />
+                <Typography variant="body1">Enroll Passkey</Typography>
+            </Box>
+        );
+    }
+
     return (
         <Box display="flex" gap={ 1 } data-componentid={ componentId }>
             <Typography variant="body1">Redirection</Typography>
