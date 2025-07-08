@@ -73,8 +73,8 @@
     "deprecated": false,
     "display": {
       "label": "Password Recovery with Email OTP",
-      "description": "Password recovery using Email OTP verification followed by password reset.",
-      "image": "https://www.svgrepo.com/show/51228/password.svg",
+      "description": "Password recovery using Email OTP",
+      "image": "https://www.svgrepo.com/show/533214/mail-notification.svg",
       "showOnResourcePanel": true
     },
     "config": {
@@ -306,8 +306,8 @@
     "deprecated": false,
     "display": {
       "label": "Password Recovery with SMS OTP",
-      "description": "Password recovery using SMS OTP verification followed by password reset.",
-      "image": "https://www.svgrepo.com/show/51228/password.svg",
+      "description": "Password recovery using SMS OTP",
+      "image": "https://www.svgrepo.com/show/533121/mobile-check.svg",
       "showOnResourcePanel": true
     },
     "config": {
@@ -539,8 +539,8 @@
     "deprecated": false,
     "display": {
       "label": "Password Recovery with SMS or Email OTP",
-      "description": "Password recovery using either SMS OTP or Email OTP verification followed by password reset.",
-      "image": "https://www.svgrepo.com/show/51228/password.svg",
+      "description": "Password recovery using either SMS or Email OTP",
+      "image": "https://www.svgrepo.com/show/532325/scan.svg",
       "showOnResourcePanel": true
     },
     "config": {
