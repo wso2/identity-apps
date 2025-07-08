@@ -2156,8 +2156,10 @@
             {% endif %}
         ],
         "systemReservedUserStores": [
-            {% if agent_identity.user_store is defined %}
-                "{{ agent_identity.user_store }}"
+            {% if console.ui.system_reserved_user_stores is defined %}
+                {% for value in console.ui.system_reserved_user_stores %}
+                "{{ value }}"{{ "," if not loop.last }}
+                {% endfor %}
             {% endif %}
         ],
         "i18nConfigs": {
