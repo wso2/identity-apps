@@ -351,7 +351,7 @@ export const console: ConsoleNS = {
                 description: "Configure login and registration settings."
             },
             userAttributesAndStores: "User Attributes & Stores",
-            userManagement: "User Management",
+            userManagement: "Identity Management",
             branding: "Branding",
             tenants: "Root Organizations",
             policyAdministration: "Policy Administration"
@@ -2672,7 +2672,10 @@ export const console: ConsoleNS = {
                         Permissions: "Permissions",
                         Users: "Users",
                         Audience: "Audience",
-                        "Audience ID": "Audience ID"
+                        "Audience ID": "Audience ID",
+                        "Users to be Added": "Users to be added",
+                        "Users to be Deleted": "Users to be deleted",
+                        "Role ID": "Role ID"
                     },
                     taskDetails: {
                         description: "You have a request to approve an operational action of a user.",

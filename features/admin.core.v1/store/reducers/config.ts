@@ -309,6 +309,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             showSmsOtpPwdRecoveryFeatureStatusChip: undefined,
             showStatusLabelForNewAuthzRuntimeFeatures: undefined,
             systemAppsIdentifiers: [],
+            systemReservedUserStores: [],
             theme: {
                 name: "",
                 path: "",

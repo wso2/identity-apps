@@ -48,7 +48,7 @@ import {
     TableColumnInterface,
     UserAvatar
 } from "@wso2is/react-components";
-import { AxiosError } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
@@ -80,6 +80,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         isReadOnly,
         tabIndex,
         activeUserStore,
+        isForNonHumanUser,
         isPrivilegedUsersToggleVisible = false,
         [ "data-componentid" ]: componentId = "edit-role-users"
     } = props;
@@ -89,6 +90,9 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
 
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
+
+    const systemReservedUserStores: string[] = useSelector((state: AppState) =>
+        state.config.ui.systemReservedUserStores);
 
     const consoleSettingsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consoleSettings
@@ -117,34 +121,43 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     } = useUserStores();
 
     const availableUserStores: UserStoreDropdownItem[] = useMemo(() => {
-        const storeOptions: UserStoreDropdownItem[] = [
-            {
-                key: -1,
-                text: userstoresConfig?.primaryUserstoreName,
-                value: userstoresConfig?.primaryUserstoreName
-            }
-        ];
+        const storeOptions: UserStoreDropdownItem[] = isForNonHumanUser
+            ? [
+                {
+                    key: -1,
+                    text: "AGENT",
+                    value: "AGENT"
+                }
+            ] : [
+                {
+                    key: -1,
+                    text: userstoresConfig?.primaryUserstoreName,
+                    value: userstoresConfig?.primaryUserstoreName
+                }
+            ];
 
-        if (userStoresList && !isUserStoresLoading) {
+        if (userStoresList && !isUserStoresLoading && !isForNonHumanUser) {
             if (userStoresList?.length > 0) {
-                userStoresList.forEach((store: UserStoreListItem, index: number) => {
-                    const isEnabled: boolean = store.enabled;
+                userStoresList
+                    ?.filter((userStore: UserStoreListItem) => !systemReservedUserStores.includes(userStore.name))
+                    ?.forEach((store: UserStoreListItem, index: number) => {
+                        const isEnabled: boolean = store.enabled;
 
-                    if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName && isEnabled) {
-                        const storeOption: UserStoreDropdownItem = {
-                            key: index,
-                            text: store.name,
-                            value: store.name
-                        };
+                        if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName && isEnabled) {
+                            const storeOption: UserStoreDropdownItem = {
+                                key: index,
+                                text: store.name,
+                                value: store.name
+                            };
 
-                        storeOptions.push(storeOption);
-                    }
-                });
+                            storeOptions.push(storeOption);
+                        }
+                    });
             }
         }
 
         return storeOptions;
-    }, [ userStoresList, isUserStoresLoading ]);
+    }, [ userStoresList, isUserStoresLoading, isForNonHumanUser, systemReservedUserStores ]);
 
     useEffect(() => {
         if (!role?.users?.length) {
@@ -261,14 +274,24 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
 
         setIsSubmitting(true);
         updateRoleDetails(role.id, roleData)
-            .then(() => {
-                dispatch(
-                    addAlert({
-                        description: t("roles:edit.users.notifications.success.description"),
-                        level: AlertLevels.SUCCESS,
-                        message: t("roles:edit.users.notifications.success.message")
-                    })
-                );
+            .then((response: AxiosResponse) => {
+                if (response?.status === 200) {
+                    dispatch(
+                        addAlert({
+                            description: t("roles:edit.users.notifications.success.description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t("roles:edit.users.notifications.success.message")
+                        })
+                    );
+                } else if (response?.status === 202) {
+                    dispatch(
+                        addAlert({
+                            description: t("roles:edit.users.notifications.pendingApproval.description"),
+                            level: AlertLevels.WARNING,
+                            message: t("roles:edit.users.notifications.pendingApproval.message")
+                        })
+                    );
+                }
                 onRoleUpdate(tabIndex);
             })
             .catch( (error: AxiosError) => {
@@ -315,14 +338,24 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
 
         setIsSubmitting(true);
         updateRoleDetails(role.id, roleData)
-            .then(() => {
-                dispatch(
-                    addAlert({
-                        description: t("roles:edit.users.notifications.success.description"),
-                        level: AlertLevels.SUCCESS,
-                        message: t("roles:edit.users.notifications.success.message")
-                    })
-                );
+            .then((response: AxiosResponse) => {
+                if (response?.status === 200) {
+                    dispatch(
+                        addAlert({
+                            description: t("roles:edit.users.notifications.success.description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t("roles:edit.users.notifications.success.message")
+                        })
+                    );
+                } else if (response?.status === 202) {
+                    dispatch(
+                        addAlert({
+                            description: t("roles:edit.users.notifications.pendingApproval.description"),
+                            level: AlertLevels.WARNING,
+                            message: t("roles:edit.users.notifications.pendingApproval.message")
+                        })
+                    );
+                }
                 onRoleUpdate(tabIndex);
             })
             .catch( (error: AxiosError) => {
@@ -577,7 +610,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                         options={ availableUserStores }
                         placeholder={ t("console:manage.features.groups.list.storeOptions") }
                         onChange={ handleDomainChange }
-                        defaultValue={ userstoresConfig.primaryUserstoreName }
+                        defaultValue={ activeUserStore ? activeUserStore : userstoresConfig.primaryUserstoreName }
                     />
                 ) }
             >
