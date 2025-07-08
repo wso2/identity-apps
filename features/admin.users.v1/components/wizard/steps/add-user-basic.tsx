@@ -480,6 +480,17 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         mapMultiValuedAttributeValues(profileInfo);
     }, [ profileInfo ]);
 
+    /**
+     * This will set the ask password option as OFFLINE if email verification is not enabled or email is not required.
+     */
+    useEffect(() => {
+        if (!emailVerificationEnabled || !isEmailRequired) {
+            setAskPasswordOption(AskPasswordOptionTypes.OFFLINE);
+        } else {
+            setAskPasswordOption(userConfig.defautlAskPasswordOption);
+        }
+    }, [ isEmailRequired ]);
+
     const resolveNamefieldAttributes = () => {
         const hiddenAttributes: (HiddenFieldNames)[] = [];
         const nameSchema: ProfileSchemaInterface = profileSchemas
@@ -936,7 +947,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                     className="mb-4"
                 >
                     {
-                        !emailVerificationEnabled? (
+                        (!emailVerificationEnabled || (!isEmailRequired && !isValidEmail)) ? (
                             <Popup
                                 basic
                                 inverted
