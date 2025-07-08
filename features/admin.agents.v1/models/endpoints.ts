@@ -17,5 +17,6 @@
  */
 
 export interface AgentsResourceEndpointsInterface {
-
+    agentCredentials: string;
+    agents: string;
 }

@@ -26,7 +26,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     AnimatedAvatar, ResourceTab, ResourceTabPaneInterface, TabPageLayout
 } from "@wso2is/react-components";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import AgentCredentials from "../components/edit/agent-credentials";
 import AgentGroups from "../components/edit/agent-groups";
@@ -98,7 +98,7 @@ export default function EditAgent({
 
     const [ agentOwnerDisplayName, setAgentOwnerDisplayName ] = useState<string>("");
 
-    React.useEffect(() => {
+    useEffect(() => {
         const fetchOwnerDisplayName = async () => {
             const [ agentOwnerUserId ] = agentInfo["urn:scim:wso2:agent:schema"]?.agentOwner?.split("@") || [];
 

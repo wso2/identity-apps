@@ -28,9 +28,7 @@ import AgentList from "../components/agent-list";
 import AddAgentWizard from "../components/wizards/add-agent-wizard";
 import { useGetAgents } from "../hooks/use-get-agents";
 
-interface AgentPageProps extends IdentifiableComponentInterface {
-
-}
+type AgentPageProps = IdentifiableComponentInterface;
 
 export default function Agents ({
     "data-componentid": componentId

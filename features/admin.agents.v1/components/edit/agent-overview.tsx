@@ -37,17 +37,6 @@ interface AgentOverviewProps extends IdentifiableComponentInterface {
     agentId: string;
 }
 
-export enum ModelType {
-    GPT_4 = "gpt_4",
-    GPT_4_TURBO = "gpt_4_turbo",
-    CLAUDE_3 = "claude_3",
-    GEMINI_1_5 = "gemini_1_5",
-    MISTRAL_7B = "mistral_7b",
-    MIXTRAL = "mixtral",
-    LLAMA_3 = "llama_3"
-}
-
-
 export default function AgentOverview({
     agentId,
     "data-componentid": componentId = "agent-overview"

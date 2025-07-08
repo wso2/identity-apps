@@ -57,7 +57,6 @@ import { useSelector } from "react-redux";
 import { Button, Card, Grid, Placeholder } from "semantic-ui-react";
 import { CardExpandedNavigationButton } from "./card-expanded-navigation-button";
 import { DynamicApplicationContextCard } from "./dynamic-application-context-card";
-import NewFeatureAnnouncement from "./new-feature-announcement/new-feature-announcement";
 import { FeatureCarousel } from "./new-feature-announcement/new-feature-announcement";
 import { getGettingStartedCardIllustrations } from "../configs/ui";
 import HomeConstants from "../constants/home-constants";
@@ -539,8 +538,6 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                         when={ loginAndRegistrationFeatureConfig?.scopes?.update }
                         featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }
                     >
-                        {/* <NewFeatureAnnouncement /> */}
-
                         <FeatureCarousel />
                     </Show>
                 </Show>
