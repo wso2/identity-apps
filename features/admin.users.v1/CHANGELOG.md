@@ -1,5 +1,25 @@
 # @wso2is/admin.users.v1
 
+## 2.33.4
+
+### Patch Changes
+
+- [#8464](https://github.com/wso2/identity-apps/pull/8464) [`18f8403bfac9f872ae44a2ad44e40b6ea20ee7b4`](https://github.com/wso2/identity-apps/commit/18f8403bfac9f872ae44a2ad44e40b6ea20ee7b4) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Separate out the user profile form to as a component
+
+- Updated dependencies [[`18f8403bfac9f872ae44a2ad44e40b6ea20ee7b4`](https://github.com/wso2/identity-apps/commit/18f8403bfac9f872ae44a2ad44e40b6ea20ee7b4)]:
+  - @wso2is/admin.users.v1@2.33.4
+
+## 2.33.3
+
+### Patch Changes
+
+- [#8442](https://github.com/wso2/identity-apps/pull/8442) [`635b9c61911819182fb7685f32bc7942fd6b9af5`](https://github.com/wso2/identity-apps/commit/635b9c61911819182fb7685f32bc7942fd6b9af5) Thanks [@Malith-19](https://github.com/Malith-19)! - Add new warning message when user deletion workflow created and display the validation errors.
+
+- Updated dependencies [[`635b9c61911819182fb7685f32bc7942fd6b9af5`](https://github.com/wso2/identity-apps/commit/635b9c61911819182fb7685f32bc7942fd6b9af5), [`4f6a234d2b0e2f77ece767b5a3e76dfb30049a1a`](https://github.com/wso2/identity-apps/commit/4f6a234d2b0e2f77ece767b5a3e76dfb30049a1a)]:
+  - @wso2is/admin.users.v1@2.33.3
+  - @wso2is/i18n@2.24.9
+  - @wso2is/admin.userstores.v1@2.27.34
+
 ## 2.33.2
 
 ### Patch Changes

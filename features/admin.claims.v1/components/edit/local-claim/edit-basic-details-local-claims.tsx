@@ -682,8 +682,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 displayOrder: attributeConfig.editAttributes.getDisplayOrder(
                     claim.displayOrder, values.displayOrder?.toString()),
                 inputFormat: inputType ? { inputType: inputType } : claim?.inputFormat,
-                multiValued: values?.multiValued !== undefined
-                    ? !!values.multiValued : claim?.multiValued,
+                multiValued: multiValued,
                 properties: claim?.properties,
                 readOnly: values?.readOnly !== undefined
                     ? !!values.readOnly
@@ -731,8 +730,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 displayOrder: attributeConfig.editAttributes.getDisplayOrder(
                     claim.displayOrder, values.displayOrder?.toString()),
                 inputFormat: inputType ? { inputType: inputType } : claim?.inputFormat,
-                multiValued: values?.multiValued !== undefined
-                    ? !!values.multiValued : claim?.multiValued,
+                multiValued: multiValued,
                 profiles: {
                     console: {
                         readOnly: values?.consoleReadOnly !== undefined ?
@@ -1218,6 +1216,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             setCanonicalValues([]);
                             setDataType(data.value);
                             setDefaultInputTypeForDataType(data.value as ClaimDataType, multiValued);
+                            if (data.value === ClaimDataType.COMPLEX || data.value === ClaimDataType.BOOLEAN) {
+                                setMultiValued(false);
+                            }
                         } }
                     />
 
@@ -1293,24 +1294,25 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         </>
                     ) }
 
-                    { dataType !== ClaimDataType.BOOLEAN && (
-                        <Field.Checkbox
-                            ariaLabel={ t("claims:local.forms.multiValued.label") }
-                            name="multiValued"
-                            label={ t("claims:local.forms.multiValued.label") }
-                            required={ false }
-                            defaultValue={ claim?.multiValued }
-                            data-componentid={ `${testId}-form-multi-valued-input` }
-                            hint={ isSystemClaim
-                                ? t("claims:local.forms.multiValuedSystemClaimHint")
-                                : t("claims:local.forms.multiValuedHint") }
-                            readOnly={ isSubOrganization() || isSystemClaim || isReadOnly }
-                            listen={ (checked: boolean) => {
-                                setMultiValued(checked);
-                                setDefaultInputTypeForDataType(dataType as ClaimDataType, checked);
-                            } }
-                        />
-                    ) }
+                    <Field.Checkbox
+                        ariaLabel={ t("claims:local.forms.multiValued.label") }
+                        name="multiValued"
+                        label={ t("claims:local.forms.multiValued.label") }
+                        required={ false }
+                        checked={ multiValued }
+                        data-componentid={ `${testId}-form-multi-valued-input` }
+                        hint={ isSystemClaim
+                            ? t("claims:local.forms.multiValuedSystemClaimHint")
+                            : t("claims:local.forms.multiValuedHint") }
+                        readOnly={ isSubOrganization() || isSystemClaim || isReadOnly
+                            || dataType === ClaimDataType.COMPLEX || dataType === ClaimDataType.BOOLEAN
+                        }
+                        listen={ (checked: boolean) => {
+                            setMultiValued(checked);
+                            setDefaultInputTypeForDataType(dataType as ClaimDataType, checked);
+                        } }
+                    />
+
                     { dataType !== ClaimDataType.COMPLEX && (
                         <Field.Dropdown
                             ariaLabel={ t("claims:local.forms.inputFormat.label") }

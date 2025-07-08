@@ -259,7 +259,7 @@
                             "action": {
                                 "type": "EXECUTOR",
                                 "executor": {
-                                    "name": "GoogleSignupExecutor",
+                                    "name": "GoogleExecutor",
                                     "meta": {
                                         "idpName": "{{IDP_NAME}}"
                                     }

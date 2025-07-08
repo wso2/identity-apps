@@ -1,5 +1,14 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.8.1
+
+### Patch Changes
+
+- [#8475](https://github.com/wso2/identity-apps/pull/8475) [`fa8fc079c3e1ccf25384881eb988c233994eb0dd`](https://github.com/wso2/identity-apps/commit/fa8fc079c3e1ccf25384881eb988c233994eb0dd) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Rename the Google Signup Executor to Google Executor
+
+- Updated dependencies [[`fa8fc079c3e1ccf25384881eb988c233994eb0dd`](https://github.com/wso2/identity-apps/commit/fa8fc079c3e1ccf25384881eb988c233994eb0dd)]:
+  - @wso2is/admin.flow-builder-core.v1@0.7.6
+
 ## 0.8.0
 
 ### Minor Changes

@@ -65,7 +65,7 @@ interface ApprovalTaskComponentPropsInterface extends TestableComponentInterface
      * @param status - Status of the approval.
      */
     resolveApprovalTagColor?: (
-        status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED
+        status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.BLOCKED
     ) => SemanticCOLORS;
     /**
      * Specifies if the form is submitting
@@ -158,41 +158,6 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
     };
 
     /**
-     * Assignees table sub component.
-     *
-     * @param assignees - List of assignees.
-     * @returns - A table containing the list of assignees.
-     */
-    const assigneesTable = (assignees: { key: string, value: string }[]): JSX.Element => (
-        <Table celled compact className="edit-segment-table">
-            <Table.Header>
-                <Table.Row>
-                    <Table.HeaderCell>
-                        { t("common:type") }
-                    </Table.HeaderCell>
-                    <Table.HeaderCell>
-                        { t("common:assignee") }
-                    </Table.HeaderCell>
-                </Table.Row>
-            </Table.Header>
-            <Table.Body>
-                {
-                    assignees.map((assignee: { key: string, value: string }, i: number) => (
-                        <Table.Row key={ i }>
-                            <Table.Cell className="key-cell">
-                                { assignee.key }
-                            </Table.Cell>
-                            <Table.Cell className="values-cell">
-                                { assignee.value }
-                            </Table.Cell>
-                        </Table.Row>
-                    ))
-                }
-            </Table.Body>
-        </Table>
-    );
-
-    /**
      * Properties table sub component.
      *
      * @param properties - List of properties.
@@ -246,33 +211,41 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                             { t("common:claim") }
                         </Button>
                     )
-                    : (
+                    : editingApproval?.taskStatus === ApprovalStatus.RESERVED
+                        ? (
+                            <Button
+                                default
+                                className="mb-1x"
+                                fluid={ isMobileViewport }
+                                onClick={ () => {
+                                    updateApprovalStatus(editingApproval.id, ApprovalStatus.RELEASE);
+                                    onCloseApprovalTaskModal();
+                                } }
+                            >
+                                { t("common:release") }
+                            </Button>
+                        )
+                        : null
+            }
+            {
+                editingApproval?.taskStatus != ApprovalStatus.BLOCKED
+                    ? (
                         <Button
-                            default
+                            primary
                             className="mb-1x"
                             fluid={ isMobileViewport }
                             onClick={ () => {
-                                updateApprovalStatus(editingApproval.id, ApprovalStatus.RELEASE);
+                                updateApprovalStatus(editingApproval.id, ApprovalStatus.APPROVE);
                                 onCloseApprovalTaskModal();
                             } }
+                            loading={ isSubmitting }
+                            disabled={ isSubmitting }
                         >
-                            { t("common:release") }
+                            { t("common:approve") }
                         </Button>
                     )
+                    : null
             }
-            <Button
-                primary
-                className="mb-1x"
-                fluid={ isMobileViewport }
-                onClick={ () => {
-                    updateApprovalStatus(editingApproval.id, ApprovalStatus.APPROVE);
-                    onCloseApprovalTaskModal();
-                } }
-                loading={ isSubmitting }
-                disabled={ isSubmitting }
-            >
-                { t("common:approve") }
-            </Button>
             <Button
                 negative
                 className="mb-1x"
@@ -410,33 +383,6 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                         </List.Content>
                     </Grid.Column>
                 </Grid.Row>
-                {
-                    approval?.assignees
-                        ? (
-                            <Grid.Row>
-                                <Grid.Column>
-                                    <List.Content>
-                                        <Grid padded>
-                                            <Grid.Row columns={ 2 }>
-                                                <Grid.Column width={ 3 }>
-                                                    { t("common:assignees") }
-                                                </Grid.Column>
-                                                <Grid.Column mobile={ 16 } computer={ 12 }>
-                                                    <List.Description>
-                                                        <Media lessThan="tablet">
-                                                            <Divider hidden />
-                                                        </Media>
-                                                        { assigneesTable(approval?.assignees) }
-                                                    </List.Description>
-                                                </Grid.Column>
-                                            </Grid.Row>
-                                        </Grid>
-                                    </List.Content>
-                                </Grid.Column>
-                            </Grid.Row>
-                        )
-                        : null
-                }
                 {
                     approval?.properties
                         ? (

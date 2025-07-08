@@ -1,5 +1,14 @@
 # @wso2is/admin.claims.v1
 
+## 2.28.3
+
+### Patch Changes
+
+- [#8432](https://github.com/wso2/identity-apps/pull/8432) [`df31404b3cbfcf8a51ea8aae97f4fae6e165a7cb`](https://github.com/wso2/identity-apps/commit/df31404b3cbfcf8a51ea8aae97f4fae6e165a7cb) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Disable multi valued property for boolean and complex data types
+
+- Updated dependencies [[`df31404b3cbfcf8a51ea8aae97f4fae6e165a7cb`](https://github.com/wso2/identity-apps/commit/df31404b3cbfcf8a51ea8aae97f4fae6e165a7cb)]:
+  - @wso2is/admin.claims.v1@2.28.3
+
 ## 2.28.2
 
 ### Patch Changes

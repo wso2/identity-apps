@@ -1,5 +1,130 @@
 # @wso2is/console
 
+## 2.65.26
+
+### Patch Changes
+
+- [#8475](https://github.com/wso2/identity-apps/pull/8475) [`fa8fc079c3e1ccf25384881eb988c233994eb0dd`](https://github.com/wso2/identity-apps/commit/fa8fc079c3e1ccf25384881eb988c233994eb0dd) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Rename the Google Signup Executor to Google Executor
+
+## 2.65.25
+
+### Patch Changes
+
+- [#8464](https://github.com/wso2/identity-apps/pull/8464) [`18f8403bfac9f872ae44a2ad44e40b6ea20ee7b4`](https://github.com/wso2/identity-apps/commit/18f8403bfac9f872ae44a2ad44e40b6ea20ee7b4) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Separate out the user profile form to as a component
+
+- Updated dependencies [[`18f8403bfac9f872ae44a2ad44e40b6ea20ee7b4`](https://github.com/wso2/identity-apps/commit/18f8403bfac9f872ae44a2ad44e40b6ea20ee7b4)]:
+  - @wso2is/admin.users.v1@2.33.4
+
+## 2.65.24
+
+### Patch Changes
+
+- [#8469](https://github.com/wso2/identity-apps/pull/8469) [`d9bd2b38be9511fc6d8b7836a96e052efa515e9a`](https://github.com/wso2/identity-apps/commit/d9bd2b38be9511fc6d8b7836a96e052efa515e9a) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Fix issue in learn more button for api resources sub org description
+
+- Updated dependencies [[`d9bd2b38be9511fc6d8b7836a96e052efa515e9a`](https://github.com/wso2/identity-apps/commit/d9bd2b38be9511fc6d8b7836a96e052efa515e9a)]:
+  - @wso2is/admin.api-resources.v2@2.26.1
+
+## 2.65.23
+
+### Patch Changes
+
+- [#8468](https://github.com/wso2/identity-apps/pull/8468) [`8813a54e1329989eec28a10b21678bfdb0e6d11d`](https://github.com/wso2/identity-apps/commit/8813a54e1329989eec28a10b21678bfdb0e6d11d) Thanks [@ModithaM](https://github.com/ModithaM)! - Fix UI inconsistency in the Edit Organization view of Sub Orgs
+
+* [#8466](https://github.com/wso2/identity-apps/pull/8466) [`31252dcffe38616bb43dd605174e200f130242e0`](https://github.com/wso2/identity-apps/commit/31252dcffe38616bb43dd605174e200f130242e0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix broken i18n in api authorization section in application edit view
+
+* Updated dependencies [[`8813a54e1329989eec28a10b21678bfdb0e6d11d`](https://github.com/wso2/identity-apps/commit/8813a54e1329989eec28a10b21678bfdb0e6d11d), [`31252dcffe38616bb43dd605174e200f130242e0`](https://github.com/wso2/identity-apps/commit/31252dcffe38616bb43dd605174e200f130242e0)]:
+  - @wso2is/admin.organizations.v1@2.26.207
+  - @wso2is/admin.applications.v1@2.36.6
+
+## 2.65.22
+
+### Patch Changes
+
+- [#8462](https://github.com/wso2/identity-apps/pull/8462) [`0e4257335ab38289758d024034ea7806aa7c5555`](https://github.com/wso2/identity-apps/commit/0e4257335ab38289758d024034ea7806aa7c5555) Thanks [@Malith-19](https://github.com/Malith-19)! - Fix the UI issues in workflow approval page.
+
+- Updated dependencies [[`0e4257335ab38289758d024034ea7806aa7c5555`](https://github.com/wso2/identity-apps/commit/0e4257335ab38289758d024034ea7806aa7c5555)]:
+  - @wso2is/admin.workflow-approvals.v1@2.26.4
+
+## 2.65.21
+
+### Patch Changes
+
+- [#8453](https://github.com/wso2/identity-apps/pull/8453) [`3a38e2eec2e6aa0257e8157744a7555923e8bfc4`](https://github.com/wso2/identity-apps/commit/3a38e2eec2e6aa0257e8157744a7555923e8bfc4) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for plugin extensions in the flow builder core
+
+## 2.65.20
+
+### Patch Changes
+
+- [#8456](https://github.com/wso2/identity-apps/pull/8456) [`69e779d4ed09354ec002a57ec70f0f417b3d8690`](https://github.com/wso2/identity-apps/commit/69e779d4ed09354ec002a57ec70f0f417b3d8690) Thanks [@savindi7](https://github.com/savindi7)! - Update timestamp formatting.
+
+- Updated dependencies [[`69e779d4ed09354ec002a57ec70f0f417b3d8690`](https://github.com/wso2/identity-apps/commit/69e779d4ed09354ec002a57ec70f0f417b3d8690)]:
+  - @wso2is/admin.logs.v1@1.6.5
+
+## 2.65.19
+
+### Patch Changes
+
+- [#8455](https://github.com/wso2/identity-apps/pull/8455) [`919027258d7cf1a151e7258e2236b842896984f5`](https://github.com/wso2/identity-apps/commit/919027258d7cf1a151e7258e2236b842896984f5) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - add SMS OTP executor to the action button’s resource panel
+
+## 2.65.18
+
+### Patch Changes
+
+- [#8452](https://github.com/wso2/identity-apps/pull/8452) [`017eff166dcad4c9337ac1047191e337c14184f3`](https://github.com/wso2/identity-apps/commit/017eff166dcad4c9337ac1047191e337c14184f3) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Revamp My Account user profile codebase
+
+- Updated dependencies [[`017eff166dcad4c9337ac1047191e337c14184f3`](https://github.com/wso2/identity-apps/commit/017eff166dcad4c9337ac1047191e337c14184f3)]:
+  - @wso2is/core@2.9.2
+
+## 2.65.17
+
+### Patch Changes
+
+- [#8442](https://github.com/wso2/identity-apps/pull/8442) [`635b9c61911819182fb7685f32bc7942fd6b9af5`](https://github.com/wso2/identity-apps/commit/635b9c61911819182fb7685f32bc7942fd6b9af5) Thanks [@Malith-19](https://github.com/Malith-19)! - Add new warning message when user deletion workflow created and display the validation errors.
+
+* [#8449](https://github.com/wso2/identity-apps/pull/8449) [`0f1a7e81b6513ee75a945dc7573d91d5f44faf9d`](https://github.com/wso2/identity-apps/commit/0f1a7e81b6513ee75a945dc7573d91d5f44faf9d) Thanks [@Malith-19](https://github.com/Malith-19)! - Remove the assigned property from the approval task since assignee always the current user.
+
+- [#8447](https://github.com/wso2/identity-apps/pull/8447) [`4f6a234d2b0e2f77ece767b5a3e76dfb30049a1a`](https://github.com/wso2/identity-apps/commit/4f6a234d2b0e2f77ece767b5a3e76dfb30049a1a) Thanks [@BimsaraBodaragama](https://github.com/BimsaraBodaragama)! - Add console to the changeset
+
+- Updated dependencies [[`635b9c61911819182fb7685f32bc7942fd6b9af5`](https://github.com/wso2/identity-apps/commit/635b9c61911819182fb7685f32bc7942fd6b9af5), [`0f1a7e81b6513ee75a945dc7573d91d5f44faf9d`](https://github.com/wso2/identity-apps/commit/0f1a7e81b6513ee75a945dc7573d91d5f44faf9d), [`4f6a234d2b0e2f77ece767b5a3e76dfb30049a1a`](https://github.com/wso2/identity-apps/commit/4f6a234d2b0e2f77ece767b5a3e76dfb30049a1a)]:
+  - @wso2is/admin.users.v1@2.33.3
+  - @wso2is/i18n@2.24.9
+  - @wso2is/admin.workflow-approvals.v1@2.26.3
+  - @wso2is/admin.userstores.v1@2.27.34
+
+## 2.65.16
+
+### Patch Changes
+
+- [#8448](https://github.com/wso2/identity-apps/pull/8448) [`344d2c5a41d426c9222f64336dc661ff9484ea49`](https://github.com/wso2/identity-apps/commit/344d2c5a41d426c9222f64336dc661ff9484ea49) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Fix organization identifier not setting correctly from token response
+
+- Updated dependencies [[`344d2c5a41d426c9222f64336dc661ff9484ea49`](https://github.com/wso2/identity-apps/commit/344d2c5a41d426c9222f64336dc661ff9484ea49)]:
+  - @wso2is/admin.feature-gate.v1@1.7.3
+  - @wso2is/admin.flows.v1@1.0.4
+
+## 2.65.15
+
+### Patch Changes
+
+- [#8443](https://github.com/wso2/identity-apps/pull/8443) [`c53613c5563ff9755ed247f18a0bbad33cccdf9c`](https://github.com/wso2/identity-apps/commit/c53613c5563ff9755ed247f18a0bbad33cccdf9c) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix drag icon visibility issue in composer elements.
+
+## 2.65.14
+
+### Patch Changes
+
+- [#8439](https://github.com/wso2/identity-apps/pull/8439) [`bcb6cd0f9f8d88e476141c679caec38517f4854b`](https://github.com/wso2/identity-apps/commit/bcb6cd0f9f8d88e476141c679caec38517f4854b) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Change wording to imply admin data separation implemented
+
+- Updated dependencies [[`bcb6cd0f9f8d88e476141c679caec38517f4854b`](https://github.com/wso2/identity-apps/commit/bcb6cd0f9f8d88e476141c679caec38517f4854b)]:
+  - @wso2is/admin.extensions.v1@2.39.6
+
+## 2.65.13
+
+### Patch Changes
+
+- [#8432](https://github.com/wso2/identity-apps/pull/8432) [`df31404b3cbfcf8a51ea8aae97f4fae6e165a7cb`](https://github.com/wso2/identity-apps/commit/df31404b3cbfcf8a51ea8aae97f4fae6e165a7cb) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Disable multi valued property for boolean and complex data types
+
+- Updated dependencies [[`df31404b3cbfcf8a51ea8aae97f4fae6e165a7cb`](https://github.com/wso2/identity-apps/commit/df31404b3cbfcf8a51ea8aae97f4fae6e165a7cb)]:
+  - @wso2is/admin.claims.v1@2.28.3
+
 ## 2.65.12
 
 ### Patch Changes

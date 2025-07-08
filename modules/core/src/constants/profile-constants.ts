@@ -76,6 +76,7 @@ export class ProfileConstants {
         .set("NAME", "name")
         .set("ADDRESSES", "addresses")
         .set("PHONE_NUMBERS", "phoneNumbers")
+        .set("COUNTRY", "country")
         .set("GROUPS", "groups")
         .set("ROLES", "roles")
         .set("ROLES_DEFAULT", "roles.default")
@@ -104,7 +105,9 @@ export class ProfileConstants {
         .set("ACCOUNT_STATE", "accountState")
         .set("PREFERRED_CHANNEL", "preferredChannel")
         .set("EMAIL_VERIFIED", "emailVerified")
-        .set("PHONE_VERIFIED", "phoneVerified");
+        .set("PHONE_VERIFIED", "phoneVerified")
+        .set("VERIFY_EMAIL", "verifyEmail")
+        .set("VERIFY_MOBILE", "verifyMobile");
 
     /**
      * States if the SCIM schema is mutable.

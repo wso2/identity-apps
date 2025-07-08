@@ -1,5 +1,29 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.7.6
+
+### Patch Changes
+
+- [#8475](https://github.com/wso2/identity-apps/pull/8475) [`fa8fc079c3e1ccf25384881eb988c233994eb0dd`](https://github.com/wso2/identity-apps/commit/fa8fc079c3e1ccf25384881eb988c233994eb0dd) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Rename the Google Signup Executor to Google Executor
+
+## 0.7.5
+
+### Patch Changes
+
+- [#8453](https://github.com/wso2/identity-apps/pull/8453) [`3a38e2eec2e6aa0257e8157744a7555923e8bfc4`](https://github.com/wso2/identity-apps/commit/3a38e2eec2e6aa0257e8157744a7555923e8bfc4) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for plugin extensions in the flow builder core
+
+## 0.7.4
+
+### Patch Changes
+
+- [#8455](https://github.com/wso2/identity-apps/pull/8455) [`919027258d7cf1a151e7258e2236b842896984f5`](https://github.com/wso2/identity-apps/commit/919027258d7cf1a151e7258e2236b842896984f5) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - add SMS OTP executor to the action button’s resource panel
+
+## 0.7.3
+
+### Patch Changes
+
+- [#8443](https://github.com/wso2/identity-apps/pull/8443) [`c53613c5563ff9755ed247f18a0bbad33cccdf9c`](https://github.com/wso2/identity-apps/commit/c53613c5563ff9755ed247f18a0bbad33cccdf9c) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix drag icon visibility issue in composer elements.
+
 ## 0.7.2
 
 ### Patch Changes
