@@ -154,6 +154,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
             if (action && actionTypeApiPath === ActionsConstants.PRE_UPDATE_PASSWORD_API_PATH ) {
                 return {
                     ...actionCommonInitialValues,
+                    attributes: (action as PreUpdatePasswordActionResponseInterface)?.attributes,
                     certificate: (action as PreUpdatePasswordActionResponseInterface)?.passwordSharing.certificate
                         || "",
                     passwordSharing: (action as PreUpdatePasswordActionResponseInterface)?.passwordSharing.format
