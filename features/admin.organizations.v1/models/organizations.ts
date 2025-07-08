@@ -135,6 +135,7 @@ export interface CheckOrgHandleInterface {
  */
 export interface CheckOrgHandleResponseInterface {
     available: boolean;
+}
 
 export interface GetOrganizationsParamsInterface {
     shouldFetch?: boolean,

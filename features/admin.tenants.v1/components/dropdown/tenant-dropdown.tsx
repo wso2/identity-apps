@@ -42,6 +42,7 @@ import { organizationConfigs } from "@wso2is/admin.extensions.v1";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -84,7 +85,6 @@ import { TenantAssociationsInterface } from "../../models/saas/tenants";
 import { handleTenantSwitch } from "../../utils";
 import { AddTenantWizard } from "../add-modal";
 import "./tenant-dropdown.scss";
-import { isFeatureEnabled } from "@wso2is/core/helpers";
 
 /**
  * Dashboard layout Prop types.

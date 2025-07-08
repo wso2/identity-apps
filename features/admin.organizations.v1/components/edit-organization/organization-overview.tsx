@@ -20,6 +20,7 @@ import { Show } from "@wso2is/access-control";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsError } from "@wso2is/core/errors";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     SBACInterface,
@@ -59,7 +60,6 @@ import {
     OrganizationPatchData,
     OrganizationResponseInterface
 } from "../../models";
-import { isFeatureEnabled } from "@wso2is/core/helpers";
 
 interface OrganizationEditFormProps {
     name: string;
