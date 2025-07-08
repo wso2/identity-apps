@@ -20,15 +20,39 @@ export interface AgentsNS {
     title: string;
     pageTitle: string;
     description: string;
+    new: {
+        fields: {
+            name: {
+                label: string;
+            },
+            description: {
+                label: string;
+                placeholder: string;
+            }
+        }
+    };
     edit: {
         credentials: {
             title: string;
         },
         general: {
             title: string;
+            fields: {
+                name: {
+                    label: string;
+                },
+                description: {
+                    label: string;
+                    placeholder: string;
+                },
+                languageModal: {
+                    label: string;
+                }
+            }
         },
         roles: {
             title: string;
+            subtitle: string;
         }
-    }
+    };
 }

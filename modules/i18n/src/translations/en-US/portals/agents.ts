@@ -24,10 +24,35 @@ export const agents: AgentsNS = {
             title: ""
         },
         general: {
+            fields: {
+                description: {
+                    label: "",
+                    placeholder: ""
+                },
+                languageModal: {
+                    label: ""
+                },
+                name: {
+                    label: ""
+                }
+            },
             title: ""
         },
         roles: {
-            title: ""
+            subtitle: "View roles assigned directly to this agent",
+            title: "Roles"
+
+        }
+    },
+    new: {
+        fields: {
+            description: {
+                label: "Description",
+                placeholder: "Enter a description for the agent"
+            },
+            name: {
+                label: "Name"
+            }
         }
     },
     pageTitle: "Agents",

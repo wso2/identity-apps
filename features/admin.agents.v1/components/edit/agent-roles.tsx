@@ -42,10 +42,10 @@ export default function AgentRoles({ agentId }: AgentRolesViewProps) {
 
         <EmphasizedSegment padded="very" style={ { border: "none", padding: "21px" } }>
             <Typography variant="h4">
-                Roles
+                { t("agents:edit.roles.title") }
             </Typography>
             <Typography variant="body1" className="mb-5" style={ { color: "#9c9c9c" } }>
-                View roles assigned directly to this agent
+                { t("agents:edit.roles.subtitle") }
             </Typography>
             <Message
                 type="info"
