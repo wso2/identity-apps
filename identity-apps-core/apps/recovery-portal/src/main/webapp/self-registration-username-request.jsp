@@ -427,7 +427,24 @@
     }
 %>
 
-<% request.setAttribute("pageName", "self-registration-username-request"); %>
+<%
+    String cdmProfileId = null;
+    if (cookies != null) {
+        for (javax.servlet.http.Cookie cookie : cookies) {
+            if ("cdm_profile_id".equals(cookie.getName())) {
+                cdmProfileId = cookie.getValue();
+                break;
+            }
+        }
+    }
+
+    if (cdmProfileId != null) {
+        // Set as a request attribute to be used in your form
+        System.out.println("CDM Profile ID: " + cdmProfileId);
+        request.setAttribute("cdm_profile_id", cdmProfileId);
+    }
+%>
+
 
 <!doctype html>
 <html lang="en-US">
@@ -879,6 +896,8 @@
                                    value="<%=value%>" class="form-control">
                         </div>
                         <% } %>
+                        <input type="hidden" name="http://wso2.org/claims/profileId" value="<%= cdmProfileId != null ? cdmProfileId : "" %>">
+
                         <div id="password-validation-block">
                             <div id="length-block" class="password-policy-description mb-2" style="display: none;">
                                 <i id="password-validation-neutral-length" class="inverted grey circle icon"></i>
