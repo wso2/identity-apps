@@ -78,6 +78,10 @@ export interface FeatureConfigInterface {
      */
     actions?: FeatureAccessConfigInterface;
     /**
+     * Agent management feature.
+     */
+    agents?: FeatureAccessConfigInterface;
+    /**
      * Admin user management feature.
      */
     administrators?: FeatureAccessConfigInterface;

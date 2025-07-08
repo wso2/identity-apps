@@ -80,6 +80,8 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
         featureConfig?.attributeVerification?.scopes?.read
     );
 
+    const isAgentsFeatureEnabled: boolean = featureConfig?.agents?.enabled;
+
     const { filterUserStores, userStoresList, mutateUserStoreList } = useUserStores();
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
@@ -768,7 +770,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                             )) }
                             { isLoading ? (
                                 renderSegmentPlaceholder()
-                            ) : ( agentSchemaAttributeMappings?.length > 0 && (
+                            ) : ( isAgentsFeatureEnabled && agentSchemaAttributeMappings?.length > 0 && (
                                 <EmphasizedSegment
                                     className="clickable"
                                     data-testid={ `${ testId }-oidc-dialect-container` }
