@@ -36,7 +36,7 @@ import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/adminis
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { getAgentConnections } from "@wso2is/admin.remote-userstores.v1/api/remote-user-stores";
 import { AgentConnectionInterface } from "@wso2is/admin.remote-userstores.v1/models/remote-user-stores";
-import { getRoleById, searchRoleList } from "@wso2is/admin.roles.v2/api/roles";
+import { getRoleById, getRoleByIdV3, searchRoleList } from "@wso2is/admin.roles.v2/api/roles";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants";
 import { RolesV2Interface, SearchRoleInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { useServerConfigs } from "@wso2is/admin.server-configurations.v1";
@@ -214,6 +214,11 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         startIndex: 0,
         totalResults: 0
     });
+    const enaleSCIM2RoleAPIV3: boolean = useSelector(
+        (state: AppState) => state.config.ui.enableScim2RolesV3Api
+    );
+    const getRoleByIdFunction: (roleId: string) => Promise<AxiosResponse> =
+        enaleSCIM2RoleAPIV3 ? getRoleByIdV3 : getRoleById;
 
     const organizationName: string = store.getState().auth.tenantDomain;
 
@@ -930,7 +935,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
             totalResults: 0
         });
 
-        getRoleById(adminRoleId).then((response: AxiosResponse) => {
+        getRoleByIdFunction(adminRoleId).then((response: AxiosResponse) => {
             const adminList: UserRoleInterface[] = response?.data?.users;
 
             adminList.forEach((user: UserRoleInterface) => {
