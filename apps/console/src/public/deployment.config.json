@@ -1036,7 +1036,9 @@
                 }
             },
             "organizations": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "organizations.orgHandle"
+                ],
                 "enabled": true,
                 "featureFlags": [],
                 "scopes": {
