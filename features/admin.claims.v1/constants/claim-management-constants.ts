@@ -184,12 +184,6 @@ export class ClaimManagementConstants {
                 isAttributeButtonEnabled: true,
                 name: "Core 1.0 Schema",
                 uri: "urn:scim:schemas:core:1.0"
-            },
-            {
-                attributeButtonText: "",
-                isAttributeButtonEnabled: true,
-                name: "Agent Schema",
-                uri: "urn:scim:wso2:agent:schema"
             }
         ];
 
