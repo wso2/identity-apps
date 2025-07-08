@@ -555,7 +555,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                         validation?.errorMessages?.push(
                                             t("user:forms.addUserForm.inputs" +
                                             ".confirmPassword.validations.mismatch"));
-                                    } else if (value !== "") {
+                                    } else if (value) {
                                         setIsConfirmPasswordMatch(true);
                                     }
                                 }
