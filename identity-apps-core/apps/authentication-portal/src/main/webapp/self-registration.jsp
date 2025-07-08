@@ -276,7 +276,6 @@
                     setPostBody({
                         flowId: flowData.flowId,
                         actionId: "",
-                        flowType: "REGISTRATION",
                         inputs: providedInputs
                     });
                 }
@@ -309,7 +308,7 @@
                     switch (flow.type) {
                         case "REDIRECTION":
                             setLoading(true);
-                            window.location.href = flow.data.url;
+                            window.location.href = flow.data.redirectURL;
                             break;
 
                         case "INTERNAL_PROMPT":
