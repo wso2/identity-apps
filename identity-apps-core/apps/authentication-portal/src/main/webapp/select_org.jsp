@@ -51,10 +51,7 @@
     }
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "medium");
-%>
+<% request.setAttribute("pageName", "select-org"); %>
 
 <html lang="en-US">
     <head>
@@ -78,7 +75,7 @@
         <![endif]-->
     </head>
 
-    <body class="login-portal layout authentication-portal-layout">
+    <body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
         <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
             <layout:component componentName="ProductHeader">
                 <%-- product-title --%>
@@ -117,7 +114,7 @@
                             <%
                                 for (int i=1; i <= orgCount; i++) { %>
                                     <input id="orgId" type="radio" name="orgId" value="<%=Encode.forHtmlAttribute(request.getParameter("orgId_" + i))%>" required>
-                                    <label><%=request.getParameter("org_" + i)%> : </label> <label><%=request.getParameter("orgDesc_" + i)%></label><br>
+                                    <label><%= Encode.forHtml(request.getParameter("org_" + i)) %> : </label> <label><%= Encode.forHtml(request.getParameter("orgDesc_" + i)) %></label><br>
                                 <%
                                 }%>
                             <input id="idp" name="idp" type="hidden" value="<%=Encode.forHtmlAttribute(idp)%>"/>

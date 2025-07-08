@@ -1,0 +1,50 @@
+.approval-step-card {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    position: relative;
+    width: 400px;
+}
+
+.delete-button {
+    position: absolute;
+    right: 14px;
+    top: 4px;
+}
+
+.approval-step-card-wrapper {
+    position: relative; 
+    display: inline-block; 
+}
+
+.approval-step-card {
+    overflow: visible !important; 
+    position: relative; 
+}
+
+.close-button {
+    width: 20px !important;
+    height: 20px !important;
+    min-height: 20px !important;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    z-index: 10;
+    padding: 0;
+
+    .delete-button-icon {
+        width: 8px;
+        height: 8px;
+    }
+
+    &:hover {
+        background-color: #f9f9f9;
+    }
+}
+
+.box-container {
+    position: relative;
+}
+

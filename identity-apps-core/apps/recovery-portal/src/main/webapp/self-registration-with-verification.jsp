@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2024, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2016-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -24,6 +24,7 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.constants.SelfRegistrationStatusCodes" %>
@@ -313,6 +314,8 @@
     }
 %>
 
+<% request.setAttribute("pageName", "self-registration-with-verification"); %>
+
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -336,7 +339,7 @@
     %>
     <link rel="stylesheet" href="libs/addons/calendar.min.css"/>
 </head>
-<body class="login-portal layout recovery-layout">
+<body class="login-portal layout recovery-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
@@ -656,17 +659,17 @@
                                                 !(claim.getReadOnly() != null ? claim.getReadOnly() : false)) {
                                             String claimURI = claim.getUri();
                                             String claimValue = request.getParameter(claimURI);
+                                            String[] claimFields = claimURI.split("/");
+                                            String claimName = claimFields[claimFields.length-1];
+                                            String claimFieldID = claimName + "_field";
+                                            String claimErrorMsg = claimName + "_error";
+                                            String claimErrorMsgText = claimName + "_error_text";
                                 %>
-                                    <div class="field">
-                                    <% if (claim.getRequired()) { %>
-                                        <label class="control-label">
-                                            <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claim.getDisplayName())%>*
-                                        </label>
-                                    <% } else { %>
+                                    <div  id="<%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claimFieldID)%>"
+                                        <% if (claim.getRequired()) { %> class="field form-group required" <%} else {%> class="field"<%}%>  >
                                         <label class="control-label">
                                             <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claim.getDisplayName())%>
                                         </label>
-                                    <% } %>
                                     <% if(StringUtils.equals(claim.getUri(), "http://wso2.org/claims/country")) {%>
                                         <div class="ui fluid search selection dropdown"  id="country-dropdown"
                                             data-testid="country-dropdown">
@@ -680,7 +683,9 @@
                                                 value="<%= Encode.forHtmlAttribute(claimValue)%>"<%}%>
                                             />
                                             <i class="dropdown icon"></i>
-                                            <div class="default text">Enter Country</div>
+                                            <div class="default text">
+                                                <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claim.getDisplayName())%>
+                                            </div>
                                             <div class="menu">
                                                 <c:forEach items="<%=getCountryList()%>" var="country">
                                                     <div class="item" data-value="${country.value}">
@@ -688,6 +693,34 @@
                                                         ${country.value}
                                                     </div>
                                                 </c:forEach>
+                                            </div>
+                                        </div>
+                                    <% } else if (StringUtils.equals(claim.getUri(), "http://wso2.org/claims/local")) { %>
+                                        <div class="ui fluid search selection dropdown" id="local-dropdown" data-testid="local-dropdown">
+                                            <input type="hidden" id="local-input" name="<%= Encode.forHtmlAttribute(claimURI) %>"
+                                                <% if (claim.getRequired()) { %>
+                                                    required
+                                                <% }%>
+                                                <% if (skipSignUpEnableCheck && StringUtils.isNotEmpty(claimValue)) {%> disabled <%}%>
+                                                <% if (StringUtils.isNotEmpty(claimValue)) { %>
+                                                value="<%= Encode.forHtmlAttribute(claimValue) %>"<% } %>
+                                            />
+                                            <i class="dropdown icon"></i>
+                                            <div class="default text">
+                                                <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claim.getDisplayName())%>
+                                            </div>
+                                            <div class="menu">
+                                                <%
+                                                    List<Map<String, String>> localeList = getLocaleList(application);
+                                                    for (Map<String, String> localeItem : localeList) {
+                                                %>
+                                                    <div class="item" data-value="<%= localeItem.get(LOCALE_CODE_KEY) %>">
+                                                        <i class="<%= localeItem.get(FLAG_CODE_KEY).toLowerCase() %> flag"></i>
+                                                        <%= localeItem.get(DISPLAY_NAME_KEY) %>
+                                                    </div>
+                                                <%
+                                                    }
+                                                %>
                                             </div>
                                         </div>
                                     <% } else if (StringUtils.equals(claim.getUri(), "http://wso2.org/claims/dob")) { %>
@@ -853,7 +886,7 @@
                                         <%=i18n(recoveryResourceBundle, customText, "sign.up.button")%>
                                     </button>
                                 </div>
-                                <% if (!skipSignUpEnableCheck) { %>
+                                <% if (!skipSignUpEnableCheck && AuthenticationEndpointUtil.isSchemeSafeURL(callback)) { %>
                                     <div class="ui divider hidden"></div>
                                     <div class="buttons mt-2">
                                         <div class="field external-link-container text-small">
@@ -1121,6 +1154,7 @@
             var agreementChk = $(".agreement-checkbox input");
             var registrationBtn = $("#registrationSubmit");
             var countryDropdown = $("#country-dropdown");
+            var localDropdown = $("#local-dropdown");
 
             if (agreementChk.length > 0) {
                 registrationBtn.prop("disabled", true).addClass("disabled");
@@ -1135,6 +1169,12 @@
 
             countryDropdown.dropdown('hide');
             $("> input.search", countryDropdown).attr("role", "presentation");
+
+            localDropdown.dropdown({
+                onChange: function (value) {
+                    $("#local-input").val(value);
+                }
+            });
 
             $("#date_picker").calendar({
                 type: 'date',

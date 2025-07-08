@@ -29,7 +29,7 @@ import useGetRegistrationFlow from "../hooks/use-ai-generated-registration-flow"
 /**
  * This hook is used to get the registration flow generation status.
  *
- * @returns { RequestResultInterface<any, RequestErrorInterface> } Response.
+ * @returns The result of the registration flow generation status request.
  */
 const useAIRegistrationFlowGenerationStatus = ():
     RequestResultInterface<any, RequestErrorInterface> =>{
@@ -44,7 +44,7 @@ const useAIRegistrationFlowGenerationStatus = ():
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ store.getState().config.endpoints.registrationFlow }/status/${operationId}`
+        url: `${ store.getState().config.endpoints.registrationFlowAI }/status/${operationId}`
     };
 
     const { data, error, isValidating, mutate } =

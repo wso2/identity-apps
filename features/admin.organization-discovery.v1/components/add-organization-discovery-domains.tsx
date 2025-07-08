@@ -28,7 +28,10 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
-import { OrganizationInterface } from "@wso2is/admin.organizations.v1/models/organizations";
+import {
+    GetOrganizationsParamsInterface,
+    OrganizationInterface
+} from "@wso2is/admin.organizations.v1/models/organizations";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -94,16 +97,6 @@ interface AddOrganizationDiscoveryDomainsFormValuesInterface {
     organizationName: string;
 }
 
-interface Params {
-    shouldFetch?: boolean,
-    filter?: string;
-    limit?: number;
-    after?: string;
-    before?: string;
-    recursive?: boolean;
-    isRoot?: boolean;
-}
-
 const FORM_ID: string = "edit-organization-email-domains-form";
 
 /**
@@ -134,7 +127,8 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
     const [ hasMoreOrganizations, setHasMoreOrganizations ] = useState(true);
     const [ inputValue, setInputValue ] = useState<string>("");
     const [ afterCursor, setAfterCursor ] = useState<string | null>(null);
-    const [ params, setParams ] = useState<Params>({ after: null, limit: 15, shouldFetch: true });
+    const [ params, setParams ] =
+        useState<GetOrganizationsParamsInterface>({ after: null, limit: 15, shouldFetch: true });
 
     const queryPrefix: string = "name co ";
 
@@ -152,7 +146,7 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
         if (!organizationListResponse || isOrganizationsFetchRequestLoading
             || isOrganizationsFetchRequestValidating) return;
 
-        setParams((prevParams: Params) => ({
+        setParams((prevParams: GetOrganizationsParamsInterface) => ({
             ...prevParams,
             shouldFetch: false
         }));
@@ -223,7 +217,7 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
     const updateParams = (cursor: string, inputValue: string) => {
         setAfterCursor(cursor);
         setInputValue(inputValue);
-        setParams((prevParams: Params) => ({
+        setParams((prevParams: GetOrganizationsParamsInterface) => ({
             ...prevParams,
             after: cursor || null,
             filter: inputValue ? `${queryPrefix}${inputValue}` : "",

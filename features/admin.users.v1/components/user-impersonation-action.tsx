@@ -18,8 +18,11 @@
 
 import { HttpResponse, useAuthContext } from "@asgardeo/auth-react";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1";
+import { userConfig } from "@wso2is/admin.extensions.v1/configs/user";
+import useOrganizations from "@wso2is/admin.organizations.v1/hooks/use-organizations";
 import { isMyAccountImpersonationRole } from "@wso2is/admin.roles.v2/components/role-utils";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -59,13 +62,13 @@ interface UserImpersonationActionInterface extends IdentifiableComponentInterfac
      */
     isDisabled: boolean;
     /**
+     * Whether the user is managed by parent org.
+     */
+    isUserManagedByParentOrg: boolean;
+    /**
      * Whether user is read only.
      */
     isReadOnly: boolean;
-    /**
-     * Whether the user is managed by the parent organization.
-     */
-    isUserManagedByParentOrg: boolean;
 }
 
 /**
@@ -80,8 +83,8 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         user,
         isLocked,
         isDisabled,
-        isReadOnly,
-        isUserManagedByParentOrg
+        isUserManagedByParentOrg,
+        isReadOnly
     } = props;
 
     const { httpRequest } = useAuthContext();
@@ -96,9 +99,10 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     const [ authenticatedUserRoles, setAuthenticatedUserRoles ] = useState<RolesMemberInterface[]>([]);
     const [ myAccountAppId, setMyAccountAppId ] = useState<string>(null);
     const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
+    const [ isMyAccountImpersonatable, setIsMyAccountImpersonatable ]
+        = useState<boolean>(false);
 
     const consoleUrl: string = useSelector((state: AppState) => state?.config?.deployment?.clientHost);
-    const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
     const authenticatedUserProfileInfo: ProfileInfoInterface = useSelector((state: AppState) =>
         state?.profile?.profileInfo);
@@ -108,8 +112,6 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         state.config.ui.features?.users);
     const accountAppClientID: string = useSelector((state: AppState) =>
         state.config.deployment.accountApp.clientID);
-    const authenticatedUserTenanted: string = useSelector((state: AppState) => state?.auth?.username);
-    const loggedInTenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
     const getUserId = (userId: string): string => {
         const tenantAwareUserId: string = userId.split("@").length > 1 ? userId.split("@")[0] : userId;
         const userDomainAwareUserId: string = tenantAwareUserId.split("/").length > 1 ?
@@ -129,8 +131,9 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         data: authenticatedUserProfileInfoData,
         isLoading: isAuthenticatedUserFetchRequestLoading
     } = useUserDetails(getUserId(authenticatedUserProfileInfo?.id));
-
-    const isSubOrgUser: boolean = (organizationType === OrganizationType.SUBORGANIZATION);
+    const { getUserOrgInLocalStorage } = useOrganizations();
+    const isSwitchedFromRootOrg: boolean = getUserOrgInLocalStorage() === "undefined";
+    const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
     const IMPERSONATION_ARTIFACTS: string = "impersonation_artifacts";
     let impersonation_artifacts: any = sessionStorage.getItem(IMPERSONATION_ARTIFACTS);
 
@@ -168,6 +171,33 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
             sendTokenRequest(idToken, subjectToken);
         }
     }, [ idToken, subjectToken ]);
+
+    /**
+     * Timeout to handle unexpected errors occurs in the impersonation iframe.
+     * Currently, there's no way to detect such errors from within the iframe,
+     * as the iframe itself is unaware of the errors occured in different
+     * hosts—such as the authentication portal.
+     */
+    useEffect(() => {
+        if (impersonationInProgress) {
+            const timer: any = setTimeout(() => {
+                if (impersonationInProgress) {
+                    setImpersonationInProgress(false);
+                    dispatch(addAlert({
+                        description: t(
+                            "users:notifications.impersonateUser.error.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "users:notifications.impersonateUser.error.message"
+                        )
+                    }));
+                }
+            }, 5000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [ impersonationInProgress ]);
 
     const handleInitImpersonateIframeMessage = (event: CompositionEvent) => {
         if (event.data === "impersonation-authorize-request-complete"
@@ -216,17 +246,25 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
      * Sets the initial spinner.
      */
     useEffect(() => {
-        let status: boolean = AppConstants.DEFAULT_MY_ACCOUNT_STATUS;
-
         if (!isMyAccountApplicationGetRequestLoading
                 && !isMyAccountApplicationDataFetchRequestLoading
         ) {
             if (myAccountApplication) {
-                status = myAccountApplication?.applicationEnabled;
+                // Set if my account is enabled.
+                setMyAccountStatus(myAccountApplication?.applicationEnabled);
+
+                // Set if my account have only one login step and the BasicAuthenticator is included.
+                if (myAccountApplication?.authenticationSequence?.steps?.length === 1) {
+                    const step: any = myAccountApplication?.authenticationSequence?.steps[0];
+
+                    if (Array.isArray(step?.options) && step.options.some(
+                        (option: any) => option?.authenticator === "BasicAuthenticator"
+                    )) {
+                        setIsMyAccountImpersonatable(true);
+                    }
+                }
             }
         }
-
-        setMyAccountStatus(status);
     }, [
         isMyAccountApplicationGetRequestLoading,
         isMyAccountApplicationDataFetchRequestLoading,
@@ -341,15 +379,28 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         return false;
     };
 
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
+
     /**
      * This function checks whether the authenticated user's (impersonator) tenant is the logged tenant.
      */
-    const isAuthenticatedUserBelongToTheLoggedInTenant = (): boolean => {
+    const isAuthenticatedUserInAnAllowedUserstore = (): boolean => {
 
-        const authenticatedUserTenantDomain: string = authenticatedUserTenanted.split("@").length > 1
-            ? authenticatedUserTenanted.split("@")[1] : "";
+        const userUserStore: string = user?.userName?.split("/").length > 1
+            ? user?.userName?.split("/")[0]
+            : userstoresConfig?.primaryUserstoreName;
 
-        return authenticatedUserTenantDomain === loggedInTenantDomain;
+        const authenticatedUserUserStore: string = authenticatedUserProfileInfo?.id?.split("/").length > 1
+            ? authenticatedUserProfileInfo?.id?.split("/")[0]
+            : (
+                orgType === OrganizationType.SUBORGANIZATION ? userstoresConfig?.primaryUserstoreName :
+                    (userConfig?.allowImpersonationForPrimaryUserStore
+                        ? primaryUserStoreDomainName : UserManagementConstants.ASGARDEO_USERSTORE)
+            );
+
+        return authenticatedUserUserStore !== UserManagementConstants.ASGARDEO_USERSTORE
+            || userUserStore === authenticatedUserUserStore;
     };
 
     /**
@@ -361,7 +412,8 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
      */
     const isImpersonatable = (): boolean => {
 
-        return isMyAccountEnabled && isLoggedInUserAuthorizedToImpersonate() && !isLocked && !isDisabled;
+        return isMyAccountImpersonatable && isMyAccountEnabled
+            && isLoggedInUserAuthorizedToImpersonate() && !isLocked && !isDisabled;
     };
 
     /**
@@ -375,20 +427,6 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         setCodeVerifier(codeVerifier);
         setCodeChallenge(codeChallenge);
         setImpersonationInProgress(true);
-        setTimeout(() => {
-            if (impersonationInProgress && idToken == undefined && subjectToken == undefined) {
-                setImpersonationInProgress(false);
-                dispatch(addAlert({
-                    description: t(
-                        "users:notifications.impersonateUser.error.description"
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: t(
-                        "users:notifications.impersonateUser.error.message"
-                    )
-                }));
-            }
-        }, 5000);
     };
 
     /**
@@ -396,15 +434,19 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
      *
      * @param url - The URL to be modified.
      */
-    const getTenantAwareURL = (url: string): string => {
-
+    const getBasePath = (url: string): string => {
         const newURL: URL = new URL(url);
-        const newPathname: string = newURL.pathname.replace(/^\/t\/[^/]+/, "");
+
+        const newPathname: string = newURL.pathname
+            .replace(/^\/t\/[^/]+/, "")
+            .replace(/^\/o\/[^/]+/, "");
 
         newURL.pathname = newPathname;
 
         return newURL.toString();
     };
+
+    const userOrganizationId: string = useSelector((state: AppState) => state?.organization?.userOrganizationId);
 
     /**
      * This function resolves the iframe for the impersonation.
@@ -415,10 +457,11 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
             return (
                 <iframe
                     hidden
-                    src={ `${getTenantAwareURL(consoleUrl)}/resources/users/init-impersonate.html`
+                    src={ `${getBasePath(consoleUrl)}/resources/users/init-impersonate.html`
                         + `?userId=${encodeURIComponent(user.id)}`
                         + `&codeChallenge=${encodeURIComponent(codeChallenge)}`
                         + `&clientId=${encodeURIComponent(accountAppClientID)}`
+                        + `&orgId=${encodeURIComponent(userOrganizationId)}`
                     }
                 />
             );
@@ -433,6 +476,9 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     const resolvedButtonDisableHint = (): string | undefined => {
         const baseKey: string = "user:editUser.userActionZoneGroup.impersonateUserZone.buttonDisableHints";
 
+        if (!isMyAccountImpersonatable) {
+            return t(`${baseKey}.myAccountLoginFlowIncompatible`);
+        }
         if (!isMyAccountEnabled) {
             return t(`${baseKey}.myAccountDisabled`);
         }
@@ -455,16 +501,17 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     const resolveUserActions = (): ReactElement => {
 
         return (
-            !isSubOrgUser && !isUserCurrentLoggedInUser && isAuthenticatedUserBelongToTheLoggedInTenant()
-                && isFeatureEnabled(userFeatureConfig,
-                    UserManagementConstants.FEATURE_DICTIONARY.get("USER_IMPERSONATION")) ?
+            !isUserCurrentLoggedInUser && !isUserManagedByParentOrg &&
+            (orgType === OrganizationType.SUBORGANIZATION ? !isSwitchedFromRootOrg : true) &&
+            isAuthenticatedUserInAnAllowedUserstore() &&
+            isFeatureEnabled(userFeatureConfig, UserManagementConstants.FEATURE_DICTIONARY.get("USER_IMPERSONATION")) ?
                 (
                     <React.Fragment>
                         <DangerZoneGroup
                             className="action-zone"
                         >
                             {
-                                !isReadOnly && !isUserManagedByParentOrg && (
+                                !isReadOnly && (
                                     <DangerZone
                                         data-componentid={ `${ componentId }-danger-zone-button` }
                                         className="action-zone"

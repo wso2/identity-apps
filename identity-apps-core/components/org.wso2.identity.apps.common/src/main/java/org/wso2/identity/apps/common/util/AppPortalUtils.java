@@ -21,9 +21,14 @@ package org.wso2.identity.apps.common.util;
 import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.CarbonConstants;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
+import org.wso2.carbon.identity.api.resource.mgt.APIResourceManager;
+import org.wso2.carbon.identity.api.resource.mgt.APIResourceMgtException;
+import org.wso2.carbon.identity.api.resource.mgt.constant.APIResourceManagementConstants;
 import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
+import org.wso2.carbon.identity.application.common.model.APIResource;
 import org.wso2.carbon.identity.application.common.model.AssociatedRolesConfig;
+import org.wso2.carbon.identity.application.common.model.AuthorizedAPI;
 import org.wso2.carbon.identity.application.common.model.Claim;
 import org.wso2.carbon.identity.application.common.model.ClaimConfig;
 import org.wso2.carbon.identity.application.common.model.ClaimMapping;
@@ -36,6 +41,8 @@ import org.wso2.carbon.identity.application.common.util.IdentityApplicationManag
 import org.wso2.carbon.identity.application.mgt.ApplicationConstants;
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 import org.wso2.carbon.identity.application.mgt.ApplicationMgtUtil;
+import org.wso2.carbon.identity.application.mgt.AuthorizedAPIManagementService;
+import org.wso2.carbon.identity.application.mgt.AuthorizedAPIManagementServiceImpl;
 import org.wso2.carbon.identity.core.URLBuilderException;
 import org.wso2.carbon.identity.core.util.IdentityTenantUtil;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
@@ -47,7 +54,9 @@ import org.wso2.carbon.identity.oauth2.OAuth2Constants;
 import org.wso2.carbon.identity.organization.management.service.constant.OrganizationManagementConstants;
 import org.wso2.carbon.identity.organization.management.service.exception.OrganizationManagementException;
 import org.wso2.carbon.identity.role.mgt.core.RoleConstants;
+import org.wso2.carbon.identity.role.v2.mgt.core.RoleManagementService;
 import org.wso2.carbon.identity.role.v2.mgt.core.exception.IdentityRoleManagementException;
+import org.wso2.carbon.identity.role.v2.mgt.core.model.Permission;
 import org.wso2.carbon.identity.role.v2.mgt.core.model.RoleBasicInfo;
 import org.wso2.carbon.stratos.common.beans.TenantInfoBean;
 import org.wso2.carbon.user.core.UserRealm;
@@ -79,6 +88,11 @@ import static org.wso2.identity.apps.common.util.AppPortalConstants.EMAIL_CLAIM_
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ACCOUNT_SWITCH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ORGANIZATION_SWITCH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_TOKEN_EXCHANGE;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.IMPERSONATE_ORG_SCOPE_NAME;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.IMPERSONATE_ROLE_NAME;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.IMPERSONATE_SCOPE_NAME;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.IMPERSONATION_API_RESOURCE;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.IMPERSONATION_ORG_API_RESOURCE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_AUTH2_TYPE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_CONFIG_TYPE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.MYACCOUNT_APP;
@@ -123,15 +137,18 @@ public class AppPortalUtils {
             StringUtils.isNotEmpty(IdentityUtil.getProperty(CONSOLE_PORTAL_PATH))) {
             portalPath = IdentityUtil.getProperty(CONSOLE_PORTAL_PATH);
         }
+        String consolePortalPath = portalPath;
         if (MYACCOUNT_APP.equals(applicationName) &&
             StringUtils.isNotEmpty(IdentityUtil.getProperty(MYACCOUNT_PORTAL_PATH))) {
             portalPath = IdentityUtil.getProperty(MYACCOUNT_PORTAL_PATH);
+            consolePortalPath = IdentityUtil.getProperty(CONSOLE_PORTAL_PATH);
         }
         if (!portalPath.startsWith("/")) {
             portalPath = "/" + portalPath;
+            consolePortalPath = "/" + consolePortalPath;
         }
         String callbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
-        String consoleCallbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
+        String consoleCallbackUrl = IdentityUtil.getServerURL(consolePortalPath, true, true);
         String appendedConsoleCallBackURLRegex = StringUtils.EMPTY;
         boolean isUserSessionImpersonationEnabled = Boolean.parseBoolean(IdentityUtil
             .getProperty(USER_SESSION_IMPERSONATION));
@@ -145,8 +162,8 @@ public class AppPortalUtils {
                 consoleCallbackUrl = ApplicationMgtUtil.replaceUrlOriginWithPlaceholders(consoleCallbackUrl);
                 consoleCallbackUrl = ApplicationMgtUtil.resolveOriginUrlFromPlaceholders(consoleCallbackUrl,
                     CONSOLE_APP);
-                appendedConsoleCallBackURLRegex = "|" + consoleCallbackUrl.replace(portalPath, portalPath
-                    + "/resources/users/init-impersonate.html");
+                appendedConsoleCallBackURLRegex = "|" + consoleCallbackUrl.replace(
+                    consolePortalPath, portalPath + "/resources/users/init-impersonate.html");
             }
         } catch (URLBuilderException e) {
             throw new IdentityOAuthAdminException("Server encountered an error while building callback URL with " +
@@ -277,6 +294,14 @@ public class AppPortalUtils {
 
         if (!CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME && CONSOLE_APP.equals(appName)) {
             shareApplication(tenantDomain, tenantId, appId, appName, appOwner);
+        }
+        if (Boolean.parseBoolean(IdentityUtil.getProperty(USER_SESSION_IMPERSONATION)) &&
+                MYACCOUNT_APP.equals(appName)) {
+            addAPIResourceToApplication(appId, tenantDomain, IMPERSONATION_API_RESOURCE,
+                APIResourceManagementConstants.APIResourceTypes.TENANT);
+            addAPIResourceToApplication(appId, tenantDomain, IMPERSONATION_ORG_API_RESOURCE,
+                APIResourceManagementConstants.APIResourceTypes.ORGANIZATION);
+            addImpersonatorRole(appOwner, appId, tenantId, tenantDomain);
         }
     }
 
@@ -468,6 +493,58 @@ public class AppPortalUtils {
         } else {
             return consumerKey + "_" + tenantDomain;
         }
+    }
+
+    private static void addImpersonatorRole(String appOwner, String appId, int tenantId, String tenantDomain)
+        throws IdentityApplicationManagementException {
+
+        List<Permission> permissions = new ArrayList<>();
+        permissions.add(new Permission(IMPERSONATE_SCOPE_NAME));
+        permissions.add(new Permission(IMPERSONATE_ORG_SCOPE_NAME));
+
+        RoleManagementService roleManagementService = AppsCommonDataHolder.getInstance().getRoleManagementServiceV2();
+        try {
+            roleManagementService.addRole(IMPERSONATE_ROLE_NAME, Collections.emptyList(), Collections.emptyList(),
+                permissions, APPLICATION, appId, tenantDomain);
+        } catch (IdentityRoleManagementException e) {
+            throw new IdentityApplicationManagementException("Error occurred while creating impersonator role.");
+        }
+    }
+
+    private static void addAPIResourceToApplication(String appId, String tenantDomain, String apiResourceName,
+        String apiResourceType) throws IdentityApplicationManagementException {
+
+        APIResource apiResource = getImpersontionAPIResource(tenantDomain, apiResourceName);
+
+        AuthorizedAPI authorizedAPI = new AuthorizedAPI(
+                appId,
+                apiResource.getId(),
+                APIResourceManagementConstants.RBAC_AUTHORIZATION,
+                apiResource.getScopes(),
+                apiResourceType
+        );
+        try {
+            AuthorizedAPIManagementService authorizedAPIManagementService = new AuthorizedAPIManagementServiceImpl();
+            authorizedAPIManagementService.addAuthorizedAPI(appId, authorizedAPI, tenantDomain);
+        } catch (IdentityApplicationManagementException e) {
+            throw new IdentityApplicationManagementException("Error occurred while adding API resource.");
+        }
+    }
+
+    private static APIResource getImpersontionAPIResource(String tenantDomain, String apiResourceName)
+            throws IdentityApplicationManagementException {
+
+        APIResourceManager apiResourceManager = AppsCommonDataHolder.getInstance().getAPIResourceManager();
+        APIResource apiResource = null;
+        try {
+            apiResource = apiResourceManager.getAPIResourceByIdentifier(apiResourceName, tenantDomain);
+        } catch (APIResourceMgtException e) {
+            throw new IdentityApplicationManagementException("Error occurred while retrieving API resource.");
+        }
+        if (apiResource == null) {
+            throw new IdentityApplicationManagementException("Impersonation API resource is not available.");
+        }
+        return apiResource;
     }
 
     private static void addAdministratorRole(String appOwner, String appId, int tenantId, String tenantDomain)

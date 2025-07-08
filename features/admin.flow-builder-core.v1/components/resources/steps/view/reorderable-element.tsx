@@ -18,7 +18,7 @@
 
 import Box, { BoxProps } from "@oxygen-ui/react/Box";
 import { GetDragItemProps } from "@oxygen-ui/react/dnd";
-import { GridDotsVerticalIcon, TrashIcon } from "@oxygen-ui/react-icons";
+import { TrashIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useNodeId } from "@xyflow/react";
 import classNames from "classnames";
@@ -27,6 +27,8 @@ import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 import useComponentDelete from "../../../../hooks/use-component-delete";
 import { Element } from "../../../../models/elements";
+import { EventTypes } from "../../../../models/extension";
+import PluginRegistry from "../../../../plugins/plugin-registry";
 import Handle from "../../../dnd/handle";
 import Sortable, { SortableProps } from "../../../dnd/sortable";
 
@@ -56,6 +58,27 @@ const PencilIcon = ({ width = 16, height = 16 }: SVGProps<SVGSVGElement>): React
     </svg>
 );
 
+const GridDotsVerticalIcon = ({ width = 16, height = 16 }: SVGProps<SVGSVGElement>): ReactElement => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={ width }
+        height={ height }
+        viewBox="0 0 24 24"
+        fill="none"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="lucide lucide-grip-vertical-icon lucide-grip-vertical"
+    >
+        <circle cx="9" cy="12" r="2"/>
+        <circle cx="9" cy="5" r="2"/>
+        <circle cx="9" cy="19" r="2"/>
+        <circle cx="15" cy="12" r="2"/>
+        <circle cx="15" cy="5" r="2"/>
+        <circle cx="15" cy="19" r="2"/>
+    </svg>
+);
+
 /**
  * Re-orderable component inside a step node.
  *
@@ -79,6 +102,32 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
         setIsOpenResourcePropertiesPanel
     } = useAuthenticationFlowBuilderCore();
 
+    /**
+     * Handles the opening of the property panel for the resource.
+     *
+     * @param event - MouseEvent triggered on element interaction.
+     */
+    const handlePropertyPanelOpen = (event: MouseEvent): void => {
+
+        event.stopPropagation();
+        setLastInteractedStepId(stepId);
+        setLastInteractedResource(element);
+    };
+
+    /**
+     * Handles the deletion of the element.
+     */
+    const handleElementDelete = async (): Promise<void> => {
+
+        /**
+         * Execute plugins for ON_NODE_ELEMENT_DELETE event.
+         */
+        await PluginRegistry.getInstance().execute(EventTypes.ON_NODE_ELEMENT_DELETE, stepId, element);
+
+        deleteComponent(stepId, element);
+        setIsOpenResourcePropertiesPanel(false);
+    };
+
     return (
         <Sortable
             id={ id }
@@ -93,6 +142,7 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
                 alignItems="center"
                 className={ classNames("reorderable-component", className) }
                 data-componentid={ `${componentId}-${element.type}` }
+                onDoubleClick={ handlePropertyPanelOpen }
             >
                 <Box className="flow-builder-dnd-actions">
                     <Handle label="Drag" cursor="grab" ref={ handleRef }>
@@ -100,20 +150,13 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
                     </Handle>
                     <Handle
                         label="Edit"
-                        onClick={ (event: MouseEvent) => {
-                            event.stopPropagation();
-                            setLastInteractedStepId(stepId);
-                            setLastInteractedResource(element);
-                        } }
+                        onClick={ handlePropertyPanelOpen }
                     >
                         <PencilIcon />
                     </Handle>
                     <Handle
                         label="Delete"
-                        onClick={ () => {
-                            deleteComponent(stepId, element);
-                            setIsOpenResourcePropertiesPanel(false);
-                        } }
+                        onClick={ handleElementDelete }
                     >
                         <TrashIcon />
                     </Handle>

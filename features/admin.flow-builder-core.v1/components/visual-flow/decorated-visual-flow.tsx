@@ -41,12 +41,15 @@ import VisualFlow, { VisualFlowPropsInterface } from "./visual-flow";
 import VisualFlowConstants from "../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import useComponentDelete from "../../hooks/use-component-delete";
+import useDeleteRedirectionResource from "../../hooks/use-delete-redirection-resource";
 import useGenerateStepElement from "../../hooks/use-generate-step-element";
 import { Element } from "../../models/elements";
+import { EventTypes } from "../../models/extension";
 import { Resource, ResourceTypes } from "../../models/resources";
 import { Step } from "../../models/steps";
 import { Template, TemplateTypes } from "../../models/templates";
 import { Widget } from "../../models/widget";
+import PluginRegistry from "../../plugins/plugin-registry";
 import generateResourceId from "../../utils/generate-resource-id";
 import ResourcePanel from "../resource-panel/resource-panel";
 import ElementPropertiesPanel from "../resource-property-panel/resource-property-panel";
@@ -59,7 +62,7 @@ export interface DecoratedVisualFlowPropsInterface extends VisualFlowPropsInterf
      * Callback to be fired when node data is updated.
      */
     mutateComponents: (components: Element[]) => Element[];
-    onTemplateLoad: (template: Template) => [Node[], Edge[]];
+    onTemplateLoad: (template: Template) => [Node[], Edge[], Resource?, string?];
     onWidgetLoad: (
         widget: Widget,
         targetResource: Resource,
@@ -99,6 +102,10 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     onResourceAdd,
     ...rest
 }: DecoratedVisualFlowPropsInterface): ReactElement => {
+
+    // Event handlers for ON_NODE_DELETE event.
+    useDeleteRedirectionResource();
+
     const { screenToFlowPosition, updateNodeData } = useReactFlow();
     const { generateStepElement } = useGenerateStepElement();
     const updateNodeInternals: UpdateNodeInternals = useUpdateNodeInternals();
@@ -116,7 +123,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         }
     }, [ aiGeneratedFlow ]);
 
-    const addCanvasNode = (event, sourceData, targetData): void => {
+    const addCanvasNode = (event: any, sourceData: any, _targetData: any): void => {
         const { dragged: sourceResource } = sourceData;
         const { clientX, clientY } = event?.nativeEvent;
 
@@ -141,7 +148,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         onResourceDropOnCanvas(generatedStep as Step, null);
     };
 
-    const addToView = (event, sourceData, targetData): void => {
+    const addToView = (event: any, sourceData: any, targetData: any): void => {
         const { dragged: sourceResource } = sourceData;
         const { stepId: targetStepId, droppedOn: targetResource } = targetData;
 
@@ -179,7 +186,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         }
     };
 
-    const addToForm = (event, sourceData, targetData): void => {
+    const addToForm = (event: any, sourceData: any, targetData: any): void => {
         const { dragged: sourceResource } = sourceData;
         const { stepId: targetStepId, droppedOn: targetResource } = targetData;
 
@@ -205,7 +212,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         }
     };
 
-    const handleDragEnd = (event) => {
+    const handleDragEnd = (event: any) => {
         const { source, target } = event.operation;
 
         if (event.canceled || !source || !target) {
@@ -243,7 +250,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         }
     };
 
-    const handleDragOver: (e) => void = useCallback(event => {
+    const handleDragOver: (e) => void = useCallback((event: any) => {
         const { source, target } = event.operation;
 
         if (event.canceled || !source || !target) {
@@ -294,7 +301,10 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     );
 
     const onNodesDelete: OnNodesDelete<Node> = useCallback(
-        (deleted: Node[]) => {
+        async (deleted: Node[]) => {
+            // Execute plugins for ON_NODE_DELETE event.
+            await PluginRegistry.getInstance().execute(EventTypes.ON_NODE_DELETE, deleted);
+
             setEdges(
                 deleted?.reduce((acc: Edge[], node: Node) => {
                     const incomers: Node[] = getIncomers(node, nodes, edges);
@@ -318,6 +328,19 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         [ nodes, edges ]
     );
 
+    /**
+     * Handles the deletion of edges.
+     *
+     * @param deleted - Array of deleted edges.
+     */
+    const onEdgesDelete: (deleted: Edge[]) => void = useCallback(
+        async (deleted: Edge[]) => {
+            // Execute plugins for ON_EDGE_DELETE event.
+            await PluginRegistry.getInstance().execute(EventTypes.ON_EDGE_DELETE, deleted);
+        },
+        []
+    );
+
     const handleOnAdd = (resource: Resource): void => {
         // Currently we only let templates to be added to the canvas via a click.
         if (resource.resourceType !== ResourceTypes.Template) {
@@ -332,7 +355,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
             return;
         }
 
-        const [ newNodes, newEdges ] = onTemplateLoad(resource);
+        const [ newNodes, newEdges, defaultPropertySelector, defaultPropertySectorStepId ] = onTemplateLoad(resource);
 
         // TODO: Figure-out a better way to handle this debounce.
         // Tracker: https://github.com/xyflow/xyflow/issues/2405
@@ -361,7 +384,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
             setEdges(() => [ ...newEdges ]);
         }, 500);
 
-        onResourceDropOnCanvas(resource, null);
+        onResourceDropOnCanvas(defaultPropertySelector ?? resource, defaultPropertySectorStepId ?? null);
     };
 
     return (
@@ -386,6 +409,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                             onEdgesChange={ onEdgesChange }
                             onConnect={ onConnect }
                             onNodesDelete={ onNodesDelete }
+                            onEdgesDelete={ onEdgesDelete }
                             { ...rest }
                         />
                     </ElementPropertiesPanel>

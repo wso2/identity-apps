@@ -18,6 +18,9 @@
     },
     "appBaseName": "console",
     "clientID": "CONSOLE",
+    "customContent": {
+        "maxFileSize": 1048576
+    },
     "debug": false,
     "developerApp": {
         "basePath": "",
@@ -130,7 +133,17 @@
                 "description": "This email resends an Email OTP to a user for password reset",
                 "displayName": "Resend Password Reset Email OTP",
                 "id": "cmVzZW5kUGFzc3dvcmRSZXNldE9UUA"
-            }
+            },
+            {
+                "description": "This email is sent to request credentials from the user when a new account is created and the registration flow is incomplete",
+                "displayName": "Request New User Credentials",
+                "id": "T3JjaGVzdHJhdGVkQXNrUGFzc3dvcmQ"
+            },
+            {
+                "description": "This email is resent to request credentials from the user when a new account is created and the registration flow is incomplete",
+                "displayName": "Resend New User Credentials Email",
+                "id": "T3JjaGVzdHJhdGVkUmVzZW5kQXNrUGFzc3dvcmQ"
+              }
         ],
         "outboundProvisioningConnectors": [],
         "smsTemplates": [
@@ -230,6 +243,7 @@
         "appName": "Console",
         "appTitle": "WSO2 Identity Server Console",
         "appWhiteLogoPath": "/assets/images/branding/logo-inverted.svg",
+        "asyncOperationStatusPollingInterval": 5000,
         "connectionResourcesUrl": "",
         "cookiePolicyUrl": "/authenticationendpoint/cookie_policy.do",
         "emailTemplates": {
@@ -290,8 +304,7 @@
             },
             "actions": {
                 "disabledFeatures": [
-                    "actions.types.list.preRegistration",
-                    "actions.types.list.preUpdateProfile"
+                    "actions.types.list.preRegistration"
                 ],
                 "enabled": true,
                 "featureFlags": [
@@ -344,6 +357,25 @@
                 "disabledFeatures": [],
                 "enabled": false,
                 "featureFlags": [],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "read": [],
+                    "update": []
+                }
+            },
+            "agents": {
+                "disabledFeatures": [
+                    "agents.disable",
+                    "agents.groups"
+                ],
+                "enabled": true,
+                "featureFlags": [
+                    {
+                        "feature": "agents",
+                        "flag": "EXPERIMENTAL"
+                    }
+                ],
                 "scopes": {
                     "create": [],
                     "delete": [],
@@ -425,7 +457,8 @@
             },
             "applications": {
                 "disabledFeatures": [
-                    "applications.loginFlow.legacyEditor"
+                    "applications.loginFlow.legacyEditor",
+                    "applications.sharedAccess.status"
                 ],
                 "enabled": true,
                 "featureFlags": [
@@ -730,6 +763,38 @@
                     ]
                 }
             },
+            "flows": {
+                "disabledFeatures": [
+                    "flows.types.list.inviteUserToSetPassword",
+                    "flows.types.list.passwordRecovery"
+                ],
+                "enabled": true,
+                "featureFlags": [
+                    {
+                        "feature": "flows",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "flows.types.list.registration",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "flows.types.list.passwordRecovery",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "flows.types.list.inviteUserToSetPassword",
+                        "flag": ""
+                    }
+                ],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [],
+                    "update": []
+                }
+            },
             "gettingStarted": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -952,6 +1017,28 @@
                     ]
                 }
             },
+            "mcpServers": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [
+                        "internal_api_resource_create"
+                    ],
+                    "delete": [
+                        "internal_api_resource_delete"
+                    ],
+                    "feature": [
+                        "console:apiResources"
+                    ],
+                    "read": [
+                        "internal_api_resource_view"
+                    ],
+                    "update": [
+                        "internal_api_resource_update"
+                    ]
+                }
+            },
             "myAccount": {
                 "disabledFeatures": [],
                 "enabled": false,
@@ -1126,14 +1213,8 @@
                     "create": [],
                     "delete": [],
                     "feature": [],
-                    "read": [
-                        "internal_authenticator_view",
-                        "internal_registration_flow_view"
-                    ],
-                    "update": [
-                        "internal_governance_update",
-                        "internal_registration_flow_update"
-                    ]
+                    "read": [],
+                    "update": []
                 }
             },
             "remoteFetchConfig": {
@@ -1502,6 +1583,54 @@
                     ]
                 }
             },
+            "webhooks": {
+                "disabledFeatures": [
+                ],
+                "enabled": false,
+                "featureFlags": [
+                    {
+                        "feature": "webhooks",
+                        "flag": "BETA"
+                    }
+                ],
+                "scopes": {
+                    "create": [
+                            "internal_webhook_mgt_create"
+                    ],
+                    "delete": [
+                            "internal_webhook_mgt_delete"
+                    ],
+                    "read": [
+                            "internal_webhook_meta_view",
+                            "internal_webhook_mgt_view"
+                    ],
+                    "update": [
+                            "internal_webhook_mgt_update"
+                    ]
+                }
+            },
+             "workflows": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [
+                        "internal_humantask_view"
+                    ],
+                    "delete": [
+                        "internal_humantask_view"
+                    ],
+                    "feature": [
+                        "console:workflowApprovals"
+                    ],
+                    "read": [
+                        "internal_humantask_view"
+                    ],
+                    "update": [
+                        "internal_humantask_view"
+                    ]
+                }
+            },
             "wsFedConfiguration": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -1616,6 +1745,7 @@
             "Console",
             "My Account"
         ],
+        "systemReservedUserStores": ["AGENT"],
         "theme": {
             "name": "wso2is"
         },

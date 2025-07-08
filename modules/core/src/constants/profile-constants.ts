@@ -76,6 +76,7 @@ export class ProfileConstants {
         .set("NAME", "name")
         .set("ADDRESSES", "addresses")
         .set("PHONE_NUMBERS", "phoneNumbers")
+        .set("COUNTRY", "country")
         .set("GROUPS", "groups")
         .set("ROLES", "roles")
         .set("ROLES_DEFAULT", "roles.default")
@@ -104,7 +105,9 @@ export class ProfileConstants {
         .set("ACCOUNT_STATE", "accountState")
         .set("PREFERRED_CHANNEL", "preferredChannel")
         .set("EMAIL_VERIFIED", "emailVerified")
-        .set("PHONE_VERIFIED", "phoneVerified");
+        .set("PHONE_VERIFIED", "phoneVerified")
+        .set("VERIFY_EMAIL", "verifyEmail")
+        .set("VERIFY_MOBILE", "verifyMobile");
 
     /**
      * States if the SCIM schema is mutable.
@@ -132,4 +135,16 @@ export class ProfileConstants {
     // Self sign up
     public static readonly SELF_SIGN_UP_CONNECTOR: string = "self-sign-up";
     public static readonly SELF_SIGN_UP_ENABLE_SEND_OTP_IN_EMAIL: string = "SelfRegistration.OTP.SendOTPInEmail";
+
+    public static readonly MIGRATED_ENTERPRISE_SCIM_ATTRIBUTES: string[] = [
+        "askPassword", "verifyEmail", "pendingEmails.value", "accountLocked", "accountState",
+        "emailOTPDisabled", "emailVerified", "failedEmailOTPAttempts", "failedLoginAttempts",
+        "failedLoginAttemptsBeforeSuccess", "failedLoginLockoutCount", "failedPasswordRecoveryAttempts",
+        "failedSMSOTPAttempts", "failedTOTPAttempts", "isLiteUser", "lastLoginTime", "lastLogonTime",
+        "lastPasswordUpdateTime", "lockedReason", "phoneVerified", "preferredChannel", "smsOTPDisabled",
+        "tenantAdminAskPassword", "unlockTime", "accountDisabled", "dateOfBirth", "isReadOnlyUser",
+        "pendingMobileNumber", "forcePasswordReset", "oneTimePassword", "verifyMobile", "country",
+        "userSourceId", "totpEnabled", "backupCodeEnabled", "failedBackupCodeAttempts", "managedOrg",
+        "preferredMFAOption"
+    ];
 }

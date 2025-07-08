@@ -374,7 +374,7 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
             <Segment basic textAlign="center">
                 <div className="modal-input">
                     <div className="svg-box">
-                        <svg className="circular positive-stroke">
+                        <svg className="circular positive-stroke" viewBox="0 0 150 150">
                             <circle
                                 className="path"
                                 cx="75"

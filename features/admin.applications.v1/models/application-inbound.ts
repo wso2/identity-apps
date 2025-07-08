@@ -38,6 +38,7 @@ export interface MetadataPropertyInterface {
 export interface GrantTypeInterface {
     name?: string;
     displayName?: string;
+    publicClientAllowed?: boolean;
 }
 
 export interface GrantTypeMetaDataInterface {
@@ -515,7 +516,8 @@ export interface OIDCEndpointsInterface {
  */
 export enum SupportedAccessTokenBindingTypes {
     NONE = "None",
-    CERTIFICATE = "certificate"
+    CERTIFICATE = "certificate",
+    DPOP = "DPoP"
 }
 
 /**

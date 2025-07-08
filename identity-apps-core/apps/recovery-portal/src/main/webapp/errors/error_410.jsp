@@ -32,6 +32,8 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="../includes/branding-preferences.jsp"/>
 
+<% request.setAttribute("pageName","error-410"); %>
+
 <%
     String status = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.410");
 %>
@@ -55,7 +57,7 @@
         <jsp:include page="../includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout authentication-portal-layout">
+<body class="login-portal layout authentication-portal-layout" data-response-type="error" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>

@@ -135,4 +135,13 @@ export interface CheckOrgHandleInterface {
  */
 export interface CheckOrgHandleResponseInterface {
     available: boolean;
+
+export interface GetOrganizationsParamsInterface {
+    shouldFetch?: boolean,
+    filter?: string;
+    limit?: number;
+    after?: string;
+    before?: string;
+    recursive?: boolean;
+    isRoot?: boolean;
 }

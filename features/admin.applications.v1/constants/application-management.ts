@@ -87,7 +87,8 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_ACCESSTOKEN_ATTRIBUTES", "applications.accessTokenAttributes")
         .set("APPLICATION_OUTDATED_APP_BANNER", "applications.outdatedAppBanner")
         .set("APPLICATION_EDIT_ACCESS_CONFIG_BACK_CHANNEL_LOGOUT",
-            "applications.edit.accessConfiguration.backChannelLogout");
+            "applications.edit.accessConfiguration.backChannelLogout")
+        .set("APPLICATION_SHARED_ACCESS_STATUS", "applications.sharedAccess.status");
 
     /**
      * Key for the URL search param for application state.
@@ -477,6 +478,8 @@ export class ApplicationManagementConstants {
 
     public static readonly IS_CHOREO_APP_SP_PROPERTY: string = "isChoreoApp";
 
+    public static readonly ORIGINAL_TEMPLATE_ID_PROPERTY: string = "originalTemplateId";
+
     public static readonly CUSTOM_APPLICATION_PROTOCOL_ORDER: Map<string, number> =
         new Map<string, number>([
             [ "oidc", 0 ],
@@ -544,10 +547,22 @@ export class ApplicationManagementConstants {
         ApplicationManagementConstants.DEFAULT_NAME_ATTRIBUTE_FORMAT,
         "urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
     ];
+
+    /**
+     * Application share type to send to async operation status poller.
+     */
+    public static readonly B2B_APPLICATION_SHARE: string = "B2B_APPLICATION_SHARE";
 }
 
 export enum ShareWithOrgStatus {
     TRUE,
     FALSE,
     UNDEFINED
+}
+
+export enum ApplicationShareUnitStatus {
+    FAILED = "FAILED",
+    SUCCESS = "SUCCESS",
+    PARTIALLY_COMPLETED = "PARTIALLY_COMPLETED",
+    ALL = "ALL"
 }

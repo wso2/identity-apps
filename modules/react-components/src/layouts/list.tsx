@@ -184,6 +184,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
         totalPages,
         activePage,
         topActionPanelExtension,
+        listItemLimit,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
@@ -318,6 +319,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                                 hidden={ totalListSize === 0 || totalListSize === undefined }
                                 { ...paginationOptions }
                                 activePage={ activePage }
+                                listItemLimit={ listItemLimit }
                             />
                         )
                         : null

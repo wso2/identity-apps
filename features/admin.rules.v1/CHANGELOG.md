@@ -1,5 +1,29 @@
 # @wso2is/admin.rules.v1
 
+## 0.6.0
+
+### Minor Changes
+
+- [#8247](https://github.com/wso2/identity-apps/pull/8247) [`6cf542b1d28fd5a1c2d52bf5642328d99c592182`](https://github.com/wso2/identity-apps/commit/6cf542b1d28fd5a1c2d52bf5642328d99c592182) Thanks [@osandamaleesha](https://github.com/osandamaleesha)! - Remove hardcoded rule metadata for pre update profile
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.45.5
+
+## 0.5.0
+
+### Minor Changes
+
+- [#8236](https://github.com/wso2/identity-apps/pull/8236) [`7c471b913de0fc2cb974ec4fc2dec2fed1da757e`](https://github.com/wso2/identity-apps/commit/7c471b913de0fc2cb974ec4fc2dec2fed1da757e) Thanks [@osandamaleesha](https://github.com/osandamaleesha)! - This change adds rule support for pre profile action
+
+### Patch Changes
+
+- [#8238](https://github.com/wso2/identity-apps/pull/8238) [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+- Updated dependencies [[`89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f`](https://github.com/wso2/identity-apps/commit/89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f), [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f)]:
+  - @wso2is/admin.core.v1@2.45.2
+
 ## 0.4.19
 
 ### Patch Changes

@@ -23,6 +23,21 @@ import { ProfileConstants } from "@wso2is/core/constants";
 import { DropdownChild } from "@wso2is/forms";
 
 /**
+ * Keys used in feature dictionary.
+ */
+export enum UserFeatureDictionaryKeys {
+    UserCreate = "USER_CREATE",
+    UserUpdate = "USER_UPDATE",
+    UserDelete = "USER_DELETE",
+    UserRead = "USER_READ",
+    UserGroups = "USER_GROUPS",
+    UserRoles = "USER_ROLES",
+    UserSharedProfiles = "USER_SHARED_PROFILES",
+    UserImpersonation = "USER_IMPERSONATION",
+    UserLegacyProfile = "USER_LEGACY_PROFILE"
+}
+
+/**
  * Class containing app constants which can be used across several applications.
  */
 export class UserManagementConstants {
@@ -70,7 +85,8 @@ export class UserManagementConstants {
         .set("USER_GROUPS", "users.edit.groups")
         .set("USER_ROLES", "users.edit.roles")
         .set("USER_SHARED_PROFILES", "users.updateSharedProfiles")
-        .set("USER_IMPERSONATION", "users.user.impersonation");
+        .set("USER_IMPERSONATION", "users.user.impersonation")
+        .set(UserFeatureDictionaryKeys.UserLegacyProfile, "users.profile.legacy");
 
     // API errors
     public static readonly USER_INFO_UPDATE_ERROR: string = "Could not update the user information.";
@@ -182,6 +198,9 @@ export class UserManagementConstants {
     // Impersonation related constants.
     public static readonly ID_TOKEN: string = "id_token";
     public static readonly SUBJECT_TOKEN: string = "subject_token";
+
+    // Name of the Asgardeo userstore.
+    public static readonly ASGARDEO_USERSTORE: string = "ASGARDEO-USER";
 
     // Feature flags.
     public static readonly ATTRIBUTE_PROFILES_FOR_USER_CREATION_FEATURE_FLAG: string
@@ -481,12 +500,12 @@ export const USER_ACCOUNT_STATUS_FILTER_OPTIONS: DropdownChild[] = [
     {
         key: "LOCKED",
         text: "users:advancedSearch.accountStatusFilter.options.locked",
-        value: "urn:scim:wso2:schema:accountState eq LOCKED"
+        value: "urn:scim:wso2:schema:accountLocked eq true"
     },
     {
         key: "DISABLED",
         text: "users:advancedSearch.accountStatusFilter.options.disabled",
-        value: "urn:scim:wso2:schema:accountState eq DISABLED"
+        value: "urn:scim:wso2:schema:accountDisabled eq true"
     },
     {
         key: "PENDING_FUPR",
@@ -497,5 +516,24 @@ export const USER_ACCOUNT_STATUS_FILTER_OPTIONS: DropdownChild[] = [
         key: "PENDING_AP",
         text: "users:advancedSearch.accountStatusFilter.options.pendingInitialPasswordSetup",
         value: "urn:scim:wso2:schema:accountState eq PENDING_AP"
+    },
+    {
+        key: "PENDING_PRIMARY_EMAIL",
+        text: "users:advancedSearch.accountStatusFilter.options.pendingPrimaryEmailVerification",
+        value: "urn:scim:wso2:schema:emailVerified ne true"
+    },
+    {
+        key: "PENDING_PRIMARY_MOBILE",
+        text: "users:advancedSearch.accountStatusFilter.options.pendingPrimaryMobileVerification",
+        value: "urn:scim:wso2:schema:phoneVerified ne true"
     }
 ];
+
+export const EMAIL_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
+export const MOBILE_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE");
+export const EMAIL_ADDRESSES_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES");
+export const MOBILE_NUMBERS_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS");
+export const VERIFIED_MOBILE_NUMBERS_ATTRIBUTE: string =
+    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS");
+export const VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE: string =
+    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES");

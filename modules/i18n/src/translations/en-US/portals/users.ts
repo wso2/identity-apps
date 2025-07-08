@@ -39,7 +39,9 @@ export const users: usersNS = {
                 disabled: "Disabled",
                 locked: "Locked",
                 pendingInitialPasswordSetup: "Pending initial password setup",
-                pendingPasswordReset: "Pending password reset"
+                pendingPasswordReset: "Pending password reset",
+                pendingPrimaryEmailVerification: "Pending email verification",
+                pendingPrimaryMobileVerification: "Pending mobile verification"
             }
         },
         form: {
@@ -269,6 +271,12 @@ export const users: usersNS = {
                 message: "User deleted successfully"
             }
         },
+        deleteUserPendingApproval: {
+            success: {
+                description: "User deletion was accepted and pending approval.",
+                message: "User accepted for deletion"
+            }
+        },
         fetchUsers: {
             error: {
                 description: "{{description}}",
@@ -463,7 +471,8 @@ export const users: usersNS = {
                 clearButton: "Clear search query",
                 subTitle: {
                     0: "We couldn't find any results for {{query}}",
-                    1: "Please try a different search term."
+                    1: "Please try a different search query.",
+                    2: "We couldn't find any results."
                 },
                 title: "No results found"
             }

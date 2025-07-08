@@ -17,7 +17,6 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
-import Chip from "@oxygen-ui/react/Chip";
 import Tab from "@oxygen-ui/react/Tab";
 import TabPanel from "@oxygen-ui/react/TabPanel";
 import Tabs from "@oxygen-ui/react/Tabs";
@@ -126,14 +125,12 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
             mode: AuthenticationFlowBuilderModes.Classic
         },
         {
-            extra: <Chip size="small" label="Beta" className="oxygen-chip-beta" />,
             id: 1,
             label: t("authenticationFlow:modes.visual.label"),
             mode: AuthenticationFlowBuilderModes.Visual
         }
     ];
 
-    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
     const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
 
     const [ activeFlowMode, setActiveFlowMode ] = useState<AuthenticationFlowBuilderModesInterface>(FlowModes[0]);
@@ -398,7 +395,6 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                                                     <Typography sx={ { fontWeight: 500 } }>
                                                         { mode.label }
                                                     </Typography>
-                                                    { isSAASDeployment && mode.extra }
                                                 </div>
                                             ) }
                                             data-componentid={ `${componentId}-${ mode.id }-tab` }

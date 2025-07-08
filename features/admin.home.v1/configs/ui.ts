@@ -18,6 +18,9 @@
 
 import { FunctionComponent, SVGProps } from "react";
 import {
+    ReactComponent as FlowComposerIllustration
+} from "../../themes/default/assets/images/illustrations/flow-composer.svg";
+import {
     ReactComponent as OnboardUsersIllustration
 } from "../../themes/default/assets/images/illustrations/onboard-users-illustration.svg";
 import {
@@ -35,9 +38,11 @@ export const getGettingStartedCardIllustrations = (): {
     onboardUsers: FunctionComponent<SVGProps<SVGSVGElement>>;
     setupSocialConnections: FunctionComponent<SVGProps<SVGSVGElement>>;
     tryItApplication: FunctionComponent<SVGProps<SVGSVGElement>>;
+    flowComposer: FunctionComponent<SVGProps<SVGSVGElement>>;
 } => {
 
     return {
+        flowComposer: FlowComposerIllustration,
         onboardApplications: OnboardApplicationsIllustration,
         onboardUsers: OnboardUsersIllustration,
         setupSocialConnections: SetupSocialConnections,

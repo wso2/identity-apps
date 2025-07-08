@@ -76,7 +76,6 @@
     private static final String IS_SAAS_APP = "isSaaSApp";
     private static final String BASIC_AUTHENTICATOR = "BasicAuthenticator";
     private static final String IDENTIFIER_EXECUTOR = "IdentifierExecutor";
-    private static final String OPEN_ID_AUTHENTICATOR = "OpenIDAuthenticator";
     private static final String JWT_BASIC_AUTHENTICATOR = "JWTBasicAuthenticator";
     private static final String X509_CERTIFICATE_AUTHENTICATOR = "x509CertificateAuthenticator";
     private static final String GOOGLE_AUTHENTICATOR = "GoogleOIDCAuthenticator";
@@ -186,7 +185,7 @@
     List<String> localAuthenticatorNames = new ArrayList<String>();
     List<String> registeredLocalAuthenticators = Arrays.asList(
         BACKUP_CODE_AUTHENTICATOR, TOTP_AUTHENTICATOR, EMAIL_OTP_AUTHENTICATOR,
-        MAGIC_LINK_AUTHENTICATOR,SMS_OTP_AUTHENTICATOR,OPEN_ID_AUTHENTICATOR,
+        MAGIC_LINK_AUTHENTICATOR,SMS_OTP_AUTHENTICATOR,
         IDENTIFIER_EXECUTOR,JWT_BASIC_AUTHENTICATOR,BASIC_AUTHENTICATOR,
         IWA_AUTHENTICATOR,X509_CERTIFICATE_AUTHENTICATOR,FIDO_AUTHENTICATOR,
         PUSH_NOTIFICATION_AUTHENTICATOR
@@ -348,14 +347,7 @@
             selfSignUpOverrideURL = selfSignUpOverrideURL.concat("?ui_locales=" + localeString);
         }
     }
-
-    if (!StringUtils.isBlank(passwordRecoveryOverrideURL)) {
-        if (passwordRecoveryOverrideURL.contains("?")) {
-            passwordRecoveryOverrideURL = passwordRecoveryOverrideURL.concat("&ui_locales=" + localeString);
-        } else {
-            passwordRecoveryOverrideURL = passwordRecoveryOverrideURL.concat("?ui_locales=" + localeString);
-        }
-    }
+    passwordRecoveryOverrideURL = getRecoveryPortalUrl(passwordRecoveryOverrideURL, recoveryPortalOverrideURL, localeString);
 %>
 
 <%
@@ -438,6 +430,7 @@
     }
 %>
 
+<% request.setAttribute("pageName", "sign-in"); %>
 
 <!doctype html>
 <html lang="en-US">
@@ -471,16 +464,18 @@
     <%
         }
     %>
+
 </head>
-<body class="login-portal layout authentication-portal-layout" onload="checkSessionKey()">
-    <% request.setAttribute("pageName", "sign-in"); %>
+
+<body class="login-portal layout authentication-portal-layout" onload="checkSessionKey()" data-page="<%= request.getAttribute("pageName") %>">
+
     <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
         <jsp:include page="extensions/timeout.jsp"/>
     <% } else { %>
         <jsp:include page="util/timeout.jsp"/>
     <% } %>
 
-    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>">
         <layout:component componentName="ProductHeader">
             <%
                 if (StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT) &&
@@ -534,8 +529,8 @@
                             class="ellipsis"
                             data-position="top left"
                             data-variation="inverted"
-                            data-content="<%=sanitizeUserName%>">
-                        <%=sanitizeUserName%>
+                            data-content="<%=Encode.forHtmlAttribute(sanitizeUserName)%>">
+                        <%=Encode.forHtmlContent(sanitizeUserName)%>
                     </span>
                 </div>
                 <% } %>
@@ -543,12 +538,7 @@
                 <div class="segment-form">
                     <%
                         if (localAuthenticatorNames.size() > 0) {
-                            if (localAuthenticatorNames.contains(OPEN_ID_AUTHENTICATOR)) {
-                                hasLocalLoginOptions = true;
-                    %>
-                        <%@ include file="openid.jsp" %>
-                    <%
-                        } else if (localAuthenticatorNames.contains(IDENTIFIER_EXECUTOR)) {
+                            if (localAuthenticatorNames.contains(IDENTIFIER_EXECUTOR)) {
                             hasLocalLoginOptions = true;
                     %>
                         <%@ include file="identifierauth.jsp" %>
@@ -1479,7 +1469,7 @@
                 var baseLocation = "<%=commonauthURL%>?idp=" + key + "&authenticator=" + value +
                     "&sessionDataKey=<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))%>";
 
-                if ("<%=username%>" !== "null" && "<%=username%>".length > 0) {
+                if ("<%=Encode.forJavaScript(username)%>" !== "null" && "<%=Encode.forJavaScript(username)%>".length > 0) {
                     document.location = baseLocation + "&username=" + "<%=Encode.forUriComponent(username)%>" + "<%=multiOptionURIParam%>";
                 } else {
                     document.location = baseLocation + "<%=multiOptionURIParam%>";

@@ -273,6 +273,12 @@ export interface ApplicationsNS {
             content: string;
             assertionHint: string;
         };
+        inProgressReshare: {
+            header: string;
+            message: string;
+            content: string;
+            assertionHint: string;
+        };
         clientSecretHashDisclaimer: {
             modal: {
                 header: string;
@@ -635,6 +641,9 @@ export interface ApplicationsNS {
                         };
                     };
                     landing: {
+                        banners: {
+                            registrationConfiguration: string;
+                        };
                         defaultConfig: {
                             description: {
                                 0: string;
@@ -771,6 +780,12 @@ export interface ApplicationsNS {
             sharedAccess: {
                 subTitle: string;
                 tabName: string;
+                sharedAccessStatusOptions: {
+                    all: string;
+                    success: string;
+                    failed: string;
+                    partiallyCompleted: string;
+                }
             };
             shareApplication: {
                 heading: string;
@@ -811,7 +826,46 @@ export interface ApplicationsNS {
                         description: string;
                     };
                 };
+                completedSharingNotification: {
+                    failure: {
+                        message: string;
+                        description: string;
+                    },
+                    success: {
+                        message: string;
+                        description: string;
+                    },
+                    partialSuccess: {
+                        message: string;
+                        description: string;
+                    }
+                },
+                addAsyncSharingNotification: {
+                    message: string,
+                    description: string,
+                },
+                asyncOperationStatus: {
+                    inProgress: {
+                        heading: string,
+                        description: string
+                    },
+                    failed: {
+                        heading: string,
+                        description: string,
+                        actionText: string
+                    },
+                    partiallyCompleted: {
+                        heading: string,
+                        description: string,
+                        actionText: string
+                    }
+                },
                 switchToSelectiveShareFromSharingWithAllSuborgsWarning: string;
+                applicationShareFailureSummaryDefaultStatus: {
+                    success: string,
+                    failed: string,
+                    partiallyCompleted: string
+                }
             };
             apiAuthorization: {
                 m2mPolicyMessage: string;
@@ -1335,6 +1389,18 @@ export interface ApplicationsNS {
                                 ssoBinding: {
                                     label: string;
                                 };
+                                cookie: {
+                                    label: string;
+                                };
+                                clientRequest: {
+                                    label: string;
+                                };
+                                certificate: {
+                                    label: string;
+                                };
+                                deviceFlow: {
+                                    label: string;
+                                };
                             };
                             description: string;
                             label: string;
@@ -1342,6 +1408,7 @@ export interface ApplicationsNS {
                                 cookie: string;
                                 none: string;
                                 sso_session: string;
+                                dpop: string;
                             };
                         };
                         expiry: {
@@ -2947,5 +3014,14 @@ export interface ApplicationsNS {
                 description2: string;
             };
         };
+        sharedAccessStatus: {
+            heading: string,
+            subHeading: string,
+            actionText: string,
+            banner: {
+                partiallyCompleted: string,
+                failed: string
+            }
+        }
     };
 }

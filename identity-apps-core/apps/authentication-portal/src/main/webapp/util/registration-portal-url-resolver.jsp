@@ -61,6 +61,30 @@
 
         return registrationEndpointUrl;
     }
+
+    /**
+     * Returns the recovery portal URL.
+     * 
+     * @param passwordRecoveryOverrideURL The password recovery endpoint URL.
+     * @param recoveryPortalOverrideURL   The recovery portal URL.
+     * @param localeString                The locale string to append.
+     * @return The final recovery portal URL.
+     */
+     public static String getRecoveryPortalUrl(String passwordRecoveryOverrideURL, String recoveryPortalOverrideURL, 
+        String localeString) {
+
+        String baseURL = passwordRecoveryOverrideURL;
+
+        if (dynamicPortalEnabled && StringUtils.isNotBlank(recoveryPortalOverrideURL)) {
+            baseURL = recoveryPortalOverrideURL;
+        }
+
+        if (StringUtils.isNotBlank(baseURL) && StringUtils.isNotBlank(localeString)) {
+            String separator = baseURL.contains("?") ? "&" : "?";
+            baseURL = baseURL + separator + "ui_locales=" + localeString;
+        }
+        return baseURL;
+    }
 %>
 
 <%

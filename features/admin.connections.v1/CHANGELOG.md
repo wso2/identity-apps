@@ -1,5 +1,49 @@
 # @wso2is/admin.connections.v1
 
+## 2.33.98
+
+### Patch Changes
+
+- [#8395](https://github.com/wso2/identity-apps/pull/8395) [`b15fb736d9f98de2f79ff10907da3f17e077b1c9`](https://github.com/wso2/identity-apps/commit/b15fb736d9f98de2f79ff10907da3f17e077b1c9) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add signicat template.
+
+- Updated dependencies [[`b15fb736d9f98de2f79ff10907da3f17e077b1c9`](https://github.com/wso2/identity-apps/commit/b15fb736d9f98de2f79ff10907da3f17e077b1c9), [`95a551badcc4414cea3f42eb8fd2de9fdb29dc26`](https://github.com/wso2/identity-apps/commit/95a551badcc4414cea3f42eb8fd2de9fdb29dc26)]:
+  - @wso2is/admin.connections.v1@2.33.98
+  - @wso2is/admin.applications.v1@2.36.3
+  - @wso2is/i18n@2.24.4
+
+## 2.33.97
+
+### Patch Changes
+
+- [#8373](https://github.com/wso2/identity-apps/pull/8373) [`a3907cedff3ec126cea2f5174221ddb71a0ad644`](https://github.com/wso2/identity-apps/commit/a3907cedff3ec126cea2f5174221ddb71a0ad644) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix text overflow issue in trusted token issuer sub header
+
+- Updated dependencies [[`a3907cedff3ec126cea2f5174221ddb71a0ad644`](https://github.com/wso2/identity-apps/commit/a3907cedff3ec126cea2f5174221ddb71a0ad644)]:
+  - @wso2is/admin.connections.v1@2.33.97
+
+## 2.33.96
+
+### Patch Changes
+
+- [#8238](https://github.com/wso2/identity-apps/pull/8238) [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+- Updated dependencies [[`7c471b913de0fc2cb974ec4fc2dec2fed1da757e`](https://github.com/wso2/identity-apps/commit/7c471b913de0fc2cb974ec4fc2dec2fed1da757e), [`89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f`](https://github.com/wso2/identity-apps/commit/89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f), [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f)]:
+  - @wso2is/admin.actions.v1@1.13.0
+  - @wso2is/admin.core.v1@2.45.2
+  - @wso2is/admin.identity-verification-providers.v1@2.27.204
+  - @wso2is/admin.identity-providers.v1@2.26.206
+  - @wso2is/admin.console-settings.v1@2.25.210
+  - @wso2is/admin.organizations.v1@2.26.205
+  - @wso2is/admin.applications.v1@2.35.4
+  - @wso2is/admin.feature-gate.v1@1.6.2
+  - @wso2is/admin.connections.v1@2.33.96
+  - @wso2is/admin.extensions.v1@2.38.2
+  - @wso2is/admin.userstores.v1@2.27.33
+  - @wso2is/admin.claims.v1@2.27.123
+  - @wso2is/react-components@2.9.16
+  - @wso2is/admin.roles.v2@2.27.154
+  - @wso2is/dynamic-forms@2.4.41
+  - @wso2is/form@2.7.1
+
 ## 2.33.95
 
 ### Patch Changes

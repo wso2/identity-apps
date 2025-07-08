@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { LabelValue } from "./claim";
 import { RolesMemberInterface } from "./roles";
 
 /**
@@ -173,6 +174,10 @@ export interface ProfileSchemaInterface {
      */
     name: string;
     /**
+     * Available values for the attribute.
+     */
+    canonicalValues?: LabelValue[];
+    /**
      * Order to display.
      */
     displayOrder: string;
@@ -240,6 +245,10 @@ export interface ProfileSchemaInterface {
     * Supported by default. Used to display in the attribute in the UI.
     */
     supportedByDefault?: string;
+    /**
+     * Schema URI of the attribute.
+     */
+    schemaUri?: string;
     /**
      * Schema attribute profiles
      */

@@ -340,6 +340,11 @@ export class I18nModuleConstants {
     public static readonly ACTIONS_NAMESPACE: string = "actions";
 
     /**
+     * Webhooks namespace.
+     */
+    public static readonly WEBHOOKS_NAMESPACE: string = "webhooks";
+
+    /**
      * Tenants namespace.
      */
     public static readonly TENANTS_NAMESPACE: string = "tenants";
@@ -365,6 +370,16 @@ export class I18nModuleConstants {
     public static readonly RULES_NAMESPACE: string = "rules";
 
     /**
+     * Approval Workflows namespace.
+     */
+    public static readonly APPROVAL_WORKFLOWS_NAMESPACE: string = "approvalWorkflows";
+
+    /**
+     * Agents namespace.
+     */
+    public static readonly AGENTS_NAMESPACE: string = "agents";
+
+    /**
      * Constant representing the locale preference key.
      * This key is used to store the user's language preference in cookies or local storage.
      */
@@ -374,4 +389,18 @@ export class I18nModuleConstants {
      * Email Provider namespace.
      */
     public static readonly EMAIL_PROVIDERS_NAMESPACE: string = "emailProviders";
+
+    /**
+     * Constant representing the text direction handling attribute.
+     */
+    public static readonly TEXT_DIRECTION_ATTRIBUTE: string = "dir";
+
+}
+
+/**
+* Enum to define two Text Directions LTR & RTL.
+*/
+export enum TextDirection {
+    "LTR" = "ltr",
+    "RTL" = "rtl"
 }
