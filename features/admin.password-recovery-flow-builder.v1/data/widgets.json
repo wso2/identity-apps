@@ -89,7 +89,7 @@
         "deprecated": false,
         "display": {
             "label": "Continue with Email OTP",
-            "description": "Registration experience with Email",
+            "description": "Password recovery experience with Email",
             "image": "https://www.svgrepo.com/show/368868/otp.svg",
             "showOnResourcePanel": true
         },
@@ -280,7 +280,7 @@
         "deprecated": false,
         "display": {
             "label": "Continue with SMS OTP",
-            "description": "Registration experience with SMS OTP",
+            "description": "Password recovery experience with SMS OTP",
             "image": "https://www.svgrepo.com/show/381137/transaction-password-otp-verification-code-security.svg",
             "showOnResourcePanel": true
         },

@@ -26,7 +26,7 @@ export interface PasswordRecoveryFlowBuilderContextProps {
     /**
      * Flag denoting whether the password recovery flow builder is enabled or not.
      */
-    isNewRegistrationPortalEnabled: boolean;
+    isNewPasswordRecoveryPortalEnabled: boolean;
     /**
      * Is the password recovery flow publishing.
      */
@@ -54,7 +54,7 @@ const PasswordRecoveryFlowBuilderContext: Context<
     PasswordRecoveryFlowBuilderContextProps
 > = createContext<null | PasswordRecoveryFlowBuilderContextProps>(
     {
-        isNewRegistrationPortalEnabled: false,
+        isNewPasswordRecoveryPortalEnabled: false,
         isPublishing: false,
         onPublish: () => {},
         selectedAttributes: {},

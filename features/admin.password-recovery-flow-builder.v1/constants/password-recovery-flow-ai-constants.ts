@@ -35,9 +35,9 @@ export const useGetStatusLabels = (): Record<string, string> => {
     const { t } = useTranslation();
 
     return {
-        generating_registration_flow: t("ai:aiPasswordRecoveryFlow.states.5"),
-        generation_of_registration_flow_complete: t("ai:aiPasswordRecoveryFlow.states.6"),
-        generation_of_registration_step_complete: t("ai:aiPasswordRecoveryFlow.states.10"),
+        generating_password_recovery_flow: t("ai:aiPasswordRecoveryFlow.states.5"),
+        generation_of_password_recovery_flow_complete: t("ai:aiPasswordRecoveryFlow.states.6"),
+        generation_of_password_recovery_step_complete: t("ai:aiPasswordRecoveryFlow.states.10"),
         optimization_and_validation_complete: t("ai:aiPasswordRecoveryFlow.states.2"),
         optimizing_and_validating_user_query: t("ai:aiPasswordRecoveryFlow.states.1"),
         retrieval_of_examples_complete: t("ai:aiPasswordRecoveryFlow.states.4"),
@@ -46,9 +46,9 @@ export const useGetStatusLabels = (): Record<string, string> => {
 };
 
 export const statusProgressMap: Record<string, number> = {
-    generating_registration_flow: 75,
-    generation_of_registration_flow_complete: 100,
-    generation_of_registration_step_complete: 80,
+    generating_password_recovery_flow: 75,
+    generation_of_password_recovery_flow_complete: 100,
+    generation_of_password_recovery_step_complete: 80,
     optimization_and_validation_complete: 40,
     optimizing_and_validating_user_query: 20,
     retrieval_of_examples_complete: 70,

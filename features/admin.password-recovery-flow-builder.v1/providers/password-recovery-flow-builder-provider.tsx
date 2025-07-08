@@ -66,8 +66,8 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
 
     const { toObject } = useReactFlow();
     const {
-        data: isNewRegistrationPortalEnabled,
-        mutate: mutateNewRegistrationPortalEnabledRequest
+        data: isNewPasswordRecoveryPortalEnabled,
+        mutate: mutateNewPasswordRecoveryPortalEnabledRequest
     } = useNewPasswordRecoveryPortalFeatureStatus();
 
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Attribute[] }>({});
@@ -78,7 +78,7 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
 
         const flow: any = toObject();
 
-        if (!isNewRegistrationPortalEnabled) {
+        if (!isNewPasswordRecoveryPortalEnabled) {
             try {
                 await updateNewPasswordRecoveryPortalFeatureStatus(true);
             } catch(error) {
@@ -91,7 +91,7 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
                 );
             }
 
-            mutateNewRegistrationPortalEnabledRequest();
+            mutateNewPasswordRecoveryPortalEnabledRequest();
         }
 
         try {
@@ -123,7 +123,7 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
     return (
         <PasswordRecoveryFlowBuilderContext.Provider
             value={ {
-                isNewRegistrationPortalEnabled,
+                isNewPasswordRecoveryPortalEnabled,
                 isPublishing,
                 onPublish: handlePublish,
                 selectedAttributes,

@@ -54,12 +54,12 @@ const useAIPasswordRecoveryFlowGenerationStatus = ():
 
     useEffect(() => {
         const interval: ReturnType<typeof setInterval> = setInterval(() => {
-            if (!isValidating && !data?.status?.generation_of_registration_flow_complete) {
+            if (!isValidating && !data?.status?.generation_of_password_recovery_flow_complete) {
                 mutate();
             }
         }, 1000);
 
-        if (data?.status?.generation_of_registration_flow_complete) {
+        if (data?.status?.generation_of_password_recovery_flow_complete) {
             setIsLoading(false);
             clearInterval(interval);
             setFlowGenerationCompleted(true);
