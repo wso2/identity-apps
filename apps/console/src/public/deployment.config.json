@@ -356,6 +356,7 @@
             },
             "agents": {
                 "disabledFeatures": [
+                    "agents.disable",
                     "agents.groups"
                 ],
                 "enabled": true,
@@ -1647,7 +1648,7 @@
             "hypr-idp",
             "swe-idp"
         ],
-        "hiddenUserStores": ["AGENT"],
+        "hiddenUserStores": [],
         "i18nConfigs": {
             "langAutoDetectEnabled": false,
             "showLanguageSwitcher": false
@@ -1732,6 +1733,7 @@
             "Console",
             "My Account"
         ],
+        "systemReservedUserStores": ["AGENT"],
         "theme": {
             "name": "wso2is"
         },

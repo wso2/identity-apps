@@ -245,8 +245,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
 
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
-    const hiddenUserStores: string[] = useSelector((state: AppState) =>
-        state.config.ui.hiddenUserStores);
+    const systemReservedUserStores: string[] = useSelector((state: AppState) =>
+        state.config.ui.systemReservedUserStores);
 
     const [ submitExternalClaim, setSubmitExternalClaim ] = useTrigger();
 
@@ -280,7 +280,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         const userStoresNotSet: string[] = [];
 
         userStores
-            ?.filter((userStore: UserStoreListItem) => !hiddenUserStores.includes(userStore.name))
+            ?.filter((userStore: UserStoreListItem) => !systemReservedUserStores.includes(userStore.name))
             ?.forEach((userStore: UserStoreListItem) => {
                 claim?.attributeMapping?.find((attribute: AttributeMapping) => {
                     return attribute.userstore.toLowerCase() === userStore.name.toLowerCase();

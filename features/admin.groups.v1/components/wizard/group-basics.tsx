@@ -70,7 +70,8 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
         userStoresList
     } = useUserStores();
 
-    const hiddenUserStores: string[] = useSelector((state: AppState) => state?.config?.ui?.hiddenUserStores);
+    const systemReservedUserStores: string[] =
+        useSelector((state: AppState) => state?.config?.ui?.systemReservedUserStores);
 
     const [ basicDetails, setBasicDetails ] = useState<any>(null);
 
@@ -96,7 +97,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
         if (userStoresList && !isUserStoresLoading) {
             if (userStoresList?.length > 0) {
                 userStoresList
-                    ?.filter((userStore: UserStoreListItem) => !hiddenUserStores.includes(userStore.name))
+                    ?.filter((userStore: UserStoreListItem) => !systemReservedUserStores.includes(userStore.name))
                     .forEach((store: UserStoreListItem, index: number) => {
                         const isEnabled: boolean = store.enabled;
                         const isReadOnly: boolean = isUserStoreReadOnly(store?.name);

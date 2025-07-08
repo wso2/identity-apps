@@ -518,6 +518,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     hiddenUserStores: string[];
     /**
+     * System reserved userstores
+     */
+    systemReservedUserStores: string[];
+    /**
      * App Logos
      */
     appLogo: {

@@ -2155,6 +2155,11 @@
                 {% endfor %}
             {% endif %}
         ],
+        "systemReservedUserStores": [
+            {% if agent_identity.user_store is defined %}
+                "{{ agent_identity.user_store }}"
+            {% endif %}
+        ],
         "i18nConfigs": {
             {% if console.ui.i18n_configs.items() is defined %}
             {% for key, value in console.ui.i18n_configs.items() %}

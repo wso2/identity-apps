@@ -90,6 +90,9 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
 
+    const systemReservedUserStores: string[] = useSelector((state: AppState) =>
+        state.config.ui.systemReservedUserStores);
+
     const consoleSettingsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consoleSettings
     );
@@ -127,19 +130,21 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
 
         if (userStoresList && !isUserStoresLoading) {
             if (userStoresList?.length > 0) {
-                userStoresList.forEach((store: UserStoreListItem, index: number) => {
-                    const isEnabled: boolean = store.enabled;
+                userStoresList
+                    ?.filter((userStore: UserStoreListItem) => !systemReservedUserStores.includes(userStore.name))
+                    ?.forEach((store: UserStoreListItem, index: number) => {
+                        const isEnabled: boolean = store.enabled;
 
-                    if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName && isEnabled) {
-                        const storeOption: UserStoreDropdownItem = {
-                            key: index,
-                            text: store.name,
-                            value: store.name
-                        };
+                        if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName && isEnabled) {
+                            const storeOption: UserStoreDropdownItem = {
+                                key: index,
+                                text: store.name,
+                                value: store.name
+                            };
 
-                        storeOptions.push(storeOption);
-                    }
-                });
+                            storeOptions.push(storeOption);
+                        }
+                    });
             }
         }
 

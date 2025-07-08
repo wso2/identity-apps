@@ -186,7 +186,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ invitedUserListOffset, setInvitedUserListOffset ] = useState<number>(1);
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state?.profile?.profileSchemas);
-    const hiddenUserStores: string[] = useSelector((state: AppState) => state?.config?.ui?.hiddenUserStores);
+    const systemReservedUserStores: string[] =
+        useSelector((state: AppState) => state?.config?.ui?.systemReservedUserStores);
 
     const [ selectedAccountStatusFilters, setSelectedAccountStatusFilters ] = useState<string[]>([]);
 
@@ -287,7 +288,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 if (
                     store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName
                         && store.enabled
-                        && !hiddenUserStores.includes(store.name)
+                        && !systemReservedUserStores.includes(store.name)
                 ) {
                     const storeOption: UserStoreItem = {
                         disabled: store.typeName === RemoteUserStoreManagerType.RemoteUserStoreManager,
