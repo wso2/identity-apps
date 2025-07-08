@@ -272,6 +272,7 @@ export const roles: rolesNS = {
 
         },
         menuItems: {
+            agents: "Agents",
             basic: "Basics",
             connectedApps: "Connected Apps",
             groups: "Groups",
@@ -330,6 +331,10 @@ export const roles: rolesNS = {
                 genericError: {
                     description: "We were unable to update the users assigned to the role.",
                     message: "Something went wrong"
+                },
+                pendingApproval: {
+                    description: "The user assignment update was accepted and is pending approval.",
+                    message: "User assignment accepted for approval"
                 },
                 success: {
                     description: "The users assigned to the role have been successfully updated.",

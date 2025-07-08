@@ -141,12 +141,17 @@ export class ClaimManagementConstants {
         SCIMConfigs.oidc
     ];
 
+    public static readonly AGENT_SCIM_SCHEMA_MAPPING: string[] = [
+        "urn:scim:wso2:agent:schema"
+    ];
+
     public static readonly AXSCHEMA_MAPPING: string = "http://axschema.org";
 
     public static readonly OIDC: string = "oidc";
     public static readonly SCIM: string = "scim";
     public static readonly AXSCHEMA: string = "axschema";
     public static readonly EIDAS: string = "eidas";
+    public static readonly AGENT: string = "agent";
     public static readonly OTHERS: string = "others";
 
     public static readonly SCIM_TABS: {

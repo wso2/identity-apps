@@ -1,5 +1,14 @@
 # @wso2is/admin.email-management.v1
 
+## 2.25.207
+
+### Patch Changes
+
+- [#8444](https://github.com/wso2/identity-apps/pull/8444) [`69b06cc07d15a55335f545333c114b6e2e1b2101`](https://github.com/wso2/identity-apps/commit/69b06cc07d15a55335f545333c114b6e2e1b2101) Thanks [@nilasini](https://github.com/nilasini)! - Incorporate dynamic portal config to list down email templates
+
+- Updated dependencies [[`76f192a81a134a773cb0896bb6febefca442324d`](https://github.com/wso2/identity-apps/commit/76f192a81a134a773cb0896bb6febefca442324d)]:
+  - @wso2is/admin.core.v1@2.46.5
+
 ## 2.25.206
 
 ### Patch Changes
