@@ -57,6 +57,7 @@ import {
 import {
     ReactComponent as AdminOutlineIcon
 } from "../../themes/default/assets/images/icons/outline-icons/admin-outline.svg";
+import { ReactComponent as AgentOutlineIcon } from "../../themes/default/assets/images/icons/outline-icons/agent.svg";
 import {
     ReactComponent as AnalyticsIcon
 } from "../../themes/default/assets/images/icons/outline-icons/analytics.svg";
@@ -290,7 +291,8 @@ export type GetSidePanelIconsInterface = {
     sms: FunctionComponent | ReactNode,
     userStore: FunctionComponent | ReactNode,
     users: FunctionComponent | ReactNode,
-    insights: FunctionComponent | ReactNode
+    insights: FunctionComponent | ReactNode,
+    agents: FunctionComponent | ReactNode,
 };
 
 /**
@@ -303,6 +305,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
     return {
         adminAdvisoryBanner: AdminAdvisoryBannerIcon,
         administrators: AdminOutlineIcon,
+        agents: AgentOutlineIcon,
         apiResources: CloudConnectionOutlineIcon,
         appLogs: IDPMetadataIcon,
         applicationRoles: ApplicationRolesIcon,

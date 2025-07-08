@@ -19,6 +19,10 @@ import { ClaimsNS } from "../../../models";
 
 export const claims: ClaimsNS = {
     attributeMappings: {
+        agent: {
+            description: "The SCIM protocol representation for AI agent attributes used in agent identity management APIs.",
+            heading: "SCIM for AI Agents"
+        },
         axschema: {
             description: "The Attribute Exchange Schema (axschema) representation "
                 + "for user attributes.",
@@ -183,6 +187,10 @@ export const claims: ClaimsNS = {
         },
         sections: {
             manageAttributeMappings: {
+                agent: {
+                    description: "The SCIM protocol representation for AI agent attributes used in agent identity management APIs.",
+                    heading: "SCIM for AI Agents"
+                },
                 custom: {
                     description: "Communicate information about the user via custom mappings.",
                     heading: "Custom Attribute Mapping"

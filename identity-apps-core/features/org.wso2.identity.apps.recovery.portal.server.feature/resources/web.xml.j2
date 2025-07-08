@@ -65,6 +65,10 @@
             <param-name>isDowntimeBannerEnabled</param-name>
             <param-value>{{ downtime_banner.enabled }}</param-value>
         </context-param>
+        <context-param>
+            <param-name>downtimeBannerMessage</param-name>
+            <param-value>{{ downtime_banner.content }}</param-value>
+        </context-param>
     {% endif %}
     {% set cookie_consent = accountrecoveryendpoint.ui.is_cookie_consent_banner_enabled
         if accountrecoveryendpoint.ui.is_cookie_consent_banner_enabled is defined else ui.is_cookie_consent_banner_enabled %}

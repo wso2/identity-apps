@@ -36,6 +36,7 @@ class FeatureFlagConstants {
         ACTIONS_TYPES_PRE_REGISTRATION: "actions.types.list.preRegistration",
         ACTIONS_TYPES_PRE_UPDATE_PASSWORD: "actions.types.list.preUpdatePassword",
         ACTIONS_TYPES_PRE_UPDATE_PROFILE: "actions.types.list.preUpdateProfile",
+        AGENTS: "agents",
         AI_APPLICATION_LOGIN_FLOW_BANNER: "ai.application.loginFlow.banner",
         AI_BRANDING_BANNER: "ai.branding.banner",
         APPLICATIONS: "application",

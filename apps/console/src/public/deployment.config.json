@@ -354,6 +354,25 @@
                     "update": []
                 }
             },
+            "agents": {
+                "disabledFeatures": [
+                    "agents.disable",
+                    "agents.groups"
+                ],
+                "enabled": true,
+                "featureFlags": [
+                    {
+                        "feature": "agents",
+                        "flag": "EXPERIMENTAL"
+                    }
+                ],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "read": [],
+                    "update": []
+                }
+            },
             "ai": {
                 "disabledFeatures": [],
                 "enabled": false,
@@ -1712,6 +1731,7 @@
             "Console",
             "My Account"
         ],
+        "systemReservedUserStores": ["AGENT"],
         "theme": {
             "name": "wso2is"
         },

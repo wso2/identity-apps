@@ -16,10 +16,15 @@
  * under the License.
  */
 
+import FlashOnOutlinedIcon from "@mui/icons-material/FlashOnOutlined";
+import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
+import ShieldOutlinedIcon from "@mui/icons-material/ShieldOutlined";
+import VpnKeyOutlinedIcon from "@mui/icons-material/VpnKeyOutlined";
 import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Card from "@oxygen-ui/react/Card";
+import CardContent from "@oxygen-ui/react/CardContent";
 import Container from "@oxygen-ui/react/Container";
 import Dialog from "@oxygen-ui/react/Dialog";
 import DialogActions from "@oxygen-ui/react/DialogActions";
@@ -41,12 +46,14 @@ import {
     useGetGovernanceConnectorById
 } from "@wso2is/admin.server-configurations.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import NewSelfRegistrationImage from "../../assets/illustrations/preview-features/new-self-registration.png";
 import { AppConstants } from "../../constants/app-constants";
 import "./feature-preview-modal.scss";
 import { history } from "../../helpers/history";
+
+
 
 /**
  * Feature preview modal component props interface. {@link FeaturePreviewModal}
@@ -78,6 +85,11 @@ interface PreviewFeaturesListInterface {
     name: string;
 
     /**
+     * React component to be rendered
+     */
+    component?: ReactElement;
+
+    /**
      * Feature description.
      */
     description: string;
@@ -93,6 +105,11 @@ interface PreviewFeaturesListInterface {
     image?: string;
 
     /**
+     * Whether the feature is enabled
+     */
+    enabled?: boolean;
+
+    /**
      * Feature value.
      */
     value: string;
@@ -104,6 +121,53 @@ interface PreviewFeaturesListInterface {
         content: string;
     };
 }
+
+const AgentFeatureAnnouncement = () => {
+    const features: any = [
+        {
+            icon: <ShieldOutlinedIcon fontSize="medium" />,
+            subtitle: "Control what each agent can access and do",
+            title: "Secure your agents with role-based access control"
+        },
+        {
+            icon: <VpnKeyOutlinedIcon fontSize="medium" />,
+            subtitle: "Minimize risk with seamless secret lifecycle management.",
+            title: "Credential management and rotation"
+        },
+        {
+            icon: <FlashOnOutlinedIcon fontSize="medium" />,
+            subtitle: "Connect to APIs, resources, and MCP servers",
+            title: "Integrate with your existing applications seamlessly"
+        },
+        {
+            icon: <GroupsOutlinedIcon fontSize="medium" />,
+            subtitle: "Secure interaction patterns for any use case",
+            title: "Enable human-in-the-loop and multi-agent workflows"
+        }
+    ];
+
+    return (
+        <Box sx={ { flexGrow: 1, pb: 4, pt: 4 } }>
+            <Grid container spacing={ 2 }>
+                { features.map((feature: any, index: number) => (
+                    <Grid xs={ 12 } md={ 6 } key={ index }>
+                        <Card variant="outlined" sx={ { display: "flex", gap: 2, p: 2 } }>
+                            <Box sx={ { color: "secondary.main", pt: 1 } }>{ feature.icon }</Box>
+                            <CardContent sx={ { p: 0 } }>
+                                <Typography variant="subtitle1" fontWeight={ 600 }>
+                                    { feature.title }
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    { feature.subtitle }
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                )) }
+            </Grid>
+        </Box>
+    );
+};
 
 /**
  * Feature preview modal component.
@@ -124,12 +188,25 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
         ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID
     );
 
+    const [ isEnableDynamicSelfRegistrationPortal, setIsEnableDynamicSelfRegistrationPortal ] = useState(false);
+    const [ isEnableAgentManagement, setIsEnableAgentManagement ] = useState(false);
+
     {/* TODO: Get this from an Organization Preferences API */}
-    const previewFeaturesList: PreviewFeaturesListInterface[] = [
+    const previewFeaturesList: PreviewFeaturesListInterface[] = useMemo(() => ([
+        {
+            action: "Go to Agent Management",
+            component: <AgentFeatureAnnouncement />,
+            description: "Extend your identity management to autonomous agents with secure, dynamic authorization",
+            enabled: isEnableAgentManagement,
+            id: "agents",
+            name: "Identity for AI Agents",
+            value: "SelfRegistration.EnableDynamicPortal"
+        },
         {
             action: "Try Flow Composer",
             description: "This feature enables you to customize the user self-registration flow and " +
                 "secure your user onboarding experience with multiple authentication methods and verification steps.",
+            enabled: isEnableDynamicSelfRegistrationPortal,
             id: "self-registration-orchestration",
             image: NewSelfRegistrationImage,
             message: {
@@ -140,10 +217,9 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
             name: "Self-Registration Orchestration",
             value: "SelfRegistration.EnableDynamicPortal"
         }
-    ];
+    ]), [ isEnableAgentManagement, isEnableDynamicSelfRegistrationPortal ]);
 
     const [ selected, setSelected ] = useState(previewFeaturesList[0]);
-    const [ isEnableDynamicSelfRegistrationPortal, setIsEnableDynamicSelfRegistrationPortal ] = useState(false);
 
     useEffect(() => {
         if (connectorDetails) {
@@ -184,6 +260,10 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
                     ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID
                 );
                 connectorDetailsMutate();
+
+                break;
+            case "ai-agent-management":
+                setIsEnableAgentManagement(e.target.checked);
 
                 break;
             default:
@@ -262,10 +342,10 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
                                                             handleToggleChange(e, selected?.id)
                                                     }
                                                     value={ selected?.value }
-                                                    checked={ isEnableDynamicSelfRegistrationPortal }
+                                                    checked={ selected?.enabled }
                                                 />
                                             ) }
-                                            label={ isEnableDynamicSelfRegistrationPortal ?
+                                            label={ selected?.enabled ?
                                                 t("common:enabled") : t("common:disabled") }
                                             labelPlacement="start"
                                         />
@@ -275,9 +355,12 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
                             <div>
                                 <p>{ selected?.description }</p>
                             </div>
-                            <Alert severity={ selected?.message?.type } sx={ { marginTop: "10px" } }>
-                                { selected?.message?.content }
-                            </Alert>
+                            { selected?.message?.type && selected?.message?.content && (
+                                <Alert severity={ selected?.message?.type } sx={ { marginTop: "10px" } }>
+                                    { selected?.message?.content }
+                                </Alert>
+                            ) }
+
                             { selected?.image &&
                                 (
                                     <img
@@ -286,6 +369,7 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
                                     />
                                 )
                             }
+                            { selected?.component && selected?.component }
                             {
                                 previewFeaturesList?.length > 1 && isEnableDynamicSelfRegistrationPortal && (
                                     <Stack direction="row" justifyContent="flex-end">
