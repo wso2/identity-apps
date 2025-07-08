@@ -119,7 +119,7 @@ export default function AgentList ({
                             <AppAvatar
                                 image={ (
                                     <AnimatedAvatar
-                                        name={ agent?.name?.givenName }
+                                        name={ agent?.["urn:scim:wso2:agent:schema"]?.agentDisplayName }
                                         size="mini"
                                         data-testid={ `${componentId}-item-display-name-avatar` }
                                     />
@@ -130,7 +130,7 @@ export default function AgentList ({
                             />
 
                             <Header.Content>
-                                { agent?.name?.givenName }
+                                { agent?.["urn:scim:wso2:agent:schema"]?.agentDisplayName }
                             </Header.Content>
                         </Header>
                     );

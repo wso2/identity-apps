@@ -49,7 +49,7 @@ export const addAgent = (data: AgentScimSchema): Promise<any> => {
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
-            return Promise.resolve(response);
+            return Promise.resolve(response?.data);
         })
         .catch((error: AxiosError) => {
             return Promise.reject(error);

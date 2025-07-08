@@ -47,7 +47,6 @@ export const useGetAgents = (
 ): RequestResultInterface<UserListInterface, RequestErrorInterface> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -59,12 +58,13 @@ export const useGetAgents = (
             filter,
             startIndex
         },
-        url: store.getState().config.endpoints.users
+        url: store.getState().config.endpoints.agents
     };
 
     const {
         data,
         error,
+        isLoading,
         isValidating,
         mutate
     } = useRequest<UserListInterface, RequestErrorInterface>(shouldFetch ? requestConfig : null);
@@ -72,7 +72,7 @@ export const useGetAgents = (
     return {
         data,
         error,
-        isLoading: !error && !data,
+        isLoading,
         isValidating,
         mutate: mutate
     };

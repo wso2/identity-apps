@@ -32,7 +32,7 @@ Error = RequestErrorInterface> (id: string): RequestResultInterface<Data, Error>
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.users + "/" + id
+        url: store.getState().config.endpoints.agents + "/" + id
     };
 
     const { data, isLoading, isValidating, error, mutate } = useRequest<Data, Error>(id ? requestConfig : null);
