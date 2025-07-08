@@ -284,6 +284,44 @@
                 }
             },
             {% endif %}
+            {% if console.agents is defined %}
+            "agents": {
+                "disabledFeatures": [
+                    {% if console.agents.disabled_features is defined %}
+                    {% for feature in console.agents.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "featureFlags": {
+                    {% if console.agents.feature_flags is defined %}
+                    {% for flag, value in console.agents.feature_flags.items() %}
+                    "{{ flag }}": {{ value }}{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                },
+                "enabled": {% if console.agents.enabled is defined %} {{ console.agents.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.agents.scopes is defined %}
+                    {% for operation, scopes in console.agents.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "feature": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
             {% if console.login_and_registration is defined %}
             "loginAndRegistration": {
                 "disabledFeatures": [
@@ -2114,6 +2152,13 @@
         "hiddenUserStores": [
             {% if console.ui.hidden_user_stores is defined %}
                 {% for value in console.ui.hidden_user_stores %}
+                "{{ value }}"{{ "," if not loop.last }}
+                {% endfor %}
+            {% endif %}
+        ],
+        "systemReservedUserStores": [
+            {% if console.ui.system_reserved_user_stores is defined %}
+                {% for value in console.ui.system_reserved_user_stores %}
                 "{{ value }}"{{ "," if not loop.last }}
                 {% endfor %}
             {% endif %}

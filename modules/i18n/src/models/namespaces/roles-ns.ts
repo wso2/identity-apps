@@ -274,6 +274,7 @@ export interface rolesNS {
             groups: string;
             users: string;
             roles: string;
+            agents: string;
         };
         users: {
             heading: string;
