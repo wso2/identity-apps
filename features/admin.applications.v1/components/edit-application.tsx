@@ -676,8 +676,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         </ResourceTab.Pane>
     );
 
-
-
     const InfoTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <Info
@@ -952,15 +950,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                      render: InfoTabPane
                  });
             }
-
-            panes.push({
-                componentId: "customer-data",
-                "data-tabid": "customer-data",
-                menuItem: t("applications:edit.sections.customerData.tabName", "Customer Data"),
-                icon: "profile",
-                render: CustomerDataTabPane
-            });
-
 
             extensionPanes.forEach(
                 (extensionPane: ResourceTabPaneInterface) => {

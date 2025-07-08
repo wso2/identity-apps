@@ -427,6 +427,7 @@
     }
 %>
 
+<% request.setAttribute("pageName", "self-registration-username-request"); %>
 <%
     String cdmProfileId = null;
     if (cookies != null) {
