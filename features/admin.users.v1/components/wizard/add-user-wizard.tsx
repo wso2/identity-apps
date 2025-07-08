@@ -503,7 +503,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             }, "passwordOption", "newPassword", "userType", "domain", "firstName", "lastName");
 
             // If email value is not present, use the emails value.
-            if (isEmpty(userInfo?.email) && userInfo?.emails.length > 0) {
+            if (isEmpty(userInfo?.email) && userInfo?.emails?.length > 0) {
                 delete combinedUserDetails.email;
 
                 // Primary will be the string value in the emails array.
