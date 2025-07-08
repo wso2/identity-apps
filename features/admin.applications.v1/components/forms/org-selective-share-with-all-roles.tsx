@@ -18,15 +18,15 @@
 
 import { TreeViewBaseItem } from "@mui/x-tree-view/models";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
+import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import Grid from "@oxygen-ui/react/Grid";
 import LinearProgress from "@oxygen-ui/react/LinearProgress";
-import Typography from "@oxygen-ui/react/Typography";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
 import {
     OrganizationInterface,
     OrganizationLinkInterface,
-    OrganizationRoleInterface,
     SelectedOrganizationRoleInterface
 } from "@wso2is/admin.organizations.v1/models/organizations";
 import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
@@ -40,14 +40,12 @@ import React, {
     useMemo,
     useState } from "react";
 import { useTranslation } from "react-i18next";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import "./roles-selective-share.scss";
 import useGetApplicationShare from "../../api/use-get-application-share";
 import { ApplicationInterface } from "../../models/application";
-import InfiniteScroll from "react-infinite-scroll-component";
-import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
-import CircularProgress from "@oxygen-ui/react/CircularProgress";
 
 interface OrgSelectiveShareWithAllRolesProps extends IdentifiableComponentInterface {
     application: ApplicationInterface;
@@ -422,53 +420,6 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
         }
 
         setAfterCursor(cursorFragments[1]);
-    };
-
-    const computeInitialRoleSelections = (
-        orgs: OrganizationInterface[],
-        rootRoles: OrganizationRoleInterface[]
-    ): Record<string, SelectedOrganizationRoleInterface[]> => {
-        const roleMap: Record<string, SelectedOrganizationRoleInterface[]> = {};
-
-        orgs.forEach((org: OrganizationInterface) => {
-            const roles: SelectedOrganizationRoleInterface[] = rootRoles.map(
-                (role: OrganizationRoleInterface) => ({
-                    ...role,
-                    selected: org.roles?.some(
-                        (orgRole: OrganizationRoleInterface) => orgRole.displayName === role.displayName
-                    ) || false
-                })
-            );
-
-            roleMap[org.id] = roles;
-        });
-
-        return roleMap;
-    };
-
-    const computeChildRoleSelections = (
-        parentId: string,
-        children: OrganizationInterface[]
-    ): Record<string, SelectedOrganizationRoleInterface[]> => {
-        const parentRoles: SelectedOrganizationRoleInterface[] = roleSelections[parentId];
-
-        if (!parentRoles) return {};
-
-        const selectedParentRoles: SelectedOrganizationRoleInterface[] =
-            parentRoles.filter((role: SelectedOrganizationRoleInterface) => role.selected);
-
-        const updated: Record<string, SelectedOrganizationRoleInterface[]> = {};
-
-        children.forEach((childOrg: OrganizationInterface) => {
-            updated[childOrg.id] = selectedParentRoles.map((role: SelectedOrganizationRoleInterface) => ({
-                ...role,
-                selected: childOrg.roles?.some(
-                    (orgRole: OrganizationRoleInterface) => orgRole.displayName === role.displayName
-                ) || false
-            }));
-        });
-
-        return updated;
     };
 
     return (

@@ -204,7 +204,7 @@ const OrgSelectiveShareWithSelectiveRolesView = (props: OrgSelectiveShareWithAll
         // Add all nodes from the top-level organization to nodeMap
         data.forEach((item: OrganizationInterface) => {
             nodeMap[item.id] = {
-                children: item.hasChildren || item.name === "XYZ Builders" ? [
+                children: item.hasChildren ? [
                     {
                         children: [],
                         id: `${item.name}-temp-child`,

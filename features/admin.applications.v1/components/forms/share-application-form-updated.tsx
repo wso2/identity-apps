@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -57,6 +57,7 @@ import {
 import { AxiosError } from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import differenceBy from "lodash-es/differenceBy";
+import isEmpty from "lodash-es/isEmpty";
 import React, {
     ChangeEvent,
     FunctionComponent,
@@ -71,24 +72,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import OrgSelectiveShareWithAllRoles from "./org-selective-share-with-all-roles";
-import RolesSelectiveShare from "./org-selective-share-with-selective-roles-view";
-import OrgSelectiveShareWithSelectiveRoles from "./org-selective-share-with-selective-roles-view";
+import OrgSelectiveShareWithSelectiveRolesEdit from "./org-selective-share-with-selective-roles-edit";
+import OrgSelectiveShareWithSelectiveRolesView from "./org-selective-share-with-selective-roles-view";
 import RolesShareWithAll from "./roles-share-with-all";
 import {
     shareApplicationWithAllOrganizations,
     shareApplicationWithSelectedOrganizationsAndRoles,
     unshareApplicationWithSelectedOrganizations
 } from "../../api/application-roles";
+import useGetApplicationShare from "../../api/use-get-application-share";
 import { ApplicationManagementConstants } from "../../constants/application-management";
 import { RoleShareType, ShareType } from "../../constants/application-roles";
 import {
     ApplicationInterface,
+    RoleSharingInterface,
     ShareApplicationWithAllOrganizationsDataInterface,
     ShareApplicationWithSelectedOrganizationsAndRolesDataInterface,
-    UnshareOrganizationsDataInterface,
-    additionalSpProperty
+    UnshareOrganizationsDataInterface
 } from "../../models/application";
-import OrgSelectiveShareWithSelectiveRolesView from "./org-selective-share-with-selective-roles-view";
 
 export interface ApplicationShareFormPropsInterface
     extends IdentifiableComponentInterface {
@@ -167,13 +168,25 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
 
     const {
         data: sharedOrganizations,
-        isLoading: isSharedOrganizationsFetchRequestLoading,
-        isValidating: isSharedOrganizationsFetchRequestValidating,
         error: sharedOrganizationsFetchRequestError,
         mutate: mutateSharedOrganizationsFetchRequest
     } = useSharedOrganizations(
         application?.id,
         isOrganizationManagementEnabled
+    );
+
+    const {
+        data: applicationShareData,
+        isLoading: isApplicationShareDataFetchRequestLoading,
+        isValidating: isApplicationShareDataFetchRequestValidating,
+        error:  applicationShareDataFetchRequestError
+    } = useGetApplicationShare(
+        application?.id,
+        !isEmpty(application?.id) && isOrganizationManagementEnabled,
+        false,
+        null,
+        "roles",
+        1
     );
 
     /**
@@ -184,12 +197,45 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
             return false;
         }
 
-        return isSharedOrganizationsFetchRequestLoading ||
-            isSharedOrganizationsFetchRequestValidating;
+        return isApplicationShareDataFetchRequestLoading ||
+            isApplicationShareDataFetchRequestValidating;
     }, [
-        isSharedOrganizationsFetchRequestLoading,
-        isSharedOrganizationsFetchRequestValidating
+        isApplicationShareDataFetchRequestLoading,
+        isApplicationShareDataFetchRequestValidating
     ]);
+
+    useEffect(() => {
+        const orgSharingPolicy: string = applicationShareData?.sharingInitiationMode?.policy;
+
+        if (orgSharingPolicy === ApplicationSharingPolicy.ALL_EXISTING_AND_FUTURE_ORGS) {
+            setShareType(ShareType.SHARE_ALL);
+
+            const roleSharingMode: string = applicationShareData?.sharingInitiationMode?.roleSharing?.mode;
+
+            if (roleSharingMode === RoleSharingModes.ALL) {
+                setRoleShareTypeAll(RoleShareType.SHARE_WITH_ALL);
+            } else if (roleSharingMode === RoleSharingModes.SELECTED) {
+                setRoleShareTypeAll(RoleShareType.SHARE_SELECTED);
+
+                const initialRoles: RolesInterface[] =
+                    applicationShareData?.sharingInitiationMode?.roleSharing?.roles.map(
+                        (role: RoleSharingInterface) => ({
+                            audience: {
+                                display: role.audience.display,
+                                type: role.audience.type
+                            },
+                            displayName: role.displayName,
+                            id: role.displayName
+                        }) as RolesInterface
+                    );
+
+                if (initialRoles?.length > 0) {
+                    setSelectedRoles(initialRoles);
+                }
+            }
+        }
+    }, [ applicationShareData ]);
+
 
     /**
      * Listen for status updates from the parent.
@@ -200,31 +246,21 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
         }
     }, [ operationStatus, onApplicationSharingCompleted ]);
 
-    /**
-     * Fetches the shared organizations list for the particular application.
-     */
-    useEffect(() => {
-        if (sharedOrganizations?.organizations) {
-            setSharedOrganizationList(sharedOrganizations.organizations);
-        } else {
-            setSharedOrganizationList([]);
-        }
-    }, [ sharedOrganizations ]);
 
     /**
      * Dispatches error notifications if shared organizations fetch request fails.
      */
     useEffect(() => {
-        if (!sharedOrganizationsFetchRequestError) {
+        if (!applicationShareDataFetchRequestError) {
             return;
         }
 
-        if (sharedOrganizationsFetchRequestError?.response?.data?.description) {
+        if (applicationShareDataFetchRequestError?.response?.data?.description) {
             dispatch(addAlert({
-                description: sharedOrganizationsFetchRequestError?.response?.data?.description
+                description: applicationShareDataFetchRequestError?.response?.data?.description
                     ?? t("applications:edit.sections.shareApplication.getSharedOrganizations.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: sharedOrganizationsFetchRequestError?.response?.data?.message
+                message: applicationShareDataFetchRequestError?.response?.data?.message
                     ?? t("applications:edit.sections.shareApplication.getSharedOrganizations.genericError.message")
             }));
 
@@ -240,49 +276,11 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                         ".getSharedOrganizations.genericError.message")
             })
         );
-    }, [ sharedOrganizationsFetchRequestError ]);
-
-    useEffect(() => setCheckedUnassignedListItems(sharedOrganizationList || []),
-        [ sharedOrganizationList ]
-    );
-
-    useEffect(() => {
-        if (!application) {
-            return;
-        }
-
-        const isSharedWithAll: additionalSpProperty[] = application?.advancedConfigurations
-            ?.additionalSpProperties?.filter((property: additionalSpProperty) =>
-                property?.name === "shareWithAllChildren"
-            );
-
-        if (!isSharedWithAll || isSharedWithAll.length === 0) {
-            setSharedWithAll(false);
-        } else {
-            setSharedWithAll(
-                JSON.parse(isSharedWithAll[ 0 ]?.value)
-                    ? JSON.parse(isSharedWithAll[ 0 ]?.value)
-                    : false
-            );
-        }
-
-    }, [ application ]);
-
-    useEffect(() => {
-        if (sharedWithAll) {
-            setShareType(ShareType.SHARE_ALL);
-        } else if (sharedOrganizationList?.length > 0 && !sharedWithAll) {
-            setShareType(ShareType.SHARE_SELECTED);
-        } else if ((!sharedOrganizationList || sharedOrganizationList?.length === 0) &&
-            !sharedWithAll
-        ) {
-            setShareType(ShareType.UNSHARE);
-        }
-    }, [ sharedWithAll, sharedOrganizationList ]);
+    }, [ applicationShareDataFetchRequestError ]);
 
     useEffect(() => {
         if (triggerApplicationShare) {
-            handleShareApplication();
+            handleApplicationSharing();
         }
     }, [ triggerApplicationShare ]);
 
@@ -313,7 +311,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                     primaryAction={ t("common:confirm") }
                     secondaryAction={ t("common:cancel") }
                     onPrimaryActionClick={ (): void => {
-                        handleShareApplication();
+                        handleApplicationSharing();
                         setShowConfirmationModal(false);
                     } }
                     onSecondaryActionClick={ (): void => {
@@ -549,6 +547,10 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
     ]);
 
     const handleApplicationSharing = (): void => {
+        if (isApplicationShareOperationStatusEnabled) {
+            handleAsyncSharingNotification(shareType);
+        }
+
         if (shareType === ShareType.UNSHARE) {
             // logic to handle unsharing the application
 
@@ -842,7 +844,9 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                                             variant="text"
                                                                             size="small"
                                                                             onClick={ () => {
-                                                                                setEnableRoleSharing(!enableRoleSharing);
+                                                                                setEnableRoleSharing(
+                                                                                    !enableRoleSharing
+                                                                                );
                                                                             } }
                                                                         >
                                                                             { enableRoleSharing
@@ -855,7 +859,15 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                                 {
                                                                     enableRoleSharing
                                                                         ? (
-                                                                            null
+                                                                            <OrgSelectiveShareWithSelectiveRolesEdit
+                                                                                application={ application }
+                                                                                selectedItems={ selectedOrgIds }
+                                                                                setSelectedItems={ setSelectedOrgIds }
+                                                                                addedOrgs={ addedOrgIds }
+                                                                                setAddedOrgs={ setAddedOrgIds }
+                                                                                removedOrgs={ removedOrgIds }
+                                                                                setRemovedOrgs={ setRemovedOrgIds }
+                                                                            />
                                                                         )
                                                                         : (
                                                                             <OrgSelectiveShareWithSelectiveRolesView

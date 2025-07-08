@@ -43,7 +43,7 @@ import { AlertLevels,
     RolesInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { EmphasizedSegment, Text } from "@wso2is/react-components";
+import { ContentLoader, EmphasizedSegment, Text } from "@wso2is/react-components";
 import { AnimatePresence, motion } from "framer-motion";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -103,7 +103,9 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
         consoleId,
         !isEmpty(consoleId),
         false,
-        null
+        null,
+        "roles",
+        1
     );
 
     const [ sharedAccessMode, setSharedAccessMode ] = useState<RoleSharedAccessModes>(
@@ -120,6 +122,34 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
             setSelectedRoles([ administratorRole?.Resources[0] ]);
         }
     }, [ administratorRole ]);
+
+    useEffect(() => {
+        if (originalOrganizationTree?.sharingInitiationMode?.roleSharing?.mode ===
+                RoleSharingModes.ALL) {
+            setSharedAccessMode(RoleSharedAccessModes.SHARE_ALL_ROLES_WITH_ALL_ORGS);
+        }
+
+        if (originalOrganizationTree?.sharingInitiationMode?.roleSharing?.mode ===
+                RoleSharingModes.SELECTED) {
+            setSharedAccessMode(RoleSharedAccessModes.SHARE_WITH_ALL_ORGS);
+
+            const initialRoles: RolesInterface[] =
+                originalOrganizationTree?.sharingInitiationMode?.roleSharing?.roles.map(
+                    (role: RoleSharingInterface) => ({
+                        audience: {
+                            display: role.audience.display,
+                            type: role.audience.type
+                        },
+                        displayName: role.displayName,
+                        id: role.displayName
+                    }) as RolesInterface
+                );
+
+            if (initialRoles?.length > 0) {
+                setSelectedRoles(initialRoles);
+            }
+        }
+    }, [ originalOrganizationTree ]);
 
     /**
      * If the Administrator role is not fetched, show an error.
@@ -307,6 +337,10 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
             shareSelectedRolesWithSelectedOrgs();
         }
     };
+
+    if (isOrganizationTreeFetchRequestLoading) {
+        return <ContentLoader />;
+    }
 
     return (
         <>
