@@ -1,5 +1,14 @@
 # @wso2is/admin.workflow-approvals.v1
 
+## 2.26.5
+
+### Patch Changes
+
+- [#8471](https://github.com/wso2/identity-apps/pull/8471) [`c562eed1c1930ca8da84c8ce3f49d30a57773bbe`](https://github.com/wso2/identity-apps/commit/c562eed1c1930ca8da84c8ce3f49d30a57773bbe) Thanks [@Malith-19](https://github.com/Malith-19)! - Add UI support for update users in role in workflow operations.
+
+- Updated dependencies [[`c562eed1c1930ca8da84c8ce3f49d30a57773bbe`](https://github.com/wso2/identity-apps/commit/c562eed1c1930ca8da84c8ce3f49d30a57773bbe)]:
+  - @wso2is/i18n@2.24.10
+
 ## 2.26.4
 
 ### Patch Changes

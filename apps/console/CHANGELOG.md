@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 2.65.27
+
+### Patch Changes
+
+- [#8473](https://github.com/wso2/identity-apps/pull/8473) [`645617b59e738e0c9d882bb48e2ecdaa96cba53f`](https://github.com/wso2/identity-apps/commit/645617b59e738e0c9d882bb48e2ecdaa96cba53f) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Resolve orgs using associated tenants instead of org_user_associations
+
+* [#8471](https://github.com/wso2/identity-apps/pull/8471) [`c562eed1c1930ca8da84c8ce3f49d30a57773bbe`](https://github.com/wso2/identity-apps/commit/c562eed1c1930ca8da84c8ce3f49d30a57773bbe) Thanks [@Malith-19](https://github.com/Malith-19)! - Add UI support for update users in role in workflow operations.
+
+* Updated dependencies [[`c562eed1c1930ca8da84c8ce3f49d30a57773bbe`](https://github.com/wso2/identity-apps/commit/c562eed1c1930ca8da84c8ce3f49d30a57773bbe)]:
+  - @wso2is/admin.approval-workflows.v1@1.0.5
+  - @wso2is/admin.workflow-approvals.v1@2.26.5
+  - @wso2is/admin.roles.v2@2.27.158
+  - @wso2is/i18n@2.24.10
+
 ## 2.65.26
 
 ### Patch Changes
