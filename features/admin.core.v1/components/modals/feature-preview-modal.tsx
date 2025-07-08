@@ -126,30 +126,30 @@ const AgentFeatureAnnouncement = () => {
     const features: any = [
         {
             icon: <ShieldOutlinedIcon fontSize="medium" />,
-            title: "Secure your agents with role-based access control",
-            subtitle: "Control what each agent can access and do"
+            subtitle: "Control what each agent can access and do",
+            title: "Secure your agents with role-based access control"
         },
         {
             icon: <VpnKeyOutlinedIcon fontSize="medium" />,
-            title: "Credential management and rotation",
-            subtitle: "Minimize risk with seamless secret lifecycle management."
+            subtitle: "Minimize risk with seamless secret lifecycle management.",
+            title: "Credential management and rotation"
         },
         {
             icon: <FlashOnOutlinedIcon fontSize="medium" />,
-            title: "Integrate with your existing applications seamlessly",
-            subtitle: "Connect to APIs, resources, and MCP servers"
+            subtitle: "Connect to APIs, resources, and MCP servers",
+            title: "Integrate with your existing applications seamlessly"
         },
         {
             icon: <GroupsOutlinedIcon fontSize="medium" />,
-            title: "Enable human-in-the-loop and multi-agent workflows",
-            subtitle: "Secure interaction patterns for any use case"
+            subtitle: "Secure interaction patterns for any use case",
+            title: "Enable human-in-the-loop and multi-agent workflows"
         }
     ];
 
     return (
         <Box sx={ { flexGrow: 1, pb: 4, pt: 4 } }>
             <Grid container spacing={ 2 }>
-                { features.map((feature, index) => (
+                { features.map((feature: any, index: number) => (
                     <Grid xs={ 12 } md={ 6 } key={ index }>
                         <Card variant="outlined" sx={ { display: "flex", gap: 2, p: 2 } }>
                             <Box sx={ { color: "secondary.main", pt: 1 } }>{ feature.icon }</Box>
@@ -195,12 +195,12 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
     const previewFeaturesList: PreviewFeaturesListInterface[] = useMemo(() => ([
         {
             action: "Go to Agent Management",
+            component: <AgentFeatureAnnouncement />,
             description: "Extend your identity management to autonomous agents with secure, dynamic authorization",
             enabled: isEnableAgentManagement,
             id: "agents",
             name: "Identity for AI Agents",
-            value: "SelfRegistration.EnableDynamicPortal",
-            component: <AgentFeatureAnnouncement />
+            value: "SelfRegistration.EnableDynamicPortal"
         },
         {
             action: "Try Flow Composer",
