@@ -135,14 +135,9 @@
                 "id": "cmVzZW5kUGFzc3dvcmRSZXNldE9UUA"
             },
             {
-                "description": "This email is sent to request a credential from the user if they haven't completed the orchestration flow",
+                "description": "This email is sent to request credentials from the user when a new account is created and the registration flow is incomplete",
                 "displayName": "Request New User Credentials",
                 "id": "T3JjaGVzdHJhdGVkQXNrUGFzc3dvcmQ"
-            },
-            {
-                "description": "This email is resent to request a credential from the user if they haven't completed the orchestration flow",
-                "displayName": "Resend Request New User Credentials",
-                "id": "T3JjaGVzdHJhdGVkUmVzZW5kQXNrUGFzc3dvcmQ"
             }
         ],
         "outboundProvisioningConnectors": [],
