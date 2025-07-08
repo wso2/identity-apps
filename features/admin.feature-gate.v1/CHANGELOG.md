@@ -1,5 +1,60 @@
 # @wso2is/admin.feature-gate.v1
 
+## 1.7.3
+
+### Patch Changes
+
+- [#8448](https://github.com/wso2/identity-apps/pull/8448) [`344d2c5a41d426c9222f64336dc661ff9484ea49`](https://github.com/wso2/identity-apps/commit/344d2c5a41d426c9222f64336dc661ff9484ea49) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Fix organization identifier not setting correctly from token response
+
+## 1.7.2
+
+### Patch Changes
+
+- [#8336](https://github.com/wso2/identity-apps/pull/8336) [`90d6c0be05e8b957cc1fa0c239ec3fb9b5a3fa72`](https://github.com/wso2/identity-apps/commit/90d6c0be05e8b957cc1fa0c239ec3fb9b5a3fa72) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Switch to org_handle where org_name/org_id claims are used for root and sub orgs respectively
+
+- Updated dependencies [[`2981081634e150d84bb16833410fd99001f35162`](https://github.com/wso2/identity-apps/commit/2981081634e150d84bb16833410fd99001f35162)]:
+  - @wso2is/admin.core.v1@2.46.3
+
+## 1.7.1
+
+### Patch Changes
+
+- [#8364](https://github.com/wso2/identity-apps/pull/8364) [`581fda3c98828df995f28ea828585e2a760e73b0`](https://github.com/wso2/identity-apps/commit/581fda3c98828df995f28ea828585e2a760e73b0) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the feature status to the custom page editor feature
+
+- Updated dependencies [[`581fda3c98828df995f28ea828585e2a760e73b0`](https://github.com/wso2/identity-apps/commit/581fda3c98828df995f28ea828585e2a760e73b0)]:
+  - @wso2is/admin.core.v1@2.46.1
+  - @wso2is/access-control@3.4.1
+
+## 1.7.0
+
+### Minor Changes
+
+- [#8146](https://github.com/wso2/identity-apps/pull/8146) [`1f6bfbf48ade538c207b704f037f6273259215f4`](https://github.com/wso2/identity-apps/commit/1f6bfbf48ade538c207b704f037f6273259215f4) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add new UI to configure MCP servers
+
+### Patch Changes
+
+- Updated dependencies [[`1f6bfbf48ade538c207b704f037f6273259215f4`](https://github.com/wso2/identity-apps/commit/1f6bfbf48ade538c207b704f037f6273259215f4)]:
+  - @wso2is/admin.core.v1@2.46.0
+
+## 1.6.3
+
+### Patch Changes
+
+- [#8314](https://github.com/wso2/identity-apps/pull/8314) [`6427079247040e4ca2fae0edf2f2e4c570487b79`](https://github.com/wso2/identity-apps/commit/6427079247040e4ca2fae0edf2f2e4c570487b79) Thanks [@malithie](https://github.com/malithie)! - Add webhook management UI
+
+- Updated dependencies [[`6427079247040e4ca2fae0edf2f2e4c570487b79`](https://github.com/wso2/identity-apps/commit/6427079247040e4ca2fae0edf2f2e4c570487b79), [`b620bda0c39d43594a60b96579d54a645a877696`](https://github.com/wso2/identity-apps/commit/b620bda0c39d43594a60b96579d54a645a877696)]:
+  - @wso2is/admin.core.v1@2.45.8
+
+## 1.6.2
+
+### Patch Changes
+
+- [#8238](https://github.com/wso2/identity-apps/pull/8238) [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+- Updated dependencies [[`89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f`](https://github.com/wso2/identity-apps/commit/89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f), [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f)]:
+  - @wso2is/admin.core.v1@2.45.2
+  - @wso2is/admin.organizations.v1@2.26.205
+
 ## 1.6.1
 
 ### Patch Changes

@@ -19,7 +19,12 @@
 import { AsgardeoSPAClient, HttpError, HttpInstance, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { PatchOperationRequest, ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
+import {
+    ClaimDataType,
+    PatchOperationRequest,
+    ProfileInfoInterface,
+    ProfileSchemaInterface
+} from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import axios, { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
@@ -269,21 +274,30 @@ export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
             // appended to the attribute object.
             response.data.map((schema:{attributes: ProfileSchemaInterface[], id: string}) => {
                 schema.attributes.map((attribute: ProfileSchemaInterface) => {
-                    if (schema.id !== ProfileConstants.SCIM2_CORE_USER_SCHEMA) {
+                    const isExtended: boolean = schema.id !== ProfileConstants.SCIM2_CORE_USER_SCHEMA;
+                    const schemaUri: string = `${schema.id}:${attribute.name}`;
+
+                    if (attribute.type?.toLocaleLowerCase() === ClaimDataType.COMPLEX) {
                         const modifiedSubAttributes: ProfileSchemaInterface[] = [];
 
-                        if(attribute.type === "COMPLEX") {
-                            attribute.subAttributes.map((subAttribute: ProfileSchemaInterface) => {
-                                modifiedSubAttributes.push({ ...subAttribute,  extended: true, schemaId: schema.id });
-                            }
-                            );
-                            attribute.subAttributes = modifiedSubAttributes;
-                        }
-                        schemaAttributes.push({ ...attribute, extended: true, schemaId: schema.id });
-
-                        return;
+                        attribute.subAttributes.map((subAttribute: ProfileSchemaInterface) => {
+                            modifiedSubAttributes.push({
+                                ...subAttribute,
+                                extended: isExtended,
+                                multiValued: attribute.multiValued,
+                                schemaId: schema.id,
+                                schemaUri: `${schemaUri}.${subAttribute.name}`
+                            });
+                        });
+                        attribute.subAttributes = modifiedSubAttributes;
                     }
-                    schemaAttributes.push(attribute);
+
+                    schemaAttributes.push({
+                        ...attribute,
+                        extended: isExtended,
+                        schemaId: schema.id,
+                        schemaUri
+                    });
                 });
             });
 

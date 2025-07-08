@@ -41,6 +41,9 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config"; //
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state"; // No specific rule found
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import
+AdminDataSeparationNotice
+    from "@wso2is/admin.extensions.v1/configs/components/admin-data-separation-notice/admin-data-separation-notice";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -103,12 +106,17 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
     const showFeatureAnnouncementBanner: boolean = !homeFeatureConfig?.disabledFeatures?.includes(
         HomeConstants.FEATURE_DICTIONARY.FEATURE_ANNOUNCEMENT
     );
+    const isAdminDataSeparationNoticeEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.ui?.isAdminDataSeparationNoticeEnabled;
+    });
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(null);
     const [ isPlaygroundExist, setisPlaygroundExist ] = useState(undefined);
     const [ showWizardLogin, setShowWizardLogin ] = useState<boolean>(false);
     const [ inboundProtocolConfig, setInboundProtocolConfig ] = useState<any>(undefined);
+    const [ isAdminDataSeparationBannerEnabled, setIsAdminDataSeparationBannerEnabled ] = useState<boolean>(true);
+
     const [
         isTryItApplicationSearchRequestLoading,
         setIsTryItApplicationSearchRequestLoading
@@ -434,6 +442,58 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
         </Grid.Row>
     );
 
+    const renderFlowsCard = (): ReactElement => (
+        <Grid.Row>
+            <Grid.Column>
+                <Card
+                    fluid
+                    className="basic-card no-hover"
+                >
+                    <Card.Content>
+                        <div className="try-it-card">
+                            <div className="try-it-card-icon">
+                                <GenericIcon
+                                    style={ {
+                                        height: "91.3px",
+                                        width: "111.26px"
+                                    } }
+                                    floated="left"
+                                    transparent
+                                    icon={ getGettingStartedCardIllustrations().flowComposer }
+                                />
+                            </div>
+                            <div className="try-it-card-content">
+                                <div className="card-heading pt-3 mb-1">
+                                    <Heading as="h2">
+                                        Customize user flows
+                                    </Heading>
+                                </div>
+                                <Text muted>
+                                    Visually design and customize user flows with our no-code flow composer
+                                </Text>
+                            </div>
+                            <div className="try-it-card-actions">
+                                <Button
+                                    data-testid={
+                                        "develop-getting-started-page-cutomize-try-it"
+                                    }
+                                    data-componentid={
+                                        "develop-getting-started-page-cutomize-try-it"
+                                    }
+                                    onClick={ () => history.push(AppConstants.getPaths().get("FLOWS")) }
+                                    icon="angle right"
+                                    iconPlacement="right"
+                                    size="large"
+                                    className="primary-action-button ml-3"
+                                />
+                            </div>
+                        </div>
+                    </Card.Content>
+                </Card>
+            </Grid.Column>
+        </Grid.Row>
+    );
+
     return (
         <div className="advance-user-view-cards-wrapper">
             <div className="greeting">
@@ -464,6 +524,14 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                     }
                 </Heading>
             </div>
+
+            { isAdminDataSeparationNoticeEnabled && isAdminDataSeparationBannerEnabled &&
+                organizationType !== OrganizationType.SUBORGANIZATION && (
+                <AdminDataSeparationNotice setDisplayBanner={ setIsAdminDataSeparationBannerEnabled } />
+            ) }
+
+            <br />
+
             { showFeatureAnnouncementBanner && (
                 <Show featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
                     <Show
@@ -521,6 +589,13 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                                     { renderConnectionsCard() }
                                 </Show>
                             </Grid.Row>
+                            {
+                                !featureConfig?.flows?.disabledFeatures.includes("flows.homePage.tile") && (
+                                    <Show when={ featureConfig?.flows?.scopes?.read }>
+                                        { renderFlowsCard() }
+                                    </Show>
+                                )
+                            }
                             {
                                 organizationType !== OrganizationType.SUBORGANIZATION && (
                                     <Show

@@ -130,6 +130,14 @@ const CreateRolePage: FunctionComponent<CreateRoleProps> = (props: CreateRolePro
                         }));
 
                         history.push(AppConstants.getPaths().get("ROLE_EDIT").replace(":id", response.data.id));
+                    } else if (response.status === 202) {
+                        dispatch(addAlert({
+                            description: t("roles:notifications.createRolePendingApproval.success" +
+                                ".description"),
+                            level: AlertLevels.WARNING,
+                            message: t("roles:notifications.createRolePendingApproval.success.message")
+                        }));
+                        history.push(AppConstants.getPaths().get("ROLES"));
                     }
                 })
                 .catch((error: AxiosError) => {

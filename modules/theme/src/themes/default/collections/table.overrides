@@ -194,8 +194,7 @@
             max-width: @approvalTasksTableeMaxWidth;
 
             .ui.list {
-                &.values-list {
-                    overflow-x: scroll;     
+                &.values-list {    
 
                     .item {
                         text-overflow: ellipsis;

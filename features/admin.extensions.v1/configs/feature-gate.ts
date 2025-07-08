@@ -30,6 +30,15 @@ export const featureGateConfig: FeatureGateInterface  = {
             },
             status: FeatureStatus.DEFAULT
         },
+        branding: {
+            design: {
+                layout: {
+                    custom: {
+                        status: FeatureStatus.DEFAULT
+                    }
+                }
+            }
+        },
         previewFeatures: {
             status: FeatureStatus.DISABLED
         },

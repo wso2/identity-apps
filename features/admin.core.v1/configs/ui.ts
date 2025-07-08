@@ -178,6 +178,9 @@ import { ReactComponent as PythonLogo } from "../../themes/default/assets/images
 import { ReactComponent as ReactLogo } from "../../themes/default/assets/images/technologies/react-logo.svg";
 import { ReactComponent as VueLogo } from "../../themes/default/assets/images/technologies/vue-logo.svg";
 import { ReactComponent as WindowsLogo } from "../../themes/default/assets/images/technologies/windows-logo.svg";
+import {
+    ReactComponent as MCPServersOutlineIcon
+} from "../../themes/wso2is/assets/images/icons/outline-icons/mcp-servers-outline.svg";
 
 /**
  * Typed interface of {@link getTechnologyLogos}
@@ -272,6 +275,7 @@ export type GetSidePanelIconsInterface = {
     identityProviders: FunctionComponent | ReactNode,
     identityVerificationProviders: FunctionComponent | ReactNode,
     jwtKey: FunctionComponent | ReactNode,
+    mcpServers: FunctionComponent | ReactNode,
     organization: FunctionComponent | ReactNode,
     organizationLegacy: FunctionComponent | ReactNode,
     overview: FunctionComponent | ReactNode,
@@ -326,6 +330,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         identityVerificationProviders: IDVPOutlineIcon ,
         insights: AnalyticsIcon,
         jwtKey: JWTKey,
+        mcpServers: MCPServersOutlineIcon,
         organization: LDAPOutlineIcon,
         organizationLegacy: LDAPOutlineLegacyIcon,
         organizationRoles: OrganizationRolesIcon,

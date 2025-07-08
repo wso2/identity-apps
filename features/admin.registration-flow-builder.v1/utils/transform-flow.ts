@@ -19,7 +19,6 @@
 import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/visual-flow-constants";
 import { ActionTypes } from "@wso2is/admin.flow-builder-core.v1/models/actions";
 import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
-import { Resource } from "@wso2is/admin.flow-builder-core.v1/models/resources";
 import { StaticStepTypes, Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { Node } from "@xyflow/react";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -35,24 +34,38 @@ const DISPLAY_ONLY_COMPONENT_PROPERTIES: string[] = [
 ];
 
 const processNavigation = (resource: Element, resourceId: string, navigations: Record<string, string>) => {
-    // There's an `action` object in the resource and also the resource has a navigation edge.
-    if (resource?.action && navigations[resourceId]) {
-        return {
-            ...resource,
-            action: { ...resource.action, next: navigations[resourceId] }
-        };
-    }
+    // If there's a navigation edge for this resource, update the action accordingly
+    if (navigations[resourceId]) {
+        // There's an `action` object in the resource and also the resource has a navigation edge.
+        if (resource?.action) {
+            return {
+                ...resource,
+                action: { ...resource.action, next: navigations[resourceId] }
+            };
+        }
 
-    // There's no `action` object in the resource,
-    // but there's a navigation edge associated with the resource and the element is an action.
-    if (navigations[resourceId] && resource?.category === ElementCategories.Action) {
-        return {
-            ...resource,
-            action: {
-                next: navigations[resourceId],
-                type: ActionTypes.Next
-            }
-        };
+        // There's no `action` object in the resource,
+        // but there's a navigation edge associated with the resource and the element is an action.
+        if (resource?.category === ElementCategories.Action) {
+            return {
+                ...resource,
+                action: {
+                    next: navigations[resourceId],
+                    type: ActionTypes.Next
+                }
+            };
+        }
+    } else {
+        // If there's no navigation edge for this resource, remove any existing navigation
+        if (resource?.action && resource.action.next) {
+            return {
+                ...resource,
+                action: {
+                    ...resource.action,
+                    next: undefined
+                }
+            };
+        }
     }
 
     return resource;

@@ -1,5 +1,71 @@
 # @wso2is/admin.home.v1
 
+## 1.7.8
+
+### Patch Changes
+
+- [#8421](https://github.com/wso2/identity-apps/pull/8421) [`ef2fe33fed05a3b9cf2884b1fdb4f5f54f227bbf`](https://github.com/wso2/identity-apps/commit/ef2fe33fed05a3b9cf2884b1fdb4f5f54f227bbf) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Improve admin data separation banner to a alert type
+
+- Updated dependencies [[`16380763a69b363677a27dff0d71e8bb7f4bd006`](https://github.com/wso2/identity-apps/commit/16380763a69b363677a27dff0d71e8bb7f4bd006), [`ef2fe33fed05a3b9cf2884b1fdb4f5f54f227bbf`](https://github.com/wso2/identity-apps/commit/ef2fe33fed05a3b9cf2884b1fdb4f5f54f227bbf)]:
+  - @wso2is/i18n@2.24.7
+  - @wso2is/admin.extensions.v1@2.39.5
+
+## 1.7.7
+
+### Patch Changes
+
+- [#8384](https://github.com/wso2/identity-apps/pull/8384) [`2981081634e150d84bb16833410fd99001f35162`](https://github.com/wso2/identity-apps/commit/2981081634e150d84bb16833410fd99001f35162) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce flows feature
+
+- Updated dependencies [[`d324ef56d7f9db7fff78ed46d23d7bcaae69e216`](https://github.com/wso2/identity-apps/commit/d324ef56d7f9db7fff78ed46d23d7bcaae69e216), [`90d6c0be05e8b957cc1fa0c239ec3fb9b5a3fa72`](https://github.com/wso2/identity-apps/commit/90d6c0be05e8b957cc1fa0c239ec3fb9b5a3fa72), [`2981081634e150d84bb16833410fd99001f35162`](https://github.com/wso2/identity-apps/commit/2981081634e150d84bb16833410fd99001f35162)]:
+  - @wso2is/admin.applications.v1@2.36.2
+  - @wso2is/admin.extensions.v1@2.39.4
+  - @wso2is/i18n@2.24.3
+  - @wso2is/admin.feature-gate.v1@1.7.2
+  - @wso2is/admin.registration-flow-builder.v1@0.8.0
+  - @wso2is/admin.core.v1@2.46.3
+
+## 1.7.6
+
+### Patch Changes
+
+- [#8385](https://github.com/wso2/identity-apps/pull/8385) [`175ea7ca4298dcc397ef8259f508edc52c863efd`](https://github.com/wso2/identity-apps/commit/175ea7ca4298dcc397ef8259f508edc52c863efd) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add a alert announcement to console
+
+- Updated dependencies [[`175ea7ca4298dcc397ef8259f508edc52c863efd`](https://github.com/wso2/identity-apps/commit/175ea7ca4298dcc397ef8259f508edc52c863efd)]:
+  - @wso2is/admin.extensions.v1@2.39.3
+  - @wso2is/admin.core.v1@2.46.2
+
+## 1.7.5
+
+### Patch Changes
+
+- Updated dependencies [[`6852d804057d84ff63397a305b085bce761143b6`](https://github.com/wso2/identity-apps/commit/6852d804057d84ff63397a305b085bce761143b6)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.7.0
+  - @wso2is/admin.core.v1@2.45.10
+
+## 1.7.4
+
+### Patch Changes
+
+- [#8238](https://github.com/wso2/identity-apps/pull/8238) [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+- Updated dependencies [[`89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f`](https://github.com/wso2/identity-apps/commit/89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f), [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f)]:
+  - @wso2is/admin.core.v1@2.45.2
+  - @wso2is/admin.registration-flow-builder.v1@0.6.1
+  - @wso2is/admin.organizations.v1@2.26.205
+  - @wso2is/admin.applications.v1@2.35.4
+  - @wso2is/admin.feature-gate.v1@1.6.2
+  - @wso2is/admin.extensions.v1@2.38.2
+  - @wso2is/react-components@2.9.16
+  - @wso2is/common.ai.v1@2.27.3
+
+## 1.7.3
+
+### Patch Changes
+
+- Updated dependencies [[`c85ddafae25af01e6230b2583b30f0c6a741c837`](https://github.com/wso2/identity-apps/commit/c85ddafae25af01e6230b2583b30f0c6a741c837), [`19322a678f21fcc094ea10bbb276517f7fc5f3ce`](https://github.com/wso2/identity-apps/commit/19322a678f21fcc094ea10bbb276517f7fc5f3ce)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.6.0
+  - @wso2is/admin.core.v1@2.45.1
+
 ## 1.7.2
 
 ### Patch Changes

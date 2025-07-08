@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -42,7 +42,15 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CookieStorageUtils, StringUtils, URLUtils } from "@wso2is/core/utils";
-import { I18n, I18nModuleConstants, LanguageChangeException, LocaleMeta, SupportedLanguagesMeta } from "@wso2is/i18n";
+import {
+    I18n,
+    I18nModuleConstants,
+    LanguageChangeException,
+    LocaleMeta,
+    SupportedLanguagesMeta,
+    TextDirection
+} from "@wso2is/i18n";
+import { useMediaContext } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
 import React, {
@@ -86,6 +94,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     props: HeaderPropsInterface
 ): ReactElement => {
     const { handleSidePanelToggleClick } = props;
+
+    const { isMobileViewport } = useMediaContext();
 
     const dispatch: ThunkDispatch<AppState, void, Action> = useDispatch();
 
@@ -200,6 +210,23 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             URLUtils.getDomain(window.location.href),
             { secure: true }
         );
+    };
+
+    /**
+     * Handles the direction of the document based on the selected language.
+     *
+     * @param language - Selected language.
+     */
+    const handleDirection = (language: string): void => {
+
+        const supportedLanguage: LocaleMeta = supportedI18nLanguages[language];
+        const direction: string = supportedLanguage?.direction;
+
+        if (direction === TextDirection.RTL) {
+            document.documentElement.setAttribute(I18nModuleConstants.TEXT_DIRECTION_ATTRIBUTE, TextDirection.RTL);
+        } else {
+            document.documentElement.setAttribute(I18nModuleConstants.TEXT_DIRECTION_ATTRIBUTE, TextDirection.LTR);
+        }
     };
 
     /**
@@ -360,7 +387,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         <Image
                             src={ theme?.images?.myAccountLogo?.imgURL
                                     ?? resolveAppLogoFilePath(
-                                        window[ "AppUtils" ].getConfig().ui.appLogoPath,
+                                        window[ "AppUtils" ].getConfig().ui.appMobileLogoPath ??
+                                        window[ "AppUtils" ].getConfig().ui.appLogoPath
+                                        ,
                                         `${ window[ "AppUtils" ].getConfig().clientOrigin
                                         }/` +
                                         `${ StringUtils.removeSlashesFromPath(
@@ -402,7 +431,11 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         onClick={ handleLanguageSwitching }
                         data-componentid="app-header-language-switcher-trigger"
                     >
-                        { supportedI18nLanguages[ I18n.instance?.language ]?.name }
+                        {
+                            isMobileViewport
+                                ? <Flag countryCode={ supportedI18nLanguages[I18n.instance?.language]?.flag } />
+                                : supportedI18nLanguages[I18n.instance?.language]?.name
+                        }
                     </Button>
                     <Menu
                         open={ openLanguageSwitcher }
@@ -421,6 +454,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                         onClick={ () => {
                                             handleLanguageSwitch(value.code);
                                             setOpenLanguageSwitcher(false);
+                                            handleDirection(value.code);
                                         } }
                                     >
                                         <ListItem>
@@ -460,6 +494,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 onActionClick: () =>
                     history.push(AppConstants.getAppLogoutPath()),
                 triggerOptions: {
+                    "children": isMobileViewport ? "" : resolveUsername(),
                     "data-componentid": "app-header-user-avatar",
                     "data-testid": "app-header-user-avatar"
                 }

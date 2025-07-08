@@ -265,5 +265,36 @@ export const branding: BrandingNS = {
         text: {
             label: "Text"
         }
+    },
+    customPageEditor: {
+        backButton: "Go back",
+        brandingNotConfiguredTooltip: "Branding is not enabled. Please configure and save the branding settings to " +
+            "enable the custom layout editor.",
+        tabs: {
+            html: {
+                label: "HTML"
+            },
+            css: {
+                label: "CSS"
+            },
+            js: {
+                label: "JavaScript"
+            }
+        },
+        notifications: {
+            successContentUpdate: {
+                description: "Your changes have been saved and published.",
+                message: "Custom layout content updated successfully"
+            },
+            errorContentUpdate: {
+                description: "An error occurred while saving. Please try again.",
+                message: "Custom layout content update failed"
+            },
+            errorContentSizeLimit: {
+                description: "The content size exceeds the allowed limit. Please reduce the content size " +
+                    "and try again.",
+                message: "Content size limit exceeded"
+            }
+        }
     }
 };

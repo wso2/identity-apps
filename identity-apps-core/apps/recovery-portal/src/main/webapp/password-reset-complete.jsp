@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2024, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2016-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -106,17 +106,18 @@
 
     if (StringUtils.isNotBlank(callback) &&
         StringUtils.isNotBlank(userStoreDomain)) {
-        if (StringUtils.isNotBlank(sp)) {
+        if (StringUtils.isNotBlank(sp) && !StringUtils.equalsIgnoreCase(sp, "null")) {
             applicationName = sp;
         } else if (callback.contains(CONSOLE_APP_NAME.toLowerCase())) {
             applicationName = CONSOLE_APP_NAME;
-        } else if (callback.contains(MY_ACCOUNT_APP_NAME.toLowerCase().replaceAll("\\s+", ""))) {
+        } else if (callback.contains(MY_ACCOUNT_APP_NAME.toLowerCase().replaceAll("\\s+", "")) ||
+                isUserPortalUrl(callback, tenantDomain, application)) {
             applicationName = MY_ACCOUNT_APP_NAME;
         }
     } else {
             if (StringUtils.isNotBlank(spId)) {
             try {
-                if (spId.equals(MY_ACCOUNT_APP_ID)) {
+                if (spId.equals(MY_ACCOUNT_APP_ID) || isUserPortalUrl(callback, tenantDomain, application)) {
                     applicationName = MY_ACCOUNT_APP_NAME;
                 } else {
                     applicationName = applicationDataRetrieval.getApplicationName(tenantDomain,spId);
@@ -286,6 +287,18 @@
     session.invalidate();
 %>
 
+<%!
+    private boolean isUserPortalUrl(String callback, String tenantDomain, ServletContext application) {
+
+        String userPortalUrl = IdentityManagementEndpointUtil.getUserPortalUrl(
+                application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL),
+                tenantDomain);
+        return StringUtils.equals(callback, userPortalUrl);
+    }
+%>
+
+<% request.setAttribute("pageName", "password-reset-complete"); %>
+
 <%-- Data for the layout from the page --%>
 <%
     layoutData.put("isResponsePage", true);
@@ -305,7 +318,7 @@
     <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout">
+<body class="login-portal layout" data-response-type="success" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader" >
             <%-- product-title --%>

@@ -20,6 +20,7 @@ import { AskPasswordOptionTypes, PasswordOptionTypes } from "@wso2is/admin.users
 import { ProfileInfoInterface } from "@wso2is/core/models";
 
 export interface User {
+    allowImpersonationForPrimaryUserStore: boolean;
     bulkUserImportLimit: {
         fileSize: number;
         inviteEmails: number;

@@ -76,6 +76,7 @@ export class ProfileConstants {
         .set("NAME", "name")
         .set("ADDRESSES", "addresses")
         .set("PHONE_NUMBERS", "phoneNumbers")
+        .set("COUNTRY", "country")
         .set("GROUPS", "groups")
         .set("ROLES", "roles")
         .set("ROLES_DEFAULT", "roles.default")
@@ -98,7 +99,15 @@ export class ProfileConstants {
         .set("EMAIL_ADDRESSES", "emailAddresses")
         .set("MOBILE_NUMBERS", "mobileNumbers")
         .set("VERIFIED_EMAIL_ADDRESSES", "verifiedEmailAddresses")
-        .set("VERIFIED_MOBILE_NUMBERS", "verifiedMobileNumbers");
+        .set("VERIFIED_MOBILE_NUMBERS", "verifiedMobileNumbers")
+        .set("FIRST_NAME", "name.givenName")
+        .set("LAST_NAME", "name.familyName")
+        .set("ACCOUNT_STATE", "accountState")
+        .set("PREFERRED_CHANNEL", "preferredChannel")
+        .set("EMAIL_VERIFIED", "emailVerified")
+        .set("PHONE_VERIFIED", "phoneVerified")
+        .set("VERIFY_EMAIL", "verifyEmail")
+        .set("VERIFY_MOBILE", "verifyMobile");
 
     /**
      * States if the SCIM schema is mutable.
@@ -113,6 +122,7 @@ export class ProfileConstants {
     public static readonly URI_CLAIM_VALUE_MAX_LENGTH: number = 1024;
     public static readonly MAX_MOBILE_NUMBERS_ALLOWED: number = 10;
     public static readonly MAX_EMAIL_ADDRESSES_ALLOWED: number = 10;
+    public static readonly MAX_MULTI_VALUES_ALLOWED: number = 10;
 
     // Mobile and email verification
 
@@ -121,4 +131,20 @@ export class ProfileConstants {
     public static readonly ENABLE_MOBILE_VERIFICATION: string = "UserClaimUpdate.MobileNumber.EnableVerification";
 
     public static readonly ENABLE_EMAIL_VERIFICATION: string = "UserClaimUpdate.Email.EnableVerification";
+
+    // Self sign up
+    public static readonly SELF_SIGN_UP_CONNECTOR: string = "self-sign-up";
+    public static readonly SELF_SIGN_UP_ENABLE_SEND_OTP_IN_EMAIL: string = "SelfRegistration.OTP.SendOTPInEmail";
+
+    public static readonly MIGRATED_ENTERPRISE_SCIM_ATTRIBUTES: string[] = [
+        "askPassword", "verifyEmail", "pendingEmails.value", "accountLocked", "accountState",
+        "emailOTPDisabled", "emailVerified", "failedEmailOTPAttempts", "failedLoginAttempts",
+        "failedLoginAttemptsBeforeSuccess", "failedLoginLockoutCount", "failedPasswordRecoveryAttempts",
+        "failedSMSOTPAttempts", "failedTOTPAttempts", "isLiteUser", "lastLoginTime", "lastLogonTime",
+        "lastPasswordUpdateTime", "lockedReason", "phoneVerified", "preferredChannel", "smsOTPDisabled",
+        "tenantAdminAskPassword", "unlockTime", "accountDisabled", "dateOfBirth", "isReadOnlyUser",
+        "pendingMobileNumber", "forcePasswordReset", "oneTimePassword", "verifyMobile", "country",
+        "userSourceId", "totpEnabled", "backupCodeEnabled", "failedBackupCodeAttempts", "managedOrg",
+        "preferredMFAOption"
+    ];
 }

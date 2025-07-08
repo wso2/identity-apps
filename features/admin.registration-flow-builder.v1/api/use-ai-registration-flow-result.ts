@@ -31,7 +31,7 @@ import { useEffect } from "react";
  * @param operationId - Operation ID.
  * @param registrationFlowGenerationCompleted - Registration flow generation completion status.
  *
- * @returns { RequestResultInterface<any, RequestErrorInterface> } Response.
+ * @returns The result of the registration flow generation result request.
  */
 const useAIRegistrationFlowGenerationResult = (
     operationId: string,
@@ -43,7 +43,7 @@ const useAIRegistrationFlowGenerationResult = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ store.getState().config.endpoints.registrationFlow }/result/${ operationId }`
+        url: `${ store.getState().config.endpoints.registrationFlowAI }/result/${ operationId }`
     };
 
     const { data, error, isLoading, isValidating, mutate } = useRequest<any,

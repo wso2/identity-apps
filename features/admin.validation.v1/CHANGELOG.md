@@ -1,5 +1,29 @@
 # @wso2is/admin.validation.v1
 
+## 2.27.144
+
+### Patch Changes
+
+- [#8238](https://github.com/wso2/identity-apps/pull/8238) [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+- Updated dependencies [[`89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f`](https://github.com/wso2/identity-apps/commit/89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f), [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f)]:
+  - @wso2is/admin.core.v1@2.45.2
+  - @wso2is/admin.server-configurations.v1@2.35.1
+  - @wso2is/admin.organizations.v1@2.26.205
+  - @wso2is/admin.extensions.v1@2.38.2
+  - @wso2is/admin.groups.v1@2.27.119
+  - @wso2is/react-components@2.9.16
+  - @wso2is/admin.roles.v2@2.27.154
+  - @wso2is/admin.users.v1@2.32.5
+  - @wso2is/dynamic-forms@2.4.41
+  - @wso2is/form@2.7.1
+
+## 2.27.143
+
+### Patch Changes
+
+- [#8151](https://github.com/wso2/identity-apps/pull/8151) [`db5556ca9bb0c7b46b26069e39f83238977dc8fe`](https://github.com/wso2/identity-apps/commit/db5556ca9bb0c7b46b26069e39f83238977dc8fe) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix password input validation UI
+
 ## 2.27.142
 
 ### Patch Changes

@@ -18,6 +18,9 @@
     },
     "appBaseName": "console",
     "clientID": "CONSOLE",
+    "customContent": {
+        "maxFileSize": 1048576
+    },
     "debug": false,
     "developerApp": {
         "basePath": "",
@@ -168,6 +171,16 @@
                 "description": "This SMS is sent to verify the user's mobile number after an update.",
                 "displayName": "Verify Mobile On Update",
                 "id": "dmVyaWZ5TW9iaWxlT25VcGRhdGU"
+            },
+            {
+                "description": "This SMS is sent to provide a one-time password when admin initiates a password reset for a user",
+                "displayName": "Admin Forced Password Reset",
+                "id": "YWRtaW5Gb3JjZWRQYXNzd29yZFJlc2V0"
+            },
+            {
+                "description": "This SMS is sent to provide a one-time password when admin resends a password reset request",
+                "displayName": "Admin Resend Forced Password Reset",
+                "id": "cmVzZW5kQWRtaW5Gb3JjZWRQYXNzd29yZFJlc2V0"
             }
         ]
     },
@@ -220,6 +233,7 @@
         "appName": "Console",
         "appTitle": "WSO2 Identity Server Console",
         "appWhiteLogoPath": "/assets/images/branding/logo-inverted.svg",
+        "asyncOperationStatusPollingInterval": 5000,
         "connectionResourcesUrl": "",
         "cookiePolicyUrl": "/authenticationendpoint/cookie_policy.do",
         "emailTemplates": {
@@ -230,6 +244,7 @@
         "enableCustomSmsTemplates": true,
         "enableEmailDomain": false,
         "enableIdentityClaims": true,
+        "enableOldUIForEmailProvider": false,
         "features": {
             "accountLogin": {
                 "disabledFeatures": [],
@@ -279,8 +294,7 @@
             },
             "actions": {
                 "disabledFeatures": [
-                    "actions.types.list.preRegistration",
-                    "actions.types.list.preUpdateProfile"
+                    "actions.types.list.preRegistration"
                 ],
                 "enabled": true,
                 "featureFlags": [
@@ -414,7 +428,8 @@
             },
             "applications": {
                 "disabledFeatures": [
-                    "applications.loginFlow.legacyEditor"
+                    "applications.loginFlow.legacyEditor",
+                    "applications.sharedAccess.status"
                 ],
                 "enabled": true,
                 "featureFlags": [
@@ -719,6 +734,38 @@
                     ]
                 }
             },
+            "flows": {
+                "disabledFeatures": [
+                    "flows.types.list.inviteUserToSetPassword",
+                    "flows.types.list.passwordRecovery"
+                ],
+                "enabled": true,
+                "featureFlags": [
+                    {
+                        "feature": "flows",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "flows.types.list.registration",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "flows.types.list.passwordRecovery",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "flows.types.list.inviteUserToSetPassword",
+                        "flag": ""
+                    }
+                ],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [],
+                    "update": []
+                }
+            },
             "gettingStarted": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -812,7 +859,11 @@
                 "scopes": {}
             },
             "identityProviders": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "identityProviders.federationHub",
+                    "identityProviders.saml.artifactBinding",
+                    "identityProviders.saml.attributeConsumingServiceIndex"
+                ],
                 "enabled": true,
                 "featureFlags": [],
                 "scopes": {
@@ -934,6 +985,28 @@
                 "scopes": {
                     "update": [
                         "internal_application_mgt_view"
+                    ]
+                }
+            },
+            "mcpServers": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [
+                        "internal_api_resource_create"
+                    ],
+                    "delete": [
+                        "internal_api_resource_delete"
+                    ],
+                    "feature": [
+                        "console:apiResources"
+                    ],
+                    "read": [
+                        "internal_api_resource_view"
+                    ],
+                    "update": [
+                        "internal_api_resource_update"
                     ]
                 }
             },
@@ -1109,14 +1182,8 @@
                     "create": [],
                     "delete": [],
                     "feature": [],
-                    "read": [
-                        "internal_authenticator_view",
-                        "internal_registration_flow_view"
-                    ],
-                    "update": [
-                        "internal_governance_update",
-                        "internal_registration_flow_update"
-                    ]
+                    "read": [],
+                    "update": []
                 }
             },
             "remoteFetchConfig": {
@@ -1485,6 +1552,54 @@
                     ]
                 }
             },
+            "webhooks": {
+                "disabledFeatures": [
+                ],
+                "enabled": false,
+                "featureFlags": [
+                    {
+                        "feature": "webhooks",
+                        "flag": "BETA"
+                    }
+                ],
+                "scopes": {
+                    "create": [
+                            "internal_webhook_mgt_create"
+                    ],
+                    "delete": [
+                            "internal_webhook_mgt_delete"
+                    ],
+                    "read": [
+                            "internal_webhook_meta_view",
+                            "internal_webhook_mgt_view"
+                    ],
+                    "update": [
+                            "internal_webhook_mgt_update"
+                    ]
+                }
+            },
+             "workflows": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [
+                        "internal_humantask_view"
+                    ],
+                    "delete": [
+                        "internal_humantask_view"
+                    ],
+                    "feature": [
+                        "console:workflowApprovals"
+                    ],
+                    "read": [
+                        "internal_humantask_view"
+                    ],
+                    "update": [
+                        "internal_humantask_view"
+                    ]
+                }
+            },
             "wsFedConfiguration": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -1592,6 +1707,7 @@
         },
         "selfAppIdentifier": "Console",
         "showAppSwitchButton": true,
+        "showPasswordOfEmailProvider": true,
         "showSmsOtpPwdRecoveryFeatureStatusChip": false,
         "showStatusLabelForNewAuthzRuntimeFeatures": false,
         "systemAppsIdentifiers": [

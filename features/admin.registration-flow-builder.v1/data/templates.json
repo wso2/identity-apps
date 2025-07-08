@@ -83,7 +83,7 @@
                             "height": 56
                         },
                         "position": {
-                            "x": 850,
+                            "x": 1200,
                             "y": 408
                         },
                         "data": {}
@@ -100,7 +100,7 @@
         "deprecated": false,
         "display": {
             "label": "Basic Details",
-            "description": "Basic registration experience with minimal data collect",
+            "description": "Basic registration experience with minimal data collection",
             "image": "https://www.svgrepo.com/show/390092/security-protection-password.svg",
             "showOnResourcePanel": true
         },
@@ -235,7 +235,7 @@
                             "height": 56
                         },
                         "position": {
-                            "x": 880,
+                            "x": 1200,
                             "y": 408
                         },
                         "data": {}
@@ -259,6 +259,7 @@
         "config": {
             "data": {
                 "__generationMeta__": {
+                    "defaultPropertySelectorId": "{{GOOGLE_REDIRECTION_STEP_ID}}",
                     "replacers": [
                         {
                             "key": "GOOGLE_REDIRECTION_STEP_ID",
@@ -275,8 +276,8 @@
                             "height": 291
                         },
                         "position": {
-                            "x": 300,
-                            "y": 200
+                            "x": 0,
+                            "y": 330
                         },
                         "data": {
                             "components": [
@@ -367,14 +368,14 @@
                             "height": 291
                         },
                         "position": {
-                            "x": 690,
-                            "y": 500
+                            "x": 580,
+                            "y": 730
                         },
                         "data": {
                             "action": {
                                 "type": "EXECUTOR",
                                 "executor": {
-                                    "name": "GoogleSignupExecutor",
+                                    "name": "GoogleExecutor",
                                     "meta": {
                                         "idpName": "{{IDP_NAME}}"
                                     }
@@ -391,7 +392,7 @@
                             "height": 56
                         },
                         "position": {
-                            "x": 880,
+                            "x": 900,
                             "y": 408
                         },
                         "data": {}

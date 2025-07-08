@@ -39,6 +39,10 @@ export const common: CommonNS = {
     "apps": "应用",
     "assignee": "受让人",
     "assignees": "受让人",
+    "asyncOperationErrorMessage": {
+        "description": "出了點問題",
+        "message": "發生了意外錯誤。請稍後再查看。"
+    },
     "authentication": "验证",
     "authenticator": "身份验证者",
     "authenticator_plural": "身份验证者",
@@ -69,6 +73,7 @@ export const common: CommonNS = {
     "dangerZone": "危险区",
     "darkMode": "黑暗模式",
     "delete": "删除",
+    "deprecated": "此配置已弃用，并将在未来的版本中删除。",
     "description": "描述",
     "deviceModel": "设备型号",
     "disable": "禁用",

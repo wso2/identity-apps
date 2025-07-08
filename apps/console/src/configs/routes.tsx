@@ -19,7 +19,6 @@
 import {
     ArrowRightToBracketPencilIcon,
     BuildingIcon,
-    CircleStarIcon,
     DocumentCheckIcon,
     EnvelopeGearIcon,
     EnvelopeIcon,
@@ -27,13 +26,11 @@ import {
     GearIcon,
     LightbulbOnIcon,
     LinearNodesIcon,
-    LinkIcon,
     NodesIcon,
-    ProfileFlowIcon,
     ProgressFlowIcon,
     UserCircleDotIcon,
     UserGroupIcon,
-    UserPlusIcon
+    WebhookIcon
 } from "@oxygen-ui/react-icons";
 import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -78,6 +75,8 @@ export const getAppViewRoutes = (): RouteInterface[] => {
 
     const isPushProviderFeatureEnabled: boolean =
         window["AppUtils"]?.getConfig()?.ui?.features?.pushProviders?.enabled;
+    const isMcpServersFeatureEnabled: boolean =
+        window["AppUtils"]?.getConfig()?.ui?.features?.mcpServers?.enabled;
 
     const defaultRoutes: RouteInterface[] = [
         {
@@ -196,6 +195,21 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             name: "Home",
             order: 0,
             path: AppConstants.getPaths().get("GETTING_STARTED"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            children: [],
+            component: lazy(() => import("@wso2is/admin.flows.v1/pages/flows")),
+            exact: false,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.FLOWS,
+            icon: {
+                icon: <LinearNodesIcon />
+            },
+            id: "flows",
+            name: "Flows",
+            order: 0,
+            path: AppConstants.getPaths().get("FLOWS"),
             protected: true,
             showOnSidePanel: true
         },
@@ -1225,6 +1239,53 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
+            category: "extensions:manage.sidePanel.categories.approvalWorkflows",
+            children: [
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.approval-workflows.v1/pages/approval-workflow-edit-page")
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "approvalWorkflowEdit",
+                    name: "console:manage.features.sidePanel.editApprovalWorkflow",
+                    path: AppConstants.getPaths().get("APPROVAL_WORKFLOW_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import(
+                            "@wso2is/admin.approval-workflows.v1/pages/" +
+                            "approval-workflow-create-page"
+                        )
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "approvalWorkflowCreate",
+                    name: "console:manage.features.sidePanel.createApprovalWorkflows",
+                    path: AppConstants.getPaths().get("APPROVAL_WORKFLOW_CREATE"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("@wso2is/admin.approval-workflows.v1/pages/approval-workflows")),
+            exact: true,
+            icon: {
+                icon: <DocumentCheckIcon fill="black" className="icon" />
+            },
+            id: "workflows",
+            name: "console:manage.features.sidePanel.approvalWorkflows",
+            order: 8,
+            path: AppConstants.getPaths().get("APPROVAL_WORKFLOWS"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
             category: "console:manage.features.sidePanel.categories.legacy",
             component: lazy(() => import("@wso2is/admin.certificates.v1/pages/certificates-keystore")),
             icon: {
@@ -1435,125 +1496,40 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             path: AppConstants.getPaths().get("ACTIONS"),
             protected: true,
             showOnSidePanel: true
-        },    
+        },
         {
-            category: "customerData",
-            component: lazy(() =>
-                import("@wso2is/admin.cds.v1/pages/identity-resolution")
-            ),
-            exact: true,
-            icon: {
-                icon: <LinkIcon className="icon" fill="black" />
-            },
-            id: "unification",
-            name: "Unification",
-            order: 32,
-            path: "/resolution", // ✅ Make sure this is correctly defined in AppConstants if you use get()
-            protected: true,
-            showOnSidePanel: true
-        },        
-        {
-            category: "customerData",
-            label: "Traits",
-            component: lazy(() =>
-                import("@wso2is/admin.cds.v1/pages/traits")
-            ),
-            exact: true,
-            icon: {
-                icon: <UserGroupIcon className="icon" fill="black" />
-            },
-            id: "enrichment",
-            name: "Enrichment",
-            order: 33,
-            path: "/traits", // should resolve to "/traits"
-            protected: true,
-            showOnSidePanel: true,
-        
+            category: "extensions:manage.sidePanel.categories.extensions",
             children: [
                 {
                     component: lazy(() =>
-                        import("@wso2is/admin.cds.v1/pages/traits") // 👈 new trait visualizer page
+                        import("@wso2is/admin.webhooks.v1/pages/webhook-edit-page")
                     ),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
                     },
-                    id: "traitView",
-                    name: "View Trait",
-                    path: "/traits/:trait_id",
+                    id: "webhookEdit",
+                    name: "Webhook Edit",
+                    path: AppConstants.getPaths().get("WEBHOOK_EDIT"),
                     protected: true,
                     showOnSidePanel: false
                 }
-            ]
-        }, 
-        {
-            category: "customerData",
-            label: "Profiles",
+            ],
             component: lazy(() =>
-                import("@wso2is/admin.cds.v1/pages/profile-list")
+                import("@wso2is/admin.webhooks.v1/pages/webhook-list-page")
             ),
             exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.WEBHOOKS,
             icon: {
-                icon: <ProfileFlowIcon className="icon" fill="black" />
+                icon: <WebhookIcon className="icon" fill="black" />
             },
-            id: "profiles",
-            name: "Profiles",
-            order: 34,
-            path: "/profiles", 
+            id: "webhooks",
+            name: "webhooks:sidePanel.name",
+            order: 31,
+            path: AppConstants.getPaths().get("WEBHOOKS"),
             protected: true,
-            showOnSidePanel: true,
-        
-            // children: [
-            //     {
-            //         component: lazy(() =>
-            //             import("@wso2is/admin.cds.v1/pages/profile") // 👈 new trait visualizer page
-            //         ),
-            //         exact: true,
-            //         icon: {
-            //             icon: getSidePanelIcons().childIcon
-            //         },
-            //         id: "profileView",
-            //         name: "Profile List",
-            //         path: "/profile/:profile_id",
-            //         protected: true,
-            //         showOnSidePanel: false
-            //     }
-            // ]
-        },     
-        {
-            category: "customerData",
-            label: "Customer Events",
-            component: lazy(() =>
-                import("@wso2is/admin.cds.v1/pages/events")
-            ),
-            exact: true,
-            icon: {
-                icon: <CircleStarIcon className="icon" fill="black" />
-            },
-            id: "customerEvents",
-            name: "CustomerEvents",
-            order: 34,
-            path: "/customer-events", 
-            protected: true,
-            showOnSidePanel: true,
-        
-            // children: [
-            //     {
-            //         component: lazy(() =>
-            //             import("@wso2is/admin.cds.v1/pages/profile") // 👈 new trait visualizer page
-            //         ),
-            //         exact: true,
-            //         icon: {
-            //             icon: getSidePanelIcons().childIcon
-            //         },
-            //         id: "profileView",
-            //         name: "Profile List",
-            //         path: "/profile/:profile_id",
-            //         protected: true,
-            //         showOnSidePanel: false
-            //     }
-            // ]
-        },      
+            showOnSidePanel: true
+        },
         // the following routes are not onboarded to the side panel
         {
             category: "console:manage.features.sidePanel.categories.configurations",
@@ -1598,6 +1574,40 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         }
     ];
 
+    if (isMcpServersFeatureEnabled) {
+        defaultRoutes.push(
+            {
+                category: "console:develop.features.sidePanel.categories.application",
+                children: [
+                    {
+                        component: lazy(() =>
+                            import("@wso2is/admin.api-resources.v2/pages/api-resource-edit")
+                        ),
+                        exact: true,
+                        id: "mcpServers-edit",
+                        name: "extensions:develop.sidePanel.mcpServers",
+                        path: AppConstants.getPaths().get("MCP_SERVER_EDIT"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() =>
+                    import("@wso2is/admin.api-resources.v2/pages/api-resources")
+                ),
+                exact: true,
+                featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.MCP_SERVERS,
+                icon: {
+                    icon: getSidePanelIcons().mcpServers
+                },
+                id: "mcpServers",
+                name: "extensions:develop.sidePanel.mcpServers",
+                order: 2,
+                path: AppConstants.getPaths().get("MCP_SERVERS"),
+                protected: true,
+                showOnSidePanel: true
+            }
+        );
+    }
 
 
     const routes: RouteInterface[] = values(
@@ -1655,15 +1665,6 @@ export const getFullScreenViewRoutes = (): RouteInterface[] => {
  */
 export const getDefaultLayoutRoutes = (): RouteInterface[] => {
     return [
-        {
-            component: lazy(() => import("@wso2is/admin.core.v1/pages/privacy")),
-            icon: null,
-            id: "privacy",
-            name: "console:common.sidePanel.privacy",
-            path: AppConstants.getPaths().get("PRIVACY"),
-            protected: true,
-            showOnSidePanel: false
-        },
         {
             children: [
                 {

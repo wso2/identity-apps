@@ -1,5 +1,67 @@
 # @wso2is/theme
 
+## 2.8.2
+
+### Patch Changes
+
+- [#8409](https://github.com/wso2/identity-apps/pull/8409) [`16380763a69b363677a27dff0d71e8bb7f4bd006`](https://github.com/wso2/identity-apps/commit/16380763a69b363677a27dff0d71e8bb7f4bd006) Thanks [@Malith-19](https://github.com/Malith-19)! - Improve the workflow related UIs.
+
+## 2.8.1
+
+### Patch Changes
+
+- [#8384](https://github.com/wso2/identity-apps/pull/8384) [`2981081634e150d84bb16833410fd99001f35162`](https://github.com/wso2/identity-apps/commit/2981081634e150d84bb16833410fd99001f35162) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce flows feature
+
+## 2.8.0
+
+### Minor Changes
+
+- [#8146](https://github.com/wso2/identity-apps/pull/8146) [`1f6bfbf48ade538c207b704f037f6273259215f4`](https://github.com/wso2/identity-apps/commit/1f6bfbf48ade538c207b704f037f6273259215f4) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add new UI to configure MCP servers
+
+## 2.7.9
+
+### Patch Changes
+
+- [#8345](https://github.com/wso2/identity-apps/pull/8345) [`9705a6126e9c839c053a199f1c41e96b7928da1f`](https://github.com/wso2/identity-apps/commit/9705a6126e9c839c053a199f1c41e96b7928da1f) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Change registration portal class name
+
+## 2.7.8
+
+### Patch Changes
+
+- [#8116](https://github.com/wso2/identity-apps/pull/8116) [`09d8b338d4b54547c052364326779f2575ac365f`](https://github.com/wso2/identity-apps/commit/09d8b338d4b54547c052364326779f2575ac365f) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Onboard impersonation feature.
+
+## 2.7.7
+
+### Patch Changes
+
+- [#8136](https://github.com/wso2/identity-apps/pull/8136) [`352b47497274e11301f477766da9c703d3d368a5`](https://github.com/wso2/identity-apps/commit/352b47497274e11301f477766da9c703d3d368a5) Thanks [@BimsaraBodaragama](https://github.com/BimsaraBodaragama)! - Improve Responsive Behavior of My Account Application for Mobile View
+
+## 2.7.6
+
+### Patch Changes
+
+- [#8083](https://github.com/wso2/identity-apps/pull/8083) [`ca2ef3a78d5a6571fc482b4df8da9cc792a711f1`](https://github.com/wso2/identity-apps/commit/ca2ef3a78d5a6571fc482b4df8da9cc792a711f1) Thanks [@piraveena](https://github.com/piraveena)! - Add Logos of Signicat
+
+## 2.7.5
+
+### Patch Changes
+
+- [#8057](https://github.com/wso2/identity-apps/pull/8057) [`b0d1cfa9142126be2870b6af6ef8fd1b99788cd9`](https://github.com/wso2/identity-apps/commit/b0d1cfa9142126be2870b6af6ef8fd1b99788cd9) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix logo overflow in jsp pages
+
+* [#7993](https://github.com/wso2/identity-apps/pull/7993) [`2aca657fd60a32bf39a7d608f4d65eace3a99b95`](https://github.com/wso2/identity-apps/commit/2aca657fd60a32bf39a7d608f4d65eace3a99b95) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Improve user assignment UI in roles edit page and improvements to transfer components
+
+## 2.7.4
+
+### Patch Changes
+
+- [#8043](https://github.com/wso2/identity-apps/pull/8043) [`9c1ce998f2bbbad563170846d13a7e983f67063c`](https://github.com/wso2/identity-apps/commit/9c1ce998f2bbbad563170846d13a7e983f67063c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update self registration flow styling
+
+## 2.7.3
+
+### Patch Changes
+
+- [#8035](https://github.com/wso2/identity-apps/pull/8035) [`4591b3ea74dda325425f08630075ebac8d1fa1e4`](https://github.com/wso2/identity-apps/commit/4591b3ea74dda325425f08630075ebac8d1fa1e4) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update admin invitation flow styling
+
 ## 2.7.2
 
 ### Patch Changes

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,11 +16,14 @@
  * under the License.
  */
 
+import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Checkbox, Table, TableProps } from "semantic-ui-react";
+import { useInfiniteScroll } from "../../hooks";
 import { ContentLoader } from "../loader";
 import { EmptyPlaceholder } from "../placeholder";
+import "./transfer-list.scss";
 
 interface TransferListItemInterface {
     itemName: string;
@@ -50,6 +53,15 @@ export interface TransferListPropsInterface extends TableProps, IdentifiableComp
      */
     emptyPlaceholderDefaultContent?: string;
     disabled?: boolean;
+    bordered?: boolean;
+    /**
+     * Flag indicating if there are more items to load.
+     */
+    hasMore?: boolean;
+    /**
+     * Callback to load more items when triggered.
+     */
+    loadMore?: () => void;
 }
 
 /**
@@ -63,6 +75,7 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
 ): ReactElement => {
 
     const {
+        bordered,
         children,
         listHeaders,
         isListEmpty,
@@ -73,54 +86,71 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
         isLoading,
         emptyPlaceholderDefaultContent,
         disabled,
+        hasMore = false,
+        loadMore,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
+
+    const { observe } = useInfiniteScroll(hasMore, loadMore);
+
+    if (isLoading) {
+        return <ContentLoader/>;
+    }
 
     return (
         <>
             {
                 !isListEmpty
-                    ? isLoading
-                        ? <ContentLoader/>
-                        : (
-                            <Table>
-                                {
-                                    listHeaders instanceof Array && (
-                                        <Table.Header>
-                                            <Table.Row>
-                                                {
-                                                    !selectionComponent && (
-                                                        <Table.HeaderCell>
-                                                            <Checkbox
-                                                                data-componentid={ componentId }
-                                                                data-testid={ testId }
-                                                                checked={ isHeaderCheckboxChecked }
-                                                                onChange={ handleHeaderCheckboxChange }
-                                                                disabled={ disabled }
-                                                            />
+                    ? (
+                        <Table basic={ bordered ? "very" : true } padded={ bordered }>
+                            {
+                                listHeaders instanceof Array && (
+                                    <Table.Header>
+                                        <Table.Row>
+                                            {
+                                                !selectionComponent && (
+                                                    <Table.HeaderCell>
+                                                        <Checkbox
+                                                            data-componentid={ componentId }
+                                                            data-testid={ testId }
+                                                            checked={ isHeaderCheckboxChecked }
+                                                            onChange={ handleHeaderCheckboxChange }
+                                                            disabled={ disabled }
+                                                        />
+                                                    </Table.HeaderCell>
+                                                )
+                                            }
+                                            {
+                                                listHeaders?.map((header, index) => {
+                                                    return (
+                                                        <Table.HeaderCell key={ index }>
+                                                            <strong>{ header }</strong>
                                                         </Table.HeaderCell>
-                                                    )
-                                                }
-                                                {
-                                                    listHeaders?.map((header, index) => {
-                                                        return (
-                                                            <Table.HeaderCell key={ index }>
-                                                                <strong>{ header }</strong>
-                                                            </Table.HeaderCell>
-                                                        );
-                                                    })
-                                                }
-                                            </Table.Row>
-                                        </Table.Header>
-                                    )
-                                }
-                                <Table.Body>
-                                    { children }
-                                </Table.Body>
-                            </Table>
-                        )
-                    : (
+                                                    );
+                                                })
+                                            }
+                                        </Table.Row>
+                                    </Table.Header>
+                                )
+                            }
+                            <Table.Body>
+                                { children }
+                                <Table.Row className="no-top-border">
+                                    <Table.Cell colSpan={ listHeaders?.length || 1 }>
+                                        <div ref={ observe } />
+                                    </Table.Cell>
+                                </Table.Row>
+                                { hasMore && (
+                                    <Table.Row className="no-top-border">
+                                        <Table.Cell colSpan={ listHeaders?.length || 1 }>
+                                            <CircularProgress size={ 22 } className="transfer-list-loader"/>
+                                        </Table.Cell>
+                                    </Table.Row>
+                                ) }
+                            </Table.Body>
+                        </Table>
+                    ) : (
                         /**
                          * TODO : React Components should not depend on the product
                          * locale bundles.
@@ -150,6 +180,7 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
  * Default props for the transfer list component.
  */
 TransferList.defaultProps = {
+    bordered: false,
     "data-componentid": "transfer-list",
     "data-testid": "transfer-list",
     disabled: false

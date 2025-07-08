@@ -1,5 +1,34 @@
 # @wso2is/admin.login-flow.ai.v1
 
+## 2.27.101
+
+### Patch Changes
+
+- [#8238](https://github.com/wso2/identity-apps/pull/8238) [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+- Updated dependencies [[`89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f`](https://github.com/wso2/identity-apps/commit/89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f), [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f)]:
+  - @wso2is/admin.core.v1@2.45.2
+  - @wso2is/admin.identity-providers.v1@2.26.206
+  - @wso2is/admin.organizations.v1@2.26.205
+  - @wso2is/admin.applications.v1@2.35.4
+  - @wso2is/admin.feature-gate.v1@1.6.2
+  - @wso2is/admin.claims.v1@2.27.123
+  - @wso2is/react-components@2.9.16
+  - @wso2is/common.ai.v1@2.27.3
+  - @wso2is/dynamic-forms@2.4.41
+  - @wso2is/form@2.7.1
+
+## 2.27.100
+
+### Patch Changes
+
+- [#8118](https://github.com/wso2/identity-apps/pull/8118) [`c4aee527f3dad357cd7a62293d67ef6e884d927a`](https://github.com/wso2/identity-apps/commit/c4aee527f3dad357cd7a62293d67ef6e884d927a) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix identity claims display based on config
+
+- Updated dependencies [[`c4aee527f3dad357cd7a62293d67ef6e884d927a`](https://github.com/wso2/identity-apps/commit/c4aee527f3dad357cd7a62293d67ef6e884d927a)]:
+  - @wso2is/admin.applications.v1@2.34.6
+  - @wso2is/admin.claims.v1@2.27.121
+  - @wso2is/core@2.7.6
+
 ## 2.27.99
 
 ### Patch Changes

@@ -26,6 +26,7 @@ import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/co
 import {
     ApplicationInterface,
     ApplicationTabTypes,
+    ApplicationTemplateIdTypes,
     additionalSpProperty
 } from "@wso2is/admin.applications.v1/models/application";
 import { SupportedAuthProtocolTypes } from "@wso2is/admin.applications.v1/models/application-inbound";
@@ -143,7 +144,8 @@ export const applicationConfig: ApplicationConfig = {
         ],
         [ "mcp-client-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
         ],
         [ "mobile-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
@@ -153,6 +155,18 @@ export const applicationConfig: ApplicationConfig = {
             ApplicationManagementConstants.DEVICE_GRANT,
             ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
             ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
+        ],
+        [ "nextjs-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
+        ],
+        [ "react-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT
         ],
         [ "sub-organization-application" ]: [
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
@@ -268,13 +282,18 @@ export const applicationConfig: ApplicationConfig = {
                         index: application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
                             ? M2M_API_AUTHORIZATION_INDEX + tabExtensions.length
                             : API_AUTHORIZATION_INDEX + tabExtensions.length,
-                        menuItem: I18n.instance.t(
-                            "extensions:develop.applications.edit.sections.apiAuthorization.title"
-                        ),
+                        menuItem: application?.originalTemplateId === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION
+                            ? I18n.instance.t(
+                                "extensions:develop.applications.edit.sections.resourceAuthorization.title"
+                            )
+                            : I18n.instance.t(
+                                "extensions:develop.applications.edit.sections.apiAuthorization.title"
+                            ),
                         render: () => (
                             <ResourceTab.Pane controlledSegmentation>
                                 <APIAuthorization
                                     templateId={ application?.templateId }
+                                    originalTemplateId={ application?.originalTemplateId }
                                     readOnly={ isReadOnly }
                                 />
                             </ResourceTab.Pane>

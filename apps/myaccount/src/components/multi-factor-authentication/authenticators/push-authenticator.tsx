@@ -163,7 +163,7 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
         return (
             <Segment className="totp">
                 <div className="svg-box">
-                    <svg className="circular positive-stroke">
+                    <svg className="circular positive-stroke" viewBox="0 0 150 150">
                         <circle
                             className="path"
                             cx="75"

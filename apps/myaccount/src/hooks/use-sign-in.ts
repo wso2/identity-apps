@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -118,10 +118,8 @@ const useSignIn = (): UseSignInInterface => {
         const tenantDomain: string = transformTenantDomain(
             AuthenticateUtils.deriveTenantDomainFromSubject(response.sub)
         );
-        const isFirstLevelOrg: boolean = !idToken.user_org
-                || idToken.org_name === tenantDomain
-                || ((idToken.user_org === idToken.org_id) && idToken.org_name === tenantDomain);
         const userOrganizationId: string = idToken.user_org;
+        const isFirstLevelOrg: boolean = !userOrganizationId;
 
         const __experimental__platformIdP: {
             enabled: boolean;

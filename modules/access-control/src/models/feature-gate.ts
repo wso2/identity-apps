@@ -48,6 +48,7 @@ export interface AllFeatureInterface {
 
 export enum FeatureStatus {
     DEFAULT = "ENABLED",
+    // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
     ENABLED = "ENABLED",
     DISABLED = "DISABLED",
     HIDDEN = "HIDDEN",
@@ -70,6 +71,15 @@ export interface FeatureGateInterface {
             },
             status: FeatureStatus
         },
+        branding: {
+            design: {
+                layout: {
+                    custom: {
+                        status: FeatureStatus
+                    }
+                }
+            }
+        }
         previewFeatures: {
             status: FeatureStatus
         },

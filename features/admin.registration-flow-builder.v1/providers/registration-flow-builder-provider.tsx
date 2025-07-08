@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import AuthenticationFlowBuilderCoreProvider from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
+import AuthenticationFlowBuilderCoreProvider
+    from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useReactFlow } from "@xyflow/react";
@@ -30,6 +31,7 @@ import ResourceProperties from "../components/resource-property-panel/resource-p
 import ElementFactory from "../components/resources/elements/element-factory";
 import RegistrationFlowBuilderContext from "../context/registration-flow-builder-context";
 import { Attribute } from "../models/attributes";
+import RegistrationFlowConstants from "../constants/registration-flow-constants";
 import transformFlow from "../utils/transform-flow";
 
 /**
@@ -93,7 +95,10 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
         }
 
         try {
-            await configureRegistrationFlow(transformFlow(flow) as any);
+            const registrationFlow = transformFlow(flow) as any;
+            registrationFlow.flowType = RegistrationFlowConstants.REGISTRATION_FLOW_TYPE;
+
+            await configureRegistrationFlow(registrationFlow);
 
             dispatch(
                 addAlert({

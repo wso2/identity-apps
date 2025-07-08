@@ -16,10 +16,12 @@
  * under the License.
  */
 
+import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import PhoneNumberInput from "@oxygen-ui/react/PhoneNumberInput";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { CommonElementFactoryPropsInterface } from "../../common-element-factory";
+import { Hint } from "../../hint";
 
 /**
  * Props interface of {@link PhoneNumberInputAdapter}
@@ -35,14 +37,23 @@ export type PhoneNumberInputAdapterPropsInterface = IdentifiableComponentInterfa
 export const PhoneNumberInputAdapter: FunctionComponent<PhoneNumberInputAdapterPropsInterface> = ({
     resource
 }: PhoneNumberInputAdapterPropsInterface): ReactElement => (
-    <PhoneNumberInput
-        className={ resource.config?.className }
-        label={ resource.config?.label }
-        placeholder={ resource.config?.placeholder || "" }
-        InputLabelProps={ {
-            required: resource.config?.required
-        } }
-    />
+    <>
+        <PhoneNumberInput
+            className={ resource.config?.className }
+            label={ resource.config?.label }
+            placeholder={ resource.config?.placeholder || "" }
+            InputLabelProps={ {
+                required: resource.config?.required
+            } }
+        />
+        {
+            resource.config?.hint && (
+                <FormHelperText>
+                    <Hint hint={ resource.config?.hint } />
+                </FormHelperText>
+            )
+        }
+    </>
 );
 
 export default PhoneNumberInputAdapter;

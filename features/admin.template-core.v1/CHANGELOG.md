@@ -1,5 +1,14 @@
 # @wso2is/admin.template-core.v1
 
+## 1.5.158
+
+### Patch Changes
+
+- [#8383](https://github.com/wso2/identity-apps/pull/8383) [`d324ef56d7f9db7fff78ed46d23d7bcaae69e216`](https://github.com/wso2/identity-apps/commit/d324ef56d7f9db7fff78ed46d23d7bcaae69e216) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add first-class template support for both React and Next.js
+
+- Updated dependencies [[`2981081634e150d84bb16833410fd99001f35162`](https://github.com/wso2/identity-apps/commit/2981081634e150d84bb16833410fd99001f35162)]:
+  - @wso2is/admin.core.v1@2.46.3
+
 ## 1.5.157
 
 ### Patch Changes
