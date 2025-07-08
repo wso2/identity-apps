@@ -130,8 +130,6 @@ export default function AgentOverview({
                                                 className="pt-3"
                                                 component={ TextFieldAdapter }
                                             ></FinalFormField>
-
-
                                             <FinalFormField
                                                 name="description"
                                                 className="pt-3"
@@ -160,7 +158,6 @@ export default function AgentOverview({
             <DangerZoneGroup
                 sectionHeader={ "Danger Zone" }
             >
-
                 { isAgentDisablingEnabled && (
                     <DangerZone
                         actionTitle={
