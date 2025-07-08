@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.26.6
+
+### Patch Changes
+
+- [#8483](https://github.com/wso2/identity-apps/pull/8483) [`4a53a83147440de1fda69ac142f404279eb267b9`](https://github.com/wso2/identity-apps/commit/4a53a83147440de1fda69ac142f404279eb267b9) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add config to read downtime banner content from a toml config
+
 ## 2.26.5
 
 ### Patch Changes
