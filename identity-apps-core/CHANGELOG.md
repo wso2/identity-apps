@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.26.7
+
+### Patch Changes
+
+- [#8477](https://github.com/wso2/identity-apps/pull/8477) [`36505395f0de512fe8d583fe79b774db55c96e4b`](https://github.com/wso2/identity-apps/commit/36505395f0de512fe8d583fe79b774db55c96e4b) Thanks [@shanggeeth](https://github.com/shanggeeth)! - Handle the email.verification.pending error code and resend the email with EMAIL_VERIFICATION scenario
+
 ## 2.26.6
 
 ### Patch Changes
