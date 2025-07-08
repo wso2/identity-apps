@@ -164,6 +164,10 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
+    const isMaintenanceWindowEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.deployment?.maintenanceWindowEnabled;
+    });
+
     const hasOrganizationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.organizations?.scopes?.update);
     const hasOrganizationDeletePermissions: boolean = useRequiredScopes(featureConfig?.organizations?.scopes?.delete);
 
@@ -488,7 +492,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 <EmptyPlaceholder
                     className={ !isRenderedOnPortal ? "list-placeholder mr-0" : "" }
                     action={
-                        onEmptyListPlaceholderActionClick && (
+                        !isMaintenanceWindowEnabled && onEmptyListPlaceholderActionClick && (
                             <Show when={ featureConfig?.organizations?.scopes?.create }>
                                 <PrimaryButton
                                     disabled={ parentOrganization?.status === "DISABLED" }

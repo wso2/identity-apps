@@ -154,6 +154,10 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
         state?.config?.ui?.primaryUserStoreDomainName);
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state?.profile?.profileSchemas);
 
+    const isMaintenanceWindowEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.deployment?.maintenanceWindowEnabled;
+    });
+
     const isPrivilegedUsersInConsoleSettingsEnabled: boolean =
         !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
             "consoleSettings.privilegedUsers"
@@ -531,7 +535,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
             } }
             rightActionPanel={ renderRightActionPanel() }
             topActionPanelExtension={ (
-                <Show
+                isMaintenanceWindowEnabled && (<Show
                     when={
                         [ ...featureConfig?.users?.scopes?.create,
                             ...featureConfig?.userRoles?.scopes?.update
@@ -545,7 +549,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
                         </Button>
                     ) }
                     { renderAdministratorAddOptions() }
-                </Show>
+                </Show>)
             ) }
         >
             { invitationStatusOption === InvitationStatus.ACCEPTED ? adminUserListFetchError ? (

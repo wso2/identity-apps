@@ -169,6 +169,7 @@ export class Config {
             extensions: window[ "AppUtils" ]?.getConfig()?.extensions,
             idpConfigs: window[ "AppUtils" ]?.getConfig()?.idpConfigs,
             loginCallbackUrl: window[ "AppUtils" ]?.getConfig()?.loginCallbackURL,
+            maintenanceWindowEnabled: window[ "AppUtils" ]?.getConfig()?.maintenanceWindowEnabled,
             organizationPrefix: window["AppUtils"]?.getConfig()?.organizationPrefix,
             regionSelectionEnabled: window[ "AppUtils" ]?.getConfig()?.regionSelectionEnabled,
             serverHost: window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant,

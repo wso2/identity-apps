@@ -90,6 +90,10 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         (state: AppState) => state.config.ui.features
     );
 
+    const isMaintenanceWindowEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.deployment?.maintenanceWindowEnabled;
+    });
+
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
     const { getLink } = useDocumentation();
@@ -503,7 +507,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                     !isOrganizationListRequestLoading && !isAuthorizedOrganizationListRequestLoading &&
                     !(!searchQuery && (isEmpty(organizationList) || organizationList?.organizations?.length <= 0)) &&
                     (
-                        <Show when={ featureConfig?.organizations?.scopes?.create }>
+                        !isMaintenanceWindowEnabled && (<Show when={ featureConfig?.organizations?.scopes?.create }>
                             <PrimaryButton
                                 disabled={ isOrganizationListRequestLoading }
                                 loading={ isOrganizationListRequestLoading }
@@ -516,7 +520,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                 <Icon name="add" />
                                 { t("organizations:list.actions.add") }
                             </PrimaryButton>
-                        </Show>
+                        </Show>)
                     )
                 }
                 pageTitle={ t("pages:organizations.title") }
