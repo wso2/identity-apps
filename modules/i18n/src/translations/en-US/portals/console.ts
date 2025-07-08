@@ -6391,32 +6391,97 @@ export const console: ConsoleNS = {
                                 }
                             },
                             verifyHostname: {
-                                label: "Verify the hostname"
+                                label: "Verify the hostname",
+                                hint: "Enable this option to verify the hostname of the remote server.",
                             },
                             basicAuthConfig: {
-                                title: "Basic Authentication Configuration",
+                                title: "Authentication Configuration",
+                                info: {
+                                    message: "If you are changing the authentication, be aware that the authentication" +
+                                    " secrets of the remote server need to be updated.",
+                                    title: {
+                                        noneAuthType: "No authentication is configured.",
+                                        otherAuthType: "<strong>{{ authType }}</strong> authentication scheme is configured."
+                                    }
+                                },
+                                types: {
+                                    none: {
+                                        name: "None"
+                                    },
+                                    basic: {
+                                        name: "Basic"
+                                    }
+                                },
+                                authenticationType: {
+                                    hint: {
+                                        create: "Once added, this secret will not be displayed. You will only be able to reset them.",
+                                        update: "Once updated, this secret will not be displayed. You will only be able to reset them again."
+                                    },
+                                    label: "Authentication Scheme",
+                                    placeholder: "Select Authentication Scheme"
+                                },
+                                buttons: {
+                                    changeAuthentication: "Change Authentication"
+                                },
                                 serverUsername: {
                                     label: "Remote server username",
-                                    placeholder: "username"
+                                    placeholder: "username",
+                                    error: {
+                                        required: "Remote server username is required"
+                                    }
                                 },
                                 serverPassword: {
                                     label: "Remote server password",
-                                    placeholder: "*****"
+                                    placeholder: "*****",
+                                    error: {
+                                        required: "Remote server password is required"
+                                    }
                                 }
                             },
                             sslConfig: {
                                 title: "SSL Configuration",
+                                info: {
+                                    sslConfigured: {
+                                        message: "The connections will be secured using SSL",
+                                        title: "SSL Already Configured"
+                                    },
+                                    notConfigured: {
+                                        message: "SSL is not currently configured. Please set it up to secure your connections.",
+                                        title: "SSL Not Configured"
+                                    }
+                                },
+                                buttons: {
+                                    addSslConfig: "Add SSL Configuration",
+                                    changeSslConfig: "Update SSL Configuration",
+                                    clearSslConfig: "Remove SSL Configuration"
+                                },
                                 keystorePath: {
-                                    label: "Keystore location"
+                                    label: "Keystore location",
+                                    placeholder: "Path to the keystore file",
+                                    error: {
+                                        required: "Keystore location is required"
+                                    }
                                 },
                                 keystorePassword: {
-                                    label: "Keystore password"
+                                    label: "Keystore password",
+                                    placeholder: "*****",
+                                    error: {
+                                        required: "Keystore password is required"
+                                    }
                                 },
                                 truststorePath: {
-                                    label: "Truststore location"
+                                    label: "Truststore location",
+                                    placeholder: "Path to the truststore file",
+                                    error: {
+                                        required: "Truststore location is required"
+                                    }
                                 },
                                 truststorePassword: {
-                                    label: "Truststore password"
+                                    label: "Truststore password",
+                                    placeholder: "*****",
+                                    error: {
+                                        required: "Truststore password is required"
+                                    }
                                 }
                             }
                         }

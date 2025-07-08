@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AuthenticationType, AuthenticationTypeDropdownOption } from "../../admin.actions.v1/models/actions";
+
 /**
  * Constants related to the tenant management operations.
  *
@@ -86,4 +88,18 @@ export default class TenantConstants {
             TENANT_DELETION: "tenants.deletion"
         };
 
+    public static readonly AUTH_TYPES: AuthenticationTypeDropdownOption[] = [
+        {
+            key: AuthenticationType.NONE,
+            text: "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
+							"basicAuthConfig.types.none.name",
+            value: AuthenticationType.NONE
+        },
+        {
+            key: AuthenticationType.BASIC,
+            text: "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
+							"basicAuthConfig.types.basic.name",
+            value: AuthenticationType.BASIC
+        }
+    ];
 }
