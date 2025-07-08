@@ -24,6 +24,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { ChevronRightIcon } from "@oxygen-ui/react-icons";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import useNewRegistrationPortalFeatureStatus from
@@ -34,10 +35,12 @@ import classNames from "classnames";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import BackgroundBlob from "./background-blob.png";
 import SignUpBox from "./sign-up-box";
 import { ReactComponent as PreviewFeaturesIcon } from "../../../themes/default/assets/images/icons/flask-icon.svg";
 import "./new-feature-announcement.scss";
+
 
 /**
  * Props interface of {@link NewFeatureAnnouncement}
@@ -136,14 +139,17 @@ export const FeatureCarousel = () => {
         isLoading: isNewRegistrationPortalEnabledRequestLoading
     } = useNewRegistrationPortalFeatureStatus();
 
-    const isAgentManagementFeatureEnabled: boolean = true;
-    const isAgentManagmentFeatureStatusRequestLoading: boolean = true;
+    const isAgentManagementFeatureEnabled: boolean =
+        useSelector((state: AppState) => state?.config?.ui?.features?.agents);
+    const isAgentManagementFeatureEnabledForOrganization: boolean = useMemo(() => {
+        return false;
+    }, []);
 
     const features: any = useMemo(() => [
-        {
+        isAgentManagementFeatureEnabled && {
             description: "Extend your identity management to autonomous agents and AI systems",
-            isEnabled: isAgentManagementFeatureEnabled,
-            isEnabledStatusLoading: isAgentManagmentFeatureStatusRequestLoading,
+            isEnabled: isAgentManagementFeatureEnabledForOrganization,
+            isEnabledStatusLoading: false,
             onTryOut: () => {},
             title: "Identity for AI Agents "
         },
@@ -164,7 +170,7 @@ export const FeatureCarousel = () => {
             },
             title: "Design seamless self-registration experiences "
         }
-    ], [ isNewRegistrationPortalEnabled ]);
+    ].filter(Boolean), [ isNewRegistrationPortalEnabled, isAgentManagementFeatureEnabled ]);
 
     useEffect(() => {
         const interval: any = setInterval(() => {
