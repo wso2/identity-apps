@@ -391,13 +391,8 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
 
         setPassword(password);
 
-        // Update confirm password match status when new password changes.
-        if (confirmPassword && confirmPassword !== "") {
-            if (password === confirmPassword) {
-                setIsConfirmPasswordMatch(true);
-            } else {
-                setIsConfirmPasswordMatch(false);
-            }
+        if (confirmPassword) {
+            setIsConfirmPasswordMatch(password === confirmPassword);
         } else if (isConfirmPasswordMatch !== undefined) {
             setIsConfirmPasswordMatch(undefined);
         }
@@ -544,19 +539,9 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                 const newPassword: string | undefined = values?.get("newPassword")?.toString();
                                 const confirmPassword: string | undefined = values?.get("confirmPassword")?.toString();
 
-                                if (newPassword === confirmPassword && confirmPassword !== "") {
-                                    setIsConfirmPasswordMatch(true);
-
-                                    return;
-                                }
-
-                                if (confirmPassword !== "" && newPassword !== confirmPassword) {
-                                    setIsConfirmPasswordMatch(false);
-
-                                    return;
-                                }
-
-                                if (isConfirmPasswordMatch !== undefined && confirmPassword === "") {
+                                if (confirmPassword) {
+                                    setIsConfirmPasswordMatch(newPassword === confirmPassword);
+                                } else if (isConfirmPasswordMatch !== undefined) {
                                     setIsConfirmPasswordMatch(undefined);
                                 }
                             } }
