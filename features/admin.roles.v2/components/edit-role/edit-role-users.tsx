@@ -48,7 +48,7 @@ import {
     TableColumnInterface,
     UserAvatar
 } from "@wso2is/react-components";
-import { AxiosError } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
@@ -261,14 +261,24 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
 
         setIsSubmitting(true);
         updateRoleDetails(role.id, roleData)
-            .then(() => {
-                dispatch(
-                    addAlert({
-                        description: t("roles:edit.users.notifications.success.description"),
-                        level: AlertLevels.SUCCESS,
-                        message: t("roles:edit.users.notifications.success.message")
-                    })
-                );
+            .then((response: AxiosResponse) => {
+                if (response?.status === 200) {
+                    dispatch(
+                        addAlert({
+                            description: t("roles:edit.users.notifications.success.description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t("roles:edit.users.notifications.success.message")
+                        })
+                    );
+                } else if (response?.status === 202) {
+                    dispatch(
+                        addAlert({
+                            description: t("roles:edit.users.notifications.pendingApproval.description"),
+                            level: AlertLevels.WARNING,
+                            message: t("roles:edit.users.notifications.pendingApproval.message")
+                        })
+                    );
+                }
                 onRoleUpdate(tabIndex);
             })
             .catch( (error: AxiosError) => {
@@ -315,14 +325,24 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
 
         setIsSubmitting(true);
         updateRoleDetails(role.id, roleData)
-            .then(() => {
-                dispatch(
-                    addAlert({
-                        description: t("roles:edit.users.notifications.success.description"),
-                        level: AlertLevels.SUCCESS,
-                        message: t("roles:edit.users.notifications.success.message")
-                    })
-                );
+            .then((response: AxiosResponse) => {
+                if (response?.status === 200) {
+                    dispatch(
+                        addAlert({
+                            description: t("roles:edit.users.notifications.success.description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t("roles:edit.users.notifications.success.message")
+                        })
+                    );
+                } else if (response?.status === 202) {
+                    dispatch(
+                        addAlert({
+                            description: t("roles:edit.users.notifications.pendingApproval.description"),
+                            level: AlertLevels.WARNING,
+                            message: t("roles:edit.users.notifications.pendingApproval.message")
+                        })
+                    );
+                }
                 onRoleUpdate(tabIndex);
             })
             .catch( (error: AxiosError) => {

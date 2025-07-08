@@ -134,7 +134,8 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
             );
         }
 
-        if (key === "Roles" || key == "Permissions" || key === "Groups" || key === "Users") {
+        if (key === "Roles" || key == "Permissions" || key === "Groups" || key === "Users" ||
+            key === "Users to be Added" || key === "Users to be Deleted") {
             value = value.replace(/^\[|\]$/g, "").trim();
 
             try {

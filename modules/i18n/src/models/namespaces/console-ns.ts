@@ -3425,6 +3425,9 @@ export interface ConsoleNS {
                         Users: string;
                         Audience: string;
                         "Audience ID": string;
+                        "Users to be Added": string;
+                        "Users to be Deleted": string;
+                        "Role ID": string;
                     };
                     taskDetails: {
                         header: string;
