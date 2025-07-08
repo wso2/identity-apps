@@ -40,10 +40,16 @@ import { getScopesResourceEndpoints } from "@wso2is/admin.oidc-scopes.v1";
 import { getInsightsResourceEndpoints } from "@wso2is/admin.org-insights.v1/config/org-insights";
 import { getOrganizationsResourceEndpoints } from "@wso2is/admin.organizations.v1/configs";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
+import {
+    getPasswordRecoveryFlowBuilderResourceEndpoints
+} from "@wso2is/admin.password-recovery-flow-builder.v1/config/endpoints";
 import { getPolicyAdministrationResourceEndpoints } from "@wso2is/admin.policy-administration.v1/configs/endpoints";
 import {
     getPushProviderResourceEndpoints, getPushProviderTemplateEndpoints
 } from "@wso2is/admin.push-providers.v1/configs/endpoints";
+import {
+    getRegistrationFlowBuilderResourceEndpoints
+} from "@wso2is/admin.registration-flow-builder.v1/config/endpoints";
 import { getRemoteFetchConfigResourceEndpoints } from "@wso2is/admin.remote-repository-configuration.v1";
 import { getRolesResourceEndpoints } from "@wso2is/admin.roles.v2/configs/endpoints";
 import { getRulesEndpoints } from "@wso2is/admin.rules.v1/configs/endpoints";
@@ -59,12 +65,6 @@ import { getValidationServiceEndpoints } from "@wso2is/admin.validation.v1/confi
 import { getWebhooksResourceEndpoints } from "@wso2is/admin.webhooks.v1/configs/endpoints";
 import { getApprovalsResourceEndpoints } from "@wso2is/admin.workflow-approvals.v1";
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
-import {
-    getPasswordRecoveryFlowBuilderResourceEndpoints
-} from "../../admin.password-recovery-flow-builder.v1/config/endpoints";
-import {
-    getRegistrationFlowBuilderResourceEndpoints
-} from "../../admin.registration-flow-builder.v1/config/endpoints";
 import { AppConstants } from "../constants/app-constants";
 import { I18nConstants } from "../constants/i18n-constants";
 import { UIConstants } from "../constants/ui-constants";
