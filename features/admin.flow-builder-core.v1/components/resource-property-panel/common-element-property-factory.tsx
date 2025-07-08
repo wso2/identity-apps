@@ -79,7 +79,7 @@ const CommonElementPropertyFactory: FunctionComponent<CommonElementPropertyFacto
     if (typeof propertyValue === "boolean") {
         return (
             <FormControlLabel
-                control={ <Checkbox defaultChecked={ propertyValue } /> }
+                control={ <Checkbox checked={ propertyValue } /> }
                 label={ startCase(propertyKey) }
                 onChange={ (e: ChangeEvent<HTMLInputElement>) =>
                     onChange(`config.${propertyKey}`, e.target.checked, resource)

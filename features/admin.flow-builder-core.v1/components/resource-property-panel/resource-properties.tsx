@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import Box from "@oxygen-ui/react/Box";
-import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -26,7 +24,7 @@ import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import merge from "lodash-es/merge";
 import set from "lodash-es/set";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import ResourcePropertyPanelConstants from "../../constants/resource-property-panel-constants";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import { Properties } from "../../models/base";
@@ -78,17 +76,12 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
         lastInteractedStepId
     } = useAuthenticationFlowBuilderCore();
 
-    const [ filteredProperties, setFilteredProperties ] = useState<Properties>({});
-    const [ triggerPropertyFilter, setTriggerPropertyFilter ] = useState<boolean>(true);
-
     /**
-     * Resolves the properties of the last interacted resource.
+     * Get the filtered properties of the last interacted resource.
+     *
+     * @returns Filtered properties of the last interacted resource.
      */
-    useEffect(() => {
-        if (!lastInteractedResource || !triggerPropertyFilter) {
-            return;
-        }
-
+    const getFilteredProperties = (): Properties => {
         const filteredProperties: Properties = Object.keys(lastInteractedResource?.config || {}).reduce(
             (acc: Properties, key: string) => {
                 if (!ResourcePropertyPanelConstants.EXCLUDED_PROPERTIES.includes(key)) {
@@ -100,13 +93,11 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
             {} as Properties
         );
 
-        PluginRegistry.getInstance().executeAsync(EventTypes.ON_PROPERTY_PANEL_OPEN,
-            lastInteractedResource, filteredProperties)
-            .finally(() => {
-                setFilteredProperties(filteredProperties);
-                setTriggerPropertyFilter(false);
-            });
-    }, [ lastInteractedResource, triggerPropertyFilter ]);
+        PluginRegistry.getInstance().executeSync(EventTypes.ON_PROPERTY_PANEL_OPEN,
+            lastInteractedResource, filteredProperties, lastInteractedStepId);
+
+        return cloneDeep(filteredProperties);
+    };
 
     const changeSelectedVariant = (selected: string, element?: Partial<Element>) => {
         let selectedVariant: Element = lastInteractedResource?.variants?.find(
@@ -145,11 +136,8 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
     const handlePropertyChange = async (propertyKey: string, newValue: any, element: Element) => {
 
         // Execute plugins for ON_PROPERTY_CHANGE event.
-        if (!await PluginRegistry.getInstance().executeAsync(
-            EventTypes.ON_PROPERTY_CHANGE, propertyKey, newValue, element, lastInteractedStepId
-        )) {
-            setTriggerPropertyFilter(true);
-
+        if (!await PluginRegistry.getInstance().executeAsync(EventTypes.ON_PROPERTY_CHANGE, propertyKey,
+            newValue, element, lastInteractedStepId)) {
             return;
         }
 
@@ -178,30 +166,26 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
 
             return { ...data };
         });
+
+        const updatedResource: Resource = cloneDeep(lastInteractedResource);
+
+        set(updatedResource, propertyKey, newValue);
+        setLastInteractedResource(updatedResource);
     };
 
     return (
         <div className="flow-builder-element-properties" data-componentid={ componentId }>
             { lastInteractedResource ? (
-                !triggerPropertyFilter ? (
-                    <Stack gap={ 1 }>
+                <Stack gap={ 1 }>
+                    { lastInteractedResource && (
                         <ResourceProperties
                             resource={ cloneDeep(lastInteractedResource) }
-                            properties={ cloneDeep(filteredProperties) }
+                            properties={ getFilteredProperties() }
                             onChange={ handlePropertyChange }
                             onVariantChange={ changeSelectedVariant }
                         />
-                    </Stack>
-                ) : (
-                    <Box
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        height="inherit"
-                    >
-                        <CircularProgress size={ 20 } />
-                    </Box>
-                )
+                    ) }
+                </Stack>
             ) : (
                 <Typography variant="body2" color="textSecondary" sx={ { padding: 2 } }>
                     No properties available.

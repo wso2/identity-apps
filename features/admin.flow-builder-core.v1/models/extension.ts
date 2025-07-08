@@ -45,7 +45,11 @@ export enum EventTypes {
      */
     ON_PROPERTY_CHANGE = "onPropertyChange",
     /**
-     * Event triggered when a node element is rendered.
+     * Event triggered before a node element is rendered.
      */
-    ON_NODE_ELEMENT_RENDER = "onNodeElementRender"
+    ON_NODE_ELEMENT_RENDER = "onNodeElementRender",
+    /**
+     * Event triggered to filter node elements.
+     */
+    ON_NODE_ELEMENT_FILTER = "onNodeElementFilter"
 }
