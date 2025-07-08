@@ -1565,6 +1565,41 @@
                 }
             },
             {% endif %}
+            {% if console.remote_logging is defined %}
+            "remoteLogging": {
+                "disabledFeatures": [
+                    {% if console.remote_logging.disabled_features is defined %}
+                    {% for feature in console.remote_logging.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                {% if remote_logging.hide_secrets is defined %}
+                "hideConfigSecrets": {{ remote_logging.hide_secrets }},
+                {% else %}
+                "hideConfigSecrets": false,
+                {% endif %}
+                "enabled": {% if console.remote_logging.enabled is defined %} {{ console.remote_logging.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.remote_logging.scopes is defined %}
+                    {% for operation, scopes in console.remote_logging.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
             {% if console.server is defined %}
             "server": {
                 "disabledFeatures": [

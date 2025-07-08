@@ -897,6 +897,7 @@
             "remoteLogging": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "hideConfigSecrets": false,
                 "scopes": {}
             },
             "residentOutboundProvisioning": {
