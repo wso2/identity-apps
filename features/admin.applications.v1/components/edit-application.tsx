@@ -90,8 +90,6 @@ import {
     SupportedAuthProtocolTypes
 } from "../models/application-inbound";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
-import CustomerDataTabPane from "./help-panel/customer-data-tab";
-import CustomerDataIntegrationTabPane from "./help-panel/customer-data-tab";
 
 /**
  * Proptypes for the applications edit component.
@@ -678,18 +676,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         </ResourceTab.Pane>
     );
 
-    const CustomerDataTabPane = (): ReactElement => (
-        <ResourceTab.Pane controlledSegmentation>
-            <CustomerDataIntegrationTabPane
-            // TODO: Add the correct values for the props - change to client secret
-                appId={ application?.id }
-                profileId="{profile_id}" // or dynamic from context
-                orgName="carbon.super" // or dynamic from config/store
-                isHost="is-host.com" // or resolve from AppUtils
-                data-componentid={ `${ componentId }-customer-data` }
-            />
-        </ResourceTab.Pane>
-    );
+
 
     const InfoTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
@@ -973,7 +960,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 icon: "profile",
                 render: CustomerDataTabPane
             });
-            
+
 
             extensionPanes.forEach(
                 (extensionPane: ResourceTabPaneInterface) => {
