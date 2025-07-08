@@ -272,6 +272,7 @@ export const roles: rolesNS = {
 
         },
         menuItems: {
+            agents: "Agents",
             basic: "Basics",
             connectedApps: "Connected Apps",
             groups: "Groups",

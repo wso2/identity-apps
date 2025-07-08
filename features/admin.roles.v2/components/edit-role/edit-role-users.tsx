@@ -80,6 +80,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         isReadOnly,
         tabIndex,
         activeUserStore,
+        isForNonHumanUser,
         isPrivilegedUsersToggleVisible = false,
         [ "data-componentid" ]: componentId = "edit-role-users"
     } = props;
@@ -120,15 +121,22 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     } = useUserStores();
 
     const availableUserStores: UserStoreDropdownItem[] = useMemo(() => {
-        const storeOptions: UserStoreDropdownItem[] = [
-            {
-                key: -1,
-                text: userstoresConfig?.primaryUserstoreName,
-                value: userstoresConfig?.primaryUserstoreName
-            }
-        ];
+        const storeOptions: UserStoreDropdownItem[] = isForNonHumanUser
+            ? [
+                {
+                    key: -1,
+                    text: "AGENT",
+                    value: "AGENT"
+                }
+            ] : [
+                {
+                    key: -1,
+                    text: userstoresConfig?.primaryUserstoreName,
+                    value: userstoresConfig?.primaryUserstoreName
+                }
+            ];
 
-        if (userStoresList && !isUserStoresLoading) {
+        if (userStoresList && !isUserStoresLoading && !isForNonHumanUser) {
             if (userStoresList?.length > 0) {
                 userStoresList
                     ?.filter((userStore: UserStoreListItem) => !systemReservedUserStores.includes(userStore.name))
@@ -149,7 +157,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         }
 
         return storeOptions;
-    }, [ userStoresList, isUserStoresLoading ]);
+    }, [ userStoresList, isUserStoresLoading, isForNonHumanUser, systemReservedUserStores ]);
 
     useEffect(() => {
         if (!role?.users?.length) {
@@ -582,7 +590,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                         options={ availableUserStores }
                         placeholder={ t("console:manage.features.groups.list.storeOptions") }
                         onChange={ handleDomainChange }
-                        defaultValue={ userstoresConfig.primaryUserstoreName }
+                        defaultValue={ activeUserStore ? activeUserStore : userstoresConfig.primaryUserstoreName }
                     />
                 ) }
             >
