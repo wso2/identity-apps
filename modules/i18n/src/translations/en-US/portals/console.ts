@@ -6392,7 +6392,7 @@ export const console: ConsoleNS = {
                             },
                             verifyHostname: {
                                 label: "Verify the hostname",
-                                hint: "Enable this option to verify the hostname of the remote server.",
+                                hint: "Enable this option to verify the hostname of the remote server."
                             },
                             basicAuthConfig: {
                                 title: "Authentication Configuration",
