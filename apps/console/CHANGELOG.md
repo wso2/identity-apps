@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.65.28
+
+### Patch Changes
+
+- [#8482](https://github.com/wso2/identity-apps/pull/8482) [`819b81b7f5a9376bd90dbbfc1b6c31dd776fe08e`](https://github.com/wso2/identity-apps/commit/819b81b7f5a9376bd90dbbfc1b6c31dd776fe08e) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add attributes field for Pre update password action UI
+
+- Updated dependencies [[`819b81b7f5a9376bd90dbbfc1b6c31dd776fe08e`](https://github.com/wso2/identity-apps/commit/819b81b7f5a9376bd90dbbfc1b6c31dd776fe08e)]:
+  - @wso2is/admin.actions.v1@1.13.2
+
 ## 2.65.27
 
 ### Patch Changes
