@@ -443,7 +443,7 @@ export class AppConstants {
             [ "MCP_SERVERS", `${ AppConstants.getDeveloperViewBasePath() }/mcp-servers` ],
             [ "MCP_SERVER_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/mcp-servers/:id` ],
             [ "PASSWORD_RECOVERY_FLOW_BUILDER",
-                `${ AppConstants.getDeveloperViewBasePath() }/edit-password-recovery-flow` ]
+                `${ AppConstants.getDeveloperViewBasePath() }/edit-password-recovery-flow` ],
             [ "AGENTS", `${AppConstants.getAdminViewBasePath()}/agents` ],
             [ "AGENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/agents/:id` ]
         ]);

@@ -67,7 +67,9 @@ import StepFactory from "./resources/steps/step-factory";
 import useAIPasswordRecoveryFlowGenerationResult from "../api/use-ai-password-recovery-flow-result";
 import useGetPasswordRecoveryFlow from "../api/use-get-password-recovery-flow";
 import useGetPasswordRecoveryFlowBuilderResources from "../api/use-get-password-recovery-flow-builder-resources";
-import { PASSWORD_RECOVERY_FLOW_AI_PROMPT_HISTORY_PREFERENCE_KEY } from "../constants/password-recovery-flow-ai-constants";
+import {
+    PASSWORD_RECOVERY_FLOW_AI_PROMPT_HISTORY_PREFERENCE_KEY
+} from "../constants/password-recovery-flow-ai-constants";
 import PasswordRecoveryFlowExecutorConstants from "../constants/password-recovery-flow-executor-constants";
 import useAIGeneratedPasswordRecoveryFlow from "../hooks/use-ai-generated-password-recovery-flow";
 import useGeneratePasswordRecoveryFlow, {
@@ -202,7 +204,7 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
         setShowAIGenerationModal(false);
     };
 
-    const handleAIGeneratedFlow = (data) => {
+    const handleAIGeneratedFlow = (data: { steps: any; }) => {
         if (!data?.steps) {
             return [ [], [] ];
         }

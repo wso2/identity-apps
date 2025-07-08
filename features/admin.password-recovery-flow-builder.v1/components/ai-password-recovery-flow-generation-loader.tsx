@@ -159,20 +159,20 @@ const PasswordRecoveryFlowAILoader = (): ReactElement => {
 
             <DialogContent
                 sx={ {
+                    alignItems: "center",
                     display: "flex",
                     flexDirection: "column",
-                    alignItems: "center",
-                    px: 2,
-                    pb: 3
+                    pb: 3,
+                    px: 2
                 } }
             >
                 <img
                     src={ AIBot }
                     alt="AI Bot"
                     style={ {
-                        width: "200px",
                         height: "auto",
-                        marginBottom: "1rem"
+                        marginBottom: "1rem",
+                        width: "200px"
                     } }
                 />
 
@@ -185,9 +185,9 @@ const PasswordRecoveryFlowAILoader = (): ReactElement => {
                     value={ currentProgress }
                     valueBuffer={ currentProgress + (1 + Math.random() * 10) }
                     sx={ {
-                        width: "100%",
+                        height: "5px",
                         margin: "0 auto",
-                        height: "5px"
+                        width: "100%"
                     } }
                 />
             </DialogContent>

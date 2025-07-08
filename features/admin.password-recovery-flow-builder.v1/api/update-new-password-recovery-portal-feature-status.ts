@@ -35,7 +35,10 @@ const updateNewPasswordRecoveryPortalFeatureStatus = (enable: boolean = true): P
     const payload: UpdateGovernanceConnectorConfigInterface = {
         operation: "UPDATE",
         properties: [
-            { name: PasswordRecoveryFlowBuilderConstants.FLOW_BUILDER_STATUS_CONFIG_KEY, value: enable ? "true" : "false" }
+            {
+                name: PasswordRecoveryFlowBuilderConstants.FLOW_BUILDER_STATUS_CONFIG_KEY,
+                value: enable ? "true" : "false"
+            }
         ]
     };
 
