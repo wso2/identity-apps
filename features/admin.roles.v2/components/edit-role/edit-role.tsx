@@ -28,7 +28,6 @@ import {
     RolesInterface,
     SBACInterface
 } from "@wso2is/core/models";
-import { AuthenticateUtils } from "@wso2is/core/utils";
 import { ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";

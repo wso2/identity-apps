@@ -230,10 +230,6 @@ export interface FeatureConfigInterface {
      */
     userRoles?: FeatureAccessConfigInterface;
     /**
-     * Entitlement configurations feature.
-     */
-    entitlement?: FeatureAccessConfigInterface;
-    /**
      * Secret Management Feature UI Access Scopes.
      */
     secretsManagement?: FeatureAccessConfigInterface;
