@@ -1,5 +1,24 @@
 # @wso2is/console
 
+## 2.67.0
+
+### Minor Changes
+
+- [#8416](https://github.com/wso2/identity-apps/pull/8416) [`90a17579bddde8c429932caf4a318d873ff3e7d5`](https://github.com/wso2/identity-apps/commit/90a17579bddde8c429932caf4a318d873ff3e7d5) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce Passkey signup in registration orchestration
+
+### Patch Changes
+
+- [#8487](https://github.com/wso2/identity-apps/pull/8487) [`76f192a81a134a773cb0896bb6febefca442324d`](https://github.com/wso2/identity-apps/commit/76f192a81a134a773cb0896bb6febefca442324d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Minor UI bug fixes in Agents Feature
+
+* [#8444](https://github.com/wso2/identity-apps/pull/8444) [`69b06cc07d15a55335f545333c114b6e2e1b2101`](https://github.com/wso2/identity-apps/commit/69b06cc07d15a55335f545333c114b6e2e1b2101) Thanks [@nilasini](https://github.com/nilasini)! - Incorporate dynamic portal config to list down email templates
+
+* Updated dependencies [[`76f192a81a134a773cb0896bb6febefca442324d`](https://github.com/wso2/identity-apps/commit/76f192a81a134a773cb0896bb6febefca442324d), [`69b06cc07d15a55335f545333c114b6e2e1b2101`](https://github.com/wso2/identity-apps/commit/69b06cc07d15a55335f545333c114b6e2e1b2101)]:
+  - @wso2is/admin.agents.v1@1.0.1
+  - @wso2is/admin.core.v1@2.46.5
+  - @wso2is/admin.home.v1@1.7.10
+  - @wso2is/admin.email-management.v1@2.25.207
+  - @wso2is/admin.flows.v1@1.0.6
+
 ## 2.66.0
 
 ### Minor Changes

@@ -1,5 +1,14 @@
 # @wso2is/admin.agents.v1
 
+## 1.0.1
+
+### Patch Changes
+
+- [#8487](https://github.com/wso2/identity-apps/pull/8487) [`76f192a81a134a773cb0896bb6febefca442324d`](https://github.com/wso2/identity-apps/commit/76f192a81a134a773cb0896bb6febefca442324d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Minor UI bug fixes in Agents Feature
+
+- Updated dependencies [[`76f192a81a134a773cb0896bb6febefca442324d`](https://github.com/wso2/identity-apps/commit/76f192a81a134a773cb0896bb6febefca442324d)]:
+  - @wso2is/admin.core.v1@2.46.5
+
 ## 1.0.0
 
 ### Major Changes
