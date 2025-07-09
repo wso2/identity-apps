@@ -22,6 +22,7 @@ import Chip from "@oxygen-ui/react/Chip";
 import Paper from "@oxygen-ui/react/Paper";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronRightIcon } from "@oxygen-ui/react-icons";
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -40,7 +41,6 @@ import BackgroundBlob from "./background-blob.png";
 import SignUpBox from "./sign-up-box";
 import { ReactComponent as PreviewFeaturesIcon } from "../../../themes/default/assets/images/icons/flask-icon.svg";
 import "./new-feature-announcement.scss";
-
 
 /**
  * Props interface of {@link NewFeatureAnnouncement}
@@ -139,14 +139,14 @@ export const FeatureCarousel = () => {
         isLoading: isNewRegistrationPortalEnabledRequestLoading
     } = useNewRegistrationPortalFeatureStatus();
 
-    const isAgentManagementFeatureEnabled: boolean =
+    const agentFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state?.config?.ui?.features?.agents);
     const isAgentManagementFeatureEnabledForOrganization: boolean = useMemo(() => {
         return false;
     }, []);
 
     const features: any = useMemo(() => [
-        isAgentManagementFeatureEnabled && {
+        agentFeatureConfig?.enabled && {
             description: "Extend your identity management to autonomous agents and AI systems",
             isEnabled: isAgentManagementFeatureEnabledForOrganization,
             isEnabledStatusLoading: false,
@@ -170,7 +170,7 @@ export const FeatureCarousel = () => {
             },
             title: "Design seamless self-registration experiences "
         }
-    ].filter(Boolean), [ isNewRegistrationPortalEnabled, isAgentManagementFeatureEnabled ]);
+    ].filter(Boolean), [ isNewRegistrationPortalEnabled, agentFeatureConfig ]);
 
     useEffect(() => {
         const interval: any = setInterval(() => {

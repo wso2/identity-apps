@@ -1,5 +1,16 @@
 # @wso2is/admin.core.v1
 
+## 2.46.5
+
+### Patch Changes
+
+- [#8487](https://github.com/wso2/identity-apps/pull/8487) [`76f192a81a134a773cb0896bb6febefca442324d`](https://github.com/wso2/identity-apps/commit/76f192a81a134a773cb0896bb6febefca442324d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Minor UI bug fixes in Agents Feature
+
+- Updated dependencies [[`76f192a81a134a773cb0896bb6febefca442324d`](https://github.com/wso2/identity-apps/commit/76f192a81a134a773cb0896bb6febefca442324d), [`69b06cc07d15a55335f545333c114b6e2e1b2101`](https://github.com/wso2/identity-apps/commit/69b06cc07d15a55335f545333c114b6e2e1b2101), [`90a17579bddde8c429932caf4a318d873ff3e7d5`](https://github.com/wso2/identity-apps/commit/90a17579bddde8c429932caf4a318d873ff3e7d5)]:
+  - @wso2is/admin.agents.v1@1.0.1
+  - @wso2is/admin.email-management.v1@2.25.207
+  - @wso2is/admin.registration-flow-builder.v1@0.9.0
+
 ## 2.46.4
 
 ### Patch Changes

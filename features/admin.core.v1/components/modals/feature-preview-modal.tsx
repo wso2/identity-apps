@@ -45,15 +45,15 @@ import {
     updateGovernanceConnector,
     useGetGovernanceConnectorById
 } from "@wso2is/admin.server-configurations.v1";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import NewSelfRegistrationImage from "../../assets/illustrations/preview-features/new-self-registration.png";
 import { AppConstants } from "../../constants/app-constants";
 import "./feature-preview-modal.scss";
 import { history } from "../../helpers/history";
-
-
+import { AppState } from "../../store";
 
 /**
  * Feature preview modal component props interface. {@link FeaturePreviewModal}
@@ -191,9 +191,12 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
     const [ isEnableDynamicSelfRegistrationPortal, setIsEnableDynamicSelfRegistrationPortal ] = useState(false);
     const [ isEnableAgentManagement, setIsEnableAgentManagement ] = useState(false);
 
+    const agentsFeatureConfig: FeatureAccessConfigInterface =
+        useSelector((state: AppState) => state?.config?.ui?.features?.agents);
+
     {/* TODO: Get this from an Organization Preferences API */}
     const previewFeaturesList: PreviewFeaturesListInterface[] = useMemo(() => ([
-        {
+        agentsFeatureConfig?.enabled && {
             action: "Go to Agent Management",
             component: <AgentFeatureAnnouncement />,
             description: "Extend your identity management to autonomous agents with secure, dynamic authorization",
@@ -212,12 +215,12 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
             message: {
                 content: "Once this feature is enabled, existing self-registration flow configurations will be " +
                     "changed. So, update your settings accordingly.",
-                type: "warning"
+                type: "warning" as const
             },
             name: "Self-Registration Orchestration",
             value: "SelfRegistration.EnableDynamicPortal"
         }
-    ]), [ isEnableAgentManagement, isEnableDynamicSelfRegistrationPortal ]);
+    ].filter(Boolean)), [ isEnableAgentManagement, isEnableDynamicSelfRegistrationPortal ]);
 
     const [ selected, setSelected ] = useState(previewFeaturesList[0]);
 

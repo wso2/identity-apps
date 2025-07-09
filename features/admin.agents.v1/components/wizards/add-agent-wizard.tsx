@@ -169,7 +169,7 @@ export default function AddAgentWizard({
                     <>
                         <Button
                             className="link-button"
-                            onClick={ onClose }
+                            onClick={ () => onClose(null) }
                             data-testid={ `${componentId}-confirmation-modal-actions-cancel-button` }
                         >
                             Cancel
