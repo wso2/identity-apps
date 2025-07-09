@@ -895,10 +895,18 @@
                 }
             },
             "remoteLogging": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "hide.config.secrets"
+                ],
                 "enabled": true,
-                "hideConfigSecrets": false,
-                "scopes": {}
+                "featureFlags": [],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [],
+                    "update": []
+                }
             },
             "residentOutboundProvisioning": {
                 "disabledFeatures": [],

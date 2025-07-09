@@ -28,7 +28,7 @@ import Grid from "@oxygen-ui/react/Grid";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import Stack from "@oxygen-ui/react/Stack";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
 import {
@@ -42,7 +42,7 @@ import {
 import { AxiosError } from "axios";
 import startCase from "lodash-es/startCase";
 import toLower from "lodash-es/toLower";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -102,9 +102,14 @@ export const RemoteLoggingConfigForm = ({
 
     const { isLoading: isRemoteLogPublishingConfigsLoading } = useRemoteLogPublishingConfiguration();
 
-    const hideConfigSecrets: boolean = useSelector((state: AppState) => {
-        return state.config.ui.features?.remoteLogging?.hideConfigSecrets;
+    const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
+        return state.config?.ui?.features?.remoteLogging;
     });
+    const hideConfigSecrets: boolean = useMemo((): boolean => {
+        const disabledFeatures: string[] = featureConfig?.disabledFeatures || [];
+
+        return !disabledFeatures.includes("hide.config.secrets");
+    }, [ featureConfig ]);
 
     const isAddAuthConfigState: boolean = !logConfig?.username;
 

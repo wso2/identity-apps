@@ -6392,7 +6392,7 @@ export const console: ConsoleNS = {
                             },
                             verifyHostname: {
                                 label: "Verify the hostname",
-                                hint: "Enable this option to verify the hostname of the remote server."
+                                hint: "Enable verifying the remote server's hostname against its SSL certificate."
                             },
                             basicAuthConfig: {
                                 title: "Authentication Configuration",
@@ -6414,8 +6414,8 @@ export const console: ConsoleNS = {
                                 },
                                 authenticationType: {
                                     hint: {
-                                        create: "Once added, this secret will not be displayed. You will only be able to reset them.",
-                                        update: "Once updated, this secret will not be displayed. You will only be able to reset them again."
+                                        create: "Once added, this secret will not be displayed. You will only be able to update them.",
+                                        update: "Once updated, this secret will not be displayed. You will only be able to update them."
                                     },
                                     label: "Authentication Scheme",
                                     placeholder: "Select Authentication Scheme"

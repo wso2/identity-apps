@@ -1568,17 +1568,15 @@
             {% if console.remote_logging is defined %}
             "remoteLogging": {
                 "disabledFeatures": [
+                    {% if remote_logging.hide_secrets is not defined or remote_logging.hide_secrets != true %}
+                    "hide.config.secrets"{{ "," if console.remoteLogging.disabled_features is defined }}
+                    {% endif %}
                     {% if console.remote_logging.disabled_features is defined %}
                     {% for feature in console.remote_logging.disabled_features %}
                     "{{ feature }}"{{ "," if not loop.last }}
                     {% endfor %}
                     {% endif %}
                 ],
-                {% if remote_logging.hide_secrets is defined %}
-                "hideConfigSecrets": {{ remote_logging.hide_secrets }},
-                {% else %}
-                "hideConfigSecrets": false,
-                {% endif %}
                 "enabled": {% if console.remote_logging.enabled is defined %} {{ console.remote_logging.enabled }},
                 {% else %} true,
                 {% endif %}
@@ -1593,6 +1591,7 @@
                     {% endfor %}
                     {% else %}
                         "create": [],
+                        "feature": [],
                         "read": [],
                         "update": [],
                         "delete": []
