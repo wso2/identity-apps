@@ -60,6 +60,7 @@ export enum StepTypes {
 
 export enum StaticStepTypes {
     UserOnboard = "USER_ONBOARD",
+    End = "End",
     Start = "START",
 }
 
