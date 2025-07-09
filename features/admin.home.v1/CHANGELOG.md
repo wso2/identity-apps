@@ -1,5 +1,14 @@
 # @wso2is/admin.home.v1
 
+## 1.7.11
+
+### Patch Changes
+
+- [#8503](https://github.com/wso2/identity-apps/pull/8503) [`20161930823e11dc4a678a679e19ef8aa40d8053`](https://github.com/wso2/identity-apps/commit/20161930823e11dc4a678a679e19ef8aa40d8053) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Hide the flow card on the home page for sub-organizations
+
+- Updated dependencies [[`5a48b099d9eed3b73d74764b6610a678a49e6b58`](https://github.com/wso2/identity-apps/commit/5a48b099d9eed3b73d74764b6610a678a49e6b58)]:
+  - @wso2is/admin.organizations.v1@2.26.209
+
 ## 1.7.10
 
 ### Patch Changes
