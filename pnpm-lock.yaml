@@ -558,10 +558,10 @@ importers:
         specifier: ^2.39.6
         version: link:../../features/admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
-        specifier: ^1.7.4
+        specifier: ^1.7.5
         version: link:../../features/admin.feature-gate.v1
       '@wso2is/admin.flows.v1':
-        specifier: ^1.0.6
+        specifier: ^1.0.7
         version: link:../../features/admin.flows.v1
       '@wso2is/admin.groups.v1':
         specifier: ^2.27.120
@@ -8841,7 +8841,7 @@ importers:
         specifier: workspace:^
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.registration-flow-builder.v1':
-        specifier: ^0.9.0
+        specifier: ^0.9.1
         version: link:../admin.registration-flow-builder.v1
       '@wso2is/admin.server-configurations.v1':
         specifier: ^2.35.2
@@ -14180,10 +14180,10 @@ importers:
         specifier: ^2.46.5
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
-        specifier: ^1.7.2
+        specifier: ^1.7.5
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.flow-builder-core.v1':
-        specifier: ^0.8.0
+        specifier: ^0.8.1
         version: link:../admin.flow-builder-core.v1
       '@wso2is/admin.rules.v1':
         specifier: ^0.6.0
