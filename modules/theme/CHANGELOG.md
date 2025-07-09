@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.8.4
+
+### Patch Changes
+
+- [#8176](https://github.com/wso2/identity-apps/pull/8176) [`7481e3bcf5856beae32e670f04956157747334f6`](https://github.com/wso2/identity-apps/commit/7481e3bcf5856beae32e670f04956157747334f6) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add organization handle to organization creation, display, and list
+
 ## 2.8.3
 
 ### Patch Changes

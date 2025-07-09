@@ -214,6 +214,11 @@ export interface organizationsNS {
                 placeholder: string;
                 ariaLabel: string;
             };
+            orgHandle: {
+                label: string;
+                placeholder: string;
+                ariaLabel: string;
+            };
             description: {
                 label: string;
                 placeholder: string;
@@ -269,6 +274,19 @@ export interface organizationsNS {
                 };
                 label: string;
                 placeholder: string;
+            };
+            orgHandle: {
+                label: string;
+                placeholder: string;
+                tooltip: string;
+                validation: {
+                    duplicate: string;
+                    empty: string;
+                    invalidFirstCharacter: string;
+                    invalidLength: string;
+                    invalidPattern: string;
+                    mandatoryExtension: string;
+                };
             };
             description: {
                 label: string;

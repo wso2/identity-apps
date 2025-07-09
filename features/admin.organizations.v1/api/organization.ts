@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,17 +23,19 @@ import {
     HttpRequestConfig,
     HttpResponse
 } from "@asgardeo/auth-react";
-import { store } from "@wso2is/admin.core.v1/store";
 import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import {
     AddOrganizationInterface,
     BreadcrumbList,
+    CheckOrgHandleInterface,
+    CheckOrgHandleResponseInterface,
     OrganizationInterface,
     OrganizationListInterface,
     OrganizationPatchData,
@@ -482,4 +484,33 @@ export const unshareApplication = (
     return httpClient(requestConfig).catch((error: HttpError) => {
         return Promise.reject(error?.response?.data);
     });
+};
+
+/**
+ * Check whether the new organization handle already exists in the system.
+ *
+ * @param checkOrgHandleRequest - new organization handle to check.
+ *
+ * @returns a promise containing the response.
+ */
+export const checkOrgHandleAvailability = (checkOrgHandleRequest: CheckOrgHandleInterface):
+    Promise<CheckOrgHandleResponseInterface> => {
+
+    const config: HttpRequestConfig = {
+        data: checkOrgHandleRequest,
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: `${ store.getState().config.endpoints.organizations }/organizations/check-handle`
+    };
+
+    return httpClient(config)
+        .then((response: HttpResponse<CheckOrgHandleResponseInterface>) => {
+            return response.data;
+        })
+        .catch((error: HttpError) => {
+            return Promise.reject(error?.response?.data || error);
+        });
 };
