@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.67.2
+
+### Patch Changes
+
+- [#8499](https://github.com/wso2/identity-apps/pull/8499) [`670068e6d34e0e62f3a514bf82e0096750baeb0e`](https://github.com/wso2/identity-apps/commit/670068e6d34e0e62f3a514bf82e0096750baeb0e) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove featureFlags from agents feature
+
 ## 2.67.1
 
 ### Patch Changes
