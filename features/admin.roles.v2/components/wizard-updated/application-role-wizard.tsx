@@ -479,11 +479,15 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                                             { ...params }
                                             label={ t("extensions:develop.applications.edit." +
                                                 "sections.apiAuthorization.sections.apiSubscriptions." +
-                                                "wizards.authorizeAPIResource.fields.apiResource.label") }
+                                                "wizards.authorizeAPIResource.fields.apiResource.label", {
+                                                resourceText: t("extensions:develop.apiResource.resourceTypes.api")
+                                            }) }
                                             placeholder={ t("extensions:develop.applications.edit." +
                                                 "sections.apiAuthorization.sections.apiSubscriptions." +
                                                 "wizards.authorizeAPIResource.fields.apiResource." +
-                                                "placeholder") }
+                                                "placeholder", {
+                                                resourceText: t("extensions:develop.apiResource.resourceTypes.api")
+                                            }) }
                                             size="small"
                                             variant="outlined"
                                         />

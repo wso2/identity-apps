@@ -79,7 +79,7 @@ export class IdentityProviderManagementUtils {
                                 ...idp,
                                 identityProviders: [
                                     ...idp.identityProviders,
-                                    ...response.identityProviders
+                                    ...response.identityProviders || []
                                 ]
                             };
                         } else {

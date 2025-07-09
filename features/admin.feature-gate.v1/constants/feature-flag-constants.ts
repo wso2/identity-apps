@@ -36,6 +36,7 @@ class FeatureFlagConstants {
         ACTIONS_TYPES_PRE_REGISTRATION: "actions.types.list.preRegistration",
         ACTIONS_TYPES_PRE_UPDATE_PASSWORD: "actions.types.list.preUpdatePassword",
         ACTIONS_TYPES_PRE_UPDATE_PROFILE: "actions.types.list.preUpdateProfile",
+        AGENTS: "agents",
         AI_APPLICATION_LOGIN_FLOW_BANNER: "ai.application.loginFlow.banner",
         AI_BRANDING_BANNER: "ai.branding.banner",
         APPLICATIONS: "application",
@@ -45,6 +46,9 @@ class FeatureFlagConstants {
         ATTRIBUTE_DIALECTS: "attributeDialects",
         BRANDING: "branding",
         BRANDING_STYLES_AND_TEXT_TITLE: "branding.stylesAndText.application.title",
+        CUSTOM_PAGE_EDITOR_FEATURE_ID: "console.branding.design.layout.custom",
+        FLOWS: "flows",
+        FLOWS_TYPES_REGISTRATION: "flows.types.list.registration",
         INSIGHTS: "insights",
         LOGIN_AND_REGISTRATION: "loginAndRegistration",
         LOGIN_AND_REGISTRATION_FRAUD_DETECTION: "loginAndRegistration.loginSecurity.fraudDetection",
@@ -52,13 +56,15 @@ class FeatureFlagConstants {
         LOGIN_AND_REGISTRATION_ORGANIZATION_IMPERSONATION: "loginAndRegistration.organizationSettings.impersonation",
         LOGIN_AND_REGISTRATION_SELF_REGISTRATION_FLOW_BUILDER:
             "loginAndRegistration.userOnboarding.registrationFlowBuilder",
+        MCP_SERVERS: "mcpServers",
         ORGANIZATION_BRANDING_TEXT: "branding.stylesAndText.organization.text",
         PUSH_PROVIDERS: "pushProviders",
         PUSH_PROVIDER_TEMPLATES: "pushProviders.templates",
         REMOTE_LOG_PUBLISH: "remote.log.publish",
         SMS_TEMPLATES: "smsTemplates",
         USER_ROLES: "userRoles",
-        USER_STORES: "userStores"
+        USER_STORES: "userStores",
+        WEBHOOKS: "webhooks"
     };
 }
 

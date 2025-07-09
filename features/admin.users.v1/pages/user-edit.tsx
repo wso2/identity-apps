@@ -25,6 +25,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { getIdPIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
 import { useGovernanceConnectors } from "@wso2is/admin.server-configurations.v1/api";
 import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants";
@@ -35,6 +36,7 @@ import {
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import {
     getUserNameWithoutDomain,
+    isFeatureEnabled,
     resolveUserDisplayName,
     resolveUserEmails
 } from "@wso2is/core/helpers";
@@ -60,6 +62,7 @@ import { Dispatch } from "redux";
 import { Icon, Label } from "semantic-ui-react";
 import { updateUserInfo, useUserDetails } from "../api";
 import { EditUser } from "../components/edit-user";
+import { UserManagementConstants } from "../constants/user-management-constants";
 import UserManagementProvider from "../providers/user-management-provider";
 import { UserManagementUtils } from "../utils";
 
@@ -74,7 +77,7 @@ const UserEditPage = (): ReactElement => {
 
     const dispatch: Dispatch<any> = useDispatch();
 
-    const { mutateUserStoreList } = useUserStores();
+    const { mutateUserStoreList, isUserStoreReadOnly, readOnlyUserStoreNamesList } = useUserStores();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
@@ -82,6 +85,10 @@ const UserEditPage = (): ReactElement => {
     const hasUsersUpdatePermissions: boolean = useRequiredScopes(
         featureConfig?.users?.scopes?.update
     );
+    const isUserUpdateFeatureEnabled: boolean = isFeatureEnabled(
+        featureConfig?.users, UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"));
+    const isUpdatingSharedProfilesFeatureEnabled: boolean = isFeatureEnabled(
+        featureConfig?.users, UserManagementConstants.FEATURE_DICTIONARY.get("USER_SHARED_PROFILES"));
 
     const [ showEditAvatarModal, setShowEditAvatarModal ] = useState<boolean>(false);
     const [ connectorProperties, setConnectorProperties ] = useState<ConnectorPropertyInterface[]>(undefined);
@@ -119,6 +126,27 @@ const UserEditPage = (): ReactElement => {
 
     const isNameAvailable: boolean = user?.name?.familyName === undefined &&
         user?.name?.givenName === undefined;
+
+    /**
+     * Checks if the user store is read only.
+     */
+    const isReadOnlyUserStore: boolean = useMemo(() => {
+        const userStoreName: string = user?.userName?.split("/").length > 1
+            ? user?.userName?.split("/")[0]
+            : userstoresConfig.primaryUserstoreName;
+
+        return isUserStoreReadOnly(userStoreName);
+    }, [ user, readOnlyUserStoreNamesList ]);
+
+    /**
+     * Checks if the UI should be in read-only mode.
+     */
+    const isReadOnly: boolean = !isUserUpdateFeatureEnabled
+        || !hasUsersUpdatePermissions
+        || isReadOnlyUserStore
+        || user[ SCIMConfigs.scim.systemSchema ]?.userSourceId
+        || user[ SCIMConfigs.scim.systemSchema ]?.isReadOnlyUser === "true"
+        || (user[ SCIMConfigs.scim.systemSchema ]?.managedOrg && !isUpdatingSharedProfilesFeatureEnabled);
 
     /**
      * As there is a delay in updating user stores,
@@ -458,12 +486,13 @@ const UserEditPage = (): ReactElement => {
                 ) }
                 image={ (
                     <UserAvatar
-                        editable={ hasUsersUpdatePermissions }
+                        editable={ !isReadOnly }
+                        hoverable={ !isReadOnly }
                         name={ resolveUserDisplayName(user) }
                         size="tiny"
                         image={ user?.profileUrl }
                         onClick={ () =>
-                            hasUsersUpdatePermissions && setShowEditAvatarModal(true)
+                            !isReadOnly && setShowEditAvatarModal(true)
                         }
                     />
                 ) }
@@ -476,11 +505,12 @@ const UserEditPage = (): ReactElement => {
                 bottomMargin={ false }
             >
                 <EditUser
-                    featureConfig={ featureConfig }
                     user={ user }
                     handleUserUpdate={ handleUserUpdate }
                     connectorProperties={ connectorProperties }
                     isLoading={ isUserDetailsFetchRequestLoading || isUserDetailsFetchRequestValidating }
+                    isReadOnly={ isReadOnly }
+                    isReadOnlyUserStore={ isReadOnlyUserStore }
                 />
                 {
                     showEditAvatarModal && (

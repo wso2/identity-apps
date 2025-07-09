@@ -1,5 +1,17 @@
 # @wso2is/unit-testing
 
+## 0.6.4
+
+### Patch Changes
+
+- [#8077](https://github.com/wso2/identity-apps/pull/8077) [`b6f5db8cd4722cb06c1608b0698c31ae5f6a5204`](https://github.com/wso2/identity-apps/commit/b6f5db8cd4722cb06c1608b0698c31ae5f6a5204) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Misc improvements required for AI agent management feature
+
+## 0.6.3
+
+### Patch Changes
+
+- [#8047](https://github.com/wso2/identity-apps/pull/8047) [`65f16ea68c15ad70f7be5db409bad7f45ab32aed`](https://github.com/wso2/identity-apps/commit/65f16ea68c15ad70f7be5db409bad7f45ab32aed) Thanks [@hwupathum](https://github.com/hwupathum)! - Update email template endpoint to use notification template API
+
 ## 0.6.2
 
 ### Patch Changes

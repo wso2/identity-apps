@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2020-2024, WSO2 LLC. (http://www.wso2.com).
+  ~ Copyright (c) 2020-2025, WSO2 LLC. (http://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -66,18 +66,24 @@
 <%
     String styleFilePath = "";
     if (StringUtils.startsWith(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME)) {
-        if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR
-                + tenantRequestingPreferences)) {
-            styleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/styles.css";
-        } else if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR
-                + tenantRequestingPreferences + CUSTOM_LAYOUT_NAME_SEPERATOR + convertApplicationName(applicationRequestingPreferences))) {
-            styleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + convertApplicationName(applicationRequestingPreferences) + "/styles.css";
+        if(StringUtils.isNotBlank(cssContent)) {
+%>
+<style type="text/css"><%= cssContent %></style>
+<%
+        } else {
+            if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR
+                    + preferenceResolvedFromResourceName)) {
+                styleFilePath = layoutStoreURL.replace("${tenantDomain}", preferenceResolvedFromResourceName) + "/styles.css";
+            } else if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR
+                    + tenantRequestingPreferences + CUSTOM_LAYOUT_NAME_SEPERATOR + convertApplicationName(applicationRequestingPreferences))) {
+                styleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + convertApplicationName(applicationRequestingPreferences) + "/styles.css";
+            }
         }
     } else {
         styleFilePath = "includes/layouts/" + layout + "/styles.css";
     }
 
-    if (styleFilePath.startsWith("http") || config.getServletContext().getResource(styleFilePath) != null) {
+    if (StringUtils.isBlank(cssContent) && (styleFilePath.startsWith("http") || config.getServletContext().getResource(styleFilePath) != null)) {
 %>
         <link rel="stylesheet" href="<%= styleFilePath %>">
 <%

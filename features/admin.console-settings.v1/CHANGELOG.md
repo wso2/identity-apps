@@ -1,5 +1,63 @@
 # @wso2is/admin.console-settings.v1
 
+## 2.25.211
+
+### Patch Changes
+
+- [#8356](https://github.com/wso2/identity-apps/pull/8356) [`728a8eb3bcc0cd4d6f5d61ed8199f2c1a60bc275`](https://github.com/wso2/identity-apps/commit/728a8eb3bcc0cd4d6f5d61ed8199f2c1a60bc275) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Fix priviladge admin deletion in ADU setup
+
+## 2.25.210
+
+### Patch Changes
+
+- [#8238](https://github.com/wso2/identity-apps/pull/8238) [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+- Updated dependencies [[`89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f`](https://github.com/wso2/identity-apps/commit/89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f), [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f)]:
+  - @wso2is/admin.core.v1@2.45.2
+  - @wso2is/admin.server-configurations.v1@2.35.1
+  - @wso2is/admin.identity-providers.v1@2.26.206
+  - @wso2is/admin.administrators.v1@2.29.204
+  - @wso2is/admin.login-flow.ai.v1@2.27.101
+  - @wso2is/admin.organizations.v1@2.26.205
+  - @wso2is/admin.applications.v1@2.35.4
+  - @wso2is/admin.feature-gate.v1@1.6.2
+  - @wso2is/admin.extensions.v1@2.38.2
+  - @wso2is/admin.userstores.v1@2.27.33
+  - @wso2is/react-components@2.9.16
+  - @wso2is/admin.roles.v2@2.27.154
+  - @wso2is/admin.users.v1@2.32.5
+  - @wso2is/dynamic-forms@2.4.41
+  - @wso2is/form@2.7.1
+
+## 2.25.209
+
+### Patch Changes
+
+- [#8124](https://github.com/wso2/identity-apps/pull/8124) [`5883496b4f95ddf31098bba652fe97f57acd7130`](https://github.com/wso2/identity-apps/commit/5883496b4f95ddf31098bba652fe97f57acd7130) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix UX issues in console settings
+
+## 2.25.208
+
+### Patch Changes
+
+- [#8062](https://github.com/wso2/identity-apps/pull/8062) [`7c400d20c1e92560bf974fbd74ee3999a32d1f1e`](https://github.com/wso2/identity-apps/commit/7c400d20c1e92560bf974fbd74ee3999a32d1f1e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Disable profile image updating of administrators
+
+- Updated dependencies [[`7c400d20c1e92560bf974fbd74ee3999a32d1f1e`](https://github.com/wso2/identity-apps/commit/7c400d20c1e92560bf974fbd74ee3999a32d1f1e)]:
+  - @wso2is/admin.users.v1@2.30.129
+
+## 2.25.207
+
+### Patch Changes
+
+- [#7993](https://github.com/wso2/identity-apps/pull/7993) [`2aca657fd60a32bf39a7d608f4d65eace3a99b95`](https://github.com/wso2/identity-apps/commit/2aca657fd60a32bf39a7d608f4d65eace3a99b95) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Improve user assignment UI in roles edit page and improvements to transfer components
+
+- Updated dependencies [[`b0d1cfa9142126be2870b6af6ef8fd1b99788cd9`](https://github.com/wso2/identity-apps/commit/b0d1cfa9142126be2870b6af6ef8fd1b99788cd9), [`2aca657fd60a32bf39a7d608f4d65eace3a99b95`](https://github.com/wso2/identity-apps/commit/2aca657fd60a32bf39a7d608f4d65eace3a99b95)]:
+  - @wso2is/theme@2.7.5
+  - @wso2is/admin.applications.v1@2.34.4
+  - @wso2is/react-components@2.9.13
+  - @wso2is/admin.roles.v2@2.27.150
+  - @wso2is/admin.users.v1@2.30.125
+  - @wso2is/i18n@2.22.12
+
 ## 2.25.206
 
 ### Patch Changes

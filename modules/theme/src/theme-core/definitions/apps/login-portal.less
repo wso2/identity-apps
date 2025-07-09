@@ -194,6 +194,7 @@
                 img {
                     max-height: @loginPortalProductLogoMaxHeight;
                     min-height: @loginPortalProductLogoMinHeight;
+                    max-width: 100%;
                 }
             }
         }
@@ -258,21 +259,21 @@
             padding: 2rem 0;
         }
 
-        .content-container {
+        .registration-content-container {
             opacity: 0;
             transform: translateX(-50px);
             transition: opacity 0.7s ease, transform 0.7s ease;
             min-height: 200px;
         }
 
-        .content-container.loaded {
+        .registration-content-container.loaded {
             position: relative;
             z-index: 1000;
             opacity: 1;
             transform: translateX(0);
         }
 
-        .content-container.loading {
+        .registration-content-container.loading {
             opacity: 0.7;
             transition: height 0.7s ease, opacity 0.7s ease;
         }
@@ -286,7 +287,7 @@
             animation: spin 1s linear infinite;
         }
 
-        .content-container.loading.hidden {
+        .registration-content-container.loading.hidden {
             display: flex;
             align-items: center;
             justify-content: center;

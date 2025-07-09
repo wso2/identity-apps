@@ -33,6 +33,17 @@ export const users: usersNS = {
         }
     },
     advancedSearch: {
+        accountStatusFilter: {
+            label: "Account Status",
+            options: {
+                disabled: "Disabled",
+                locked: "Locked",
+                pendingInitialPasswordSetup: "Pending initial password setup",
+                pendingPasswordReset: "Pending password reset",
+                pendingPrimaryEmailVerification: "Pending email verification",
+                pendingPrimaryMobileVerification: "Pending mobile verification"
+            }
+        },
         form: {
             dropdown: {
                 filterAttributeOptions: {
@@ -260,6 +271,12 @@ export const users: usersNS = {
                 message: "User deleted successfully"
             }
         },
+        deleteUserPendingApproval: {
+            success: {
+                description: "User deletion was accepted and pending approval.",
+                message: "User accepted for deletion"
+            }
+        },
         fetchUsers: {
             error: {
                 description: "{{description}}",
@@ -286,6 +303,20 @@ export const users: usersNS = {
             success: {
                 description: "Successfully retrieved the admin roles.",
                 message: "Role retrieval successful"
+            }
+        },
+        impersonateUser: {
+            error: {
+                description: "Couldn't impersonate user.",
+                message: "Error impersonating user"
+            },
+            genericError: {
+                description: "Couldn't impersonate user.",
+                message: "Something went wrong"
+            },
+            success: {
+                description: "User impersonation started successfully.",
+                message: "User impersonation successful"
             }
         },
         revokeAdmin: {
@@ -440,7 +471,8 @@ export const users: usersNS = {
                 clearButton: "Clear search query",
                 subTitle: {
                     0: "We couldn't find any results for {{query}}",
-                    1: "Please try a different search term."
+                    1: "Please try a different search query.",
+                    2: "We couldn't find any results."
                 },
                 title: "No results found"
             }

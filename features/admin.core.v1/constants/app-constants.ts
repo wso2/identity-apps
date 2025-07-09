@@ -289,6 +289,14 @@ export class AppConstants {
                 `${ AppConstants.getDeveloperViewBasePath() }/applications/:id:tabName`
             ],
             [ "APPROVALS", `${ AppConstants.getAdminViewBasePath() }/approvals` ],
+            [ "APPROVAL_WORKFLOWS",`${ AppConstants.getAdminViewBasePath() }/workflows` ],
+            [ "APPROVAL_WORKFLOW_CREATE",`${ AppConstants.getAdminViewBasePath() }/create-workflow` ],
+            [ "APPROVAL_WORKFLOW_EDIT",`${ AppConstants.getAdminViewBasePath() }/workflows/:id` ],
+            [ "APPROVAL_WORKFLOW_ASSOCIATIONS",`${ AppConstants.getAdminViewBasePath() }/workflow-associations` ],
+            [ "APPROVAL_WORKFLOW_ASSOCIATION_CREATE",
+                `${ AppConstants.getAdminViewBasePath() }/create-workflow-associations` ],
+            [ "APPROVAL_WORKFLOW_ASSOCIATIONS_EDIT",
+                `${ AppConstants.getAdminViewBasePath() }/workflow-associations/:id` ],
             [ "BRANDING", `${ AppConstants.getDeveloperViewBasePath() }/branding` ],
             [ "CERTIFICATES", `${ AppConstants.getAdminViewBasePath() }/certificates` ],
             [ "CLAIM_DIALECTS", `${ AppConstants.getAdminViewBasePath() }/attributes-and-mappings` ],
@@ -313,6 +321,7 @@ export class AppConstants {
             [ "SMS_PROVIDER", `${ AppConstants.getDeveloperViewBasePath() }/sms-provider` ],
             [ "SMS_MANAGEMENT", `${ AppConstants.getDeveloperViewBasePath() }/sms-management` ],
             [ "PUSH_PROVIDER", `${ AppConstants.getDeveloperViewBasePath() }/push-provider` ],
+            [ "FLOWS", `${ AppConstants.getDeveloperViewBasePath() }/flows` ],
             [ "EMAIL_TEMPLATE_TYPES", `${ AppConstants.getAdminViewBasePath() }/email-templates` ],
             [ "EMAIL_TEMPLATES", `${ AppConstants.getAdminViewBasePath() }/email-templates/:templateTypeId` ],
             [
@@ -343,6 +352,8 @@ export class AppConstants {
             [ "LOGIN", window["AppUtils"]?.getConfig()?.routes.login ],
             [ "LOGIN_AND_REGISTRATION", `${ AppConstants.getDeveloperViewBasePath() }/login-and-registration` ],
             [ "ACTIONS", `${ AppConstants.getDeveloperViewBasePath() }/actions` ],
+            [ "WEBHOOKS", `${ AppConstants.getDeveloperViewBasePath() }/webhooks` ],
+            [ "WEBHOOK_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/webhooks/:id` ],
             [ "SCIM_MAPPING", `${ AppConstants.getAdminViewBasePath() }/attribute-mappings/scim` ],
             [ "LOGOUT", window["AppUtils"]?.getConfig()?.routes.logout ],
             [ "OIDC_SCOPES", `${ AppConstants.getAdminViewBasePath() }/oidc-scopes` ],
@@ -419,6 +430,8 @@ export class AppConstants {
             [ "IMPERSONATION", `${AppConstants.getAdminViewBasePath()}/login-and-registration/impersonation` ],
             [ "ACTIONS",
                 `${AppConstants.getAdminViewBasePath()}/actions` ],
+            [ "WEBHOOKS",
+                `${AppConstants.getAdminViewBasePath()}/webhooks` ],
             [ "PRE_ISSUE_ACCESS_TOKEN_EDIT",
                 `${AppConstants.getAdminViewBasePath()}/actions/pre-issue-access-token` ],
             [ "PRE_UPDATE_PASSWORD_EDIT",
@@ -429,7 +442,11 @@ export class AppConstants {
             [ "EDIT_TENANT", `${AppConstants.getDefaultLayoutBasePath()}/organizations/:id` ],
             [ "SYSTEM_SETTINGS", `${AppConstants.getDefaultLayoutBasePath()}/organizations/system-settings` ],
             [ "POLICY_ADMINISTRATION", `${AppConstants.getAdminViewBasePath()}/policy-administration` ],
-            [ "EDIT_POLICY", `${AppConstants.getAdminViewBasePath()}/policy-administration/edit-policy/:id` ]
+            [ "EDIT_POLICY", `${AppConstants.getAdminViewBasePath()}/policy-administration/edit-policy/:id` ],
+            [ "MCP_SERVERS", `${ AppConstants.getDeveloperViewBasePath() }/mcp-servers` ],
+            [ "MCP_SERVER_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/mcp-servers/:id` ],
+            [ "AGENTS", `${AppConstants.getAdminViewBasePath()}/agents` ],
+            [ "AGENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/agents/:id` ]
         ]);
 
         return paths;

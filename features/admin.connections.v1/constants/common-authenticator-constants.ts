@@ -17,6 +17,15 @@
  */
 
 /**
+ * Keys used in feature dictionary.
+ */
+export enum ConnectionsFeatureDictionaryKeys {
+    FederationHub = "CONNECTIONS_FEDERATION_HUB",
+    SAMLArtifactBinding = "CONNECTIONS_SAML_ARTIFACT_BINDING",
+    SAMLAttributeConsumingServiceIndex = "CONNECTIONS_SAML_ATTRIBUTE_CONSUMING_SERVICE_INDEX",
+}
+
+/**
  * This class contains the constants for the Common for Authenticators.
  */
 export class CommonAuthenticatorConstants {
@@ -46,6 +55,7 @@ export class CommonAuthenticatorConstants {
         OIDC: string;
         ORGANIZATION_ENTERPRISE_IDP: string;
         SAML: string;
+        SIGNICAT: string;
         SWE: string;
         TRUSTED_TOKEN_ISSUER: string;
         TWO_FACTOR_CUSTOM_AUTHENTICATOR: string;
@@ -66,6 +76,7 @@ export class CommonAuthenticatorConstants {
             OIDC: "enterprise-oidc-idp",
             ORGANIZATION_ENTERPRISE_IDP: "organization-enterprise-idp",
             SAML: "enterprise-saml-idp",
+            SIGNICAT: "signicat",
             SWE: "swe-idp",
             TRUSTED_TOKEN_ISSUER: "trusted-token-issuer",
             TWO_FACTOR_CUSTOM_AUTHENTICATOR: "two-factor-custom-authenticator"
@@ -100,4 +111,14 @@ export class CommonAuthenticatorConstants {
     public static readonly DISPLAY_NAME_REGEX: RegExp = /^.{3,}$/;
 
     public static readonly TEMPLATE_ID_FIELD: string = "templateId";
+
+    /**
+     * Set of keys used to enable/disable sub-features.
+     */
+    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>([
+        [ ConnectionsFeatureDictionaryKeys.FederationHub, "identityProviders.federationHub" ],
+        [ ConnectionsFeatureDictionaryKeys.SAMLArtifactBinding, "identityProviders.saml.artifactBinding" ],
+        [ ConnectionsFeatureDictionaryKeys.SAMLAttributeConsumingServiceIndex,
+            "identityProviders.saml.attributeConsumingServiceIndex" ]
+    ]);
 }

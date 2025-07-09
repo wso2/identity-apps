@@ -21,6 +21,7 @@ import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/vi
 import {
     BlockTypes,
     ButtonTypes,
+    ButtonVariants,
     Element,
     ElementTypes,
     InputVariants
@@ -251,7 +252,23 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         );
     };
 
-    const defaultTemplateComponents = useMemo(() => getBlankTemplateComponents(), [ resources ]);
+    const getBasicTemplateComponents = (): Element[] => {
+        const basicTemplate: Template = cloneDeep(
+            templates.find((template: Template) => template.type === TemplateTypes.Basic)
+        );
+
+        if (basicTemplate?.config?.data?.steps?.length > 0) {
+            basicTemplate.config.data.steps[0].id = INITIAL_FLOW_START_STEP_ID;
+        }
+
+        return resolveComponentMetadata(
+            resources,
+            generateIdsForResources<Template>(basicTemplate)?.config?.data?.steps[0]?.data?.components
+        );
+    };
+
+    const initialTemplateComponents = useMemo(() => getBasicTemplateComponents(), [ resources ]);
+    const blankTemplateComponents = useMemo(() => getBlankTemplateComponents(), [ resources ]);
 
     const generateSteps = (steps: Node[]): Node[] => {
         const START_STEP: Node = {
@@ -260,7 +277,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             },
             deletable: false,
             id: INITIAL_FLOW_START_STEP_ID,
-            position: { x: -50, y: 330 },
+            position: { x: -300, y: 330 },
             type: StaticStepTypes.Start
         };
 
@@ -520,22 +537,22 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         return generateSteps([
             {
                 data: {
-                    components: defaultTemplateComponents
+                    components: initialTemplateComponents
                 },
                 deletable: true,
                 id: INITIAL_FLOW_VIEW_STEP_ID,
-                position: { x: 300, y: 200 },
+                position: { x: 0, y: 330 },
                 type: StepTypes.View
             },
             {
                 data: {},
                 deletable: false,
                 id: INITIAL_FLOW_USER_ONBOARD_STEP_ID,
-                position: { x: 850, y: 408 },
+                position: { x: 500, y: 408 },
                 type: StaticStepTypes.UserOnboard
             }
         ]);
-    }, [ defaultTemplateComponents, generateSteps ]);
+    }, [ initialTemplateComponents, generateSteps ]);
 
     const [ nodes, setNodes, onNodesChange ] = useNodesState([]);
     const [ edges, setEdges, onEdgesChange ] = useEdgesState([]);
@@ -649,10 +666,48 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     const handleMutateComponents = (components: Element[]): Element[] => {
         let modifiedComponents: Element[] = cloneDeep(components);
 
+        const formCount: number = modifiedComponents.filter(c => c.type === BlockTypes.Form).length;
+
+        if (formCount > 1) {
+            let firstFormFound: boolean = false;
+
+            modifiedComponents = modifiedComponents.filter(c => {
+                if (c.type === BlockTypes.Form) {
+                    if (!firstFormFound) {
+                        firstFormFound = true;
+
+                        return true;
+                    }
+
+                    return false;
+                }
+
+                return true;
+            });
+        }
+
         // Check inside `forms`, if there is a form with a password field and there's only one submit button,
         // Set the `"action": { "type": "EXECUTOR", "executor": { "name": "PasswordOnboardExecutor"}, "next": "" }`
         modifiedComponents = modifiedComponents.map((component: Element) => {
             if (component.type === BlockTypes.Form) {
+                // Set all the `PRIMARY` buttons inside the form type to `submit`.
+                component.components = component?.components?.map((formComponent: Element) => {
+                    if (
+                        formComponent.type === ElementTypes.Button &&
+                                        formComponent.variant === ButtonVariants.Primary
+                    ) {
+                        return {
+                            ...formComponent,
+                            config: {
+                                ...formComponent.config,
+                                type: ButtonTypes.Submit
+                            }
+                        };
+                    }
+
+                    return formComponent;
+                });
+
                 const hasPasswordField: boolean = component.components?.some(
                     (formComponent: Element) =>
                         formComponent.type === ElementTypes.Input && formComponent.variant === InputVariants.Password
@@ -711,15 +766,15 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         return modifiedComponents;
     };
 
-    const handleTemplateLoad = (template: Template): [Node[], Edge[]] => {
+    const handleTemplateLoad = (template: Template): [Node[], Edge[], Resource?, string?] => {
         if (template?.type === "GENERATE_WITH_AI") {
             setShowAIGenerationModal(true);
 
-            return [ [], [] ];
+            return [ [], [], null, null ];
         }
 
         if (!template?.config?.data?.steps) {
-            return [ [], [] ];
+            return [ [], [], null, null ];
         }
 
         const replacers = template?.config?.data?.__generationMeta__?.replacers;
@@ -732,9 +787,20 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         const templateEdges: Edge[] = validateEdges(
             generateEdges(templateSteps as any),
             templateSteps
-        );
+        ) as Edge[];
 
-        return [ templateSteps, templateEdges ];
+        // Handle BASIC_FEDERATED template case
+        if (template.type === TemplateTypes.BasicFederated) {
+            const googleRedirectionStep = templateSteps.find(
+                (step: Node) => step.type === "REDIRECTION"
+            );
+
+            if (googleRedirectionStep) {
+                return [ templateSteps, templateEdges, googleRedirectionStep as Resource, googleRedirectionStep.id ];
+            }
+        }
+
+        return [ templateSteps, templateEdges, null, null ];
     };
 
     const generateUnconnectedEdges = (currentEdges: Edge[], currentNodes: Node[]): Edge[] => {
@@ -929,7 +995,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                     ...step,
                     data: {
                         ...step.data,
-                        components: defaultTemplateComponents
+                        components: blankTemplateComponents
                     }
                 };
             }

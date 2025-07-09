@@ -17,11 +17,13 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
+import { ApplicationTabComponentsFilter }
+    from "@wso2is/admin.application-templates.v1/components/application-tab-components-filter";
 import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import { ApplicationTabIDs, applicationConfig } from "@wso2is/admin.extensions.v1";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
@@ -320,467 +322,502 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                     appleAppId: config?.trustedAppConfiguration?.appleAppId || config?.attestationMetaData?.appleAppId
                 } }
             >
-                <Field.CheckboxLegacy
-                    ariaLabel="Skip consent login"
-                    name="skipConsentLogin"
-                    label={ t("applications:forms.advancedConfig.fields.skipConsentLogin" +
-                        ".label") }
-                    required={ false }
-                    value={ config?.skipLoginConsent ? [ "skipLoginConsent" ] : [] }
-                    readOnly={ readOnly }
-                    data-testid={ `${ testId }-skip-login-consent-checkbox` }
-                    data-componentid={ `${ testId }-skip-login-consent-checkbox` }
-                    hint={ t("applications:forms.advancedConfig.fields.skipConsentLogin.hint") }
-                />
-                {
-                    SAMLWebApplicationTemplate?.id !== template?.id &&
-                    (
-                        <Field.CheckboxLegacy
-                            ariaLabel="Skip consent logout"
-                            name="skipConsentLogout"
-                            label={
-                                t("applications:forms.advancedConfig.fields" +
-                                    ".skipConsentLogout.label")
-                            }
-                            required={ false }
-                            value={ config?.skipLogoutConsent ? [ "skipLogoutConsent" ] : [] }
-                            readOnly={ readOnly }
-                            data-testid={ `${ testId }-skip-logout-consent-checkbox` }
-                            data-componentid={ `${ testId }-skip-logout-consent-checkbox` }
-                            hint={ t("applications:forms.advancedConfig.fields.skipConsentLogout" +
-                                ".hint"
-                            ) }
-                        />
-                    )
-                }
-                <Field.CheckboxLegacy
-                    ariaLabel="Return authenticated IDP list"
-                    name="returnAuthenticatedIdpList"
-                    label={ t("applications:forms.advancedConfig.fields." +
-                        "returnAuthenticatedIdpList.label"
-                    ) }
-                    required={ false }
-                    value={ config?.returnAuthenticatedIdpList ? [ "returnAuthenticatedIdpList" ] : [] }
-                    readOnly={ readOnly }
-                    data-testid={ `${ testId }-return-authenticated-idp-list-checkbox` }
-                    data-componentid={ `${ testId }-return-authenticated-idp-list-checkbox` }
-                    hidden={ !applicationConfig.advancedConfigurations.showReturnAuthenticatedIdPs }
-                    hint={ t("applications:forms.advancedConfig.fields" +
-                        ".returnAuthenticatedIdpList.hint"
-                    ) }
-                />
-                <Field.CheckboxLegacy
-                    ariaLabel="Enable authorization"
-                    name="enableAuthorization"
-                    label={ t("applications:forms.advancedConfig.fields." +
-                        "enableAuthorization.label"
-                    ) }
-                    required={ false }
-                    value={ config?.enableAuthorization ? [ "enableAuthorization" ] : [] }
-                    readOnly={ readOnly }
-                    data-testid={ `${ testId }-enable-authorization-checkbox` }
-                    data-componentid={ `${ testId }-enable-authorization-checkbox` }
-                    hidden={
-                        !applicationConfig.advancedConfigurations.showEnableAuthorization
-                        || !UIConfig?.isXacmlConnectorEnabled }
-                    hint={ t("applications:forms.advancedConfig.fields.enableAuthorization.hint") }
-                />
-                {
-                    (
-                        isApplicationNativeAuthenticationEnabled &&
-                        (template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
-                        template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
-                        template?.id === ApplicationManagementConstants.MOBILE ||
-                        template?.id === ApplicationManagementConstants.TEMPLATE_IDS.get("oidcWeb"))
-                    ) && (
-                        <Grid>
-                            <Grid.Row columns={ 2 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Divider />
-                                    <Divider hidden />
-                                </Grid.Column>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Heading as="h4">
-                                        { t("applications:forms.advancedConfig." +
-                                        "sections.applicationNativeAuthentication.heading") }
-                                    </Heading>
-                                    <Field.CheckboxLegacy
-                                        ariaLabel="Enable apiBasedAuthentication"
-                                        name="enableAPIBasedAuthentication"
-                                        label={ t("applications:forms.advancedConfig." +
-                                            "sections.applicationNativeAuthentication.fields." +
-                                            "enableAPIBasedAuthentication.label") }
-                                        required={ false }
-                                        readOnly={ readOnly }
-                                        value={
-                                            isEnableAPIBasedAuthentication
-                                                ? [ "enableAPIBasedAuthentication" ]
-                                                : []
-                                        }
-                                        listen={ handleEnableAPIBasedAuthentication }
-                                        data-testid={ `${ testId }-enable-api-based-authentication` }
-                                        data-componentid={ `${ testId }-enable-api-based-authentication` }
-                                        hidden={ !applicationConfig.advancedConfigurations.showEnableAuthorization }
-                                        hint={ t("applications:forms.advancedConfig." +
-                                            "sections.applicationNativeAuthentication.fields." +
-                                            "enableAPIBasedAuthentication.hint") }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    )
-                }
-                {
-                    (
-                        isApplicationNativeAuthenticationEnabled &&
-                        (template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
-                        template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
-                        template?.id === ApplicationManagementConstants.MOBILE)
-                    ) && (
-                        <Grid>
-                            <Grid.Row
-                                columns={ 1 }
-                                onClick={ handleWhenClientAttestationClickedWhenDisabled }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Divider />
-                                    <Heading as="h4">
-                                        { t("applications:forms.advancedConfig." +
-                                            "sections.clientAttestation.heading") }
-                                    </Heading>
-                                    {
-                                        (
-                                            isClientAttestationUIDisabled &&
-                                            isUserClickedClientAttestationWhenDisabled
-                                        ) && (
-                                            <Alert severity="info" className="client-attestation-info-alert">
-                                                { t("applications:forms.advancedConfig." +
-                                                    "sections.clientAttestation.alerts.clientAttestationAlert") }
-                                            </Alert>
-                                        )
-                                    }
-                                    <Field.CheckboxLegacy
-                                        ariaLabel="Enable attestation"
-                                        name="enableClientAttestation"
-                                        label={ t("applications:forms." +
-                                            "advancedConfig.sections.clientAttestation." +
-                                            "fields.enableClientAttestation.label") }
-                                        required={ false }
-                                        readOnly={ readOnly }
-                                        value={
-                                            config?.attestationMetaData?.enableClientAttestation
-                                                ? [ "enableClientAttestation" ]
-                                                : []
-                                        }
-                                        listen={ setIsEnableClientAttestation }
-                                        data-testid={ `${ testId }-enable-client-attestation` }
-                                        data-componentid={ `${ testId }-enable-api-based-authentication` }
-                                        disabled={ isClientAttestationUIDisabled }
-                                        hint={ (
-                                            <Trans
-                                                i18nKey={
-                                                    "applications:forms.advancedConfig.sections.clientAttestation." +
-                                                    "fields.enableClientAttestation.hint"
-                                                }
-                                            >
-                                                Select to verify the integrity of the application by calling the
-                                                 attestation service of the hosting platform. To enable this you will
-                                                 be required to setup <strong>Platform Settings</strong>.
-                                            </Trans>
-                                        ) }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row
-                                columns={ 1 }
-                                onClick={ handleWhenClientAttestationClickedWhenDisabled }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Field.Textarea
-                                        ariaLabel="Android service account credentials"
-                                        inputType="description"
-                                        name="androidAttestationServiceCredentials"
-                                        label={ (
-                                            <>
-                                                <GenericIcon
-                                                    size="micro"
-                                                    icon={ getTechnologyLogos().android }
-                                                    floated="left"
-                                                    verticalAlign="middle"
-                                                    spaced="right"
-                                                />
-                                                { t("applications:forms." +
-                                                "advancedConfig." +
-                                                "sections.clientAttestation.fields." +
-                                                "androidAttestationServiceCredentials.label") }
-                                            </>
-                                        ) }
-                                        placeholder={ t("applications:forms." +
-                                            "advancedConfig.sections." +
-                                            "clientAttestation.fields." +
-                                            "androidAttestationServiceCredentials.placeholder") }
-                                        value={
-                                            config?.
-                                                attestationMetaData?.androidAttestationServiceCredentials ?
-                                                [ JSON.stringify(
-                                                    config?.
-                                                        attestationMetaData?.
-                                                        androidAttestationServiceCredentials,
-                                                    null, 4)
-                                                ] : []
-                                        }
-                                        hint={ t("applications:forms." +
-                                            "advancedConfig." +
-                                            "sections.clientAttestation.fields." +
-                                            "androidAttestationServiceCredentials.hint") }
-                                        type="text"
-                                        maxLength={ 5000 }
-                                        minLength={ 30 }
-                                        width={ 16 }
-                                        data-testid={
-                                            `${ testId }-client-attestation-android-account-credentials`
-                                        }
-                                        data-componentid={
-                                            `${ testId }-client-attestation-android-account-credentials`
-                                        }
-                                        disabled={ isClientAttestationMethodsUiDisabled }
-                                        readOnly={ readOnly }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    )
-                }
-                {
-                    (
-                        isTrustedAppsFeatureEnabled &&
-                        (template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
-                        template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
-                        template?.id === ApplicationManagementConstants.MOBILE)
-                    ) && (
-                        <Grid>
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Divider />
-                                    <Heading as="h4">
-                                        { t("applications:forms.advancedConfig.sections.trustedApps.heading") }
-                                    </Heading>
-                                    <Field.CheckboxLegacy
-                                        ariaLabel="Enable FIDO Trusted Apps"
-                                        name="enableFIDOTrustedApps"
-                                        label={ t("applications:forms.advancedConfig.sections.trustedApps." +
-                                            "fields.enableFIDOTrustedApps.label") }
-                                        required={ false }
-                                        readOnly={ readOnly }
-                                        checked={ isFIDOTrustedAppsEnabled }
-                                        value={
-                                            isFIDOTrustedAppsEnabled ? [ "isFIDOTrustedApp" ] : []
-                                        }
-                                        listen={ handleFIDOActivation }
-                                        data-componentid={ `${ componentId }-enable-fido-trusted-apps` }
-                                        hint={ (
-                                            <Trans
-                                                i18nKey={
-                                                    "applications:forms.advancedConfig.sections." +
-                                                    "trustedApps.fields.enableFIDOTrustedApps.hint"
-                                                }
-                                            >
-                                                Select to trust the app for user login with passkey.
-                                                 Provide the details of the application under
-                                                <strong> Platform Settings</strong>.
-                                            </Trans>
-                                        ) }
-                                    />
-                                    {
-                                        (applicationConfig.advancedConfigurations.showTrustedAppConsentWarning) && (
-                                            <Alert severity="warning" className="fido-enabled-warn-alert">
-                                                <>
-                                                    {
-                                                        <Trans
-                                                            i18nKey={
-                                                                "applications:forms.advancedConfig." +
-                                                                "sections.trustedApps.alerts.trustedAppSettingsAlert"
-                                                            }
-                                                        >
-                                                            Enabling this feature will publish details under
-                                                            <strong> Platform Settings</strong> to a public endpoint
-                                                             accessible to all Asgardeo organizations. Consequently,
-                                                             other organizations can view information about your
-                                                             application and its associated organization. This option
-                                                             is not applicable if you are using custom domains.
-                                                        </Trans>
-                                                    }
-                                                    <DocumentationLink
-                                                        link={ getLink("develop.applications.editApplication." +
-                                                    "common.advanced.trustedApps.learnMore") }
-                                                    >
-                                                        { t("common:learnMore") }
-                                                    </DocumentationLink>
-                                                </>
-                                            </Alert>
-                                        )
-                                    }
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    )
-                }
-                {
-                    (
-                        template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
-                        template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
-                        template?.id === ApplicationManagementConstants.MOBILE
-                    ) && (
-                        <Grid>
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Divider />
-                                    <Heading as="h4">
-                                        { t("applications:forms.advancedConfig." +
-                                            "sections.platformSettings.heading") }
-                                    </Heading>
-                                    <Heading subHeading as="h6">
-                                        { t("applications:forms.advancedConfig." +
-                                            "sections.platformSettings.subTitle") }
-                                    </Heading>
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column>
-                                    <Heading as="h5" bold="500">
-                                        <GenericIcon
-                                            size="micro"
-                                            icon={ getTechnologyLogos().android }
-                                            verticalAlign="middle"
-                                            floated="left"
-                                        />
-                                        { t("applications:forms.advancedConfig." +
-                                            "sections.platformSettings.fields." +
-                                            "android.heading") }
-                                    </Heading>
-                                    <Field.Input
-                                        ariaLabel="Android package name"
-                                        inputType="default"
-                                        name="androidPackageName"
-                                        label={ t("applications:forms." +
-                                            "advancedConfig." +
-                                            "sections.platformSettings.fields." +
-                                            "android.fields.androidPackageName.label") }
-                                        required={ false }
-                                        readOnly={ readOnly }
-                                        value={ (config?.attestationMetaData?.androidPackageName ||
-                                            config?.trustedAppConfiguration?.androidPackageName) ?? "" }
-                                        placeholder={ t("applications:forms." +
-                                            "advancedConfig." +
-                                            "sections.platformSettings.fields." +
-                                            "android.fields.androidPackageName.placeholder") }
-                                        maxLength={ 200 }
-                                        minLength={ 3 }
-                                        width={ 16 }
-                                        data-componentid={
-                                            `${ componentId }-platform-settings-android-package-name`
-                                        }
-                                        disabled={ isPlatformSettingsUiDisabled }
-                                    />
-                                    <Hint disabled={ isPlatformSettingsUiDisabled }>
-                                        { t("applications:forms.advancedConfig." +
-                                            "sections.platformSettings.fields." +
-                                            "android.fields.androidPackageName.hint") }
-                                    </Hint>
-                                </Grid.Column>
-                            </Grid.Row>
-                            { isTrustedAppsFeatureEnabled && (
+                <ApplicationTabComponentsFilter
+                    tabId={ ApplicationTabIDs.ADVANCED }
+                >
+                    <Grid>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Field.CheckboxLegacy
+                                    ariaLabel="Skip consent login"
+                                    name="skipConsentLogin"
+                                    label={ t("applications:forms.advancedConfig.fields.skipConsentLogin" +
+                                        ".label") }
+                                    required={ false }
+                                    value={ config?.skipLoginConsent ? [ "skipLoginConsent" ] : [] }
+                                    readOnly={ readOnly }
+                                    data-testid={ `${ testId }-skip-login-consent-checkbox` }
+                                    data-componentid={ `${ testId }-skip-login-consent-checkbox` }
+                                    hint={ t("applications:forms.advancedConfig.fields.skipConsentLogin.hint") }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                    {
+                        SAMLWebApplicationTemplate?.id !== template?.id &&
+                        (
+                            <Grid>
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                        <URLInput
-                                            isAllowEnabled={ false }
-                                            onlyOrigin={ false }
-                                            labelEnabled={ false }
-                                            urlState={ thumbprints }
-                                            setURLState={ (url: string) => setThumbprints(url) }
-                                            labelName={
-                                                t("applications:forms." +
-                                                    "advancedConfig.sections.platformSettings.fields." +
-                                                    "android.fields.keyHashes.label")
+                                        <Field.CheckboxLegacy
+                                            ariaLabel="Skip consent logout"
+                                            name="skipConsentLogout"
+                                            label={
+                                                t("applications:forms.advancedConfig.fields" +
+                                                    ".skipConsentLogout.label")
                                             }
                                             required={ false }
-                                            value={ thumbprints }
-                                            validation={ (value: string) => !value?.includes(",") }
-                                            placeholder={
-                                                t("applications:forms." +
-                                                    "advancedConfig.sections.platformSettings.fields." +
-                                                    "android.fields.keyHashes.placeholder")
-                                            }
-                                            validationErrorMsg={
-                                                t("applications:forms." +
-                                                    "advancedConfig.sections.platformSettings.fields." +
-                                                    "android.fields.keyHashes.validations.invalidOrEmpty")
-                                            }
-                                            showError={ showThumbprintsError }
-                                            setShowError={ setShowThumbprinstError }
-                                            clearError={ clearThumbprintsError }
-                                            setClearError={ setClearThumbprinstError }
+                                            value={ config?.skipLogoutConsent ? [ "skipLogoutConsent" ] : [] }
                                             readOnly={ readOnly }
-                                            addURLTooltip={ t("applications:forms." +
-                                                "advancedConfig.sections.platformSettings.fields." +
-                                                "android.fields.keyHashes.tooltip") }
-                                            duplicateURLErrorMessage={ t("applications:forms." +
-                                                "advancedConfig.sections.platformSettings.fields." +
-                                                "android.fields.keyHashes.validations.duplicate") }
-                                            showPredictions={ false }
-                                            showLessContent={ t("common:showLess") }
-                                            showMoreContent={ t("common:showMore") }
-                                            data-componentid={
-                                                `${ componentId }-platform-settings-android-thumbprints`
-                                            }
-                                            disabled={ isPlatformSettingsUiDisabled || !isFIDOTrustedAppsEnabled }
-                                            skipInternalValidation
+                                            data-testid={ `${ testId }-skip-logout-consent-checkbox` }
+                                            data-componentid={ `${ testId }-skip-logout-consent-checkbox` }
+                                            hint={ t("applications:forms.advancedConfig.fields.skipConsentLogout" +
+                                                ".hint"
+                                            ) }
                                         />
-                                        <Hint disabled={ isPlatformSettingsUiDisabled || !isFIDOTrustedAppsEnabled }>
-                                            { t("applications:forms." +
-                                                "advancedConfig.sections.platformSettings.fields." +
-                                                "android.fields.keyHashes.hint") }
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        )
+                    }
+                    <Grid>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Field.CheckboxLegacy
+                                    ariaLabel="Return authenticated IDP list"
+                                    name="returnAuthenticatedIdpList"
+                                    label={ t("applications:forms.advancedConfig.fields." +
+                                        "returnAuthenticatedIdpList.label"
+                                    ) }
+                                    required={ false }
+                                    value={ config?.returnAuthenticatedIdpList ? [ "returnAuthenticatedIdpList" ] : [] }
+                                    readOnly={ readOnly }
+                                    data-testid={ `${ testId }-return-authenticated-idp-list-checkbox` }
+                                    data-componentid={ `${ testId }-return-authenticated-idp-list-checkbox` }
+                                    hidden={ !applicationConfig.advancedConfigurations.showReturnAuthenticatedIdPs }
+                                    hint={ t("applications:forms.advancedConfig.fields" +
+                                        ".returnAuthenticatedIdpList.hint"
+                                    ) }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                    {
+                        (applicationConfig.advancedConfigurations.showEnableAuthorization
+                            && UIConfig?.isXacmlConnectorEnabled) && (
+                            <Grid>
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Field.CheckboxLegacy
+                                            ariaLabel="Enable authorization"
+                                            name="enableAuthorization"
+                                            label={ t("applications:forms.advancedConfig.fields." +
+                                                "enableAuthorization.label"
+                                            ) }
+                                            required={ false }
+                                            value={ config?.enableAuthorization ? [ "enableAuthorization" ] : [] }
+                                            readOnly={ readOnly }
+                                            data-testid={ `${ testId }-enable-authorization-checkbox` }
+                                            data-componentid={ `${ testId }-enable-authorization-checkbox` }
+                                            hidden={
+                                                !applicationConfig.advancedConfigurations.showEnableAuthorization
+                                                || !UIConfig?.isXacmlConnectorEnabled }
+                                            hint={ t("applications:forms.advancedConfig.fields."+
+                                                "enableAuthorization.hint") }
+                                        />
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        )
+                    }
+                    {
+                        (
+                            isApplicationNativeAuthenticationEnabled &&
+                            (template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
+                            template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
+                            template?.id === ApplicationManagementConstants.MOBILE ||
+                            template?.id === ApplicationManagementConstants.TEMPLATE_IDS.get("oidcWeb"))
+                        ) && (
+                            <Grid data-componentid={ `${ testId }-application-native-authentication` }>
+                                <Grid.Row columns={ 2 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Divider />
+                                        <Divider hidden />
+                                    </Grid.Column>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Heading as="h4">
+                                            { t("applications:forms.advancedConfig." +
+                                            "sections.applicationNativeAuthentication.heading") }
+                                        </Heading>
+                                        <Field.CheckboxLegacy
+                                            ariaLabel="Enable apiBasedAuthentication"
+                                            name="enableAPIBasedAuthentication"
+                                            label={ t("applications:forms.advancedConfig." +
+                                                "sections.applicationNativeAuthentication.fields." +
+                                                "enableAPIBasedAuthentication.label") }
+                                            required={ false }
+                                            readOnly={ readOnly }
+                                            value={
+                                                isEnableAPIBasedAuthentication
+                                                    ? [ "enableAPIBasedAuthentication" ]
+                                                    : []
+                                            }
+                                            listen={ handleEnableAPIBasedAuthentication }
+                                            data-testid={ `${ testId }-enable-api-based-authentication` }
+                                            data-componentid={ `${ testId }-enable-api-based-authentication` }
+                                            hidden={ !applicationConfig.advancedConfigurations.showEnableAuthorization }
+                                            hint={ t("applications:forms.advancedConfig." +
+                                                "sections.applicationNativeAuthentication.fields." +
+                                                "enableAPIBasedAuthentication.hint") }
+                                        />
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        )
+                    }
+                    {
+                        (
+                            isApplicationNativeAuthenticationEnabled &&
+                            (template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
+                            template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
+                            template?.id === ApplicationManagementConstants.MOBILE)
+                        ) && (
+                            <Grid data-componentid={ `${ testId }-client-attestation` }>
+                                <Grid.Row
+                                    columns={ 1 }
+                                    onClick={ handleWhenClientAttestationClickedWhenDisabled }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Divider />
+                                        <Heading as="h4">
+                                            { t("applications:forms.advancedConfig." +
+                                                "sections.clientAttestation.heading") }
+                                        </Heading>
+                                        {
+                                            (
+                                                isClientAttestationUIDisabled &&
+                                                isUserClickedClientAttestationWhenDisabled
+                                            ) && (
+                                                <Alert severity="info" className="client-attestation-info-alert">
+                                                    { t("applications:forms.advancedConfig." +
+                                                        "sections.clientAttestation.alerts.clientAttestationAlert") }
+                                                </Alert>
+                                            )
+                                        }
+                                        <Field.CheckboxLegacy
+                                            ariaLabel="Enable attestation"
+                                            name="enableClientAttestation"
+                                            label={ t("applications:forms." +
+                                                "advancedConfig.sections.clientAttestation." +
+                                                "fields.enableClientAttestation.label") }
+                                            required={ false }
+                                            readOnly={ readOnly }
+                                            value={
+                                                config?.attestationMetaData?.enableClientAttestation
+                                                    ? [ "enableClientAttestation" ]
+                                                    : []
+                                            }
+                                            listen={ setIsEnableClientAttestation }
+                                            data-testid={ `${ testId }-enable-client-attestation` }
+                                            data-componentid={ `${ testId }-enable-api-based-authentication` }
+                                            disabled={ isClientAttestationUIDisabled }
+                                            hint={ (
+                                                <Trans
+                                                    i18nKey={
+                                                        "applications:forms.advancedConfig.sections." +
+                                                        "clientAttestation.fields.enableClientAttestation.hint"
+                                                    }
+                                                >
+                                                    Select to verify the integrity of the application by calling the
+                                                    attestation service of the hosting platform. To enable this you will
+                                                    be required to setup <strong>Platform Settings</strong>.
+                                                </Trans>
+                                            ) }
+                                        />
+                                    </Grid.Column>
+                                </Grid.Row>
+                                <Grid.Row
+                                    columns={ 1 }
+                                    onClick={ handleWhenClientAttestationClickedWhenDisabled }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Field.Textarea
+                                            ariaLabel="Android service account credentials"
+                                            inputType="description"
+                                            name="androidAttestationServiceCredentials"
+                                            label={ (
+                                                <>
+                                                    <GenericIcon
+                                                        size="micro"
+                                                        icon={ getTechnologyLogos().android }
+                                                        floated="left"
+                                                        verticalAlign="middle"
+                                                        spaced="right"
+                                                    />
+                                                    { t("applications:forms." +
+                                                    "advancedConfig." +
+                                                    "sections.clientAttestation.fields." +
+                                                    "androidAttestationServiceCredentials.label") }
+                                                </>
+                                            ) }
+                                            placeholder={ t("applications:forms." +
+                                                "advancedConfig.sections." +
+                                                "clientAttestation.fields." +
+                                                "androidAttestationServiceCredentials.placeholder") }
+                                            value={
+                                                config?.
+                                                    attestationMetaData?.androidAttestationServiceCredentials ?
+                                                    [ JSON.stringify(
+                                                        config?.
+                                                            attestationMetaData?.
+                                                            androidAttestationServiceCredentials,
+                                                        null, 4)
+                                                    ] : []
+                                            }
+                                            hint={ t("applications:forms." +
+                                                "advancedConfig." +
+                                                "sections.clientAttestation.fields." +
+                                                "androidAttestationServiceCredentials.hint") }
+                                            type="text"
+                                            maxLength={ 5000 }
+                                            minLength={ 30 }
+                                            width={ 16 }
+                                            data-testid={
+                                                `${ testId }-client-attestation-android-account-credentials`
+                                            }
+                                            data-componentid={
+                                                `${ testId }-client-attestation-android-account-credentials`
+                                            }
+                                            disabled={ isClientAttestationMethodsUiDisabled }
+                                            readOnly={ readOnly }
+                                        />
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        )
+                    }
+                    {
+                        (
+                            isTrustedAppsFeatureEnabled &&
+                            (template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
+                            template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
+                            template?.id === ApplicationManagementConstants.MOBILE)
+                        ) && (
+                            <Grid data-componentid={ `${ testId }-trusted-apps` }>
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Divider />
+                                        <Heading as="h4">
+                                            { t("applications:forms.advancedConfig.sections.trustedApps.heading") }
+                                        </Heading>
+                                        <Field.CheckboxLegacy
+                                            ariaLabel="Enable FIDO Trusted Apps"
+                                            name="enableFIDOTrustedApps"
+                                            label={ t("applications:forms.advancedConfig.sections.trustedApps." +
+                                                "fields.enableFIDOTrustedApps.label") }
+                                            required={ false }
+                                            readOnly={ readOnly }
+                                            checked={ isFIDOTrustedAppsEnabled }
+                                            value={
+                                                isFIDOTrustedAppsEnabled ? [ "isFIDOTrustedApp" ] : []
+                                            }
+                                            listen={ handleFIDOActivation }
+                                            data-componentid={ `${ componentId }-enable-fido-trusted-apps` }
+                                            hint={ (
+                                                <Trans
+                                                    i18nKey={
+                                                        "applications:forms.advancedConfig.sections." +
+                                                        "trustedApps.fields.enableFIDOTrustedApps.hint"
+                                                    }
+                                                >
+                                                    Select to trust the app for user login with passkey.
+                                                    Provide the details of the application under
+                                                    <strong> Platform Settings</strong>.
+                                                </Trans>
+                                            ) }
+                                        />
+                                        {
+                                            (applicationConfig.advancedConfigurations.showTrustedAppConsentWarning) && (
+                                                <Alert severity="warning" className="fido-enabled-warn-alert">
+                                                    <>
+                                                        {
+                                                            <Trans
+                                                                i18nKey={
+                                                                    "applications:forms.advancedConfig.sections." +
+                                                                    "trustedApps.alerts.trustedAppSettingsAlert"
+                                                                }
+                                                            >
+                                                                Enabling this feature will publish details under
+                                                                <strong> Platform Settings</strong> to a public endpoint
+                                                                accessible to all Asgardeo organizations. Consequently,
+                                                                other organizations can view information about your
+                                                                application and its associated organization. This option
+                                                                is not applicable if you are using custom domains.
+                                                            </Trans>
+                                                        }
+                                                        <DocumentationLink
+                                                            link={ getLink("develop.applications.editApplication." +
+                                                        "common.advanced.trustedApps.learnMore") }
+                                                        >
+                                                            { t("common:learnMore") }
+                                                        </DocumentationLink>
+                                                    </>
+                                                </Alert>
+                                            )
+                                        }
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        )
+                    }
+                    {
+                        (
+                            template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
+                            template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
+                            template?.id === ApplicationManagementConstants.MOBILE
+                        ) && (
+                            <Grid data-componentid={ `${ testId }-platform-settings` }>
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Divider />
+                                        <Heading as="h4">
+                                            { t("applications:forms.advancedConfig." +
+                                                "sections.platformSettings.heading") }
+                                        </Heading>
+                                        <Heading subHeading as="h6">
+                                            { t("applications:forms.advancedConfig." +
+                                                "sections.platformSettings.subTitle") }
+                                        </Heading>
+                                    </Grid.Column>
+                                </Grid.Row>
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column>
+                                        <Heading as="h5" bold="500">
+                                            <GenericIcon
+                                                size="micro"
+                                                icon={ getTechnologyLogos().android }
+                                                verticalAlign="middle"
+                                                floated="left"
+                                            />
+                                            { t("applications:forms.advancedConfig." +
+                                                "sections.platformSettings.fields." +
+                                                "android.heading") }
+                                        </Heading>
+                                        <Field.Input
+                                            ariaLabel="Android package name"
+                                            inputType="default"
+                                            name="androidPackageName"
+                                            label={ t("applications:forms." +
+                                                "advancedConfig." +
+                                                "sections.platformSettings.fields." +
+                                                "android.fields.androidPackageName.label") }
+                                            required={ false }
+                                            readOnly={ readOnly }
+                                            value={ (config?.attestationMetaData?.androidPackageName ||
+                                                config?.trustedAppConfiguration?.androidPackageName) ?? "" }
+                                            placeholder={ t("applications:forms." +
+                                                "advancedConfig." +
+                                                "sections.platformSettings.fields." +
+                                                "android.fields.androidPackageName.placeholder") }
+                                            maxLength={ 200 }
+                                            minLength={ 3 }
+                                            width={ 16 }
+                                            data-componentid={
+                                                `${ componentId }-platform-settings-android-package-name`
+                                            }
+                                            disabled={ isPlatformSettingsUiDisabled }
+                                        />
+                                        <Hint disabled={ isPlatformSettingsUiDisabled }>
+                                            { t("applications:forms.advancedConfig." +
+                                                "sections.platformSettings.fields." +
+                                                "android.fields.androidPackageName.hint") }
                                         </Hint>
                                     </Grid.Column>
                                 </Grid.Row>
-                            ) }
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column>
-                                    <Heading as="h5" bold="500">
-                                        <GenericIcon
-                                            size="micro"
-                                            icon={ getTechnologyLogos().apple }
-                                            floated="left"
-                                            verticalAlign="middle"
+                                { isTrustedAppsFeatureEnabled && (
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            <URLInput
+                                                isAllowEnabled={ false }
+                                                onlyOrigin={ false }
+                                                labelEnabled={ false }
+                                                urlState={ thumbprints }
+                                                setURLState={ (url: string) => setThumbprints(url) }
+                                                labelName={
+                                                    t("applications:forms." +
+                                                        "advancedConfig.sections.platformSettings.fields." +
+                                                        "android.fields.keyHashes.label")
+                                                }
+                                                required={ false }
+                                                value={ thumbprints }
+                                                validation={ (value: string) => !value?.includes(",") }
+                                                placeholder={
+                                                    t("applications:forms." +
+                                                        "advancedConfig.sections.platformSettings.fields." +
+                                                        "android.fields.keyHashes.placeholder")
+                                                }
+                                                validationErrorMsg={
+                                                    t("applications:forms." +
+                                                        "advancedConfig.sections.platformSettings.fields." +
+                                                        "android.fields.keyHashes.validations.invalidOrEmpty")
+                                                }
+                                                showError={ showThumbprintsError }
+                                                setShowError={ setShowThumbprinstError }
+                                                clearError={ clearThumbprintsError }
+                                                setClearError={ setClearThumbprinstError }
+                                                readOnly={ readOnly }
+                                                addURLTooltip={ t("applications:forms." +
+                                                    "advancedConfig.sections.platformSettings.fields." +
+                                                    "android.fields.keyHashes.tooltip") }
+                                                duplicateURLErrorMessage={ t("applications:forms." +
+                                                    "advancedConfig.sections.platformSettings.fields." +
+                                                    "android.fields.keyHashes.validations.duplicate") }
+                                                showPredictions={ false }
+                                                showLessContent={ t("common:showLess") }
+                                                showMoreContent={ t("common:showMore") }
+                                                data-componentid={
+                                                    `${ componentId }-platform-settings-android-thumbprints`
+                                                }
+                                                disabled={ isPlatformSettingsUiDisabled || !isFIDOTrustedAppsEnabled }
+                                                skipInternalValidation
+                                            />
+                                            <Hint
+                                                disabled={ isPlatformSettingsUiDisabled || !isFIDOTrustedAppsEnabled }>
+                                                { t("applications:forms." +
+                                                    "advancedConfig.sections.platformSettings.fields." +
+                                                    "android.fields.keyHashes.hint") }
+                                            </Hint>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                ) }
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column>
+                                        <Heading as="h5" bold="500">
+                                            <GenericIcon
+                                                size="micro"
+                                                icon={ getTechnologyLogos().apple }
+                                                floated="left"
+                                                verticalAlign="middle"
+                                            />
+                                            { t("applications:forms.advancedConfig.sections.platformSettings.fields." +
+                                                "apple.heading") }
+                                        </Heading>
+                                        <Field.Input
+                                            ariaLabel="Apple App Id"
+                                            inputType="default"
+                                            name="appleAppId"
+                                            label={ t("applications:forms.advancedConfig.sections.platformSettings." +
+                                                "fields.apple.fields.appleAppId.label") }
+                                            required={ false }
+                                            placeholder={ t("applications:forms.advancedConfig.sections." +
+                                                "platformSettings.fields.apple.fields.appleAppId.placeholder") }
+                                            value={ (config?.attestationMetaData?.appleAppId ||
+                                                config?.trustedAppConfiguration?.appleAppId) ?? "" }
+                                            maxLength={ 200 }
+                                            minLength={ 3 }
+                                            width={ 16 }
+                                            data-componentid={ `${ componentId }-platform-settings-apple-app-id` }
+                                            disabled={ isPlatformSettingsUiDisabled }
+                                            readOnly={ readOnly }
                                         />
-                                        { t("applications:forms.advancedConfig.sections.platformSettings.fields." +
-                                            "apple.heading") }
-                                    </Heading>
-                                    <Field.Input
-                                        ariaLabel="Apple App Id"
-                                        inputType="default"
-                                        name="appleAppId"
-                                        label={ t("applications:forms.advancedConfig.sections.platformSettings." +
-                                            "fields.apple.fields.appleAppId.label") }
-                                        required={ false }
-                                        placeholder={ t("applications:forms.advancedConfig.sections.platformSettings." +
-                                            "fields.apple.fields.appleAppId.placeholder") }
-                                        value={ (config?.attestationMetaData?.appleAppId ||
-                                            config?.trustedAppConfiguration?.appleAppId) ?? "" }
-                                        maxLength={ 200 }
-                                        minLength={ 3 }
-                                        width={ 16 }
-                                        data-componentid={ `${ componentId }-platform-settings-apple-app-id` }
-                                        disabled={ isPlatformSettingsUiDisabled }
-                                        readOnly={ readOnly }
-                                    />
-                                    <Hint disabled={ isPlatformSettingsUiDisabled }>
-                                        { t("applications:forms.advancedConfig.sections.platformSettings.fields." +
-                                            "apple.fields.appleAppId.hint") }
-                                    </Hint>
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    )
-                }
+                                        <Hint disabled={ isPlatformSettingsUiDisabled }>
+                                            { t("applications:forms.advancedConfig.sections.platformSettings.fields." +
+                                                "apple.fields.appleAppId.hint") }
+                                        </Hint>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        )
+                    }
+                </ApplicationTabComponentsFilter>
                 <Field.Button
                     form={ FORM_ID }
                     size="small"

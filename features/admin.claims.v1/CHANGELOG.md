@@ -1,5 +1,197 @@
 # @wso2is/admin.claims.v1
 
+## 2.28.4
+
+### Patch Changes
+
+- [#8077](https://github.com/wso2/identity-apps/pull/8077) [`4c0d987daf1267aa5cdd2b4b5d1ef2f9f17a53b1`](https://github.com/wso2/identity-apps/commit/4c0d987daf1267aa5cdd2b4b5d1ef2f9f17a53b1) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add assets, i18n and util methods required for AI agent management
+
+- Updated dependencies [[`4c0d987daf1267aa5cdd2b4b5d1ef2f9f17a53b1`](https://github.com/wso2/identity-apps/commit/4c0d987daf1267aa5cdd2b4b5d1ef2f9f17a53b1), [`b6f5db8cd4722cb06c1608b0698c31ae5f6a5204`](https://github.com/wso2/identity-apps/commit/b6f5db8cd4722cb06c1608b0698c31ae5f6a5204)]:
+  - @wso2is/admin.claims.v1@2.28.4
+  - @wso2is/admin.users.v1@2.33.5
+  - @wso2is/admin.core.v1@2.46.4
+  - @wso2is/theme@2.8.3
+  - @wso2is/i18n@2.24.11
+  - @wso2is/admin.userstores.v1@2.27.35
+  - @wso2is/core@2.9.3
+
+## 2.28.3
+
+### Patch Changes
+
+- [#8432](https://github.com/wso2/identity-apps/pull/8432) [`df31404b3cbfcf8a51ea8aae97f4fae6e165a7cb`](https://github.com/wso2/identity-apps/commit/df31404b3cbfcf8a51ea8aae97f4fae6e165a7cb) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Disable multi valued property for boolean and complex data types
+
+- Updated dependencies [[`df31404b3cbfcf8a51ea8aae97f4fae6e165a7cb`](https://github.com/wso2/identity-apps/commit/df31404b3cbfcf8a51ea8aae97f4fae6e165a7cb)]:
+  - @wso2is/admin.claims.v1@2.28.3
+
+## 2.28.2
+
+### Patch Changes
+
+- [#8378](https://github.com/wso2/identity-apps/pull/8378) [`f8c18f0cc7868399735ffc30391741b86cc80126`](https://github.com/wso2/identity-apps/commit/f8c18f0cc7868399735ffc30391741b86cc80126) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Attribute level input format support
+
+- Updated dependencies [[`edd0e0eae566daddfadff7877e1fba13f1daeba9`](https://github.com/wso2/identity-apps/commit/edd0e0eae566daddfadff7877e1fba13f1daeba9), [`f8c18f0cc7868399735ffc30391741b86cc80126`](https://github.com/wso2/identity-apps/commit/f8c18f0cc7868399735ffc30391741b86cc80126)]:
+  - @wso2is/core@2.9.1
+  - @wso2is/admin.claims.v1@2.28.2
+  - @wso2is/i18n@2.24.2
+
+## 2.28.1
+
+### Patch Changes
+
+- [#8350](https://github.com/wso2/identity-apps/pull/8350) [`de96d36e86d954e9f55591c9adf2fdcde6ba5917`](https://github.com/wso2/identity-apps/commit/de96d36e86d954e9f55591c9adf2fdcde6ba5917) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Change date data type to dateTime
+
+- Updated dependencies [[`de96d36e86d954e9f55591c9adf2fdcde6ba5917`](https://github.com/wso2/identity-apps/commit/de96d36e86d954e9f55591c9adf2fdcde6ba5917), [`6f7979d5efcde8fcc76fba3b66649e71302f8e32`](https://github.com/wso2/identity-apps/commit/6f7979d5efcde8fcc76fba3b66649e71302f8e32)]:
+  - @wso2is/admin.claims.v1@2.28.1
+  - @wso2is/i18n@2.23.12
+
+## 2.28.0
+
+### Minor Changes
+
+- [#8309](https://github.com/wso2/identity-apps/pull/8309) [`238533137505979cccd4f75d9de2c26ce8d20b50`](https://github.com/wso2/identity-apps/commit/238533137505979cccd4f75d9de2c26ce8d20b50) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add data types support for user profile UI and refactor user profile codebase
+
+### Patch Changes
+
+- Updated dependencies [[`238533137505979cccd4f75d9de2c26ce8d20b50`](https://github.com/wso2/identity-apps/commit/238533137505979cccd4f75d9de2c26ce8d20b50)]:
+  - @wso2is/admin.claims.v1@2.28.0
+  - @wso2is/admin.users.v1@2.33.0
+  - @wso2is/core@2.9.0
+  - @wso2is/form@2.8.0
+
+## 2.27.126
+
+### Patch Changes
+
+- [#8269](https://github.com/wso2/identity-apps/pull/8269) [`b108cde0b3aa77d8943ce0a7075db13c2ee5d9fd`](https://github.com/wso2/identity-apps/commit/b108cde0b3aa77d8943ce0a7075db13c2ee5d9fd) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix attributes view page issue
+
+- Updated dependencies [[`b108cde0b3aa77d8943ce0a7075db13c2ee5d9fd`](https://github.com/wso2/identity-apps/commit/b108cde0b3aa77d8943ce0a7075db13c2ee5d9fd)]:
+  - @wso2is/admin.claims.v1@2.27.126
+
+## 2.27.125
+
+### Patch Changes
+
+- [#8267](https://github.com/wso2/identity-apps/pull/8267) [`8330b84a7033ee46c1fd13f2e6de58a6ecab93e7`](https://github.com/wso2/identity-apps/commit/8330b84a7033ee46c1fd13f2e6de58a6ecab93e7) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix attributes issue
+
+- Updated dependencies [[`8330b84a7033ee46c1fd13f2e6de58a6ecab93e7`](https://github.com/wso2/identity-apps/commit/8330b84a7033ee46c1fd13f2e6de58a6ecab93e7)]:
+  - @wso2is/admin.claims.v1@2.27.125
+  - @wso2is/admin.core.v1@2.45.5
+
+## 2.27.124
+
+### Patch Changes
+
+- [#8111](https://github.com/wso2/identity-apps/pull/8111) [`4b3b589d2b0dbbe651855efe39ab64d8da1adc31`](https://github.com/wso2/identity-apps/commit/4b3b589d2b0dbbe651855efe39ab64d8da1adc31) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Data Type support for the attributes
+
+- Updated dependencies [[`4b3b589d2b0dbbe651855efe39ab64d8da1adc31`](https://github.com/wso2/identity-apps/commit/4b3b589d2b0dbbe651855efe39ab64d8da1adc31)]:
+  - @wso2is/admin.claims.v1@2.27.124
+  - @wso2is/i18n@2.23.5
+
+## 2.27.123
+
+### Patch Changes
+
+- [#8238](https://github.com/wso2/identity-apps/pull/8238) [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+- Updated dependencies [[`89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f`](https://github.com/wso2/identity-apps/commit/89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f), [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f)]:
+  - @wso2is/admin.core.v1@2.45.2
+  - @wso2is/admin.server-configurations.v1@2.35.1
+  - @wso2is/admin.organizations.v1@2.26.205
+  - @wso2is/admin.extensions.v1@2.38.2
+  - @wso2is/admin.userstores.v1@2.27.33
+  - @wso2is/admin.validation.v1@2.27.144
+  - @wso2is/admin.claims.v1@2.27.123
+  - @wso2is/react-components@2.9.16
+  - @wso2is/admin.users.v1@2.32.5
+  - @wso2is/dynamic-forms@2.4.41
+  - @wso2is/form@2.7.1
+
+## 2.27.122
+
+### Patch Changes
+
+- [#8159](https://github.com/wso2/identity-apps/pull/8159) [`c2c860870f95ebb57e71f0cbe2383df5102345c1`](https://github.com/wso2/identity-apps/commit/c2c860870f95ebb57e71f0cbe2383df5102345c1) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Show identity claims in SCIM mapping
+
+- Updated dependencies [[`09d8b338d4b54547c052364326779f2575ac365f`](https://github.com/wso2/identity-apps/commit/09d8b338d4b54547c052364326779f2575ac365f), [`c2c860870f95ebb57e71f0cbe2383df5102345c1`](https://github.com/wso2/identity-apps/commit/c2c860870f95ebb57e71f0cbe2383df5102345c1)]:
+  - @wso2is/react-components@2.9.14
+  - @wso2is/admin.users.v1@2.31.5
+  - @wso2is/theme@2.7.8
+  - @wso2is/core@2.7.8
+  - @wso2is/i18n@2.22.19
+  - @wso2is/admin.claims.v1@2.27.122
+
+## 2.27.121
+
+### Patch Changes
+
+- [#8118](https://github.com/wso2/identity-apps/pull/8118) [`c4aee527f3dad357cd7a62293d67ef6e884d927a`](https://github.com/wso2/identity-apps/commit/c4aee527f3dad357cd7a62293d67ef6e884d927a) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix identity claims display based on config
+
+- Updated dependencies [[`b279be403444037048c9bff8cfdfe881ee97ec15`](https://github.com/wso2/identity-apps/commit/b279be403444037048c9bff8cfdfe881ee97ec15), [`c4aee527f3dad357cd7a62293d67ef6e884d927a`](https://github.com/wso2/identity-apps/commit/c4aee527f3dad357cd7a62293d67ef6e884d927a)]:
+  - @wso2is/admin.users.v1@2.31.2
+  - @wso2is/admin.claims.v1@2.27.121
+  - @wso2is/core@2.7.6
+
+## 2.27.120
+
+### Patch Changes
+
+- [#8105](https://github.com/wso2/identity-apps/pull/8105) [`0657f736d806026521afa9d909f9daca000be7b2`](https://github.com/wso2/identity-apps/commit/0657f736d806026521afa9d909f9daca000be7b2) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix attributes view for sub organizations
+
+- Updated dependencies [[`0657f736d806026521afa9d909f9daca000be7b2`](https://github.com/wso2/identity-apps/commit/0657f736d806026521afa9d909f9daca000be7b2)]:
+  - @wso2is/admin.userstores.v1@2.27.32
+  - @wso2is/admin.claims.v1@2.27.120
+
+## 2.27.119
+
+### Patch Changes
+
+- [#8090](https://github.com/wso2/identity-apps/pull/8090) [`e4c1e6cb46bf7aa7a12b555aea9bf53c7ead99af`](https://github.com/wso2/identity-apps/commit/e4c1e6cb46bf7aa7a12b555aea9bf53c7ead99af) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Disable the multi valued check box for the system claims
+
+- Updated dependencies [[`e4c1e6cb46bf7aa7a12b555aea9bf53c7ead99af`](https://github.com/wso2/identity-apps/commit/e4c1e6cb46bf7aa7a12b555aea9bf53c7ead99af)]:
+  - @wso2is/admin.claims.v1@2.27.119
+  - @wso2is/i18n@2.22.14
+
+## 2.27.118
+
+### Patch Changes
+
+- [#8074](https://github.com/wso2/identity-apps/pull/8074) [`eb86becc810ef24d64c36ef6cdbbe4d35eca33ef`](https://github.com/wso2/identity-apps/commit/eb86becc810ef24d64c36ef6cdbbe4d35eca33ef) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Revert "Fix attributes view for sub organizations"
+
+- Updated dependencies [[`eb86becc810ef24d64c36ef6cdbbe4d35eca33ef`](https://github.com/wso2/identity-apps/commit/eb86becc810ef24d64c36ef6cdbbe4d35eca33ef)]:
+  - @wso2is/admin.claims.v1@2.27.118
+
+## 2.27.117
+
+### Patch Changes
+
+- [#7968](https://github.com/wso2/identity-apps/pull/7968) [`43bde29076aefa01ee70595cb7d63588034d750e`](https://github.com/wso2/identity-apps/commit/43bde29076aefa01ee70595cb7d63588034d750e) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Provide first class support to configure claims as multi valued
+
+- Updated dependencies [[`43bde29076aefa01ee70595cb7d63588034d750e`](https://github.com/wso2/identity-apps/commit/43bde29076aefa01ee70595cb7d63588034d750e)]:
+  - @wso2is/admin.claims.v1@2.27.117
+  - @wso2is/core@2.7.3
+  - @wso2is/i18n@2.22.11
+
+## 2.27.116
+
+### Patch Changes
+
+- [#8048](https://github.com/wso2/identity-apps/pull/8048) [`48a4e368d93a2338f39e78e8257ed339cba1896c`](https://github.com/wso2/identity-apps/commit/48a4e368d93a2338f39e78e8257ed339cba1896c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix attributes view for sub organizations
+
+- Updated dependencies [[`48a4e368d93a2338f39e78e8257ed339cba1896c`](https://github.com/wso2/identity-apps/commit/48a4e368d93a2338f39e78e8257ed339cba1896c)]:
+  - @wso2is/admin.claims.v1@2.27.116
+
+## 2.27.115
+
+### Patch Changes
+
+- [#8037](https://github.com/wso2/identity-apps/pull/8037) [`e09f6aac4d52f5385c2ebb62ec859decf86981ab`](https://github.com/wso2/identity-apps/commit/e09f6aac4d52f5385c2ebb62ec859decf86981ab) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Allow "." in claim uri from UI
+
+- Updated dependencies [[`f44217d609d530a8588ffcc0c2684569852e7c35`](https://github.com/wso2/identity-apps/commit/f44217d609d530a8588ffcc0c2684569852e7c35), [`e09f6aac4d52f5385c2ebb62ec859decf86981ab`](https://github.com/wso2/identity-apps/commit/e09f6aac4d52f5385c2ebb62ec859decf86981ab), [`5755f6304a3829c8a9d0ed277f18b9d7748f28f4`](https://github.com/wso2/identity-apps/commit/5755f6304a3829c8a9d0ed277f18b9d7748f28f4)]:
+  - @wso2is/i18n@2.22.9
+  - @wso2is/admin.claims.v1@2.27.115
+  - @wso2is/admin.users.v1@2.30.122
+
 ## 2.27.114
 
 ### Patch Changes

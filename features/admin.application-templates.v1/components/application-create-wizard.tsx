@@ -20,7 +20,12 @@ import { createApplication } from "@wso2is/admin.applications.v1/api/application
 import { ApplicationShareModal } from "@wso2is/admin.applications.v1/components/modals/application-share-modal";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import useApplicationSharingEligibility from "@wso2is/admin.applications.v1/hooks/use-application-sharing-eligibility";
-import { MainApplicationInterface, URLFragmentTypes } from "@wso2is/admin.applications.v1/models/application";
+import {
+    ApplicationTemplateIdTypes,
+    InboundProtocolsInterface,
+    MainApplicationInterface,
+    URLFragmentTypes
+} from "@wso2is/admin.applications.v1/models/application";
 import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -176,6 +181,25 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         ) as boolean ?? false;
 
         unset(values, ApplicationTemplateConstants.APPLICATION_CREATE_WIZARD_SHARING_FIELD_NAME);
+
+        const allowedOrigins: string[] = [];
+
+        if (values?.templateId === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION ||
+            values?.templateId === ApplicationTemplateIdTypes.REACT_APPLICATION ||
+            values?.templateId === ApplicationTemplateIdTypes.NEXT_JS_APPLICATION) {
+            (values as unknown as MainApplicationInterface)?.inboundProtocolConfiguration?.oidc?.callbackURLs?.map(
+                (url: string) => {
+                    try {
+                        const callbackUrl: URL = new URL(url);
+
+                        allowedOrigins.push(callbackUrl.origin);
+                    } catch (err: unknown) {
+                        // Ignore invalid URLs.
+                    }
+                });
+
+            (values.inboundProtocolConfiguration as InboundProtocolsInterface).oidc.allowedOrigins = allowedOrigins;
+        }
 
         createApplication(values as unknown as MainApplicationInterface)
             .then((response: AxiosResponse) => {

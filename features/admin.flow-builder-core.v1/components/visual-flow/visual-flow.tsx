@@ -17,7 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Controls, Edge, Node, NodeTypes, ReactFlow, ReactFlowProps, useReactFlow } from "@xyflow/react";
+import { Controls, Edge, Node, NodeTypes, ReactFlow, ReactFlowProps } from "@xyflow/react";
 import React, { FC, FunctionComponent, ReactElement, useMemo } from "react";
 import VisualFlowConstants from "../../constants/visual-flow-constants";
 import { Resources } from "../../models/resources";
@@ -79,7 +79,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     onEdgesChange,
     onConnect,
     onNodesDelete,
-    ...rest
+    onEdgesDelete
 }: VisualFlowPropsInterface): ReactElement => {
     const edgeTypes: { [key: string]: FC<Edge> } = useMemo(() => {
         return {
@@ -98,12 +98,16 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
             >
                 <ReactFlow
                     fitView
+                    fitViewOptions={ {
+                        maxZoom: 0.8
+                    } }
                     nodes={ nodes }
                     edges={ edges }
                     nodeTypes={ useMemo(() => nodeTypes, []) }
                     edgeTypes={ edgeTypes as any }
                     onConnect={ onConnect }
                     onNodesDelete={ onNodesDelete }
+                    onEdgesDelete={ onEdgesDelete }
                     proOptions={ { hideAttribution: true } }
                     data-componentid={ componentId }
                     onNodesChange={ onNodesChange }

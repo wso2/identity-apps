@@ -129,13 +129,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                 const mappedClaims: string[] = [];
 
                 response.forEach((claim: ExternalClaim[]) => {
-                    // Hide identity claims in SCIM
-                    const claims: ExternalClaim[] = attributeConfig.attributeMappings.getExternalAttributes(
-                        type,
-                        claim
-                    );
-
-                    mappedClaims.push(...claims.map((claim: ExternalClaim) => claim.mappedLocalClaimURI));
+                    mappedClaims.push(...claim.map((claim: ExternalClaim) => claim.mappedLocalClaimURI));
                 });
                 setMappedLocalClaims(mappedClaims);
             }).catch((error: IdentityAppsApiException) => {
@@ -167,6 +161,10 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
          */
         const resolvePageHeading = (): string => {
             switch (type) {
+                case ClaimManagementConstants.AGENT:
+                    return t(
+                        "claims:attributeMappings.agent.heading"
+                    );
                 case ClaimManagementConstants.OIDC:
                     return t(
                         "claims:attributeMappings.oidc.heading"
@@ -199,6 +197,17 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
          */
         const resolvePageDescription = (): ReactElement => {
             switch (type) {
+                case ClaimManagementConstants.AGENT:
+                    return (
+                        <>
+                            { t("claims:attributeMappings.agent.description") }
+                            <DocumentationLink
+                                link={ getLink("manage.attributes.oidcAttributes.learnMore") }
+                            >
+                                { t("common:learnMore") }
+                            </DocumentationLink>
+                        </>
+                    );
                 case ClaimManagementConstants.OIDC:
                     return (
                         <>
@@ -349,6 +358,11 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                     filteredDialect.forEach((attributeMapping: ClaimDialect) => {
                         if (ClaimManagementConstants.OIDC_MAPPING.includes(attributeMapping.dialectURI)) {
                             type === ClaimManagementConstants.OIDC && attributeMappings.push(attributeMapping);
+                        }
+                        else if (
+                            ClaimManagementConstants.AGENT_SCIM_SCHEMA_MAPPING.includes(attributeMapping.dialectURI)
+                        ) {
+                            type === ClaimManagementConstants.AGENT && attributeMappings.push(attributeMapping);
                         } else if (Object.values(ClaimManagementConstants.SCIM_TABS).map(
                             (tab: { name: string; uri: string }) => tab.uri).includes(attributeMapping.dialectURI)) {
                             type === ClaimManagementConstants.SCIM && attributeMappings.push(attributeMapping);

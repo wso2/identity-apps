@@ -127,6 +127,14 @@ export interface RoleEditSectionsInterface {
      * outside the component.
      */
     activeUserStore?: string
+    /**
+     * Flag to check if privileged users toggle is visible.
+     */
+    isPrivilegedUsersToggleVisible?: boolean;
+    /**
+     * Is roles assignment for non human users (eg: AI agents)
+     */
+    isForNonHumanUser?: boolean
 }
 
 /**

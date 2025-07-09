@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -396,31 +396,6 @@ export const getAPIResourceDetails = (apiResourceId: string): Promise<APIResourc
 };
 
 /**
- * Update Data of the matched ID or the role
- *
- * @param roleId - role id to update role details
- * @param roleData - Data that needs to be updated.
- */
-export const updateRole = (roleId: string, roleData: PatchRoleDataInterface): Promise<any> => {
-    const requestConfig: RequestConfigInterface = {
-        data: roleData,
-        headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.PATCH,
-        url: store.getState().config.endpoints.rolesV2 + "/" + roleId
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            return Promise.resolve(response);
-        }).catch((error: AxiosError) => {
-            return Promise.reject(error);
-        });
-};
-
-/**
  * Update roles for given role IDs.
  *
  * @param roleIds - Ids of the Roles to be updated
@@ -430,7 +405,7 @@ export const updateRole = (roleId: string, roleData: PatchRoleDataInterface): Pr
 export const updateRolesBulk = (roleIds: string[], roleData: PatchRoleDataInterface): Promise<any[]> => {
     // send the request for each ID and return the response.
     return Promise.all(roleIds.map((roleId: string) => {
-        return updateRole(roleId, roleData);
+        return updateRoleDetails(roleId, roleData);
     }));
 };
 
@@ -590,4 +565,3 @@ export const useGetAuthorizedAPIList = <Data = AuthorizedAPIListItemInterface[],
         mutate
     };
 };
-

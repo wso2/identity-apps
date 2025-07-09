@@ -61,7 +61,8 @@ export interface AddTenantFormProps extends IdentifiableComponentInterface {
     onSubmit?: (payload: AddTenantRequestPayload) => void;
 }
 
-export type AddTenantFormValues = Pick<Tenant, "domain" | "id"> & Omit<TenantOwner, "additionalDetails">;
+export type AddTenantFormValues = Omit<Pick<Tenant, "domain" | "id">, "name"> & { organizationName: string }
+    & Omit<TenantOwner, "additionalDetails">;
 
 export type AddTenantFormErrors = Partial<AddTenantFormValues>;
 
@@ -132,18 +133,6 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                     return undefined;
                 }
 
-                let isAvailable: boolean = true;
-
-                try {
-                    isAvailable = await getTenantDomainAvailability(value);
-                } catch (error) {
-                    isAvailable = false;
-                }
-
-                if (!isAvailable) {
-                    return t("tenants:common.form.fields.domain.validations.domainUnavailable");
-                }
-
                 if (isTenantDomainDotExtensionMandatory) {
                     const lastIndexOfDot: number = value.lastIndexOf(".");
 
@@ -173,6 +162,38 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                         return t("tenants:common.form.fields.domain.validations.domainInvalidCharPattern");
                     }
                 }
+
+                let isAvailable: boolean = true;
+
+                try {
+                    isAvailable = await getTenantDomainAvailability(value);
+                } catch (error) {
+                    isAvailable = false;
+                }
+
+                if (!isAvailable) {
+                    return t("tenants:common.form.fields.domain.validations.domainUnavailable");
+                }
+            }
+        ), []);
+
+    /**
+     * Form validator to validate the organization name format.
+     *
+     * @param orgName - Input organization name value.
+     * @returns An error if the organization name is not valid else undefined.
+     */
+    const validateOrganizationName: (orgName: string) => Promise<string | undefined> = useCallback(
+        memoize(
+            async (orgName: string): Promise<string | undefined> => {
+                if (!orgName) {
+                    return undefined;
+                }
+                const regex: RegExp = new RegExp(TenantConstants.ORGANIZATION_NAME_REGEX);
+
+                if (regex.test(orgName)) {
+                    return t("tenants:common.form.fields.organizationName.validations.invalidCharPattern");
+                }
             }
         ), []);
 
@@ -181,10 +202,11 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
      * @param values - Form values.
      */
     const handleSubmit = (values: AddTenantFormValues): void => {
-        const { domain, ...rest } = values;
+        const { domain, organizationName, ...rest } = values;
 
         const payload: AddTenantRequestPayload = {
             domain,
+            name: organizationName,
             owners: [
                 {
                     ...rest,
@@ -331,6 +353,29 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                         onSubmit={ handleSubmit }
                         className="add-tenant-form"
                     >
+                        <FinalFormField
+                            key="organizationName"
+                            width={ 16 }
+                            className="text-field-container"
+                            ariaLabel="organizationName"
+                            required={ true }
+                            data-componentid={ `${componentId}-organization-name` }
+                            name="organizationName"
+                            type="text"
+                            helperText={
+                                (<Hint>
+                                    <Typography variant="inherit">
+                                        { t("tenants:common.form.fields.organizationName.helperText") }
+                                    </Typography>
+                                </Hint>)
+                            }
+                            label={ t("tenants:common.form.fields.organizationName.label") }
+                            placeholder={ t("tenants:common.form.fields.organizationName.placeholder") }
+                            component={ TextFieldAdapter }
+                            maxLength={ 100 }
+                            minLength={ 1 }
+                            validate={ validateOrganizationName }
+                        />
                         <FinalFormField
                             key="domain"
                             width={ 16 }

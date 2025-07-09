@@ -236,7 +236,6 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                 <TransferComponent
                     compact
                     basic
-                    bordered
                     className="one-column-selection"
                     selectionComponent
                     searchPlaceholder={ t("groups:edit.users.searchUsers") }
@@ -251,6 +250,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                 >
                     <TransferList
                         selectionComponent
+                        bordered={ true }
                         isListEmpty={ userList.length <= 0 }
                         isLoading={ isUserListFetchRequestLoading || isUserListFetchRequestValidating }
                         listType="unselected"

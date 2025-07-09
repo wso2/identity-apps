@@ -1,5 +1,41 @@
 # @wso2is/admin.logs.v1
 
+## 1.6.5
+
+### Patch Changes
+
+- [#8456](https://github.com/wso2/identity-apps/pull/8456) [`69e779d4ed09354ec002a57ec70f0f417b3d8690`](https://github.com/wso2/identity-apps/commit/69e779d4ed09354ec002a57ec70f0f417b3d8690) Thanks [@savindi7](https://github.com/savindi7)! - Update timestamp formatting.
+
+## 1.6.4
+
+### Patch Changes
+
+- [#8340](https://github.com/wso2/identity-apps/pull/8340) [`27736180cccaf3da49cfde52ff2ce80d6c35f15a`](https://github.com/wso2/identity-apps/commit/27736180cccaf3da49cfde52ff2ce80d6c35f15a) Thanks [@sandushi](https://github.com/sandushi)! - Remove the label from the visual editor and audit logs
+
+- Updated dependencies [[`de96d36e86d954e9f55591c9adf2fdcde6ba5917`](https://github.com/wso2/identity-apps/commit/de96d36e86d954e9f55591c9adf2fdcde6ba5917), [`6f7979d5efcde8fcc76fba3b66649e71302f8e32`](https://github.com/wso2/identity-apps/commit/6f7979d5efcde8fcc76fba3b66649e71302f8e32)]:
+  - @wso2is/i18n@2.23.12
+
+## 1.6.3
+
+### Patch Changes
+
+- [#8238](https://github.com/wso2/identity-apps/pull/8238) [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+- Updated dependencies [[`89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f`](https://github.com/wso2/identity-apps/commit/89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f), [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f)]:
+  - @wso2is/admin.core.v1@2.45.2
+  - @wso2is/admin.feature-gate.v1@1.6.2
+  - @wso2is/react-components@2.9.16
+  - @wso2is/form@2.7.1
+
+## 1.6.2
+
+### Patch Changes
+
+- [#8022](https://github.com/wso2/identity-apps/pull/8022) [`daafbd3f4f87ca806cdbf84c3d0f2330f50abd60`](https://github.com/wso2/identity-apps/commit/daafbd3f4f87ca806cdbf84c3d0f2330f50abd60) Thanks [@Avarjana](https://github.com/Avarjana)! - Fix bug in remote log publish form
+
+- Updated dependencies [[`f2e6bfadec1e4ef53cc1c713b1285b0c6b3bfaa5`](https://github.com/wso2/identity-apps/commit/f2e6bfadec1e4ef53cc1c713b1285b0c6b3bfaa5)]:
+  - @wso2is/i18n@2.22.8
+
 ## 1.6.1
 
 ### Patch Changes

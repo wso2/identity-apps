@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -68,14 +68,13 @@ const useGetOrganizations = <
         }/organizations`
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch? requestConfig : null, {
-        shouldRetryOnError: false
-    });
+    const { data, error, isLoading, isValidating, mutate } =
+        useRequest<Data, Error>(shouldFetch? requestConfig : null, { shouldRetryOnError: false });
 
     return {
         data,
         error,
-        isLoading: !error && !data,
+        isLoading,
         isValidating,
         mutate
     };

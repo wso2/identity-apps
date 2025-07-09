@@ -18,6 +18,7 @@
 
 import FormControl from "@oxygen-ui/react/FormControl";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
+import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import FormLabel from "@oxygen-ui/react/FormLabel";
 import Radio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
@@ -25,6 +26,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { FieldOption } from "../../../../models/base";
 import { CommonElementFactoryPropsInterface } from "../common-element-factory";
+import Hint from "../hint";
 
 /**
  * Props interface of {@link ChoiceAdapter}
@@ -52,6 +54,13 @@ const ChoiceAdapter: FunctionComponent<ChoiceAdapterPropsInterface> = ({
                 />
             )) }
         </RadioGroup>
+        {
+            resource.config?.hint && (
+                <FormHelperText>
+                    <Hint hint={ resource.config?.hint } />
+                </FormHelperText>
+            )
+        }
     </FormControl>
 );
 

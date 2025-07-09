@@ -39,6 +39,10 @@ export const common: CommonNS = {
     apps: "Aplicaciones",
     assignee: "Cesionario",
     assignees: "cesionarios",
+    asyncOperationErrorMessage: {
+        description: "Algo salió mal",
+        message: "Se produjo un error inesperado. Vuelva a intentarlo más tarde."
+    },
     authentication: "Autenticación",
     authenticator: "Autenticador",
     authenticator_plural: "Autenticadores",
@@ -69,6 +73,7 @@ export const common: CommonNS = {
     dangerZone: "Zona peligrosa",
     darkMode: "Modo oscuro",
     delete: "Borrar",
+    deprecated: "Esta configuración está obsoleta y se eliminará en una versión futura.",
     description: "Descripción",
     deviceModel: "Modelo de dispositivo",
     disable: "Desactivar",

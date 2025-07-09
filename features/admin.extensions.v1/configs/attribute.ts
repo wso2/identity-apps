@@ -82,43 +82,6 @@ export const attributeConfig: AttributeConfig = {
     attributesPlaceholderAddButton: (attributeType: string): boolean => {
         return attributeType !== ClaimManagementConstants.SCIM;
     },
-    defaultScimMapping: {
-        "urn:ietf:params:scim:schemas:core:2.0": new Map()
-            .set("urn:ietf:params:scim:schemas:core:2.0:externalId","http://wso2.org/claims/externalid")
-            .set("urn:ietf:params:scim:schemas:core:2.0:id","http://wso2.org/claims/userid")
-            .set("urn:ietf:params:scim:schemas:core:2.0:meta.created","http://wso2.org/claims/created")
-            .set("urn:ietf:params:scim:schemas:core:2.0:meta.lastModified","http://wso2.org/claims/modified")
-            .set("urn:ietf:params:scim:schemas:core:2.0:meta.location","http://wso2.org/claims/location")
-            .set("urn:ietf:params:scim:schemas:core:2.0:meta.resourceType","http://wso2.org/claims/resourceType")
-            .set("urn:ietf:params:scim:schemas:core:2.0:meta.version","http://wso2.org/claims/metadata.version"),
-        "urn:ietf:params:scim:schemas:core:2.0:User": new Map()
-            .set("urn:ietf:params:scim:schemas:core:2.0:User:active","http://wso2.org/claims/active")
-            .set("urn:ietf:params:scim:schemas:core:2.0:User:addresses#home.locality",
-                "http://wso2.org/claims/locality")
-            .set("urn:ietf:params:scim:schemas:core:2.0:User:addresses#home.postalCode",
-                "http://wso2.org/claims/postalcode")
-            .set("urn:ietf:params:scim:schemas:core:2.0:User:addresses#home.region",
-                "http://wso2.org/claims/region")
-            .set("urn:ietf:params:scim:schemas:core:2.0:User:addresses#home.streetAddress",
-                "http://wso2.org/claims/streetaddress")
-            .set("urn:ietf:params:scim:schemas:core:2.0:User:displayName","http://wso2.org/claims/displayName")
-            .set("urn:ietf:params:scim:schemas:core:2.0:User:emails","http://wso2.org/claims/emailaddress")
-            .set("urn:ietf:params:scim:schemas:core:2.0:User:groups","http://wso2.org/claims/groups")
-            .set("urn:ietf:params:scim:schemas:core:2.0:User:locale","http://wso2.org/claims/local")
-            .set("urn:ietf:params:scim:schemas:core:2.0:User:name.familyName","http://wso2.org/claims/lastname")
-            .set("urn:ietf:params:scim:schemas:core:2.0:User:name.formatted","http://wso2.org/claims/fullname")
-            .set("urn:ietf:params:scim:schemas:core:2.0:User:name.givenName","http://wso2.org/claims/givenname")
-            .set("urn:ietf:params:scim:schemas:core:2.0:User:name.middleName","http://wso2.org/claims/middleName")
-            .set("urn:ietf:params:scim:schemas:core:2.0:User:nickName","http://wso2.org/claims/nickname")
-            .set("urn:ietf:params:scim:schemas:core:2.0:User:phoneNumbers.mobile","http://wso2.org/claims/mobile")
-            .set("urn:ietf:params:scim:schemas:core:2.0:User:photos.thumbnail","http://wso2.org/claims/thumbnail")
-            .set("urn:ietf:params:scim:schemas:core:2.0:User:profileUrl","http://wso2.org/claims/url")
-            .set("urn:ietf:params:scim:schemas:core:2.0:User:roles.default","http://wso2.org/claims/roles")
-            .set("urn:ietf:params:scim:schemas:core:2.0:User:userName","http://wso2.org/claims/username"),
-        "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": new Map()
-            .set("urn:ietf:params:scim:schemas:extension:enterprise:2.0:User:manager.displayName",
-                "http://wso2.org/claims/manager.displayName")
-    },
     editAttributeMappings: {
         /**
          * Disables and marks the dialect add new attribute button as a
@@ -202,7 +165,7 @@ export const attributeConfig: AttributeConfig = {
             return I18n.instance.t("common:edit");
         },
         hideDeleteIcon: (claim: ExternalClaim): boolean => {
-            return claim?.claimURI === "sub" || isIdentityClaims(claim);
+            return claim?.claimURI === "sub";
         },
         isAttributeEditable: true,
         isEditActionClickable: (claim: ExternalClaim): boolean => {

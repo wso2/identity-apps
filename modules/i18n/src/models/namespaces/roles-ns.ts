@@ -274,11 +274,14 @@ export interface rolesNS {
             groups: string;
             users: string;
             roles: string;
+            agents: string;
         };
         users: {
             heading: string;
             subHeading: string;
             placeholders: {
+                beginSearch: string
+                error: string;
                 emptyPlaceholder: {
                     action: string;
                     title: string;
@@ -286,6 +289,7 @@ export interface rolesNS {
                         0: string;
                     };
                 };
+                emptySearchResult: string;
                 errorPlaceholder: {
                     action: string;
                     title: string;
@@ -309,6 +313,10 @@ export interface rolesNS {
                     description: string;
                 };
                 fetchError: {
+                    message: string;
+                    description: string;
+                };
+                pendingApproval: {
                     message: string;
                     description: string;
                 };
@@ -426,6 +434,12 @@ export interface rolesNS {
         };
     };
     notifications: {
+        createRolePendingApproval: {
+            success: {
+                description: string;
+                message: string;
+            }
+        },
         deleteRole: {
             error: {
                 message: string;

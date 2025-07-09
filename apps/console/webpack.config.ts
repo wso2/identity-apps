@@ -130,6 +130,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     const devServerHost: string = process.env.DEV_SERVER_HOST || config.devServer?.host;
     const isDevServerHostCheckDisabled: boolean = process.env.DISABLE_DEV_SERVER_HOST_CHECK === "true";
     const isESLintPluginDisabled: boolean = process.env.DISABLE_ESLINT_PLUGIN === "true";
+    const isTSCheckPluginDisabled: boolean = process.env.DISABLE_TS_CHECK_PLUGIN === "true";
     const devServerWebSocketHost: string = process.env.WDS_SOCKET_HOST;
     const devServerWebSocketPath: string = process.env.WDS_SOCKET_PATH;
     const devServerWebSocketPort: string = process.env.WDS_SOCKET_PORT;
@@ -152,6 +153,17 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 ? "info"
                 : "none"
     } as WebpackOptionsNormalized["infrastructureLogging"];
+
+    // Disable the TS Check in the Dev server if disabled from the `.env`.
+    if (!isProduction && isTSCheckPluginDisabled) {
+        const forkTsCheckerPluginIndex: number = config.plugins.findIndex((plugin: WebpackPluginInstance) => {
+            return plugin.constructor.name === "ForkTsCheckerWebpackPlugin";
+        });
+
+        if (forkTsCheckerPluginIndex !== -1) {
+            config.plugins.splice(forkTsCheckerPluginIndex, 1);
+        }
+    }
 
     // Remove `IndexHtmlWebpackPlugin` plugin added by NX and add `HtmlWebpackPlugin` instead.
     const indexHtmlWebpackPluginIndex: number = config.plugins.findIndex((plugin: WebpackPluginInstance) => {
@@ -186,6 +198,10 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     "authentication.framework.util.FrameworkUtils.isOrganizationManagementEnabled\"%>"
                     : "",
                 hash: true,
+                importIdentityTenantUtil: !isDeployedOnExternalTomcatServer
+                    ? "<%@ page import=\"" +
+                    "static org.wso2.carbon.identity.core.util.IdentityTenantUtil.isTenantQualifiedUrlsEnabled\" %>"
+                    : "",
                 importStringUtils: "<%@ page import=\"org.apache.commons.lang.StringUtils\" %>",
                 importSuperTenantConstant: !isDeployedOnExternalTomcatServer
                     ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
@@ -205,6 +221,9 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 isOrganizationManagementEnabled: !isDeployedOnExternalTomcatServer
                     ? "<%= isOrganizationManagementEnabled() %>"
                     : "false",
+                isTenantQualifiedUrlsEnabled: !isDeployedOnExternalTomcatServer
+                    ? "<%=isTenantQualifiedUrlsEnabled()%>"
+                    : "",
                 minify: false,
                 proxyContextPath: !isDeployedOnExternalTomcatServer
                     ? "<%=ServerConfiguration.getInstance().getFirstProperty(PROXY_CONTEXT_PATH)%>"
@@ -251,6 +270,10 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     "authentication.framework.util.FrameworkUtils.isAdaptiveAuthenticationAvailable\"%>"
                     : "",
                 hash: true,
+                importIdentityTenantUtil: !isDeployedOnExternalTomcatServer
+                    ? "<%@ page import=\"" +
+                "static org.wso2.carbon.identity.core.util.IdentityTenantUtil.isTenantQualifiedUrlsEnabled\" %>"
+                    : "",
                 importOwaspEncode: "<%@ page import=\"org.owasp.encoder.Encode\" %>",
                 importSuperTenantConstant: !isDeployedOnExternalTomcatServer
                     ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
@@ -268,6 +291,9 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 isAdaptiveAuthenticationAvailable: !isDeployedOnExternalTomcatServer
                     ? "<%= isAdaptiveAuthenticationAvailable() %>"
                     : "false",
+                isTenantQualifiedUrlsEnabled: !isDeployedOnExternalTomcatServer
+                    ? "<%=isTenantQualifiedUrlsEnabled()%>"
+                    : "",
                 minify: false,
                 proxyContextPath: !isDeployedOnExternalTomcatServer
                     ? "<%=ServerConfiguration.getInstance().getFirstProperty(PROXY_CONTEXT_PATH)%>"
@@ -682,6 +708,7 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     if (
                         req.url.startsWith("/app/static/") ||
                         req.url.startsWith("/static/") ||
+                        req.url.startsWith("/app/resources/users/") ||
                         req.url.match(
                             /\.(js|css|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot|ico|json|map)$/)
                     ) {

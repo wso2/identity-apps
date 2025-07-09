@@ -19,16 +19,21 @@
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { FeatureAccessConfigInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { DropdownChild, Field, Form, composeValidators } from "@wso2is/form";
-import { Code, FormInputLabel, FormSection } from "@wso2is/react-components";
+import { Code, FormInputLabel, FormSection, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid, SemanticWIDTHS } from "semantic-ui-react";
+import {
+    CommonAuthenticatorConstants,
+    ConnectionsFeatureDictionaryKeys
+} from "../../../../constants/common-authenticator-constants";
 import {
     AuthenticatorSettingsFormModes,
     CommonAuthenticatorFormInitialValuesInterface
@@ -142,6 +147,21 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
 
     const disabledFeatures: string[] = useSelector((state: AppState) =>
         state.config.ui.features?.identityProviders?.disabledFeatures);
+
+    const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state.config.ui.features?.identityProviders);
+
+    const isArtifactBindingFeatureEnabled: boolean = isFeatureEnabled(
+        featureConfig,
+        CommonAuthenticatorConstants.FEATURE_DICTIONARY.get(ConnectionsFeatureDictionaryKeys.SAMLArtifactBinding)
+    );
+
+    const isAttributeConsumingServiceIndexEnabled: boolean = isFeatureEnabled(
+        featureConfig,
+        CommonAuthenticatorConstants.FEATURE_DICTIONARY.get(
+            ConnectionsFeatureDictionaryKeys.SAMLAttributeConsumingServiceIndex
+        )
+    );
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const { t } = useTranslation();
@@ -768,122 +788,110 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             />
                         </SectionRow>
                     ) }
-                    { identityProviderConfig?.extendedSamlConfig?.includeNameIDPolicyEnabled && (
-                        <SectionRow>
-                            <Field.Checkbox
+                    <SectionRow>
+                        <Field.Checkbox
+                            required={ false }
+                            name="IncludeNameIDPolicy"
+                            initialValue={ includeNameIDPolicy }
+                            ariaLabel={ "Include Name ID Policy" }
+                            data-testid={ `${ testId }-includeNameIDPolicy-field` }
+                            label={ (
+                                <FormInputLabel htmlFor="IncludeNameIDPolicy">
+                                    { t(`${ I18N_TARGET_KEY }.includeNameIDPolicy.label`) }
+                                </FormInputLabel>
+                            ) }
+                            hint={ t(`${ I18N_TARGET_KEY }.includeNameIDPolicy.hint`) }
+                            listen={ (value: any) => setIncludeNameIDPolicy(Boolean(value)) }
+                            readOnly={ readOnly }
+                        />
+                    </SectionRow>
+                    <SectionRow>
+                        <Field.Checkbox
+                            required={ false }
+                            name="IsAssertionEncrypted"
+                            initialValue={ isEnableAssetionEncryption }
+                            ariaLabel={ "Enable Assertion Encryption" }
+                            data-testid={ `${ testId }-isEnableAssertionEncryption-field` }
+                            label={ (
+                                <FormInputLabel htmlFor="IsEnableAssertionEncryption">
+                                    { t(`${ I18N_TARGET_KEY }.isEnableAssertionEncryption.label`) }
+                                </FormInputLabel>
+                            ) }
+                            hint={ t(`${ I18N_TARGET_KEY }.isEnableAssertionEncryption.hint`) }
+                            listen={ (value: any) => setIsEnableAssetionEncryption(Boolean(value)) }
+                            readOnly={ readOnly }
+                        />
+                    </SectionRow>
+                    <SectionRow>
+                        { /* IncludeAuthnContext */ }
+                        <p>Include authentication context</p>
+                        { getIncludeAuthenticationContextOptions().map((option: DropdownChild,index: number) => (
+                            <Field.Radio
+                                key={ index }
+                                ariaLabel={ `${option.value} layout swatch` }
+                                name={ "IncludeAuthnContext" }
+                                label={
+                                    option.text
+                                }
                                 required={ false }
-                                name="IncludeNameIDPolicy"
-                                initialValue={ includeNameIDPolicy }
-                                ariaLabel={ "Include Name ID Policy" }
-                                data-testid={ `${ testId }-includeNameIDPolicy-field` }
-                                label={ (
-                                    <FormInputLabel htmlFor="IncludeNameIDPolicy">
-                                        { t(`${ I18N_TARGET_KEY }.includeNameIDPolicy.label`) }
-                                    </FormInputLabel>
-                                ) }
-                                hint={ t(`${ I18N_TARGET_KEY }.includeNameIDPolicy.hint`) }
-                                listen={ (value: any) => setIncludeNameIDPolicy(Boolean(value)) }
-                                readOnly={ readOnly }
+                                value={ option.value }
                             />
-                        </SectionRow>
-                    ) }
-                    { identityProviderConfig?.extendedSamlConfig?.isAssertionEncryptionEnabled && (
-                        <SectionRow>
-                            <Field.Checkbox
+                        )) }
+                    </SectionRow>
+
+                    <SectionRow>
+                        { /* ForceAuthentication */ }
+                        <p>Force authentication</p>
+                        { getForceAuthenticationOptions().map((option: DropdownChild,index: number) => (
+                            <Field.Radio
+                                key={ index }
+                                ariaLabel={ `${option.value} layout swatch` }
+                                name={ "ForceAuthentication" }
+                                label={ option.text }
                                 required={ false }
-                                name="IsAssertionEncrypted"
-                                initialValue={ isEnableAssetionEncryption }
-                                ariaLabel={ "Enable Assertion Encryption" }
-                                data-testid={ `${ testId }-isEnableAssertionEncryption-field` }
-                                label={ (
-                                    <FormInputLabel htmlFor="IsEnableAssertionEncryption">
-                                        { t(`${ I18N_TARGET_KEY }.isEnableAssertionEncryption.label`) }
-                                    </FormInputLabel>
-                                ) }
-                                hint={ t(`${ I18N_TARGET_KEY }.isEnableAssertionEncryption.hint`) }
-                                listen={ (value: any) => setIsEnableAssetionEncryption(Boolean(value)) }
-                                readOnly={ readOnly }
+                                value={ option.value }
                             />
-                        </SectionRow>
-                    ) }
-                    { identityProviderConfig.extendedSamlConfig.includeAuthenticationContextEnabled && (
-                        <SectionRow>
-                            { /* IncludeAuthnContext */ }
-                            <p>Include authentication context</p>
-                            { getIncludeAuthenticationContextOptions().map((option: DropdownChild,index: number) => (
-                                <Field.Radio
-                                    key={ index }
-                                    ariaLabel={ `${option.value} layout swatch` }
-                                    name={ "IncludeAuthnContext" }
-                                    label={
-                                        option.text
-                                    }
-                                    required={ false }
-                                    value={ option.value }
-                                />
-                            )) }
-                        </SectionRow>
-                    ) }
+                        )) }
+                    </SectionRow>
 
-                    { identityProviderConfig.extendedSamlConfig.forceAuthenticationEnabled && (
-                        <SectionRow>
-                            { /* ForceAuthentication */ }
-                            <p>Force authentication</p>
-                            { getForceAuthenticationOptions().map((option: DropdownChild,index: number) => (
-                                <Field.Radio
-                                    key={ index }
-                                    ariaLabel={ `${option.value} layout swatch` }
-                                    name={ "ForceAuthentication" }
-                                    label={ option.text }
-                                    required={ false }
-                                    value={ option.value }
-                                />
-                            )) }
-                        </SectionRow>
-                    ) }
-
-                    { identityProviderConfig.extendedSamlConfig.responseAuthenticationContextClassEnabled && (
-                        <SectionRow>
-                            <p>Response Authentication Context Class</p>
-                            { /* ResponseAuthnContextClassRef */ }
-                            { getResponseAuthnContextClassRefOptions().map((option: DropdownChild, index: number) => (
-                                <Field.Radio
-                                    key={ index }
-                                    ariaLabel={ `${option.value} layout swatch` }
-                                    name={ "ResponseAuthnContextClassRef" }
-                                    label={
-                                        option.text
-                                    }
-                                    required={ false }
-                                    value={ option.value }
-                                />
-                            )) }
-                        </SectionRow>
-                    ) }
-
-                    { identityProviderConfig.extendedSamlConfig.authContextComparisonLevelEnabled && (
-                        <SectionRow>
-                            <Field.Dropdown
+                    <SectionRow>
+                        <p>Response Authentication Context Class</p>
+                        { /* ResponseAuthnContextClassRef */ }
+                        { getResponseAuthnContextClassRefOptions().map((option: DropdownChild, index: number) => (
+                            <Field.Radio
+                                key={ index }
+                                ariaLabel={ `${option.value} layout swatch` }
+                                name={ "ResponseAuthnContextClassRef" }
+                                label={
+                                    option.text
+                                }
                                 required={ false }
-                                name="AuthnContextComparisonLevel"
-                                value={ formValues?.AuthnContextComparisonLevel }
-                                defaultValue={ formValues?.AuthnContextComparisonLevel }
-                                placeholder={ t(`${ I18N_TARGET_KEY }.authContextComparisonLevel.placeholder`) }
-                                ariaLabel={ t(`${ I18N_TARGET_KEY }.authContextComparisonLevel.ariaLabel`) }
-                                data-testid={ `${ testId }-authContextComparisonLevel-field` }
-                                options={ getAvailableAuthContextComparisonLevelOptions() }
-                                label={ (
-                                    <FormInputLabel htmlFor="AuthnContextComparisonLevel">
-                                        { t(`${ I18N_TARGET_KEY }.authContextComparisonLevel.label`) }
-                                    </FormInputLabel>
-                                ) }
-                                hint={ t(`${ I18N_TARGET_KEY }.authContextComparisonLevel.hint`) }
-                                readOnly={ readOnly }
+                                value={ option.value }
                             />
-                        </SectionRow>
-                    ) }
+                        )) }
+                    </SectionRow>
 
-                    { identityProviderConfig.extendedSamlConfig.attributeConsumingServiceIndexEnabled && (
+                    <SectionRow>
+                        <Field.Dropdown
+                            required={ false }
+                            name="AuthnContextComparisonLevel"
+                            value={ formValues?.AuthnContextComparisonLevel }
+                            defaultValue={ formValues?.AuthnContextComparisonLevel }
+                            placeholder={ t(`${ I18N_TARGET_KEY }.authContextComparisonLevel.placeholder`) }
+                            ariaLabel={ t(`${ I18N_TARGET_KEY }.authContextComparisonLevel.ariaLabel`) }
+                            data-testid={ `${ testId }-authContextComparisonLevel-field` }
+                            options={ getAvailableAuthContextComparisonLevelOptions() }
+                            label={ (
+                                <FormInputLabel htmlFor="AuthnContextComparisonLevel">
+                                    { t(`${ I18N_TARGET_KEY }.authContextComparisonLevel.label`) }
+                                </FormInputLabel>
+                            ) }
+                            hint={ t(`${ I18N_TARGET_KEY }.authContextComparisonLevel.hint`) }
+                            readOnly={ readOnly }
+                        />
+                    </SectionRow>
+
+                    { isAttributeConsumingServiceIndexEnabled && (
                         <SectionRow>
                             <Field.Input
                                 name="AttributeConsumingServiceIndex"
@@ -902,6 +910,9 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                                 hint={ t(`${ I18N_TARGET_KEY }.attributeConsumingServiceIndex.hint`) }
                                 readOnly={ readOnly }
                             />
+                            <Hint warning>
+                                { t("common:deprecated") }
+                            </Hint>
                         </SectionRow>
                     ) }
 
@@ -988,9 +999,12 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 <Divider hidden/>
             </FormSection>
 
-            { identityProviderConfig.extendedSamlConfig.isArtifactBindingEnabled && (
+            { isArtifactBindingFeatureEnabled && (
                 <FormSection heading="Artifact Binding">
                     <Grid>
+                        <Hint warning>
+                            { t("common:deprecated") }
+                        </Hint>
                         <SectionRow>
                             <Field.Checkbox
                                 required={ false }

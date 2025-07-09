@@ -189,6 +189,8 @@
     }
 %>
 
+<% request.setAttribute("pageName", "password-recovery"); %>
+
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -220,7 +222,7 @@
         }
     %>
 </head>
-<body class="login-portal layout recovery-layout">
+<body class="login-portal layout recovery-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>"
         data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
@@ -641,6 +643,19 @@
                 .on("submit", submitForm)
                 .keyup(validateUsername)
                 .blur(validateUsername);
+        });
+
+        $(window).on("pageshow", function (event) {
+            if (event.originalEvent.persisted) {
+                // The page was restored from bfcache.
+                $("#recoverySubmit").removeClass("loading");
+                const usernameInput = $("#usernameUserInput").val();
+                if (!usernameInput || usernameInput.trim().length === 0) {
+                    submitBtnState( { disabled: true } );
+                } else {
+                    submitBtnState( { disabled: false } );
+                }
+            }
         });
 
         // Removing the recaptcha UI from the keyboard tab order

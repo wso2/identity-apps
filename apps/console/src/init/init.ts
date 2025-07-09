@@ -112,14 +112,29 @@ if (
 let _idleSecondsCounter: number = 0;
 let _sessionAgeCounter: number = 0;
 
-document.onclick = function() {
+/**
+ * This function is called when the user interacts with the page.
+ */
+const onUserInteraction = (): void => {
+    // If the user has been inactive for SESSION_REFRESH_TIMEOUT seconds,
+    // and the idle session warning is not yet displayed,
+    // refresh the session when the user starts interact with the page.
+    if (_idleSecondsCounter >= SESSION_REFRESH_TIMEOUT && _idleSecondsCounter < IDLE_WARNING_TIMEOUT) {
+        dispatchEvent(new MessageEvent(CommonConstants.SESSION_REFRESH_EVENT));
+    }
+
+    // Reset the idle seconds counter.
     _idleSecondsCounter = 0;
+};
+
+document.onclick = function() {
+    onUserInteraction();
 };
 document.onmousemove = function() {
-    _idleSecondsCounter = 0;
+    onUserInteraction();
 };
 document.onkeypress = function() {
-    _idleSecondsCounter = 0;
+    onUserInteraction();
 };
 
 // Run the timer in main thread if the browser doesn't support worker threads.

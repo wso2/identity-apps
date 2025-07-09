@@ -23,6 +23,7 @@ import OutlinedInput from "@oxygen-ui/react/OutlinedInput";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { CommonElementFactoryPropsInterface } from "../../common-element-factory";
+import Hint from "../../hint";
 
 /**
  * Props interface of {@link OTPInputAdapter}
@@ -55,9 +56,13 @@ export const OTPInputAdapter: FunctionComponent<OTPInputAdapterPropsInterface> =
                     />
                 )) }
             </Box>
-            { resource.config?.hint && (
-                <FormHelperText id="otp-input-adapter-helper-text">{ resource.config?.hint }</FormHelperText>
-            ) }
+            {
+                resource.config?.hint && (
+                    <FormHelperText>
+                        <Hint hint={ resource.config?.hint } />
+                    </FormHelperText>
+                )
+            }
         </div>
     );
 };

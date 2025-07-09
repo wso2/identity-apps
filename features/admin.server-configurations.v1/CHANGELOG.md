@@ -1,5 +1,71 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.35.3
+
+### Patch Changes
+
+- [#8391](https://github.com/wso2/identity-apps/pull/8391) [`95a551badcc4414cea3f42eb8fd2de9fdb29dc26`](https://github.com/wso2/identity-apps/commit/95a551badcc4414cea3f42eb8fd2de9fdb29dc26) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - add self registration info banner for application login flow tab
+
+- Updated dependencies [[`95a551badcc4414cea3f42eb8fd2de9fdb29dc26`](https://github.com/wso2/identity-apps/commit/95a551badcc4414cea3f42eb8fd2de9fdb29dc26)]:
+  - @wso2is/admin.server-configurations.v1@2.35.3
+  - @wso2is/i18n@2.24.4
+
+## 2.35.2
+
+### Patch Changes
+
+- [#8303](https://github.com/wso2/identity-apps/pull/8303) [`b620bda0c39d43594a60b96579d54a645a877696`](https://github.com/wso2/identity-apps/commit/b620bda0c39d43594a60b96579d54a645a877696) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add fixes and improvements to registration orchestration flow
+
+- Updated dependencies [[`6427079247040e4ca2fae0edf2f2e4c570487b79`](https://github.com/wso2/identity-apps/commit/6427079247040e4ca2fae0edf2f2e4c570487b79), [`b620bda0c39d43594a60b96579d54a645a877696`](https://github.com/wso2/identity-apps/commit/b620bda0c39d43594a60b96579d54a645a877696)]:
+  - @wso2is/admin.feature-gate.v1@1.6.3
+  - @wso2is/admin.extensions.v1@2.38.3
+  - @wso2is/admin.core.v1@2.45.8
+  - @wso2is/i18n@2.23.10
+  - @wso2is/admin.server-configurations.v1@2.35.2
+
+## 2.35.1
+
+### Patch Changes
+
+- [#8238](https://github.com/wso2/identity-apps/pull/8238) [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+- Updated dependencies [[`89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f`](https://github.com/wso2/identity-apps/commit/89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f), [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f)]:
+  - @wso2is/admin.core.v1@2.45.2
+  - @wso2is/admin.server-configurations.v1@2.35.1
+  - @wso2is/admin.identity-providers.v1@2.26.206
+  - @wso2is/admin.organizations.v1@2.26.205
+  - @wso2is/admin.feature-gate.v1@1.6.2
+  - @wso2is/admin.extensions.v1@2.38.2
+  - @wso2is/admin.validation.v1@2.27.144
+  - @wso2is/react-components@2.9.16
+  - @wso2is/admin.users.v1@2.32.5
+  - @wso2is/dynamic-forms@2.4.41
+  - @wso2is/form@2.7.1
+
+## 2.35.0
+
+### Minor Changes
+
+- [#7995](https://github.com/wso2/identity-apps/pull/7995) [`c639a98a6e09992cbb3e37c315ea507b8212bb35`](https://github.com/wso2/identity-apps/commit/c639a98a6e09992cbb3e37c315ea507b8212bb35) Thanks [@Malith-19](https://github.com/Malith-19)! - Update the forced password reset configuration page and force password reset modal message to support email Link and email OTP.
+
+### Patch Changes
+
+- Updated dependencies [[`988621e009d2cfb65e7a3200f82eaa7a10fdd716`](https://github.com/wso2/identity-apps/commit/988621e009d2cfb65e7a3200f82eaa7a10fdd716), [`c639a98a6e09992cbb3e37c315ea507b8212bb35`](https://github.com/wso2/identity-apps/commit/c639a98a6e09992cbb3e37c315ea507b8212bb35)]:
+  - @wso2is/core@2.7.4
+  - @wso2is/i18n@2.22.13
+  - @wso2is/admin.server-configurations.v1@2.35.0
+  - @wso2is/admin.users.v1@2.31.0
+
+## 2.34.4
+
+### Patch Changes
+
+- [#8067](https://github.com/wso2/identity-apps/pull/8067) [`6fbc0298456c0f38657c8cacd94116adc2f97030`](https://github.com/wso2/identity-apps/commit/6fbc0298456c0f38657c8cacd94116adc2f97030) Thanks [@Malith-19](https://github.com/Malith-19)! - Improve the connector edit page and username recovery form formmattings.
+
+- Updated dependencies [[`6fbc0298456c0f38657c8cacd94116adc2f97030`](https://github.com/wso2/identity-apps/commit/6fbc0298456c0f38657c8cacd94116adc2f97030), [`ef219b69cd4a6ddedc9bc9d9b27ecfb5de34f8c2`](https://github.com/wso2/identity-apps/commit/ef219b69cd4a6ddedc9bc9d9b27ecfb5de34f8c2)]:
+  - @wso2is/admin.server-configurations.v1@2.34.4
+  - @wso2is/admin.users.v1@2.30.128
+
 ## 2.34.3
 
 ### Patch Changes

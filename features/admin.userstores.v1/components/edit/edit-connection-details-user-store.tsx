@@ -26,7 +26,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Button, Grid, Icon } from "semantic-ui-react";
+import { Button, Grid, Header, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
 import { patchUserStore, testConnection } from "../../api";
 import { JDBC } from "../../constants";
@@ -36,6 +36,7 @@ import {
     RequiredBinary,
     TestConnection,
     TypeProperty,
+    UserStore,
     UserstoreType
 } from "../../models";
 
@@ -63,6 +64,7 @@ interface EditConnectionDetailsPropsInterface extends TestableComponentInterface
      * Readonly attribute for the component.
      */
     readOnly?: boolean;
+    userStore: UserStore;
 }
 
 /**
@@ -82,6 +84,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
         readOnly,
         type,
         update,
+        userStore,
         [ "data-testid" ]: testId
     } = props;
 
@@ -451,6 +454,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                             .find(
                                                                 (property: TypeProperty) => property.name === "url"
                                                             )?.value,
+                                                    domain: userStore.name,
                                                     driverName: formValue?.get("driverName").toString()
                                                         ?? properties?.required
                                                             .find((property: TypeProperty) =>
@@ -476,15 +480,6 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                         setConnectionFailed(false);
                                                         setConnectionSuccessful(true);
                                                     } else {
-                                                        dispatch(addAlert({
-                                                            description: t("userstores:" +
-                                                                "notifications.testConnection.genericError" +
-                                                                ".description"),
-                                                            level: AlertLevels.ERROR,
-                                                            message: t(
-                                                                "userstores:notifications.testConnection.genericError" +
-                                                                ".message")
-                                                        }));
                                                         setConnectionSuccessful(false);
                                                         setConnectionFailed(true);
                                                     }
@@ -522,6 +517,11 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                     />
                                     { t("userstores:forms.connection.testButton") }
                                 </Button>
+                                { connectionFailed && (
+                                    <Header as="h6" color="red">
+                                        { t("userstores:forms.connection.connectionErrorMessage") }
+                                    </Header>
+                                ) }
                             </Grid.Column>
                         </Grid.Row>
                     ) }

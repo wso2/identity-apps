@@ -19,7 +19,7 @@
 import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { DocumentationLinksExtensionInterface } from "./models/documentation";
 
-export const getDocumentationLinksExtension = () : DocumentationLinksExtensionInterface => {
+export const getDocumentationLinksExtension = (): DocumentationLinksExtensionInterface => {
     const documentationBaseUrl: string = Config?.getDeploymentConfig()?.docSiteURL;
 
     return {
@@ -30,7 +30,7 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
             termsOfService: "https://wso2.com/terms-of-use"
         },
         develop: {
-            actions:{
+            actions: {
                 learnMore: undefined,
                 types: {
                     preIssueAccessToken: {
@@ -43,7 +43,7 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         learnMore: undefined
                     },
                     preUpdateProfile: {
-                        learnMore:undefined
+                        learnMore: undefined
                     }
                 }
             },
@@ -250,6 +250,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         },
                         ssoIntegration: {
                             learnMore: undefined
+                        },
+                        technology: {
+                            learnMore: undefined
                         }
                     }
                 }
@@ -260,6 +263,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 },
                 layout: {
                     custom: {
+                        editor: {
+                            learnMore: undefined
+                        },
                         learnMore: undefined
                     }
                 },
@@ -384,6 +390,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         learnMore: undefined
                     }
                 },
+                learnMore: undefined
+            },
+            webhooks: {
                 learnMore: undefined
             }
         },

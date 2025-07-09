@@ -1,5 +1,29 @@
 # @wso2is/admin.authentication.v1
 
+## 2.25.206
+
+### Patch Changes
+
+- [#8176](https://github.com/wso2/identity-apps/pull/8176) [`7481e3bcf5856beae32e670f04956157747334f6`](https://github.com/wso2/identity-apps/commit/7481e3bcf5856beae32e670f04956157747334f6) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add organization handle to organization creation, display, and list
+
+- Updated dependencies [[`1038e10f5dd3d2a1bd806b8022f56a008337e489`](https://github.com/wso2/identity-apps/commit/1038e10f5dd3d2a1bd806b8022f56a008337e489), [`7481e3bcf5856beae32e670f04956157747334f6`](https://github.com/wso2/identity-apps/commit/7481e3bcf5856beae32e670f04956157747334f6)]:
+  - @wso2is/admin.users.v1@2.33.6
+  - @wso2is/admin.organizations.v1@2.26.208
+  - @wso2is/admin.tenants.v1@2.29.14
+  - @wso2is/admin.core.v1@2.46.6
+  - @wso2is/i18n@2.24.12
+
+## 2.25.205
+
+### Patch Changes
+
+- [#8336](https://github.com/wso2/identity-apps/pull/8336) [`90d6c0be05e8b957cc1fa0c239ec3fb9b5a3fa72`](https://github.com/wso2/identity-apps/commit/90d6c0be05e8b957cc1fa0c239ec3fb9b5a3fa72) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Switch to org_handle where org_name/org_id claims are used for root and sub orgs respectively
+
+- Updated dependencies [[`d324ef56d7f9db7fff78ed46d23d7bcaae69e216`](https://github.com/wso2/identity-apps/commit/d324ef56d7f9db7fff78ed46d23d7bcaae69e216), [`2981081634e150d84bb16833410fd99001f35162`](https://github.com/wso2/identity-apps/commit/2981081634e150d84bb16833410fd99001f35162)]:
+  - @wso2is/admin.extensions.v1@2.39.4
+  - @wso2is/i18n@2.24.3
+  - @wso2is/admin.core.v1@2.46.3
+
 ## 2.25.204
 
 ### Patch Changes

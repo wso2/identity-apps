@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2016-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -76,6 +76,8 @@
     }
 %>
 
+<% request.setAttribute("pageName", "self-registration-without-verification"); %>
+
 <html lang="en-US">
 <head>
     <%-- header --%>
@@ -97,7 +99,7 @@
         }
     %>
 </head>
-<body class="login-portal layout recovery-layout">
+<body class="login-portal layout recovery-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>

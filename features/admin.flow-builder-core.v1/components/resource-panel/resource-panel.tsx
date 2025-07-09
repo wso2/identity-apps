@@ -24,7 +24,7 @@ import Drawer, { DrawerProps } from "@oxygen-ui/react/Drawer";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
-import { ChevronRightIcon } from "@oxygen-ui/react-icons";
+import { ChevronDownIcon } from "@oxygen-ui/react-icons";
 import AICard from "@wso2is/common.ai.v1/components/ai-card";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
@@ -202,7 +202,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                     >
                         <AccordionSummary
                             className="flow-builder-element-panel-category-heading"
-                            expandIcon={ <ChevronRightIcon size={ 14 } /> }
+                            expandIcon={ <ChevronDownIcon size={ 14 } /> }
                             aria-controls="panel1-content"
                             id="panel1-header"
                         >
@@ -236,7 +236,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                     <Accordion square disableGutters className={ classNames("flow-builder-element-panel-categories") }>
                         <AccordionSummary
                             className="flow-builder-element-panel-category-heading"
-                            expandIcon={ <ChevronRightIcon size={ 14 } /> }
+                            expandIcon={ <ChevronDownIcon size={ 14 } /> }
                             aria-controls="panel1-content"
                             id="panel1-header"
                         >
@@ -247,7 +247,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                         </AccordionSummary>
                         <AccordionDetails className="flow-builder-element-panel-category-details">
                             <Typography variant="body2">
-                                Use these widgets to build up the flow using per-created flow blocks
+                                Use these widgets to build up the flow using pre-created flow blocks
                             </Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { widgets.map((widget: Widget, index: number) => (
@@ -263,7 +263,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                     <Accordion square disableGutters className={ classNames("flow-builder-element-panel-categories") }>
                         <AccordionSummary
                             className="flow-builder-element-panel-category-heading"
-                            expandIcon={ <ChevronRightIcon size={ 14 } /> }
+                            expandIcon={ <ChevronDownIcon size={ 14 } /> }
                             aria-controls="panel1-content"
                             id="panel1-header"
                         >
@@ -288,7 +288,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                     <Accordion square disableGutters className={ classNames("flow-builder-element-panel-categories") }>
                         <AccordionSummary
                             className="flow-builder-element-panel-category-heading"
-                            expandIcon={ <ChevronRightIcon size={ 14 } /> }
+                            expandIcon={ <ChevronDownIcon size={ 14 } /> }
                             aria-controls="panel1-content"
                             id="panel1-header"
                         >
@@ -298,7 +298,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                             <Typography variant="h6">Components</Typography>
                         </AccordionSummary>
                         <AccordionDetails className="flow-builder-element-panel-category-details">
-                            <Typography variant="body2">Use these components to build up your vies</Typography>
+                            <Typography variant="body2">Use these components to build up your views</Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { elements.map((element: Element, index: number) => (
                                     <ResourcePanelDraggable
