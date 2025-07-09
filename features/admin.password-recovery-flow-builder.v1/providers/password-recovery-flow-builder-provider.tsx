@@ -29,9 +29,9 @@ import updateNewPasswordRecoveryPortalFeatureStatus from "../api/update-new-pass
 import useNewPasswordRecoveryPortalFeatureStatus from "../api/use-new-password-recovery-portal-feature-status";
 import ResourceProperties from "../components/resource-property-panel/resource-properties";
 import ElementFactory from "../components/resources/elements/element-factory";
+import PasswordRecoveryFlowConstants from "../constants/password-recovery-flow-constants";
 import PasswordRecoveryFlowBuilderContext from "../context/password-recovery-flow-builder-context";
 import { Attribute } from "../models/attributes";
-import PasswordRecoveryFlowConstants from "../constants/password-recovery-flow-constants";
 import transformFlow from "../utils/transform-flow";
 
 /**
@@ -95,7 +95,8 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
         }
 
         try {
-            const passwordRecoveryFlow = transformFlow(flow) as any;
+            const passwordRecoveryFlow: any = transformFlow(flow);
+
             passwordRecoveryFlow.flowType = PasswordRecoveryFlowConstants.PASSWORD_RECOVERY_FLOW_TYPE;
 
             await configurePasswordRecoveryFlow(passwordRecoveryFlow);

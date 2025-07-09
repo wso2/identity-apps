@@ -74,7 +74,7 @@ const processNavigation = (resource: Element, resourceId: string, navigations: R
 const transformFlow = (flowState: any) => {
     const { nodes: flowNodes, edges: flowEdges } = cloneDeep(flowState);
 
-    const payload = {
+    const payload: { steps: any[] } = {
         steps: []
     };
 
@@ -88,7 +88,7 @@ const transformFlow = (flowState: any) => {
         ] = edge.target;
     });
 
-    const filteredFlowNodes = flowNodes.filter((node: Node) => node.data.displayOnly !== true);
+    const filteredFlowNodes: Node[] = flowNodes.filter((node: Node) => node.data.displayOnly !== true);
 
     filteredFlowNodes.forEach((node: any) => {
         const { data, id, position, measured, type } = node;
@@ -110,7 +110,16 @@ const transformFlow = (flowState: any) => {
         };
 
         /* eslint-disable sort-keys */
-        const step = {
+        const step: {
+            id: string;
+            type: string;
+            size: {
+                height: number;
+                width: number;
+            };
+            position: { x: number; y: number };
+            data: any; // Or a more specific type
+        } = {
             id,
             type,
             size: measured || {

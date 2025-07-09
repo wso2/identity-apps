@@ -37,7 +37,10 @@ const PasswordRecoveryFlowBuilder: FunctionComponent<PasswordRecoveryFlowBuilder
     ...rest
 }: PasswordRecoveryFlowBuilderPropsInterface): ReactElement => (
     <AIGeneratedFlowProvider>
-        <PasswordRecoveryFlowBuilderCore { ...rest } />
+        <PasswordRecoveryFlowBuilderCore
+            data-componentid={ componentId }
+            { ...rest }
+        />
     </AIGeneratedFlowProvider>
 );
 

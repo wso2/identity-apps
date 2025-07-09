@@ -27,7 +27,6 @@ import {
     sampleRuleExecuteInstances,
     sampleRuleExecutionMeta
 } from "@wso2is/admin.rules.v1/data";
-import { RuleExecuteCollectionInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { getRuleInstanceValue } from "@wso2is/admin.rules.v1/providers/rules-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";

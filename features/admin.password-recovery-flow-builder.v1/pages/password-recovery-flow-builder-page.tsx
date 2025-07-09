@@ -20,8 +20,8 @@ import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences"
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import PasswordRecoveryFlowBuilderPageHeader from "./password-recovery-flow-builder-page-header";
-import PasswordRecoveryFlowBuilder from 
-"../components/password-recovery-flow-builder";
+import PasswordRecoveryFlowBuilder from
+    "../components/password-recovery-flow-builder";
 import PasswordRecoveryFlowBuilderProvider from
     "../providers/password-recovery-flow-builder-provider";
 import "./password-recovery-flow-builder-page.scss";

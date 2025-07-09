@@ -210,20 +210,20 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
         }
 
         const aiGeneratedPasswordRecoveryFlow: any = {
-            "resourceType": "TEMPLATE",
             "category": "STARTER",
-            "type": "AI",
-            "version": "0.1.0",
+            "config": {
+                "data": data
+            },
             "deprecated": false,
             "display": {
-                "label": "Blank",
                 "description": "Start a new flow from scratch",
                 "image": "",
+                "label": "Blank",
                 "showOnResourcePanel": false
             },
-            "config": {
-                data : data
-            }
+            "resourceType": "TEMPLATE",
+            "type": "AI",
+            "version": "0.1.0"
         };
 
         setAIGeneratedFlow(aiGeneratedPasswordRecoveryFlow);
@@ -269,8 +269,8 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
         );
     };
 
-    const initialTemplateComponents = useMemo(() => getBasicTemplateComponents(), [ resources ]);
-    const blankTemplateComponents = useMemo(() => getBlankTemplateComponents(), [ resources ]);
+    const initialTemplateComponents: any = useMemo(() => getBasicTemplateComponents(), [ resources ]);
+    const blankTemplateComponents: any = useMemo(() => getBlankTemplateComponents(), [ resources ]);
 
     const generateSteps = (steps: Node[]): Node[] => {
         const START_STEP: Node = {
@@ -304,38 +304,27 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
 
     /**
      * Validate edges based on the nodes.
-     *
      * @param edges - Edges to validate.
-     * @param nodes - Nodes to validate against.
-     * @returns Validated edges.
      */
-    const validateEdges = (edges: Edge[], nodes: Node[]): Edge[] => {
-        const nodeIds: Set<string> = new Set(nodes.map((node: Node) => node.id));
-
-        return edges.filter((edge: Edge) => {
-            // if (!nodeIds.has(edge.source) || !nodeIds.has(edge.target)) {
-            //     return false;
-            // }
-
-            return true;
-        });
+    const validateEdges = (edges: Edge[], _nodes: Node[]): Edge[] => {
+        return edges.slice();
     };
 
     const generateEdges = (steps: Step[]): Edge[] => {
         let edges: Edge[] = [];
 
         // Get all step IDs for validation
-        const stepIds = steps.map(step => step.id);
+        const stepIds: any = steps.map((step: any) => step.id);
 
         // Find the user onboard step
-        const userOnboardStep = steps.find(step => step.type === StaticStepTypes.End);
+        const userOnboardStep: any = steps.find((step: any) => step.type === StaticStepTypes.End);
 
         // Get the ID of the user onboard step or use the default one
-        const userOnboardStepId = userOnboardStep?.id || INITIAL_FLOW_USER_ONBOARD_STEP_ID;
+        const userOnboardStepId: any = userOnboardStep?.id || INITIAL_FLOW_USER_ONBOARD_STEP_ID;
 
         // Check if we need to connect start to the first step
         if (steps.length > 0) {
-            let firstStep = steps[0];
+            let firstStep: any = steps[0];
 
             // TODO: Handle this better. Templates have a `Start` node, but the black starter doesn't.
             if (firstStep.id === INITIAL_FLOW_START_STEP_ID) {
@@ -358,10 +347,10 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
         }
 
         // Flag to track if we've already created an edge to the user onboard step
-        let userOnboardEdgeCreated = false;
+        let userOnboardEdgeCreated: boolean = false;
 
-        const createEdgesForButtons = (step, button) => {
-            const edges = [];
+        const createEdgesForButtons = (step: any, button: any) => {
+            const edges: any[] = [];
 
             if (button.action?.next) {
                 // If next points to a valid step, create that edge
@@ -398,7 +387,8 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
                     });
                     userOnboardEdgeCreated = true;
                 }
-            } else if (button.action?.executor?.name === PasswordRecoveryFlowExecutorConstants.PASSWORD_ONBOARD_EXECUTOR) {
+            } else if (button.action?.executor?.name ===
+                PasswordRecoveryFlowExecutorConstants.PASSWORD_ONBOARD_EXECUTOR) {
                 // For PasswordOnboardExecutor buttons without explicit next,
                 // create an edge to the user onboard step
                 edges.push({
@@ -430,7 +420,7 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
                 // Look for forms and their buttons
                 step.data.components.forEach((component: Element) => {
                     if (component.type === BlockTypes.Form) {
-                        const buttons = component.components?.filter(
+                        const buttons: any[] = component.components?.filter(
                             (elem: Element) => elem.type === ElementTypes.Button
                         );
 
@@ -488,19 +478,19 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
         // connect the last view step to the user onboard step
         if (!userOnboardEdgeCreated && steps.length > 0) {
             // Find view steps
-            const viewSteps = steps.filter(step => step.type === StepTypes.View);
+            const viewSteps: any[] = steps.filter((step: any) => step.type === StepTypes.View);
 
             if (viewSteps.length > 0) {
                 // Get the last view step
-                const lastViewStep = viewSteps[viewSteps.length - 1];
+                const lastViewStep: any = viewSteps[viewSteps.length - 1];
 
                 // Find a button in this step to use for the connection
-                let buttonId = null;
+                let buttonId: any = null;
 
                 if (lastViewStep.data?.components) {
                     for (const component of lastViewStep.data.components) {
                         if (component.type === BlockTypes.Form) {
-                            const button = component.components?.find(
+                            const button: any = component.components?.find(
                                 (elem: Element) => elem.type === ElementTypes.Button
                             );
 
@@ -514,7 +504,7 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
                 }
 
                 // If we found a button, use it; otherwise generate a fallback ID
-                const edgeId = buttonId || `${lastViewStep.id}-to-${userOnboardStepId}`;
+                const edgeId: any = buttonId || `${lastViewStep.id}-to-${userOnboardStepId}`;
 
                 edges.push({
                     animated: false,
@@ -637,7 +627,11 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
                 updateFlowWithSequence(initialNodes);
             }
         }
-    }, [ passwordRecoveryFlow?.steps, isPasswordRecoveryFlowFetchRequestLoading, isPasswordRecoveryFlowFetchRequestValidating ]);
+    }, [
+        passwordRecoveryFlow?.steps,
+        isPasswordRecoveryFlowFetchRequestLoading,
+        isPasswordRecoveryFlowFetchRequestValidating
+    ]);
 
     const generateNodeTypes = (): NodeTypes => {
         if (!steps) {
@@ -668,12 +662,12 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
     const handleMutateComponents = (components: Element[]): Element[] => {
         let modifiedComponents: Element[] = cloneDeep(components);
 
-        const formCount: number = modifiedComponents.filter(c => c.type === BlockTypes.Form).length;
+        const formCount: number = modifiedComponents.filter((c: any) => c.type === BlockTypes.Form).length;
 
         if (formCount > 1) {
             let firstFormFound: boolean = false;
 
-            modifiedComponents = modifiedComponents.filter(c => {
+            modifiedComponents = modifiedComponents.filter((c: any) => {
                 if (c.type === BlockTypes.Form) {
                     if (!firstFormFound) {
                         firstFormFound = true;
@@ -733,10 +727,10 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
                                     ...formComponent,
                                     action: {
                                         ...(formComponent?.action ?? {}),
-                                        type: "EXECUTOR",
                                         executor: {
                                             name: PasswordRecoveryFlowExecutorConstants.PASSWORD_ONBOARD_EXECUTOR
-                                        }
+                                        },
+                                        type: "EXECUTOR"
                                     }
                                 };
                             }
@@ -746,10 +740,10 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
                                     ...formComponent,
                                     action: {
                                         ...(formComponent?.action ?? {}),
-                                        type: "EXECUTOR",
                                         executor: {
                                             name: PasswordRecoveryFlowExecutorConstants.EMAIL_OTP_EXECUTOR
-                                        }
+                                        },
+                                        type: "EXECUTOR"
                                     }
                                 };
                             }
@@ -779,7 +773,7 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
             return [ [], [], null, null ];
         }
 
-        const replacers = template?.config?.data?.__generationMeta__?.replacers;
+        const replacers: any = template?.config?.data?.__generationMeta__?.replacers;
 
         const [ templateSteps ] = updateTemplatePlaceholderReferences(
             generateSteps(template.config.data.steps as any),
@@ -793,7 +787,7 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
 
         // Handle BASIC_FEDERATED template case
         if (template.type === TemplateTypes.BasicFederated) {
-            const googleRedirectionStep = templateSteps.find(
+            const googleRedirectionStep: any = templateSteps.find(
                 (step: Node) => step.type === "REDIRECTION"
             );
 
@@ -806,23 +800,24 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
     };
 
     const generateUnconnectedEdges = (currentEdges: Edge[], currentNodes: Node[]): Edge[] => {
-        const nodeIds = new Set(currentNodes.map(node => node.id));
+        const nodeIds: any = new Set(currentNodes.map((node: any) => node.id));
         const missingEdges: Edge[] = [];
 
-        const processAction = (stepId, resourceId, action) => {
+        const processAction = (stepId: any, resourceId: any, action: any) => {
             if (action?.next) {
-                const buttonId = resourceId;
-                const expectedTarget = action.next;
+                const buttonId: any = resourceId;
+                const expectedTarget: any = action.next;
 
                 // Ensure expected target exists in nodes
                 if (!nodeIds.has(expectedTarget)) {
+                    // eslint-disable-next-line no-console
                     console.warn(`Expected target node '${expectedTarget}' not found in currentNodes.`);
 
                     return;
                 }
 
-                const existingEdge = currentEdges.find(
-                    edge => edge.source === stepId && edge.sourceHandle === `${buttonId}_NEXT`
+                const existingEdge: any = currentEdges.find(
+                    (edge: any) => edge.source === stepId && edge.sourceHandle === `${buttonId}_NEXT`
                 );
 
                 // If no edge exists or it's pointing to the wrong node, add a missing edge
@@ -842,10 +837,10 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
             }
         };
 
-        currentNodes.forEach(node => {
+        currentNodes.forEach((node: any) => {
             if (!node.data) {
                 return;
-            };
+            }
 
             if (node.data?.components) {
                 (node.data?.components as any).forEach((component: Element) => {
@@ -874,7 +869,7 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
         currentNodes: Node[],
         currentEdges: Edge[]
     ): [Node[], Edge[], Resource, string] => {
-        const widgetFlow = widget.config.data;
+        const widgetFlow: any = widget.config.data;
 
         if (!widgetFlow || !widgetFlow.steps) {
             return [ currentNodes, currentEdges, null, null ];
@@ -894,7 +889,7 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
 
         widgetFlow.steps.filter((step: Step) => {
             if (step.__generationMeta__) {
-                const strategy = step.__generationMeta__.strategy;
+                const strategy: any = step.__generationMeta__.strategy;
 
                 if (strategy === "MERGE_WITH_DROP_POINT") {
                     newNodes = newNodes.map((node: Node) => {
@@ -911,7 +906,7 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
             }
         });
 
-        const replacers = widgetFlow.__generationMeta__.replacers;
+        const replacers: any = widgetFlow.__generationMeta__.replacers;
         const defaultPropertySelectorId: string = widgetFlow.__generationMeta__.defaultPropertySelectorId;
         let defaultPropertySectorStepId: string = null;
         let defaultPropertySelector: Resource = null;

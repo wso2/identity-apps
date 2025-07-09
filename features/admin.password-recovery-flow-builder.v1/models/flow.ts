@@ -25,5 +25,5 @@ export interface PasswordRecoveryFlow {
     /**
      * Steps of the password recovery flow.
      */
-    steps: step[];
+    steps: Step[];
 }
