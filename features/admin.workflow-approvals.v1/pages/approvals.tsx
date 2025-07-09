@@ -341,7 +341,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                         selection
                         options={ APPROVAL_OPTIONS && APPROVAL_OPTIONS }
                         onChange={ handleFilterStatusChange }
-                        defaultValue={ ApprovalStatus.ALL }
+                        value={ filterStatus }
                     />)
                 }
                 leftActionPanel={
