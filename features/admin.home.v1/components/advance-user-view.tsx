@@ -122,7 +122,7 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
         setIsTryItApplicationSearchRequestLoading
     ] = useState<boolean>(false);
 
-    const { organizationType } = useGetCurrentOrganizationType();
+    const { organizationType, isSubOrganization } = useGetCurrentOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -590,7 +590,8 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                                 </Show>
                             </Grid.Row>
                             {
-                                !featureConfig?.flows?.disabledFeatures.includes("flows.homePage.tile") && (
+                                !featureConfig?.flows?.disabledFeatures.includes("flows.homePage.tile") &&
+                                    !isSubOrganization() && (
                                     <Show when={ featureConfig?.flows?.scopes?.read }>
                                         { renderFlowsCard() }
                                     </Show>
