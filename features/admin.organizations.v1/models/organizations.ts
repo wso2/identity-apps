@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,6 +21,7 @@ import { RolesInterface } from "@wso2is/core/models";
 export interface OrganizationInterface {
     id: string;
     name: string;
+    orgHandle?: string;
     ref: string;
     status: "ACTIVE" | "DISABLED"
 }
@@ -37,6 +38,7 @@ export interface OrganizationListInterface {
 
 export interface AddOrganizationInterface {
     name: string;
+    orgHandle?: string;
     description: string;
     type: string;
     parentId: string;
@@ -51,6 +53,7 @@ export interface OrganizationAttributesInterface {
 export interface OrganizationResponseInterface {
     id: string;
     name: string;
+    orgHandle?: string;
     description: string;
     status: string;
     created: string;
@@ -118,6 +121,20 @@ export interface ShareApplicationRequestInterface {
 export interface OrganizationsMetaAttributesListInterface {
     links?: OrganizationLinkInterface[];
     attributes: string[];
+}
+
+/**
+ * Represents the request body structure for checking the availability of an organization handle.
+ */
+export interface CheckOrgHandleInterface {
+    orgHandle: string;
+}
+
+/**
+ * Represents the response structure for checking the availability of an organization handle.
+ */
+export interface CheckOrgHandleResponseInterface {
+    available: boolean;
 }
 
 export interface GetOrganizationsParamsInterface {
