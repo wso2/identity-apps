@@ -1297,7 +1297,7 @@
         "privacyPolicyConfigs": {},
         "productName": "WSO2 Identity Server",
         "productVersionConfig": {
-            "productVersion": "7.x.x"
+            "productVersion": ""
         },
         "routes": {
             "organizationEnabledRoutes": [
