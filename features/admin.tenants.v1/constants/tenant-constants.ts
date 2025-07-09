@@ -94,13 +94,13 @@ export default class TenantConstants {
         {
             key: AuthenticationType.NONE,
             text: "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
-							"basicAuthConfig.types.none.name",
+		    "basicAuthConfig.types.none.name",
             value: AuthenticationType.NONE
         },
         {
             key: AuthenticationType.BASIC,
             text: "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
-							"basicAuthConfig.types.basic.name",
+		    "basicAuthConfig.types.basic.name",
             value: AuthenticationType.BASIC
         }
     ];
