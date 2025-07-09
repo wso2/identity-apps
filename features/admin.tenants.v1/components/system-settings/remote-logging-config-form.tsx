@@ -28,6 +28,7 @@ import Grid from "@oxygen-ui/react/Grid";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import Stack from "@oxygen-ui/react/Stack";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -47,7 +48,7 @@ import {
 import { AxiosError } from "axios";
 import startCase from "lodash-es/startCase";
 import toLower from "lodash-es/toLower";
-import React, { ReactElement, useEffect, useMemo, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -110,11 +111,10 @@ export const RemoteLoggingConfigForm = ({
     const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
         return state.config?.ui?.features?.remoteLogging;
     });
-    const hideConfigSecrets: boolean = useMemo((): boolean => {
-        const disabledFeatures: string[] = featureConfig?.disabledFeatures || [];
-
-        return !disabledFeatures.includes("hide.config.secrets");
-    }, [ featureConfig ]);
+    const hideConfigSecrets: boolean = isFeatureEnabled(
+        featureConfig,
+        TenantConstants.FEATURE_DICTIONARY.HIDE_REMOTE_LOG_CONFIG_SECRETS
+    );
 
     const isAddAuthConfigState: boolean = !logConfig?.username;
 
