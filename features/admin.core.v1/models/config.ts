@@ -332,11 +332,6 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      * This is used to enable/disable the region selection in the organization creation page.
      */
     regionSelectionEnabled?: boolean;
-    /**
-     * Maintenance window enabled.
-     * This is used to enable/disable the maintenance window.
-     */
-    maintenanceWindowEnabled?: boolean;
 }
 
 /**

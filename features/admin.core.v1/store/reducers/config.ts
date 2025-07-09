@@ -73,7 +73,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             helpCenterURL: "",
             idpConfigs: null,
             loginCallbackUrl: "",
-            maintenanceWindowEnabled: undefined,
             organizationPrefix: "",
             regionSelectionEnabled: undefined,
             serverHost: "",

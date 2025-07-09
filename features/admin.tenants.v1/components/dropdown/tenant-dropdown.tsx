@@ -41,6 +41,7 @@ import { organizationConfigs } from "@wso2is/admin.extensions.v1";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -164,9 +165,6 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
         return !state?.config?.ui?.features?.tenants?.disabledFeatures?.includes(
             TenantConstants.FEATURE_DICTIONARY.ORGANIZATIONS_QUICK_NAV_FROM_DROPDOWN
         );
-    });
-    const isMaintenanceWindowEnabled: boolean = useSelector((state: AppState) => {
-        return state?.config?.deployment?.maintenanceWindowEnabled;
     });
 
     const [ tenantAssociations, setTenantAssociations ] = useState<TenantAssociationsInterface>(undefined);
@@ -489,7 +487,8 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
         }
     };
 
-    const tenantDropdownLinks: TenantDropdownLinkInterface[] = isMaintenanceWindowEnabled
+    const tenantDropdownLinks: TenantDropdownLinkInterface[] =
+    !isFeatureEnabled(organizationsFeatureConfig, "organizations.addTenant")
         ? []
         : [
             {
@@ -579,7 +578,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
             organizationType !== OrganizationType.SUBORGANIZATION &&
             tenantAssociations
         ) {
-            if (!isMaintenanceWindowEnabled) {
+            if (isFeatureEnabled(organizationsFeatureConfig, "organizations.addTenant")) {
                 if (tenantAssociations.currentTenant?.domain === tenantAssociations.defaultTenant?.domain) {
                     options.push(
                         <Dropdown.Item className="action-panel" data-testid={ "default-button" } disabled={ true }>

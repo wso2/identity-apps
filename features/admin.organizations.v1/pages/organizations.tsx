@@ -90,10 +90,6 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         (state: AppState) => state.config.ui.features
     );
 
-    const isMaintenanceWindowEnabled: boolean = useSelector((state: AppState) => {
-        return state?.config?.deployment?.maintenanceWindowEnabled;
-    });
-
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
     const { getLink } = useDocumentation();
@@ -507,20 +503,21 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                     !isOrganizationListRequestLoading && !isAuthorizedOrganizationListRequestLoading &&
                     !(!searchQuery && (isEmpty(organizationList) || organizationList?.organizations?.length <= 0)) &&
                     (
-                        !isMaintenanceWindowEnabled && (<Show when={ featureConfig?.organizations?.scopes?.create }>
-                            <PrimaryButton
-                                disabled={ isOrganizationListRequestLoading }
-                                loading={ isOrganizationListRequestLoading }
-                                onClick={ (): void => {
-                                    eventPublisher.publish("organization-click-new-organization-button");
-                                    setShowWizard(true);
-                                } }
-                                data-componentid={ `${ testId }-list-layout-add-button` }
-                            >
-                                <Icon name="add" />
-                                { t("organizations:list.actions.add") }
-                            </PrimaryButton>
-                        </Show>)
+                        isFeatureEnabled(featureConfig.organizations, "organizations.create") && (
+                            <Show when={ featureConfig?.organizations?.scopes?.create }>
+                                <PrimaryButton
+                                    disabled={ isOrganizationListRequestLoading }
+                                    loading={ isOrganizationListRequestLoading }
+                                    onClick={ (): void => {
+                                        eventPublisher.publish("organization-click-new-organization-button");
+                                        setShowWizard(true);
+                                    } }
+                                    data-componentid={ `${ testId }-list-layout-add-button` }
+                                >
+                                    <Icon name="add" />
+                                    { t("organizations:list.actions.add") }
+                                </PrimaryButton>
+                            </Show>)
                     )
                 }
                 pageTitle={ t("pages:organizations.title") }

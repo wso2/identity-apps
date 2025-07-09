@@ -47,6 +47,7 @@ import { UserInviteInterface } from "@wso2is/admin.users.v1/components/guests/mo
 import { AdminAccountTypes, InvitationStatus, UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { resolveUserSearchAttributes } from "@wso2is/admin.users.v1/utils";
 import { UserStoreDropdownItem } from "@wso2is/admin.userstores.v1/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -153,10 +154,6 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state?.profile?.profileSchemas);
-
-    const isMaintenanceWindowEnabled: boolean = useSelector((state: AppState) => {
-        return state?.config?.deployment?.maintenanceWindowEnabled;
-    });
 
     const isPrivilegedUsersInConsoleSettingsEnabled: boolean =
         !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
@@ -535,7 +532,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
             } }
             rightActionPanel={ renderRightActionPanel() }
             topActionPanelExtension={ (
-                isMaintenanceWindowEnabled && (<Show
+                isFeatureEnabled(consoleSettingsFeatureConfig, "consoleSettings.addAdministrator") && (<Show
                     when={
                         [ ...featureConfig?.users?.scopes?.create,
                             ...featureConfig?.userRoles?.scopes?.update
