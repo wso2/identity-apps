@@ -899,7 +899,6 @@
                     "hide.config.secrets"
                 ],
                 "enabled": true,
-                "featureFlags": [],
                 "scopes": {
                     "create": [],
                     "delete": [],
