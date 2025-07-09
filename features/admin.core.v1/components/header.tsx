@@ -114,6 +114,9 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     const isRegionSelectionEnabled: boolean = useSelector((state: AppState) => {
         return state?.config?.deployment?.regionSelectionEnabled;
     });
+    const productVersion: string = useSelector((state: AppState) => {
+        return state?.config?.ui?.productVersionConfig?.productVersion;
+    });
 
     const hasGettingStartedViewPermission: boolean = useRequiredScopes(
         gettingStartedFeatureConfig?.scopes?.feature
@@ -416,31 +419,39 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                     actionIcon: <LogoutIcon />,
                     actionText: t("common:logout"),
                     footerContent: [
-                        <Box key="footer" className="user-dropdown-footer">
-                            <Link
-                                variant="body3"
-                                href={ getLink("common.privacyPolicy") }
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                { I18n.instance.t("console:common.dropdown.footer.privacyPolicy") as string }
-                            </Link>
-                            <Link
-                                variant="body3"
-                                href={ getLink("common.cookiePolicy") }
-                                target="_blank"
-                                rel="noreferrer">
-                                { I18n.instance.t("console:common.dropdown.footer.cookiePolicy") as string }
-                            </Link>
-                            <Link
-                                variant="body3"
-                                href={ getLink("common.termsOfService") }
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                { I18n.instance.t("console:common.dropdown.footer.termsOfService") as string }
-                            </Link>
-                        </Box>
+                        <div key="footer" className="user-dropdown-footer-wrapper">
+                            <Box className="user-dropdown-footer">
+                                <Link
+                                    variant="body3"
+                                    href={ getLink("common.privacyPolicy") }
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    { I18n.instance.t("console:common.dropdown.footer.privacyPolicy") as string }
+                                </Link>
+                                <Link
+                                    variant="body3"
+                                    href={ getLink("common.cookiePolicy") }
+                                    target="_blank"
+                                    rel="noreferrer">
+                                    { I18n.instance.t("console:common.dropdown.footer.cookiePolicy") as string }
+                                </Link>
+                                <Link
+                                    variant="body3"
+                                    href={ getLink("common.termsOfService") }
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    { I18n.instance.t("console:common.dropdown.footer.termsOfService") as string }
+                                </Link>
+                            </Box>
+                            <Divider/>
+                            <Box className="oxygen-user-dropdown-menu oxygen-menu-item">
+                                <Typography variant="body3">
+                                    Product Version: { productVersion || "N/A" }
+                                </Typography>
+                            </Box>
+                        </div>
                     ],
                     menuItems: [
                         billingPortalURL &&
@@ -463,7 +474,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                 </MenuItem>
                             </Show>
                         ),
-                        <Show featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
+                        <Show key="feature.preview" featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
                             <Show
                                 when={ loginAndRegistrationFeatureConfig?.scopes?.update }
                                 featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }
