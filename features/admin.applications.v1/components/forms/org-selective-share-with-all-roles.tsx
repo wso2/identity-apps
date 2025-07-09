@@ -26,8 +26,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
 import {
     OrganizationInterface,
-    OrganizationLinkInterface,
-    SelectedOrganizationRoleInterface
+    OrganizationLinkInterface
 } from "@wso2is/admin.organizations.v1/models/organizations";
 import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -38,7 +37,8 @@ import React, {
     SyntheticEvent,
     useEffect,
     useMemo,
-    useState } from "react";
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
@@ -91,7 +91,6 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
     const [ afterCursor, setAfterCursor ] = useState<string>();
     const [ expandedOrgId, setExpandedOrgId ] = useState<string>();
     const [ resolvedOrgs, setResolvedOrgs ] = useState<string[]>([]);
-    const [ roleSelections, setRoleSelections ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
 
     const {
         data: originalApplicationOrganizationTree,
@@ -276,7 +275,7 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                 ] : [],
                 id: item.id,
                 label: item.name,
-                parentId: item.parentId ?? expandedOrgId
+                parentId: item.parentId ?? expandedOrgId ?? organizationId
             };
 
             // Add the organization to the flat map
@@ -285,7 +284,7 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                     hasChildren: item.hasChildren,
                     id: item.id,
                     name: item.name,
-                    parentId: item.parentId,
+                    parentId: item.parentId ?? expandedOrgId ?? organizationId,
                     ref: item.ref,
                     status: item.status
                 };
@@ -339,19 +338,14 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
     };
 
     const selectParentNodes = (selectedItemId: string): void => {
-        // If selectedItemId is equal to the organizationId, that means we are at the root level
-        // and we don't need to select any parent nodes.
-        if (selectedItemId === organizationId) {
-            return;
-        }
-
-        // Get the seleted node and its parent node
+        // Get the seleted node from the flatOrganizationMap
         const selectedOrg: OrganizationInterface | undefined = flatOrganizationMap[selectedItemId];
 
         if (!selectedOrg) {
             return;
         }
 
+        // Get the parent node of the selected organization from the flatOrganizationMap
         const parentNode: OrganizationInterface | undefined = flatOrganizationMap[selectedOrg.parentId];
 
         if (!parentNode) {
@@ -363,8 +357,10 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
             setSelectedItems((prev: string[]) => [ ...prev, parentNode.id ]);
             selectParentNodes(parentNode.id);
 
-            // add the selected organization to the addedOrgs list
-            setAddedOrgs((addedOrgs: string[]) => [ ...addedOrgs, parentNode.id ]);
+            // add the selected organization to the addedOrgs list if it is not already there
+            if (!addedOrgs.includes(parentNode.id)) {
+                setAddedOrgs((addedOrgs: string[]) => [ ...addedOrgs, parentNode.id ]);
+            }
         }
     };
 
@@ -372,7 +368,7 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
         // Get the seleted node and its children nodes
         const selectedOrg: OrganizationInterface | undefined = flatOrganizationMap[selectedItemId];
 
-        // If the selected organization does not have children, we don't need to deselect anything.
+        // If the selected organization does not have children, return
         if (!selectedOrg || !selectedOrg.hasChildren) {
             return;
         }
@@ -382,8 +378,10 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
         // Deselect all children nodes
         setSelectedItems((prev: string[]) => prev.filter((item: string) => !children.includes(item)));
 
-        // add the deselected organization to the removedOrgs list
-        setRemovedOrgs((prev: string[]) => [ ...prev, selectedItemId ]);
+        // add the deselected organization to the removedOrgs list if it is not already there
+        if (!removedOrgs.includes(selectedItemId)) {
+            setRemovedOrgs((prev: string[]) => [ ...prev, selectedItemId ]);
+        }
 
         // Recursively deselect children nodes
         children.forEach((childId: string) => {
@@ -393,16 +391,26 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
 
     const resolveSelectedItems = (selectedItem: string, isSelected: boolean) => {
         if (isSelected) {
-            setSelectedItems((prev: string[]) => [ ...prev, selectedItem ]);
-            setAddedOrgs((addedOrgs: string[]) => [ ...addedOrgs, selectedItem ]);
+            // Add the selected item to the selectedItems list if it is not already there
+            if (!selectedItems.includes(selectedItem)) {
+                setSelectedItems((prev: string[]) => [ ...prev, selectedItem ]);
+            }
+            // Add to addedOrgs list if the organization is not already in the list
+            if (!addedOrgs.includes(selectedItem)) {
+                setAddedOrgs((prev: string[]) => [ ...prev, selectedItem ]);
+            }
             // remove the organization from the removedOrgs list if it exists
             setRemovedOrgs((prev: string[]) => prev.filter((item: string) => item !== selectedItem));
             // Select the parent nodes of the selected item
             selectParentNodes(selectedItem);
         }
         else {
+            // Remove the selected item from the selectedItems list
             setSelectedItems((prev: string[]) => prev.filter((item: string) => item !== selectedItem));
-            setRemovedOrgs((removedOrgs: string[]) => [ ...removedOrgs, selectedItem ]);
+            // Add to removedOrgs list if the organization is not already in the list
+            if (!removedOrgs.includes(selectedItem)) {
+                setRemovedOrgs((prev: string[]) => [ ...prev, selectedItem ]);
+            }
             // remove the organization from the addedOrgs list if it exists
             setAddedOrgs((prev: string[]) => prev.filter((item: string) => item !== selectedItem));
             // Deselect all children nodes of the selected item

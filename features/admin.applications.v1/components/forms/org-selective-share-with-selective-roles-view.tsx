@@ -97,7 +97,6 @@ const OrgSelectiveShareWithSelectiveRolesView = (props: OrgSelectiveShareWithAll
 
     const {
         data: originalApplicationOrganizations,
-        isLoading: isApplicationOrganizationsFetchRequestLoading,
         error:  originalApplicationOrganizationsFetchRequestError
     } = useGetApplicationShare(
         application?.id,
@@ -106,12 +105,8 @@ const OrgSelectiveShareWithSelectiveRolesView = (props: OrgSelectiveShareWithAll
         `parentId eq '${ expandedOrgId }'`
     );
 
-    const isLoading: boolean = useMemo((): boolean => (isTopLevelApplicationOrganizationsFetchRequestLoading ||
-            isApplicationOrganizationsFetchRequestLoading
-    ), [
-        isTopLevelApplicationOrganizationsFetchRequestLoading,
-        isApplicationOrganizationsFetchRequestLoading
-    ]);
+    const isLoading: boolean = useMemo((): boolean => (isTopLevelApplicationOrganizationsFetchRequestLoading),
+        [ isTopLevelApplicationOrganizationsFetchRequestLoading ]);
 
     // Get the shared organizations of the application
     useEffect(() => {

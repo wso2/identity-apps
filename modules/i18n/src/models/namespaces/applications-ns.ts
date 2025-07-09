@@ -782,7 +782,9 @@ export interface ApplicationsNS {
                     success: string;
                     failed: string;
                     partiallyCompleted: string;
-                }
+                };
+                orgNotSelectedForRoleSharing: string;
+                noRolesAvailableForOrg: string;
             };
             shareApplication: {
                 heading: string;

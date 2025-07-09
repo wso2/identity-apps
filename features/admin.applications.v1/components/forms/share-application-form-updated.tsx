@@ -37,6 +37,7 @@ import useSharedOrganizations from "@wso2is/admin.organizations.v1/api/use-share
 import {
     OrganizationInterface,
     OrganizationResponseInterface,
+    OrganizationRoleInterface,
     SelectedOrganizationRoleInterface,
     ShareApplicationRequestInterface
 } from "@wso2is/admin.organizations.v1/models";
@@ -76,6 +77,7 @@ import OrgSelectiveShareWithSelectiveRolesEdit from "./org-selective-share-with-
 import OrgSelectiveShareWithSelectiveRolesView from "./org-selective-share-with-selective-roles-view";
 import RolesShareWithAll from "./roles-share-with-all";
 import {
+    editApplicationRolesOfExistingOrganizations,
     shareApplicationWithAllOrganizations,
     shareApplicationWithSelectedOrganizationsAndRoles,
     unshareApplicationWithSelectedOrganizations
@@ -88,6 +90,8 @@ import {
     RoleSharingInterface,
     ShareApplicationWithAllOrganizationsDataInterface,
     ShareApplicationWithSelectedOrganizationsAndRolesDataInterface,
+    ShareOrganizationsAndRolesPatchDataInterface,
+    ShareOrganizationsAndRolesPatchOperationInterface,
     UnshareOrganizationsDataInterface
 } from "../../models/application";
 
@@ -159,12 +163,13 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
     const { isOrganizationManagementEnabled } = useGlobalVariables();
     const [ showConfirmationModal, setShowConfirmationModal ] = useState(false);
     const [ selectedRoles, setSelectedRoles ] = useState<RolesInterface[]>([]);
-    const [ addedRoles, setAddedRoles ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
-    const [ removedRoles, setRemovedRoles ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
+    const [ addedRoles, setAddedRoles ] = useState<Record<string, RoleSharingInterface[]>>({});
+    const [ removedRoles, setRemovedRoles ] = useState<Record<string, RoleSharingInterface[]>>({});
     const [ selectedOrgIds, setSelectedOrgIds ] = useState<string[]>([]);
     const [ addedOrgIds, setAddedOrgIds ] = useState<string[]>([]);
     const [ removedOrgIds, setRemovedOrgIds ] = useState<string[]>([]);
     const [ enableRoleSharing, setEnableRoleSharing ] = useState<boolean>(false);
+    const [ roleSelections, setRoleSelections ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
 
     const {
         data: sharedOrganizations,
@@ -587,9 +592,172 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
         }
     };
 
-    const shareSelectedRolesWithSelectedOrgs = (): void => {
-        console.log(selectedOrgIds);
+    const shareSelectedRolesWithSelectedOrgs = async (): Promise<void> => {
+        const tempAddedRoles: Record<string, RoleSharingInterface[]> = { ...addedRoles };
+        const tempRemovedRoles: Record<string, RoleSharingInterface[]> = { ...removedRoles };
+        const sharePromises: Promise<any>[] = [];
 
+        // If there are added orgs we need to add both orgs and roles
+        if (addedOrgIds.length > 0) {
+            const data: ShareApplicationWithSelectedOrganizationsAndRolesDataInterface = {
+                applicationId: application.id,
+                organizations: addedOrgIds.map((orgId: string) => {
+                    return {
+                        orgId: orgId,
+                        policy: ApplicationSharingPolicy.SELECTED_ORG_ONLY,
+                        roleSharing: {
+                            mode: tempAddedRoles[orgId] && tempAddedRoles[orgId].length > 0
+                                ? RoleSharingModes.SELECTED
+                                : RoleSharingModes.NONE,
+                            roles: tempAddedRoles[orgId] && tempAddedRoles[orgId].length > 0
+                                ? tempAddedRoles[orgId] as RoleSharingInterface[]
+                                : []
+                        }
+                    };
+                })
+            };
+
+            // Remove the roles of the added orgs from tempAddedRoles as they are already added
+            addedOrgIds.forEach((orgId: string) => {
+                delete tempAddedRoles[orgId];
+            });
+
+            sharePromises.push(
+                shareApplicationWithSelectedOrganizationsAndRoles(data)
+                    .then(() => {
+                        dispatch(addAlert({
+                            description: t("consoleSettings:sharedAccess.notifications." +
+                                "shareRoles.success.description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t("consoleSettings:sharedAccess.notifications.shareRoles.success.message")
+                        }));
+                    })
+                    .catch((error: Error) => {
+                        dispatch(addAlert({
+                            description: t("consoleSettings:sharedAccess.notifications." +
+                                "shareRoles.error.description",
+                            { error: error.message }),
+                            level: AlertLevels.ERROR,
+                            message: t("consoleSettings:sharedAccess.notifications.shareRoles.error.message")
+                        }));
+                    })
+            );
+        }
+
+        // If there are removed orgs we need to unshare the application with those orgs
+        if (removedOrgIds.length > 0) {
+            const data: UnshareOrganizationsDataInterface = {
+                applicationId: application.id,
+                orgIds: removedOrgIds
+            };
+
+            // Remove the roles of the removed orgs from tempRemovedRoles as they are already removed
+            removedOrgIds.forEach((orgId: string) => {
+                delete tempRemovedRoles[orgId];
+            });
+
+            sharePromises.push(
+                unshareApplicationWithSelectedOrganizations(data)
+                    .then(() => {
+                        dispatch(addAlert({
+                            description: t("consoleSettings:sharedAccess.notifications." +
+                                "shareRoles.success.description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t("consoleSettings:sharedAccess.notifications.shareRoles.success.message")
+                        }));
+                    })
+                    .catch((error: Error) => {
+                        dispatch(addAlert({
+                            description: t("consoleSettings:sharedAccess.notifications." +
+                                "shareRoles.error.description",
+                            { error: error.message }),
+                            level: AlertLevels.ERROR,
+                            message: t("consoleSettings:sharedAccess.notifications.shareRoles.error.message")
+                        }));
+                    })
+            );
+        }
+
+        // Wait for sharing/unsharing to complete
+        await Promise.all(sharePromises);
+
+        const addOperations: ShareOrganizationsAndRolesPatchOperationInterface[] = Object.entries(tempAddedRoles)
+            .map(([ orgId, roles ]: [string, RoleSharingInterface[]]) => {
+                const roleData: RoleSharingInterface[] = roles.map(
+                    (role: RoleSharingInterface) => ({
+                        audience: {
+                            display: role.audience.display,
+                            type: role.audience.type
+                        },
+                        displayName: role.displayName
+                    })
+                );
+
+                if (isEmpty(roleData)) {
+                    return null;
+                }
+
+                return {
+                    op: "add",
+                    path: `organizations[orgId eq "${orgId}"].roles`,
+                    value: roleData
+                };
+            }).filter((item: any) => item !== null);
+
+        const removeOperations: ShareOrganizationsAndRolesPatchOperationInterface[] = Object.entries(tempRemovedRoles)
+            .map(([ orgId, roles ]: [string, RoleSharingInterface[]]) => {
+                const roleData: RoleSharingInterface[] = roles.map(
+                    (role: RoleSharingInterface) => ({
+                        audience: {
+                            display: role.audience.display,
+                            type: role.audience.type
+                        },
+                        displayName: role.displayName
+                    })
+                );
+
+                if (isEmpty(roleData)) {
+                    return null;
+                }
+
+                return {
+                    op: "remove",
+                    path: `organizations[orgId eq "${orgId}"].roles`,
+                    value: roleData
+                };
+            }).filter((item: any) => item !== null);
+
+        const data: ShareOrganizationsAndRolesPatchDataInterface = {
+            Operations: [
+                ...addOperations,
+                ...removeOperations
+            ],
+            applicationId: application.id
+        };
+
+        if (data?.Operations?.length > 0) {
+            editApplicationRolesOfExistingOrganizations(data)
+                .then(() => {
+                    dispatch(addAlert({
+                        description: t("consoleSettings:sharedAccess.notifications." +
+                            "shareRoles.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("consoleSettings:sharedAccess.notifications.shareRoles.success.message")
+                    }));
+
+                    setAddedRoles({});
+                    setRemovedRoles({});
+                })
+                .catch((error: Error) => {
+                    dispatch(addAlert({
+                        description: t("consoleSettings:sharedAccess.notifications." +
+                            "shareRoles.error.description",
+                        { error: error.message }),
+                        level: AlertLevels.ERROR,
+                        message: t("consoleSettings:sharedAccess.notifications.shareRoles.error.message")
+                    }));
+                });
+        }
     };
 
     const shareAllRolesWithSelectedOrgs = (): void => {
@@ -867,6 +1035,12 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                                                 setAddedOrgs={ setAddedOrgIds }
                                                                                 removedOrgs={ removedOrgIds }
                                                                                 setRemovedOrgs={ setRemovedOrgIds }
+                                                                                roleSelections={ roleSelections }
+                                                                                setRoleSelections={ setRoleSelections }
+                                                                                addedRoles={ addedRoles }
+                                                                                setAddedRoles={ setAddedRoles }
+                                                                                removedRoles={ removedRoles }
+                                                                                setRemovedRoles={ setRemovedRoles }
                                                                             />
                                                                         )
                                                                         : (

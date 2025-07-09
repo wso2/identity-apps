@@ -31,5 +31,6 @@ export enum ApplicationSharingPolicy {
 
 export enum RoleSharingModes {
     ALL = "ALL",
-    SELECTED = "SELECTED"
+    SELECTED = "SELECTED",
+    NONE = "NONE"
 }
