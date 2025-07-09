@@ -384,8 +384,8 @@
                 }
             },
             "ai": {
-                "disabledFeatures": [],
-                "enabled": false,
+                "disabledFeatures": [ "ai.flows.types.list.registration" ],
+                "enabled": true,
                 "featureFlags": [
                     {
                         "feature": "ai.application.loginFlow.banner",
