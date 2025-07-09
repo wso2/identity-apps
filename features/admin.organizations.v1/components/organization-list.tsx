@@ -488,7 +488,8 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 <EmptyPlaceholder
                     className={ !isRenderedOnPortal ? "list-placeholder mr-0" : "" }
                     action={
-                        isFeatureEnabled(featureConfig.organizations, "organizations.create")
+                        isFeatureEnabled(featureConfig.organizations,
+                            OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_CREATE"))
                         && onEmptyListPlaceholderActionClick && (
                             <Show when={ featureConfig?.organizations?.scopes?.create }>
                                 <PrimaryButton

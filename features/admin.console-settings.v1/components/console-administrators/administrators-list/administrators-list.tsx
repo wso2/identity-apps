@@ -63,6 +63,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import AdministratorsTable from "./administrators-table";
+import { ConsoleAdministratorOnboardingConstants } from "../../../constants/console-administrator-onboarding-constants";
 import useAdministrators from "../../../hooks/use-administrators";
 import useBulkAssignAdministratorRoles from "../../../hooks/use-bulk-assign-user-roles";
 import AddExistingUserWizard from "../add-existing-user-wizard/add-existing-user-wizard";
@@ -532,7 +533,9 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
             } }
             rightActionPanel={ renderRightActionPanel() }
             topActionPanelExtension={ (
-                isFeatureEnabled(consoleSettingsFeatureConfig, "consoleSettings.addAdministrator") && (<Show
+                isFeatureEnabled(consoleSettingsFeatureConfig,
+                    ConsoleAdministratorOnboardingConstants.FEATURE_DICTIONARY
+                        .get("CONSOLE_SETTINGS_ADD_ADMINISTRATOR")) && (<Show
                     when={
                         [ ...featureConfig?.users?.scopes?.create,
                             ...featureConfig?.userRoles?.scopes?.update

@@ -136,6 +136,10 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
         state?.config?.ui?.features?.organizations
     );
 
+    const tenantsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.tenants
+    );
+
     const isCentralDeploymentEnabled: boolean = useSelector((state: AppState) => {
         return state?.config?.deployment?.centralDeploymentEnabled;
     });
@@ -488,7 +492,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
     };
 
     const tenantDropdownLinks: TenantDropdownLinkInterface[] =
-    !isFeatureEnabled(organizationsFeatureConfig, "organizations.addTenant")
+    !isFeatureEnabled(tenantsFeatureConfig, TenantConstants.FEATURE_DICTIONARY.ADD_TENANTS_FROM_DROPDOWN)
         ? []
         : [
             {
@@ -578,7 +582,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
             organizationType !== OrganizationType.SUBORGANIZATION &&
             tenantAssociations
         ) {
-            if (isFeatureEnabled(organizationsFeatureConfig, "organizations.addTenant")) {
+            if (isFeatureEnabled(tenantsFeatureConfig, TenantConstants.FEATURE_DICTIONARY.ADD_TENANTS_FROM_DROPDOWN)) {
                 if (tenantAssociations.currentTenant?.domain === tenantAssociations.defaultTenant?.domain) {
                     options.push(
                         <Dropdown.Item className="action-panel" data-testid={ "default-button" } disabled={ true }>
