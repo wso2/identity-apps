@@ -41,6 +41,7 @@ import VisualFlow, { VisualFlowPropsInterface } from "./visual-flow";
 import VisualFlowConstants from "../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import useComponentDelete from "../../hooks/use-component-delete";
+import useConfirmPasswordField from "../../hooks/use-confirm-password-field";
 import useDeleteRedirectionResource from "../../hooks/use-delete-redirection-resource";
 import useGenerateStepElement from "../../hooks/use-generate-step-element";
 import { Element } from "../../models/elements";
@@ -53,7 +54,6 @@ import PluginRegistry from "../../plugins/plugin-registry";
 import generateResourceId from "../../utils/generate-resource-id";
 import ResourcePanel from "../resource-panel/resource-panel";
 import ElementPropertiesPanel from "../resource-property-panel/resource-property-panel";
-import useConfirmPasswordField from "../../hooks/use-confirm-password-field";
 
 /**
  * Props interface of {@link DecoratedVisualFlow}
