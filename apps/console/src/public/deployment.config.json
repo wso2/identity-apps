@@ -385,7 +385,7 @@
             },
             "ai": {
                 "disabledFeatures": [ "ai.flows.types.list.registration" ],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [
                     {
                         "feature": "ai.application.loginFlow.banner",
