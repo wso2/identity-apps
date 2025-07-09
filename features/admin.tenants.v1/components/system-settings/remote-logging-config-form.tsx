@@ -28,7 +28,12 @@ import Grid from "@oxygen-ui/react/Grid";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import Stack from "@oxygen-ui/react/Stack";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { AlertInterface, AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
+import {
+    AlertInterface,
+    AlertLevels,
+    FeatureAccessConfigInterface,
+    IdentifiableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
 import {
