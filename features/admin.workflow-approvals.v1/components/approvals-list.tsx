@@ -290,8 +290,9 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
             {
                 "data-testid": `${ testId }-item-claim-button`,
                 hidden: (approval: ApprovalTaskListItemInterface): boolean =>
-                    approval?.approvalStatus === ApprovalStatus.COMPLETED || approval?.approvalStatus === ApprovalStatus.RESERVED ||
-                        approval?.approvalStatus === ApprovalStatus.BLOCKED,
+                    approval?.approvalStatus === ApprovalStatus.COMPLETED ||
+                    approval?.approvalStatus === ApprovalStatus.RESERVED ||
+                    approval?.approvalStatus === ApprovalStatus.BLOCKED,
                 icon: (): SemanticICONS => "hand pointer outline",
                 onClick: (e: SyntheticEvent, approval: ApprovalTaskListItemInterface): void =>
                     updateApprovalStatus(approval?.id, ApprovalStatus.CLAIM),
@@ -301,8 +302,9 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
             {
                 "data-testid": `${ testId }-item-release-button`,
                 hidden: (approval: ApprovalTaskListItemInterface): boolean =>
-                    approval?.approvalStatus === ApprovalStatus.COMPLETED|| approval?.approvalStatus === ApprovalStatus.READY ||
-                        approval?.approvalStatus === ApprovalStatus.BLOCKED,
+                    approval?.approvalStatus === ApprovalStatus.COMPLETED||
+                    approval?.approvalStatus === ApprovalStatus.READY ||
+                    approval?.approvalStatus === ApprovalStatus.BLOCKED,
                 icon: (): SemanticICONS => "paper plane",
                 onClick: (e: SyntheticEvent, approval: ApprovalTaskListItemInterface): void =>
                     updateApprovalStatus(approval?.id, ApprovalStatus.RELEASE),
