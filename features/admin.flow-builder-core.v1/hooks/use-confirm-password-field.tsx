@@ -251,7 +251,7 @@ const useConfirmPasswordField = (): void => {
         element: Element, stepId: string): Promise<boolean> => {
         if (element.type === ElementTypes.Input && element.variant === InputVariants.Password) {
             if (propertyKey === "config.confirmHint" || propertyKey === "config.confirmLabel" ||
-                propertyKey === "config.confirmPlaceholder") {
+                propertyKey === "config.confirmPlaceholder" || propertyKey === "config.required") {
                 updateNodeData(stepId, (node: Node) => {
                     if (node.data.components) {
                         const components: Element[] = cloneDeep(node.data.components) as Element[];
@@ -273,8 +273,13 @@ const useConfirmPasswordField = (): void => {
                                     return true;
                                 }
 
-                                set(component.components[passwordFieldIndex + 1],
-                                    `config.${propertyKey.split(".")[1].substring(7).toLowerCase()}`, newValue);
+                                let propertyName: string = propertyKey.split(".")[1];
+
+                                if (propertyName.includes("confirm")) {
+                                    propertyName = propertyName.substring(7).toLowerCase();
+                                }
+
+                                set(component.components[passwordFieldIndex + 1], `config.${propertyName}`, newValue);
 
                                 return false;
                             }
@@ -288,7 +293,9 @@ const useConfirmPasswordField = (): void => {
                     }
                 });
 
-                return false;
+                if (propertyKey !== "config.required") {
+                    return false;
+                }
             }
         }
 
