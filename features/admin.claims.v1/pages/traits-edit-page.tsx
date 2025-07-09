@@ -3,15 +3,14 @@ import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { Checkbox, Dropdown, DropdownProps, Form, Table, Segment } from "semantic-ui-react";
+import { Checkbox, Dropdown, DropdownProps, Form, Table, Segment, Image, Button } from "semantic-ui-react";
 import axios from "axios";
-import { TabPageLayout, AnimatedAvatar, PrimaryButton } from "@wso2is/react-components";
+import { TabPageLayout, AnimatedAvatar, PrimaryButton, Hint } from "@wso2is/react-components";
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { Trait } from "../api/traits";
-import { Image } from "semantic-ui-react";
 
 interface RouteParams {
     id: string;
@@ -34,12 +33,6 @@ const TraitsEditPage: FunctionComponent<RouteComponentProps<RouteParams>> = (
         fetchTrait();
     }, []);
 
-    const generateTraitLetter = (name: string): string => {
-        const cleanName = name?.replace(/^traits\./, "");
-        return cleanName?.charAt(0).toUpperCase();
-    };
-    
-
     const fetchTrait = () => {
         setIsLoading(true);
         axios.get(`http://localhost:8900/api/v1/profile-schema/traits/${traitId}`)
@@ -55,19 +48,23 @@ const TraitsEditPage: FunctionComponent<RouteComponentProps<RouteParams>> = (
     };
 
     const handleUpdateTrait = (updatedFields: Partial<Trait>) => {
-        const updatedTrait = { ...trait, ...updatedFields };
+        setTrait(prev => ({ ...prev, ...updatedFields }));
+    };
+
+    const handleSubmit = () => {
         setIsUpdating(true);
 
-        axios.put(`http://localhost:8900/api/v1/profile-schema/traits/${traitId}`, {
-            attribute_name: updatedTrait.attribute_name,
-            value_type: updatedTrait.value_type,
-            merge_strategy: updatedTrait.merge_strategy,
-            mutability: updatedTrait.mutability,
-            multi_valued: updatedTrait.multi_valued,
-            sub_attributes: updatedTrait.sub_attributes
-        })
+        const updatedTrait = {
+            attribute_name: trait.attribute_name,
+            value_type: trait.value_type,
+            merge_strategy: trait.merge_strategy,
+            mutability: trait.mutability,
+            multi_valued: trait.multi_valued,
+            sub_attributes: trait.sub_attributes
+        };
+
+        axios.put(`http://localhost:8900/api/v1/profile-schema/traits/${traitId}`, updatedTrait)
             .then(() => {
-                setTrait(updatedTrait);
                 dispatch(addAlert({
                     description: "Trait updated successfully.",
                     level: AlertLevels.SUCCESS,
@@ -92,6 +89,10 @@ const TraitsEditPage: FunctionComponent<RouteComponentProps<RouteParams>> = (
         handleUpdateTrait({ merge_strategy: data.value as string });
     };
 
+    const handleValueTypeChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
+        handleUpdateTrait({ value_type: data.value as string });
+    };
+
     const mergeStrategyOptions = [
         { key: "combine", text: "Combine", value: "combine" },
         { key: "latest", text: "Latest", value: "latest" },
@@ -106,22 +107,16 @@ const TraitsEditPage: FunctionComponent<RouteComponentProps<RouteParams>> = (
         { key: "complex", text: "Complex", value: "complex" }
     ];
 
-    const generateInitial = (name: string): string => {
-        const clean = name.replace(/^traits\./, "");
-        return clean.charAt(0).toUpperCase();
+    const generateTraitLetter = (name: string): string => {
+        const cleanName = name?.replace(/^traits\./, "");
+        return cleanName?.charAt(0).toUpperCase();
     };
 
     return (
         <TabPageLayout
             isLoading={ isLoading }
             image={ (
-                <Image
-                    floated="left"
-                    verticalAlign="middle"
-                    rounded
-                    centered
-                    size="tiny"
-                >
+                <Image floated="left" verticalAlign="middle" rounded centered size="tiny">
                     <AnimatedAvatar />
                     <span className="claims-letter">
                         { trait && generateTraitLetter(trait?.attribute_name) }
@@ -145,6 +140,7 @@ const TraitsEditPage: FunctionComponent<RouteComponentProps<RouteParams>> = (
                         <Form.Field>
                             <label>Name</label>
                             <input value={ trait.attribute_name.replace(/^traits\./, "") } readOnly />
+                            <Hint>This is the unique name of the trait and cannot be changed.</Hint>
                         </Form.Field>
 
                         <Form.Field>
@@ -153,9 +149,10 @@ const TraitsEditPage: FunctionComponent<RouteComponentProps<RouteParams>> = (
                                 selection
                                 options={ valueTypeOptions }
                                 value={ trait.value_type }
+                                onChange={ handleValueTypeChange }
                                 disabled={ isUpdating }
-                                // OnChange can be added if value_type is editable in your flow
                             />
+                            <Hint>Specifies the data type of this trait's value.</Hint>
                         </Form.Field>
 
                         <Form.Field>
@@ -167,6 +164,7 @@ const TraitsEditPage: FunctionComponent<RouteComponentProps<RouteParams>> = (
                                 onChange={ handleMergeStrategyChange }
                                 disabled={ isUpdating }
                             />
+                            <Hint>Defines how values are merged when multiple sources exist.</Hint>
                         </Form.Field>
 
                         <Form.Field>
@@ -176,38 +174,54 @@ const TraitsEditPage: FunctionComponent<RouteComponentProps<RouteParams>> = (
                                 onChange={ handleMultiValuedToggle }
                                 disabled={ isUpdating }
                             />
+                            <Hint>Enable if this trait can have multiple values.</Hint>
                         </Form.Field>
 
-                        <Form.Field>
-                            <label>Sub Attributes</label>
-                            <Table celled compact>
-                                <Table.Header>
-                                    <Table.Row>
-                                        <Table.HeaderCell>Name</Table.HeaderCell>
-                                    </Table.Row>
-                                </Table.Header>
-                                <Table.Body>
-                                    { trait.sub_attributes?.map((sub) => (
-                                        <Table.Row key={ sub.attribute_id }>
-                                            <Table.Cell>{ sub.attribute_name.replace(/^traits\./, "") }</Table.Cell>
-                                            <Table.Cell>
-                                                <PrimaryButton
-                                                    size="small"
-                                                    negative
-                                                    onClick={ () => {
-                                                        const updatedSubs = trait.sub_attributes.filter(s => s.attribute_id !== sub.attribute_id);
-                                                        handleUpdateTrait({ sub_attributes: updatedSubs });
-                                                    } }
-                                                    disabled={ isUpdating }
-                                                >
-                                                    Remove
-                                                </PrimaryButton>
-                                            </Table.Cell>
+                        { trait.sub_attributes && trait.sub_attributes.length > 0 && (
+                            <Form.Field>
+                                <label>Sub Attributes</label>
+                                <Table celled compact>
+                                    <Table.Header>
+                                        <Table.Row>
+                                            <Table.HeaderCell>Name</Table.HeaderCell>
+                                            <Table.HeaderCell>Actions</Table.HeaderCell>
                                         </Table.Row>
-                                    )) }
-                                </Table.Body>
-                            </Table>
-                        </Form.Field>
+                                    </Table.Header>
+                                    <Table.Body>
+                                        { trait.sub_attributes.map((sub) => (
+                                            <Table.Row key={ sub.attribute_id }>
+                                                <Table.Cell>{ sub.attribute_name.replace(/^traits\./, "") }</Table.Cell>
+                                                <Table.Cell>
+                                                    <PrimaryButton
+                                                        size="small"
+                                                        negative
+                                                        onClick={ () => {
+                                                            const updatedSubs = trait.sub_attributes.filter(s =>
+                                                                s.attribute_id !== sub.attribute_id);
+                                                            handleUpdateTrait({ sub_attributes: updatedSubs });
+                                                        } }
+                                                        disabled={ isUpdating }
+                                                    >
+                                                        Remove
+                                                    </PrimaryButton>
+                                                </Table.Cell>
+                                            </Table.Row>
+                                        )) }
+                                    </Table.Body>
+                                </Table>
+                                <Hint>List of sub attributes under this complex trait.</Hint>
+                            </Form.Field>
+                        )}
+
+                        <Button
+                            primary
+                            loading={ isUpdating }
+                            disabled={ isUpdating }
+                            onClick={ handleSubmit }
+                            style={{ marginTop: "1em" }}
+                        >
+                            Update
+                        </Button>
                     </Form>
                 </Segment>
             )}
