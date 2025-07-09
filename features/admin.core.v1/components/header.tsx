@@ -448,7 +448,8 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                             <Divider/>
                             <Box className="oxygen-user-dropdown-menu oxygen-menu-item">
                                 <Typography variant="body3">
-                                    { `${t("console:common.dropdown.footer.productName")}: ${productVersion || "N/A"}` }
+                                    { `${t("console:common.dropdown.footer.productVersion")}: ` }
+                                    { productVersion || "N/A" }
                                 </Typography>
                             </Box>
                         </div>
