@@ -169,7 +169,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                 selectedApprovalTask = {
                     ...selectedApprovalTask,
                     createdTimeInMillis: approval.createdTimeInMillis,
-                    taskStatus: approval?.status
+                    taskStatus: approval?.approvalStatus
                 };
                 setApproval(selectedApprovalTask);
             })
@@ -290,8 +290,8 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
             {
                 "data-testid": `${ testId }-item-claim-button`,
                 hidden: (approval: ApprovalTaskListItemInterface): boolean =>
-                    approval?.status === ApprovalStatus.COMPLETED || approval?.status === ApprovalStatus.RESERVED ||
-                        approval?.status === ApprovalStatus.BLOCKED,
+                    approval?.approvalStatus === ApprovalStatus.COMPLETED || approval?.approvalStatus === ApprovalStatus.RESERVED ||
+                        approval?.approvalStatus === ApprovalStatus.BLOCKED,
                 icon: (): SemanticICONS => "hand pointer outline",
                 onClick: (e: SyntheticEvent, approval: ApprovalTaskListItemInterface): void =>
                     updateApprovalStatus(approval?.id, ApprovalStatus.CLAIM),
@@ -301,8 +301,8 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
             {
                 "data-testid": `${ testId }-item-release-button`,
                 hidden: (approval: ApprovalTaskListItemInterface): boolean =>
-                    approval?.status === ApprovalStatus.COMPLETED|| approval?.status === ApprovalStatus.READY ||
-                        approval?.status === ApprovalStatus.BLOCKED,
+                    approval?.approvalStatus === ApprovalStatus.COMPLETED|| approval?.approvalStatus === ApprovalStatus.READY ||
+                        approval?.approvalStatus === ApprovalStatus.BLOCKED,
                 icon: (): SemanticICONS => "paper plane",
                 onClick: (e: SyntheticEvent, approval: ApprovalTaskListItemInterface): void =>
                     updateApprovalStatus(approval?.id, ApprovalStatus.RELEASE),
@@ -377,8 +377,8 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                                             circular
                                             size="mini"
                                             className="micro mr-2 ml-0 vertical-aligned-baseline"
-                                            color={ resolveApprovalTagColor(approval.status) } />
-                                        { approval.status }
+                                            color={ resolveApprovalTagColor(approval.approvalStatus) } />
+                                        { approval.approvalStatus }
                                     </div>
                                 </Header.Subheader>
                             </Header.Content>

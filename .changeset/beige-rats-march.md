@@ -3,4 +3,4 @@
 "@wso2is/console": patch
 ---
 
-Fix the filter not updating issue in the workflow.
+Fix the filter not updating issue in the workflow and approval task status schema changes.

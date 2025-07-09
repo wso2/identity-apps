@@ -138,7 +138,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                 approvalsFromState.forEach((fromState: ApprovalTaskListItemInterface) => {
                     approvalsFromResponse.forEach((fromResponse: ApprovalTaskListItemInterface) => {
                         if (fromState.id === fromResponse.id) {
-                            fromState.status = fromResponse.status;
+                            fromState.approvalStatus = fromResponse.approvalStatus;
                             filteredApprovals.push(fromState);
                         }
                     });
@@ -339,7 +339,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                     (<Dropdown
                         data-testid={ `${ testId }-status-filter-dropdown` }
                         selection
-                        options={ APPROVAL_OPTIONS && APPROVAL_OPTIONS }
+                        options={ APPROVAL_OPTIONS }
                         onChange={ handleFilterStatusChange }
                         value={ filterStatus }
                     />)
