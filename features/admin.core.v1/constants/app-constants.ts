@@ -280,6 +280,7 @@ export class AppConstants {
             [ "APPLICATION_ROLES", `${ AppConstants.getAdminViewBasePath() }/application-roles` ],
             [ "APPLICATION_ROLES_EDIT",
                 `${ AppConstants.getAdminViewBasePath() }/application-roles/:applicationId/:roleId` ],
+            [ "APPLICATION_DATA", `${ AppConstants.getAdminViewBasePath() }/application-data` ],
             [ "APPLICATION_ROLES_SUB", `${ AppConstants.getAdminViewBasePath() }/roles/application-roles` ],
             [ "APPLICATION_ROLES_EDIT_SUB",
                 `${ AppConstants.getAdminViewBasePath() }/roles/application-roles/:applicationId/:roleId` ],
@@ -378,6 +379,8 @@ export class AppConstants {
                 "ATTRIBUTE_MAPPINGS",
                 `${AppConstants.getAdminViewBasePath()}/attribute-mappings/:type/:customAttributeMappingID?`
             ],
+            [ "TRAITS", `${ AppConstants.getAdminViewBasePath() }/traits` ],
+            [ "TRAITS_EDIT", `${ AppConstants.getAdminViewBasePath() }/traits/:id` ],
             [ "CREATE_TENANT", `${AppConstants.getAppBasePath()}/create-tenant` ],
             [ "ORGANIZATIONS", `${AppConstants.getAdminViewBasePath()}/organizations` ],
             [ "ORGANIZATION_UPDATE", `${AppConstants.getAdminViewBasePath()}/organizations/:id` ],

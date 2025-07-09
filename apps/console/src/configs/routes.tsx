@@ -594,7 +594,45 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     path: AppConstants.getPaths().get("CLAIM_VERIFICATION_SETTINGS"),
                     protected: true,
                     showOnSidePanel: false
-                }
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.claims.v1/pages/traits-page")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "traits",
+                    name: "Traits",
+                    path: AppConstants.getPaths().get("TRAITS"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.claims.v1/pages/traits-edit-page")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "traits",
+                    name: "Traits",
+                    path: AppConstants.getPaths().get("TRAITS_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                
+                // {
+                //     component: lazy(() => import("@wso2is/admin.cds.v1/pages/application-data")),
+                //     exact: true,
+                //     icon: {
+                //         icon: getSidePanelIcons().childIcon
+                //     },
+                //     id: "applicationData",
+                //     name: "Application Data",
+                //     path: AppConstants.getPaths().get("APPLICATION_DATA"),
+                //     protected: true,
+                //     showOnSidePanel: false
+                // }
+            
             ],
             component: lazy(() => import("@wso2is/admin.claims.v1/pages/claim-dialects")),
             exact: true,
@@ -1456,7 +1494,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             category: "customerData",
             label: "Traits",
             component: lazy(() =>
-                import("@wso2is/admin.cds.v1/pages/profile-enrichment-rules")
+                import("@wso2is/admin.cds.v1/pages/profile-unification-rules")
             ),
             exact: true,
             icon: {
@@ -1472,7 +1510,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             children: [
                 {
                     component: lazy(() =>
-                        import("@wso2is/admin.cds.v1/pages/profile-enrichment-rules") 
+                        import("@wso2is/admin.cds.v1/pages/profile-unification-rules") 
                     ),
                     exact: true,
                     icon: {

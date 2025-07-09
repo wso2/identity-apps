@@ -6,7 +6,7 @@ import {
 import { Add, Delete } from "@mui/icons-material";
 import { Card, CardContent } from "@oxygen-ui/react";
 import axios from "axios";
-import ResolutionRuleModal from "../components/modals/resolution-rule-add-modal";
+import ResolutionRuleModal from "../components/modals/unification-rule-add-modal";
 
 const IdentityResolutionPage = () => {
     const [rules, setRules] = useState([]);
