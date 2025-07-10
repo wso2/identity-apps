@@ -22,13 +22,19 @@ export * from "./adapters/url-field-adapter";
 export * from "./adapters/file-picker-adapter";
 export * from "./adapters/__DEPRECATED__select-field-adapter";
 export * from "./adapters/checkbox-field-adapter";
+export * from "./adapters/checkbox-group-field-adapter";
+export * from "./adapters/checkbox-field-adapter";
+export * from "./adapters/switch-field-adapter";
 
 export { default as TextFieldAdapter } from "./adapters/text-field-adapter";
 export { default as __DEPRECATED__SelectFieldAdapter } from "./adapters/__DEPRECATED__select-field-adapter";
 export { default as SelectFieldAdapter } from "./adapters/select-field-adapter";
+export { default as SelectFieldAdapterV2 } from "./adapters/select-field-adapter-v2";
 export { default as AutocompleteFieldAdapter } from "./adapters/autocomplete-field-adapter";
 export { default as URLFieldAdapter } from "./adapters/url-field-adapter";
 export { default as CheckboxFieldAdapter } from "./adapters/checkbox-field-adapter";
+export { default as CheckboxGroupFieldAdapter } from "./adapters/checkbox-group-field-adapter";
+export { default as SwitchFieldAdapter } from "./adapters/switch-field-adapter";
 export { default as FilePickerAdapter } from "./adapters/file-picker-adapter";
 export { default as RadioGroupFieldAdapter } from "./adapters/radio-group-field-adapter";
 
