@@ -112,7 +112,7 @@
       </layout:component>
       <layout:component componentName="MainSection">
           <div class="ui segment left aligned">
-              <div id="react-root" class="react-ui-container"/>
+              <div id="react-root" class="react-ui-container"></div>
           </div>
       </layout:component>
       <layout:component componentName="ProductFooter">
@@ -272,7 +272,7 @@
                             providedInputs[param] = window.location.origin;
                         }
                     });
-                    
+
                     setPostBody({
                         flowId: flowData.flowId,
                         actionId: "",
