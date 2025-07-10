@@ -4,4 +4,4 @@
 "@wso2is/console": patch
 ---
 
-Improve confirm password behaviour of composer
+Improve confirm password behaviour of the flow builder.
