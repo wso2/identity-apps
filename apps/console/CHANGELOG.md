@@ -1,5 +1,53 @@
 # @wso2is/console
 
+## 2.67.4
+
+### Patch Changes
+
+- [#8491](https://github.com/wso2/identity-apps/pull/8491) [`5a48b099d9eed3b73d74764b6610a678a49e6b58`](https://github.com/wso2/identity-apps/commit/5a48b099d9eed3b73d74764b6610a678a49e6b58) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Utilise isFeatureEnabled function to enable / disable features during maintainance window
+
+* [#8503](https://github.com/wso2/identity-apps/pull/8503) [`20161930823e11dc4a678a679e19ef8aa40d8053`](https://github.com/wso2/identity-apps/commit/20161930823e11dc4a678a679e19ef8aa40d8053) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Hide the flow card on the home page for sub-organizations
+
+* Updated dependencies [[`5a48b099d9eed3b73d74764b6610a678a49e6b58`](https://github.com/wso2/identity-apps/commit/5a48b099d9eed3b73d74764b6610a678a49e6b58), [`20161930823e11dc4a678a679e19ef8aa40d8053`](https://github.com/wso2/identity-apps/commit/20161930823e11dc4a678a679e19ef8aa40d8053)]:
+  - @wso2is/admin.console-settings.v1@2.25.212
+  - @wso2is/admin.organizations.v1@2.26.209
+  - @wso2is/admin.tenants.v1@2.29.15
+  - @wso2is/admin.home.v1@1.7.11
+
+## 2.67.3
+
+### Patch Changes
+
+- [#8501](https://github.com/wso2/identity-apps/pull/8501) [`14a8747910ed801671508c60c5769781fa022674`](https://github.com/wso2/identity-apps/commit/14a8747910ed801671508c60c5769781fa022674) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Disable the AI-generation template of registration flow builder
+
+- Updated dependencies [[`14a8747910ed801671508c60c5769781fa022674`](https://github.com/wso2/identity-apps/commit/14a8747910ed801671508c60c5769781fa022674)]:
+  - @wso2is/admin.feature-gate.v1@1.7.5
+  - @wso2is/admin.flows.v1@1.0.7
+
+## 2.67.2
+
+### Patch Changes
+
+- [#8499](https://github.com/wso2/identity-apps/pull/8499) [`670068e6d34e0e62f3a514bf82e0096750baeb0e`](https://github.com/wso2/identity-apps/commit/670068e6d34e0e62f3a514bf82e0096750baeb0e) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove featureFlags from agents feature
+
+## 2.67.1
+
+### Patch Changes
+
+- [#8490](https://github.com/wso2/identity-apps/pull/8490) [`1038e10f5dd3d2a1bd806b8022f56a008337e489`](https://github.com/wso2/identity-apps/commit/1038e10f5dd3d2a1bd806b8022f56a008337e489) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Fix issues in user creation when email is not required
+
+* [#8176](https://github.com/wso2/identity-apps/pull/8176) [`7481e3bcf5856beae32e670f04956157747334f6`](https://github.com/wso2/identity-apps/commit/7481e3bcf5856beae32e670f04956157747334f6) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add organization handle to organization creation, display, and list
+
+* Updated dependencies [[`1038e10f5dd3d2a1bd806b8022f56a008337e489`](https://github.com/wso2/identity-apps/commit/1038e10f5dd3d2a1bd806b8022f56a008337e489), [`7481e3bcf5856beae32e670f04956157747334f6`](https://github.com/wso2/identity-apps/commit/7481e3bcf5856beae32e670f04956157747334f6)]:
+  - @wso2is/admin.users.v1@2.33.6
+  - @wso2is/admin.authentication.v1@2.25.206
+  - @wso2is/admin.organizations.v1@2.26.208
+  - @wso2is/admin.tenants.v1@2.29.14
+  - @wso2is/admin.core.v1@2.46.6
+  - @wso2is/theme@2.8.4
+  - @wso2is/i18n@2.24.12
+  - @wso2is/admin.agents.v1@1.0.2
+
 ## 2.67.0
 
 ### Minor Changes

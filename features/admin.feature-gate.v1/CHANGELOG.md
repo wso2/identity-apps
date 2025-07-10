@@ -1,5 +1,11 @@
 # @wso2is/admin.feature-gate.v1
 
+## 1.7.5
+
+### Patch Changes
+
+- [#8501](https://github.com/wso2/identity-apps/pull/8501) [`14a8747910ed801671508c60c5769781fa022674`](https://github.com/wso2/identity-apps/commit/14a8747910ed801671508c60c5769781fa022674) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Disable the AI-generation template of registration flow builder
+
 ## 1.7.4
 
 ### Patch Changes

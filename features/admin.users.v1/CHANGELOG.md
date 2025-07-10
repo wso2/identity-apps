@@ -1,5 +1,20 @@
 # @wso2is/admin.users.v1
 
+## 2.33.6
+
+### Patch Changes
+
+- [#8490](https://github.com/wso2/identity-apps/pull/8490) [`1038e10f5dd3d2a1bd806b8022f56a008337e489`](https://github.com/wso2/identity-apps/commit/1038e10f5dd3d2a1bd806b8022f56a008337e489) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Fix issues in user creation when email is not required
+
+- Updated dependencies [[`1038e10f5dd3d2a1bd806b8022f56a008337e489`](https://github.com/wso2/identity-apps/commit/1038e10f5dd3d2a1bd806b8022f56a008337e489), [`7481e3bcf5856beae32e670f04956157747334f6`](https://github.com/wso2/identity-apps/commit/7481e3bcf5856beae32e670f04956157747334f6)]:
+  - @wso2is/admin.users.v1@2.33.6
+  - @wso2is/admin.authentication.v1@2.25.206
+  - @wso2is/admin.organizations.v1@2.26.208
+  - @wso2is/admin.tenants.v1@2.29.14
+  - @wso2is/admin.core.v1@2.46.6
+  - @wso2is/theme@2.8.4
+  - @wso2is/i18n@2.24.12
+
 ## 2.33.5
 
 ### Patch Changes

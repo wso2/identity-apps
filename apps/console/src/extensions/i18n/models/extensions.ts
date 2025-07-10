@@ -2528,6 +2528,7 @@ export interface Extensions {
                     makeDefaultOrganization: string;
                     backButton: string;
                     copyOrganizationId: string;
+                    copyOrganizationHandle: string;
                     copied: string;
                     tenantSearch: {
                         placeholder: string;
