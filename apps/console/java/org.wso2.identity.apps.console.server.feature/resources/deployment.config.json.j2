@@ -293,7 +293,7 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {% if console.agents.enabled is defined %} {{ console.agents.enabled }},
+                "enabled": {% if agent_identity.enabled is defined %} {{ agent_identity.enabled }},
                 {% else %} true,
                 {% endif %}
                 "scopes": {
