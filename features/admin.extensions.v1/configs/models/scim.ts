@@ -37,4 +37,23 @@ export interface SCIMConfigInterface {
         profileUrl: string
     };
     serverSupportedClaimsAvailable: string[];
+    scimUserSchema: {
+        addressesHome: string;
+        addressesWork: string;
+        emails: string;
+        emailsHome: string;
+        emailsWork: string;
+        emailsOther: string;
+        phoneNumbersMobile: string;
+        phoneNumbersHome: string;
+        phoneNumbersWork: string;
+        phoneNumbersOther: string;
+        phoneNumbersPager: string;
+        phoneNumbersFax: string;
+    };
+    scimSystemSchema: {
+        country: string;
+        emailAddresses: string;
+        mobileNumbers: string;
+    };
 }
