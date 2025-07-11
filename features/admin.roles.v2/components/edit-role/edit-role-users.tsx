@@ -88,6 +88,8 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
+    const baseI18nKey: string = isForNonHumanUser ? "roles:edit.agents." : "roles:edit.users.";
+
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
 
@@ -278,17 +280,17 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                 if (response?.status === 200) {
                     dispatch(
                         addAlert({
-                            description: t("roles:edit.users.notifications.success.description"),
+                            description: t(baseI18nKey + "notifications.success.description"),
                             level: AlertLevels.SUCCESS,
-                            message: t("roles:edit.users.notifications.success.message")
+                            message: t(baseI18nKey + "notifications.success.message")
                         })
                     );
                 } else if (response?.status === 202) {
                     dispatch(
                         addAlert({
-                            description: t("roles:edit.users.notifications.pendingApproval.description"),
+                            description: t(baseI18nKey + "notifications.pendingApproval.description"),
                             level: AlertLevels.WARNING,
-                            message: t("roles:edit.users.notifications.pendingApproval.message")
+                            message: t(baseI18nKey + "notifications.pendingApproval.message")
                         })
                     );
                 }
@@ -342,17 +344,17 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                 if (response?.status === 200) {
                     dispatch(
                         addAlert({
-                            description: t("roles:edit.users.notifications.success.description"),
+                            description: t(baseI18nKey + "notifications.success.description"),
                             level: AlertLevels.SUCCESS,
-                            message: t("roles:edit.users.notifications.success.message")
+                            message: t(baseI18nKey + "notifications.success.message")
                         })
                     );
                 } else if (response?.status === 202) {
                     dispatch(
                         addAlert({
-                            description: t("roles:edit.users.notifications.pendingApproval.description"),
+                            description: t(baseI18nKey + "notifications.pendingApproval.description"),
                             level: AlertLevels.WARNING,
-                            message: t("roles:edit.users.notifications.pendingApproval.message")
+                            message: t(baseI18nKey + "notifications.pendingApproval.message")
                         })
                     );
                 }
@@ -459,10 +461,10 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         if (paginatedUsers.length === 0) {
             return (
                 <EmptyPlaceholder
-                    title={ t("roles:edit.users.list." +
+                    title={ t(baseI18nKey + "list." +
                         "emptyPlaceholder.title") }
                     subtitle={ [
-                        t("roles:edit.users.list." +
+                        t(baseI18nKey + "list." +
                             "emptyPlaceholder.subtitles", { type: "role" })
                     ] }
                     image={ getEmptyPlaceholderIllustrations().emptyList }
@@ -570,10 +572,10 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             <Box display="flex" justifyContent="space-between" alignItems="center">
                 <div>
                     <Heading as="h4">
-                        { t("roles:edit.users.heading") }
+                        { t(baseI18nKey + "heading") }
                     </Heading>
                     <Heading subHeading ellipsis as="h6">
-                        { t("roles:edit.users.subHeading") }
+                        { t(baseI18nKey + "subHeading") }
                     </Heading>
                 </div>
                 { !isReadOnly && (
@@ -584,7 +586,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                         onClick={ handleOpenAddNewUserModal }
                     >
                         <Icon name="plus"/>
-                        { t("console:manage.features.roles.edit.users.list." +
+                        { t(baseI18nKey + "list." +
                             "emptyPlaceholder.action") }
                     </PrimaryButton>
                 ) }
