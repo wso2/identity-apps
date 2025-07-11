@@ -41,6 +41,9 @@ import { getScopesResourceEndpoints } from "@wso2is/admin.oidc-scopes.v1";
 import { getInsightsResourceEndpoints } from "@wso2is/admin.org-insights.v1/config/org-insights";
 import { getOrganizationsResourceEndpoints } from "@wso2is/admin.organizations.v1/configs";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
+import {
+    getPasswordRecoveryFlowBuilderResourceEndpoints
+} from "@wso2is/admin.password-recovery-flow-builder.v1/config/endpoints";
 import { getPolicyAdministrationResourceEndpoints } from "@wso2is/admin.policy-administration.v1/configs/endpoints";
 import {
     getPushProviderResourceEndpoints, getPushProviderTemplateEndpoints
@@ -335,6 +338,7 @@ export class Config {
             ...getWorkflowsResourceEndpoints(this.resolveServerHost()),
             ...getWorkflowAssociationsResourceEndpoints(this.resolveServerHost()),
             ...getRegistrationFlowBuilderResourceEndpoints(this.resolveServerHost()),
+            ...getPasswordRecoveryFlowBuilderResourceEndpoints(this.resolveServerHost()),
             ...getWebhooksResourceEndpoints(this.resolveServerHost()),
             ...getAgentsResourceEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.resolveServerHostFromConfig() }/api/server/v1/cors/origins`,

@@ -1,0 +1,55 @@
+.button-extended-properties {
+    margin-bottom: var(--oxygen-spacing-1);
+
+    .extended-property.action-type {
+        cursor: pointer;
+
+        &.oxygen-card {
+            // TODO: `@oxygen-ui/react/Card` declares a default padding which is a bug.
+            // Remove this once it is handled.
+            // Tracker: https://github.com/wso2/oxygen-ui/issues/300
+            padding: 0;
+
+            .oxygen-card-content:last-child {
+                padding: var(--oxygen-spacing-1);
+
+                &:last-child {
+                    padding-bottom: var(--oxygen-spacing-1);
+                }
+            }
+        }
+
+        .action-type-name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            line-clamp: 2;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .action-type-icon {
+            background-color: var(--oxygen-palette-grey-300);
+            width: 32px;
+            height: 32px;
+
+            img {
+                height: 16px;
+                width: 16px;
+            }
+        }
+
+        &.selected {
+            border: 1px solid var(--oxygen-palette-primary-main);
+        }
+    }
+
+    .button-extended-properties-heading {
+        font-weight: 500;
+    }
+
+    .button-extended-properties-sub-heading {
+        margin-top: var(--oxygen-spacing-2);
+        margin-bottom: var(--oxygen-spacing-1);
+    }
+}
