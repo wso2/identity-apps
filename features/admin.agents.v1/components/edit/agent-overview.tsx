@@ -27,7 +27,8 @@ import { AlertLevels, Claim, IdentifiableComponentInterface } from "@wso2is/core
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
 import { DangerZone, DangerZoneGroup, EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
-import React, { useEffect, useMemo, useState } from "react";
+import { AxiosError } from "axios";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Form, Grid } from "semantic-ui-react";
@@ -78,20 +79,20 @@ export default function AgentOverview({
             .then((agentClaims: Claim[]) => {
                 setAgentSchemaAttributes(agentClaims);
             })
-            .catch((error) => {
-                console.error("Failed to fetch agent schema attributes", error);
+            .catch((_error: AxiosError) => {
+
             });
     }, []);
 
-    const formFieldProps = {
+    const agentSchemaformFieldProperties: Record<string, any> = {
         "urn:scim:wso2:agent:schema:agentDescription": {
+            maxRows: 6,
             multiline: true,
-            rows: 4,
-            maxRows: 6
+            rows: 4
         }
     };
 
-    const readOnlyAgentAttributes = [
+    const readOnlyAgentAttributes: string[] = [
         "urn:scim:wso2:agent:schema:agentOwner"
     ];
 
@@ -100,15 +101,13 @@ export default function AgentOverview({
             <EmphasizedSegment padded="very" style={ { border: "none", padding: "21px" } }>
                 <FinalForm
                     onSubmit={ (values: any) => {
-                        
+
                         const updateAgentPayload: AgentScimSchema = {
                             "urn:scim:wso2:agent:schema": {
                                 ...values,
                                 agentOwner: authenticatedUser
                             }
                         };
-
-                        console.log(updateAgentPayload)
 
                         updateAgent(agentId, updateAgentPayload).then((_response: any) => {
                             dispatch(addAlert({
@@ -134,20 +133,28 @@ export default function AgentOverview({
                                             style={ { display: "flex", flexDirection: "column" } }
                                         >
                                             { agentSchemaAttributes?.map((agentAttribute: Claim) => {
-                                                const claimProperties = Object.fromEntries(
-                                                    agentAttribute?.properties?.map(({ key, value }) => [ key, value ]));
+                                                const claimProperties: any = Object.fromEntries(
+                                                    agentAttribute?.properties?.map(
+                                                        ({
+                                                            key, value
+                                                        }: {
+                                                            key: string;
+                                                            value: string;
+                                                        }) => [ key, value ]));
 
-                                                const formFieldProperties = formFieldProps[agentAttribute.claimURI] ?? [];
+                                                const formFieldProperties: any =
+                                                    agentSchemaformFieldProperties[agentAttribute.claimURI] ?? [];
 
-                                                return readOnlyAgentAttributes?.includes(agentAttribute.claimURI) ? null : (
-                                                    <FinalFormField
-                                                        key={ agentAttribute.id }
-                                                        name={ agentAttribute.claimURI.split(":").pop() }
-                                                        label={ claimProperties.DisplayName }
-                                                        component={ TextFieldAdapter }
-                                                        { ...formFieldProperties }
-                                                    ></FinalFormField>
-                                                );
+                                                return readOnlyAgentAttributes?.includes(agentAttribute.claimURI)
+                                                    ? null : (
+                                                        <FinalFormField
+                                                            key={ agentAttribute.id }
+                                                            name={ agentAttribute.claimURI.split(":").pop() }
+                                                            label={ claimProperties.DisplayName }
+                                                            component={ TextFieldAdapter }
+                                                            { ...formFieldProperties }
+                                                        ></FinalFormField>
+                                                    );
                                             }) }
 
                                             <Form.Group>
