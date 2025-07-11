@@ -18,6 +18,7 @@
 
 import { TreeViewBaseItem } from "@mui/x-tree-view/models";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
+import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import Grid from "@oxygen-ui/react/Grid";
@@ -47,6 +48,7 @@ import { Dispatch } from "redux";
 import "./roles-selective-share.scss";
 import useGetApplicationShare from "../../api/use-get-application-share";
 import { ApplicationInterface } from "../../models/application";
+import { getChildrenOfOrganization, updateTreeWithChildren } from "../../utils/shared-access";
 
 interface OrgSelectiveShareWithAllRolesProps extends IdentifiableComponentInterface {
     application: ApplicationInterface;
@@ -75,8 +77,11 @@ const OrgSelectiveShareWithSelectiveRolesView = (props: OrgSelectiveShareWithAll
     const [ nextPageLink, setNextPageLink ] = useState<string>();
     const [ afterCursor, setAfterCursor ] = useState<string>();
     const [ expandedOrgId, setExpandedOrgId ] = useState<string>();
+    const [ expandedItems, setExpandedItems ] = useState<string[]>([]);
     const [ roleSelections, setRoleSelections ] = useState<Record<string, OrganizationRoleInterface[]>>({});
     const [ selectedOrgId, setSelectedOrgId ] = useState<string>(organizationId);
+    const [ flatOrganizationMap, setFlatOrganizationMap ] = useState<Record<string, OrganizationInterface>>({});
+    const [ availableRoles, setAvailableRoles ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
 
     // We are fetching the application organization tree in the read-only mode.
     // Used in 1st level with pagination
@@ -153,6 +158,18 @@ const OrgSelectiveShareWithSelectiveRolesView = (props: OrgSelectiveShareWithAll
 
             // Set the first organization as the selected initial organization.
             setSelectedOrgId(applicationOrgTree[0].id);
+
+            // Initialize the flat organization map with the top-level organizations
+            const initialFlatMap: Record<string, OrganizationInterface> = {};
+
+            // Set the top-level organizations in the flat organization map.
+            originalTopLevelApplicationOrganizations.organizations.forEach((org: OrganizationInterface) => {
+                initialFlatMap[org.id] = {
+                    ...org,
+                    parentId: organizationId
+                };
+            });
+            setFlatOrganizationMap(initialFlatMap);
         }
     }, [ originalTopLevelApplicationOrganizations ]);
 
@@ -195,6 +212,9 @@ const OrgSelectiveShareWithSelectiveRolesView = (props: OrgSelectiveShareWithAll
         const orgRolesMap: Record<string, OrganizationRoleInterface[]> = {
             ...roleSelections
         };
+        const tempFlatOrganizationMap: Record<string, OrganizationInterface> = {
+            ...flatOrganizationMap
+        };
 
         // Add all nodes from the top-level organization to nodeMap
         data.forEach((item: OrganizationInterface) => {
@@ -212,38 +232,27 @@ const OrgSelectiveShareWithSelectiveRolesView = (props: OrgSelectiveShareWithAll
             };
 
             orgRolesMap[item.id] = item.roles;
+
+            // Add the organization to the flat map
+            if (!tempFlatOrganizationMap[item.id]) {
+                tempFlatOrganizationMap[item.id] = {
+                    hasChildren: item.hasChildren,
+                    id: item.id,
+                    name: item.name,
+                    parentId: item.parentId ?? expandedOrgId,
+                    ref: item.ref,
+                    status: item.status
+                };
+            }
         });
+
+        // Update the flat organization map state
+        setFlatOrganizationMap(tempFlatOrganizationMap);
 
         // Update the role selections state with the orgRolesMap
         setRoleSelections(orgRolesMap);
 
         return data.map((item: OrganizationInterface) => nodeMap[item.id]);
-    };
-
-    // This function updates the tree with new children for a given parent ID.
-    // It recursively traverses the tree and updates the children of the specified parent.
-    const updateTreeWithChildren = (
-        nodes: TreeViewBaseItemWithRoles[],
-        parentId: string,
-        newChildren: TreeViewBaseItemWithRoles[]
-    ): TreeViewBaseItemWithRoles[] => {
-        return nodes.map((node: TreeViewBaseItemWithRoles) => {
-            if (node.id === parentId) {
-                return {
-                    ...node,
-                    children: newChildren
-                };
-            }
-
-            if (node.children && node.children.length > 0) {
-                return {
-                    ...node,
-                    children: updateTreeWithChildren(node.children, parentId, newChildren)
-                };
-            }
-
-            return node;
-        });
     };
 
     const loadMoreOrganizations = (): void => {
@@ -256,6 +265,30 @@ const OrgSelectiveShareWithSelectiveRolesView = (props: OrgSelectiveShareWithAll
         }
 
         setAfterCursor(cursorFragments[1]);
+    };
+
+    /**
+     * This function collapses all child nodes of a given parent node.
+     * It removes the child nodes from the expanded items and recursively collapses
+     * any further child nodes.
+     *
+     * @param parentId - The ID of the parent node whose children need to be collapsed.
+     */
+    const collapseChildNodes = (parentId: string): void => {
+        // Find children of the parent node
+        const children: string[] = getChildrenOfOrganization(parentId, flatOrganizationMap);
+
+        // If there are no children, return
+        if (children?.length > 0) {
+            // Recursively collapse child nodes
+            children.forEach((childId: string) => {
+                // Remove the child from the expanded items
+                setExpandedItems((prev: string[]) => prev.filter((id: string) => id !== childId));
+
+                // Recursively collapse child nodes
+                collapseChildNodes(childId);
+            });
+        }
     };
 
     return (
@@ -279,80 +312,107 @@ const OrgSelectiveShareWithSelectiveRolesView = (props: OrgSelectiveShareWithAll
                         </Grid>
                     ) : (
                         <>
-                            <Grid
-                                xs={ 12 }
-                                md={ 4 }
-                                padding={ 1 }
-                                className="roles-selective-share-left-panel"
-                                id="scrollableOrgContainer"
-                            >
-                                <InfiniteScroll
-                                    dataLength={ applicationOrganizationTree.length }
-                                    next={ loadMoreOrganizations }
-                                    hasMore={ isNextPageAvailable }
-                                    loader={ (<LinearProgress/>) }
-                                    scrollableTarget="scrollableOrgContainer"
-                                >
+                            {
+                                applicationOrganizationTree.length > 0 ? (
+                                    <>
+                                        <Grid
+                                            xs={ 12 }
+                                            md={ 4 }
+                                            padding={ 1 }
+                                            className="roles-selective-share-left-panel"
+                                            id="scrollableOrgContainer"
+                                        >
+                                            <InfiniteScroll
+                                                dataLength={ applicationOrganizationTree.length }
+                                                next={ loadMoreOrganizations }
+                                                hasMore={ isNextPageAvailable }
+                                                loader={ (<LinearProgress/>) }
+                                                scrollableTarget="scrollableOrgContainer"
+                                            >
 
-                                    <RichTreeView
-                                        data-componentid={ `${ componentId }-tree-view` }
-                                        className="roles-selective-share-tree-view"
-                                        items={ applicationOrganizationTree }
-                                        expansionTrigger="iconContainer"
-                                        onItemExpansionToggle={ (
-                                            _e: SyntheticEvent,
-                                            itemId: string,
-                                            expanded: boolean
-                                        ) => {
-                                            if (expanded) {
-                                                setExpandedOrgId(itemId);
-                                            }
-                                        } }
-                                        onItemClick={ (_e: SyntheticEvent, itemId: string) => {
-                                            setSelectedOrgId(itemId);
-                                        } }
-                                        checkboxSelection={ false }
-                                    />
-                                </InfiniteScroll>
-                            </Grid>
-                            <AnimatePresence mode="wait">
-                                <Grid
-                                    xs={ 12 }
-                                    md={ 8 }
-                                    paddingX={ 2 }
-                                    paddingY={ 1 }
-                                    className="roles-selective-share-right-panel"
-                                >
-                                    <Box
-                                        className="role-list-container"
+                                                <RichTreeView
+                                                    data-componentid={ `${ componentId }-tree-view` }
+                                                    className="roles-selective-share-tree-view"
+                                                    items={ applicationOrganizationTree }
+                                                    expansionTrigger="iconContainer"
+                                                    expandedItems={ expandedItems }
+                                                    onItemExpansionToggle={ (
+                                                        _e: SyntheticEvent,
+                                                        itemId: string,
+                                                        expanded: boolean
+                                                    ) => {
+                                                        if (expanded) {
+                                                            setExpandedOrgId(itemId);
+                                                            setExpandedItems((prev: string[]) => [
+                                                                ...prev,
+                                                                itemId
+                                                            ]);
+                                                        } else  {
+                                                            setExpandedItems((prev: string[]) =>
+                                                                prev.filter((id: string) => id !== itemId));
+                                                            collapseChildNodes(itemId);
+                                                        }
+                                                    } }
+                                                    onItemClick={ (_e: SyntheticEvent, itemId: string) => {
+                                                        setSelectedOrgId(itemId);
+                                                    } }
+                                                    checkboxSelection={ false }
+                                                />
+                                            </InfiniteScroll>
+                                        </Grid>
+                                        <AnimatePresence mode="wait">
+                                            <Grid
+                                                xs={ 12 }
+                                                md={ 8 }
+                                                paddingX={ 2 }
+                                                paddingY={ 1 }
+                                                className="roles-selective-share-right-panel"
+                                            >
+                                                <Box
+                                                    className="role-list-container"
+                                                >
+                                                    { !isEmpty(roleSelections[selectedOrgId]) &&
+                                                        roleSelections[selectedOrgId]
+                                                            .map((
+                                                                role: SelectedOrganizationRoleInterface,
+                                                                index: number) => (
+                                                                <Box
+                                                                    key={ `role-${index}` }
+                                                                    className="role-item"
+                                                                    data-componentid={ `${componentId}-role-${index}` }
+                                                                >
+                                                                    <AnimatedAvatar
+                                                                        name={ role.displayName }
+                                                                        size="mini"
+                                                                        data-componentid={
+                                                                            `${ componentId }-item-avatar` }
+                                                                    />
+                                                                    <Typography
+                                                                        variant="body1"
+                                                                        className="role-label"
+                                                                        data-componentid={
+                                                                            `${ componentId }-role-label` }
+                                                                    >
+                                                                        { role.displayName }
+                                                                    </Typography>
+                                                                </Box>
+                                                            ))
+                                                    }
+                                                </Box>
+
+                                            </Grid>
+                                        </AnimatePresence>
+                                    </>
+
+                                ) : (
+                                    <Alert
+                                        severity="info"
+                                        data-componentid={ `${ componentId }-no-orgs-alert` }
                                     >
-                                        { !isEmpty(roleSelections[selectedOrgId]) &&
-                                            roleSelections[selectedOrgId]
-                                                .map((role: SelectedOrganizationRoleInterface, index: number) => (
-                                                    <Box
-                                                        key={ `role-${index}` }
-                                                        className="role-item"
-                                                        data-componentid={ `${componentId}-role-${index}` }
-                                                    >
-                                                        <AnimatedAvatar
-                                                            name={ role.displayName }
-                                                            size="mini"
-                                                            data-componentid={ `${ componentId }-item-avatar` }
-                                                        />
-                                                        <Typography
-                                                            variant="body1"
-                                                            className="role-label"
-                                                            data-componentid={ `${ componentId }-role-label` }
-                                                        >
-                                                            { role.displayName }
-                                                        </Typography>
-                                                    </Box>
-                                                ))
-                                        }
-                                    </Box>
-
-                                </Grid>
-                            </AnimatePresence>
+                                        { t("applications:edit.sections.sharedAccess.noSharedOrgs") }
+                                    </Alert>
+                                )
+                            }
                         </>
                     )
                 }

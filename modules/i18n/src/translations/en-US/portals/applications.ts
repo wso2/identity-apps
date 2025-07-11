@@ -598,6 +598,7 @@ export const applications: ApplicationsNS = {
                 tabName: "Provisioning"
             },
             sharedAccess: {
+                noSharedOrgs: "This application is not shared with any organizations.",
                 noRolesAvailableForOrg: "No roles available for the selected organization.",
                 orgNotSelectedForRoleSharing: "To share roles, please select the organization from the left panel.",
                 subTitle: "Select the following options to share the application with the organizations.",

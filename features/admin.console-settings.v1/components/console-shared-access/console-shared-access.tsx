@@ -125,6 +125,12 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
     }, [ administratorRole ]);
 
     useEffect(() => {
+        if (!originalOrganizationTree?.sharingInitiationMode) {
+            setSharedAccessMode(RoleSharedAccessModes.SHARE_WITH_SELECTED_ORGS_AND_ROLES);
+
+            return;
+        }
+
         if (originalOrganizationTree?.sharingInitiationMode?.roleSharing?.mode ===
                 RoleSharingModes.ALL) {
             setSharedAccessMode(RoleSharedAccessModes.SHARE_ALL_ROLES_WITH_ALL_ORGS);

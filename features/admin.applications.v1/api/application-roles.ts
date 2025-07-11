@@ -26,6 +26,7 @@ import {
     ShareApplicationWithAllOrganizationsDataInterface,
     ShareApplicationWithSelectedOrganizationsAndRolesDataInterface,
     ShareOrganizationsAndRolesPatchDataInterface,
+    UnshareApplicationWithAllOrganizationsDataInterface,
     UnshareOrganizationsDataInterface
 } from "../models/application";
 
@@ -54,6 +55,49 @@ export const shareApplicationWithAllOrganizations = <T>(
         },
         method: HttpMethods.POST,
         url: `${ store.getState().config.endpoints.applications }/share-with-all`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200 && response.status !== 202) {
+                throw new IdentityAppsApiException(
+                    ApplicationManagementConstants.APPLICATION_STATUS_UPDATE_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data as T);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ApplicationManagementConstants.APPLICATION_STATUS_UPDATE_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * unshare an application with all organizations with given roles.
+ *
+ * @param id - ID of the application.
+ * @returns A promise containing the response.
+ * @throws IdentityAppsApiException
+ */
+export const unShareApplicationWithAllOrganizations = <T>(
+    data: UnshareApplicationWithAllOrganizationsDataInterface): Promise<T> => {
+    const requestConfig: AxiosRequestConfig = {
+        data,
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: `${ store.getState().config.endpoints.applications }/unshare-with-all`
     };
 
     return httpClient(requestConfig)

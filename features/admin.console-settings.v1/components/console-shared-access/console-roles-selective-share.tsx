@@ -25,11 +25,16 @@ import Grid from "@oxygen-ui/react/Grid";
 import LinearProgress from "@oxygen-ui/react/LinearProgress";
 import Typography from "@oxygen-ui/react/Typography";
 import useGetApplicationShare from "@wso2is/admin.applications.v1/api/use-get-application-share";
+import {
+    computeChildRoleSelections,
+    computeInitialRoleSelections,
+    getChildrenOfOrganization,
+    updateTreeWithChildren
+} from "@wso2is/admin.applications.v1/utils/shared-access";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     OrganizationInterface,
     OrganizationLinkInterface,
-    OrganizationRoleInterface,
     SelectedOrganizationRoleInterface
 } from "@wso2is/admin.organizations.v1/models/organizations";
 import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
@@ -80,9 +85,10 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
     const [ selectedOrgId, setSelectedOrgId ] = useState<string>();
     const [ expandedOrgId, setExpandedOrgId ] = useState<string>();
     const [ readOnly, setReadOnly ] = useState<boolean>(true);
-    const [ resolvedOrgs, setResolvedOrgs ] = useState<string[]>([]);
+    const [ expandedItems, setExpandedItems ] = useState<string[]>([]);
     const [ organizationTree, setOrganizationTree ] = useState<TreeViewBaseItemWithRoles[]>([]);
     const [ roleSelections, setRoleSelections ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
+    const [ flatOrganizationMap, setFlatOrganizationMap ] = useState<Record<string, OrganizationInterface>>({});
     const [ isNextPageAvailable, setIsNextPageAvailable ] = useState<boolean>(false);
     const [ nextPageLink, setNextPageLink ] = useState<string>();
     const [ afterCursor, setAfterCursor ] = useState<string>();
@@ -107,8 +113,7 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
     } = useGetApplicationShare(
         consoleId,
         !isEmpty(consoleId) &&
-        !isEmpty(expandedOrgId) &&
-        !resolvedOrgs.includes(expandedOrgId),
+        !isEmpty(expandedOrgId),
         false,
         `parentId eq '${ expandedOrgId }'`
     );
@@ -140,6 +145,18 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
                 setOrganizationTree(combinedOrgs);
                 setSelectedOrgId(topLevelOrgTree[0].id);
             }
+
+            // Initialize the flat organization map with the top-level organizations
+            const initialFlatMap: Record<string, OrganizationInterface> = {};
+
+            // Set the top-level organizations in the flat organization map.
+            originalTopLevelOrganizationTree.organizations.forEach((org: OrganizationInterface) => {
+                initialFlatMap[org.id] = {
+                    ...org,
+                    parentId: organizationId
+                };
+            });
+            setFlatOrganizationMap(initialFlatMap);
         }
 
         // If there are links in the top-level organization tree, set the next page link.
@@ -167,13 +184,13 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
             const updatedTree: TreeViewBaseItemWithRoles[] =
                 updateTreeWithChildren(organizationTree, expandedOrgId, childOrgTree);
 
-            setResolvedOrgs((prev: string[]) => [ ...prev, expandedOrgId ]);
             setOrganizationTree(updatedTree);
 
             // Compute role selections for the newly added children
             const childRoleMap: Record<string, SelectedOrganizationRoleInterface[]> = computeChildRoleSelections(
                 expandedOrgId,
-                originalOrganizationTree.organizations
+                originalOrganizationTree.organizations,
+                roleSelections
             );
 
             setRoleSelections((prev: Record<string, SelectedOrganizationRoleInterface[]>) => ({
@@ -227,6 +244,9 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
 
     const buildChildTree = (data: OrganizationInterface[]): TreeViewBaseItemWithRoles[] => {
         const nodeMap: Record<string, TreeViewBaseItemWithRoles> = {};
+        const tempFlatOrganizationMap: Record<string, OrganizationInterface> = {
+            ...flatOrganizationMap
+        };
 
         // Add all nodes from the top-level organization to nodeMap
         data.forEach((item: OrganizationInterface) => {
@@ -243,61 +263,28 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
                 parentId: item.parentId,
                 roles: item.roles || []
             };
+
+            // Add the organization to the flat map
+            if (!tempFlatOrganizationMap[item.id]) {
+                tempFlatOrganizationMap[item.id] = {
+                    hasChildren: item.hasChildren,
+                    id: item.id,
+                    name: item.name,
+                    parentId: item.parentId ?? expandedOrgId,
+                    ref: item.ref,
+                    status: item.status
+                };
+            }
         });
+
+        // Update the flat organization map state
+        setFlatOrganizationMap(tempFlatOrganizationMap);
 
         return data.map((item: OrganizationInterface) => nodeMap[item.id]);
     };
 
-    // This function updates the tree with new children for a given parent ID.
-    // It recursively traverses the tree and updates the children of the specified parent.
-    const updateTreeWithChildren = (
-        nodes: TreeViewBaseItemWithRoles[],
-        parentId: string,
-        newChildren: TreeViewBaseItemWithRoles[]
-    ): TreeViewBaseItemWithRoles[] => {
-        return nodes.map((node: TreeViewBaseItemWithRoles) => {
-            if (node.id === parentId) {
-                return {
-                    ...node,
-                    children: newChildren
-                };
-            }
-
-            if (node.children && node.children.length > 0) {
-                return {
-                    ...node,
-                    children: updateTreeWithChildren(node.children, parentId, newChildren)
-                };
-            }
-
-            return node;
-        });
-    };
-
-    const getChildrenOfOrganization = (parentId: string): string[] => {
-        const result: string[] = [];
-
-        const recurse = (nodes: TreeViewBaseItemWithRoles[]) => {
-            for (const node of nodes) {
-                if (node.id === parentId && node.children) {
-                    for (const child of node.children as TreeViewBaseItemWithRoles[]) {
-                        result.push(child.id);
-                        recurse([ child ]);
-                    }
-                } else if (node.children) {
-                    recurse(node.children as TreeViewBaseItemWithRoles[]);
-                }
-            }
-        };
-
-        recurse(organizationTree);
-
-        return result;
-    };
-
-
     const cascadeRoleRemovalToChildren = (parentId: string, removedRole: SelectedOrganizationRoleInterface) => {
-        const children: string[] = getChildrenOfOrganization(parentId);
+        const children: string[] = getChildrenOfOrganization(parentId, flatOrganizationMap);
 
         children.forEach((childId: string) => {
             const childRoles: SelectedOrganizationRoleInterface[] = roleSelections[childId];
@@ -318,7 +305,7 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
     };
 
     const cascadeRoleAdditionToChildren = (parentId: string, addedRole: SelectedOrganizationRoleInterface) => {
-        const children: string[] = getChildrenOfOrganization(parentId);
+        const children: string[] = getChildrenOfOrganization(parentId, flatOrganizationMap);
 
         children.forEach((childId: string) => {
             const existingRoles: SelectedOrganizationRoleInterface[] = roleSelections[childId] || [];
@@ -408,53 +395,6 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
         });
     };
 
-    const computeInitialRoleSelections = (
-        orgs: OrganizationInterface[],
-        rootRoles: OrganizationRoleInterface[]
-    ): Record<string, SelectedOrganizationRoleInterface[]> => {
-        const roleMap: Record<string, SelectedOrganizationRoleInterface[]> = {};
-
-        orgs.forEach((org: OrganizationInterface) => {
-            const roles: SelectedOrganizationRoleInterface[] = rootRoles.map(
-                (role: OrganizationRoleInterface) => ({
-                    ...role,
-                    selected: org.roles?.some(
-                        (orgRole: OrganizationRoleInterface) => orgRole.displayName === role.displayName
-                    ) || false
-                })
-            );
-
-            roleMap[org.id] = roles;
-        });
-
-        return roleMap;
-    };
-
-    const computeChildRoleSelections = (
-        parentId: string,
-        children: OrganizationInterface[]
-    ): Record<string, SelectedOrganizationRoleInterface[]> => {
-        const parentRoles: SelectedOrganizationRoleInterface[] = roleSelections[parentId];
-
-        if (!parentRoles) return {};
-
-        const selectedParentRoles: SelectedOrganizationRoleInterface[] =
-            parentRoles.filter((role: SelectedOrganizationRoleInterface) => role.selected);
-
-        const updated: Record<string, SelectedOrganizationRoleInterface[]> = {};
-
-        children.forEach((childOrg: OrganizationInterface) => {
-            updated[childOrg.id] = selectedParentRoles.map((role: SelectedOrganizationRoleInterface) => ({
-                ...role,
-                selected: childOrg.roles?.some(
-                    (orgRole: OrganizationRoleInterface) => orgRole.displayName === role.displayName
-                ) || false
-            }));
-        });
-
-        return updated;
-    };
-
     // This function loads more organizations when the user scrolls to the bottom of the organization tree.
     // It checks if there is a next page link and updates the after cursor for pagination.
     const loadMoreOrganizations = (): void => {
@@ -467,6 +407,30 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
         }
 
         setAfterCursor(cursorFragments[1]);
+    };
+
+    /**
+     * This function collapses all child nodes of a given parent node.
+     * It removes the child nodes from the expanded items and recursively collapses
+     * any further child nodes.
+     *
+     * @param parentId - The ID of the parent node whose children need to be collapsed.
+     */
+    const collapseChildNodes = (parentId: string): void => {
+        // Find children of the parent node
+        const children: string[] = getChildrenOfOrganization(parentId, flatOrganizationMap);
+
+        // If there are no children, return
+        if (children?.length > 0) {
+            // Recursively collapse child nodes
+            children.forEach((childId: string) => {
+                // Remove the child from the expanded items
+                setExpandedItems((prev: string[]) => prev.filter((id: string) => id !== childId));
+
+                // Recursively collapse child nodes
+                collapseChildNodes(childId);
+            });
+        }
     };
 
     return (
@@ -505,6 +469,7 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
                             className="roles-selective-share-tree-view"
                             items={ organizationTree }
                             defaultSelectedItems={ selectedOrgId }
+                            expandedItems={ expandedItems }
                             expansionTrigger="iconContainer"
                             onItemClick={ (_e: SyntheticEvent, itemId: string) => {
                                 setSelectedOrgId(itemId);
@@ -512,6 +477,10 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
                             onItemExpansionToggle={ (_e: SyntheticEvent, itemId: string, expanded: boolean) => {
                                 if (expanded) {
                                     setExpandedOrgId(itemId);
+                                    setExpandedItems((prev: string[]) => [ ...prev, itemId ]);
+                                } else {
+                                    setExpandedItems((prev: string[]) => prev.filter((id: string) => id !== itemId));
+                                    collapseChildNodes(itemId);
                                 }
                             } }
                             multiSelect={ false }

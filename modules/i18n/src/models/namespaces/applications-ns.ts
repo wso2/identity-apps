@@ -785,6 +785,7 @@ export interface ApplicationsNS {
                 };
                 orgNotSelectedForRoleSharing: string;
                 noRolesAvailableForOrg: string;
+                noSharedOrgs: string;
             };
             shareApplication: {
                 heading: string;

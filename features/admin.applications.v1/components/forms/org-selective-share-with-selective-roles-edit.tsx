@@ -57,6 +57,7 @@ import { Dispatch } from "redux";
 import "./roles-selective-share.scss";
 import useGetApplicationShare from "../../api/use-get-application-share";
 import { ApplicationInterface, RoleSharingInterface } from "../../models/application";
+import { computeChildRoleSelections, computeInitialRoleSelections, getChildrenOfOrganization, updateTreeWithChildren } from "../../utils/shared-access";
 
 interface OrgSelectiveShareWithSelectiveRolesEditProps extends IdentifiableComponentInterface {
     application: ApplicationInterface;
@@ -287,7 +288,8 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
             // Compute role selections for the newly added children when expanded.
             const childRoleMap: Record<string, SelectedOrganizationRoleInterface[]> = computeChildRoleSelections(
                 expandedOrgId,
-                originalOrganizations.organizations
+                originalOrganizations.organizations,
+                roleSelections
             );
 
             setRoleSelections((prev: Record<string, SelectedOrganizationRoleInterface[]>) => ({
@@ -449,102 +451,8 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
         return data.map((item: OrganizationInterface) => nodeMap[item.id]);
     };
 
-    // This function updates the tree with new children for a given parent ID.
-    // It recursively traverses the tree and updates the children of the specified parent.
-    const updateTreeWithChildren = (
-        nodes: TreeViewBaseItemWithRoles[],
-        parentId: string,
-        newChildren: TreeViewBaseItemWithRoles[]
-    ): TreeViewBaseItemWithRoles[] => {
-        return nodes.map((node: TreeViewBaseItemWithRoles) => {
-            if (node.id === parentId) {
-                return {
-                    ...node,
-                    children: newChildren
-                };
-            }
-
-            if (node.children && node.children.length > 0) {
-                return {
-                    ...node,
-                    children: updateTreeWithChildren(node.children, parentId, newChildren)
-                };
-            }
-
-            return node;
-        });
-    };
-
-    const computeInitialRoleSelections = (
-        orgs: OrganizationInterface[],
-        rootRoles: OrganizationRoleInterface[]
-    ): Record<string, SelectedOrganizationRoleInterface[]> => {
-        const roleMap: Record<string, SelectedOrganizationRoleInterface[]> = {};
-
-        orgs.forEach((org: OrganizationInterface) => {
-            const roles: SelectedOrganizationRoleInterface[] = rootRoles.map(
-                (role: OrganizationRoleInterface) => ({
-                    audience: {
-                        display: role.audience?.display,
-                        type: role.audience?.type
-                    },
-                    displayName: role.displayName,
-                    id: role.displayName,
-                    selected: false
-                })
-            );
-
-            roleMap[org.id] = roles;
-        });
-
-        return roleMap;
-    };
-
-    const computeChildRoleSelections = (
-        parentId: string,
-        children: OrganizationInterface[]
-    ): Record<string, SelectedOrganizationRoleInterface[]> => {
-        const parentRoles: SelectedOrganizationRoleInterface[] = roleSelections[parentId];
-
-        if (!parentRoles) return {};
-
-        const selectedParentRoles: SelectedOrganizationRoleInterface[] =
-            parentRoles.filter((role: SelectedOrganizationRoleInterface) => role.selected);
-
-        const updated: Record<string, SelectedOrganizationRoleInterface[]> = {};
-
-        children.forEach((childOrg: OrganizationInterface) => {
-            updated[childOrg.id] = selectedParentRoles.map((role: SelectedOrganizationRoleInterface) => ({
-                audience: {
-                    display: role.audience.display,
-                    type: role.audience.type
-                },
-                displayName: role.displayName,
-                id: role.displayName,
-                selected: false
-            }));
-        });
-
-        return updated;
-    };
-
-    const getChildrenOfOrganization = (parentId: string): string[] => {
-        const result: string[] = [];
-
-        // Iterate the flatOrganizationMap to find orgs that have the given parentId
-        Object.keys(flatOrganizationMap).forEach((orgId: string) => {
-            const org: OrganizationInterface = flatOrganizationMap[orgId];
-
-            if (org.parentId === parentId) {
-                result.push(orgId);
-            }
-        });
-
-        return result;
-    };
-
     const cascadeRoleAdditionToChildren = (parentId: string, addedRole: SelectedOrganizationRoleInterface) => {
-        const children: string[] = getChildrenOfOrganization(parentId);
+        const children: string[] = getChildrenOfOrganization(parentId, flatOrganizationMap);
 
         children.forEach((childId: string) => {
             const existingRoles: SelectedOrganizationRoleInterface[] = roleSelections[childId] || [];
@@ -571,7 +479,7 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
     };
 
     const cascadeRoleRemovalToChildren = (parentId: string, removedRole: SelectedOrganizationRoleInterface) => {
-        const children: string[] = getChildrenOfOrganization(parentId);
+        const children: string[] = getChildrenOfOrganization(parentId, flatOrganizationMap);
 
         children.forEach((childId: string) => {
             const childRoles: SelectedOrganizationRoleInterface[] = roleSelections[childId];
@@ -660,7 +568,7 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
             return;
         }
 
-        const children: string[] = getChildrenOfOrganization(selectedItemId);
+        const children: string[] = getChildrenOfOrganization(selectedItemId, flatOrganizationMap);
 
         // Deselect all children nodes
         setSelectedItems((prev: string[]) => prev.filter((item: string) => !children.includes(item)));
@@ -884,9 +792,6 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                 </Box>
             ));
     };
-
-    console.log(selectedOrgId);
-
 
     return (
         <>

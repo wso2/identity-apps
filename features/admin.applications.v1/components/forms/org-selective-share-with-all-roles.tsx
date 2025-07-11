@@ -46,6 +46,7 @@ import { Dispatch } from "redux";
 import "./roles-selective-share.scss";
 import useGetApplicationShare from "../../api/use-get-application-share";
 import { ApplicationInterface } from "../../models/application";
+import { getChildrenOfOrganization, updateTreeWithChildren } from "../../utils/shared-access";
 
 interface OrgSelectiveShareWithAllRolesProps extends IdentifiableComponentInterface {
     application: ApplicationInterface;
@@ -254,7 +255,6 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
 
     const buildChildTree = (data: OrganizationInterface[]): TreeViewBaseItemWithRoles[] => {
         const nodeMap: Record<string, TreeViewBaseItemWithRoles> = {};
-
         const tempFlatOrganizationMap: Record<string, OrganizationInterface> = {
             ...flatOrganizationMap
         };
@@ -296,47 +296,6 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
         return data.map((item: OrganizationInterface) => nodeMap[item.id]);
     };
 
-    // This function updates the tree with new children for a given parent ID.
-    // It recursively traverses the tree and updates the children of the specified parent.
-    const updateTreeWithChildren = (
-        nodes: TreeViewBaseItemWithRoles[],
-        parentId: string,
-        newChildren: TreeViewBaseItemWithRoles[]
-    ): TreeViewBaseItemWithRoles[] => {
-        return nodes.map((node: TreeViewBaseItemWithRoles) => {
-            if (node.id === parentId) {
-                return {
-                    ...node,
-                    children: newChildren
-                };
-            }
-
-            if (node.children && node.children.length > 0) {
-                return {
-                    ...node,
-                    children: updateTreeWithChildren(node.children, parentId, newChildren)
-                };
-            }
-
-            return node;
-        });
-    };
-
-    const getChildrenOfOrganization = (parentId: string): string[] => {
-        const result: string[] = [];
-
-        // Iterate the flatOrganizationMap to find orgs that have the given parentId
-        Object.keys(flatOrganizationMap).forEach((orgId: string) => {
-            const org: OrganizationInterface = flatOrganizationMap[orgId];
-
-            if (org.parentId === parentId) {
-                result.push(orgId);
-            }
-        });
-
-        return result;
-    };
-
     const selectParentNodes = (selectedItemId: string): void => {
         // Get the seleted node from the flatOrganizationMap
         const selectedOrg: OrganizationInterface | undefined = flatOrganizationMap[selectedItemId];
@@ -373,7 +332,7 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
             return;
         }
 
-        const children: string[] = getChildrenOfOrganization(selectedItemId);
+        const children: string[] = getChildrenOfOrganization(selectedItemId, flatOrganizationMap);
 
         // Deselect all children nodes
         setSelectedItems((prev: string[]) => prev.filter((item: string) => !children.includes(item)));

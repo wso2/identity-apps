@@ -33,11 +33,9 @@ import {
     stopSharingApplication,
     unshareApplication
 } from "@wso2is/admin.organizations.v1/api";
-import useSharedOrganizations from "@wso2is/admin.organizations.v1/api/use-shared-organizations";
 import {
     OrganizationInterface,
     OrganizationResponseInterface,
-    OrganizationRoleInterface,
     SelectedOrganizationRoleInterface,
     ShareApplicationRequestInterface
 } from "@wso2is/admin.organizations.v1/models";
@@ -80,6 +78,7 @@ import {
     editApplicationRolesOfExistingOrganizations,
     shareApplicationWithAllOrganizations,
     shareApplicationWithSelectedOrganizationsAndRoles,
+    unShareApplicationWithAllOrganizations,
     unshareApplicationWithSelectedOrganizations
 } from "../../api/application-roles";
 import useGetApplicationShare from "../../api/use-get-application-share";
@@ -92,6 +91,7 @@ import {
     ShareApplicationWithSelectedOrganizationsAndRolesDataInterface,
     ShareOrganizationsAndRolesPatchDataInterface,
     ShareOrganizationsAndRolesPatchOperationInterface,
+    UnshareApplicationWithAllOrganizationsDataInterface,
     UnshareOrganizationsDataInterface
 } from "../../models/application";
 
@@ -172,15 +172,6 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
     const [ roleSelections, setRoleSelections ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
 
     const {
-        data: sharedOrganizations,
-        error: sharedOrganizationsFetchRequestError,
-        mutate: mutateSharedOrganizationsFetchRequest
-    } = useSharedOrganizations(
-        application?.id,
-        isOrganizationManagementEnabled
-    );
-
-    const {
         data: applicationShareData,
         isLoading: isApplicationShareDataFetchRequestLoading,
         isValidating: isApplicationShareDataFetchRequestValidating,
@@ -210,7 +201,28 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
     ]);
 
     useEffect(() => {
-        const orgSharingPolicy: string = applicationShareData?.sharingInitiationMode?.policy;
+        if (!applicationShareData) {
+            // If there is no application share data, it means the application is not shared with any organization.
+            setShareType(ShareType.UNSHARE);
+
+            return;
+        }
+
+        if (!applicationShareData.sharingInitiationMode) {
+            // If there is no sharing initiation mode, it selective sharing is done.
+            setShareType(ShareType.SHARE_SELECTED);
+
+            if (applicationShareData.organizations?.length > 0) {
+                const sharedOrg: OrganizationInterface = applicationShareData.organizations[0];
+
+                console.log(sharedOrg);
+
+            }
+
+            return;
+        }
+
+        const orgSharingPolicy: string = applicationShareData.sharingInitiationMode?.policy;
 
         if (orgSharingPolicy === ApplicationSharingPolicy.ALL_EXISTING_AND_FUTURE_ORGS) {
             setShareType(ShareType.SHARE_ALL);
@@ -430,7 +442,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 })
                 .finally(() => {
                     if (shareType === ShareType.SHARE_SELECTED) {
-                        mutateSharedOrganizationsFetchRequest();
+                        // mutateSharedOrganizationsFetchRequest();
                     }
 
                     onApplicationSharingCompleted();
@@ -557,12 +569,9 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
         }
 
         if (shareType === ShareType.UNSHARE) {
-            // logic to handle unsharing the application
-
-            return;
-        }
-
-        if (shareType === ShareType.SHARE_ALL) {
+            // Unshare the application with all organizations
+            unshareWithAllOrganizations();
+        } else if (shareType === ShareType.SHARE_ALL) {
             if (roleShareTypeAll === RoleShareType.SHARE_SELECTED) {
                 // Share selected roles with all organizations
                 shareSelectedRolesWithAllOrgs();
@@ -572,11 +581,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 // Share all roles with all organizations
                 shareAllRolesWithAllOrgs();
             }
-
-            return;
-        }
-
-        if (shareType === ShareType.SHARE_SELECTED) {
+        } else if (shareType === ShareType.SHARE_SELECTED) {
             // logic to handle sharing the application with selected organizations
             if (roleShareTypeSelected === RoleShareType.SHARE_SELECTED) {
                 // Share selected roles with selected organizations
@@ -587,9 +592,32 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 // Share all roles with selected organizations
                 shareAllRolesWithSelectedOrgs();
             }
-
-            return;
         }
+    };
+
+    const unshareWithAllOrganizations = (): void => {
+        const data: UnshareApplicationWithAllOrganizationsDataInterface = {
+            applicationId: application.id
+        };
+
+        unShareApplicationWithAllOrganizations(data)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t("consoleSettings:sharedAccess.notifications." +
+                        "unshareRoles.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("consoleSettings:sharedAccess.notifications.unshareRoles.success.message")
+                }));
+            })
+            .catch((error: Error) => {
+                dispatch(addAlert({
+                    description: t("consoleSettings:sharedAccess.notifications." +
+                        "unshareRoles.error.description",
+                    { error: error.message }),
+                    level: AlertLevels.ERROR,
+                    message: t("consoleSettings:sharedAccess.notifications.unshareRoles.error.message")
+                }));
+            });
     };
 
     const shareSelectedRolesWithSelectedOrgs = async (): Promise<void> => {

@@ -959,6 +959,13 @@ export interface ShareApplicationWithAllOrganizationsDataInterface {
 }
 
 /**
+ * Interface for unsharing the application with all organizations.
+ */
+export interface UnshareApplicationWithAllOrganizationsDataInterface {
+    applicationId: string;
+}
+
+/**
  * Interface for shared organization and roles.
  */
 export interface SharedOrganizationAndRolesInterface {
