@@ -28,6 +28,7 @@ import {
     shareApplicationWithAllOrganizations
 } from "@wso2is/admin.applications.v1/api/application-roles";
 import useGetApplicationShare from "@wso2is/admin.applications.v1/api/use-get-application-share";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import {
     RoleSharingInterface,
     ShareApplicationWithAllOrganizationsDataInterface,
@@ -219,7 +220,7 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                 roles: selectedRoles.map((role: RolesInterface) => {
                     return {
                         audience: {
-                            display: role.audience.display,
+                            display: role.audience.display ?? ApplicationManagementConstants.CONSOLE_APP_NAME,
                             type: role.audience.type
                         },
                         displayName: role.displayName
@@ -412,9 +413,7 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                                             >
                                                 <Grid xs={ 14 }>
                                                     <ConsoleRolesSelectiveShare
-                                                        addedRoles={ addedRoles }
                                                         setAddedRoles={ setAddedRoles }
-                                                        removedRoles={ removedRoles }
                                                         setRemovedRoles={ setRemovedRoles }
                                                     />
                                                 </Grid>

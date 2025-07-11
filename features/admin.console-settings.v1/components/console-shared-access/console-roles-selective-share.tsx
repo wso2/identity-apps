@@ -53,8 +53,6 @@ import useConsoleSettings from "../../hooks/use-console-settings";
 import "./console-roles-selective-share.scss";
 
 interface ConsoleRolesSelectiveShareProps extends IdentifiableComponentInterface {
-    addedRoles: Record<string, SelectedOrganizationRoleInterface[]>;
-    removedRoles: Record<string, SelectedOrganizationRoleInterface[]>;
     setAddedRoles: ReactDispatch<SetStateAction<Record<string, SelectedOrganizationRoleInterface[]>>>;
     setRemovedRoles: ReactDispatch<SetStateAction<Record<string, SelectedOrganizationRoleInterface[]>>>;
 }
@@ -67,8 +65,6 @@ interface TreeViewBaseItemWithRoles extends TreeViewBaseItem {
 const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
     const {
         [ "data-componentid" ]: componentId = "console-roles-selective-share-modal",
-        addedRoles,
-        removedRoles,
         setAddedRoles,
         setRemovedRoles
     } = props;
@@ -93,7 +89,6 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
 
     const {
         data: originalTopLevelOrganizationTree,
-        isLoading: isTopLevelOrganizationTreeFetchRequestLoading,
         error:  originalTopLevelOrganizationTreeFetchRequestError
     } = useGetApplicationShare(
         consoleId,
@@ -108,7 +103,6 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
 
     const {
         data: originalOrganizationTree,
-        isLoading: isOrganizationTreeFetchRequestLoading,
         error:  originalOrganizationTreeFetchRequestError
     } = useGetApplicationShare(
         consoleId,
@@ -118,9 +112,6 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
         false,
         `parentId eq '${ expandedOrgId }'`
     );
-
-    console.log(originalOrganizationTree);
-
 
     const {
         consoleRoles,
