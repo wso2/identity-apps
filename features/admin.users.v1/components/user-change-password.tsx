@@ -387,8 +387,11 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
      * @param confirmPassword - Confirm password entered by the user.
      * @returns boolean | undefined
      */
-    const checkPasswordsMatch = (newPassword: string, confirmPassword: string): boolean | undefined => {
-        if (!confirmPassword) return undefined;
+    const checkPasswordsMatch = (
+        newPassword: string | undefined,
+        confirmPassword: string | undefined
+    ): boolean | undefined => {
+        if (!newPassword || !confirmPassword) return undefined;
 
         return newPassword === confirmPassword;
     };
