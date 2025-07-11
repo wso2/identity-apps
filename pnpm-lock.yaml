@@ -654,7 +654,7 @@ importers:
         specifier: ^1.0.3
         version: link:../../features/admin.webhooks.v1
       '@wso2is/admin.workflow-approvals.v1':
-        specifier: ^2.26.5
+        specifier: ^2.26.6
         version: link:../../features/admin.workflow-approvals.v1
       '@wso2is/admin.wsfed-configuration.v1':
         specifier: ^2.25.204
