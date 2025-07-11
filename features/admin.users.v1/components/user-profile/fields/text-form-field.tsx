@@ -60,7 +60,7 @@ const TextFormField: FunctionComponent<TextFormFieldPropsInterface> = (
             name={ fieldName }
             type={ type ?? "text" }
             label={ fieldLabel }
-            placeholder={ placeholder || t("user:profile.forms.generic.inputs.dropdownPlaceholder",
+            placeholder={ placeholder || t("user:profile.forms.generic.inputs.placeholder",
                 { fieldName: fieldLabel })
             }
             validate={ (value: string) => validator ? validator(value) : undefined }

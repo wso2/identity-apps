@@ -164,7 +164,7 @@ const MultiValuedTextField: FunctionComponent<MultiValuedTextFieldPropsInterface
                     label={ fieldLabel }
                     margin="dense"
                     placeholder={
-                        t("user:profile.forms.generic.inputs.dropdownPlaceholder", { fieldName: fieldLabel }) }
+                        t("user:profile.forms.generic.inputs.placeholder", { fieldName: fieldLabel }) }
                     InputProps={ {
                         endAdornment: renderAddButton(),
                         readOnly: isReadOnly || isUpdating
