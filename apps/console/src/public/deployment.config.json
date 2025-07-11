@@ -370,12 +370,7 @@
                     "agents.groups"
                 ],
                 "enabled": true,
-                "featureFlags": [
-                    {
-                        "feature": "agents",
-                        "flag": "EXPERIMENTAL"
-                    }
-                ],
+                "featureFlags": [],
                 "scopes": {
                     "create": [],
                     "delete": [],
