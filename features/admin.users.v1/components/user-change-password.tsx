@@ -402,7 +402,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
      * @param values - values of form field
      */
     const handlePasswordChange = (values: Map<string, FormValue>): void => {
-        const newPassword: string | undefined = values?.get("newPassword")?.toString();
+        const newPassword: string = values?.get("newPassword")?.toString() || "";
         const confirmPassword: string | undefined = values?.get("confirmPassword")?.toString();
 
         setPassword(newPassword);
