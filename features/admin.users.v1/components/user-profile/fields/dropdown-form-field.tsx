@@ -1,0 +1,78 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import { IdentifiableComponentInterface, LabelValue, ProfileSchemaInterface } from "@wso2is/core/models";
+import { FinalFormField, SelectFieldAdapterV2 } from "@wso2is/form/src";
+import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
+
+interface DropdownFormFieldPropsInterface extends IdentifiableComponentInterface {
+    schema: ProfileSchemaInterface;
+    fieldName: string;
+    fieldLabel: string;
+    initialValue: string | string[];
+    isUpdating: boolean;
+    isReadOnly: boolean;
+    isRequired: boolean;
+    isMultiSelect?: boolean;
+    validator?: (value: string) => string | undefined;
+}
+
+const DropdownFormField: FunctionComponent<DropdownFormFieldPropsInterface> = (
+    {
+        schema,
+        fieldName,
+        fieldLabel,
+        initialValue,
+        isUpdating,
+        isReadOnly,
+        isRequired,
+        validator,
+        isMultiSelect,
+        ["data-componentid"]: componentId = "dropdown-form-field"
+    }: DropdownFormFieldPropsInterface
+): ReactElement => {
+    const { t } = useTranslation();
+
+    const dropdownOptions: LabelValue[] = schema.canonicalValues ?? [];
+
+    return (
+        <FinalFormField
+            component={ SelectFieldAdapterV2 }
+            data-componentid={ componentId }
+            initialValue={ initialValue }
+            ariaLabel={ fieldLabel }
+            name={ fieldName }
+            label={ fieldLabel }
+            validate={ validator ?? undefined }
+            placeholder={ t("user:profile.forms.generic.inputs.dropdownPlaceholder", { fieldName: fieldLabel }) }
+            options={ dropdownOptions?.map(({ label, value }: LabelValue) => {
+                return {
+                    text: label,
+                    value
+                };
+            }) }
+            multiple={ isMultiSelect ?? false }
+            readOnly={ isReadOnly || isUpdating }
+            required={ isRequired }
+            disableClearable={ isRequired }
+        />
+    );
+};
+
+export default DropdownFormField;
