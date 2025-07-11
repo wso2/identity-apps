@@ -102,11 +102,13 @@ const MultiValuedMobileField: FunctionComponent<MultiValuedMobileFieldPropsInter
     const pendingMobileNumberFieldName: string = `${schema.schemaId}.${"pendingMobileNumber"}`;
 
     const {
-        input: { value: mobileNumbersFieldValue }
-    } = useField(mobileNumbersFieldName, { subscription: { value: true } });
+        input: { value: mobileNumbersFieldValue },
+        meta: { error: fieldError, touched: fieldTouched }
+    } = useField(mobileNumbersFieldName, { subscription: { error: true, touched: true, value: true } });
     const {
-        input: { value: mobileFieldValue }
-    } = useField(mobileFieldName, { subscription: { value: true } });
+        input: { value: mobileFieldValue },
+        meta: { error: primaryFieldError, touched: primaryFieldTouched }
+    } = useField(mobileFieldName, { subscription: { error: true, touched: true, value: true } });
     const {
         input: { value: verifiedMobileNumbersFieldValue }
     } = useField(verifiedMobileNumbersFieldName, { subscription: { value: true } });
@@ -116,6 +118,7 @@ const MultiValuedMobileField: FunctionComponent<MultiValuedMobileFieldPropsInter
 
     const resolvedPrimarySchemaRequiredValue: boolean =
         primarySchema?.profiles?.console?.required ?? primarySchema?.required;
+    const resolvedSchemaRequiredValue: boolean = schema?.profiles?.console?.required ?? schema?.required;
 
     const [ sortedMobileNumbersList, setSortedMobileNumbersList ] = useState<SortedMobileNumber[]>([]);
     const [ validationError, setValidationError ] = useState<string>();
@@ -197,7 +200,7 @@ const MultiValuedMobileField: FunctionComponent<MultiValuedMobileFieldPropsInter
 
     const validateMobileNumber = (value: string): string => {
         if (!RegExp(primarySchema?.regEx).test(value)) {
-            return t("users:forms.validation.formatError", { field: fieldLabel });
+            return t("users:forms.validation.formatError", { field: primarySchema.displayName });
         }
 
         return undefined;
@@ -224,6 +227,7 @@ const MultiValuedMobileField: FunctionComponent<MultiValuedMobileFieldPropsInter
         }
 
         form.change(mobileNumbersFieldName, [ ...(mobileNumbersFieldValue ?? []), newMobileNumber ]);
+        addFieldRef.current.value = "";
     };
 
     const renderAddButton = (): ReactElement => {
@@ -286,9 +290,16 @@ const MultiValuedMobileField: FunctionComponent<MultiValuedMobileFieldPropsInter
                         endAdornment: renderAddButton(),
                         readOnly: isReadOnly || isUpdating
                     } }
+                    InputLabelProps={ {
+                        required: resolvedPrimarySchemaRequiredValue || resolvedSchemaRequiredValue
+                    } }
                     data-componentid={ `${ componentId }-${ schema.name }-input` }
-                    error={ !isEmpty(validationError) }
-                    helperText={ validationError }
+                    error={ !isEmpty(validationError) ||
+                        (fieldTouched && fieldError) ||
+                        (primaryFieldTouched && primaryFieldError) }
+                    helperText={ validationError ||
+                        (fieldTouched && fieldError) ||
+                        (primaryFieldTouched && primaryFieldError) }
                     onChange={ (event: ChangeEvent<HTMLInputElement>) => {
                         validateInputFieldValue(event.target.value);
                     } }
@@ -304,11 +315,21 @@ const MultiValuedMobileField: FunctionComponent<MultiValuedMobileFieldPropsInter
                     name={ mobileNumbersFieldName }
                     component="input"
                     type="hidden"
+                    validate={ (value: string[]) => {
+                        if (resolvedSchemaRequiredValue && isEmpty(value)) {
+                            return t("user:profile.forms.generic.inputs.validations.empty", { fieldName: fieldLabel });
+                        }
+                    } }
                 />
                 <FinalFormField
                     name={ mobileFieldName }
                     component="input"
                     type="hidden"
+                    validate={ (value: string) => {
+                        if (resolvedSchemaRequiredValue && isEmpty(value)) {
+                            return t("user:profile.forms.mobile.primaryMobile.validations.empty");
+                        }
+                    } }
                 />
                 <FinalFormField
                     name={ verifiedMobileNumbersFieldName }

@@ -79,8 +79,9 @@ const MultiValuedTextField: FunctionComponent<MultiValuedTextFieldPropsInterface
     const addFieldRef: MutableRefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
 
     const {
-        input: { value: fieldValue }
-    } = useField<string[]>(fieldName, { subscription: { value: true } });
+        input: { value: fieldValue },
+        meta: { error: fieldError, touched: fieldTouched }
+    } = useField<string[]>(fieldName, { subscription: { error: true, touched: true, value: true } });
 
     const [ validationError, setValidationError ] = useState<string>();
 
@@ -127,6 +128,7 @@ const MultiValuedTextField: FunctionComponent<MultiValuedTextFieldPropsInterface
         const existingValues: string[] = fieldValue ?? [];
 
         form.change(fieldName, [ ...existingValues, newValue ]);
+        addFieldRef.current.value = "";
     };
 
     const renderAddButton = (): ReactElement => {
@@ -167,9 +169,12 @@ const MultiValuedTextField: FunctionComponent<MultiValuedTextFieldPropsInterface
                         endAdornment: renderAddButton(),
                         readOnly: isReadOnly || isUpdating
                     } }
+                    InputLabelProps={ {
+                        required: isRequired
+                    } }
                     data-componentid={ `${componentId}-${schema.name}-input` }
-                    error={ !isEmpty(validationError) }
-                    helperText={ validationError }
+                    error={ !isEmpty(validationError) || (fieldTouched && !isEmpty(fieldError)) }
+                    helperText={ validationError ?? (fieldTouched && fieldError) }
                     onChange={ (event: ChangeEvent<HTMLInputElement>) => {
                         validateInputFieldValue(event.target.value);
                     } }

@@ -1291,7 +1291,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     return (
-        !isReadOnlyUserStoresLoading && !isEmpty(profileInfo)
+        !isReadOnlyUserStoresLoading && !isClaimsLoading && !isEmpty(profileInfo)
             ? (<>
                 {
                     (accountLocked || accountDisabled) && (

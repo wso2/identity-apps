@@ -430,6 +430,20 @@ export interface userNS {
                     };
                 };
             };
+            email: {
+                primaryEmail: {
+                    validations: {
+                        empty: string;
+                    }
+                };
+            };
+            mobile: {
+                primaryMobile: {
+                    validations: {
+                        empty: string;
+                    }
+                };
+            };
             mobileChangeForm: {
                 inputs: {
                     mobile: {
