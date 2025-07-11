@@ -137,6 +137,10 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
         state?.config?.ui?.features?.organizations
     );
 
+    const tenantsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.tenants
+    );
+
     const isCentralDeploymentEnabled: boolean = useSelector((state: AppState) => {
         return state?.config?.deployment?.centralDeploymentEnabled;
     });
@@ -508,13 +512,16 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
         }
     };
 
-    const tenantDropdownLinks: TenantDropdownLinkInterface[] = [
-        {
-            icon: <PlusIcon fill="black" />,
-            name: t("extensions:manage.features.tenant.header.tenantAddHeader"),
-            onClick: () => { setShowTenantAddModal(true); }
-        }
-    ];
+    const tenantDropdownLinks: TenantDropdownLinkInterface[] =
+    !isFeatureEnabled(tenantsFeatureConfig, TenantConstants.FEATURE_DICTIONARY.ADD_TENANTS_FROM_DROPDOWN)
+        ? []
+        : [
+            {
+                icon: <PlusIcon fill="black" />,
+                name: t("extensions:manage.features.tenant.header.tenantAddHeader"),
+                onClick: () => { setShowTenantAddModal(true); }
+            }
+        ];
 
     const setDefaultTenantInDropdown = (tenant: TenantInfo): void => {
         setIsSetDefaultTenantInProgress(true);
@@ -596,25 +603,27 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
             organizationType !== OrganizationType.SUBORGANIZATION &&
             tenantAssociations
         ) {
-            if (tenantAssociations.currentTenant?.domain === tenantAssociations.defaultTenant?.domain) {
-                options.push(
-                    <Dropdown.Item className="action-panel" data-testid={ "default-button" } disabled={ true }>
-                        <BuildingCircleCheckIcon fill="black" />
-                        { t("extensions:manage.features.tenant.header.makeDefaultOrganization") }
-                    </Dropdown.Item>
-                );
-            } else {
-                options.push(
-                    <Dropdown.Item
-                        className="action-panel"
-                        onClick={ () => setDefaultTenantInDropdown(tenantAssociations.currentTenant) }
-                        data-testid={ "default-button" }
-                        disabled={ isSetDefaultTenantInProgress }
-                    >
-                        <BuildingCircleCheckIcon fill="black" />
-                        { t("extensions:manage.features.tenant.header.makeDefaultOrganization") }
-                    </Dropdown.Item>
-                );
+            if (isFeatureEnabled(tenantsFeatureConfig, TenantConstants.FEATURE_DICTIONARY.ADD_TENANTS_FROM_DROPDOWN)) {
+                if (tenantAssociations.currentTenant?.domain === tenantAssociations.defaultTenant?.domain) {
+                    options.push(
+                        <Dropdown.Item className="action-panel" data-testid={ "default-button" } disabled={ true }>
+                            <BuildingCircleCheckIcon fill="black" />
+                            { t("extensions:manage.features.tenant.header.makeDefaultOrganization") }
+                        </Dropdown.Item>
+                    );
+                } else {
+                    options.push(
+                        <Dropdown.Item
+                            className="action-panel"
+                            onClick={ () => setDefaultTenantInDropdown(tenantAssociations.currentTenant) }
+                            data-testid={ "default-button" }
+                            disabled={ isSetDefaultTenantInProgress }
+                        >
+                            <BuildingCircleCheckIcon fill="black" />
+                            { t("extensions:manage.features.tenant.header.makeDefaultOrganization") }
+                        </Dropdown.Item>
+                    );
+                }
             }
         }
 
