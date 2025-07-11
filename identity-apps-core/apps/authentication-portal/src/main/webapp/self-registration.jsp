@@ -65,6 +65,8 @@
     String state = request.getParameter("state");
     String code = request.getParameter("code");
     String spId = request.getParameter("spId");
+    String confirmationCode = request.getParameter("confirmation");
+    String flowType = request.getParameter("flowType");
 
     try {
         byte[] jsonData = Files.readAllBytes(Paths.get(jsonFilePath));
@@ -167,9 +169,11 @@
                 const authenticationEndpoint = baseUrl + "${pageContext.request.contextPath}";
                 const defaultMyAccountUrl = "<%= myaccountUrl %>";
                 const authPortalURL = "<%= authenticationPortalURL %>";
-                const registrationFlowApiProxyPath = authPortalURL + "/util/self-registration-api.jsp";
+                const registrationFlowApiProxyPath = authPortalURL + "/util/execution-flow-api.jsp";
                 const code = "<%= Encode.forJavaScript(code) != null ? Encode.forJavaScript(code) : null %>";
                 const state = "<%= Encode.forJavaScript(state) != null ? Encode.forJavaScript(state) : null %>";
+                const confirmationCode = "<%= Encode.forJavaScript(confirmationCode) != null ? Encode.forJavaScript(confirmationCode) : null %>";
+                const flowType = "<%= Encode.forJavaScript(flowType) != null ? Encode.forJavaScript(flowType) : null %>";
 
                 const locale = "en-US";
                 const translations = <%= translationsJson %>;
@@ -180,10 +184,10 @@
                 const [ error, setError ] = useState(null);
                 const [ postBody, setPostBody ] = useState(undefined);
                 const [ flowError, setFlowError ] = useState(undefined);
+                const [confirmationEffectDone, setConfirmationEffectDone] = useState(false);
 
                 useEffect(() => {
                     const savedFlowId = localStorage.getItem("flowId");
-
                     if (code !== "null" && state !== "null") {
                         setPostBody({
                             flowId: savedFlowId,
@@ -195,10 +199,21 @@
                             }
                         });
                     }
-                }, [ code, state ]);
+                }, [code, state]);
+                useEffect(() => {
+                    if (confirmationCode && confirmationCode !== "null" && !confirmationEffectDone) {
+                        setPostBody({
+                            flowType: flowType,
+                            inputs: {
+                                confirmationCode: confirmationCode
+                            }
+                        });
+                        setConfirmationEffectDone(true);
+                    }
+                }, [confirmationCode, confirmationEffectDone]);
 
                 useEffect(() => {
-                    if (!postBody && code === "null") {
+                    if (!postBody && code === "null" && confirmationCode === "null") {
                         setPostBody({ applicationId: "new-application", flowType: "REGISTRATION" });
                     }
                 }, []);
@@ -252,10 +267,15 @@
 
                 useEffect(() => {
                     if (error && error.code) {
-                        const errorDetails = getI18nKeyForError(error.code);
+                        const errorDetails = getI18nKeyForError(error.code, flowType);
+                        const reg_portal_url = authPortalURL + "/register.do";
+                        if (flowType === "INVITE_USER_REGISTRATION" || flowType === "PASSWORD_RESET") {
+                            reg_portal_url = authPortalURL + "/recovery.do";
+                        }
                         const errorPageURL = authPortalURL + "/registration_error.do?" + "ERROR_MSG="
-                            + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID="
-                            + "<%= Encode.forJavaScript(spId) %>" + "&" + "REG_PORTAL_URL=" + authPortalURL + "/register.do";
+                            + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID=" + 
+                            "&" + "flowType=" + flowType + "<%= Encode.forJavaScript(spId) %>" + "&" + 
+                            "REG_PORTAL_URL=" + authPortalURL + "/register.do";
 
                         window.location.href = errorPageURL;
                     }
