@@ -164,7 +164,7 @@ export interface ApprovalTaskListItemInterface {
     /**
      * Status of the Approval Task
      */
-    status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.BLOCKED;
+    approvalStatus: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.BLOCKED;
     /**
      * Priority of the Approval task
      */
