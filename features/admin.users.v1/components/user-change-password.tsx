@@ -556,8 +556,11 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                             validation={
                                 (value: string, validation: Validation, formValues: Map<string, FormValue>) => {
                                     const newPassword: string | undefined = formValues?.get("newPassword")?.toString();
+                                    const isMatch: boolean | undefined = checkPasswordsMatch(newPassword, value);
 
-                                    if (value && newPassword !== value) {
+                                    if (isMatch === undefined) {
+                                        setIsConfirmPasswordMatch(undefined);
+                                    } else if (!isMatch) {
                                         validation.isValid = false;
                                         setIsConfirmPasswordMatch(false);
                                         validation?.errorMessages?.push(
