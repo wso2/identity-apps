@@ -19,6 +19,7 @@
 import {
     ArrowRightToBracketPencilIcon,
     BuildingIcon,
+    CircleStarIcon,
     DocumentCheckIcon,
     EnvelopeGearIcon,
     EnvelopeIcon,
@@ -26,11 +27,15 @@ import {
     GearIcon,
     LightbulbOnIcon,
     LinearNodesIcon,
+    LinkIcon,
     NodesIcon,
+    ProfileFlowIcon,
     ProgressFlowIcon,
     UserCircleDotIcon,
     UserGroupIcon,
     WebhookIcon
+    UserGroupIcon,
+    UserPlusIcon
 } from "@oxygen-ui/react-icons";
 import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -637,7 +642,45 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     path: AppConstants.getPaths().get("CLAIM_VERIFICATION_SETTINGS"),
                     protected: true,
                     showOnSidePanel: false
-                }
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.claims.v1/pages/traits-page")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "traits",
+                    name: "Traits",
+                    path: AppConstants.getPaths().get("TRAITS"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.claims.v1/pages/traits-edit-page")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "traits",
+                    name: "Traits",
+                    path: AppConstants.getPaths().get("TRAITS_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                
+                // {
+                //     component: lazy(() => import("@wso2is/admin.cds.v1/pages/application-data")),
+                //     exact: true,
+                //     icon: {
+                //         icon: getSidePanelIcons().childIcon
+                //     },
+                //     id: "applicationData",
+                //     name: "Application Data",
+                //     path: AppConstants.getPaths().get("APPLICATION_DATA"),
+                //     protected: true,
+                //     showOnSidePanel: false
+                // }
+            
             ],
             component: lazy(() => import("@wso2is/admin.claims.v1/pages/claim-dialects")),
             exact: true,
@@ -1558,7 +1601,108 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             path: AppConstants.getPaths().get("WEBHOOKS"),
             protected: true,
             showOnSidePanel: true
-        },
+        }, 
+        {
+            category: "customerData",
+            component: lazy(() =>
+                import("@wso2is/admin.cds.v1/pages/profile-unification-rules")
+            ),
+            exact: true,
+            icon: {
+                icon: <LinkIcon className="icon" fill="black" />
+            },
+            id: "unification",
+            name: "Unification",
+            order: 32,
+            path: "/unification", // ✅ Make sure this is correctly defined in AppConstants if you use get()
+            protected: true,
+            showOnSidePanel: true
+        },        
+        {
+            category: "customerData",
+            label: "Traits",
+            component: lazy(() =>
+                import("@wso2is/admin.cds.v1/pages/profile-unification-rules")
+            ),
+            exact: true,
+            icon: {
+                icon: <UserGroupIcon className="icon" fill="black" />
+            },
+            id: "enrichment",
+            name: "Enrichment",
+            order: 33,
+            path: "/enrichment", // should resolve to "/traits"
+            protected: true,
+            showOnSidePanel: true,
+        
+            children: [
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.cds.v1/pages/profile-unification-rules") 
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "traitView",
+                    name: "View ",
+                    path: "/enrichment/:trait_id",
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ]
+        }, 
+        {
+            category: "customerData",
+            label: "Profiles",
+            component: lazy(() =>
+                import("@wso2is/admin.cds.v1/pages/profile-list")
+            ),
+            exact: true,
+            icon: {
+                icon: <ProfileFlowIcon className="icon" fill="black" />
+            },
+            id: "profiles",
+            name: "Profiles",
+            order: 34,
+            path: "/profiles", 
+            protected: true,
+            showOnSidePanel: true,
+        },     
+        {
+            category: "customerData",
+            label: "Customer Events",
+            component: lazy(() =>
+                import("@wso2is/admin.cds.v1/pages/events")
+            ),
+            exact: true,
+            icon: {
+                icon: <CircleStarIcon className="icon" fill="black" />
+            },
+            id: "customerEvents",
+            name: "CustomerEvents",
+            order: 34,
+            path: "/customer-events", 
+            protected: true,
+            showOnSidePanel: true,
+        
+            // children: [
+            //     {
+            //         component: lazy(() =>
+            //             import("@wso2is/admin.cds.v1/pages/profile") // 👈 new trait visualizer page
+            //         ),
+            //         exact: true,
+            //         icon: {
+            //             icon: getSidePanelIcons().childIcon
+            //         },
+            //         id: "profileView",
+            //         name: "Profile List",
+            //         path: "/profile/:profile_id",
+            //         protected: true,
+            //         showOnSidePanel: false
+            //     }
+            // ]
+        },      
         // the following routes are not onboarded to the side panel
         {
             category: "console:manage.features.sidePanel.categories.configurations",
