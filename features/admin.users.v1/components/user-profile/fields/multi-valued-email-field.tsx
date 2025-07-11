@@ -117,11 +117,13 @@ const MultiValuedEmailField: FunctionComponent<MultiValuedEmailFieldPropsInterfa
     const pendingEmailAddressesFieldName: string = `${schema.schemaId}.${"pendingEmails"}`;
 
     const {
-        input: { value: emailAddressesFieldValue }
-    } = useField<string[]>(emailAddressesFieldName, { subscription: { value: true } });
+        input: { value: emailAddressesFieldValue },
+        meta: { error: fieldError, touched: fieldTouched }
+    } = useField<string[]>(emailAddressesFieldName, { subscription: { error: true, touched: true, value: true } });
     const {
-        input: { value: emailsFieldValue }
-    } = useField<string>(emailsFieldName, { subscription: { value: true } });
+        input: { value: emailsFieldValue },
+        meta: { error: primaryFieldError, touched: primaryFieldTouched }
+    } = useField<string>(emailsFieldName, { subscription: { error: true, touched: true, value: true } });
     const {
         input: { value: verifiedEmailAddressesFieldValue }
     } = useField<string[]>(verifiedEmailAddressesFieldName, { subscription: { value: true } });
@@ -131,6 +133,7 @@ const MultiValuedEmailField: FunctionComponent<MultiValuedEmailFieldPropsInterfa
 
     const resolvedPrimarySchemaRequiredValue: boolean =
         primaryEmailSchema?.profiles?.console?.required ?? primaryEmailSchema?.required;
+    const resolvedSchemaRequiredValue: boolean = schema?.profiles?.console?.required ?? schema?.required;
 
     const [ validationError, setValidationError ] = useState<string>();
 
@@ -356,9 +359,16 @@ const MultiValuedEmailField: FunctionComponent<MultiValuedEmailFieldPropsInterfa
                         endAdornment: renderAddButton(),
                         readOnly: isReadOnly || isUpdating
                     } }
+                    InputLabelProps={ {
+                        required: resolvedPrimarySchemaRequiredValue || resolvedSchemaRequiredValue
+                    } }
                     data-componentid={ `${ componentId }-${ schema.name }-input` }
-                    error={ !isEmpty(validationError) }
-                    helperText={ validationError }
+                    error={ !isEmpty(validationError) ||
+                        (fieldTouched && fieldError) ||
+                        (primaryFieldTouched && primaryFieldError) }
+                    helperText={ validationError ||
+                        (fieldTouched && fieldError) ||
+                        (primaryFieldTouched && primaryFieldError) }
                     onChange={ (event: ChangeEvent<HTMLInputElement>) => {
                         validateInputFieldValue(event.target.value);
                     } }
@@ -374,11 +384,21 @@ const MultiValuedEmailField: FunctionComponent<MultiValuedEmailFieldPropsInterfa
                     name={ emailAddressesFieldName }
                     component="input"
                     type="hidden"
+                    validate={ (value: string[]) => {
+                        if (resolvedSchemaRequiredValue && isEmpty(value)) {
+                            return t("user:profile.forms.generic.inputs.validations.empty", { fieldName: fieldLabel });
+                        }
+                    } }
                 />
                 <FinalFormField
                     name={ emailsFieldName }
                     component="input"
                     type="hidden"
+                    validate={ (value: string) => {
+                        if (resolvedPrimarySchemaRequiredValue && isEmpty(value)) {
+                            return t("user:profile.forms.email.primaryEmail.validations.empty");
+                        }
+                    } }
                 />
                 <FinalFormField
                     name={ verifiedEmailAddressesFieldName }
