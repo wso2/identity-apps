@@ -1,5 +1,15 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.9.1
+
+### Patch Changes
+
+- [#8501](https://github.com/wso2/identity-apps/pull/8501) [`14a8747910ed801671508c60c5769781fa022674`](https://github.com/wso2/identity-apps/commit/14a8747910ed801671508c60c5769781fa022674) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Disable the AI-generation template of registration flow builder
+
+- Updated dependencies [[`14a8747910ed801671508c60c5769781fa022674`](https://github.com/wso2/identity-apps/commit/14a8747910ed801671508c60c5769781fa022674)]:
+  - @wso2is/admin.flow-builder-core.v1@0.8.1
+  - @wso2is/admin.feature-gate.v1@1.7.5
+
 ## 0.9.0
 
 ### Minor Changes

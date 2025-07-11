@@ -1,5 +1,14 @@
 # @wso2is/admin.tenants.v1
 
+## 2.29.15
+
+### Patch Changes
+
+- [#8491](https://github.com/wso2/identity-apps/pull/8491) [`5a48b099d9eed3b73d74764b6610a678a49e6b58`](https://github.com/wso2/identity-apps/commit/5a48b099d9eed3b73d74764b6610a678a49e6b58) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Utilise isFeatureEnabled function to enable / disable features during maintainance window
+
+- Updated dependencies [[`5a48b099d9eed3b73d74764b6610a678a49e6b58`](https://github.com/wso2/identity-apps/commit/5a48b099d9eed3b73d74764b6610a678a49e6b58)]:
+  - @wso2is/admin.organizations.v1@2.26.209
+
 ## 2.29.14
 
 ### Patch Changes

@@ -503,7 +503,9 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 <EmptyPlaceholder
                     className={ !isRenderedOnPortal ? "list-placeholder mr-0" : "" }
                     action={
-                        onEmptyListPlaceholderActionClick && (
+                        isFeatureEnabled(featureConfig.organizations,
+                            OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_CREATE"))
+                        && onEmptyListPlaceholderActionClick && (
                             <Show when={ featureConfig?.organizations?.scopes?.create }>
                                 <PrimaryButton
                                     disabled={ parentOrganization?.status === "DISABLED" }
