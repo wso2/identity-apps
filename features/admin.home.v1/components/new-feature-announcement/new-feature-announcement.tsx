@@ -30,6 +30,9 @@ import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import useNewRegistrationPortalFeatureStatus from
     "@wso2is/admin.registration-flow-builder.v1/api/use-new-registration-portal-feature-status";
+import { AGENT_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import AIText from "@wso2is/common.ai.v1/components/ai-text";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
@@ -135,15 +138,28 @@ export const FeatureCarousel = () => {
     const [ direction, setDirection ] = useState(1);
 
     const {
+        isLoading: isUserStoresListFetchRequestLoading,
+        userStoresList
+    } = useUserStores();
+
+    const {
         data: isNewRegistrationPortalEnabled,
         isLoading: isNewRegistrationPortalEnabledRequestLoading
     } = useNewRegistrationPortalFeatureStatus();
 
     const agentFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state?.config?.ui?.features?.agents);
+
     const isAgentManagementFeatureEnabledForOrganization: boolean = useMemo(() => {
+        const agentUserStore: UserStoreListItem =
+            userStoresList?.find((userStore: UserStoreListItem) => userStore?.name === AGENT_USERSTORE);
+
+        if (agentUserStore) {
+            return true;
+        }
+
         return false;
-    }, []);
+    }, [ isUserStoresListFetchRequestLoading, userStoresList ]);
 
     const features: any = useMemo(() => [
         agentFeatureConfig?.enabled && {

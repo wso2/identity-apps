@@ -17,16 +17,19 @@
  */
 
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import { getExternalClaims } from "@wso2is/admin.claims.v1/api";
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, Claim, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
 import { DangerZone, DangerZoneGroup, EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { deleteAgent, updateAgent } from "../../api/agents";
 import { AGENT_FEATURE_DICTIONARY } from "../../constants/agents";
@@ -42,7 +45,7 @@ export default function AgentOverview({
     "data-componentid": componentId = "agent-overview"
 }: AgentOverviewProps) {
 
-    const dispatch: any = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ initialValues, setInitialValues ] = useState<any>();
 
@@ -62,27 +65,50 @@ export default function AgentOverview({
     useEffect(() => {
         if (agentInfo) {
             setInitialValues({
-                description: agentInfo?.["urn:scim:wso2:agent:schema"]?.agentDescription,
-                languageModel: agentInfo?.["urn:scim:wso2:agent:schema"]?.agentLanguageModel,
-                name: agentInfo?.["urn:scim:wso2:agent:schema"]?.agentDisplayName,
-                owner: agentInfo?.["urn:scim:wso2:agent:schema"]?.agentOwner
+                ...agentInfo?.["urn:scim:wso2:agent:schema"]
             });
         }
     }, [ agentInfo ]);
+
+
+    const [ agentSchemaAttributes, setAgentSchemaAttributes ] = useState<Claim[]>([]);
+
+    useEffect(() => {
+        getExternalClaims(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_FOR_AGENTS"))
+            .then((agentClaims: Claim[]) => {
+                setAgentSchemaAttributes(agentClaims);
+            })
+            .catch((error) => {
+                console.error("Failed to fetch agent schema attributes", error);
+            });
+    }, []);
+
+    const formFieldProps = {
+        "urn:scim:wso2:agent:schema:agentDescription": {
+            multiline: true,
+            rows: 4,
+            maxRows: 6
+        }
+    };
+
+    const readOnlyAgentAttributes = [
+        "urn:scim:wso2:agent:schema:agentOwner"
+    ];
 
     return (
         <>
             <EmphasizedSegment padded="very" style={ { border: "none", padding: "21px" } }>
                 <FinalForm
                     onSubmit={ (values: any) => {
+                        
                         const updateAgentPayload: AgentScimSchema = {
                             "urn:scim:wso2:agent:schema": {
-                                agentDescription: values?.description,
-                                agentDisplayName: values?.name,
-                                agentLanguageModel: values?.languageModel,
+                                ...values,
                                 agentOwner: authenticatedUser
                             }
                         };
+
+                        console.log(updateAgentPayload)
 
                         updateAgent(agentId, updateAgentPayload).then((_response: any) => {
                             dispatch(addAlert({
@@ -107,27 +133,23 @@ export default function AgentOverview({
                                             onSubmit={ handleSubmit }
                                             style={ { display: "flex", flexDirection: "column" } }
                                         >
-                                            <FinalFormField
-                                                name="name"
-                                                label="Name"
-                                                component={ TextFieldAdapter }
-                                            ></FinalFormField>
+                                            { agentSchemaAttributes?.map((agentAttribute: Claim) => {
+                                                const claimProperties = Object.fromEntries(
+                                                    agentAttribute?.properties?.map(({ key, value }) => [ key, value ]));
 
-                                            <FinalFormField
-                                                name="languageModel"
-                                                label="Language model"
-                                                className="pt-3"
-                                                component={ TextFieldAdapter }
-                                            ></FinalFormField>
-                                            <FinalFormField
-                                                name="description"
-                                                className="pt-3"
-                                                label="Description"
-                                                multiline
-                                                rows={ 4 }
-                                                maxRows={ 6 }
-                                                component={ TextFieldAdapter }
-                                            ></FinalFormField>
+                                                const formFieldProperties = formFieldProps[agentAttribute.claimURI] ?? [];
+
+                                                return readOnlyAgentAttributes?.includes(agentAttribute.claimURI) ? null : (
+                                                    <FinalFormField
+                                                        key={ agentAttribute.id }
+                                                        name={ agentAttribute.claimURI.split(":").pop() }
+                                                        label={ claimProperties.DisplayName }
+                                                        component={ TextFieldAdapter }
+                                                        { ...formFieldProperties }
+                                                    ></FinalFormField>
+                                                );
+                                            }) }
+
                                             <Form.Group>
                                                 <PrimaryButton type="submit" className="mt-5">
                                                     Update

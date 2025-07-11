@@ -45,6 +45,9 @@ import {
     updateGovernanceConnector,
     useGetGovernanceConnectorById
 } from "@wso2is/admin.server-configurations.v1";
+import { AGENT_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -52,6 +55,7 @@ import { useSelector } from "react-redux";
 import NewSelfRegistrationImage from "../../assets/illustrations/preview-features/new-self-registration.png";
 import { AppConstants } from "../../constants/app-constants";
 import "./feature-preview-modal.scss";
+
 import { history } from "../../helpers/history";
 import { AppState } from "../../store";
 
@@ -183,27 +187,51 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
 
     const { t } = useTranslation();
 
+    const {
+        isLoading: isUserStoresListFetchRequestLoading,
+        userStoresList
+    } = useUserStores();
+
     const { data: connectorDetails, mutate: connectorDetailsMutate } = useGetGovernanceConnectorById(
         ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
         ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID
     );
 
     const [ isEnableDynamicSelfRegistrationPortal, setIsEnableDynamicSelfRegistrationPortal ] = useState(false);
-    const [ isEnableAgentManagement, setIsEnableAgentManagement ] = useState(false);
 
     const agentsFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state?.config?.ui?.features?.agents);
 
+    const isAgentManagementFeatureEnabledForOrganization: boolean = useMemo(() => {
+        const agentUserStore: UserStoreListItem =
+                userStoresList?.find((userStore: UserStoreListItem) => userStore?.name === AGENT_USERSTORE);
+
+        if (agentUserStore) {
+            return true;
+        }
+
+        return false;
+    }, [ isUserStoresListFetchRequestLoading, userStoresList ]);
+
     {/* TODO: Get this from an Organization Preferences API */}
     const previewFeaturesList: PreviewFeaturesListInterface[] = useMemo(() => ([
         agentsFeatureConfig?.enabled && {
-            action: "Go to Agent Management",
+            action: "Try out",
             component: <AgentFeatureAnnouncement />,
             description: "Extend your identity management to autonomous agents with secure, dynamic authorization",
-            enabled: isEnableAgentManagement,
+            enabled: isAgentManagementFeatureEnabledForOrganization,
             id: "agents",
+            message: {
+                content: isAgentManagementFeatureEnabledForOrganization
+                    ? "This feature is experimental and still under active development. " +
+                    "It may be unstable, change without notice, or have limited functionality and " +
+                    "support. Use in production environments is not recommended."
+                    : "Agent management is not currently available for this organization. To access " +
+                    "this feature, please create a new organization.",
+                type: isAgentManagementFeatureEnabledForOrganization ? "warning" as const : "info" as const
+            },
             name: "Identity for AI Agents",
-            value: "SelfRegistration.EnableDynamicPortal"
+            value: null
         },
         {
             action: "Try Flow Composer",
@@ -220,7 +248,7 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
             name: "Self-Registration Orchestration",
             value: "SelfRegistration.EnableDynamicPortal"
         }
-    ].filter(Boolean)), [ isEnableAgentManagement, isEnableDynamicSelfRegistrationPortal ]);
+    ].filter(Boolean)), [ isAgentManagementFeatureEnabledForOrganization, isEnableDynamicSelfRegistrationPortal ]);
 
     const [ selected, setSelected ] = useState(previewFeaturesList[0]);
 
@@ -242,6 +270,8 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
         switch (actionId) {
             case "self-registration-orchestration":
                 return history.push(AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER"));
+            case "agents":
+                return history.push(AppConstants.getPaths().get("AGENTS"));
             default:
                 return;
         }
@@ -263,10 +293,6 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
                     ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID
                 );
                 connectorDetailsMutate();
-
-                break;
-            case "ai-agent-management":
-                setIsEnableAgentManagement(e.target.checked);
 
                 break;
             default:
@@ -337,21 +363,23 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
                                         sx={ { alignItems: "center", marginBottom: "20px" } }
                                     >
                                         <Typography variant="h6">{ selected?.name }</Typography>
-                                        <FormControlLabel
-                                            control={ (
-                                                <Switch
-                                                    onChange={
-                                                        (e: ChangeEvent<HTMLInputElement>) =>
-                                                            handleToggleChange(e, selected?.id)
-                                                    }
-                                                    value={ selected?.value }
-                                                    checked={ selected?.enabled }
-                                                />
-                                            ) }
-                                            label={ selected?.enabled ?
-                                                t("common:enabled") : t("common:disabled") }
-                                            labelPlacement="start"
-                                        />
+                                        { selected?.id !== "agents" && (
+                                            <FormControlLabel
+                                                control={ (
+                                                    <Switch
+                                                        onChange={
+                                                            (e: ChangeEvent<HTMLInputElement>) =>
+                                                                handleToggleChange(e, selected?.id)
+                                                        }
+                                                        value={ selected?.value }
+                                                        checked={ selected?.enabled }
+                                                    />
+                                                ) }
+                                                label={ selected?.enabled ?
+                                                    t("common:enabled") : t("common:disabled") }
+                                                labelPlacement="start"
+                                            />
+                                        ) }
                                     </Stack>
                                 )
                             }
@@ -374,20 +402,21 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
                             }
                             { selected?.component && selected?.component }
                             {
-                                previewFeaturesList?.length > 1 && isEnableDynamicSelfRegistrationPortal && (
-                                    <Stack direction="row" justifyContent="flex-end">
-                                        <Button
-                                            onClick={ () => {
-                                                handleClose();
-                                                handlePageRedirection(selected?.id);
-                                            } }
-                                            color="primary"
-                                            variant="contained"
-                                        >
-                                            { selected?.action || "Try it out" }
-                                        </Button>
-                                    </Stack>
-                                )
+                                previewFeaturesList?.length > 1 && selected?.enabled &&
+                                 (
+                                     <Stack direction="row" justifyContent="flex-end">
+                                         <Button
+                                             onClick={ () => {
+                                                 handleClose();
+                                                 handlePageRedirection(selected?.id);
+                                             } }
+                                             color="primary"
+                                             variant="contained"
+                                         >
+                                             { selected?.action || "Try it out" }
+                                         </Button>
+                                     </Stack>
+                                 )
                             }
                         </Grid>
                     </Grid>
