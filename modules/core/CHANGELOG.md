@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.9.4
+
+### Patch Changes
+
+- [#8478](https://github.com/wso2/identity-apps/pull/8478) [`24ed4949898ff12edd895c0d36d9098fa36b7e8c`](https://github.com/wso2/identity-apps/commit/24ed4949898ff12edd895c0d36d9098fa36b7e8c) Thanks [@hwupathum](https://github.com/hwupathum)! - Enable secret hiding for Remote logging UI
+
 ## 2.9.3
 
 ### Patch Changes

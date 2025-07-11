@@ -41,6 +41,7 @@ import VisualFlow, { VisualFlowPropsInterface } from "./visual-flow";
 import VisualFlowConstants from "../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import useComponentDelete from "../../hooks/use-component-delete";
+import useConfirmPasswordField from "../../hooks/use-confirm-password-field";
 import useDeleteRedirectionResource from "../../hooks/use-delete-redirection-resource";
 import useGenerateStepElement from "../../hooks/use-generate-step-element";
 import { Element } from "../../models/elements";
@@ -105,6 +106,9 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
 
     // Event handlers for ON_NODE_DELETE event.
     useDeleteRedirectionResource();
+
+    // Event handlers for ON_PROPERTY_PANEL_OPEN event.
+    useConfirmPasswordField();
 
     const { screenToFlowPosition, updateNodeData } = useReactFlow();
     const { generateStepElement } = useGenerateStepElement();
@@ -303,7 +307,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     const onNodesDelete: OnNodesDelete<Node> = useCallback(
         async (deleted: Node[]) => {
             // Execute plugins for ON_NODE_DELETE event.
-            await PluginRegistry.getInstance().execute(EventTypes.ON_NODE_DELETE, deleted);
+            await PluginRegistry.getInstance().executeAsync(EventTypes.ON_NODE_DELETE, deleted);
 
             setEdges(
                 deleted?.reduce((acc: Edge[], node: Node) => {
@@ -336,7 +340,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     const onEdgesDelete: (deleted: Edge[]) => void = useCallback(
         async (deleted: Edge[]) => {
             // Execute plugins for ON_EDGE_DELETE event.
-            await PluginRegistry.getInstance().execute(EventTypes.ON_EDGE_DELETE, deleted);
+            await PluginRegistry.getInstance().executeAsync(EventTypes.ON_EDGE_DELETE, deleted);
         },
         []
     );

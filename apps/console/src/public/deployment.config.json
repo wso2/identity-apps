@@ -1249,10 +1249,17 @@
                 }
             },
             "remoteLogging": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "hide.config.secrets"
+                ],
                 "enabled": true,
-                "featureFlags": [],
-                "scopes": {}
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [],
+                    "update": []
+                }
             },
             "residentOutboundProvisioning": {
                 "disabledFeatures": [],

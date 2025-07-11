@@ -190,6 +190,7 @@
             "image": "https://www.svgrepo.com/show/339836/boolean.svg",
             "showOnResourcePanel": false
         },
+        "variant": "DROPDOWN",
         "config": {
             "hint": "",
             "label": "Choice",

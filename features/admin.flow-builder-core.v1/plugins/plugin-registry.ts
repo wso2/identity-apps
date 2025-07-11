@@ -24,7 +24,8 @@ import debounce from "lodash/debounce";
 class PluginRegistry {
     private static instance: PluginRegistry;
 
-    private plugins: Map<string, Map<string, (...args: any[]) => Promise<boolean>>> = new Map();
+    private asyncPlugins: Map<string, Map<string, (...args: any[]) => Promise<boolean>>> = new Map();
+    private syncPlugins: Map<string, Map<string, (...args: any[]) => boolean>> = new Map();
 
     private constructor() {
         // Private constructor to prevent instantiation.
@@ -38,19 +39,41 @@ class PluginRegistry {
         return PluginRegistry.instance;
     }
 
+
     /**
-     * Registers a plugin with the given name and event.
-     * Note: First argument of the handler function should not be a number.
+     * Register an async plugin for the given event.
      *
      * @param eventName - The name of the event to register the plugin for.
-     * @param handler - The handler function to be called when the event is triggered.
+     * @param handler - The async handler function to be executed when the event is triggered.
      */
-    public register(eventName: string, handler: (...args: any[]) => Promise<boolean>): void {
-        if (!this.plugins.has(eventName)) {
-            this.plugins.set(eventName, new Map());
+    public registerAsync(eventName: string, handler: (...args: any[]) => Promise<boolean>): void {
+
+        if (!handler.name) {
+            throw new Error("Handler function must have a name. Use a named function or arrow function with a name.");
         }
 
-        this.plugins.get(eventName)!.set(handler.name, handler);
+        if (!this.asyncPlugins.has(eventName)) {
+            this.asyncPlugins.set(eventName, new Map());
+        }
+        this.asyncPlugins.get(eventName)!.set(handler.name, handler);
+    };
+
+    /**
+     * Register an sync plugin for the given event.
+     *
+     * @param eventName - The name of the event to register the plugin for.
+     * @param handler - The sync handler function to be executed when the event is triggered.
+     */
+    public registerSync(eventName: string, handler: (...args: any[]) => boolean): void {
+
+        if (!handler.name) {
+            throw new Error("Handler function must have a name. Use a named function or arrow function with a name.");
+        }
+
+        if (!this.syncPlugins.has(eventName)) {
+            this.syncPlugins.set(eventName, new Map());
+        }
+        this.syncPlugins.get(eventName)!.set(handler.name, handler);
     };
 
     /**
@@ -60,15 +83,21 @@ class PluginRegistry {
      * @param handlerName - The name of the handler function to be removed.
      */
     public unregister(eventName: string, handlerName: string): void {
-        if (this.plugins.has(eventName)) {
-            const handlers = this.plugins.get(eventName);
-            if (handlers && handlers.has(handlerName)) {
-                handlers.delete(handlerName);
-                if (handlers.size === 0) {
-                    this.plugins.delete(eventName); // Remove the event if no handlers are left.
+
+        const removeHandler = (map: Map<string, Map<string, (...args: any[]) => Promise<boolean> | boolean>>) => {
+            if (map.has(eventName)) {
+                const handlers = map.get(eventName);
+                if (handlers && handlers.has(handlerName)) {
+                    handlers.delete(handlerName);
+                    if (handlers.size === 0) {
+                        map.delete(eventName); // Remove the event if no handlers are left.
+                    }
                 }
             }
         }
+
+        removeHandler(this.asyncPlugins);
+        removeHandler(this.syncPlugins);
     };
 
     /**
@@ -78,7 +107,29 @@ class PluginRegistry {
      * @param args - The arguments to pass to the plugin handlers.
      * @returns True if all plugins returned true, false otherwise.
      */
-    public execute(eventName: string, ...args: any[]): Promise<boolean>;
+    public executeSync(eventName: string, ...args: any[]): boolean {
+
+        const handlers = this.syncPlugins.get(eventName)?.values();
+        if (!handlers) {
+            return true; // No plugins registered, consider it a success.
+        }
+
+        for (const handler of handlers) {
+            if (!handler(...args)) {
+                return false; // If any plugin returns false, stop execution and return false.
+            }
+        }
+        return true; // All plugins executed successfully.
+    }
+
+    /**
+     * Executes all registered plugins for the given event with the provided arguments.
+     *
+     * @param eventName - The name of the event to execute plugins for.
+     * @param args - The arguments to pass to the plugin handlers.
+     * @returns True if all plugins returned true, false otherwise.
+     */
+    public executeAsync(eventName: string, ...args: any[]): Promise<boolean>;
 
     /**
      * Executes all registered plugins for the given event with the provided arguments and debounces the execution.
@@ -88,18 +139,18 @@ class PluginRegistry {
      * @param args - The arguments to pass to the plugin handlers.
      * @returns True if all plugins returned true, false otherwise.
      */
-    public execute(eventName: string, debounceTime: number, ...args: any[]): Promise<boolean>;
+    public executeAsync(eventName: string, debounceTime: number, ...args: any[]): Promise<boolean>;
 
-    public execute(eventName: string, ...args: any[]): Promise<boolean> {
+    public executeAsync(eventName: string, ...args: any[]): Promise<boolean> {
         // Check if the first argument is a number (debounce time).
         if (args.length > 1 && typeof args[0] === "number") {
             const debounceTime: number = args.shift() as number;
             return debounce(() => {
-                return this.executeAll(eventName, ...args);
+                return this.executeAllAsync(eventName, ...args);
             }, debounceTime)(); // Debounce execution to avoid rapid calls.
         } else {
             // If no debounce time is provided, execute the plugins immediately.
-            return this.executeAll(eventName, ...args);
+            return this.executeAllAsync(eventName, ...args);
         }
     }
 
@@ -110,8 +161,8 @@ class PluginRegistry {
      * @param args - The arguments to pass to the plugin handlers.
      * @returns True if all plugins returned true, false otherwise.
      */
-    private async executeAll(eventName: string, ...args: any[]): Promise<boolean> {
-        const handlers = this.plugins.get(eventName)?.values();
+    private async executeAllAsync(eventName: string, ...args: any[]): Promise<boolean> {
+        const handlers = this.asyncPlugins.get(eventName)?.values();
         if (!handlers) {
             return true; // No plugins registered, consider it a success.
         }

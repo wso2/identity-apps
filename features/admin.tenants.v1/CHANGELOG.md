@@ -1,5 +1,16 @@
 # @wso2is/admin.tenants.v1
 
+## 2.29.16
+
+### Patch Changes
+
+- [#8478](https://github.com/wso2/identity-apps/pull/8478) [`24ed4949898ff12edd895c0d36d9098fa36b7e8c`](https://github.com/wso2/identity-apps/commit/24ed4949898ff12edd895c0d36d9098fa36b7e8c) Thanks [@hwupathum](https://github.com/hwupathum)! - Enable secret hiding for Remote logging UI
+
+- Updated dependencies [[`24ed4949898ff12edd895c0d36d9098fa36b7e8c`](https://github.com/wso2/identity-apps/commit/24ed4949898ff12edd895c0d36d9098fa36b7e8c), [`cf84a990e2bcdb6ac7a47d64fc2271abdc3dec88`](https://github.com/wso2/identity-apps/commit/cf84a990e2bcdb6ac7a47d64fc2271abdc3dec88)]:
+  - @wso2is/core@2.9.4
+  - @wso2is/i18n@2.24.13
+  - @wso2is/admin.organizations.v1@2.26.210
+
 ## 2.29.15
 
 ### Patch Changes
