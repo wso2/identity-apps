@@ -49,6 +49,7 @@ import "./new-feature-announcement.scss";
  * Props interface of {@link NewFeatureAnnouncement}
  */
 export interface NewFeatureAnnouncementProps extends IdentifiableComponentInterface {
+    id: string;
     title: ReactElement;
     description: ReactElement;
     isEnabled: boolean;
@@ -65,6 +66,7 @@ export interface NewFeatureAnnouncementProps extends IdentifiableComponentInterf
  */
 const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = ({
     "data-componentid": componentId = "new-feature-announcement",
+    id,
     title,
     description,
     isEnabled,
@@ -75,7 +77,7 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
 }: NewFeatureAnnouncementProps): ReactElement => {
     const { t } = useTranslation();
 
-    const { setShowPreviewFeaturesModal } = useFeatureGate();
+    const { setShowPreviewFeaturesModal, setSelectedPreviewFeatureToShow } = useFeatureGate();
 
     return (
         <Paper
@@ -118,11 +120,15 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
                 ) : (
                     <Button
                         variant="contained"
-                        onClick={ () => setShowPreviewFeaturesModal(true) }
+                        onClick={ () => {
+                            console.log(id)
+                            setSelectedPreviewFeatureToShow(id);
+                            setShowPreviewFeaturesModal(true);
+                        } }
                         loading={ isEnabledStatusLoading }
                     >
                         <Box display="flex" alignItems="center" gap={ 1 }>
-                            <PreviewFeaturesIcon /> Enable and try out
+                            <PreviewFeaturesIcon /> { id !== "agents" ? "Enable and try out" : "Try Out" }
                         </Box>
                     </Button>
                 ) }
@@ -164,6 +170,7 @@ export const FeatureCarousel = () => {
     const features: any = useMemo(() => [
         agentFeatureConfig?.enabled && {
             description: "Extend your identity management to autonomous agents and AI systems",
+            id: "agents",
             isEnabled: isAgentManagementFeatureEnabledForOrganization,
             isEnabledStatusLoading: false,
             onTryOut: () => {},
@@ -176,6 +183,7 @@ export const FeatureCarousel = () => {
                     new AI-powered visual designer <AIText />
                 </>
             ),
+            id: "self-registration-orchestration",
             illustration: <Box className="login-box">
                 <SignUpBox />
             </Box>,
@@ -186,7 +194,11 @@ export const FeatureCarousel = () => {
             },
             title: "Design seamless self-registration experiences "
         }
-    ].filter(Boolean), [ isNewRegistrationPortalEnabled, agentFeatureConfig ]);
+    ].filter(Boolean), [
+        isNewRegistrationPortalEnabled,
+        agentFeatureConfig,
+        isNewRegistrationPortalEnabledRequestLoading
+    ]);
 
     useEffect(() => {
         const interval: any = setInterval(() => {
@@ -236,6 +248,7 @@ export const FeatureCarousel = () => {
                     } }
                 >
                     <NewFeatureAnnouncement
+                        id={ features[currentIndex].id }
                         title={ features[currentIndex]?.title }
                         description={ features[currentIndex]?.description }
                         illustration={ features[currentIndex]?.illustration }

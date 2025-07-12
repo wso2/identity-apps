@@ -39,6 +39,7 @@ import ListItemText from "@oxygen-ui/react/ListItemText";
 import Stack from "@oxygen-ui/react/Stack";
 import Switch from "@oxygen-ui/react/Switch";
 import Typography from "@oxygen-ui/react/Typography";
+import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import {
     ConnectorPropertyInterface,
     ServerConfigurationsConstants,
@@ -55,9 +56,9 @@ import { useSelector } from "react-redux";
 import NewSelfRegistrationImage from "../../assets/illustrations/preview-features/new-self-registration.png";
 import { AppConstants } from "../../constants/app-constants";
 import "./feature-preview-modal.scss";
-
 import { history } from "../../helpers/history";
 import { AppState } from "../../store";
+
 
 /**
  * Feature preview modal component props interface. {@link FeaturePreviewModal}
@@ -192,6 +193,8 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
         userStoresList
     } = useUserStores();
 
+    const { selectedPreviewFeatureToShow } = useFeatureGate();
+
     const { data: connectorDetails, mutate: connectorDetailsMutate } = useGetGovernanceConnectorById(
         ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
         ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID
@@ -248,9 +251,25 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
             name: "Self-Registration Orchestration",
             value: "SelfRegistration.EnableDynamicPortal"
         }
-    ].filter(Boolean)), [ isAgentManagementFeatureEnabledForOrganization, isEnableDynamicSelfRegistrationPortal ]);
+    ].filter(Boolean)), [
+        isAgentManagementFeatureEnabledForOrganization,
+        isEnableDynamicSelfRegistrationPortal,
+        connectorDetails
+    ]);
 
-    const [ selected, setSelected ] = useState(previewFeaturesList[0]);
+    const [ selectedFeatureIndex, setSelectedFeatureIndex ] = useState(0);
+
+    const selected: PreviewFeaturesListInterface = useMemo(() => {
+        return previewFeaturesList[selectedFeatureIndex];
+    }, [ selectedFeatureIndex, isEnableDynamicSelfRegistrationPortal ]);
+
+    useEffect(() => {
+        const activePreviewFeatureIndex: number = previewFeaturesList.findIndex(
+            (feature: PreviewFeaturesListInterface) => feature?.id === selectedPreviewFeatureToShow
+        );
+
+        setSelectedFeatureIndex(activePreviewFeatureIndex);
+    }, [ selectedPreviewFeatureToShow ]);
 
     useEffect(() => {
         if (connectorDetails) {
@@ -338,12 +357,12 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
                         { (previewFeaturesList?.length > 1) && (
                             <Grid xs={ 4 }>
                                 <List style={ { padding: "0" } }>
-                                    { previewFeaturesList?.map((item: PreviewFeaturesListInterface) => (
+                                    { previewFeaturesList?.map((item: PreviewFeaturesListInterface, index: number) => (
                                         <ListItem key={ item.name } disablePadding>
                                             <Card className="preview-feature-menu-card">
                                                 <ListItemButton
                                                     selected={ selected === item }
-                                                    onClick={ () => setSelected(item) }
+                                                    onClick={ () => setSelectedFeatureIndex(index) }
                                                 >
                                                     <ListItemText primary={ item.name } />
                                                 </ListItemButton>
