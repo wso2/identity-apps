@@ -85,7 +85,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ selectedPermissions, setSelectedPermissions ] = useState<SelectedPermissionsInterface[]>([]);
     const [ selectedAPIResources, setSelectedAPIResources ] = useState<APIResourceInterface[]>([]);
-    const [ apiResourcesListOptions, setAPIResourcesListOptions ] = useState<DropdownProps[]>([]);
+    const [ apiResourcesListOptions, setAPIResourcesListOptions ] = useState<DropdownItemProps[]>([]);
     const [ applicationName, setApplicationName ] = useState<string>(application?.name);
     const [ selectedApplication, setSelectedApplication ] = useState<DropdownItemProps[]>([]);
     const [ isFormError, setIsFormError ] = useState<boolean>(false);
@@ -120,7 +120,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
     }, [ application ]);
 
     useEffect(() => {
-        const options: DropdownProps[] = [];
+        const options: DropdownItemProps[] = [];
 
         subscribedAPIResourcesListData?.map((apiResource: AuthorizedAPIListItemInterface) => {
             const isNotSelected: boolean = !selectedAPIResources
@@ -456,14 +456,13 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                                             option.value === value.value
                                     }
                                     options={
-                                        apiResourcesListOptions?.filter((item: DropdownProps) =>
+                                        apiResourcesListOptions?.filter((item: DropdownItemProps) =>
                                             item?.type === APIResourceCategories.TENANT ||
                                             item?.type === APIResourceCategories.ORGANIZATION ||
-                                            item?.type === APIResourceCategories.BUSINESS
-                                        ).sort((a: DropdownProps, b: DropdownProps) =>
-                                            APIResourceUtils.resolveApiResourceGroup(a?.type)
-                                                ?.localeCompare(APIResourceUtils
-                                                    .resolveApiResourceGroup(b?.type))
+                                            item?.type === APIResourceCategories.BUSINESS ||
+                                            item?.type === APIResourceCategories.MCP
+                                        ).sort((a: DropdownItemProps, b: DropdownItemProps) =>
+                                            APIResourceUtils.sortApiResourceTypes(a, b)
                                         )
                                     }
                                     onChange={ onAPIResourceSelected }
