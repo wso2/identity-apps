@@ -23,13 +23,14 @@ import { APIResourceInterface } from "@wso2is/admin.api-resources.v2/models";
 import { APIResourceUtils } from "@wso2is/admin.api-resources.v2/utils/api-resource-utils";
 import useSubscribedAPIResources from "@wso2is/admin.applications.v1/api/use-subscribed-api-resources";
 import { AuthorizedAPIListItemInterface } from "@wso2is/admin.applications.v1/models/api-authorization";
-import { ApplicationInterface } from "@wso2is/admin.applications.v1/models/application";
+import { ApplicationInterface, ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models/application";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
 import { Code, ContentLoader, EmphasizedSegment, Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
+import startCase from "lodash-es/startCase";
 import React, {
     FunctionComponent,
     MutableRefObject,
@@ -61,6 +62,10 @@ interface ApplicationRoleWizardPropsInterface extends IdentifiableComponentInter
     closeWizard: () => void;
     setUserListRequestLoading: (value: boolean) => void;
     onRoleCreated: () => void;
+    /**
+     * Original template ID of the application to which the app role is assigned.
+     */
+    originalTemplateId?: string;
 }
 
 /**
@@ -76,6 +81,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
         closeWizard,
         application,
         onRoleCreated,
+        originalTemplateId,
         ["data-componentid"]: componentId
     } = props;
 
@@ -479,13 +485,25 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                                             label={ t("extensions:develop.applications.edit." +
                                                 "sections.apiAuthorization.sections.apiSubscriptions." +
                                                 "wizards.authorizeAPIResource.fields.apiResource.label", {
-                                                resourceText: t("extensions:develop.apiResource.resourceTypes.api")
+                                                resourceText: originalTemplateId ===
+                                                    ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION
+                                                    ? startCase(t("extensions:develop.applications.edit.sections" +
+                                                        ".apiAuthorization.resourceText.genericResource"))
+                                                    : t("extensions:develop.applications.edit.sections.apiAuthorization"
+                                                        + ".resourceText.apiResource")
+
                                             }) }
                                             placeholder={ t("extensions:develop.applications.edit." +
                                                 "sections.apiAuthorization.sections.apiSubscriptions." +
                                                 "wizards.authorizeAPIResource.fields.apiResource." +
                                                 "placeholder", {
-                                                resourceText: t("extensions:develop.apiResource.resourceTypes.api")
+                                                resourceText: originalTemplateId ===
+                                                    ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION
+                                                    ? startCase(t("extensions:develop.applications.edit.sections" +
+                                                        ".apiAuthorization.resourceText.genericResource"))
+                                                    : t("extensions:develop.applications.edit.sections.apiAuthorization"
+                                                        + ".resourceText.apiResource")
+
                                             }) }
                                             size="small"
                                             variant="outlined"

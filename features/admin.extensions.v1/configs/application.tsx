@@ -327,6 +327,7 @@ export const applicationConfig: ApplicationConfig = {
                             <ResourceTab.Pane controlledSegmentation>
                                 <ApplicationRoles
                                     onUpdate={ onApplicationUpdate }
+                                    originalTemplateId={ application?.originalTemplateId }
                                     readOnly={ isReadOnly || application?.advancedConfigurations?.fragment }
                                 />
                             </ResourceTab.Pane>
