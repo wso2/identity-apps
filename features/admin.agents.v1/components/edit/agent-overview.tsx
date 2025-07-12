@@ -106,7 +106,10 @@ export default function AgentOverview({
                             "urn:scim:wso2:agent:schema": {
                                 ...values,
                                 agentOwner: authenticatedUser
-                            }
+                            },
+                            // TODO: Move this to BE API to set the agent username when updating
+                            // the agent information
+                            userName: agentInfo?.userName
                         };
 
                         updateAgent(agentId, updateAgentPayload).then((_response: any) => {
@@ -130,7 +133,7 @@ export default function AgentOverview({
                                     <Grid.Column computer={ 8 }>
                                         <form
                                             onSubmit={ handleSubmit }
-                                            style={ { display: "flex", flexDirection: "column" } }
+                                            style={ { display: "flex", flexDirection: "column", gap: "16px" } }
                                         >
                                             { agentSchemaAttributes?.map((agentAttribute: Claim) => {
                                                 const claimProperties: any = Object.fromEntries(
