@@ -98,6 +98,10 @@ export const attributeConfig: AttributeConfig = {
             return excludingSet.has(dialectID);
         },
         showAddExternalAttributeButton: (_dialectID: string): boolean => {
+            if (_dialectID === ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_FOR_AGENTS")) {
+                return false;
+            }
+
             return true;
         }
     },

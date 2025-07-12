@@ -30,6 +30,8 @@ export interface FeatureGateContextProps {
      * Setter to set the showPreviewFeaturesModal flag.
      */
     setShowPreviewFeaturesModal: Dispatch<SetStateAction<boolean>>;
+    selectedPreviewFeatureToShow: string;
+    setSelectedPreviewFeatureToShow: Dispatch<SetStateAction<string>>;
 }
 
 /**
@@ -39,6 +41,8 @@ const FeatureGateContext: Context<
     FeatureGateContextProps
 > = createContext<null | FeatureGateContextProps>(
     {
+        selectedPreviewFeatureToShow: "",
+        setSelectedPreviewFeatureToShow: () => {},
         setShowPreviewFeaturesModal: () => {},
         showPreviewFeaturesModal: false
     }

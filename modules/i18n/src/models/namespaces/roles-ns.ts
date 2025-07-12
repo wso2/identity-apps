@@ -16,6 +16,74 @@
  * under the License.
  */
 
+interface AssignEntityToRole {
+            heading: string;
+            subHeading: string;
+            placeholders: {
+                beginSearch: string
+                error: string;
+                emptyPlaceholder: {
+                    action: string;
+                    title: string;
+                    subtitles: {
+                        0: string;
+                    };
+                };
+                emptySearchResult: string;
+                errorPlaceholder: {
+                    action: string;
+                    title: string;
+                    subtitles: {
+                        0: string;
+                        1: string;
+                    };
+                };
+            };
+            notifications: {
+                error: {
+                    message: string;
+                    description: string;
+                };
+                success: {
+                    message: string;
+                    description: string;
+                };
+                genericError: {
+                    message: string;
+                    description: string;
+                };
+                fetchError: {
+                    message: string;
+                    description: string;
+                };
+                pendingApproval: {
+                    message: string;
+                    description: string;
+                };
+            };
+            list: {
+                emptyPlaceholder: {
+                    action: string;
+                    title: string;
+                    subtitles: string;
+                };
+                user: string;
+                organization: string;
+            };
+            actions: {
+                search: {
+                    placeholder: string;
+                };
+                assign: {
+                    placeholder: string;
+                };
+                remove: {
+                    label: string;
+                    placeholder: string;
+                };
+            };
+        };
+
 export interface rolesNS {
     addRoleWizard: {
         buttons: {
@@ -276,79 +344,14 @@ export interface rolesNS {
             roles: string;
             agents: string;
         };
-        users: {
-            heading: string;
-            subHeading: string;
-            placeholders: {
-                beginSearch: string
-                error: string;
-                emptyPlaceholder: {
-                    action: string;
-                    title: string;
-                    subtitles: {
-                        0: string;
-                    };
-                };
-                emptySearchResult: string;
-                errorPlaceholder: {
-                    action: string;
-                    title: string;
-                    subtitles: {
-                        0: string;
-                        1: string;
-                    };
-                };
-            };
-            notifications: {
-                error: {
-                    message: string;
-                    description: string;
-                };
-                success: {
-                    message: string;
-                    description: string;
-                };
-                genericError: {
-                    message: string;
-                    description: string;
-                };
-                fetchError: {
-                    message: string;
-                    description: string;
-                };
-                pendingApproval: {
-                    message: string;
-                    description: string;
-                };
-            };
-            list: {
-                emptyPlaceholder: {
-                    action: string;
-                    title: string;
-                    subtitles: string;
-                };
-                user: string;
-                organization: string;
-            };
-            actions: {
-                search: {
-                    placeholder: string;
-                };
-                assign: {
-                    placeholder: string;
-                };
-                remove: {
-                    label: string;
-                    placeholder: string;
-                };
-            };
-        };
         permissions: {
             heading: string;
             subHeading: string;
             readOnlySubHeading: string;
             removedPermissions: string;
         };
+        users: AssignEntityToRole;
+        agents: AssignEntityToRole;
     };
     list: {
         buttons: {

@@ -228,13 +228,13 @@
                     {% endif %}
                 ],
                 "enabled": {{ feature.enabled }},
-                "featureFlags": {
+                "featureFlags": [
                     {% if feature.feature_flags is defined %}
                     {% for flag, value in feature.feature_flags.items() %}
                     "{{ flag }}": {{ value }}{{ "," if not loop.last }}
                     {% endfor %}
                     {% endif %}
-                },
+                ],
                 "scopes": {
                     {% if feature.scopes is defined %}
                     {% for operation, scopes in feature.scopes.items() %}
@@ -293,7 +293,7 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {% if console.agents.enabled is defined %} {{ console.agents.enabled }},
+                "enabled": {% if agent_identity.enabled is defined %} {{ agent_identity.enabled }},
                 {% else %} true,
                 {% endif %}
                 "scopes": {

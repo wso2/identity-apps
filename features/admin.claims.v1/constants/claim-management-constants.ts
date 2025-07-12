@@ -105,7 +105,8 @@ export class ClaimManagementConstants {
         .set("SCIM2_SCHEMAS_EXT_ENT_USER",
             "dXJuOmlldGY6cGFyYW1zOnNjaW06c2NoZW1hczpleHRlbnNpb246ZW50ZXJwcmlzZToyLjA6VXNlcg")
         .set("SCIM_SCHEMAS_CORE", "dXJuOnNjaW06c2NoZW1hczpjb3JlOjEuMA")
-        .set("SCIM2_SCHEMAS_EXT_SYSTEM", "dXJuOnNjaW06d3NvMjpzY2hlbWE");
+        .set("SCIM2_SCHEMAS_EXT_SYSTEM", "dXJuOnNjaW06d3NvMjpzY2hlbWE")
+        .set("SCIM2_FOR_AGENTS", "dXJuOnNjaW06d3NvMjphZ2VudDpzY2hlbWE");
 
     /**
      * Set of dialects packed OOTB.

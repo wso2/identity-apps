@@ -482,20 +482,8 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                         item?.type === APIResourceCategories.BUSINESS ||
                                                         (originalTemplateId === "mcp-client-application" &&
                                                             item?.type === APIResourceCategories.MCP)
-                                                    ).sort((a: DropdownItemProps, b: DropdownItemProps) => {
-                                                        const apiResourceSortingOrder: APIResourceCategories[] = [
-                                                            APIResourceCategories.BUSINESS,
-                                                            APIResourceCategories.MCP,
-                                                            APIResourceCategories.TENANT,
-                                                            APIResourceCategories.ORGANIZATION
-                                                        ];
-                                                        const aIndex: number = apiResourceSortingOrder.indexOf(a?.type);
-                                                        const bIndex: number = apiResourceSortingOrder.indexOf(b?.type);
-
-                                                        return (aIndex === -1 ? apiResourceSortingOrder.length : aIndex)
-                                                            - (bIndex === -1 ? apiResourceSortingOrder.length : bIndex);
-                                                    }
-
+                                                    ).sort((a: DropdownItemProps, b: DropdownItemProps) =>
+                                                        APIResourceUtils.sortApiResourceTypes(a, b)
                                                     )
                                                 }
                                                 onChange={ (

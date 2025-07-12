@@ -76,6 +76,10 @@ interface ApplicationRolesSettingsInterface extends IdentifiableComponentInterfa
      * Make the component read only.
      */
     readOnly?: boolean;
+    /**
+     * Original template ID of the application for which the roles are created.
+     */
+    originalTemplateId?: string;
 }
 
 /**
@@ -89,6 +93,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
 
     const {
         onUpdate,
+        originalTemplateId,
         readOnly,
         [ "data-componentid" ]: componentId
     } = props;
@@ -550,6 +555,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                         } }
                         application={ application }
                         onRoleCreated={ onRoleCreated }
+                        originalTemplateId={ originalTemplateId }
                     />
                 )
             }
