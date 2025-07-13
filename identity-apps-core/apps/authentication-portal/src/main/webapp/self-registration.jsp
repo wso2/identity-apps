@@ -93,45 +93,45 @@
         <link rel="preload" href="${pageContext.request.contextPath}/libs/react/react-dom.production.min.js" as="script" />
         <link rel="preload" href="${pageContext.request.contextPath}/js/react-ui-core.min.js" as="script" />
 
-        <script>
-            window.onSubmit = function(token) {
-                console.log("Got recaptcha token:", token);
-            };
-        </script>
-    </head>
-    <body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
-    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
-        <layout:component componentName="ProductHeader">
-            <%-- product-title --%>
-            <%
-                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-                if (productTitleFile.exists()) {
-            %>
-                <jsp:include page="extensions/product-title.jsp"/>
-            <% } else { %>
-                <jsp:include page="includes/product-title.jsp"/>
-            <% } %>
-        </layout:component>
-        <layout:component componentName="MainSection">
-            <div class="ui segment left aligned">
-                <div id="react-root" class="react-ui-container"/>
-            </div>
-        </layout:component>
-        <layout:component componentName="ProductFooter">
-            <%-- product-footer --%>
-            <%
-                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-                if (productFooterFile.exists()) {
-            %>
-            <jsp:include page="extensions/product-footer.jsp"/>
-            <% } else { %>
-            <jsp:include page="includes/product-footer.jsp"/>
-            <% } %>
-        </layout:component>
-        <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">
-            <jsp:include page="${pathOfDynamicComponent}" />
-        </layout:dynamicComponent>
-    </layout:main>
+    <script>
+        window.onSubmit = function(token) {
+            console.log("Got recaptcha token:", token);
+        };
+    </script>
+</head>
+<body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
+  <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+      <layout:component componentName="ProductHeader">
+          <%-- product-title --%>
+          <%
+              File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+              if (productTitleFile.exists()) {
+          %>
+              <jsp:include page="extensions/product-title.jsp"/>
+          <% } else { %>
+              <jsp:include page="includes/product-title.jsp"/>
+          <% } %>
+      </layout:component>
+      <layout:component componentName="MainSection">
+          <div class="ui segment left aligned">
+              <div id="react-root" class="react-ui-container"></div>
+          </div>
+      </layout:component>
+      <layout:component componentName="ProductFooter">
+          <%-- product-footer --%>
+          <%
+              File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+              if (productFooterFile.exists()) {
+          %>
+          <jsp:include page="extensions/product-footer.jsp"/>
+          <% } else { %>
+          <jsp:include page="includes/product-footer.jsp"/>
+          <% } %>
+      </layout:component>
+      <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">
+          <jsp:include page="${pathOfDynamicComponent}" />
+      </layout:dynamicComponent>
+  </layout:main>
 
     <%-- footer --%>
     <%
@@ -161,8 +161,8 @@
                     return;
                 }
 
-                const { createElement, useEffect, useState } = React;
-                const { DynamicContent, I18nProvider } = ReactUICore;
+            const { createElement, useEffect, useState } = React;
+            const { DynamicContent, I18nProvider, executeFido2FLow, PasskeyEnrollment } = ReactUICore;
 
                 const Content = () => {
                     const baseUrl = "<%= identityServerEndpointContextParam %>";
@@ -280,10 +280,25 @@
                             window.location.href = errorPageURL;
                         }
 
-                        if (flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error) {
-                            setFlowError(flowData.data.additionalData.error);
+                    if (flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error) {
+                        setFlowError(flowData.data.additionalData.error);
+                    }
+                }, [ error, flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error ]);
+
+                const handleInternalPrompt = (flowData) => {
+                    let providedInputs = {};
+                    flowData.data.requiredParams.map((param) => {
+                        if (param === "origin") {
+                            providedInputs[param] = window.location.origin;
                         }
-                    }, [ error, flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error ]);
+                    });
+
+                    setPostBody({
+                        flowId: flowData.flowId,
+                        actionId: "",
+                        inputs: providedInputs
+                    });
+                }
 
                     const handleFlowStatus = (flow) => {
                         if (!flow) return false;
@@ -308,18 +323,44 @@
                         }
                     };
 
-                    const handleStepType = (flow) => {
-                        if (!flow) return false;
+                const handleStepType = (flow) => {
+                    if (!flow) return false;
+                    switch (flow.type) {
+                        case "REDIRECTION":
+                            setLoading(true);
+                            window.location.href = flow.data.redirectURL;
+                            break;
 
-                        switch (flow.type) {
-                            case "REDIRECTION":
-                                setLoading(true);
-                                window.location.href = flow.data.redirectURL;
+                        case "INTERNAL_PROMPT":
+                            handleInternalPrompt(flow);
+                            break;
 
-                            default:
-                                console.log(`Flow step type: ${flow.type}. No special action.`);
-                        }
-                    };
+                        case "WEBAUTHN":
+                            executeFido2FLow(
+                                flow,
+                                setPostBody,
+                                (error) => {
+                                    setFlowError(error);
+                                }
+                            );
+                            break;
+
+                        default:
+                            console.log(`Flow step type: ${flow.type}. No special action.`);
+                    }
+                };
+
+                if (flowData && flowData.type === "WEBAUTHN") {
+                    return createElement(
+                        "div",
+                        { className: "registration-content-container loaded" },
+                        createElement(
+                            PasskeyEnrollment, {
+                                passkeyError: flowError
+                            }
+                        )
+                    );
+                }
 
                     if (loading || (!components || components.length === 0)) {
                         return createElement(

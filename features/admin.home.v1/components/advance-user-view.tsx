@@ -57,7 +57,7 @@ import { useSelector } from "react-redux";
 import { Button, Card, Grid, Placeholder } from "semantic-ui-react";
 import { CardExpandedNavigationButton } from "./card-expanded-navigation-button";
 import { DynamicApplicationContextCard } from "./dynamic-application-context-card";
-import NewFeatureAnnouncement from "./new-feature-announcement/new-feature-announcement";
+import { FeatureCarousel } from "./new-feature-announcement/new-feature-announcement";
 import { getGettingStartedCardIllustrations } from "../configs/ui";
 import HomeConstants from "../constants/home-constants";
 
@@ -115,12 +115,14 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
     const [ isPlaygroundExist, setisPlaygroundExist ] = useState(undefined);
     const [ showWizardLogin, setShowWizardLogin ] = useState<boolean>(false);
     const [ inboundProtocolConfig, setInboundProtocolConfig ] = useState<any>(undefined);
+    const [ isAdminDataSeparationBannerEnabled, setIsAdminDataSeparationBannerEnabled ] = useState<boolean>(true);
+
     const [
         isTryItApplicationSearchRequestLoading,
         setIsTryItApplicationSearchRequestLoading
     ] = useState<boolean>(false);
 
-    const { organizationType } = useGetCurrentOrganizationType();
+    const { organizationType, isSubOrganization } = useGetCurrentOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -523,9 +525,12 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                 </Heading>
             </div>
 
-            { isAdminDataSeparationNoticeEnabled && (
-                <AdminDataSeparationNotice />
+            { isAdminDataSeparationNoticeEnabled && isAdminDataSeparationBannerEnabled &&
+                organizationType !== OrganizationType.SUBORGANIZATION && (
+                <AdminDataSeparationNotice setDisplayBanner={ setIsAdminDataSeparationBannerEnabled } />
             ) }
+
+            <br />
 
             { showFeatureAnnouncementBanner && (
                 <Show featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
@@ -533,7 +538,7 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                         when={ loginAndRegistrationFeatureConfig?.scopes?.update }
                         featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }
                     >
-                        <NewFeatureAnnouncement />
+                        <FeatureCarousel />
                     </Show>
                 </Show>
             ) }
@@ -585,7 +590,8 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                                 </Show>
                             </Grid.Row>
                             {
-                                !featureConfig?.flows?.disabledFeatures.includes("flows.homePage.tile") && (
+                                !featureConfig?.flows?.disabledFeatures.includes("flows.homePage.tile") &&
+                                    !isSubOrganization() && (
                                     <Show when={ featureConfig?.flows?.scopes?.read }>
                                         { renderFlowsCard() }
                                     </Show>

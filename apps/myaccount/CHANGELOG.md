@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.20.4
+
+### Patch Changes
+
+- [#8452](https://github.com/wso2/identity-apps/pull/8452) [`017eff166dcad4c9337ac1047191e337c14184f3`](https://github.com/wso2/identity-apps/commit/017eff166dcad4c9337ac1047191e337c14184f3) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Revamp My Account user profile codebase
+
+- Updated dependencies [[`017eff166dcad4c9337ac1047191e337c14184f3`](https://github.com/wso2/identity-apps/commit/017eff166dcad4c9337ac1047191e337c14184f3)]:
+  - @wso2is/core@2.9.2
+
 ## 2.20.3
 
 ### Patch Changes

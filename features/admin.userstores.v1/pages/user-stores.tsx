@@ -96,6 +96,8 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
 
     const disabledFeatures: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.features?.userStores?.disabledFeatures);
+    const systemReservedUserStores: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.systemReservedUserStores);
 
     const dispatch: Dispatch = useDispatch();
 
@@ -110,8 +112,13 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
 
     useEffect(() => {
         if (fetchedUserStores?.length > 0) {
-            setUserStores(fetchedUserStores);
-            setFilteredUserStores(fetchedUserStores);
+            const visibleUserStores: UserStoreListItem[] = fetchedUserStores.filter(
+                (userStore: UserStoreListItem) =>
+                    !systemReservedUserStores?.includes(userStore?.name)
+            );
+
+            setUserStores(visibleUserStores);
+            setFilteredUserStores(visibleUserStores);
         }
     }, [ fetchedUserStores ]);
 

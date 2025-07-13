@@ -78,6 +78,10 @@ export interface FeatureConfigInterface {
      */
     actions?: FeatureAccessConfigInterface;
     /**
+     * Agent management feature.
+     */
+    agents?: FeatureAccessConfigInterface;
+    /**
      * Admin user management feature.
      */
     administrators?: FeatureAccessConfigInterface;
@@ -517,6 +521,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Hidden userstores
      */
     hiddenUserStores: string[];
+    /**
+     * System reserved userstores
+     */
+    systemReservedUserStores: string[];
     /**
      * App Logos
      */

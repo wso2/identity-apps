@@ -59,7 +59,7 @@ const useGetAllFeatures = <
     useEffect(() => {
         getDecodedIDToken().then((response: DecodedIDTokenPayload) => {
             // Set tenant domain as organization identifier.
-            setOrgIdentifier(response.orgHandle);
+            setOrgIdentifier(response.org_handle);
         });
     }, [ organizationType ]);
 

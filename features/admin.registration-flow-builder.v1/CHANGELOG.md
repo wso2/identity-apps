@@ -1,5 +1,46 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.9.2
+
+### Patch Changes
+
+- [#8492](https://github.com/wso2/identity-apps/pull/8492) [`a91868a9a99658e89c2e2169e766ccae3cd7cd20`](https://github.com/wso2/identity-apps/commit/a91868a9a99658e89c2e2169e766ccae3cd7cd20) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improve confirm password behaviour of the flow builder.
+
+- Updated dependencies [[`24ed4949898ff12edd895c0d36d9098fa36b7e8c`](https://github.com/wso2/identity-apps/commit/24ed4949898ff12edd895c0d36d9098fa36b7e8c), [`a91868a9a99658e89c2e2169e766ccae3cd7cd20`](https://github.com/wso2/identity-apps/commit/a91868a9a99658e89c2e2169e766ccae3cd7cd20)]:
+  - @wso2is/core@2.9.4
+  - @wso2is/admin.flow-builder-core.v1@0.8.2
+
+## 0.9.1
+
+### Patch Changes
+
+- [#8501](https://github.com/wso2/identity-apps/pull/8501) [`14a8747910ed801671508c60c5769781fa022674`](https://github.com/wso2/identity-apps/commit/14a8747910ed801671508c60c5769781fa022674) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Disable the AI-generation template of registration flow builder
+
+- Updated dependencies [[`14a8747910ed801671508c60c5769781fa022674`](https://github.com/wso2/identity-apps/commit/14a8747910ed801671508c60c5769781fa022674)]:
+  - @wso2is/admin.flow-builder-core.v1@0.8.1
+  - @wso2is/admin.feature-gate.v1@1.7.5
+
+## 0.9.0
+
+### Minor Changes
+
+- [#8416](https://github.com/wso2/identity-apps/pull/8416) [`90a17579bddde8c429932caf4a318d873ff3e7d5`](https://github.com/wso2/identity-apps/commit/90a17579bddde8c429932caf4a318d873ff3e7d5) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce Passkey signup in registration orchestration
+
+### Patch Changes
+
+- Updated dependencies [[`76f192a81a134a773cb0896bb6febefca442324d`](https://github.com/wso2/identity-apps/commit/76f192a81a134a773cb0896bb6febefca442324d), [`90a17579bddde8c429932caf4a318d873ff3e7d5`](https://github.com/wso2/identity-apps/commit/90a17579bddde8c429932caf4a318d873ff3e7d5)]:
+  - @wso2is/admin.core.v1@2.46.5
+  - @wso2is/admin.flow-builder-core.v1@0.8.0
+
+## 0.8.1
+
+### Patch Changes
+
+- [#8475](https://github.com/wso2/identity-apps/pull/8475) [`fa8fc079c3e1ccf25384881eb988c233994eb0dd`](https://github.com/wso2/identity-apps/commit/fa8fc079c3e1ccf25384881eb988c233994eb0dd) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Rename the Google Signup Executor to Google Executor
+
+- Updated dependencies [[`fa8fc079c3e1ccf25384881eb988c233994eb0dd`](https://github.com/wso2/identity-apps/commit/fa8fc079c3e1ccf25384881eb988c233994eb0dd)]:
+  - @wso2is/admin.flow-builder-core.v1@0.7.6
+
 ## 0.8.0
 
 ### Minor Changes

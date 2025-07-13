@@ -246,6 +246,10 @@ export interface ProfileSchemaInterface {
     */
     supportedByDefault?: string;
     /**
+     * Schema URI of the attribute.
+     */
+    schemaUri?: string;
+    /**
      * Schema attribute profiles
      */
     profiles?: {

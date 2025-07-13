@@ -1,5 +1,20 @@
 # @wso2is/admin.applications.v1
 
+## 2.36.6
+
+### Patch Changes
+
+- [#8466](https://github.com/wso2/identity-apps/pull/8466) [`31252dcffe38616bb43dd605174e200f130242e0`](https://github.com/wso2/identity-apps/commit/31252dcffe38616bb43dd605174e200f130242e0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix broken i18n in api authorization section in application edit view
+
+- Updated dependencies [[`8813a54e1329989eec28a10b21678bfdb0e6d11d`](https://github.com/wso2/identity-apps/commit/8813a54e1329989eec28a10b21678bfdb0e6d11d)]:
+  - @wso2is/admin.organizations.v1@2.26.207
+
+## 2.36.5
+
+### Patch Changes
+
+- [#8434](https://github.com/wso2/identity-apps/pull/8434) [`2a00fc63bb8c5df7a52877b4d5f532d54cbae659`](https://github.com/wso2/identity-apps/commit/2a00fc63bb8c5df7a52877b4d5f532d54cbae659) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Remove info in protocol tab for react and nextjst templates
+
 ## 2.36.4
 
 ### Patch Changes

@@ -1,5 +1,53 @@
 # @wso2is/i18n
 
+## 2.24.13
+
+### Patch Changes
+
+- [#8478](https://github.com/wso2/identity-apps/pull/8478) [`24ed4949898ff12edd895c0d36d9098fa36b7e8c`](https://github.com/wso2/identity-apps/commit/24ed4949898ff12edd895c0d36d9098fa36b7e8c) Thanks [@hwupathum](https://github.com/hwupathum)! - Enable secret hiding for Remote logging UI
+
+- Updated dependencies [[`24ed4949898ff12edd895c0d36d9098fa36b7e8c`](https://github.com/wso2/identity-apps/commit/24ed4949898ff12edd895c0d36d9098fa36b7e8c)]:
+  - @wso2is/core@2.9.4
+
+## 2.24.12
+
+### Patch Changes
+
+- [#8176](https://github.com/wso2/identity-apps/pull/8176) [`7481e3bcf5856beae32e670f04956157747334f6`](https://github.com/wso2/identity-apps/commit/7481e3bcf5856beae32e670f04956157747334f6) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add organization handle to organization creation, display, and list
+
+## 2.24.11
+
+### Patch Changes
+
+- [#8077](https://github.com/wso2/identity-apps/pull/8077) [`4c0d987daf1267aa5cdd2b4b5d1ef2f9f17a53b1`](https://github.com/wso2/identity-apps/commit/4c0d987daf1267aa5cdd2b4b5d1ef2f9f17a53b1) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add assets, i18n and util methods required for AI agent management
+
+- Updated dependencies [[`b6f5db8cd4722cb06c1608b0698c31ae5f6a5204`](https://github.com/wso2/identity-apps/commit/b6f5db8cd4722cb06c1608b0698c31ae5f6a5204)]:
+  - @wso2is/core@2.9.3
+
+## 2.24.10
+
+### Patch Changes
+
+- [#8471](https://github.com/wso2/identity-apps/pull/8471) [`c562eed1c1930ca8da84c8ce3f49d30a57773bbe`](https://github.com/wso2/identity-apps/commit/c562eed1c1930ca8da84c8ce3f49d30a57773bbe) Thanks [@Malith-19](https://github.com/Malith-19)! - Add UI support for update users in role in workflow operations.
+
+## 2.24.9
+
+### Patch Changes
+
+- [#8442](https://github.com/wso2/identity-apps/pull/8442) [`635b9c61911819182fb7685f32bc7942fd6b9af5`](https://github.com/wso2/identity-apps/commit/635b9c61911819182fb7685f32bc7942fd6b9af5) Thanks [@Malith-19](https://github.com/Malith-19)! - Add new warning message when user deletion workflow created and display the validation errors.
+
+## 2.24.8
+
+### Patch Changes
+
+- [#8422](https://github.com/wso2/identity-apps/pull/8422) [`f047e10bf194d35f2f79c7eda0a63a31ddc57a46`](https://github.com/wso2/identity-apps/commit/f047e10bf194d35f2f79c7eda0a63a31ddc57a46) Thanks [@malithie](https://github.com/malithie)! - Update UI to adhere to api changes.
+
+## 2.24.7
+
+### Patch Changes
+
+- [#8409](https://github.com/wso2/identity-apps/pull/8409) [`16380763a69b363677a27dff0d71e8bb7f4bd006`](https://github.com/wso2/identity-apps/commit/16380763a69b363677a27dff0d71e8bb7f4bd006) Thanks [@Malith-19](https://github.com/Malith-19)! - Improve the workflow related UIs.
+
 ## 2.24.6
 
 ### Patch Changes

@@ -1,5 +1,27 @@
 # @wso2is/admin.feature-gate.v1
 
+## 1.7.5
+
+### Patch Changes
+
+- [#8501](https://github.com/wso2/identity-apps/pull/8501) [`14a8747910ed801671508c60c5769781fa022674`](https://github.com/wso2/identity-apps/commit/14a8747910ed801671508c60c5769781fa022674) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Disable the AI-generation template of registration flow builder
+
+## 1.7.4
+
+### Patch Changes
+
+- [#8077](https://github.com/wso2/identity-apps/pull/8077) [`4c0d987daf1267aa5cdd2b4b5d1ef2f9f17a53b1`](https://github.com/wso2/identity-apps/commit/4c0d987daf1267aa5cdd2b4b5d1ef2f9f17a53b1) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add assets, i18n and util methods required for AI agent management
+
+- Updated dependencies [[`4c0d987daf1267aa5cdd2b4b5d1ef2f9f17a53b1`](https://github.com/wso2/identity-apps/commit/4c0d987daf1267aa5cdd2b4b5d1ef2f9f17a53b1), [`b6f5db8cd4722cb06c1608b0698c31ae5f6a5204`](https://github.com/wso2/identity-apps/commit/b6f5db8cd4722cb06c1608b0698c31ae5f6a5204)]:
+  - @wso2is/admin.core.v1@2.46.4
+  - @wso2is/core@2.9.3
+
+## 1.7.3
+
+### Patch Changes
+
+- [#8448](https://github.com/wso2/identity-apps/pull/8448) [`344d2c5a41d426c9222f64336dc661ff9484ea49`](https://github.com/wso2/identity-apps/commit/344d2c5a41d426c9222f64336dc661ff9484ea49) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Fix organization identifier not setting correctly from token response
+
 ## 1.7.2
 
 ### Patch Changes

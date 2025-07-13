@@ -25,6 +25,8 @@ import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import { Element, ElementCategories } from "../../../../models/elements";
+import { EventTypes } from "../../../../models/extension";
+import PluginRegistry from "../../../../plugins/plugin-registry";
 import generateResourceId from "../../../../utils/generate-resource-id";
 import Droppable from "../../../dnd/droppable";
 import ReorderableElement from "../../steps/view/reorderable-element";
@@ -74,7 +76,8 @@ const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
                         <Typography variant="body2">DROP FORM COMPONENTS HERE</Typography>
                     </Box>
                 ) }
-                { (resource?.components as any)?.map((component: Element, index: number) => (
+                { (resource?.components as any)?.map((component: Element, index: number) => PluginRegistry
+                    .getInstance().executeSync(EventTypes.ON_NODE_ELEMENT_FILTER, component) && (
                     <ReorderableElement
                         key={ component.id }
                         id={ component.id }

@@ -27,4 +27,7 @@ export class ConsoleAdministratorOnboardingConstants {
 
     public static readonly ADD_EXISTING_USER_FORM_ID: string = "add-existing-user-wizard-form";
     public static readonly INVITE_PARENT_USER_FORM_ID: string = "invite-parent-user-wizard-form";
+
+    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
+        .set("CONSOLE_SETTINGS_ADD_ADMINISTRATOR", "consoleSettings.addAdministrator");
 }

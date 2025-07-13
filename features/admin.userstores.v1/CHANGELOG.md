@@ -1,5 +1,26 @@
 # @wso2is/admin.userstores.v1
 
+## 2.27.35
+
+### Patch Changes
+
+- [#8077](https://github.com/wso2/identity-apps/pull/8077) [`b6f5db8cd4722cb06c1608b0698c31ae5f6a5204`](https://github.com/wso2/identity-apps/commit/b6f5db8cd4722cb06c1608b0698c31ae5f6a5204) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Misc improvements required for AI agent management feature
+
+- Updated dependencies [[`4c0d987daf1267aa5cdd2b4b5d1ef2f9f17a53b1`](https://github.com/wso2/identity-apps/commit/4c0d987daf1267aa5cdd2b4b5d1ef2f9f17a53b1), [`b6f5db8cd4722cb06c1608b0698c31ae5f6a5204`](https://github.com/wso2/identity-apps/commit/b6f5db8cd4722cb06c1608b0698c31ae5f6a5204)]:
+  - @wso2is/admin.core.v1@2.46.4
+  - @wso2is/theme@2.8.3
+  - @wso2is/i18n@2.24.11
+  - @wso2is/core@2.9.3
+
+## 2.27.34
+
+### Patch Changes
+
+- [#8447](https://github.com/wso2/identity-apps/pull/8447) [`4f6a234d2b0e2f77ece767b5a3e76dfb30049a1a`](https://github.com/wso2/identity-apps/commit/4f6a234d2b0e2f77ece767b5a3e76dfb30049a1a) Thanks [@BimsaraBodaragama](https://github.com/BimsaraBodaragama)! - Add console to the changeset
+
+- Updated dependencies [[`635b9c61911819182fb7685f32bc7942fd6b9af5`](https://github.com/wso2/identity-apps/commit/635b9c61911819182fb7685f32bc7942fd6b9af5)]:
+  - @wso2is/i18n@2.24.9
+
 ## 2.27.33
 
 ### Patch Changes

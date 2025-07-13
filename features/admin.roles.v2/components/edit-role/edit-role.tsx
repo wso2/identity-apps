@@ -80,6 +80,10 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
         (state: AppState) => state?.config?.ui?.features?.userRoles);
     const usersFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.users);
+    const agentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.agents
+    );
+
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const administratorRoleDisplayName: string = useSelector(
         (state: AppState) => state?.config?.ui?.administratorRoleDisplayName);
@@ -179,6 +183,26 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                             <RoleUsersList
                                 isReadOnly={ isReadOnly || isUserReadOnly }
                                 role={ roleObject }
+                                onRoleUpdate={ onRoleUpdate }
+                                tabIndex={ 3 }
+                            />
+                        </ResourceTab.Pane>
+                    )
+                }
+            );
+        }
+
+        if (agentsFeatureConfig?.enabled) {
+            panes.push(
+                {
+                    menuItem: t("roles:edit.menuItems.agents"),
+                    render: () => (
+                        <ResourceTab.Pane controlledSegmentation attached={ false }>
+                            <RoleUsersList
+                                isReadOnly={ isReadOnly || isUserReadOnly }
+                                role={ roleObject }
+                                isForNonHumanUser={ true }
+                                activeUserStore="AGENT"
                                 onRoleUpdate={ onRoleUpdate }
                                 tabIndex={ 3 }
                             />

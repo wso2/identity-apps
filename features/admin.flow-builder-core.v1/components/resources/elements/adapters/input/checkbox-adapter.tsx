@@ -18,9 +18,11 @@
 
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
+import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { CommonElementFactoryPropsInterface } from "../../common-element-factory";
+import Hint from "../../hint";
 
 /**
  * Props interface of {@link CheckboxAdapter}
@@ -36,15 +38,24 @@ export type CheckboxAdapterPropsInterface = IdentifiableComponentInterface & Com
 export const CheckboxAdapter: FunctionComponent<CheckboxAdapterPropsInterface> = ({
     resource
 }: CheckboxAdapterPropsInterface): ReactElement => (
-    <FormControlLabel
-        control={ <Checkbox defaultChecked /> }
-        className={ resource.config?.className }
-        defaultValue={ resource.config?.defaultValue }
-        label={ resource.config?.label }
-        placeholder={ resource.config?.placeholder || "" }
-        required={ resource.config?.required }
-        style={ resource.config?.styles }
-    />
+    <div>
+        <FormControlLabel
+            control={ <Checkbox defaultChecked /> }
+            className={ resource.config?.className }
+            defaultValue={ resource.config?.defaultValue }
+            label={ resource.config?.label }
+            placeholder={ resource.config?.placeholder || "" }
+            required={ resource.config?.required }
+            style={ resource.config?.styles }
+        />
+        {
+            resource.config?.hint && (
+                <FormHelperText>
+                    <Hint hint={ resource.config?.hint } />
+                </FormHelperText>
+            )
+        }
+    </div>
 );
 
 export default CheckboxAdapter;
