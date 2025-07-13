@@ -72,7 +72,7 @@ const CommonStepPropertyFactory: FunctionComponent<CommonStepPropertyFactoryProp
 }: CommonStepPropertyFactoryPropsInterface): ReactElement | null => {
     if (propertyKey === "text") {
         if (resource.type === ElementTypes.RichText) {
-            return <RichText ToolbarProps={ { history: false, strikeThrough: false } } { ...rest } />;
+            return <RichText { ...rest } />;
         }
     }
 

@@ -436,7 +436,7 @@
         "display": {
             "label": "Rich Text",
             "image": "https://www.svgrepo.com/show/374852/display-rich-text.svg",
-            "showOnResourcePanel": false
+            "showOnResourcePanel": true
         },
         "config": {
             "text": "<h3 class=\"ui header\">Rich Text</h3>"
