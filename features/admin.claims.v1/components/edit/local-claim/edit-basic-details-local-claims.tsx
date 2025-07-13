@@ -1309,7 +1309,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         }
                         listen={ (checked: boolean) => {
                             setMultiValued(checked);
-                            setDefaultInputTypeForDataType(dataType as ClaimDataType, checked);
+                            if (dataType === ClaimDataType.OPTIONS) {
+                                setDefaultInputTypeForDataType(dataType as ClaimDataType, checked);
+                            }
                         } }
                     />
 

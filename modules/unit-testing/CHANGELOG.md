@@ -1,5 +1,11 @@
 # @wso2is/unit-testing
 
+## 0.6.5
+
+### Patch Changes
+
+- [#8506](https://github.com/wso2/identity-apps/pull/8506) [`cf84a990e2bcdb6ac7a47d64fc2271abdc3dec88`](https://github.com/wso2/identity-apps/commit/cf84a990e2bcdb6ac7a47d64fc2271abdc3dec88) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Fix unit test failure and add check for org handle autogeneration
+
 ## 0.6.4
 
 ### Patch Changes

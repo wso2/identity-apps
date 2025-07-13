@@ -1,5 +1,14 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.8.2
+
+### Patch Changes
+
+- [#8492](https://github.com/wso2/identity-apps/pull/8492) [`a91868a9a99658e89c2e2169e766ccae3cd7cd20`](https://github.com/wso2/identity-apps/commit/a91868a9a99658e89c2e2169e766ccae3cd7cd20) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improve confirm password behaviour of the flow builder.
+
+- Updated dependencies [[`24ed4949898ff12edd895c0d36d9098fa36b7e8c`](https://github.com/wso2/identity-apps/commit/24ed4949898ff12edd895c0d36d9098fa36b7e8c)]:
+  - @wso2is/core@2.9.4
+
 ## 0.8.1
 
 ### Patch Changes

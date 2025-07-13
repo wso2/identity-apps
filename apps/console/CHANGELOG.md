@@ -1,5 +1,37 @@
 # @wso2is/console
 
+## 2.67.7
+
+### Patch Changes
+
+- [#8513](https://github.com/wso2/identity-apps/pull/8513) [`7d2478f0f706e8eb01b8dfea5ba5080cf7b57811`](https://github.com/wso2/identity-apps/commit/7d2478f0f706e8eb01b8dfea5ba5080cf7b57811) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix input format change when selecting the multi valued property
+
+- Updated dependencies [[`7d2478f0f706e8eb01b8dfea5ba5080cf7b57811`](https://github.com/wso2/identity-apps/commit/7d2478f0f706e8eb01b8dfea5ba5080cf7b57811)]:
+  - @wso2is/admin.claims.v1@2.28.5
+
+## 2.67.6
+
+### Patch Changes
+
+- [#8498](https://github.com/wso2/identity-apps/pull/8498) [`77a1537cdf2e755dd4e7945048da26d6fe1c0479`](https://github.com/wso2/identity-apps/commit/77a1537cdf2e755dd4e7945048da26d6fe1c0479) Thanks [@Malith-19](https://github.com/Malith-19)! - Fix the filter not updating issue in the workflow and approval task status schema changes.
+
+- Updated dependencies [[`77a1537cdf2e755dd4e7945048da26d6fe1c0479`](https://github.com/wso2/identity-apps/commit/77a1537cdf2e755dd4e7945048da26d6fe1c0479)]:
+  - @wso2is/admin.workflow-approvals.v1@2.26.6
+
+## 2.67.5
+
+### Patch Changes
+
+- [#8478](https://github.com/wso2/identity-apps/pull/8478) [`24ed4949898ff12edd895c0d36d9098fa36b7e8c`](https://github.com/wso2/identity-apps/commit/24ed4949898ff12edd895c0d36d9098fa36b7e8c) Thanks [@hwupathum](https://github.com/hwupathum)! - Enable secret hiding for Remote logging UI
+
+* [#8492](https://github.com/wso2/identity-apps/pull/8492) [`a91868a9a99658e89c2e2169e766ccae3cd7cd20`](https://github.com/wso2/identity-apps/commit/a91868a9a99658e89c2e2169e766ccae3cd7cd20) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improve confirm password behaviour of the flow builder.
+
+* Updated dependencies [[`24ed4949898ff12edd895c0d36d9098fa36b7e8c`](https://github.com/wso2/identity-apps/commit/24ed4949898ff12edd895c0d36d9098fa36b7e8c), [`cf84a990e2bcdb6ac7a47d64fc2271abdc3dec88`](https://github.com/wso2/identity-apps/commit/cf84a990e2bcdb6ac7a47d64fc2271abdc3dec88)]:
+  - @wso2is/admin.tenants.v1@2.29.16
+  - @wso2is/core@2.9.4
+  - @wso2is/i18n@2.24.13
+  - @wso2is/admin.organizations.v1@2.26.210
+
 ## 2.67.4
 
 ### Patch Changes
