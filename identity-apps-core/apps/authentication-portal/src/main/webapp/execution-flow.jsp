@@ -274,7 +274,7 @@
                         if (flowType === "INVITE_USER_REGISTRATION" || flowType === "PASSWORD_RECOVERY") {
                             reg_portal_url = authPortalURL + "/recovery.do";
                         }
-                        const errorPageURL = authPortalURL + "/registration_error.do?" + "ERROR_MSG="
+                        const errorPageURL = authPortalURL + "/execution_flow_error.do?" + "ERROR_MSG="
                             + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID=" + 
                             "&" + "flowType=" + flowType + "<%= Encode.forJavaScript(spId) %>" + "&" + 
                             "REG_PORTAL_URL=" + reg_portal_url;

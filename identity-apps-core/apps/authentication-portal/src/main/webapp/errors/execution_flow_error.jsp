@@ -42,7 +42,7 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="../includes/branding-preferences.jsp"/>
 
-<% request.setAttribute("pageName","registration-error"); %>
+<% request.setAttribute("pageName","execution-flow-error"); %>
 
 <%
     String errorMessage = request.getParameter("ERROR_MSG");

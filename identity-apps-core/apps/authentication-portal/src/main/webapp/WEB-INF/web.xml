@@ -379,7 +379,12 @@
 
     <servlet>
         <servlet-name>register.do</servlet-name>
-        <jsp-file>/self-registration.jsp</jsp-file>
+        <jsp-file>/execution-flow.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
+        <servlet-name>recovery.do</servlet-name>
+        <jsp-file>/execution-flow.jsp</jsp-file>
     </servlet>
 
     <servlet-mapping>
