@@ -270,20 +270,12 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                     setDeletingUser(undefined);
                 });
         } else if (accountType === UserAccountTypes.CUSTOMER) {
-            let pathValue: string;
-            let userId: string;
 
-            if ("value" in user) {
-                userId = user?.value;
-            } else if ("id" in user) {
-                userId = user?.id;
-            }
+            const userId: string = "value" in user ? user?.value : ("id" in user ? user?.id : undefined);
 
-            if (enableSCIM2RoleAPIV3) {
-                pathValue = `value eq ${userId}`;
-            } else {
-                pathValue = `users[value eq ${userId}]`;
-            }
+            const pathValue: string = enableSCIM2RoleAPIV3
+                ? `value eq ${userId}`
+                : `users[value eq ${userId}]`;
 
             // Payload for the update role request.
             const roleData: PatchRoleDataInterface = {
