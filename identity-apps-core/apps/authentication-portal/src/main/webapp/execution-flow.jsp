@@ -169,7 +169,7 @@
                 const authenticationEndpoint = baseUrl + "${pageContext.request.contextPath}";
                 const defaultMyAccountUrl = "<%= myaccountUrl %>";
                 const authPortalURL = "<%= authenticationPortalURL %>";
-                const registrationFlowApiProxyPath = authPortalURL + "/util/execution-flow-api.jsp";
+                const executionFlowApiProxyPath = authPortalURL + "/util/execution-flow-api.jsp";
                 const code = "<%= Encode.forJavaScript(code) != null ? Encode.forJavaScript(code) : null %>";
                 const state = "<%= Encode.forJavaScript(state) != null ? Encode.forJavaScript(state) : null %>";
                 const confirmationCode = "<%= Encode.forJavaScript(confirmationCode) != null ? Encode.forJavaScript(confirmationCode) : null %>";
@@ -200,8 +200,9 @@
                         });
                     }
                 }, [code, state]);
+
                 useEffect(() => {
-                    if (confirmationCode && confirmationCode !== "null" && !confirmationEffectDone) {
+                    if (confirmationCode !== "null" && !confirmationEffectDone) {
                         setPostBody({
                             flowType: flowType,
                             inputs: {
@@ -224,7 +225,7 @@
                     if (!postBody) return;
                     setLoading(true);
 
-                    fetch(registrationFlowApiProxyPath, {
+                    fetch(executionFlowApiProxyPath, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(postBody)
@@ -270,14 +271,14 @@
                 useEffect(() => {
                     if (error && error.code) {
                         const errorDetails = getI18nKeyForError(error.code, flowType);
-                        const reg_portal_url = authPortalURL + "/register.do";
+                        const portal_url = authPortalURL + "/register.do";
                         if (flowType === "INVITE_USER_REGISTRATION" || flowType === "PASSWORD_RECOVERY") {
-                            reg_portal_url = authPortalURL + "/recovery.do";
+                            portal_url = authPortalURL + "/recovery.do";
                         }
                         const errorPageURL = authPortalURL + "/execution_flow_error.do?" + "ERROR_MSG="
-                            + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID=" + 
-                            "&" + "flowType=" + flowType + "<%= Encode.forJavaScript(spId) %>" + "&" + 
-                            "REG_PORTAL_URL=" + reg_portal_url;
+                            + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID=" 
+                            + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + flowType + "&" + 
+                            "PORTAL_URL=" + portal_url;
 
                         window.location.href = errorPageURL;
                     }

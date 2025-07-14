@@ -48,7 +48,7 @@
     String errorMessage = request.getParameter("ERROR_MSG");
     String errorDescription = request.getParameter("ERROR_DESC");
     String spId = request.getParameter("SP_ID");
-    String registrationPortalURL = request.getParameter("REG_PORTAL_URL") + "?spId=" + request.getParameter("SP_ID");
+    String registrationPortalURL = request.getParameter("PORTAL_URL") + "?spId=" + request.getParameter("SP_ID");
     String errorCode = request.getParameter("errorCode");
     String flowType = request.getParameter("flowType");
     final String USER_REGISTRATION = "USER_REGISTRATION";
@@ -84,8 +84,6 @@
             errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "orchestration.flow.error.unexpected.message");
         }
     }
-
-    
 
     if (StringUtils.isEmpty(errorDescription)) {
         if (flowType != null) {
