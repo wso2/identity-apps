@@ -199,7 +199,18 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
-            children: [],
+            children: [
+                {
+                    component: lazy(() => import(
+                        "@wso2is/admin.password-recovery-flow-builder.v1/pages/password-recovery-flow-builder-page")),
+                    exact: true,
+                    id: "passwordRecoveryFlowBuilder",
+                    name: "Password Recovery Flow Builder",
+                    path: AppConstants.getPaths().get("PASSWORD_RECOVERY_FLOW_BUILDER"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
             component: lazy(() => import("@wso2is/admin.flows.v1/pages/flows")),
             exact: false,
             featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.FLOWS,
