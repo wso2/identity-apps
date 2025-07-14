@@ -1687,6 +1687,8 @@
         },
         "routes": {
             "organizationEnabledRoutes": [
+                "accountSecurity",
+                "admin-forced-password-reset",
                 "apiResources",
                 "applications",
                 "attributeDialects",
@@ -1697,11 +1699,16 @@
                 "governanceConnectors",
                 "groups",
                 "identityProviders",
+                "loginAndRegistration",
                 "organizations",
+                "password-recovery",
                 "roles",
+                "self-registration-connector",
                 "smsTemplates",
+                "user-email-verification",
                 "userRoles",
                 "userStores",
+                "username-recovery",
                 "users"
             ]
         },

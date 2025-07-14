@@ -359,8 +359,14 @@ export class ServerConfigurationsConstants {
     public static readonly CONFIGS_UPDATE_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
 		"code while updating the configurations.";
 
+    public static readonly CONFIGS_REVERT_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
+        "code while reverting the configurations to default.";
+
     public static readonly CONFIGS_UPDATE_REQUEST_ERROR: string = "An error occurred while updating the " +
 		"configurations.";
+
+    public static readonly CONFIGS_REVERT_REQUEST_ERROR: string = "An error occurred while reverting the " +
+        "configurations to default.";
 
     public static readonly ADMIN_ADVISORY_BANNER_CONFIGS_UPDATE_REQUEST_ERROR: string = "An error occurred " +
         "while updating the admin advisory banner configurations.";

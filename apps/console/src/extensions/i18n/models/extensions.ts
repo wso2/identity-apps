@@ -2440,6 +2440,16 @@ export interface Extensions {
     manage: {
         accountLogin: {
             notifications: {
+                revert: {
+                    error: {
+                        description: string;
+                        message: string;
+                    },
+                    success: {
+                        description: string;
+                        message: string;
+                    }
+                };
                 success: {
                     description: string;
                     message: string;

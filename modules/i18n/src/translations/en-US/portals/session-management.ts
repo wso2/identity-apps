@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -47,6 +47,16 @@ export const sessionManagement: SessionManagementNS = {
             error: {
                 description: "Error occurred while fetching session management settings.",
                 message: "Error occurred"
+            }
+        },
+        revertConfiguration: {
+            error: {
+                message: "Error occurred",
+                description: "Error occurred while reverting session management settings."
+            },
+            success: {
+                message: "Revert successful",
+                description: "Successfully reverted the session management settings."
             }
         },
         updateConfiguration: {
