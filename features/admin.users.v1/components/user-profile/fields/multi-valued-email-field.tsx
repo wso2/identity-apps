@@ -247,6 +247,7 @@ const MultiValuedEmailField: FunctionComponent<MultiValuedEmailFieldPropsInterfa
         const existingEmailAddresses: string[] = emailAddressesFieldValue ?? [];
 
         form.change(emailAddressesFieldName, [ ...existingEmailAddresses, newEmailAddress ]);
+        addFieldRef.current.value = "";
     };
 
     const renderAddButton = (): ReactElement => {
@@ -274,12 +275,14 @@ const MultiValuedEmailField: FunctionComponent<MultiValuedEmailFieldPropsInterfa
         const updatedEmailAddresses: string[] = emailAddressesFieldValue?.filter(
             (item: string) => item !== emailAddress
         );
-        const updatedVerifiedEmailAddresses: string[] = verifiedEmailAddressesFieldValue?.filter(
-            (item: string) => item !== emailAddress
-        );
-        const updatedPendingEmailAddresses: string[] = pendingEmailAddressesFieldValue?.filter(
-            (item: string) => item !== emailAddress
-        );
+        const updatedVerifiedEmailAddresses: string[] = !isEmpty(verifiedEmailAddressesFieldValue) &&
+            verifiedEmailAddressesFieldValue?.filter(
+                (item: string) => item !== emailAddress
+            );
+        const updatedPendingEmailAddresses: string[] = !isEmpty(pendingEmailAddressesFieldValue) &&
+            pendingEmailAddressesFieldValue?.filter(
+                (item: string) => item !== emailAddress
+            );
 
         form.batch(() => {
             form.change(emailAddressesFieldName, updatedEmailAddresses);
@@ -288,10 +291,10 @@ const MultiValuedEmailField: FunctionComponent<MultiValuedEmailFieldPropsInterfa
                 form.change(emailsFieldName, "");
             }
             if (verifiedEmailAddressesFieldValue?.includes(emailAddress)) {
-                form.change(verifiedEmailAddressesFieldName, updatedVerifiedEmailAddresses);
+                form.change(verifiedEmailAddressesFieldName, updatedVerifiedEmailAddresses || []);
             }
             if (pendingEmailAddressesFieldValue?.includes(emailAddress)) {
-                form.change(pendingEmailAddressesFieldName, updatedPendingEmailAddresses);
+                form.change(pendingEmailAddressesFieldName, updatedPendingEmailAddresses || []);
             }
         });
     };
