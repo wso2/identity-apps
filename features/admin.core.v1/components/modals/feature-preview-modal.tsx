@@ -59,7 +59,6 @@ import "./feature-preview-modal.scss";
 import { history } from "../../helpers/history";
 import { AppState } from "../../store";
 
-
 /**
  * Feature preview modal component props interface. {@link FeaturePreviewModal}
  */
