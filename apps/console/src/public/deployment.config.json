@@ -304,7 +304,9 @@
             },
             "actions": {
                 "disabledFeatures": [
-                    "actions.types.list.preRegistration"
+                    "actions.types.list.preRegistration",
+                    "actions.types.list.preUpdatePassword.headersAndParameters",
+                    "actions.types.list.preUpdateProfile.headersAndParameters"
                 ],
                 "enabled": true,
                 "featureFlags": [

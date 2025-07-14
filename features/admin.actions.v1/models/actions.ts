@@ -123,6 +123,14 @@ interface EndpointInterface {
      * Authentication configurations of the Action.
      */
     authentication: AuthenticationInterface;
+    /**
+     * Allowed request headers to be shared with the endpoint.
+     */
+    allowedHeaders?: string[];
+    /**
+     * Allowed request parameters to be shared with the endpoint.
+     */
+    allowedParameters?: string[];
 }
 
 /**
@@ -283,6 +291,8 @@ export interface EndpointResponseInterface {
      * External endpoint.
      */
     uri: string;
+    allowedHeaders?: string[];
+    allowedParameters?: string[];
     /**
      * Authentication configurations of the Action.
      */
@@ -446,6 +456,14 @@ export interface EndpointConfigFormPropertyInterface {
      * Value property of apiKey authentication.
      */
     valueAuthProperty?: string;
+    /**
+     * Allowed request headers to be shared with the endpoint.
+     */
+    allowedHeaders?: string[];
+    /**
+     * Allowed request parameters to be shared with the endpoint.
+     */
+    allowedParameters?: string[];
 }
 
 /**
