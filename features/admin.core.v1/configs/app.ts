@@ -423,6 +423,7 @@ export class Config {
             primaryUserStoreDomainName: window[ "AppUtils" ]?.getConfig()?.ui?.primaryUserStoreDomainName?.toUpperCase()
                 ?? PRIMARY_USERSTORE,
             privacyPolicyConfigs: window[ "AppUtils" ]?.getConfig()?.ui?.privacyPolicyConfigs,
+            privacyPolicyUrl: window[ "AppUtils" ]?.getConfig()?.ui?.privacyPolicyUrl,
             productName: window[ "AppUtils" ]?.getConfig()?.ui?.productName,
             productVersionConfig: window[ "AppUtils" ]?.getConfig()?.ui?.productVersionConfig,
             routes: window[ "AppUtils" ]?.getConfig()?.ui?.routes ?? {
@@ -436,6 +437,7 @@ export class Config {
             showStatusLabelForNewAuthzRuntimeFeatures:
                 window[ "AppUtils" ]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures,
             systemAppsIdentifiers: window[ "AppUtils" ]?.getConfig()?.ui?.systemAppsIdentifiers,
+            termsOfUseUrl: window[ "AppUtils" ]?.getConfig()?.ui?.termsOfUseURL,
             theme: window[ "AppUtils" ]?.getConfig()?.ui?.theme,
             useRoleClaimAsGroupClaim: window[ "AppUtils" ]?.getConfig()?.ui?.useRoleClaimAsGroupClaim,
             userSchemaURI: window[ "AppUtils" ]?.getConfig()?.ui?.customUserSchemaURI

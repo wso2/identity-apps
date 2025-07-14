@@ -503,6 +503,13 @@ export const myAccount: MyAccountNS = {
                 },
                 "tooltip": "应用"
             },
+            "dropdown": {
+                "footer": {
+                    "cookiePolicy": "Cookie政策",
+                    "privacyPolicy": "隐私政策",
+                    "termsOfService": "服务条款"
+                }
+            },
             "organizationLabel": "此帐户由"
         },
         "linkedAccounts": {
