@@ -13,6 +13,7 @@
         "@dnd-kit/react": "^0.1.19",
         "@emotion/react": "^11.11.0",
         "@emotion/styled": "^11.11.0",
+        "@lexical/html": "^0.21.0",
         "@lexical/link": "^0.21.0",
         "@lexical/react": "^0.21.0",
         "@lexical/rich-text": "^0.21.0",

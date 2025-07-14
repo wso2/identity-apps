@@ -29,7 +29,8 @@ import Paper from "@oxygen-ui/react/Paper";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import { ParagraphNode, TextNode } from "lexical";
-import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
+import HTMLPlugin from "./helper-plugins/html-plugin";
 import CustomLinkPlugin from "./helper-plugins/link-plugin";
 import ToolbarPlugin, { ToolbarPluginProps } from "./helper-plugins/toolbar-plugin";
 import "./rich-text.scss";
@@ -48,8 +49,24 @@ const editorConfig: InitialConfigType = {
     }
 };
 
-export interface RichTextProps extends IdentifiableComponentInterface, HTMLAttributes<HTMLDivElement> {
+/**
+ * Props interface for the RichText component.
+ */
+export interface RichTextProps extends IdentifiableComponentInterface {
+    /**
+     * Options to customize the rich text editor toolbar.
+     */
     ToolbarProps?: ToolbarPluginProps;
+    /**
+     * Listener for changes in the rich text editor content.
+     *
+     * @param value - The HTML string representation of the rich text editor content.
+     */
+    onChange: (value: string) => void;
+    /**
+     * Additional CSS class names to apply to the rich text editor container.
+     */
+    className?: string;
 }
 
 /**
@@ -58,7 +75,8 @@ export interface RichTextProps extends IdentifiableComponentInterface, HTMLAttri
 const RichText: FunctionComponent<RichTextProps> = ({
     "data-componentid": componentId = "rich-text",
     ToolbarProps,
-    className
+    className,
+    onChange
 }: RichTextProps): ReactElement => {
     return (
         <LexicalComposer initialConfig={ editorConfig }>
@@ -81,6 +99,7 @@ const RichText: FunctionComponent<RichTextProps> = ({
                     <AutoFocusPlugin />
                     <LinkPlugin />
                     <CustomLinkPlugin />
+                    <HTMLPlugin onChange={ onChange } />
                 </Paper>
             </div>
         </LexicalComposer>
