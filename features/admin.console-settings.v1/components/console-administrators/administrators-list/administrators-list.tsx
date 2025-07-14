@@ -255,12 +255,9 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
 
     const [ loading, setLoading ] = useState(false);
 
-    //SCIM2 Roles V3 API specific permission for user role management
-    const INTERNAL_ROLE_MGT_USERS_UPDATE_PERMISSION: string = "internal_role_mgt_users_update";
-
     const adminActionPermissionScopes: string[] = useMemo(() => {
         const userRoleUpdateScopes: string[] = enableScim2RolesV3Api
-            ? [ INTERNAL_ROLE_MGT_USERS_UPDATE_PERMISSION ]
+            ? [ AdministratorConstants.INTERNAL_ROLE_MGT_USERS_UPDATE_PERMISSION ]
             : featureConfig?.userRoles?.scopes?.update;
 
         return [

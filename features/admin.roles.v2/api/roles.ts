@@ -128,47 +128,6 @@ export const getRoleByName = (
 };
 
 /**
- * Get the roles by name using SCIM2 Roles V3 API.
- *
- * @param audienceId - Organization ID or Application ID.
- * @param roleName - Role name.
- * @param before - Before link.
- * @param after - After link.
- * @param limit - Limit.
- *
- * @returns A promise containing the response.
- */
-export const getRoleByNameV3 = (
-    audienceId: string,
-    roleName: string,
-    before: string,
-    after: string,
-    limit: number
-):Promise<RolesV2ResponseInterface> => {
-
-    const filter: string = `audience.value eq ${ audienceId } and displayName eq ${ roleName }`;
-
-    const requestConfig: RequestConfigInterface = {
-        method: HttpMethods.GET,
-        params: {
-            after,
-            before,
-            filter,
-            limit
-        },
-        url:  `${ store.getState().config.endpoints.rolesV3 }`
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            return Promise.resolve(response.data as RolesV2ResponseInterface);
-        })
-        .catch((error: AxiosError) => {
-            return Promise.reject(error);
-        });
-};
-
-/**
  * Retrieve Role details for a give role id.
  *
  * @param roleId - role id to retrieve role details
@@ -200,7 +159,6 @@ export const getRoleById = (roleId: string): Promise<any> => {
 export const getRoleByIdV3 = (roleId: string): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -230,42 +188,6 @@ export const useGetRoleById = <Data = RolesInterface, Error = RequestErrorInterf
         },
         method: HttpMethods.GET,
         url: `${store.getState().config.endpoints.rolesV2}/${roleId}`
-    };
-
-    const {
-        data,
-        error,
-        isLoading,
-        isValidating,
-        mutate,
-        response
-    } = useRequest<Data, Error>(roleId ? requestConfig : null);
-
-    return {
-        data,
-        error,
-        isLoading,
-        isValidating,
-        mutate,
-        response
-    };
-};
-
-/**
- * Retrieve Role details for a given role id using SCIM2 Roles V3 API.
- *
- * @param roleId - role id to retrieve role details
- */
-export const useGetRoleByIdV3 = <Data = RolesInterface, Error = RequestErrorInterface>(
-    roleId: string
-): RequestResultInterface<Data, Error> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.rolesV3}/${roleId}`
     };
 
     const {
@@ -336,7 +258,6 @@ export const updateRoleDetailsUsingV3Api = (roleId: string, roleData: PatchRoleD
     const requestConfig: RequestConfigInterface = {
         data: roleData,
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
@@ -361,7 +282,6 @@ export const assignGroupstoRoles = (roleId: string, roleData: PatchRoleDataInter
     const requestConfig: RequestConfigInterface = {
         data: roleData,
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
@@ -386,7 +306,6 @@ export const updateUsersForRole = (roleId: string, roleData: PatchRoleDataInterf
     const requestConfig: RequestConfigInterface = {
         data: roleData,
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
@@ -459,7 +378,6 @@ export const deleteRoleById = (roleId: string): Promise<any> => {
 export const deleteRoleByIdV3 = (roleId: string): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,

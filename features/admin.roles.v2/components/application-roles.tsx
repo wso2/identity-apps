@@ -60,7 +60,7 @@ import { AutoCompleteRenderOption } from "./auto-complete-render-option";
 import { ApplicationRoleWizard } from "./wizard-updated/application-role-wizard";
 import { getApplicationRolesByAudience } from "../api/roles";
 import { RoleAudienceTypes } from "../constants/role-constants";
-import useGetApplicationRolesByAudienceV3 from "../hooks/get-application-roles-by-audience-v3";
+import useGetApplicationRolesByAudienceV3 from "../hooks/use-get-application-roles-by-audience-v3";
 import {
     AssociatedRolesPatchObjectInterface,
     BasicRoleInterface, RolesV2Interface,
