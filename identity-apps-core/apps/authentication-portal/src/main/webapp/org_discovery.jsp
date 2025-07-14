@@ -44,7 +44,7 @@
        if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
            errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
            if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
-               errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
+               errorMessage = i18n(resourceBundle, customText, "error.retry");
             } else if (isSelfRegistration && (errorMessage.equalsIgnoreCase("Can't identify organization")
                || errorMessage.equalsIgnoreCase("Organization is not associated with this application."))) {
                errorMessage = i18n(resourceBundle, customText, "invalid.organization.discovery.input.self.registration");
@@ -105,7 +105,7 @@
                <%
                   } else {
                %>
-               <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%= StringUtils.isNotBlank(idp) ? Encode.forHtmlContent(idp) : AuthenticationEndpointUtil.i18n(resourceBundle, "organization.login") %></h2>
+               <h2><%=i18n(resourceBundle, customText, "sign.in.with")%> <%= StringUtils.isNotBlank(idp) ? Encode.forHtmlContent(idp) : i18n(resourceBundle, customText, "organization.login") %></h2>
                <%
                   }
                %>
@@ -156,7 +156,7 @@
                         <div class="social-login blurring social-dimmer">
                            <input type="submit" id="orgHandleButton" onclick="enterOrgHandle();" 
                                   class="ui primary basic button link-button"
-                                  value="<%=i18n(resourceBundle, customText, "provide.organization.handle", "Provide organization handle")%>"
+                                  value="<%=i18n(resourceBundle, customText, "provide.organization.handle")%>"
                         </div>
                      <%
                      } else {
@@ -164,7 +164,7 @@
                         <div class="social-login blurring social-dimmer">
                            <input type="submit" id="orgNameButton" onclick="enterOrgName();" 
                                   class="ui primary basic button link-button"
-                                  value="<%=i18n(resourceBundle, customText, "provide.organization.name", "Provide organization name")%>"
+                                  value="<%=i18n(resourceBundle, customText, "provide.organization.name")%>"
                         </div>
                      <%
                      }
