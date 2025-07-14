@@ -48,7 +48,7 @@ import {
     TableColumnInterface,
     UserAvatar
 } from "@wso2is/react-components";
-import { AxiosError } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
@@ -80,6 +80,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         isReadOnly,
         tabIndex,
         activeUserStore,
+        isForNonHumanUser,
         isPrivilegedUsersToggleVisible = false,
         [ "data-componentid" ]: componentId = "edit-role-users"
     } = props;
@@ -87,8 +88,13 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
+    const baseI18nKey: string = isForNonHumanUser ? "roles:edit.agents." : "roles:edit.users.";
+
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
+
+    const systemReservedUserStores: string[] = useSelector((state: AppState) =>
+        state.config.ui.systemReservedUserStores);
 
     const consoleSettingsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consoleSettings
@@ -111,40 +117,56 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ showAddNewUserModal, setShowAddNewUserModal ] = useState<boolean>(false);
 
+    const shouldShowUserstoreDropdown: boolean =
+    selectedUserStoreDomainName !== "AGENT" &&
+    (
+        (!isPrivilegedUsersToggleVisible && isUserstoreSelectionInAdministratorsEnabled) ||
+        selectedUserStoreDomainName !== PRIMARY_USERSTORE
+    );
+
     const {
         isLoading: isUserStoresLoading,
         userStoresList
     } = useUserStores();
 
     const availableUserStores: UserStoreDropdownItem[] = useMemo(() => {
-        const storeOptions: UserStoreDropdownItem[] = [
-            {
-                key: -1,
-                text: userstoresConfig?.primaryUserstoreName,
-                value: userstoresConfig?.primaryUserstoreName
-            }
-        ];
+        const storeOptions: UserStoreDropdownItem[] = isForNonHumanUser
+            ? [
+                {
+                    key: -1,
+                    text: "AGENT",
+                    value: "AGENT"
+                }
+            ] : [
+                {
+                    key: -1,
+                    text: userstoresConfig?.primaryUserstoreName,
+                    value: userstoresConfig?.primaryUserstoreName
+                }
+            ];
 
-        if (userStoresList && !isUserStoresLoading) {
+        if (userStoresList && !isUserStoresLoading && !isForNonHumanUser) {
             if (userStoresList?.length > 0) {
-                userStoresList.forEach((store: UserStoreListItem, index: number) => {
-                    const isEnabled: boolean = store.enabled;
+                userStoresList
+                    ?.filter((userStore: UserStoreListItem) => !systemReservedUserStores.includes(userStore.name))
+                    ?.forEach((store: UserStoreListItem, index: number) => {
+                        const isEnabled: boolean = store.enabled;
 
-                    if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName && isEnabled) {
-                        const storeOption: UserStoreDropdownItem = {
-                            key: index,
-                            text: store.name,
-                            value: store.name
-                        };
+                        if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName && isEnabled) {
+                            const storeOption: UserStoreDropdownItem = {
+                                key: index,
+                                text: store.name,
+                                value: store.name
+                            };
 
-                        storeOptions.push(storeOption);
-                    }
-                });
+                            storeOptions.push(storeOption);
+                        }
+                    });
             }
         }
 
         return storeOptions;
-    }, [ userStoresList, isUserStoresLoading ]);
+    }, [ userStoresList, isUserStoresLoading, isForNonHumanUser, systemReservedUserStores ]);
 
     useEffect(() => {
         if (!role?.users?.length) {
@@ -261,14 +283,24 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
 
         setIsSubmitting(true);
         updateRoleDetails(role.id, roleData)
-            .then(() => {
-                dispatch(
-                    addAlert({
-                        description: t("roles:edit.users.notifications.success.description"),
-                        level: AlertLevels.SUCCESS,
-                        message: t("roles:edit.users.notifications.success.message")
-                    })
-                );
+            .then((response: AxiosResponse) => {
+                if (response?.status === 200) {
+                    dispatch(
+                        addAlert({
+                            description: t(baseI18nKey + "notifications.success.description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t(baseI18nKey + "notifications.success.message")
+                        })
+                    );
+                } else if (response?.status === 202) {
+                    dispatch(
+                        addAlert({
+                            description: t(baseI18nKey + "notifications.pendingApproval.description"),
+                            level: AlertLevels.WARNING,
+                            message: t(baseI18nKey + "notifications.pendingApproval.message")
+                        })
+                    );
+                }
                 onRoleUpdate(tabIndex);
             })
             .catch( (error: AxiosError) => {
@@ -315,14 +347,24 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
 
         setIsSubmitting(true);
         updateRoleDetails(role.id, roleData)
-            .then(() => {
-                dispatch(
-                    addAlert({
-                        description: t("roles:edit.users.notifications.success.description"),
-                        level: AlertLevels.SUCCESS,
-                        message: t("roles:edit.users.notifications.success.message")
-                    })
-                );
+            .then((response: AxiosResponse) => {
+                if (response?.status === 200) {
+                    dispatch(
+                        addAlert({
+                            description: t(baseI18nKey + "notifications.success.description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t(baseI18nKey + "notifications.success.message")
+                        })
+                    );
+                } else if (response?.status === 202) {
+                    dispatch(
+                        addAlert({
+                            description: t(baseI18nKey + "notifications.pendingApproval.description"),
+                            level: AlertLevels.WARNING,
+                            message: t(baseI18nKey + "notifications.pendingApproval.message")
+                        })
+                    );
+                }
                 onRoleUpdate(tabIndex);
             })
             .catch( (error: AxiosError) => {
@@ -426,10 +468,10 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         if (paginatedUsers.length === 0) {
             return (
                 <EmptyPlaceholder
-                    title={ t("roles:edit.users.list." +
+                    title={ t(baseI18nKey + "list." +
                         "emptyPlaceholder.title") }
                     subtitle={ [
-                        t("roles:edit.users.list." +
+                        t(baseI18nKey + "list." +
                             "emptyPlaceholder.subtitles", { type: "role" })
                     ] }
                     image={ getEmptyPlaceholderIllustrations().emptyList }
@@ -479,7 +521,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                         </Header>
                     );
                 },
-                title: "User"
+                title: null
             }
         ];
 
@@ -524,7 +566,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             onFilter={ (query: string) => handleUserFilter(query?.trim()) }
             disableSearchFilterDropdown
             filterAttributeOptions={ [] }
-            placeholder={ t("console:manage.features.groups.advancedSearch.placeholder") }
+            placeholder={ t("users:advancedSearch.placeholder") }
             defaultSearchAttribute=""
             defaultSearchOperator=""
             triggerClearQuery={ triggerClearQuery }
@@ -537,10 +579,10 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             <Box display="flex" justifyContent="space-between" alignItems="center">
                 <div>
                     <Heading as="h4">
-                        { t("roles:edit.users.heading") }
+                        { t(baseI18nKey + "heading") }
                     </Heading>
                     <Heading subHeading ellipsis as="h6">
-                        { t("roles:edit.users.subHeading") }
+                        { t(baseI18nKey + "subHeading") }
                     </Heading>
                 </div>
                 { !isReadOnly && (
@@ -551,7 +593,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                         onClick={ handleOpenAddNewUserModal }
                     >
                         <Icon name="plus"/>
-                        { t("console:manage.features.roles.edit.users.list." +
+                        { t(baseI18nKey + "list." +
                             "emptyPlaceholder.action") }
                     </PrimaryButton>
                 ) }
@@ -569,16 +611,17 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                 totalListSize={ selectedUsersFromUserStore?.length }
                 isLoading={ isUserStoresLoading || isSubmitting }
                 showPaginationPageLimit={ !isReadOnly }
-                rightActionPanel={ ((!isPrivilegedUsersToggleVisible && isUserstoreSelectionInAdministratorsEnabled) ||
-                    selectedUserStoreDomainName !== PRIMARY_USERSTORE) && (
-                    <Dropdown
-                        data-componentid={ `${ componentId }-list-usertore-dropdown` }
-                        selection
-                        options={ availableUserStores }
-                        placeholder={ t("console:manage.features.groups.list.storeOptions") }
-                        onChange={ handleDomainChange }
-                        defaultValue={ userstoresConfig.primaryUserstoreName }
-                    />
+                rightActionPanel={ (
+                    shouldShowUserstoreDropdown && (
+                        <Dropdown
+                            data-componentid={ `${ componentId }-list-usertore-dropdown` }
+                            selection
+                            options={ availableUserStores }
+                            placeholder={ t("console:manage.features.groups.list.storeOptions") }
+                            onChange={ handleDomainChange }
+                            defaultValue={ activeUserStore ? activeUserStore : userstoresConfig.primaryUserstoreName }
+                        />
+                    )
                 ) }
             >
                 <DataTable<UserBasicInterface>
@@ -612,6 +655,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                             ? availableUserStores
                             : []
                         }
+                        isForNonHumanUser={ isForNonHumanUser }
                     />
                 )
             }

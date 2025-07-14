@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2018-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2018-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -427,6 +427,8 @@
     }
 %>
 
+<% request.setAttribute("pageName", "self-registration-username-request"); %>
+
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -449,7 +451,7 @@
     %>
     <link rel="stylesheet" href="libs/addons/calendar.min.css"/>
 </head>
-<body class="login-portal layout recovery-layout">
+<body class="login-portal layout recovery-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
@@ -1072,8 +1074,8 @@
                                         </div>
                                     <% } else if (StringUtils.equals(claim.getUri(), "http://wso2.org/claims/local")) { %>
                                         <div class="ui fluid search selection dropdown" id="local-dropdown" data-testid="local-dropdown">
-                                            <input type="hidden" 
-                                                id="local-input" 
+                                            <input type="hidden"
+                                                id="local-input"
                                                 name="<%= Encode.forHtmlAttribute(claimURI) %>"
                                                 <% if (claim.getRequired()) { %>
                                                     required
@@ -1097,7 +1099,7 @@
                                                 <%
                                                     }
                                                 %>
-                                            </div>                                            
+                                            </div>
                                         </div>
                                     <% } else if (StringUtils.equals(claim.getUri(), "http://wso2.org/claims/dob")) { %>
                                         <div class="ui calendar" id="date_picker">
@@ -2544,7 +2546,7 @@
 
                     return false;
             } else {
-                var usernamePattern = /(^[\u00C0-\u00FFa-zA-Z0-9](?:(?![!#$'+=^_.{|}~\-&]{2})[\u00C0-\u00FF\w!#$'+=^_.{|}~\-&]){0,63}(?=[\u00C0-\u00FFa-zA-Z0-9_]).\@(?![+.\-_])(?:(?![.+\-_]{2})[\w.+\-]){0,245}(?=[\u00C0-\u00FFa-zA-Z0-9]).\.[a-zA-Z]{2,10})$/;
+                var usernamePattern = /(^[\u00C0-\u00FFa-zA-Z0-9](?:(?![!#$'+=^_.{|}~\-&]{2})[\u00C0-\u00FF\w!#$'+=^_.{|}~\-&]){0,63}(?<=[\u00C0-\u00FFa-zA-Z0-9_])@(?![+.\-_])(?:(?![.+\-_]{2})[\w.+\-]){0,245}(?=[\u00C0-\u00FFa-zA-Z0-9]).\.[a-zA-Z]{2,10})$/;
                 if (!usernamePattern.test(usernameUserInput.value.trim()) && (emailRequired || !isAlphanumericUsernameEnabled())) {
                     username_error_msg_text.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Please.enter.valid.email")%>")
                     username_error_msg.show();
@@ -3091,7 +3093,7 @@
             hideLocalValidationStatus();
             return true;
         }
-        
+
         function hideLocalValidationStatus() {
             var local_error = $("#local_error");
             var local_field = $("#local_field");

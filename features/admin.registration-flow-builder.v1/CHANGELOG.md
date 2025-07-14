@@ -1,5 +1,116 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.9.2
+
+### Patch Changes
+
+- [#8492](https://github.com/wso2/identity-apps/pull/8492) [`a91868a9a99658e89c2e2169e766ccae3cd7cd20`](https://github.com/wso2/identity-apps/commit/a91868a9a99658e89c2e2169e766ccae3cd7cd20) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improve confirm password behaviour of the flow builder.
+
+- Updated dependencies [[`24ed4949898ff12edd895c0d36d9098fa36b7e8c`](https://github.com/wso2/identity-apps/commit/24ed4949898ff12edd895c0d36d9098fa36b7e8c), [`a91868a9a99658e89c2e2169e766ccae3cd7cd20`](https://github.com/wso2/identity-apps/commit/a91868a9a99658e89c2e2169e766ccae3cd7cd20)]:
+  - @wso2is/core@2.9.4
+  - @wso2is/admin.flow-builder-core.v1@0.8.2
+
+## 0.9.1
+
+### Patch Changes
+
+- [#8501](https://github.com/wso2/identity-apps/pull/8501) [`14a8747910ed801671508c60c5769781fa022674`](https://github.com/wso2/identity-apps/commit/14a8747910ed801671508c60c5769781fa022674) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Disable the AI-generation template of registration flow builder
+
+- Updated dependencies [[`14a8747910ed801671508c60c5769781fa022674`](https://github.com/wso2/identity-apps/commit/14a8747910ed801671508c60c5769781fa022674)]:
+  - @wso2is/admin.flow-builder-core.v1@0.8.1
+  - @wso2is/admin.feature-gate.v1@1.7.5
+
+## 0.9.0
+
+### Minor Changes
+
+- [#8416](https://github.com/wso2/identity-apps/pull/8416) [`90a17579bddde8c429932caf4a318d873ff3e7d5`](https://github.com/wso2/identity-apps/commit/90a17579bddde8c429932caf4a318d873ff3e7d5) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce Passkey signup in registration orchestration
+
+### Patch Changes
+
+- Updated dependencies [[`76f192a81a134a773cb0896bb6febefca442324d`](https://github.com/wso2/identity-apps/commit/76f192a81a134a773cb0896bb6febefca442324d), [`90a17579bddde8c429932caf4a318d873ff3e7d5`](https://github.com/wso2/identity-apps/commit/90a17579bddde8c429932caf4a318d873ff3e7d5)]:
+  - @wso2is/admin.core.v1@2.46.5
+  - @wso2is/admin.flow-builder-core.v1@0.8.0
+
+## 0.8.1
+
+### Patch Changes
+
+- [#8475](https://github.com/wso2/identity-apps/pull/8475) [`fa8fc079c3e1ccf25384881eb988c233994eb0dd`](https://github.com/wso2/identity-apps/commit/fa8fc079c3e1ccf25384881eb988c233994eb0dd) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Rename the Google Signup Executor to Google Executor
+
+- Updated dependencies [[`fa8fc079c3e1ccf25384881eb988c233994eb0dd`](https://github.com/wso2/identity-apps/commit/fa8fc079c3e1ccf25384881eb988c233994eb0dd)]:
+  - @wso2is/admin.flow-builder-core.v1@0.7.6
+
+## 0.8.0
+
+### Minor Changes
+
+- [#8384](https://github.com/wso2/identity-apps/pull/8384) [`2981081634e150d84bb16833410fd99001f35162`](https://github.com/wso2/identity-apps/commit/2981081634e150d84bb16833410fd99001f35162) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce flows feature
+
+### Patch Changes
+
+- Updated dependencies [[`90d6c0be05e8b957cc1fa0c239ec3fb9b5a3fa72`](https://github.com/wso2/identity-apps/commit/90d6c0be05e8b957cc1fa0c239ec3fb9b5a3fa72), [`2981081634e150d84bb16833410fd99001f35162`](https://github.com/wso2/identity-apps/commit/2981081634e150d84bb16833410fd99001f35162)]:
+  - @wso2is/admin.feature-gate.v1@1.7.2
+  - @wso2is/admin.core.v1@2.46.3
+
+## 0.7.4
+
+### Patch Changes
+
+- Updated dependencies [[`f90bee4c68608e5e989756546535a53bb6980016`](https://github.com/wso2/identity-apps/commit/f90bee4c68608e5e989756546535a53bb6980016)]:
+  - @wso2is/admin.flow-builder-core.v1@0.7.0
+
+## 0.7.3
+
+### Patch Changes
+
+- Updated dependencies [[`118a97a70ecdaa237f03a3c38a6ecf8409cf54f5`](https://github.com/wso2/identity-apps/commit/118a97a70ecdaa237f03a3c38a6ecf8409cf54f5)]:
+  - @wso2is/admin.flow-builder-core.v1@0.6.0
+
+## 0.7.2
+
+### Patch Changes
+
+- [#8367](https://github.com/wso2/identity-apps/pull/8367) [`dc3301d821fbe0e0775864696099c06edb5d6871`](https://github.com/wso2/identity-apps/commit/dc3301d821fbe0e0775864696099c06edb5d6871) Thanks [@KD23243](https://github.com/KD23243)! - Update registration ai endpoint url
+
+## 0.7.1
+
+### Patch Changes
+
+- [#8305](https://github.com/wso2/identity-apps/pull/8305) [`c0497876a952c41514ddfae3c4088e04df67bb11`](https://github.com/wso2/identity-apps/commit/c0497876a952c41514ddfae3c4088e04df67bb11) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with deleting edges in Registration flow composer
+
+## 0.7.0
+
+### Minor Changes
+
+- [#8282](https://github.com/wso2/identity-apps/pull/8282) [`6852d804057d84ff63397a305b085bce761143b6`](https://github.com/wso2/identity-apps/commit/6852d804057d84ff63397a305b085bce761143b6) Thanks [@KD23243](https://github.com/KD23243)! - Update flow composer to support configurable flow types
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.45.10
+
+## 0.6.3
+
+### Patch Changes
+
+- [#8303](https://github.com/wso2/identity-apps/pull/8303) [`b620bda0c39d43594a60b96579d54a645a877696`](https://github.com/wso2/identity-apps/commit/b620bda0c39d43594a60b96579d54a645a877696) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add fixes and improvements to registration orchestration flow
+
+- Updated dependencies [[`6427079247040e4ca2fae0edf2f2e4c570487b79`](https://github.com/wso2/identity-apps/commit/6427079247040e4ca2fae0edf2f2e4c570487b79), [`b620bda0c39d43594a60b96579d54a645a877696`](https://github.com/wso2/identity-apps/commit/b620bda0c39d43594a60b96579d54a645a877696)]:
+  - @wso2is/admin.feature-gate.v1@1.6.3
+  - @wso2is/admin.core.v1@2.45.8
+  - @wso2is/admin.server-configurations.v1@2.35.2
+  - @wso2is/admin.flow-builder-core.v1@0.5.3
+
+## 0.6.2
+
+### Patch Changes
+
+- Updated dependencies [[`6cf542b1d28fd5a1c2d52bf5642328d99c592182`](https://github.com/wso2/identity-apps/commit/6cf542b1d28fd5a1c2d52bf5642328d99c592182), [`8330b84a7033ee46c1fd13f2e6de58a6ecab93e7`](https://github.com/wso2/identity-apps/commit/8330b84a7033ee46c1fd13f2e6de58a6ecab93e7)]:
+  - @wso2is/admin.rules.v1@0.6.0
+  - @wso2is/admin.claims.v1@2.27.125
+  - @wso2is/admin.core.v1@2.45.5
+
 ## 0.6.1
 
 ### Patch Changes

@@ -193,6 +193,8 @@ export interface usersNS {
                 locked: string;
                 pendingInitialPasswordSetup: string;
                 pendingPasswordReset: string;
+                pendingPrimaryEmailVerification: string;
+                pendingPrimaryMobileVerification: string;
             };
         };
         form: {
@@ -348,6 +350,12 @@ export interface usersNS {
                 description: string;
             };
         };
+        deleteUserPendingApproval: {
+            success: {
+                message: string;
+                description: string;
+            }
+        };
         fetchUsers: {
             error: {
                 message: string;
@@ -455,6 +463,7 @@ export interface usersNS {
                 subTitle: {
                     0: string;
                     1: string;
+                    2: string;
                 };
                 title: string;
             };

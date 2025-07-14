@@ -22,12 +22,13 @@ import { DateInput } from "semantic-ui-calendar-react";
 import useFieldValidation from "../../hooks/use-field-validations";
 import { useTranslations } from "../../hooks/use-translations";
 import { resolveElementText } from "../../utils/i18n-utils";
+import Hint from "../hint";
 import ValidationCriteria from "../validation-criteria";
 import ValidationError from "../validation-error";
 
 const DateFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHandler }) => {
 
-    const { identifier, required, label, placeholder, validations } = component.config;
+    const { identifier, required, label, placeholder, validations, hint } = component.config;
 
     const { translations } = useTranslations();
     const { fieldErrors, validate } = useFieldValidation(validations);
@@ -58,7 +59,11 @@ const DateFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHa
                 clearable
                 closeOnMouseLeave
                 closable
+                className="mb-0"
             />
+            {
+                hint && ( <Hint hint={ hint } /> )
+            }
             {
                 validations && validations.type === "RULE" && (
                     <ValidationCriteria validationConfig={ validations } errors={ fieldErrors } value={ value } />

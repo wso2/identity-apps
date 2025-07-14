@@ -1,5 +1,23 @@
 # @wso2is/admin.application-templates.v1
 
+## 1.5.5
+
+### Patch Changes
+
+- [#8411](https://github.com/wso2/identity-apps/pull/8411) [`0b3ab014fe4662ed00912e8638f9a7fb221f19c0`](https://github.com/wso2/identity-apps/commit/0b3ab014fe4662ed00912e8638f9a7fb221f19c0) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add application scopes in application markdown guide
+
+## 1.5.4
+
+### Patch Changes
+
+- [#8383](https://github.com/wso2/identity-apps/pull/8383) [`d324ef56d7f9db7fff78ed46d23d7bcaae69e216`](https://github.com/wso2/identity-apps/commit/d324ef56d7f9db7fff78ed46d23d7bcaae69e216) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add first-class template support for both React and Next.js
+
+- Updated dependencies [[`d324ef56d7f9db7fff78ed46d23d7bcaae69e216`](https://github.com/wso2/identity-apps/commit/d324ef56d7f9db7fff78ed46d23d7bcaae69e216), [`90d6c0be05e8b957cc1fa0c239ec3fb9b5a3fa72`](https://github.com/wso2/identity-apps/commit/90d6c0be05e8b957cc1fa0c239ec3fb9b5a3fa72), [`2981081634e150d84bb16833410fd99001f35162`](https://github.com/wso2/identity-apps/commit/2981081634e150d84bb16833410fd99001f35162)]:
+  - @wso2is/admin.template-core.v1@1.5.158
+  - @wso2is/admin.applications.v1@2.36.2
+  - @wso2is/admin.feature-gate.v1@1.7.2
+  - @wso2is/admin.core.v1@2.46.3
+
 ## 1.5.3
 
 ### Patch Changes

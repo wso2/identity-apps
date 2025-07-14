@@ -1,12 +1,19 @@
 <%--
- ~
- ~ Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
- ~
- ~ This software is the property of WSO2 LLC. and its suppliers, if any.
- ~ Dissemination of any information or reproduction of any material contained
- ~ herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
- ~ You may not alter or remove any copyright or other notice from copies of this content."
- ~
+  ~ Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
+  ~
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
 --%>
 
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
@@ -101,6 +108,8 @@
     }
 %>
 
+<% request.setAttribute("pageName", "totp"); %>
+
 <html lang="en-US">
     <head>
         <%-- header --%>
@@ -165,7 +174,7 @@
         </script>
     </head>
 
-    <body class="login-portal layout totp-portal-layout">
+    <body class="login-portal layout totp-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
         <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
             <jsp:include page="extensions/timeout.jsp"/>
         <% } else { %>
@@ -288,7 +297,7 @@
                                             type="text"
                                             inputmode="numeric">
                                     </div>
-                                </div>
+                            </div>
 
                             <input id="sessionDataKey" type="hidden" name="sessionDataKey"
                                 value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>' />
@@ -414,16 +423,28 @@
                 e.preventDefault();
                 // Get pasted data via clipboard API
                 clipboardData = e.clipboardData || window.clipboardData;
-                value = clipboardData.getData('Text');
+                value = clipboardData.getData('Text').trim();
                 const reg = new RegExp(/^\d+$/);
                 if (reg.test(value)) {
-                    for (n = 0; n < 6; ++n) {
+                    value = value.substring(0, 6);
+                    
+                    for (let n = 0; n < value.length && n < 6; ++n) {
                         $("#pincode-" + (n+1)).val(value[n]);
-                        $("#pincode-" + (n+1)).focus();
+                    }
+                    
+                    if (value.length < 6) {
+                        $("#pincode-" + (value.length + 1)).focus();
+                    } else {
+                        $("#pincode-6").focus();
+                        $('#subButton').attr('disabled', false);
                     }
                 }
             }
-        document.getElementById('pincode-1').addEventListener('paste', handlePaste);
+            
+            // Add paste event listener to all input fields
+            for (let i = 1; i <= 6; i++) {
+                document.getElementById('pincode-' + i).addEventListener('paste', handlePaste);
+            }
             $('#subButton').attr('disabled', true);
             $('#pincode-6').on('keyup', function() {
                 if ($('#pincode-1').val() != '' && $('#pincode-2').val() != ''

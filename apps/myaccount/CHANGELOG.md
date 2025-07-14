@@ -1,5 +1,96 @@
 # @wso2is/myaccount
 
+## 2.20.4
+
+### Patch Changes
+
+- [#8452](https://github.com/wso2/identity-apps/pull/8452) [`017eff166dcad4c9337ac1047191e337c14184f3`](https://github.com/wso2/identity-apps/commit/017eff166dcad4c9337ac1047191e337c14184f3) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Revamp My Account user profile codebase
+
+- Updated dependencies [[`017eff166dcad4c9337ac1047191e337c14184f3`](https://github.com/wso2/identity-apps/commit/017eff166dcad4c9337ac1047191e337c14184f3)]:
+  - @wso2is/core@2.9.2
+
+## 2.20.3
+
+### Patch Changes
+
+- [#8405](https://github.com/wso2/identity-apps/pull/8405) [`8bb032d47f2e830c5434665bfdf0db9ffeb6d3d8`](https://github.com/wso2/identity-apps/commit/8bb032d47f2e830c5434665bfdf0db9ffeb6d3d8) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Revert to deriving tenant domain from subject instead of using org_handle
+
+- Updated dependencies [[`615709472c3c0ac89783f37a8cb3b07d414b5d75`](https://github.com/wso2/identity-apps/commit/615709472c3c0ac89783f37a8cb3b07d414b5d75)]:
+  - @wso2is/i18n@2.24.6
+
+## 2.20.2
+
+### Patch Changes
+
+- [#8336](https://github.com/wso2/identity-apps/pull/8336) [`90d6c0be05e8b957cc1fa0c239ec3fb9b5a3fa72`](https://github.com/wso2/identity-apps/commit/90d6c0be05e8b957cc1fa0c239ec3fb9b5a3fa72) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Switch to org_handle where org_name/org_id claims are used for root and sub orgs respectively
+
+- Updated dependencies [[`d324ef56d7f9db7fff78ed46d23d7bcaae69e216`](https://github.com/wso2/identity-apps/commit/d324ef56d7f9db7fff78ed46d23d7bcaae69e216), [`2981081634e150d84bb16833410fd99001f35162`](https://github.com/wso2/identity-apps/commit/2981081634e150d84bb16833410fd99001f35162)]:
+  - @wso2is/i18n@2.24.3
+  - @wso2is/theme@2.8.1
+
+## 2.20.1
+
+### Patch Changes
+
+- [#8357](https://github.com/wso2/identity-apps/pull/8357) [`5ca670808ca6c672e563c6aae8c73ddfb50c7914`](https://github.com/wso2/identity-apps/commit/5ca670808ca6c672e563c6aae8c73ddfb50c7914) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Remove unnecessary extension config in My Account
+
+## 2.20.0
+
+### Minor Changes
+
+- [#8309](https://github.com/wso2/identity-apps/pull/8309) [`238533137505979cccd4f75d9de2c26ce8d20b50`](https://github.com/wso2/identity-apps/commit/238533137505979cccd4f75d9de2c26ce8d20b50) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add data types support for user profile UI and refactor user profile codebase
+
+### Patch Changes
+
+- [#8341](https://github.com/wso2/identity-apps/pull/8341) [`aae236698f6cc807209d44944c3f676761f3e16e`](https://github.com/wso2/identity-apps/commit/aae236698f6cc807209d44944c3f676761f3e16e) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Bump oxygen-ui version to 2.4.5
+
+- Updated dependencies [[`238533137505979cccd4f75d9de2c26ce8d20b50`](https://github.com/wso2/identity-apps/commit/238533137505979cccd4f75d9de2c26ce8d20b50)]:
+  - @wso2is/core@2.9.0
+
+## 2.19.19
+
+### Patch Changes
+
+- [#8324](https://github.com/wso2/identity-apps/pull/8324) [`be1290007bf3b01b905512422d9f4017a2c32351`](https://github.com/wso2/identity-apps/commit/be1290007bf3b01b905512422d9f4017a2c32351) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix SCIM2 claim migration issue with user profiles
+
+* [#8327](https://github.com/wso2/identity-apps/pull/8327) [`0737a9b661223683516180b03b7946568d7ca0ea`](https://github.com/wso2/identity-apps/commit/0737a9b661223683516180b03b7946568d7ca0ea) Thanks [@malithie](https://github.com/malithie)! - Update oxygen ui version to 2.4.4
+
+* Updated dependencies [[`be1290007bf3b01b905512422d9f4017a2c32351`](https://github.com/wso2/identity-apps/commit/be1290007bf3b01b905512422d9f4017a2c32351)]:
+  - @wso2is/core@2.8.2
+
+## 2.19.18
+
+### Patch Changes
+
+- [#8306](https://github.com/wso2/identity-apps/pull/8306) [`619fecf8e12e3fcca3e6710b4cd78b20ab07dd0a`](https://github.com/wso2/identity-apps/commit/619fecf8e12e3fcca3e6710b4cd78b20ab07dd0a) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Fix RTL alignment issues by disabling LTR stylesheet before applying RTL stylesheet
+
+- Updated dependencies [[`619fecf8e12e3fcca3e6710b4cd78b20ab07dd0a`](https://github.com/wso2/identity-apps/commit/619fecf8e12e3fcca3e6710b4cd78b20ab07dd0a), [`a9b49f91ab8047a590fbc6ffa3e631ae2077e63f`](https://github.com/wso2/identity-apps/commit/a9b49f91ab8047a590fbc6ffa3e631ae2077e63f)]:
+  - @wso2is/common.branding.v1@2.27.3
+  - @wso2is/i18n@2.23.9
+
+## 2.19.17
+
+### Patch Changes
+
+- [#8275](https://github.com/wso2/identity-apps/pull/8275) [`5f2b24b179f498fd0a6f1845d9a0a7a78da911c6`](https://github.com/wso2/identity-apps/commit/5f2b24b179f498fd0a6f1845d9a0a7a78da911c6) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add sub org impersonation.
+
+## 2.19.16
+
+### Patch Changes
+
+- [#8301](https://github.com/wso2/identity-apps/pull/8301) [`b29ed7869a11e35df46b23027e7302ae64fabc39`](https://github.com/wso2/identity-apps/commit/b29ed7869a11e35df46b23027e7302ae64fabc39) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Provide RTL Support for MyAccount
+
+- Updated dependencies [[`b29ed7869a11e35df46b23027e7302ae64fabc39`](https://github.com/wso2/identity-apps/commit/b29ed7869a11e35df46b23027e7302ae64fabc39)]:
+  - @wso2is/common.branding.v1@2.27.2
+  - @wso2is/react-components@2.9.17
+  - @wso2is/i18n@2.23.7
+
+## 2.19.15
+
+### Patch Changes
+
+- [#8297](https://github.com/wso2/identity-apps/pull/8297) [`7f2e84f2210870eeee73879cb42a7085855d7fe8`](https://github.com/wso2/identity-apps/commit/7f2e84f2210870eeee73879cb42a7085855d7fe8) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Bump oxygen-ui version to 2.4.3
+
 ## 2.19.14
 
 ### Patch Changes

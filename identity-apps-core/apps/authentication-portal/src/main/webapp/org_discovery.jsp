@@ -1,12 +1,12 @@
 <%--
-  ~ Copyright (c) 2023-2025, WSO2 LLC. (http://www.wso2.com).
+  ~ Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~    http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing,
   ~ software distributed under the License is distributed on an
@@ -14,7 +14,7 @@
   ~ KIND, either express or implied.  See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
-  --%>
+--%>
 
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
@@ -44,8 +44,8 @@
        if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
            errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
            if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
-               errorMessage = i18n(resourceBundle, customText, "error.retry");
-            } else if (isSelfRegistration && (errorMessage.equalsIgnoreCase("Can't identify organization") 
+               errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
+            } else if (isSelfRegistration && (errorMessage.equalsIgnoreCase("Can't identify organization")
                || errorMessage.equalsIgnoreCase("Organization is not associated with this application."))) {
                errorMessage = i18n(resourceBundle, customText, "invalid.organization.discovery.input.self.registration");
             } else if (errorMessage.equalsIgnoreCase("Can't identify organization")) {
@@ -59,10 +59,9 @@
    }
    String defaultDiscoveryParam = Encode.forHtmlAttribute(request.getParameter("defaultParam"));
 %>
-<%-- Data for the layout from the page --%>
-<%
-   layoutData.put("containerSize", "medium");
-%>
+
+<% request.setAttribute("pageName", "org-discovery"); %>
+
 <html lang="en-US">
    <head>
       <%-- header --%>
@@ -79,7 +78,7 @@
          }
       %>
    </head>
-   <body class="login-portal layout authentication-portal-layout">
+   <body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
       <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
          <layout:component componentName="ProductHeader">
             <%-- product-title --%>
@@ -106,8 +105,7 @@
                <%
                   } else {
                %>
-               <h2><%=i18n(resourceBundle, customText, "sign.in.with")%> <%= StringUtils.isNotBlank(idp) ? Encode.forHtmlContent(idp) : i18n(resourceBundle, customText, "organization.login") %></h2>
-
+               <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%= StringUtils.isNotBlank(idp) ? Encode.forHtmlContent(idp) : AuthenticationEndpointUtil.i18n(resourceBundle, "organization.login") %></h2>
                <%
                   }
                %>

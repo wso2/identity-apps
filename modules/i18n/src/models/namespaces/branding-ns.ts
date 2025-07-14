@@ -256,4 +256,33 @@ export interface BrandingNS {
         title: string;
         termsAndConditions: string;
     };
+    customPageEditor: {
+        backButton: string;
+        brandingNotConfiguredTooltip: string;
+        tabs: {
+            html: {
+                label: string;
+            };
+            css: {
+                label: string;
+            };
+            js: {
+                label: string;
+            };
+        };
+        notifications: {
+            successContentUpdate: {
+                description: string;
+                message: string;
+            };
+            errorContentUpdate: {
+                description: string;
+                message: string;
+            };
+            errorContentSizeLimit: {
+                description: string;
+                message: string;
+            }
+        };
+    };
 }

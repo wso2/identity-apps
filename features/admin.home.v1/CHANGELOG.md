@@ -1,5 +1,92 @@
 # @wso2is/admin.home.v1
 
+## 1.7.12
+
+### Patch Changes
+
+- [#8511](https://github.com/wso2/identity-apps/pull/8511) [`90acfab75f677280eb39db0fc26d4e8e63024985`](https://github.com/wso2/identity-apps/commit/90acfab75f677280eb39db0fc26d4e8e63024985) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - UI improvements to the agents feature
+
+- Updated dependencies [[`90acfab75f677280eb39db0fc26d4e8e63024985`](https://github.com/wso2/identity-apps/commit/90acfab75f677280eb39db0fc26d4e8e63024985)]:
+  - @wso2is/admin.applications.v1@2.36.7
+  - @wso2is/admin.extensions.v1@2.39.7
+  - @wso2is/admin.userstores.v1@2.27.36
+  - @wso2is/admin.core.v1@2.46.7
+  - @wso2is/i18n@2.24.14
+  - @wso2is/admin.feature-gate.v1@1.7.6
+
+## 1.7.11
+
+### Patch Changes
+
+- [#8503](https://github.com/wso2/identity-apps/pull/8503) [`20161930823e11dc4a678a679e19ef8aa40d8053`](https://github.com/wso2/identity-apps/commit/20161930823e11dc4a678a679e19ef8aa40d8053) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Hide the flow card on the home page for sub-organizations
+
+- Updated dependencies [[`5a48b099d9eed3b73d74764b6610a678a49e6b58`](https://github.com/wso2/identity-apps/commit/5a48b099d9eed3b73d74764b6610a678a49e6b58)]:
+  - @wso2is/admin.organizations.v1@2.26.209
+
+## 1.7.10
+
+### Patch Changes
+
+- [#8487](https://github.com/wso2/identity-apps/pull/8487) [`76f192a81a134a773cb0896bb6febefca442324d`](https://github.com/wso2/identity-apps/commit/76f192a81a134a773cb0896bb6febefca442324d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Minor UI bug fixes in Agents Feature
+
+- Updated dependencies [[`76f192a81a134a773cb0896bb6febefca442324d`](https://github.com/wso2/identity-apps/commit/76f192a81a134a773cb0896bb6febefca442324d), [`90a17579bddde8c429932caf4a318d873ff3e7d5`](https://github.com/wso2/identity-apps/commit/90a17579bddde8c429932caf4a318d873ff3e7d5)]:
+  - @wso2is/admin.core.v1@2.46.5
+  - @wso2is/admin.registration-flow-builder.v1@0.9.0
+
+## 1.7.9
+
+### Patch Changes
+
+- [#8077](https://github.com/wso2/identity-apps/pull/8077) [`b6f5db8cd4722cb06c1608b0698c31ae5f6a5204`](https://github.com/wso2/identity-apps/commit/b6f5db8cd4722cb06c1608b0698c31ae5f6a5204) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Misc improvements required for AI agent management feature
+
+- Updated dependencies [[`4c0d987daf1267aa5cdd2b4b5d1ef2f9f17a53b1`](https://github.com/wso2/identity-apps/commit/4c0d987daf1267aa5cdd2b4b5d1ef2f9f17a53b1), [`b6f5db8cd4722cb06c1608b0698c31ae5f6a5204`](https://github.com/wso2/identity-apps/commit/b6f5db8cd4722cb06c1608b0698c31ae5f6a5204)]:
+  - @wso2is/admin.feature-gate.v1@1.7.4
+  - @wso2is/admin.core.v1@2.46.4
+  - @wso2is/i18n@2.24.11
+  - @wso2is/core@2.9.3
+
+## 1.7.8
+
+### Patch Changes
+
+- [#8421](https://github.com/wso2/identity-apps/pull/8421) [`ef2fe33fed05a3b9cf2884b1fdb4f5f54f227bbf`](https://github.com/wso2/identity-apps/commit/ef2fe33fed05a3b9cf2884b1fdb4f5f54f227bbf) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Improve admin data separation banner to a alert type
+
+- Updated dependencies [[`16380763a69b363677a27dff0d71e8bb7f4bd006`](https://github.com/wso2/identity-apps/commit/16380763a69b363677a27dff0d71e8bb7f4bd006), [`ef2fe33fed05a3b9cf2884b1fdb4f5f54f227bbf`](https://github.com/wso2/identity-apps/commit/ef2fe33fed05a3b9cf2884b1fdb4f5f54f227bbf)]:
+  - @wso2is/i18n@2.24.7
+  - @wso2is/admin.extensions.v1@2.39.5
+
+## 1.7.7
+
+### Patch Changes
+
+- [#8384](https://github.com/wso2/identity-apps/pull/8384) [`2981081634e150d84bb16833410fd99001f35162`](https://github.com/wso2/identity-apps/commit/2981081634e150d84bb16833410fd99001f35162) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce flows feature
+
+- Updated dependencies [[`d324ef56d7f9db7fff78ed46d23d7bcaae69e216`](https://github.com/wso2/identity-apps/commit/d324ef56d7f9db7fff78ed46d23d7bcaae69e216), [`90d6c0be05e8b957cc1fa0c239ec3fb9b5a3fa72`](https://github.com/wso2/identity-apps/commit/90d6c0be05e8b957cc1fa0c239ec3fb9b5a3fa72), [`2981081634e150d84bb16833410fd99001f35162`](https://github.com/wso2/identity-apps/commit/2981081634e150d84bb16833410fd99001f35162)]:
+  - @wso2is/admin.applications.v1@2.36.2
+  - @wso2is/admin.extensions.v1@2.39.4
+  - @wso2is/i18n@2.24.3
+  - @wso2is/admin.feature-gate.v1@1.7.2
+  - @wso2is/admin.registration-flow-builder.v1@0.8.0
+  - @wso2is/admin.core.v1@2.46.3
+
+## 1.7.6
+
+### Patch Changes
+
+- [#8385](https://github.com/wso2/identity-apps/pull/8385) [`175ea7ca4298dcc397ef8259f508edc52c863efd`](https://github.com/wso2/identity-apps/commit/175ea7ca4298dcc397ef8259f508edc52c863efd) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add a alert announcement to console
+
+- Updated dependencies [[`175ea7ca4298dcc397ef8259f508edc52c863efd`](https://github.com/wso2/identity-apps/commit/175ea7ca4298dcc397ef8259f508edc52c863efd)]:
+  - @wso2is/admin.extensions.v1@2.39.3
+  - @wso2is/admin.core.v1@2.46.2
+
+## 1.7.5
+
+### Patch Changes
+
+- Updated dependencies [[`6852d804057d84ff63397a305b085bce761143b6`](https://github.com/wso2/identity-apps/commit/6852d804057d84ff63397a305b085bce761143b6)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.7.0
+  - @wso2is/admin.core.v1@2.45.10
+
 ## 1.7.4
 
 ### Patch Changes

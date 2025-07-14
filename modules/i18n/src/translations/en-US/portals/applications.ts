@@ -886,6 +886,10 @@ export const applications: ApplicationsNS = {
                         }
                     },
                     landing: {
+                        banners: {
+                            registrationConfiguration: "Want to customize your organization's user " +
+                                "<1>self-registration</1> flow? Click <3>configure</3> to get started."
+                        },
                         defaultConfig: {
                             description: {
                                 0: "This application is configured with <1>Username & Password</1> Login",

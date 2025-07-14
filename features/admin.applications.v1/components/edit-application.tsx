@@ -60,6 +60,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider, Form, Grid, Menu, TabProps } from "semantic-ui-react";
+import RegistrationFlowBanner from "./banners/registration-flow-banner";
 import { InboundProtocolsMeta } from "./meta/inbound-protocols.meta";
 import MyAccountOverview from "./my-account/my-account-overview";
 import { AccessConfiguration } from "./settings/access-configuration";
@@ -612,22 +613,25 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
 
     const SignOnMethodsTabPane = (): ReactElement => (
-        <AILoginFlowProvider>
-            <ResourceTab.Pane controlledSegmentation>
-                <SignOnMethods
-                    application={ application }
-                    appId={ application.id }
-                    authenticationSequence={ application.authenticationSequence }
-                    clientId={ inboundProtocolConfig?.oidc?.clientId }
-                    hiddenAuthenticators={ hiddenAuthenticators }
-                    isLoading={ isLoading }
-                    onUpdate={ handleApplicationUpdate }
-                    featureConfig={ featureConfig }
-                    readOnly={ readOnly }
-                    data-componentid={ `${ componentId }-sign-on-methods` }
-                />
-            </ResourceTab.Pane>
-        </AILoginFlowProvider>
+        <>
+            <RegistrationFlowBanner />
+            <AILoginFlowProvider>
+                <ResourceTab.Pane controlledSegmentation>
+                    <SignOnMethods
+                        application={ application }
+                        appId={ application.id }
+                        authenticationSequence={ application.authenticationSequence }
+                        clientId={ inboundProtocolConfig?.oidc?.clientId }
+                        hiddenAuthenticators={ hiddenAuthenticators }
+                        isLoading={ isLoading }
+                        onUpdate={ handleApplicationUpdate }
+                        featureConfig={ featureConfig }
+                        readOnly={ readOnly }
+                        data-componentid={ `${ componentId }-sign-on-methods` }
+                    />
+                </ResourceTab.Pane>
+            </AILoginFlowProvider>
+        </>
     );
 
     const AdvancedSettingsTabPane = (): ReactElement => (

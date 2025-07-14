@@ -1,5 +1,20 @@
 # @wso2is/admin.console-settings.v1
 
+## 2.25.212
+
+### Patch Changes
+
+- [#8491](https://github.com/wso2/identity-apps/pull/8491) [`5a48b099d9eed3b73d74764b6610a678a49e6b58`](https://github.com/wso2/identity-apps/commit/5a48b099d9eed3b73d74764b6610a678a49e6b58) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Utilise isFeatureEnabled function to enable / disable features during maintainance window
+
+- Updated dependencies [[`5a48b099d9eed3b73d74764b6610a678a49e6b58`](https://github.com/wso2/identity-apps/commit/5a48b099d9eed3b73d74764b6610a678a49e6b58)]:
+  - @wso2is/admin.organizations.v1@2.26.209
+
+## 2.25.211
+
+### Patch Changes
+
+- [#8356](https://github.com/wso2/identity-apps/pull/8356) [`728a8eb3bcc0cd4d6f5d61ed8199f2c1a60bc275`](https://github.com/wso2/identity-apps/commit/728a8eb3bcc0cd4d6f5d61ed8199f2c1a60bc275) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Fix priviladge admin deletion in ADU setup
+
 ## 2.25.210
 
 ### Patch Changes

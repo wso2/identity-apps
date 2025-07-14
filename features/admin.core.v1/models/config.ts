@@ -23,6 +23,10 @@ import {
     ApplicationTemplateLoadingStrategies
 } from "@wso2is/admin.applications.v1/models/application";
 import { ApplicationsResourceEndpointsInterface } from "@wso2is/admin.applications.v1/models/endpoints";
+import {
+    WorkflowAssociationsResourceEndpointsInterface,
+    WorkflowsResourceEndpointsInterface
+} from "@wso2is/admin.approval-workflows.v1/models/endpoints";
 import { BrandingPreferenceResourceEndpointsInterface } from "@wso2is/admin.branding.v1/models/endpoints";
 import { CertificatesResourceEndpointsInterface } from "@wso2is/admin.certificates.v1";
 import { ClaimResourceEndpointsInterface } from "@wso2is/admin.claims.v1/models/endpoints";
@@ -74,6 +78,10 @@ export interface FeatureConfigInterface {
      */
     actions?: FeatureAccessConfigInterface;
     /**
+     * Agent management feature.
+     */
+    agents?: FeatureAccessConfigInterface;
+    /**
      * Admin user management feature.
      */
     administrators?: FeatureAccessConfigInterface;
@@ -117,6 +125,10 @@ export interface FeatureConfigInterface {
      * Email providers feature.
      */
     emailProviders?: FeatureAccessConfigInterface;
+    /**
+     * Flow orchestration feature.
+     */
+    flows?: FeatureAccessConfigInterface;
     /**
      * Getting started feature.
      */
@@ -273,6 +285,10 @@ export interface FeatureConfigInterface {
      * Notification sending feature.
      */
     internalNotificationSending?: FeatureAccessConfigInterface;
+    /**
+     * Registration flow builder feature.
+     */
+    registrationFlowBuilder?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -311,6 +327,11 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      * Configs of multiple application protocol.
      */
     allowMultipleAppProtocols?: boolean;
+    /**
+     * Region selection enabled.
+     * This is used to enable/disable the region selection in the organization creation page.
+     */
+    regionSelectionEnabled?: boolean;
 }
 
 /**
@@ -396,6 +417,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Configurations for IDP templates.
      */
     identityProviderTemplates: IdentityProviderTemplatesConfigInterface;
+    /**
+     * Should the admin data separation notice be enabled.
+     */
+    isAdminDataSeparationNoticeEnabled?: boolean;
     /**
      * Should default dialects be allowed for editing.
      */
@@ -497,6 +522,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     hiddenUserStores: string[];
     /**
+     * System reserved userstores
+     */
+    systemReservedUserStores: string[];
+    /**
      * App Logos
      */
     appLogo: {
@@ -560,6 +589,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Async Operation Polling Interval.
      */
     asyncOperationStatusPollingInterval: number;
+    /**
+     * Custom content configurations.
+     */
+    customContent: CustomContentConfigInterface;
 }
 
 /**
@@ -639,6 +672,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     SMSTemplateResourceEndpointsInterface,
     ActionsResourceEndpointsInterface,
     PolicyAdministrationEndpointsInterface,
+    WorkflowsResourceEndpointsInterface,
+    WorkflowAssociationsResourceEndpointsInterface,
     RulesEndpointsInterface,
     RemoteLoggingResourceEndpointsInterface {
 
@@ -656,4 +691,14 @@ export interface ResourceEndpointsInterface {
 
 export interface RouteConfigInterface {
     organizationEnabledRoutes: string[];
+}
+
+/**
+ * Interface for custom content configurations.
+ */
+export interface CustomContentConfigInterface {
+    /**
+     * Maximum file size allowed for custom content.
+     */
+    maxFileSize?: number;
 }

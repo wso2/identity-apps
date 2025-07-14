@@ -31,6 +31,8 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect } from "r
 import ReorderableElement from "./reorderable-element";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import { Element } from "../../../../models/elements";
+import { EventTypes } from "../../../../models/extension";
+import PluginRegistry from "../../../../plugins/plugin-registry";
 import generateResourceId from "../../../../utils/generate-resource-id";
 import Droppable from "../../../dnd/droppable";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
@@ -104,18 +106,20 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
                                 ] }
                                 collisionPriority={ CollisionPriority.Low }
                             >
-                                { (node?.data?.components as any)?.map((component: Element, index: number) => (
-                                    <ReorderableElement
-                                        key={ component.id }
-                                        id={ component.id }
-                                        index={ index }
-                                        element={ component }
-                                        className={ classNames("flow-builder-step-content-form-field") }
-                                        type={ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID }
-                                        accept={ [ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID ] }
-                                        group={ stepId }
-                                    />
-                                )) }
+                                { (node?.data?.components as any)?.map((component: Element, index: number) =>
+                                    PluginRegistry.getInstance().executeSync(EventTypes.ON_NODE_ELEMENT_FILTER,
+                                        component) && (
+                                        <ReorderableElement
+                                            key={ component.id }
+                                            id={ component.id }
+                                            index={ index }
+                                            element={ component }
+                                            className={ classNames("flow-builder-step-content-form-field") }
+                                            type={ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID }
+                                            accept={ [ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID ] }
+                                            group={ stepId }
+                                        />
+                                    )) }
                             </Droppable>
                         </FormGroup>
                     </Box>

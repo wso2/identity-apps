@@ -276,6 +276,9 @@ interface ApplicationsDocumentationLinksInterface {
             default: {
                 learnMore: string;
             }
+            technology: {
+                learnMore: string;
+            }
             ssoIntegration: {
                 learnMore: string;
             }
@@ -307,6 +310,9 @@ interface BrandingDocumentationLinksInterface {
     }
     layout: {
         custom: {
+            editor: {
+                learnMore: string;
+            }
             learnMore: string;
         }
     }
@@ -573,6 +579,13 @@ interface AccountDisableDocumentationLinksInterface {
 }
 
 /**
+ * Interface for the webhooks section documentation structure.
+ */
+interface WebhooksDocumentationLinksInterface {
+    learnMore: string;
+}
+
+/**
  * Interface for the console documentation structure.
  */
 export interface DocumentationLinksExtensionInterface {
@@ -624,6 +637,10 @@ export interface DocumentationLinksExtensionInterface {
          * Documentation links for SMS customization UI elements.
          */
         smsCustomization: SmsCustomizationLinksInterface;
+        /**
+         * Documentation links for webhooks section elements.
+         */
+        webhooks: WebhooksDocumentationLinksInterface;
     }
     /**
      * Documentation links for manage section elements.

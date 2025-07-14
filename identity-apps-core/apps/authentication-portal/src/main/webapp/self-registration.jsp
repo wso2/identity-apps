@@ -31,10 +31,7 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "medium");
-%>
+<% request.setAttribute("pageName", "self-registration"); %>
 
 <%
     String myaccountUrl = application.getInitParameter("MyAccountURL");
@@ -53,12 +50,12 @@
     String subPath = servletPath + contextPath;
     String baseURL = accessedURL.substring(0, accessedURL.length() - subPath.length());
     String authenticationPortalURL = baseURL + contextPath;
-    
-    if (tenantDomain != null 
+
+    if (tenantDomain != null
         && !tenantDomain.isEmpty()
         && !tenantDomain.equalsIgnoreCase(IdentityManagementEndpointConstants.SUPER_TENANT)) {
         authenticationPortalURL = baseURL + "/t/" + tenantDomain + contextPath;
-    } 
+    }
 %>
 
 <%
@@ -68,7 +65,7 @@
     String state = request.getParameter("state");
     String code = request.getParameter("code");
     String spId = request.getParameter("spId");
-    
+
     try {
         byte[] jsonData = Files.readAllBytes(Paths.get(jsonFilePath));
         translationsJson = new String(jsonData, "UTF-8");
@@ -100,7 +97,7 @@
         };
     </script>
 </head>
-<body class="login-portal layout authentication-portal-layout">
+<body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
   <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
       <layout:component componentName="ProductHeader">
           <%-- product-title --%>
@@ -115,7 +112,7 @@
       </layout:component>
       <layout:component componentName="MainSection">
           <div class="ui segment left aligned">
-              <div id="react-root" class="react-ui-container"/>
+              <div id="react-root" class="react-ui-container"></div>
           </div>
       </layout:component>
       <layout:component componentName="ProductFooter">
@@ -163,7 +160,7 @@
             }
 
             const { createElement, useEffect, useState } = React;
-            const { DynamicContent, I18nProvider } = ReactUICore;
+            const { DynamicContent, I18nProvider, executeFido2FLow, PasskeyEnrollment } = ReactUICore;
 
             const Content = () => {
                 const baseUrl = "<%= identityServerEndpointContextParam %>";
@@ -171,12 +168,12 @@
                 const defaultMyAccountUrl = "<%= myaccountUrl %>";
                 const authPortalURL = "<%= authenticationPortalURL %>";
                 const registrationFlowApiProxyPath = authPortalURL + "/util/self-registration-api.jsp";
-                const code = "<%= code != null ? code : null %>";
-                const state = "<%= state != null ? state : null %>";
-                
+                const code = "<%= Encode.forJavaScript(code) != null ? Encode.forJavaScript(code) : null %>";
+                const state = "<%= Encode.forJavaScript(state) != null ? Encode.forJavaScript(state) : null %>";
+
                 const locale = "en-US";
                 const translations = <%= translationsJson %>;
-                
+
                 const [ flowData, setFlowData ] = useState(null);
                 const [ components, setComponents ] = useState([]);
                 const [ loading, setLoading ] = useState(true);
@@ -190,10 +187,11 @@
                     if (code !== "null" && state !== "null") {
                         setPostBody({
                             flowId: savedFlowId,
+                            flowType: "REGISTRATION",
                             actionId: "",
-                            inputs: { 
+                            inputs: {
                                 code,
-                                state 
+                                state
                             }
                         });
                     }
@@ -201,7 +199,7 @@
 
                 useEffect(() => {
                     if (!postBody && code === "null") {
-                        setPostBody({ applicationId: "new-application" });
+                        setPostBody({ applicationId: "new-application", flowType: "REGISTRATION" });
                     }
                 }, []);
 
@@ -233,7 +231,7 @@
                         }
 
                         const isFlowEnded = handleFlowStatus(data);
-                        
+
                         if (isFlowEnded) {
                             return;
                         }
@@ -257,8 +255,8 @@
                         const errorDetails = getI18nKeyForError(error.code);
                         const errorPageURL = authPortalURL + "/registration_error.do?" + "ERROR_MSG="
                             + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID="
-                            + "<%= spId %>" + "&" + "REG_PORTAL_URL=" + authPortalURL + "/register.do";
-                        
+                            + "<%= Encode.forJavaScript(spId) %>" + "&" + "REG_PORTAL_URL=" + authPortalURL + "/register.do";
+
                         window.location.href = errorPageURL;
                     }
 
@@ -267,13 +265,28 @@
                     }
                 }, [ error, flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error ]);
 
+                const handleInternalPrompt = (flowData) => {
+                    let providedInputs = {};
+                    flowData.data.requiredParams.map((param) => {
+                        if (param === "origin") {
+                            providedInputs[param] = window.location.origin;
+                        }
+                    });
+
+                    setPostBody({
+                        flowId: flowData.flowId,
+                        actionId: "",
+                        inputs: providedInputs
+                    });
+                }
+
                 const handleFlowStatus = (flow) => {
                     if (!flow) return false;
 
                     switch (flow.flowStatus) {
                         case "INCOMPLETE":
                             return false;
-                            
+
                         case "COMPLETE":
                             localStorage.clear();
 
@@ -292,31 +305,57 @@
 
                 const handleStepType = (flow) => {
                     if (!flow) return false;
-
                     switch (flow.type) {
                         case "REDIRECTION":
                             setLoading(true);
                             window.location.href = flow.data.redirectURL;
+                            break;
+
+                        case "INTERNAL_PROMPT":
+                            handleInternalPrompt(flow);
+                            break;
+
+                        case "WEBAUTHN":
+                            executeFido2FLow(
+                                flow,
+                                setPostBody,
+                                (error) => {
+                                    setFlowError(error);
+                                }
+                            );
+                            break;
 
                         default:
                             console.log(`Flow step type: ${flow.type}. No special action.`);
                     }
                 };
 
+                if (flowData && flowData.type === "WEBAUTHN") {
+                    return createElement(
+                        "div",
+                        { className: "registration-content-container loaded" },
+                        createElement(
+                            PasskeyEnrollment, {
+                                passkeyError: flowError
+                            }
+                        )
+                    );
+                }
+
                 if (loading || (!components || components.length === 0)) {
                     return createElement(
                         "div",
-                        { className: `content-container loading ${!loading ? "hidden" : ""}` },
+                        { className: `registration-content-container loading ${!loading ? "hidden" : ""}` },
                         createElement(
                             "div",
                             { className: "spinner" }
                         )
                     );
-                } 
+                }
 
                 return createElement(
                     "div",
-                    { className: "content-container loaded" },
+                    { className: "registration-content-container loaded" },
                     createElement(
                         DynamicContent, {
                             contentData: flowData.data && flowData.data,
@@ -326,6 +365,7 @@
                                 setPostBody({
                                     flowId: flowData.flowId,
                                     actionId,
+                                    flowType: "REGISTRATION",
                                     inputs: formValues
                                 });
                             },

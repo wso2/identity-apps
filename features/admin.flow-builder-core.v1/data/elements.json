@@ -156,7 +156,7 @@
         "display": {
             "label": "reCAPTCHA",
             "image": "https://www.gstatic.com/recaptcha/api2/logo_48.png",
-            "showOnResourcePanel": false
+            "showOnResourcePanel": true
         },
         "config": {
             "version": 2
@@ -190,6 +190,7 @@
             "image": "https://www.svgrepo.com/show/339836/boolean.svg",
             "showOnResourcePanel": false
         },
+        "variant": "DROPDOWN",
         "config": {
             "hint": "",
             "label": "Choice",

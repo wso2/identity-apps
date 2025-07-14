@@ -63,7 +63,11 @@ interface APIAuthorizationResourcesProps extends
      * Template ID.
      */
     templateId: string;
-     /**
+    /**
+     * Original template ID.
+     */
+    originalTemplateId?: string;
+    /**
      * Make the component read only.
      */
     readOnly?: boolean;
@@ -80,6 +84,7 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
 
     const {
         templateId,
+        originalTemplateId,
         readOnly,
         ["data-componentid"]: componentId
     } = props;
@@ -87,6 +92,10 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
     const { getLink } = useDocumentation();
+
+    const resourceText: string = originalTemplateId === "mcp-client-application"
+        ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.genericResource")
+        : t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.apiResource");
 
     const [ isSubAPIResourcesSectionLoading, setSubAPIResourcesSectionLoading ] = useState<boolean>(false);
     const [ isShownError, setIsShownError ] = useState<boolean>(false);
@@ -208,10 +217,14 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
                     description: t("extensions:develop.applications.edit.sections." +
-                        "apiAuthorization.sections.apiSubscriptions.notifications.unSubscribe.success.description"),
+                        "apiAuthorization.sections.apiSubscriptions.notifications.unSubscribe.success.description", {
+                        resourceText: resourceText
+                    }),
                     level: AlertLevels.SUCCESS,
                     message: t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                        ".apiSubscriptions.notifications.unSubscribe.success.message")
+                        ".apiSubscriptions.notifications.unSubscribe.success.message", {
+                        resourceText: resourceText
+                    })
                 }));
 
                 setIsUnsubscribeAPIResourceLoading(false);
@@ -220,10 +233,14 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
             .catch(() => {
                 dispatch(addAlert<AlertInterface>({
                     description: t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                        ".apiSubscriptions.notifications.unSubscribe.genericError.description"),
+                        ".apiSubscriptions.notifications.unSubscribe.genericError.description", {
+                        resourceText: resourceText
+                    }),
                     level: AlertLevels.ERROR,
                     message: t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                        ".apiSubscriptions.notifications.unSubscribe.genericError.message")
+                        ".apiSubscriptions.notifications.unSubscribe.genericError.message", {
+                        resourceText: resourceText
+                    })
                 }));
             })
             .finally(() => {
@@ -250,10 +267,14 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
                     description: t("extensions:develop.applications.edit.sections.apiAuthorization" +
-                        ".sections.apiSubscriptions.notifications.createAuthorizedAPIResource.success.description"),
+                        ".sections.apiSubscriptions.notifications.createAuthorizedAPIResource.success.description", {
+                        resourceText: resourceText
+                    }),
                     level: AlertLevels.SUCCESS,
                     message: t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                        ".apiSubscriptions.notifications.createAuthorizedAPIResource.success.message")
+                        ".apiSubscriptions.notifications.createAuthorizedAPIResource.success.message", {
+                        resourceText: resourceText
+                    })
                 }));
 
                 setIsUpdateData(true);
@@ -262,10 +283,14 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
             .catch(() => {
                 dispatch(addAlert<AlertInterface>({
                     description: t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                        ".apiSubscriptions.notifications.createAuthorizedAPIResource.genericError.description"),
+                        ".apiSubscriptions.notifications.createAuthorizedAPIResource.genericError.description", {
+                        resourceText: resourceText
+                    }),
                     level: AlertLevels.ERROR,
                     message: t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                        ".apiSubscriptions.notifications.createAuthorizedAPIResource.genericError.message")
+                        ".apiSubscriptions.notifications.createAuthorizedAPIResource.genericError.message", {
+                        resourceText: resourceText
+                    })
                 }));
             })
             .finally(() => {
@@ -309,11 +334,15 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
                         <Grid.Column className="heading-wrapper" computer={ 8 } mobile={ 10 }>
                             <Heading as="h4">
                                 { t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                                    ".apiSubscriptions.heading") }
+                                    ".apiSubscriptions.heading", {
+                                    resourceText: resourceText
+                                }) }
                             </Heading>
                             <Heading subHeading ellipsis as="h6" >
                                 { t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                                    ".apiSubscriptions.subHeading") }
+                                    ".apiSubscriptions.subHeading", {
+                                    resourceText: resourceText
+                                }) }
                                 <DocumentationLink
                                     link={ getLink("develop.applications.apiAuthorization.learnMore") }
                                 >
@@ -333,7 +362,9 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
                                     >
                                         <Icon name="add" />
                                         { t("extensions:develop.applications.edit.sections.apiAuthorization." +
-                                            "sections.apiSubscriptions.buttons.subAPIResource") }
+                                            "sections.apiSubscriptions.buttons.subAPIResource", {
+                                            resourceText: resourceText
+                                        }) }
                                     </PrimaryButton>
                                 )
                             }
@@ -344,6 +375,7 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
                 <SubscribedAPIResources
                     appId={ appId }
                     templateId={ templateId }
+                    originalTemplateId={ originalTemplateId }
                     allAPIResourcesListData={ allAPIResourcesListData?.apiResources }
                     allAPIResourcesFetchRequestError={ allAPIResourcesFetchRequestError }
                     allAuthorizedScopes={ allAuthorizedScopes }
@@ -365,7 +397,9 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
                         onClose={ (): void => setRemoveSubscribedAPIResource(null) }
                         type="negative"
                         assertionHint={ t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                            ".apiSubscriptions.confirmations.unsubscribeAPIResource.assertionHint") }
+                            ".apiSubscriptions.confirmations.unsubscribeAPIResource.assertionHint", {
+                            resourceText: resourceText
+                        }) }
                         assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
                         secondaryAction={ t("common:cancel") }
@@ -378,7 +412,9 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
                             data-componentid={ `${componentId}-delete-confirmation-modal-header` }
                         >
                             { t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                                ".apiSubscriptions.confirmations.unsubscribeAPIResource.header") }
+                                ".apiSubscriptions.confirmations.unsubscribeAPIResource.header", {
+                                resourceText: resourceText
+                            }) }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
@@ -386,13 +422,17 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
                             data-componentid={ `${componentId}-delete-confirmation-modal-message` }
                         >
                             { t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                                ".apiSubscriptions.confirmations.unsubscribeAPIResource.message") }
+                                ".apiSubscriptions.confirmations.unsubscribeAPIResource.message", {
+                                resourceText: resourceText
+                            }) }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content
                             data-componentid={ `${componentId}-delete-confirmation-modal-content` }
                         >
                             { t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                                ".apiSubscriptions.confirmations.unsubscribeAPIResource.content") }
+                                ".apiSubscriptions.confirmations.unsubscribeAPIResource.content", {
+                                resourceText: resourceText
+                            }) }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )
@@ -401,6 +441,7 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
                 isAuthorizeAPIResourceWizardOpen && (
                     <AuthorizeAPIResource
                         templateId={ templateId }
+                        originalTemplateId={ originalTemplateId }
                         subscribedAPIResourcesListData={ subscribedAPIResourcesListData }
                         closeWizard={ (): void => setIsAuthorizeAPIResourceWizardOpen(false) }
                         handleCreateAPIResource= { handleCreateAPIResource } />

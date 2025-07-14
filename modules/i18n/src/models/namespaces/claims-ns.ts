@@ -17,6 +17,10 @@
  */
 export interface ClaimsNS {
     attributeMappings: {
+        agent: {
+            heading: string;
+            description: string
+        };
         axschema: {
             heading: string;
             description: string;
@@ -170,6 +174,10 @@ export interface ClaimsNS {
                     heading: string;
                     description: string;
                 };
+                agent: {
+                    heading: string;
+                    description: string;
+                }
             };
         };
         confirmations: {
@@ -507,16 +515,60 @@ export interface ClaimsNS {
                 label: string;
                 placeholder: string;
             };
+            canonicalValues: {
+                hint: string;
+                keyLabel: string;
+                valueLabel: string;
+                keyRequiredErrorMessage: string;
+                valueRequiredErrorMessage: string;
+                validationError: string;
+                validationErrorMessage: string;
+            };
+            dataType: {
+                hint: string;
+                label: string;
+                options: {
+                    text: string;
+                    options: string;
+                    integer: string;
+                    decimal: string;
+                    boolean: string;
+                    dateTime: string;
+                    object: string;
+                };
+            };
+            subAttributes: {
+                label: string;
+                placeholder: string;
+                validationError: string;
+                validationErrorMessage: string;
+            };
             multiValued: {
                 label: string;
                 placeholder: string;
             };
             multiValuedHint: string;
-            multiValuedDisabledHint: string;
+            multiValuedSystemClaimHint: string;
             displayOrderHint: string;
             required: {
                 label: string;
             };
+            inputFormat: {
+                label: string;
+                hint: string;
+                options: {
+                    textInput: string;
+                    dropdown: string;
+                    multiSelectDropdown: string;
+                    radioGroup: string;
+                    checkBoxGroup: string;
+                    checkbox: string;
+                    datePicker: string;
+                    textArea: string;
+                    toggle: string;
+                    numberInput: string;
+                }
+            }
             requiredHint: string;
             requiredWarning: string;
             readOnly: {

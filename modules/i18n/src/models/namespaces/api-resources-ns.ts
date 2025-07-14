@@ -120,4 +120,40 @@ export interface ApiResourcesNS {
             };
         };
     };
+    mcpServers: {
+        newMcpServer: string;
+        wizards: {
+            addMcpServer: {
+                title: string;
+                description: string;
+                steps: {
+                    general: {
+                        fields: {
+                            displayName: {
+                                hint: string;
+                                placeholder: string;
+                            };
+                            identifier: {
+                                placeholder: string;
+                            };
+                        };
+                    };
+                };
+            };
+        };
+        deleteMcpServer: {
+            actionText: string;
+            heading: string;
+            subheading: string;
+        };
+        title: string;
+        description: string;
+        searchBarPlaceholder: string;
+        backButtonText: string;
+        scopes: {
+            subHeading: string;
+        };
+        editPageTitle: string;
+        emptyListPlaceholderText: string;
+    };
 }

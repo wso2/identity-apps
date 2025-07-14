@@ -223,6 +223,7 @@
     String cookiePolicyURL = "/authenticationendpoint/cookie_policy.do";
     String selfSignUpOverrideURL = "";
     String passwordRecoveryOverrideURL = "";
+    String recoveryPortalOverrideURL = "";
     String layout = "centered";
     String layoutFileRelativePath = "includes/layouts/" + layout + "/body.ser";
     String layoutStoreURL = "extensions/layouts/custom/${tenantDomain}";
@@ -235,6 +236,9 @@
     String productWhiteLogoAlt = "WSO2 Identity Server Logo White Variation";
     String poweredByLogoURL = "";
     boolean enableDefaultPreLoader = true;
+    String htmlContent = null;
+    String cssContent = null;
+    String jsContent = null;
 
     final String BRANDING_PREFERENCE_CACHE_KEY = "BrandingPreferenceCache";
     final String BRANDING_TEXT_PREFERENCE_CACHE_KEY = "BrandingTextPreferenceCache";
@@ -266,6 +270,7 @@
     String COOKIE_POLICY_URL_KEY = "cookiePolicyURL";
     String SELF_SIGN_UP_URL_KEY = "selfSignUpURL";
     String PASSWORD_RECOVERY_URL_KEY = "passwordRecoveryURL";
+    String RECOVERY_PORTAL_URL_KEY = "recoveryPortalURL";
     String CONFIGS_KEY = "configs";
     String IS_BRANDING_ENABLED_KEY= "isBrandingEnabled";
     String IS_SELF_SIGN_UP_ENABLED_KEY = "isSelfSignUpEnabled";
@@ -402,9 +407,13 @@
         if (overrideFallbackValues.containsKey(SELF_SIGN_UP_URL_KEY)) {
             selfSignUpOverrideURL = (String) overrideFallbackValues.get(SELF_SIGN_UP_URL_KEY);
         }
-
+        
         if (overrideFallbackValues.containsKey(PASSWORD_RECOVERY_URL_KEY)) {
             passwordRecoveryOverrideURL = (String) overrideFallbackValues.get(PASSWORD_RECOVERY_URL_KEY);
+        }
+
+        if (overrideFallbackValues.containsKey(RECOVERY_PORTAL_URL_KEY)) {
+            recoveryPortalOverrideURL = (String) overrideFallbackValues.get(RECOVERY_PORTAL_URL_KEY);
         }
     }
 
@@ -535,11 +544,11 @@
 
                     // Write cookie only if resolved value is non-blank and different from cookie
                     if (StringUtils.isNotBlank(resolvedUiTheme) && !resolvedUiTheme.equals(themeFromCookie)) {
-                        
+
                         String cookieName = UI_THEME;
                         String cookieValue = resolvedUiTheme;
                         int maxAge = 2592000;
-                    
+
                         String headerValue = cookieName + "=" + cookieValue + "; Path=/; Max-Age=" + maxAge + "; Secure";
                         response.setHeader("Set-Cookie", headerValue);
                     }
@@ -645,7 +654,7 @@
                                     if (theme.getJSONObject(IMAGES_KEY).has(FAVICON_KEY) && theme.getJSONObject(IMAGES_KEY).getJSONObject(FAVICON_KEY) != null) {
                                 if (theme.getJSONObject(IMAGES_KEY).getJSONObject(FAVICON_KEY).has(IMAGE_URL_KEY)
                                         && !StringUtils.isBlank(theme.getJSONObject(IMAGES_KEY).getJSONObject(FAVICON_KEY).getString(IMAGE_URL_KEY))) {
-                
+
                                     faviconURL = theme.getJSONObject(IMAGES_KEY).getJSONObject(FAVICON_KEY).getString(IMAGE_URL_KEY);
                                 }
                             }
@@ -757,6 +766,14 @@
                         if (!StringUtils.isBlank(passwordRecoveryURLInput) && !passwordRecoveryURLInput.toLowerCase().contains("javascript:") &&
                             !passwordRecoveryURLInput.toLowerCase().contains("data:")) {
                             passwordRecoveryOverrideURL = passwordRecoveryURLInput;
+                        }
+                    }
+
+                    if (brandingPreference.getJSONObject(URLS_KEY).has(RECOVERY_PORTAL_URL_KEY)) {
+                        String recoveryPortalURLInput = brandingPreference.getJSONObject(URLS_KEY).getString(RECOVERY_PORTAL_URL_KEY);
+                        if (!StringUtils.isBlank(recoveryPortalURLInput) && !recoveryPortalURLInput.toLowerCase().contains("javascript:") &&
+                            !recoveryPortalURLInput.toLowerCase().contains("data:")) {
+                                recoveryPortalOverrideURL = recoveryPortalURLInput;
                         }
                     }
                 }

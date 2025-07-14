@@ -44,6 +44,7 @@ import { useSelector } from "react-redux";
 import { ActionCertificateComponent } from "./certificate/action-certificate";
 import CommonActionConfigForm from "./common-action-config-form";
 import RuleConfigForm from "./rule-config-form";
+import UserAttributeList from "./user-attributes/user-attribute-list";
 import createAction from "../api/create-action";
 import updateAction from "../api/update-action";
 import useGetActionById from "../api/use-get-action-by-id";
@@ -99,6 +100,8 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
         (state: AppState) => state.config.ui.features.actions);
     const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
     const [ authenticationType, setAuthenticationType ] = useState<AuthenticationType>(null);
+    const [ isUserAttributesChanged, setIsUserAttributesChanged ] = useState<boolean>(false);
+    const [ userAttributeList, setUserAttributeList ] = useState<string[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ PEMValue, setPEMValue ] = useState<string>(undefined);
     const [ isHasRule, setIsHasRule ] = useState<boolean>(false);
@@ -157,6 +160,25 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
             <Skeleton variant="rectangular" height={ 7 } />
         </Box>
     );
+
+    /**
+     * Callback to be triggered when the user attribute list is updated.
+     *
+     * The final user attribute list is updated only if the user has made changes to the initial list.
+     * @param hasChanged - Flag to indicate whether the user has made changes to the initial list.
+     * @param changedAttributes - Updated attribute list.
+     */
+    const handleUserAttributeChange = (hasChanged: boolean, changedAttributes: string[]) => {
+
+        if (!hasChanged) {
+            setIsUserAttributesChanged(false);
+
+            return;
+        }
+
+        setIsUserAttributesChanged(true);
+        setUserAttributeList([ ...changedAttributes ]);
+    };
 
     const validateForm = (values: PreUpdatePasswordActionConfigFormPropertyInterface):
         Partial<PreUpdatePasswordActionConfigFormPropertyInterface> => {
@@ -217,6 +239,7 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
 
         if (isCreateFormState) {
             const actionValues: PreUpdatePasswordActionInterface = {
+                attributes: userAttributeList,
                 endpoint: {
                     authentication: {
                         properties: authProperties,
@@ -247,6 +270,7 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
         } else {
             // Updating the action
             const updatingValues: PreUpdatePasswordActionUpdateInterface = {
+                attributes: isUserAttributesChanged ? userAttributeList : undefined,
                 endpoint: isAuthenticationUpdateFormState || changedFields?.endpointUri ? {
                     authentication: isAuthenticationUpdateFormState ? {
                         properties: authProperties,
@@ -342,6 +366,16 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
                     actionId={ initialValues?.id }
                     readOnly={ isReadOnly }
                     data-componentid={ `${ _componentId }-certificate` }
+                />
+                <Divider className="divider-container" />
+                <Typography variant="h6" className="heading-container" >
+                    { t("actions:fields.userAttributes.heading") }
+                </Typography>
+                <UserAttributeList
+                    initialValues={ initialValues?.attributes }
+                    onAttributesChange={ handleUserAttributeChange }
+                    isReadOnly={ isReadOnly }
+                    data-componentid={ `${ _componentId }-user-attributes` }
                 />
                 { RuleExpressionsMetaData && showRuleComponent && (
                     <RuleConfigForm

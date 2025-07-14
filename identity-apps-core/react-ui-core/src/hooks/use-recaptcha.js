@@ -36,22 +36,34 @@ const useReCaptcha = (recaptchaType, siteKey, reCaptchaScriptUrl) => {
     const [ recaptcha, setRecaptcha ] = useState(null);
     const [ error, setError ] = useState(null);
     const resolveRef = useRef(null);
-    const reCaptchaUrl = reCaptchaScriptUrl + DEFAULT_RECAPTCHA_SCRIPT_URL_PARAMS || DEFAULT_RECAPTCHA_SCRIPT_URL;
+    const reCaptchaUrl = reCaptchaScriptUrl
+        ? reCaptchaScriptUrl + DEFAULT_RECAPTCHA_SCRIPT_URL_PARAMS
+        : DEFAULT_RECAPTCHA_SCRIPT_URL;
 
     const getRecaptchaObject = useCallback(() => {
-        if (!window.grecaptcha) {
-            throw new Error("reCAPTCHA API not loaded");
-        }
+        return new Promise((resolve) => {
+            const checkRecaptcha = () => {
+                if (window.grecaptcha) {
+                    if (recaptchaType === RECAPTCHA_ENTERPRISE_ID) {
+                        const checkEnterprise = () => {
+                            if (window.grecaptcha.enterprise) {
+                                resolve(window.grecaptcha.enterprise);
+                            } else {
+                                setTimeout(checkEnterprise, 100);
+                            }
+                        };
 
-        if (recaptchaType === RECAPTCHA_ENTERPRISE_ID) {
-            if (!window.grecaptcha.enterprise) {
-                throw new Error("reCAPTCHA Enterprise API not loaded");
-            }
+                        checkEnterprise();
+                    } else {
+                        resolve(window.grecaptcha);
+                    }
+                } else {
+                    setTimeout(checkRecaptcha, 100);
+                }
+            };
 
-            return window.grecaptcha.enterprise;
-        }
-
-        return window.grecaptcha;
+            checkRecaptcha();
+        });
     }, [ recaptchaType ]);
 
     useEffect(() => {
@@ -65,27 +77,54 @@ const useReCaptcha = (recaptchaType, siteKey, reCaptchaScriptUrl) => {
 
         const initializeRecaptcha = async () => {
             try {
-                const recaptchaObject = getRecaptchaObject();
-
-                setRecaptcha(recaptchaObject);
-
-                const grecaptcha = await loadRecaptchaApi(reCaptchaUrl, RECAPTCHA_V2_SCRIPT_ID, recaptchaObject);
+                await loadRecaptchaApi(reCaptchaUrl, RECAPTCHA_V2_SCRIPT_ID);
 
                 if (!mounted) return;
 
+                const recaptchaObject = await getRecaptchaObject();
+
+                setRecaptcha(recaptchaObject);
+
                 try {
-                    widgetIdRef.current = grecaptcha.render(containerRef.current, {
-                        callback: (recaptchaToken) => {
-                            if (!mounted) return;
+                    if (recaptchaType === RECAPTCHA_ENTERPRISE_ID) {
+                        await new Promise((resolve) => {
+                            window.grecaptcha.enterprise.ready(async () => {
+                                try {
+                                    // Render the widget first
+                                    widgetIdRef.current = window.grecaptcha.enterprise.render(containerRef.current, {
+                                        callback: (token) => {
+                                            if (!mounted) return;
+                                            setToken(token);
+                                            if (resolveRef.current) {
+                                                resolveRef.current(token);
+                                                resolveRef.current = null;
+                                            }
+                                        },
+                                        sitekey: siteKey,
+                                        size: "invisible"
+                                    });
+
+                                    resolve();
+                                } catch (error) {
+                                    console.error("ReCAPTCHA Enterprise: Failed to initialize", error);
+                                    throw error;
+                                }
+                            });
+                        });
+                    } else {
+                        widgetIdRef.current = recaptchaObject.render(containerRef.current, {
+                            callback: (recaptchaToken) => {
+                                if (!mounted) return;
                                 setToken(recaptchaToken);
-                            if (resolveRef.current) {
-                                resolveRef.current(recaptchaToken);
-                                resolveRef.current = null;
-                            }
-                        },
-                        sitekey: siteKey,
-                        size: "invisible"
-                    });
+                                if (resolveRef.current) {
+                                    resolveRef.current(recaptchaToken);
+                                    resolveRef.current = null;
+                                }
+                            },
+                            sitekey: siteKey,
+                            size: "invisible"
+                        });
+                    }
                     setWidgetReady(true);
                     setError(null);
                 } catch (renderError) {
@@ -115,25 +154,49 @@ const useReCaptcha = (recaptchaType, siteKey, reCaptchaScriptUrl) => {
     }, [ siteKey, reCaptchaUrl, getRecaptchaObject ]);
 
     const execute = useCallback(() => {
-        if (!widgetReady || typeof widgetIdRef.current !== "number") {
+        if (!widgetReady) {
             return Promise.reject(new Error("ReCAPTCHA not ready"));
         }
 
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             resolveRef.current = resolve;
-            recaptcha.execute(widgetIdRef.current);
+            if (recaptchaType === RECAPTCHA_ENTERPRISE_ID) {
+                window.grecaptcha.enterprise.ready(async () => {
+                    try {
+                        const token = await window.grecaptcha.enterprise.execute(widgetIdRef.current);
+
+                        if (token) {
+                            setToken(token);
+                            if (resolveRef.current) {
+                                resolveRef.current(token);
+                                resolveRef.current = null;
+                            }
+                        }
+                    } catch (error) {
+                        console.error("ReCAPTCHA Enterprise: Failed to execute", error);
+                        reject(error);
+                    }
+                });
+            } else {
+                recaptcha.execute(widgetIdRef.current);
+            }
         });
-    }, [ widgetReady, recaptcha ]);
+    }, [ widgetReady, recaptcha, recaptchaType, siteKey ]);
 
     const reset = useCallback(() => {
-        if (widgetReady && widgetIdRef.current !== null) {
-            recaptcha.reset(widgetIdRef.current);
-            setToken(null);
-            resolveRef.current = null;
+        if (widgetReady) {
+            if (recaptchaType === RECAPTCHA_ENTERPRISE_ID) {
+                setToken(null);
+                resolveRef.current = null;
+            } else if (widgetIdRef.current !== null) {
+                recaptcha.reset(widgetIdRef.current);
+                setToken(null);
+                resolveRef.current = null;
+            }
         }
-    }, [ widgetReady, recaptcha ]);
+    }, [ widgetReady, recaptcha, recaptchaType ]);
 
-    return { containerRef, ready: widgetReady, execute, reset, token, error };
+    return { containerRef, error, execute, ready: widgetReady, reset, token };
 };
 
 export default useReCaptcha;

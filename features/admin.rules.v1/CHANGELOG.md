@@ -1,5 +1,16 @@
 # @wso2is/admin.rules.v1
 
+## 0.6.0
+
+### Minor Changes
+
+- [#8247](https://github.com/wso2/identity-apps/pull/8247) [`6cf542b1d28fd5a1c2d52bf5642328d99c592182`](https://github.com/wso2/identity-apps/commit/6cf542b1d28fd5a1c2d52bf5642328d99c592182) Thanks [@osandamaleesha](https://github.com/osandamaleesha)! - Remove hardcoded rule metadata for pre update profile
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.45.5
+
 ## 0.5.0
 
 ### Minor Changes

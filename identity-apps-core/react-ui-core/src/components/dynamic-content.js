@@ -40,6 +40,7 @@ const DynamicContent = ({ contentData, handleFlowRequest, error }) => {
         if (isCaptchaEnabled && captchaNode && recaptchaRef.current.ready) {
             try {
                 const token = await recaptchaRef.current.execute();
+
                 finalValues = { ...finalValues, captchaResponse: token };
             } catch (e) {
                 console.error("ReCAPTCHA failed", e);

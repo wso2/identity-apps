@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2024, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2016-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -24,6 +24,7 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.constants.SelfRegistrationStatusCodes" %>
@@ -313,6 +314,8 @@
     }
 %>
 
+<% request.setAttribute("pageName", "self-registration-with-verification"); %>
+
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -336,7 +339,7 @@
     %>
     <link rel="stylesheet" href="libs/addons/calendar.min.css"/>
 </head>
-<body class="login-portal layout recovery-layout">
+<body class="login-portal layout recovery-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
@@ -718,8 +721,8 @@
                                                 <%
                                                     }
                                                 %>
-                                            </div>                                            
-                                        </div>    
+                                            </div>
+                                        </div>
                                     <% } else if (StringUtils.equals(claim.getUri(), "http://wso2.org/claims/dob")) { %>
                                         <div class="ui calendar" id="date_picker">
                                             <div class="ui input right icon" style="width: 100%;">
@@ -883,7 +886,7 @@
                                         <%=i18n(recoveryResourceBundle, customText, "sign.up.button")%>
                                     </button>
                                 </div>
-                                <% if (!skipSignUpEnableCheck) { %>
+                                <% if (!skipSignUpEnableCheck && AuthenticationEndpointUtil.isSchemeSafeURL(callback)) { %>
                                     <div class="ui divider hidden"></div>
                                     <div class="buttons mt-2">
                                         <div class="field external-link-container text-small">

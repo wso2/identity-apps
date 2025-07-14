@@ -18,9 +18,14 @@
 
 import { getActionsResourceEndpoints } from "@wso2is/admin.actions.v1/configs/endpoints";
 import { getAdministratorsResourceEndpoints } from "@wso2is/admin.administrators.v1/config/endpoints";
+import { getAgentsResourceEndpoints } from "@wso2is/admin.agents.v1/configs/endpoints";
 import { getAPIResourceEndpoints } from "@wso2is/admin.api-resources.v2/configs/endpoint";
 import { getApplicationTemplatesResourcesEndpoints } from "@wso2is/admin.application-templates.v1/configs/endpoints";
 import { getApplicationsResourceEndpoints } from "@wso2is/admin.applications.v1/configs/endpoints";
+import {
+    getWorkflowAssociationsResourceEndpoints,
+    getWorkflowsResourceEndpoints
+} from "@wso2is/admin.approval-workflows.v1/configs/endpoints";
 import { getBrandingResourceEndpoints } from "@wso2is/admin.branding.v1/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "@wso2is/admin.certificates.v1";
 import { getClaimResourceEndpoints } from "@wso2is/admin.claims.v1/configs/endpoints";
@@ -55,6 +60,7 @@ import { getUsersResourceEndpoints } from "@wso2is/admin.users.v1/configs/endpoi
 import { getUserstoreResourceEndpoints } from "@wso2is/admin.userstores.v1/configs/endpoints";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { getValidationServiceEndpoints } from "@wso2is/admin.validation.v1/configs";
+import { getWebhooksResourceEndpoints } from "@wso2is/admin.webhooks.v1/configs/endpoints";
 import { getApprovalsResourceEndpoints } from "@wso2is/admin.workflow-approvals.v1";
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
 import { AppConstants } from "../constants/app-constants";
@@ -120,7 +126,7 @@ export class Config {
      * @returns server host.
      */
     public static resolveServerHostFromConfig() {
-        if (this.isTenantQualifiedURLsEnabled()) {
+        if (!this.isTenantQualifiedURLsEnabled()) {
             return this.getDeploymentConfig()?.serverOrigin;
         } else {
             return this.getDeploymentConfig()?.serverHost;
@@ -164,6 +170,7 @@ export class Config {
             idpConfigs: window[ "AppUtils" ]?.getConfig()?.idpConfigs,
             loginCallbackUrl: window[ "AppUtils" ]?.getConfig()?.loginCallbackURL,
             organizationPrefix: window["AppUtils"]?.getConfig()?.organizationPrefix,
+            regionSelectionEnabled: window[ "AppUtils" ]?.getConfig()?.regionSelectionEnabled,
             serverHost: window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant,
             serverOrigin: window[ "AppUtils" ]?.getConfig()?.serverOrigin,
             superTenant: window[ "AppUtils" ]?.getConfig()?.superTenant,
@@ -258,7 +265,10 @@ export class Config {
                 I18nConstants.REMOTE_USER_STORES_NAMESPACE,
                 I18nConstants.RULES_NAMESPACE,
                 I18nConstants.PUSH_PROVIDERS_NAMESPACE,
-                I18nConstants.EMAIL_PROVIDERS_NAMESPACE
+                I18nConstants.EMAIL_PROVIDERS_NAMESPACE,
+                I18nConstants.WEBHOOKS_NAMESPACE,
+                I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE,
+                I18nConstants.AGENTS_NAMESPACE
             ],
             preload: []
         };
@@ -322,7 +332,11 @@ export class Config {
             ...getPushProviderResourceEndpoints(this.resolveServerHost()),
             ...getPushProviderTemplateEndpoints(this.resolveServerHost()),
             ...getRemoteLoggingEndpoints(this.resolveServerHost()),
+            ...getWorkflowsResourceEndpoints(this.resolveServerHost()),
+            ...getWorkflowAssociationsResourceEndpoints(this.resolveServerHost()),
             ...getRegistrationFlowBuilderResourceEndpoints(this.resolveServerHost()),
+            ...getWebhooksResourceEndpoints(this.resolveServerHost()),
+            ...getAgentsResourceEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.resolveServerHostFromConfig() }/api/server/v1/cors/origins`,
             asyncStatus: `${ this.resolveServerHost(false, true) }/api/server/v1/async-operations`,
             // TODO: Remove this endpoint and use ID token to get the details
@@ -359,6 +373,8 @@ export class Config {
                 window[ "AppUtils" ]?.getConfig()?.ui?.asyncOperationStatusPollingInterval,
             connectionResourcesUrl: window[ "AppUtils" ]?.getConfig()?.ui?.connectionResourcesUrl,
             cookiePolicyUrl: window[ "AppUtils" ]?.getConfig()?.ui?.cookiePolicyUrl,
+            customContent: window[ "AppUtils" ]?.getConfig()?.ui?.customContent ??
+                UIConstants.DEFAULT_CUSTOM_CONTENT_CONFIGS,
             emailTemplates: {
                 defaultLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultLogoUrl,
                 defaultWhiteLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultWhiteLogoUrl
@@ -377,6 +393,8 @@ export class Config {
             hiddenUserStores: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenUserStores,
             i18nConfigs: window[ "AppUtils" ]?.getConfig()?.ui?.i18nConfigs,
             identityProviderTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.identityProviderTemplates,
+            isAdminDataSeparationNoticeEnabled:
+                window[ "AppUtils" ]?.getConfig()?.ui?.isAdminDataSeparationNoticeEnabled,
             isClaimUniquenessValidationEnabled:
                 window[ "AppUtils" ]?.getConfig()?.ui?.isClaimUniquenessValidationEnabled ?? false,
             isClientSecretHashEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isClientSecretHashEnabled,
@@ -421,6 +439,7 @@ export class Config {
             showStatusLabelForNewAuthzRuntimeFeatures:
                 window[ "AppUtils" ]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures,
             systemAppsIdentifiers: window[ "AppUtils" ]?.getConfig()?.ui?.systemAppsIdentifiers,
+            systemReservedUserStores: window[ "AppUtils" ]?.getConfig()?.ui?.systemReservedUserStores,
             theme: window[ "AppUtils" ]?.getConfig()?.ui?.theme,
             useRoleClaimAsGroupClaim: window[ "AppUtils" ]?.getConfig()?.ui?.useRoleClaimAsGroupClaim,
             userSchemaURI: window[ "AppUtils" ]?.getConfig()?.ui?.customUserSchemaURI
