@@ -22,17 +22,24 @@ import Chip from "@oxygen-ui/react/Chip";
 import Paper from "@oxygen-ui/react/Paper";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronRightIcon } from "@oxygen-ui/react-icons";
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import useNewRegistrationPortalFeatureStatus from
     "@wso2is/admin.registration-flow-builder.v1/api/use-new-registration-portal-feature-status";
+import { AGENT_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import AIText from "@wso2is/common.ai.v1/components/ai-text";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import BackgroundBlob from "./background-blob.png";
 import SignUpBox from "./sign-up-box";
 import { ReactComponent as PreviewFeaturesIcon } from "../../../themes/default/assets/images/icons/flask-icon.svg";
@@ -41,7 +48,15 @@ import "./new-feature-announcement.scss";
 /**
  * Props interface of {@link NewFeatureAnnouncement}
  */
-export interface NewFeatureAnnouncementProps extends IdentifiableComponentInterface {}
+export interface NewFeatureAnnouncementProps extends IdentifiableComponentInterface {
+    id: string;
+    title: ReactElement;
+    description: ReactElement;
+    isEnabled: boolean;
+    isEnabledStatusLoading: boolean;
+    onTryOut: any;
+    illustration: any;
+}
 
 /**
  * Section to display new feature announcements.
@@ -51,16 +66,18 @@ export interface NewFeatureAnnouncementProps extends IdentifiableComponentInterf
  */
 const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = ({
     "data-componentid": componentId = "new-feature-announcement",
+    id,
+    title,
+    description,
+    isEnabled,
+    isEnabledStatusLoading,
+    onTryOut,
+    illustration,
     ...rest
 }: NewFeatureAnnouncementProps): ReactElement => {
     const { t } = useTranslation();
 
-    const { setShowPreviewFeaturesModal } = useFeatureGate();
-
-    const {
-        data: isNewRegistrationPortalEnabled,
-        isLoading: isNewRegistrationPortalEnabledRequestLoading
-    } = useNewRegistrationPortalFeatureStatus();
+    const { setShowPreviewFeaturesModal, setSelectedPreviewFeatureToShow } = useFeatureGate();
 
     return (
         <Paper
@@ -72,15 +89,14 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
             <Box className="new-feature-announcement-content">
                 <Box>
                     <Typography variant="h3">
-                        Design seamless self-registration experiences{ " " }
+                        { title }
                         <Chip
                             label={ t(FeatureStatusLabel.PREVIEW) }
                             className="oxygen-menu-item-chip oxygen-chip-experimental"
                         />
                     </Typography>
                     <Typography variant="body2">
-                        Effortlessly design your user self-registration flows with the{ " " }
-                        new AI-powered visual designer <AIText />
+                        { description }
                     </Typography>
                 </Box>
             </Box>
@@ -90,14 +106,12 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
                     backgroundImage: `url(${BackgroundBlob})`
                 } }
             ></Box>
-            <Box className="login-box">
-                <SignUpBox />
-            </Box>
+            { illustration }
             <Box className="new-feature-announcement-actions">
-                { isNewRegistrationPortalEnabled ? (
+                { isEnabled ? (
                     <Button
                         variant="contained"
-                        onClick={ () => history.push(AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER")) }
+                        onClick={ onTryOut }
                     >
                         <Box display="flex" alignItems="center" gap={ 1 }>
                             Try Out <ChevronRightIcon />
@@ -106,16 +120,144 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
                 ) : (
                     <Button
                         variant="contained"
-                        onClick={ () => setShowPreviewFeaturesModal(true) }
-                        loading={ isNewRegistrationPortalEnabledRequestLoading }
+                        onClick={ () => {
+                            setSelectedPreviewFeatureToShow(id);
+                            setShowPreviewFeaturesModal(true);
+                        } }
+                        loading={ isEnabledStatusLoading }
                     >
                         <Box display="flex" alignItems="center" gap={ 1 }>
-                            <PreviewFeaturesIcon /> Enable and try out
+                            <PreviewFeaturesIcon /> { id !== "agents" ? "Enable and try out" : "Try Out" }
                         </Box>
                     </Button>
                 ) }
             </Box>
         </Paper>
+    );
+};
+
+const AUTO_SLIDE_INTERVAL: number = 5000;
+
+export const FeatureCarousel = () => {
+    const [ currentIndex, setCurrentIndex ] = useState(0);
+    const [ direction, setDirection ] = useState(1);
+
+    const {
+        isLoading: isUserStoresListFetchRequestLoading,
+        userStoresList
+    } = useUserStores();
+
+    const {
+        data: isNewRegistrationPortalEnabled,
+        isLoading: isNewRegistrationPortalEnabledRequestLoading
+    } = useNewRegistrationPortalFeatureStatus();
+
+    const agentFeatureConfig: FeatureAccessConfigInterface =
+        useSelector((state: AppState) => state?.config?.ui?.features?.agents);
+
+    const isAgentManagementFeatureEnabledForOrganization: boolean = useMemo(() => {
+        const agentUserStore: UserStoreListItem =
+            userStoresList?.find((userStore: UserStoreListItem) => userStore?.name === AGENT_USERSTORE);
+
+        if (agentUserStore) {
+            return true;
+        }
+
+        return false;
+    }, [ isUserStoresListFetchRequestLoading, userStoresList ]);
+
+    const features: any = useMemo(() => [
+        agentFeatureConfig?.enabled && {
+            description: "Extend your identity management to autonomous agents and AI systems",
+            id: "agents",
+            isEnabled: isAgentManagementFeatureEnabledForOrganization,
+            isEnabledStatusLoading: false,
+            onTryOut: () => {},
+            title: "Identity for AI Agents "
+        },
+        {
+            description: (
+                <>
+                    Effortlessly design your user self-registration flows with the{ " " }
+                    new AI-powered visual designer <AIText />
+                </>
+            ),
+            id: "self-registration-orchestration",
+            illustration: <Box className="login-box">
+                <SignUpBox />
+            </Box>,
+            isEnabled: isNewRegistrationPortalEnabled,
+            isEnabledStatusLoading: isNewRegistrationPortalEnabledRequestLoading,
+            onTryOut: () => {
+                history.push(AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER"));
+            },
+            title: "Design seamless self-registration experiences "
+        }
+    ].filter(Boolean), [
+        isNewRegistrationPortalEnabled,
+        agentFeatureConfig,
+        isNewRegistrationPortalEnabledRequestLoading
+    ]);
+
+    useEffect(() => {
+        const interval: any = setInterval(() => {
+            setDirection(1);
+            setCurrentIndex((prev: number) => (prev + 1) % features.length);
+        }, AUTO_SLIDE_INTERVAL);
+
+        return () => clearInterval(interval);
+    }, [ features.length ]);
+
+    const variants: any = {
+        center: {
+            opacity: 1,
+            x: 0
+        },
+        enter: (direction: number) => ({
+            opacity: 0.5,
+            x: direction > 0 ? 300 : -300
+        })
+    };
+
+    return (
+        <div
+            style={ {
+                height: "200px",
+                overflow: "hidden",
+                position: "relative",
+                width: "100%"
+            } }
+        >
+            <AnimatePresence custom={ direction } mode="wait">
+                <motion.div
+                    key={ currentIndex }
+                    custom={ direction }
+                    variants={ variants }
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={ {
+                        opacity: { duration: 0.2 },
+                        x: { damping: 30,stiffness: 300, type: "spring" }
+                    } }
+                    style={ {
+                        height: "100%",
+                        position: "absolute",
+                        width: "100%"
+                    } }
+                >
+                    <NewFeatureAnnouncement
+                        id={ features[currentIndex].id }
+                        title={ features[currentIndex]?.title }
+                        description={ features[currentIndex]?.description }
+                        illustration={ features[currentIndex]?.illustration }
+                        isEnabled={ features[currentIndex]?.isEnabled }
+                        isEnabledStatusLoading={ features[currentIndex]?.isEnabledStatusLoading }
+                        onTryOut={ features[currentIndex]?.onTryOut }
+                    />
+                </motion.div>
+            </AnimatePresence>
+        </div>
     );
 };
 

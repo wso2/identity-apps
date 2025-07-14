@@ -112,7 +112,7 @@
       </layout:component>
       <layout:component componentName="MainSection">
           <div class="ui segment left aligned">
-              <div id="react-root" class="react-ui-container"/>
+              <div id="react-root" class="react-ui-container"></div>
           </div>
       </layout:component>
       <layout:component componentName="ProductFooter">
@@ -160,7 +160,7 @@
             }
 
             const { createElement, useEffect, useState } = React;
-            const { DynamicContent, I18nProvider } = ReactUICore;
+            const { DynamicContent, I18nProvider, executeFido2FLow, PasskeyEnrollment } = ReactUICore;
 
             const Content = () => {
                 const baseUrl = "<%= identityServerEndpointContextParam %>";
@@ -265,6 +265,21 @@
                     }
                 }, [ error, flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error ]);
 
+                const handleInternalPrompt = (flowData) => {
+                    let providedInputs = {};
+                    flowData.data.requiredParams.map((param) => {
+                        if (param === "origin") {
+                            providedInputs[param] = window.location.origin;
+                        }
+                    });
+
+                    setPostBody({
+                        flowId: flowData.flowId,
+                        actionId: "",
+                        inputs: providedInputs
+                    });
+                }
+
                 const handleFlowStatus = (flow) => {
                     if (!flow) return false;
 
@@ -290,16 +305,42 @@
 
                 const handleStepType = (flow) => {
                     if (!flow) return false;
-
                     switch (flow.type) {
                         case "REDIRECTION":
                             setLoading(true);
                             window.location.href = flow.data.redirectURL;
+                            break;
+
+                        case "INTERNAL_PROMPT":
+                            handleInternalPrompt(flow);
+                            break;
+
+                        case "WEBAUTHN":
+                            executeFido2FLow(
+                                flow,
+                                setPostBody,
+                                (error) => {
+                                    setFlowError(error);
+                                }
+                            );
+                            break;
 
                         default:
                             console.log(`Flow step type: ${flow.type}. No special action.`);
                     }
                 };
+
+                if (flowData && flowData.type === "WEBAUTHN") {
+                    return createElement(
+                        "div",
+                        { className: "registration-content-container loaded" },
+                        createElement(
+                            PasskeyEnrollment, {
+                                passkeyError: flowError
+                            }
+                        )
+                    );
+                }
 
                 if (loading || (!components || components.length === 0)) {
                     return createElement(

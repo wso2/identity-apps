@@ -1,5 +1,23 @@
 # @wso2is/theme
 
+## 2.8.4
+
+### Patch Changes
+
+- [#8176](https://github.com/wso2/identity-apps/pull/8176) [`7481e3bcf5856beae32e670f04956157747334f6`](https://github.com/wso2/identity-apps/commit/7481e3bcf5856beae32e670f04956157747334f6) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add organization handle to organization creation, display, and list
+
+## 2.8.3
+
+### Patch Changes
+
+- [#8077](https://github.com/wso2/identity-apps/pull/8077) [`4c0d987daf1267aa5cdd2b4b5d1ef2f9f17a53b1`](https://github.com/wso2/identity-apps/commit/4c0d987daf1267aa5cdd2b4b5d1ef2f9f17a53b1) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add assets, i18n and util methods required for AI agent management
+
+## 2.8.2
+
+### Patch Changes
+
+- [#8409](https://github.com/wso2/identity-apps/pull/8409) [`16380763a69b363677a27dff0d71e8bb7f4bd006`](https://github.com/wso2/identity-apps/commit/16380763a69b363677a27dff0d71e8bb7f4bd006) Thanks [@Malith-19](https://github.com/Malith-19)! - Improve the workflow related UIs.
+
 ## 2.8.1
 
 ### Patch Changes

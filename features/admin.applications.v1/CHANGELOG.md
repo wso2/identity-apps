@@ -1,5 +1,36 @@
 # @wso2is/admin.applications.v1
 
+## 2.36.7
+
+### Patch Changes
+
+- [#8511](https://github.com/wso2/identity-apps/pull/8511) [`90acfab75f677280eb39db0fc26d4e8e63024985`](https://github.com/wso2/identity-apps/commit/90acfab75f677280eb39db0fc26d4e8e63024985) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - UI improvements to the agents feature
+
+- Updated dependencies [[`90acfab75f677280eb39db0fc26d4e8e63024985`](https://github.com/wso2/identity-apps/commit/90acfab75f677280eb39db0fc26d4e8e63024985)]:
+  - @wso2is/admin.api-resources.v2@2.26.2
+  - @wso2is/admin.extensions.v1@2.39.7
+  - @wso2is/admin.userstores.v1@2.27.36
+  - @wso2is/admin.claims.v1@2.28.6
+  - @wso2is/admin.roles.v2@2.27.160
+  - @wso2is/admin.core.v1@2.46.7
+  - @wso2is/i18n@2.24.14
+  - @wso2is/admin.feature-gate.v1@1.7.6
+
+## 2.36.6
+
+### Patch Changes
+
+- [#8466](https://github.com/wso2/identity-apps/pull/8466) [`31252dcffe38616bb43dd605174e200f130242e0`](https://github.com/wso2/identity-apps/commit/31252dcffe38616bb43dd605174e200f130242e0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix broken i18n in api authorization section in application edit view
+
+- Updated dependencies [[`8813a54e1329989eec28a10b21678bfdb0e6d11d`](https://github.com/wso2/identity-apps/commit/8813a54e1329989eec28a10b21678bfdb0e6d11d)]:
+  - @wso2is/admin.organizations.v1@2.26.207
+
+## 2.36.5
+
+### Patch Changes
+
+- [#8434](https://github.com/wso2/identity-apps/pull/8434) [`2a00fc63bb8c5df7a52877b4d5f532d54cbae659`](https://github.com/wso2/identity-apps/commit/2a00fc63bb8c5df7a52877b4d5f532d54cbae659) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Remove info in protocol tab for react and nextjst templates
+
 ## 2.36.4
 
 ### Patch Changes

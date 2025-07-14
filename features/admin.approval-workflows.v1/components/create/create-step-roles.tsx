@@ -16,14 +16,11 @@
  * under the License.
  */
 
-import { SelectChangeEvent } from "@mui/material/Select";
 import Autocomplete, {
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
 } from "@oxygen-ui/react/Autocomplete";
 import Grid from "@oxygen-ui/react/Grid";
-import MenuItem from "@oxygen-ui/react/MenuItem";
-import Select from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
 import { getRolesList } from "@wso2is/admin.roles.v2/api";
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
@@ -46,7 +43,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import AutoCompleteRenderOption from "./auto-complete-render-option";
 import RenderChip from "./render-chip";
-import { DropdownPropsInterface, StepEditSectionsInterface } from "../../models/ui";
+import { StepEditSectionsInterface } from "../../models/ui";
 
 type StepRolesPropsInterface = IdentifiableComponentInterface & StepEditSectionsInterface;
 
@@ -69,22 +66,15 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
     const [ roles, setRoles ] = useState<RolesInterface[]>([]);
     const [ allRoles, setAllRoles ] = useState<RolesInterface[]>([]);
     const [ activeOption, setActiveOption ] = useState<RolesInterface>(undefined);
-    const [ selectedRoleType, setSelectedRoleType ] = useState<string>("Organization");
-    const [ selectedRolesFromRoleType, setSelectedRolesFromRoleType ] = useState<RolesInterface[]>([]);
     const [ isRoleSearchLoading, setRoleSearchLoading ] = useState<boolean>(false);
-    const [ selectedAllRoles, setSelectedAllRoles ] = useState<Record<string, RolesInterface[]>>({});
     const [ selectedRoles, setSelectedRoles ] = useState<RolesInterface[]>([]);
     const [ validationError, setValidationError ] = useState<boolean>(false);
 
     const filterQuery: string = (() => {
-        if (selectedRoleType && roleSearchValue) {
-            return `audience.type eq "${selectedRoleType}" and displayName co "${roleSearchValue}"`;
-        } else if (selectedRoleType) {
-            return `audience.type eq "${selectedRoleType}"`;
-        } else if (roleSearchValue) {
+        if (roleSearchValue) {
             return `displayName co "${roleSearchValue}"`;
         } else {
-            return "";
+            return null;
         }
     })();
 
@@ -94,22 +84,6 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
         error: rolesListError,
         mutate: mutateRolesList
     } = useGetRolesList(null, null, filterQuery, "users,groups,permissions,associatedApplications");
-
-    /**
-     * Filter options for the roles list.
-     */
-    const filterOptions: DropdownPropsInterface[] = [
-        {
-            key: RoleConstants.ROLE_AUDIENCE_APPLICATION_FILTER,
-            text: "Application",
-            value: "Application"
-        },
-        {
-            key: RoleConstants.ROLE_AUDIENCE_ORGANIZATION_FILTER,
-            text: "Organization",
-            value: "Organization"
-        }
-    ];
 
     /**
      * Filters and sets available roles whenever the roles list updates.
@@ -128,18 +102,6 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
         }
 
     }, [ rolesList ]);
-
-    /**
-     * Updates the selected roles mapped to the current role type.
-     */
-    const updateSelectedAllRoles = () => {
-        if (Array.isArray(selectedRolesFromRoleType)) {
-            const tempSelectedRoles: Record<string, RolesInterface[]> = selectedAllRoles;
-
-            tempSelectedRoles[selectedRoleType] = selectedRolesFromRoleType;
-            setSelectedAllRoles(tempSelectedRoles);
-        }
-    };
 
     /**
      * Handles the search query for the users list.
@@ -235,51 +197,17 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
                     { !activeRoleType && (
                         <>
                             <Grid
-                                md={ 1.5 }
+                                md={ 2 }
                                 data-componentid={ `${testId}-field-role-type-label` }
                             >
                                 <label>{ t("approvalWorkflows:forms.configurations.template.roles.label") }</label>
-                            </Grid>
-                            <Grid
-                                xs={ 12 }
-                                sm={ 4 }
-                                md={ 3.5 }
-                                alignItems="center"
-                                data-componentid={ `${testId}-field-role-type-select-container` }
-                            >
-                                <Select
-                                    data-componentid={ `${testId}-dropdown-role-type` }
-                                    value={ selectedRoleType }
-                                    disabled={ isReadOnly }
-                                    onChange={ (e: SelectChangeEvent<unknown>) => {
-                                        updateSelectedAllRoles();
-                                        setSelectedRolesFromRoleType([]);
-                                        setSelectedRoleType(e.target.value as string);
-                                    } }
-                                    fullWidth
-                                    sx={ { height: 38 } }
-                                >
-                                    { isRolesListLoading ? (
-                                        <p>{ t("common:loading") }</p>
-                                    ) : (
-                                        filterOptions?.map((roleType: DropdownPropsInterface) => (
-                                            <MenuItem
-                                                key={ roleType.key }
-                                                value={ roleType.value }
-                                                data-componentid={ `${testId}-dropdown-role-option-${roleType.key}` }
-                                            >
-                                                { roleType.text }
-                                            </MenuItem>
-                                        ))
-                                    ) }
-                                </Select>
                             </Grid>
                         </>
                     ) }
                     <Grid
                         xs={ 12 }
-                        sm={ 6.5 }
-                        md={ 7 }
+                        sm={ 8 }
+                        md={ 10 }
                         data-componentid={ `${testId}-field-role-autocomplete-container` }
                     >
                         <Autocomplete
@@ -300,7 +228,6 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
                                 />
                             ) }
                             onChange={ (event: SyntheticEvent, roles: RolesInterface[]) => {
-                                setSelectedRolesFromRoleType(roles);
                                 setSelectedRoles((prevRoles: RolesInterface[]) => {
                                     const updatedRoles: RolesInterface[] = [ ...prevRoles ];
 

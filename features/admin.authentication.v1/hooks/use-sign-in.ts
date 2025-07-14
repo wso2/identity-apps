@@ -339,6 +339,7 @@ const useSignIn = (): UseSignInInterface => {
                     id: orgId,
                     lastModified: new Date().toString(),
                     name: orgName,
+                    orgHandle: orgHandle,
                     parent: {
                         id: "",
                         ref: ""

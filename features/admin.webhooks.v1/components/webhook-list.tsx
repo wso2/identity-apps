@@ -184,7 +184,7 @@ const WebhookList: FunctionComponent<WebhookListPropsInterface> = ({
                 key: "status",
                 render: (webhook: WebhookListItemInterface): ReactNode => {
                     const isActive: boolean =
-                        webhook.status === WebhookStatus.ACTIVE || webhook.status === WebhookStatus.PENDING_ACTIVATION;
+                        webhook.status === WebhookStatus.ACTIVE || webhook.status === WebhookStatus.PARTIALLY_ACTIVE;
                     const labelColor: SemanticCOLORS = isActive ? "green" : "grey";
                     const labelText: string = isActive
                         ? t("webhooks:common.status.active")
@@ -238,7 +238,7 @@ const WebhookList: FunctionComponent<WebhookListPropsInterface> = ({
                 return true;
             }
 
-            return webhook?.status === WebhookStatus.INACTIVE || webhook?.status === WebhookStatus.PENDING_DEACTIVATION;
+            return webhook?.status === WebhookStatus.INACTIVE || webhook?.status === WebhookStatus.PARTIALLY_INACTIVE;
         };
 
         if (hasWebhookDeletePermissions) {

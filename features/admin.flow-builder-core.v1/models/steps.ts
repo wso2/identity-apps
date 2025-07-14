@@ -60,9 +60,11 @@ export enum StepTypes {
 
 export enum StaticStepTypes {
     UserOnboard = "USER_ONBOARD",
+    End = "End",
     Start = "START",
 }
 
 export enum RedirectionTypes {
-    GoogleFederation = "GoogleSignupExecutor"
+    GoogleFederation = "GoogleExecutor",
+    PasskeyEnrollment = "FIDO2Executor"
 }
