@@ -459,7 +459,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                     // Build the fullPath ex: "urn:scim:wso2:schema.country".
                     const fullPath: string = `${revertedFieldName}.${path}`;
                     // Grab the value at that path from the form values.
-                    const leafValue: unknown = get(values, fullPath);
+                    const leafValue: unknown = get(values, fullPath, "");
                     // Build { fieldName: { …nested… } }, e.g. { urn:…: { country: "Argentina" } }
                     const opValue: Record<string, any> = {};
 
