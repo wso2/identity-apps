@@ -261,7 +261,6 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
                         isUpdating={ isUpdating }
                         isReadOnly={ isReadOnly }
                         isRequired={ isRequired }
-                        validator={ genericValidator }
                         data-componentid={ fieldComponentId }
                         isMultiSelect
                     />
@@ -357,7 +356,6 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
                     isUpdating={ isUpdating }
                     isReadOnly={ isReadOnly }
                     isRequired={ isRequired }
-                    validator={ genericValidator }
                     data-componentid={ fieldComponentId }
                 />
             );

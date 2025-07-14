@@ -21,13 +21,13 @@ import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { IdentifiableComponentInterface, ProfileSchemaInterface } from "@wso2is/core/models";
 import { FinalFormField, SelectFieldAdapter } from "@wso2is/form/src";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { LocaleJoiningSymbol, UserManagementConstants } from "../../../constants/user-management-constants";
+import { LocaleFieldPropsInterface } from "../../../models/ui";
 import { normalizeLocaleFormat } from "../../../utils/user-management-utils";
 
 /**
@@ -40,20 +40,6 @@ interface LocaleListItemInterface {
     value: string;
     "data-componentId": string;
 };
-
-/**
- * Interface for the locale field props.
- */
-interface LocaleFieldPropsInterface extends IdentifiableComponentInterface {
-    schema: ProfileSchemaInterface;
-    fieldName: string;
-    fieldLabel: string;
-    initialValue: string;
-    isUpdating: boolean;
-    isReadOnly: boolean;
-    isRequired: boolean;
-    validator?: (value: string) => string | undefined;
-}
 
 /**
  * User profile locale field component.

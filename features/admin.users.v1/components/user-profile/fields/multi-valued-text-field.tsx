@@ -28,7 +28,6 @@ import TableRow from "@oxygen-ui/react/TableRow";
 import TextField from "@oxygen-ui/react/TextField";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import { PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
-import { IdentifiableComponentInterface, ProfileSchemaInterface } from "@wso2is/core/models";
 import { FinalFormField, FormApi } from "@wso2is/form/src";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
@@ -45,22 +44,13 @@ import React, {
 } from "react";
 import { useField, useForm } from "react-final-form";
 import { useTranslation } from "react-i18next";
+import { MultiValuedTextFieldPropsInterface } from "../../../models/ui";
 
 import "./multi-valued-field.scss";
 
-
-interface MultiValuedTextFieldPropsInterface extends IdentifiableComponentInterface {
-    schema: ProfileSchemaInterface;
-    fieldName: string;
-    initialValue: string[];
-    isUpdating: boolean;
-    isReadOnly: boolean;
-    isRequired: boolean;
-    fieldLabel: string;
-    maxValueLimit: number;
-    type?: string;
-}
-
+/**
+ * User profile multi-valued text field component.
+ */
 const MultiValuedTextField: FunctionComponent<MultiValuedTextFieldPropsInterface> = ({
     schema,
     fieldName,

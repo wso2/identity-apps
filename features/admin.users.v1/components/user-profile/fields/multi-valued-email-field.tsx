@@ -63,6 +63,9 @@ import { PatchUserOperationValue } from "../../../models/user";
 
 import "./multi-valued-field.scss";
 
+/**
+ * Interface for the sorted email address.
+ */
 interface SortedEmailAddress {
     value: string;
     isPrimary: boolean;
@@ -70,6 +73,9 @@ interface SortedEmailAddress {
     isVerificationPending?: boolean;
 }
 
+/**
+ * User profile multi-valued email field component props interface.
+ */
 interface MultiValuedEmailFieldPropsInterface extends IdentifiableComponentInterface {
     userId: string;
     schema: ProfileSchemaInterface;
@@ -87,6 +93,9 @@ interface MultiValuedEmailFieldPropsInterface extends IdentifiableComponentInter
     onUserUpdated: (userId: string) => void;
 }
 
+/**
+ * User profile multi-valued email field component.
+ */
 const MultiValuedEmailField: FunctionComponent<MultiValuedEmailFieldPropsInterface> = ({
     userId,
     schema,

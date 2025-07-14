@@ -16,26 +16,10 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalFormField, TextFieldAdapter } from "@wso2is/form/src";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-
-/**
- * Text form field component props.
- */
-interface TextFormFieldPropsInterface extends IdentifiableComponentInterface {
-    fieldName: string;
-    fieldLabel: string;
-    initialValue: string;
-    isUpdating: boolean;
-    isReadOnly: boolean;
-    isRequired: boolean;
-    maxLength: number;
-    validator?: (value: string) => string | undefined;
-    placeholder?: string;
-    type?: string;
-}
+import { TextFormFieldPropsInterface } from "../../../models/ui";
 
 /**
  * User profile text field component.

@@ -55,6 +55,9 @@ import { Icon } from "semantic-ui-react";
 
 import "./multi-valued-field.scss";
 
+/**
+ * Sorted mobile number interface.
+ */
 interface SortedMobileNumber {
     value: string;
     isPrimary: boolean;
@@ -62,6 +65,9 @@ interface SortedMobileNumber {
     isVerificationPending?: boolean;
 }
 
+/**
+ * User profile multi-valued mobile field component props interface.
+ */
 interface MultiValuedMobileFieldPropsInterface extends IdentifiableComponentInterface {
     schema: ProfileSchemaInterface;
     primarySchema: ProfileSchemaInterface;
@@ -76,6 +82,9 @@ interface MultiValuedMobileFieldPropsInterface extends IdentifiableComponentInte
     maxValueLimit: number;
 }
 
+/**
+ * User profile multi-valued mobile field component.
+ */
 const MultiValuedMobileField: FunctionComponent<MultiValuedMobileFieldPropsInterface> = ({
     schema,
     primarySchema: primarySchema,

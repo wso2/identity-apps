@@ -16,22 +16,16 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface, LabelValue, ProfileSchemaInterface } from "@wso2is/core/models";
+import { LabelValue } from "@wso2is/core/models";
 import { CheckboxGroupFieldAdapter, FinalFormField } from "@wso2is/form/src";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
+import { CheckBoxGroupFormFieldPropsInterface } from "../../../models/ui";
 
-interface CheckBoxGroupFormFieldPropsInterface extends IdentifiableComponentInterface {
-    schema: ProfileSchemaInterface;
-    fieldName: string;
-    fieldLabel: string;
-    initialValue: string[];
-    isUpdating: boolean;
-    isReadOnly: boolean;
-    isRequired: boolean;
-}
-
+/**
+ * User profile checkbox group form field component.
+ */
 const CheckBoxGroupFormField: FunctionComponent<CheckBoxGroupFormFieldPropsInterface> = (
     {
         schema,

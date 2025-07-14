@@ -16,25 +16,12 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface, LabelValue, ProfileSchemaInterface } from "@wso2is/core/models";
+import { LabelValue } from "@wso2is/core/models";
 import { FinalFormField, SelectFieldAdapter } from "@wso2is/form/src";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-
-/**
- * Dropdown form field component props.
- */
-interface DropdownFormFieldPropsInterface extends IdentifiableComponentInterface {
-    schema: ProfileSchemaInterface;
-    fieldName: string;
-    fieldLabel: string;
-    initialValue: string | string[];
-    isUpdating: boolean;
-    isReadOnly: boolean;
-    isRequired: boolean;
-    isMultiSelect?: boolean;
-    validator?: (value: string) => string | undefined;
-}
+import { DropdownFormFieldPropsInterface } from "../../../models/ui";
 
 /**
  * User profile dropdown field component.
@@ -48,7 +35,6 @@ const DropdownFormField: FunctionComponent<DropdownFormFieldPropsInterface> = (
         isUpdating,
         isReadOnly,
         isRequired,
-        validator,
         isMultiSelect = false,
         ["data-componentid"]: componentId = "dropdown-form-field"
     }: DropdownFormFieldPropsInterface
@@ -56,6 +42,17 @@ const DropdownFormField: FunctionComponent<DropdownFormFieldPropsInterface> = (
     const { t } = useTranslation();
 
     const dropdownOptions: LabelValue[] = schema.canonicalValues ?? [];
+
+    const validateField = (value: string | string[]): string | undefined => {
+        // Validate the required field.
+        if (isEmpty(value) && isRequired) {
+            return (
+                t("user:profile.forms.generic.inputs.validations.empty", { fieldName: fieldLabel })
+            );
+        }
+
+        return undefined;
+    };
 
     return (
         <FinalFormField
@@ -66,7 +63,7 @@ const DropdownFormField: FunctionComponent<DropdownFormFieldPropsInterface> = (
             ariaLabel={ fieldLabel }
             name={ fieldName }
             label={ fieldLabel }
-            validate={ validator ?? undefined }
+            validate={ validateField }
             placeholder={ t("user:profile.forms.generic.inputs.dropdownPlaceholder", { fieldName: fieldLabel }) }
             options={ dropdownOptions?.map(({ label, value }: LabelValue) => {
                 return {

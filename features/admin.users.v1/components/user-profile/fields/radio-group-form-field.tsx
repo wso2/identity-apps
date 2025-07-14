@@ -16,21 +16,14 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface, LabelValue, ProfileSchemaInterface } from "@wso2is/core/models";
+import { LabelValue } from "@wso2is/core/models";
 import { FinalFormField, RadioGroupFieldAdapter } from "@wso2is/form/src";
 import React, { FunctionComponent, ReactElement } from "react";
+import { RadioGroupFormFieldPropsInterface } from "../../../models/ui";
 
-interface RadioGroupFormFieldPropsInterface extends IdentifiableComponentInterface {
-    schema: ProfileSchemaInterface;
-    fieldName: string;
-    fieldLabel: string;
-    initialValue: string;
-    isUpdating: boolean;
-    isReadOnly: boolean;
-    isRequired: boolean;
-    validator?: (value: string) => string | undefined;
-}
-
+/**
+ * User profile radio group form field component.
+ */
 const RadioGroupFormField: FunctionComponent<RadioGroupFormFieldPropsInterface> = (
     {
         schema,

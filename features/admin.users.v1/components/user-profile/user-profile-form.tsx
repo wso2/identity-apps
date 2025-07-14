@@ -58,15 +58,40 @@ import {
     isMultipleEmailsAndMobileNumbersEnabledForUserStore
 } from "../../utils/user-management-utils";
 
+/**
+ * Props interface for the user profile form component.
+ */
 interface UserProfileFormPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Profile data.
+     */
     profileData: ProfileInfoInterface;
+    /**
+     * Calculated duplicate claims.
+     */
     duplicateClaims: ExternalClaim[];
+    /**
+     * Whether the whole form is in read-only mode.
+     */
     isReadOnlyMode: boolean;
+    /**
+     * Account config settings.
+     * Contains whether the email/mobile number verification is enabled or not.
+     */
     accountConfigSettings: AccountConfigSettingsInterface;
+    /**
+     * Whether the user is managed by a parent organization.
+     */
     isUserManagedByParentOrg: boolean;
+    /**
+     * Callback to be fired when the user is updated.
+     */
     onUserUpdated: (userId: string) => void;
 }
 
+/**
+ * Schema names to be hidden.
+ */
 const HIDDEN_SCHEMA_NAMES: string[] = [
     ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT"),
     ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ACTIVE"),
@@ -79,6 +104,9 @@ const HIDDEN_SCHEMA_NAMES: string[] = [
     ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS")
 ];
 
+/**
+ * User profile form component.
+ */
 const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
     profileData,
     duplicateClaims,
@@ -256,6 +284,44 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
         return initialValues;
     };
 
+    /**
+     * Memoizes and flattens the initial profile data to a flat object to be used in the form.
+     * @example
+     * ```ts
+     * // Suppose:
+     * prepareInitialValues() returns:
+     * {
+     *   id: "abcd-1234",
+     *   userName: "jdoe",
+     *   emails: ["jdoe@example.com", { type: "work", value: "jdoe.work@example" }],
+     *   phoneNumbers: [{ type: "mobile", value: "+9876543210" }, { type: "work", value: "+9876543210" }],
+     *   addresses: [
+     *     { type: "home", formatted: "123 Main St" },
+     *     { type: "work", formatted: "456 Elm Rd" }
+     *   ],
+     *   "urn:enterprise:User": { department: "Engineering" },
+     *   "urn:system:User": {
+     *     "country": "Sri Lanka",
+     *     "complex": { "nested": "value" }
+     *   }
+     * }
+     *
+     * // Then `flattenedProfileSchema` will be:
+     * {
+     *   id: "abcd-1234",
+     *   userName: "jdoe",
+     *   emails: "jdoe@example.com",
+     *   "emails.work": "jdoe.work@example",
+     *   "phoneNumbers.mobile": "+9876543210",
+     *   "phoneNumbers.work": "+9876543210",
+     *   "urn:enterprise:User": { department: "Engineering" },
+     *   "urn:system:User": {
+     *     "country": "Sri Lanka",
+     *     "complex.nested": "value"
+     *   }
+     * }
+     * ```
+     */
     const flattenedInitialValues: Record<string, unknown> = useMemo(() => {
         const preparedInitialValues: Record<string, unknown> = prepareInitialValues();
         const _flattenedInitialValues: Record<string, unknown> = {};
@@ -373,14 +439,28 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
         return flattenedInitialValues[schema.name];
     };
 
-    const handleSubmit = (values: Record<string, unknown>, formApi: FormApi): void => {
+    /**
+     * Handles form submission. Submits only the dirty fields.
+     *
+     * @param values - Form values.
+     * @param formObj - React Final Form API object.
+     */
+    const handleSubmit = (values: Record<string, unknown>, formObj: FormApi): void => {
         setIsUpdating(true);
 
         const data: PatchOperationRequest<PatchUserOperationValue> = {
             Operations: [],
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
-        const dirtyFields: Record<string, boolean> = formApi.getState().dirtyFields;
+        const dirtyFields: Record<string, boolean> = formObj.getState().dirtyFields;
+
+        /**
+         * Expand the flat dirtyFields object to a nested dirtyFields object.
+         * Ex: `{ "name.givenName": true } => { "name": { "givenName": true } }`
+         *
+         * @param flat - Flat object to expand.
+         * @returns A nested object.
+         */
         const unFlattenDirtyFields = (flat: Record<string, boolean>): Record<string, unknown> => {
             return transform(
                 flat,
@@ -400,6 +480,10 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                 fieldName === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")) {
                 const patchValue: unknown[] = [];
 
+                // For emails - Primary email is submitted as a string:
+                //   [ "8Q5YH@example.com", { type: "work", value: "8Q5YH@example.com" }].
+                // Phone numbers are submitted as an array of phone number objects:
+                //   [ { type: "mobile", value: "1234567890" }, { type: "work", value: "1234567890" }].
                 for (const [ type, value ] of Object.entries(
                     values[fieldName] as Record<string, string>)) {
                     if (type === "primary") {
@@ -421,6 +505,9 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
             } else if (fieldName === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ADDRESSES")) {
                 const patchValue: unknown[] = [];
 
+                // Addresses should be submitted as an array of address objects,
+                // [{ type: "home", formatted: "123 Main St" }, { type: "work", formatted: "456 Business St" }].
+                // "formatted" property is added from UI.
                 for (const [ type, value ] of Object.entries(
                     values[fieldName] as Record<string, string>)) {
                     patchValue.push({
@@ -440,10 +527,14 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                 let revertedFieldName: string = fieldName;
 
                 if (isExtendedSchema) {
-                    // Replace back the __DOT_ with dots.
+                    // Replace back the __DOT__ with dots.
                     revertedFieldName = fieldName.replace(/__DOT__/g, ".");
                 }
 
+                /**
+                 * Following logics map the values from the form with the dirty fields and
+                 * build the patch operations.
+                 */
                 // Convert the nested dirtyTree into a flat list of leaf-paths.
                 const attributePaths: string[] = Object.entries(dirtyTree)
                     .flatMap(([ key, value ]: [string, unknown]) =>
@@ -499,7 +590,6 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
             .finally(() => {
                 setIsUpdating(false);
             });
-
     };
 
     const isAttributeDisplayable = (schema: ProfileSchemaInterface): boolean => {

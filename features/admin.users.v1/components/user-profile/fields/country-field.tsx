@@ -20,12 +20,12 @@ import CountryFlag from "@oxygen-ui/react/CountryFlag";
 import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
 import ListItemText from "@oxygen-ui/react/ListItemText";
-import { IdentifiableComponentInterface, ProfileSchemaInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import { FinalFormField, SelectFieldAdapter } from "@wso2is/form/src";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { CountryFieldPropsInterface } from "../../../models/ui";
 
 /**
  * Country list item interface.
@@ -36,20 +36,6 @@ interface CountryListItemInterface {
     text: string;
     value: string;
 };
-
-/**
- * Country field props interface.
- */
-interface CountryFieldPropsInterface extends IdentifiableComponentInterface {
-    schema: ProfileSchemaInterface;
-    fieldName: string;
-    fieldLabel: string;
-    initialValue: string;
-    isUpdating: boolean;
-    isReadOnly: boolean;
-    isRequired: boolean;
-    validator?: (value: string) => string | undefined;
-}
 
 /**
  * User profile country field.
