@@ -449,7 +449,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                 <Divider/>
                                 <Box className="user-dropdown-version">
                                     <Typography variant="body3">
-                                        { `${productName} ${productVersion || "N/A"}` }
+                                        { `${productName} ${productVersion}` }
                                     </Typography>
                                 </Box>
                             </>) }
