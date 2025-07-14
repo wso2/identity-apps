@@ -19,7 +19,7 @@
 import { Typography } from "@mui/material";
 import { ReadOnlyRoleList } from "@wso2is/admin.roles.v2/components/readonly-role-list";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { EmphasizedSegment, Message } from "@wso2is/react-components";
+import { EmphasizedSegment } from "@wso2is/react-components";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import "./agent-roles.scss";
@@ -47,11 +47,6 @@ export default function AgentRoles({ agentId }: AgentRolesViewProps) {
             <Typography variant="body1" className="mb-5" style={ { color: "#9c9c9c" } }>
                 { t("agents:edit.roles.subtitle") }
             </Typography>
-            <Message
-                type="info"
-                content={ t("user:updateUser.roles.editRoles.infoMessage") }
-                className="agent-role-message"
-            />
             <ReadOnlyRoleList
                 totalRoleList={ agentInfo?.roles }
                 emptyRolesListPlaceholder={ null }

@@ -23,12 +23,12 @@ import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
-    AnimatedAvatar, AppAvatar, DataTable, EmptyPlaceholder, TableActionsInterface, TableColumnInterface
+    AnimatedAvatar, AppAvatar, DataTable, EmptyPlaceholder, PrimaryButton, TableActionsInterface, TableColumnInterface
 } from "@wso2is/react-components";
 import React, { ReactElement, ReactNode, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Header, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import { deleteAgent } from "../api/agents";
 
 interface AgentListProps extends IdentifiableComponentInterface {
@@ -36,6 +36,7 @@ interface AgentListProps extends IdentifiableComponentInterface {
     isLoading: boolean;
     mutateAgentList: any;
     list: any[];
+    setShowAgentAddWizard: () => void;
 }
 
 interface AgentListItemInterface {
@@ -48,6 +49,7 @@ export default function AgentList ({
     isLoading,
     list,
     mutateAgentList,
+    setShowAgentAddWizard,
     [ "data-componentid" ]: componentId
 }: AgentListProps) {
     const dispatch: any = useDispatch();
@@ -158,11 +160,19 @@ export default function AgentList ({
             return (
                 <EmptyPlaceholder
                     className="list-placeholder mr-0"
-                    action={ null }
+                    action={
+                        (<PrimaryButton
+                            data-testid={ `${ componentId }-empty-placeholder-add-agent-button` }
+                            onClick={ () => setShowAgentAddWizard() }
+                        >
+                            <Icon name="add" />
+                             New Agent
+                        </PrimaryButton>)
+                    }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     subtitle={ [
-                        "No agents"
+                        "There are no agents available at the moment"
                     ] }
                     data-testid={ `${ componentId }-empty-placeholder` }
                 />
