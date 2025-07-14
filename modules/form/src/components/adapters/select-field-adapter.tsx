@@ -18,9 +18,12 @@
 
 import FormControl, { FormControlProps } from "@oxygen-ui/react/FormControl";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
+import IconButton from "@oxygen-ui/react/IconButton";
+import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import InputLabel from "@oxygen-ui/react/InputLabel";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectProps } from "@oxygen-ui/react/Select";
+import { XMarkIcon } from "@oxygen-ui/react-icons";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 import { FieldRenderProps } from "react-final-form";
@@ -56,6 +59,11 @@ export interface SelectFieldAdapterPropsInterface
      * Form control props.
      */
     FormControlProps?: FormControlProps;
+    /**
+     * Whether to show the clear button.
+     * Defaults to false.
+     */
+    isClearable?: boolean;
 }
 
 /**
@@ -78,10 +86,23 @@ const SelectFieldAdapter: FunctionComponent<SelectFieldAdapterPropsInterface> = 
         helperText,
         required,
         options,
+        isClearable = false,
         ...rest
     } = props;
 
     const isError: boolean = (meta.error || meta.submitError) && meta.touched;
+
+    /**
+     * Clears the input value.
+     */
+    const onValueClear = () => {
+        input.onChange(input.multiple ? [] : "");
+    };
+
+    // Prepare the field value when the input value is empty.
+    const fieldValue: string | string[] = isEmpty(input.value) ? (input.multiple ? [] : "") : input.value;
+    // Clear button should be hidden when the field value is empty.
+    const showClearButton: boolean = isClearable && !isEmpty(fieldValue);
 
     return (
         <div>
@@ -99,7 +120,17 @@ const SelectFieldAdapter: FunctionComponent<SelectFieldAdapterPropsInterface> = 
                 </InputLabel>
                 <Select
                     { ...input }
+                    value={ fieldValue }
                     margin="dense"
+                    endAdornment={ showClearButton && (
+                        <InputAdornment sx={ { marginRight: "10px" } } position="end">
+                            <IconButton
+                                onClick={ () => onValueClear() }
+                            >
+                                <XMarkIcon></XMarkIcon>
+                            </IconButton>
+                        </InputAdornment>
+                    ) }
                     { ...rest as SelectProps }
                 >
                     { options?.map((option: DropDownItemInterface) => (
