@@ -33,7 +33,7 @@
    String sessionDataKey = request.getParameter(Constants.SESSION_DATA_KEY);
    boolean isSelfRegistration = Boolean.parseBoolean(request.getParameter("isSelfRegistration"));
 
-   String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
+   String errorMessage = i18n(resourceBundle, customText, "error.retry");
    String authenticationFailed = "false";
 
    // Log the actual error for localized error fallbacks
@@ -44,19 +44,20 @@
        if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
            errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
            if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
-               errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
+               errorMessage = i18n(resourceBundle, customText, "error.retry");
             } else if (isSelfRegistration && (errorMessage.equalsIgnoreCase("Can't identify organization")
                || errorMessage.equalsIgnoreCase("Organization is not associated with this application."))) {
-               errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "invalid.organization.discovery.input.self.registration");
+               errorMessage = i18n(resourceBundle, customText, "invalid.organization.discovery.input.self.registration");
             } else if (errorMessage.equalsIgnoreCase("Can't identify organization")) {
-               errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "invalid.organization.discovery.input");
+               errorMessage = i18n(resourceBundle, customText, "invalid.organization.discovery.input");
             } else if (errorMessage.equalsIgnoreCase("invalid.organization.discovery.type")) {
-               errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "invalid.organization.discovery.type");
+               errorMessage = i18n(resourceBundle, customText, "invalid.organization.discovery.type");
             } else if (isErrorFallbackLocale) {
-                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
+                errorMessage = i18n(resourceBundle, customText,"error.retry");
             }
        }
    }
+   String defaultDiscoveryParam = Encode.forHtmlAttribute(request.getParameter("defaultParam"));
 %>
 
 <% request.setAttribute("pageName", "org-discovery"); %>
@@ -100,12 +101,11 @@
                <%
                   if (isSelfRegistration) {
                %>
-               <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue.with")%> <%= AuthenticationEndpointUtil.i18n(resourceBundle, "organization.email") %></h2>
+               <h2><%=i18n(resourceBundle, customText, "continue.with")%> <%= i18n(resourceBundle, customText, "organization.email") %></h2>
                <%
                   } else {
                %>
-               <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%= StringUtils.isNotBlank(idp) ? Encode.forHtmlContent(idp) : AuthenticationEndpointUtil.i18n(resourceBundle, "organization.login") %></h2>
-
+               <h2><%=i18n(resourceBundle, customText, "sign.in.with")%> <%= StringUtils.isNotBlank(idp) ? Encode.forHtmlContent(idp) : i18n(resourceBundle, customText, "organization.login") %></h2>
                <%
                   }
                %>
@@ -121,14 +121,14 @@
                <div id="alertDiv"></div>
                <form class="ui large form" id="org_form" name="org_form" action="<%=commonauthURL%>" method="POST">
                   <div class="field m-0 text-left required">
-                     <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "organization.email")%></label>
+                     <label><%=i18n(resourceBundle, customText, "organization.email")%></label>
                   </div>
                   <input type="text" id='login_hint' name="login_hint" size='30'/>
 
                   <div class="mt-1" id="discoveryInputError" style="display: none;">
                      <i class="red exclamation circle fitted icon"></i>
                      <span class="validation-error-message" id="discoveryInputErrorText">
-                           <%=AuthenticationEndpointUtil.i18n(resourceBundle, "discovery.input.cannot.be.empty")%>
+                           <%=i18n(resourceBundle, customText, "discovery.input.cannot.be.empty")%>
                      </span>
                   </div>
                   <input id="prompt" name="prompt" type="hidden" value="orgName">
@@ -137,26 +137,40 @@
                   <input id="sessionDataKey" name="sessionDataKey" type="hidden" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
                   <div class="ui divider hidden"></div>
                   <input type="submit" id="submitButton" onclick="submitDiscovery(); return false;"
-                     value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "submit")%>"
+                     value="<%=i18n(resourceBundle, customText, "submit")%>"
                      class="ui primary large fluid button" />
                   <div class="mt-1 align-center">
                      <a href="javascript:navigateBackToLoginPage()" class="ui button secondary large fluid">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "cancel")%>
+                        <%=i18n(resourceBundle, customText, "cancel")%>
                      </a>
                   </div>
                   <%
                   if (!isSelfRegistration) {
                   %>
-                  <div class="ui horizontal divider">
-                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%>
-                  </div>
-                  <div class="social-login blurring social-dimmer">
-                     <input type="submit" id="orgNameButton" onclick="enterOrgName();" class="ui primary basic button link-button"
-                           value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.organization.name")%>">
-                  </div>
-                  <%
+                     <div class="ui horizontal divider">
+                        <%=i18n(resourceBundle, customText, "or")%>
+                     </div>
+                     <%
+                     if ("orgHandle".equals(defaultDiscoveryParam)) {
+                     %>
+                        <div class="social-login blurring social-dimmer">
+                           <input type="submit" id="orgHandleButton" onclick="enterOrgHandle();" 
+                                  class="ui primary basic button link-button"
+                                  value="<%=i18n(resourceBundle, customText, "provide.organization.handle")%>"
+                        </div>
+                     <%
+                     } else {
+                     %>
+                        <div class="social-login blurring social-dimmer">
+                           <input type="submit" id="orgNameButton" onclick="enterOrgName();" 
+                                  class="ui primary basic button link-button"
+                                  value="<%=i18n(resourceBundle, customText, "provide.organization.name")%>"
+                        </div>
+                     <%
+                     }
                   }
                   %>
+               </form>
                </form>
             </div>
          </layout:component>
@@ -192,6 +206,12 @@
 
       <script type="text/javascript">
          function enterOrgName() {
+            document.getElementById("login_hint").disabled = true;
+            document.getElementById("org_form").submit();
+         }
+
+         function enterOrgHandle() {
+            document.getElementById("prompt").value = "orgHandle";
             document.getElementById("login_hint").disabled = true;
             document.getElementById("org_form").submit();
          }
