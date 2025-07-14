@@ -39,6 +39,7 @@ import React, {
     KeyboardEvent,
     MutableRefObject,
     ReactElement,
+    MouseEvent as ReactMouseEvent,
     useCallback,
     useEffect,
     useRef,
@@ -83,6 +84,7 @@ const LinkEditor = (): ReactElement => {
      */
     const updateLinkEditor: () => void = useCallback(() => {
         const selection: BaseSelection = $getSelection();
+        const editorElem: HTMLDivElement = editorRef.current;
 
         if ($isRangeSelection(selection)) {
             const node: TextNode | ElementNode = getSelectedNode(selection);
@@ -94,12 +96,13 @@ const LinkEditor = (): ReactElement => {
                 setLinkUrl(node.getURL());
             } else {
                 setLinkUrl("");
+                setEditMode(false);
+                positionEditorElement(editorElem, null);
 
                 return;
             }
         }
 
-        const editorElem: HTMLDivElement = editorRef.current;
         const nativeSelection: Selection = window.getSelection();
         const activeElement: Element = document.activeElement;
 
@@ -246,7 +249,17 @@ const LinkEditor = (): ReactElement => {
                                 }
                             } }
                         />
-                        <IconButton onClick={ () => setEditMode(false) }>
+                        <IconButton
+                            onClick={ (event: ReactMouseEvent<HTMLButtonElement>) => {
+                                event.preventDefault();
+                                if (lastSelection !== null) {
+                                    if (linkUrl !== "") {
+                                        editor.dispatchCommand(TOGGLE_LINK_COMMAND, linkUrl);
+                                    }
+                                }
+                                setEditMode(false);
+                            } }
+                        >
                             <CheckIcon />
                         </IconButton>
                     </>

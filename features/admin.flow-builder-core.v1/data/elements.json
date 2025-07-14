@@ -439,7 +439,7 @@
             "showOnResourcePanel": true
         },
         "config": {
-            "text": "<h3 class=\"ui header\">Rich Text</h3>"
+            "text": "<h3>Rich Text</h3><script></script>"
         }
     },
     {

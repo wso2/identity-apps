@@ -16,13 +16,12 @@
  * under the License.
  */
 
-import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Encode } from "@wso2is/core/utils";
-import parse, { domToReact } from "html-react-parser";
+import parse, { DOMNode, Element, domToReact } from "html-react-parser";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Element } from "../../../../models/elements";
 import { CommonElementFactoryPropsInterface } from "../common-element-factory";
+import "./rich-text-adapter.scss";
 
 /**
  * Props interface of {@link RichTextAdapter}
@@ -38,15 +37,47 @@ export type RichTextAdapterPropsInterface = IdentifiableComponentInterface & Com
 const RichTextAdapter: FunctionComponent<RichTextAdapterPropsInterface> = ({
     resource
 }: RichTextAdapterPropsInterface): ReactElement => (
-    <>
+    <div className="rich-text-content">
         { parse(Encode.forHtml(resource?.config?.text), {
-            replace(domNode: any) {
-                if (((domNode as unknown) as any).name === "h1") {
-                    <Typography variant="h1">{ domToReact(((domNode as unknown) as any).children) }</Typography>;
+            replace(domNode: DOMNode) {
+                if (domNode.type === "tag") {
+                    const element: Element = domNode as Element;
+                    const tagName: string = element.name;
+                    const className: string | undefined = element.attribs?.class;
+                    const children: React.ReactNode = domToReact(element.children);
+
+                    switch (tagName) {
+                        case "p":
+                            return <p className={ className }>{ children }</p>;
+                        case "span":
+                            return <span className={ className }>{ children }</span>;
+                        case "h1":
+                            return <h1 className={ className }>{ children }</h1>;
+                        case "h2":
+                            return <h2 className={ className }>{ children }</h2>;
+                        case "h3":
+                            return <h3 className={ className }>{ children }</h3>;
+                        case "h4":
+                            return <h4 className={ className }>{ children }</h4>;
+                        case "h5":
+                            return <h5 className={ className }>{ children }</h5>;
+                        case "h6":
+                            return <h6 className={ className }>{ children }</h6>;
+                        case "b":
+                            return <b className={ className }>{ children }</b>;
+                        case "i":
+                            return <i className={ className }>{ children }</i>;
+                        case "em":
+                            return <em className={ className }>{ children }</em>;
+                        case "u":
+                            return <u className={ className }>{ children }</u>;
+                        default:
+                            return undefined;
+                    }
                 }
             }
         }) }
-    </>
+    </div>
 );
 
 export default RichTextAdapter;

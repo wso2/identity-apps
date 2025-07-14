@@ -28,13 +28,38 @@ import { HeadingNode } from "@lexical/rich-text";
 import Paper from "@oxygen-ui/react/Paper";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import { ParagraphNode, TextNode } from "lexical";
+import { EditorThemeClasses, ParagraphNode, TextNode } from "lexical";
 import React, { FunctionComponent, ReactElement } from "react";
 import HTMLPlugin from "./helper-plugins/html-plugin";
 import CustomLinkPlugin from "./helper-plugins/link-plugin";
 import ToolbarPlugin, { ToolbarPluginProps } from "./helper-plugins/toolbar-plugin";
+import { Resource } from "../../../models/resources";
 import "./rich-text.scss";
 
+/**
+ * Theme classes for the rich text editor.
+ */
+const ThemeClasses: EditorThemeClasses = {
+    heading: {
+        h1: "rich-text-heading-h1",
+        h2: "rich-text-heading-h2",
+        h3: "rich-text-heading-h3",
+        h4: "rich-text-heading-h4",
+        h5: "rich-text-heading-h5",
+        h6: "rich-text-heading-h6"
+    },
+    link: "rich-text-link",
+    paragraph: "rich-text-paragraph",
+    text: {
+        bold: "rich-text-bold",
+        italic: "rich-text-italic",
+        underline: "rich-text-underline"
+    }
+};
+
+/**
+ * Configs for the rich text editor.
+ */
 const editorConfig: InitialConfigType = {
     namespace: "Rich Text",
     nodes: [
@@ -46,7 +71,8 @@ const editorConfig: InitialConfigType = {
     ],
     onError(error: Error) {
         throw error;
-    }
+    },
+    theme: ThemeClasses
 };
 
 /**
@@ -67,6 +93,10 @@ export interface RichTextProps extends IdentifiableComponentInterface {
      * Additional CSS class names to apply to the rich text editor container.
      */
     className?: string;
+    /**
+     * The resource associated with the rich text editor.
+     */
+    resource: Resource;
 }
 
 /**
@@ -76,7 +106,8 @@ const RichText: FunctionComponent<RichTextProps> = ({
     "data-componentid": componentId = "rich-text",
     ToolbarProps,
     className,
-    onChange
+    onChange,
+    resource
 }: RichTextProps): ReactElement => {
     return (
         <LexicalComposer initialConfig={ editorConfig }>
@@ -91,6 +122,7 @@ const RichText: FunctionComponent<RichTextProps> = ({
                                 placeholder={
                                     <div className="OxygenRichText-editor-input-placeholder">Enter some rich text.</div>
                                 }
+                                value="Rich Text"
                             />)
                         }
                         ErrorBoundary={ LexicalErrorBoundary }
@@ -99,7 +131,7 @@ const RichText: FunctionComponent<RichTextProps> = ({
                     <AutoFocusPlugin />
                     <LinkPlugin />
                     <CustomLinkPlugin />
-                    <HTMLPlugin onChange={ onChange } />
+                    <HTMLPlugin resource={ resource } onChange={ onChange } />
                 </Paper>
             </div>
         </LexicalComposer>
