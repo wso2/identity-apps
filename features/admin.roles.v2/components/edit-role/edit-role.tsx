@@ -85,8 +85,6 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
         (state: AppState) => state?.config?.ui?.features?.agents
     );
 
-    const entitlementConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.entitlement);
     const rolesV3featureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRolesV3);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);

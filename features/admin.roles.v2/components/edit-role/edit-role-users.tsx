@@ -103,6 +103,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
 
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
+
     const systemReservedUserStores: string[] = useSelector((state: AppState) =>
         state.config.ui?.systemReservedUserStores);
 
@@ -142,6 +143,13 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
 
     const updateUsersOfRoleFunction: (roleId: string, roleData: PatchRoleDataInterface) => Promise<any> =
         enableScim2RolesV3Api ? updateUsersForRole : updateRoleDetails;
+
+    const shouldShowUserstoreDropdown: boolean =
+    selectedUserStoreDomainName !== "AGENT" &&
+    (
+        (!isPrivilegedUsersToggleVisible && isUserstoreSelectionInAdministratorsEnabled) ||
+        selectedUserStoreDomainName !== PRIMARY_USERSTORE
+    );
 
     const {
         isLoading: isUserStoresLoading,
@@ -309,8 +317,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         };
 
         setIsSubmitting(true);
-
-        updateRoleDetails(role.id, roleData)
+        updateUsersOfRoleFunction(role.id, roleData)
             .then((response: AxiosResponse) => {
                 if (response?.status === 200) {
                     dispatch(
@@ -329,7 +336,6 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                         })
                     );
                 }
-
                 onRoleUpdate(tabIndex);
             })
             .catch( (error: AxiosError) => {
@@ -381,7 +387,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         };
 
         setIsSubmitting(true);
-        updateRoleDetails(role.id, roleData)
+        updateUsersOfRoleFunction(role.id, roleData)
             .then((response: AxiosResponse) => {
                 if (response?.status === 200) {
                     dispatch(

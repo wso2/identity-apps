@@ -550,11 +550,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
                 isFeatureEnabled(consoleSettingsFeatureConfig,
                     ConsoleAdministratorOnboardingConstants.FEATURE_DICTIONARY
                         .get("CONSOLE_SETTINGS_ADD_ADMINISTRATOR")) && (<Show
-                    when={
-                        [ ...featureConfig?.users?.scopes?.create,
-                            ...featureConfig?.userRoles?.scopes?.update
-                        ] }>
-                <Show when={ adminActionPermissionScopes }>
+                    when={ adminActionPermissionScopes }>
                     { !isSubOrganization() && isPrivilegedUsersInConsoleSettingsEnabled && (
                         <Button
                             data-componentid={ `${componentId}-admin-settings-button` }
