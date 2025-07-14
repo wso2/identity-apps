@@ -121,7 +121,6 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
                     <Button
                         variant="contained"
                         onClick={ () => {
-                            console.log(id)
                             setSelectedPreviewFeatureToShow(id);
                             setShowPreviewFeaturesModal(true);
                         } }
