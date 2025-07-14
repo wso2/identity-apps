@@ -113,7 +113,7 @@ class PluginRegistry {
      */
     public executeSync(eventName: string, ...args: any[]): boolean {
 
-        const handlers: MapIterator<(...args: any[]) => boolean> = this.syncPlugins.get(eventName)?.values();
+        const handlers: IterableIterator<(...args: any[]) => boolean> = this.syncPlugins.get(eventName)?.values();
 
         if (!handlers) {
             return true; // No plugins registered, consider it a success.
@@ -169,7 +169,8 @@ class PluginRegistry {
      * @returns True if all plugins returned true, false otherwise.
      */
     private async executeAllAsync(eventName: string, ...args: any[]): Promise<boolean> {
-        const handlers: MapIterator<(...args: any[]) => Promise<boolean>> = this.asyncPlugins.get(eventName)?.values();
+        const handlers: IterableIterator<(...args: any[]) => Promise<boolean>> =
+            this.asyncPlugins.get(eventName)?.values();
 
         if (!handlers) {
             return true; // No plugins registered, consider it a success.
