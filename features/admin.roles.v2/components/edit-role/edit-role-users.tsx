@@ -177,7 +177,6 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
 
         const alreadyAssignedUsersFromSelectedUserStore: UserBasicInterface[] = role?.users?.map(
             (user: RolesMemberInterface) => ({
-                displayName: user.displayName,
                 id: user.value,
                 userName: user.display
             })
