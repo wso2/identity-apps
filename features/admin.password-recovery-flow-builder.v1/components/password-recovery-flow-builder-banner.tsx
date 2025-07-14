@@ -28,6 +28,7 @@ import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-f
 import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FC } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import BackgroundSprites from "../../themes/wso2is/assets/images/illustrations/ai-banner-background-white.svg";
 import "./password-recovery-flow-builder-banner.scss";
@@ -47,7 +48,8 @@ const PasswordRecoveryFlowBuilderBanner: FC<PasswordRecoveryFlowBuilderBannerPro
     "data-componentid": componentId = "password-recovery-flow-builder-banner"
 }: PasswordRecoveryFlowBuilderBannerProps) => {
 
-    const flowsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+    const { t } = useTranslation();
+    const flowsFeatureAIConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features?.ai);
 
     return (
@@ -65,9 +67,9 @@ const PasswordRecoveryFlowBuilderBanner: FC<PasswordRecoveryFlowBuilderBannerPro
                 <Box>
                     <Typography variant="h5">
                         Construct your ideal recovery experience with our new{ " " }
-                        <span className="text-gradient primary">Password Recovery Flow Builder</span>
+                        <span className="text-gradient primary">{ t("flows:passwordRecoveryFlowBuilder") }</span>
                         <FeatureFlagLabel
-                            featureFlags={ flowsFeatureConfig?.featureFlags }
+                            featureFlags={ flowsFeatureAIConfig?.featureFlags }
                             featureKey={ FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.FLOWS_TYPES_REGISTRATION }
                             type="chip"
                         />

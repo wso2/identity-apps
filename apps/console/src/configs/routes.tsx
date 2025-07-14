@@ -201,15 +201,11 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         {
             children: [
                 {
-                    component: lazy(() =>
-                        import(// eslint-disable-next-line max-len
-                            "@wso2is/admin.password-recovery-flow-builder.v1/pages/password-recovery-flow-builder-page")),
+                    component: lazy(() => import(
+                        "@wso2is/admin.password-recovery-flow-builder.v1/pages/password-recovery-flow-builder-page")),
                     exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
                     id: "passwordRecoveryFlowBuilder",
-                    name: "passwordRecoveryFlowBuilder",
+                    name: "Password Recovery Flow Builder",
                     path: AppConstants.getPaths().get("PASSWORD_RECOVERY_FLOW_BUILDER"),
                     protected: true,
                     showOnSidePanel: false

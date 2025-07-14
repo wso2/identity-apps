@@ -30,17 +30,14 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpReque
 );
 
 /**
- * Add a new tenant.
+ * Updates the password recovery flow configuration via an HTTP PUT request.
  *
- * This function calls the POST method of the following endpoint to update the tenant status.
- *  - `https://{serverUrl}/t/{tenantDomain}/api/server/v1/tenants`
- * - TODO: Fill this
- * For more details, refer to the documentation:
- * {@link https://TODO:<fillthis>)}
+ * @param payload - The configuration data to be sent to the server.
+ * @returns A Promise resolving with the response data if the update is successful.
  *
- * @param payload - Request payload.
- * @returns A promise that resolves when the operation is complete.
- * @throws Error - Throws an error if the operation fails.
+ * @throws IdentityAppsApiException - If the server responds with a non-200 status code
+ *                                    or if the request fails.
+ *
  */
 const configurePasswordRecoveryFlow = (payload: Payload): Promise<AxiosResponse> => {
     const requestConfig: RequestConfigInterface = {
