@@ -31,12 +31,12 @@
                 "action": {
                     "type": "EXECUTOR",
                     "executor": {
-                        "name": "PasswordOnboardExecutor"
+                        "name": "SMSOTPExecutor"
                     }
                 },
                 "display": {
-                    "label": "Onboard Password",
-                    "image": "https://www.svgrepo.com/show/526627/password.svg",
+                    "label": "Verify SMS OTP",
+                    "image": "https://www.svgrepo.com/show/455832/mobile-message.svg",
                     "defaultVariant": "PRIMARY"
                 }
             },
@@ -48,8 +48,34 @@
                     }
                 },
                 "display": {
-                    "label": "Verify OTP Code",
+                    "label": "Verify Email OTP",
                     "image": "https://www.svgrepo.com/show/479622/email-18.svg",
+                    "defaultVariant": "PRIMARY"
+                }
+            },
+            {
+                "action": {
+                    "type": "EXECUTOR",
+                    "executor": {
+                        "name": "UserResolveExecutor"
+                    }
+                },
+                "display": {
+                    "label": "Resolve User",
+                    "image": "https://www.svgrepo.com/show/479898/magnifying-glass-10.svg",
+                    "defaultVariant": "PRIMARY"
+                }
+            },
+            {
+                "action": {
+                    "type": "EXECUTOR",
+                    "executor": {
+                        "name": "PasswordProvisioningExecutor"
+                    }
+                },
+                "display": {
+                    "label": "Provision Password",
+                    "image": "https://www.svgrepo.com/show/479398/stamp-2.svg",
                     "defaultVariant": "PRIMARY"
                 }
             }
