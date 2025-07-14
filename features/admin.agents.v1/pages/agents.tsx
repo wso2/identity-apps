@@ -69,7 +69,7 @@ export default function Agents ({
             bottomMargin={ false }
             contentTopMargin={ true }
             pageHeaderMaxWidth={ false }
-            action={ (<PrimaryButton
+            action={ agentList?.Resources?.length > 0 && !isAgentListLoading && (<PrimaryButton
                 onClick={ () => {
                     setIsAddAgentWizardOpen(true);
                 } }>
@@ -178,6 +178,9 @@ export default function Agents ({
                     mutateAgentList={ mutateAgentList }
                     isLoading={ isAgentListLoading }
                     list={ agentList?.Resources }
+                    setShowAgentAddWizard={ () => {
+                        setIsAddAgentWizardOpen(true);
+                    } }
                 />
             </ListLayout>
 

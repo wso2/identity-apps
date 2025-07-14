@@ -70,6 +70,10 @@ interface AddRoleUserModalProps extends IdentifiableComponentInterface {
      * List of available user stores.
      */
     availableUserStores: UserStoreDropdownItem[];
+    /**
+     * Is for role assignment to a non-human user.
+     */
+    isForNonHumanUser?: boolean;
 }
 
 export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
@@ -81,6 +85,7 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
         [ "data-componentid" ]: componentId = "edit-role-users-add-user-modal",
         handleAddUserSubmit,
         handleCloseAddNewUserModal,
+        isForNonHumanUser,
         showAddNewUserModal,
         role,
         userstore
@@ -260,13 +265,20 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
         >
             <Modal.Header>
                 {
-                    t("roles:addRoleWizard.users.assignUserModal.heading",
-                        { type: "Role" })
+                    isForNonHumanUser
+                        ? t("roles:addRoleWizard.agents.assignAgentModal.heading",
+                            { type: "Role" })
+                        : t("roles:addRoleWizard.users.assignUserModal.heading",
+                            { type: "Role" })
                 }
                 <Heading subHeading ellipsis as="h6">
                     {
-                        t("roles:addRoleWizard.users.assignUserModal.subHeading",
-                            { type: "role" })
+                        isForNonHumanUser
+                            ? t("roles:addRoleWizard.agents.assignAgentModal.subHeading",
+                                { type: "role" })
+                            :
+                            t("roles:addRoleWizard.users.assignUserModal.subHeading",
+                                { type: "role" })
                     }
                 </Heading>
             </Modal.Header>
@@ -278,7 +290,9 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
                         basic
                         className="one-column-selection"
                         selectionComponent
-                        searchPlaceholder={ t("groups:edit.users.searchUsers") }
+                        searchPlaceholder={ isForNonHumanUser
+                            ? t("roles:addRoleWizard.agents.assignAgentModal.search")
+                            : t("groups:edit.users.searchUsers") }
                         isLoading={ isUserListFetchRequestLoading || isUserListFetchRequestValidating }
                         handleHeaderCheckboxChange={ () => selectAllAssignedList() }
                         isHeaderCheckboxChecked={ isSelectAllUsers }
@@ -287,7 +301,7 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
                         } }
                         showSelectAllCheckbox={ !isUserListFetchRequestLoading && userList.length > 0 }
                         data-componentid={ `${ componentId }-transfer-component` }
-                        leftActionPanel={ availableUserStores?.length > 0 && (
+                        leftActionPanel={ !isForNonHumanUser && availableUserStores?.length > 0 && (
                             <GridColumn width={ 1 } className="add-role-user-modal-userstore-dropdown">
                                 <Dropdown
                                     fluid

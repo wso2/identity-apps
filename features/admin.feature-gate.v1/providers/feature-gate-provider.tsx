@@ -34,10 +34,13 @@ const FeatureGateProvider: FC<FeatureGateProviderProps> = ({
     children
 }: PropsWithChildren<FeatureGateProviderProps>): ReactElement => {
     const [ showPreviewFeaturesModal, setShowPreviewFeaturesModal ] = useState<boolean>(false);
+    const [ selectedPreviewFeatureToShow, setSelectedPreviewFeatureToShow ] = useState<string>("");
 
     return (
         <FeatureGateContext.Provider
             value={ {
+                selectedPreviewFeatureToShow,
+                setSelectedPreviewFeatureToShow,
                 setShowPreviewFeaturesModal,
                 showPreviewFeaturesModal
             } }

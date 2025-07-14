@@ -9370,6 +9370,9 @@ importers:
       '@wso2is/admin.registration-flow-builder.v1':
         specifier: ^0.9.0
         version: link:../admin.registration-flow-builder.v1
+      '@wso2is/admin.userstores.v1':
+        specifier: workspace:^
+        version: link:../admin.userstores.v1
       '@wso2is/common.ai.v1':
         specifier: ^2.27.3
         version: link:../common.ai.v1
