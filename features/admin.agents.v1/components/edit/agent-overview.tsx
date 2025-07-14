@@ -36,6 +36,7 @@ import { deleteAgent, updateAgent } from "../../api/agents";
 import { AGENT_FEATURE_DICTIONARY } from "../../constants/agents";
 import useGetAgent from "../../hooks/use-get-agent";
 import { AgentScimSchema } from "../../models/agents";
+import "./agent-overview.scss";
 
 interface AgentOverviewProps extends IdentifiableComponentInterface {
     agentId: string;
@@ -98,7 +99,11 @@ export default function AgentOverview({
 
     return (
         <>
-            <EmphasizedSegment padded="very" style={ { border: "none", padding: "21px" } }>
+            <EmphasizedSegment
+                padded="very"
+                style={ { border: "none", padding: "21px" } }
+                className="agent-overview-form"
+            >
                 <FinalForm
                     onSubmit={ (values: any) => {
 
