@@ -773,8 +773,9 @@ export interface ApplicationsNS {
                         };
                     };
                 };
-            };
+            };allRolesAndOrgsSharingMessage
             sharedAccess: {
+                allRolesAndOrgsSharingMessage: string;
                 subTitle: string;
                 tabName: string;
                 sharedAccessStatusOptions: {
@@ -786,6 +787,10 @@ export interface ApplicationsNS {
                 orgNotSelectedForRoleSharing: string;
                 noRolesAvailableForOrg: string;
                 noSharedOrgs: string;
+                shareRoleSubsetWithSelectedOrgs: string;
+                shareRoleSubsetWithAllOrgs: string;
+                manageRoleSharing: string;
+                viewRoleSharing: string;
             };
             shareApplication: {
                 heading: string;

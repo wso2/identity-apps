@@ -81,7 +81,6 @@ const OrgSelectiveShareWithSelectiveRolesView = (props: OrgSelectiveShareWithAll
     const [ roleSelections, setRoleSelections ] = useState<Record<string, OrganizationRoleInterface[]>>({});
     const [ selectedOrgId, setSelectedOrgId ] = useState<string>(organizationId);
     const [ flatOrganizationMap, setFlatOrganizationMap ] = useState<Record<string, OrganizationInterface>>({});
-    const [ availableRoles, setAvailableRoles ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
 
     // We are fetching the application organization tree in the read-only mode.
     // Used in 1st level with pagination
