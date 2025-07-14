@@ -427,14 +427,14 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                     target="_blank"
                                     rel="noreferrer"
                                 >
-                                    { I18n.instance.t("console:common.dropdown.footer.privacyPolicy") as string }
+                                    { t("console:common.dropdown.footer.privacyPolicy") }
                                 </Link>
                                 <Link
                                     variant="body3"
                                     href={ getLink("common.cookiePolicy") }
                                     target="_blank"
                                     rel="noreferrer">
-                                    { I18n.instance.t("console:common.dropdown.footer.cookiePolicy") as string }
+                                    { t("console:common.dropdown.footer.cookiePolicy") }
                                 </Link>
                                 <Link
                                     variant="body3"
@@ -442,7 +442,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                     target="_blank"
                                     rel="noreferrer"
                                 >
-                                    { I18n.instance.t("console:common.dropdown.footer.termsOfService") as string }
+                                    { t("console:common.dropdown.footer.termsOfService") }
                                 </Link>
                             </Box>
                             { productVersion && (<>
