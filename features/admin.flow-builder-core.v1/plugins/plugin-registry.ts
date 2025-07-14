@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import debounce from "lodash/debounce";
+import debounce from "lodash-es/debounce";
+import VisualFlowConstants from "../constants/visual-flow-constants";
 
 /**
  * PluginRegistry is a singleton class that manages the registration and execution of plugins.
@@ -48,14 +49,15 @@ class PluginRegistry {
      */
     public registerAsync(eventName: string, handler: (...args: any[]) => Promise<boolean>): void {
 
-        if (!handler.name) {
-            throw new Error("Handler function must have a name. Use a named function or arrow function with a name.");
+        if (!handler[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER]) {
+            throw new Error("Handler function must have the `uniqueName` property.");
         }
 
         if (!this.asyncPlugins.has(eventName)) {
             this.asyncPlugins.set(eventName, new Map());
         }
-        this.asyncPlugins.get(eventName)!.set(handler.name, handler);
+        this.asyncPlugins.get(eventName)!.set(
+            handler[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER], handler);
     };
 
     /**
@@ -66,14 +68,15 @@ class PluginRegistry {
      */
     public registerSync(eventName: string, handler: (...args: any[]) => boolean): void {
 
-        if (!handler.name) {
-            throw new Error("Handler function must have a name. Use a named function or arrow function with a name.");
+        if (!handler[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER]) {
+            throw new Error("Handler function must have the `uniqueName` property.");
         }
 
         if (!this.syncPlugins.has(eventName)) {
             this.syncPlugins.set(eventName, new Map());
         }
-        this.syncPlugins.get(eventName)!.set(handler.name, handler);
+        this.syncPlugins.get(eventName)!.set(
+            handler[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER], handler);
     };
 
     /**
@@ -86,7 +89,8 @@ class PluginRegistry {
 
         const removeHandler = (map: Map<string, Map<string, (...args: any[]) => Promise<boolean> | boolean>>) => {
             if (map.has(eventName)) {
-                const handlers = map.get(eventName);
+                const handlers: Map<string, (...args: any[]) => Promise<boolean> | boolean> = map.get(eventName);
+
                 if (handlers && handlers.has(handlerName)) {
                     handlers.delete(handlerName);
                     if (handlers.size === 0) {
@@ -94,7 +98,7 @@ class PluginRegistry {
                     }
                 }
             }
-        }
+        };
 
         removeHandler(this.asyncPlugins);
         removeHandler(this.syncPlugins);
@@ -109,7 +113,8 @@ class PluginRegistry {
      */
     public executeSync(eventName: string, ...args: any[]): boolean {
 
-        const handlers = this.syncPlugins.get(eventName)?.values();
+        const handlers: MapIterator<(...args: any[]) => boolean> = this.syncPlugins.get(eventName)?.values();
+
         if (!handlers) {
             return true; // No plugins registered, consider it a success.
         }
@@ -119,6 +124,7 @@ class PluginRegistry {
                 return false; // If any plugin returns false, stop execution and return false.
             }
         }
+
         return true; // All plugins executed successfully.
     }
 
@@ -145,6 +151,7 @@ class PluginRegistry {
         // Check if the first argument is a number (debounce time).
         if (args.length > 1 && typeof args[0] === "number") {
             const debounceTime: number = args.shift() as number;
+
             return debounce(() => {
                 return this.executeAllAsync(eventName, ...args);
             }, debounceTime)(); // Debounce execution to avoid rapid calls.
@@ -162,7 +169,8 @@ class PluginRegistry {
      * @returns True if all plugins returned true, false otherwise.
      */
     private async executeAllAsync(eventName: string, ...args: any[]): Promise<boolean> {
-        const handlers = this.asyncPlugins.get(eventName)?.values();
+        const handlers: MapIterator<(...args: any[]) => Promise<boolean>> = this.asyncPlugins.get(eventName)?.values();
+
         if (!handlers) {
             return true; // No plugins registered, consider it a success.
         }
@@ -172,6 +180,7 @@ class PluginRegistry {
                 return false; // If any plugin returns false, stop execution and return false.
             }
         }
+
         return true; // All plugins executed successfully.
     }
 }
