@@ -11,6 +11,7 @@
 "@wso2is/admin.home.v1": patch
 "@wso2is/console": patch
 "@wso2is/i18n": patch
+"@wso2is/admin.feature-gate.v1": patch
 ---
 
 UI improvements to the agents feature
