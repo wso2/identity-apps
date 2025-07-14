@@ -452,7 +452,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                         { `${productName} ${productVersion || "N/A"}` }
                                     </Typography>
                                 </Box>
-                            </>)}
+                            </>) }
                         </div>
                     ],
                     menuItems: [
