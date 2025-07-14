@@ -446,7 +446,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                 </Link>
                             </Box>
                             { productVersion && (<>
-                                <Divider variant="middle"/>
+                                <Divider/>
                                 <Box className="user-dropdown-version">
                                     <Typography variant="body3">
                                         { `${productName} ${productVersion || "N/A"}` }
