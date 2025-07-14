@@ -22,10 +22,14 @@ import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import { IdentifiableComponentInterface, ProfileSchemaInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
-import { FinalFormField, SelectFieldAdapterV2 } from "@wso2is/form/src";
+import { FinalFormField, SelectFieldAdapter } from "@wso2is/form/src";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
+/**
+ * Country list item interface.
+ */
 interface CountryListItemInterface {
     flag: string;
     key: number;
@@ -33,6 +37,9 @@ interface CountryListItemInterface {
     value: string;
 };
 
+/**
+ * Country field props interface.
+ */
 interface CountryFieldPropsInterface extends IdentifiableComponentInterface {
     schema: ProfileSchemaInterface;
     fieldName: string;
@@ -44,6 +51,9 @@ interface CountryFieldPropsInterface extends IdentifiableComponentInterface {
     validator?: (value: string) => string | undefined;
 }
 
+/**
+ * User profile country field.
+ */
 const CountryField: FunctionComponent<CountryFieldPropsInterface> = ({
     schema,
     fieldName,
@@ -57,17 +67,38 @@ const CountryField: FunctionComponent<CountryFieldPropsInterface> = ({
 }: CountryFieldPropsInterface): ReactElement => {
     const { t } = useTranslation();
 
+    /**
+     * Validates the field value.
+     *
+     * @param value - Selected value.
+     * @returns A non-empty error message if the value is not valid else undefined.
+     */
+    const validateField = (value: unknown): string | undefined => {
+        // Validate the required field.
+        if (isEmpty(value) && isRequired) {
+            return (
+                t("user:profile.forms.generic.inputs.validations.empty", { fieldName: fieldLabel })
+            );
+        }
+
+        return undefined;
+    };
+
+    /**
+     * Get the list of countries.
+     */
     const countryList: CountryListItemInterface[] = useMemo(() => CommonUtils.getCountryList(), []);
 
     return (
         <FinalFormField
-            component={ SelectFieldAdapterV2 }
+            component={ SelectFieldAdapter }
             data-componentid={ `${componentId}-${schema.name}-input` }
             initialValue={ initialValue as string | string[] }
+            isClearable={ !isRequired }
             ariaLabel={ fieldLabel }
             name={ fieldName }
             label={ fieldLabel }
-            validate={ validator }
+            validate={ validator ?? validateField }
             placeholder={ t("user:profile.forms.generic.inputs.dropdownPlaceholder", { fieldName: fieldLabel }) }
             options={ countryList?.map(({ key, flag, text: countryName, value }: CountryListItemInterface) => {
                 return {

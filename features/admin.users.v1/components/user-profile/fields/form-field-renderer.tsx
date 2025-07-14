@@ -81,7 +81,8 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
         (isUserManagedByParentOrg &&
             sharedProfileValueResolvingMethod === SharedProfileValueResolvingMethod.FROM_ORIGIN) ||
         isReadOnlyMode ||
-        mutabilityValue === ProfileConstants.READONLY_SCHEMA;
+        mutabilityValue === ProfileConstants.READONLY_SCHEMA ||
+        schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME");
 
     const isRequired: boolean = (
         !(isUserManagedByParentOrg &&

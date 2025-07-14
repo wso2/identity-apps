@@ -21,6 +21,9 @@ import { FinalFormField, TextFieldAdapter } from "@wso2is/form/src";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 
+/**
+ * Text form field component props.
+ */
 interface TextFormFieldPropsInterface extends IdentifiableComponentInterface {
     fieldName: string;
     fieldLabel: string;
@@ -34,6 +37,9 @@ interface TextFormFieldPropsInterface extends IdentifiableComponentInterface {
     type?: string;
 }
 
+/**
+ * User profile text field component.
+ */
 const TextFormField: FunctionComponent<TextFormFieldPropsInterface> = (
     {
         fieldName,

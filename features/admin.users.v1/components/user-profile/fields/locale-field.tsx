@@ -22,7 +22,7 @@ import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface, ProfileSchemaInterface } from "@wso2is/core/models";
-import { FinalFormField, SelectFieldAdapterV2 } from "@wso2is/form/src";
+import { FinalFormField, SelectFieldAdapter } from "@wso2is/form/src";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -30,6 +30,9 @@ import { useSelector } from "react-redux";
 import { LocaleJoiningSymbol, UserManagementConstants } from "../../../constants/user-management-constants";
 import { normalizeLocaleFormat } from "../../../utils/user-management-utils";
 
+/**
+ * Interface for the locale list item.
+ */
 interface LocaleListItemInterface {
     flag: string;
     key: string;
@@ -38,6 +41,9 @@ interface LocaleListItemInterface {
     "data-componentId": string;
 };
 
+/**
+ * Interface for the locale field props.
+ */
 interface LocaleFieldPropsInterface extends IdentifiableComponentInterface {
     schema: ProfileSchemaInterface;
     fieldName: string;
@@ -49,6 +55,9 @@ interface LocaleFieldPropsInterface extends IdentifiableComponentInterface {
     validator?: (value: string) => string | undefined;
 }
 
+/**
+ * User profile locale field component.
+ */
 const LocaleField: FunctionComponent<LocaleFieldPropsInterface> = ({
     schema,
     fieldName,
@@ -66,6 +75,9 @@ const LocaleField: FunctionComponent<LocaleFieldPropsInterface> = ({
         (state: AppState) => state.global.supportedI18nLanguages
     );
 
+    /**
+     * Prepares the supported i18n languages array for the locale dropdown options.
+     */
     const supportedI18nLanguagesArray: LocaleListItemInterface[] = useMemo(() => {
         return supportedI18nLanguages
             ? Object.keys(supportedI18nLanguages).map((key: string) => ({
@@ -92,7 +104,7 @@ const LocaleField: FunctionComponent<LocaleFieldPropsInterface> = ({
 
     return (
         <FinalFormField
-            component={ SelectFieldAdapterV2 }
+            component={ SelectFieldAdapter }
             initialValue={ selectedLocale.value as string | string[] }
             ariaLabel={ fieldLabel }
             name={ fieldName }

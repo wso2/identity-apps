@@ -17,10 +17,13 @@
  */
 
 import { IdentifiableComponentInterface, LabelValue, ProfileSchemaInterface } from "@wso2is/core/models";
-import { FinalFormField, SelectFieldAdapterV2 } from "@wso2is/form/src";
+import { FinalFormField, SelectFieldAdapter } from "@wso2is/form/src";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 
+/**
+ * Dropdown form field component props.
+ */
 interface DropdownFormFieldPropsInterface extends IdentifiableComponentInterface {
     schema: ProfileSchemaInterface;
     fieldName: string;
@@ -33,6 +36,9 @@ interface DropdownFormFieldPropsInterface extends IdentifiableComponentInterface
     validator?: (value: string) => string | undefined;
 }
 
+/**
+ * User profile dropdown field component.
+ */
 const DropdownFormField: FunctionComponent<DropdownFormFieldPropsInterface> = (
     {
         schema,
@@ -43,7 +49,7 @@ const DropdownFormField: FunctionComponent<DropdownFormFieldPropsInterface> = (
         isReadOnly,
         isRequired,
         validator,
-        isMultiSelect,
+        isMultiSelect = false,
         ["data-componentid"]: componentId = "dropdown-form-field"
     }: DropdownFormFieldPropsInterface
 ): ReactElement => {
@@ -53,9 +59,10 @@ const DropdownFormField: FunctionComponent<DropdownFormFieldPropsInterface> = (
 
     return (
         <FinalFormField
-            component={ SelectFieldAdapterV2 }
+            component={ SelectFieldAdapter }
             data-componentid={ componentId }
             initialValue={ initialValue }
+            isClearable={ !isRequired }
             ariaLabel={ fieldLabel }
             name={ fieldName }
             label={ fieldLabel }
@@ -67,7 +74,7 @@ const DropdownFormField: FunctionComponent<DropdownFormFieldPropsInterface> = (
                     value
                 };
             }) }
-            multiple={ isMultiSelect ?? false }
+            multiple={ isMultiSelect }
             readOnly={ isReadOnly || isUpdating }
             required={ isRequired }
             disableClearable={ isRequired }
