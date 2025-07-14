@@ -558,16 +558,12 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                     const newPassword: string | undefined = formValues?.get("newPassword")?.toString();
                                     const isMatch: boolean | undefined = checkPasswordsMatch(newPassword, value);
 
-                                    if (isMatch === undefined) {
-                                        setIsConfirmPasswordMatch(undefined);
-                                    } else if (!isMatch) {
+                                    if (!isMatch) {
                                         validation.isValid = false;
                                         setIsConfirmPasswordMatch(false);
                                         validation?.errorMessages?.push(
                                             t("user:forms.addUserForm.inputs" +
                                             ".confirmPassword.validations.mismatch"));
-                                    } else {
-                                        setIsConfirmPasswordMatch(true);
                                     }
                                 }
                             }
