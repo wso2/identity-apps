@@ -82,8 +82,7 @@ export const console: ConsoleNS = {
             footer: {
                 privacyPolicy: "Privacy",
                 cookiePolicy: "Cookies",
-                termsOfService: "Terms",
-                productVersion: "Product Version"
+                termsOfService: "Terms"
             }
         },
         header: {

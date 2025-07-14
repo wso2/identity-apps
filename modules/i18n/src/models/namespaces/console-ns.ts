@@ -76,7 +76,6 @@ export interface ConsoleNS {
                 privacyPolicy: string;
                 cookiePolicy: string;
                 termsOfService: string;
-                productVersion: string;
             }
         };
         header: {

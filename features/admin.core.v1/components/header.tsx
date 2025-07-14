@@ -445,13 +445,14 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                     { I18n.instance.t("console:common.dropdown.footer.termsOfService") as string }
                                 </Link>
                             </Box>
-                            <Divider/>
-                            <Box className="oxygen-user-dropdown-menu oxygen-menu-item">
-                                <Typography variant="body3">
-                                    { `${t("console:common.dropdown.footer.productVersion")}: ` }
-                                    { productVersion || "N/A" }
-                                </Typography>
-                            </Box>
+                            { productVersion && (<>
+                                <Divider variant="middle"/>
+                                <Box className="user-dropdown-version">
+                                    <Typography variant="body3">
+                                        { `${productName} ${productVersion || "N/A"}` }
+                                    </Typography>
+                                </Box>
+                            </>)}
                         </div>
                     ],
                     menuItems: [
