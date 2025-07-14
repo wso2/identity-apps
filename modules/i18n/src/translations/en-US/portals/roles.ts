@@ -25,6 +25,18 @@ import { rolesNS } from "../../../models";
 
 export const roles: rolesNS = {
     addRoleWizard: {
+        agents: {
+            assignAgentModal: {
+                heading: "Assign Agents",
+                hint: "Select agents to assign them to the role",
+                list: {
+                    listHeader: "Name",
+                    searchPlaceholder: "Search agents"
+                },
+                search: "Search agents by username",
+                subHeading: "Assign new agents to the role."
+            }
+        },
         back: "Go back",
         buttons: {
             finish: "Finish",

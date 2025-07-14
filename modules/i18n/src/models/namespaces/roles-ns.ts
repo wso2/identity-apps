@@ -218,6 +218,18 @@ export interface rolesNS {
                 };
             };
         };
+        agents: {
+            assignAgentModal: {
+                heading: string;
+                hint: string;
+                list: {
+                    listHeader: string;
+                    searchPlaceholder: string;
+                },
+                search: string;
+                subHeading: string;
+            }
+        },
         wizardSteps: {
             0: string;
             1: string;

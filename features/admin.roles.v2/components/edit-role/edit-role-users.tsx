@@ -117,6 +117,13 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ showAddNewUserModal, setShowAddNewUserModal ] = useState<boolean>(false);
 
+    const shouldShowUserstoreDropdown: boolean =
+    selectedUserStoreDomainName !== "AGENT" &&
+    (
+        (!isPrivilegedUsersToggleVisible && isUserstoreSelectionInAdministratorsEnabled) ||
+        selectedUserStoreDomainName !== PRIMARY_USERSTORE
+    );
+
     const {
         isLoading: isUserStoresLoading,
         userStoresList
@@ -170,6 +177,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
 
         const alreadyAssignedUsersFromSelectedUserStore: UserBasicInterface[] = role?.users?.map(
             (user: RolesMemberInterface) => ({
+                displayName: user.displayName,
                 id: user.value,
                 userName: user.display
             })
@@ -514,7 +522,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                         </Header>
                     );
                 },
-                title: "User"
+                title: null
             }
         ];
 
@@ -559,7 +567,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             onFilter={ (query: string) => handleUserFilter(query?.trim()) }
             disableSearchFilterDropdown
             filterAttributeOptions={ [] }
-            placeholder={ t("console:manage.features.groups.advancedSearch.placeholder") }
+            placeholder={ t("users:advancedSearch.placeholder") }
             defaultSearchAttribute=""
             defaultSearchOperator=""
             triggerClearQuery={ triggerClearQuery }
@@ -604,16 +612,17 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                 totalListSize={ selectedUsersFromUserStore?.length }
                 isLoading={ isUserStoresLoading || isSubmitting }
                 showPaginationPageLimit={ !isReadOnly }
-                rightActionPanel={ ((!isPrivilegedUsersToggleVisible && isUserstoreSelectionInAdministratorsEnabled) ||
-                    selectedUserStoreDomainName !== PRIMARY_USERSTORE) && (
-                    <Dropdown
-                        data-componentid={ `${ componentId }-list-usertore-dropdown` }
-                        selection
-                        options={ availableUserStores }
-                        placeholder={ t("console:manage.features.groups.list.storeOptions") }
-                        onChange={ handleDomainChange }
-                        defaultValue={ activeUserStore ? activeUserStore : userstoresConfig.primaryUserstoreName }
-                    />
+                rightActionPanel={ (
+                    shouldShowUserstoreDropdown && (
+                        <Dropdown
+                            data-componentid={ `${ componentId }-list-usertore-dropdown` }
+                            selection
+                            options={ availableUserStores }
+                            placeholder={ t("console:manage.features.groups.list.storeOptions") }
+                            onChange={ handleDomainChange }
+                            defaultValue={ activeUserStore ? activeUserStore : userstoresConfig.primaryUserstoreName }
+                        />
+                    )
                 ) }
             >
                 <DataTable<UserBasicInterface>
@@ -647,6 +656,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                             ? availableUserStores
                             : []
                         }
+                        isForNonHumanUser={ isForNonHumanUser }
                     />
                 )
             }
