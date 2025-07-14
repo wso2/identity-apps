@@ -128,15 +128,6 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ showAddNewUserModal, setShowAddNewUserModal ] = useState<boolean>(false);
 
-    const shouldShowUserstoreDropdown: boolean =
-    selectedUserStoreDomainName !== "AGENT" &&
-    (
-        (!isPrivilegedUsersToggleVisible && isUserstoreSelectionInAdministratorsEnabled) ||
-        selectedUserStoreDomainName !== PRIMARY_USERSTORE
-    );
-    const useSCIM2RoleAPIV3: boolean = useSelector(
-            (state: AppState) => state.config.ui.useSCIM2RoleAPIV3
-        );
     const enableScim2RolesV3Api: boolean = useSelector(
         (state: AppState) => state.config.ui.enableScim2RolesV3Api
     );
