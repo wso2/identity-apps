@@ -30,6 +30,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import { EditorThemeClasses, ParagraphNode, TextNode } from "lexical";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import HTMLPlugin from "./helper-plugins/html-plugin";
 import CustomLinkPlugin from "./helper-plugins/link-plugin";
 import ToolbarPlugin, { ToolbarPluginProps } from "./helper-plugins/toolbar-plugin";
@@ -109,6 +110,8 @@ const RichText: FunctionComponent<RichTextProps> = ({
     onChange,
     resource
 }: RichTextProps): ReactElement => {
+    const { t } = useTranslation();
+
     return (
         <LexicalComposer initialConfig={ editorConfig }>
             <div className={ classNames("OxygenRichText-root", className) } data-componentid={ componentId }>
@@ -119,10 +122,11 @@ const RichText: FunctionComponent<RichTextProps> = ({
                             (<ContentEditable
                                 className="OxygenRichText-editor-input"
                                 aria-placeholder="Enter some rich text..."
-                                placeholder={
-                                    <div className="OxygenRichText-editor-input-placeholder">Enter some rich text.</div>
-                                }
-                                value="Rich Text"
+                                placeholder={ (
+                                    <div className="OxygenRichText-editor-input-placeholder">
+                                        { t("flows:core.elements.richText.placeholder") }
+                                    </div>
+                                ) }
                             />)
                         }
                         ErrorBoundary={ LexicalErrorBoundary }

@@ -17,6 +17,18 @@
  */
 import { flowsNS } from "../../../models";
 
-export const invite: flowsNS = {
-    passwordRecoveryFlowBuilder: "Password Recovery Flow Builder"
+export const flows: flowsNS = {
+    core: {
+        elements: {
+            richText: {
+                linkEditor: {
+                    placeholder: "Enter link URL here..."
+                },
+                placeholder: "Enter rich text content here..."
+            }
+        }
+    },
+    passwordRecovery: {
+        name: "Password Recovery Flow Builder"
+    }
 };

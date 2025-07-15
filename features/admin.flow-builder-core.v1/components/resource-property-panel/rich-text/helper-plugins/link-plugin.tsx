@@ -48,8 +48,10 @@ import React, {
     useState
 } from "react";
 import { createPortal } from "react-dom";
+import { useTranslation } from "react-i18next";
 import { getSelectedNode } from "../utils/get-selected-node";
 import "./link-plugin.scss";
+import { useAuthenticationFlowBuilderCore } from "../../../../public-api";
 
 const LowPriority: CommandListenerPriority = 1;
 const HighPriority: CommandListenerPriority = 3;
@@ -117,6 +119,8 @@ const LinkEditor = (): ReactElement => {
     const [ linkUrl, setLinkUrl ] = useState("");
     const [ isEditMode, setEditMode ] = useState(false);
     const [ lastSelection, setLastSelection ] = useState<BaseSelection | null>(null);
+
+    const { t } = useTranslation();
 
     /**
      * Updates the link editor position and state based on the current selection.
@@ -301,7 +305,7 @@ const LinkEditor = (): ReactElement => {
                             onChange={ (event: ChangeEvent<HTMLInputElement>) =>
                                 setLinkUrl(event.target.value)
                             }
-                            placeholder="Enter link URL"
+                            placeholder={ t("flows:core.elements.richText.linkEditor.placeholder") }
                             onKeyDown={ (event: KeyboardEvent<HTMLInputElement>) => {
                                 if (event.key === "Enter") {
                                     event.preventDefault();

@@ -17,5 +17,17 @@
  */
 
 export interface flowsNS {
-    passwordRecoveryFlowBuilder: string;
+    core: {
+        elements: {
+            richText: {
+                placeholder: string;
+                linkEditor: {
+                    placeholder: string;
+                };
+            }
+        }
+    };
+    passwordRecovery: {
+        name: string;
+    };
 }
