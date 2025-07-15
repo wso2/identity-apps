@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,27 +18,40 @@
 
 import FormControl, { FormControlProps } from "@oxygen-ui/react/FormControl";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
+import InputLabel from "@oxygen-ui/react/InputLabel";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectProps } from "@oxygen-ui/react/Select";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { ChangeEvent, FunctionComponent, ReactElement, ReactNode } from "react";
+import isEmpty from "lodash-es/isEmpty";
+import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 import { FieldRenderProps } from "react-final-form";
 
 /**
- * Interface for the DropDownItem.
+ * Interface for the items passed as options.
  */
-export interface DropDownItemInterface {
+interface DropDownItemInterface {
     text: ReactNode;
     value: string;
 }
 
 /**
- * Props interface of {@link SelectFieldAdapter}
+ * Props for the SelectFieldAdapter component.
  */
 export interface SelectFieldAdapterPropsInterface
-    extends FieldRenderProps<string, HTMLElement, string>,
-        Omit<SelectProps, "input">,
-        IdentifiableComponentInterface {
+    extends FieldRenderProps<string | string[], HTMLElement, string | string> {
+    /**
+     * The label to display above the Select Field.
+     */
+    label: string;
+    /**
+     * Options list for the Select Field.
+     * @see DropDownItemInterface
+     */
+    options: DropDownItemInterface[];
+    /**
+     * Whether the TextField should take full width.
+     * Defaults to true.
+     */
+    fullWidth?: boolean;
     /**
      * Form control props.
      */
@@ -46,72 +59,60 @@ export interface SelectFieldAdapterPropsInterface
 }
 
 /**
- * A custom Select field adapter for the React Final Form library.
- * This adapter wraps a Material-UI Select component and integrates it with React Final Form.
+ * A custom SelectField adapter for use with React Final Form.
+ * This adapter wraps a Oxygen-UI Select component and integrates it with React Final Form.
  *
  * @param props - The component props.
- * @returns The rendered Select component.
+ * @returns The rendered SelectField component.
  */
 const SelectFieldAdapter: FunctionComponent<SelectFieldAdapterPropsInterface> = (
     props: SelectFieldAdapterPropsInterface
 ): ReactElement => {
     const {
         input,
-        name,
-        meta,
         label,
+        meta,
+        fullWidth = true,
         FormControlProps = {},
         placeholder,
-        options,
-        fullWidth,
-        required,
         helperText,
-        onChange,
+        required,
+        options,
         ...rest
     } = props;
 
     const isError: boolean = (meta.error || meta.submitError) && meta.touched;
 
     return (
-        <FormControl
-            required={ required }
-            error={ isError }
-            size="small"
-            variant="outlined"
-            fullWidth={ fullWidth }
-            { ...FormControlProps }
-        >
-            <Select
-                { ...input }
-                name={ name }
-                value={ input.value || "" }
-                onChange={ (e: ChangeEvent, child: ReactNode) => {
-                    input.onChange((e?.target as any)?.value as string);
-                    onChange && onChange(e as any, child);
-                } }
+        <div>
+            <InputLabel required={ required }>{ label }</InputLabel>
+            <FormControl
+                error={ isError }
+                size="small"
+                variant="outlined"
                 margin="dense"
-                label={ label }
-                // Need any to avoid 'children' does not exist on type 'IntrinsicAttributes & SelectProps' error.
-                { ...rest as (SelectProps & any) }
+                fullWidth={ fullWidth }
+                { ...FormControlProps }
             >
-                <MenuItem value="" disabled>
-                    { placeholder }
-                </MenuItem>
-                { options?.map((option: DropDownItemInterface) => (
-                    <MenuItem key={ option.value } value={ option.value }>
-                        { option.text }
-                    </MenuItem>
-                )) }
-            </Select>
-            <FormHelperText id={ `${input.name}-helper-text` }>
-                { helperText }
-            </FormHelperText>
-        </FormControl>
+                <InputLabel shrink={ false } disabled>
+                    { isEmpty(input.value) ? placeholder : "" }
+                </InputLabel>
+                <Select
+                    { ...input }
+                    margin="dense"
+                    { ...rest as SelectProps }
+                >
+                    { options?.map((option: DropDownItemInterface) => (
+                        <MenuItem key={ option.value } value={ option.value }>
+                            { option.text }
+                        </MenuItem>
+                    )) }
+                </Select>
+                { isError && <FormHelperText error>{ meta.error || meta.submitError }</FormHelperText> }
+                { helperText && <FormHelperText>{ helperText }</FormHelperText> }
+            </FormControl>
+        </div>
     );
-};
-
-SelectFieldAdapter.defaultProps = {
-    fullWidth: true
 };
 
 export default SelectFieldAdapter;

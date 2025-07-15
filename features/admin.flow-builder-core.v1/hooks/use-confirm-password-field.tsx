@@ -23,6 +23,7 @@ import set from "lodash-es/set";
 import React, { ReactElement, useEffect } from "react";
 import DefaultInputAdapter from "../components/resources/elements/adapters/input/default-input-adapter";
 import FlowBuilderElementConstants from "../constants/flow-builder-element-constants";
+import VisualFlowConstants from "../constants/visual-flow-constants";
 import { Properties } from "../models/base";
 import { BlockTypes, Element, ElementTypes, InputVariants } from "../models/elements";
 import { EventTypes } from "../models/extension";
@@ -34,6 +35,19 @@ const useConfirmPasswordField = (): void => {
     const { getNode, updateNodeData } = useReactFlow();
 
     useEffect(() => {
+        addConfirmPasswordField[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER] =
+            "addConfirmPasswordField";
+        addConfirmPasswordFieldProperties[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER] =
+            "addConfirmPasswordFieldProperties";
+        updateConfirmPasswordFieldProperties[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER] =
+            "updateConfirmPasswordFieldProperties";
+        renderConfirmPasswordField[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER] =
+            "renderConfirmPasswordField";
+        skipConfirmPasswordField[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER] =
+            "skipConfirmPasswordField";
+        deleteConfirmPasswordField[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER] =
+            "deleteConfirmPasswordField";
+
         PluginRegistry.getInstance().registerAsync(EventTypes.ON_PROPERTY_CHANGE, addConfirmPasswordField);
         PluginRegistry.getInstance().registerAsync(EventTypes.ON_PROPERTY_CHANGE, updateConfirmPasswordFieldProperties);
         PluginRegistry.getInstance().registerSync(EventTypes.ON_PROPERTY_PANEL_OPEN,

@@ -88,6 +88,8 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
+    const baseI18nKey: string = isForNonHumanUser ? "roles:edit.agents." : "roles:edit.users.";
+
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
 
@@ -114,6 +116,13 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const [ paginatedUsers, setPaginatedUsers ] = useState<UserBasicInterface[]>([]);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ showAddNewUserModal, setShowAddNewUserModal ] = useState<boolean>(false);
+
+    const shouldShowUserstoreDropdown: boolean =
+    selectedUserStoreDomainName !== "AGENT" &&
+    (
+        (!isPrivilegedUsersToggleVisible && isUserstoreSelectionInAdministratorsEnabled) ||
+        selectedUserStoreDomainName !== PRIMARY_USERSTORE
+    );
 
     const {
         isLoading: isUserStoresLoading,
@@ -278,17 +287,17 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                 if (response?.status === 200) {
                     dispatch(
                         addAlert({
-                            description: t("roles:edit.users.notifications.success.description"),
+                            description: t(baseI18nKey + "notifications.success.description"),
                             level: AlertLevels.SUCCESS,
-                            message: t("roles:edit.users.notifications.success.message")
+                            message: t(baseI18nKey + "notifications.success.message")
                         })
                     );
                 } else if (response?.status === 202) {
                     dispatch(
                         addAlert({
-                            description: t("roles:edit.users.notifications.pendingApproval.description"),
+                            description: t(baseI18nKey + "notifications.pendingApproval.description"),
                             level: AlertLevels.WARNING,
-                            message: t("roles:edit.users.notifications.pendingApproval.message")
+                            message: t(baseI18nKey + "notifications.pendingApproval.message")
                         })
                     );
                 }
@@ -342,17 +351,17 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                 if (response?.status === 200) {
                     dispatch(
                         addAlert({
-                            description: t("roles:edit.users.notifications.success.description"),
+                            description: t(baseI18nKey + "notifications.success.description"),
                             level: AlertLevels.SUCCESS,
-                            message: t("roles:edit.users.notifications.success.message")
+                            message: t(baseI18nKey + "notifications.success.message")
                         })
                     );
                 } else if (response?.status === 202) {
                     dispatch(
                         addAlert({
-                            description: t("roles:edit.users.notifications.pendingApproval.description"),
+                            description: t(baseI18nKey + "notifications.pendingApproval.description"),
                             level: AlertLevels.WARNING,
-                            message: t("roles:edit.users.notifications.pendingApproval.message")
+                            message: t(baseI18nKey + "notifications.pendingApproval.message")
                         })
                     );
                 }
@@ -459,10 +468,10 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         if (paginatedUsers.length === 0) {
             return (
                 <EmptyPlaceholder
-                    title={ t("roles:edit.users.list." +
+                    title={ t(baseI18nKey + "list." +
                         "emptyPlaceholder.title") }
                     subtitle={ [
-                        t("roles:edit.users.list." +
+                        t(baseI18nKey + "list." +
                             "emptyPlaceholder.subtitles", { type: "role" })
                     ] }
                     image={ getEmptyPlaceholderIllustrations().emptyList }
@@ -512,7 +521,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                         </Header>
                     );
                 },
-                title: "User"
+                title: null
             }
         ];
 
@@ -557,7 +566,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             onFilter={ (query: string) => handleUserFilter(query?.trim()) }
             disableSearchFilterDropdown
             filterAttributeOptions={ [] }
-            placeholder={ t("console:manage.features.groups.advancedSearch.placeholder") }
+            placeholder={ t("users:advancedSearch.placeholder") }
             defaultSearchAttribute=""
             defaultSearchOperator=""
             triggerClearQuery={ triggerClearQuery }
@@ -570,10 +579,10 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             <Box display="flex" justifyContent="space-between" alignItems="center">
                 <div>
                     <Heading as="h4">
-                        { t("roles:edit.users.heading") }
+                        { t(baseI18nKey + "heading") }
                     </Heading>
                     <Heading subHeading ellipsis as="h6">
-                        { t("roles:edit.users.subHeading") }
+                        { t(baseI18nKey + "subHeading") }
                     </Heading>
                 </div>
                 { !isReadOnly && (
@@ -584,7 +593,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                         onClick={ handleOpenAddNewUserModal }
                     >
                         <Icon name="plus"/>
-                        { t("console:manage.features.roles.edit.users.list." +
+                        { t(baseI18nKey + "list." +
                             "emptyPlaceholder.action") }
                     </PrimaryButton>
                 ) }
@@ -602,16 +611,17 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                 totalListSize={ selectedUsersFromUserStore?.length }
                 isLoading={ isUserStoresLoading || isSubmitting }
                 showPaginationPageLimit={ !isReadOnly }
-                rightActionPanel={ ((!isPrivilegedUsersToggleVisible && isUserstoreSelectionInAdministratorsEnabled) ||
-                    selectedUserStoreDomainName !== PRIMARY_USERSTORE) && (
-                    <Dropdown
-                        data-componentid={ `${ componentId }-list-usertore-dropdown` }
-                        selection
-                        options={ availableUserStores }
-                        placeholder={ t("console:manage.features.groups.list.storeOptions") }
-                        onChange={ handleDomainChange }
-                        defaultValue={ activeUserStore ? activeUserStore : userstoresConfig.primaryUserstoreName }
-                    />
+                rightActionPanel={ (
+                    shouldShowUserstoreDropdown && (
+                        <Dropdown
+                            data-componentid={ `${ componentId }-list-usertore-dropdown` }
+                            selection
+                            options={ availableUserStores }
+                            placeholder={ t("console:manage.features.groups.list.storeOptions") }
+                            onChange={ handleDomainChange }
+                            defaultValue={ activeUserStore ? activeUserStore : userstoresConfig.primaryUserstoreName }
+                        />
+                    )
                 ) }
             >
                 <DataTable<UserBasicInterface>
@@ -645,6 +655,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                             ? availableUserStores
                             : []
                         }
+                        isForNonHumanUser={ isForNonHumanUser }
                     />
                 )
             }

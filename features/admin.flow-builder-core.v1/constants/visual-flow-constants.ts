@@ -72,6 +72,8 @@ class VisualFlowConstants {
         ElementTypes.Divider,
         ElementTypes.Image
     ];
+
+    public static readonly FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER: string = "uniqueName";
 }
 
 export default VisualFlowConstants;

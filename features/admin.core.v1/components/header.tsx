@@ -60,7 +60,7 @@ import { OrganizationType } from "../constants/organization-constants";
 import { history } from "../helpers/history";
 import useGlobalVariables from "../hooks/use-global-variables";
 import { ConfigReducerStateInterface } from "../models/reducer-state";
-import { AppState } from "../store";
+import { AppState, store } from "../store";
 import { CommonUtils } from "../utils/common-utils";
 import { EventPublisher } from "../utils/event-publisher";
 import "./header.scss";
@@ -415,33 +415,42 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                 userDropdownMenu={ {
                     actionIcon: <LogoutIcon />,
                     actionText: t("common:logout"),
-                    footerContent: [
-                        <Box key="footer" className="user-dropdown-footer">
-                            <Link
-                                variant="body3"
-                                href={ getLink("common.privacyPolicy") }
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                { I18n.instance.t("console:common.dropdown.footer.privacyPolicy") as string }
-                            </Link>
-                            <Link
-                                variant="body3"
-                                href={ getLink("common.cookiePolicy") }
-                                target="_blank"
-                                rel="noreferrer">
-                                { I18n.instance.t("console:common.dropdown.footer.cookiePolicy") as string }
-                            </Link>
-                            <Link
-                                variant="body3"
-                                href={ getLink("common.termsOfService") }
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                { I18n.instance.t("console:common.dropdown.footer.termsOfService") as string }
-                            </Link>
-                        </Box>
-                    ],
+                    footerContent:  store.getState()?.config?.ui?.cookiePolicyUrl ||
+                                    store.getState()?.config?.ui?.privacyPolicyUrl ||
+                                    store.getState()?.config?.ui?.termsOfUseUrl ? ([
+                            <Box key="footer" className="user-dropdown-footer">
+                                { store.getState()?.config?.ui?.privacyPolicyUrl && (
+                                    <Link
+                                        variant="body3"
+                                        href={ store.getState()?.config?.ui?.privacyPolicyUrl ?? "" }
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        { I18n.instance.t("console:common.dropdown.footer.privacyPolicy") as string }
+                                    </Link>
+                                ) }
+                                { store.getState()?.config?.ui?.cookiePolicyUrl && (
+                                    <Link
+                                        variant="body3"
+                                        href={ store.getState()?.config?.ui?.cookiePolicyUrl ?? "" }
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        { I18n.instance.t("console:common.dropdown.footer.cookiePolicy") as string }
+                                    </Link>
+                                ) }
+                                { store.getState()?.config?.ui?.termsOfUseUrl && (
+                                    <Link
+                                        variant="body3"
+                                        href={ store.getState()?.config?.ui?.termsOfUseUrl ?? "" }
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        { I18n.instance.t("console:common.dropdown.footer.termsOfService") as string }
+                                    </Link>
+                                ) }
+                            </Box>
+                        ]) : undefined,
                     menuItems: [
                         billingPortalURL &&
                             window["AppUtils"].getConfig().extensions.billingPortalUrl &&

@@ -593,6 +593,14 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Custom content configurations.
      */
     customContent: CustomContentConfigInterface;
+    /**
+     * Privacy policy URL.
+     */
+    privacyPolicyUrl?: string;
+    /**
+     * Terms of service URL.
+     */
+    termsOfUseUrl?: string;
 }
 
 /**

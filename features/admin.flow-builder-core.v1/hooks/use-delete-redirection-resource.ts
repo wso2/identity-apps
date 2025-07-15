@@ -38,6 +38,11 @@ const useDeleteRedirectionResource = (): void => {
     const { getEdges, getNodes, updateNodeData, setNodes } = useReactFlow();
 
     useEffect(() => {
+        deleteComponentAndNode[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER] = "deleteComponentAndNode";
+        deleteRedirectionNode[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER] = "deleteRedirectionNode";
+        deleteRedirectionActionNode[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER] =
+            "deleteRedirectionActionNode";
+
         PluginRegistry.getInstance().registerAsync(EventTypes.ON_NODE_DELETE, deleteRedirectionActionNode);
         PluginRegistry.getInstance().registerAsync(EventTypes.ON_NODE_ELEMENT_DELETE, deleteRedirectionNode);
         PluginRegistry.getInstance().registerAsync(EventTypes.ON_EDGE_DELETE, deleteComponentAndNode);

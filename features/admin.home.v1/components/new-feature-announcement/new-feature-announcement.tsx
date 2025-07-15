@@ -30,6 +30,9 @@ import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import useNewRegistrationPortalFeatureStatus from
     "@wso2is/admin.registration-flow-builder.v1/api/use-new-registration-portal-feature-status";
+import { AGENT_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import AIText from "@wso2is/common.ai.v1/components/ai-text";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
@@ -46,6 +49,7 @@ import "./new-feature-announcement.scss";
  * Props interface of {@link NewFeatureAnnouncement}
  */
 export interface NewFeatureAnnouncementProps extends IdentifiableComponentInterface {
+    id: string;
     title: ReactElement;
     description: ReactElement;
     isEnabled: boolean;
@@ -62,6 +66,7 @@ export interface NewFeatureAnnouncementProps extends IdentifiableComponentInterf
  */
 const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = ({
     "data-componentid": componentId = "new-feature-announcement",
+    id,
     title,
     description,
     isEnabled,
@@ -72,7 +77,7 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
 }: NewFeatureAnnouncementProps): ReactElement => {
     const { t } = useTranslation();
 
-    const { setShowPreviewFeaturesModal } = useFeatureGate();
+    const { setShowPreviewFeaturesModal, setSelectedPreviewFeatureToShow } = useFeatureGate();
 
     return (
         <Paper
@@ -115,11 +120,14 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
                 ) : (
                     <Button
                         variant="contained"
-                        onClick={ () => setShowPreviewFeaturesModal(true) }
+                        onClick={ () => {
+                            setSelectedPreviewFeatureToShow(id);
+                            setShowPreviewFeaturesModal(true);
+                        } }
                         loading={ isEnabledStatusLoading }
                     >
                         <Box display="flex" alignItems="center" gap={ 1 }>
-                            <PreviewFeaturesIcon /> Enable and try out
+                            <PreviewFeaturesIcon /> { id !== "agents" ? "Enable and try out" : "Try Out" }
                         </Box>
                     </Button>
                 ) }
@@ -135,19 +143,33 @@ export const FeatureCarousel = () => {
     const [ direction, setDirection ] = useState(1);
 
     const {
+        isLoading: isUserStoresListFetchRequestLoading,
+        userStoresList
+    } = useUserStores();
+
+    const {
         data: isNewRegistrationPortalEnabled,
         isLoading: isNewRegistrationPortalEnabledRequestLoading
     } = useNewRegistrationPortalFeatureStatus();
 
     const agentFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state?.config?.ui?.features?.agents);
+
     const isAgentManagementFeatureEnabledForOrganization: boolean = useMemo(() => {
+        const agentUserStore: UserStoreListItem =
+            userStoresList?.find((userStore: UserStoreListItem) => userStore?.name === AGENT_USERSTORE);
+
+        if (agentUserStore) {
+            return true;
+        }
+
         return false;
-    }, []);
+    }, [ isUserStoresListFetchRequestLoading, userStoresList ]);
 
     const features: any = useMemo(() => [
         agentFeatureConfig?.enabled && {
             description: "Extend your identity management to autonomous agents and AI systems",
+            id: "agents",
             isEnabled: isAgentManagementFeatureEnabledForOrganization,
             isEnabledStatusLoading: false,
             onTryOut: () => {},
@@ -160,6 +182,7 @@ export const FeatureCarousel = () => {
                     new AI-powered visual designer <AIText />
                 </>
             ),
+            id: "self-registration-orchestration",
             illustration: <Box className="login-box">
                 <SignUpBox />
             </Box>,
@@ -170,7 +193,11 @@ export const FeatureCarousel = () => {
             },
             title: "Design seamless self-registration experiences "
         }
-    ].filter(Boolean), [ isNewRegistrationPortalEnabled, agentFeatureConfig ]);
+    ].filter(Boolean), [
+        isNewRegistrationPortalEnabled,
+        agentFeatureConfig,
+        isNewRegistrationPortalEnabledRequestLoading
+    ]);
 
     useEffect(() => {
         const interval: any = setInterval(() => {
@@ -220,6 +247,7 @@ export const FeatureCarousel = () => {
                     } }
                 >
                     <NewFeatureAnnouncement
+                        id={ features[currentIndex].id }
                         title={ features[currentIndex]?.title }
                         description={ features[currentIndex]?.description }
                         illustration={ features[currentIndex]?.illustration }
