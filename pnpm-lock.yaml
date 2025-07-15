@@ -543,7 +543,7 @@ importers:
         specifier: ^2.25.212
         version: link:../../features/admin.console-settings.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.7
+        specifier: ^2.46.8
         version: link:../../features/admin.core.v1
       '@wso2is/admin.email-and-sms.v1':
         specifier: ^2.25.204
@@ -561,7 +561,7 @@ importers:
         specifier: ^1.7.6
         version: link:../../features/admin.feature-gate.v1
       '@wso2is/admin.flows.v1':
-        specifier: ^1.0.8
+        specifier: ^1.0.9
         version: link:../../features/admin.flows.v1
       '@wso2is/admin.groups.v1':
         specifier: ^2.27.120
@@ -6232,7 +6232,7 @@ importers:
         specifier: ^2.26.208
         version: link:../admin.organizations.v1
       '@wso2is/admin.password-recovery-flow-builder.v1':
-        specifier: ^0.0.0
+        specifier: ^1.0.0
         version: link:../admin.password-recovery-flow-builder.v1
       '@wso2is/admin.policy-administration.v1':
         specifier: ^1.0.121
@@ -6244,7 +6244,7 @@ importers:
         specifier: ^1.0.92
         version: link:../admin.push-providers.v1
       '@wso2is/admin.registration-flow-builder.v1':
-        specifier: ^0.9.0
+        specifier: ^0.9.3
         version: link:../admin.registration-flow-builder.v1
       '@wso2is/admin.remote-repository-configuration.v1':
         specifier: ^2.25.204
@@ -8720,7 +8720,7 @@ importers:
         specifier: ^2.4.5
         version: 2.4.5(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.5
+        specifier: ^2.46.8
         version: link:../admin.core.v1
       '@wso2is/common.ai.v1':
         specifier: ^2.27.3
@@ -8841,13 +8841,13 @@ importers:
         specifier: ^2.4.3
         version: 2.4.3(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.7
+        specifier: ^2.46.8
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: workspace:^
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.registration-flow-builder.v1':
-        specifier: ^0.9.1
+        specifier: ^0.9.3
         version: link:../admin.registration-flow-builder.v1
       '@wso2is/admin.server-configurations.v1':
         specifier: ^2.35.2
@@ -12958,13 +12958,13 @@ importers:
         specifier: ^2.33.96
         version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.3
+        specifier: ^2.46.8
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.7.2
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.flow-builder-core.v1':
-        specifier: ^0.8.0
+        specifier: ^0.8.4
         version: link:../admin.flow-builder-core.v1
       '@wso2is/admin.rules.v1':
         specifier: ^0.6.0
@@ -14346,13 +14346,13 @@ importers:
         specifier: ^2.33.96
         version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.5
+        specifier: ^2.46.8
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.7.5
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.flow-builder-core.v1':
-        specifier: ^0.8.2
+        specifier: ^0.8.4
         version: link:../admin.flow-builder-core.v1
       '@wso2is/admin.rules.v1':
         specifier: ^0.6.0
@@ -42948,6 +42948,8 @@ packages:
       webpack: '*'
     peerDependenciesMeta:
       webpack:
+        optional: true
+      webpack-sources:
         optional: true
     dependencies:
       webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@4.10.0)

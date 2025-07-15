@@ -1,5 +1,17 @@
 # @wso2is/admin.core.v1
 
+## 2.46.8
+
+### Patch Changes
+
+- [#8494](https://github.com/wso2/identity-apps/pull/8494) [`ff7f467277d15c7d9db98f4581e13df80c678ddb`](https://github.com/wso2/identity-apps/commit/ff7f467277d15c7d9db98f4581e13df80c678ddb) Thanks [@KD23243](https://github.com/KD23243)! - Add flow composer for the password recovery flow
+
+* [#8527](https://github.com/wso2/identity-apps/pull/8527) [`cea049e8be75e74950f7ebbba2c2750abe4c0e62`](https://github.com/wso2/identity-apps/commit/cea049e8be75e74950f7ebbba2c2750abe4c0e62) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix feature preview modal rendering without content
+
+* Updated dependencies [[`ff7f467277d15c7d9db98f4581e13df80c678ddb`](https://github.com/wso2/identity-apps/commit/ff7f467277d15c7d9db98f4581e13df80c678ddb)]:
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.0.0
+  - @wso2is/admin.registration-flow-builder.v1@0.9.3
+
 ## 2.46.7
 
 ### Patch Changes

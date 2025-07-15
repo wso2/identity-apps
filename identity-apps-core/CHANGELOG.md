@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.27.3
+
+### Patch Changes
+
+- [#8249](https://github.com/wso2/identity-apps/pull/8249) [`993184075b947dd35826aea9e58b13be2466a7e9`](https://github.com/wso2/identity-apps/commit/993184075b947dd35826aea9e58b13be2466a7e9) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add organization handle discovery support for b2b login flow
+
 ## 2.27.2
 
 ### Patch Changes
