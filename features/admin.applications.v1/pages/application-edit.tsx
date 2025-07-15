@@ -277,9 +277,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
                 template = cloneDeep(getTemplate(relatedOldTemplateId));
 
-                if (extensionTemplate?.id === "mcp-client-application") {
-                    template["originalTemplateId"] = extensionTemplate?.id;
-                    applicationData["originalTemplateId"] = extensionTemplate?.id;
+                if (extensionTemplate?.id) {
+                    template[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY] = extensionTemplate?.id;
+                    applicationData[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY] =
+                        extensionTemplate?.id;
                 }
             }
         }

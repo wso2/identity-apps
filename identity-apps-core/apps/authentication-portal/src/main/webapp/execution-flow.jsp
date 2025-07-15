@@ -65,6 +65,8 @@
     String state = request.getParameter("state");
     String code = request.getParameter("code");
     String spId = request.getParameter("spId");
+    String confirmationCode = request.getParameter("confirmation");
+    String flowType = request.getParameter("flowType");
 
     try {
         byte[] jsonData = Files.readAllBytes(Paths.get(jsonFilePath));
@@ -112,7 +114,7 @@
       </layout:component>
       <layout:component componentName="MainSection">
           <div class="ui segment left aligned">
-              <div id="react-root" class="react-ui-container"/>
+              <div id="react-root" class="react-ui-container"></div>
           </div>
       </layout:component>
       <layout:component componentName="ProductFooter">
@@ -160,16 +162,18 @@
             }
 
             const { createElement, useEffect, useState } = React;
-            const { DynamicContent, I18nProvider } = ReactUICore;
+            const { DynamicContent, I18nProvider, executeFido2FLow, PasskeyEnrollment } = ReactUICore;
 
             const Content = () => {
                 const baseUrl = "<%= identityServerEndpointContextParam %>";
                 const authenticationEndpoint = baseUrl + "${pageContext.request.contextPath}";
                 const defaultMyAccountUrl = "<%= myaccountUrl %>";
                 const authPortalURL = "<%= authenticationPortalURL %>";
-                const registrationFlowApiProxyPath = authPortalURL + "/util/self-registration-api.jsp";
+                const executionFlowApiProxyPath = authPortalURL + "/util/execution-flow-api.jsp";
                 const code = "<%= Encode.forJavaScript(code) != null ? Encode.forJavaScript(code) : null %>";
                 const state = "<%= Encode.forJavaScript(state) != null ? Encode.forJavaScript(state) : null %>";
+                const confirmationCode = "<%= Encode.forJavaScript(confirmationCode) != null ? Encode.forJavaScript(confirmationCode) : null %>";
+                const flowType = "<%= Encode.forJavaScript(flowType) != null ? Encode.forJavaScript(flowType) : null %>";
 
                 const locale = "en-US";
                 const translations = <%= translationsJson %>;
@@ -180,6 +184,7 @@
                 const [ error, setError ] = useState(null);
                 const [ postBody, setPostBody ] = useState(undefined);
                 const [ flowError, setFlowError ] = useState(undefined);
+                const [confirmationEffectDone, setConfirmationEffectDone] = useState(false);
 
                 useEffect(() => {
                     const savedFlowId = localStorage.getItem("flowId");
@@ -187,7 +192,6 @@
                     if (code !== "null" && state !== "null") {
                         setPostBody({
                             flowId: savedFlowId,
-                            flowType: "REGISTRATION",
                             actionId: "",
                             inputs: {
                                 code,
@@ -195,19 +199,33 @@
                             }
                         });
                     }
-                }, [ code, state ]);
+                }, [code, state]);
 
                 useEffect(() => {
-                    if (!postBody && code === "null") {
-                        setPostBody({ applicationId: "new-application", flowType: "REGISTRATION" });
+                    if (confirmationCode !== "null" && !confirmationEffectDone) {
+                        setPostBody({
+                            flowType: flowType,
+                            inputs: {
+                                confirmationCode: confirmationCode
+                            }
+                        });
+                        setConfirmationEffectDone(true);
                     }
+                }, [confirmationCode, confirmationEffectDone]);
+
+                useEffect(() => {
+                    if (!postBody && code === "null" && confirmationCode === "null" && flowType == "null") {
+                        setPostBody({ applicationId: "new-application", flowType: "REGISTRATION" });
+                    } else if (!postBody && code === "null" && confirmationCode === "null" && flowType !== "null") {
+                        setPostBody({ applicationId: "new-application", flowType: flowType });
+                    } 
                 }, []);
 
                 useEffect(() => {
                     if (!postBody) return;
                     setLoading(true);
 
-                    fetch(registrationFlowApiProxyPath, {
+                    fetch(executionFlowApiProxyPath, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(postBody)
@@ -252,10 +270,15 @@
 
                 useEffect(() => {
                     if (error && error.code) {
-                        const errorDetails = getI18nKeyForError(error.code);
-                        const errorPageURL = authPortalURL + "/registration_error.do?" + "ERROR_MSG="
-                            + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID="
-                            + "<%= Encode.forJavaScript(spId) %>" + "&" + "REG_PORTAL_URL=" + authPortalURL + "/register.do";
+                        const errorDetails = getI18nKeyForError(error.code, flowType);
+                        const portal_url = authPortalURL + "/register.do";
+                        if (flowType === "INVITE_USER_REGISTRATION" || flowType === "PASSWORD_RECOVERY") {
+                            portal_url = authPortalURL + "/recovery.do";
+                        }
+                        const errorPageURL = authPortalURL + "/execution_flow_error.do?" + "ERROR_MSG="
+                            + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID=" 
+                            + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + flowType + "&" + 
+                            "PORTAL_URL=" + portal_url;
 
                         window.location.href = errorPageURL;
                     }
@@ -264,6 +287,21 @@
                         setFlowError(flowData.data.additionalData.error);
                     }
                 }, [ error, flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error ]);
+
+                const handleInternalPrompt = (flowData) => {
+                    let providedInputs = {};
+                    flowData.data.requiredParams.map((param) => {
+                        if (param === "origin") {
+                            providedInputs[param] = window.location.origin;
+                        }
+                    });
+
+                    setPostBody({
+                        flowId: flowData.flowId,
+                        actionId: "",
+                        inputs: providedInputs
+                    });
+                }
 
                 const handleFlowStatus = (flow) => {
                     if (!flow) return false;
@@ -290,16 +328,42 @@
 
                 const handleStepType = (flow) => {
                     if (!flow) return false;
-
                     switch (flow.type) {
                         case "REDIRECTION":
                             setLoading(true);
                             window.location.href = flow.data.redirectURL;
+                            break;
+
+                        case "INTERNAL_PROMPT":
+                            handleInternalPrompt(flow);
+                            break;
+
+                        case "WEBAUTHN":
+                            executeFido2FLow(
+                                flow,
+                                setPostBody,
+                                (error) => {
+                                    setFlowError(error);
+                                }
+                            );
+                            break;
 
                         default:
                             console.log(`Flow step type: ${flow.type}. No special action.`);
                     }
                 };
+
+                if (flowData && flowData.type === "WEBAUTHN") {
+                    return createElement(
+                        "div",
+                        { className: "registration-content-container loaded" },
+                        createElement(
+                            PasskeyEnrollment, {
+                                passkeyError: flowError
+                            }
+                        )
+                    );
+                }
 
                 if (loading || (!components || components.length === 0)) {
                     return createElement(

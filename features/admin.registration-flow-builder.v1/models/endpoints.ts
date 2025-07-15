@@ -25,4 +25,5 @@ export interface RegistrationFlowBuilderResourceEndpointsInterface {
      * @example `https://{serverUrl}/t/{tenantDomain}/api/server/v1/registration-flow`
     */
     registrationFlow: string;
+    registrationFlowAI: string;
 }

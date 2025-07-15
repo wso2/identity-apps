@@ -45,7 +45,8 @@ class VisualFlowConstants {
         StepTypes.Redirection,
         TemplateTypes.Basic,
         TemplateTypes.BasicFederated,
-        TemplateTypes.Blank
+        TemplateTypes.Blank,
+        TemplateTypes.BasicPasskey
     ];
 
     public static readonly FLOW_BUILDER_VIEW_ALLOWED_RESOURCE_TYPES: string[] = [
@@ -70,6 +71,8 @@ class VisualFlowConstants {
         ElementTypes.Divider,
         ElementTypes.Image
     ];
+
+    public static readonly FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER: string = "uniqueName";
 }
 
 export default VisualFlowConstants;

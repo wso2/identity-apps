@@ -1,5 +1,98 @@
 # @wso2is/i18n
 
+## 2.24.14
+
+### Patch Changes
+
+- [#8511](https://github.com/wso2/identity-apps/pull/8511) [`90acfab75f677280eb39db0fc26d4e8e63024985`](https://github.com/wso2/identity-apps/commit/90acfab75f677280eb39db0fc26d4e8e63024985) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - UI improvements to the agents feature
+
+## 2.24.13
+
+### Patch Changes
+
+- [#8478](https://github.com/wso2/identity-apps/pull/8478) [`24ed4949898ff12edd895c0d36d9098fa36b7e8c`](https://github.com/wso2/identity-apps/commit/24ed4949898ff12edd895c0d36d9098fa36b7e8c) Thanks [@hwupathum](https://github.com/hwupathum)! - Enable secret hiding for Remote logging UI
+
+- Updated dependencies [[`24ed4949898ff12edd895c0d36d9098fa36b7e8c`](https://github.com/wso2/identity-apps/commit/24ed4949898ff12edd895c0d36d9098fa36b7e8c)]:
+  - @wso2is/core@2.9.4
+
+## 2.24.12
+
+### Patch Changes
+
+- [#8176](https://github.com/wso2/identity-apps/pull/8176) [`7481e3bcf5856beae32e670f04956157747334f6`](https://github.com/wso2/identity-apps/commit/7481e3bcf5856beae32e670f04956157747334f6) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add organization handle to organization creation, display, and list
+
+## 2.24.11
+
+### Patch Changes
+
+- [#8077](https://github.com/wso2/identity-apps/pull/8077) [`4c0d987daf1267aa5cdd2b4b5d1ef2f9f17a53b1`](https://github.com/wso2/identity-apps/commit/4c0d987daf1267aa5cdd2b4b5d1ef2f9f17a53b1) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add assets, i18n and util methods required for AI agent management
+
+- Updated dependencies [[`b6f5db8cd4722cb06c1608b0698c31ae5f6a5204`](https://github.com/wso2/identity-apps/commit/b6f5db8cd4722cb06c1608b0698c31ae5f6a5204)]:
+  - @wso2is/core@2.9.3
+
+## 2.24.10
+
+### Patch Changes
+
+- [#8471](https://github.com/wso2/identity-apps/pull/8471) [`c562eed1c1930ca8da84c8ce3f49d30a57773bbe`](https://github.com/wso2/identity-apps/commit/c562eed1c1930ca8da84c8ce3f49d30a57773bbe) Thanks [@Malith-19](https://github.com/Malith-19)! - Add UI support for update users in role in workflow operations.
+
+## 2.24.9
+
+### Patch Changes
+
+- [#8442](https://github.com/wso2/identity-apps/pull/8442) [`635b9c61911819182fb7685f32bc7942fd6b9af5`](https://github.com/wso2/identity-apps/commit/635b9c61911819182fb7685f32bc7942fd6b9af5) Thanks [@Malith-19](https://github.com/Malith-19)! - Add new warning message when user deletion workflow created and display the validation errors.
+
+## 2.24.8
+
+### Patch Changes
+
+- [#8422](https://github.com/wso2/identity-apps/pull/8422) [`f047e10bf194d35f2f79c7eda0a63a31ddc57a46`](https://github.com/wso2/identity-apps/commit/f047e10bf194d35f2f79c7eda0a63a31ddc57a46) Thanks [@malithie](https://github.com/malithie)! - Update UI to adhere to api changes.
+
+## 2.24.7
+
+### Patch Changes
+
+- [#8409](https://github.com/wso2/identity-apps/pull/8409) [`16380763a69b363677a27dff0d71e8bb7f4bd006`](https://github.com/wso2/identity-apps/commit/16380763a69b363677a27dff0d71e8bb7f4bd006) Thanks [@Malith-19](https://github.com/Malith-19)! - Improve the workflow related UIs.
+
+## 2.24.6
+
+### Patch Changes
+
+- [#8396](https://github.com/wso2/identity-apps/pull/8396) [`615709472c3c0ac89783f37a8cb3b07d414b5d75`](https://github.com/wso2/identity-apps/commit/615709472c3c0ac89783f37a8cb3b07d414b5d75) Thanks [@malithie](https://github.com/malithie)! - Update webhooks ui to support websubhub behavior.
+
+## 2.24.5
+
+### Patch Changes
+
+- [#8393](https://github.com/wso2/identity-apps/pull/8393) [`6b6898bf46bda36ee3a4fd58bb2734eda6822824`](https://github.com/wso2/identity-apps/commit/6b6898bf46bda36ee3a4fd58bb2734eda6822824) Thanks [@Malith-19](https://github.com/Malith-19)! - Add UI support for the add_role workflow.
+
+## 2.24.4
+
+### Patch Changes
+
+- [#8391](https://github.com/wso2/identity-apps/pull/8391) [`95a551badcc4414cea3f42eb8fd2de9fdb29dc26`](https://github.com/wso2/identity-apps/commit/95a551badcc4414cea3f42eb8fd2de9fdb29dc26) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - add self registration info banner for application login flow tab
+
+## 2.24.3
+
+### Patch Changes
+
+- [#8383](https://github.com/wso2/identity-apps/pull/8383) [`d324ef56d7f9db7fff78ed46d23d7bcaae69e216`](https://github.com/wso2/identity-apps/commit/d324ef56d7f9db7fff78ed46d23d7bcaae69e216) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add first-class template support for both React and Next.js
+
+## 2.24.2
+
+### Patch Changes
+
+- [#8378](https://github.com/wso2/identity-apps/pull/8378) [`f8c18f0cc7868399735ffc30391741b86cc80126`](https://github.com/wso2/identity-apps/commit/f8c18f0cc7868399735ffc30391741b86cc80126) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Attribute level input format support
+
+- Updated dependencies [[`edd0e0eae566daddfadff7877e1fba13f1daeba9`](https://github.com/wso2/identity-apps/commit/edd0e0eae566daddfadff7877e1fba13f1daeba9)]:
+  - @wso2is/core@2.9.1
+
+## 2.24.1
+
+### Patch Changes
+
+- [#8364](https://github.com/wso2/identity-apps/pull/8364) [`581fda3c98828df995f28ea828585e2a760e73b0`](https://github.com/wso2/identity-apps/commit/581fda3c98828df995f28ea828585e2a760e73b0) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the feature status to the custom page editor feature
+
 ## 2.24.0
 
 ### Minor Changes

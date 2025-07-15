@@ -19,7 +19,7 @@
  .custom-page-editor {
     .back-button {
         cursor: pointer;
-        margin-bottom: 2px;
+        margin-bottom: 10px;
     }
 
     .main-container {
@@ -27,8 +27,20 @@
     }
 
     .editor-container {
-        padding-bottom: 0;
-        padding-left: 0;
-        padding-right: 0;
+        padding: 0;
+
+        .resource-tabs {
+            .menu {
+                margin-bottom: 0;
+            }
+            .resource-tab-pane {
+                margin-top: 0 !important;
+            }
+        }
+
+        .sticky-action-container {
+            padding: 1em;
+            margin-bottom: 0;
+        }
     }
 }

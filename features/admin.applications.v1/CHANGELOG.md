@@ -1,5 +1,67 @@
 # @wso2is/admin.applications.v1
 
+## 2.36.7
+
+### Patch Changes
+
+- [#8511](https://github.com/wso2/identity-apps/pull/8511) [`90acfab75f677280eb39db0fc26d4e8e63024985`](https://github.com/wso2/identity-apps/commit/90acfab75f677280eb39db0fc26d4e8e63024985) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - UI improvements to the agents feature
+
+- Updated dependencies [[`90acfab75f677280eb39db0fc26d4e8e63024985`](https://github.com/wso2/identity-apps/commit/90acfab75f677280eb39db0fc26d4e8e63024985)]:
+  - @wso2is/admin.api-resources.v2@2.26.2
+  - @wso2is/admin.extensions.v1@2.39.7
+  - @wso2is/admin.userstores.v1@2.27.36
+  - @wso2is/admin.claims.v1@2.28.6
+  - @wso2is/admin.roles.v2@2.27.160
+  - @wso2is/admin.core.v1@2.46.7
+  - @wso2is/i18n@2.24.14
+  - @wso2is/admin.feature-gate.v1@1.7.6
+
+## 2.36.6
+
+### Patch Changes
+
+- [#8466](https://github.com/wso2/identity-apps/pull/8466) [`31252dcffe38616bb43dd605174e200f130242e0`](https://github.com/wso2/identity-apps/commit/31252dcffe38616bb43dd605174e200f130242e0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix broken i18n in api authorization section in application edit view
+
+- Updated dependencies [[`8813a54e1329989eec28a10b21678bfdb0e6d11d`](https://github.com/wso2/identity-apps/commit/8813a54e1329989eec28a10b21678bfdb0e6d11d)]:
+  - @wso2is/admin.organizations.v1@2.26.207
+
+## 2.36.5
+
+### Patch Changes
+
+- [#8434](https://github.com/wso2/identity-apps/pull/8434) [`2a00fc63bb8c5df7a52877b4d5f532d54cbae659`](https://github.com/wso2/identity-apps/commit/2a00fc63bb8c5df7a52877b4d5f532d54cbae659) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Remove info in protocol tab for react and nextjst templates
+
+## 2.36.4
+
+### Patch Changes
+
+- [#8412](https://github.com/wso2/identity-apps/pull/8412) [`5c238289ef5f6734d2f88efe9f7a6b88357b6a6b`](https://github.com/wso2/identity-apps/commit/5c238289ef5f6734d2f88efe9f7a6b88357b6a6b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improvements for the flows feature
+
+## 2.36.3
+
+### Patch Changes
+
+- [#8391](https://github.com/wso2/identity-apps/pull/8391) [`95a551badcc4414cea3f42eb8fd2de9fdb29dc26`](https://github.com/wso2/identity-apps/commit/95a551badcc4414cea3f42eb8fd2de9fdb29dc26) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - add self registration info banner for application login flow tab
+
+- Updated dependencies [[`b15fb736d9f98de2f79ff10907da3f17e077b1c9`](https://github.com/wso2/identity-apps/commit/b15fb736d9f98de2f79ff10907da3f17e077b1c9), [`95a551badcc4414cea3f42eb8fd2de9fdb29dc26`](https://github.com/wso2/identity-apps/commit/95a551badcc4414cea3f42eb8fd2de9fdb29dc26)]:
+  - @wso2is/admin.connections.v1@2.33.98
+  - @wso2is/admin.server-configurations.v1@2.35.3
+  - @wso2is/i18n@2.24.4
+
+## 2.36.2
+
+### Patch Changes
+
+- [#8383](https://github.com/wso2/identity-apps/pull/8383) [`d324ef56d7f9db7fff78ed46d23d7bcaae69e216`](https://github.com/wso2/identity-apps/commit/d324ef56d7f9db7fff78ed46d23d7bcaae69e216) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add first-class template support for both React and Next.js
+
+- Updated dependencies [[`d324ef56d7f9db7fff78ed46d23d7bcaae69e216`](https://github.com/wso2/identity-apps/commit/d324ef56d7f9db7fff78ed46d23d7bcaae69e216), [`90d6c0be05e8b957cc1fa0c239ec3fb9b5a3fa72`](https://github.com/wso2/identity-apps/commit/90d6c0be05e8b957cc1fa0c239ec3fb9b5a3fa72), [`2981081634e150d84bb16833410fd99001f35162`](https://github.com/wso2/identity-apps/commit/2981081634e150d84bb16833410fd99001f35162)]:
+  - @wso2is/admin.application-templates.v1@1.5.4
+  - @wso2is/admin.template-core.v1@1.5.158
+  - @wso2is/admin.extensions.v1@2.39.4
+  - @wso2is/i18n@2.24.3
+  - @wso2is/admin.feature-gate.v1@1.7.2
+  - @wso2is/admin.core.v1@2.46.3
+
 ## 2.36.1
 
 ### Patch Changes

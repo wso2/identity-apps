@@ -179,6 +179,7 @@ export class AppConstants {
         .set("OVERVIEW_ACCOUNT_SECURITY", "overview.accountSecurity")
         .set("OVERVIEW_CONSENTS", "overview.consents")
         .set("PROFILEINFO_PROFILE", "profileInfo.profile")
+        .set("PROFILEINFO_LEGACY_PROFILE", "profileInfo.profile.legacy")
         .set("PROFILEINFO_LINKED_ACCOUNTS", "profileInfo.linkedAccounts")
         .set("PROFILEINFO_EXTERNAL_LOGINS", "profileInfo.externalLogins")
         .set("PROFILEINFO_EXPORT_PROFILE", "profileInfo.exportProfile")

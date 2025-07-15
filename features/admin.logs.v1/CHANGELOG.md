@@ -1,5 +1,11 @@
 # @wso2is/admin.logs.v1
 
+## 1.6.5
+
+### Patch Changes
+
+- [#8456](https://github.com/wso2/identity-apps/pull/8456) [`69e779d4ed09354ec002a57ec70f0f417b3d8690`](https://github.com/wso2/identity-apps/commit/69e779d4ed09354ec002a57ec70f0f417b3d8690) Thanks [@savindi7](https://github.com/savindi7)! - Update timestamp formatting.
+
 ## 1.6.4
 
 ### Patch Changes

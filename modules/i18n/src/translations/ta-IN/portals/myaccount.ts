@@ -517,6 +517,13 @@ export const myAccount: MyAccountNS = {
                 },
                 tooltip: "Apps"
             },
+            dropdown: {
+                footer: {
+                    cookiePolicy: "குக்கீக் கொள்கை",
+                    privacyPolicy: "தனியுரிமை",
+                    termsOfService: "சேவை விதிமுறைகள்"
+                }
+            },
             organizationLabel: "இந்தக் கணக்கு நிர்வகிக்கப்படுகிறது"
         },
         linkedAccounts: {

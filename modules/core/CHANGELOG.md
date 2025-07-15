@@ -1,5 +1,29 @@
 # @wso2is/core
 
+## 2.9.4
+
+### Patch Changes
+
+- [#8478](https://github.com/wso2/identity-apps/pull/8478) [`24ed4949898ff12edd895c0d36d9098fa36b7e8c`](https://github.com/wso2/identity-apps/commit/24ed4949898ff12edd895c0d36d9098fa36b7e8c) Thanks [@hwupathum](https://github.com/hwupathum)! - Enable secret hiding for Remote logging UI
+
+## 2.9.3
+
+### Patch Changes
+
+- [#8077](https://github.com/wso2/identity-apps/pull/8077) [`b6f5db8cd4722cb06c1608b0698c31ae5f6a5204`](https://github.com/wso2/identity-apps/commit/b6f5db8cd4722cb06c1608b0698c31ae5f6a5204) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Misc improvements required for AI agent management feature
+
+## 2.9.2
+
+### Patch Changes
+
+- [#8452](https://github.com/wso2/identity-apps/pull/8452) [`017eff166dcad4c9337ac1047191e337c14184f3`](https://github.com/wso2/identity-apps/commit/017eff166dcad4c9337ac1047191e337c14184f3) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Revamp My Account user profile codebase
+
+## 2.9.1
+
+### Patch Changes
+
+- [#8378](https://github.com/wso2/identity-apps/pull/8378) [`edd0e0eae566daddfadff7877e1fba13f1daeba9`](https://github.com/wso2/identity-apps/commit/edd0e0eae566daddfadff7877e1fba13f1daeba9) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Input format support for the attributes
+
 ## 2.9.0
 
 ### Minor Changes

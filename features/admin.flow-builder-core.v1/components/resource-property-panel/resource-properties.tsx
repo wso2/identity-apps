@@ -29,8 +29,10 @@ import ResourcePropertyPanelConstants from "../../constants/resource-property-pa
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import { Properties } from "../../models/base";
 import { Element } from "../../models/elements";
+import { EventTypes } from "../../models/extension";
 import { Resource } from "../../models/resources";
 import { StepData } from "../../models/steps";
+import PluginRegistry from "../../plugins/plugin-registry";
 import "./resource-properties.scss";
 
 /**
@@ -74,6 +76,29 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
         lastInteractedStepId
     } = useAuthenticationFlowBuilderCore();
 
+    /**
+     * Get the filtered properties of the last interacted resource.
+     *
+     * @returns Filtered properties of the last interacted resource.
+     */
+    const getFilteredProperties = (): Properties => {
+        const filteredProperties: Properties = Object.keys(lastInteractedResource?.config || {}).reduce(
+            (acc: Properties, key: string) => {
+                if (!ResourcePropertyPanelConstants.EXCLUDED_PROPERTIES.includes(key)) {
+                    acc[key] = lastInteractedResource?.config[key];
+                }
+
+                return acc;
+            },
+            {} as Properties
+        );
+
+        PluginRegistry.getInstance().executeSync(EventTypes.ON_PROPERTY_PANEL_OPEN,
+            lastInteractedResource, filteredProperties, lastInteractedStepId);
+
+        return cloneDeep(filteredProperties);
+    };
+
     const changeSelectedVariant = (selected: string, element?: Partial<Element>) => {
         let selectedVariant: Element = lastInteractedResource?.variants?.find(
             (resource: Element) => resource.variant === selected
@@ -108,7 +133,14 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
         });
     };
 
-    const handlePropertyChange = (propertyKey: string, newValue: any, element: Element) => {
+    const handlePropertyChange = async (propertyKey: string, newValue: any, element: Element) => {
+
+        // Execute plugins for ON_PROPERTY_CHANGE event.
+        if (!await PluginRegistry.getInstance().executeAsync(EventTypes.ON_PROPERTY_CHANGE, propertyKey,
+            newValue, element, lastInteractedStepId)) {
+            return;
+        }
+
         const updateComponent = (components: Element[]): Element[] => {
             return components.map((component: Element) => {
                 if (component.id === element.id) {
@@ -134,18 +166,12 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
 
             return { ...data };
         });
+
+        const updatedResource: Resource = cloneDeep(lastInteractedResource);
+
+        set(updatedResource, propertyKey, newValue);
+        setLastInteractedResource(updatedResource);
     };
-
-    const filteredProperties: Properties = Object.keys(lastInteractedResource?.config || {}).reduce(
-        (acc: Properties, key: string) => {
-            if (!ResourcePropertyPanelConstants.EXCLUDED_PROPERTIES.includes(key)) {
-                acc[key] = lastInteractedResource?.config[key];
-            }
-
-            return acc;
-        },
-        {} as Properties
-    );
 
     return (
         <div className="flow-builder-element-properties" data-componentid={ componentId }>
@@ -154,7 +180,7 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
                     { lastInteractedResource && (
                         <ResourceProperties
                             resource={ cloneDeep(lastInteractedResource) }
-                            properties={ cloneDeep(filteredProperties) }
+                            properties={ getFilteredProperties() }
                             onChange={ handlePropertyChange }
                             onVariantChange={ changeSelectedVariant }
                         />

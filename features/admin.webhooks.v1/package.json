@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.webhooks.v1",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "description": "UI components and utility methods for WSO2 Identity Server Webhooks",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -16,7 +16,7 @@
         "@wso2is/admin.feature-gate.v1": "^1.6.3",
         "@wso2is/core": "^2.7.6",
         "@wso2is/form": "^2.6.35",
-        "@wso2is/i18n": "^2.23.10",
+        "@wso2is/i18n": "^2.24.8",
         "@wso2is/react-components": "^2.9.12",
         "axios": "^0.19.2",
         "react-i18next": "^11.18.5",

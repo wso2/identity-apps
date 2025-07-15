@@ -1,5 +1,62 @@
 # @wso2is/admin.claims.v1
 
+## 2.28.6
+
+### Patch Changes
+
+- [#8511](https://github.com/wso2/identity-apps/pull/8511) [`90acfab75f677280eb39db0fc26d4e8e63024985`](https://github.com/wso2/identity-apps/commit/90acfab75f677280eb39db0fc26d4e8e63024985) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - UI improvements to the agents feature
+
+- Updated dependencies [[`90acfab75f677280eb39db0fc26d4e8e63024985`](https://github.com/wso2/identity-apps/commit/90acfab75f677280eb39db0fc26d4e8e63024985)]:
+  - @wso2is/admin.extensions.v1@2.39.7
+  - @wso2is/admin.userstores.v1@2.27.36
+  - @wso2is/admin.claims.v1@2.28.6
+  - @wso2is/admin.core.v1@2.46.7
+  - @wso2is/i18n@2.24.14
+
+## 2.28.5
+
+### Patch Changes
+
+- [#8513](https://github.com/wso2/identity-apps/pull/8513) [`7d2478f0f706e8eb01b8dfea5ba5080cf7b57811`](https://github.com/wso2/identity-apps/commit/7d2478f0f706e8eb01b8dfea5ba5080cf7b57811) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix input format change when selecting the multi valued property
+
+- Updated dependencies [[`7d2478f0f706e8eb01b8dfea5ba5080cf7b57811`](https://github.com/wso2/identity-apps/commit/7d2478f0f706e8eb01b8dfea5ba5080cf7b57811)]:
+  - @wso2is/admin.claims.v1@2.28.5
+
+## 2.28.4
+
+### Patch Changes
+
+- [#8077](https://github.com/wso2/identity-apps/pull/8077) [`4c0d987daf1267aa5cdd2b4b5d1ef2f9f17a53b1`](https://github.com/wso2/identity-apps/commit/4c0d987daf1267aa5cdd2b4b5d1ef2f9f17a53b1) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add assets, i18n and util methods required for AI agent management
+
+- Updated dependencies [[`4c0d987daf1267aa5cdd2b4b5d1ef2f9f17a53b1`](https://github.com/wso2/identity-apps/commit/4c0d987daf1267aa5cdd2b4b5d1ef2f9f17a53b1), [`b6f5db8cd4722cb06c1608b0698c31ae5f6a5204`](https://github.com/wso2/identity-apps/commit/b6f5db8cd4722cb06c1608b0698c31ae5f6a5204)]:
+  - @wso2is/admin.claims.v1@2.28.4
+  - @wso2is/admin.users.v1@2.33.5
+  - @wso2is/admin.core.v1@2.46.4
+  - @wso2is/theme@2.8.3
+  - @wso2is/i18n@2.24.11
+  - @wso2is/admin.userstores.v1@2.27.35
+  - @wso2is/core@2.9.3
+
+## 2.28.3
+
+### Patch Changes
+
+- [#8432](https://github.com/wso2/identity-apps/pull/8432) [`df31404b3cbfcf8a51ea8aae97f4fae6e165a7cb`](https://github.com/wso2/identity-apps/commit/df31404b3cbfcf8a51ea8aae97f4fae6e165a7cb) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Disable multi valued property for boolean and complex data types
+
+- Updated dependencies [[`df31404b3cbfcf8a51ea8aae97f4fae6e165a7cb`](https://github.com/wso2/identity-apps/commit/df31404b3cbfcf8a51ea8aae97f4fae6e165a7cb)]:
+  - @wso2is/admin.claims.v1@2.28.3
+
+## 2.28.2
+
+### Patch Changes
+
+- [#8378](https://github.com/wso2/identity-apps/pull/8378) [`f8c18f0cc7868399735ffc30391741b86cc80126`](https://github.com/wso2/identity-apps/commit/f8c18f0cc7868399735ffc30391741b86cc80126) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Attribute level input format support
+
+- Updated dependencies [[`edd0e0eae566daddfadff7877e1fba13f1daeba9`](https://github.com/wso2/identity-apps/commit/edd0e0eae566daddfadff7877e1fba13f1daeba9), [`f8c18f0cc7868399735ffc30391741b86cc80126`](https://github.com/wso2/identity-apps/commit/f8c18f0cc7868399735ffc30391741b86cc80126)]:
+  - @wso2is/core@2.9.1
+  - @wso2is/admin.claims.v1@2.28.2
+  - @wso2is/i18n@2.24.2
+
 ## 2.28.1
 
 ### Patch Changes

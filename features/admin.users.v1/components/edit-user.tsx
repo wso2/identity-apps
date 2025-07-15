@@ -203,7 +203,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         const _panes: {
             menuItem: string;
             render: () => ReactElement;
-        } [] = [];
+        }[] = [];
 
         if (isLegacyUserProfileEnabled) {
             _panes.push({
@@ -221,11 +221,9 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                             isReadOnlyUserStore={ isReadOnlyUserStore }
                             isUserManagedByParentOrg={ isUserManagedByParentOrg }
                             adminUserType={ AdminAccountTypes.INTERNAL }
-                            allowDeleteOnly={
-                                user[ SCIMConfigs.scim.systemSchema ]?.isReadOnlyUser === "true"
-                            }
-                            editUserDisclaimerMessage={ (
-                                <Grid>
+                            allowDeleteOnly={ user[SCIMConfigs.scim.systemSchema]?.isReadOnlyUser === "true" }
+                            editUserDisclaimerMessage={
+                                (<Grid>
                                     <Grid.Row columns={ 1 }>
                                         <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
                                             <Message
@@ -236,8 +234,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                                             <Divider hidden />
                                         </Grid.Column>
                                     </Grid.Row>
-                                </Grid>
-                            ) }
+                                </Grid>)
+                            }
                         />
                     </ResourceTab.Pane>
                 )
@@ -258,11 +256,9 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                             isReadOnlyUserStore={ isReadOnlyUserStore }
                             isUserManagedByParentOrg={ isUserManagedByParentOrg }
                             adminUserType={ AdminAccountTypes.INTERNAL }
-                            allowDeleteOnly={
-                                user[ SCIMConfigs.scim.systemSchema ]?.isReadOnlyUser === "true"
-                            }
-                            editUserDisclaimerMessage={ (
-                                <Grid>
+                            allowDeleteOnly={ user[SCIMConfigs.scim.systemSchema]?.isReadOnlyUser === "true" }
+                            editUserDisclaimerMessage={
+                                (<Grid>
                                     <Grid.Row columns={ 1 }>
                                         <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
                                             <Message
@@ -273,8 +269,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                                             <Divider hidden />
                                         </Grid.Column>
                                     </Grid.Row>
-                                </Grid>
-                            ) }
+                                </Grid>)
+                            }
                         />
                     </ResourceTab.Pane>
                 )
@@ -297,31 +293,49 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             });
         }
 
-        _panes.push({
-            menuItem: t("users:editUser.tab.menuItems.2"),
-            render: () => (
-                <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <UserRolesList user={ user } />
-                </ResourceTab.Pane>
-            )
-        },
-        {
-            menuItem: t("users:editUser.tab.menuItems.3"),
-            render: () => (
-                <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <UserSessions
-                        user={ user }
-                        showSessionTerminationButton={ (!isSuperAdminIdentifierFetchRequestLoading && !hideTermination)
-                        && ((isSelectedSuperAdmin && isSuperAdmin)
-                            || (!isSelectedSuperAdmin && isSuperAdmin)
-                            || (!isSelectedSuperAdmin && !isSuperAdmin))
-                        } />
-                </ResourceTab.Pane>
-            )
-        });
+        _panes.push(
+            {
+                menuItem: t("users:editUser.tab.menuItems.2"),
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <UserRolesList user={ user } />
+                    </ResourceTab.Pane>
+                )
+            },
+            {
+                menuItem: t("users:editUser.tab.menuItems.3"),
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <UserSessions
+                            user={ user }
+                            showSessionTerminationButton={
+                                !isSuperAdminIdentifierFetchRequestLoading &&
+                                !hideTermination &&
+                                ((isSelectedSuperAdmin && isSuperAdmin) ||
+                                    (!isSelectedSuperAdmin && isSuperAdmin) ||
+                                    (!isSelectedSuperAdmin && !isSuperAdmin))
+                            }
+                        />
+                    </ResourceTab.Pane>
+                )
+            }
+        );
 
         return _panes;
-    }, [ user, isLegacyUserProfileEnabled, isUserGroupsEnabled ]);
+    }, [
+        user,
+        isLegacyUserProfileEnabled,
+        isUserGroupsEnabled,
+        connectorProperties,
+        isSuperAdminIdentifierFetchRequestLoading,
+        hideTermination,
+        isSelectedSuperAdmin,
+        isSuperAdmin,
+        isReadOnly,
+        isUserStoresLoading,
+        isReadOnlyUserStore,
+        isUserManagedByParentOrg
+    ]);
 
     return (
         <ResourceTab

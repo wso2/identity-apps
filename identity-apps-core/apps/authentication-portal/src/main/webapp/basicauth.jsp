@@ -178,8 +178,16 @@
     }
 
     function showResendReCaptcha() {
-        <% if (StringUtils.isNotBlank(request.getParameter("failedUsername"))){ %>
-            window.location.href="login.do?resend_username=<%=Encode.forHtml(URLEncoder.encode(request.getParameter("failedUsername"), UTF_8))%>&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>";
+        <% 
+            String failedUsername = request.getParameter("failedUsername");
+            boolean isEmailVerification = IdentityCoreConstants.USER_EMAIL_NOT_VERIFIED_ERROR_CODE.equals(errorCode);
+        %>
+        <% if (StringUtils.isNotBlank(failedUsername)) { %>
+            window.location.href = "login.do?resend_username=<%=Encode.forHtml(URLEncoder.encode(failedUsername, UTF_8))%>"
+            <% if (isEmailVerification) { %>
+            + "&isEmailVerification=true"
+            <% } %>
+            + "&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>";
         <% } %>
     }
 
@@ -304,6 +312,8 @@
     String spIdProp = "spId";
     String sp = Encode.forJava(request.getParameter("sp"));
     String spId = "";
+    String recoveryScenarioProp = "RecoveryScenario";
+    String emailVerificationScenario = "EMAIL_VERIFICATION";
 
     try {
         if (sp.equals("My Account")) {
@@ -334,6 +344,15 @@
         spProperty.setKey(spIdProp);
         spProperty.setValue(spId);
         properties.add(spProperty);
+
+        if (request.getParameter("isEmailVerification") != null
+            && Boolean.parseBoolean(request.getParameter("isEmailVerification"))) {
+            PropertyDTO recoveryScenarioProperty = new PropertyDTO();
+            recoveryScenarioProperty.setKey(recoveryScenarioProp);
+            recoveryScenarioProperty.setValue(emailVerificationScenario);
+            properties.add(recoveryScenarioProperty);
+        }
+
         selfRegistrationRequest.setProperties(properties);
 
         String path = config.getServletContext().getInitParameter(Constants.ACCOUNT_RECOVERY_REST_ENDPOINT_URL);
@@ -397,7 +416,7 @@
         </div>
     <% }
 } else if (Boolean.parseBoolean(loginFailed) &&
-        !errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE)) {
+        !errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE) && !errorCode.equals(IdentityCoreConstants.USER_EMAIL_NOT_VERIFIED_ERROR_CODE)) {
     if (StringUtils.equals(request.getParameter("errorCode"),
             IdentityCoreConstants.ADMIN_FORCED_USER_PASSWORD_RESET_VIA_EMAIL_LINK_ERROR_CODE) &&
             StringUtils.equals(request.getParameter("t"), "carbon.super") &&
@@ -428,6 +447,43 @@
         <div class="ui divider hidden"></div>
 
         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.confirmation.mail")%>
+
+        <a id="registerLink"
+            href="javascript:showResendReCaptcha();"
+            data-testid="login-page-resend-confirmation-email-link"
+        >
+            <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "resend.mail"))%>
+        </a>
+    </div>
+    <div class="ui divider hidden"></div>
+    <%
+        if (reCaptchaResendEnabled) {
+            String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+    %>
+        <div class="field">
+            <div class="g-recaptcha"
+                data-sitekey="<%=Encode.forHtmlAttribute(reCaptchaKey)%>"
+                data-testid="register-page-g-recaptcha"
+                data-bind="registerLink"
+                data-callback="showResendReCaptcha"
+                data-theme="light"
+                data-tabindex="-1"
+            >
+            </div>
+        </div>
+    <%
+        }
+    %>
+<% } else if (Boolean.parseBoolean(loginFailed) && errorCode.equals(IdentityCoreConstants.USER_EMAIL_NOT_VERIFIED_ERROR_CODE) && request.getParameter("resend_username") == null) { %>
+    <div class="ui visible warning message" id="error-msg" data-testid="login-page-error-message">
+
+        <h5 class="ui heading"><strong><%= AuthenticationEndpointUtil.i18n(resourceBundle, "no.email.confirmation.mail.heading") %></strong></h5>
+
+        <%= AuthenticationEndpointUtil.i18n(resourceBundle, Encode.forJava(errorMessage)) %>
+
+        <div class="ui divider hidden"></div>
+
+        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "generic.no.confirmation.mail")%>
 
         <a id="registerLink"
             href="javascript:showResendReCaptcha();"
@@ -656,7 +712,7 @@
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%>
             </a>
             <% } %>
-            ?
+            <%= resourceBundle.containsKey("question.mark") ? resourceBundle.getString("question.mark") : "?" %>
         </div>
         <% } %>
     </div>

@@ -213,6 +213,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             asyncOperationStatusPollingInterval: null,
             connectionResourcesUrl: "",
             cookiePolicyUrl: "",
+            customContent: {},
             emailTemplates: {
                 defaultLogoUrl: "",
                 defaultWhiteLogoUrl: ""
@@ -270,6 +271,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                     enabled: false
                 }
             },
+            isAdminDataSeparationNoticeEnabled: undefined,
             isClaimUniquenessValidationEnabled: undefined,
             isClientSecretHashEnabled: undefined,
             isCookieConsentBannerEnabled: undefined,
@@ -307,6 +309,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             showSmsOtpPwdRecoveryFeatureStatusChip: undefined,
             showStatusLabelForNewAuthzRuntimeFeatures: undefined,
             systemAppsIdentifiers: [],
+            systemReservedUserStores: [],
             theme: {
                 name: "",
                 path: "",

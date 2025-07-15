@@ -384,17 +384,49 @@
 
                 // Get pasted data via clipboard API
                 clipboardData = e.clipboardData || window.clipboardData;
-                value = clipboardData.getData('Text');
-                const reg = new RegExp(/^\d+$/);
-                if (reg.test(value)) {
-                    for (n = 0; n < 6; ++n) {
+                value = clipboardData.getData('Text').trim();
+                
+                var isValid = true;
+                var firstInput = document.getElementById('pincode-1');
+                var isOnlyNumeric = firstInput && firstInput.getAttribute('inputmode') === 'numeric';
+                
+                if (isOnlyNumeric) {
+                    isValid = /^\d+$/.test(value);
+                } else {
+                    isValid = value.length > 0;
+                }
+                
+                if (isValid) {
+                    value = value.substring(0, otpLength);
+                    
+                    for (let n = 0; n < value.length && n < otpLength; ++n) {
                         $("#pincode-" + (n+1)).val(value[n]);
-                        $("#pincode-" + (n+1)).focus();
+                    }
+                    
+                    if (value.length < otpLength) {
+                        $("#pincode-" + (value.length + 1)).focus();
+                    } else {
+                        $("#pincode-" + otpLength).focus();
+                        var hasNullDigit = false;
+                        for (let i = 1; i <= otpLength; i++) {
+                            if (!$("#pincode-" + i).val()) {
+                                hasNullDigit = true;
+                                break;
+                            }
+                        }
+                        
+                        if (!hasNullDigit) {
+                            document.getElementById("subButton").disabled = false;
+                        }
                     }
                 }
             }
 
-           document.getElementById('pincode-1') ? document.getElementById('pincode-1').addEventListener('paste', handlePaste) : null;
+            for (let i = 1; i <= otpLength; i++) {
+                if (document.getElementById('pincode-' + i)) {
+                    document.getElementById('pincode-' + i).addEventListener('paste', handlePaste);
+                }
+            }
 
             $(document).ready(function () {
                 $.fn.preventDoubleSubmission = function() {

@@ -1,5 +1,14 @@
 # @wso2is/admin.sms-templates.v1
 
+## 1.0.204
+
+### Patch Changes
+
+- [#8518](https://github.com/wso2/identity-apps/pull/8518) [`542afdfe17cf91bef172e141de787436f9f59d7e`](https://github.com/wso2/identity-apps/commit/542afdfe17cf91bef172e141de787436f9f59d7e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Introduce improved `SelectFieldAdapter` component
+
+- Updated dependencies [[`542afdfe17cf91bef172e141de787436f9f59d7e`](https://github.com/wso2/identity-apps/commit/542afdfe17cf91bef172e141de787436f9f59d7e)]:
+  - @wso2is/form@2.8.1
+
 ## 1.0.203
 
 ### Patch Changes

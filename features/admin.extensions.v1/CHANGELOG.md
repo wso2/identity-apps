@@ -1,5 +1,78 @@
 # @wso2is/admin.extensions.v1
 
+## 2.39.7
+
+### Patch Changes
+
+- [#8511](https://github.com/wso2/identity-apps/pull/8511) [`90acfab75f677280eb39db0fc26d4e8e63024985`](https://github.com/wso2/identity-apps/commit/90acfab75f677280eb39db0fc26d4e8e63024985) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - UI improvements to the agents feature
+
+- Updated dependencies [[`90acfab75f677280eb39db0fc26d4e8e63024985`](https://github.com/wso2/identity-apps/commit/90acfab75f677280eb39db0fc26d4e8e63024985)]:
+  - @wso2is/admin.remote-userstores.v1@1.7.161
+  - @wso2is/admin.applications.v1@2.36.7
+  - @wso2is/admin.userstores.v1@2.27.36
+  - @wso2is/admin.claims.v1@2.28.6
+  - @wso2is/admin.roles.v2@2.27.160
+  - @wso2is/admin.core.v1@2.46.7
+  - @wso2is/i18n@2.24.14
+  - @wso2is/admin.feature-gate.v1@1.7.6
+
+## 2.39.6
+
+### Patch Changes
+
+- [#8439](https://github.com/wso2/identity-apps/pull/8439) [`bcb6cd0f9f8d88e476141c679caec38517f4854b`](https://github.com/wso2/identity-apps/commit/bcb6cd0f9f8d88e476141c679caec38517f4854b) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Change wording to imply admin data separation implemented
+
+## 2.39.5
+
+### Patch Changes
+
+- [#8421](https://github.com/wso2/identity-apps/pull/8421) [`ef2fe33fed05a3b9cf2884b1fdb4f5f54f227bbf`](https://github.com/wso2/identity-apps/commit/ef2fe33fed05a3b9cf2884b1fdb4f5f54f227bbf) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Improve admin data separation banner to a alert type
+
+- Updated dependencies [[`16380763a69b363677a27dff0d71e8bb7f4bd006`](https://github.com/wso2/identity-apps/commit/16380763a69b363677a27dff0d71e8bb7f4bd006)]:
+  - @wso2is/theme@2.8.2
+  - @wso2is/i18n@2.24.7
+
+## 2.39.4
+
+### Patch Changes
+
+- [#8383](https://github.com/wso2/identity-apps/pull/8383) [`d324ef56d7f9db7fff78ed46d23d7bcaae69e216`](https://github.com/wso2/identity-apps/commit/d324ef56d7f9db7fff78ed46d23d7bcaae69e216) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add first-class template support for both React and Next.js
+
+- Updated dependencies [[`d324ef56d7f9db7fff78ed46d23d7bcaae69e216`](https://github.com/wso2/identity-apps/commit/d324ef56d7f9db7fff78ed46d23d7bcaae69e216), [`90d6c0be05e8b957cc1fa0c239ec3fb9b5a3fa72`](https://github.com/wso2/identity-apps/commit/90d6c0be05e8b957cc1fa0c239ec3fb9b5a3fa72), [`2981081634e150d84bb16833410fd99001f35162`](https://github.com/wso2/identity-apps/commit/2981081634e150d84bb16833410fd99001f35162)]:
+  - @wso2is/admin.applications.v1@2.36.2
+  - @wso2is/i18n@2.24.3
+  - @wso2is/admin.authentication.v1@2.25.205
+  - @wso2is/admin.feature-gate.v1@1.7.2
+  - @wso2is/admin.core.v1@2.46.3
+  - @wso2is/theme@2.8.1
+
+## 2.39.3
+
+### Patch Changes
+
+- [#8385](https://github.com/wso2/identity-apps/pull/8385) [`175ea7ca4298dcc397ef8259f508edc52c863efd`](https://github.com/wso2/identity-apps/commit/175ea7ca4298dcc397ef8259f508edc52c863efd) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add a alert announcement to console
+
+- Updated dependencies [[`175ea7ca4298dcc397ef8259f508edc52c863efd`](https://github.com/wso2/identity-apps/commit/175ea7ca4298dcc397ef8259f508edc52c863efd)]:
+  - @wso2is/admin.core.v1@2.46.2
+
+## 2.39.2
+
+### Patch Changes
+
+- [#8376](https://github.com/wso2/identity-apps/pull/8376) [`927910dfd0035c274da91e049b0c92edfbba0133`](https://github.com/wso2/identity-apps/commit/927910dfd0035c274da91e049b0c92edfbba0133) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Remove unused extension config
+
+## 2.39.1
+
+### Patch Changes
+
+- [#8364](https://github.com/wso2/identity-apps/pull/8364) [`581fda3c98828df995f28ea828585e2a760e73b0`](https://github.com/wso2/identity-apps/commit/581fda3c98828df995f28ea828585e2a760e73b0) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the feature status to the custom page editor feature
+
+- Updated dependencies [[`581fda3c98828df995f28ea828585e2a760e73b0`](https://github.com/wso2/identity-apps/commit/581fda3c98828df995f28ea828585e2a760e73b0)]:
+  - @wso2is/admin.core.v1@2.46.1
+  - @wso2is/admin.feature-gate.v1@1.7.1
+  - @wso2is/access-control@3.4.1
+  - @wso2is/i18n@2.24.1
+
 ## 2.39.0
 
 ### Minor Changes

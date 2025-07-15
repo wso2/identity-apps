@@ -47,6 +47,10 @@
             <param-name>isDowntimeBannerEnabled</param-name>
             <param-value>{{ downtime_banner.enabled }}</param-value>
         </context-param>
+        <context-param>
+            <param-name>downtimeBannerMessage</param-name>
+            <param-value>{{ downtime_banner.content }}</param-value>
+        </context-param>
     {% endif %}
     {% set cookie_consent = authenticationendpoint.ui.is_cookie_consent_banner_enabled
         if authenticationendpoint.ui.is_cookie_consent_banner_enabled is defined else ui.is_cookie_consent_banner_enabled %}
@@ -360,10 +364,12 @@
         {"name": "duo_error.do", "jsp": "/duoError.jsp", "url": "/duo_error.do"},
         {"name": "magic_link_notification.do", "jsp": "/magic_link_notification.jsp", "url": "/magic_link_notification.do"},
         {"name": "org_name.do", "jsp": "/org_name.jsp", "url": "/org_name.do"},
+        {"name": "org_handle.do", "jsp": "/org_handle.jsp", "url": "/org_handle.do"},
         {"name": "org_discovery.do", "jsp": "/org_discovery.jsp", "url": "/org_discovery.do"},
         {"name": "select_org.do", "jsp": "/select_org.jsp", "url": "/select_org.do"},
-        {"name": "register.do", "jsp": "/self-registration.jsp", "url": "/register.do"},
-        {"name": "registration_error.do", "jsp": "/errors/registration_error.jsp", "url": "/registration_error.do"}
+        {"name": "register.do", "jsp": "/execution-flow.jsp", "url": "/register.do"},
+        {"name": "recovery.do", "jsp": "/execution-flow.jsp", "url": "/recovery.do"},
+        {"name": "execution_flow_error.do", "jsp": "/errors/execution_flow_error.jsp", "url": "/execution_flow_error.do"}
     ] %}
     {% for servlet_item in default_servlets %}
         {% set key_name = servlet_item['name'] %}

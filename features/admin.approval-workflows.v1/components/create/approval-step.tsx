@@ -25,10 +25,12 @@ import { ReactComponent as CrossIcon } from "@wso2is/admin.core.v1/assets/icons/
 import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
 import { IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import StepRolesList from "./create-step-roles";
 import StepUsersList from "./create-step-users";
 import { MultiStepApprovalTemplate } from "../../models/approval-workflows";
 import "./approval-step.scss";
+
 
 /**
  * Props for the approval step component.
@@ -113,6 +115,7 @@ const ApprovalStep: FunctionComponent<ApprovalStepProps> = (
     const [ validationError, setValidationError ] = useState<boolean>(false);
     const [ selectedUsers, setSelectedUsers ] = useState<UserBasicInterface[]>([]);
     const [ selectedRoles, setSelectedRoles ] = useState<RolesInterface[]>([]);
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (selectedUsers?.length > 0 || selectedRoles?.length > 0) {
@@ -152,40 +155,38 @@ const ApprovalStep: FunctionComponent<ApprovalStepProps> = (
             >
 
                 <List data-componentid={ `${componentId}-list-${step.stepNumber}` }>
-                    <div
-                        className="rules-component"
-                        data-componentid={ `${componentId}-rules-component-${step.stepNumber}` }
+                    <Box
+                        className="box-container"
+                        data-componentid={ `${componentId}-box-container-${step.stepNumber}` }
                     >
-                        <Box
-                            className="box-container"
-                            data-componentid={ `${componentId}-box-container-${step.stepNumber}` }
+                        <ListItem
+                            className="list-item-roles"
+                            data-componentid={ `${componentId}-roles-list-item-${step.stepNumber}` }
                         >
-                            <ListItem
-                                className="list-item-roles"
-                                data-componentid={ `${componentId}-roles-list-item-${step.stepNumber}` }
-                            >
-                                <StepRolesList
-                                    initialValues={ initialValues }
-                                    isReadOnly={ isReadOnly }
-                                    onRolesChange={ handleRolesChange }
-                                    showValidationError={ validationError }
-                                    data-componentid={ `${componentId}-roles-list-${step.stepNumber}` }
-                                />
-                            </ListItem>
-                            <ListItem
-                                className="list-item-users"
-                                data-componentid={ `${componentId}-users-list-item-${step.stepNumber}` }
-                            >
-                                <StepUsersList
-                                    initialValues={ initialValues }
-                                    isReadOnly={ isReadOnly }
-                                    onUsersChange={ handleUsersChange }
-                                    showValidationError={ validationError }
-                                    data-componentid={ `${componentId}-users-list-${step.stepNumber}` }
-                                />
-                            </ListItem>
-                        </Box>
-                    </div>
+                            <StepRolesList
+                                initialValues={ initialValues }
+                                isReadOnly={ isReadOnly }
+                                onRolesChange={ handleRolesChange }
+                                showValidationError={ validationError }
+                                data-componentid={ `${componentId}-roles-list-${step.stepNumber}` }
+                            />
+                        </ListItem>
+                        <Typography align="center">
+                            { t("approvalWorkflows:forms.configurations.template.condition") }
+                        </Typography>
+                        <ListItem
+                            className="list-item-users"
+                            data-componentid={ `${componentId}-users-list-item-${step.stepNumber}` }
+                        >
+                            <StepUsersList
+                                initialValues={ initialValues }
+                                isReadOnly={ isReadOnly }
+                                onUsersChange={ handleUsersChange }
+                                showValidationError={ validationError }
+                                data-componentid={ `${componentId}-users-list-${step.stepNumber}` }
+                            />
+                        </ListItem>
+                    </Box>
                 </List>
                 <Fab
                     variant="circular"

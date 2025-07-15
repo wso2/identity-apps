@@ -350,6 +350,12 @@ export interface usersNS {
                 description: string;
             };
         };
+        deleteUserPendingApproval: {
+            success: {
+                message: string;
+                description: string;
+            }
+        };
         fetchUsers: {
             error: {
                 message: string;

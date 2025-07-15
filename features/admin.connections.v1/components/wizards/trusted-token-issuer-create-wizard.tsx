@@ -79,6 +79,7 @@ import { getConnectionIcons, getConnectionWizardStepIcons } from "../../configs/
 import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
 import { IdpNameValidationCache } from "../../models/connection";
 import { ConnectionsManagementUtils } from "../../utils/connection-utils";
+import "./trusted-token-issuer-create-wizard.scss";
 
 /**
  * Proptypes for the enterprise identity provider
@@ -630,8 +631,8 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                         <div>
                             { title }
                             { subTitle && (
-                                <Heading as="h6">
-                                    { subTitle }
+                                <Heading as="h6" className="sub-title">
+                                    { subTitle }{ " " }
                                     { resolveDocumentationLink() }
                                 </Heading>
                             ) }

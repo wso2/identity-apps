@@ -19,6 +19,24 @@
 import { EventProfileReferenceInterface } from "./event-profile";
 
 /**
+ * Enum for webhook status.
+ */
+export enum WebhookStatus {
+    ACTIVE = "ACTIVE",
+    INACTIVE = "INACTIVE",
+    PARTIALLY_ACTIVE = "PARTIALLY_ACTIVE",
+    PARTIALLY_INACTIVE = "PARTIALLY_INACTIVE"
+}
+
+export enum ChannelStatus {
+    SUBSCRIPTION_PENDING = "SUBSCRIPTION_PENDING",
+    SUBSCRIPTION_ACCEPTED = "SUBSCRIPTION_ACCEPTED",
+    SUBSCRIPTION_ERROR = "SUBSCRIPTION_ERROR",
+    UNSUBSCRIPTION_ACCEPTED = "UNSUBSCRIPTION_ACCEPTED",
+    UNSUBSCRIPTION_ERROR = "UNSUBSCRIPTION_ERROR"
+}
+
+/**
  * Interface for webhook event profile.
  */
 export interface WebhookEventProfileInterface {
@@ -33,11 +51,17 @@ export interface WebhookEventProfileInterface {
 }
 
 /**
- * Enum for webhook status.
+ * Interface for webhook channel subscription with status.
  */
-export enum WebhookStatus {
-    ACTIVE = "ACTIVE",
-    INACTIVE = "INACTIVE"
+export interface WebhookChannelSubscriptionInterface {
+    /**
+     * Channel URI.
+     */
+    channelUri: string;
+    /**
+     * Subscription status.
+     */
+    status: ChannelStatus;
 }
 
 /**
@@ -103,7 +127,7 @@ export interface WebhookUpdateRequestInterface {
 /**
  * Interface for webhook response.
  */
-export interface WebhookResponseInterface extends WebhookCreateRequestInterface {
+export interface WebhookResponseInterface {
     /**
      * Unique identifier of the webhook.
      */
@@ -116,6 +140,34 @@ export interface WebhookResponseInterface extends WebhookCreateRequestInterface 
      * Last updated timestamp.
      */
     updatedAt?: string;
+    /**
+     * Webhook endpoint URL.
+     */
+    endpoint: string;
+    /**
+     * Event profile reference.
+     */
+    eventProfile: EventProfileReferenceInterface;
+    /**
+     * Name of the webhook.
+     */
+    name: string;
+    /**
+     * List of subscribed channels with status.
+     */
+    channelsSubscribed: WebhookChannelSubscriptionInterface[];
+    /**
+     * Secret for webhook authentication.
+     */
+    secret?: string;
+    /**
+     * Status of the webhook.
+     */
+    status: WebhookStatus;
+    /**
+     * Adapter type (e.g., "websubhub").
+     */
+    adapter?: string;
 }
 
 /**

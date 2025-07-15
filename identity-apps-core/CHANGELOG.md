@@ -1,5 +1,74 @@
 # @wso2is/identity-apps-core
 
+## 2.27.3
+
+### Patch Changes
+
+- [#8249](https://github.com/wso2/identity-apps/pull/8249) [`993184075b947dd35826aea9e58b13be2466a7e9`](https://github.com/wso2/identity-apps/commit/993184075b947dd35826aea9e58b13be2466a7e9) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add organization handle discovery support for b2b login flow
+
+## 2.27.2
+
+### Patch Changes
+
+- [#8515](https://github.com/wso2/identity-apps/pull/8515) [`29e53379192f91a6ef31df5bfccc562a4803168d`](https://github.com/wso2/identity-apps/commit/29e53379192f91a6ef31df5bfccc562a4803168d) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add impersonate cb url fix.
+
+## 2.27.1
+
+### Patch Changes
+
+- [#8508](https://github.com/wso2/identity-apps/pull/8508) [`1f25cd1582130b47dc60f61e7c025ae56cd073a4`](https://github.com/wso2/identity-apps/commit/1f25cd1582130b47dc60f61e7c025ae56cd073a4) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the styling issue of the dynamic self-registration page's cookie policy banner
+
+## 2.27.0
+
+### Minor Changes
+
+- [#8416](https://github.com/wso2/identity-apps/pull/8416) [`90a17579bddde8c429932caf4a318d873ff3e7d5`](https://github.com/wso2/identity-apps/commit/90a17579bddde8c429932caf4a318d873ff3e7d5) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce Passkey signup in registration orchestration
+
+## 2.26.7
+
+### Patch Changes
+
+- [#8477](https://github.com/wso2/identity-apps/pull/8477) [`36505395f0de512fe8d583fe79b774db55c96e4b`](https://github.com/wso2/identity-apps/commit/36505395f0de512fe8d583fe79b774db55c96e4b) Thanks [@shanggeeth](https://github.com/shanggeeth)! - Handle the email.verification.pending error code and resend the email with EMAIL_VERIFICATION scenario
+
+## 2.26.6
+
+### Patch Changes
+
+- [#8483](https://github.com/wso2/identity-apps/pull/8483) [`4a53a83147440de1fda69ac142f404279eb267b9`](https://github.com/wso2/identity-apps/commit/4a53a83147440de1fda69ac142f404279eb267b9) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add config to read downtime banner content from a toml config
+
+## 2.26.5
+
+### Patch Changes
+
+- [#8414](https://github.com/wso2/identity-apps/pull/8414) [`c53a0c23b5fc777e65040f93d6fec90b1e30efd2`](https://github.com/wso2/identity-apps/commit/c53a0c23b5fc777e65040f93d6fec90b1e30efd2) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for displaying hints in input fields in Composer
+
+## 2.26.4
+
+### Patch Changes
+
+- [#8408](https://github.com/wso2/identity-apps/pull/8408) [`d0782516d5637e15b1e1e35eefa32aaa74e9ee03`](https://github.com/wso2/identity-apps/commit/d0782516d5637e15b1e1e35eefa32aaa74e9ee03) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Make onFail callback invocation configurable in internalWait.jsp
+
+- Updated dependencies [[`16380763a69b363677a27dff0d71e8bb7f4bd006`](https://github.com/wso2/identity-apps/commit/16380763a69b363677a27dff0d71e8bb7f4bd006)]:
+  - @wso2is/theme@2.8.2
+
+## 2.26.3
+
+### Patch Changes
+
+- [#8398](https://github.com/wso2/identity-apps/pull/8398) [`6c44d0680d13bfdeb99f03d412516d5df9291984`](https://github.com/wso2/identity-apps/commit/6c44d0680d13bfdeb99f03d412516d5df9291984) Thanks [@nilasini](https://github.com/nilasini)! - Add recovery portal URL support in branding
+
+## 2.26.2
+
+### Patch Changes
+
+- [#8401](https://github.com/wso2/identity-apps/pull/8401) [`14caebcc26ca43c9f496e0910b82440a78a17cda`](https://github.com/wso2/identity-apps/commit/14caebcc26ca43c9f496e0910b82440a78a17cda) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issues with OTP fields on mobile devices
+
+## 2.26.1
+
+### Patch Changes
+
+- [#8397](https://github.com/wso2/identity-apps/pull/8397) [`d21cdb4938bb7e9b34a25f5e8c6793ca2a4d46a2`](https://github.com/wso2/identity-apps/commit/d21cdb4938bb7e9b34a25f5e8c6793ca2a4d46a2) Thanks [@savindi7](https://github.com/savindi7)! - Update language property requirement for "?" with a default value.
+
 ## 2.26.0
 
 ### Minor Changes

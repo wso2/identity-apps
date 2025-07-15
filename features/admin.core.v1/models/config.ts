@@ -78,6 +78,10 @@ export interface FeatureConfigInterface {
      */
     actions?: FeatureAccessConfigInterface;
     /**
+     * Agent management feature.
+     */
+    agents?: FeatureAccessConfigInterface;
+    /**
      * Admin user management feature.
      */
     administrators?: FeatureAccessConfigInterface;
@@ -121,6 +125,10 @@ export interface FeatureConfigInterface {
      * Email providers feature.
      */
     emailProviders?: FeatureAccessConfigInterface;
+    /**
+     * Flow orchestration feature.
+     */
+    flows?: FeatureAccessConfigInterface;
     /**
      * Getting started feature.
      */
@@ -410,6 +418,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     identityProviderTemplates: IdentityProviderTemplatesConfigInterface;
     /**
+     * Should the admin data separation notice be enabled.
+     */
+    isAdminDataSeparationNoticeEnabled?: boolean;
+    /**
      * Should default dialects be allowed for editing.
      */
     isDefaultDialectEditingEnabled?: boolean;
@@ -510,6 +522,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     hiddenUserStores: string[];
     /**
+     * System reserved userstores
+     */
+    systemReservedUserStores: string[];
+    /**
      * App Logos
      */
     appLogo: {
@@ -573,6 +589,18 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Async Operation Polling Interval.
      */
     asyncOperationStatusPollingInterval: number;
+    /**
+     * Custom content configurations.
+     */
+    customContent: CustomContentConfigInterface;
+    /**
+     * Privacy policy URL.
+     */
+    privacyPolicyUrl?: string;
+    /**
+     * Terms of service URL.
+     */
+    termsOfUseUrl?: string;
 }
 
 /**
@@ -671,4 +699,14 @@ export interface ResourceEndpointsInterface {
 
 export interface RouteConfigInterface {
     organizationEnabledRoutes: string[];
+}
+
+/**
+ * Interface for custom content configurations.
+ */
+export interface CustomContentConfigInterface {
+    /**
+     * Maximum file size allowed for custom content.
+     */
+    maxFileSize?: number;
 }

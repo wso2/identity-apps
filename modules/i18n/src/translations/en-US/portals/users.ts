@@ -271,6 +271,12 @@ export const users: usersNS = {
                 message: "User deleted successfully"
             }
         },
+        deleteUserPendingApproval: {
+            success: {
+                description: "User deletion was accepted and pending approval.",
+                message: "User accepted for deletion"
+            }
+        },
         fetchUsers: {
             error: {
                 description: "{{description}}",
