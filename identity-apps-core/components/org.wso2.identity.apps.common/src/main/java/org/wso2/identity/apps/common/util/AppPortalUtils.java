@@ -146,6 +146,8 @@ public class AppPortalUtils {
         if (!portalPath.startsWith("/")) {
             portalPath = "/" + portalPath;
             consolePortalPath = "/" + consolePortalPath;
+            // This is needed to create impersonation callback URL regex. Do not use this to create console callback URL.
+            consolePortalPath = consolePortalPath.replace("(\\?fidp=PlatformIDP)?$", "");
         }
         String callbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
         String consoleCallbackUrl = IdentityUtil.getServerURL(consolePortalPath, true, true);
