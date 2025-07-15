@@ -29,8 +29,6 @@
         "@wso2is/admin.extensions.v1": "^2.39.7",
         "@wso2is/admin.feature-gate.v1": "^1.7.6",
         "@wso2is/admin.identity-providers.v1": "^2.26.206",
-        "@wso2is/admin.impersonation.v1": "^1.6.204",
-        "@wso2is/admin.login-flow-builder.v1": "^2.26.2",
         "@wso2is/admin.login-flow.ai.v1": "^2.27.101",
         "@wso2is/admin.oidc-scopes.v1": "^2.25.204",
         "@wso2is/admin.organizations.v1": "^2.26.207",
