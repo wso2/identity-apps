@@ -143,7 +143,7 @@ const ConsoleRolesShareWithAll: FunctionComponent<ConsoleRolesShareWithAllPropsI
                 placeholder={ t("consoleSettings:sharedAccess.modes.shareWithSelectedPlaceholder") }
                 options={ consoleRoles?.Resources ?? [] }
                 value={ selectedRoles }
-                onChange={ (event: SyntheticEvent, value: RolesInterface[]) => {
+                onChange={ (_event: SyntheticEvent, value: RolesInterface[]) => {
                     handleRolesOnChange(value);
                 } }
                 disabled={ isReadOnly }

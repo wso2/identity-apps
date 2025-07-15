@@ -96,8 +96,7 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
     const [ nextPageLink, setNextPageLink ] = useState<string>();
     const [ afterCursor, setAfterCursor ] = useState<string>();
     const [ expandedOrgId, setExpandedOrgId ] = useState<string>();
-    const [ resolvedOrgs, setResolvedOrgs ] = useState<string[]>([]);
-    const [ roleSelections, setRoleSelections ] = useState<Record<string, RolesInterface[]>>({});
+    const [ expandedItems, setExpandedItems ] = useState<string[]>([]);
 
     const {
         data: originalApplicationOrganizationTree,
@@ -128,7 +127,7 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
         data: originalOrganizations,
         error: organizationsFetchRequestError
     } = useGetOrganizations(
-        isOrganizationManagementEnabled && !resolvedOrgs.includes(expandedOrgId),
+        isOrganizationManagementEnabled,
         `parentId eq '${ expandedOrgId }'`,
         null,
         null,
@@ -150,14 +149,6 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
             const applicationOrgIds: string[] = originalApplicationOrganizationTree.organizations
                 .map((org: OrganizationInterface) => org.id);
 
-            // Set the role selections for the shared organizations
-            const initialRoleSelections: Record<string, RolesInterface[]> = {};
-
-            originalApplicationOrganizationTree.organizations.forEach((org: OrganizationInterface) => {
-                initialRoleSelections[org.id] = org.roles || [];
-            });
-
-            setRoleSelections(initialRoleSelections);
             setSelectedItems(applicationOrgIds);
         } else {
             setSelectedItems([]);
@@ -224,10 +215,6 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
 
     // This will update the organization tree with the children of the selected organization.
     useEffect(() => {
-        if (originalOrganizations) {
-            setResolvedOrgs((prev: string[]) => [ ...prev, expandedOrgId ]);
-        }
-
         if (originalOrganizations?.organizations?.length > 0) {
             const childOrgTree: TreeViewBaseItemWithRoles[] =
                 buildChildTree(originalOrganizations?.organizations);
@@ -281,7 +268,7 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
             }
 
             nodeMap[item.id] = {
-                children: item.hasChildren || item.name === "XYZ Builders" ? [
+                children: item.hasChildren ? [
                     {
                         children: [],
                         id: `${item.name}-temp-child`,
@@ -404,12 +391,37 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
         setAfterCursor(cursorFragments[1]);
     };
 
+    /**
+     * This function collapses all child nodes of a given parent node.
+     * It removes the child nodes from the expanded items and recursively collapses
+     * any further child nodes.
+     *
+     * @param parentId - The ID of the parent node whose children need to be collapsed.
+     */
+    const collapseChildNodes = (parentId: string): void => {
+        // Find children of the parent node
+        const children: string[] = getChildrenOfOrganization(parentId, flatOrganizationMap);
+
+        // If there are no children, return
+        if (children?.length > 0) {
+            // Recursively collapse child nodes
+            children.forEach((childId: string) => {
+                // Remove the child from the expanded items
+                setExpandedItems((prev: string[]) => prev.filter((id: string) => id !== childId));
+
+                // Recursively collapse child nodes
+                collapseChildNodes(childId);
+            });
+        }
+    };
+
     const TreeItemsContents = (props: TreeItemProps): ReactElement => {
         const { status } = useTreeItem(props);
 
         // const roles: RolesInterface[] | undefined = roleSelections[props.itemId];
 
         // console.log("TreeItemProps", roles);
+        const isRolePartiallyShared: boolean = false;
 
         return (
             <TreeItem
@@ -424,9 +436,9 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                     }) => (
                         <Tooltip
                             data-componentid={ `${ componentId }-tree-item-tooltip` }
-                            title={ "Some roles are not shared in this organization" }
+                            title={ isRolePartiallyShared && t("applications:edit.sections.sharedAccess" +
+                                ".rolesSharedPartially") }
                             placement="right"
-                            open={ false }
                         >
                             <TreeItemContent
                                 status={ status }
@@ -434,7 +446,11 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                                 data-componentid={ `${ componentId }-tree-item-content` }
                             >
                                 { children }
-                                <CircleInfoIcon size={ 12 } />
+                                {
+                                    isRolePartiallyShared && (
+                                        <CircleInfoIcon size={ 12 } />
+                                    )
+                                }
                             </TreeItemContent>
                         </Tooltip>
                     )
@@ -447,7 +463,7 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
         <>
             <Grid
                 container
-                xs={ 12 }
+                xs={ 10 }
                 className="roles-selective-share-container"
             >
                 {
@@ -456,7 +472,7 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                             container
                             xs={ 12 }
                             padding={ 1 }
-                            className="roles-selective-share-left-panel"
+                            className="roles-selective-share-all-roles"
                             justifyContent="center"
                             alignItems="center"
                         >
@@ -466,7 +482,7 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                         <Grid
                             xs={ 12 }
                             padding={ 1 }
-                            className="roles-selective-share-left-panel"
+                            className="roles-selective-share-all-roles"
                             id="scrollableOrgContainer"
                         >
                             <InfiniteScroll
@@ -481,6 +497,7 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                                     data-componentid={ `${ componentId }-tree-view` }
                                     className="roles-selective-share-tree-view"
                                     items={ organizationTree }
+                                    expandedItems={ expandedItems }
                                     expansionTrigger="iconContainer"
                                     selectedItems={ selectedItems }
                                     onItemSelectionToggle={ (
@@ -492,6 +509,11 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                                     onItemExpansionToggle={ (_e: SyntheticEvent, itemId: string, expanded: boolean) => {
                                         if (expanded) {
                                             setExpandedOrgId(itemId);
+                                            setExpandedItems((prev: string[]) => [ ...prev, itemId ]);
+                                        } else {
+                                            setExpandedItems((prev: string[]) =>
+                                                prev.filter((id: string) => id !== itemId));
+                                            collapseChildNodes(itemId);
                                         }
                                     } }
                                     selectionPropagation={ {

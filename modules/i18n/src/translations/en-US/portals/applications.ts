@@ -604,15 +604,57 @@ export const applications: ApplicationsNS = {
                 noSharedOrgs: "This application is not shared with any organizations.",
                 noRolesAvailableForOrg: "No roles available for the selected organization.",
                 orgNotSelectedForRoleSharing: "To share roles, please select the organization from the left panel.",
+                rolesSharedPartially: "Roles are shared partially with this organization.",
                 shareRoleSubsetWithSelectedOrgs: "Share a subset of roles with selected organizations",
                 shareRoleSubsetWithAllOrgs: "Share a subset of roles with all organizations",
                 subTitle: "Select the following options to share the application with the organizations.",
                 tabName: "Shared Access",
+                selectAnOrganizationToViewRoles: "Select an organization to view the shared roles.",
                 sharedAccessStatusOptions: {
                     all: "All",
                     success: "Success",
                     failed: "Failed",
                     partiallyCompleted: "Partially Completed"
+                },
+                notifications: {
+                    unshare: {
+                        success: {
+                            description: "Application unshared with the organization(s) successfully",
+                            message: "Application unshared!"
+                        },
+                        error: {
+                            description: "Application unsharing failed. Please try again",
+                            message: "Application unsharing failed!"
+                        }
+                    },
+                    share: {
+                        success: {
+                            description: "Application shared with the organization(s) successfully",
+                            message: "Application shared!"
+                        },
+                        error: {
+                            description: "Application sharing failed. Please try again",
+                            message: "Application sharing failed!"
+                        }
+                    },
+                    fetchApplicationOrgTree: {
+                        genericError: {
+                            description: "Error occurred while fetching the shared organizations.",
+                            message: "Fetching shared organizations failed!"
+                        }
+                    },
+                    fetchApplicationRoles: {
+                        genericError: {
+                            description: "Error occurred while fetching the shared roles of the application.",
+                            message: "Fetching roles failed!"
+                        }
+                    },
+                    fetchOrganizations: {
+                        genericError: {
+                            description: "Error occurred while fetching the organizations.",
+                            message: "Fetching organizations failed!"
+                        }
+                    }
                 }
             },
             shareApplication: {

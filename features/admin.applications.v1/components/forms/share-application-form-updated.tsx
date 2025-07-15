@@ -436,11 +436,11 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                         orgSharingSuccess = false;
 
                         dispatch(addAlert({
-                            description: t("applications:edit.sections.sharedAccess.notifications.shareOrgs." +
+                            description: t("applications:edit.sections.sharedAccess.notifications.share." +
                                 "error.description",
                             { error: error.message }),
                             level: AlertLevels.ERROR,
-                            message: t("applications:edit.sections.sharedAccess.notifications.shareOrgs.error.message")
+                            message: t("applications:edit.sections.sharedAccess.notifications.share.error.message")
                         }));
                     })
             );
@@ -466,11 +466,11 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                         orgSharingSuccess = false;
 
                         dispatch(addAlert({
-                            description: t("applications:edit.sections.sharedAccess.notifications.unshareOrgs." +
+                            description: t("applications:edit.sections.sharedAccess.notifications.unshare." +
                                 "error.description",
                             { error: error.message }),
                             level: AlertLevels.ERROR,
-                            message: t("applications:edit.sections.sharedAccess.notifications.unshareOrgs." +
+                            message: t("applications:edit.sections.sharedAccess.notifications.unshare." +
                                 "error.message")
                         }));
                     })
@@ -570,6 +570,23 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 .finally(() => {
                     onApplicationSharingCompleted();
                 });
+        } else {
+            // If there are no further operations to perform, just show a success notification
+            // and reset the state.
+            dispatch(addAlert({
+                description: t("applications:edit.sections.sharedAccess.notifications.share." +
+                    "success.description"),
+                level: AlertLevels.SUCCESS,
+                message: t("applications:edit.sections.sharedAccess.notifications.share.success.message")
+            }));
+
+            // We can reset the added and removed roles and orgs after a successful operation
+            setAddedRoles({});
+            setRemovedRoles({});
+            setAddedOrgIds([]);
+            setRemovedOrgIds([]);
+            mutateApplicationShareDataFetchRequest();
+            onApplicationSharingCompleted();
         }
     };
 
@@ -776,7 +793,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                 ) }
                                 control={ <Radio /> }
                                 disabled={ readOnly }
-                                data-componentid={ `${ componentId }-share-with-all-checkbox` }
+                                data-componentid={ `${ componentId }-unshare-with-all-orgs-checkbox` }
                             />
 
                             <FormControlLabel
@@ -784,6 +801,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                 label={ t("organizations:shareWithSelectedOrgsRadio") }
                                 control={ <Radio /> }
                                 disabled={ readOnly }
+                                data-componentid={ `${ componentId }-share-with-selected-orgs-checkbox` }
                             />
                             <AnimatePresence mode="wait">
                                 {
@@ -810,7 +828,8 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                             }
                                                         } }
                                                         data-componentid={
-                                                            `${ componentId }-share-with-selected-switch` }
+                                                            `${ componentId }-share-selected-roles-` +
+                                                            "selected-orgs-toggle" }
                                                     />
                                                 ) }
                                                 label={ t("applications:edit.sections.sharedAccess." +
@@ -847,12 +866,15 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                                                     !enableRoleSharing
                                                                                 );
                                                                             } }
+                                                                            data-componentid={
+                                                                                `${ componentId }-manage-role-` +
+                                                                                "sharing-button" }
                                                                         >
                                                                             { enableRoleSharing
                                                                                 ? t("applications:edit.sections." +
-                                                                                    "sharedAccess.manageRoleSharing")
-                                                                                : t("applications:edit.sections." +
                                                                                     "sharedAccess.viewRoleSharing")
+                                                                                : t("applications:edit.sections." +
+                                                                                    "sharedAccess.manageRoleSharing")
                                                                             }
                                                                         </Button>
                                                                     </motion.div>
@@ -895,6 +917,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                 label={ t("organizations:shareApplicationRadio") }
                                 control={ <Radio /> }
                                 disabled={ readOnly }
+                                data-componentid={ `${ componentId }-share-with-all-orgs-checkbox` }
                             />
                             <AnimatePresence mode="wait">
                                 {
@@ -920,7 +943,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                             }
                                                         } }
                                                         data-componentid={
-                                                            `${ componentId }-share-with-selected-switch` }
+                                                            `${ componentId }-share-selected-roles-all-orgs-toggle` }
                                                     />
                                                 ) }
                                                 label={ t("applications:edit.sections.sharedAccess." +

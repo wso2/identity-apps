@@ -111,7 +111,8 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
     const [ afterCursor, setAfterCursor ] = useState<string>();
     const [ expandedOrgId, setExpandedOrgId ] = useState<string>();
     const [ selectedOrgId, setSelectedOrgId ] = useState<string>();
-    const [ resolvedOrgs, setResolvedOrgs ] = useState<string[]>([]);
+    const [ expandedItems, setExpandedItems ] = useState<string[]>([]);
+
     const [ flatOrganizationMap, setFlatOrganizationMap ] = useState<Record<string, OrganizationInterface>>({});
 
     const applicationAudience: string = application?.associatedRoles?.allowedAudience ?? RoleAudienceTypes.ORGANIZATION;
@@ -185,8 +186,7 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
     } = useGetApplicationShare(
         application?.id,
         !isEmpty(application?.id) &&
-        !isEmpty(selectedOrgId) &&
-        !resolvedOrgs.includes(selectedOrgId),
+        !isEmpty(selectedOrgId),
         false,
         `id eq '${ selectedOrgId }'`
     );
@@ -357,13 +357,6 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                 }
             }
         }
-
-        if (selectedApplicationOrganization !== undefined) {
-            // If the item is not in resolvedOrgs add it to the list
-            if (!resolvedOrgs.includes(selectedOrgId)) {
-                setResolvedOrgs((prev: string[]) => [ ...prev, selectedOrgId ]);
-            }
-        }
     }, [ selectedApplicationOrganization ]);
 
     useEffect(() => {
@@ -422,7 +415,7 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
         // Add all nodes from the top-level organization to nodeMap
         data.forEach((item: OrganizationInterface) => {
             nodeMap[item.id] = {
-                children: item.hasChildren || item.name === "XYZ Builders" ? [
+                children: item.hasChildren ? [
                     {
                         children: [],
                         id: `${item.name}-temp-child`,
@@ -699,6 +692,30 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
         });
     };
 
+    /**
+     * This function collapses all child nodes of a given parent node.
+     * It removes the child nodes from the expanded items and recursively collapses
+     * any further child nodes.
+     *
+     * @param parentId - The ID of the parent node whose children need to be collapsed.
+     */
+    const collapseChildNodes = (parentId: string): void => {
+        // Find children of the parent node
+        const children: string[] = getChildrenOfOrganization(parentId, flatOrganizationMap);
+
+        // If there are no children, return
+        if (children?.length > 0) {
+            // Recursively collapse child nodes
+            children.forEach((childId: string) => {
+                // Remove the child from the expanded items
+                setExpandedItems((prev: string[]) => prev.filter((id: string) => id !== childId));
+
+                // Recursively collapse child nodes
+                collapseChildNodes(childId);
+            });
+        }
+    };
+
     const resolveRoleSelectionPane = (): ReactNode => {
         if (isEmpty(selectedOrgId)) {
             return (
@@ -707,7 +724,7 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                     data-componentid={ `${ componentId }-org-not-selected-alert` }
                 >
                     { t("applications:edit.sections.sharedAccess" +
-                        ".selectAnOrganizationToShareRoles") }
+                        ".selectAnOrganizationToViewRoles") }
                 </Alert>
             );
         }
@@ -741,10 +758,11 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                 <Box
                     key={ `role-${index}` }
                     className="role-item"
-                    data-componentid={ `${componentId}-role-${index}` }
+                    data-componentid={ `${ componentId }-role-${ role.displayName }` }
                 >
                     <Checkbox
                         className="role-checkbox"
+                        data-componentid={ `${ componentId }-role-${ role.displayName }-checkbox` }
                         checked={ role.selected }
                         onChange={ (
                             _e: ChangeEvent<HTMLInputElement>,
@@ -787,7 +805,7 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                     <Typography
                         variant="body1"
                         className="role-label"
-                        data-componentid={ `${ componentId }-role-label` }
+                        data-componentid={ `${ componentId }-role-${ role.displayName }-label` }
                     >
                         { role.displayName }
                     </Typography>
@@ -799,7 +817,7 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
         <>
             <Grid
                 container
-                xs={ 12 }
+                xs={ 10 }
                 className="roles-selective-share-container"
             >
                 {
@@ -835,6 +853,7 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                                         data-componentid={ `${ componentId }-tree-view` }
                                         className="roles-selective-share-tree-view"
                                         items={ organizationTree }
+                                        expandedItems={ expandedItems }
                                         expansionTrigger="iconContainer"
                                         onItemExpansionToggle={ (
                                             _e: SyntheticEvent,
@@ -843,6 +862,11 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                                         ) => {
                                             if (expanded) {
                                                 setExpandedOrgId(itemId);
+                                                setExpandedItems((prev: string[]) => [ ...prev, itemId ]);
+                                            } else {
+                                                setExpandedItems((prev: string[]) =>
+                                                    prev.filter((id: string) => id !== itemId));
+                                                collapseChildNodes(itemId);
                                             }
                                         } }
                                         onItemSelectionToggle={ (

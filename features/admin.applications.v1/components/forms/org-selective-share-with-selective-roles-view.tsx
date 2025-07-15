@@ -294,7 +294,7 @@ const OrgSelectiveShareWithSelectiveRolesView = (props: OrgSelectiveShareWithAll
         <>
             <Grid
                 container
-                xs={ 12 }
+                xs={ 10 }
                 className="roles-selective-share-container"
             >
                 {
@@ -378,7 +378,8 @@ const OrgSelectiveShareWithSelectiveRolesView = (props: OrgSelectiveShareWithAll
                                                                 <Box
                                                                     key={ `role-${index}` }
                                                                     className="role-item"
-                                                                    data-componentid={ `${componentId}-role-${index}` }
+                                                                    data-componentid={
+                                                                        `${ componentId }-role-${ role.displayName }` }
                                                                 >
                                                                     <AnimatedAvatar
                                                                         name={ role.displayName }

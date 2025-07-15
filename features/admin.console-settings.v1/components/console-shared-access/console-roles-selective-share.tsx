@@ -441,13 +441,13 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
                 onClick={ () => setReadOnly(!readOnly) }
             >
                 { readOnly
-                    ? "Manage Role Sharing"
-                    : "View Shared Roles"
+                    ? t("applications:edit.sections.sharedAccess.manageRoleSharing")
+                    : t("applications:edit.sections.sharedAccess.viewRoleSharing")
                 }
             </Button>
             <Grid
                 container
-                xs={ 12 }
+                xs={ 10 }
                 className="roles-selective-share-container"
             >
                 <Grid
@@ -467,6 +467,7 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
 
                         <RichTreeView
                             className="roles-selective-share-tree-view"
+                            data-componentid={ `${ componentId }-organization-tree-view` }
                             items={ organizationTree }
                             defaultSelectedItems={ selectedOrgId }
                             expandedItems={ expandedItems }
@@ -505,7 +506,7 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
                                     <Box
                                         key={ `role-${index}` }
                                         className="role-item"
-                                        data-componentid={ `${componentId}-role-${index}` }
+                                        data-componentid={ `${ componentId }-role-${ role.displayName }` }
                                     >
                                         { readOnly
                                             ? (
@@ -518,6 +519,8 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
                                             : (
                                                 <Checkbox
                                                     className="role-checkbox"
+                                                    data-componentid={
+                                                        `${ componentId }-role-${ role.displayName }-checkbox` }
                                                     checked={ role.displayName ===
                                                         ConsoleRolesOnboardingConstants.ADMINISTRATOR
                                                         ? true
@@ -556,6 +559,7 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
                                         <Typography
                                             variant="body1"
                                             className="role-label"
+                                            data-componentid={ `${ componentId }-role-${ role.displayName }-label` }
                                         >
                                             { role.displayName }
                                         </Typography>
