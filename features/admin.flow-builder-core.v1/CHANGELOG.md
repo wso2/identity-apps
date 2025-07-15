@@ -1,5 +1,20 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.8.4
+
+### Patch Changes
+
+- [#8494](https://github.com/wso2/identity-apps/pull/8494) [`ff7f467277d15c7d9db98f4581e13df80c678ddb`](https://github.com/wso2/identity-apps/commit/ff7f467277d15c7d9db98f4581e13df80c678ddb) Thanks [@KD23243](https://github.com/KD23243)! - Add flow composer for the password recovery flow
+
+- Updated dependencies [[`ff7f467277d15c7d9db98f4581e13df80c678ddb`](https://github.com/wso2/identity-apps/commit/ff7f467277d15c7d9db98f4581e13df80c678ddb), [`cea049e8be75e74950f7ebbba2c2750abe4c0e62`](https://github.com/wso2/identity-apps/commit/cea049e8be75e74950f7ebbba2c2750abe4c0e62)]:
+  - @wso2is/admin.core.v1@2.46.8
+
+## 0.8.3
+
+### Patch Changes
+
+- [#8519](https://github.com/wso2/identity-apps/pull/8519) [`3071c17162606a29a43c98bf8fae4ba526ab0f2f`](https://github.com/wso2/identity-apps/commit/3071c17162606a29a43c98bf8fae4ba526ab0f2f) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add a new property to identify plugin functions
+
 ## 0.8.2
 
 ### Patch Changes

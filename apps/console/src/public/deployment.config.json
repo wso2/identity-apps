@@ -370,12 +370,7 @@
                     "agents.groups"
                 ],
                 "enabled": true,
-                "featureFlags": [
-                    {
-                        "feature": "agents",
-                        "flag": "EXPERIMENTAL"
-                    }
-                ],
+                "featureFlags": [],
                 "scopes": {
                     "create": [],
                     "delete": [],
@@ -765,8 +760,6 @@
             },
             "flows": {
                 "disabledFeatures": [
-                    "flows.types.list.inviteUserToSetPassword",
-                    "flows.types.list.passwordRecovery"
                 ],
                 "enabled": true,
                 "featureFlags": [

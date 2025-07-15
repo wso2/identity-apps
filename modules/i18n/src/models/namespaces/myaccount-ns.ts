@@ -331,6 +331,13 @@ export interface MyAccountNS {
                 tooltip: string;
             };
             organizationLabel: string;
+            dropdown: {
+                footer: {
+                    cookiePolicy: string;
+                    privacyPolicy: string;
+                    termsOfService: string;
+                };
+            };
         },
         linkedAccounts: {
             accountTypes: {

@@ -43,6 +43,7 @@ class VisualFlowConstants {
         StepTypes.View,
         StepTypes.Rule,
         StepTypes.Redirection,
+        StepTypes.Execution,
         TemplateTypes.Basic,
         TemplateTypes.BasicFederated,
         TemplateTypes.Blank,
@@ -71,6 +72,8 @@ class VisualFlowConstants {
         ElementTypes.Divider,
         ElementTypes.Image
     ];
+
+    public static readonly FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER: string = "uniqueName";
 }
 
 export default VisualFlowConstants;

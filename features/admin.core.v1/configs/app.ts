@@ -26,6 +26,9 @@ import {
     getWorkflowAssociationsResourceEndpoints,
     getWorkflowsResourceEndpoints
 } from "@wso2is/admin.approval-workflows.v1/configs/endpoints";
+import {
+    getAskPasswordFlowBuilderResourceEndpoints
+} from "@wso2is/admin.ask-password-flow-builder.v1/configs/endpoints";
 import { getBrandingResourceEndpoints } from "@wso2is/admin.branding.v1/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "@wso2is/admin.certificates.v1";
 import { getClaimResourceEndpoints } from "@wso2is/admin.claims.v1/configs/endpoints";
@@ -41,6 +44,9 @@ import { getScopesResourceEndpoints } from "@wso2is/admin.oidc-scopes.v1";
 import { getInsightsResourceEndpoints } from "@wso2is/admin.org-insights.v1/config/org-insights";
 import { getOrganizationsResourceEndpoints } from "@wso2is/admin.organizations.v1/configs";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
+import {
+    getPasswordRecoveryFlowBuilderResourceEndpoints
+} from "@wso2is/admin.password-recovery-flow-builder.v1/config/endpoints";
 import { getPolicyAdministrationResourceEndpoints } from "@wso2is/admin.policy-administration.v1/configs/endpoints";
 import {
     getPushProviderResourceEndpoints, getPushProviderTemplateEndpoints
@@ -335,6 +341,8 @@ export class Config {
             ...getWorkflowsResourceEndpoints(this.resolveServerHost()),
             ...getWorkflowAssociationsResourceEndpoints(this.resolveServerHost()),
             ...getRegistrationFlowBuilderResourceEndpoints(this.resolveServerHost()),
+            ...getPasswordRecoveryFlowBuilderResourceEndpoints(this.resolveServerHost()),
+            ...getAskPasswordFlowBuilderResourceEndpoints(this.resolveServerHost()),
             ...getWebhooksResourceEndpoints(this.resolveServerHost()),
             ...getAgentsResourceEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.resolveServerHostFromConfig() }/api/server/v1/cors/origins`,
@@ -426,6 +434,7 @@ export class Config {
             primaryUserStoreDomainName: window[ "AppUtils" ]?.getConfig()?.ui?.primaryUserStoreDomainName?.toUpperCase()
                 ?? PRIMARY_USERSTORE,
             privacyPolicyConfigs: window[ "AppUtils" ]?.getConfig()?.ui?.privacyPolicyConfigs,
+            privacyPolicyUrl: window[ "AppUtils" ]?.getConfig()?.ui?.privacyPolicyUrl,
             productName: window[ "AppUtils" ]?.getConfig()?.ui?.productName,
             productVersionConfig: window[ "AppUtils" ]?.getConfig()?.ui?.productVersionConfig,
             routes: window[ "AppUtils" ]?.getConfig()?.ui?.routes ?? {
@@ -440,6 +449,7 @@ export class Config {
                 window[ "AppUtils" ]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures,
             systemAppsIdentifiers: window[ "AppUtils" ]?.getConfig()?.ui?.systemAppsIdentifiers,
             systemReservedUserStores: window[ "AppUtils" ]?.getConfig()?.ui?.systemReservedUserStores,
+            termsOfUseUrl: window[ "AppUtils" ]?.getConfig()?.ui?.termsOfUseURL,
             theme: window[ "AppUtils" ]?.getConfig()?.ui?.theme,
             useRoleClaimAsGroupClaim: window[ "AppUtils" ]?.getConfig()?.ui?.useRoleClaimAsGroupClaim,
             userSchemaURI: window[ "AppUtils" ]?.getConfig()?.ui?.customUserSchemaURI

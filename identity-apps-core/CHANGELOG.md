@@ -1,5 +1,29 @@
 # @wso2is/identity-apps-core
 
+## 2.27.5
+
+### Patch Changes
+
+- [#8531](https://github.com/wso2/identity-apps/pull/8531) [`6b4e412564cf1dcb8e3e0a655308ba3fa4ee8f50`](https://github.com/wso2/identity-apps/commit/6b4e412564cf1dcb8e3e0a655308ba3fa4ee8f50) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - fix asg imp cb url.
+
+## 2.27.4
+
+### Patch Changes
+
+- [#8497](https://github.com/wso2/identity-apps/pull/8497) [`4f7ce17831548284f9c555a67753ed421fc32746`](https://github.com/wso2/identity-apps/commit/4f7ce17831548284f9c555a67753ed421fc32746) Thanks [@nilasini](https://github.com/nilasini)! - Support different flow types
+
+## 2.27.3
+
+### Patch Changes
+
+- [#8249](https://github.com/wso2/identity-apps/pull/8249) [`993184075b947dd35826aea9e58b13be2466a7e9`](https://github.com/wso2/identity-apps/commit/993184075b947dd35826aea9e58b13be2466a7e9) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add organization handle discovery support for b2b login flow
+
+## 2.27.2
+
+### Patch Changes
+
+- [#8515](https://github.com/wso2/identity-apps/pull/8515) [`29e53379192f91a6ef31df5bfccc562a4803168d`](https://github.com/wso2/identity-apps/commit/29e53379192f91a6ef31df5bfccc562a4803168d) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add impersonate cb url fix.
+
 ## 2.27.1
 
 ### Patch Changes
