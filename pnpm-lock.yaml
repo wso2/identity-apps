@@ -6329,7 +6329,7 @@ importers:
         specifier: ^1.0.0
         version: link:../admin.approval-workflows.v1
       '@wso2is/admin.ask-password-flow-builder.v1':
-        specifier: ^0.0.0
+        specifier: workspace:^
         version: link:../admin.ask-password-flow-builder.v1
       '@wso2is/admin.authentication.v1':
         specifier: ^2.25.206
