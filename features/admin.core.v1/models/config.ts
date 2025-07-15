@@ -78,6 +78,10 @@ export interface FeatureConfigInterface {
      */
     actions?: FeatureAccessConfigInterface;
     /**
+     * Agent management feature.
+     */
+    agents?: FeatureAccessConfigInterface;
+    /**
      * Admin user management feature.
      */
     administrators?: FeatureAccessConfigInterface;
@@ -518,6 +522,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     hiddenUserStores: string[];
     /**
+     * System reserved userstores
+     */
+    systemReservedUserStores: string[];
+    /**
      * App Logos
      */
     appLogo: {
@@ -585,6 +593,14 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Custom content configurations.
      */
     customContent: CustomContentConfigInterface;
+    /**
+     * Privacy policy URL.
+     */
+    privacyPolicyUrl?: string;
+    /**
+     * Terms of service URL.
+     */
+    termsOfUseUrl?: string;
 }
 
 /**

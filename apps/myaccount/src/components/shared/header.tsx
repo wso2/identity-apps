@@ -18,10 +18,12 @@
 
 import { useColorScheme } from "@mui/material";
 import Alert from "@oxygen-ui/react/Alert";
+import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Flag from "@oxygen-ui/react/CountryFlag";
 import OxygenHeader from "@oxygen-ui/react/Header";
 import Image from "@oxygen-ui/react/Image";
+import Link from "@oxygen-ui/react/Link";
 import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemAvatar from "@oxygen-ui/react/ListItemAvatar";
 import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
@@ -35,6 +37,7 @@ import {
     RectangleLineIcon
 } from "@oxygen-ui/react-icons";
 import { useThemeProvider } from "@wso2is/common.branding.v1/hooks/use-theme-provider";
+import { BrandingPreferenceURLInterface } from "@wso2is/common.branding.v1/models";
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -147,7 +150,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
     const { mode } = useColorScheme();
 
-    const { theme } = useThemeProvider();
+    const { raw, theme } = useThemeProvider();
+
+    const brandingPreferenceUrls: BrandingPreferenceURLInterface = raw?.preference?.urls;
 
     useEffect(() => {
         const localeCookie: string = CookieStorageUtils.getItem("ui_lang");
@@ -477,6 +482,47 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             userDropdownMenu={ {
                 actionIcon: <ArrowRightFromBracketIcon fill={ mode === "dark" ? "white" : "black" } />,
                 actionText: t("common:logout"),
+                footerContent : brandingPreferenceUrls?.privacyPolicyURL ||
+                                brandingPreferenceUrls?.cookiePolicyURL ||
+                                brandingPreferenceUrls?.termsOfUseURL ? ([
+                        <Box key="footer" className="user-dropdown-footer">
+                            { brandingPreferenceUrls?.privacyPolicyURL && (
+                                <Link
+                                    variant="body3"
+                                    href={ raw.preference.urls.privacyPolicyURL }
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    { I18n.instance.t(
+                                        "myAccount:components.header.dropdown.footer.privacyPolicy") as string }
+                                </Link>
+                            ) }
+
+                            { brandingPreferenceUrls?.cookiePolicyURL && (
+                                <Link
+                                    variant="body3"
+                                    href={ raw.preference.urls.cookiePolicyURL }
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    { I18n.instance.t(
+                                        "myAccount:components.header.dropdown.footer.cookiePolicy") as string }
+                                </Link>
+                            ) }
+
+                            { brandingPreferenceUrls?.termsOfUseURL && (
+                                <Link
+                                    variant="body3"
+                                    href={ raw.preference.urls.termsOfUseURL }
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    { I18n.instance.t(
+                                        "myAccount:components.header.dropdown.footer.termsOfService") as string }
+                                </Link>
+                            ) }
+                        </Box>
+                    ]) : undefined,
                 menuItems: [
                     commonConfig?.showOrganizationManagedBy && resolveOrganizationLabel(),
                     resolveConsoleAppSwitchMenuItem(),

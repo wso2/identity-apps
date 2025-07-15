@@ -76,6 +76,8 @@ const RemoteUserStoresPage: FunctionComponent<RemoteUserStoresPagePropsInterface
     ];
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const systemReservedUserStores: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.systemReservedUserStores);
 
     const [ userStores, setUserStores ] = useState<UserStoreListItem[]>([]);
     const [ offset, setOffset ] = useState(0);
@@ -107,7 +109,9 @@ const RemoteUserStoresPage: FunctionComponent<RemoteUserStoresPagePropsInterface
         }
 
         const userStores: UserStoreListItem[] = originalUserStoreList.filter(
-            (userStore: UserStoreListItem) => userStore.id !== RemoteUserStoreConstants.CUSTOMER_USERSTORE_ID
+            (userStore: UserStoreListItem) =>
+                userStore.id !== RemoteUserStoreConstants.CUSTOMER_USERSTORE_ID &&
+                !systemReservedUserStores?.includes(userStore?.name)
         );
 
         setUserStores(userStores);

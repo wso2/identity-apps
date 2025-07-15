@@ -2700,6 +2700,7 @@ export const extensions: Extensions = {
                     makeDefaultOrganization: "Make default organization",
                     backButton: "Go back",
                     copyOrganizationId: "Copy organization ID",
+                    copyOrganizationHandle: "Copy organization Handle",
                     copied: "Copied!",
                     tenantSearch: {
                         placeholder: "Search organization",
@@ -3919,7 +3920,7 @@ export const extensions: Extensions = {
             categories: {
                 attributeManagement: "Attribute Management",
                 AccountManagement: "Account Management",
-                userManagement: "User Management",
+                userManagement: "Identity Management",
                 approvalWorkflows: "Approval Workflows",
                 organizationSettings: "Organization Settings"
             }

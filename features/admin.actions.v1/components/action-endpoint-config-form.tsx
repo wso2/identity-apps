@@ -25,7 +25,7 @@ import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { FinalFormField, FormSpy, SelectFieldAdapter, TextFieldAdapter } from "@wso2is/form/src";
+import { FinalFormField, FormSpy, __DEPRECATED__SelectFieldAdapter, TextFieldAdapter } from "@wso2is/form/src";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -385,7 +385,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                             displayEmpty={ true }
                             label={ t("actions:fields.authenticationType.label") }
                             placeholder={ t("actions:fields.authenticationType.placeholder") }
-                            component={ SelectFieldAdapter }
+                            component={ __DEPRECATED__SelectFieldAdapter }
                             maxLength={ 100 }
                             minLength={ 0 }
                             options={

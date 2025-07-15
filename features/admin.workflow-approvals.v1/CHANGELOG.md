@@ -1,5 +1,20 @@
 # @wso2is/admin.workflow-approvals.v1
 
+## 2.26.6
+
+### Patch Changes
+
+- [#8498](https://github.com/wso2/identity-apps/pull/8498) [`77a1537cdf2e755dd4e7945048da26d6fe1c0479`](https://github.com/wso2/identity-apps/commit/77a1537cdf2e755dd4e7945048da26d6fe1c0479) Thanks [@Malith-19](https://github.com/Malith-19)! - Fix the filter not updating issue in the workflow and approval task status schema changes.
+
+## 2.26.5
+
+### Patch Changes
+
+- [#8471](https://github.com/wso2/identity-apps/pull/8471) [`c562eed1c1930ca8da84c8ce3f49d30a57773bbe`](https://github.com/wso2/identity-apps/commit/c562eed1c1930ca8da84c8ce3f49d30a57773bbe) Thanks [@Malith-19](https://github.com/Malith-19)! - Add UI support for update users in role in workflow operations.
+
+- Updated dependencies [[`c562eed1c1930ca8da84c8ce3f49d30a57773bbe`](https://github.com/wso2/identity-apps/commit/c562eed1c1930ca8da84c8ce3f49d30a57773bbe)]:
+  - @wso2is/i18n@2.24.10
+
 ## 2.26.4
 
 ### Patch Changes

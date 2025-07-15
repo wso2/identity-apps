@@ -1,5 +1,53 @@
 # @wso2is/identity-apps-core
 
+## 2.27.5
+
+### Patch Changes
+
+- [#8531](https://github.com/wso2/identity-apps/pull/8531) [`6b4e412564cf1dcb8e3e0a655308ba3fa4ee8f50`](https://github.com/wso2/identity-apps/commit/6b4e412564cf1dcb8e3e0a655308ba3fa4ee8f50) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - fix asg imp cb url.
+
+## 2.27.4
+
+### Patch Changes
+
+- [#8497](https://github.com/wso2/identity-apps/pull/8497) [`4f7ce17831548284f9c555a67753ed421fc32746`](https://github.com/wso2/identity-apps/commit/4f7ce17831548284f9c555a67753ed421fc32746) Thanks [@nilasini](https://github.com/nilasini)! - Support different flow types
+
+## 2.27.3
+
+### Patch Changes
+
+- [#8249](https://github.com/wso2/identity-apps/pull/8249) [`993184075b947dd35826aea9e58b13be2466a7e9`](https://github.com/wso2/identity-apps/commit/993184075b947dd35826aea9e58b13be2466a7e9) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add organization handle discovery support for b2b login flow
+
+## 2.27.2
+
+### Patch Changes
+
+- [#8515](https://github.com/wso2/identity-apps/pull/8515) [`29e53379192f91a6ef31df5bfccc562a4803168d`](https://github.com/wso2/identity-apps/commit/29e53379192f91a6ef31df5bfccc562a4803168d) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add impersonate cb url fix.
+
+## 2.27.1
+
+### Patch Changes
+
+- [#8508](https://github.com/wso2/identity-apps/pull/8508) [`1f25cd1582130b47dc60f61e7c025ae56cd073a4`](https://github.com/wso2/identity-apps/commit/1f25cd1582130b47dc60f61e7c025ae56cd073a4) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the styling issue of the dynamic self-registration page's cookie policy banner
+
+## 2.27.0
+
+### Minor Changes
+
+- [#8416](https://github.com/wso2/identity-apps/pull/8416) [`90a17579bddde8c429932caf4a318d873ff3e7d5`](https://github.com/wso2/identity-apps/commit/90a17579bddde8c429932caf4a318d873ff3e7d5) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce Passkey signup in registration orchestration
+
+## 2.26.7
+
+### Patch Changes
+
+- [#8477](https://github.com/wso2/identity-apps/pull/8477) [`36505395f0de512fe8d583fe79b774db55c96e4b`](https://github.com/wso2/identity-apps/commit/36505395f0de512fe8d583fe79b774db55c96e4b) Thanks [@shanggeeth](https://github.com/shanggeeth)! - Handle the email.verification.pending error code and resend the email with EMAIL_VERIFICATION scenario
+
+## 2.26.6
+
+### Patch Changes
+
+- [#8483](https://github.com/wso2/identity-apps/pull/8483) [`4a53a83147440de1fda69ac142f404279eb267b9`](https://github.com/wso2/identity-apps/commit/4a53a83147440de1fda69ac142f404279eb267b9) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add config to read downtime banner content from a toml config
+
 ## 2.26.5
 
 ### Patch Changes

@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.template-core.v1",
-    "version": "1.5.158",
+    "version": "1.5.159",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
