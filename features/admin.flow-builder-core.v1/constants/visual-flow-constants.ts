@@ -43,6 +43,7 @@ class VisualFlowConstants {
         StepTypes.View,
         StepTypes.Rule,
         StepTypes.Redirection,
+        StepTypes.Execution,
         TemplateTypes.Basic,
         TemplateTypes.BasicFederated,
         TemplateTypes.Blank,
