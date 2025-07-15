@@ -16,11 +16,14 @@
  * under the License.
  */
 
+import { TreeItem, TreeItemContent, TreeItemProps, useTreeItem } from "@mui/x-tree-view";
 import { TreeViewBaseItem } from "@mui/x-tree-view/models";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import Grid from "@oxygen-ui/react/Grid";
 import LinearProgress from "@oxygen-ui/react/LinearProgress";
+import Tooltip from "@oxygen-ui/react/Tooltip";
+import { CircleInfoIcon } from "@oxygen-ui/react-icons";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
@@ -33,6 +36,8 @@ import { addAlert } from "@wso2is/core/store";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     Dispatch as ReactDispatch,
+    ReactElement,
+    ReactNode,
     SetStateAction,
     SyntheticEvent,
     useEffect,
@@ -92,6 +97,7 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
     const [ afterCursor, setAfterCursor ] = useState<string>();
     const [ expandedOrgId, setExpandedOrgId ] = useState<string>();
     const [ resolvedOrgs, setResolvedOrgs ] = useState<string[]>([]);
+    const [ roleSelections, setRoleSelections ] = useState<Record<string, RolesInterface[]>>({});
 
     const {
         data: originalApplicationOrganizationTree,
@@ -101,8 +107,7 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
         application?.id,
         true,
         true,
-        null,
-        "roles"
+        null
     );
 
     const {
@@ -145,7 +150,17 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
             const applicationOrgIds: string[] = originalApplicationOrganizationTree.organizations
                 .map((org: OrganizationInterface) => org.id);
 
+            // Set the role selections for the shared organizations
+            const initialRoleSelections: Record<string, RolesInterface[]> = {};
+
+            originalApplicationOrganizationTree.organizations.forEach((org: OrganizationInterface) => {
+                initialRoleSelections[org.id] = org.roles || [];
+            });
+
+            setRoleSelections(initialRoleSelections);
             setSelectedItems(applicationOrgIds);
+        } else {
+            setSelectedItems([]);
         }
     }, [ originalApplicationOrganizationTree ]);
 
@@ -389,6 +404,45 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
         setAfterCursor(cursorFragments[1]);
     };
 
+    const TreeItemsContents = (props: TreeItemProps): ReactElement => {
+        const { status } = useTreeItem(props);
+
+        // const roles: RolesInterface[] | undefined = roleSelections[props.itemId];
+
+        // console.log("TreeItemProps", roles);
+
+        return (
+            <TreeItem
+                { ...props }
+                slots={ {
+                    content: ({
+                        children,
+                        ...props
+                    }: {
+                        children: ReactNode;
+                        props: TreeItemProps;
+                    }) => (
+                        <Tooltip
+                            data-componentid={ `${ componentId }-tree-item-tooltip` }
+                            title={ "Some roles are not shared in this organization" }
+                            placement="right"
+                            open={ false }
+                        >
+                            <TreeItemContent
+                                status={ status }
+                                { ...props }
+                                data-componentid={ `${ componentId }-tree-item-content` }
+                            >
+                                { children }
+                                <CircleInfoIcon size={ 12 } />
+                            </TreeItemContent>
+                        </Tooltip>
+                    )
+                } }
+            />
+        );
+    };
+
     return (
         <>
             <Grid
@@ -446,6 +500,9 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                                     } }
                                     multiSelect={ true }
                                     checkboxSelection={ true }
+                                    slots={ {
+                                        item: TreeItemsContents
+                                    } }
                                 />
                             </InfiniteScroll>
                         </Grid>

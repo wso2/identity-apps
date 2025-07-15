@@ -773,7 +773,7 @@ export interface ApplicationsNS {
                         };
                     };
                 };
-            };allRolesAndOrgsSharingMessage
+            };
             sharedAccess: {
                 allRolesAndOrgsSharingMessage: string;
                 subTitle: string;

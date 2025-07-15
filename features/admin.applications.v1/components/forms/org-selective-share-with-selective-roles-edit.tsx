@@ -208,6 +208,8 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
             );
 
             setSelectedItems(sharedOrgs);
+        } else {
+            setSelectedItems([]);
         }
     }, [ totalApplicationOrganizations ]);
 
