@@ -44,7 +44,6 @@ import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/co
 import { FeatureAccessConfigInterface } from "@wso2is/core/src/models";
 import { StringUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
-import { useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -83,8 +82,6 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
 }: HeaderPropsInterface): ReactElement => {
     const { t } = useTranslation();
 
-    const { getLink } = useDocumentation();
-
     const { showPreviewFeaturesModal, setShowPreviewFeaturesModal } = useFeatureGate();
 
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
@@ -113,6 +110,9 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     });
     const isRegionSelectionEnabled: boolean = useSelector((state: AppState) => {
         return state?.config?.deployment?.regionSelectionEnabled;
+    });
+    const productVersion: string = useSelector((state: AppState) => {
+        return state?.config?.ui?.productVersionConfig?.productVersion;
     });
 
     const hasGettingStartedViewPermission: boolean = useRequiredScopes(
@@ -417,37 +417,52 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                     actionText: t("common:logout"),
                     footerContent:  store.getState()?.config?.ui?.cookiePolicyUrl ||
                                     store.getState()?.config?.ui?.privacyPolicyUrl ||
-                                    store.getState()?.config?.ui?.termsOfUseUrl ? ([
-                            <Box key="footer" className="user-dropdown-footer">
-                                { store.getState()?.config?.ui?.privacyPolicyUrl && (
-                                    <Link
-                                        variant="body3"
-                                        href={ store.getState()?.config?.ui?.privacyPolicyUrl ?? "" }
-                                        target="_blank"
-                                        rel="noreferrer"
-                                    >
-                                        { I18n.instance.t("console:common.dropdown.footer.privacyPolicy") as string }
-                                    </Link>
-                                ) }
-                                { store.getState()?.config?.ui?.cookiePolicyUrl && (
-                                    <Link
-                                        variant="body3"
-                                        href={ store.getState()?.config?.ui?.cookiePolicyUrl ?? "" }
-                                        target="_blank"
-                                        rel="noreferrer"
-                                    >
-                                        { I18n.instance.t("console:common.dropdown.footer.cookiePolicy") as string }
-                                    </Link>
-                                ) }
-                                { store.getState()?.config?.ui?.termsOfUseUrl && (
-                                    <Link
-                                        variant="body3"
-                                        href={ store.getState()?.config?.ui?.termsOfUseUrl ?? "" }
-                                        target="_blank"
-                                        rel="noreferrer"
-                                    >
-                                        { I18n.instance.t("console:common.dropdown.footer.termsOfService") as string }
-                                    </Link>
+                                    store.getState()?.config?.ui?.termsOfUseUrl ||
+                                    productVersion ? ([
+                            <Box key="footer" className="user-dropdown-footer-wrapper">
+                                { store.getState()?.config?.ui?.cookiePolicyUrl ||
+                                    store.getState()?.config?.ui?.privacyPolicyUrl ||
+                                    store.getState()?.config?.ui?.termsOfUseUrl ? (<>
+                                        <Box key="footer" className="user-dropdown-footer">
+                                            { store.getState()?.config?.ui?.privacyPolicyUrl && (
+                                                <Link
+                                                    variant="body3"
+                                                    href={ store.getState()?.config?.ui?.privacyPolicyUrl ?? "" }
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                >
+                                                    { t("console:common.dropdown.footer.privacyPolicy") }
+                                                </Link>
+                                            ) }
+                                            { store.getState()?.config?.ui?.cookiePolicyUrl && (
+                                                <Link
+                                                    variant="body3"
+                                                    href={ store.getState()?.config?.ui?.cookiePolicyUrl ?? "" }
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                >
+                                                    { t("console:common.dropdown.footer.cookiePolicy") }
+                                                </Link>
+                                            ) }
+                                            { store.getState()?.config?.ui?.termsOfUseUrl && (
+                                                <Link
+                                                    variant="body3"
+                                                    href={ store.getState()?.config?.ui?.termsOfUseUrl ?? "" }
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                >
+                                                    { t("console:common.dropdown.footer.termsOfService") }
+                                                </Link>
+                                            ) }
+                                        </Box>
+                                        { productVersion && <Divider/> }
+                                    </>) : undefined }
+                                { productVersion && (
+                                    <Box className="user-dropdown-version">
+                                        <Typography variant="body3">
+                                            { `${productName} ${productVersion}` }
+                                        </Typography>
+                                    </Box>
                                 ) }
                             </Box>
                         ]) : undefined,
@@ -472,7 +487,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                 </MenuItem>
                             </Show>
                         ),
-                        <Show featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
+                        <Show key="feature.preview" featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
                             <Show
                                 when={ loginAndRegistrationFeatureConfig?.scopes?.update }
                                 featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }
