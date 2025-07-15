@@ -346,12 +346,65 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
 
                 if (schemaNameParts.length === 1) {
                     if (schemaNameParts[0] === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")) {
+                        /**
+                         * Extracts the primary email address from the emails array.
+                         *
+                         * @example
+                         * ```
+                         * Suppose: Profile data:
+                         * {
+                         *   ...
+                         *   "emails": [
+                         *     "jdoe@example.com",
+                         *     { "type": "work", "value": "jdoe.work@example" }
+                         *   ],
+                         *   ...
+                         * }
+                         *
+                         * Then: _flattenedInitialValues:
+                         * {
+                         *   ...
+                         *   "emails": "jdoe@example.com",
+                         *   "emails.work": "jdoe.work@example",
+                         *   ...
+                         * }
+                         * ```
+                         */
                         const primaryEmail: string = (preparedInitialValues[schemaNameParts[0]] as unknown[])?.find(
                             (email: unknown): email is string => typeof email === "string");
 
                         _flattenedInitialValues[schemaNameParts[0]] = primaryEmail;
                     }
                 } else {
+                    /**
+                     * Handles the cases like: "emails.work", "phoneNumbers.mobile", "phoneNumbers.work", etc.
+                     *
+                     * @example
+                     * ```
+                     * Suppose: Profile data:
+                     * {
+                     *   ...
+                     *   "phoneNumbers": [
+                     *     { "type": "mobile", "value": "+9876543210" },
+                     *     { "type": "work", "value": "+9876543210" }
+                     *   ]
+                     *   "emails": [
+                     *     "jdoe@example.com",
+                     *     { "type": "work", "value": "jdoe.work@example" }
+                     *   ],
+                     *   ...
+                     * }
+                     *
+                     * Then: _flattenedInitialValues:
+                     * {
+                     *   ...
+                     *   "emails.work": "jdoe.work@example",
+                     *   "phoneNumbers.mobile": "+9876543210",
+                     *   "phoneNumbers.work": "+9876543210",
+                     *   ...
+                     * }
+                     * ```
+                     */
                     _flattenedInitialValues[schema.name] = (preparedInitialValues[schemaNameParts[0]] as unknown[])
                         ?.find((value: unknown): value is { type: string; value: string } =>
                             (value as { type: string; value: string }).type === schemaNameParts[1])?.value;
@@ -359,9 +412,65 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
             } else if (!schema.extended &&
                 schemaNameParts[0] === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ADDRESSES")) {
 
+                /**
+                 * Handles the cases like: "addresses.home", "addresses.work", etc.
+                 *
+                 * @example
+                 * ```
+                 * Suppose: Profile data:
+                 * {
+                 *   ...
+                 *   "addresses": [
+                 *     { "type": "home", "formatted": "123 Main St" },
+                 *     { "type": "work", "formatted": "456 Elm Rd" }
+                 *   ]
+                 *   ...
+                 * }
+                 *
+                 * Then: _flattenedInitialValues:
+                 * {
+                 *   ...
+                 *   "addresses.home": "123 Main St",
+                 *   "addresses.work": "456 Elm Rd",
+                 *   ...
+                 * }
+                 * ```
+                 */
                 _flattenedInitialValues[schema.name] = (preparedInitialValues[schemaNameParts[0]] as unknown[])?.find(
                     (value: unknown): value is { type: string; formatted: string } =>
                         (value as { type: string; formatted: string }).type === schemaNameParts[1])?.formatted;
+            } else if (!schema.extended &&
+                schemaNameParts[0].startsWith(`${ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ADDRESSES")}#`)) {
+
+                /**
+                 * Handles the cases like: "addresses#home.street", "addresses#home.city", etc.
+                 *
+                 * @example
+                 * ```
+                 * Suppose: Profile data:
+                 * {
+                 *   ...
+                 *   "addresses": [
+                 *     { "type": "home", "street": "123 Main St", "city": "Colombo" }
+                 *   ]
+                 *   ...
+                 * }
+                 *
+                 * Then: _flattenedInitialValues:
+                 * {
+                 *   ...
+                 *   "addresses#home.street": "123 Main St",
+                 *   "addresses#home.city": "Colombo",
+                 *   ...
+                 * }
+                 * ```
+                 */
+                const typeParts: string[] = schemaNameParts[0].split("#");
+                const subName: string = schemaNameParts[1];
+
+                _flattenedInitialValues[schema.name] = (preparedInitialValues[typeParts[0]] as unknown[])?.find(
+                    (value: unknown): value is { type: string; [subName]: string } =>
+                        (value as { type: string; [subName]: string }).type === typeParts[1])?.[subName];
             } else {
                 if (schemaNameParts.length > 1) {
                     const schemaNameCanonicalParts: string[] = schemaNameParts[0].split("#");
@@ -398,6 +507,35 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                     if (!schema.extended) {
                         _flattenedInitialValues[schema.name] = preparedInitialValues[schemaNameParts[0]];
                     } else {
+                        /**
+                         * Handles extended schemas.
+                         * @example
+                         * ```
+                         * Suppose: Profile data:
+                         * {
+                         *   ...
+                         *   "urn:scim:wso2:schema": {
+                         *     "country": "Sri Lanka",
+                         *     "complex": {
+                         *       "attribute1": "val1",
+                         *       "attribute2": "val2"
+                         *     }
+                         *   }
+                         *   ...
+                         * }
+                         *
+                         * Then: _flattenedInitialValues:
+                         * {
+                         *   ...
+                         *   "urn:scim:wso2:schema": {
+                         *     "country": "Sri Lanka",
+                         *     "complex.attribute1": "val1",
+                         *     "complex.attribute2": "val2"
+                         *   }
+                         *   ...
+                         * }
+                         * ```
+                         */
                         _flattenedInitialValues[convertedSchemaId][schema.name] = preparedInitialValues[
                             schema.schemaId]?.[schemaNameParts[0]];
                     }
