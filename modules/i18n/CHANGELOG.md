@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.24.15
+
+### Patch Changes
+
+- [#8536](https://github.com/wso2/identity-apps/pull/8536) [`b7d5766dd3c195f36ca62b3785943e402a8d4536`](https://github.com/wso2/identity-apps/commit/b7d5766dd3c195f36ca62b3785943e402a8d4536) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add rich text support to the registration flow composer
+
 ## 2.24.14
 
 ### Patch Changes
