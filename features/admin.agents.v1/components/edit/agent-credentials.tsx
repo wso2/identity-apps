@@ -17,10 +17,15 @@
  */
 
 import { Grid, Typography } from "@mui/material";
+import { generatePassword, getConfiguration } from "@wso2is/admin.users.v1/utils/generate-password.utils";
+import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
+import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models/validation-config";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Button, CopyInputField, EmphasizedSegment, Message, PrimaryButton } from "@wso2is/react-components";
-import React from "react";
+import { Button, CopyInputField, EmphasizedSegment, Message } from "@wso2is/react-components";
+import React, { useMemo } from "react";
 import { Divider } from "semantic-ui-react";
+import { AgentSecretShowModal } from "./agent-secret-show-modal";
+import { updateAgentPassword } from "../../api/agents";
 
 interface AgentCredentialsProps extends IdentifiableComponentInterface {
     agentId: string;
@@ -30,8 +35,48 @@ export default function AgentCredentials({
     agentId,
     ["data-componentid"]: componentId = "agent-credentials"
 }: AgentCredentialsProps) {
+    const { data: validationData } = useValidationConfigData();
+
+    const passwordValidationConfig: ValidationFormInterface = useMemo((): ValidationFormInterface => {
+        return getConfiguration(validationData);
+    }, [ validationData ]);
+
+    const [ isSecretRegenerationLoading, setIsSecretRegenerationLoading ] = React.useState<boolean>(false);
+    const [ isAgentCredentialWizardOpen, setIsAgentCredentialWizardOpen ] = React.useState<boolean>(false);
+    const [ newAgentSecret, setNewAgentSecret ] = React.useState<string>("");
+
     const regenerateAgentScret = () => {
-        /** TODO Impl. */
+        setIsSecretRegenerationLoading(true);
+
+        const newPassword: string = generatePassword(
+            Number(passwordValidationConfig.minLength),
+            Number(passwordValidationConfig.minLowerCaseCharacters) > 0,
+            Number(passwordValidationConfig.minUpperCaseCharacters) > 0,
+            Number(passwordValidationConfig.minNumbers) > 0,
+            Number(passwordValidationConfig.minSpecialCharacters) > 0,
+            Number(passwordValidationConfig.minLowerCaseCharacters),
+            Number(passwordValidationConfig.minUpperCaseCharacters),
+            Number(passwordValidationConfig.minNumbers),
+            Number(passwordValidationConfig.minSpecialCharacters),
+            Number(passwordValidationConfig.minUniqueCharacters)
+        );
+
+        setNewAgentSecret(newPassword);
+
+        updateAgentPassword(
+            agentId,
+            newPassword
+        ).then((resp) => {
+            setIsAgentCredentialWizardOpen(true);
+            // Handle successful regeneration of agent secret.
+            // This could include showing a success message or updating the UI.
+
+        }).catch((error) => {
+            // Handle error during regeneration of agent secret.
+
+        }).finally(() => {
+            setIsSecretRegenerationLoading(false);
+        });
     };
 
     return (
@@ -52,15 +97,24 @@ export default function AgentCredentials({
                     </Message>
                     <Button
                         color="red"
+                        loading={ isSecretRegenerationLoading }
+                        disabled={ isSecretRegenerationLoading }
                         onClick={ regenerateAgentScret }
                         data-componentid={ `${componentId}-agent-secret-regenerate-button` }
                     >
-                        Regenerate
+                        { isSecretRegenerationLoading ? "Regenerating" : "Regenerate" }
                     </Button>
                 </Grid>
             </Grid>
-
-            <PrimaryButton className="mt-5">Update</PrimaryButton>
+            <AgentSecretShowModal
+                title="Regenerated Agent Secret"
+                agentId={ agentId }
+                agentSecret={ newAgentSecret }
+                isOpen={ isAgentCredentialWizardOpen }
+                onClose={ () => {
+                    setIsAgentCredentialWizardOpen(false);
+                } }
+            />
         </EmphasizedSegment>
     );
 }
