@@ -1,5 +1,20 @@
 # @wso2is/console
 
+## 2.67.10
+
+### Patch Changes
+
+- [#8526](https://github.com/wso2/identity-apps/pull/8526) [`f51252a6332f950f52c5685a22e27d25b46fe308`](https://github.com/wso2/identity-apps/commit/f51252a6332f950f52c5685a22e27d25b46fe308) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Add customisability for cookie policy privacy policy and terms of service urls in the console user dropdown
+
+* [#8494](https://github.com/wso2/identity-apps/pull/8494) [`ff7f467277d15c7d9db98f4581e13df80c678ddb`](https://github.com/wso2/identity-apps/commit/ff7f467277d15c7d9db98f4581e13df80c678ddb) Thanks [@KD23243](https://github.com/KD23243)! - Add flow composer for the password recovery flow
+
+- [#8527](https://github.com/wso2/identity-apps/pull/8527) [`cea049e8be75e74950f7ebbba2c2750abe4c0e62`](https://github.com/wso2/identity-apps/commit/cea049e8be75e74950f7ebbba2c2750abe4c0e62) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix feature preview modal rendering without content
+
+- Updated dependencies [[`ff7f467277d15c7d9db98f4581e13df80c678ddb`](https://github.com/wso2/identity-apps/commit/ff7f467277d15c7d9db98f4581e13df80c678ddb), [`cea049e8be75e74950f7ebbba2c2750abe4c0e62`](https://github.com/wso2/identity-apps/commit/cea049e8be75e74950f7ebbba2c2750abe4c0e62)]:
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.0.0
+  - @wso2is/admin.flows.v1@1.0.9
+  - @wso2is/admin.core.v1@2.46.8
+
 ## 2.67.9
 
 ### Patch Changes
