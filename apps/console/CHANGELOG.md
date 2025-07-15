@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.67.11
+
+### Patch Changes
+
+- [#8528](https://github.com/wso2/identity-apps/pull/8528) [`9f1946db09592ff45717f653566c9fce0441a865`](https://github.com/wso2/identity-apps/commit/9f1946db09592ff45717f653566c9fce0441a865) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add organization switch grant to React and Next.js apps
+
+- Updated dependencies [[`9f1946db09592ff45717f653566c9fce0441a865`](https://github.com/wso2/identity-apps/commit/9f1946db09592ff45717f653566c9fce0441a865)]:
+  - @wso2is/admin.extensions.v1@2.39.8
+
 ## 2.67.10
 
 ### Patch Changes

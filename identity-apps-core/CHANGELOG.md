@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.27.4
+
+### Patch Changes
+
+- [#8497](https://github.com/wso2/identity-apps/pull/8497) [`4f7ce17831548284f9c555a67753ed421fc32746`](https://github.com/wso2/identity-apps/commit/4f7ce17831548284f9c555a67753ed421fc32746) Thanks [@nilasini](https://github.com/nilasini)! - Support different flow types
+
 ## 2.27.3
 
 ### Patch Changes
