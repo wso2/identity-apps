@@ -19,8 +19,8 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Node } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
-import Redirection from "./redirection/redirection";
 import Execution from "./execution/execution";
+import Redirection from "./redirection/redirection";
 import Rule from "./rule/rule";
 import View from "./view/view";
 import { Step, StepTypes } from "../../../models/steps";
