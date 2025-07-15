@@ -102,7 +102,7 @@
                     <%
                         if ("true".equals(authenticationFailed)) {
                     %>
-                    <div class="ui negative message" id="failed-msg"><%=errorMessage%></div>
+                    <div class="ui negative message" id="failed-msg"><%= Encode.forHtml(errorMessage) %></div>
                     <% } %>
                 </div>
             </layout:component>

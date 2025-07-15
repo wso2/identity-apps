@@ -81,6 +81,9 @@
     String sp = Encode.forJava(request.getParameter("sp"));
     String spId = Encode.forJava(request.getParameter("spId"));
 
+    String rawQueryString = request.getQueryString();
+    String urlQuery = Encode.forHtmlAttribute(rawQueryString == null ? "" : rawQueryString);
+
     if (StringUtils.isBlank(tenantDomain)) {
         tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
     }
@@ -408,7 +411,7 @@
                         <input type="hidden" name="channel" value=""/>
                         <input type="hidden" name="sp" value="<%=sp %>"/>
                         <input type="hidden" name="spId" value="<%=spId %>"/>
-                        <input type="hidden" name="urlQuery" value="<%=request.getQueryString() %>"/>
+                        <input type="hidden" name="urlQuery" value="<%=urlQuery %>"/>
                         <input type="hidden" name="isMultiRecoveryOptionsAvailable"
                             value="<%=multipleRecoveryOptionsAvailable %>"/>
                         <input type="hidden" name="isEmailOtpBasedPasswordRecoveryEnabledByTenant"
