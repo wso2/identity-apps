@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.27.6
+
+### Patch Changes
+
+- [#8537](https://github.com/wso2/identity-apps/pull/8537) [`cfaad2b16d10e3364f29cc7d4694381ac4c47cbc`](https://github.com/wso2/identity-apps/commit/cfaad2b16d10e3364f29cc7d4694381ac4c47cbc) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Fix asgardeo callback building logic.
+
 ## 2.27.5
 
 ### Patch Changes
