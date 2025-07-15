@@ -267,7 +267,7 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
             (feature: PreviewFeaturesListInterface) => feature?.id === selectedPreviewFeatureToShow
         );
 
-        setSelectedFeatureIndex(activePreviewFeatureIndex);
+        setSelectedFeatureIndex(activePreviewFeatureIndex > 0 ? activePreviewFeatureIndex : 0);
     }, [ selectedPreviewFeatureToShow ]);
 
     useEffect(() => {
