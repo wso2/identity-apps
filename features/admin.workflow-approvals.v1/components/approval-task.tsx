@@ -21,7 +21,7 @@ import { AlertLevels, Claim, ClaimsGetParams, TestableComponentInterface } from 
 import { addAlert } from "@wso2is/core/store";
 import { LinkButton, Media, Popup, Text, useMediaContext } from "@wso2is/react-components";
 import moment from "moment";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -102,7 +102,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
     const { t } = useTranslation();
     const { isMobileViewport } = useMediaContext();
     const dispatch: Dispatch = useDispatch();
-    const [ localClaims, setLocalClaims ] = React.useState<Claim[]>([]);
+    const [ localClaims, setLocalClaims ] = useState<Claim[]>([]);
 
 
     const getLocalClaims = () => {
