@@ -18,7 +18,7 @@
 import { AgentsNS } from "../../../models/namespaces/agents-ns";
 
 export const agents: AgentsNS = {
-    description: "Configure and manage AI agent identities for your organizaton",
+    description: "Manage AI agent identities, permissions, and access controls for your organization's automated systems.",
     edit: {
         credentials: {
             title: ""
