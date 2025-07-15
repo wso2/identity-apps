@@ -51,7 +51,6 @@ import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { getSelectedNode } from "../utils/get-selected-node";
 import "./link-plugin.scss";
-import { useAuthenticationFlowBuilderCore } from "../../../../public-api";
 
 const LowPriority: CommandListenerPriority = 1;
 const HighPriority: CommandListenerPriority = 3;
