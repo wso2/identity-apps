@@ -2227,6 +2227,12 @@
         {% if console.ui.cookie_policy_url is defined %}
         "cookiePolicyUrl": "{{ console.ui.cookie_policy_url }}",
         {% endif %}
+        {% if console.ui.privacy_policy_url is defined %}
+        "privacyPolicyUrl": "{{ console.ui.privacy_policy_url }}",
+        {% endif %}
+        {% if console.ui.terms_of_service_url is defined %}
+        "termsOfUseUrl": "{{ console.ui.terms_of_service_url }}",
+        {% endif %}
         {% if console.ui.is_marketing_consent_banner_enabled is defined %}
         "isMarketingConsentBannerEnabled": {{ console.ui.is_marketing_consent_banner_enabled }},
         {% endif %}
