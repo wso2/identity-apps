@@ -25,7 +25,7 @@ import { useAPIAuthorization } from "../hooks/use-application-api-authorization"
  */
 export interface ApplicationManagementProviderProps extends PropsWithChildren {
     /**
-     * Application ID for API authorization.
+     * Application ID.
      */
     appId: string;
 }
@@ -53,7 +53,6 @@ const ApplicationManagementProvider: FunctionComponent<ApplicationManagementProv
         setApiScopes(scopes);
     };
 
-    // Use the API authorization hook
     const {
         allAuthorizedScopes,
         subscribedAPIResourcesListData,

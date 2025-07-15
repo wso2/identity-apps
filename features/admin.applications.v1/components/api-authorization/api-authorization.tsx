@@ -339,7 +339,6 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
                     originalTemplateId={ originalTemplateId }
                     allAPIResourcesListData={ allAPIResourcesListData?.apiResources }
                     allAPIResourcesFetchRequestError={ allAPIResourcesFetchRequestError }
-                    allAuthorizedScopes={ allAuthorizedScopes }
                     subscribedAPIResourcesListData={ subscribedAPIResourcesListData }
                     subscribedAPIResourcesFetchRequestError=
                         { subscribedAPIResourcesFetchRequestError }

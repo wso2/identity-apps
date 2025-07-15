@@ -83,4 +83,4 @@ const ApplicationManagementContext: Context<ApplicationManagementContextProps> =
  */
 ApplicationManagementContext.displayName = "ApplicationManagementContext";
 
-export default ApplicationManagementContext; 
+export default ApplicationManagementContext;

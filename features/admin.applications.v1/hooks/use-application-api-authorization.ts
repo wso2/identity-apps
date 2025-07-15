@@ -16,15 +16,15 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { useEffect, useState } from "react";
 import useSubscribedAPIResources from "../api/use-subscribed-api-resources";
+import { ApplicationManagementConstants } from "../constants/application-management";
 import {
     AuthorizedAPIListItemInterface,
     AuthorizedPermissionListItemInterface
 } from "../models/api-authorization";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { ApplicationManagementConstants } from "../constants/application-management";
-import { useRequiredScopes } from "@wso2is/access-control";
 
 interface UseAPIAuthorizationReturn {
     allAuthorizedScopes: AuthorizedPermissionListItemInterface[];
@@ -37,7 +37,7 @@ interface UseAPIAuthorizationReturn {
 
 /**
  * Hook to manage API authorization logic.
- * 
+ *
  * @param appId - Application ID
  * @param updateApiScopes - Function to update API scopes in context
  * @returns API authorization state and functions
@@ -46,7 +46,7 @@ export const useAPIAuthorization = (
     appId: string,
     updateApiScopes?: (scopes: string) => void
 ): UseAPIAuthorizationReturn => {
-    const [allAuthorizedScopes, setAllAuthorizedScopes] = useState<AuthorizedPermissionListItemInterface[]>([]);
+    const [ allAuthorizedScopes, setAllAuthorizedScopes ] = useState<AuthorizedPermissionListItemInterface[]>([]);
     const { isSubOrganization } = useGetCurrentOrganizationType();
     const requiredApplicationViewScope: string = isSubOrganization
         ? ApplicationManagementConstants.INTERNAL_ORG_APPLICATION_MGT_VIEW

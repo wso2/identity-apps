@@ -160,21 +160,22 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
             data.pemCertificate = btoa(getPemFormatCertificate(samlConfigurations?.certificate));
         }
 
-        // Concatenate API and user scopes.
-        const concatenatedScopes: string = [ apiScopes, userScopes ]
-            .filter((scope: string) => scope && scope.trim() !== "")
-            .join(" ");
+        // Combine API and user scopes.
+        const scopeArray: string[] = [apiScopes, userScopes]
+            .filter((scope: string) => scope?.trim())
+            .join(" ")
+            .trim()
+            .split(/\s+/)
+            .filter(Boolean);
 
-        // Default to "openid profile" if no scopes are provided.
-        const finalScopes: string = concatenatedScopes || "openid profile";
-
-        const scopeArray: string[] = finalScopes.split(" ").filter((scope: string) => scope.trim() !== "");
+        // Default to OAuth 2.0 scopes ("openid profile") if no scopes are provided.
+        const finalScopeArray: string[] = scopeArray.length ? scopeArray : ["openid", "profile"];
 
         data.scopes = {
             // Comma separated list with single quotes around the scope values.
             // Example: "'openid', 'profile', 'email'"
-            commaSeperatedList: scopeArray.map((scope: string) => `'${scope}'`).join(", "),
-            spaceSeperatedList: finalScopes
+            commaSeperatedList: finalScopeArray.map((scope: string) => `'${scope}'`).join(", "),
+            spaceSeperatedList: finalScopeArray.join(" ")
         };
 
         return data;

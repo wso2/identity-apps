@@ -46,8 +46,8 @@ import { Dispatch } from "redux";
 import { Form, Grid, Header, Icon, Input } from "semantic-ui-react";
 import { ScopeForm } from "./scope-form";
 import useScopesOfAPIResources from "../../api/use-scopes-of-api-resources";
-import useApplicationManagement from "../../hooks/use-application-management";
 import { Policy } from "../../constants/api-authorization";
+import useApplicationManagement from "../../hooks/use-application-management";
 import {
     AuthorizedAPIListItemInterface,
     AuthorizedPermissionListItemInterface
@@ -79,10 +79,6 @@ interface SubscribedAPIResourcesProps extends
      * Error when fetching all API Resources
      */
     allAPIResourcesFetchRequestError: AxiosError<RequestErrorInterface>;
-    /**
-     * All authorized scopes.
-     */
-    allAuthorizedScopes: AuthorizedPermissionListItemInterface[];
     /**
      * List of subscribed API Resources
      */
@@ -129,7 +125,6 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
         originalTemplateId,
         allAPIResourcesListData,
         allAPIResourcesFetchRequestError,
-        allAuthorizedScopes,
         subscribedAPIResourcesListData,
         subscribedAPIResourcesFetchRequestError,
         isScopesAvailableForUpdate,
