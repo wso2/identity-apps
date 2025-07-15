@@ -22,18 +22,16 @@ import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, Claim, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
 import { DangerZone, DangerZoneGroup, EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Divider, Form, Grid } from "semantic-ui-react";
-import { deleteAgent, updateAgent } from "../../api/agents";
-import { AGENT_FEATURE_DICTIONARY } from "../../constants/agents";
+import { CheckboxProps, Divider, Form, Grid } from "semantic-ui-react";
+import { deleteAgent, updateAgent, updateAgentLockStatus } from "../../api/agents";
 import useGetAgent from "../../hooks/use-get-agent";
 import { AgentScimSchema } from "../../models/agents";
 import "./agent-overview.scss";
@@ -50,17 +48,20 @@ export default function AgentOverview({
     const dispatch: Dispatch = useDispatch();
 
     const [ initialValues, setInitialValues ] = useState<any>();
+    const [ isAgentLocked, setIsAgentLocked ] = useState<boolean>(false);
 
     const {
         data: agentInfo
     } = useGetAgent(agentId);
 
+    useEffect(() => {
+        setIsAgentLocked(agentInfo["urn:scim:wso2:schema"].accountLocked);
+    }, [ agentInfo ]);
+
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
 
     const agentFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state?.config?.ui?.features?.agents);
-    const isAgentDisablingEnabled: boolean =
-        isFeatureEnabled(agentFeatureConfig, AGENT_FEATURE_DICTIONARY.get("DISABLE_AGENT"));
 
     const hasAgentDeletePermissions: boolean = useRequiredScopes(agentFeatureConfig?.scopes?.delete);
 
@@ -71,7 +72,6 @@ export default function AgentOverview({
             });
         }
     }, [ agentInfo ]);
-
 
     const [ agentSchemaAttributes, setAgentSchemaAttributes ] = useState<Claim[]>([]);
 
@@ -84,6 +84,27 @@ export default function AgentOverview({
 
             });
     }, []);
+
+    const agentSchemaAttributesWithProperties: any[] = useMemo(() => {
+        return agentSchemaAttributes?.map((agentAttribute: Claim) => {
+            const claimProperties: any = Object.fromEntries(
+                agentAttribute?.properties?.map(
+                    ({ key, value }: { key: string; value: string }) => [ key, value ]
+                )
+            );
+
+            return {
+                ...agentAttribute,
+                properties: claimProperties
+            };
+        })?.sort((a, b) => {
+            const orderA: number = parseInt(a.properties?.DisplayOrder ?? "0", 10);
+            const orderB: number = parseInt(b.properties?.DisplayOrder ?? "0", 10);
+
+            return orderA - orderB;
+        });
+
+    }, [ agentSchemaAttributes ]);
 
     const agentSchemaformFieldProperties: Record<string, any> = {
         "urn:scim:wso2:agent:schema:agentDescription": {
@@ -110,7 +131,7 @@ export default function AgentOverview({
                         const updateAgentPayload: AgentScimSchema = {
                             "urn:scim:wso2:agent:schema": {
                                 ...values,
-                                agentOwner: authenticatedUser
+                                Owner: authenticatedUser
                             },
                             // TODO: Move this to BE API to set the agent username when updating
                             // the agent information
@@ -140,16 +161,7 @@ export default function AgentOverview({
                                             onSubmit={ handleSubmit }
                                             style={ { display: "flex", flexDirection: "column", gap: "16px" } }
                                         >
-                                            { agentSchemaAttributes?.map((agentAttribute: Claim) => {
-                                                const claimProperties: any = Object.fromEntries(
-                                                    agentAttribute?.properties?.map(
-                                                        ({
-                                                            key, value
-                                                        }: {
-                                                            key: string;
-                                                            value: string;
-                                                        }) => [ key, value ]));
-
+                                            { agentSchemaAttributesWithProperties?.map((agentAttribute: any) => {
                                                 const formFieldProperties: any =
                                                     agentSchemaformFieldProperties[agentAttribute.claimURI] ?? [];
 
@@ -158,7 +170,7 @@ export default function AgentOverview({
                                                         <FinalFormField
                                                             key={ agentAttribute.id }
                                                             name={ agentAttribute.claimURI.split(":").pop() }
-                                                            label={ claimProperties.DisplayName }
+                                                            label={ agentAttribute?.properties.DisplayName }
                                                             component={ TextFieldAdapter }
                                                             { ...formFieldProperties }
                                                         ></FinalFormField>
@@ -184,22 +196,6 @@ export default function AgentOverview({
             <DangerZoneGroup
                 sectionHeader={ "Danger Zone" }
             >
-                { isAgentDisablingEnabled && (
-                    <DangerZone
-                        actionTitle={
-                            "Disable agent"
-                        }
-                        header={
-                            "Disable agent"
-                        }
-                        subheader={
-                            "Once disabled, this agent will not be able to connect to any application or connection. " +
-                        "Please be certain before you proceed"
-                        }
-                        onActionClick={ (): void => null }
-                        data-componentid={ componentId + "-danger-zone" }
-                    />
-                ) }
                 { hasAgentDeletePermissions && (<DangerZone
                     actionTitle={ "Delete agent" }
                     header={ "Delete agent" }
@@ -222,6 +218,41 @@ export default function AgentOverview({
                     }
                     data-componentid={ componentId + "-danger-zone" }
                 />) }
+
+                <DangerZone
+                    data-componentId={ `${ componentId }-danger-zone-toggle` }
+                    actionTitle={ "Block Agent" }
+                    header={
+                        "Block Agent"
+                    }
+                    subheader={
+                        "Once the agent is blocked, it will not be able to access any resources. "
+                    }
+                    onActionClick={ undefined }
+                    toggle={ {
+                        checked: isAgentLocked,
+                        id: "agentAccountLocked",
+                        onChange: (toggleData: CheckboxProps) => {
+                            setIsAgentLocked(toggleData.target.checked);
+                            updateAgentLockStatus(agentId, toggleData.target.checked)
+                                .then(() => {
+                                    dispatch(addAlert({
+                                        description: `The agent account is ${ toggleData.checked ? "blocked" : "unbocked" } successfully.`,
+                                        level: AlertLevels.SUCCESS,
+                                        message: `Agent account is ${ toggleData.checked ? "blocked" : "unblocked" }`
+                                    }));
+                                })
+                                .catch((_error: AxiosError) => {
+                                    dispatch(addAlert({
+                                        description:
+                                            `An error occurred when ${ toggleData.checked ? "blocking" : "unblocking" } the agent.`,
+                                        level: AlertLevels.ERROR,
+                                        message: "Something went wrong"
+                                    }));
+                                });
+                        }
+                    } }
+                />
 
             </DangerZoneGroup>
         </>

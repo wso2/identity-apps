@@ -17,14 +17,15 @@
  */
 
 import { Typography } from "@mui/material";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { ReadOnlyRoleList } from "@wso2is/admin.roles.v2/components/readonly-role-list";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { EmphasizedSegment } from "@wso2is/react-components";
+import { EmphasizedSegment, Link, Message } from "@wso2is/react-components";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import "./agent-roles.scss";
 import useGetAgent from "../../hooks/use-get-agent";
-
+import "./agent-roles.scss";
 
 interface AgentRolesViewProps extends IdentifiableComponentInterface {
     agentId: string;
@@ -47,6 +48,17 @@ export default function AgentRoles({ agentId }: AgentRolesViewProps) {
             <Typography variant="body1" className="mb-5" style={ { color: "#9c9c9c" } }>
                 { t("agents:edit.roles.subtitle") }
             </Typography>
+            <Message info className="mt-5 mb-5">
+                You can assign roles to the agent from <Link
+                    external={ false }
+                    onClick={ () => {
+                        history.push(
+                            AppConstants.getPaths().get("ROLES")
+                        );
+                    } }
+                >Roles
+                </Link>
+            </Message>
             <ReadOnlyRoleList
                 totalRoleList={ agentInfo?.roles }
                 emptyRolesListPlaceholder={ null }

@@ -19,12 +19,17 @@
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { DocumentationLink, ListLayout, PageLayout, PrimaryButton, useDocumentation } from "@wso2is/react-components";
+import set from "lodash-es/set";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
 import AgentList from "../components/agent-list";
+import { AgentSecretShowModal } from "../components/edit/agent-secret-show-modal";
 import AddAgentWizard from "../components/wizards/add-agent-wizard";
 import { useGetAgents } from "../hooks/use-get-agents";
 
@@ -33,7 +38,14 @@ type AgentPageProps = IdentifiableComponentInterface;
 export default function Agents ({
     "data-componentid": componentId
 }: AgentPageProps) {
+    const [ newAgent, setNewAgent ] = useState<any>(null);
+
+    const dispatch: Dispatch = useDispatch();
+
     const [ isAddAgentWizardOpen,setIsAddAgentWizardOpen ] = useState(false);
+    const [ isAgentCredentialWizardOpen, setIsAgentCredentialWizardOpen ] = useState(false);
+
+    const { getLink } = useDocumentation();
 
     const { t } = useTranslation();
 
@@ -64,7 +76,19 @@ export default function Agents ({
         <PageLayout
             pageTitle={ t("agents:title") }
             title={ t("agents:pageTitle") }
-            description={ t("agents:description") }
+            description={
+                (<>
+                    { t("agents:description") }
+                    <DocumentationLink
+                        link={
+                            getLink("develop.agents.learnMore")
+                        }
+                        showEmptyLink={ false }
+                    >
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </>)
+            }
             data-componentid={ `${componentId}-page-layout` }
             bottomMargin={ false }
             contentTopMargin={ true }
@@ -186,15 +210,35 @@ export default function Agents ({
 
             <AddAgentWizard
                 isOpen={ isAddAgentWizardOpen }
-                onClose={ (newAgentId: string) => {
+                onClose={ (newCreatedAgent) => {
+                    setNewAgent(newCreatedAgent);
                     setIsAddAgentWizardOpen(false);
-                    if (newAgentId) {
+                    setIsAgentCredentialWizardOpen(true);
+                } }
+            />
+
+            <AgentSecretShowModal
+                title="Agent created successfully"
+                agentId={ newAgent?.id }
+                agentSecret={ newAgent?.password }
+                isOpen={ isAgentCredentialWizardOpen }
+                onClose={ () => {
+                    dispatch(
+                        addAlert({
+                            description: "Agent created successfully",
+                            level: AlertLevels.SUCCESS,
+                            message: "Created successfully"
+                        })
+                    );
+                    if (newAgent?.id) {
                         history.push(
-                            AppConstants.getPaths().get("AGENT_EDIT").replace(":id", newAgentId )
+                            AppConstants.getPaths().get("AGENT_EDIT").replace(":id", newAgent?.id )
                         );
                     }
                 } }
+
             />
+
         </PageLayout>
     );
 }
