@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -46,6 +46,7 @@ import { Dispatch } from "redux";
 import { Form, Grid, Header, Icon, Input } from "semantic-ui-react";
 import { ScopeForm } from "./scope-form";
 import useScopesOfAPIResources from "../../api/use-scopes-of-api-resources";
+import useApplicationManagement from "../../hooks/use-application-management";
 import { Policy } from "../../constants/api-authorization";
 import {
     AuthorizedAPIListItemInterface,
@@ -156,9 +157,10 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
     const [ searchQuery, setSearchQuery ] = useState<string>(null);
     const [ searchedSubscribedAPIResources, setSearchedSubscribedAPIResources ] =
         useState<AuthorizedAPIListItemInterface[]>(null);
-    const [ copyScopesValue, setCopyScopesValue ] = useState<string>(null);
     const [ m2mApplication, setM2MApplication ] = useState<boolean>(false);
     const dispatch: Dispatch = useDispatch();
+
+    const { apiScopes } = useApplicationManagement();
 
     const {
         data: currentAPIResourceScopeListData,
@@ -175,16 +177,7 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
         }
     }, [ subscribedAPIResourcesListData ]);
 
-    /**
-     * Initalize the copy scopes value.
-     */
-    useEffect(() => {
-        if (allAuthorizedScopes) {
-            setCopyScopesValue(allAuthorizedScopes.map(
-                (scope: AuthorizedPermissionListItemInterface) => scope.name).join(" ")
-            );
-        }
-    }, [ allAuthorizedScopes ]);
+
 
     /**
      * Check whether the application is an M2M application.
@@ -560,7 +553,7 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                         </Grid.Column>
                     </Grid.Row>
                     {
-                        copyScopesValue && (
+                        apiScopes && (
                             <Grid.Row className="mt-2">
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
                                     <Grid.Row>
@@ -568,7 +561,7 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                                             <Form.Field>
                                                 <CopyInputField
                                                     className="copy-input spaced"
-                                                    value={ copyScopesValue }
+                                                    value={ apiScopes }
                                                     data-componentid={ `${ componentId }-selected-scope-area` }
                                                 />
                                                 <Hint>

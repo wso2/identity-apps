@@ -30,11 +30,13 @@ import { AuthorizedAPIListItemInterface } from "../models/api-authorization";
  * Hook to get subscribed API resources.
  *
  * @param appId - application ID.
+ * @param shouldFetch - Whether to fetch the data. Defaults to true.
  * @returns SWR response object containing the data, error, isLoading, mutate.
  * @throws `IdentityAppsApiException`
  */
 const useSubscribedAPIResources = <Data = AuthorizedAPIListItemInterface[], Error = RequestErrorInterface>(
-    appId: string
+    appId: string,
+    shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: AxiosRequestConfig = {
@@ -46,7 +48,9 @@ const useSubscribedAPIResources = <Data = AuthorizedAPIListItemInterface[], Erro
         url: `${ store.getState().config.endpoints.applications }/${ appId }/authorized-apis`
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(
+        shouldFetch ? requestConfig : null
+    );
 
     return {
         data,

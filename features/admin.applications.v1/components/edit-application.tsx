@@ -19,6 +19,7 @@
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { ApplicationEditForm } from "@wso2is/admin.application-templates.v1/components/application-edit-form";
 import { ApplicationMarkdownGuide } from "@wso2is/admin.application-templates.v1/components/application-markdown-guide";
+import useApplicationManagement from "../hooks/use-application-management";
 import useApplicationTemplateMetadata from
     "@wso2is/admin.application-templates.v1/hooks/use-application-template-metadata";
 import {
@@ -167,6 +168,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const { isSuperOrganization, isSubOrganization } = useGetCurrentOrganizationType();
     const dispatch: Dispatch = useDispatch();
     const { UIConfig } = useUIConfig();
+    const { apiScopes, userScopes } = useApplicationManagement();
+    
     const {
         templateMetadata: extensionTemplateMetadata,
         isTemplateMetadataRequestLoading: isExtensionTemplateMetadataFetchRequestLoading
@@ -731,6 +734,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     content={ guideContent }
                     isLoading={ isLoading }
                     protocolName={ firstProtocolName }
+                    apiScopes={ apiScopes }
+                    userScopes={ userScopes }
                 />
             </ResourceTab.Pane>
         );

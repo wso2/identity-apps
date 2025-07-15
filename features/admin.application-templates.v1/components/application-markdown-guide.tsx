@@ -62,6 +62,14 @@ export interface ApplicationMarkdownGuidePropsInterface extends IdentifiableComp
      * Current application protocol name.
      */
     protocolName: string;
+    /**
+     * API scopes for the application.
+     */
+    apiScopes?: string;
+    /**
+     * User scopes for the application.
+     */
+    userScopes?: string;
 }
 
 /**
@@ -109,6 +117,8 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
     content,
     isLoading,
     protocolName,
+    apiScopes,
+    userScopes,
     ["data-componentid"]: componentId = "application-markdown-guide"
 }: ApplicationMarkdownGuidePropsInterface): ReactElement => {
 
@@ -150,11 +160,21 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
             data.pemCertificate = btoa(getPemFormatCertificate(samlConfigurations?.certificate));
         }
 
-        // TODO: Dynmically update the scopes based on the application configured scopes.
-        // Default to OAuth 2.0 scopes.
+        // Concatenate API and user scopes.
+        const concatenatedScopes: string = [ apiScopes, userScopes ]
+            .filter((scope: string) => scope && scope.trim() !== "")
+            .join(" ");
+
+        // Default to "openid profile" if no scopes are provided.
+        const finalScopes: string = concatenatedScopes || "openid profile";
+
+        const scopeArray: string[] = finalScopes.split(" ").filter((scope: string) => scope.trim() !== "");
+
         data.scopes = {
-            commaSeperatedList: "'openid', 'profile'",
-            spaceSeperatedList: "openid profile"
+            // Comma separated list with single quotes around the scope values.
+            // Example: "'openid', 'profile', 'email'"
+            commaSeperatedList: scopeArray.map((scope: string) => `'${scope}'`).join(", "),
+            spaceSeperatedList: finalScopes
         };
 
         return data;

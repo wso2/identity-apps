@@ -75,6 +75,7 @@ import { updateApplicationDetails } from "../api/application";
 import { useGetApplication } from "../api/use-get-application";
 import useGetApplicationInboundConfigs from "../api/use-get-application-inbound-configs";
 import { EditApplication } from "../components/edit-application";
+import ApplicationManagementProvider from "../providers/application-management-provider";
 import { InboundProtocolDefaultFallbackTemplates } from "../components/meta/inbound-protocols.meta";
 import { ApplicationManagementConstants } from "../constants/application-management";
 import CustomApplicationTemplate
@@ -1067,24 +1068,26 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 <ApplicationTemplateMetadataProvider
                     template={ extensionApplicationTemplate }
                 >
-                    <EditApplication
-                        application={ moderatedApplicationData }
-                        featureConfig={ featureConfig }
-                        isLoading={ isApplicationRequestLoading }
-                        setIsLoading={ setApplicationRequestLoading }
-                        onDelete={ handleApplicationDelete }
-                        onUpdate={ handleApplicationUpdate }
-                        template={ applicationTemplate }
-                        data-componentid={ componentId }
-                        urlSearchParams={ urlSearchParams }
-                        getConfiguredInboundProtocolsList={ (list: string[]) => {
-                            setInboundProtocolList(list);
-                        } }
-                        getConfiguredInboundProtocolConfigs={ (configs: Record<string, unknown>) => {
-                            setInboundProtocolConfigs(configs);
-                        } }
-                        readOnly={ resolveReadOnlyState() }
-                    />
+                    <ApplicationManagementProvider appId={ applicationId }>
+                        <EditApplication
+                            application={ moderatedApplicationData }
+                            featureConfig={ featureConfig }
+                            isLoading={ isApplicationRequestLoading }
+                            setIsLoading={ setApplicationRequestLoading }
+                            onDelete={ handleApplicationDelete }
+                            onUpdate={ handleApplicationUpdate }
+                            template={ applicationTemplate }
+                            data-componentid={ componentId }
+                            urlSearchParams={ urlSearchParams }
+                            getConfiguredInboundProtocolsList={ (list: string[]) => {
+                                setInboundProtocolList(list);
+                            } }
+                            getConfiguredInboundProtocolConfigs={ (configs: Record<string, unknown>) => {
+                                setInboundProtocolConfigs(configs);
+                            } }
+                            readOnly={ resolveReadOnlyState() }
+                        />
+                    </ApplicationManagementProvider>
                 </ApplicationTemplateMetadataProvider>
             </ApplicationTemplateProvider>
         </TabPageLayout>
