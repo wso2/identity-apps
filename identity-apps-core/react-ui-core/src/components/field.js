@@ -22,6 +22,7 @@ import React from "react";
 import ButtonFieldAdapter from "./adapters/button-field-adapter";
 import CaptchaWidgetAdapter from "./adapters/captcha-widget-adapter";
 import InputFieldAdapter from "./adapters/input-field-adapter";
+import RichTextAdapter from "./adapters/rich-text-field-adapter";
 import TypographyAdapter from "./adapters/typography-field-adapter";
 import DividerAdapter from "./divider";
 
@@ -37,6 +38,8 @@ const Field = ({
     switch (component.type) {
         case "TYPOGRAPHY":
             return <TypographyAdapter component={ component } />;
+        case "RICH_TEXT":
+            return <RichTextAdapter component={ component } />;
         case "INPUT":
             return (
                 <InputFieldAdapter
@@ -70,6 +73,7 @@ Field.propTypes = {
     formFieldError: PropTypes.func,
     formState: PropTypes.object,
     formStateHandler: PropTypes.func,
+    recaptchaRef: PropTypes.object,
     setRecaptchaRef: PropTypes.func
 };
 

@@ -31,8 +31,10 @@ import {
     EditorState,
     ElementNode,
     KEY_ESCAPE_COMMAND,
+    LexicalCommand,
     SELECTION_CHANGE_COMMAND,
-    TextNode
+    TextNode,
+    createCommand
 } from "lexical";
 import React, {
     ChangeEvent,
@@ -50,6 +52,10 @@ import { getSelectedNode } from "../utils/get-selected-node";
 import "./link-plugin.scss";
 
 const LowPriority: CommandListenerPriority = 1;
+const HighPriority: CommandListenerPriority = 3;
+
+// Custom command for creating safe links.
+export const TOGGLE_SAFE_LINK_COMMAND: LexicalCommand<string> = createCommand("TOGGLE_SAFE_LINK_COMMAND");
 
 /**
  * Positions the editor element based on the selection rectangle.
@@ -63,8 +69,41 @@ const positionEditorElement = (editor: HTMLDivElement, rect: DOMRect | null): vo
         editor.style.left = "-1000px";
     } else {
         editor.style.opacity = "1";
-        editor.style.top = `${rect.top + rect.height + window.pageYOffset + 10}px`;
-        editor.style.left = `${rect.left + window.pageXOffset - editor.offsetWidth / 2 + rect.width / 2}px`;
+
+        // Get viewport dimensions.
+        const viewportWidth: number = window.innerWidth;
+        const viewportHeight: number = window.innerHeight;
+
+        // Get editor dimensions.
+        const editorWidth: number = editor.offsetWidth;
+        const editorHeight: number = editor.offsetHeight;
+
+        // Calculate initial position (centered below the selection).
+        let top: number = rect.top + rect.height + window.pageYOffset + 10;
+        let left: number = rect.left + window.pageXOffset - editorWidth / 2 + rect.width / 2;
+
+        // Adjust horizontal position to keep editor within viewport.
+        if (left < 0) {
+            // If editor would be cut off on the left, align it to the left edge.
+            left = 10;
+        } else if (left + editorWidth > viewportWidth) {
+            // If editor would be cut off on the right, align it to the right edge.
+            left = viewportWidth - editorWidth - 10;
+        }
+
+        // Adjust vertical position to keep editor within viewport.
+        if (top + editorHeight > viewportHeight + window.pageYOffset) {
+            // If editor would be cut off at the bottom, position it above the selection.
+            top = rect.top + window.pageYOffset - editorHeight - 10;
+        }
+
+        // Ensure top position is not negative.
+        if (top < window.pageYOffset) {
+            top = window.pageYOffset + 10;
+        }
+
+        editor.style.top = `${top}px`;
+        editor.style.left = `${left}px`;
     }
 };
 
@@ -199,6 +238,35 @@ const LinkEditor = (): ReactElement => {
                     return false;
                 },
                 LowPriority
+            ),
+            editor.registerCommand(
+                TOGGLE_SAFE_LINK_COMMAND,
+                (url: string) => {
+                    if (url) {
+                        // First use the default command to handle the link creation/update.
+                        editor.dispatchCommand(TOGGLE_LINK_COMMAND, url);
+
+                        // Then update the link attributes to include safe properties.
+                        const selection: BaseSelection = $getSelection();
+
+                        if ($isRangeSelection(selection)) {
+                            const node: TextNode | ElementNode = getSelectedNode(selection);
+                            const linkNode: ElementNode = $isLinkNode(node) ? node : node.getParent();
+
+                            if ($isLinkNode(linkNode)) {
+                                // Update the link node with safe attributes.
+                                linkNode.setTarget("_blank");
+                                linkNode.setRel("noopener noreferrer");
+                            }
+                        }
+                    } else {
+                        // If no URL, remove the link (same as TOGGLE_LINK_COMMAND with null).
+                        editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
+                    }
+
+                    return true;
+                },
+                HighPriority
             )
         );
     }, [ editor, updateLinkEditor, isEditMode ]);
@@ -239,7 +307,7 @@ const LinkEditor = (): ReactElement => {
                                     event.preventDefault();
                                     if (lastSelection !== null) {
                                         if (linkUrl !== "") {
-                                            editor.dispatchCommand(TOGGLE_LINK_COMMAND, linkUrl);
+                                            editor.dispatchCommand(TOGGLE_SAFE_LINK_COMMAND, linkUrl);
                                         }
                                         setEditMode(false);
                                     }
@@ -254,7 +322,7 @@ const LinkEditor = (): ReactElement => {
                                 event.preventDefault();
                                 if (lastSelection !== null) {
                                     if (linkUrl !== "") {
-                                        editor.dispatchCommand(TOGGLE_LINK_COMMAND, linkUrl);
+                                        editor.dispatchCommand(TOGGLE_SAFE_LINK_COMMAND, linkUrl);
                                     }
                                 }
                                 setEditMode(false);

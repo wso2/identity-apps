@@ -8743,6 +8743,9 @@ importers:
       classnames:
         specifier: ^2.2.6
         version: 2.5.1
+      dompurify:
+        specifier: ^3.0.9
+        version: 3.2.4
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -21584,6 +21587,12 @@ importers:
       '@wso2is/theme':
         specifier: ^2.8.2
         version: link:../modules/theme
+      dompurify:
+        specifier: ^3.0.9
+        version: 3.2.4
+      html-react-parser:
+        specifier: ^2.0.0
+        version: 2.0.0(react@18.3.1)
       react:
         specifier: ^18.2.0
         version: 18.3.1
