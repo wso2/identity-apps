@@ -26,6 +26,9 @@ import {
     getWorkflowAssociationsResourceEndpoints,
     getWorkflowsResourceEndpoints
 } from "@wso2is/admin.approval-workflows.v1/configs/endpoints";
+import {
+    getAskPasswordFlowBuilderResourceEndpoints
+} from "@wso2is/admin.ask-password-flow-builder.v1/configs/endpoints";
 import { getBrandingResourceEndpoints } from "@wso2is/admin.branding.v1/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "@wso2is/admin.certificates.v1";
 import { getClaimResourceEndpoints } from "@wso2is/admin.claims.v1/configs/endpoints";
@@ -339,6 +342,7 @@ export class Config {
             ...getWorkflowAssociationsResourceEndpoints(this.resolveServerHost()),
             ...getRegistrationFlowBuilderResourceEndpoints(this.resolveServerHost()),
             ...getPasswordRecoveryFlowBuilderResourceEndpoints(this.resolveServerHost()),
+            ...getAskPasswordFlowBuilderResourceEndpoints(this.resolveServerHost()),
             ...getWebhooksResourceEndpoints(this.resolveServerHost()),
             ...getAgentsResourceEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.resolveServerHostFromConfig() }/api/server/v1/cors/origins`,

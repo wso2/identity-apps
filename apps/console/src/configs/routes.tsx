@@ -209,6 +209,16 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     path: AppConstants.getPaths().get("PASSWORD_RECOVERY_FLOW_BUILDER"),
                     protected: true,
                     showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import(
+                        "@wso2is/admin.ask-password-flow-builder.v1/pages/ask-password-flow-builder-page")),
+                    exact: true,
+                    id: "askPasswordFlowBuilder",
+                    name: "Ask Password Flow Builder",
+                    path: AppConstants.getPaths().get("ASK_PASSWORD_FLOW_BUILDER"),
+                    protected: true,
+                    showOnSidePanel: false
                 }
             ],
             component: lazy(() => import("@wso2is/admin.flows.v1/pages/flows")),

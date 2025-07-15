@@ -55,7 +55,8 @@ export enum StepCategories {
 export enum StepTypes {
     View = "VIEW",
     Rule = "RULE",
-    Redirection = "REDIRECTION"
+    Redirection = "REDIRECTION",
+    Execution = "EXECUTION"
 }
 
 export enum StaticStepTypes {

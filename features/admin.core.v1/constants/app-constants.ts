@@ -444,6 +444,8 @@ export class AppConstants {
             [ "MCP_SERVER_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/mcp-servers/:id` ],
             [ "PASSWORD_RECOVERY_FLOW_BUILDER",
                 `${ AppConstants.getDeveloperViewBasePath() }/edit-password-recovery-flow` ],
+            [ "ASK_PASSWORD_FLOW_BUILDER",
+                `${ AppConstants.getDeveloperViewBasePath() }/edit-ask-password-flow` ],
             [ "AGENTS", `${AppConstants.getAdminViewBasePath()}/agents` ],
             [ "AGENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/agents/:id` ]
         ]);
