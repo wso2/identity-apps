@@ -36,6 +36,7 @@ import MultiValuedEmailField from "./multi-valued-email-field";
 import MultiValuedMobileField from "./multi-valued-mobile-field";
 import MultiValuedTextField from "./multi-valued-text-field";
 import RadioGroupFormField from "./radio-group-form-field";
+import SingleValuedEmailMobileField from "./single-valued-email-mobile-field";
 import TextFormField from "./text-form-field";
 
 interface ProfileFormFieldRendererPropsInterface extends IdentifiableComponentInterface {
@@ -171,6 +172,51 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
                 isUpdating={ isUpdating }
                 isReadOnly={ isReadOnly }
                 maxValueLimit={ ProfileConstants.MAX_MOBILE_NUMBERS_ALLOWED }
+                data-componentid={ componentId }
+            />
+        );
+    }
+
+    if (schema.schemaUri === SCIMExtensionConfigs.scimUserSchema.emails) {
+        const emailField: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
+        const pendingEmail: string = (
+            initialValues[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]["pendingEmails"] as { value: string }[])
+            ?.find((email: { value: string }) => !isEmpty(email.value))?.value ?? "";
+
+        return (
+            <SingleValuedEmailMobileField
+                schema={ schema }
+                fieldName={ `${emailField}.primary` }
+                fieldLabel={ fieldLabel }
+                initialValue={ initialValues[emailField] as string }
+                pendingValue={ pendingEmail }
+                isVerificationEnabled={ isEmailVerificationEnabled }
+                isUpdating={ isUpdating }
+                isReadOnly={ isReadOnly }
+                isRequired={ isRequired }
+                validator={ genericValidator }
+                data-componentid={ componentId }
+            />
+        );
+    }
+
+    if (schema.schemaUri === SCIMExtensionConfigs.scimUserSchema.phoneNumbersMobile) {
+        const mobileField: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE");
+        const pendingMobile: string = (
+            initialValues[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]["pendingMobileNumber"] as string) ?? "";
+
+        return (
+            <SingleValuedEmailMobileField
+                schema={ schema }
+                fieldName={ schema.name }
+                fieldLabel={ fieldLabel }
+                initialValue={ initialValues[mobileField] as string }
+                pendingValue={ pendingMobile }
+                isVerificationEnabled={ isMobileVerificationEnabled }
+                isUpdating={ isUpdating }
+                isReadOnly={ isReadOnly }
+                isRequired={ isRequired }
+                validator={ genericValidator }
                 data-componentid={ componentId }
             />
         );

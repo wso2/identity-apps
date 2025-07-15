@@ -92,6 +92,28 @@ export interface LocaleFieldPropsInterface extends ProfileFormFieldProps<string>
 }
 
 /**
+ * User profile single-valued email/mobile field component props interface.
+ */
+export interface SingleValuedEmailMobileFieldPropsInterface extends ProfileFormFieldProps<string> {
+    /**
+     * Attribute schema.
+     */
+    schema: ProfileSchemaInterface;
+    /**
+     * Pending email or mobile value. Used to show the verification status.
+     */
+    pendingValue: string;
+    /**
+     * Whether the verification is enabled or not.
+     */
+    isVerificationEnabled: boolean;
+    /**
+     * Maximum characters allowed in the field.
+     */
+    maxLength?: number;
+}
+
+/**
  * Interface for the User profile multi-valued text field props.
  */
 export interface MultiValuedTextFieldPropsInterface extends ProfileFormFieldProps<string[]> {
