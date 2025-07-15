@@ -116,7 +116,7 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
     });
     const fieldComponentId: string = `${ componentId }-${ schema.name }-input`;
     // Replace dots with __DOT__ to avoid issues with dot separated field names.
-    const convertedSchemaId: string = schema.schemaId.replace(/\./g, "__DOT__");
+    const encodedSchemaId: string = schema.schemaId.replace(/\./g, "__DOT__");
 
     const sharedProfileValueResolvingMethod: string = schema?.sharedProfileValueResolvingMethod;
     const mutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
@@ -286,8 +286,8 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
             <CountryField
                 schema={ schema }
                 fieldLabel={ fieldLabel }
-                fieldName={ `${convertedSchemaId}.${schema.name}` }
-                initialValue={ initialValues[convertedSchemaId][schema.name] as string }
+                fieldName={ `${encodedSchemaId}.${schema.name}` }
+                initialValue={ initialValues[encodedSchemaId][schema.name] as string }
                 isUpdating={ isUpdating }
                 isReadOnly={ isReadOnly }
                 isRequired={ isRequired }
@@ -322,9 +322,9 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
     if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB")) {
         return (
             <TextFormField
-                fieldName={ `${convertedSchemaId}.${schema.name}` }
+                fieldName={ `${encodedSchemaId}.${schema.name}` }
                 fieldLabel={ fieldLabel }
-                initialValue={ initialValues[convertedSchemaId][schema.name] as string }
+                initialValue={ initialValues[encodedSchemaId][schema.name] as string }
                 validator={ genericValidator }
                 placeholder="YYYY-MM-DD"
                 maxLength={ maxLength }
@@ -346,8 +346,8 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
      * Ex: "urn:scim:wso2:schema.country"
      */
     if (schema.extended) {
-        initialValue = initialValues[convertedSchemaId][schema.name];
-        fieldName = `${convertedSchemaId}.${schema.name}`;
+        initialValue = initialValues[encodedSchemaId][schema.name];
+        fieldName = `${encodedSchemaId}.${schema.name}`;
     }
 
     if (isMultiValued) {

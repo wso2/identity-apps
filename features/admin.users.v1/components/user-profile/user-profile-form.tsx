@@ -338,7 +338,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
         for (const schema of flattenedProfileSchema) {
             const schemaNameParts: string[] = schema.name.split(".");
             // Replace dots with __DOT__ to avoid issues with dot separated field names.
-            const convertedSchemaId: string = schema.schemaId.replace(/\./g, "__DOT__");
+            const encodedSchemaId: string = schema.schemaId.replace(/\./g, "__DOT__");
 
             if (!schema.extended &&
                 (schemaNameParts[0] === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS") ||
@@ -469,8 +469,8 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                 const subName: string = schemaNameParts[1];
 
                 _flattenedInitialValues[schema.name] = (preparedInitialValues[typeParts[0]] as unknown[])?.find(
-                    (value: unknown): value is { type: string; [subName]: string } =>
-                        (value as { type: string; [subName]: string }).type === typeParts[1])?.[subName];
+                    (value: unknown): value is { type: string; [key: string]: string } =>
+                        (value as { type: string; [key: string]: string }).type === typeParts[1])?.[subName];
             } else {
                 if (schemaNameParts.length > 1) {
                     const schemaNameCanonicalParts: string[] = schemaNameParts[0].split("#");
@@ -481,7 +481,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                         if (!schema.extended) {
                             value = preparedInitialValues[schemaNameCanonicalParts[0]];
                         } else {
-                            value = preparedInitialValues[convertedSchemaId]?.[schemaNameCanonicalParts[0]];
+                            value = preparedInitialValues[encodedSchemaId]?.[schemaNameCanonicalParts[0]];
                         }
 
                         const flattenedValue: unknown = (value as unknown[]).find(
@@ -492,14 +492,14 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                         if (!schema.extended) {
                             _flattenedInitialValues[schema.name] = flattenedValue;
                         } else {
-                            _flattenedInitialValues[convertedSchemaId][schema.name] = flattenedValue;
+                            _flattenedInitialValues[encodedSchemaId][schema.name] = flattenedValue;
                         }
                     } else {
                         if (!schema.extended) {
                             _flattenedInitialValues[schema.name] = preparedInitialValues[
                                 schemaNameParts[0]]?.[schemaNameParts[1]];
                         } else {
-                            _flattenedInitialValues[convertedSchemaId][schema.name] = preparedInitialValues[
+                            _flattenedInitialValues[encodedSchemaId][schema.name] = preparedInitialValues[
                                 schema.schemaId]?.[schemaNameParts[0]]?.[schemaNameParts[1]];
                         }
                     }
@@ -536,7 +536,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                          * }
                          * ```
                          */
-                        _flattenedInitialValues[convertedSchemaId][schema.name] = preparedInitialValues[
+                        _flattenedInitialValues[encodedSchemaId][schema.name] = preparedInitialValues[
                             schema.schemaId]?.[schemaNameParts[0]];
                     }
                 }
@@ -661,11 +661,11 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                 });
             } else {
                 const isExtendedSchema: boolean = (profileData.schemas as string[]).includes(fieldName);
-                let revertedFieldName: string = fieldName;
+                let decodedFieldName: string = fieldName;
 
                 if (isExtendedSchema) {
                     // Replace back the __DOT__ with dots.
-                    revertedFieldName = fieldName.replace(/__DOT__/g, ".");
+                    decodedFieldName = fieldName.replace(/__DOT__/g, ".");
                 }
 
                 /**
@@ -685,7 +685,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                 // For each path, build and push a patch op:
                 attributePaths.forEach((path: string) => {
                     // Build the fullPath ex: "urn:scim:wso2:schema.country".
-                    const fullPath: string = `${revertedFieldName}.${path}`;
+                    const fullPath: string = `${decodedFieldName}.${path}`;
                     // Grab the value at that path from the form values.
                     const leafValue: unknown = get(values, fullPath, "");
                     // Build { fieldName: { …nested… } }, e.g. { urn:…: { country: "Argentina" } }
