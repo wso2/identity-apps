@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FinalFormField, TextFieldAdapter } from "@wso2is/form/src";
+import { FinalFormField, TextFieldAdapter } from "@wso2is/form";
 import { Popup } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";

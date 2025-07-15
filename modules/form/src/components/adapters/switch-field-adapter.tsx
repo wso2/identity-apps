@@ -62,18 +62,12 @@ const SwitchFieldAdapter: FunctionComponent<SwitchFieldAdapterPropsInterface> = 
         <FormControl required error={ isError } component="fieldset" variant="standard" { ...FormControlProps }>
             <FormControlLabel
                 control={ (
-                    <>
-                        { /* `autocomplete`, `capture`, etc. are not part of TextField API */ }
-                        { /* TODO: Tracker: https://github.com/wso2/oxygen-ui/issues/292 */ }
-                        { /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */ }
-                        { /* @ts-ignore */ }
-                        <Switch
-                            color="primary"
-                            { ...input }
-                            { ...rest }
-                            checked={ (input.value as unknown) as boolean }
-                        />
-                    </>
+                    <Switch
+                        color="primary"
+                        { ...input }
+                        { ...rest }
+                        checked={ (input.value as unknown) as boolean }
+                    />
                 ) }
                 label={ label }
             />

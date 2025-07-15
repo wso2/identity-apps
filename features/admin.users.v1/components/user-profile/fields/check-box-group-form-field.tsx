@@ -17,7 +17,7 @@
  */
 
 import { LabelValue } from "@wso2is/core/models";
-import { CheckboxGroupFieldAdapter, FinalFormField } from "@wso2is/form/src";
+import { CheckboxGroupFieldAdapter, FinalFormField } from "@wso2is/form";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";

@@ -28,7 +28,7 @@ import TableRow from "@oxygen-ui/react/TableRow";
 import TextField from "@oxygen-ui/react/TextField";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import { PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
-import { FinalFormField, FormApi } from "@wso2is/form/src";
+import { FinalFormField, FormApi } from "@wso2is/form";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
 import React, {

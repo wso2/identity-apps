@@ -24,7 +24,7 @@ import {
     ProfileSchemaInterface,
     SharedProfileValueResolvingMethod
 } from "@wso2is/core/models";
-import { CheckboxFieldAdapter, FinalFormField, SwitchFieldAdapter } from "@wso2is/form/src";
+import { CheckboxFieldAdapter, FinalFormField, SwitchFieldAdapter } from "@wso2is/form";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
@@ -39,19 +39,63 @@ import RadioGroupFormField from "./radio-group-form-field";
 import SingleValuedEmailMobileField from "./single-valued-email-mobile-field";
 import TextFormField from "./text-form-field";
 
+/**
+ * User profile form field renderer component props interface.
+ */
 interface ProfileFormFieldRendererPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Attribute schema.
+     */
     schema: ProfileSchemaInterface;
+    /**
+     * Flattened profile schema.
+     * Used to derive primary attribute schema for email and mobile.
+     */
     flattenedProfileSchema: ProfileSchemaInterface[];
+    /**
+     * Flattened initial values.
+     */
     initialValues: Record<string, unknown>;
+    /**
+     * Whether email verification is enabled.
+     */
     isEmailVerificationEnabled: boolean;
+    /**
+     * Whether mobile verification is enabled.
+     */
     isMobileVerificationEnabled: boolean;
+    /**
+     * Whether the user profile is being updated.
+     */
     isUpdating: boolean;
+    /**
+     * Whether the user profile is in read-only mode.
+     */
     isReadOnlyMode: boolean;
+    /**
+     * Whether the user is managed by a parent organization.
+     */
     isUserManagedByParentOrg: boolean;
+    /**
+     * Callback to be fired when the user profile update is initiated/completed.
+     * @param isUpdating - Whether the user profile is being updated.
+     */
     setIsUpdating: (isUpdating: boolean) => void;
+    /**
+     * Callback to be fired when the user profile update is completed.
+     * @param userId - User ID.
+     */
     onUserUpdated: (userId: string) => void;
 }
 
+/**
+ * User profile form field renderer component.
+ * Renders the appropriate form field for a given SCIM profile schema entry.
+ *
+ * This component inspects the provided `schema` and renders one of several
+ * specialized field components (e.g., email, mobile, country, locale, date of birth,
+ * multi-valued text, dropdowns, checkboxes, toggles, etc.).
+ */
 const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsInterface> = ({
     schema,
     flattenedProfileSchema,
@@ -110,6 +154,9 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
         return undefined;
     };
 
+    /**
+     * Render multi-valued email addresses field.
+     */
     if (schema.schemaUri === SCIMExtensionConfigs.scimSystemSchema.emailAddresses) {
         const primarySchema: ProfileSchemaInterface = flattenedProfileSchema.find(
             (profileSchema: ProfileSchemaInterface) => {
@@ -145,6 +192,9 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
         );
     }
 
+    /**
+     * Render multi-valued mobile numbers field.
+     */
     if (schema.schemaUri === SCIMExtensionConfigs.scimSystemSchema.mobileNumbers) {
         const primarySchema: ProfileSchemaInterface = flattenedProfileSchema.find(
             (profileSchema: ProfileSchemaInterface) => {
@@ -177,6 +227,9 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
         );
     }
 
+    /**
+     * Render single-valued email address field.
+     */
     if (schema.schemaUri === SCIMExtensionConfigs.scimUserSchema.emails) {
         const emailField: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
         const pendingEmail: string = (
@@ -200,6 +253,9 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
         );
     }
 
+    /**
+     * Render single-valued mobile number field.
+     */
     if (schema.schemaUri === SCIMExtensionConfigs.scimUserSchema.phoneNumbersMobile) {
         const mobileField: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE");
         const pendingMobile: string = (
@@ -222,6 +278,9 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
         );
     }
 
+    /**
+     * Render country field. Specially handled to load and render country list.
+     */
     if (schema.schemaUri === SCIMExtensionConfigs.scimSystemSchema.country) {
         return (
             <CountryField
@@ -238,6 +297,9 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
         );
     }
 
+    /**
+     * Render locale field. Specially handled to load and render locale list.
+     */
     if (schema.name === "locale") {
         return (
             <LocaleField
@@ -254,6 +316,9 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
         );
     }
 
+    /**
+     * Render date of birth field. Specially handled to use special validator.
+     */
     if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB")) {
         return (
             <TextFormField
@@ -276,6 +341,10 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
     let initialValue: unknown = initialValues[schema.name];
     let fieldName: string = schema.name;
 
+    /**
+     * For extended SCIM schemas, the field name is prefixed with the schema ID.
+     * Ex: "urn:scim:wso2:schema.country"
+     */
     if (schema.extended) {
         initialValue = initialValues[convertedSchemaId][schema.name];
         fieldName = `${convertedSchemaId}.${schema.name}`;
@@ -312,12 +381,13 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
                     />
                 );
 
-            case ClaimInputFormat.TEXT_INPUT:
+            case ClaimInputFormat.NUMBER_INPUT:
                 return (
                     <MultiValuedTextField
                         schema={ schema }
                         fieldName={ fieldName }
                         fieldLabel={ fieldLabel }
+                        type="number"
                         initialValue={ initialValue as string[] }
                         isReadOnly={ isReadOnly }
                         isRequired={ isRequired }
@@ -327,13 +397,13 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
                     />
                 );
 
-            case ClaimInputFormat.NUMBER_INPUT:
+            case ClaimInputFormat.TEXT_INPUT:
+            default:
                 return (
                     <MultiValuedTextField
                         schema={ schema }
                         fieldName={ fieldName }
                         fieldLabel={ fieldLabel }
-                        type="number"
                         initialValue={ initialValue as string[] }
                         isReadOnly={ isReadOnly }
                         isRequired={ isRequired }

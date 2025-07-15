@@ -21,7 +21,7 @@ import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import { CommonUtils } from "@wso2is/core/utils";
-import { FinalFormField, SelectFieldAdapter } from "@wso2is/form/src";
+import { FinalFormField, SelectFieldAdapter } from "@wso2is/form";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";

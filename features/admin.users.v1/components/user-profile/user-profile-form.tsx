@@ -39,8 +39,7 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ProfileUtils } from "@wso2is/core/utils";
-import { FinalForm, FormRenderProps } from "@wso2is/form";
-import { FinalFormField, FormApi, TextFieldAdapter } from "@wso2is/form/src";
+import { FinalForm, FinalFormField, FormApi, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FinalFormField, TextFieldAdapter } from "@wso2is/form/src";
+import { FinalFormField, TextFieldAdapter } from "@wso2is/form";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { TextFormFieldPropsInterface } from "../../../models/ui";
