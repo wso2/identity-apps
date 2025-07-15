@@ -80,6 +80,7 @@ export const meta: LocaleMeta = {
         I18nModuleConstants.EMAIL_PROVIDERS_NAMESPACE,
         I18nModuleConstants.WEBHOOKS_NAMESPACE,
         I18nModuleConstants.APPROVAL_WORKFLOWS_NAMESPACE,
-        I18nModuleConstants.AGENTS_NAMESPACE
+        I18nModuleConstants.AGENTS_NAMESPACE,
+        I18nModuleConstants.FLOWS_NAMESPACE
     ]
 };

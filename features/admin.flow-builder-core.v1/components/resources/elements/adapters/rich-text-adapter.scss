@@ -16,18 +16,40 @@
  * under the License.
  */
 
-export interface flowsNS {
-    core: {
-        elements: {
-            richText: {
-                placeholder: string;
-                linkEditor: {
-                    placeholder: string;
-                };
-            }
-        }
-    };
-    passwordRecovery: {
-        name: string;
-    };
+.rich-text-content {
+    .rich-text-pre-wrap {
+        white-space: pre-wrap;
+    }
+
+    .rich-text-align-left {
+        text-align: left;
+    }
+
+    .rich-text-align-center {
+        text-align: center;
+    }
+
+    .rich-text-align-right {
+        text-align: right;
+    }
+
+    .rich-text-align-justify {
+        text-align: justify;
+    }
+
+    .rich-text-bold {
+        font-weight: bold;
+    }
+
+    .rich-text-italic {
+        font-style: italic;
+    }
+
+    .rich-text-underline {
+        text-decoration: underline;
+    }
+
+    .rich-text-paragraph {
+        margin: 0.5em 0;
+    }
 }

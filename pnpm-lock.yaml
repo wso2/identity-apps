@@ -8855,9 +8855,21 @@ importers:
       '@emotion/styled':
         specifier: ^11.11.0
         version: 11.14.0(@emotion/react@11.14.0)(@types/react@18.0.18)(react@18.3.1)
+      '@lexical/html':
+        specifier: ^0.21.0
+        version: 0.21.0
+      '@lexical/link':
+        specifier: ^0.21.0
+        version: 0.21.0
       '@lexical/react':
         specifier: ^0.21.0
         version: 0.21.0(react-dom@18.3.1)(react@18.3.1)(yjs@13.6.23)
+      '@lexical/rich-text':
+        specifier: ^0.21.0
+        version: 0.21.0
+      '@lexical/selection':
+        specifier: ^0.21.0
+        version: 0.21.0
       '@lexical/utils':
         specifier: ^0.21.0
         version: 0.21.0
@@ -8903,6 +8915,9 @@ importers:
       classnames:
         specifier: ^2.2.6
         version: 2.5.1
+      dompurify:
+        specifier: ^3.0.9
+        version: 3.2.4
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -21907,6 +21922,12 @@ importers:
       '@wso2is/theme':
         specifier: ^2.8.2
         version: link:../modules/theme
+      dompurify:
+        specifier: ^3.0.9
+        version: 3.2.4
+      html-react-parser:
+        specifier: ^2.0.0
+        version: 2.0.0(react@18.3.1)
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -26376,7 +26397,7 @@ packages:
     dependencies:
       '@lexical/utils': 0.21.0
       lexical: 0.21.0
-      prismjs: 1.29.0
+      prismjs: 1.30.0
     dev: false
 
   /@lexical/devtools-core@0.21.0(react-dom@18.3.1)(react@18.3.1):
@@ -26862,7 +26883,6 @@ packages:
   /@mui/base@5.0.0-alpha.108(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-KjzRUts2i/ODlMfywhFTqTzQl+Cr9nlDSZxJcnYjrbOV/iRyQNBTDoiFJt+XEdRi0fZBHnk74AFbnP56ehybsA==}
     engines: {node: '>=12.0.0'}
-    deprecated: This package has been replaced by @base-ui-components/react
     peerDependencies:
       '@types/react': 18.0.18
       react: ^17.0.0 || ^18.0.0
@@ -46658,8 +46678,8 @@ packages:
     resolution: {integrity: sha512-66hKPCr+72mlfiSjlEB1+45IjXSqvVAIy6mocupoww4tBFE9R9IhwwUGoI4G++Tc9Aq+2rxOt0RFU6gPcrte0A==}
     engines: {node: '>= 0.8'}
 
-  /prismjs@1.29.0:
-    resolution: {integrity: sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q==}
+  /prismjs@1.30.0:
+    resolution: {integrity: sha512-DEvV2ZF2r2/63V+tK8hQvrR2ZGn10srHbXviTlcv7Kpzw8jWiNTqbVgjO3IY8RxrrOUF8VPMQQFysYYYv0YZxw==}
     engines: {node: '>=6'}
     dev: false
 

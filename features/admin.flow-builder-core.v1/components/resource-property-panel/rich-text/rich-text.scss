@@ -22,14 +22,16 @@
 
         .OxygenRichText-editor-input {
             min-height: 150px;
+            max-height: 300px;
             resize: none;
             font-size: 15px;
             caret-color: rgb(5, 5, 5);
             position: relative;
             tab-size: 1;
             outline: 0;
-            padding: 15px 10px;
+            padding: 10px 10px;
             caret-color: #444;
+            overflow-y: auto;
         }
 
         .OxygenRichText-editor-input-placeholder {
@@ -37,12 +39,48 @@
             overflow: hidden;
             position: absolute;
             text-overflow: ellipsis;
-            top: 15px;
+            top: 17.5px;
             left: 10px;
             font-size: 15px;
             user-select: none;
             display: inline-block;
             pointer-events: none;
+        }
+
+        .rich-text-pre-wrap {
+            white-space: pre-wrap;
+        }
+
+        .rich-text-align-left {
+            text-align: left;
+        }
+
+        .rich-text-align-center {
+            text-align: center;
+        }
+
+        .rich-text-align-right {
+            text-align: right;
+        }
+
+        .rich-text-align-justify {
+            text-align: justify;
+        }
+
+        .rich-text-bold {
+            font-weight: bold;
+        }
+
+        .rich-text-italic {
+            font-style: italic;
+        }
+
+        .rich-text-underline {
+            text-decoration: underline;
+        }
+
+        .rich-text-paragraph {
+            margin: 0.5em 0;
         }
     }
 }
