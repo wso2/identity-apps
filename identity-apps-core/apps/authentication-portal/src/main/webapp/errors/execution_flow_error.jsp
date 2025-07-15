@@ -42,14 +42,18 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="../includes/branding-preferences.jsp"/>
 
-<% request.setAttribute("pageName","registration-error"); %>
+<% request.setAttribute("pageName","execution-flow-error"); %>
 
 <%
     String errorMessage = request.getParameter("ERROR_MSG");
     String errorDescription = request.getParameter("ERROR_DESC");
     String spId = request.getParameter("SP_ID");
-    String registrationPortalURL = request.getParameter("REG_PORTAL_URL") + "?spId=" + request.getParameter("SP_ID");
+    String registrationPortalURL = request.getParameter("PORTAL_URL") + "?spId=" + request.getParameter("SP_ID");
     String errorCode = request.getParameter("errorCode");
+    String flowType = request.getParameter("flowType");
+    final String USER_REGISTRATION = "USER_REGISTRATION";
+    final String INVITE_USER_REGISTRATION = "INVITE_USER_REGISTRATION";
+    final String PASSWORD_RECOVERY = "PASSWORD_RECOVERY";
 
     if (StringUtils.isNotEmpty(errorMessage) || StringUtils.isNotEmpty(errorDescription)) {
         if (StringUtils.isNotEmpty(errorMessage)) {
@@ -61,12 +65,45 @@
     }
 
     if (StringUtils.isEmpty(errorMessage)) {
-        errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "sign.up.error.unexpected.message");
+        if (flowType != null) {
+            switch (flowType) {
+                case USER_REGISTRATION:
+                    errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "sign.up.error.unexpected.message");
+                    break;
+                case INVITE_USER_REGISTRATION:
+                    errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "invite.user.registration.error.unexpected.message");
+                    break;
+                case PASSWORD_RECOVERY:
+                    errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "password.reset.error.unexpected.message");
+                    break;
+                default:
+                    errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "orchestration.flow.error.unexpected.message");
+            }
+        } else {
+            // Default fallback when flowType is null
+            errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "orchestration.flow.error.unexpected.message");
+        }
     }
 
     if (StringUtils.isEmpty(errorDescription)) {
-        errorDescription = AuthenticationEndpointUtil.i18n(resourceBundle,
-            "sign.up.error.unexpected.description");
+        if (flowType != null) {
+            switch (flowType) {
+                case USER_REGISTRATION:
+                    errorDescription = AuthenticationEndpointUtil.i18n(resourceBundle, "sign.up.error.unexpected.description");
+                    break;
+                case INVITE_USER_REGISTRATION:
+                    errorDescription = AuthenticationEndpointUtil.i18n(resourceBundle, "invite.user.registration.error.unexpected.description");
+                    break;
+                case PASSWORD_RECOVERY:
+                    errorDescription = AuthenticationEndpointUtil.i18n(resourceBundle, "password.reset.error.unexpected.description");
+                    break;
+                default:
+                    errorDescription = AuthenticationEndpointUtil.i18n(resourceBundle, "orchestration.flow.error.unexpected.description");
+            }
+        } else {
+            // When flowType is null
+            errorDescription = AuthenticationEndpointUtil.i18n(resourceBundle, "orchestration.flow.error.unexpected.description");
+        }
     }
 %>
 
