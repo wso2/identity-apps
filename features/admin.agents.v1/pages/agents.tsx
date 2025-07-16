@@ -37,6 +37,7 @@ import AgentList from "../components/agent-list";
 import { AgentSecretShowModal } from "../components/edit/agent-secret-show-modal";
 import AddAgentWizard from "../components/wizards/add-agent-wizard";
 import { useGetAgents } from "../hooks/use-get-agents";
+import "./agents.scss";
 
 type AgentPageProps = IdentifiableComponentInterface;
 
@@ -111,24 +112,23 @@ export default function Agents ({
                     setIsAddAgentWizardOpen(true);
                 } }>
                 <Icon name="add" />
-                New Agent
+                { t("agents:new.action.title") }
             </PrimaryButton>) }
         >
 
             { !isUserStoresListFetchRequestLoading && !isAgentManagementEnabledForOrg ? (
-                <EmphasizedSegment
-                    style={ { display: "flex", justifyContent: "center", minHeight: "70vh",flexDirection: "column" } }>
+                <EmphasizedSegment className="agent-feature-unavailable-notice">
                     <EmptyPlaceholder
                         action={ null }
                         image={ getEmptyPlaceholderIllustrations().search }
                         imageSize="tiny"
                         subtitle={ [
                             isSAASDeployment
-                                ? "To tryout the Agents feature, create a new organization."
-                                : "To enable the Agents feature, connect a userstore named AGENT in your organization.",
-                            "Soon, Agents will be available by default for all organizations."
+                                ? t("agents:list.featureUnavailable.subtitle.0.saas")
+                                : t("agents:list.featureUnavailable.subtitle.0.onprem"),
+                            t("agents:list.featureUnavailable.subtitle.1")
                         ] }
-                        title={ "Agents are not currently available for this organization" }
+                        title={ t("agents:list.featureUnavailable.title") }
                     />
                 </EmphasizedSegment>
             ) :             (<ListLayout
@@ -240,7 +240,7 @@ export default function Agents ({
 
             <AddAgentWizard
                 isOpen={ isAddAgentWizardOpen }
-                onClose={ (newCreatedAgent) => {
+                onClose={ (newCreatedAgent: any) => {
                     if (newCreatedAgent) {
                         setNewAgent(newCreatedAgent);
                         setIsAgentCredentialWizardOpen(true);
@@ -251,16 +251,16 @@ export default function Agents ({
             />
 
             <AgentSecretShowModal
-                title="Agent created successfully"
+                title={ t("agents:new.title") }
                 agentId={ newAgent?.id }
                 agentSecret={ newAgent?.password }
                 isOpen={ isAgentCredentialWizardOpen }
                 onClose={ () => {
                     dispatch(
                         addAlert({
-                            description: "Agent created successfully",
+                            description: t("agents:new.alerts.success.description"),
                             level: AlertLevels.SUCCESS,
-                            message: "Created successfully"
+                            message: t("agents:new.alerts.success.message")
                         })
                     );
                     if (newAgent?.id) {

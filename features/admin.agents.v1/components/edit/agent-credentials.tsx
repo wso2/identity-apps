@@ -25,6 +25,7 @@ import { addAlert } from "@wso2is/core/store";
 import { Button, CopyInputField, EmphasizedSegment, Message } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
@@ -42,6 +43,7 @@ export default function AgentCredentials({
     const { data: validationData } = useValidationConfigData();
 
     const dispatch: Dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const passwordValidationConfig: ValidationFormInterface = useMemo((): ValidationFormInterface => {
         return getConfiguration(validationData);
@@ -77,9 +79,9 @@ export default function AgentCredentials({
         }).catch((_error: AxiosError) => {
             // Handle error during regeneration of agent secret.
             dispatch(addAlert({
-                description: "Error when regenerating the agent secret",
+                description: t("agents:edit.credentials.regenerate.alerts.error.description"),
                 level: AlertLevels.ERROR,
-                message: "Something went wrong"
+                message: t("agents:edit.credentials.regenerate.alerts.error.message")
             }));
         }).finally(() => {
             setIsSecretRegenerationLoading(false);
@@ -88,9 +90,9 @@ export default function AgentCredentials({
 
     return (
         <EmphasizedSegment padded="very" style={ { border: "none", padding: "21px" } }>
-            <Typography variant="h4">Credentials</Typography>
+            <Typography variant="h4">{ t("agents:edit.credentials.title") }</Typography>
             <Typography variant="body1" className="mt-1 mb-3" style={ { color: "#9c9c9c" } }>
-                Authentication details for this agent to securely access applications and API resources.
+                { t("agents:edit.credentials.subtitle") }
             </Typography>
             <Grid container>
                 <Grid xs={ 8 }>
