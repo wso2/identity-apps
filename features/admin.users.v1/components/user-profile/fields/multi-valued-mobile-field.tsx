@@ -108,7 +108,8 @@ const MultiValuedMobileField: FunctionComponent<MultiValuedMobileFieldPropsInter
     const mobileFieldName: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE");
     const verifiedMobileNumbersFieldName: string = `${schema.schemaId}.${ProfileConstants.SCIM2_SCHEMA_DICTIONARY
         .get("VERIFIED_MOBILE_NUMBERS")}`;
-    const pendingMobileNumberFieldName: string = `${schema.schemaId}.${"pendingMobileNumber"}`;
+    const pendingMobileNumberFieldName: string = `${schema.schemaId}.${ProfileConstants.SCIM2_SCHEMA_DICTIONARY
+        .get("PENDING_MOBILE")}`;
 
     const {
         input: { value: mobileNumbersFieldValue },

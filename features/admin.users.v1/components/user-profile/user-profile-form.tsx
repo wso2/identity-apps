@@ -555,10 +555,16 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
             preparedInitialValues[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][
                 ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_VERIFIED")
             ];
-        _flattenedInitialValues[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]["pendingEmails"] =
-            preparedInitialValues[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]["pendingEmails"];
-        _flattenedInitialValues[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]["pendingMobileNumber"] =
-            preparedInitialValues[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]["pendingMobileNumber"];
+
+        const pendingEmailsAttribute: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PENDING_EMAILS");
+
+        _flattenedInitialValues[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][pendingEmailsAttribute] =
+            preparedInitialValues[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][pendingEmailsAttribute];
+
+        const pendingMobileAttribute: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PENDING_MOBILE");
+
+        _flattenedInitialValues[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][pendingMobileAttribute] =
+            preparedInitialValues[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][pendingMobileAttribute];
 
         return _flattenedInitialValues;
     }, [

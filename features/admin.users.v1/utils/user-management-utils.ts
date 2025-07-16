@@ -685,8 +685,8 @@ export const flattenValues = (obj: Record<string, any>, prefix: string = ""): Ma
  */
 export const getVerificationPendingAttributeValue = (schemaName: string, user: ProfileInfoInterface): string | null => {
     if (schemaName === EMAIL_ATTRIBUTE || schemaName === EMAIL_ADDRESSES_ATTRIBUTE) {
-        const pendingAttributes: Array<{value: string}> | undefined =
-        user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.["pendingEmails"];
+        const pendingAttributes: Array<{value: string}> | undefined = user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]
+            ?.[ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PENDING_EMAILS")];
 
         return Array.isArray(pendingAttributes)
             && pendingAttributes.length > 0
@@ -694,8 +694,10 @@ export const getVerificationPendingAttributeValue = (schemaName: string, user: P
             ? pendingAttributes[0].value
             : null;
     } else if (schemaName === MOBILE_ATTRIBUTE || schemaName === MOBILE_NUMBERS_ATTRIBUTE) {
-        return !isEmpty(user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.["pendingMobileNumber"])
-            ? user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.["pendingMobileNumber"]
+        const pendingMobileAttribute: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PENDING_MOBILE");
+
+        return !isEmpty(user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.[pendingMobileAttribute])
+            ? user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.[pendingMobileAttribute]
             : null;
     }
 

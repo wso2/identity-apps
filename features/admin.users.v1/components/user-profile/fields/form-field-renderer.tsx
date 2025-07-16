@@ -167,8 +167,8 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
         const emailAddressesField: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES");
         const verifiedEmailAddressesField: string = ProfileConstants
             .SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES");
-
-        const pendingEmails: string[] = (initialValues[schema.schemaId]["pendingEmails"] as { value: string }[])
+        const pendingEmailsField: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PENDING_EMAILS");
+        const pendingEmails: string[] = (initialValues[schema.schemaId][pendingEmailsField] as { value: string }[])
             ?.map((email: { value: string }) => email.value) ?? [];
 
         return (
@@ -206,8 +206,8 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
         const mobileNumbersField: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS");
         const verifiedMobileNumbersField: string = ProfileConstants
             .SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS");
-
-        const pendingMobile: string = (initialValues[schema.schemaId]["pendingMobileNumber"] as string) ?? "";
+        const pendingMobileField: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PENDING_MOBILE");
+        const pendingMobile: string = (initialValues[schema.schemaId][pendingMobileField] as string) ?? "";
 
         return (
             <MultiValuedMobileField
@@ -232,8 +232,9 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
      */
     if (schema.schemaUri === SCIMExtensionConfigs.scimUserSchema.emails) {
         const emailField: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
+        const pendingEmailsField: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PENDING_EMAILS");
         const pendingEmail: string = (
-            initialValues[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]["pendingEmails"] as { value: string }[])
+            initialValues[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][pendingEmailsField] as { value: string }[])
             ?.find((email: { value: string }) => !isEmpty(email.value))?.value ?? "";
 
         return (
@@ -258,8 +259,9 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
      */
     if (schema.schemaUri === SCIMExtensionConfigs.scimUserSchema.phoneNumbersMobile) {
         const mobileField: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE");
+        const pendingMobileField: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PENDING_MOBILE");
         const pendingMobile: string = (
-            initialValues[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]["pendingMobileNumber"] as string) ?? "";
+            initialValues[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][pendingMobileField] as string) ?? "";
 
         return (
             <SingleValuedEmailMobileField

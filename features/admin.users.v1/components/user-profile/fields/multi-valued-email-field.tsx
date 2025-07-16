@@ -123,7 +123,8 @@ const MultiValuedEmailField: FunctionComponent<MultiValuedEmailFieldPropsInterfa
     const emailsFieldName: string = `${ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")}.primary`;
     const verifiedEmailAddressesFieldName: string = `${schema.schemaId}.${ProfileConstants.SCIM2_SCHEMA_DICTIONARY
         .get("VERIFIED_EMAIL_ADDRESSES")}`;
-    const pendingEmailAddressesFieldName: string = `${schema.schemaId}.${"pendingEmails"}`;
+    const pendingEmailAddressesFieldName: string = `${schema.schemaId}.${ProfileConstants.SCIM2_SCHEMA_DICTIONARY
+        .get("PENDING_EMAILS")}`;
 
     const {
         input: { value: emailAddressesFieldValue },
