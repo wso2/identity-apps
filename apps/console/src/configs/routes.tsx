@@ -33,9 +33,8 @@ import {
     ProgressFlowIcon,
     UserCircleDotIcon,
     UserGroupIcon,
-    WebhookIcon
-    UserGroupIcon,
-    UserPlusIcon
+    WebhookIcon,
+    UserPlusIcon,
 } from "@oxygen-ui/react-icons";
 import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";

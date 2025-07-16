@@ -17,6 +17,7 @@ import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AddTraitModal } from "../components/add/add-trait";
 
 const TraitsPage: FunctionComponent = (): ReactElement => {
 
@@ -36,6 +37,8 @@ const TraitsPage: FunctionComponent = (): ReactElement => {
     const [ sortOrder, setSortOrder ] = useState<boolean>(true);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
+    const [ showAddTraitModal, setShowAddTraitModal ] = useState<boolean>(false);
+
 
     const initialRender = useRef(true);
 
@@ -98,8 +101,8 @@ const TraitsPage: FunctionComponent = (): ReactElement => {
     };
 
     const handleAddTrait = () => {
-        // TODO: Implement add trait flow
-    };
+        setShowAddTraitModal(true);
+    };    
 
     const handleTraitsFilter = (query: string): void => {
         const filtered = originalTraits.filter((trait) =>
@@ -191,6 +194,12 @@ const TraitsPage: FunctionComponent = (): ReactElement => {
                     </ListLayout>
                 )
             }
+                <AddTraitModal
+                open={showAddTraitModal}
+                onClose={() => setShowAddTraitModal(false)}
+                onAddSuccess={fetchTraits}
+            />
+
         </PageLayout>
     );
 };
