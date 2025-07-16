@@ -1584,7 +1584,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     {
                         // Hides on groups claim
                         !isDistinctAttributeProfilesDisabled && claim && !hideSpecialClaims && mappingChecked
-                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI && 
+                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI &&
                             !isAgentAttribute && (
                             <>
                                 <Divider />
