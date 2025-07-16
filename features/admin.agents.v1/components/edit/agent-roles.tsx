@@ -49,7 +49,7 @@ export default function AgentRoles({ agentId }: AgentRolesViewProps) {
                 { t("agents:edit.roles.subtitle") }
             </Typography>
             <Message info className="mt-5 mb-5">
-                You can assign roles to the agent from <Link
+                Assign or manage roles for this agent in <Link
                     external={ false }
                     onClick={ () => {
                         history.push(
