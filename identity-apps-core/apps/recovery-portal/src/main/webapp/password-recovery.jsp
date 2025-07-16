@@ -78,8 +78,8 @@
     if (SMSOTP.equalsIgnoreCase(request.getParameter("selectedOption"))) {
         selectedOption = SMSOTP;
     }
-    String sp = Encode.forJava(request.getParameter("sp"));
-    String spId = Encode.forJava(request.getParameter("spId"));
+    String sp = request.getParameter("sp");
+    String spId = request.getParameter("spId");
 
     String rawQueryString = request.getQueryString();
     String urlQuery = Encode.forHtmlAttribute(rawQueryString == null ? "" : rawQueryString);
@@ -104,7 +104,7 @@
     try {
         ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
         applicationAccessURLWithoutEncoding = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain,
-                sp);
+            Encode.forJava(sp));
         applicationAccessURLWithoutEncoding = IdentityManagementEndpointUtil.replaceUserTenantHintPlaceholder(
                                                                 applicationAccessURLWithoutEncoding, userTenantDomain);
     } catch (ApplicationDataRetrievalClientException e) {
@@ -409,8 +409,12 @@
 
                         <input type="hidden" name="recoveryStage" value="INITIATE"/>
                         <input type="hidden" name="channel" value=""/>
-                        <input type="hidden" name="sp" value="<%=sp %>"/>
-                        <input type="hidden" name="spId" value="<%=spId %>"/>
+                        <% if (StringUtils.isNotBlank(sp)) { %>
+                            <input type="hidden" name="sp" value="<%=Encode.forHtmlAttribute(sp) %>"/>
+                        <% } %>
+                        <% if (StringUtils.isNotBlank(spId)) { %>
+                            <input type="hidden" name="spId" value="<%=Encode.forHtmlAttribute(spId) %>"/>
+                        <% } %>
                         <input type="hidden" name="urlQuery" value="<%=urlQuery %>"/>
                         <input type="hidden" name="isMultiRecoveryOptionsAvailable"
                             value="<%=multipleRecoveryOptionsAvailable %>"/>
