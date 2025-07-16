@@ -96,6 +96,31 @@ const FlowList: FunctionComponent<FlowListProps> = ({
         });
     }, [ flowConfigs ]);
 
+    const { data: flowConfigs, mutate: mutateFlowConfigs } = useGetFlowConfigs();
+
+    useEffect(() => {
+        if (!flowConfigs) {
+            return;
+        }
+
+        flowConfigs.forEach((config) => {
+            switch (config.flowType) {
+                case FlowTypes.REGISTRATION:
+                    setRegistrationFlowEnabled(config.isEnabled);
+                    break;
+                case FlowTypes.PASSWORD_RECOVERY:
+                    setPasswordRecoveryFlowEnabled(config.isEnabled);
+                    break;
+                case "INVITED_USER_REGISTRATION":
+                case FlowTypes.INVITE_USER_PASSWORD_SETUP:
+                    setInviteUserFlowEnabled(config.isEnabled);
+                    break;
+                default:
+                    break;
+            }
+        });
+    }, [ flowConfigs ]);
+
     /**
      * Resolves the icon based on the flow type.
      * @param flowType - The type of the flow.
@@ -224,8 +249,11 @@ const FlowList: FunctionComponent<FlowListProps> = ({
             };
 
             await updateFlowConfig(payload);
+
             setState(!currentState);
+
             handleUpdateSuccess(flowType, !currentState);
+
             await mutateFlowConfigs();
         } catch (error) {
             handleFlowStatusUpdateError(flowType, error);
