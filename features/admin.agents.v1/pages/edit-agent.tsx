@@ -127,7 +127,7 @@ export default function EditAgent({
             pageTitle="Edit agent"
             title={ agentInfo?.["urn:scim:wso2:agent:schema"]?.DisplayName }
             description={ (<>
-                Created by <strong>{ agentOwnerDisplayName }</strong>
+                <p>Created by <strong>{ agentOwnerDisplayName }</strong></p>
             </>) }
             isLoading={ isAgentInfoLoading }
             backButton={ {
@@ -143,12 +143,7 @@ export default function EditAgent({
                 />
             ) }
         >
-
-            <ResourceTab
-                panes={ renderedTabPanes }
-            >
-
-            </ResourceTab>
+            <ResourceTab panes={ renderedTabPanes } />
         </TabPageLayout>
 
     );

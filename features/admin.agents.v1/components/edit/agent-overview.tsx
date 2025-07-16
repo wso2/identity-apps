@@ -25,7 +25,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, Claim, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
-import { DangerZone, DangerZoneGroup, EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
+import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -51,6 +51,8 @@ export default function AgentOverview({
 
     const [ initialValues, setInitialValues ] = useState<any>();
     const [ isAgentLocked, setIsAgentLocked ] = useState<boolean>(false);
+    const [ isAgentDeleting, setIsAgentDeleting ] = useState<boolean>(false);
+    const [ isAgentDeleteInProgress, setIsAgentDeleteInProgress ] = useState<boolean>(false);
 
     const {
         data: agentInfo,
@@ -214,21 +216,7 @@ export default function AgentOverview({
                         header={ "Delete agent" }
                         subheader={ "This action will remove the agent's association with this organization. " +
                         "Please be certain before you proceed" }
-                        onActionClick={ () => deleteAgent(agentId).then(() => {
-                            dispatch(addAlert({
-                                description: "Agent deleted successfully.",
-                                level: AlertLevels.SUCCESS,
-                                message: "Deleted successfully"
-                            }));
-                            history.push(AppConstants.getPaths().get("AGENTS"));
-                        }).catch((_error: any) => {
-                            dispatch(addAlert({
-                                description: "An error occurred when deleting agent.",
-                                level: AlertLevels.ERROR,
-                                message: "Something went wrong"
-                            }));
-                        })
-                        }
+                        onActionClick={ () => setIsAgentDeleting(true) }
                         data-componentid={ componentId + "-danger-zone" }
                     />) }
 
@@ -266,9 +254,61 @@ export default function AgentOverview({
                             }
                         } }
                     />
-
                 </DangerZoneGroup>
             ) }
+
+            { (
+                <ConfirmationModal
+                    data-componentId={ `${ componentId }-confirmation-modal` }
+                    onClose={ (): void => setIsAgentDeleting(false) }
+                    type="negative"
+                    open={ isAgentDeleting }
+                    assertionHint={ "Please confirm your action" }
+                    assertionType="checkbox"
+                    primaryAction={ t("common:confirm") }
+                    secondaryAction={ t("common:cancel") }
+                    onSecondaryActionClick={ (): void => {
+                        setIsAgentDeleting(false);
+                    } }
+                    primaryActionLoading={ isAgentDeleteInProgress }
+                    onPrimaryActionClick={ () => {
+
+                        setIsAgentDeleteInProgress(true);
+                        deleteAgent(agentId).then(() => {
+                            dispatch(addAlert({
+                                description: "Agent deleted successfully.",
+                                level: AlertLevels.SUCCESS,
+                                message: "Deleted successfully"
+                            }));
+                            history.push(AppConstants.getPaths().get("AGENTS"));
+                        }).catch((_error: any) => {
+                            dispatch(addAlert({
+                                description: "An error occurred when deleting agent.",
+                                level: AlertLevels.ERROR,
+                                message: "Something went wrong"
+                            }));
+                        }).finally(() => {
+                            setIsAgentDeleteInProgress(false);
+                        }); } }
+                    closeOnDimmerClick={ false }
+                >
+                    <ConfirmationModal.Header data-componentId={ `${ componentId }-confirmation-modal-header` }>
+                        Are you sure?
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message
+                        data-componentId={ `${ componentId }-confirmation-modal-message` }
+                        attached
+                        negative
+                    >
+                        If you delete this agent, some functionalities may not work properly.
+                        Please proceed with caution.
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content data-componentId={ `${ componentId }-confirmation-modal-content` }>
+                        This action is irreversible and will remove the agent&apos;s association with this organization.
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
+            ) }
+
         </>
     );
 }
