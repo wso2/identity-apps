@@ -155,6 +155,8 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
     const [ addedOrgIds, setAddedOrgIds ] = useState<string[]>([]);
     const [ removedOrgIds, setRemovedOrgIds ] = useState<string[]>([]);
 
+    // This is used to determine if the application is shared with all organizations or not.
+    // and this will change the radio button option based on the result.
     const {
         data: applicationShareData,
         isLoading: isApplicationShareDataFetchRequestLoading,
@@ -167,7 +169,10 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
         false,
         null,
         "roles",
-        1
+        1,
+        null,
+        null,
+        "sharingMode"
     );
 
     /**
@@ -187,14 +192,14 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
 
     useEffect(() => {
         // If there is no application share data, it means the application is not shared with any organization.
-        if (!applicationShareData) {
+        if (isEmpty(applicationShareData)) {
             setShareType(ShareType.UNSHARE);
 
             return;
         }
 
-        // If there is no sharing initiation mode, it selective organization sharing is done.
-        if (!applicationShareData.sharingInitiationMode) {
+        // If there is no sharing mode, it selective organization sharing is done.
+        if (!applicationShareData.sharingMode) {
             setShareType(ShareType.SHARE_SELECTED);
 
             if (applicationShareData.organizations?.length > 0) {
@@ -209,12 +214,12 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
         }
 
         // Otherwise, application is shared with all organizations
-        const orgSharingPolicy: string = applicationShareData.sharingInitiationMode?.policy;
+        const orgSharingPolicy: string = applicationShareData.sharingMode?.policy;
 
         if (orgSharingPolicy === ApplicationSharingPolicy.ALL_EXISTING_AND_FUTURE_ORGS) {
             setShareType(ShareType.SHARE_ALL);
 
-            const roleSharingMode: string = applicationShareData?.sharingInitiationMode?.roleSharing?.mode;
+            const roleSharingMode: string = applicationShareData?.sharingMode?.roleSharing?.mode;
 
             // Based on the role sharing mode, set the role share type.
             if (roleSharingMode === RoleSharingModes.ALL) {
@@ -224,7 +229,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
 
                 // If there is selective role sharing, set the selected roles.
                 const initialRoles: RolesInterface[] =
-                    applicationShareData?.sharingInitiationMode?.roleSharing?.roles.map(
+                    applicationShareData?.sharingMode?.roleSharing?.roles.map(
                         (role: RoleSharingInterface) => ({
                             audience: {
                                 display: role.audience.display,
@@ -482,9 +487,9 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
 
         // If the org sharing was not successful, do not proceed with role patch operations
         if (!orgSharingSuccess) {
-            return;
-        } else {
             onApplicationSharingCompleted();
+
+            return;
         }
 
         const addOperations: ShareOrganizationsAndRolesPatchOperationInterface[] = Object.entries(tempAddedRoles)

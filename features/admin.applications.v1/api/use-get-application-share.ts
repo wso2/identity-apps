@@ -42,7 +42,8 @@ const useGetApplicationShare = <
         excludedAttributes?: string,
         limit?: number,
         before?: string,
-        after?: string
+        after?: string,
+        attributes?: string
     ): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -52,6 +53,7 @@ const useGetApplicationShare = <
         method: HttpMethods.GET,
         params: {
             after,
+            attributes,
             before,
             excludedAttributes,
             filter,

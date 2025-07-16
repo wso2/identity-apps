@@ -37,6 +37,7 @@ import { AnimatedAvatar } from "@wso2is/react-components";
 import { AnimatePresence } from "framer-motion";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
+    ReactNode,
     SyntheticEvent,
     useEffect,
     useMemo,
@@ -104,7 +105,7 @@ const OrgSelectiveShareWithSelectiveRolesView = (props: OrgSelectiveShareWithAll
         error:  originalApplicationOrganizationsFetchRequestError
     } = useGetApplicationShare(
         application?.id,
-        true,
+        !isEmpty(expandedOrgId),
         false,
         `parentId eq '${ expandedOrgId }'`
     );
@@ -152,7 +153,12 @@ const OrgSelectiveShareWithSelectiveRolesView = (props: OrgSelectiveShareWithAll
                 if (nextLink) {
                     setNextPageLink(nextLink.href);
                     setIsNextPageAvailable(true);
+                } else {
+                    setNextPageLink(undefined);
+                    setIsNextPageAvailable(false);
                 }
+            } else {
+                setIsNextPageAvailable(false);
             }
 
             // Set the first organization as the selected initial organization.
@@ -290,11 +296,62 @@ const OrgSelectiveShareWithSelectiveRolesView = (props: OrgSelectiveShareWithAll
         }
     };
 
+    const resolveRoleSelectionPane = (): ReactNode => {
+        if (isEmpty(selectedOrgId)) {
+            return (
+                <Alert
+                    severity="info"
+                    data-componentid={ `${ componentId }-org-not-selected-alert` }
+                >
+                    { t("applications:edit.sections.sharedAccess" +
+                        ".selectAnOrganizationToViewRoles") }
+                </Alert>
+            );
+        }
+
+        if (isEmpty(roleSelections[selectedOrgId])) {
+            return (
+                <Alert
+                    severity="info"
+                    data-componentid={ `${ componentId }-no-roles-alert` }
+                >
+                    { t("applications:edit.sections.sharedAccess" +
+                        ".noRolesAvailableForOrg") }
+                </Alert>
+            );
+        }
+
+        return roleSelections[selectedOrgId]
+            .map((role: SelectedOrganizationRoleInterface, index: number) => (
+                <Box
+                    key={ `role-${index}` }
+                    className="role-item"
+                    data-componentid={
+                        `${ componentId }-role-${ role.displayName }` }
+                >
+                    <AnimatedAvatar
+                        name={ role.displayName }
+                        size="mini"
+                        data-componentid={
+                            `${ componentId }-item-avatar` }
+                    />
+                    <Typography
+                        variant="body1"
+                        className="role-label"
+                        data-componentid={
+                            `${ componentId }-role-label` }
+                    >
+                        { role.displayName }
+                    </Typography>
+                </Box>
+            ));
+    };
+
     return (
         <>
             <Grid
                 container
-                xs={ 10 }
+                xs={ 12 }
                 className="roles-selective-share-container"
             >
                 {
@@ -333,7 +390,6 @@ const OrgSelectiveShareWithSelectiveRolesView = (props: OrgSelectiveShareWithAll
                                                     data-componentid={ `${ componentId }-tree-view` }
                                                     className="roles-selective-share-tree-view"
                                                     items={ applicationOrganizationTree }
-                                                    expansionTrigger="iconContainer"
                                                     expandedItems={ expandedItems }
                                                     onItemExpansionToggle={ (
                                                         _e: SyntheticEvent,
@@ -370,36 +426,8 @@ const OrgSelectiveShareWithSelectiveRolesView = (props: OrgSelectiveShareWithAll
                                                 <Box
                                                     className="role-list-container"
                                                 >
-                                                    { !isEmpty(roleSelections[selectedOrgId]) &&
-                                                        roleSelections[selectedOrgId]
-                                                            .map((
-                                                                role: SelectedOrganizationRoleInterface,
-                                                                index: number) => (
-                                                                <Box
-                                                                    key={ `role-${index}` }
-                                                                    className="role-item"
-                                                                    data-componentid={
-                                                                        `${ componentId }-role-${ role.displayName }` }
-                                                                >
-                                                                    <AnimatedAvatar
-                                                                        name={ role.displayName }
-                                                                        size="mini"
-                                                                        data-componentid={
-                                                                            `${ componentId }-item-avatar` }
-                                                                    />
-                                                                    <Typography
-                                                                        variant="body1"
-                                                                        className="role-label"
-                                                                        data-componentid={
-                                                                            `${ componentId }-role-label` }
-                                                                    >
-                                                                        { role.displayName }
-                                                                    </Typography>
-                                                                </Box>
-                                                            ))
-                                                    }
+                                                    { resolveRoleSelectionPane() }
                                                 </Box>
-
                                             </Grid>
                                         </AnimatePresence>
                                     </>

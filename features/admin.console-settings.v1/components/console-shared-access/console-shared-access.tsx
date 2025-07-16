@@ -106,7 +106,10 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
         false,
         null,
         "roles",
-        1
+        1,
+        null,
+        null,
+        "sharingMode"
     );
 
     const [ sharedAccessMode, setSharedAccessMode ] = useState<RoleSharedAccessModes>(
@@ -125,23 +128,23 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
     }, [ administratorRole ]);
 
     useEffect(() => {
-        if (!originalOrganizationTree?.sharingInitiationMode) {
+        if (!originalOrganizationTree?.sharingMode) {
             setSharedAccessMode(RoleSharedAccessModes.SHARE_WITH_SELECTED_ORGS_AND_ROLES);
 
             return;
         }
 
-        if (originalOrganizationTree?.sharingInitiationMode?.roleSharing?.mode ===
+        if (originalOrganizationTree?.sharingMode?.roleSharing?.mode ===
                 RoleSharingModes.ALL) {
             setSharedAccessMode(RoleSharedAccessModes.SHARE_ALL_ROLES_WITH_ALL_ORGS);
         }
 
-        if (originalOrganizationTree?.sharingInitiationMode?.roleSharing?.mode ===
+        if (originalOrganizationTree?.sharingMode?.roleSharing?.mode ===
                 RoleSharingModes.SELECTED) {
             setSharedAccessMode(RoleSharedAccessModes.SHARE_WITH_ALL_ORGS);
 
             const initialRoles: RolesInterface[] =
-                originalOrganizationTree?.sharingInitiationMode?.roleSharing?.roles.map(
+                originalOrganizationTree?.sharingMode?.roleSharing?.roles.map(
                     (role: RoleSharingInterface) => ({
                         audience: {
                             display: role.audience.display,

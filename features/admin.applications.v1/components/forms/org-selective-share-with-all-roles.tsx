@@ -127,7 +127,7 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
         data: originalOrganizations,
         error: organizationsFetchRequestError
     } = useGetOrganizations(
-        isOrganizationManagementEnabled,
+        isOrganizationManagementEnabled && !isEmpty(expandedOrgId),
         `parentId eq '${ expandedOrgId }'`,
         null,
         null,
@@ -206,6 +206,7 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                 setNextPageLink(nextLink.href);
                 setIsNextPageAvailable(true);
             } else {
+                setNextPageLink(undefined);
                 setIsNextPageAvailable(false);
             }
         } else {
@@ -263,10 +264,6 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
 
         // Add all nodes from the top-level organization to nodeMap
         data.forEach((item: OrganizationInterface) => {
-            if (item.status !== "ACTIVE") {
-                return;
-            }
-
             nodeMap[item.id] = {
                 children: item.hasChildren ? [
                     {
@@ -463,7 +460,7 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
         <>
             <Grid
                 container
-                xs={ 10 }
+                xs={ 12 }
                 className="roles-selective-share-container"
             >
                 {
@@ -498,7 +495,6 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                                     className="roles-selective-share-tree-view"
                                     items={ organizationTree }
                                     expandedItems={ expandedItems }
-                                    expansionTrigger="iconContainer"
                                     selectedItems={ selectedItems }
                                     onItemSelectionToggle={ (
                                         _e: SyntheticEvent,
@@ -520,11 +516,11 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                                         descendants: false,
                                         parents: false
                                     } }
-                                    multiSelect={ true }
                                     checkboxSelection={ true }
-                                    slots={ {
-                                        item: TreeItemsContents
-                                    } }
+                                    multiSelect={ true }
+                                    // slots={ {
+                                    //     item: TreeItemsContents
+                                    // } }
                                 />
                             </InfiniteScroll>
                         </Grid>

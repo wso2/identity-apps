@@ -212,8 +212,11 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
                     consoleRoles.Resources
                 );
 
-            // Initialize the role selections with the top-level organization roles
-            setRoleSelections(computedRoleSelections);
+            // Update the role selections with the top-level organization roles
+            setRoleSelections((prev: Record<string, SelectedOrganizationRoleInterface[]>) => ({
+                ...prev,
+                ...computedRoleSelections
+            }));
         }
     }, [ originalTopLevelOrganizationTree, consoleRoles ]);
 
@@ -447,7 +450,7 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
             </Button>
             <Grid
                 container
-                xs={ 10 }
+                xs={ 12 }
                 className="roles-selective-share-container"
             >
                 <Grid

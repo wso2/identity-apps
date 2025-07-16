@@ -57,7 +57,12 @@ import { Dispatch } from "redux";
 import "./roles-selective-share.scss";
 import useGetApplicationShare from "../../api/use-get-application-share";
 import { ApplicationInterface, RoleSharingInterface } from "../../models/application";
-import { computeChildRoleSelections, computeInitialRoleSelections, getChildrenOfOrganization, updateTreeWithChildren } from "../../utils/shared-access";
+import {
+    computeChildRoleSelections,
+    computeInitialRoleSelections,
+    getChildrenOfOrganization,
+    updateTreeWithChildren
+} from "../../utils/shared-access";
 
 interface OrgSelectiveShareWithSelectiveRolesEditProps extends IdentifiableComponentInterface {
     application: ApplicationInterface;
@@ -260,7 +265,12 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                 if (nextLink) {
                     setNextPageLink(nextLink.href);
                     setIsNextPageAvailable(true);
+                } else {
+                    setNextPageLink(undefined);
+                    setIsNextPageAvailable(false);
                 }
+            } else {
+                setIsNextPageAvailable(false);
             }
 
             // Initialize the flat organization map with the top-level organizations
@@ -817,7 +827,7 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
         <>
             <Grid
                 container
-                xs={ 10 }
+                xs={ 12 }
                 className="roles-selective-share-container"
             >
                 {

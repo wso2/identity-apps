@@ -38,7 +38,7 @@ export interface OrganizationLinkInterface {
 export interface OrganizationListInterface {
     links?: OrganizationLinkInterface[];
     organizations: OrganizationInterface[];
-    sharingInitiationMode?: {
+    sharingMode?: {
         policy: string;
         roleSharing: {
             mode: string;
