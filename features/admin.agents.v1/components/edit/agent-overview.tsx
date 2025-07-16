@@ -28,6 +28,7 @@ import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@w
 import { DangerZone, DangerZoneGroup, EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider, Form, Grid, Loader } from "semantic-ui-react";
@@ -44,6 +45,7 @@ export default function AgentOverview({
     agentId,
     "data-componentid": componentId = "agent-overview"
 }: AgentOverviewProps) {
+    const { t } = useTranslation();
 
     const dispatch: Dispatch = useDispatch();
 
@@ -63,6 +65,8 @@ export default function AgentOverview({
 
     const agentFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state?.config?.ui?.features?.agents);
+
+    const hasAgentUpdatePermissions: boolean = useRequiredScopes(agentFeatureConfig?.scopes?.update);
 
     const hasAgentDeletePermissions: boolean = useRequiredScopes(agentFeatureConfig?.scopes?.delete);
 
@@ -123,7 +127,6 @@ export default function AgentOverview({
         <>
             <EmphasizedSegment
                 padded="very"
-                style={ { border: "none", padding: "21px" } }
                 className="agent-overview-form"
             >
                 {
@@ -154,7 +157,7 @@ export default function AgentOverview({
                                 }));
                             });
                         } }
-                        render={ ({ handleSubmit }: FormRenderProps) => {
+                        render={ ({ handleSubmit, submitting }: FormRenderProps) => {
                             return (
                                 <Grid>
                                     <Grid.Row>
@@ -178,11 +181,16 @@ export default function AgentOverview({
                                                             ></FinalFormField>
                                                         );
                                                 }) }
-
                                                 <Form.Group>
-                                                    <PrimaryButton type="submit">
-                                                    Update
-                                                    </PrimaryButton>
+                                                    { hasAgentUpdatePermissions && (
+                                                        <PrimaryButton
+                                                            type="submit"
+                                                            loading={ submitting }
+                                                            disabled={ submitting }
+                                                        >
+                                                            { t("common:update") }
+                                                        </PrimaryButton>
+                                                    ) }
                                                 </Form.Group>
                                             </form>
                                         </Grid.Column>

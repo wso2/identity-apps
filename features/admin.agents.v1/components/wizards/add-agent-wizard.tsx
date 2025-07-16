@@ -66,8 +66,6 @@ export default function AddAgentWizard({
                             }
                         };
 
-                        debugger;
-                        
                         addAgent(addAgentPayload)
                             .then((response: AgentScimSchema) => {
                                 onClose(response);
@@ -112,6 +110,8 @@ export default function AddAgentWizard({
             <Modal.Actions>
                 <Button
                     className="link-button"
+                    basic
+                    primary
                     onClick={ () => onClose(null) }
                     data-testid={ `${componentId}-confirmation-modal-actions-cancel-button` }
                 >

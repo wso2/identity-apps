@@ -241,9 +241,12 @@ export default function Agents ({
             <AddAgentWizard
                 isOpen={ isAddAgentWizardOpen }
                 onClose={ (newCreatedAgent) => {
-                    setNewAgent(newCreatedAgent);
+                    if (newCreatedAgent) {
+                        setNewAgent(newCreatedAgent);
+                        setIsAgentCredentialWizardOpen(true);
+                    }
+
                     setIsAddAgentWizardOpen(false);
-                    setIsAgentCredentialWizardOpen(true);
                 } }
             />
 
