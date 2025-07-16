@@ -20,9 +20,13 @@ import { Grid, Typography } from "@mui/material";
 import { generatePassword, getConfiguration } from "@wso2is/admin.users.v1/utils/generate-password.utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models/validation-config";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { Button, CopyInputField, EmphasizedSegment, Message } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { useMemo } from "react";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import { AgentSecretShowModal } from "./agent-secret-show-modal";
 import { updateAgentPassword } from "../../api/agents";
@@ -36,6 +40,8 @@ export default function AgentCredentials({
     ["data-componentid"]: componentId = "agent-credentials"
 }: AgentCredentialsProps) {
     const { data: validationData } = useValidationConfigData();
+
+    const dispatch: Dispatch = useDispatch();
 
     const passwordValidationConfig: ValidationFormInterface = useMemo((): ValidationFormInterface => {
         return getConfiguration(validationData);
@@ -66,14 +72,15 @@ export default function AgentCredentials({
         updateAgentPassword(
             agentId,
             newPassword
-        ).then((resp) => {
+        ).then(() => {
             setIsAgentCredentialWizardOpen(true);
-            // Handle successful regeneration of agent secret.
-            // This could include showing a success message or updating the UI.
-
-        }).catch((error) => {
+        }).catch((_error: AxiosError) => {
             // Handle error during regeneration of agent secret.
-
+            dispatch(addAlert({
+                description: "Error when regenerating the agent secret",
+                level: AlertLevels.ERROR,
+                message: "Something went wrong"
+            }));
         }).finally(() => {
             setIsSecretRegenerationLoading(false);
         });
@@ -91,9 +98,15 @@ export default function AgentCredentials({
                     <CopyInputField value={ agentId } />
                     <Divider />
                     <Typography variant="body1">Agent secret</Typography>
-                    <Message info>
-                        If you’ve lost or forgotten the agent secret, you can regenerate it, but be aware that any
-                        scripts or applications using the current agent secret will need to be updated.
+                    <Message warning>
+                        <strong>Before regenerating:</strong> Make sure you are ready to update all
+                        applications using the new agent secret. Once regenerated,
+                        <ul>
+                            <li>All scripts and applications that use the current agent secret will
+                                stop working immediately</li>
+                            <li>You will need to update the agent secret in all integrations</li>
+                            <li>The current agent secret cannot be recovered once regenerated</li>
+                        </ul>
                     </Message>
                     <Button
                         color="red"

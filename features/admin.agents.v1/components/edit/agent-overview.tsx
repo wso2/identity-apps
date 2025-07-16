@@ -30,7 +30,7 @@ import { AxiosError } from "axios";
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { CheckboxProps, Divider, Form, Grid } from "semantic-ui-react";
+import { CheckboxProps, Divider, Form, Grid, Loader } from "semantic-ui-react";
 import { deleteAgent, updateAgent, updateAgentLockStatus } from "../../api/agents";
 import useGetAgent from "../../hooks/use-get-agent";
 import { AgentScimSchema } from "../../models/agents";
@@ -51,7 +51,8 @@ export default function AgentOverview({
     const [ isAgentLocked, setIsAgentLocked ] = useState<boolean>(false);
 
     const {
-        data: agentInfo
+        data: agentInfo,
+        isLoading: isAgentInfoLoading
     } = useGetAgent(agentId);
 
     useEffect(() => {
@@ -107,7 +108,7 @@ export default function AgentOverview({
     }, [ agentSchemaAttributes ]);
 
     const agentSchemaformFieldProperties: Record<string, any> = {
-        "urn:scim:wso2:agent:schema:agentDescription": {
+        "urn:scim:wso2:agent:schema:Description": {
             maxRows: 6,
             multiline: true,
             rows: 4
@@ -115,7 +116,7 @@ export default function AgentOverview({
     };
 
     const readOnlyAgentAttributes: string[] = [
-        "urn:scim:wso2:agent:schema:agentOwner"
+        "urn:scim:wso2:agent:schema:Owner"
     ];
 
     return (
@@ -125,136 +126,141 @@ export default function AgentOverview({
                 style={ { border: "none", padding: "21px" } }
                 className="agent-overview-form"
             >
-                <FinalForm
-                    onSubmit={ (values: any) => {
+                {
+                    isAgentInfoLoading ? <Loader /> :                (<FinalForm
+                        onSubmit={ (values: any) => {
 
-                        const updateAgentPayload: AgentScimSchema = {
-                            "urn:scim:wso2:agent:schema": {
-                                ...values,
-                                Owner: authenticatedUser
-                            },
-                            // TODO: Move this to BE API to set the agent username when updating
-                            // the agent information
-                            userName: agentInfo?.userName
-                        };
+                            const updateAgentPayload: AgentScimSchema = {
+                                "urn:scim:wso2:agent:schema": {
+                                    ...values,
+                                    Owner: authenticatedUser
+                                },
+                                // TODO: Move this to BE API to set the agent username when updating
+                                // the agent information
+                                userName: agentInfo?.userName
+                            };
 
-                        updateAgent(agentId, updateAgentPayload).then((_response: any) => {
-                            dispatch(addAlert({
-                                description: "Agent information updated successfully.",
-                                level: AlertLevels.SUCCESS,
-                                message: "Updated successfully"
-                            }));
-                        }).catch((_err: unknown) => {
-                            dispatch(addAlert({
-                                description: "An error occurred when updating agent information.",
-                                level: AlertLevels.ERROR,
-                                message: "Something went wrong"
-                            }));
-                        });
-                    } }
-                    render={ ({ handleSubmit }: FormRenderProps) => {
-                        return (
-                            <Grid>
-                                <Grid.Row>
-                                    <Grid.Column computer={ 8 }>
-                                        <form
-                                            onSubmit={ handleSubmit }
-                                            style={ { display: "flex", flexDirection: "column", gap: "16px" } }
-                                        >
-                                            { agentSchemaAttributesWithProperties?.map((agentAttribute: any) => {
-                                                const formFieldProperties: any =
+                            updateAgent(agentId, updateAgentPayload).then((_response: any) => {
+                                dispatch(addAlert({
+                                    description: "Agent information updated successfully.",
+                                    level: AlertLevels.SUCCESS,
+                                    message: "Updated successfully"
+                                }));
+                            }).catch((_err: unknown) => {
+                                dispatch(addAlert({
+                                    description: "An error occurred when updating agent information.",
+                                    level: AlertLevels.ERROR,
+                                    message: "Something went wrong"
+                                }));
+                            });
+                        } }
+                        render={ ({ handleSubmit }: FormRenderProps) => {
+                            return (
+                                <Grid>
+                                    <Grid.Row>
+                                        <Grid.Column computer={ 8 }>
+                                            <form
+                                                onSubmit={ handleSubmit }
+                                                style={ { display: "flex", flexDirection: "column", gap: "16px" } }
+                                            >
+                                                { agentSchemaAttributesWithProperties?.map((agentAttribute: any) => {
+                                                    const formFieldProperties: any =
                                                     agentSchemaformFieldProperties[agentAttribute.claimURI] ?? [];
 
-                                                return readOnlyAgentAttributes?.includes(agentAttribute.claimURI)
-                                                    ? null : (
-                                                        <FinalFormField
-                                                            key={ agentAttribute.id }
-                                                            name={ agentAttribute.claimURI.split(":").pop() }
-                                                            label={ agentAttribute?.properties.DisplayName }
-                                                            component={ TextFieldAdapter }
-                                                            { ...formFieldProperties }
-                                                        ></FinalFormField>
-                                                    );
-                                            }) }
+                                                    return readOnlyAgentAttributes?.includes(agentAttribute.claimURI)
+                                                        ? null : (
+                                                            <FinalFormField
+                                                                key={ agentAttribute.id }
+                                                                name={ agentAttribute.claimURI.split(":").pop() }
+                                                                label={ agentAttribute?.properties.DisplayName }
+                                                                component={ TextFieldAdapter }
+                                                                { ...formFieldProperties }
+                                                            ></FinalFormField>
+                                                        );
+                                                }) }
 
-                                            <Form.Group>
-                                                <PrimaryButton type="submit" className="mt-5">
+                                                <Form.Group>
+                                                    <PrimaryButton type="submit">
                                                     Update
-                                                </PrimaryButton>
-                                            </Form.Group>
-                                        </form>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        );
-                    } }
-                    initialValues={ initialValues }
-                ></FinalForm>
+                                                    </PrimaryButton>
+                                                </Form.Group>
+                                            </form>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </Grid>
+                            );
+                        } }
+                        initialValues={ initialValues }
+                    ></FinalForm>)
+                }
+
             </EmphasizedSegment>
 
             <Divider hidden />
-            <DangerZoneGroup
-                sectionHeader={ "Danger Zone" }
-            >
-                { hasAgentDeletePermissions && (<DangerZone
-                    actionTitle={ "Delete agent" }
-                    header={ "Delete agent" }
-                    subheader={ "This action will remove the agent's association with this organization. " +
+            { isAgentInfoLoading ? <Loader /> : (
+                <DangerZoneGroup
+                    sectionHeader={ "Danger Zone" }
+                >
+                    { hasAgentDeletePermissions && (<DangerZone
+                        actionTitle={ "Delete agent" }
+                        header={ "Delete agent" }
+                        subheader={ "This action will remove the agent's association with this organization. " +
                         "Please be certain before you proceed" }
-                    onActionClick={ () => deleteAgent(agentId).then(() => {
-                        dispatch(addAlert({
-                            description: "Agent deleted successfully.",
-                            level: AlertLevels.SUCCESS,
-                            message: "Deleted successfully"
-                        }));
-                        history.push(AppConstants.getPaths().get("AGENTS"));
-                    }).catch((_error: any) => {
-                        dispatch(addAlert({
-                            description: "An error occurred when deleting agent.",
-                            level: AlertLevels.ERROR,
-                            message: "Something went wrong"
-                        }));
-                    })
-                    }
-                    data-componentid={ componentId + "-danger-zone" }
-                />) }
-
-                <DangerZone
-                    data-componentId={ `${ componentId }-danger-zone-toggle` }
-                    actionTitle={ "Block Agent" }
-                    header={
-                        "Block Agent"
-                    }
-                    subheader={
-                        "Once the agent is blocked, it will not be able to access any resources. "
-                    }
-                    onActionClick={ undefined }
-                    toggle={ {
-                        checked: isAgentLocked,
-                        id: "agentAccountLocked",
-                        onChange: (toggleData: CheckboxProps) => {
-                            setIsAgentLocked(toggleData.target.checked);
-                            updateAgentLockStatus(agentId, toggleData.target.checked)
-                                .then(() => {
-                                    dispatch(addAlert({
-                                        description: `The agent account is ${ toggleData.checked ? "blocked" : "unbocked" } successfully.`,
-                                        level: AlertLevels.SUCCESS,
-                                        message: `Agent account is ${ toggleData.checked ? "blocked" : "unblocked" }`
-                                    }));
-                                })
-                                .catch((_error: AxiosError) => {
-                                    dispatch(addAlert({
-                                        description:
-                                            `An error occurred when ${ toggleData.checked ? "blocking" : "unblocking" } the agent.`,
-                                        level: AlertLevels.ERROR,
-                                        message: "Something went wrong"
-                                    }));
-                                });
+                        onActionClick={ () => deleteAgent(agentId).then(() => {
+                            dispatch(addAlert({
+                                description: "Agent deleted successfully.",
+                                level: AlertLevels.SUCCESS,
+                                message: "Deleted successfully"
+                            }));
+                            history.push(AppConstants.getPaths().get("AGENTS"));
+                        }).catch((_error: any) => {
+                            dispatch(addAlert({
+                                description: "An error occurred when deleting agent.",
+                                level: AlertLevels.ERROR,
+                                message: "Something went wrong"
+                            }));
+                        })
                         }
-                    } }
-                />
+                        data-componentid={ componentId + "-danger-zone" }
+                    />) }
 
-            </DangerZoneGroup>
+                    <DangerZone
+                        data-componentId={ `${ componentId }-danger-zone-toggle` }
+                        actionTitle={ "Block Agent" }
+                        header={
+                            "Block Agent"
+                        }
+                        subheader={
+                            "Once the agent is blocked, it will not be able to access any resources. "
+                        }
+                        onActionClick={ undefined }
+                        toggle={ {
+                            checked: isAgentLocked,
+                            id: "agentAccountLocked",
+                            onChange: (toggleData: CheckboxProps) => {
+                                setIsAgentLocked(toggleData.target.checked);
+                                updateAgentLockStatus(agentId, toggleData.target.checked)
+                                    .then(() => {
+                                        dispatch(addAlert({
+                                            description: `The agent account is ${ toggleData.checked ? "blocked" : "unbocked" } successfully.`,
+                                            level: AlertLevels.SUCCESS,
+                                            message: `Agent account is ${ toggleData.checked ? "blocked" : "unblocked" }`
+                                        }));
+                                    })
+                                    .catch((_error: AxiosError) => {
+                                        dispatch(addAlert({
+                                            description:
+                                            `An error occurred when ${ toggleData.checked ? "blocking" : "unblocking" } the agent.`,
+                                            level: AlertLevels.ERROR,
+                                            message: "Something went wrong"
+                                        }));
+                                    });
+                            }
+                        } }
+                    />
+
+                </DangerZoneGroup>
+            ) }
         </>
     );
 }

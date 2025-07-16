@@ -17,15 +17,20 @@
  */
 
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { AGENT_USERSTORE_ID } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { DocumentationLink, ListLayout, PageLayout, PrimaryButton, useDocumentation } from "@wso2is/react-components";
-import set from "lodash-es/set";
-import React, { useState } from "react";
+import { DocumentationLink, EmphasizedSegment, EmptyPlaceholder,
+    ListLayout, PageLayout, PrimaryButton, useDocumentation } from "@wso2is/react-components";
+import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
 import AgentList from "../components/agent-list";
@@ -42,10 +47,21 @@ export default function Agents ({
 
     const dispatch: Dispatch = useDispatch();
 
+    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
+
     const [ isAddAgentWizardOpen,setIsAddAgentWizardOpen ] = useState(false);
     const [ isAgentCredentialWizardOpen, setIsAgentCredentialWizardOpen ] = useState(false);
 
     const { getLink } = useDocumentation();
+
+    const {
+        isLoading: isUserStoresListFetchRequestLoading,
+        userStoresList
+    } = useUserStores();
+
+    const isAgentManagementEnabledForOrg: boolean = useMemo((): boolean => {
+        return userStoresList?.some((userStore: UserStoreListItem) => userStore.id === AGENT_USERSTORE_ID);
+    }, [ userStoresList ]);
 
     const { t } = useTranslation();
 
@@ -53,7 +69,6 @@ export default function Agents ({
         attributes: "",
         count: 10,
         domain: "AGENT",
-        excludedAttributes: "roles,groups",
         filter: "",
         startIndex: 1
     };
@@ -67,9 +82,7 @@ export default function Agents ({
         agentListMetaData.startIndex,
         agentListMetaData.filter === "" ? null : agentListMetaData.filter,
         agentListMetaData.attributes === "" ? null : agentListMetaData.attributes,
-        "AGENT",
-        agentListMetaData.excludedAttributes,
-        true
+        isAgentManagementEnabledForOrg
     );
 
     return (
@@ -101,7 +114,24 @@ export default function Agents ({
                 New Agent
             </PrimaryButton>) }
         >
-            <ListLayout
+
+            { !isUserStoresListFetchRequestLoading && !isAgentManagementEnabledForOrg ? (
+                <EmphasizedSegment
+                    style={ { display: "flex", justifyContent: "center", minHeight: "70vh",flexDirection: "column" } }>
+                    <EmptyPlaceholder
+                        action={ null }
+                        image={ getEmptyPlaceholderIllustrations().search }
+                        imageSize="tiny"
+                        subtitle={ [
+                            isSAASDeployment
+                                ? "To tryout the Agents feature, create a new organization."
+                                : "To enable the Agents feature, connect a userstore named AGENT in your organization.",
+                            "Soon, Agents will be available by default for all organizations."
+                        ] }
+                        title={ "Agents are not currently available for this organization" }
+                    />
+                </EmphasizedSegment>
+            ) :             (<ListLayout
                 advancedSearch={ (
                     <AdvancedSearchWithBasicFilters
                         onFilter={ () => {} }
@@ -206,7 +236,7 @@ export default function Agents ({
                         setIsAddAgentWizardOpen(true);
                     } }
                 />
-            </ListLayout>
+            </ListLayout>) }
 
             <AddAgentWizard
                 isOpen={ isAddAgentWizardOpen }

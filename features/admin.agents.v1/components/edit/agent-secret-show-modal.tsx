@@ -16,19 +16,34 @@
  * under the License.
  */
 
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CopyInputField } from "@wso2is/react-components";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
 import { Button, Message, Modal } from "semantic-ui-react";
 
+/**
+ * Props for the AgentSecretShowModal component.
+ */
 interface AgentSecretShowModalProps extends IdentifiableComponentInterface {
+    /**
+     * The title to be displayed in the modal.
+     */
     title: string;
+    /**
+     * The unique identifier of the agent.
+     */
     agentId: string;
+    /**
+     * The secret associated with the agent.
+     */
     agentSecret: string;
+    /**
+     * Flag indicating whether the modal is open.
+     */
     isOpen: boolean;
+    /**
+     * Callback to be invoked when the modal is closed.
+     */
     onClose: () => void;
 }
 
@@ -56,8 +71,8 @@ export function AgentSecretShowModal({
             <Modal.Header>{ title }</Modal.Header>
             <Modal.Content>
                 <Message warning>
-                            Important: Please copy and store the agent credentials securely.{ " " }
-                            Make sure to copy the agent secret now as you will not be able to see this again.
+                    <strong>Important:</strong> Please copy and store the agent credentials securely.{ " " }
+                    Make sure to copy the agent secret now as you will not be able to see this again.
                 </Message>
 
                 <label>Agent ID</label>
