@@ -67,9 +67,9 @@ const FlowList: FunctionComponent<FlowListProps> = ({
 
     const dispatch: Dispatch = useDispatch();
 
-    const [registrationFlowEnabled, setRegistrationFlowEnabled] = useState<boolean>(false);
-    const [passwordRecoveryFlowEnabled, setPasswordRecoveryFlowEnabled] = useState<boolean>(false);
-    const [inviteUserFlowEnabled, setInviteUserFlowEnabled] = useState<boolean>(false);
+    const [ registrationFlowEnabled, setRegistrationFlowEnabled ] = useState<boolean>(false);
+    const [ passwordRecoveryFlowEnabled, setPasswordRecoveryFlowEnabled ] = useState<boolean>(false);
+    const [ inviteUserFlowEnabled, setInviteUserFlowEnabled ] = useState<boolean>(false);
 
     const { data: flowConfigs, mutate: mutateFlowConfigs } = useGetFlowConfigs();
 
@@ -78,42 +78,20 @@ const FlowList: FunctionComponent<FlowListProps> = ({
             return;
         }
 
-        flowConfigs.forEach((config) => {
+        flowConfigs.forEach((config: any) => {
             switch (config.flowType) {
                 case FlowTypes.REGISTRATION:
                     setRegistrationFlowEnabled(config.isEnabled);
+
                     break;
                 case FlowTypes.PASSWORD_RECOVERY:
                     setPasswordRecoveryFlowEnabled(config.isEnabled);
+
                     break;
                 case "INVITED_USER_REGISTRATION":
                 case FlowTypes.INVITE_USER_PASSWORD_SETUP:
                     setInviteUserFlowEnabled(config.isEnabled);
-                    break;
-                default:
-                    break;
-            }
-        });
-    }, [ flowConfigs ]);
 
-    const { data: flowConfigs, mutate: mutateFlowConfigs } = useGetFlowConfigs();
-
-    useEffect(() => {
-        if (!flowConfigs) {
-            return;
-        }
-
-        flowConfigs.forEach((config) => {
-            switch (config.flowType) {
-                case FlowTypes.REGISTRATION:
-                    setRegistrationFlowEnabled(config.isEnabled);
-                    break;
-                case FlowTypes.PASSWORD_RECOVERY:
-                    setPasswordRecoveryFlowEnabled(config.isEnabled);
-                    break;
-                case "INVITED_USER_REGISTRATION":
-                case FlowTypes.INVITE_USER_PASSWORD_SETUP:
-                    setInviteUserFlowEnabled(config.isEnabled);
                     break;
                 default:
                     break;
@@ -188,7 +166,7 @@ const FlowList: FunctionComponent<FlowListProps> = ({
     };
 
     const resolveFlowTypeStatusLabel = (flowType: string): ReactElement => {
-        const enabled = resolveFlowTypeStatus(flowType);
+        const enabled: any = resolveFlowTypeStatus(flowType);
 
         return enabled ? (
             <div
@@ -218,8 +196,8 @@ const FlowList: FunctionComponent<FlowListProps> = ({
     ): Promise<void> => {
         e.stopPropagation();
 
-        let apiFlowType = flowType;
-        let currentState = false;
+        let apiFlowType: any = flowType;
+        let currentState: any = false;
         let setState: (value: boolean) => void = () => {};
 
         switch (flowType) {
@@ -227,16 +205,19 @@ const FlowList: FunctionComponent<FlowListProps> = ({
                 apiFlowType = FlowTypes.REGISTRATION;
                 currentState = registrationFlowEnabled;
                 setState = setRegistrationFlowEnabled;
+
                 break;
             case FlowTypes.PASSWORD_RECOVERY:
                 apiFlowType = FlowTypes.PASSWORD_RECOVERY;
                 currentState = passwordRecoveryFlowEnabled;
                 setState = setPasswordRecoveryFlowEnabled;
+
                 break;
             case FlowTypes.INVITE_USER_PASSWORD_SETUP:
                 apiFlowType = "INVITED_USER_REGISTRATION";
                 currentState = inviteUserFlowEnabled;
                 setState = setInviteUserFlowEnabled;
+
                 break;
             default:
                 return;
@@ -249,11 +230,8 @@ const FlowList: FunctionComponent<FlowListProps> = ({
             };
 
             await updateFlowConfig(payload);
-
             setState(!currentState);
-
             handleUpdateSuccess(flowType, !currentState);
-
             await mutateFlowConfigs();
         } catch (error) {
             handleFlowStatusUpdateError(flowType, error);
