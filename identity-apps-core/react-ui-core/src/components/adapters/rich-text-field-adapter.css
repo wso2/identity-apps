@@ -16,23 +16,39 @@
  * under the License.
  */
 
-const MIN_ALLOWED_FONT_SIZE: number = 8;
-const MAX_ALLOWED_FONT_SIZE: number = 72;
+.rich-text-content .rich-text-pre-wrap {
+    white-space: pre-wrap;
+}
 
-export const parseAllowedFontSize = (input: string): string => {
-    const match: RegExpMatchArray = input.match(/^(\d+(?:\.\d+)?)px$/);
+.rich-text-content .rich-text-align-left {
+    text-align: left;
+}
 
-    if (match) {
-        const n: number = Number(match[1]);
+.rich-text-content .rich-text-align-center {
+    text-align: center;
+}
 
-        if (n >= MIN_ALLOWED_FONT_SIZE && n <= MAX_ALLOWED_FONT_SIZE) {
-            return input;
-        }
-    }
+.rich-text-content .rich-text-align-right {
+    text-align: right;
+}
 
-    return "";
-};
+.rich-text-content .rich-text-align-justify {
+    text-align: justify;
+}
 
-export function parseAllowedColor(input: string) {
-    return /^rgb\(\d+, \d+, \d+\)$/.test(input) ? input : "";
+.rich-text-content .rich-text-bold {
+    font-weight: bold;
+}
+
+.rich-text-content .rich-text-italic {
+    font-style: italic;
+}
+
+.rich-text-content .rich-text-underline {
+    text-decoration: underline;
+}
+
+.rich-text-content .rich-text-paragraph {
+    margin: 0.5em 0;
+    font-size: 13px;
 }

@@ -27,6 +27,7 @@
         "displayName": "Develop",
         "path": "/applications"
     },
+    "docSiteUrl": "https://is.docs.wso2.com/en/latest",
     "extensions": {
         "defaultBrandedLoginScreenCopyright": "${copyright} ${year} WSO2 LLC.",
         "emailTemplates": [

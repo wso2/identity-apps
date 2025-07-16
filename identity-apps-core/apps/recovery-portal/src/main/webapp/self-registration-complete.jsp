@@ -309,7 +309,7 @@
                             String url = "";
                             if (StringUtils.isNotBlank(confirm)) { %>
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "your.account.with.username")%>
-                                <b><%=resendUsername%></b>
+                                <b><%=Encode.forHtml(resendUsername)%></b>
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "has.been.verified.successfully")%>
                             <%
                                 if (!StringUtils.isBlank(sp) && sp.equals("My Account")) {
@@ -338,7 +338,11 @@
                             %>
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "check.your.inbox.at")%>
                                 <b><span id="maskedEmail"></span></b> <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "for.instructions.to.activate.your.account")%>
-                                <script>maskEmail('<%= emailValue %>');</script>
+                                <script>
+                                    <% if (StringUtils.isNotBlank(emailValue)) { %>
+                                        maskEmail('<%= Encode.forJavaScript(emailValue) %>');
+                                    <% } %>                                
+                                </script>
                                 </br></br>
                         <%
                             if (showBackButton && StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)) {

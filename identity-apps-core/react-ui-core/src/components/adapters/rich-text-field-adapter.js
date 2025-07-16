@@ -16,17 +16,15 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import DOMPurify from "dompurify";
 import parse from "html-react-parser";
-import React, { FunctionComponent, ReactElement } from "react";
-import { CommonElementFactoryPropsInterface } from "../common-element-factory";
-import "./rich-text-adapter.scss";
+import PropTypes from "prop-types";
+import React from "react";
+import "./rich-text-field-adapter.css";
 
-// Register DOMPurify hook once at module level to handle anchor tags.
-DOMPurify.addHook("afterSanitizeAttributes", (node: Element) => {
+DOMPurify.addHook("afterSanitizeAttributes", (node) => {
     if (node.hasAttribute("target")) {
-        const target: string | null = node.getAttribute("target");
+        const target = node.getAttribute("target");
 
         if (target === "_blank") {
             node.setAttribute("rel", "noopener noreferrer");
@@ -34,21 +32,10 @@ DOMPurify.addHook("afterSanitizeAttributes", (node: Element) => {
     }
 });
 
-/**
- * Props interface of {@link RichTextAdapter}
- */
-export type RichTextAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
+const RichTextAdapter = ({ component }) => {
+    const { config } = component;
 
-/**
- * Adapter for the Rich Text component.
- *
- * @param props - Props injected to the component.
- * @returns The RichTextAdapter component.
- */
-const RichTextAdapter: FunctionComponent<RichTextAdapterPropsInterface> = ({
-    resource
-}: RichTextAdapterPropsInterface): ReactElement => {
-    const sanitizedHtml: string = DOMPurify.sanitize(resource?.config?.text || "", {
+    const sanitizedHtml = DOMPurify.sanitize(config.text || "", {
         ADD_ATTR: [ "target" ]
     });
 
@@ -57,6 +44,15 @@ const RichTextAdapter: FunctionComponent<RichTextAdapterPropsInterface> = ({
             { parse(sanitizedHtml) }
         </div>
     );
+};
+
+RichTextAdapter.propTypes = {
+    component: PropTypes.shape({
+        config: PropTypes.shape({
+            text: PropTypes.string.isRequired
+        }).isRequired,
+        id: PropTypes.string
+    }).isRequired
 };
 
 export default RichTextAdapter;

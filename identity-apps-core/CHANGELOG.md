@@ -1,5 +1,23 @@
 # @wso2is/identity-apps-core
 
+## 2.27.8
+
+### Patch Changes
+
+- [#8534](https://github.com/wso2/identity-apps/pull/8534) [`10afd4a76d491050e7dfcfd82fd1adbdb87d9476`](https://github.com/wso2/identity-apps/commit/10afd4a76d491050e7dfcfd82fd1adbdb87d9476) Thanks [@savindi7](https://github.com/savindi7)! - Improve input validations.
+
+## 2.27.7
+
+### Patch Changes
+
+- [#8536](https://github.com/wso2/identity-apps/pull/8536) [`b7d5766dd3c195f36ca62b3785943e402a8d4536`](https://github.com/wso2/identity-apps/commit/b7d5766dd3c195f36ca62b3785943e402a8d4536) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add rich text support to the registration flow composer
+
+## 2.27.6
+
+### Patch Changes
+
+- [#8537](https://github.com/wso2/identity-apps/pull/8537) [`cfaad2b16d10e3364f29cc7d4694381ac4c47cbc`](https://github.com/wso2/identity-apps/commit/cfaad2b16d10e3364f29cc7d4694381ac4c47cbc) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Fix asgardeo callback building logic.
+
 ## 2.27.5
 
 ### Patch Changes

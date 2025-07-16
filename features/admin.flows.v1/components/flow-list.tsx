@@ -248,7 +248,7 @@ const FlowList: FunctionComponent<FlowListProps> = ({
                                 key={ flow.id }
                                 className={ classNames("flow-type", { "disabled": flow.disabled }) }
                                 data-componentid={ `${ flow.id }-flow-type-card` }
-                                onClick={ () => history.push(AppConstants.getPaths().get(flow.path)) }
+                                onClick={ () => !flow.disabled && history.push(AppConstants.getPaths().get(flow.path)) }
                             >
                                 <CardContent className="flow-type-header">
                                     <div>

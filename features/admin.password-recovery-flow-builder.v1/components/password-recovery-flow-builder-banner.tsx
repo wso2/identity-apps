@@ -67,7 +67,7 @@ const PasswordRecoveryFlowBuilderBanner: FC<PasswordRecoveryFlowBuilderBannerPro
                 <Box>
                     <Typography variant="h5">
                         Construct your ideal recovery experience with our new{ " " }
-                        <span className="text-gradient primary">{ t("flows:passwordRecoveryFlowBuilder") }</span>
+                        <span className="text-gradient primary">{ t("flows:passwordRecovery.name") }</span>
                         <FeatureFlagLabel
                             featureFlags={ flowsFeatureAIConfig?.featureFlags }
                             featureKey={ FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.FLOWS_TYPES_REGISTRATION }
