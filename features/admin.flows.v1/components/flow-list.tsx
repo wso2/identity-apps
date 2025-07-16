@@ -44,6 +44,7 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import updateFlowConfig, { FlowConfigInterface } from "../api/update-flow-config";
+import useGetFlowConfigs from "../api/use-get-flow-configs";
 import flowData from "../data/flows.json";
 import { FlowListItemInterface, FlowTypes } from "../models/flows";
 import "./flow-list.scss";
@@ -76,6 +77,31 @@ const FlowList: FunctionComponent<FlowListProps> = ({
     const [registrationFlowEnabled, setRegistrationFlowEnabled] = useState<boolean>(false);
     const [passwordRecoveryFlowEnabled, setPasswordRecoveryFlowEnabled] = useState<boolean>(false);
     const [inviteUserFlowEnabled, setInviteUserFlowEnabled] = useState<boolean>(false);
+
+    const { data: flowConfigs, mutate: mutateFlowConfigs } = useGetFlowConfigs();
+
+    useEffect(() => {
+        if (!flowConfigs) {
+            return;
+        }
+
+        flowConfigs.forEach((config) => {
+            switch (config.flowType) {
+                case FlowTypes.REGISTRATION:
+                    setRegistrationFlowEnabled(config.isEnabled);
+                    break;
+                case FlowTypes.PASSWORD_RECOVERY:
+                    setPasswordRecoveryFlowEnabled(config.isEnabled);
+                    break;
+                case "INVITED_USER_REGISTRATION":
+                case FlowTypes.INVITE_USER_PASSWORD_SETUP:
+                    setInviteUserFlowEnabled(config.isEnabled);
+                    break;
+                default:
+                    break;
+            }
+        });
+    }, [ flowConfigs ]);
 
     // useEffect(() => {
     //     setRegistrationFlowEnabled(isNewRegistrationPortalEnabled);
@@ -208,6 +234,8 @@ const FlowList: FunctionComponent<FlowListProps> = ({
             setState(!currentState);
 
             handleUpdateSuccess(flowType, !currentState);
+
+            await mutateFlowConfigs();
 
             // await refetchNewRegistrationPortalStatus();
         } catch (error) {
