@@ -33,22 +33,17 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
-import useNewRegistrationPortalFeatureStatus from
-    "@wso2is/admin.registration-flow-builder.v1/api/use-new-registration-portal-feature-status";
-import {
-    ServerConfigurationsConstants,
-    updateGovernanceConnector,
-    useGetGovernanceConnectorById
-} from "@wso2is/admin.server-configurations.v1";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+// import useNewRegistrationPortalFeatureStatus from
+//     "@wso2is/admin.registration-flow-builder.v1/api/use-new-registration-portal-feature-status";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { GenericIcon } from "@wso2is/react-components";
 import classNames from "classnames";
-import React, { FunctionComponent, MouseEvent, ReactElement } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import updateFlowConfig, { FlowConfigInterface } from "../api/update-flow-config";
 import flowData from "../data/flows.json";
 import { FlowListItemInterface, FlowTypes } from "../models/flows";
 import "./flow-list.scss";
@@ -73,20 +68,19 @@ const FlowList: FunctionComponent<FlowListProps> = ({
 
     const dispatch: Dispatch = useDispatch();
 
-    const {
-        data: isNewRegistrationPortalEnabled
-    } = useNewRegistrationPortalFeatureStatus();
+    // const {
+    //     data: isNewRegistrationPortalEnabled,
+    //     mutate: refetchNewRegistrationPortalStatus
+    // } = useNewRegistrationPortalFeatureStatus();
 
-    const { mutate: connectorDetailsMutate } = useGetGovernanceConnectorById(
-        ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
-        ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID
-    );
+    const [registrationFlowEnabled, setRegistrationFlowEnabled] = useState<boolean>(false);
+    const [passwordRecoveryFlowEnabled, setPasswordRecoveryFlowEnabled] = useState<boolean>(false);
+    const [inviteUserFlowEnabled, setInviteUserFlowEnabled] = useState<boolean>(false);
 
-    /**
-     * Resolves the icon based on the flow type.
-     * @param flowType - The type of the flow.
-     * @returns The icon element for the flow type.
-     */
+    // useEffect(() => {
+    //     setRegistrationFlowEnabled(isNewRegistrationPortalEnabled);
+    // }, [isNewRegistrationPortalEnabled]);
+
     const resolveFlowTypeIcon = (flowType: string): ReactElement => {
         switch (flowType) {
             case FlowTypes.REGISTRATION:
@@ -116,7 +110,7 @@ const FlowList: FunctionComponent<FlowListProps> = ({
     const handleUpdateSuccess = (flowType: string, isEnabled: boolean) => {
         dispatch(
             addAlert({
-                description: `The cutomized ${ flowType.toLowerCase() } flow has been successfully`
+                description: `The customized ${ flowType.toLowerCase() } flow has been successfully`
                     + (isEnabled ? " enabled." : " disabled."),
                 level: AlertLevels.SUCCESS,
                 message: "Dynamic " + resolveFlowTypeName(flowType) + " Flow" + (isEnabled ? " Enabled" : " Disabled")
@@ -135,65 +129,89 @@ const FlowList: FunctionComponent<FlowListProps> = ({
         );
     };
 
-
     const resolveFlowTypeStatus = (flowType: string): boolean => {
         switch (flowType) {
             case FlowTypes.REGISTRATION:
-                return isNewRegistrationPortalEnabled;
-
+                return registrationFlowEnabled;
+            case FlowTypes.PASSWORD_RECOVERY:
+                return passwordRecoveryFlowEnabled;
+            case FlowTypes.INVITE_USER_PASSWORD_SETUP:
+                return inviteUserFlowEnabled;
+            default:
+                return false;
         }
     };
 
     const resolveFlowTypeStatusLabel = (flowType: string): ReactElement => {
-        switch (flowType) {
-            case FlowTypes.REGISTRATION:
-                return resolveFlowTypeStatus(flowType)
-                    ? (
-                        <div
-                            className="status-tag"
-                            data-componentid={ `${ componentId }-${ flowType }-configured-status-tag` }
-                        >
-                            <CircleCheckFilledIcon className="icon-configured"/>
-                            <Typography  className="text-configured" variant="h6">
-                                Enabled
-                            </Typography>
-                        </div>
-                    ) : (
-                        <div
-                            className="status-tag"
-                            data-componentid={ `${ componentId }-${ flowType }-not-configured-status-tag` }
-                        >
-                            <Typography className="text-not-configured" variant="h6">
-                                Disabled
-                            </Typography>
-                        </div>
-                    );
+        const enabled = resolveFlowTypeStatus(flowType);
 
-        }
+        return enabled ? (
+            <div
+                className="status-tag"
+                data-componentid={ `${ componentId }-${ flowType }-configured-status-tag` }
+            >
+                <CircleCheckFilledIcon className="icon-configured"/>
+                <Typography className="text-configured" variant="h6">
+                    Enabled
+                </Typography>
+            </div>
+        ) : (
+            <div
+                className="status-tag"
+                data-componentid={ `${ componentId }-${ flowType }-not-configured-status-tag` }
+            >
+                <Typography className="text-not-configured" variant="h6">
+                    Disabled
+                </Typography>
+            </div>
+        );
     };
 
-    const handleFlowStatusToggle = async (e: MouseEvent<HTMLButtonElement>, flowType: string): Promise<void> => {
+    const handleFlowStatusToggle = async (
+        e: MouseEvent<HTMLButtonElement>,
+        flowType: string
+    ): Promise<void> => {
         e.stopPropagation();
+
+        let apiFlowType = flowType;
+        let currentState = false;
+        let setState: (value: boolean) => void = () => {};
+
         switch (flowType) {
             case FlowTypes.REGISTRATION:
-                updateGovernanceConnector(
-                    {
-                        operation: "UPDATE",
-                        properties:[ {
-                            name: ServerConfigurationsConstants.SELF_REGISTRATION_FLOW_BUILDER_ENABLED,
-                            value: !isNewRegistrationPortalEnabled
-                        } ]
-                    },
-                    ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
-                    ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID
-                ).then(() => {
-                    handleUpdateSuccess(flowType, !isNewRegistrationPortalEnabled);
-                    connectorDetailsMutate();
-                }).catch((error: IdentityAppsApiException) => {
-                    handleFlowStatusUpdateError(flowType, error);
-                });
-
+                apiFlowType = FlowTypes.REGISTRATION;
+                currentState = registrationFlowEnabled;
+                setState = setRegistrationFlowEnabled;
                 break;
+            case FlowTypes.PASSWORD_RECOVERY:
+                apiFlowType = FlowTypes.PASSWORD_RECOVERY;
+                currentState = passwordRecoveryFlowEnabled;
+                setState = setPasswordRecoveryFlowEnabled;
+                break;
+            case FlowTypes.INVITE_USER_PASSWORD_SETUP:
+                apiFlowType = "INVITED_USER_REGISTRATION";
+                currentState = inviteUserFlowEnabled;
+                setState = setInviteUserFlowEnabled;
+                break;
+            default:
+                return;
+        }
+
+        try {
+            const payload: FlowConfigInterface = {
+                flowType: apiFlowType,
+                isEnabled: !currentState
+            };
+
+            await updateFlowConfig(payload);
+
+            setState(!currentState);
+
+            handleUpdateSuccess(flowType, !currentState);
+
+            // await refetchNewRegistrationPortalStatus();
+        } catch (error) {
+            handleFlowStatusUpdateError(flowType, error);
         }
     };
 
@@ -242,7 +260,7 @@ const FlowList: FunctionComponent<FlowListProps> = ({
                                 </CardContent>
                                 <CardContent>
                                     <Typography variant="body2" color="text.secondary">
-                                        {  flow.description }
+                                        { flow.description }
                                     </Typography>
                                 </CardContent>
                                 {

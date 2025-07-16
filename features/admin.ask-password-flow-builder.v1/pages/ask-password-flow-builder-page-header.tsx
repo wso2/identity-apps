@@ -95,7 +95,7 @@ const AskPasswordFlowBuilderPageHeader: FunctionComponent<AskPasswordFlowBuilder
                     >
                         Flows
                     </Link>
-                    <Typography sx={ { color: "text.primary" } }>Edit Password Recovery Flow</Typography>
+                    <Typography sx={ { color: "text.primary" } }>Edit Invite User Password Flow</Typography>
                 </Breadcrumbs>
             </Box>
             <Box
