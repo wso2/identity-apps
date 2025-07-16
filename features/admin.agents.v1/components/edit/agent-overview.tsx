@@ -22,10 +22,16 @@ import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { AlertLevels, Claim, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, Claim, IdentifiableComponentInterface, Property } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
-import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
+import {
+    ConfirmationModal,
+    DangerZone,
+    DangerZoneGroup,
+    EmphasizedSegment,
+    PrimaryButton
+} from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -39,6 +45,10 @@ import "./agent-overview.scss";
 
 interface AgentOverviewProps extends IdentifiableComponentInterface {
     agentId: string;
+}
+
+type AgentAttribute = Claim & {
+    properties: Property[]
 }
 
 export default function AgentOverview({
@@ -92,11 +102,11 @@ export default function AgentOverview({
             });
     }, []);
 
-    const agentSchemaAttributesWithProperties: any[] = useMemo(() => {
+    const agentSchemaAttributesWithProperties: AgentAttribute[] = useMemo(() => {
         return agentSchemaAttributes?.map((agentAttribute: Claim) => {
             const claimProperties: any = Object.fromEntries(
                 agentAttribute?.properties?.map(
-                    ({ key, value }: { key: string; value: string }) => [ key, value ]
+                    ({ key, value }: Property) => [ key, value ]
                 )
             );
 
@@ -104,9 +114,9 @@ export default function AgentOverview({
                 ...agentAttribute,
                 properties: claimProperties
             };
-        })?.sort((a, b) => {
-            const orderA: number = parseInt(a.properties?.DisplayOrder ?? "0", 10);
-            const orderB: number = parseInt(b.properties?.DisplayOrder ?? "0", 10);
+        })?.sort((a: AgentAttribute, b: AgentAttribute) => {
+            const orderA: number = parseInt(a.properties?.["DisplayOrder"] ?? "0", 10);
+            const orderB: number = parseInt(b.properties?.["DisplayOrder"] ?? "0", 10);
 
             return orderA - orderB;
         });
@@ -238,15 +248,19 @@ export default function AgentOverview({
                                 updateAgentLockStatus(agentId, toggleData.target.checked)
                                     .then(() => {
                                         dispatch(addAlert({
-                                            description: `The agent account is ${ toggleData.checked ? "blocked" : "unbocked" } successfully.`,
+                                            description: "The agent account is " +
+                                                (toggleData.checked ? "blocked" : "unblocked") + " successfully.",
                                             level: AlertLevels.SUCCESS,
-                                            message: `Agent account is ${ toggleData.checked ? "blocked" : "unblocked" }`
+                                            message: "Agent account is " +
+                                                (toggleData.checked ? "blocked" : "unblocked")
                                         }));
                                     })
                                     .catch((_error: AxiosError) => {
                                         dispatch(addAlert({
                                             description:
-                                            `An error occurred when ${ toggleData.checked ? "blocking" : "unblocking" } the agent.`,
+                                                "An error occurred when " +
+                                                (toggleData.checked ? "blocking" : "unblocking") +
+                                                " the agent.",
                                             level: AlertLevels.ERROR,
                                             message: "Something went wrong"
                                         }));
