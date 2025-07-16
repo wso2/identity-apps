@@ -24,9 +24,12 @@ import InputLabel from "@oxygen-ui/react/InputLabel";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectProps } from "@oxygen-ui/react/Select";
 import { XMarkIcon } from "@oxygen-ui/react-icons";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 import { FieldRenderProps } from "react-final-form";
+
+import "./select-field-adapter.scss";
 
 /**
  * Interface for the items passed as options.
@@ -40,7 +43,7 @@ interface DropDownItemInterface {
  * Props for the SelectFieldAdapter component.
  */
 export interface SelectFieldAdapterPropsInterface
-    extends FieldRenderProps<string | string[], HTMLElement, string | string> {
+    extends FieldRenderProps<string | string[], HTMLElement, string | string>, IdentifiableComponentInterface {
     /**
      * The label to display above the Select Field.
      */
@@ -87,6 +90,7 @@ const SelectFieldAdapter: FunctionComponent<SelectFieldAdapterPropsInterface> = 
         required,
         options,
         isClearable = false,
+        "data-componentid": componentId = "select-field-adapter",
         ...rest
     } = props;
 
@@ -105,7 +109,7 @@ const SelectFieldAdapter: FunctionComponent<SelectFieldAdapterPropsInterface> = 
     const showClearButton: boolean = isClearable && !isEmpty(fieldValue);
 
     return (
-        <div>
+        <div className="select-field-adapter" data-componentid={ componentId }>
             <InputLabel required={ required }>{ label }</InputLabel>
             <FormControl
                 error={ isError }
@@ -115,32 +119,43 @@ const SelectFieldAdapter: FunctionComponent<SelectFieldAdapterPropsInterface> = 
                 fullWidth={ fullWidth }
                 { ...FormControlProps }
             >
-                <InputLabel shrink={ false } disabled>
+                <InputLabel shrink={ false } data-componentid={ `${componentId}-placeholder` } disabled>
                     { isEmpty(input.value) ? placeholder : "" }
                 </InputLabel>
                 <Select
                     { ...input }
                     value={ fieldValue }
                     margin="dense"
-                    endAdornment={ showClearButton && (
-                        <InputAdornment sx={ { marginRight: "10px" } } position="end">
-                            <IconButton
-                                onClick={ () => onValueClear() }
-                            >
-                                <XMarkIcon></XMarkIcon>
-                            </IconButton>
-                        </InputAdornment>
-                    ) }
-                    { ...rest as SelectProps }
+                    endAdornment={
+                        showClearButton && (
+                            <InputAdornment className="end-adornment" position="end">
+                                <IconButton onClick={ () => onValueClear() }>
+                                    <XMarkIcon />
+                                </IconButton>
+                            </InputAdornment>
+                        )
+                    }
+                    data-componentid={ `${componentId}-input` }
+                    { ...(rest as SelectProps) }
                 >
-                    { options?.map((option: DropDownItemInterface) => (
-                        <MenuItem key={ option.value } value={ option.value }>
+                    { options?.map((option: DropDownItemInterface, index: number) => (
+                        <MenuItem
+                            data-componentid={ `${componentId}-input-${index}` }
+                            key={ option.value }
+                            value={ option.value }
+                        >
                             { option.text }
                         </MenuItem>
                     )) }
                 </Select>
-                { isError && <FormHelperText error>{ meta.error || meta.submitError }</FormHelperText> }
-                { helperText && <FormHelperText>{ helperText }</FormHelperText> }
+                { isError && (
+                    <FormHelperText data-componentid={ `${componentId}-error` } error>
+                        { meta.error || meta.submitError }
+                    </FormHelperText>
+                ) }
+                { helperText && (
+                    <FormHelperText data-componentid={ `${componentId}-helper-text` }>{ helperText }</FormHelperText>
+                ) }
             </FormControl>
         </div>
     );

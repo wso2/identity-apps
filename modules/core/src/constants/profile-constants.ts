@@ -107,7 +107,9 @@ export class ProfileConstants {
         .set("EMAIL_VERIFIED", "emailVerified")
         .set("PHONE_VERIFIED", "phoneVerified")
         .set("VERIFY_EMAIL", "verifyEmail")
-        .set("VERIFY_MOBILE", "verifyMobile");
+        .set("VERIFY_MOBILE", "verifyMobile")
+        .set("PENDING_MOBILE", "pendingMobileNumber")
+        .set("PENDING_EMAILS", "pendingEmails");
 
     /**
      * States if the SCIM schema is mutable.
