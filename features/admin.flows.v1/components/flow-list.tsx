@@ -33,8 +33,6 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
-// import useNewRegistrationPortalFeatureStatus from
-//     "@wso2is/admin.registration-flow-builder.v1/api/use-new-registration-portal-feature-status";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -44,6 +42,7 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import updateFlowConfig, { FlowConfigInterface } from "../api/update-flow-config";
+import useGetFlowConfigs from "../api/use-get-flow-configs";
 import flowData from "../data/flows.json";
 import { FlowListItemInterface, FlowTypes } from "../models/flows";
 import "./flow-list.scss";
@@ -68,19 +67,40 @@ const FlowList: FunctionComponent<FlowListProps> = ({
 
     const dispatch: Dispatch = useDispatch();
 
-    // const {
-    //     data: isNewRegistrationPortalEnabled,
-    //     mutate: refetchNewRegistrationPortalStatus
-    // } = useNewRegistrationPortalFeatureStatus();
-
     const [registrationFlowEnabled, setRegistrationFlowEnabled] = useState<boolean>(false);
     const [passwordRecoveryFlowEnabled, setPasswordRecoveryFlowEnabled] = useState<boolean>(false);
     const [inviteUserFlowEnabled, setInviteUserFlowEnabled] = useState<boolean>(false);
 
-    // useEffect(() => {
-    //     setRegistrationFlowEnabled(isNewRegistrationPortalEnabled);
-    // }, [isNewRegistrationPortalEnabled]);
+    const { data: flowConfigs, mutate: mutateFlowConfigs } = useGetFlowConfigs();
 
+    useEffect(() => {
+        if (!flowConfigs) {
+            return;
+        }
+
+        flowConfigs.forEach((config) => {
+            switch (config.flowType) {
+                case FlowTypes.REGISTRATION:
+                    setRegistrationFlowEnabled(config.isEnabled);
+                    break;
+                case FlowTypes.PASSWORD_RECOVERY:
+                    setPasswordRecoveryFlowEnabled(config.isEnabled);
+                    break;
+                case "INVITED_USER_REGISTRATION":
+                case FlowTypes.INVITE_USER_PASSWORD_SETUP:
+                    setInviteUserFlowEnabled(config.isEnabled);
+                    break;
+                default:
+                    break;
+            }
+        });
+    }, [ flowConfigs ]);
+
+    /**
+     * Resolves the icon based on the flow type.
+     * @param flowType - The type of the flow.
+     * @returns The icon element for the flow type.
+     */
     const resolveFlowTypeIcon = (flowType: string): ReactElement => {
         switch (flowType) {
             case FlowTypes.REGISTRATION:
@@ -204,12 +224,9 @@ const FlowList: FunctionComponent<FlowListProps> = ({
             };
 
             await updateFlowConfig(payload);
-
             setState(!currentState);
-
             handleUpdateSuccess(flowType, !currentState);
-
-            // await refetchNewRegistrationPortalStatus();
+            await mutateFlowConfigs();
         } catch (error) {
             handleFlowStatusUpdateError(flowType, error);
         }

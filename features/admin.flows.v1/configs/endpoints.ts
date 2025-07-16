@@ -10,6 +10,7 @@ export const getFlowsResourceEndpoints = (
     serverHost: string
 ): FlowsResourceEndpointsInterface => {
     return {
-        flowConfiguration: `${ serverHost }/api/server/v1/flow/config`
+        flowConfiguration: `${ serverHost }/api/server/v1/flow/config`,
+        flowConfigurations: `${ serverHost }/api/server/v1/flow/configs`
     };
 };
