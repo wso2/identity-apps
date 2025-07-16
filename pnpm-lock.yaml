@@ -513,7 +513,7 @@ importers:
         specifier: ^2.26.2
         version: link:../../features/admin.api-resources.v2
       '@wso2is/admin.application-templates.v1':
-        specifier: ^1.5.5
+        specifier: ^1.5.6
         version: link:../../features/admin.application-templates.v1
       '@wso2is/admin.applications.v1':
         specifier: ^2.36.7
@@ -546,7 +546,7 @@ importers:
         specifier: ^2.25.212
         version: link:../../features/admin.console-settings.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.10
+        specifier: ^2.46.11
         version: link:../../features/admin.core.v1
       '@wso2is/admin.email-and-sms.v1':
         specifier: ^2.25.204
@@ -648,7 +648,7 @@ importers:
         specifier: ^1.5.204
         version: link:../../features/admin.username-validation.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.33.6
+        specifier: ^2.33.7
         version: link:../../features/admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.36
@@ -2024,7 +2024,7 @@ importers:
         specifier: ^2.26.2
         version: link:../admin.api-resources.v2
       '@wso2is/admin.application-templates.v1':
-        specifier: ^1.4.203
+        specifier: ^1.5.6
         version: link:../admin.application-templates.v1
       '@wso2is/admin.applications.v1':
         specifier: workspace:^
@@ -2045,7 +2045,7 @@ importers:
         specifier: ^2.25.203
         version: link:../admin.console-settings.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.7
+        specifier: ^2.46.11
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.39.7
@@ -2776,7 +2776,7 @@ importers:
         specifier: ^2.36.2
         version: link:../admin.applications.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.3
+        specifier: ^2.46.11
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.7.2
@@ -6320,7 +6320,7 @@ importers:
         specifier: ^2.26.2
         version: link:../admin.api-resources.v2
       '@wso2is/admin.application-templates.v1':
-        specifier: ^1.5.4
+        specifier: ^1.5.6
         version: link:../admin.application-templates.v1
       '@wso2is/admin.applications.v1':
         specifier: ^2.36.7
@@ -6452,7 +6452,7 @@ importers:
         specifier: ^2.29.14
         version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.33.6
+        specifier: ^2.33.7
         version: link:../admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.36
@@ -19193,7 +19193,7 @@ importers:
         specifier: ^2.28.4
         version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.6
+        specifier: ^2.46.11
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.38.2
@@ -19220,7 +19220,7 @@ importers:
         specifier: ^2.29.14
         version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.33.6
+        specifier: ^2.33.7
         version: 'link:'
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.35

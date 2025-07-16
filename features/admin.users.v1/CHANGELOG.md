@@ -1,5 +1,15 @@
 # @wso2is/admin.users.v1
 
+## 2.33.7
+
+### Patch Changes
+
+- [#8542](https://github.com/wso2/identity-apps/pull/8542) [`b5579f329ca3b0fa59d2f67a94378306c4ae0ca2`](https://github.com/wso2/identity-apps/commit/b5579f329ca3b0fa59d2f67a94378306c4ae0ca2) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issue with sub org user profile
+
+- Updated dependencies [[`b5579f329ca3b0fa59d2f67a94378306c4ae0ca2`](https://github.com/wso2/identity-apps/commit/b5579f329ca3b0fa59d2f67a94378306c4ae0ca2)]:
+  - @wso2is/admin.users.v1@2.33.7
+  - @wso2is/admin.core.v1@2.46.11
+
 ## 2.33.6
 
 ### Patch Changes

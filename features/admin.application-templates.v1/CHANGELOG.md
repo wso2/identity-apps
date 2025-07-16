@@ -1,5 +1,14 @@
 # @wso2is/admin.application-templates.v1
 
+## 1.5.6
+
+### Patch Changes
+
+- [#8544](https://github.com/wso2/identity-apps/pull/8544) [`411a23ec32efb3957d59ec1cc3fad8500a7a1a95`](https://github.com/wso2/identity-apps/commit/411a23ec32efb3957d59ec1cc3fad8500a7a1a95) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Update Application Markdown guide to include docSiteURL in application templates quick start guide
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.46.11
+
 ## 1.5.5
 
 ### Patch Changes
