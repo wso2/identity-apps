@@ -1316,6 +1316,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         setIsUpdating={ (isUpdating: boolean): void => setIsSubmitting(isUpdating) }
                         onUserUpdate={ handleUserUpdate }
                         accountConfigSettings={ configSettings }
+                        isUserManagedByParentOrg={ isUserManagedByParentOrg }
                         data-componentid={ testId }
                     />
                 </EmphasizedSegment>
