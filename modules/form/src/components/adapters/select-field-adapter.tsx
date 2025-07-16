@@ -90,6 +90,7 @@ const SelectFieldAdapter: FunctionComponent<SelectFieldAdapterPropsInterface> = 
         required,
         options,
         isClearable = false,
+        readOnly = false,
         "data-componentid": componentId = "select-field-adapter",
         ...rest
     } = props;
@@ -117,6 +118,7 @@ const SelectFieldAdapter: FunctionComponent<SelectFieldAdapterPropsInterface> = 
                 variant="outlined"
                 margin="dense"
                 fullWidth={ fullWidth }
+                disabled={ readOnly }
                 { ...FormControlProps }
             >
                 <InputLabel shrink={ false } data-componentid={ `${componentId}-placeholder` } disabled>

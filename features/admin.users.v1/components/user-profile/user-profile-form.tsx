@@ -18,6 +18,7 @@
 
 import Button from "@oxygen-ui/react/Button";
 import Grid from "@oxygen-ui/react/Grid";
+import TextField from "@oxygen-ui/react/TextField";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import {
@@ -45,6 +46,7 @@ import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import set from "lodash-es/set";
 import transform from "lodash-es/transform";
+import moment from "moment";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -135,6 +137,10 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
         attributeDialectsFeatureConfig,
         ClaimManagementConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG
     );
+
+    const oneTimePassword: string = profileData[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.oneTimePassword;
+    const createdDate: string = profileData?.meta?.created;
+    const modifiedDate: string = profileData?.meta?.lastModified;
 
     /**
      * Flatten the profile schemas and sort them based on the display order.
@@ -850,6 +856,65 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                                         </Grid>
                                     );
                                 })
+                            }
+
+                            {
+                                oneTimePassword && (
+                                    <Grid xs={ 12 }>
+                                        <TextField
+                                            defaultValue={ oneTimePassword }
+                                            label={ t("user:profile.fields.oneTimePassword") }
+                                            name="oneTimePassword"
+                                            type="text"
+                                            InputProps={ {
+                                                readOnly: true
+                                            } }
+                                            data-testid={ `${ componentId }-profile-form-one-time-pw-input` }
+                                            data-componentid={ `${ componentId }-profile-form-one-time-pw-input` }
+                                            margin="dense"
+                                            fullWidth
+                                        />
+                                    </Grid>
+                                )
+                            }
+
+                            {
+                                createdDate && (
+                                    <Grid xs={ 12 }>
+                                        <TextField
+                                            defaultValue={ createdDate ? moment(createdDate).format("YYYY-MM-DD") : "" }
+                                            label={ t("user:profile.fields.createdDate") }
+                                            name="createdDate"
+                                            type="text"
+                                            InputProps={ {
+                                                readOnly: true
+                                            } }
+                                            data-componentid={ `${ componentId }-profile-form-created-date-input` }
+                                            margin="dense"
+                                            fullWidth
+                                        />
+                                    </Grid>
+                                )
+                            }
+
+                            {
+                                modifiedDate && (
+                                    <Grid xs={ 12 }>
+                                        <TextField
+                                            defaultValue={ modifiedDate
+                                                ? moment(modifiedDate).format("YYYY-MM-DD") : "" }
+                                            label={ t("user:profile.fields.modifiedDate") }
+                                            name="modifiedDate"
+                                            type="text"
+                                            InputProps={ {
+                                                readOnly: true
+                                            } }
+                                            data-componentid={ `${ componentId }-profile-form-modified-date-input` }
+                                            margin="dense"
+                                            fullWidth
+                                        />
+                                    </Grid>
+                                )
                             }
 
                             { !isReadOnlyMode && (

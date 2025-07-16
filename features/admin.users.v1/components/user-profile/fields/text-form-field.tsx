@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ProfileConstants } from "@wso2is/core/constants";
 import { FinalFormField, TextFieldAdapter } from "@wso2is/form";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
@@ -36,16 +37,27 @@ const TextFormField: FunctionComponent<TextFormFieldPropsInterface> = (
         validator,
         placeholder,
         type,
-        ["data-componentid"]: componentId = "component-id"
+        ["data-componentid"]: componentId = "text-form-field"
     }: TextFormFieldPropsInterface
 ): ReactElement => {
     const { t } = useTranslation();
+
+    let fieldValue: string = initialValue;
+
+    // Separate out the user store domain from the username.
+    if (fieldName === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")) {
+        const usernameParts: string[] = fieldValue?.split("/") ?? [];
+
+        if (usernameParts.length > 1) {
+            fieldValue = usernameParts[1];
+        }
+    }
 
     return (
         <FinalFormField
             component={ TextFieldAdapter }
             data-componentid={ componentId }
-            initialValue={ initialValue }
+            initialValue={ fieldValue }
             ariaLabel={ fieldLabel }
             name={ fieldName }
             type={ type ?? "text" }

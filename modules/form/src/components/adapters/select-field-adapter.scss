@@ -20,4 +20,8 @@
     .end-adornment {
         margin-right: 10px;
     }
+
+    .MuiInputBase-root.Mui-disabled {
+        background-color: var(--oxygen-palette-ReadOnlyInput-bg);
+    }
 }
