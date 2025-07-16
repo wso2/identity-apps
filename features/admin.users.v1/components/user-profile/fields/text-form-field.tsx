@@ -36,7 +36,7 @@ const TextFormField: FunctionComponent<TextFormFieldPropsInterface> = (
         maxLength,
         validator,
         placeholder,
-        type,
+        type = "text",
         ["data-componentid"]: componentId = "text-form-field"
     }: TextFormFieldPropsInterface
 ): ReactElement => {
@@ -60,7 +60,7 @@ const TextFormField: FunctionComponent<TextFormFieldPropsInterface> = (
             initialValue={ fieldValue }
             ariaLabel={ fieldLabel }
             name={ fieldName }
-            type={ type ?? "text" }
+            type={ type }
             label={ fieldLabel }
             placeholder={ placeholder || t("user:profile.forms.generic.inputs.placeholder",
                 { fieldName: fieldLabel })

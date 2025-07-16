@@ -671,6 +671,27 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                         [fieldName]: patchValue
                     } as unknown as PatchUserOperationValue
                 });
+            } else if (fieldName.startsWith(`${ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ADDRESSES")}#`)) {
+                // Handles address schema names like
+                // "addresses#home.streetAddress", "addresses#work.streetAddress", etc.
+                // These need to be converted to "addresses": [ { type: "home", streetAddress: "123 Main St" } ]
+                const fieldNameParts: string[] = fieldName.split("#");
+
+                for (const [ key, value ] of Object.entries(dirtyTree as Record<string, boolean>)) {
+                    if (value === true) {
+                        const updatedValue: string = get(values, `${fieldName}.${key}`, "") as string;
+
+                        data.Operations.push({
+                            op: "add",
+                            value: {
+                                [fieldNameParts[0]]: [ {
+                                    [key]: updatedValue,
+                                    type: fieldNameParts[1]
+                                } ]
+                            } as unknown as PatchUserOperationValue
+                        });
+                    }
+                }
             } else {
                 const isExtendedSchema: boolean = (profileData.schemas as string[]).includes(fieldName);
                 let decodedFieldName: string = fieldName;
