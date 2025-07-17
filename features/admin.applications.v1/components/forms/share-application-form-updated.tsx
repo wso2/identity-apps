@@ -605,7 +605,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 organizations: addedOrgIds.map((orgId: string) => {
                     return {
                         orgId: orgId,
-                        policy: ApplicationSharingPolicy.SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN,
+                        policy: ApplicationSharingPolicy.SELECTED_ORG_ONLY,
                         roleSharing: {
                             mode: RoleSharingModes.ALL,
                             roles: []
