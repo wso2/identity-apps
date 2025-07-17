@@ -19,6 +19,7 @@
 import Alert from "@oxygen-ui/react/Alert";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { getAllExternalClaims } from "@wso2is/admin.claims.v1/api/claims";
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
