@@ -25,7 +25,9 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { AGENT_USERSTORE_ID } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, ClaimDialect, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -83,6 +85,10 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
     const isAgentsFeatureEnabled: boolean = featureConfig?.agents?.enabled;
 
     const { filterUserStores, userStoresList, mutateUserStoreList } = useUserStores();
+
+    const isAgentManagementEnabledForOrg: boolean = useMemo((): boolean => {
+        return userStoresList?.some((userStore: UserStoreListItem) => userStore.id === AGENT_USERSTORE_ID);
+    }, [ userStoresList ]);
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
     const [ addEditClaim, setAddEditClaim ] = useState(false);
@@ -770,7 +776,9 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                             )) }
                             { isLoading ? (
                                 renderSegmentPlaceholder()
-                            ) : ( isAgentsFeatureEnabled && agentSchemaAttributeMappings?.length > 0 && (
+                            ) : ( isAgentsFeatureEnabled &&
+                                isAgentManagementEnabledForOrg &&
+                                agentSchemaAttributeMappings?.length > 0 && (
                                 <EmphasizedSegment
                                     className="clickable"
                                     data-testid={ `${ testId }-oidc-dialect-container` }

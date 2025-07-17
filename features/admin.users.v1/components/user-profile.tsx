@@ -18,7 +18,6 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
-import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
@@ -174,12 +173,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const profileSchemas: ProfileSchemaInterface[] =
-        useSelector((state: AppState) => state.profile.profileSchemas?.filter(
-            (schema: ProfileSchemaInterface) =>
-                !ClaimManagementConstants.AGENT_SCIM_SCHEMA_MAPPING.includes(schema.schemaId)
-        ));
-
+    const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
     const currentOrganization: string =  useSelector((state: AppState) => state?.config?.deployment?.tenant);
