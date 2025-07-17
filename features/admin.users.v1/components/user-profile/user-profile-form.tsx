@@ -21,10 +21,7 @@ import Grid from "@oxygen-ui/react/Grid";
 import TextField from "@oxygen-ui/react/TextField";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import {
-    SCIMConfigs as SCIMExtensionConfigs,
-    commonConfig as commonExtensionConfig
-} from "@wso2is/admin.extensions.v1";
+import { commonConfig as commonExtensionConfig } from "@wso2is/admin.extensions.v1";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
@@ -768,22 +765,22 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
             return false;
         }
 
-        if (schema.schemaUri === SCIMExtensionConfigs.scimUserSchema.emails &&
+        if (schema.schemaUri === ProfileConstants.SCIM2_CORE_USER_SCHEMA_ATTRIBUTES.emails &&
             !commonExtensionConfig?.userEditSection?.showEmail) {
             return false;
         }
 
         if (
-            (schema.schemaUri === SCIMExtensionConfigs.scimSystemSchema.emailAddresses ||
-                schema.schemaUri === SCIMExtensionConfigs.scimSystemSchema.mobileNumbers) &&
+            (schema.schemaUri === ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA_ATTRIBUTES.emailAddresses ||
+                schema.schemaUri === ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA_ATTRIBUTES.mobileNumbers) &&
             !isMultipleEmailAndMobileNumberEnabled
         ) {
             return false;
         }
 
         if (
-            (schema.schemaUri === SCIMExtensionConfigs.scimUserSchema.emails ||
-                schema.schemaUri === SCIMExtensionConfigs.scimUserSchema.phoneNumbersMobile) &&
+            (schema.schemaUri === ProfileConstants.SCIM2_CORE_USER_SCHEMA_ATTRIBUTES.emails ||
+                schema.schemaUri === ProfileConstants.SCIM2_CORE_USER_SCHEMA_ATTRIBUTES.mobile) &&
             isMultipleEmailAndMobileNumberEnabled
         ) {
             return false;

@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { SCIMConfigs as SCIMExtensionConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { ProfileConstants } from "@wso2is/core/constants";
 import {
     ClaimInputFormat,
@@ -157,7 +156,7 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
     /**
      * Render multi-valued email addresses field.
      */
-    if (schema.schemaUri === SCIMExtensionConfigs.scimSystemSchema.emailAddresses) {
+    if (schema.schemaUri === ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA_ATTRIBUTES.emailAddresses) {
         const primarySchema: ProfileSchemaInterface = flattenedProfileSchema.find(
             (profileSchema: ProfileSchemaInterface) => {
                 return profileSchema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
@@ -195,7 +194,7 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
     /**
      * Render multi-valued mobile numbers field.
      */
-    if (schema.schemaUri === SCIMExtensionConfigs.scimSystemSchema.mobileNumbers) {
+    if (schema.schemaUri === ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA_ATTRIBUTES.mobileNumbers) {
         const primarySchema: ProfileSchemaInterface = flattenedProfileSchema.find(
             (profileSchema: ProfileSchemaInterface) => {
                 return profileSchema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE");
@@ -230,7 +229,7 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
     /**
      * Render single-valued email address field.
      */
-    if (schema.schemaUri === SCIMExtensionConfigs.scimUserSchema.emails) {
+    if (schema.schemaUri === ProfileConstants.SCIM2_CORE_USER_SCHEMA_ATTRIBUTES.emails) {
         const emailField: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
         const pendingEmailsField: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PENDING_EMAILS");
         const pendingEmail: string = (
@@ -257,7 +256,7 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
     /**
      * Render single-valued mobile number field.
      */
-    if (schema.schemaUri === SCIMExtensionConfigs.scimUserSchema.phoneNumbersMobile) {
+    if (schema.schemaUri === ProfileConstants.SCIM2_CORE_USER_SCHEMA_ATTRIBUTES.mobile) {
         const mobileField: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE");
         const pendingMobileField: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PENDING_MOBILE");
         const pendingMobile: string = (
@@ -283,7 +282,7 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
     /**
      * Render country field. Specially handled to load and render country list.
      */
-    if (schema.schemaUri === SCIMExtensionConfigs.scimSystemSchema.country) {
+    if (schema.schemaUri === ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA_ATTRIBUTES.country) {
         return (
             <CountryField
                 schema={ schema }
