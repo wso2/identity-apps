@@ -18,6 +18,9 @@
 import { flowsNS } from "../../../models";
 
 export const flows: flowsNS = {
+    askPassword: {
+        breadcrumb: "Edit Invite User Password Flow"
+    },
     core: {
         elements: {
             richText: {

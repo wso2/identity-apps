@@ -38,7 +38,7 @@ import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterfa
 import { addAlert } from "@wso2is/core/store";
 import { GenericIcon } from "@wso2is/react-components";
 import classNames from "classnames";
-import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import updateFlowConfig, { FlowConfigInterface } from "../api/update-flow-config";
@@ -67,37 +67,7 @@ const FlowList: FunctionComponent<FlowListProps> = ({
 
     const dispatch: Dispatch = useDispatch();
 
-    const [ registrationFlowEnabled, setRegistrationFlowEnabled ] = useState<boolean>(false);
-    const [ passwordRecoveryFlowEnabled, setPasswordRecoveryFlowEnabled ] = useState<boolean>(false);
-    const [ inviteUserFlowEnabled, setInviteUserFlowEnabled ] = useState<boolean>(false);
-
     const { data: flowConfigs, mutate: mutateFlowConfigs } = useGetFlowConfigs();
-
-    useEffect(() => {
-        if (!flowConfigs) {
-            return;
-        }
-
-        flowConfigs.forEach((config: any) => {
-            switch (config.flowType) {
-                case FlowTypes.REGISTRATION:
-                    setRegistrationFlowEnabled(config.isEnabled);
-
-                    break;
-                case FlowTypes.PASSWORD_RECOVERY:
-                    setPasswordRecoveryFlowEnabled(config.isEnabled);
-
-                    break;
-                case "INVITED_USER_REGISTRATION":
-                case FlowTypes.INVITE_USER_PASSWORD_SETUP:
-                    setInviteUserFlowEnabled(config.isEnabled);
-
-                    break;
-                default:
-                    break;
-            }
-        });
-    }, [ flowConfigs ]);
 
     /**
      * Resolves the icon based on the flow type.
@@ -110,7 +80,7 @@ const FlowList: FunctionComponent<FlowListProps> = ({
                 return <UserPlusIcon size="small" className="icon" />;
             case FlowTypes.PASSWORD_RECOVERY:
                 return <UserFlowIcon size="small" className="icon" />;
-            case FlowTypes.INVITE_USER_PASSWORD_SETUP:
+            case FlowTypes.INVITED_USER_REGISTRATION:
                 return <UserAsteriskIcon size="small" className="icon" />;
             default:
                 return <UserKeyIcon size="small" className="icon" />;
@@ -123,7 +93,7 @@ const FlowList: FunctionComponent<FlowListProps> = ({
                 return "Registration";
             case FlowTypes.PASSWORD_RECOVERY:
                 return "Password Recovery";
-            case FlowTypes.INVITE_USER_PASSWORD_SETUP:
+            case FlowTypes.INVITED_USER_REGISTRATION:
                 return "Invite User Password Setup";
             default:
                 return "Unknown Flow Type";
@@ -153,16 +123,10 @@ const FlowList: FunctionComponent<FlowListProps> = ({
     };
 
     const resolveFlowTypeStatus = (flowType: string): boolean => {
-        switch (flowType) {
-            case FlowTypes.REGISTRATION:
-                return registrationFlowEnabled;
-            case FlowTypes.PASSWORD_RECOVERY:
-                return passwordRecoveryFlowEnabled;
-            case FlowTypes.INVITE_USER_PASSWORD_SETUP:
-                return inviteUserFlowEnabled;
-            default:
-                return false;
-        }
+
+        const config: any = flowConfigs?.find((conf: any) => conf.flowType === flowType);
+
+        return config?.isEnabled ?? false;
     };
 
     const resolveFlowTypeStatusLabel = (flowType: string): ReactElement => {
@@ -196,41 +160,15 @@ const FlowList: FunctionComponent<FlowListProps> = ({
     ): Promise<void> => {
         e.stopPropagation();
 
-        let apiFlowType: any = flowType;
-        let currentState: any = false;
-        let setState: (value: boolean) => void = () => {};
-
-        switch (flowType) {
-            case FlowTypes.REGISTRATION:
-                apiFlowType = FlowTypes.REGISTRATION;
-                currentState = registrationFlowEnabled;
-                setState = setRegistrationFlowEnabled;
-
-                break;
-            case FlowTypes.PASSWORD_RECOVERY:
-                apiFlowType = FlowTypes.PASSWORD_RECOVERY;
-                currentState = passwordRecoveryFlowEnabled;
-                setState = setPasswordRecoveryFlowEnabled;
-
-                break;
-            case FlowTypes.INVITE_USER_PASSWORD_SETUP:
-                apiFlowType = "INVITED_USER_REGISTRATION";
-                currentState = inviteUserFlowEnabled;
-                setState = setInviteUserFlowEnabled;
-
-                break;
-            default:
-                return;
-        }
+        const currentState: boolean = resolveFlowTypeStatus(flowType);
 
         try {
             const payload: FlowConfigInterface = {
-                flowType: apiFlowType,
+                flowType,
                 isEnabled: !currentState
             };
 
             await updateFlowConfig(payload);
-            setState(!currentState);
             handleUpdateSuccess(flowType, !currentState);
             await mutateFlowConfigs();
         } catch (error) {

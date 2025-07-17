@@ -16,7 +16,6 @@
  * under the License.
  */
 
-
 /**
  * Interface for the Flows management feature resource endpoints.
  */
