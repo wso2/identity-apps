@@ -133,7 +133,8 @@ export class ClaimManagementConstants {
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_ENT_USER"),
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM_SCHEMAS_CORE"),
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP"),
-        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_SYSTEM")
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_SYSTEM"),
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_FOR_AGENTS")
     ];
 
     public static readonly CUSTOM_MAPPING: string = SCIMConfigs.custom;
@@ -234,6 +235,8 @@ export class ClaimManagementConstants {
 
     public static readonly SYSTEM_CLAIM_PROPERTY_NAME: string = "isSystemClaim";
 
+    public static readonly AGENT_CLAIM_PROPERTY_NAME: string = "isAgentClaim";
+
     /**
      * Claim property name for uniqueness validation scope.
      */
@@ -247,7 +250,7 @@ export class ClaimManagementConstants {
     /**
      * List of restricted property keys that cannot be used in claim properties.
      */
-    public static readonly RESTRICTED_PROPERTY_KEYS: string[] = [ "isUnique" ];
+    public static readonly RESTRICTED_PROPERTY_KEYS: string[] = [ "isUnique", "isAgentClaim" ];
 
     /**
      * The error code that is returned when there is no item in the list

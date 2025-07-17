@@ -36,4 +36,7 @@ export interface flowsNS {
     passwordRecovery: {
         name: string;
     };
+    askPassword: {
+        breadcrumb: string;
+    };
 }

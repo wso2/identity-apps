@@ -15,24 +15,5 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-export interface AddAgentInterface {
-    id?: string;
-    name: string;
-    description: string;
-    version: string;
-    url?: string;
-    owner?: string;
-}
-export interface AgentSchema {
-    Url?: string;
-    Description?: string;
-    DisplayName?: string;
-    [key: string]: any;
-}
 
-export interface AgentScimSchema {
-    id?: string;
-    userName?: string;
-    password?: string;
-    "urn:scim:wso2:agent:schema"?: AgentSchema;
-}
+export * from "./endpoints";

@@ -22,54 +22,46 @@ import useRequest, {
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
-import { UserListInterface } from "@wso2is/admin.users.v1/models/user";
 import { HttpMethods } from "@wso2is/core/models";
 
+export interface FlowConfigsResponseItemInterface {
+    flowType: string;
+    isEnabled: boolean;
+    isAutoLoginEnabled?: boolean;
+}
+
+export type FlowConfigsResponseInterface = FlowConfigsResponseItemInterface[];
+
 /**
- * Hook to get the users list with limit and offset.
+ * Hook to fetch the flow configurations.
  *
- * @param count - The number of users to be returned.
- * @param startIndex - The index of the first user to be returned.
- * @param filter - The filter to be applied to the users.
- * @param attributes - The attributes to be returned.
- * @returns `RequestResultInterface<Data, Error>`
+ * @param shouldFetch - Should fetch data from the API.
+ * @returns Flow configuration list response.
  */
-export const useGetAgents = (
-    count: number,
-    startIndex: number,
-    filter: string,
-    attributes: string,
+const useGetFlowConfigs = <Data = FlowConfigsResponseInterface, Error = RequestErrorInterface>(
     shouldFetch: boolean = true
-): RequestResultInterface<UserListInterface, RequestErrorInterface> => {
+): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
+            Accept: "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        params: {
-            attributes,
-            count,
-            domain: "AGENT",
-            excludedAttributes: "roles,groups",
-            filter,
-            startIndex
-        },
-        url: store.getState().config.endpoints.agents
+        url: store.getState().config.endpoints.flowConfigurations
     };
 
-    const {
-        data,
-        error,
-        isLoading,
-        isValidating,
-        mutate
-    } = useRequest<UserListInterface, RequestErrorInterface>(shouldFetch ? requestConfig : null);
+    const { data, error, isLoading, isValidating, mutate, response } = useRequest<Data, Error>(
+        shouldFetch ? requestConfig : null
+    );
 
     return {
         data,
         error,
         isLoading,
         isValidating,
-        mutate: mutate
+        mutate,
+        response
     };
 };
+
+export default useGetFlowConfigs;

@@ -19,21 +19,49 @@
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
-import React, { useState } from "react";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { AGENT_USERSTORE_ID } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { DocumentationLink, EmphasizedSegment, EmptyPlaceholder,
+    ListLayout, PageLayout, PrimaryButton, useDocumentation } from "@wso2is/react-components";
+import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
 import AgentList from "../components/agent-list";
+import { AgentSecretShowModal } from "../components/edit/agent-secret-show-modal";
 import AddAgentWizard from "../components/wizards/add-agent-wizard";
 import { useGetAgents } from "../hooks/use-get-agents";
+import "./agents.scss";
 
 type AgentPageProps = IdentifiableComponentInterface;
 
 export default function Agents ({
     "data-componentid": componentId
 }: AgentPageProps) {
+    const [ newAgent, setNewAgent ] = useState<any>(null);
+
+    const dispatch: Dispatch = useDispatch();
+
+    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
+
     const [ isAddAgentWizardOpen,setIsAddAgentWizardOpen ] = useState(false);
+    const [ isAgentCredentialWizardOpen, setIsAgentCredentialWizardOpen ] = useState(false);
+
+    const { getLink } = useDocumentation();
+
+    const {
+        isLoading: isUserStoresListFetchRequestLoading,
+        userStoresList
+    } = useUserStores();
+
+    const isAgentManagementEnabledForOrg: boolean = useMemo((): boolean => {
+        return userStoresList?.some((userStore: UserStoreListItem) => userStore.id === AGENT_USERSTORE_ID);
+    }, [ userStoresList ]);
 
     const { t } = useTranslation();
 
@@ -41,7 +69,6 @@ export default function Agents ({
         attributes: "",
         count: 10,
         domain: "AGENT",
-        excludedAttributes: "roles,groups",
         filter: "",
         startIndex: 1
     };
@@ -55,16 +82,26 @@ export default function Agents ({
         agentListMetaData.startIndex,
         agentListMetaData.filter === "" ? null : agentListMetaData.filter,
         agentListMetaData.attributes === "" ? null : agentListMetaData.attributes,
-        "AGENT",
-        agentListMetaData.excludedAttributes,
-        true
+        isAgentManagementEnabledForOrg
     );
 
     return (
         <PageLayout
             pageTitle={ t("agents:title") }
             title={ t("agents:pageTitle") }
-            description={ t("agents:description") }
+            description={
+                (<>
+                    { t("agents:description") }
+                    <DocumentationLink
+                        link={
+                            getLink("develop.agents.learnMore")
+                        }
+                        showEmptyLink={ false }
+                    >
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </>)
+            }
             data-componentid={ `${componentId}-page-layout` }
             bottomMargin={ false }
             contentTopMargin={ true }
@@ -74,10 +111,26 @@ export default function Agents ({
                     setIsAddAgentWizardOpen(true);
                 } }>
                 <Icon name="add" />
-                New Agent
+                { t("agents:new.action.title") }
             </PrimaryButton>) }
         >
-            <ListLayout
+
+            { !isUserStoresListFetchRequestLoading && !isAgentManagementEnabledForOrg ? (
+                <EmphasizedSegment className="agent-feature-unavailable-notice">
+                    <EmptyPlaceholder
+                        action={ null }
+                        image={ null }
+                        imageSize="tiny"
+                        subtitle={ [
+                            isSAASDeployment
+                                ? t("agents:list.featureUnavailable.subtitle.0.saas")
+                                : t("agents:list.featureUnavailable.subtitle.0.onprem"),
+                            t("agents:list.featureUnavailable.subtitle.1")
+                        ] }
+                        title={ t("agents:list.featureUnavailable.title") }
+                    />
+                </EmphasizedSegment>
+            ) :             (<ListLayout
                 advancedSearch={ (
                     <AdvancedSearchWithBasicFilters
                         onFilter={ () => {} }
@@ -182,19 +235,42 @@ export default function Agents ({
                         setIsAddAgentWizardOpen(true);
                     } }
                 />
-            </ListLayout>
+            </ListLayout>) }
 
             <AddAgentWizard
                 isOpen={ isAddAgentWizardOpen }
-                onClose={ (newAgentId: string) => {
+                onClose={ (newCreatedAgent: any) => {
+                    if (newCreatedAgent) {
+                        setNewAgent(newCreatedAgent);
+                        setIsAgentCredentialWizardOpen(true);
+                    }
+
                     setIsAddAgentWizardOpen(false);
-                    if (newAgentId) {
+                } }
+            />
+
+            <AgentSecretShowModal
+                title={ t("agents:new.title") }
+                agentId={ newAgent?.id }
+                agentSecret={ newAgent?.password }
+                isOpen={ isAgentCredentialWizardOpen }
+                onClose={ () => {
+                    dispatch(
+                        addAlert({
+                            description: t("agents:new.alerts.success.description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t("agents:new.alerts.success.message")
+                        })
+                    );
+                    if (newAgent?.id) {
                         history.push(
-                            AppConstants.getPaths().get("AGENT_EDIT").replace(":id", newAgentId )
+                            AppConstants.getPaths().get("AGENT_EDIT").replace(":id", newAgent?.id )
                         );
                     }
                 } }
+
             />
+
         </PageLayout>
     );
 }

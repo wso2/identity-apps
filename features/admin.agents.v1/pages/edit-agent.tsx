@@ -100,7 +100,7 @@ export default function EditAgent({
 
     useEffect(() => {
         const fetchOwnerDisplayName = async () => {
-            const [ agentOwnerUserId ] = agentInfo["urn:scim:wso2:agent:schema"]?.agentOwner?.split("@") || [];
+            const [ agentOwnerUserId ] = agentInfo["urn:scim:wso2:agent:schema"]?.Owner?.split("@") || [];
 
             if (!agentOwnerUserId) {
                 setAgentOwnerDisplayName("");
@@ -108,12 +108,12 @@ export default function EditAgent({
                 return;
             }
 
-            const userInfo: any = await getUserDetails(agentOwnerUserId, null);
+            const userInfo: any = await getUserDetails(agentOwnerUserId, "userName");
 
             setAgentOwnerDisplayName(userInfo?.userName);
         };
 
-        if (agentInfo?.["urn:scim:wso2:agent:schema"]?.agentOwner) {
+        if (agentInfo?.["urn:scim:wso2:agent:schema"]?.Owner) {
             fetchOwnerDisplayName();
         }
     }, [ agentInfo ]);
@@ -125,9 +125,9 @@ export default function EditAgent({
     return (
         <TabPageLayout
             pageTitle="Edit agent"
-            title={ agentInfo?.["urn:scim:wso2:agent:schema"]?.agentDisplayName }
+            title={ agentInfo?.["urn:scim:wso2:agent:schema"]?.DisplayName }
             description={ (<>
-                Created by <strong>{ agentOwnerDisplayName }</strong>
+                <p>Created by <strong>{ agentOwnerDisplayName }</strong></p>
             </>) }
             isLoading={ isAgentInfoLoading }
             backButton={ {
@@ -137,18 +137,13 @@ export default function EditAgent({
             } }
             image={ (
                 <AnimatedAvatar
-                    name={ agentInfo?.["urn:scim:wso2:agent:schema"]?.agentDisplayName }
+                    name={ agentInfo?.["urn:scim:wso2:agent:schema"]?.DisplayName }
                     size="tiny"
                     floated="left"
                 />
             ) }
         >
-
-            <ResourceTab
-                panes={ renderedTabPanes }
-            >
-
-            </ResourceTab>
+            <ResourceTab panes={ renderedTabPanes } />
         </TabPageLayout>
 
     );

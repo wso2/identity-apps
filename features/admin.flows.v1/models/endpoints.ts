@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,11 +16,18 @@
  * under the License.
  */
 
- // TODO: Remove `.add-tenant-modal-content` part once composition issue on Oxygen is fixed.
- .add-tenant-modal-content.OxygenDialogContent-root {
-    padding: var(--oxygen-spacing-3) var(--oxygen-spacing-4);
-}
-
-.add-tenant-modal-actions {
-    width: 100%;
+/**
+ * Interface for the Flows management feature resource endpoints.
+ */
+export interface FlowsResourceEndpointsInterface {
+    /**
+     * API to update the flow configuration.
+     * @example `https://{serverUrl}/t/{tenantDomain}/api/server/v1/flow/config`
+     */
+    flowConfiguration: string;
+    /**
+     * API to fetch the flow configurations.
+     * @example `https://{serverUrl}/t/{tenantDomain}/api/server/v1/flow/configs`
+     */
+    flowConfigurations: string;
 }

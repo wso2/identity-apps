@@ -94,7 +94,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         state?.config?.ui?.primaryUserStoreDomainName);
 
     const systemReservedUserStores: string[] = useSelector((state: AppState) =>
-        state.config.ui.systemReservedUserStores);
+        state.config.ui?.systemReservedUserStores);
 
     const consoleSettingsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consoleSettings
@@ -148,7 +148,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         if (userStoresList && !isUserStoresLoading && !isForNonHumanUser) {
             if (userStoresList?.length > 0) {
                 userStoresList
-                    ?.filter((userStore: UserStoreListItem) => !systemReservedUserStores.includes(userStore.name))
+                    ?.filter((userStore: UserStoreListItem) => !systemReservedUserStores?.includes(userStore.name))
                     ?.forEach((store: UserStoreListItem, index: number) => {
                         const isEnabled: boolean = store.enabled;
 
