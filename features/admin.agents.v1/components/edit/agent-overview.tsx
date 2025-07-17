@@ -249,10 +249,13 @@ export default function AgentOverview({
                                     .then(() => {
                                         dispatch(addAlert({
                                             description: "The agent account is " +
-                                                (toggleData.checked ? "blocked" : "unblocked") + " successfully.",
+                                                (toggleData.target.checked
+                                                    ? "blocked"
+                                                    : "unblocked"
+                                                ) + " successfully.",
                                             level: AlertLevels.SUCCESS,
                                             message: "Agent account is " +
-                                                (toggleData.checked ? "blocked" : "unblocked")
+                                                (toggleData.target.checked ? "blocked" : "unblocked")
                                         }));
                                     })
                                     .catch((_error: AxiosError) => {
