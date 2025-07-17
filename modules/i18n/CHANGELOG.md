@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.24.16
+
+### Patch Changes
+
+- [#8540](https://github.com/wso2/identity-apps/pull/8540) [`da3d9e07eb5b80dac59bde32117c86e77b29f9d5`](https://github.com/wso2/identity-apps/commit/da3d9e07eb5b80dac59bde32117c86e77b29f9d5) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - UI improvements to agent management
+
 ## 2.24.15
 
 ### Patch Changes
