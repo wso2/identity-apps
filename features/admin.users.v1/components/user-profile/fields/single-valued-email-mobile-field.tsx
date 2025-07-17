@@ -76,7 +76,6 @@ const SingleValuedEmailMobileField: FunctionComponent<SingleValuedEmailMobileFie
     return (
         <FinalFormField
             component={ TextFieldAdapter }
-            data-componentid={ componentId }
             initialValue={ fieldValue }
             ariaLabel={ fieldLabel }
             name={ fieldName ?? schema.name }
@@ -92,6 +91,8 @@ const SingleValuedEmailMobileField: FunctionComponent<SingleValuedEmailMobileFie
             InputProps={ {
                 endAdornment: isVerificationEnabled && isPending && renderVerificationStatus()
             } }
+            data-componentid={ `${componentId}-input` }
+            data-testid={ `${componentId}-input` }
         />
     );
 };

@@ -45,7 +45,6 @@ interface LocaleListItemInterface {
  * User profile locale field component.
  */
 const LocaleField: FunctionComponent<LocaleFieldPropsInterface> = ({
-    schema,
     fieldName,
     fieldLabel,
     initialValue,
@@ -121,7 +120,8 @@ const LocaleField: FunctionComponent<LocaleFieldPropsInterface> = ({
             readOnly={ isReadOnly || isUpdating }
             required={ isRequired }
             disableClearable={ isRequired }
-            data-componentid={ `${ componentId }-${ schema.name }-input` }
+            data-testid={ `${ componentId }-input` }
+            data-componentid={ `${ componentId }-input` }
         />
     );
 };

@@ -113,7 +113,7 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
     const fieldLabel: string = t("user:profile.fields." + schema.name.replace(".", "_"), {
         defaultValue: schema.displayName
     });
-    const fieldComponentId: string = `${ componentId }-${ schema.name }-input`;
+    const fieldComponentId: string = `${ componentId }-${ schema.name }`;
     // Replace dots with __DOT__ to avoid issues with dot separated field names.
     const encodedSchemaId: string = schema.schemaId.replace(/\./g, "__DOT__");
 
@@ -186,7 +186,7 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
                 maxValueLimit={ ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED }
                 setIsUpdating={ setIsUpdating }
                 onUserUpdated={ onUserUpdated }
-                data-componentid={ componentId }
+                data-componentid={ fieldComponentId }
             />
         );
     }
@@ -221,7 +221,7 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
                 isUpdating={ isUpdating }
                 isReadOnly={ isReadOnly }
                 maxValueLimit={ ProfileConstants.MAX_MOBILE_NUMBERS_ALLOWED }
-                data-componentid={ componentId }
+                data-componentid={ fieldComponentId }
             />
         );
     }
@@ -248,7 +248,7 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
                 isReadOnly={ isReadOnly }
                 isRequired={ isRequired }
                 validator={ genericValidator }
-                data-componentid={ componentId }
+                data-componentid={ fieldComponentId }
             />
         );
     }
@@ -274,7 +274,7 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
                 isReadOnly={ isReadOnly }
                 isRequired={ isRequired }
                 validator={ genericValidator }
-                data-componentid={ componentId }
+                data-componentid={ fieldComponentId }
             />
         );
     }
@@ -285,7 +285,6 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
     if (schema.schemaUri === ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA_ATTRIBUTES.country) {
         return (
             <CountryField
-                schema={ schema }
                 fieldLabel={ fieldLabel }
                 fieldName={ `${encodedSchemaId}.${schema.name}` }
                 initialValue={ initialValues[encodedSchemaId][schema.name] as string }
@@ -293,7 +292,7 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
                 isReadOnly={ isReadOnly }
                 isRequired={ isRequired }
                 validator={ genericValidator }
-                data-componentid={ componentId }
+                data-componentid={ fieldComponentId }
             />
         );
     }
@@ -304,7 +303,6 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
     if (schema.name === "locale") {
         return (
             <LocaleField
-                schema={ schema }
                 fieldLabel={ fieldLabel }
                 fieldName={ schema.name }
                 initialValue={ initialValues[schema.name] as string }
@@ -312,7 +310,7 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
                 isReadOnly={ isReadOnly }
                 isRequired={ isRequired }
                 validator={ genericValidator }
-                data-componentid={ componentId }
+                data-componentid={ fieldComponentId }
             />
         );
     }

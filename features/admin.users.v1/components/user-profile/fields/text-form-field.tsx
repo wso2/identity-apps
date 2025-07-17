@@ -56,7 +56,6 @@ const TextFormField: FunctionComponent<TextFormFieldPropsInterface> = (
     return (
         <FinalFormField
             component={ TextFieldAdapter }
-            data-componentid={ componentId }
             initialValue={ fieldValue }
             ariaLabel={ fieldLabel }
             name={ fieldName }
@@ -69,6 +68,8 @@ const TextFormField: FunctionComponent<TextFormFieldPropsInterface> = (
             maxLength={ maxLength }
             readOnly={ isReadOnly || isUpdating }
             required={ isRequired }
+            data-componentid={ `${componentId}-input` }
+            data-testid={ `${componentId}-input` }
         />
     );
 };

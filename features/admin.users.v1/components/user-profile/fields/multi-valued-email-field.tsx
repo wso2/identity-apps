@@ -374,7 +374,6 @@ const MultiValuedEmailField: FunctionComponent<MultiValuedEmailFieldPropsInterfa
                     InputLabelProps={ {
                         required: resolvedPrimarySchemaRequiredValue || resolvedSchemaRequiredValue
                     } }
-                    data-componentid={ `${ componentId }-${ schema.name }-input` }
                     error={ !isEmpty(validationError) ||
                         (fieldTouched && fieldError) ||
                         (primaryFieldTouched && primaryFieldError) }
@@ -390,6 +389,8 @@ const MultiValuedEmailField: FunctionComponent<MultiValuedEmailFieldPropsInterfa
                             handleAddEmail();
                         }
                     } }
+                    data-componentid={ `${ componentId }-input` }
+                    data-testid={ `${ componentId }-input` }
                     fullWidth
                 />
                 <FinalFormField

@@ -41,7 +41,6 @@ interface CountryListItemInterface {
  * User profile country field.
  */
 const CountryField: FunctionComponent<CountryFieldPropsInterface> = ({
-    schema,
     fieldName,
     fieldLabel,
     initialValue,
@@ -78,7 +77,6 @@ const CountryField: FunctionComponent<CountryFieldPropsInterface> = ({
     return (
         <FinalFormField
             component={ SelectFieldAdapter }
-            data-componentid={ `${componentId}-${schema.name}-input` }
             initialValue={ initialValue as string | string[] }
             isClearable={ !isRequired }
             ariaLabel={ fieldLabel }
@@ -106,6 +104,8 @@ const CountryField: FunctionComponent<CountryFieldPropsInterface> = ({
             readOnly={ isReadOnly || isUpdating }
             required={ isRequired }
             disableClearable={ isRequired }
+            data-componentid={ `${componentId}-input` }
+            data-testid={ `${componentId}-input` }
         />
     );
 };

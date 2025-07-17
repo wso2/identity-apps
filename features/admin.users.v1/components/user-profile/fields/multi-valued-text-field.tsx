@@ -162,7 +162,6 @@ const MultiValuedTextField: FunctionComponent<MultiValuedTextFieldPropsInterface
                     InputLabelProps={ {
                         required: isRequired
                     } }
-                    data-componentid={ `${componentId}-${schema.name}-input` }
                     error={ !isEmpty(validationError) || (fieldTouched && !isEmpty(fieldError)) }
                     helperText={ validationError ?? (fieldTouched && fieldError) }
                     onChange={ (event: ChangeEvent<HTMLInputElement>) => {
@@ -174,6 +173,8 @@ const MultiValuedTextField: FunctionComponent<MultiValuedTextFieldPropsInterface
                             handleAddValue();
                         }
                     } }
+                    data-componentid={ `${ componentId }-input` }
+                    data-testid={ `${ componentId }-input` }
                     fullWidth
                 />
                 <FinalFormField

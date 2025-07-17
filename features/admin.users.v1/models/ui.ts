@@ -74,22 +74,12 @@ export interface TextFormFieldPropsInterface extends ProfileFormFieldProps<strin
 /**
  * Interface for the User profile country field props.
  */
-export interface CountryFieldPropsInterface extends ProfileFormFieldProps<string> {
-    /**
-     * Attribute schema.
-     */
-    schema: ProfileSchemaInterface;
-}
+export interface CountryFieldPropsInterface extends ProfileFormFieldProps<string> { }
 
 /**
  * Interface for the User profile locale field props.
  */
-export interface LocaleFieldPropsInterface extends ProfileFormFieldProps<string> {
-    /**
-     * Attribute schema.
-     */
-    schema: ProfileSchemaInterface;
-}
+export interface LocaleFieldPropsInterface extends ProfileFormFieldProps<string> { }
 
 /**
  * User profile single-valued email/mobile field component props interface.

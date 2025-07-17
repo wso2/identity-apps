@@ -938,13 +938,14 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                             { !isReadOnlyMode && (
                                 <Grid xs={ 12 }>
                                     <Button
-                                        data-componentid={ `${ componentId }-form-update-button` }
                                         variant="contained"
                                         type="submit"
                                         size="small"
                                         className="form-button"
                                         loading={ isUpdating }
                                         disabled={ isUpdating || !dirty }
+                                        data-componentid={ `${ componentId }-update-button` }
+                                        data-testid={ `${ componentId }-update-button` }
                                     >
                                         { t("common:update") }
                                     </Button>
