@@ -43,8 +43,6 @@ import { AnimatedAvatar } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     ChangeEvent,
-    Dispatch as ReactDispatch,
-    SetStateAction,
     SyntheticEvent,
     useEffect,
     useState } from "react";
@@ -58,8 +56,8 @@ import useConsoleSettings from "../../hooks/use-console-settings";
 import "./console-roles-selective-share.scss";
 
 interface ConsoleRolesSelectiveShareProps extends IdentifiableComponentInterface {
-    setAddedRoles: ReactDispatch<SetStateAction<Record<string, SelectedOrganizationRoleInterface[]>>>;
-    setRemovedRoles: ReactDispatch<SetStateAction<Record<string, SelectedOrganizationRoleInterface[]>>>;
+    setAddedRoles: (roles: Record<string, SelectedOrganizationRoleInterface[]>) => void;
+    setRemovedRoles: (roles: Record<string, SelectedOrganizationRoleInterface[]>) => void;
 }
 
 interface TreeViewBaseItemWithRoles extends TreeViewBaseItem {
@@ -438,16 +436,6 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
 
     return (
         <>
-            <Button
-                variant="text"
-                size="small"
-                onClick={ () => setReadOnly(!readOnly) }
-            >
-                { readOnly
-                    ? t("applications:edit.sections.sharedAccess.manageRoleSharing")
-                    : t("applications:edit.sections.sharedAccess.viewRoleSharing")
-                }
-            </Button>
             <Grid
                 container
                 xs={ 12 }
@@ -474,7 +462,6 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
                             items={ organizationTree }
                             defaultSelectedItems={ selectedOrgId }
                             expandedItems={ expandedItems }
-                            expansionTrigger="iconContainer"
                             onItemClick={ (_e: SyntheticEvent, itemId: string) => {
                                 setSelectedOrgId(itemId);
                             } }
@@ -570,9 +557,17 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
                                 ))
                         }
                     </Box>
-
                 </Grid>
-
+                <Button
+                    variant="text"
+                    size="small"
+                    onClick={ () => setReadOnly(!readOnly) }
+                >
+                    { readOnly
+                        ? "Advanced Role Sharing"
+                        : t("applications:edit.sections.sharedAccess.viewRoleSharing")
+                    }
+                </Button>
             </Grid>
         </>
     );

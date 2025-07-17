@@ -793,6 +793,7 @@ export interface ApplicationsNS {
                 rolesSharedPartially: string;
                 shareRoleSubsetWithSelectedOrgs: string;
                 shareRoleSubsetWithAllOrgs: string;
+                searchAvailableRolesPlaceholder: string;
                 manageRoleSharing: string;
                 viewRoleSharing: string;
                 selectAnOrganizationToViewRoles: string;

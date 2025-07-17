@@ -21,6 +21,7 @@ import {
     OrganizationRoleInterface,
     SelectedOrganizationRoleInterface
 } from "@wso2is/admin.organizations.v1/models/organizations";
+import isEmpty from "lodash-es/isEmpty";
 import { TreeViewBaseItemWithRoles } from "../models/shared-access";
 
 export const computeInitialRoleSelections = (
@@ -65,17 +66,40 @@ export const computeChildRoleSelections = (
     const updated: Record<string, SelectedOrganizationRoleInterface[]> = {};
 
     children.forEach((childOrg: OrganizationInterface) => {
-        updated[childOrg.id] = selectedParentRoles.map((role: SelectedOrganizationRoleInterface) => ({
-            audience: {
-                display: role.audience.display,
-                type: role.audience.type
-            },
-            displayName: role.displayName,
-            id: role.displayName,
-            selected: childOrg.roles?.some(
-                (orgRole: OrganizationRoleInterface) => orgRole.displayName === role.displayName
-            ) || false
-        }));
+        if (isEmpty(roleSelections[childOrg.id])) {
+            // If the child organization does not have roleSelections,
+            // we will create new ones based on the parent roles.
+            updated[childOrg.id] = selectedParentRoles.map((role: SelectedOrganizationRoleInterface) => ({
+                audience: {
+                    display: role.audience.display,
+                    type: role.audience.type
+                },
+                displayName: role.displayName,
+                id: role.displayName,
+                selected: childOrg.roles?.some(
+                    (orgRole: OrganizationRoleInterface) => orgRole.displayName === role.displayName
+                ) || false
+            }));
+        } else {
+            // If the child organization already has an entry in roleSelections,
+            // we will use the existing values to check if its selected or not.
+            updated[childOrg.id] = selectedParentRoles.map((role: SelectedOrganizationRoleInterface) => {
+                const existingRole: SelectedOrganizationRoleInterface | undefined =
+                    roleSelections[childOrg.id].find((r: SelectedOrganizationRoleInterface) =>
+                        r.displayName === role.displayName
+                    );
+
+                return {
+                    audience: {
+                        display: role.audience.display,
+                        type: role.audience.type
+                    },
+                    displayName: role.displayName,
+                    id: role.displayName,
+                    selected: existingRole ? existingRole.selected : false
+                };
+            });
+        }
     });
 
     return updated;

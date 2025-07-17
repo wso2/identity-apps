@@ -44,7 +44,7 @@ import { AlertLevels,
     RolesInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ContentLoader, EmphasizedSegment, Text } from "@wso2is/react-components";
+import { ContentLoader, EmphasizedSegment, Heading, Text } from "@wso2is/react-components";
 import { AnimatePresence, motion } from "framer-motion";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -99,7 +99,9 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
     const {
         data: originalOrganizationTree,
         isLoading: isOrganizationTreeFetchRequestLoading,
-        error:  originalOrganizationTreeFetchRequestError
+        isValidating: isOrganizationTreeFetchRequestValidating,
+        error:  originalOrganizationTreeFetchRequestError,
+        mutate: mutateOriginalOrganizationTree
     } = useGetApplicationShare(
         consoleId,
         !isEmpty(consoleId),
@@ -117,6 +119,7 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
     const [ selectedRoles, setSelectedRoles ] = useState<RolesInterface[]>([]);
     const [ addedRoles, setAddedRoles ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
     const [ removedRoles, setRemovedRoles ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
+    const [ enableAdvancedSharing, setEnableAdvancedSharing ] = useState<boolean>(false);
 
     /**
      * If the Administrator role is fetched, set it as the selected role.
@@ -217,6 +220,9 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                     level: AlertLevels.ERROR,
                     message: t("consoleSettings:sharedAccess.notifications.shareRoles.error.message")
                 }));
+            })
+            .finally(() => {
+                mutateOriginalOrganizationTree();
             });
     };
 
@@ -255,6 +261,9 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                     level: AlertLevels.ERROR,
                     message: t("consoleSettings:sharedAccess.notifications.shareRoles.error.message")
                 }));
+            })
+            .finally(() => {
+                mutateOriginalOrganizationTree();
             });
     };
 
@@ -334,6 +343,9 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                         level: AlertLevels.ERROR,
                         message: t("consoleSettings:sharedAccess.notifications.shareRoles.error.message")
                     }));
+                })
+                .finally(() => {
+                    mutateOriginalOrganizationTree();
                 });
         }
     };
@@ -348,7 +360,7 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
         }
     };
 
-    if (isOrganizationTreeFetchRequestLoading) {
+    if (isOrganizationTreeFetchRequestLoading || isOrganizationTreeFetchRequestValidating) {
         return <ContentLoader />;
     }
 
@@ -402,14 +414,14 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                                         )
                                     }
                                 </AnimatePresence>
-                                <FormControlLabel
+                                {/* <FormControlLabel
                                     value={ RoleSharedAccessModes.SHARE_WITH_SELECTED_ORGS_AND_ROLES }
                                     label={ t("consoleSettings:sharedAccess.modes.shareWithSelected") }
                                     control={ <Radio /> }
                                     disabled={ isReadOnly }
                                     data-componentid={ `${componentId}-share-with-selected-orgs-and-roles-radio-btn` }
-                                />
-                                <AnimatePresence mode="wait">
+                                /> */}
+                                {/* <AnimatePresence mode="wait">
                                     {
                                         sharedAccessMode === RoleSharedAccessModes.SHARE_WITH_SELECTED_ORGS_AND_ROLES
                                         && (
@@ -429,9 +441,18 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                                             </motion.div>
                                         )
                                     }
-                                </AnimatePresence>
+                                </AnimatePresence> */}
                             </RadioGroup>
                         </FormControl>
+                        <Grid xs={ 14 } marginTop={ 2 }>
+                            <Heading as="h4">
+                                Shared Roles
+                            </Heading>
+                            <ConsoleRolesSelectiveShare
+                                setAddedRoles={ setAddedRoles }
+                                setRemovedRoles={ setRemovedRoles }
+                            />
+                        </Grid>
                         <Button
                             className="mt-5"
                             data-componentid={ `${componentId}-save-button` }

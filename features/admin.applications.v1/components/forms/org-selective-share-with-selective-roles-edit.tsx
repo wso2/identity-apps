@@ -192,7 +192,7 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
         application?.id,
         !isEmpty(application?.id) &&
         !isEmpty(selectedOrgId),
-        false,
+        true,
         `id eq '${ selectedOrgId }'`
     );
 
@@ -322,8 +322,18 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                     applicationRolesList
                 );
 
-            // Initialize the role selections with the top-level organization roles
-            setRoleSelections(computedRoleSelections);
+            // Update the roleSelection if the added roleSelections are not already present.
+            setRoleSelections((prev: Record<string, SelectedOrganizationRoleInterface[]>) => {
+                const updated: Record<string, SelectedOrganizationRoleInterface[]> = { ...prev };
+
+                Object.keys(computedRoleSelections).forEach((orgId: string) => {
+                    if (isEmpty(updated[orgId])) {
+                        updated[orgId] = computedRoleSelections[orgId];
+                    }
+                });
+
+                return updated;
+            });
         }
     }, [ originalTopLevelOrganizations, applicationRolesList ]);
 
