@@ -1,5 +1,15 @@
 # @wso2is/admin.groups.v1
 
+## 2.27.122
+
+### Patch Changes
+
+- [#8551](https://github.com/wso2/identity-apps/pull/8551) [`6c6bee5696d3e1f675cfbb3bc1df4e5694ea0aaa`](https://github.com/wso2/identity-apps/commit/6c6bee5696d3e1f675cfbb3bc1df4e5694ea0aaa) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide system reserved user stores in groups list & other minor bug fixes
+
+- Updated dependencies [[`6c6bee5696d3e1f675cfbb3bc1df4e5694ea0aaa`](https://github.com/wso2/identity-apps/commit/6c6bee5696d3e1f675cfbb3bc1df4e5694ea0aaa)]:
+  - @wso2is/admin.users.v1@2.33.9
+  - @wso2is/admin.core.v1@2.46.14
+
 ## 2.27.121
 
 ### Patch Changes
