@@ -106,3 +106,83 @@ export const deleteAgent = (agentId: string): Promise<AxiosResponse> => {
             return Promise.reject(error);
         });
 };
+
+/**
+ * Deletes an agent.
+ *
+ * @param data - Adds this data.
+ *
+ * @returns response.
+ */
+export const updateAgentLockStatus = (agentId: string, isLocked: boolean): Promise<AxiosResponse> => {
+    const requestConfig: RequestConfigInterface = {
+        data: {
+            Operations: [
+                {
+                    op: "replace",
+                    value: {
+                        "urn:scim:wso2:schema": {
+                            "accountLocked": isLocked
+                        }
+                    }
+                }
+            ],
+            schemas: [
+                "urn:ietf:params:scim:api:messages:2.0:PatchOp"
+            ]
+        },
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        method: HttpMethods.PATCH,
+        url: store.getState().config.endpoints.agents + `/${agentId}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Updates an agent's password.
+ *
+ * @param agentId - ID of the agent.
+ * @param newPassword - New password to set.
+ *
+ * @returns response.
+ */
+export const updateAgentPassword = (agentId: string, newPassword: string): Promise<AxiosResponse> => {
+    const requestConfig: RequestConfigInterface = {
+        data: {
+            Operations: [
+                {
+                    op: "replace",
+                    value: {
+                        password: newPassword
+                    }
+                }
+            ],
+            schemas: [
+                "urn:ietf:params:scim:api:messages:2.0:PatchOp"
+            ]
+        },
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: store.getState().config.endpoints.agents + `/${agentId}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};

@@ -24,9 +24,9 @@ export interface AddAgentInterface {
     owner?: string;
 }
 export interface AgentSchema {
-    agentUrl?: string;
-    agentDescription?: string;
-    agentDisplayName?: string;
+    Url?: string;
+    Description?: string;
+    DisplayName?: string;
     [key: string]: any;
 }
 
@@ -34,5 +34,5 @@ export interface AgentScimSchema {
     id?: string;
     userName?: string;
     password?: string;
-    "urn:scim:wso2:agent:schema": AgentSchema;
+    "urn:scim:wso2:agent:schema"?: AgentSchema;
 }

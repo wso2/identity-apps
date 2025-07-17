@@ -21,8 +21,8 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form/src";
-import { Button, CopyInputField, Message } from "@wso2is/react-components";
-import React, { useState } from "react";
+import { Button } from "@wso2is/react-components";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "semantic-ui-react";
 import { addAgent } from "../../api/agents";
@@ -40,9 +40,6 @@ export default function AddAgentWizard({
 }: AddAgentWizardProps) {
     const dispatch: any = useDispatch();
 
-    const [ showSecret, setShowSecret ] = useState(false);
-    const [ newAgent, setNewAgent ] = useState<AgentScimSchema>();
-
     const authenticatedUserInfo: AuthenticatedUserInfo = useSelector((state: AppState) => state?.auth);
 
     return (
@@ -57,137 +54,81 @@ export default function AddAgentWizard({
             closeOnDimmerClick={ false }
             closeOnEscape
         >
-            <Modal.Header>{ showSecret ? "Agent created successfully" : "New Agent" }</Modal.Header>
+            <Modal.Header>New Agent</Modal.Header>
             <Modal.Content>
-                { !showSecret ?
-                    (<FinalForm
-                        onSubmit={ (values: any) => {
-                            const addAgentPayload: AgentScimSchema = {
-                                "urn:scim:wso2:agent:schema": {
-                                    agentDescription: values?.description,
-                                    agentDisplayName: values?.name,
-                                    agentOwner: authenticatedUserInfo?.username
-                                }
-                            };
+                <FinalForm
+                    onSubmit={ (values: any) => {
+                        const addAgentPayload: AgentScimSchema = {
+                            "urn:scim:wso2:agent:schema": {
+                                Description: values?.description,
+                                DisplayName: values?.name,
+                                Owner: authenticatedUserInfo?.username
+                            }
+                        };
 
-                            addAgent(addAgentPayload)
-                                .then((response: AgentScimSchema) => {
-                                    setNewAgent(response);
-                                    setShowSecret(true);
-                                })
-                                .catch((_err: unknown) => {
-                                    dispatch(
-                                        addAlert({
-                                            description: "Creating agent failed",
-                                            level: AlertLevels.ERROR,
-                                            message: "Something went wrong"
-                                        })
-                                    );
-                                });
-                        } }
-                        render={ ({ handleSubmit }: FormRenderProps) => {
-                            return (
-                                <form id="addAgentForm" onSubmit={ handleSubmit }>
-                                    <FinalFormField
-                                        name="name"
-                                        label="Name"
-                                        autoComplete="new-password"
-                                        component={ TextFieldAdapter }
-                                    />
-                                    <FinalFormField
-                                        label="Description"
-                                        name="description"
-                                        className="mt-3"
-                                        multiline
-                                        rows={ 4 }
-                                        maxRows={ 4 }
-                                        autoComplete="new-password"
-                                        placeholder="Enter a description for the agent"
-                                        component={ TextFieldAdapter }
-                                    />
-                                </form>
-                            );
-                        } }
-                    />
-                    ) : (
-                        <>
-                            <Message warning>
-                            Important: Please copy and store the agent credentials securely.{ " " }
-                            Make sure to copy the agent secret now as you will not be able to see this again.
-                            </Message>
-
-                            <label>Agent ID</label>
-                            <div style={ { marginTop: "1%" } }>
-                                <CopyInputField
-                                    className="agent-id-input"
-                                    value={ newAgent?.id }
-                                    data-componentid="agent-id-readonly-input"
+                        addAgent(addAgentPayload)
+                            .then((response: AgentScimSchema) => {
+                                onClose(response);
+                            })
+                            .catch((_err: unknown) => {
+                                dispatch(
+                                    addAlert({
+                                        description: "Creating agent failed",
+                                        level: AlertLevels.ERROR,
+                                        message: "Something went wrong"
+                                    })
+                                );
+                            });
+                    } }
+                    render={ ({ handleSubmit }: FormRenderProps) => {
+                        return (
+                            <form id="addAgentForm" onSubmit={ handleSubmit }>
+                                <FinalFormField
+                                    name="name"
+                                    label="Name"
+                                    autoComplete="new-password"
+                                    component={ TextFieldAdapter }
                                 />
-                            </div>
-                            <div style={ { marginTop: "2%" } }></div>
-                            <label>Agent secret</label>
-                            <div style={ { marginTop: "1%" } }>
-                                <CopyInputField
-                                    className="agent-secret-input"
-                                    secret
-                                    value={ newAgent?.password }
-                                    hideSecretLabel={ "Hide secret" }
-                                    showSecretLabel={ "Show secret" }
-                                    data-componentid={ "agent-secret-readonly-input" }
+                                <FinalFormField
+                                    label="Description"
+                                    name="description"
+                                    className="mt-3"
+                                    multiline
+                                    rows={ 4 }
+                                    maxRows={ 4 }
+                                    autoComplete="new-password"
+                                    placeholder="Enter a description for the agent"
+                                    component={ TextFieldAdapter }
                                 />
-                            </div>
+                            </form>
+                        );
+                    } }
+                />
 
-                        </>
-                    ) }
             </Modal.Content>
 
             <Modal.Actions>
-                { showSecret ? (
-                    <>
-                        <Button
-                            primary={ true }
-                            type="submit"
-                            onClick={ () => {
-                                if (newAgent) {
-                                    setShowSecret(false);
-                                    onClose(newAgent?.id);
-                                    dispatch(
-                                        addAlert({
-                                            description: "Agent created successfully",
-                                            level: AlertLevels.SUCCESS,
-                                            message: "Created successfully"
-                                        })
-                                    );
-                                }
-                            } }
-                            data-testid={ `${componentId}-confirmation-modal-actions-continue-button` }
-                        >
-                            Done
-                        </Button>
-                    </>
-                ) : (
-                    <>
-                        <Button
-                            className="link-button"
-                            onClick={ () => onClose(null) }
-                            data-testid={ `${componentId}-confirmation-modal-actions-cancel-button` }
-                        >
+                <Button
+                    className="link-button"
+                    basic
+                    primary
+                    onClick={ () => onClose(null) }
+                    data-testid={ `${componentId}-confirmation-modal-actions-cancel-button` }
+                >
                             Cancel
-                        </Button>
-                        <Button
-                            primary={ true }
-                            type="submit"
-                            onClick={ () => {
-                                document
-                                    .getElementById("addAgentForm")
-                                    .dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
-                            } }
-                            data-testid={ `${componentId}-confirmation-modal-actions-continue-button` }
-                        >
+                </Button>
+                <Button
+                    primary={ true }
+                    type="submit"
+                    onClick={ () => {
+                        document
+                            .getElementById("addAgentForm")
+                            .dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+                    } }
+                    data-testid={ `${componentId}-confirmation-modal-actions-continue-button` }
+                >
                             Create
-                        </Button>
-                    </>
-                ) }
+                </Button>
             </Modal.Actions>
         </Modal>
     );

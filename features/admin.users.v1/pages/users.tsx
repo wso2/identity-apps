@@ -288,7 +288,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 if (
                     store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName
                         && store.enabled
-                        && !systemReservedUserStores.includes(store.name)
+                        && !systemReservedUserStores?.includes(store.name)
                 ) {
                     const storeOption: UserStoreItem = {
                         disabled: store.typeName === RemoteUserStoreManagerType.RemoteUserStoreManager,
