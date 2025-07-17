@@ -119,7 +119,7 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
     const [ selectedRoles, setSelectedRoles ] = useState<RolesInterface[]>([]);
     const [ addedRoles, setAddedRoles ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
     const [ removedRoles, setRemovedRoles ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
-    const [ enableAdvancedSharing, setEnableAdvancedSharing ] = useState<boolean>(false);
+    const [ readOnly, setReadOnly ] = useState<boolean>(true);
 
     /**
      * If the Administrator role is fetched, set it as the selected role.
@@ -205,12 +205,17 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
 
         shareApplicationWithAllOrganizations(data)
             .then(() => {
-                dispatch(addAlert({
-                    description: t("consoleSettings:sharedAccess.notifications." +
-                        "shareRoles.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("consoleSettings:sharedAccess.notifications.shareRoles.success.message")
-                }));
+                if (!readOnly) {
+                    // Advanced role sharing is enabled, so we need to share the roles
+                    shareSelectedRolesWithSelectedOrgs();
+                } else {
+                    dispatch(addAlert({
+                        description: t("consoleSettings:sharedAccess.notifications." +
+                            "shareRoles.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("consoleSettings:sharedAccess.notifications.shareRoles.success.message")
+                    }));
+                }
             })
             .catch((error: Error) => {
                 dispatch(addAlert({
@@ -246,12 +251,17 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
 
         shareApplicationWithAllOrganizations(data)
             .then(() => {
-                dispatch(addAlert({
-                    description: t("consoleSettings:sharedAccess.notifications." +
-                        "shareRoles.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("consoleSettings:sharedAccess.notifications.shareRoles.success.message")
-                }));
+                if (!readOnly) {
+                    // Advanced role sharing is enabled, so we need to share the roles
+                    shareSelectedRolesWithSelectedOrgs();
+                } else {
+                    dispatch(addAlert({
+                        description: t("consoleSettings:sharedAccess.notifications." +
+                            "shareRoles.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("consoleSettings:sharedAccess.notifications.shareRoles.success.message")
+                    }));
+                }
             })
             .catch((error: Error) => {
                 dispatch(addAlert({
@@ -355,8 +365,6 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
             shareAllRolesWithAllOrgs();
         } else if (sharedAccessMode === RoleSharedAccessModes.SHARE_WITH_ALL_ORGS) {
             shareSelectedRolesWithAllOrgs();
-        } else if (sharedAccessMode === RoleSharedAccessModes.SHARE_WITH_SELECTED_ORGS_AND_ROLES) {
-            shareSelectedRolesWithSelectedOrgs();
         }
     };
 
@@ -451,6 +459,8 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                             <ConsoleRolesSelectiveShare
                                 setAddedRoles={ setAddedRoles }
                                 setRemovedRoles={ setRemovedRoles }
+                                readOnly={ readOnly }
+                                setReadOnly={ setReadOnly }
                             />
                         </Grid>
                         <Button

@@ -43,9 +43,12 @@ import { AnimatedAvatar } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     ChangeEvent,
+    Dispatch as ReactDispatch,
+    SetStateAction,
     SyntheticEvent,
     useEffect,
-    useState } from "react";
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
@@ -56,8 +59,10 @@ import useConsoleSettings from "../../hooks/use-console-settings";
 import "./console-roles-selective-share.scss";
 
 interface ConsoleRolesSelectiveShareProps extends IdentifiableComponentInterface {
-    setAddedRoles: (roles: Record<string, SelectedOrganizationRoleInterface[]>) => void;
-    setRemovedRoles: (roles: Record<string, SelectedOrganizationRoleInterface[]>) => void;
+    setAddedRoles: ReactDispatch<SetStateAction<Record<string, SelectedOrganizationRoleInterface[]>>>;
+    setRemovedRoles: ReactDispatch<SetStateAction<Record<string, SelectedOrganizationRoleInterface[]>>>;
+    readOnly: boolean;
+    setReadOnly: ReactDispatch<SetStateAction<boolean>>;
 }
 
 interface TreeViewBaseItemWithRoles extends TreeViewBaseItem {
@@ -69,7 +74,9 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
     const {
         [ "data-componentid" ]: componentId = "console-roles-selective-share-modal",
         setAddedRoles,
-        setRemovedRoles
+        setRemovedRoles,
+        readOnly,
+        setReadOnly
     } = props;
 
     const organizationId: string = useSelector((state: AppState) => state?.organization?.organization?.id);
@@ -82,7 +89,6 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
 
     const [ selectedOrgId, setSelectedOrgId ] = useState<string>();
     const [ expandedOrgId, setExpandedOrgId ] = useState<string>();
-    const [ readOnly, setReadOnly ] = useState<boolean>(true);
     const [ expandedItems, setExpandedItems ] = useState<string[]>([]);
     const [ organizationTree, setOrganizationTree ] = useState<TreeViewBaseItemWithRoles[]>([]);
     const [ roleSelections, setRoleSelections ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
