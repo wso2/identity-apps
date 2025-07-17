@@ -63,6 +63,9 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const { readOnlyUserStoreNamesList, isUserStoreReadOnly, mutateUserStoreList, userStoresList } = useUserStores();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const systemReservedUserStores: string[] = useSelector(
+        (state: AppState) => state?.config?.ui?.systemReservedUserStores
+    );
 
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(1);
@@ -108,7 +111,9 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
 
         if (userStoresList?.length > 0) {
             userStoresList.forEach((store: UserStoreListItem, index: number) => {
-                if (store.enabled && store.name !== userstoresConfig.primaryUserstoreName) {
+                if (store.enabled && store.name !== userstoresConfig.primaryUserstoreName &&
+                    !systemReservedUserStores?.includes(store.name)
+                ) {
                     const storeOption: DropdownItemProps = {
                         disabled: store.typeName === RemoteUserStoreManagerType.RemoteUserStoreManager,
                         key: index,
