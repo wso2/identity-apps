@@ -501,7 +501,7 @@ export class RouteUtils {
             },
             {
                 category: customerData,
-                id: "enrichment",
+                id: "profiles",
                 parent: customerData
             },
             {

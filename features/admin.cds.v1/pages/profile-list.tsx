@@ -56,7 +56,7 @@ const UsersPage = ({ router }) => {
     const fetchPropertiesForScope = async (scope: string, index: number) => {
         try {
             const response = await axios.get(
-                `http://localhost:8900/api/v1/enrichment-rules?filter=property_name+sw+${scope}`
+                `http://localhost:8900/api/v1/profile-schema/${scope}`
             );
             const props = response.data?.map((r: any) => {
                 const name = r.property_name || "";

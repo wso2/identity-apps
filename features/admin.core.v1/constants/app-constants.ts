@@ -368,6 +368,12 @@ export class AppConstants {
             [ "GOVERNANCE_CONNECTORS", `${AppConstants.getAdminViewBasePath()}/governance-connectors/:id` ],
             [ "MULTI_ATTRIBUTE_LOGIN", `${AppConstants.getAdminViewBasePath()}/multi-attribute-login` ],
             [ "UNAUTHORIZED", `${AppConstants.getMainViewBasePath()}/unauthorized` ],
+            [ "PROFILES", `${AppConstants.getMainViewBasePath()}/profiles` ],
+            [ "PROFILE_EDIT", `${AppConstants.getMainViewBasePath()}/profiles/:id` ],
+            [ "PROFILE_VIEW", `${AppConstants.getMainViewBasePath()}/profiles/:id/view` ],
+            [ "UNIFICATION_RULES", `${AppConstants.getMainViewBasePath()}/unification-rules` ],
+            [ "UNIFICATION_RULE_EDIT", `${AppConstants.getMainViewBasePath()}/unification-rules/:id` ],
+
             [ "USERS", `${AppConstants.getAdminViewBasePath()}/users` ],
             [ "USER_EDIT", `${AppConstants.getAdminViewBasePath()}/users/:id` ],
             [ "USERSTORES", `${AppConstants.getAdminViewBasePath()}/user-stores` ],

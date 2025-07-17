@@ -32,7 +32,7 @@ const ResolutionRuleModal = ({ open, onClose, onSubmitSuccess }) => {
     const fetchAttributes = async (scope: string) => {
         try {
             const response = await axios.get(
-                `http://localhost:8900/api/v1/enrichment-rules?filter=property_name+sw+${scope}`
+                `http://localhost:8900/api/v1/profile-schema/${scope}`
             );
 
             const names = (response.data || []).map(rule => {
@@ -65,7 +65,7 @@ const ResolutionRuleModal = ({ open, onClose, onSubmitSuccess }) => {
         try {
             await axios.post("http://localhost:8900/api/v1/unification-rules", {
                 rule_name: form.rule_name,
-                property: fullAttribute,
+                property_name: fullAttribute,
                 priority: form.priority,
                 is_active: form.is_active
             });

@@ -1604,57 +1604,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         {
             category: "customerData",
             component: lazy(() =>
-                import("@wso2is/admin.cds.v1/pages/profile-unification-rules")
-            ),
-            exact: true,
-            icon: {
-                icon: <LinkIcon className="icon" fill="black" />
-            },
-            id: "unification",
-            name: "Unification",
-            order: 32,
-            path: "/unification", // ✅ Make sure this is correctly defined in AppConstants if you use get()
-            protected: true,
-            showOnSidePanel: true
-        },        
-        {
-            category: "customerData",
-            label: "Traits",
-            component: lazy(() =>
-                import("@wso2is/admin.cds.v1/pages/profile-unification-rules")
-            ),
-            exact: true,
-            icon: {
-                icon: <UserGroupIcon className="icon" fill="black" />
-            },
-            id: "enrichment",
-            name: "Enrichment",
-            order: 33,
-            path: "/enrichment", // should resolve to "/traits"
-            protected: true,
-            showOnSidePanel: true,
-        
-            children: [
-                {
-                    component: lazy(() =>
-                        import("@wso2is/admin.cds.v1/pages/profile-unification-rules") 
-                    ),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
-                    id: "traitView",
-                    name: "View ",
-                    path: "/enrichment/:trait_id",
-                    protected: true,
-                    showOnSidePanel: false
-                }
-            ]
-        }, 
-        {
-            category: "customerData",
-            label: "Profiles",
-            component: lazy(() =>
                 import("@wso2is/admin.cds.v1/pages/profile-list")
             ),
             exact: true,
@@ -1663,45 +1612,59 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             },
             id: "profiles",
             name: "Profiles",
-            order: 34,
-            path: "/profiles", 
+            order: 32,
+            path: AppConstants.getPaths().get("PROFILES"), 
             protected: true,
             showOnSidePanel: true,
-        },     
-        {
-            category: "customerData",
-            label: "Customer Events",
-            component: lazy(() =>
-                import("@wso2is/admin.cds.v1/pages/events")
-            ),
-            exact: true,
-            icon: {
-                icon: <CircleStarIcon className="icon" fill="black" />
-            },
-            id: "customerEvents",
-            name: "CustomerEvents",
-            order: 34,
-            path: "/customer-events", 
-            protected: true,
-            showOnSidePanel: true,
-        
             // children: [
             //     {
             //         component: lazy(() =>
-            //             import("@wso2is/admin.cds.v1/pages/profile") // 👈 new trait visualizer page
+            //             import("@wso2is/admin.cds.v1/pages/profile-unification-rules") 
             //         ),
             //         exact: true,
             //         icon: {
             //             icon: getSidePanelIcons().childIcon
             //         },
-            //         id: "profileView",
-            //         name: "Profile List",
-            //         path: "/profile/:profile_id",
+            //         id: "traitView",
+            //         name: "View ",
+            //         path: "/enrichment/:trait_id",
             //         protected: true,
             //         showOnSidePanel: false
             //     }
             // ]
-        },      
+        },   
+        {
+            category: "customerData",
+            component: lazy(() =>
+                import("@wso2is/admin.cds.v1/pages/profile-unification-rules")
+            ),
+            exact: true,
+            icon: {
+                icon: <LinkIcon className="icon" fill="black" />
+            },
+            id: "unification",
+            name: "Unification Rules",
+            order: 33,
+            path: AppConstants.getPaths().get("UNIFICATION_RULES"), 
+            protected: true,
+            showOnSidePanel: true,
+            children: [
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.cds.v1/pages/edit-profile-unification-rules") 
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "traitEdit",
+                    name: "Edit Unification Rule",
+                    path: AppConstants.getPaths().get("UNIFICATION_RULE_EDIT"), 
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ]
+        },        
         // the following routes are not onboarded to the side panel
         {
             category: "console:manage.features.sidePanel.categories.configurations",

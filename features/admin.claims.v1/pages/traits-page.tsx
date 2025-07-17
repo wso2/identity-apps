@@ -130,7 +130,7 @@ const TraitsPage: FunctionComponent = (): ReactElement => {
             description={ t("traits:page.description", { defaultValue: "Manage user traits here." }) }
             backButton={{
                 onClick: () => { history.push(AppConstants.getPaths().get("CLAIM_DIALECTS")); },
-                text: t("common:back", { defaultValue: "Back" })
+                text: t("common:back", { defaultValue: "Go back to Attributes and Mappings" })
             }}
             action={ traits.length > 0 && (
                 <PrimaryButton onClick={ handleAddTrait }>
