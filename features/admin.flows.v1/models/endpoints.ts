@@ -16,18 +16,18 @@
  * under the License.
  */
 
-export interface FlowListItemInterface {
-    id: string;
-    description?: string;
-    disabled?: boolean;
-    path?: string;
-    type?: string;
-    heading?: string;
-    featureStatusKey?: string;
-};
-
-export enum FlowTypes {
-    REGISTRATION = "REGISTRATION",
-    PASSWORD_RECOVERY = "PASSWORD_RECOVERY",
-    INVITED_USER_REGISTRATION = "INVITED_USER_REGISTRATION",
+/**
+ * Interface for the Flows management feature resource endpoints.
+ */
+export interface FlowsResourceEndpointsInterface {
+    /**
+     * API to update the flow configuration.
+     * @example `https://{serverUrl}/t/{tenantDomain}/api/server/v1/flow/config`
+     */
+    flowConfiguration: string;
+    /**
+     * API to fetch the flow configurations.
+     * @example `https://{serverUrl}/t/{tenantDomain}/api/server/v1/flow/configs`
+     */
+    flowConfigurations: string;
 }

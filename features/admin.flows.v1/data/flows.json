@@ -16,7 +16,7 @@
             "featureStatusKey": "flows.types.list.passwordRecovery",
             "path": "PASSWORD_RECOVERY_FLOW_BUILDER",
             "type": "PASSWORD_RECOVERY",
-            "disabled": true
+            "disabled": false
         },
         {
             "id": "invite-user-to-set-password",
@@ -24,8 +24,8 @@
             "description": "Design and customize the invite-user password setup journey with a flexible, no-code flow composer.",
             "featureStatusKey": "flows.types.list.inviteUserToSetPassword",
             "path": "INVITE_USER_PASSWORD_SETUP_FLOW_BUILDER",
-            "type": "INVITE_USER_PASSWORD_SETUP",
-            "disabled": true
+            "type": "INVITED_USER_REGISTRATION",
+            "disabled": false
         }
     ]
 }

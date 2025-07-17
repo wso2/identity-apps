@@ -6373,6 +6373,9 @@ importers:
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.7.6
         version: link:../admin.feature-gate.v1
+      '@wso2is/admin.flows.v1':
+        specifier: workspace:^
+        version: link:../admin.flows.v1
       '@wso2is/admin.groups.v1':
         specifier: ^2.27.121
         version: link:../admin.groups.v1
@@ -43138,8 +43141,6 @@ packages:
       webpack: '*'
     peerDependenciesMeta:
       webpack:
-        optional: true
-      webpack-sources:
         optional: true
     dependencies:
       webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@4.10.0)
