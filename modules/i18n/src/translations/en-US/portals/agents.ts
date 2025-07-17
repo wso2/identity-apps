@@ -57,8 +57,8 @@ export const agents: AgentsNS = {
         featureUnavailable: {
             subtitle: {
                 0: {
-                    onprem: "To enable the Agents feature, connect a userstore named AGENT in your organization.",
-                    saas: "To tryout the Agents feature, create a new organization."
+                    onprem: "To enable and try out this feature, configure a datastore for AI agents.",
+                    saas: "Agent management is an experimental feature and currently only available in new organizations. To get early access, create a new organization."
                 },
                 1: "Soon, Agents will be available by default for all organizations."
             },

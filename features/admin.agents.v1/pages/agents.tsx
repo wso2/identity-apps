@@ -17,7 +17,6 @@
  */
 
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
-import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -120,7 +119,7 @@ export default function Agents ({
                 <EmphasizedSegment className="agent-feature-unavailable-notice">
                     <EmptyPlaceholder
                         action={ null }
-                        image={ getEmptyPlaceholderIllustrations().search }
+                        image={ null }
                         imageSize="tiny"
                         subtitle={ [
                             isSAASDeployment
