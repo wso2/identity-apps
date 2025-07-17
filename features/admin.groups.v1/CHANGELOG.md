@@ -1,5 +1,18 @@
 # @wso2is/admin.groups.v1
 
+## 2.27.121
+
+### Patch Changes
+
+- [#8540](https://github.com/wso2/identity-apps/pull/8540) [`da3d9e07eb5b80dac59bde32117c86e77b29f9d5`](https://github.com/wso2/identity-apps/commit/da3d9e07eb5b80dac59bde32117c86e77b29f9d5) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - UI improvements to agent management
+
+- Updated dependencies [[`da3d9e07eb5b80dac59bde32117c86e77b29f9d5`](https://github.com/wso2/identity-apps/commit/da3d9e07eb5b80dac59bde32117c86e77b29f9d5)]:
+  - @wso2is/admin.userstores.v1@2.27.37
+  - @wso2is/admin.roles.v2@2.27.161
+  - @wso2is/admin.users.v1@2.33.8
+  - @wso2is/i18n@2.24.16
+  - @wso2is/admin.core.v1@2.46.12
+
 ## 2.27.120
 
 ### Patch Changes
