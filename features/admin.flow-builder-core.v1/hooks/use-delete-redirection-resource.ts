@@ -48,10 +48,12 @@ const useDeleteRedirectionResource = (): void => {
         PluginRegistry.getInstance().registerAsync(EventTypes.ON_EDGE_DELETE, deleteComponentAndNode);
 
         return () => {
-            PluginRegistry.getInstance().unregister(EventTypes.ON_NODE_DELETE, deleteRedirectionActionNode.name);
+            PluginRegistry.getInstance().unregister(EventTypes.ON_NODE_DELETE,
+                deleteRedirectionActionNode[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER]);
             PluginRegistry.getInstance().unregister(EventTypes.ON_NODE_ELEMENT_DELETE,
-                deleteRedirectionNode.name);
-            PluginRegistry.getInstance().unregister(EventTypes.ON_EDGE_DELETE, deleteComponentAndNode.name);
+                deleteRedirectionNode[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER]);
+            PluginRegistry.getInstance().unregister(EventTypes.ON_EDGE_DELETE,
+                deleteComponentAndNode[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER]);
         };
     }, []);
 

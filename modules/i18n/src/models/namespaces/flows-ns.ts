@@ -25,7 +25,13 @@ export interface flowsNS {
                     placeholder: string;
                 };
             }
-        }
+        };
+        errors: {
+            flowMetadataFetch: {
+                description: string;
+                message: string;
+            };
+        };
     };
     passwordRecovery: {
         name: string;

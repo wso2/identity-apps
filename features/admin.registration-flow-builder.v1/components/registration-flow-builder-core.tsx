@@ -70,6 +70,7 @@ import useGetRegistrationFlowBuilderResources from "../api/use-get-registration-
 import { REGISTRATION_FLOW_AI_PROMPT_HISTORY_PREFERENCE_KEY } from "../constants/registration-flow-ai-constants";
 import RegistrationFlowExecutorConstants from "../constants/registration-flow-executor-constants";
 import useAIGeneratedRegistrationFlow from "../hooks/use-ai-generated-registration-flow";
+import useDefaultFlow from "../hooks/use-default-flow";
 import useGenerateRegistrationFlow, {
     UseGenerateRegistrationFlowFunction
 } from "../hooks/use-generate-registration-flow";
@@ -89,6 +90,8 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     "data-componentid": componentId = "registration-flow-builder-core",
     ...rest
 }: RegistrationFlowBuilderCorePropsInterface): ReactElement => {
+    useDefaultFlow();
+
     const updateNodeInternals: UpdateNodeInternals = useUpdateNodeInternals();
     const flowUpdatesInProgress: MutableRefObject<boolean> = useRef<boolean>(false);
     const nodesUpdatedRef: MutableRefObject<boolean> = useRef<boolean>(false);

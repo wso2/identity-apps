@@ -18,6 +18,7 @@
 
 import AuthenticationFlowBuilderCoreProvider
     from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useReactFlow } from "@xyflow/react";
@@ -48,7 +49,11 @@ export type PasswordRecoveryFlowBuilderProviderProps = PropsWithChildren<unknown
 const PasswordRecoveryFlowBuilderProvider: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
     children
 }: PropsWithChildren<PasswordRecoveryFlowBuilderProviderProps>): ReactElement => (
-    <AuthenticationFlowBuilderCoreProvider ElementFactory={ ElementFactory } ResourceProperties={ ResourceProperties }>
+    <AuthenticationFlowBuilderCoreProvider
+        ElementFactory={ ElementFactory }
+        ResourceProperties={ ResourceProperties }
+        flowType={ FlowTypes.PASSWORD_RECOVERY }
+    >
         <FlowContextWrapper>{ children }</FlowContextWrapper>
     </AuthenticationFlowBuilderCoreProvider>
 );

@@ -28,6 +28,7 @@
         "@oxygen-ui/react": "^2.4.5",
         "@oxygen-ui/react-icons": "^2.4.5",
         "@wso2is/admin.core.v1": "^2.46.10",
+        "@wso2is/admin.flows.v1": "workspace:^",
         "@wso2is/common.ai.v1": "^2.27.3",
         "@wso2is/core": "^2.9.4",
         "@xyflow/react": "^12.3.2",

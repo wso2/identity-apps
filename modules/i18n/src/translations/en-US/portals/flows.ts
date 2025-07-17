@@ -26,6 +26,12 @@ export const flows: flowsNS = {
                 },
                 placeholder: "Enter rich text content here..."
             }
+        },
+        errors: {
+            flowMetadataFetch: {
+                description: "An error occurred while fetching the flow metadata.",
+                message: "Flow Metadata Fetch Error"
+            }
         }
     },
     passwordRecovery: {

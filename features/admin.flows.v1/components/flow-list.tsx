@@ -89,11 +89,11 @@ const FlowList: FunctionComponent<FlowListProps> = ({
      */
     const resolveFlowTypeIcon = (flowType: string): ReactElement => {
         switch (flowType) {
-            case FlowTypes.REGISTRATION:
+            case FlowTypes.SELF_REGISTRATION:
                 return <UserPlusIcon size="small" className="icon" />;
             case FlowTypes.PASSWORD_RECOVERY:
                 return <UserFlowIcon size="small" className="icon" />;
-            case FlowTypes.INVITE_USER_PASSWORD_SETUP:
+            case FlowTypes.ASK_PASSWORD:
                 return <UserAsteriskIcon size="small" className="icon" />;
             default:
                 return <UserKeyIcon size="small" className="icon" />;
@@ -102,11 +102,11 @@ const FlowList: FunctionComponent<FlowListProps> = ({
 
     const resolveFlowTypeName = (flowType: string): string => {
         switch (flowType) {
-            case FlowTypes.REGISTRATION:
+            case FlowTypes.SELF_REGISTRATION:
                 return "Registration";
             case FlowTypes.PASSWORD_RECOVERY:
                 return "Password Recovery";
-            case FlowTypes.INVITE_USER_PASSWORD_SETUP:
+            case FlowTypes.ASK_PASSWORD:
                 return "Invite User Password Setup";
             default:
                 return "Unknown Flow Type";
@@ -138,7 +138,7 @@ const FlowList: FunctionComponent<FlowListProps> = ({
 
     const resolveFlowTypeStatus = (flowType: string): boolean => {
         switch (flowType) {
-            case FlowTypes.REGISTRATION:
+            case FlowTypes.SELF_REGISTRATION:
                 return isNewRegistrationPortalEnabled;
 
         }
@@ -146,7 +146,7 @@ const FlowList: FunctionComponent<FlowListProps> = ({
 
     const resolveFlowTypeStatusLabel = (flowType: string): ReactElement => {
         switch (flowType) {
-            case FlowTypes.REGISTRATION:
+            case FlowTypes.SELF_REGISTRATION:
                 return resolveFlowTypeStatus(flowType)
                     ? (
                         <div
@@ -175,7 +175,7 @@ const FlowList: FunctionComponent<FlowListProps> = ({
     const handleFlowStatusToggle = async (e: MouseEvent<HTMLButtonElement>, flowType: string): Promise<void> => {
         e.stopPropagation();
         switch (flowType) {
-            case FlowTypes.REGISTRATION:
+            case FlowTypes.SELF_REGISTRATION:
                 updateGovernanceConnector(
                     {
                         operation: "UPDATE",

@@ -16,18 +16,12 @@
  * under the License.
  */
 
-export interface FlowListItemInterface {
-    id: string;
-    description?: string;
-    disabled?: boolean;
-    path?: string;
-    type?: string;
-    heading?: string;
-    featureStatusKey?: string;
-};
-
-export enum FlowTypes {
-    REGISTRATION = "REGISTRATION",
-    PASSWORD_RECOVERY = "PASSWORD_RECOVERY",
-    INVITED_USER_REGISTRATION = "INVITED_USER_REGISTRATION",
+/**
+ * Interface for the Flow Builder Core feature resource endpoints.
+ */
+export interface FlowBuilderCoreResourceEndpointsInterface {
+    /**
+     * API to get the metadata for the flow builder.
+     */
+    flowMeta: string;
 }
