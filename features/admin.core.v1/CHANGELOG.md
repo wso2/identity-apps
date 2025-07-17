@@ -1,5 +1,17 @@
 # @wso2is/admin.core.v1
 
+## 2.46.13
+
+### Patch Changes
+
+- [#8549](https://github.com/wso2/identity-apps/pull/8549) [`23f4c46d2186dc04027c7a3d6ac7eb034741cc36`](https://github.com/wso2/identity-apps/commit/23f4c46d2186dc04027c7a3d6ac7eb034741cc36) Thanks [@Malith-19](https://github.com/Malith-19)! - Fix the flows tab selected in the side panel when workflows approval tab selected.
+
+* [#8541](https://github.com/wso2/identity-apps/pull/8541) [`11d651c788f58438df750721bb0da11b3c38d081`](https://github.com/wso2/identity-apps/commit/11d651c788f58438df750721bb0da11b3c38d081) Thanks [@KD23243](https://github.com/KD23243)! - Enable Password Recovery and Ask Password flows
+
+* Updated dependencies [[`11d651c788f58438df750721bb0da11b3c38d081`](https://github.com/wso2/identity-apps/commit/11d651c788f58438df750721bb0da11b3c38d081)]:
+  - @wso2is/admin.ask-password-flow-builder.v1@1.0.2
+  - @wso2is/admin.flows.v1@1.0.11
+
 ## 2.46.12
 
 ### Patch Changes
