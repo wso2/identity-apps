@@ -151,6 +151,7 @@ export const common: CommonNS = {
     priority: "ප්\u200Dරමුඛතාවය",
     privacy: "රහස්\u200Dයතාවය",
     properties: "ගුණාංග",
+    publish: "ප්‍රකාශනය කරන්න",
     ready: "සූදානම්",
     regenerate: "නැවත උත්පාදනය කරන්න",
     register: "ලියාපදිංචි වන්න",

@@ -17,6 +17,8 @@
  */
 
 import Breadcrumbs from "@mui/material/Breadcrumbs";
+import Collapse from "@mui/material/Collapse";
+import Fade from "@mui/material/Fade";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import IconButton from "@oxygen-ui/react/IconButton";
@@ -25,9 +27,17 @@ import Typography from "@oxygen-ui/react/Typography";
 import { ArrowLeftIcon } from "@oxygen-ui/react-icons";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import updateFlowConfig from "@wso2is/admin.flows.v1/api/update-flow-config";
+import useGetFlowConfig from "@wso2is/admin.flows.v1/api/use-get-flow-config";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import useRegistrationFlowBuilder from "@wso2is/admin.registration-flow-builder.v1/hooks/use-registration-flow-builder";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import React, { FunctionComponent, ReactElement, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import "./registration-flow-builder-page-header.scss";
 
 /**
  * Props interface of {@link RegistrationFlowBuilderPageHeader}
@@ -56,6 +66,28 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
     ["data-componentid"]: componentId = "registration-flow-builder-page-header"
 }: RegistrationFlowBuilderPageHeaderProps): ReactElement => {
     const { isPublishing, onPublish } = useRegistrationFlowBuilder();
+    const {
+        data: flowConfig,
+        mutate: mutateFlowConfig,
+        error: flowConfigError
+    } = useGetFlowConfig(FlowTypes.REGISTRATION);
+    const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
+
+    const [ isFlowConfigUpdating, setIsFlowConfigUpdating ] = React.useState<boolean>(false);
+
+    /**
+     * Handle flow config fetch errors using useEffect
+     */
+    useEffect(() => {
+        if (flowConfigError) {
+            dispatch(addAlert<AlertInterface>({
+                description: t("flows:registrationFlow.notifications.fetchFlowConfig.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("flows:registrationFlow.notifications.fetchFlowConfig.genericError.message")
+            }));
+        }
+    }, [ flowConfigError, dispatch, t ]);
 
     /**
      * Handles the back button click event.
@@ -73,6 +105,75 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
         }
 
         history.push(backPath);
+    };
+
+    /**
+     * Dispatches error alerts for flow config API errors.
+     *
+     * @param operation - The operation being performed (enable, disable).
+     */
+    const handleFlowConfigError = (operation: string): void => {
+        dispatch(addAlert<AlertInterface>({
+            description: t(`flows:registrationFlow.notifications.${operation}Flow.genericError.description`),
+            level: AlertLevels.ERROR,
+            message: t(`flows:registrationFlow.notifications.${operation}Flow.genericError.message`)
+        }));
+    };
+
+    /**
+     * Dispatches success alerts for flow config operations.
+     *
+     * @param operation - The operation that was successful (enable, disable, publish).
+     */
+    const handleFlowConfigSuccess = (operation: string): void => {
+        dispatch(addAlert<AlertInterface>({
+            description: t(`flows:registrationFlow.notifications.${operation}Flow.success.description`),
+            level: AlertLevels.SUCCESS,
+            message: t(`flows:registrationFlow.notifications.${operation}Flow.success.message`)
+        }));
+    };
+
+    /**
+     * Handles the publish button click event.
+     */
+    const handlePublishButtonClick = async (): Promise<void> => {
+        setIsFlowConfigUpdating(true);
+
+        try {
+            if (!flowConfig.isEnabled) {
+                await updateFlowConfig({
+                    flowType: FlowTypes.REGISTRATION,
+                    isEnabled: true
+                });
+                handleFlowConfigSuccess("enable");
+            }
+        } catch (error) {
+            handleFlowConfigError("enable");
+        } finally {
+            setIsFlowConfigUpdating(false);
+            onPublish();
+            mutateFlowConfig();
+        }
+    };
+
+    /**
+     * Handles the disable button click event.
+     */
+    const handleDisableButtonClick = async (): Promise<void> => {
+        setIsFlowConfigUpdating(true);
+
+        try {
+            await updateFlowConfig({
+                flowType: FlowTypes.REGISTRATION,
+                isEnabled: false
+            });
+            handleFlowConfigSuccess("disable");
+        } catch (error) {
+            handleFlowConfigError("disable");
+        } finally {
+            setIsFlowConfigUpdating(false);
+            mutateFlowConfig();
+        }
     };
 
     return (
@@ -93,19 +194,46 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
                         color="inherit"
                         onClick={ () => history.push(AppConstants.getPaths().get("FLOWS")) }
                     >
-                        Flows
+                        { t("flows:label") }
                     </Link>
-                    <Typography sx={ { color: "text.primary" } }>Edit Registration Flow</Typography>
+                    <Typography>
+                        { t("flows:registrationFlow.breadcrumb") }
+                    </Typography>
                 </Breadcrumbs>
             </Box>
             <Box
                 display="flex"
                 justifyContent="flex-end"
                 alignItems="center"
+                gap={ 2 }
             >
-                <Button variant="contained" onClick={ () => onPublish() } loading={ isPublishing }>
-                    Publish
+                <Button
+                    variant="contained"
+                    onClick={ handlePublishButtonClick }
+                    loading={ isPublishing || isFlowConfigUpdating }
+                >
+                    { flowConfig?.isEnabled
+                        ? t("common:publish")
+                        : `${t("common:enable")} & ${t("common:publish")}`
+                    }
                 </Button>
+                <Collapse
+                    in={ flowConfig?.isEnabled }
+                    orientation="horizontal"
+                    timeout={ 300 }
+                >
+                    <Fade in={ flowConfig?.isEnabled } timeout={ 200 }>
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            onClick={ handleDisableButtonClick }
+                            loading={ isFlowConfigUpdating }
+                            className="registration-flow-builder-page-header-disable-button"
+                        >
+                            { t("common:disable") }
+                        </Button>
+                    </Fade>
+                </Collapse>
             </Box>
         </Box>
     );

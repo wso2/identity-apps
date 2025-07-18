@@ -25,6 +25,7 @@ import { EventTypes } from "@wso2is/admin.flow-builder-core.v1/models/extension"
 import { Resource } from "@wso2is/admin.flow-builder-core.v1/models/resources";
 import { TemplateTypes } from "@wso2is/admin.flow-builder-core.v1/models/templates";
 import PluginRegistry from "@wso2is/admin.flow-builder-core.v1/plugins/plugin-registry";
+import generateResourceId from "@wso2is/admin.flow-builder-core.v1/utils/generate-resource-id";
 import { Claim } from "@wso2is/core/models";
 import cloneDeep from "lodash-es/cloneDeep";
 import { useEffect } from "react";
@@ -41,7 +42,7 @@ const EXCLUDED_CLAIMS: string[] = [
     "http://wso2.org/claims/challengeQuestion1",
     "http://wso2.org/claims/challengeQuestion2",
     "http://wso2.org/claims/groups",
-    "http://wso2.org/claims/role",
+    "http://wso2.org/claims/roles",
     "http://wso2.org/claims/url",
     "http://wso2.org/claims/emailAddresses",
     "http://wso2.org/claims/verifiedEmailAddresses",
@@ -129,6 +130,7 @@ const useDefaultFlow = (): void => {
     const buildFieldFromClaim = (claim: Claim): Element => {
         const field: Element = cloneDeep(FIELD);
 
+        field.id = generateResourceId("input");
         field.config.label = claim.displayName;
         field.config.placeholder = buildPlaceholderText(claim.displayName);
         field.config.required = claim.required;
@@ -140,6 +142,10 @@ const useDefaultFlow = (): void => {
     };
 
     useEffect(() => {
+        if (!claims) {
+            return;
+        }
+
         generateProfileAttributes[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER] =
             "generateProfileAttributes";
 
@@ -149,7 +155,7 @@ const useDefaultFlow = (): void => {
             PluginRegistry.getInstance().unregister(EventTypes.ON_TEMPLATE_LOAD,
                 generateProfileAttributes[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER]);
         };
-    }, []);
+    }, [ claims ]);
 
     /**
      * Generate profile attributes for the given resource.
@@ -159,7 +165,7 @@ const useDefaultFlow = (): void => {
      */
     const generateProfileAttributes = (resource: Resource): boolean => {
         if (resource.type === TemplateTypes.Basic) {
-            const formComponents: Element[] = resource.data.steps[0].data.components;
+            const formComponents: Element[] = resource.config.data.steps[0].data.components[1].components;
 
             const emailClaim: Claim = claims?.find((claim: Claim) => claim.claimURI === EMAIL_CLAIM_URI);
             const firstNameClaim: Claim = claims?.find((claim: Claim) => claim.claimURI === FIRST_NAME_CLAIM_URI);
@@ -168,30 +174,28 @@ const useDefaultFlow = (): void => {
             if (emailClaim) {
                 const field: Element = buildFieldFromClaim(emailClaim);
 
-                formComponents.splice(0, 0, field);
+                formComponents.splice(1, 0, field);
             }
 
-            if (firstNameClaim) {
-                const field: Element = buildFieldFromClaim(firstNameClaim);
+            const claimsForRegistration: Element[] = [];
 
-                formComponents.push(field);
+            if (firstNameClaim) {
+                claimsForRegistration.push(buildFieldFromClaim(firstNameClaim));
             }
 
             if (lastNameClaim) {
-                const field: Element = buildFieldFromClaim(lastNameClaim);
-
-                formComponents.push(field);
+                claimsForRegistration.push(buildFieldFromClaim(lastNameClaim));
             }
 
             claims?.forEach((claim: Claim) => {
-                if (EXCLUDED_CLAIMS.includes(claim.claimURI)) {
+                if (EXCLUDED_CLAIMS.includes(claim.claimURI) || claim.readOnly) {
                     return;
                 }
 
-                const field: Element = buildFieldFromClaim(claim);
-
-                formComponents.push(field);
+                claimsForRegistration.push(buildFieldFromClaim(claim));
             });
+
+            formComponents.splice(formComponents.length - 3, 0, ...claimsForRegistration);
         }
 
         return true;

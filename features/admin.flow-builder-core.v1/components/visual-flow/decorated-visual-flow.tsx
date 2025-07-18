@@ -351,6 +351,8 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
             return;
         }
 
+        resource = cloneDeep(resource);
+
         /**
          * Execute plugins for ON_TEMPLATE_LOAD event.
          */

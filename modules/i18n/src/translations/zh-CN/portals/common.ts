@@ -151,6 +151,7 @@ export const common: CommonNS = {
     "priority": "优先事项",
     "privacy": "隐私",
     "properties": "特性",
+    "publish": "发布",
     "ready": "准备好",
     "regenerate": "再生",
     "register": "登记",

@@ -151,6 +151,7 @@ export const common: CommonNS = {
     "priority": "優先度",
     "privacy": "プライバシー",
     "properties": "プロパティ",
+    "publish": "公開",
     "ready": "準備ができて",
     "regenerate": "再生",
     "register": "登録する",

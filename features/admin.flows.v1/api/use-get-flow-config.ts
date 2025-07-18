@@ -23,15 +23,16 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { FlowConfigInterface } from "../models/flows";
+import { FlowConfigInterface, FlowTypes } from "../models/flows";
 
 /**
- * Hook to fetch the flow configurations.
+ * Hook to fetch the flow configuration.
  *
  * @param shouldFetch - Should fetch data from the API.
- * @returns Flow configuration list response.
+ * @returns Flow configuration response.
  */
-const useGetFlowConfigs = <Data = FlowConfigInterface[], Error = RequestErrorInterface>(
+const useGetFlowConfig = <Data = FlowConfigInterface, Error = RequestErrorInterface>(
+    flowType: FlowTypes,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
@@ -40,10 +41,13 @@ const useGetFlowConfigs = <Data = FlowConfigInterface[], Error = RequestErrorInt
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.flowConfigurations
+        params: {
+            flowType
+        },
+        url: store.getState().config.endpoints.flowConfiguration
     };
 
-    const { data, error, isLoading, isValidating, mutate, response } = useRequest<Data, Error>(
+    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
         shouldFetch ? requestConfig : null
     );
 
@@ -52,9 +56,8 @@ const useGetFlowConfigs = <Data = FlowConfigInterface[], Error = RequestErrorInt
         error,
         isLoading,
         isValidating,
-        mutate,
-        response
+        mutate
     };
 };
 
-export default useGetFlowConfigs;
+export default useGetFlowConfig;

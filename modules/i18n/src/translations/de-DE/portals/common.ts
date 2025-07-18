@@ -151,6 +151,7 @@ export const common: CommonNS = {
     "priority": "Priorität",
     "privacy": "Privatsphäre",
     "properties": "Eigenschaften",
+    "publish": "Veröffentlichen",
     "ready": "Bereit",
     "regenerate": "Regenerieren",
     "register": "Registrieren",

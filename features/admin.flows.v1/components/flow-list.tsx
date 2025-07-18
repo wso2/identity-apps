@@ -41,10 +41,10 @@ import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import updateFlowConfig, { FlowConfigInterface } from "../api/update-flow-config";
+import updateFlowConfig from "../api/update-flow-config";
 import useGetFlowConfigs from "../api/use-get-flow-configs";
 import flowData from "../data/flows.json";
-import { FlowListItemInterface, FlowTypes } from "../models/flows";
+import { FlowConfigInterface, FlowListItemInterface, FlowTypes } from "../models/flows";
 import "./flow-list.scss";
 
 /**
@@ -164,7 +164,7 @@ const FlowList: FunctionComponent<FlowListProps> = ({
 
         try {
             const payload: FlowConfigInterface = {
-                flowType,
+                flowType: flowType as FlowTypes,
                 isEnabled: !currentState
             };
 
