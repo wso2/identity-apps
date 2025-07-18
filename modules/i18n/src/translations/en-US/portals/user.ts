@@ -462,7 +462,8 @@ export const user: userNS = {
                     placeholder: "Enter your {{fieldName}}",
                     validations: {
                         empty: "{{fieldName}} is a required field",
-                        invalidFormat: "The {{fieldName}} is not of the correct format"
+                        invalidFormat: "The {{fieldName}} is not of the correct format",
+                        required: "{{fieldName}} is required"
                     }
                 }
             },

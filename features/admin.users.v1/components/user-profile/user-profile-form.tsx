@@ -832,14 +832,19 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
             onSubmit={ handleSubmit }
             render={ ({ handleSubmit, dirty }: FormRenderProps) => {
                 return (
-                    <form id="user-profile-form" onSubmit={ handleSubmit } className="user-profile-form">
+                    <form
+                        id="user-profile-form"
+                        onSubmit={ handleSubmit }
+                        className="user-profile-form"
+                        data-componentid={ `${componentId}-form` }
+                        data-testid={ `${componentId}-form` }
+                    >
                         <Grid container spacing={ 3 }>
 
                             { profileData.id && (
                                 <Grid xs={ 12 }>
                                     <FinalFormField
                                         key="userID"
-                                        data-componentid={ `${ componentId }-userID` }
                                         component={ TextFieldAdapter }
                                         initialValue={ profileData?.id }
                                         label={ t("user:profile.fields.userId") }
@@ -848,6 +853,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                                         type="text"
                                         maxLength={ 100 }
                                         minLength={ 0 }
+                                        data-componentid={ `${componentId}-profile-form-userID` }
                                         readOnly
                                     />
                                 </Grid>
@@ -869,7 +875,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                                                 isUpdating={ isUpdating }
                                                 setIsUpdating={ (isUpdating: boolean) => setIsUpdating(isUpdating) }
                                                 onUserUpdated={ onUserUpdated }
-                                                data-componentid={ componentId }
+                                                data-componentid={ `${componentId}-profile-form` }
                                             />
                                         </Grid>
                                     );
@@ -944,8 +950,8 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                                         className="form-button"
                                         loading={ isUpdating }
                                         disabled={ isUpdating || !dirty }
-                                        data-componentid={ `${ componentId }-update-button` }
-                                        data-testid={ `${ componentId }-update-button` }
+                                        data-componentid={ `${ componentId }-form-update-button` }
+                                        data-testid={ `${ componentId }-form-update-button` }
                                     >
                                         { t("common:update") }
                                     </Button>

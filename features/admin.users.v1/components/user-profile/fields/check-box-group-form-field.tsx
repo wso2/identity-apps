@@ -45,7 +45,7 @@ const CheckBoxGroupFormField: FunctionComponent<CheckBoxGroupFormFieldPropsInter
     const validate = (value: string[]): string => {
         if (isEmpty(value) && isRequired) {
             return (
-                t("user:profile.forms.generic.inputs.validations.empty", { fieldName: fieldLabel })
+                t("user:profile.forms.generic.inputs.validations.required", { fieldName: fieldLabel })
             );
         }
 

@@ -327,7 +327,8 @@ const MultiValuedMobileField: FunctionComponent<MultiValuedMobileFieldPropsInter
                     type="hidden"
                     validate={ (value: string[]) => {
                         if (resolvedSchemaRequiredValue && isEmpty(value)) {
-                            return t("user:profile.forms.generic.inputs.validations.empty", { fieldName: fieldLabel });
+                            return t("user:profile.forms.generic.inputs.validations.required", {
+                                fieldName: fieldLabel });
                         }
                     } }
                 />
@@ -371,7 +372,7 @@ const MultiValuedMobileField: FunctionComponent<MultiValuedMobileFieldPropsInter
                                                 alignItems="center"
                                             >
                                                 <label
-                                                    data-componentid={ `${componentId}-${schema.name}-value-${index}` }
+                                                    data-componentid={ `${componentId}-value-${index}` }
                                                     className="multi-value-table-label"
                                                 >
                                                     { value }
@@ -379,8 +380,7 @@ const MultiValuedMobileField: FunctionComponent<MultiValuedMobileFieldPropsInter
                                                 { isVerified && (
                                                     <div
                                                         className="verified-icon"
-                                                        data-componentid={ `${componentId}-profile-form-${
-                                                            schema.name}-verified-icon-${index}` }
+                                                        data-componentid={ `${componentId}-verified-icon-${index}` }
                                                     >
                                                         <Popup
                                                             name="verified-popup"
@@ -393,8 +393,7 @@ const MultiValuedMobileField: FunctionComponent<MultiValuedMobileFieldPropsInter
                                                 ) }
                                                 { isPrimary && (
                                                     <div
-                                                        data-componentid={ `${componentId}-profile-form-${
-                                                            schema.name}-primary-icon-${index}` }
+                                                        data-componentid={ `${componentId}-primary-icon-${index}` }
                                                     >
                                                         <Chip label={ t("common:primary") } size="medium" />
                                                     </div>
@@ -427,28 +426,29 @@ const MultiValuedMobileField: FunctionComponent<MultiValuedMobileFieldPropsInter
                                                         size="small"
                                                         className="text-btn"
                                                         onClick={ () => handleMakePrimary(value) }
-                                                        data-componentid={ `${componentId}-profile-form-${
-                                                            schema.name}-make-primary-button-${index}` }
+                                                        data-componentid={
+                                                            `${componentId}-make-primary-button-${index}` }
                                                         disabled={ isUpdating || isReadOnly }
                                                     >
                                                         { t("common:makePrimary") }
                                                     </Button>
                                                 ) }
-                                                { !(isPrimary && resolvedPrimarySchemaRequiredValue) && (
-                                                    <Tooltip title={ t("common:delete") }>
-                                                        <IconButton
-                                                            size="small"
-                                                            onClick={ () => handleDelete(value) }
-                                                            data-componentid={
-                                                                `${componentId}-profile-form` +
-                                                                `-${schema.name}-delete-button-${index}`
-                                                            }
-                                                            disabled={ isUpdating || isReadOnly }
-                                                        >
-                                                            <TrashIcon />
-                                                        </IconButton>
-                                                    </Tooltip>
-                                                ) }
+                                                <Tooltip title={ t("common:delete") }>
+                                                    <IconButton
+                                                        size="small"
+                                                        onClick={ () => handleDelete(value) }
+                                                        data-componentid={
+                                                            `${componentId}-delete-button-${index}`
+                                                        }
+                                                        disabled={ (isPrimary &&
+                                                            resolvedPrimarySchemaRequiredValue) ||
+                                                            isUpdating ||
+                                                            isReadOnly
+                                                        }
+                                                    >
+                                                        <TrashIcon />
+                                                    </IconButton>
+                                                </Tooltip>
                                             </Grid>
                                         </TableCell>
                                     </TableRow>

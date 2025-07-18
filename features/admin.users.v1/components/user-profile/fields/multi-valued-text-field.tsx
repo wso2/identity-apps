@@ -183,7 +183,8 @@ const MultiValuedTextField: FunctionComponent<MultiValuedTextFieldPropsInterface
                     type="hidden"
                     validate={ (value: string[]) => {
                         if (isEmpty(value) && isRequired) {
-                            return t("user:profile.forms.generic.inputs.validations.empty", { fieldName: fieldLabel });
+                            return t("user:profile.forms.generic.inputs.validations.required", {
+                                fieldName: fieldLabel });
                         }
                     } }
                 />
@@ -203,7 +204,8 @@ const MultiValuedTextField: FunctionComponent<MultiValuedTextFieldPropsInterface
                                             alignItems="center"
                                         >
                                             <label
-                                                data-componentid={ `${componentId}-${schema.name}-value-${index}` }
+                                                data-componentid={ `${componentId}-value-${index}` }
+                                                data-testid={ `${componentId}-value-${index}` }
                                                 className="multi-value-table-label"
                                             >
                                                 { value }
@@ -217,8 +219,7 @@ const MultiValuedTextField: FunctionComponent<MultiValuedTextFieldPropsInterface
                                                     size="small"
                                                     onClick={ () => handleDelete(value) }
                                                     data-componentid={
-                                                        `${componentId}-profile-form` +
-                                                        `-${schema.name}-delete-button-${index}`
+                                                        `${componentId}-delete-button-${index}`
                                                     }
                                                     disabled={ isUpdating || isReadOnly }
                                                 >

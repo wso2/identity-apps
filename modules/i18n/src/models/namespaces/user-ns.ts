@@ -414,6 +414,7 @@ export interface userNS {
                     validations: {
                         empty: string;
                         invalidFormat: string;
+                        required: string;
                     };
                 };
             };

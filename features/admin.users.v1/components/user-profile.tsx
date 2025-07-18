@@ -1342,7 +1342,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 accountConfigSettings={ configSettings }
                                 isUserManagedByParentOrg={ isUserManagedByParentOrg }
                                 onUserUpdated={ handleUserUpdate }
-                                data-componentid={ `${testId}-profile-form` }
+                                data-componentid={ testId }
                             />
                         </div>
                     ) }
