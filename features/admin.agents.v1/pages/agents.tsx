@@ -122,10 +122,10 @@ export default function Agents ({
                         image={ null }
                         imageSize="tiny"
                         subtitle={ [
+                            t("agents:list.featureUnavailable.subtitle.0"),
                             isSAASDeployment
-                                ? t("agents:list.featureUnavailable.subtitle.0.saas")
-                                : t("agents:list.featureUnavailable.subtitle.0.onprem"),
-                            t("agents:list.featureUnavailable.subtitle.1")
+                                ? t("agents:list.featureUnavailable.subtitle.1.saas")
+                                : t("agents:list.featureUnavailable.subtitle.1.onprem")
                         ] }
                         title={ t("agents:list.featureUnavailable.title") }
                     />
