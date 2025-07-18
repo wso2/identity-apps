@@ -33,6 +33,10 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
+import {
+    ServerConfigurationsConstants,
+    updateGovernanceConnector
+} from "@wso2is/admin.server-configurations.v1";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -51,6 +55,20 @@ import "./flow-list.scss";
  * Props interface of {@link FlowList}
  */
 type FlowListProps = IdentifiableComponentInterface;
+
+const GOVERNANCE_CONNECTOR_MAP: {
+    [key in FlowTypes]?: {
+        connectorCategory: string;
+        connectorId: string;
+        property: string;
+    }
+} = {
+    [FlowTypes.REGISTRATION]: {
+        connectorCategory: ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+        connectorId: ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID,
+        property: ServerConfigurationsConstants.SELF_REGISTRATION_FLOW_BUILDER_ENABLED
+    }
+};
 
 /**
  * Flow list component.
@@ -161,6 +179,26 @@ const FlowList: FunctionComponent<FlowListProps> = ({
         e.stopPropagation();
 
         const currentState: boolean = resolveFlowTypeStatus(flowType);
+
+        if (GOVERNANCE_CONNECTOR_MAP[flowType]) {
+            const { connectorCategory, connectorId, property } = GOVERNANCE_CONNECTOR_MAP[flowType];
+
+            try {
+                await updateGovernanceConnector(
+                    {
+                        operation: "UPDATE",
+                        properties: [ {
+                            name: property,
+                            value: !currentState
+                        } ]
+                    },
+                    connectorCategory,
+                    connectorId
+                );
+            } catch (error) {
+                handleFlowStatusUpdateError(flowType, error);
+            }
+        }
 
         try {
             const payload: FlowConfigInterface = {
