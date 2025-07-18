@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Typography from "@oxygen-ui/react/Typography";
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -35,7 +36,7 @@ import AgentRoles from "../components/edit/agent-roles";
 import { AGENT_FEATURE_DICTIONARY } from "../constants/agents";
 import useGetAgent from "../hooks/use-get-agent";
 
-interface EditAgentPageProps extends IdentifiableComponentInterface {}
+type EditAgentPageProps = IdentifiableComponentInterface;
 
 export default function EditAgent({
     [ "data-componentid" ]: componentId
@@ -113,7 +114,7 @@ export default function EditAgent({
             setAgentOwnerDisplayName(userInfo?.userName);
         };
 
-        if (agentInfo?.["urn:scim:wso2:agent:schema"]?.Owner) {
+        if (!agentOwnerDisplayName && agentInfo?.["urn:scim:wso2:agent:schema"]?.Owner) {
             fetchOwnerDisplayName();
         }
     }, [ agentInfo ]);
@@ -125,9 +126,12 @@ export default function EditAgent({
     return (
         <TabPageLayout
             pageTitle="Edit agent"
-            title={ agentInfo?.["urn:scim:wso2:agent:schema"]?.DisplayName }
+            title={ agentInfo?.["urn:scim:wso2:agent:schema"]?.DisplayName ?? agentInfo?.id }
             description={ (<>
-                <p>Created by <strong>{ agentOwnerDisplayName }</strong></p>
+                <Typography variant="body1">{
+                    agentInfo?.["urn:scim:wso2:agent:schema"]?.DisplayName && agentInfo?.id
+                }</Typography>
+                <Typography variant="body1">Created by <strong>{ agentOwnerDisplayName }</strong></Typography>
             </>) }
             isLoading={ isAgentInfoLoading }
             backButton={ {
@@ -142,6 +146,7 @@ export default function EditAgent({
                     floated="left"
                 />
             ) }
+            bottomMargin={ false }
         >
             <ResourceTab panes={ renderedTabPanes } />
         </TabPageLayout>
