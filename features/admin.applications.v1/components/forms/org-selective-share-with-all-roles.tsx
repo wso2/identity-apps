@@ -111,7 +111,6 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
 
     const {
         data: originalTopLevelOrganizations,
-        isLoading: isTopLevelOrganizationsFetchRequestLoading,
         error: topLevelOrganizationsFetchRequestError
     } = useGetOrganizations(
         isOrganizationManagementEnabled,
@@ -137,11 +136,8 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
     );
 
     const isLoading: boolean = useMemo(() => {
-        return isApplicationOrganizationTreeFetchRequestLoading || isTopLevelOrganizationsFetchRequestLoading;
-    }, [
-        isApplicationOrganizationTreeFetchRequestLoading,
-        isTopLevelOrganizationsFetchRequestLoading
-    ]);
+        return isApplicationOrganizationTreeFetchRequestLoading;
+    }, [ isApplicationOrganizationTreeFetchRequestLoading ]);
 
     // Get the shared organizations of the application
     useEffect(() => {

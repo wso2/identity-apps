@@ -53,6 +53,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import ConsoleRolesSelectiveShare from "./console-roles-selective-share";
 import ConsoleRolesShareWithAll from "./console-roles-share-with-all";
+import { ConsoleRolesOnboardingConstants } from "../../constants/console-roles-onboarding-constants";
 import useConsoleRoles from "../../hooks/use-console-roles";
 import useConsoleSettings from "../../hooks/use-console-settings";
 import { ApplicationSharingPolicy, RoleSharedAccessModes, RoleSharingModes } from "../../models/shared-access";
@@ -93,7 +94,7 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
         true,
         UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
         null,
-        "displayName eq Administrator"
+        `displayName eq ${ ConsoleRolesOnboardingConstants.ADMINISTRATOR }`
     );
 
     const {
@@ -159,7 +160,20 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                 );
 
             if (initialRoles?.length > 0) {
-                setSelectedRoles(initialRoles);
+                const tempInitialRoles: RolesInterface[] = [ ...initialRoles ];
+                // Check if the administrator role is already available in the initial roles.
+                const isAdministratorRoleAvailable: boolean = tempInitialRoles.some(
+                    (role: RolesInterface) =>
+                        role.displayName === ConsoleRolesOnboardingConstants.ADMINISTRATOR
+                );
+
+                // If the administrator role is not available,
+                // add it to the initial roles in the first position.
+                if (!isAdministratorRoleAvailable) {
+                    tempInitialRoles.unshift(administratorRole?.Resources[0]);
+                }
+
+                setSelectedRoles(tempInitialRoles);
             }
         }
     }, [ originalOrganizationTree ]);
@@ -454,7 +468,7 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                         </FormControl>
                         <Grid xs={ 14 } marginTop={ 2 }>
                             <Heading as="h4">
-                                Shared Roles
+                                Advanced Role Sharing
                             </Heading>
                             <ConsoleRolesSelectiveShare
                                 setAddedRoles={ setAddedRoles }

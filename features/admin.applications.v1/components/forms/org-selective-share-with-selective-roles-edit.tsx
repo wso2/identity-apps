@@ -155,7 +155,6 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
     // Fetch the top-level organization of the current organization.
     const {
         data: originalTopLevelOrganizations,
-        isLoading: isTopLevelOrganizationsFetchRequestLoading,
         error: topLevelOrganizationsFetchRequestError
     } = useGetOrganizations(
         isOrganizationManagementEnabled,
@@ -197,11 +196,9 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
     );
 
     const isLoading: boolean = useMemo((): boolean => (isTotalApplicationOrganizationsFetchRequestLoading ||
-            isTopLevelOrganizationsFetchRequestLoading ||
             isApplicationRolesFetchRequestLoading
     ), [
         isTotalApplicationOrganizationsFetchRequestLoading,
-        isTopLevelOrganizationsFetchRequestLoading,
         isApplicationRolesFetchRequestLoading
     ]);
 

@@ -18,6 +18,7 @@
 
 import { TreeViewBaseItem } from "@mui/x-tree-view/models";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
+import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Checkbox from "@oxygen-ui/react/Checkbox";
@@ -53,6 +54,7 @@ import { useTranslation } from "react-i18next";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import { Icon } from "semantic-ui-react";
 import { ConsoleRolesOnboardingConstants } from "../../constants/console-roles-onboarding-constants";
 import useConsoleRoles from "../../hooks/use-console-roles";
 import useConsoleSettings from "../../hooks/use-console-settings";
@@ -99,6 +101,7 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
 
     const {
         data: originalTopLevelOrganizationTree,
+        mutate: mutateOriginalTopLevelOrganizationTree,
         error:  originalTopLevelOrganizationTreeFetchRequestError
     } = useGetApplicationShare(
         consoleId,
@@ -442,10 +445,45 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
 
     return (
         <>
+            <Alert
+                severity="info"
+            >
+                Sharing roles will take some time to effect.
+            </Alert>
+            <Grid
+                marginTop={ 1 }
+                justifySelf="flex-end"
+            >
+
+                <Button
+                    data-componentid={ `${ componentId }-refresh-button` }
+                    variant="text"
+                    size="small"
+                    onClick={ () => mutateOriginalTopLevelOrganizationTree() }
+                    startIcon={ <Icon size="small" name="refresh" /> }
+                >
+                    Refresh
+                </Button>
+                <Button
+                    data-componentid={ `${ componentId }-edit-button` }
+                    variant="text"
+                    size="small"
+                    onClick={ () => setReadOnly(!readOnly) }
+                    startIcon= {
+                        readOnly
+                            ? <Icon size="small" name="edit" />
+                            : <Icon size="small" name="eye"  />
+                    }
+                >
+                    { readOnly
+                        ? t("applications:edit.sections.sharedAccess.manageRoleSharing")
+                        : t("applications:edit.sections.sharedAccess.viewRoleSharing")
+                    }
+                </Button>
+            </Grid>
             <Grid
                 container
                 xs={ 12 }
-                className="roles-selective-share-container"
             >
                 <Grid
                     xs={ 12 }
@@ -564,16 +602,6 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
                         }
                     </Box>
                 </Grid>
-                <Button
-                    variant="text"
-                    size="small"
-                    onClick={ () => setReadOnly(!readOnly) }
-                >
-                    { readOnly
-                        ? "Advanced Role Sharing"
-                        : t("applications:edit.sections.sharedAccess.viewRoleSharing")
-                    }
-                </Button>
             </Grid>
         </>
     );
