@@ -121,7 +121,7 @@ export default function AgentList ({
                             <AppAvatar
                                 image={ (
                                     <AnimatedAvatar
-                                        name={ agent?.["urn:scim:wso2:agent:schema"]?.DisplayName }
+                                        name={ agent?.["urn:scim:wso2:agent:schema"]?.DisplayName ?? "Agent" }
                                         size="mini"
                                         data-testid={ `${componentId}-item-display-name-avatar` }
                                     />

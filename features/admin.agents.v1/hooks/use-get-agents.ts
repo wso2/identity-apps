@@ -49,7 +49,6 @@ export const useGetAgents = (
         params: {
             attributes,
             count,
-            domain: "AGENT",
             excludedAttributes: "roles,groups",
             filter,
             startIndex

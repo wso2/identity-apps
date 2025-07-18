@@ -18,6 +18,7 @@
 
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AGENT_USERSTORE_ID } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
@@ -31,7 +32,7 @@ import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Icon } from "semantic-ui-react";
+import { DropdownProps, Icon } from "semantic-ui-react";
 import AgentList from "../components/agent-list";
 import { AgentSecretShowModal } from "../components/edit/agent-secret-show-modal";
 import AddAgentWizard from "../components/wizards/add-agent-wizard";
@@ -52,6 +53,12 @@ export default function Agents ({
     const [ isAddAgentWizardOpen,setIsAddAgentWizardOpen ] = useState(false);
     const [ isAgentCredentialWizardOpen, setIsAgentCredentialWizardOpen ] = useState(false);
 
+    const [ searchQuery, setSearchQuery ] = useState<string>(null);
+    const [ startIndex, setStartIndex ] = useState<number>(1);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(
+        UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT
+    );
+
     const { getLink } = useDocumentation();
 
     const {
@@ -65,25 +72,26 @@ export default function Agents ({
 
     const { t } = useTranslation();
 
-    const agentListMetaData: any = {
-        attributes: "",
-        count: 10,
-        domain: "AGENT",
-        filter: "",
-        startIndex: 1
-    };
-
     const {
         data: agentList,
         isLoading: isAgentListLoading,
         mutate: mutateAgentList
     } = useGetAgents(
-        agentListMetaData.count,
-        agentListMetaData.startIndex,
-        agentListMetaData.filter === "" ? null : agentListMetaData.filter,
-        agentListMetaData.attributes === "" ? null : agentListMetaData.attributes,
+        listItemLimit,
+        startIndex,
+        searchQuery,
+        null,
         isAgentManagementEnabledForOrg
     );
+
+    const handleUserFilter = (query: string): void => {
+        setSearchQuery(query);
+        setStartIndex(1);
+    };
+
+    const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
+        setListItemLimit(data.value as number);
+    };
 
     return (
         <PageLayout
@@ -114,7 +122,6 @@ export default function Agents ({
                 { t("agents:new.action.title") }
             </PrimaryButton>) }
         >
-
             { !isUserStoresListFetchRequestLoading && !isAgentManagementEnabledForOrg ? (
                 <EmphasizedSegment className="agent-feature-unavailable-notice">
                     <EmptyPlaceholder
@@ -133,7 +140,7 @@ export default function Agents ({
             ) :             (<ListLayout
                 advancedSearch={ (
                     <AdvancedSearchWithBasicFilters
-                        onFilter={ () => {} }
+                        onFilter={ handleUserFilter }
                         filterAttributeOptions={ [
                             {
                                 key: 0,
@@ -158,7 +165,7 @@ export default function Agents ({
                         defaultSearchAttribute="name"
                         defaultSearchOperator="co"
                         predefinedDefaultSearchStrategy={
-                            "name co %search-value% or clientId co %search-value% or issuer co %search-value%"
+                            "urn:scim:wso2:agent:schema.DisplayName co %search-value% or id co %search-value%"
                         }
                         triggerClearQuery={ false }
                         data-testid={ `${ componentId }-list-advanced-search` }
@@ -166,15 +173,15 @@ export default function Agents ({
                 ) }
                 currentListSize={ agentList?.totalResults }
                 isLoading={ isAgentListLoading }
-                listItemLimit={ agentListMetaData.count }
-                onItemsPerPageDropdownChange={ () => {} }
+                listItemLimit={ listItemLimit }
+                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ () => {} }
                 onSortStrategyChange={ () => {} }
                 showPagination={ true }
                 showTopActionPanel={ true }
                 sortOptions={ null }
                 sortStrategy={ null }
-                totalPages={ Math.ceil(agentList?.totalResults / agentListMetaData?.count ) }
+                totalPages={ Math.ceil(agentList?.totalResults / listItemLimit ) }
                 totalListSize={ agentList?.totalResults }
                 paginationOptions={ {
                     disableNextButton: true

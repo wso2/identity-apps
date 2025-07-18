@@ -141,7 +141,7 @@ export default function EditAgent({
             } }
             image={ (
                 <AnimatedAvatar
-                    name={ agentInfo?.["urn:scim:wso2:agent:schema"]?.DisplayName }
+                    name={ agentInfo?.["urn:scim:wso2:agent:schema"]?.DisplayName ?? "Agent" }
                     size="tiny"
                     floated="left"
                 />
