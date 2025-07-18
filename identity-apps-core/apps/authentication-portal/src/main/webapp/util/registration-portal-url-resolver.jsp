@@ -16,8 +16,8 @@
   ~ under the License.
 --%>
 
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.CommonDataRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.CommonDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
 <%@ page import="javax.servlet.http.HttpServletRequest" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
@@ -107,9 +107,9 @@
     }
 
     try {
-        PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
-        isDynamicPortalEnabled = preferenceRetrievalClient.checkSelfRegistrationEnableDynamicPortal(tenantDomain);
-    } catch (PreferenceRetrievalClientException e) {
+        CommonDataRetrievalClient commonDataRetrievalClient = new CommonDataRetrievalClient();
+        isDynamicPortalEnabled = commonDataRetrievalClient.checkBooleanProperty("/api/server/v1/flow/config?flowType=REGISTRATION", tenantDomain, "isEnabled", false, true);
+    } catch (CommonDataRetrievalClientException e) {
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", AuthenticationEndpointUtil
                 .i18n(resourceBundle, "something.went.wrong.contact.admin"));
