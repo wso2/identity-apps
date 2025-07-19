@@ -2590,6 +2590,16 @@ export const extensions: Extensions = {
     manage: {
         accountLogin: {
             notifications: {
+                revert: {
+                    error: {
+                        description: "An error occurred while reverting the username validation configuration.",
+                        message: "Revert error"
+                    },
+                    success: {
+                        description: "Successfully reverted username validation configuration.",
+                        message: "Revert successful"
+                    }
+                },
                 success: {
                     description: "Successfully updated username validation configuration.",
                     message: "Update successful"

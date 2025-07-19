@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -31,14 +31,21 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
-import { EmphasizedSegment, PageLayout, PrimaryButton, URLInput } from "@wso2is/react-components";
+import {
+    DangerZone,
+    DangerZoneGroup,
+    EmphasizedSegment,
+    PageLayout,
+    PrimaryButton,
+    URLInput
+} from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Placeholder, Ref } from "semantic-ui-react";
-import { updateSaml2Configurations, useSaml2Config } from "../api/saml2-configuration";
+import { revertSaml2Configurations, updateSaml2Configurations, useSaml2Config } from "../api/saml2-configuration";
 import { Saml2ConfigurationConstants } from "../constants/saml2-configuration";
 import {
     Saml2ConfigAPIResponseInterface,
@@ -146,6 +153,21 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
     };
 
     /**
+     * Displays the sucess banner when saml2 configuration configurations are reverted.
+     */
+    const handleRevertSuccess = () => {
+        dispatch(
+            addAlert({
+                description: t("saml2Config:notifications." +
+                    "revertConfiguration.success.description"),
+                level: AlertLevels.SUCCESS,
+                message: t("saml2Config:notifications." +
+                    "revertConfiguration.success.message")
+            })
+        );
+    };
+
+    /**
      * Displays the error banner when unable to update saml2 configuration configurations.
      */
     const handleUpdateError = () => {
@@ -156,6 +178,21 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
                 level: AlertLevels.ERROR,
                 message: t("saml2Config:notifications." +
                 "updateConfiguration.error.message")
+            })
+        );
+    };
+
+    /**
+     * Displays the error banner when unable to revert saml2 configuration configurations.
+     */
+    const handlerevertError = () => {
+        dispatch(
+            addAlert({
+                description: t("saml2Config:notifications." +
+                    "revertConfiguration.error.description"),
+                level: AlertLevels.ERROR,
+                message: t("saml2Config:notifications." +
+                    "revertConfiguration.error.message")
             })
         );
     };
@@ -210,6 +247,23 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
             setIsSubmitting(false);
             mutateSaml2Config();
         });
+    };
+
+    /**
+     * Handle saml2 configuration revert.
+     */
+    const onConfigRevert = (): void => {
+        setIsSubmitting(true);
+
+        revertSaml2Configurations()
+            .then(() => {
+                handleRevertSuccess();
+            }).catch(() => {
+                handlerevertError();
+            }).finally(() => {
+                setIsSubmitting(false);
+                mutateSaml2Config();
+            });
     };
 
     const onBackButtonClick = (): void => {
@@ -276,6 +330,7 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
                                     : (
                                         <>
                                             <Form
+                                                key={ JSON.stringify(saml2Config) || "empty" }
                                                 id={ FORM_ID }
                                                 uncontrolledForm={ true }
                                                 onSubmit={ handleSubmit }
@@ -402,6 +457,21 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
                             </EmphasizedSegment>
                         </Grid.Column>
                     </Grid.Row>
+                    { !isReadOnly && (
+                        <Grid.Row columns={ 1 } className="mt-6">
+                            <Grid.Column width={ 16 }>
+                                <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                                    <DangerZone
+                                        actionTitle= { t("governanceConnectors:dangerZone.actionTitle") }
+                                        header= { t("governanceConnectors:dangerZone.heading") }
+                                        subheader= { t("governanceConnectors:dangerZone.subHeading") }
+                                        onActionClick={ () => onConfigRevert() }
+                                        data-testid={ `${ componentId }-danger-zone` }
+                                    />
+                                </DangerZoneGroup>
+                            </Grid.Column>
+                        </Grid.Row>
+                    ) }
                 </Grid>
             </Ref>
         </PageLayout>

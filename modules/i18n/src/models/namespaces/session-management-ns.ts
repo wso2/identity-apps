@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,6 +35,16 @@ export interface SessionManagementNS {
         };
     };
     notifications: {
+        revertConfiguration: {
+            error: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
         updateConfiguration: {
             error: {
                 message: string;

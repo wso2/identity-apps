@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,7 +18,6 @@
 
 import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { Code } from "@wso2is/react-components";
@@ -160,12 +159,10 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
     } = props;
 
     const { t } = useTranslation();
-    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     // This can be used when `meta` support is there.
     const [ , setFormFields ] = useState<EmailOTPAuthenticatorFormFieldsInterface>(undefined);
     const [ initialValues, setInitialValues ] = useState<EmailOTPAuthenticatorFormInitialValuesInterface>(undefined);
-    const [ isReadOnly ] = useState<boolean>(isSubOrganization() || readOnly);
 
     // SMS OTP length unit is set to digits or characters according to the state of this variable
     const [ isOTPAlphanumeric, setIsOTPAlphanumeric ] = useState<boolean>();
@@ -358,7 +355,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                     </Trans>)
                 }
                 required={ true }
-                readOnly={ isReadOnly }
+                readOnly={ readOnly }
                 min={
                     ConnectionUIConstants
                         .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_VALUE
@@ -400,7 +397,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                         characters will be used.
                     </Trans>)
                 }
-                readOnly={ isReadOnly }
+                readOnly={ readOnly }
                 width={ 12 }
                 data-testid={ `${ testId }-otp-regex-use-numeric` }
                 listen={ (e:boolean) => {setIsOTPAlphanumeric(e);} }
@@ -430,7 +427,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                     </Trans>)
                 }
                 required={ true }
-                readOnly={ isReadOnly }
+                readOnly={ readOnly }
                 maxLength={
                     ConnectionUIConstants
                         .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.OTP_LENGTH_MAX_LENGTH
@@ -460,7 +457,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                 disabled={ isSubmitting }
                 loading={ isSubmitting }
                 label={ t("common:update") }
-                hidden={ isReadOnly }
+                hidden={ readOnly }
             />
         </Form>
     );

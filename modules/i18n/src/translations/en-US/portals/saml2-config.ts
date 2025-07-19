@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -48,6 +48,16 @@ export const saml2Config: Saml2ConfigNS = {
             error: {
                 description: "Error occurred while fetching saml2 configurations.",
                 message: "Error occurred"
+            }
+        },
+        revertConfiguration: {
+            error: {
+                message: "Error occurred",
+                description: "Error occurred while reverting saml2 configurations."
+            },
+            success: {
+                message: "Revert successful",
+                description: "Successfully reverted the saml2 configurations."
             }
         },
         updateConfiguration: {

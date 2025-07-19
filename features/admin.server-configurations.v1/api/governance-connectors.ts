@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,12 +17,12 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { store } from "@wso2is/admin.core.v1/store";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
 import { LocalAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
@@ -32,6 +32,7 @@ import {
     GovernanceCategoryForOrgsInterface,
     GovernanceConnectorInterface,
     RealmConfigInterface,
+    RevertGovernanceConnectorConfigInterface,
     UpdateGovernanceConnectorConfigInterface
 } from "../models";
 
@@ -247,6 +248,60 @@ export const updateGovernanceConnector = (data: UpdateGovernanceConnectorConfigI
         "/" + categoryId + "/connectors/" + connectorId;
 
     return updateConfigurations(data, url);
+};
+
+/**
+ * Revert governance connector configurations.
+ *
+ * @param categoryId - ID of the connector category
+ * @param connectorId - ID of the connector
+ * @param requestBody - request payload
+ * @returns a promise containing the response.
+ */
+export const revertGovernanceConnectorProperties = (
+    categoryId: string,
+    connectorId: string,
+    requestBody: RevertGovernanceConnectorConfigInterface
+): Promise<any> => {
+    const url: string = store.getState().config.endpoints.governanceConnectorCategories +
+        "/" + categoryId + "/connectors/revert";
+
+    const requestConfig: AxiosRequestConfig = {
+        data: requestBody,
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        params: {
+            connectorId: connectorId
+        },
+        url: url
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    ServerConfigurationsConstants.CONFIGS_REVERT_REQUEST_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ServerConfigurationsConstants.CONFIGS_REVERT_REQUEST_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
 };
 
 /**

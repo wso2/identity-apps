@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -31,11 +31,11 @@ export class ValidationConfigConstants {
         PASSWORD_MIN_VALUE: number;
     } = {
 
-        MIN_LENGTH: 1,
-        MIN_VALUE: 0,
-        PASSWORD_MIN_LENGTH: 1,
-        PASSWORD_MIN_VALUE: 5
-    };
+            MIN_LENGTH: 1,
+            MIN_VALUE: 0,
+            PASSWORD_MIN_LENGTH: 1,
+            PASSWORD_MIN_VALUE: 5
+        };
 
     /**
      * Set of keys used to enable/disable features.
@@ -51,6 +51,17 @@ export class ValidationManagementConstants {
     public static readonly CONFIGURATION_STATUS_UPDATE_ERROR: string = "An error occurred while updating " +
         "validation configurations.";
 
+    public static readonly CONFIGURATION_REVERT_ERROR: string = "An error occurred while reverting validation " +
+        "configurations.";
+
     public static readonly CONFIGURATION_UPDATE_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while updating validation configurations.";
+
+    public static readonly CONFIGURATION_REVERT_INVALID_STATUS_CODE_ERROR: string = "Received an " +
+        "invalid status code while reverting validation configurations.";
+}
+
+export enum ValidationConfigurationFields {
+    USERNAME = "username",
+    PASSWORD = "password",
 }

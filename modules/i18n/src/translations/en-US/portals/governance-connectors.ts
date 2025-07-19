@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -342,6 +342,16 @@ export const governanceConnectors: governanceConnectorsNS = {
                             success: {
                                 description: "Successfully updated the account disable configuration.",
                                 message: "Update Successful"
+                            }
+                        },
+                        revertConfiguration: {
+                            success: {
+                                description: "Successfully reverted the account disable configuration.",
+                                message: "Revert Successful"
+                            },
+                            error: {
+                                description: "An error occurred while reverting the account disable configuration.",
+                                message: "Revert Error"
                             }
                         }
                     }
@@ -686,6 +696,11 @@ export const governanceConnectors: governanceConnectorsNS = {
             }
         }
     },
+    dangerZone: {
+        actionTitle: "Revert",
+        heading: "Revert to default",
+        subHeading: "This action will discard all custom configurations on this page and restore the default settings."
+    },
     disabled: "Disabled",
     enabled: "Enabled",
     form: {
@@ -736,6 +751,16 @@ export const governanceConnectors: governanceConnectorsNS = {
             success: {
                 description: "{{ name }} configuration updated successfully.",
                 message: "Update Successful."
+            }
+        },
+        revertConnector: {
+            error: {
+                description: "An error occurred while reverting governance connector properties.",
+                message: "Revert Error"
+            },
+            success: {
+                description: "Successfully reverted the configuration to default.",
+                message: "Revert Successful."
             }
         }
     },

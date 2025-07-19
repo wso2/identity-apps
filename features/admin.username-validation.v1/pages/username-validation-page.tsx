@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,7 +19,11 @@
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { updateValidationConfigData, useValidationConfigData } from "@wso2is/admin.validation.v1/api";
+import { revertValidationConfigData,
+    updateValidationConfigData,
+    useValidationConfigData
+} from "@wso2is/admin.validation.v1/api";
+import { ValidationConfigurationFields } from "@wso2is/admin.validation.v1/constants/validation-config-constants";
 import {
     ValidationConfInterface,
     ValidationDataInterface,
@@ -29,7 +33,14 @@ import {
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
-import { ContentLoader, EmphasizedSegment, Hint, PageLayout, Text } from "@wso2is/react-components";
+import { ContentLoader,
+    DangerZone,
+    DangerZoneGroup,
+    EmphasizedSegment,
+    Hint,
+    PageLayout,
+    Text
+} from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -263,6 +274,42 @@ const UsernameValidationPage: FunctionComponent<UsernameValidationPageInterface>
         }
 
         return null;
+    };
+
+    const handleRevertSuccess = () => {
+        dispatch(
+            addAlert({
+                description: t("extensions:manage.accountLogin.notifications.revert.success.description"),
+                level: AlertLevels.SUCCESS,
+                message: t("extensions:manage.accountLogin.notifications.revert.success.message")
+            })
+        );
+    };
+
+    const handleRevertError = () => {
+        dispatch(
+            addAlert({
+                description: t("extensions:manage.accountLogin.notifications.revert.error.description"),
+                level: AlertLevels.ERROR,
+                message: t("extensions:manage.accountLogin.notifications.revert.error.message")
+            })
+        );
+    };
+
+    const onConfigRevert = (): void => {
+        setSubmitting(true);
+
+        revertValidationConfigData([ ValidationConfigurationFields.USERNAME ])
+            .then(() => {
+                mutateValidationConfigFetchRequest();
+                handleRevertSuccess();
+            })
+            .catch(() => {
+                handleRevertError();
+            })
+            .finally(() => {
+                setSubmitting(false);
+            });
     };
 
     const handleUpdateUsernameValidationData = (values: ValidationFormInterface): void => {
@@ -583,6 +630,19 @@ const UsernameValidationPage: FunctionComponent<UsernameValidationPageInterface>
                                     : <ContentLoader />
                                 }
                             </EmphasizedSegment>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column width={ 16 }>
+                            <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                                <DangerZone
+                                    actionTitle= { t("governanceConnectors:dangerZone.actionTitle") }
+                                    header= { t("governanceConnectors:dangerZone.heading") }
+                                    subheader= { t("governanceConnectors:dangerZone.subHeading") }
+                                    onActionClick={ () => onConfigRevert() }
+                                    data-componentid={ `${ componentId }-danger-zone` }
+                                />
+                            </DangerZoneGroup>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

@@ -27,6 +27,8 @@ import RegistrationFlowBuilderBanner
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
+    DangerZone,
+    DangerZoneGroup,
     DocumentationLink,
     EmphasizedSegment,
     GridLayout,
@@ -47,12 +49,18 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Grid, Icon, Message, Ref } from "semantic-ui-react";
-import { getConnectorDetails, updateGovernanceConnector } from "../api/governance-connectors";
+import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
+import {
+    getConnectorDetails,
+    revertGovernanceConnectorProperties,
+    updateGovernanceConnector
+} from "../api/governance-connectors";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import { ConnectorFormFactory } from "../forms";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
+    RevertGovernanceConnectorConfigInterface,
     UpdateGovernanceConnectorConfigInterface,
     UpdateGovernanceConnectorConfigPropertyInterface
 } from "../models/governance-connectors";
@@ -96,6 +104,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ enableBackButton, setEnableBackButton ] = useState<boolean>(true);
 
+    const { isSubOrganization } = useGetCurrentOrganizationType();
     const hasGovernanceConnectorsUpdatePermissions: boolean
         = useRequiredScopes(applicationFeatureConfig?.governanceConnectors?.scopes?.update);
     const hasRegistrationFlowBuilderViewPermissions: boolean
@@ -132,6 +141,33 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 level: AlertLevels.SUCCESS,
                 message: t(
                     "governanceConnectors:notifications." + "updateConnector.success.message"
+                )
+            })
+        );
+    };
+
+    const handleRevertSuccess = () => {
+        dispatch(
+            addAlert({
+                description: t(
+                    "governanceConnectors:notifications.revertConnector.success.description"),
+                level: AlertLevels.SUCCESS,
+                message: t(
+                    "governanceConnectors:notifications.revertConnector.success.message"
+                )
+            })
+        );
+    };
+
+    const handleRevertError = () => {
+        dispatch(
+            addAlert({
+                description: t(
+                    "governanceConnectors:notifications.revertConnector.error.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "governanceConnectors:notifications.revertConnector.error.message"
                 )
             })
         );
@@ -273,6 +309,76 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             })
             .catch((error: AxiosError) => {
                 handleUpdateError(error);
+            });
+    };
+
+    const onConfigRevert = () => {
+        setIsSubmitting(true);
+        const revertRequest: RevertGovernanceConnectorConfigInterface = {
+            properties: []
+        };
+
+        connector?.properties?.forEach((property: ConnectorPropertyInterface) => {
+            revertRequest.properties.push(property.name);
+        });
+
+        revertGovernanceConnectorProperties(categoryId, connectorId, revertRequest)
+            .then(() => {
+                handleRevertSuccess();
+            })
+            .catch(() => {
+                handleRevertError();
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+                loadConnectorDetails();
+            });
+    };
+
+    const onBotDetectionRevert = async () => {
+        const ssoPropertiesToRevert: RevertGovernanceConnectorConfigInterface = {
+            properties: [
+                serverConfigurationConfig.connectorToggleName[ connector?.name ] ?? connector?.name,
+                ServerConfigurationsConstants.RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE
+            ]
+        };
+        const selfSignUpPropertiesToRevert: RevertGovernanceConnectorConfigInterface = {
+            properties: [
+                ServerConfigurationsConstants.RE_CAPTCHA
+            ]
+        };
+        const recoveryPropertiesToRevert: RevertGovernanceConnectorConfigInterface = {
+            properties: [
+                ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA
+            ]
+        };
+
+        if (ServerConfigurationsConstants.ACCOUNT_RECOVERY_BY_USERNAME in
+            serverConfigurationConfig.connectorToggleName) {
+            recoveryPropertiesToRevert.properties.push(ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA);
+        }
+
+        revertGovernanceConnectorProperties(categoryId, connectorId, ssoPropertiesToRevert)
+            .then(() => {
+                revertGovernanceConnectorProperties(
+                    ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+                    ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID,
+                    selfSignUpPropertiesToRevert
+                ).then(() => {
+                    revertGovernanceConnectorProperties(
+                        ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID,
+                        ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID,
+                        recoveryPropertiesToRevert
+                    ).then(() => {
+                        handleRevertSuccess();
+                    });
+                });
+            })
+            .catch(() => {
+                handleRevertError();
+            })
+            .finally(() => {
+                loadConnectorDetails();
             });
     };
 
@@ -682,7 +788,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
      */
     const renderFeatureEnhancementBanner = (): ReactElement => {
         if (connector.id === ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID) {
-            if (!registrationFlowBuilderFeatureConfig?.enabled || !hasRegistrationFlowBuilderViewPermissions) {
+            if (isSubOrganization() || !registrationFlowBuilderFeatureConfig?.enabled ||
+                    !hasRegistrationFlowBuilderViewPermissions) {
                 return null;
             }
 
@@ -709,9 +816,9 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             { renderFeatureEnhancementBanner() }
             { resolveConnectorToggleProperty(connector) ? connectorToggle() : null }
             { pageInfo(connector) }
-            { !(connectorId === ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID) ? (
-                <Ref innerRef={ pageContextRef }>
-                    <Grid className={ "mt-3" }>
+            <Ref innerRef={ pageContextRef }>
+                <Grid className={ "mt-3" }>
+                    { !(connectorId === ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID) ? (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 }>
                                 <EmphasizedSegment className="form-wrapper" padded={ "very" }>
@@ -725,9 +832,24 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                                 </EmphasizedSegment>
                             </Grid.Column>
                         </Grid.Row>
-                    </Grid>
-                </Ref>
-            ) : null }
+                    ) : null }
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column width={ 16 }>
+                            <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                                <DangerZone
+                                    actionTitle= { t("governanceConnectors:dangerZone.actionTitle") }
+                                    header= { t("governanceConnectors:dangerZone.heading") }
+                                    subheader= { t("governanceConnectors:dangerZone.subHeading") }
+                                    onActionClick={ () => connectorId ===
+                                        ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID ?
+                                        onBotDetectionRevert() : onConfigRevert() }
+                                    data-testid={ `${ testId }-${ connectorId }-danger-zone` }
+                                />
+                            </DangerZoneGroup>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </Ref>
         </PageLayout>
     ) : (
         <GridLayout isLoading={ isConnectorRequestLoading } className={ "pt-5" } />

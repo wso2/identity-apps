@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,18 +21,22 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { EmphasizedSegment, Hint, PageLayout } from "@wso2is/react-components";
+import { DangerZone, DangerZoneGroup, EmphasizedSegment, Hint, PageLayout } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FC, FormEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps } from "semantic-ui-react";
-import { getConnectorDetails, updateGovernanceConnector } from "../api/governance-connectors";
+import { getConnectorDetails,
+    revertGovernanceConnectorProperties,
+    updateGovernanceConnector
+} from "../api/governance-connectors";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
+    RevertGovernanceConnectorConfigInterface,
     UpdateGovernanceConnectorConfigInterface
 } from "../models/governance-connectors";
 
@@ -286,6 +290,91 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
             });
     };
 
+    const onConfigRevert = async (): Promise<void> => {
+        const selfSignupRevertData: RevertGovernanceConnectorConfigInterface = {
+            properties: [
+                ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED
+            ]
+        };
+        const emailVerificationRevertData: RevertGovernanceConnectorConfigInterface = {
+            properties: [
+                ServerConfigurationsConstants.EMAIL_VERIFICATION_NOTIFICATIONS_INTERNALLY_MANAGED
+            ]
+        };
+        const accountLockingRevertData: RevertGovernanceConnectorConfigInterface = {
+            properties: [
+                ServerConfigurationsConstants.ACCOUNT_LOCK_INTERNAL_NOTIFICATION_MANAGEMENT
+            ]
+        };
+        const accountDisablingRevertData: RevertGovernanceConnectorConfigInterface = {
+            properties: [
+                ServerConfigurationsConstants.ACCOUNT_DISABLE_INTERNAL_NOTIFICATION_MANAGEMENT
+            ]
+        };
+        const accountRecoveryRevertData: RevertGovernanceConnectorConfigInterface = {
+            properties: [
+                ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED
+            ]
+        };
+
+        try {
+            await revertGovernanceConnectorProperties(
+                ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+                ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID,
+                selfSignupRevertData
+            );
+            await revertGovernanceConnectorProperties(
+                ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+                ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID,
+                emailVerificationRevertData
+            );
+            await revertGovernanceConnectorProperties(
+                ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID,
+                ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID,
+                accountLockingRevertData
+            );
+            await revertGovernanceConnectorProperties(
+                ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID,
+                ServerConfigurationsConstants.ACCOUNT_DISABLING_CONNECTOR_ID,
+                accountDisablingRevertData
+            );
+            await revertGovernanceConnectorProperties(
+                ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID,
+                ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID,
+                accountRecoveryRevertData
+            );
+
+            getNotificationInternallyManaged();
+            dispatch(
+                addAlert({
+                    description: t(
+                        "governanceConnectors:notifications." +
+                        "revertConnector.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "governanceConnectors:notifications." +
+                        "revertConnector.success.message"
+                    )
+                })
+            );
+        } catch (error) {
+            dispatch(
+                addAlert({
+                    description: t(
+                        "governanceConnectors:notifications." +
+                            "revertConnector.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "governanceConnectors:notifications." +
+                            "revertConnector.genericError.message"
+                    )
+                })
+            );
+        }
+    };
+
     /**
      * Update Connector Notification Internally Managed Value
      */
@@ -376,31 +465,44 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
             pageHeaderMaxWidth={ true }
             isLoading={ isLoading }
         >
-            <Grid className={ "mt-5" }>
-                <EmphasizedSegment className="form-wrapper" padded={ "very" }>
-                    <Checkbox
-                        ariaLabel={ t("governanceConnectors:connectorCategories." +
-                            "accountManagement.connectors.accountRecovery.properties." +
-                            "recoveryNotificationInternallyManage.label") }
-                        name="manageInternalNotificationSending"
-                        label={ t("governanceConnectors:connectorCategories." +
-                            "accountManagement.connectors.accountRecovery.properties." +
-                            "recoveryNotificationInternallyManage.label") }
-                        width={ 16 }
-                        data-componentid={
-                            `${componentId}-toggle` }
-                        toggle
-                        onChange={ (event: FormEvent<HTMLInputElement>, data: CheckboxProps) => {
-                            handleCheckboxToggle(data);
-                        } }
-                        checked={ isNotificationInternallyManaged }
-                    />
-                    <Hint>
-                        { t("governanceConnectors:connectorCategories." +
-                            "accountManagement.connectors.accountRecovery.properties." +
-                            "recoveryNotificationInternallyManage.hint") }
-                    </Hint>
-                </EmphasizedSegment>
+            <Grid container spacing={ 2 } direction="column">
+                <Grid xs={ 12 }>
+                    <EmphasizedSegment className="form-wrapper" padded={ "very" }>
+                        <Checkbox
+                            ariaLabel={ t("governanceConnectors:connectorCategories." +
+                                "accountManagement.connectors.accountRecovery.properties." +
+                                "recoveryNotificationInternallyManage.label") }
+                            name="manageInternalNotificationSending"
+                            label={ t("governanceConnectors:connectorCategories." +
+                                "accountManagement.connectors.accountRecovery.properties." +
+                                "recoveryNotificationInternallyManage.label") }
+                            width={ 16 }
+                            data-componentid={
+                                `${componentId}-toggle` }
+                            toggle
+                            onChange={ (event: FormEvent<HTMLInputElement>, data: CheckboxProps) => {
+                                handleCheckboxToggle(data);
+                            } }
+                            checked={ isNotificationInternallyManaged }
+                        />
+                        <Hint>
+                            { t("governanceConnectors:connectorCategories." +
+                                "accountManagement.connectors.accountRecovery.properties." +
+                                "recoveryNotificationInternallyManage.hint") }
+                        </Hint>
+                    </EmphasizedSegment>
+                </Grid>
+                <Grid xs={ 12 }>
+                    <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                        <DangerZone
+                            actionTitle= { t("governanceConnectors:dangerZone.actionTitle") }
+                            header= { t("governanceConnectors:dangerZone.heading") }
+                            subheader= { t("governanceConnectors:dangerZone.subHeading") }
+                            onActionClick={ () => onConfigRevert() }
+                            data-testid={ `${ componentId }-danger-zone` }
+                        />
+                    </DangerZoneGroup>
+                </Grid>
             </Grid>
         </PageLayout>
     );
