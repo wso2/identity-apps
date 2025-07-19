@@ -70,6 +70,10 @@ export const flows: flowsNS = {
                     message: "Fetch Registration Flow Error"
                 }
             }
+        },
+        tooltip: {
+            disableFlow: "Click to disable the registration flow",
+            enableFlow: "Click to enable the registration flow"
         }
     }
 };

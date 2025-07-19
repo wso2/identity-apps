@@ -167,6 +167,7 @@ export const common: CommonNS = {
     revokeAll: "සියල්ල අවලංගු කරන්න",
     samples: "සාම්පල",
     save: "සුරකින්න",
+    saveDraft: "තාවකාලිකව සුරකින්න",
     sdks: "SDKs",
     search: "සොයන්න",
     searching: "සොයමින්",

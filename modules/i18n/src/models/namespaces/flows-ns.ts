@@ -70,5 +70,9 @@ export interface flowsNS {
                 };
             };
         };
+        tooltip: {
+            disableFlow: string;
+            enableFlow: string;
+        };
     };
 }

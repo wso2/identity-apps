@@ -195,5 +195,6 @@ export interface CommonNS {
     asyncOperationErrorMessage: {
         description: string;
         message: string;
-    }
+    },
+    saveDraft: string;
 }

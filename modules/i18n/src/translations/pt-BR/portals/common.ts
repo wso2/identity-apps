@@ -167,6 +167,7 @@ export const common: CommonNS = {
     revokeAll: "Revogar todos",
     samples: "Exemplos",
     save: "Salvar",
+    saveDraft: "Salvar rascunho",
     sdks: "SDKs",
     search: "Pesquisar",
     searching: "Pesquisando",

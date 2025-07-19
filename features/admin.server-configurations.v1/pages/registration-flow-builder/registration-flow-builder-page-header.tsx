@@ -17,12 +17,11 @@
  */
 
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import Collapse from "@mui/material/Collapse";
-import Fade from "@mui/material/Fade";
 import Box from "@oxygen-ui/react/Box";
-import Button from "@oxygen-ui/react/Button";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Link from "@oxygen-ui/react/Link";
+import Switch from "@oxygen-ui/react/Switch";
+import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { ArrowLeftIcon } from "@oxygen-ui/react-icons";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -33,7 +32,7 @@ import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import useRegistrationFlowBuilder from "@wso2is/admin.registration-flow-builder.v1/hooks/use-registration-flow-builder";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import React, { FunctionComponent, ReactElement, useEffect } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -65,7 +64,7 @@ interface PathStateInterface {
 const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuilderPageHeaderProps> = ({
     ["data-componentid"]: componentId = "registration-flow-builder-page-header"
 }: RegistrationFlowBuilderPageHeaderProps): ReactElement => {
-    const { isPublishing, onPublish } = useRegistrationFlowBuilder();
+    const { onPublish } = useRegistrationFlowBuilder();
     const {
         data: flowConfig,
         mutate: mutateFlowConfig,
@@ -74,7 +73,7 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const [ isFlowConfigUpdating, setIsFlowConfigUpdating ] = React.useState<boolean>(false);
+    const [ isFlowConfigUpdating, setIsFlowConfigUpdating ] = useState<boolean>(false);
 
     /**
      * Handle flow config fetch errors using useEffect
@@ -87,7 +86,7 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
                 message: t("flows:registrationFlow.notifications.fetchFlowConfig.genericError.message")
             }));
         }
-    }, [ flowConfigError, dispatch, t ]);
+    }, [ flowConfigError ]);
 
     /**
      * Handles the back button click event.
@@ -134,42 +133,24 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
     };
 
     /**
-     * Handles the publish button click event.
+     * Handles the toggle switch change event.
      */
-    const handlePublishButtonClick = async (): Promise<void> => {
-        setIsFlowConfigUpdating(true);
+    const handleToggleFlow = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
+        const isEnabled: boolean = event.target.checked;
 
-        try {
-            if (!flowConfig.isEnabled) {
-                await updateFlowConfig({
-                    flowType: FlowTypes.REGISTRATION,
-                    isEnabled: true
-                });
-                handleFlowConfigSuccess("enable");
-            }
-        } catch (error) {
-            handleFlowConfigError("enable");
-        } finally {
-            setIsFlowConfigUpdating(false);
-            onPublish();
-            mutateFlowConfig();
-        }
-    };
-
-    /**
-     * Handles the disable button click event.
-     */
-    const handleDisableButtonClick = async (): Promise<void> => {
         setIsFlowConfigUpdating(true);
 
         try {
             await updateFlowConfig({
                 flowType: FlowTypes.REGISTRATION,
-                isEnabled: false
+                isEnabled
             });
-            handleFlowConfigSuccess("disable");
+            handleFlowConfigSuccess(isEnabled ? "enable" : "disable");
+            if (isEnabled) {
+                onPublish();
+            }
         } catch (error) {
-            handleFlowConfigError("disable");
+            handleFlowConfigError(isEnabled ? "enable" : "disable");
         } finally {
             setIsFlowConfigUpdating(false);
             mutateFlowConfig();
@@ -205,35 +186,21 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
                 display="flex"
                 justifyContent="flex-end"
                 alignItems="center"
-                gap={ 2 }
             >
-                <Button
-                    variant="contained"
-                    onClick={ handlePublishButtonClick }
-                    loading={ isPublishing || isFlowConfigUpdating }
-                >
-                    { flowConfig?.isEnabled
-                        ? t("common:publish")
-                        : `${t("common:enable")} & ${t("common:publish")}`
+                <Tooltip
+                    title={
+                        flowConfig?.isEnabled
+                            ? t("flows:registrationFlow.tooltip.disableFlow")
+                            : t("flows:registrationFlow.tooltip.enableFlow")
                     }
-                </Button>
-                <Collapse
-                    in={ flowConfig?.isEnabled }
-                    orientation="horizontal"
-                    timeout={ 300 }
                 >
-                    <Fade in={ flowConfig?.isEnabled } timeout={ 200 }>
-                        <Button
-                            variant="contained"
-                            color="secondary"
-                            onClick={ handleDisableButtonClick }
-                            loading={ isFlowConfigUpdating }
-                            className="registration-flow-builder-page-header-disable-button"
-                        >
-                            { t("common:disable") }
-                        </Button>
-                    </Fade>
-                </Collapse>
+                    <Switch
+                        checked={ flowConfig?.isEnabled || false }
+                        onChange={ handleToggleFlow }
+                        disabled={ isFlowConfigUpdating }
+                        data-componentid={ `${componentId}-toggle-switch` }
+                    />
+                </Tooltip>
             </Box>
         </Box>
     );

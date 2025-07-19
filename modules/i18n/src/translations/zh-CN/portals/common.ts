@@ -167,6 +167,7 @@ export const common: CommonNS = {
     "revokeAll": "撤销所有",
     "samples": "样品",
     "save": "节省",
+    "saveDraft": "保存草稿",
     "sdks": "SDKs",
     "search": "搜索",
     "searching": "搜索",

@@ -167,6 +167,7 @@ export const common: CommonNS = {
     "revokeAll": "すべてを取り消します",
     "samples": "サンプル",
     "save": "保存",
+    "saveDraft": "下書きを保存",
     "sdks": "SDKs",
     "search": "検索",
     "searching": "検索",
