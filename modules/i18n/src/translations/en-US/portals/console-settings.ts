@@ -65,5 +65,43 @@ export const consoleSettings: ConsoleSettingsNS = {
             edit: "Edit",
             view: "View"
         }
+    },
+    sharedAccess: {
+        description: "Select the following options to share the application roles with the organizations.",
+        selectRolesForOrganization: "Select roles for organization",
+        organizations: "Organizations",
+        availableRoles: "Available Roles",
+        searchAvailableRolesPlaceholder: "Search available roles",
+        tabLabel: "Shared Access",
+        modes: {
+            doNotShare: "Do not share any roles",
+            shareWithAll: "Share a common set of roles with all organizations",
+            shareWithSelected: "Share different set of roles with each organization",
+            shareAllRolesWithAllOrgs: "Share all roles with all organizations"
+        },
+        notifications: {
+            fetchRoles: {
+                error: {
+                    description: "An error occurred while fetching the roles.",
+                    message: "Error fetching roles"
+                }
+            },
+            fetchOrgTree: {
+                error: {
+                    description: "An error occurred while fetching the organization tree.",
+                    message: "Error fetching organization tree"
+                }
+            },
+            shareRoles: {
+                error: {
+                    description: "An error occurred while sharing the roles.",
+                    message: "Error sharing roles"
+                },
+                success: {
+                    description: "Roles have been successfully shared.",
+                    message: "Roles shared successfully"
+                }
+            }
+        }
     }
 };

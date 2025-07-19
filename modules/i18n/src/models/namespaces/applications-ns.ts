@@ -778,6 +778,7 @@ export interface ApplicationsNS {
                 };
             };
             sharedAccess: {
+                allRolesAndOrgsSharingMessage: string;
                 subTitle: string;
                 tabName: string;
                 sharedAccessStatusOptions: {
@@ -785,7 +786,57 @@ export interface ApplicationsNS {
                     success: string;
                     failed: string;
                     partiallyCompleted: string;
-                }
+                };
+                orgNotSelectedForRoleSharing: string;
+                noRolesAvailableForOrg: string;
+                noSharedOrgs: string;
+                rolesSharedPartially: string;
+                shareRoleSubsetWithSelectedOrgs: string;
+                shareRoleSubsetWithAllOrgs: string;
+                searchAvailableRolesPlaceholder: string;
+                manageRoleSharing: string;
+                viewRoleSharing: string;
+                selectAnOrganizationToViewRoles: string;
+                notifications: {
+                    fetchApplicationOrgTree: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchOrganizations: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchApplicationRoles: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    unshare: {
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    share: {
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                };
             };
             shareApplication: {
                 heading: string;
