@@ -44,11 +44,12 @@ export interface AgentsNS {
     list: {
         featureUnavailable: {
             subtitle: {
-                0: {
+                0: string;
+                1: {
                     onprem: string;
                     saas: string;
                 };
-                1: string;
+
             };
             title: string;
         };

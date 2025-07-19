@@ -59,7 +59,6 @@ export default function AgentOverview({
 
     const dispatch: Dispatch = useDispatch();
 
-    const [ initialValues, setInitialValues ] = useState<any>();
     const [ isAgentLocked, setIsAgentLocked ] = useState<boolean>(false);
     const [ isAgentDeleting, setIsAgentDeleting ] = useState<boolean>(false);
     const [ isAgentDeleteInProgress, setIsAgentDeleteInProgress ] = useState<boolean>(false);
@@ -77,16 +76,31 @@ export default function AgentOverview({
 
     const agentFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state?.config?.ui?.features?.agents);
-
     const hasAgentUpdatePermissions: boolean = useRequiredScopes(agentFeatureConfig?.scopes?.update);
-
     const hasAgentDeletePermissions: boolean = useRequiredScopes(agentFeatureConfig?.scopes?.delete);
 
-    useEffect(() => {
+    function formatTimestamp(timestamp: string): string {
+        // Handle microseconds by trimming to milliseconds
+        const cleanTimestamp: string = timestamp.split(".")[0] + "Z";
+        const date: Date = new Date(cleanTimestamp);
+
+        return date.toLocaleString("en-US", {
+            day: "numeric",    // 17
+            hour: "numeric",   // 11
+            hour12: true,      // AM/PM format
+            minute: "2-digit", // 21
+            month: "short",    // Jul
+            year: "numeric"    // 2025
+        });
+    }
+
+    const initialValues: AgentScimSchema = useMemo(() => {
         if (agentInfo) {
-            setInitialValues({
-                ...agentInfo?.["urn:scim:wso2:agent:schema"]
-            });
+            return {
+                ...agentInfo?.["urn:scim:wso2:agent:schema"],
+                createdAt: formatTimestamp(agentInfo?.meta?.created),
+                lastModified: formatTimestamp(agentInfo?.meta?.lastModified)
+            };
         }
     }, [ agentInfo ]);
 
@@ -193,6 +207,20 @@ export default function AgentOverview({
                                                             ></FinalFormField>
                                                         );
                                                 }) }
+                                                <FinalFormField
+                                                    key="createdAt"
+                                                    name="createdAt"
+                                                    label="Created Date"
+                                                    component={ TextFieldAdapter }
+                                                    readOnly
+                                                ></FinalFormField>
+                                                <FinalFormField
+                                                    key="lastModified"
+                                                    name="lastModified"
+                                                    label="Modified Date"
+                                                    component={ TextFieldAdapter }
+                                                    readOnly
+                                                ></FinalFormField>
                                                 <Form.Group>
                                                     { hasAgentUpdatePermissions && (
                                                         <PrimaryButton
