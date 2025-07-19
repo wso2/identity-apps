@@ -436,6 +436,13 @@ export const user: userNS = {
             userName: "Username"
         },
         forms: {
+            email: {
+                primaryEmail: {
+                    validations: {
+                        empty: "Primary email address is required"
+                    }
+                }
+            },
             emailChangeForm: {
                 inputs: {
                     email: {
@@ -455,7 +462,15 @@ export const user: userNS = {
                     placeholder: "Enter your {{fieldName}}",
                     validations: {
                         empty: "{{fieldName}} is a required field",
-                        invalidFormat: "The {{fieldName}} is not of the correct format"
+                        invalidFormat: "The {{fieldName}} is not of the correct format",
+                        required: "{{fieldName}} is required"
+                    }
+                }
+            },
+            mobile: {
+                primaryMobile: {
+                    validations: {
+                        empty: "Primary mobile number is required"
                     }
                 }
             },

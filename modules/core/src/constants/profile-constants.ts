@@ -43,6 +43,32 @@ export class ProfileConstants {
     public static readonly SCIM2_WSO2_CUSTOM_SCHEMA: string = "urn:scim:wso2:schema";
     public static readonly SCIM2_CUSTOM_USER_SCHEMA: string = "urn:scim:schemas:extension:custom:User";
 
+    /**
+     * SCIM2 user core schema attributes.
+     * Only the attributes which are required for special handling are defined here.
+     */
+    public static readonly SCIM2_CORE_USER_SCHEMA_ATTRIBUTES: {
+        emails: string,
+        mobile: string
+    } = {
+            emails: "urn:ietf:params:scim:schemas:core:2.0:User:emails",
+            mobile: "urn:ietf:params:scim:schemas:core:2.0:User:phoneNumbers.mobile"
+        };
+
+    /**
+     * SCIM2 system user schema attributes.
+     * Only the attributes which are required for special handling are defined here.
+     */
+    public static readonly SCIM2_SYSTEM_USER_SCHEMA_ATTRIBUTES: {
+        country: string,
+        emailAddresses: string,
+        mobileNumbers: string
+    } = {
+            country: "urn:scim:wso2:schema:country",
+            emailAddresses: "urn:scim:wso2:schema:emailAddresses",
+            mobileNumbers: "urn:scim:wso2:schema:mobileNumbers"
+        };
+
     // API errors
     public static readonly SCHEMA_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR: string = "Received an invalid status " +
         "code while retrieving the profile schemas.";
@@ -107,7 +133,9 @@ export class ProfileConstants {
         .set("EMAIL_VERIFIED", "emailVerified")
         .set("PHONE_VERIFIED", "phoneVerified")
         .set("VERIFY_EMAIL", "verifyEmail")
-        .set("VERIFY_MOBILE", "verifyMobile");
+        .set("VERIFY_MOBILE", "verifyMobile")
+        .set("PENDING_MOBILE", "pendingMobileNumber")
+        .set("PENDING_EMAILS", "pendingEmails");
 
     /**
      * States if the SCIM schema is mutable.

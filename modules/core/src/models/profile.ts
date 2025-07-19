@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { LabelValue } from "./claim";
+import { ClaimInputFormat, LabelValue } from "./claim";
 import { RolesMemberInterface } from "./roles";
 
 /**
@@ -249,6 +249,16 @@ export interface ProfileSchemaInterface {
      * Schema URI of the attribute.
      */
     schemaUri?: string;
+    /**
+     * Input format of the attribute.
+     */
+    inputFormat?: {
+        /**
+         * Input type of the attribute.
+         * @see {@link ClaimInputFormat}
+         */
+        inputType?: ClaimInputFormat;
+    };
     /**
      * Schema attribute profiles
      */

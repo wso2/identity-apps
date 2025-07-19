@@ -212,22 +212,34 @@ export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
             // appended to the attribute object.
             response.data.map((schema: SchemaResponseInterface) => {
                 schema.attributes.map((attribute: ProfileSchemaInterface) => {
-                    if (schema.id !== ProfileConstants.SCIM2_CORE_USER_SCHEMA
-                        && schema.id !== ProfileConstants.SCIM2_CORE_SCHEMA) {
+                    const isExtended: boolean = schema.id !== ProfileConstants.SCIM2_CORE_USER_SCHEMA &&
+                        schema.id !== ProfileConstants.SCIM2_CORE_SCHEMA;
+                    const schemaUri: string = `${schema.id}:${attribute.name}`;
+
+                    if (isExtended) {
                         const modifiedSubAttributes: ProfileSchemaInterface[] = [];
 
-                        if(attribute.type === AttributeDataType.COMPLEX) {
+                        if (attribute.type === AttributeDataType.COMPLEX) {
                             attribute.subAttributes.map((subAttribute: ProfileSchemaInterface) => {
-                                modifiedSubAttributes.push({ ...subAttribute,  extended: true, schemaId: schema.id });
-                            }
-                            );
+                                modifiedSubAttributes.push({
+                                    ...subAttribute,
+                                    extended: true,
+                                    schemaId: schema.id,
+                                    schemaUri: `${schemaUri}.${subAttribute.name}`
+                                });
+                            });
                             attribute.subAttributes = modifiedSubAttributes;
                         }
-                        schemaAttributes.push({ ...attribute, extended: true, schemaId: schema.id });
+                        schemaAttributes.push({ ...attribute, extended: true, schemaId: schema.id, schemaUri });
 
                         return;
                     }
-                    schemaAttributes.push(attribute);
+
+                    schemaAttributes.push({
+                        ...attribute,
+                        schemaId: schema.id,
+                        schemaUri
+                    });
                 });
             });
 
