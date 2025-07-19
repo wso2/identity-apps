@@ -19,6 +19,7 @@
 import {
     ArrowRightToBracketPencilIcon,
     BuildingIcon,
+    CircleStarIcon,
     DocumentCheckIcon,
     EnvelopeGearIcon,
     EnvelopeIcon,
@@ -26,11 +27,14 @@ import {
     GearIcon,
     LightbulbOnIcon,
     LinearNodesIcon,
+    LinkIcon,
     NodesIcon,
+    ProfileFlowIcon,
     ProgressFlowIcon,
     UserCircleDotIcon,
     UserGroupIcon,
-    WebhookIcon
+    WebhookIcon,
+    UserPlusIcon,
 } from "@oxygen-ui/react-icons";
 import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -658,7 +662,45 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     path: AppConstants.getPaths().get("CLAIM_VERIFICATION_SETTINGS"),
                     protected: true,
                     showOnSidePanel: false
-                }
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.claims.v1/pages/traits-page")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "traits",
+                    name: "Traits",
+                    path: AppConstants.getPaths().get("TRAITS"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.claims.v1/pages/traits-edit-page")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "traits",
+                    name: "Traits",
+                    path: AppConstants.getPaths().get("TRAITS_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                
+                // {
+                //     component: lazy(() => import("@wso2is/admin.cds.v1/pages/application-data")),
+                //     exact: true,
+                //     icon: {
+                //         icon: getSidePanelIcons().childIcon
+                //     },
+                //     id: "applicationData",
+                //     name: "Application Data",
+                //     path: AppConstants.getPaths().get("APPLICATION_DATA"),
+                //     protected: true,
+                //     showOnSidePanel: false
+                // }
+            
             ],
             component: lazy(() => import("@wso2is/admin.claims.v1/pages/claim-dialects")),
             exact: true,
@@ -1579,7 +1621,71 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             path: AppConstants.getPaths().get("WEBHOOKS"),
             protected: true,
             showOnSidePanel: true
-        },
+        }, 
+        {
+            category: "customerData",
+            component: lazy(() =>
+                import("@wso2is/admin.cds.v1/pages/profile-list")
+            ),
+            exact: true,
+            icon: {
+                icon: <ProfileFlowIcon className="icon" fill="black" />
+            },
+            id: "profiles",
+            name: "Profiles",
+            order: 32,
+            path: AppConstants.getPaths().get("PROFILES"), 
+            protected: true,
+            showOnSidePanel: true,
+            // children: [
+            //     {
+            //         component: lazy(() =>
+            //             import("@wso2is/admin.cds.v1/pages/profile-unification-rules") 
+            //         ),
+            //         exact: true,
+            //         icon: {
+            //             icon: getSidePanelIcons().childIcon
+            //         },
+            //         id: "traitView",
+            //         name: "View ",
+            //         path: "/enrichment/:trait_id",
+            //         protected: true,
+            //         showOnSidePanel: false
+            //     }
+            // ]
+        },   
+        {
+            category: "customerData",
+            component: lazy(() =>
+                import("@wso2is/admin.cds.v1/pages/profile-unification-rules")
+            ),
+            exact: true,
+            icon: {
+                icon: <LinkIcon className="icon" fill="black" />
+            },
+            id: "unification",
+            name: "Unification Rules",
+            order: 33,
+            path: AppConstants.getPaths().get("UNIFICATION_RULES"), 
+            protected: true,
+            showOnSidePanel: true,
+            children: [
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.cds.v1/pages/edit-profile-unification-rules") 
+                    ),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "traitEdit",
+                    name: "Edit Unification Rule",
+                    path: AppConstants.getPaths().get("UNIFICATION_RULE_EDIT"), 
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ]
+        },        
         // the following routes are not onboarded to the side panel
         {
             category: "console:manage.features.sidePanel.categories.configurations",
