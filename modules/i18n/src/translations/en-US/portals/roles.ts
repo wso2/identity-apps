@@ -33,7 +33,7 @@ export const roles: rolesNS = {
                     listHeader: "Name",
                     searchPlaceholder: "Search agents"
                 },
-                search: "Search agents by username",
+                search: "Search agents by name or ID",
                 subHeading: "Assign new agents to the role."
             }
         },
@@ -242,7 +242,7 @@ export const roles: rolesNS = {
                 }
             },
             placeholders: {
-                beginSearch: "To begin, search agents by typing the username. You may have to type the complete username.",
+                beginSearch: "To begin, search agents by typing the name or ID. You may have to type the complete name or ID.",
                 emptyPlaceholder: {
                     action: "Assign Agents",
                     subtitles: {

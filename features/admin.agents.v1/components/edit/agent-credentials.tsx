@@ -69,6 +69,7 @@ export default function AgentCredentials({
                 onClose={ () => {
                     setIsAgentCredentialWizardOpen(false);
                 } }
+                title="Regenerate Agent Secret"
                 isForSecretRegeneration
             />
         </EmphasizedSegment>

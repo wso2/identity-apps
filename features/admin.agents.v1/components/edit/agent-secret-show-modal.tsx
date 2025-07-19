@@ -128,13 +128,7 @@ export function AgentSecretShowModal({
             closeOnDimmerClick={ false }
             closeOnEscape
         >
-            <Modal.Header>
-                {
-                    title ||
-                    isForSecretRegeneration && !shouldShowSecretRegeneration
-                        ? "Regenerate agent secret"
-                        : "Agent secret regenerated"
-                }</Modal.Header>
+            <Modal.Header>{ title }</Modal.Header>
             <Modal.Content>
 
                 {
@@ -143,9 +137,8 @@ export function AgentSecretShowModal({
                             <strong>Before regenerating:</strong> Make sure you are ready to update all
                         applications using the new agent secret. Once regenerated,
                             <ul>
-                                <li>All scripts and applications that use the current agent secret will
-                                stop working immediately.</li>
-                                <li>You will need to update the agent secret in all integrations.</li>
+                                <li>Scripts and applications using the current agent secret will need
+                                    to be updated accordingly.</li>
                                 <li>The current agent secret cannot be recovered once regenerated.</li>
                             </ul>
                         </>

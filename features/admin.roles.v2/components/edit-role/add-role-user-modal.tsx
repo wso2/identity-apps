@@ -365,7 +365,7 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
                                             handleItemChange={ () => handleItemCheckboxChange(user) }
                                             key={ index }
                                             listItem={ isForNonHumanUser
-                                                ? user["urn:scim:wso2:agent:schema"].DisplayName ?? resolvedUsername
+                                                ? user["urn:scim:wso2:agent:schema"]?.DisplayName ?? resolvedUsername
                                                 : resolvedGivenName ?? resolvedUsername }
                                             listItemId={ user.id }
                                             listItemIndex={ index }
@@ -376,7 +376,7 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
                                             showSecondaryActions={ false }
                                             showListSubItem={ true }
                                             listSubItem={ isForNonHumanUser
-                                                ? user["urn:scim:wso2:agent:schema"].DisplayName && resolvedUsername
+                                                ? user["urn:scim:wso2:agent:schema"]?.DisplayName && resolvedUsername
                                                 : resolvedGivenName && (
                                                     <Code compact withBackground={ false }>{ "sdjksjdk" }</Code>
                                                 ) }
