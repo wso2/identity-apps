@@ -36,7 +36,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import "./registration-flow-builder-page-header.scss";
 
 /**
  * Props interface of {@link RegistrationFlowBuilderPageHeader}
