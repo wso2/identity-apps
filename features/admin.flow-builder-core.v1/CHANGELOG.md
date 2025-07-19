@@ -1,5 +1,14 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.9.2
+
+### Patch Changes
+
+- [#8563](https://github.com/wso2/identity-apps/pull/8563) [`518889fccc67f829a5e497df54cfc6e238a06097`](https://github.com/wso2/identity-apps/commit/518889fccc67f829a5e497df54cfc6e238a06097) Thanks [@KD23243](https://github.com/KD23243)! - Refactor actions.json
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.46.18
+
 ## 0.9.1
 
 ### Patch Changes
