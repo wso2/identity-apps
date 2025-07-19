@@ -22,16 +22,22 @@ import useRequest, {
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { HttpMethods } from "@wso2is/core/models";
-import { FlowConfigInterface } from "../models/flows";
+import { CommonMetadataInterface } from "../models/metadata";
 
 /**
- * Hook to fetch the flow configurations.
+ * Hook to get the metadata for a specific flow type.
  *
- * @param shouldFetch - Should fetch data from the API.
- * @returns Flow configuration list response.
+ * This function calls the GET method of the following endpoint to get the metadata of the specified flow type.
+ * - `https://{serverUrl}/t/{tenantDomain}/api/server/v1/flow/meta?flowType={flowType}`
+ *
+ * @param flowType - The type of the flow to get metadata for.
+ * @param shouldFetch - Should fetch the data.
+ * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useGetFlowConfigs = <Data = FlowConfigInterface[], Error = RequestErrorInterface>(
+const useGetMetadata = <Data = CommonMetadataInterface, Error = RequestErrorInterface>(
+    flowType: FlowTypes,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
@@ -40,21 +46,20 @@ const useGetFlowConfigs = <Data = FlowConfigInterface[], Error = RequestErrorInt
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.flowConfigurations
+        url: `${store.getState().config.endpoints.flowMeta}?flowType=${flowType}`
     };
 
-    const { data, error, isLoading, isValidating, mutate, response } = useRequest<Data, Error>(
+    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
         shouldFetch ? requestConfig : null
     );
 
     return {
-        data,
+        data: data as Data,
         error,
         isLoading,
         isValidating,
-        mutate,
-        response
+        mutate
     };
 };
 
-export default useGetFlowConfigs;
+export default useGetMetadata;

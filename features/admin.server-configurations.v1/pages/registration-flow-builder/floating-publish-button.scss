@@ -16,24 +16,13 @@
  * under the License.
  */
 
-export interface FlowListItemInterface {
-    id: string;
-    description?: string;
-    disabled?: boolean;
-    path?: string;
-    type?: string;
-    heading?: string;
-    featureStatusKey?: string;
-};
+.floating-publish-button {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-export interface FlowConfigInterface {
-    flowType: FlowTypes;
-    isEnabled: boolean;
-    isAutoLoginEnabled?: boolean;
-}
-
-export enum FlowTypes {
-    REGISTRATION = "REGISTRATION",
-    PASSWORD_RECOVERY = "PASSWORD_RECOVERY",
-    INVITED_USER_REGISTRATION = "INVITED_USER_REGISTRATION",
+    &.transition {
+        transform: translateX(calc(-1 * var(--wso2is-flow-builder-element-property-panel-width)));
+    }
 }

@@ -121,6 +121,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             extensions: "",
             externalClaims: "",
             fidoConfigs: "",
+            flowMeta: "",
             getSecret: "",
             getSecretList: "",
             getSecretType: "",

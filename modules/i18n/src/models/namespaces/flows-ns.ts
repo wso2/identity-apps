@@ -17,20 +17,62 @@
  */
 
 export interface flowsNS {
+    askPassword: {
+        breadcrumb: string;
+    };
     core: {
         elements: {
             richText: {
-                placeholder: string;
                 linkEditor: {
                     placeholder: string;
                 };
+                placeholder: string;
             }
-        }
+        };
+        errors: {
+            flowMetadataFetch: {
+                description: string;
+                message: string;
+            };
+        };
     };
+    label?: string;
     passwordRecovery: {
         name: string;
     };
-    askPassword: {
+    registrationFlow: {
         breadcrumb: string;
+        notifications: {
+            disableFlow: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+            enableFlow: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+            fetchFlowConfig: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
+        tooltip: {
+            disableFlow: string;
+            enableFlow: string;
+        };
     };
 }
