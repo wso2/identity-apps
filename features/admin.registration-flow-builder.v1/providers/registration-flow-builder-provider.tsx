@@ -18,6 +18,7 @@
 
 import AuthenticationFlowBuilderCoreProvider
     from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useReactFlow } from "@xyflow/react";
@@ -29,9 +30,9 @@ import updateNewRegistrationPortalFeatureStatus from "../api/update-new-registra
 import useNewRegistrationPortalFeatureStatus from "../api/use-new-registration-portal-feature-status";
 import ResourceProperties from "../components/resource-property-panel/resource-properties";
 import ElementFactory from "../components/resources/elements/element-factory";
+import RegistrationFlowConstants from "../constants/registration-flow-constants";
 import RegistrationFlowBuilderContext from "../context/registration-flow-builder-context";
 import { Attribute } from "../models/attributes";
-import RegistrationFlowConstants from "../constants/registration-flow-constants";
 import transformFlow from "../utils/transform-flow";
 
 /**
@@ -48,7 +49,11 @@ export type RegistrationFlowBuilderProviderProps = PropsWithChildren<unknown>;
 const RegistrationFlowBuilderProvider: FC<RegistrationFlowBuilderProviderProps> = ({
     children
 }: PropsWithChildren<RegistrationFlowBuilderProviderProps>): ReactElement => (
-    <AuthenticationFlowBuilderCoreProvider ElementFactory={ ElementFactory } ResourceProperties={ ResourceProperties }>
+    <AuthenticationFlowBuilderCoreProvider
+        ElementFactory={ ElementFactory }
+        ResourceProperties={ ResourceProperties }
+        flowType={ FlowTypes.REGISTRATION }
+    >
         <FlowContextWrapper>{ children }</FlowContextWrapper>
     </AuthenticationFlowBuilderCoreProvider>
 );
@@ -95,7 +100,8 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
         }
 
         try {
-            const registrationFlow = transformFlow(flow) as any;
+            const registrationFlow: any = transformFlow(flow) as any;
+
             registrationFlow.flowType = RegistrationFlowConstants.REGISTRATION_FLOW_TYPE;
 
             await configureRegistrationFlow(registrationFlow);

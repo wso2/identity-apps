@@ -37,6 +37,7 @@ import { getConnectionResourceEndpoints } from "@wso2is/admin.connections.v1";
 import { getEmailTemplatesResourceEndpoints } from "@wso2is/admin.email-templates.v1";
 import { getExtendedFeatureResourceEndpoints } from "@wso2is/admin.extensions.v1/configs/endpoints";
 import { getFeatureGateResourceEndpoints } from "@wso2is/admin.feature-gate.v1/configs/endpoints";
+import { getFlowBuilderCoreResourceEndpoints } from "@wso2is/admin.flow-builder-core.v1/config/endpoints";
 import { getFlowsResourceEndpoints } from "@wso2is/admin.flows.v1/configs/endpoints";
 import { getGroupsResourceEndpoints } from "@wso2is/admin.groups.v1/configs/endpoints";
 import { getIDVPResourceEndpoints } from "@wso2is/admin.identity-verification-providers.v1/configs/endpoints";
@@ -348,6 +349,7 @@ export class Config {
             ...getFlowsResourceEndpoints(this.resolveServerHost()),
             ...getWebhooksResourceEndpoints(this.resolveServerHost()),
             ...getAgentsResourceEndpoints(this.resolveServerHost()),
+            ...getFlowBuilderCoreResourceEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.resolveServerHostFromConfig() }/api/server/v1/cors/origins`,
             asyncStatus: `${ this.resolveServerHost(false, true) }/api/server/v1/async-operations`,
             // TODO: Remove this endpoint and use ID token to get the details

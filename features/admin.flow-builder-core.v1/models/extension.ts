@@ -51,5 +51,9 @@ export enum EventTypes {
     /**
      * Event triggered to filter node elements.
      */
-    ON_NODE_ELEMENT_FILTER = "onNodeElementFilter"
+    ON_NODE_ELEMENT_FILTER = "onNodeElementFilter",
+    /**
+     * Event triggered when a template is loaded.
+     */
+    ON_TEMPLATE_LOAD = "onTemplateLoad"
 }

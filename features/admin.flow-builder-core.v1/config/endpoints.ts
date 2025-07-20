@@ -16,24 +16,17 @@
  * under the License.
  */
 
-export interface FlowListItemInterface {
-    id: string;
-    description?: string;
-    disabled?: boolean;
-    path?: string;
-    type?: string;
-    heading?: string;
-    featureStatusKey?: string;
+import { FlowBuilderCoreResourceEndpointsInterface } from "../models/endpoints";
+
+/**
+ * Get the resource endpoints for the Flow Builder Core related features.
+ *
+ * @returns Flow Builder Core resource endpoints.
+ */
+export const getFlowBuilderCoreResourceEndpoints = (
+    serverOrigin: string
+): FlowBuilderCoreResourceEndpointsInterface => {
+    return {
+        flowMeta: `${ serverOrigin }/api/server/v1/flow/meta`
+    };
 };
-
-export interface FlowConfigInterface {
-    flowType: FlowTypes;
-    isEnabled: boolean;
-    isAutoLoginEnabled?: boolean;
-}
-
-export enum FlowTypes {
-    REGISTRATION = "REGISTRATION",
-    PASSWORD_RECOVERY = "PASSWORD_RECOVERY",
-    INVITED_USER_REGISTRATION = "INVITED_USER_REGISTRATION",
-}

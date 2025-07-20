@@ -17,9 +17,7 @@
  */
 
 import Avatar from "@oxygen-ui/react/Avatar";
-import Button from "@oxygen-ui/react/Button";
 import Card from "@oxygen-ui/react/Card";
-import CardActions from "@oxygen-ui/react/CardActions";
 import CardContent from "@oxygen-ui/react/CardContent";
 import Typography from "@oxygen-ui/react/Typography";
 import {
@@ -34,14 +32,11 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon } from "@wso2is/react-components";
 import classNames from "classnames";
-import React, { FunctionComponent, MouseEvent, ReactElement } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
-import updateFlowConfig, { FlowConfigInterface } from "../api/update-flow-config";
+import React, { FunctionComponent, ReactElement } from "react";
+import { useSelector } from "react-redux";
 import useGetFlowConfigs from "../api/use-get-flow-configs";
 import flowData from "../data/flows.json";
 import { FlowListItemInterface, FlowTypes } from "../models/flows";
@@ -65,9 +60,7 @@ const FlowList: FunctionComponent<FlowListProps> = ({
     const flowsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
         state.config.ui.features?.flows);
 
-    const dispatch: Dispatch = useDispatch();
-
-    const { data: flowConfigs, mutate: mutateFlowConfigs } = useGetFlowConfigs();
+    const { data: flowConfigs } = useGetFlowConfigs();
 
     /**
      * Resolves the icon based on the flow type.
@@ -85,41 +78,6 @@ const FlowList: FunctionComponent<FlowListProps> = ({
             default:
                 return <UserKeyIcon size="small" className="icon" />;
         }
-    };
-
-    const resolveFlowTypeName = (flowType: string): string => {
-        switch (flowType) {
-            case FlowTypes.REGISTRATION:
-                return "Registration";
-            case FlowTypes.PASSWORD_RECOVERY:
-                return "Password Recovery";
-            case FlowTypes.INVITED_USER_REGISTRATION:
-                return "Invite User Password Setup";
-            default:
-                return "Unknown Flow Type";
-        }
-    };
-
-    const handleUpdateSuccess = (flowType: string, isEnabled: boolean) => {
-        dispatch(
-            addAlert({
-                description: `The customized ${ flowType.toLowerCase() } flow has been successfully`
-                    + (isEnabled ? " enabled." : " disabled."),
-                level: AlertLevels.SUCCESS,
-                message: "Dynamic " + resolveFlowTypeName(flowType) + " Flow" + (isEnabled ? " Enabled" : " Disabled")
-            })
-        );
-    };
-
-    const handleFlowStatusUpdateError = (flowType: string, error: any) => {
-        dispatch(
-            addAlert({
-                description: `An error occurred while toggling the ${ flowType.toLowerCase() } flow status: `
-                    + `${ error?.description || error?.message }`,
-                level: AlertLevels.ERROR,
-                message: "Flow Status Update Error"
-            })
-        );
     };
 
     const resolveFlowTypeStatus = (flowType: string): boolean => {
@@ -152,28 +110,6 @@ const FlowList: FunctionComponent<FlowListProps> = ({
                 </Typography>
             </div>
         );
-    };
-
-    const handleFlowStatusToggle = async (
-        e: MouseEvent<HTMLButtonElement>,
-        flowType: string
-    ): Promise<void> => {
-        e.stopPropagation();
-
-        const currentState: boolean = resolveFlowTypeStatus(flowType);
-
-        try {
-            const payload: FlowConfigInterface = {
-                flowType,
-                isEnabled: !currentState
-            };
-
-            await updateFlowConfig(payload);
-            handleUpdateSuccess(flowType, !currentState);
-            await mutateFlowConfigs();
-        } catch (error) {
-            handleFlowStatusUpdateError(flowType, error);
-        }
     };
 
     return (
@@ -224,24 +160,6 @@ const FlowList: FunctionComponent<FlowListProps> = ({
                                         { flow.description }
                                     </Typography>
                                 </CardContent>
-                                {
-                                    !flow.disabled && (
-                                        <CardActions>
-                                            <Button
-                                                className="action-button"
-                                                onClick={
-                                                    (e: MouseEvent<HTMLButtonElement>) =>
-                                                        handleFlowStatusToggle(e, flow.type)
-                                                }
-                                            >
-                                                { resolveFlowTypeStatus(flow.type)
-                                                    ? "Disable"
-                                                    : "Enable"
-                                                }
-                                            </Button>
-                                        </CardActions>
-                                    )
-                                }
                             </Card>
                         )))
                 }

@@ -22,6 +22,7 @@ import RegistrationFlowBuilderProvider from
 import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
+import FloatingPublishButton from "./floating-publish-button";
 import RegistrationFlowBuilderPageHeader from "./registration-flow-builder-page-header";
 import "./registration-flow-builder-page.scss";
 
@@ -58,6 +59,7 @@ const RegistrationFlowBuilderPage: FunctionComponent<RegistrationFlowBuilderPage
                     <RegistrationFlowBuilderPageHeader />
                 </div>
                 <RegistrationFlowBuilder />
+                <FloatingPublishButton />
             </div>
         </RegistrationFlowBuilderProvider>
     );

@@ -1,5 +1,20 @@
 # @wso2is/i18n
 
+## 2.24.18
+
+### Patch Changes
+
+- [#8560](https://github.com/wso2/identity-apps/pull/8560) [`241192e2ac434969b87b22e22ff794e9b5844451`](https://github.com/wso2/identity-apps/commit/241192e2ac434969b87b22e22ff794e9b5844451) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for generating the basic template using the self-registration connector configurations
+
+- Updated dependencies [[`241192e2ac434969b87b22e22ff794e9b5844451`](https://github.com/wso2/identity-apps/commit/241192e2ac434969b87b22e22ff794e9b5844451)]:
+  - @wso2is/core@2.9.5
+
+## 2.24.17
+
+### Patch Changes
+
+- [#8553](https://github.com/wso2/identity-apps/pull/8553) [`df5144cf67de49a7a66b5a518b8dbd05a5e626f5`](https://github.com/wso2/identity-apps/commit/df5144cf67de49a7a66b5a518b8dbd05a5e626f5) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Minor UX improvements to agents UI
+
 ## 2.24.16
 
 ### Patch Changes
