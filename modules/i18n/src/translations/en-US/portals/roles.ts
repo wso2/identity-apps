@@ -250,7 +250,7 @@ export const roles: rolesNS = {
                     },
                     title: "No agents assigned to the role."
                 },
-                emptySearchResult: "We couldn't find any results. Please try with the complete username.",
+                emptySearchResult: "We couldn't find any results. Please try with the complete name or ID.",
                 error: "An error occurred while fetching agents.",
                 errorPlaceholder: {
                     action: "Refresh",

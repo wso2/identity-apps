@@ -105,6 +105,8 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
     const [ searchQuery, setSearchQuery ] = useState<string>(null);
     const [ selectedUserstore, setSelectedUserStore ] = useState<string>(userstore);
 
+    const baseI18nKey: string = isForNonHumanUser ? "edit.agents" : "edit.users";
+
     /**
      * Fetch the user list.
      */
@@ -267,9 +269,9 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
         }
 
         if (isEmpty(searchQuery)) {
-            return t("roles:edit.users.placeholders.beginSearch");
+            return t("roles:" + baseI18nKey + ".placeholders.beginSearch");
         } else {
-            return t("roles:edit.users.placeholders.emptySearchResult");
+            return t("roles:" + baseI18nKey + ".placeholders.emptySearchResult");
         }
     };
 
