@@ -51,6 +51,7 @@ import React, {
     FunctionComponent,
     MutableRefObject,
     ReactElement,
+    useCallback,
     useEffect,
     useLayoutEffect,
     useMemo,
@@ -90,7 +91,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     "data-componentid": componentId = "registration-flow-builder-core",
     ...rest
 }: RegistrationFlowBuilderCorePropsInterface): ReactElement => {
-    useDefaultFlow();
+    const { generateProfileAttributes } = useDefaultFlow();
 
     const updateNodeInternals: UpdateNodeInternals = useUpdateNodeInternals();
     const flowUpdatesInProgress: MutableRefObject<boolean> = useRef<boolean>(false);
@@ -260,6 +261,8 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             templates.find((template: Template) => template.type === TemplateTypes.Basic)
         );
 
+        generateProfileAttributes(basicTemplate);
+
         if (basicTemplate?.config?.data?.steps?.length > 0) {
             basicTemplate.config.data.steps[0].id = INITIAL_FLOW_START_STEP_ID;
         }
@@ -270,10 +273,11 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         );
     };
 
-    const initialTemplateComponents: Element[] = useMemo(() => getBasicTemplateComponents(), [ resources ]);
+    const initialTemplateComponents: Element[] = useMemo(
+        () => getBasicTemplateComponents(), [ resources, generateProfileAttributes ]);
     const blankTemplateComponents: Element[] = useMemo(() => getBlankTemplateComponents(), [ resources ]);
 
-    const generateSteps = (steps: Node[]): Node[] => {
+    const generateSteps: (steps: Node[]) => Node[] = useCallback((steps: Node[]): Node[] => {
         const START_STEP: Node = {
             data: {
                 displayOnly: true
@@ -301,7 +305,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 };
             })
         ]) as Step[]) as Node[];
-    };
+    }, [ resources ]);
 
     /**
      * Validate edges based on the nodes.
@@ -638,7 +642,12 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                 updateFlowWithSequence(initialNodes);
             }
         }
-    }, [ registrationFlow?.steps, isRegistrationFlowFetchRequestLoading, isRegistrationFlowFetchRequestValidating ]);
+    }, [
+        registrationFlow?.steps,
+        isRegistrationFlowFetchRequestLoading,
+        isRegistrationFlowFetchRequestValidating,
+        initialNodes
+    ]);
 
     const generateNodeTypes = (): NodeTypes => {
         if (!steps) {

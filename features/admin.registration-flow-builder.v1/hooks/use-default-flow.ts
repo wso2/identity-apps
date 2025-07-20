@@ -28,7 +28,7 @@ import PluginRegistry from "@wso2is/admin.flow-builder-core.v1/plugins/plugin-re
 import generateResourceId from "@wso2is/admin.flow-builder-core.v1/utils/generate-resource-id";
 import { Claim } from "@wso2is/core/models";
 import cloneDeep from "lodash-es/cloneDeep";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 const EMAIL_CLAIM_URI: string = "http://wso2.org/claims/emailaddress";
 const FIRST_NAME_CLAIM_URI: string = "http://wso2.org/claims/givenname";
@@ -68,7 +68,7 @@ const FIELD: Element = {
 /**
  * Hook to handle default flow for registration flow builder.
  */
-const useDefaultFlow = (): void => {
+const useDefaultFlow = (): { generateProfileAttributes: (resource: Resource) => boolean } => {
 
     const { metadata } = useAuthenticationFlowBuilderCore();
     const { data: claims } = useGetAllLocalClaims({
@@ -141,29 +141,13 @@ const useDefaultFlow = (): void => {
         return field;
     };
 
-    useEffect(() => {
-        if (!claims) {
-            return;
-        }
-
-        generateProfileAttributes[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER] =
-            "generateProfileAttributes";
-
-        PluginRegistry.getInstance().registerSync(EventTypes.ON_TEMPLATE_LOAD, generateProfileAttributes);
-
-        return () => {
-            PluginRegistry.getInstance().unregister(EventTypes.ON_TEMPLATE_LOAD,
-                generateProfileAttributes[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER]);
-        };
-    }, [ claims ]);
-
     /**
      * Generate profile attributes for the given resource.
      *
      * @param resource - The resource to generate profile attributes for.
      * @returns True.
      */
-    const generateProfileAttributes = (resource: Resource): boolean => {
+    const generateProfileAttributes: (resource: Resource) => boolean = useCallback((resource: Resource): boolean => {
         if (resource.type === TemplateTypes.Basic) {
             const formComponents: Element[] = resource.config.data.steps[0].data.components[1].components;
 
@@ -199,7 +183,21 @@ const useDefaultFlow = (): void => {
         }
 
         return true;
-    };
+    }, [ claims ]);
+
+    useEffect(() => {
+        generateProfileAttributes[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER] =
+            "generateProfileAttributes";
+
+        PluginRegistry.getInstance().registerSync(EventTypes.ON_TEMPLATE_LOAD, generateProfileAttributes);
+
+        return () => {
+            PluginRegistry.getInstance().unregister(EventTypes.ON_TEMPLATE_LOAD,
+                generateProfileAttributes[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER]);
+        };
+    }, [ generateProfileAttributes ]);
+
+    return { generateProfileAttributes };
 };
 
 export default useDefaultFlow;

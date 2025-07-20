@@ -23,6 +23,7 @@ import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/featur
 import useGetFlowBuilderCoreResources from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-builder-core-resources";
 import { Resources } from "@wso2is/admin.flow-builder-core.v1/models/resources";
 import { Template, TemplateTypes } from "@wso2is/admin.flow-builder-core.v1/models/templates";
+import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import templates from "../data/templates.json";
 import widgets from "../data/widgets.json";
@@ -47,15 +48,15 @@ const useGetRegistrationFlowBuilderResources = <Data = Resources, Error = Reques
         (state: AppState) => state.config.ui.features?.ai
     );
 
-    const isAiFeatureDisabled: boolean = !aiFeature?.enabled ||
-        aiFeature?.disabledFeatures?.includes(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.AI_FLOWS_TYPES_REGISTRATION);
+    const data: unknown = useMemo(() => {
+        const isAiFeatureDisabled: boolean = !aiFeature?.enabled || aiFeature?.disabledFeatures?.includes(
+            FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.AI_FLOWS_TYPES_REGISTRATION);
 
-    const filteredTemplates: Template[] = (templates as Template[]).filter((template: Template) => {
-        return !isAiFeatureDisabled || template?.type !== TemplateTypes.GeneratedWithAI;
-    });
+        const filteredTemplates: Template[] = (templates as Template[]).filter((template: Template) => {
+            return !isAiFeatureDisabled || template?.type !== TemplateTypes.GeneratedWithAI;
+        });
 
-    return {
-        data: ({
+        return {
             ...coreResources,
             templates: [
                 ...coreResources?.templates,
@@ -65,7 +66,11 @@ const useGetRegistrationFlowBuilderResources = <Data = Resources, Error = Reques
                 ...coreResources?.widgets,
                 ...widgets
             ]
-        } as unknown) as Data,
+        };
+    }, [ coreResources, aiFeature ]);
+
+    return {
+        data: data as Data,
         error: null,
         isLoading: false,
         isValidating: false,
