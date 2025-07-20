@@ -19,9 +19,12 @@
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { mergeRegister } from "@lexical/utils";
+import Button from "@oxygen-ui/react/Button";
 import IconButton from "@oxygen-ui/react/IconButton";
+import MenuItem from "@oxygen-ui/react/MenuItem";
+import Select from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
-import { CheckIcon, PenToSquareIcon } from "@oxygen-ui/react-icons";
+import { PenToSquareIcon } from "@oxygen-ui/react-icons";
 import {
     $getSelection,
     $isRangeSelection,
@@ -57,6 +60,36 @@ const HighPriority: CommandListenerPriority = 3;
 
 // Custom command for creating safe links.
 export const TOGGLE_SAFE_LINK_COMMAND: LexicalCommand<string> = createCommand("TOGGLE_SAFE_LINK_COMMAND");
+
+// Predefined URL options
+interface PredefinedUrlOption {
+    label: string;
+    placeholder: string;
+    value: string;
+}
+
+const PREDEFINED_URLS: PredefinedUrlOption[] = [
+    {
+        label: "Application Access URL",
+        placeholder: "{{APPLICATION_ACCESS_URL}}",
+        value: "{{application:accessUrl}}"
+    },
+    {
+        label: "Privacy Policy URL",
+        placeholder: "{{PRIVACY_POLICY_URL}}",
+        value: "{{branding:privacyPolicyUrl}}"
+    },
+    {
+        label: "Terms of Use URL",
+        placeholder: "{{TERMS_OF_USE_URL}}",
+        value: "{{branding:termsOfUseUrl}}"
+    },
+    {
+        label: "Custom URL",
+        placeholder: "",
+        value: "CUSTOM"
+    }
+];
 
 /**
  * Positions the editor element based on the selection rectangle.
@@ -118,6 +151,7 @@ const LinkEditor = (): ReactElement => {
     const [ linkUrl, setLinkUrl ] = useState("");
     const [ isEditMode, setEditMode ] = useState(false);
     const [ lastSelection, setLastSelection ] = useState<BaseSelection | null>(null);
+    const [ selectedUrlType, setSelectedUrlType ] = useState<string>("CUSTOM");
 
     const { t } = useTranslation();
 
@@ -133,11 +167,18 @@ const LinkEditor = (): ReactElement => {
             const parent: ElementNode = node.getParent();
 
             if ($isLinkNode(parent)) {
-                setLinkUrl(parent.getURL());
+                const url: string = parent.getURL();
+
+                setLinkUrl(getPlaceholderUrl(url));
+                setSelectedUrlType(determineUrlType(url));
             } else if ($isLinkNode(node)) {
-                setLinkUrl(node.getURL());
+                const url: string = node.getURL();
+
+                setLinkUrl(getPlaceholderUrl(url));
+                setSelectedUrlType(determineUrlType(url));
             } else {
                 setLinkUrl("");
+                setSelectedUrlType("CUSTOM");
                 setEditMode(false);
                 positionEditorElement(editorElem, null);
 
@@ -188,6 +229,74 @@ const LinkEditor = (): ReactElement => {
 
         return true;
     }, [ editor ]);
+
+    /**
+     * Gets the placeholder URL for a given URL.
+     * @param url - The URL to get the placeholder for.
+     * @returns The placeholder URL if found, otherwise an empty string.
+     */
+    const getPlaceholderUrl = (url: string): string => {
+        const selectedType: string = determineUrlType(url);
+
+        if (selectedType !== "CUSTOM") {
+            const selectedOption: PredefinedUrlOption | undefined = PREDEFINED_URLS.find(
+                (option: PredefinedUrlOption) => option.value === url
+            );
+
+            return selectedOption ? selectedOption.placeholder : "";
+        }
+
+        return url;
+    };
+
+    /**
+     * Determines the URL type based on the URL content.
+     */
+    const determineUrlType = (url: string): string => {
+        const predefinedUrl: PredefinedUrlOption = PREDEFINED_URLS.find(
+            (option: PredefinedUrlOption) => option.value === url
+        );
+
+        return predefinedUrl ? predefinedUrl.value : "CUSTOM";
+    };
+
+    /**
+     * Handles URL type selection change.
+     */
+    const handleUrlTypeChange = (event: { target: { value: unknown } }): void => {
+        const newType: string = event.target.value as string;
+
+        setSelectedUrlType(newType);
+
+        if (newType !== "CUSTOM") {
+            const selectedOption: PredefinedUrlOption = PREDEFINED_URLS.find(
+                (option: PredefinedUrlOption) => option.value === newType
+            );
+
+            if (selectedOption) {
+                setLinkUrl(selectedOption.placeholder);
+                editor.dispatchCommand(TOGGLE_SAFE_LINK_COMMAND, selectedOption.value);
+            }
+        } else {
+            setLinkUrl("https://");
+            editor.dispatchCommand(TOGGLE_SAFE_LINK_COMMAND, "https://");
+        }
+    };
+
+    /**
+     * Gets the current URL for editing mode.
+     */
+    const getCurrentUrl = (): string => {
+        if (selectedUrlType !== "CUSTOM") {
+            const selectedOption: PredefinedUrlOption = PREDEFINED_URLS.find(
+                (option: PredefinedUrlOption) => option.value === selectedUrlType
+            );
+
+            return selectedOption ? selectedOption.value : linkUrl;
+        }
+
+        return linkUrl;
+    };
 
     /**
      * Sets up event listeners for window resize and scroll to update the link editor position.
@@ -297,20 +406,46 @@ const LinkEditor = (): ReactElement => {
             <div className="link-input">
                 { isEditMode ? (
                     <>
+                        <Select
+                            value={ selectedUrlType }
+                            label={ t("flows:core.elements.richText.linkEditor.urlTypeLabel") }
+                            onChange={ handleUrlTypeChange }
+                            size="small"
+                            InputLabelProps={
+                                { style: { marginLeft: 0, marginTop: 0 } }
+                            }
+                        >
+                            { PREDEFINED_URLS.map((option: PredefinedUrlOption) => (
+                                <MenuItem key={ option.value } value={ option.value }>
+                                    { option.label }
+                                </MenuItem>
+                            )) }
+                        </Select>
                         <TextField
                             inputRef={ inputRef }
                             fullWidth
-                            value={ linkUrl }
-                            onChange={ (event: ChangeEvent<HTMLInputElement>) =>
-                                setLinkUrl(event.target.value)
+                            value={ selectedUrlType === "CUSTOM" ? linkUrl : "" }
+                            onChange={ (event: ChangeEvent<HTMLInputElement>) => {
+                                if (selectedUrlType === "CUSTOM") {
+                                    setLinkUrl(event.target.value);
+                                }
+                            } }
+                            placeholder={
+                                selectedUrlType === "CUSTOM"
+                                    ? (t("flows:core.elements.richText.linkEditor.placeholder"))
+                                    : PREDEFINED_URLS.find(
+                                        (option: PredefinedUrlOption) => option.value === selectedUrlType
+                                    )?.placeholder || ""
                             }
-                            placeholder={ t("flows:core.elements.richText.linkEditor.placeholder") }
+                            disabled={ selectedUrlType !== "CUSTOM" }
                             onKeyDown={ (event: KeyboardEvent<HTMLInputElement>) => {
                                 if (event.key === "Enter") {
                                     event.preventDefault();
                                     if (lastSelection !== null) {
-                                        if (linkUrl !== "") {
-                                            editor.dispatchCommand(TOGGLE_SAFE_LINK_COMMAND, linkUrl);
+                                        const currentUrl: string = getCurrentUrl();
+
+                                        if (currentUrl !== "") {
+                                            editor.dispatchCommand(TOGGLE_SAFE_LINK_COMMAND, currentUrl);
                                         }
                                         setEditMode(false);
                                     }
@@ -320,19 +455,24 @@ const LinkEditor = (): ReactElement => {
                                 }
                             } }
                         />
-                        <IconButton
+                        <Button
+                            size="small"
+                            variant="outlined"
+                            className="link-input-save-button"
                             onClick={ (event: ReactMouseEvent<HTMLButtonElement>) => {
                                 event.preventDefault();
                                 if (lastSelection !== null) {
-                                    if (linkUrl !== "") {
-                                        editor.dispatchCommand(TOGGLE_SAFE_LINK_COMMAND, linkUrl);
+                                    const currentUrl: string = getCurrentUrl();
+
+                                    if (currentUrl !== "") {
+                                        editor.dispatchCommand(TOGGLE_SAFE_LINK_COMMAND, currentUrl);
                                     }
                                 }
                                 setEditMode(false);
                             } }
                         >
-                            <CheckIcon />
-                        </IconButton>
+                            { t("common:save") }
+                        </Button>
                     </>
                 ) : (
                     <>

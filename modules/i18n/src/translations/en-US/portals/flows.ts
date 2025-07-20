@@ -25,7 +25,8 @@ export const flows: flowsNS = {
         elements: {
             richText: {
                 linkEditor: {
-                    placeholder: "Enter link URL here..."
+                    placeholder: "Enter link URL here...",
+                    urlTypeLabel: "URL Type"
                 },
                 placeholder: "Enter rich text content here..."
             }

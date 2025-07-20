@@ -25,6 +25,7 @@ export interface flowsNS {
             richText: {
                 linkEditor: {
                     placeholder: string;
+                    urlTypeLabel: string;
                 };
                 placeholder: string;
             }
