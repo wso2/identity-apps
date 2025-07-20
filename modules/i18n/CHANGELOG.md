@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.24.20
+
+### Patch Changes
+
+- [#8567](https://github.com/wso2/identity-apps/pull/8567) [`c017b54263998ebbe3b7feb67fe5b2ff696b9bf1`](https://github.com/wso2/identity-apps/commit/c017b54263998ebbe3b7feb67fe5b2ff696b9bf1) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improve i18n in agent search modal in role assignment
+
 ## 2.24.19
 
 ### Patch Changes
