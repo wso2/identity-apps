@@ -280,7 +280,7 @@
                         const errorPageURL = authPortalURL + "/execution_flow_error.do?" + "ERROR_MSG="
                             + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID="
                             + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + flowType + "&" +
-                            "PORTAL_URL=" + portal_url;
+                            "PORTAL_URL=" + portal_url + "&SP=" + "<%= Encode.forJavaScript(sp) %>";
 
                         window.location.href = errorPageURL;
                     }
