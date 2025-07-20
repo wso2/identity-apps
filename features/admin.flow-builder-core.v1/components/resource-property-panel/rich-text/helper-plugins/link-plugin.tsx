@@ -70,19 +70,24 @@ interface PredefinedUrlOption {
 
 const PREDEFINED_URLS: PredefinedUrlOption[] = [
     {
+        label: "Callback or Application Access URL",
+        placeholder: "{{CALLBACK_OR_APPLICATION_ACCESS_URL}}",
+        value: "{{application.callbackOrAccessUrl}}"
+    },
+    {
         label: "Application Access URL",
         placeholder: "{{APPLICATION_ACCESS_URL}}",
-        value: "{{application:accessUrl}}"
+        value: "{{application.accessUrl}}"
     },
     {
         label: "Privacy Policy URL",
         placeholder: "{{PRIVACY_POLICY_URL}}",
-        value: "{{branding:privacyPolicyUrl}}"
+        value: "{{branding.privacyPolicyUrl}}"
     },
     {
         label: "Terms of Use URL",
         placeholder: "{{TERMS_OF_USE_URL}}",
-        value: "{{branding:termsOfUseUrl}}"
+        value: "{{branding.termsOfUseUrl}}"
     },
     {
         label: "Custom URL",

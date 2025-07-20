@@ -31,6 +31,8 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
+<jsp:directive.include file="includes/flow-utils.jsp"/>
+
 <% request.setAttribute("pageName", "self-registration"); %>
 
 <%
@@ -162,7 +164,7 @@
             }
 
             const { createElement, useEffect, useState } = React;
-            const { DynamicContent, I18nProvider, executeFido2FLow, PasskeyEnrollment } = ReactUICore;
+            const { DynamicContent, GlobalContextProvider, I18nProvider, executeFido2FLow, PasskeyEnrollment } = ReactUICore;
 
             const Content = () => {
                 const baseUrl = "<%= identityServerEndpointContextParam %>";
@@ -218,7 +220,7 @@
                         setPostBody({ applicationId: "new-application", flowType: "REGISTRATION" });
                     } else if (!postBody && code === "null" && confirmationCode === "null" && flowType !== "null") {
                         setPostBody({ applicationId: "new-application", flowType: flowType });
-                    } 
+                    }
                 }, []);
 
                 useEffect(() => {
@@ -276,8 +278,8 @@
                             portal_url = authPortalURL + "/recovery.do";
                         }
                         const errorPageURL = authPortalURL + "/execution_flow_error.do?" + "ERROR_MSG="
-                            + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID=" 
-                            + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + flowType + "&" + 
+                            + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID="
+                            + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + flowType + "&" +
                             "PORTAL_URL=" + portal_url;
 
                         window.location.href = errorPageURL;
@@ -399,11 +401,15 @@
             }
 
             ReactDOM.render(
-            createElement(
-                I18nProvider,
-                { locale: "en-US", translationsObject: <%= translationsJson %> },
-                createElement(Content)
-            ),
+                createElement(
+                    GlobalContextProvider,
+                    { globalData: <%= reactGlobalContextJson %> },
+                    createElement(
+                        I18nProvider,
+                        { locale: "en-US", translationsObject: <%= translationsJson %> },
+                        createElement(Content)
+                    )
+                ),
                 document.getElementById("react-root")
             );
         });

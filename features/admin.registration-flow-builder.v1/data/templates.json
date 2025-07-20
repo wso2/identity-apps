@@ -166,7 +166,7 @@
                                         {
                                             "category": "DISPLAY",
                                             "config": {
-                                                "text": "<p class=\"rich-text-paragraph\"><br></p><p class=\"rich-text-paragraph\"><span class=\"rich-text-pre-wrap\">When you click Sign Up, you are agreeing to our </span><a href=\"{{branding:termsOfUseUrl}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"rich-text-link\"><span class=\"rich-text-pre-wrap\">Terms of Service</span></a><span class=\"rich-text-pre-wrap\"> and </span><a href=\"{{branding:privacyPolicyUrl}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"rich-text-link\"><span class=\"rich-text-pre-wrap\">Privacy Policy</span></a></p>"
+                                                "text": "<p class=\"rich-text-paragraph\"><br></p><p class=\"rich-text-paragraph\"><span class=\"rich-text-pre-wrap\">When you click Sign Up, you are agreeing to our </span><a href=\"{{branding.termsOfUseUrl}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"rich-text-link\"><span class=\"rich-text-pre-wrap\">Terms of Service</span></a><span class=\"rich-text-pre-wrap\"> and </span><a href=\"{{branding.privacyPolicyUrl}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"rich-text-link\"><span class=\"rich-text-pre-wrap\">Privacy Policy</span></a></p>"
                                             },
                                             "id": "{{ID}}",
                                             "type": "RICH_TEXT"
@@ -191,7 +191,7 @@
                                         {
                                             "category": "DISPLAY",
                                             "config": {
-                                                "text": "<p class=\"rich-text-paragraph\"><br></p><p class=\"rich-text-paragraph\"><span class=\"rich-text-pre-wrap\">Already have an account? </span><a href=\"{{application:accessUrl}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"rich-text-link\"><span class=\"rich-text-pre-wrap\">Sign in</span></a></p>"
+                                                "text": "<p class=\"rich-text-paragraph\"><br></p><p class=\"rich-text-paragraph\"><span class=\"rich-text-pre-wrap\">Already have an account? </span><a href=\"{{application.callbackOrAccessUrl}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"rich-text-link\"><span class=\"rich-text-pre-wrap\">Sign in</span></a></p>"
                                             },
                                             "id": "{{ID}}",
                                             "type": "RICH_TEXT"
