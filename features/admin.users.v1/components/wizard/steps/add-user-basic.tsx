@@ -40,6 +40,10 @@ import { OperationValueInterface } from "@wso2is/admin.roles.v2/models/roles";
 import {
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import {
+    VerificationOption
+} from "@wso2is/admin.server-configurations.v1/models/ask-password";
+import { ConnectorPropertyInterface } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { useGetUserStore } from "@wso2is/admin.userstores.v1/api/use-get-user-store";
 import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
@@ -122,6 +126,7 @@ export interface AddUserProps extends IdentifiableComponentInterface {
     isBasicDetailsLoading?: boolean;
     setBasicDetailsLoading?: (toggle: boolean) => void;
     selectedUserStoreId: string;
+    connectorProperties?: ConnectorPropertyInterface[];
 }
 
 /**
@@ -149,6 +154,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         setBasicDetailsLoading,
         validationConfig,
         selectedUserStoreId,
+        connectorProperties,
         [ "data-componentid" ]: componentId = "add-user-basic"
     } = props;
 
@@ -168,6 +174,8 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
 
     const [ askPasswordOption, setAskPasswordOption ] = useState<string>(userConfig.defautlAskPasswordOption);
+    const [ askPasswordVerificationOption, setAskPasswordVerificationOption ] =
+        useState<VerificationOption>(VerificationOption.EMAIL_LINK);
     const [ password, setPassword ] = useState<string>(initialValues?.newPassword ?? "");
     const [ passwordConfig, setPasswordConfig ] = useState<ValidationFormInterface>(undefined);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
@@ -349,6 +357,33 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     useEffect(() => {
         resolveNamefieldAttributes();
     }, []);
+
+    /**
+     * Process connector properties to determine ask password verification option.
+     */
+    useEffect(() => {
+        if (!connectorProperties) {
+            return;
+        }
+
+        const emailOTPConnector: ConnectorPropertyInterface = connectorProperties.find(
+            (property: ConnectorPropertyInterface) =>
+                property.name === ServerConfigurationsConstants.ASK_PASSWORD_EMAIL_OTP
+        );
+
+        const smsOTPConnector: ConnectorPropertyInterface = connectorProperties.find(
+            (property: ConnectorPropertyInterface) =>
+                property.name === ServerConfigurationsConstants.ASK_PASSWORD_SMS_OTP
+        );
+
+        if (smsOTPConnector?.value === "true") {
+            setAskPasswordVerificationOption(VerificationOption.SMS_OTP);
+        } else if (emailOTPConnector?.value === "true") {
+            setAskPasswordVerificationOption(VerificationOption.EMAIL_OTP);
+        } else {
+            setAskPasswordVerificationOption(VerificationOption.EMAIL_LINK);
+        }
+    }, [ connectorProperties ]);
 
     /**
      *
@@ -539,11 +574,90 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     };
 
     /**
+     * Get the message icon based on the verification option.
+     *
+     * @returns The icon name for the message.
+     */
+    const getMessageIcon = (): string => {
+        switch (askPasswordVerificationOption) {
+            case VerificationOption.EMAIL_OTP:
+            case VerificationOption.EMAIL_LINK:
+                return "mail";
+            case VerificationOption.SMS_OTP:
+                return "mobile";
+            default:
+                return "mail";
+        }
+    };
+
+    /**
+     * Get the message content based on the verification option.
+     *
+     * @returns The translated message content.
+     */
+    const getMessageContent = (): string => {
+        switch (askPasswordVerificationOption) {
+            case VerificationOption.EMAIL_OTP:
+                return t("extensions:manage.features.user.addUser.inviteUserTooltip.emailOTPInviteTooltip");
+            case VerificationOption.SMS_OTP:
+                return t("extensions:manage.features.user.addUser.inviteUserTooltip.smsOTPInviteTooltip");
+            case VerificationOption.EMAIL_LINK:
+            default:
+                return t("extensions:manage.features.user.addUser.inviteUserTooltip.emailLinkInviteTooltip");
+        }
+    };
+
+    /**
+     * Get the menu item text based on the verification option.
+     *
+     * @returns The translated menu item text.
+     */
+    const getMenuItemText = (): string => {
+        switch (askPasswordVerificationOption) {
+            case VerificationOption.SMS_OTP:
+                return t("user:modals.addUserWizard.askPassword.inviteViaSMS");
+            case VerificationOption.EMAIL_OTP:
+            case VerificationOption.EMAIL_LINK:
+            default:
+                return t("user:modals.addUserWizard.askPassword.inviteViaEmail");
+        }
+    };
+
+    /**
      * Check whether the alphanumeric usernames are enabled.
      *
      * @returns isAlphanumericUsernameEnabled - validation status.
      */
     const isAlphanumericUsernameEnabled = (): boolean => usernameConfig?.enableValidator === "true";
+
+    /**
+     * Check whether mobile field is available for user creation.
+     *
+     * @returns isMobileFieldAvailable - whether mobile field is available.
+     */
+    const isMobileFieldAvailable = (): boolean => {
+        if (!isAttributeProfileForUserCreationEnabled || !profileSchema) {
+            return false;
+        }
+
+        const mobileNumbersSchema: ProfileSchemaInterface = profileSchema?.find(
+            (schema: ProfileSchemaInterface) => schema.name === MOBILE_NUMBERS_ATTRIBUTE);
+        const mobileSchema: ProfileSchemaInterface = profileSchema?.find(
+            (schema: ProfileSchemaInterface) => schema.name === MOBILE_ATTRIBUTE);
+
+        // Check if multiple mobile numbers field is available
+        if (isMultipleEmailAndMobileNumberEnabled && mobileNumbersSchema &&
+            isFieldDisplayableInUserCreationWizard(mobileNumbersSchema, isDistinctAttributeProfilesDisabled)) {
+            return true;
+        }
+
+        // Check if single mobile field is available
+        if (isFieldDisplayableInUserCreationWizard(mobileSchema, isDistinctAttributeProfilesDisabled)) {
+            return true;
+        }
+
+        return false;
+    };
 
     /**
      * Callback function to validate password.
@@ -929,6 +1043,31 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
             );
         }
 
+        if (askPasswordVerificationOption === VerificationOption.SMS_OTP && !isMobileFieldAvailable()) {
+            const mobileClaimId: string = fetchedAttributes?.find(
+                (attribute: Claim) =>
+                    attribute?.[ClaimManagementConstants.CLAIM_URI_ATTRIBUTE_KEY] ===
+                    ClaimManagementConstants.MOBILE_CLAIM_URI
+            )?.id || "";
+
+            return (
+                <Trans
+                    i18nKey="user:modals.addUserWizard.askPassword.mobileNumberAlreadyExists"
+                >
+                    Please enable mobile as required field <Link
+                        onClick={ () => {
+                            const editClaimPath: string = AppConstants.getPaths()
+                                .get("LOCAL_CLAIMS_EDIT")
+                                .replace(":id", mobileClaimId);
+
+                            history.push(editClaimPath);
+                        } }
+                        external={ false }
+                    >Mobile Attribute Settings</Link>.
+                </Trans>
+            );
+        }
+
         if (!isEmailFilled || !isValidEmail) {
             return t(
                 "user:modals.addUserWizard.askPassword.emailInvalid"
@@ -947,31 +1086,33 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                     className="mb-4"
                 >
                     {
-                        (!emailVerificationEnabled || (!isEmailRequired && !isValidEmail)) ? (
-                            <Popup
-                                basic
-                                inverted
-                                position="top center"
-                                content={ resolveAskPasswordOptionPopupContent() }
-                                hoverable
-                                trigger={
-                                    (
-                                        <Menu.Item
-                                            name={ t("user:modals.addUserWizard" +
-                                                ".askPassword.inviteViaEmail") }
-                                            disabled
-                                        />
-                                    )
-                                }
-                            />
-                        ) : (
-                            <Menu.Item
-                                name={ t("user:modals.addUserWizard" +
-                                    ".askPassword.inviteViaEmail") }
-                                active={ askPasswordOption === AskPasswordOptionTypes.EMAIL }
-                                onClick={ () => setAskPasswordOption(AskPasswordOptionTypes.EMAIL) }
-                            />
-                        )
+                        (!emailVerificationEnabled ||
+                         (!isEmailRequired && !isValidEmail
+                            && askPasswordVerificationOption !== VerificationOption.SMS_OTP) ||
+                         (askPasswordVerificationOption === VerificationOption.SMS_OTP &&
+                          !isMobileFieldAvailable())) ? (
+                                <Popup
+                                    basic
+                                    inverted
+                                    position="top center"
+                                    content={ resolveAskPasswordOptionPopupContent() }
+                                    hoverable
+                                    trigger={
+                                        (
+                                            <Menu.Item
+                                                name={ getMenuItemText() }
+                                                disabled
+                                            />
+                                        )
+                                    }
+                                />
+                            ) : (
+                                <Menu.Item
+                                    name={ getMenuItemText() }
+                                    active={ askPasswordOption === AskPasswordOptionTypes.EMAIL }
+                                    onClick={ () => setAskPasswordOption(AskPasswordOptionTypes.EMAIL) }
+                                />
+                            )
                     }
                     <Menu.Item
                         name={ t("user:modals.addUserWizard" +
@@ -993,10 +1134,8 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                         <Message
-                            icon="mail"
-                            content={ t(
-                                "extensions:manage.features.user.addUser.inviteUserTooltip"
-                            ) }
+                            icon={ getMessageIcon() }
+                            content={ getMessageContent() }
                             size="small"
                         />
                     </Grid.Column>

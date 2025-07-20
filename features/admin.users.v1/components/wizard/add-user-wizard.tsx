@@ -26,6 +26,10 @@ import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores
 import { updateGroupDetails, useGroupList } from "@wso2is/admin.groups.v1/api/groups";
 import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1";
+import { useGetGovernanceConnectorById } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
@@ -162,6 +166,13 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const {
         data: validationData
     } = useValidationConfigData();
+
+    const {
+        data: askPasswordConnectorDetails
+    } = useGetGovernanceConnectorById(
+        ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+        ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID
+    );
 
     const {
         data: originalGroupList,
@@ -760,6 +771,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     setBasicDetailsLoading={ setBasicDetailsLoading }
                     validationConfig ={ validationData }
                     selectedUserStoreId={ resolveSelectedUserstoreId() }
+                    connectorProperties={ askPasswordConnectorDetails?.properties }
                 />
             ),
             icon: getUserWizardStepIcons().general,

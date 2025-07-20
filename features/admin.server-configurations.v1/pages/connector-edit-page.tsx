@@ -601,6 +601,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 return ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_ENABLE;
             case ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID:
                 return ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_ENABLE;
+            case ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID:
+                return ServerConfigurationsConstants.EMAIL_VERIFICATION_ENABLED;
             default:
                 return null;
         }
