@@ -55,6 +55,8 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.CommonDataRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.CommonDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.user.core.util.UserCoreUtil" %>
 <%@ page import="java.io.UnsupportedEncodingException" %>
@@ -242,6 +244,10 @@
     private static final String ACCOUNT_RECOVERY_ENDPOINT_RECOVER = "/recoveraccountrouter.do";
     private static final String ACCOUNT_RECOVERY_ENDPOINT_REGISTER = "/register.do";
     private static final String AUTHENTICATION_ENDPOINT_LOGIN = "/authenticationendpoint/login.do";
+    private static final String PASSWORD_RECOVERY_FLOW_ENDPOINT = "/api/server/v1/flow/config?flowType=PASSWORD_RECOVERY";
+    private static final String PASSWORD_RECOVERY_ENABLED_PROPERTY = "isEnabled";
+    private static final String DYNAMIC_PASSWORD_RECOVERY_URL =
+            "recovery.do?flowType=PASSWORD_RECOVERY";
     private static final String CONSOLE = "Console";
     private Log log = LogFactory.getLog(this.getClass());
 %>
@@ -606,6 +612,7 @@
         String accountRegistrationEndpointURL = "";
         String urlEncodedURL = "";
         String urlParameters = "";
+        Boolean isDynamicPortalPWEnabled = false;
 
         if (StringUtils.isNotBlank(recoveryEPAvailable)) {
             isRecoveryEPAvailable = Boolean.valueOf(recoveryEPAvailable);
@@ -677,6 +684,15 @@
             String srprmstr = URLDecoder.decode(((String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING)), UTF_8);
             String srURLWithoutEncoding = srURI + "?" + srprmstr;
             srURLEncodedURL= URLEncoder.encode(srURLWithoutEncoding, UTF_8);
+
+            try {
+                CommonDataRetrievalClient commonDataRetrievalClient = new CommonDataRetrievalClient();
+                isDynamicPortalPWEnabled = commonDataRetrievalClient.checkBooleanProperty(
+                        PASSWORD_RECOVERY_FLOW_ENDPOINT, tenantDomain,
+                        PASSWORD_RECOVERY_ENABLED_PROPERTY, false, true);
+            } catch (CommonDataRetrievalClientException e) {
+                // Ignored and fallback to default recovery portal.
+            }
         }
     %>
 
@@ -702,7 +718,11 @@
                 <% if(StringUtils.isNotBlank(passwordRecoveryOverrideURL)) { %>
                 href="<%=StringEscapeUtils.escapeHtml4(passwordRecoveryOverrideURL)%>"
                 <% } else { %>
+                <% if (isDynamicPortalPWEnabled) { %>
+                href="<%=DYNAMIC_PASSWORD_RECOVERY_URL%>"
+                <% } else { %>
                 href="<%=StringEscapeUtils.escapeHtml4(getRecoverAccountUrlWithUsername(identityMgtEndpointContext, urlEncodedURL, false, urlParameters, usernameIdentifier))%>"
+                <% } %>
                 <% } %>
                 data-testid="login-page-password-recovery-button"
                 <% if (StringUtils.equals("true", promptAccountLinking)) { %>
