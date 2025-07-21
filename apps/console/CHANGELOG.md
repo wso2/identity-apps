@@ -1,5 +1,21 @@
 # @wso2is/console
 
+## 2.68.17
+
+### Patch Changes
+
+- [#8586](https://github.com/wso2/identity-apps/pull/8586) [`e4bacc6f7fabba38a995428ea0b0bb785d2f1d35`](https://github.com/wso2/identity-apps/commit/e4bacc6f7fabba38a995428ea0b0bb785d2f1d35) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enable password recovery and invited user registration flow builders
+
+- Updated dependencies [[`e4bacc6f7fabba38a995428ea0b0bb785d2f1d35`](https://github.com/wso2/identity-apps/commit/e4bacc6f7fabba38a995428ea0b0bb785d2f1d35)]:
+  - @wso2is/admin.flows.v1@1.0.15
+  - @wso2is/admin.ask-password-flow-builder.v1@1.0.6
+  - @wso2is/admin.branding.v1@2.31.6
+  - @wso2is/admin.core.v1@2.46.26
+  - @wso2is/admin.email-management.v1@2.25.210
+  - @wso2is/admin.home.v1@1.7.17
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.0.5
+  - @wso2is/admin.server-configurations.v1@2.35.9
+
 ## 2.68.16
 
 ### Patch Changes
