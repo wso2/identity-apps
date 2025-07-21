@@ -40,6 +40,7 @@ export interface ProfileFieldFormRendererPropsInterface extends IdentifiableComp
      * The label to be displayed.
      */
     fieldLabel: string;
+    fieldName?: string;
     /**
      * Whether the field is in edit mode or not.
      */
