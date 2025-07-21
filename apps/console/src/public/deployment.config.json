@@ -1587,11 +1587,11 @@
             "webhooks": {
                 "disabledFeatures": [
                 ],
-                "enabled": false,
+                "enabled": true,
                 "featureFlags": [
                     {
                         "feature": "webhooks",
-                        "flag": "BETA"
+                        "flag": "PREVIEW"
                     }
                 ],
                 "scopes": {
