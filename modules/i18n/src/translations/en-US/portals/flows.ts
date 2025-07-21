@@ -19,7 +19,39 @@ import { flowsNS } from "../../../models";
 
 export const flows: flowsNS = {
     askPassword: {
-        breadcrumb: "Edit Invite User Password Flow"
+        breadcrumb: "Edit Invite User Registration Flow",
+        notifications: {
+            disableFlow: {
+                genericError: {
+                    description: "An error occurred while disabling the invited user registration flow.",
+                    message: "Disable Invited User Registration Flow Error"
+                },
+                success: {
+                    description: "Successfully disabled the invited user registration flow.",
+                    message: "Invited User Registration Flow Disabled"
+                }
+            },
+            enableFlow: {
+                genericError: {
+                    description: "An error occurred while enabling the invited user registration flow.",
+                    message: "Enable Invited User Registration Flow Error"
+                },
+                success: {
+                    description: "Successfully enabled the invited user registration flow.",
+                    message: "Invited User Registration Flow Enabled"
+                }
+            },
+            fetchFlowConfig: {
+                genericError: {
+                    description: "An error occurred while fetching the invited user registration flow configuration.",
+                    message: "Fetch Invited User Registration Flow Error"
+                }
+            }
+        },
+        tooltip: {
+            disableFlow: "Click to disable the invited user registration flow",
+            enableFlow: "Click to enable the invited user registration flow"
+        }
     },
     core: {
         elements: {
@@ -47,7 +79,39 @@ export const flows: flowsNS = {
     },
     label: "Flows",
     passwordRecovery: {
-        name: "Password Recovery Flow Builder"
+        name: "Password Recovery Flow Builder",
+        notifications: {
+            disableFlow: {
+                genericError: {
+                    description: "An error occurred while disabling the password recovery flow.",
+                    message: "Disable Password Recovery Flow Error"
+                },
+                success: {
+                    description: "Successfully disabled the password recovery flow.",
+                    message: "Password Recovery Flow Disabled"
+                }
+            },
+            enableFlow: {
+                genericError: {
+                    description: "An error occurred while enabling the password recovery flow.",
+                    message: "Enable Password Recovery Flow Error"
+                },
+                success: {
+                    description: "Successfully enabled the password recovery flow.",
+                    message: "Password Recovery Flow Enabled"
+                }
+            },
+            fetchFlowConfig: {
+                genericError: {
+                    description: "An error occurred while fetching the password recovery flow configuration.",
+                    message: "Fetch Password Recovery Flow Error"
+                }
+            }
+        },
+        tooltip: {
+            disableFlow: "Click to disable the password recovery flow",
+            enableFlow: "Click to enable the password recovery flow"
+        }
     },
     registrationFlow: {
         breadcrumb: "Edit Registration Flow",

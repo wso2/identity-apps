@@ -20,8 +20,8 @@
         },
         {
             "id": "invite-user-to-set-password",
-            "heading": "Invite User to Set Password",
-            "description": "Design and customize the invite-user password setup journey with a flexible, no-code flow composer.",
+            "heading": "Invite User Registration",
+            "description": "Design and customize the invite-user registration journey with a flexible, no-code flow composer.",
             "featureStatusKey": "flows.types.list.inviteUserToSetPassword",
             "path": "INVITE_USER_PASSWORD_SETUP_FLOW_BUILDER",
             "type": "INVITED_USER_REGISTRATION",
