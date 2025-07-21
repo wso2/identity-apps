@@ -186,6 +186,12 @@ export interface CheckBoxFieldFormPropsInterface
         "isActive" | "isRequired" | "profileInfo" | "onEditClicked" | "onEditCancelClicked"
     > {}
 
+export interface SwitchFieldFormPropsInterface
+    extends Omit<
+        ProfileFieldFormPropsInterface,
+        "isActive" | "isRequired" | "profileInfo" | "onEditClicked" | "onEditCancelClicked"
+    > {}
+
 export interface DOBFieldFormPropsInterface extends ProfileFieldFormPropsInterface {}
 
 export interface DropdownFieldFormPropsInterface extends ProfileFieldFormPropsInterface {}
