@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { StaticStepTypes, Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
+import { Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 
 /**
  * Interface for a registration flow API schema.
