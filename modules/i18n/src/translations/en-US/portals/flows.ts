@@ -26,6 +26,13 @@ export const flows: flowsNS = {
             richText: {
                 linkEditor: {
                     placeholder: "Enter link URL here...",
+                    predefinedUrls: {
+                        applicationAccessUrl: "Application Access URL",
+                        callbackOrApplicationAccessUrl: "Callback or Application Access URL",
+                        customUrl: "Custom URL",
+                        privacyPolicyUrl: "Privacy Policy URL",
+                        termsOfUseUrl: "Terms of Use URL"
+                    },
                     urlTypeLabel: "URL Type"
                 },
                 placeholder: "Enter rich text content here..."

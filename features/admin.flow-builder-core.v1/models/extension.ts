@@ -55,9 +55,5 @@ export enum EventTypes {
     /**
      * Event triggered when a template is loaded.
      */
-    ON_TEMPLATE_LOAD = "onTemplateLoad",
-    /**
-     * Event triggered when a custom nodes are registered to the flow.
-     */
-    ON_CUSTOM_NODE_REGISTER = "onCustomNodeRegister"
+    ON_TEMPLATE_LOAD = "onTemplateLoad"
 }

@@ -70,27 +70,27 @@ interface PredefinedUrlOption {
 
 const PREDEFINED_URLS: PredefinedUrlOption[] = [
     {
-        label: "Callback or Application Access URL",
+        label: "flows:core.elements.richText.linkEditor.predefinedUrls.callbackOrApplicationAccessUrl",
         placeholder: "{{CALLBACK_OR_APPLICATION_ACCESS_URL}}",
         value: "{{application.callbackOrAccessUrl}}"
     },
     {
-        label: "Application Access URL",
+        label: "flows:core.elements.richText.linkEditor.predefinedUrls.applicationAccessUrl",
         placeholder: "{{APPLICATION_ACCESS_URL}}",
         value: "{{application.accessUrl}}"
     },
     {
-        label: "Privacy Policy URL",
+        label: "flows:core.elements.richText.linkEditor.predefinedUrls.privacyPolicyUrl",
         placeholder: "{{PRIVACY_POLICY_URL}}",
         value: "{{branding.privacyPolicyUrl}}"
     },
     {
-        label: "Terms of Use URL",
+        label: "flows:core.elements.richText.linkEditor.predefinedUrls.termsOfUseUrl",
         placeholder: "{{TERMS_OF_USE_URL}}",
         value: "{{branding.termsOfUseUrl}}"
     },
     {
-        label: "Custom URL",
+        label: "flows:core.elements.richText.linkEditor.predefinedUrls.customUrl",
         placeholder: "",
         value: "CUSTOM"
     }
@@ -422,7 +422,7 @@ const LinkEditor = (): ReactElement => {
                         >
                             { PREDEFINED_URLS.map((option: PredefinedUrlOption) => (
                                 <MenuItem key={ option.value } value={ option.value }>
-                                    { option.label }
+                                    { t(option.label) }
                                 </MenuItem>
                             )) }
                         </Select>
