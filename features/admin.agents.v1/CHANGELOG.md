@@ -1,5 +1,15 @@
 # @wso2is/admin.agents.v1
 
+## 1.0.11
+
+### Patch Changes
+
+- [#8574](https://github.com/wso2/identity-apps/pull/8574) [`0d15c6297e5145cf9aaf1d50224f4293d1f6057f`](https://github.com/wso2/identity-apps/commit/0d15c6297e5145cf9aaf1d50224f4293d1f6057f) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove placeholder text in role assign wizard
+
+- Updated dependencies [[`0d15c6297e5145cf9aaf1d50224f4293d1f6057f`](https://github.com/wso2/identity-apps/commit/0d15c6297e5145cf9aaf1d50224f4293d1f6057f)]:
+  - @wso2is/admin.roles.v2@2.27.166
+  - @wso2is/admin.core.v1@2.46.22
+
 ## 1.0.10
 
 ### Patch Changes
