@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { Payload } from "./api";
 import { Base } from "./base";
 
 export type Widget = Base<WidgetExtendedConfig>;
