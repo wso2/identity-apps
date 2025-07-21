@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.27.11
+
+### Patch Changes
+
+- [#8558](https://github.com/wso2/identity-apps/pull/8558) [`a22e6e2976b023c761268173bbdb8c1d3518997c`](https://github.com/wso2/identity-apps/commit/a22e6e2976b023c761268173bbdb8c1d3518997c) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Fix Username field not hidden during self-registration when email is used as username
+
+* [#8576](https://github.com/wso2/identity-apps/pull/8576) [`32f809bf44aa79cd7c87144466915fc9c6438ca5`](https://github.com/wso2/identity-apps/commit/32f809bf44aa79cd7c87144466915fc9c6438ca5) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for generating the legacy self-registration flow from the Flow Builder
+
 ## 2.27.10
 
 ### Patch Changes
