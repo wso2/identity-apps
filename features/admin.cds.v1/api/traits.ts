@@ -11,14 +11,14 @@ const BASE = "http://localhost:8900/api/v1";
 export const getProfileTraitById = (traitId: string): Promise<any> => {
     return httpClient({
         method: HttpMethods.GET,
-        url: `${BASE}/enrichment-rules/${traitId}`
+        url: `${BASE}/profile-schema/${traitId}`
     }).then(handleResponse).catch(handleError);
 };
 
 export const createProfileTrait = (traitData: any): Promise<any> => {
     return httpClient({
         method: HttpMethods.POST,
-        url: `${BASE}/enrichment-rules`,
+        url: `${BASE}/profile-schema`,
         data: traitData
     }).then(handleResponse).catch(handleError);
 };
@@ -26,7 +26,7 @@ export const createProfileTrait = (traitData: any): Promise<any> => {
 export const updateProfileTrait = (traitId: string, updatedData: any): Promise<any> => {
     return httpClient({
         method: HttpMethods.PATCH,
-        url: `${BASE}/enrichment-rules/${traitId}`,
+        url: `${BASE}/profile-schema/${traitId}`,
         data: updatedData
     }).then(handleResponse).catch(handleError);
 };
@@ -34,7 +34,7 @@ export const updateProfileTrait = (traitId: string, updatedData: any): Promise<a
 export const deleteProfileTrait = (traitId: string): Promise<any> => {
     return httpClient({
         method: HttpMethods.DELETE,
-        url: `${BASE}/enrichment-rules/${traitId}`
+        url: `${BASE}/profile-schema/${traitId}`
     }).then(handleResponse).catch(handleError);
 };
 

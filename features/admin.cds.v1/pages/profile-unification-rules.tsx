@@ -3,26 +3,21 @@ import {
     PageLayout,
     ListLayout,
     PrimaryButton,
-    EmptyPlaceholder
+    EmptyPlaceholder,
+    ConfirmationModal,
+    useConfirmationModalAlert
 } from "@wso2is/react-components";
 import {
     AlertLevels,
-} from "@wso2is/core/models";
-import { ConfirmationModal, useConfirmationModalAlert } from "@wso2is/react-components";
-
-import {
-    Table, TableBody, TableCell, TableHead, TableRow, TableContainer,
-    Paper, IconButton, FormControlLabel, Switch
-} from "@mui/material";
-import {
     DropdownItemProps,
-    DropdownProps,
-    Icon
-} from "semantic-ui-react";
+    DropdownProps
+} from "@wso2is/core/models";
+import { Icon } from "semantic-ui-react";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
-import { Delete } from "@mui/icons-material";
 import axios from "axios";
-import ResolutionRuleModal from "../components/modals/unification-rule-add-modal";
+import UnificationRuleAddModal from "../components/modals/unification-rule-add-modal";
+import { UnificationRulesList } from "./unification-rule-list";
 
 const SORT_BY: DropdownItemProps[] = [
     { key: 0, text: "Name", value: "rule_name" },
@@ -38,7 +33,11 @@ const sortRules = (list: any[], key: string, ascending: boolean): any[] => {
     });
 };
 
-const IdentityResolutionPage = () => {
+const paginate = (items: any[], limit: number, offset: number): any[] => {
+    return items.slice(offset, offset + limit);
+};
+
+const ProfileUnificationRulePage = () => {
     const [rules, setRules] = useState([]);
     const [originalRules, setOriginalRules] = useState([]);
     const [openModal, setOpenModal] = useState(false);
@@ -48,11 +47,14 @@ const IdentityResolutionPage = () => {
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [triggerClearQuery, setTriggerClearQuery] = useState<boolean>(false);
     const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
-    const [deletingRule, setDeletingRule] = useState(null);
+    const [deletingRule, setDeletingRule] = useState<any>(null);
     const [alert, setAlert, alertComponent] = useConfirmationModalAlert();
     const [showStatusChangeModal, setShowStatusChangeModal] = useState(false);
     const [togglingRule, setTogglingRule] = useState<any>(null);
     const [nextStatus, setNextStatus] = useState<boolean>(false);
+
+    const [offset, setOffset] = useState(0);
+    const listItemLimit = 10;
 
     const fetchRules = async () => {
         setIsLoading(true);
@@ -137,161 +139,74 @@ const IdentityResolutionPage = () => {
         setRules(originalRules);
     };
 
-    return (<PageLayout
-        title="Unification Rules"
-        description="Manage profile unification rules here."
-        action={<PrimaryButton onClick={() => setOpenModal(true)}><Icon name="add" />Add Rule</PrimaryButton>}
-        isLoading={isLoading}>
+    return (
+        <PageLayout
+            title="Unification Rules"
+            description="Manage profile unification rules here."
+            action={rules.length > 0 && (
+                <PrimaryButton onClick={() => setOpenModal(true)}>
+                    <Icon name="add" />
+                    Add Unification Rule
+                </PrimaryButton>
+            )}
+            isLoading={isLoading}
+        >
+            {rules.length === 0 && !isLoading ? (
+                <EmptyPlaceholder
+                    action={(
+                        <PrimaryButton onClick={() => setOpenModal(true)}>
+                            <Icon name="add" />
+                            Add Unification Rule
+                        </PrimaryButton>
+                    )}
+                    image={getEmptyPlaceholderIllustrations().newList}
+                    imageSize="tiny"
+                    title="No Unification Rules Found"
+                    subtitle={["Please add a unification rule to start unifying your profiles."]}
+                />
+            ) : (
+                <ListLayout
+                    showTopActionPanel
+                    currentListSize={rules.length}
+                    totalListSize={rules.length}
+                    sortOptions={SORT_BY}
+                    sortStrategy={sortBy}
+                    onSortStrategyChange={handleSortStrategyChange}
+                    onSortOrderChange={handleSortOrderChange}
+                    isLoading={isLoading}
+                    onPageChange={(page: number) => setOffset((page - 1) * listItemLimit)}
+                    totalPages={Math.ceil(rules.length / listItemLimit)}
+                    advancedSearch={
+                        <AdvancedSearchWithBasicFilters
+                            onFilter={handleRuleSearch}
+                            filterAttributeOptions={SORT_BY}
+                            placeholder="Search by Rule Name or Scope"
+                            defaultSearchAttribute="rule_name"
+                            defaultSearchOperator="co"
+                            triggerClearQuery={triggerClearQuery}
+                            onSearchQueryClear={handleSearchQueryClear}
+                            searchQuery={searchQuery}
+                        />
+                    }
+                >
+                    <UnificationRulesList
+                        rules={paginate(rules, listItemLimit, offset)}
+                        isLoading={isLoading}
+                        onRefresh={fetchRules}
+                    />
+                </ListLayout>
+            )}
 
-        {rules.length === 0 && !isLoading ? (
-            <EmptyPlaceholder
-                action={<PrimaryButton onClick={() => setOpenModal(true)}><Icon name="add" />Add Rule</PrimaryButton>}
-                image="/path/to/empty-placeholder.svg"
-                imageSize="tiny"
-                title="No Unification Rules"
-                subtitle={["Start by creating a rule to unify profiles."]}
+            <UnificationRuleAddModal
+                open={openModal}
+                onClose={() => setOpenModal(false)}
+                onSubmitSuccess={() => {
+                    setOpenModal(false);
+                    fetchRules();
+                }}
             />
-        ) : (
-            <ListLayout
-                showTopActionPanel
-                showPagination={false}
-                currentListSize={rules.length}
-                totalListSize={rules.length}
-                sortOptions={SORT_BY}
-                sortStrategy={sortBy}
-                onSortStrategyChange={handleSortStrategyChange}
-                onSortOrderChange={handleSortOrderChange}
-                isLoading={isLoading}
-                onPageChange={() => {}}
-                totalPages={1}
-                advancedSearch={<AdvancedSearchWithBasicFilters
-                    onFilter={handleRuleSearch}
-                    filterAttributeOptions={SORT_BY}
-                    placeholder="Search by Rule Name or Scope"
-                    defaultSearchAttribute="rule_name"
-                    defaultSearchOperator="co"
-                    triggerClearQuery={triggerClearQuery}
-                    onSearchQueryClear={handleSearchQueryClear}
-                    searchQuery={searchQuery} />}
-            >
-                <TableContainer component={Paper}>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell><strong>Rule Name</strong></TableCell>
-                                <TableCell><strong>Scope</strong></TableCell>
-                                <TableCell><strong>Attribute</strong></TableCell>
-                                <TableCell><strong>Priority</strong></TableCell>
-                                <TableCell><strong>Status</strong></TableCell>
-                                <TableCell></TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {rules.map(rule => {
-                                const attr = rule.property_name || "";
-                                const isUserId = attr === "user_id";
-                                let attrSuffix = attr;
-                                if (attr.startsWith("identity_attributes.")) attrSuffix = attr.replace("identity_attributes.", "");
-                                else if (attr.startsWith("application_data.")) attrSuffix = attr.replace("application_data.", "");
-                                else if (attr.startsWith("traits.")) attrSuffix = attr.replace("traits.", "");
-
-                                return (<TableRow key={rule.rule_id}>
-                                    <TableCell>{rule.rule_name}</TableCell>
-                                    <TableCell>{rule.property_scope}</TableCell>
-                                    <TableCell>{attrSuffix}</TableCell>
-                                    <TableCell>{rule.priority}</TableCell>
-                                    <TableCell>
-                                        <FormControlLabel
-                                            control={<Switch
-                                                checked={rule.is_active}
-                                                onChange={() => {
-                                                    setTogglingRule(rule);
-                                                    setNextStatus(!rule.is_active);
-                                                    setShowStatusChangeModal(true);
-                                                }}
-                                                disabled={isUserId} />}
-                                            label={rule.is_active ? "Active" : "Inactive"} />
-                                    </TableCell>
-                                    <TableCell>
-                                        {!isUserId && <IconButton
-                                            onClick={() => {
-                                                setDeletingRule(rule);
-                                                setShowDeleteConfirmationModal(true);
-                                            }}
-                                            color="error">
-                                            <Delete />
-                                        </IconButton>}
-                                    </TableCell>
-                                </TableRow>);
-                            })}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </ListLayout>
-        )}
-
-        {deletingRule && <ConfirmationModal
-            primaryActionLoading={isLoading}
-            onClose={() => setShowDeleteConfirmationModal(false)}
-            type="negative"
-            open={showDeleteConfirmationModal}
-            assertionHint="Please confirm the deletion."
-            assertionType="checkbox"
-            primaryAction="Confirm"
-            secondaryAction="Cancel"
-            onSecondaryActionClick={() => {
-                setShowDeleteConfirmationModal(false);
-                setAlert(null);
-            }}
-            onPrimaryActionClick={() => handleRuleDelete(deletingRule.rule_id)}
-            data-testid="delete-unification-rule-modal"
-            closeOnDimmerClick={false}>
-            <>
-                <ConfirmationModal.Header>Delete Unification Rule</ConfirmationModal.Header>
-                <ConfirmationModal.Message attached negative>Deleting this rule will permanently remove it and it cannot be undone. Unifications done using this rule will not be affected, but future unifications will not apply this rule.</ConfirmationModal.Message>
-                <ConfirmationModal.Content>
-                    <div className="modal-alert-wrapper">{alert && alertComponent}</div>
-                    Are you sure you want to delete the rule <b>{deletingRule.rule_name}</b>?
-                </ConfirmationModal.Content>
-            </>
-        </ConfirmationModal>}
-
-        {togglingRule && <ConfirmationModal
-            primaryActionLoading={isLoading}
-            onClose={() => setShowStatusChangeModal(false)}
-            type="warning"
-            open={showStatusChangeModal}
-            assertionHint="Please confirm your action."
-            assertionType="checkbox"
-            primaryAction="Confirm"
-            secondaryAction="Cancel"
-            onSecondaryActionClick={() => setShowStatusChangeModal(false)}
-            onPrimaryActionClick={() => {
-                performToggle(togglingRule.rule_id, togglingRule.is_active);
-                setShowStatusChangeModal(false);
-            }}
-            data-testid="toggle-unification-rule-status-modal"
-            closeOnDimmerClick={false}>
-            <>
-                <ConfirmationModal.Header>{nextStatus ? "Enable Unification Rule" : "Disable Unification Rule"}</ConfirmationModal.Header>
-                <ConfirmationModal.Message attached>{nextStatus
-                    ? "Enabling this rule will apply it to future profile unifications."
-                    : "Disabling this rule will prevent it from being applied to future profile unifications. Existing unifications will not be affected."}</ConfirmationModal.Message>
-                <ConfirmationModal.Content>
-                <div className="modal-alert-wrapper">{alert && alertComponent}</div>
-                Are you sure you want to <b>{nextStatus ? "enable" : "disable"}</b> the unification rule <b>{togglingRule.rule_name}</b>?
-                </ConfirmationModal.Content>
-            </>
-        </ConfirmationModal>}
-
-        <ResolutionRuleModal
-            open={openModal}
-            onClose={() => setOpenModal(false)}
-            onSubmitSuccess={() => {
-                setOpenModal(false);
-                fetchRules();
-            }} />
-    </PageLayout>);
+        </PageLayout>
+    );
 };
 
-export default IdentityResolutionPage;
+export default ProfileUnificationRulePage;

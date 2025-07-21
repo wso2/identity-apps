@@ -1,17 +1,34 @@
-import React, { useState, useEffect } from "react";
-import {
-    Dialog, DialogTitle, DialogContent, DialogActions,
-    TextField, MenuItem, Button, Grid
-} from "@mui/material";
+import React, { FunctionComponent, useEffect, useState } from "react";
+import { Modal, Form, DropdownProps, Checkbox, Grid } from "semantic-ui-react";
 import axios from "axios";
+import {
+    PrimaryButton,
+    Hint
+} from "@wso2is/react-components";
+import { LinkButton } from "@wso2is/react-components/src/components/button/link-button";
+import { useDispatch } from "react-redux";
+import { addAlert } from "@wso2is/core/store";
+import { AlertLevels } from "@wso2is/core/models";
 
-const scopeOptions = [
-    { label: "Identity Attribute", value: "identity_attributes" },
-    { label: "Application Data", value: "application_data" },
-    { label: "Trait", value: "traits" }
+interface UnificationRuleAddModalProps {
+    open: boolean;
+    onClose: () => void;
+    onSubmitSuccess: () => void;
+}
+
+const SCOPE_OPTIONS = [
+    { key: "identity", text: "Identity Attributes", value: "identity_attributes" },
+    { key: "application", text: "Application Data", value: "application_data" },
+    { key: "traits", text: "Traits", value: "traits" }
 ];
 
-const ResolutionRuleModal = ({ open, onClose, onSubmitSuccess }) => {
+export const UnificationRuleAddModal: FunctionComponent<UnificationRuleAddModalProps> = ({
+    open,
+    onClose,
+    onSubmitSuccess
+}) => {
+    const dispatch = useDispatch();
+
     const [form, setForm] = useState({
         rule_name: "",
         scope: "identity_attributes",
@@ -20,135 +37,200 @@ const ResolutionRuleModal = ({ open, onClose, onSubmitSuccess }) => {
         is_active: true
     });
 
-    const [attributeOptions, setAttributeOptions] = useState<string[]>([]);
+    const [attributeOptions, setAttributeOptions] = useState<{ key: string, text: string, value: string }[]>([]);
+    const [existingRules, setExistingRules] = useState<any[]>([]);
+    const [ruleNameConflict, setRuleNameConflict] = useState(false);
+    const [attributeConflict, setAttributeConflict] = useState(false);
+    const [priorityConflict, setPriorityConflict] = useState(false);
 
-    const handleChange = (field, value) => {
-        setForm(prev => ({ ...prev, [field]: value }));
-        if (field === "scope") {
-            setForm(prev => ({ ...prev, attribute: "", scope: value }));
+
+    useEffect(() => {
+        if (!open) return;
+    
+        fetchAttributes(form.scope);
+    
+        axios.get("http://localhost:8900/api/v1/unification-rules")
+            .then((res) => setExistingRules(res.data || []))
+            .catch(() => setExistingRules([]));
+    }, [open]);
+
+    useEffect(() => {
+        if (form.scope) {
+            setForm((prev) => ({ ...prev, attribute: "" }));
+            fetchAttributes(form.scope);
         }
-    };
+    }, [form.scope]);
+
+    useEffect(() => {
+        if (!form.rule_name || !form.attribute || !form.priority) {
+            setRuleNameConflict(false);
+            setAttributeConflict(false);
+            setPriorityConflict(false);
+            return;
+        }
+    
+        const fullAttribute = `${form.scope}.${form.attribute}`;
+    
+        setRuleNameConflict(existingRules.some(rule => rule.rule_name === form.rule_name));
+        setAttributeConflict(existingRules.some(rule => rule.property_name === fullAttribute));
+        setPriorityConflict(existingRules.some(rule => rule.priority === form.priority));
+    }, [form, existingRules]);
+    
 
     const fetchAttributes = async (scope: string) => {
         try {
-            const response = await axios.get(
-                `http://localhost:8900/api/v1/profile-schema/${scope}`
-            );
-
-            const names = (response.data || []).map(rule => {
-                const traitName = rule.property_name || "";
-                const parts = traitName.split(".");
-                return parts.length > 1 ? parts[1] : traitName;
-            });
-
-            setAttributeOptions(names);
+            const response = await axios.get(`http://localhost:8900/api/v1/profile-schema/${scope}`);
+            const options = (response.data || [])
+                .filter((item: any) => {
+                    // Exclude complex types and entries with empty names
+                    const name = item.attribute_name || "";
+                    return name && item.value_type !== "complex";
+                })
+                .map((item: any) => {
+                    const name = item.attribute_name;
+                    const suffix = name.split(".").slice(1).join(".") || name;
+                    return {
+                        key: name,
+                        text: suffix,
+                        value: suffix
+                    };
+                });
+    
+            setAttributeOptions(options);
         } catch (error) {
             console.error("Failed to fetch attributes", error);
             setAttributeOptions([]);
         }
     };
-
-    useEffect(() => {
-        fetchAttributes(form.scope);
-    }, [form.scope]);
-
-    useEffect(() => {
-        if (open) {
-            fetchAttributes("identity_attributes");
-        }
-    }, [open]);
+    
 
     const handleSubmit = async () => {
-        if (!form.attribute || form.priority <= 0) return;
+        if (!form.rule_name || !form.attribute || form.priority <= 0) return;
 
-        const fullAttribute = `${form.scope}.${form.attribute}`;
         try {
             await axios.post("http://localhost:8900/api/v1/unification-rules", {
                 rule_name: form.rule_name,
-                property_name: fullAttribute,
+                property_name: `${form.scope}.${form.attribute}`,
                 priority: form.priority,
                 is_active: form.is_active
             });
+
+            dispatch(addAlert({
+                description: "Unification rule added successfully.",
+                level: AlertLevels.SUCCESS,
+                message: "Success"
+            }));
+
             onSubmitSuccess();
-        } catch (err) {
-            console.error("Failed to create rule", err);
+            onClose();
+        } catch (error) {
+            dispatch(addAlert({
+                description: error?.message || "Failed to add rule.",
+                level: AlertLevels.ERROR,
+                message: "Error"
+            }));
         }
     };
 
     return (
-        <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-            <DialogTitle>Create Resolution Rule</DialogTitle>
-            <DialogContent>
-                <TextField
-                    label="Rule Name"
-                    fullWidth
-                    sx={{ mt: 2 }}
-                    value={form.rule_name}
-                    onChange={(e) => handleChange("rule_name", e.target.value)}
-                />
+        <Modal
+            open={open}
+            onClose={onClose}
+            size="small"
+            dimmer="blurring"
+            className="wizard application-create-wizard"
+            closeOnDimmerClick={false}
+        >
+            <Modal.Header>Add Profile Unification Rule</Modal.Header>
+            <Modal.Content>
+                <Form>
+                    <Form.Input
+                        label="Rule Name"
+                        placeholder="e.g. resolve_by_email"
+                        value={form.rule_name}
+                        onChange={(e) => setForm({ ...form, rule_name: e.target.value })}
+                        required
+                    />
+                    {ruleNameConflict && (
+                        <div style={{ color: "red", marginTop: "0.25rem" }}>
+                            A rule with this name already exists.
+                        </div>
+                    )}
 
-                <Grid container spacing={2} sx={{ mt: 2 }}>
-                    <Grid item xs={6}>
-                        <TextField
-                            select
+                    <Form.Group widths="equal">
+                        <Form.Dropdown
                             label="Scope"
-                            fullWidth
+                            selection
+                            options={SCOPE_OPTIONS}
                             value={form.scope}
-                            onChange={(e) => handleChange("scope", e.target.value)}
-                        >
-                            {scopeOptions.map(scope => (
-                                <MenuItem key={scope.value} value={scope.value}>
-                                    {scope.label}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <TextField
-                            select
-                            label="Attribute Name"
-                            fullWidth
+                            onChange={(_, data: DropdownProps) =>
+                                setForm({ ...form, scope: data.value as string })}
+                        />
+                        <Form.Dropdown
+                            label="Attribute"
+                            selection
+                            search
+                            options={attributeOptions}
                             value={form.attribute}
-                            onChange={(e) => handleChange("attribute", e.target.value)}
-                        >
-                            {attributeOptions.length > 0 ? (
-                                attributeOptions.map((attr, index) => (
-                                    <MenuItem key={index} value={attr}>
-                                        {attr}
-                                    </MenuItem>
-                                ))
-                            ) : (
-                                <MenuItem disabled>No attributes found</MenuItem>
-                            )}
-                        </TextField>
-                    </Grid>
+                            onChange={(_, data: DropdownProps) =>
+                                setForm({ ...form, attribute: data.value as string })}
+                        />
+                    </Form.Group>
+                    {attributeConflict && (
+                        <div style={{ color: "red", marginTop: "0.25rem" }}>
+                            A rule for this attribute already exists.
+                        </div>
+                    )}
+                    <Hint>
+                        Choose the attribute scope and specific attribute to apply this rule to.
+                    </Hint>
+
+                    <Form.Input
+                        label="Priority"
+                        type="number"
+                        min={1}
+                        value={form.priority}
+                        onChange={(e) =>
+                            setForm({ ...form, priority: Math.max(1, parseInt(e.target.value) || 1) })}
+                    />
+                    {priorityConflict && (
+                        <div style={{ color: "red", marginTop: "0.25rem" }}>
+                            This priority is already assigned for an attribute.
+                        </div>
+                    )}
+                    <Hint>Lower number means higher priority.</Hint>
+
+                    <Form.Field>
+                        <Checkbox
+                            label="Enable Rule"
+                            checked={form.is_active}
+                            onChange={() =>
+                                setForm((prev) => ({ ...prev, is_active: !prev.is_active }))}
+                        />
+                    </Form.Field>
+                </Form>
+            </Modal.Content>
+            <Modal.Actions>
+                <Grid>
+                    <Grid.Row columns={2}>
+                        <Grid.Column>
+                            <LinkButton floated="left" onClick={onClose}>Cancel</LinkButton>
+                        </Grid.Column>
+                        <Grid.Column textAlign="right">
+                            <PrimaryButton
+                                disabled={!form.rule_name || !form.attribute || form.priority <= 0 || ruleNameConflict ||
+                                    attributeConflict ||
+                                    priorityConflict}
+                                onClick={handleSubmit}
+                            >
+                                Submit
+                            </PrimaryButton>
+                        </Grid.Column>
+                    </Grid.Row>
                 </Grid>
-
-                <TextField
-                    label="Priority (must be > 0)"
-                    type="number"
-                    fullWidth
-                    sx={{ mt: 2 }}
-                    value={form.priority}
-                    onChange={(e) =>
-                        handleChange("priority", Math.max(1, parseInt(e.target.value) || 1))
-                    }
-                    inputProps={{ min: 1 }}
-                />
-            </DialogContent>
-
-            <DialogActions>
-                <Button onClick={onClose}>Cancel</Button>
-                <Button
-                    variant="contained"
-                    onClick={handleSubmit}
-                    disabled={!form.rule_name || !form.attribute || form.priority <= 0}
-                >
-                    Submit
-                </Button>
-            </DialogActions>
-        </Dialog>
+            </Modal.Actions>
+        </Modal>
     );
 };
 
-export default ResolutionRuleModal;
+export default UnificationRuleAddModal;

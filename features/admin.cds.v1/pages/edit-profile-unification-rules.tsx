@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { Form, Field } from "@wso2is/form";
 import {
-    PageLayout,
+    TabPageLayout,
     PrimaryButton,
     ContentLoader,
-    ConfirmationModal
+    ConfirmationModal,
+    Hint,
+    AnimatedAvatar
 } from "@wso2is/react-components";
 import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
@@ -13,7 +15,7 @@ import axios from "axios";
 import { AlertLevels } from "@wso2is/core/models";
 
 const UnificationRuleEditPage = () => {
-    const { id } = useParams();
+    const { id } = useParams<{ id: string }>();
     const history = useHistory();
     const dispatch = useDispatch();
 
@@ -42,7 +44,9 @@ const UnificationRuleEditPage = () => {
     const handleSubmit = async (values) => {
         setIsSubmitting(true);
         try {
-            await axios.patch(`http://localhost:8900/api/v1/unification-rules/${id}`, values);
+            await axios.patch(`http://localhost:8900/api/v1/unification-rules/${id}`, {
+                priority: values.priority
+            });
             dispatch(addAlert({
                 level: AlertLevels.SUCCESS,
                 message: "Rule updated successfully"
@@ -102,13 +106,16 @@ const UnificationRuleEditPage = () => {
     if (isLoading) return <ContentLoader />;
 
     return (
-        <PageLayout
-            title="Edit Unification Rule"
+        <TabPageLayout
+            isLoading={ isLoading }
+            title={ rule?.rule_name || "Edit Rule" }
+            pageTitle="Edit Unification Rule"
             description="Modify and manage your unification rule."
-            backButton={ {
+            backButton={{
                 onClick: () => history.push("/unification"),
                 text: "Go back to list"
-            } }
+            }}
+            image={ <AnimatedAvatar name={ rule?.rule_name } size="tiny" /> }
             titleTextAlign="left"
         >
             <Form
@@ -119,7 +126,7 @@ const UnificationRuleEditPage = () => {
                 <Field
                     name="rule_name"
                     label="Rule Name"
-                    required
+                    readOnly
                 />
                 <Field
                     name="property_name"
@@ -132,6 +139,9 @@ const UnificationRuleEditPage = () => {
                     type="number"
                     required
                 />
+                <Hint>
+                    Only priority can be updated. Rule name and attribute are fixed once created.
+                </Hint>
                 <PrimaryButton type="submit" loading={ isSubmitting }>Update</PrimaryButton>
                 <PrimaryButton
                     basic
@@ -188,7 +198,7 @@ const UnificationRuleEditPage = () => {
                     Are you sure you want to delete rule <b>{ rule.rule_name }</b>?
                 </ConfirmationModal.Content>
             </ConfirmationModal>
-        </PageLayout>
+        </TabPageLayout>
     );
 };
 
