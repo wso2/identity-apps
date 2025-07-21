@@ -29,6 +29,7 @@ import DropdownFieldForm from "./dropdown-field-form";
 import EmailFieldForm from "./email-field-form";
 import MobileFieldForm from "./mobile-field-form";
 import MultiValueFieldForm from "./multi-valued-field-form";
+import SwitchFieldForm from "./switch-field-form";
 import TextFieldForm from "./text-field-form";
 import { CommonConstants } from "../../../constants";
 import { SCIMConfigs as SCIMExtensionConfigs } from "../../../extensions/configs/scim";
@@ -276,6 +277,21 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
         case ClaimInputFormat.CHECKBOX:
             return (
                 <CheckboxFieldForm
+                    fieldSchema={ fieldSchema }
+                    initialValue={ initialValue }
+                    fieldLabel={ fieldLabel }
+                    isEditable={ isEditable }
+                    setIsProfileUpdating={ setIsProfileUpdating }
+                    isLoading={ isLoading }
+                    isUpdating={ isUpdating }
+                    data-componentid={ componentId }
+                    handleSubmit={ handleSubmit }
+                />
+            );
+
+        case ClaimInputFormat.TOGGLE:
+            return (
+                <SwitchFieldForm
                     fieldSchema={ fieldSchema }
                     initialValue={ initialValue }
                     fieldLabel={ fieldLabel }
