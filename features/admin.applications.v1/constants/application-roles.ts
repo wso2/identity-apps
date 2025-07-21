@@ -47,5 +47,6 @@ export enum ShareType {
 
 export enum RoleShareType {
     SHARE_WITH_ALL = "SHARE_ALL",
-    SHARE_SELECTED = "SHARE_SELECTED"
+    SHARE_SELECTED = "SHARE_SELECTED",
+    SHARE_NONE = "SHARE_NONE"
 }

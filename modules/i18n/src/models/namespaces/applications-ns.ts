@@ -779,6 +779,7 @@ export interface ApplicationsNS {
             };
             sharedAccess: {
                 allRolesAndOrgsSharingMessage: string;
+                allRolesAndOrgsNotSharingMessage: string;
                 subTitle: string;
                 tabName: string;
                 sharedAccessStatusOptions: {

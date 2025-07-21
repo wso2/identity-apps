@@ -599,6 +599,7 @@ export const applications: ApplicationsNS = {
             },
             sharedAccess: {
                 allRolesAndOrgsSharingMessage: "All roles of the application will be shared with all the organizations.",
+                allRolesAndOrgsNotSharingMessage: "No roles will be shared with any organization.",
                 manageRoleSharing: "Manage role sharing",
                 viewRoleSharing: "View shared roles",
                 noSharedOrgs: "This application is not shared with any organizations.",
