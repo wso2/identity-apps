@@ -112,6 +112,17 @@ const FlowList: FunctionComponent<FlowListProps> = ({
         );
     };
 
+    /**
+     * Checks whether the flow card should be disabled based on the feature flag status.
+     *
+     * @param flow - The flow item to check.
+     * @returns Whether the flow card should be disabled.
+     */
+    const isFlowCardDisabled = (flow: FlowListItemInterface): boolean => {
+        return flow.disabled ||
+            !isFeatureEnabled(flowsFeatureConfig, `${flow.featureStatusKey}.disabled`);
+    };
+
     return (
         <div className="flow-list-grid-wrapper" data-componentid={ `${ componentId }-grid` }>
             <div className="flow-list-grid">
@@ -120,9 +131,10 @@ const FlowList: FunctionComponent<FlowListProps> = ({
                         isFeatureEnabled(flowsFeatureConfig, flow.featureStatusKey) && (
                             <Card
                                 key={ flow.id }
-                                className={ classNames("flow-type", { "disabled": flow.disabled }) }
+                                className={ classNames("flow-type", { "disabled": isFlowCardDisabled(flow) }) }
                                 data-componentid={ `${ flow.id }-flow-type-card` }
-                                onClick={ () => !flow.disabled && history.push(AppConstants.getPaths().get(flow.path)) }
+                                onClick={ () => !isFlowCardDisabled(flow) &&
+                                    history.push(AppConstants.getPaths().get(flow.path)) }
                             >
                                 <CardContent className="flow-type-header">
                                     <div>

@@ -16,7 +16,7 @@
             "featureStatusKey": "flows.types.list.passwordRecovery",
             "path": "PASSWORD_RECOVERY_FLOW_BUILDER",
             "type": "PASSWORD_RECOVERY",
-            "disabled": true
+            "disabled": false
         },
         {
             "id": "invite-user-to-set-password",
@@ -25,7 +25,7 @@
             "featureStatusKey": "flows.types.list.inviteUserToSetPassword",
             "path": "INVITE_USER_PASSWORD_SETUP_FLOW_BUILDER",
             "type": "INVITED_USER_REGISTRATION",
-            "disabled": true
+            "disabled": false
         }
     ]
 }
