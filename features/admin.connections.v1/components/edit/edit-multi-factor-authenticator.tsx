@@ -22,6 +22,7 @@ import {
 } from "@wso2is/admin.extensions.v1";
 import { authenticatorConfig } from "@wso2is/admin.extensions.v1/configs/authenticator";
 import { AuthenticatorFormFactory } from "@wso2is/admin.identity-providers.v1/components/forms";
+import { AuthenticatorTypes } from "../../models/authenticators";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -32,7 +33,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, SemanticShorthandItem, TabPaneProps } from "semantic-ui-react";
-import { updateMultiFactorAuthenticatorDetails } from "../../api/authenticators";
+import { updateMultiFactorAuthenticatorDetails,
+         updateSystemDefinedLocalAuthenticator } from "../../api/authenticators";
 import { LocalAuthenticatorConstants } from "../../constants/local-authenticator-constants";
 import { AuthenticatorMeta } from "../../meta/authenticator-meta";
 import {
@@ -92,7 +94,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
         isReadOnly,
         [ "data-testid" ]: testId
     } = props;
-
+    console.log("Authenticator: ", authenticator);
     const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
@@ -133,14 +135,23 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
 
         const i18nKeyForMFAAuthenticator: string = getI18nKeyForMultiFactorAuthenticator(authenticator);
 
-        updateMultiFactorAuthenticatorDetails(authenticator.id, values)
+        console.log("Authenticator Type: ", values?.type);
+        const updatePromise = values.type == AuthenticatorTypes.LOCAL
+            ? updateSystemDefinedLocalAuthenticator(authenticator.id, values.amrValue)
+            : updateMultiFactorAuthenticatorDetails(authenticator.id, values);
+
+        updatePromise
             .then(() => {
                 dispatch(addAlert({
-                    description: t("authenticationProvider:" +
-                        "notifications." + i18nKeyForMFAAuthenticator + ".success.description"),
+                    description: t(
+                        "authenticationProvider:notifications." +
+                        i18nKeyForMFAAuthenticator + ".success.description"
+                    ),
                     level: AlertLevels.SUCCESS,
-                    message: t("authenticationProvider:notifications." +
-                        i18nKeyForMFAAuthenticator + ".success.message")
+                    message: t(
+                        "authenticationProvider:notifications." +
+                        i18nKeyForMFAAuthenticator + ".success.message"
+                    )
                 }));
 
                 onUpdate(authenticator.id);
