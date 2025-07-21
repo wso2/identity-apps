@@ -21,7 +21,6 @@ import Select from "@oxygen-ui/react/Select";
 import Typography from "@oxygen-ui/react/Typography";
 import MultiValuedTextField from "@wso2is/common.ui.profile.v1/components/multi-valued-text-field";
 import { ProfileConstants } from "@wso2is/core/constants";
-import { FormValue } from "@wso2is/forms";
 import { Button, Popup, useMediaContext } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement } from "react";
@@ -57,7 +56,7 @@ const MultiValueFieldForm = <T extends string | number>({
 
         const valueList: T[] = Array.from(values[schema.name] as T[] ?? []);
 
-        handleSubmit(schema.name, valueList as FormValue);
+        handleSubmit(schema.name, valueList as string[]);
     };
 
     const renderInactiveFieldContent = (): ReactElement => {
