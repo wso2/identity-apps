@@ -1,5 +1,40 @@
 # @wso2is/admin.flows.v1
 
+## 1.0.13
+
+### Patch Changes
+
+- [#8560](https://github.com/wso2/identity-apps/pull/8560) [`241192e2ac434969b87b22e22ff794e9b5844451`](https://github.com/wso2/identity-apps/commit/241192e2ac434969b87b22e22ff794e9b5844451) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for generating the basic template using the self-registration connector configurations
+
+- Updated dependencies [[`241192e2ac434969b87b22e22ff794e9b5844451`](https://github.com/wso2/identity-apps/commit/241192e2ac434969b87b22e22ff794e9b5844451)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.9.5
+  - @wso2is/admin.server-configurations.v1@2.35.4
+  - @wso2is/admin.core.v1@2.46.17
+
+## 1.0.12
+
+### Patch Changes
+
+- [#8554](https://github.com/wso2/identity-apps/pull/8554) [`bf6576c14b8aa27976a9576b74ce6aa4705d0edd`](https://github.com/wso2/identity-apps/commit/bf6576c14b8aa27976a9576b74ce6aa4705d0edd) Thanks [@KD23243](https://github.com/KD23243)! - Disable password recovery & Ask password flows
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.46.15
+
+## 1.0.11
+
+### Patch Changes
+
+- [#8541](https://github.com/wso2/identity-apps/pull/8541) [`11d651c788f58438df750721bb0da11b3c38d081`](https://github.com/wso2/identity-apps/commit/11d651c788f58438df750721bb0da11b3c38d081) Thanks [@KD23243](https://github.com/KD23243)! - Enable Password Recovery and Ask Password flows
+
+- Updated dependencies [[`23f4c46d2186dc04027c7a3d6ac7eb034741cc36`](https://github.com/wso2/identity-apps/commit/23f4c46d2186dc04027c7a3d6ac7eb034741cc36), [`11d651c788f58438df750721bb0da11b3c38d081`](https://github.com/wso2/identity-apps/commit/11d651c788f58438df750721bb0da11b3c38d081)]:
+  - @wso2is/admin.core.v1@2.46.13
+
+## 1.0.10
+
+### Patch Changes
+
+- [#8545](https://github.com/wso2/identity-apps/pull/8545) [`3610f9e162655051d11b970571383e207e55919a`](https://github.com/wso2/identity-apps/commit/3610f9e162655051d11b970571383e207e55919a) Thanks [@KD23243](https://github.com/KD23243)! - Disable password recovery flow composer in asgardeo
+
 ## 1.0.9
 
 ### Patch Changes

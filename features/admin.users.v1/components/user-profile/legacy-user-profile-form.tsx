@@ -98,7 +98,7 @@ interface UserProfileFormPropsInterface extends IdentifiableComponentInterface {
     onUserUpdate: (userId: string) => void;
     isUpdating: boolean;
     adminUserType?: string;
-    isUserManagedByParentOrg?: boolean;
+    isUserManagedByParentOrg: boolean;
     setIsUpdating: (isUpdating: boolean) => void;
     accountConfigSettings: AccountConfigSettingsInterface;
     onUpdate: (userId: string) => void;

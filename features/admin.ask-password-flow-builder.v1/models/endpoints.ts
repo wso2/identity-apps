@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,23 +16,14 @@
  * under the License.
  */
 
-const MIN_ALLOWED_FONT_SIZE: number = 8;
-const MAX_ALLOWED_FONT_SIZE: number = 72;
-
-export const parseAllowedFontSize = (input: string): string => {
-    const match: RegExpMatchArray = input.match(/^(\d+(?:\.\d+)?)px$/);
-
-    if (match) {
-        const n: number = Number(match[1]);
-
-        if (n >= MIN_ALLOWED_FONT_SIZE && n <= MAX_ALLOWED_FONT_SIZE) {
-            return input;
-        }
-    }
-
-    return "";
-};
-
-export function parseAllowedColor(input: string) {
-    return /^rgb\(\d+, \d+, \d+\)$/.test(input) ? input : "";
+/**
+ * Interface for the Password Recovery Flow Builder feature resource endpoints.
+ */
+export interface AskPasswordFlowBuilderResourceEndpointsInterface {
+    /**
+     * API to configure the GET/UPDATE password recovery flow.
+     * @example `https://{serverUrl}/t/{tenantDomain}/api/server/v1/ask-password-flow`
+    */
+    askPasswordFlow: string;
+    askPasswordFlowAI: string;
 }

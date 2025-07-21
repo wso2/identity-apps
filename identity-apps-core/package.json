@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/identity-apps-core",
-    "version": "2.27.3",
+    "version": "2.27.9",
     "private": true,
     "description": "WSO2 Identity Server Authentication Portal",
     "author": "WSO2",
@@ -15,6 +15,8 @@
     },
     "dependencies": {
         "@wso2is/theme": "^2.8.2",
+        "dompurify": "^3.0.9",
+        "html-react-parser": "^2.0.0",
         "react": "^18.2.0",
         "semantic-ui-calendar-react": "^0.15.3",
         "semantic-ui-react": "^2.1.3"

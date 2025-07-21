@@ -483,7 +483,7 @@ export class RouteUtils {
             {
                 category: preferences,
                 id: "flows",
-                selected: history.location.pathname.includes("flows")
+                selected: history.location.pathname.includes("/flows")
             },
             {
                 category: preferences,

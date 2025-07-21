@@ -18,10 +18,19 @@
 import { AgentsNS } from "../../../models/namespaces/agents-ns";
 
 export const agents: AgentsNS = {
-    description: "Configure and manage AI agent identities for your organizaton",
+    description: "Manage AI agent identities, permissions, and access controls for your organization's automated systems.",
     edit: {
         credentials: {
-            title: ""
+            regenerate: {
+                alerts: {
+                    error: {
+                        description: "Error when regenerating the agent secret",
+                        message: "Something went wrong"
+                    }
+                }
+            },
+            subtitle: "Authentication details for this agent to securely access applications and API resources.",
+            title: "Credentials"
         },
         general: {
             fields: {
@@ -44,7 +53,28 @@ export const agents: AgentsNS = {
 
         }
     },
+    list: {
+        featureUnavailable: {
+            subtitle: {
+                0: "Each AI agent requires a unique identity with specific permissions, roles, and access policies. Monitor usage, manage credentials, and ensure compliance across all automated systems.",
+                1: {
+                    onprem: "Configure agent datastore to enable and try out this feature now.",
+                    saas: "Create a fresh organization for instant access, or contact us for early access to this game-changing feature."
+                }
+            },
+            title: "AI agent management is coming soon to your organization!"
+        }
+    },
     new: {
+        action: {
+            title: "New Agent"
+        },
+        alerts: {
+            success: {
+                description: "Agent created successfully",
+                message: "Created successfully"
+            }
+        },
         fields: {
             description: {
                 label: "Description",
@@ -53,7 +83,8 @@ export const agents: AgentsNS = {
             name: {
                 label: "Name"
             }
-        }
+        },
+        title: "Agent created successfully"
     },
     pageTitle: "Agents",
     title: "Agents"

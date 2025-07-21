@@ -351,6 +351,13 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
             return;
         }
 
+        resource = cloneDeep(resource);
+
+        /**
+         * Execute plugins for ON_TEMPLATE_LOAD event.
+         */
+        PluginRegistry.getInstance().executeSync(EventTypes.ON_TEMPLATE_LOAD, resource);
+
         // Users need to add a prompt first when they select the AI template.
         // TODO: Handle this better.
         if (resource.type === TemplateTypes.GeneratedWithAI) {

@@ -17,5 +17,62 @@
  */
 
 export interface flowsNS {
-    passwordRecoveryFlowBuilder: string;
+    askPassword: {
+        breadcrumb: string;
+    };
+    core: {
+        elements: {
+            richText: {
+                linkEditor: {
+                    placeholder: string;
+                };
+                placeholder: string;
+            }
+        };
+        errors: {
+            flowMetadataFetch: {
+                description: string;
+                message: string;
+            };
+        };
+    };
+    label?: string;
+    passwordRecovery: {
+        name: string;
+    };
+    registrationFlow: {
+        breadcrumb: string;
+        notifications: {
+            disableFlow: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+            enableFlow: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+            fetchFlowConfig: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
+        tooltip: {
+            disableFlow: string;
+            enableFlow: string;
+        };
+    };
 }

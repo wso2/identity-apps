@@ -32,8 +32,6 @@ import { HttpMethods } from "@wso2is/core/models";
  * @param startIndex - The index of the first user to be returned.
  * @param filter - The filter to be applied to the users.
  * @param attributes - The attributes to be returned.
- * @param domain - The user store domain name.
- * @param excludedAttributes - The attributes to be excluded.
  * @returns `RequestResultInterface<Data, Error>`
  */
 export const useGetAgents = (
@@ -41,8 +39,6 @@ export const useGetAgents = (
     startIndex: number,
     filter: string,
     attributes: string,
-    domain: string,
-    excludedAttributes?: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<UserListInterface, RequestErrorInterface> => {
     const requestConfig: RequestConfigInterface = {
@@ -53,8 +49,7 @@ export const useGetAgents = (
         params: {
             attributes,
             count,
-            domain,
-            excludedAttributes,
+            excludedAttributes: "roles,groups",
             filter,
             startIndex
         },

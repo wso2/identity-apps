@@ -127,6 +127,7 @@ export interface CommonNS {
     priority: string;
     privacy: string;
     properties: string;
+    publish: string;
     ready: string;
     regenerate: string;
     register: string;
@@ -196,5 +197,6 @@ export interface CommonNS {
     asyncOperationErrorMessage: {
         description: string;
         message: string;
-    }
+    },
+    saveDraft: string;
 }

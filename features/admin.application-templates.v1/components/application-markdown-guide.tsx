@@ -28,6 +28,7 @@ import {
     SupportedAuthProtocolTypes,
     WSTrustConfigurationInterface
 } from "@wso2is/admin.applications.v1/models/application-inbound";
+import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-app-configs";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { MarkdownGuide } from "@wso2is/admin.template-core.v1/components/markdown-guide";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -95,6 +96,7 @@ interface MarkdownGuideDataInterface {
     serverOrigin?: string;
     productName?: string;
     accountAppURL?: string;
+    docSiteURL?: string;
     moderatedData?: ModeratedData;
 }
 
@@ -122,6 +124,7 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
     const accountAppURL: string = useSelector((state: AppState) =>
         state?.config?.deployment?.accountApp?.tenantQualifiedPath);
+    const { deploymentConfig } = useDeploymentConfig();
 
     /**
      * Convert certificate into the pem format.
@@ -192,6 +195,7 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
         markdownDataObject.serverOrigin = serverOrigin;
         markdownDataObject.productName = productName;
         markdownDataObject.accountAppURL = accountAppURL;
+        markdownDataObject.docSiteURL = deploymentConfig?.docSiteURL;
         markdownDataObject.moderatedData = getModeratedData();
 
         return markdownDataObject;

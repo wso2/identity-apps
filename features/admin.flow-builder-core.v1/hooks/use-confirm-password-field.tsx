@@ -57,17 +57,18 @@ const useConfirmPasswordField = (): void => {
         PluginRegistry.getInstance().registerAsync(EventTypes.ON_NODE_ELEMENT_DELETE, deleteConfirmPasswordField);
 
         return () => {
-            PluginRegistry.getInstance().unregister(EventTypes.ON_PROPERTY_CHANGE, addConfirmPasswordField.name);
             PluginRegistry.getInstance().unregister(EventTypes.ON_PROPERTY_CHANGE,
-                updateConfirmPasswordFieldProperties.name);
+                addConfirmPasswordField[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER]);
+            PluginRegistry.getInstance().unregister(EventTypes.ON_PROPERTY_CHANGE,
+                updateConfirmPasswordFieldProperties[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER]);
             PluginRegistry.getInstance().unregister(EventTypes.ON_PROPERTY_PANEL_OPEN,
-                addConfirmPasswordFieldProperties.name);
+                addConfirmPasswordFieldProperties[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER]);
             PluginRegistry.getInstance().unregister(EventTypes.ON_NODE_ELEMENT_RENDER,
-                renderConfirmPasswordField.name);
+                renderConfirmPasswordField[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER]);
             PluginRegistry.getInstance().unregister(EventTypes.ON_NODE_ELEMENT_FILTER,
-                skipConfirmPasswordField.name);
+                skipConfirmPasswordField[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER]);
             PluginRegistry.getInstance().unregister(EventTypes.ON_NODE_ELEMENT_DELETE,
-                deleteConfirmPasswordField.name);
+                deleteConfirmPasswordField[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER]);
         };
     }, []);
 

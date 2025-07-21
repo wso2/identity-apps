@@ -1,5 +1,41 @@
 # @wso2is/identity-apps-core
 
+## 2.27.9
+
+### Patch Changes
+
+- [#8560](https://github.com/wso2/identity-apps/pull/8560) [`241192e2ac434969b87b22e22ff794e9b5844451`](https://github.com/wso2/identity-apps/commit/241192e2ac434969b87b22e22ff794e9b5844451) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for generating the basic template using the self-registration connector configurations
+
+## 2.27.8
+
+### Patch Changes
+
+- [#8534](https://github.com/wso2/identity-apps/pull/8534) [`10afd4a76d491050e7dfcfd82fd1adbdb87d9476`](https://github.com/wso2/identity-apps/commit/10afd4a76d491050e7dfcfd82fd1adbdb87d9476) Thanks [@savindi7](https://github.com/savindi7)! - Improve input validations.
+
+## 2.27.7
+
+### Patch Changes
+
+- [#8536](https://github.com/wso2/identity-apps/pull/8536) [`b7d5766dd3c195f36ca62b3785943e402a8d4536`](https://github.com/wso2/identity-apps/commit/b7d5766dd3c195f36ca62b3785943e402a8d4536) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add rich text support to the registration flow composer
+
+## 2.27.6
+
+### Patch Changes
+
+- [#8537](https://github.com/wso2/identity-apps/pull/8537) [`cfaad2b16d10e3364f29cc7d4694381ac4c47cbc`](https://github.com/wso2/identity-apps/commit/cfaad2b16d10e3364f29cc7d4694381ac4c47cbc) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Fix asgardeo callback building logic.
+
+## 2.27.5
+
+### Patch Changes
+
+- [#8531](https://github.com/wso2/identity-apps/pull/8531) [`6b4e412564cf1dcb8e3e0a655308ba3fa4ee8f50`](https://github.com/wso2/identity-apps/commit/6b4e412564cf1dcb8e3e0a655308ba3fa4ee8f50) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - fix asg imp cb url.
+
+## 2.27.4
+
+### Patch Changes
+
+- [#8497](https://github.com/wso2/identity-apps/pull/8497) [`4f7ce17831548284f9c555a67753ed421fc32746`](https://github.com/wso2/identity-apps/commit/4f7ce17831548284f9c555a67753ed421fc32746) Thanks [@nilasini](https://github.com/nilasini)! - Support different flow types
+
 ## 2.27.3
 
 ### Patch Changes

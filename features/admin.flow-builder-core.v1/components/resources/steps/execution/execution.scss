@@ -1,0 +1,27 @@
+/**
+ * Styles for the Execution node.
+ */
+
+:root {
+    --wso2is-flow-builder-execution-background-color: #1b3853;
+    --wso2is-flow-builder-execution-content-box-width: 180px;
+    --wso2is-flow-builder-execution-text-color: var(--oxygen-palette-primary-contrastText);
+}
+
+.flow-builder-execution {
+    background-color: var(--wso2is-flow-builder-execution-background-color);
+    border-radius: var(--oxygen-shape-borderRadius);
+
+    .flow-builder-execution-content {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        width: var(--wso2is-flow-builder-execution-content-box-width);
+
+        .flow-builder-execution-id {
+            color: var(--wso2is-flow-builder-execution-text-color);
+        }
+    }
+}

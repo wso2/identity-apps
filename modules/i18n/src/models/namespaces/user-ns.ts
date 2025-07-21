@@ -414,6 +414,7 @@ export interface userNS {
                     validations: {
                         empty: string;
                         invalidFormat: string;
+                        required: string;
                     };
                 };
             };
@@ -428,6 +429,20 @@ export interface userNS {
                         };
                         note: string;
                     };
+                };
+            };
+            email: {
+                primaryEmail: {
+                    validations: {
+                        empty: string;
+                    }
+                };
+            };
+            mobile: {
+                primaryMobile: {
+                    validations: {
+                        empty: string;
+                    }
                 };
             };
             mobileChangeForm: {

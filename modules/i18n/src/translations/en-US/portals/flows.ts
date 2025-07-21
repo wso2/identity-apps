@@ -17,6 +17,63 @@
  */
 import { flowsNS } from "../../../models";
 
-export const invite: flowsNS = {
-    passwordRecoveryFlowBuilder: "Password Recovery Flow Builder"
+export const flows: flowsNS = {
+    askPassword: {
+        breadcrumb: "Edit Invite User Password Flow"
+    },
+    core: {
+        elements: {
+            richText: {
+                linkEditor: {
+                    placeholder: "Enter link URL here..."
+                },
+                placeholder: "Enter rich text content here..."
+            }
+        },
+        errors: {
+            flowMetadataFetch: {
+                description: "An error occurred while fetching the flow metadata.",
+                message: "Flow Metadata Fetch Error"
+            }
+        }
+    },
+    label: "Flows",
+    passwordRecovery: {
+        name: "Password Recovery Flow Builder"
+    },
+    registrationFlow: {
+        breadcrumb: "Edit Registration Flow",
+        notifications: {
+            disableFlow: {
+                genericError: {
+                    description: "An error occurred while disabling the registration flow.",
+                    message: "Disable Registration Flow Error"
+                },
+                success: {
+                    description: "Successfully disabled the registration flow.",
+                    message: "Registration Flow Disabled"
+                }
+            },
+            enableFlow: {
+                genericError: {
+                    description: "An error occurred while enabling the registration flow.",
+                    message: "Enable Registration Flow Error"
+                },
+                success: {
+                    description: "Successfully enabled the registration flow.",
+                    message: "Registration Flow Enabled"
+                }
+            },
+            fetchFlowConfig: {
+                genericError: {
+                    description: "An error occurred while fetching the registration flow configuration.",
+                    message: "Fetch Registration Flow Error"
+                }
+            }
+        },
+        tooltip: {
+            disableFlow: "Click to disable the registration flow",
+            enableFlow: "Click to enable the registration flow"
+        }
+    }
 };

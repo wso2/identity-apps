@@ -1,5 +1,55 @@
 # @wso2is/i18n
 
+## 2.25.0
+
+### Minor Changes
+
+- [#8509](https://github.com/wso2/identity-apps/pull/8509) [`c3debfc1bfab856c701eda6df14b097c7b296cae`](https://github.com/wso2/identity-apps/commit/c3debfc1bfab856c701eda6df14b097c7b296cae) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add data format support for console user profile
+
+### Patch Changes
+
+- Updated dependencies [[`c3debfc1bfab856c701eda6df14b097c7b296cae`](https://github.com/wso2/identity-apps/commit/c3debfc1bfab856c701eda6df14b097c7b296cae)]:
+  - @wso2is/core@2.10.0
+
+## 2.24.20
+
+### Patch Changes
+
+- [#8567](https://github.com/wso2/identity-apps/pull/8567) [`c017b54263998ebbe3b7feb67fe5b2ff696b9bf1`](https://github.com/wso2/identity-apps/commit/c017b54263998ebbe3b7feb67fe5b2ff696b9bf1) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improve i18n in agent search modal in role assignment
+
+## 2.24.19
+
+### Patch Changes
+
+- [#8565](https://github.com/wso2/identity-apps/pull/8565) [`9305b98acad1ded54b384ad55354eee6c551c3d7`](https://github.com/wso2/identity-apps/commit/9305b98acad1ded54b384ad55354eee6c551c3d7) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Minor agent ux fixes
+
+## 2.24.18
+
+### Patch Changes
+
+- [#8560](https://github.com/wso2/identity-apps/pull/8560) [`241192e2ac434969b87b22e22ff794e9b5844451`](https://github.com/wso2/identity-apps/commit/241192e2ac434969b87b22e22ff794e9b5844451) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for generating the basic template using the self-registration connector configurations
+
+- Updated dependencies [[`241192e2ac434969b87b22e22ff794e9b5844451`](https://github.com/wso2/identity-apps/commit/241192e2ac434969b87b22e22ff794e9b5844451)]:
+  - @wso2is/core@2.9.5
+
+## 2.24.17
+
+### Patch Changes
+
+- [#8553](https://github.com/wso2/identity-apps/pull/8553) [`df5144cf67de49a7a66b5a518b8dbd05a5e626f5`](https://github.com/wso2/identity-apps/commit/df5144cf67de49a7a66b5a518b8dbd05a5e626f5) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Minor UX improvements to agents UI
+
+## 2.24.16
+
+### Patch Changes
+
+- [#8540](https://github.com/wso2/identity-apps/pull/8540) [`da3d9e07eb5b80dac59bde32117c86e77b29f9d5`](https://github.com/wso2/identity-apps/commit/da3d9e07eb5b80dac59bde32117c86e77b29f9d5) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - UI improvements to agent management
+
+## 2.24.15
+
+### Patch Changes
+
+- [#8536](https://github.com/wso2/identity-apps/pull/8536) [`b7d5766dd3c195f36ca62b3785943e402a8d4536`](https://github.com/wso2/identity-apps/commit/b7d5766dd3c195f36ca62b3785943e402a8d4536) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add rich text support to the registration flow composer
+
 ## 2.24.14
 
 ### Patch Changes
