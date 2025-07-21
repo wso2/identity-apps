@@ -104,7 +104,7 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
         error:  originalApplicationOrganizationTreeFetchRequestError
     } = useGetApplicationShare(
         application?.id,
-        true,
+        !isEmpty(application?.id),
         true,
         null
     );
@@ -408,49 +408,49 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
         }
     };
 
-    const TreeItemsContents = (props: TreeItemProps): ReactElement => {
-        const { status } = useTreeItem(props);
+    // const TreeItemsContents = (props: TreeItemProps): ReactElement => {
+    //     const { status } = useTreeItem(props);
 
-        // const roles: RolesInterface[] | undefined = roleSelections[props.itemId];
+    //     // const roles: RolesInterface[] | undefined = roleSelections[props.itemId];
 
-        // console.log("TreeItemProps", roles);
-        const isRolePartiallyShared: boolean = false;
+    //     // console.log("TreeItemProps", roles);
+    //     const isRolePartiallyShared: boolean = false;
 
-        return (
-            <TreeItem
-                { ...props }
-                slots={ {
-                    content: ({
-                        children,
-                        ...props
-                    }: {
-                        children: ReactNode;
-                        props: TreeItemProps;
-                    }) => (
-                        <Tooltip
-                            data-componentid={ `${ componentId }-tree-item-tooltip` }
-                            title={ isRolePartiallyShared && t("applications:edit.sections.sharedAccess" +
-                                ".rolesSharedPartially") }
-                            placement="right"
-                        >
-                            <TreeItemContent
-                                status={ status }
-                                { ...props }
-                                data-componentid={ `${ componentId }-tree-item-content` }
-                            >
-                                { children }
-                                {
-                                    isRolePartiallyShared && (
-                                        <CircleInfoIcon size={ 12 } />
-                                    )
-                                }
-                            </TreeItemContent>
-                        </Tooltip>
-                    )
-                } }
-            />
-        );
-    };
+    //     return (
+    //         <TreeItem
+    //             { ...props }
+    //             slots={ {
+    //                 content: ({
+    //                     children,
+    //                     ...props
+    //                 }: {
+    //                     children: ReactNode;
+    //                     props: TreeItemProps;
+    //                 }) => (
+    //                     <Tooltip
+    //                         data-componentid={ `${ componentId }-tree-item-tooltip` }
+    //                         title={ isRolePartiallyShared && t("applications:edit.sections.sharedAccess" +
+    //                             ".rolesSharedPartially") }
+    //                         placement="right"
+    //                     >
+    //                         <TreeItemContent
+    //                             status={ status }
+    //                             { ...props }
+    //                             data-componentid={ `${ componentId }-tree-item-content` }
+    //                         >
+    //                             { children }
+    //                             {
+    //                                 isRolePartiallyShared && (
+    //                                     <CircleInfoIcon size={ 12 } />
+    //                                 )
+    //                             }
+    //                         </TreeItemContent>
+    //                     </Tooltip>
+    //                 )
+    //             } }
+    //         />
+    //     );
+    // };
 
     return (
         <>

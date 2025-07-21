@@ -436,37 +436,9 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                                         )
                                     }
                                 </AnimatePresence>
-                                {/* <FormControlLabel
-                                    value={ RoleSharedAccessModes.SHARE_WITH_SELECTED_ORGS_AND_ROLES }
-                                    label={ t("consoleSettings:sharedAccess.modes.shareWithSelected") }
-                                    control={ <Radio /> }
-                                    disabled={ isReadOnly }
-                                    data-componentid={ `${componentId}-share-with-selected-orgs-and-roles-radio-btn` }
-                                /> */}
-                                {/* <AnimatePresence mode="wait">
-                                    {
-                                        sharedAccessMode === RoleSharedAccessModes.SHARE_WITH_SELECTED_ORGS_AND_ROLES
-                                        && (
-                                            <motion.div
-                                                key="selected-orgs-block"
-                                                initial={ { height: 0, opacity: 0 } }
-                                                animate={ { height: "auto", opacity: 1 } }
-                                                exit={ { height: 0, opacity: 0 } }
-                                                transition={ { duration: 0.3 } }
-                                            >
-                                                <Grid xs={ 14 }>
-                                                    <ConsoleRolesSelectiveShare
-                                                        setAddedRoles={ setAddedRoles }
-                                                        setRemovedRoles={ setRemovedRoles }
-                                                    />
-                                                </Grid>
-                                            </motion.div>
-                                        )
-                                    }
-                                </AnimatePresence> */}
                             </RadioGroup>
                         </FormControl>
-                        <Grid xs={ 14 } marginTop={ 2 }>
+                        <Grid xs={ 12 } marginTop={ 2 }>
                             <Heading as="h4">
                                 Advanced Role Sharing
                             </Heading>
