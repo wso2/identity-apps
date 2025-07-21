@@ -22,6 +22,9 @@ import CommonStaticStepFactory, {
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Node } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
+import EmailConfirmationNode from "./email-confirmation";
+import UserAccountUnlockNode from "./user-acount-unlock";
+import { RegistrationStaticStepTypes } from "../../../models/flow";
 
 /**
  * Props interface of {@link StaticStepFactory}
@@ -40,6 +43,15 @@ export const StaticStepFactory: FunctionComponent<StaticStepFactoryPropsInterfac
     "data-componentid": componentId = "static-node-factory",
     ...rest
 }: StaticStepFactoryPropsInterface & Node): ReactElement => {
+
+    if ((type as string) === RegistrationStaticStepTypes.EMAIL_CONFIRMATION) {
+        return <EmailConfirmationNode />;
+    }
+
+    if ((type as string) === RegistrationStaticStepTypes.USER_ACCOUNT_UNLOCK) {
+        return <UserAccountUnlockNode />;
+    }
+
     return <CommonStaticStepFactory type={ type } data-componentid={ componentId } { ...rest } />;
 };
 

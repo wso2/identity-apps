@@ -16,22 +16,26 @@
  * under the License.
  */
 
-import { StaticStepTypes, Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
-
-/**
- * Interface for a registration flow API schema.
- */
-export interface RegistrationFlow {
-    /**
-     * Steps of the registration flow.
-     */
-    steps: Step[];
+ :root {
+    --wso2is-flow-builder-done-step-icon-color: var(--oxygen-customComponents-Chip-properties-new-border-color);;
 }
 
-/**
- * Enum for static step types in the registration flow.
- */
-export enum RegistrationStaticStepTypes {
-    EMAIL_CONFIRMATION = "EmailConfirmation",
-    USER_ACCOUNT_UNLOCK = "UserAccountUnlock",
-};
+.user-account-unlock.MuiFab-root {
+    pointer-events: none;
+    box-shadow: none;
+    color: var(--oxygen-palette-common-white);
+    background-color: rgba(0, 0, 0, 0);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(131deg, rgba(117, 237, 161, 0.70) 28.46%, rgb(52 146 86 / 60%) 119.09%);
+
+    svg {
+        path {
+            stroke: var(--wso2is-flow-builder-done-step-icon-color);
+        }
+    }
+}

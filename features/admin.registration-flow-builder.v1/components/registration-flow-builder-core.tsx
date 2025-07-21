@@ -75,6 +75,7 @@ import useDefaultFlow from "../hooks/use-default-flow";
 import useGenerateRegistrationFlow, {
     UseGenerateRegistrationFlowFunction
 } from "../hooks/use-generate-registration-flow";
+import { RegistrationStaticStepTypes } from "../models/flow";
 
 /**
  * Props interface of {@link RegistrationFlowBuilderCore}
@@ -91,7 +92,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     "data-componentid": componentId = "registration-flow-builder-core",
     ...rest
 }: RegistrationFlowBuilderCorePropsInterface): ReactElement => {
-    const { generateProfileAttributes } = useDefaultFlow();
+    const { addEmailVerificationEdges, addEmailVerificationNodes, generateProfileAttributes } = useDefaultFlow();
 
     const updateNodeInternals: UpdateNodeInternals = useUpdateNodeInternals();
     const flowUpdatesInProgress: MutableRefObject<boolean> = useRef<boolean>(false);
@@ -288,7 +289,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             type: StaticStepTypes.Start
         };
 
-        return resolveStepMetadata(resources, generateIdsForResources<Node[]>([
+        const processedSteps: Step[] = resolveStepMetadata(resources, generateIdsForResources<Node[]>([
             START_STEP,
             ...steps.map((step: Node) => {
                 return {
@@ -304,8 +305,12 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                     type: step.type
                 };
             })
-        ]) as Step[]) as Node[];
-    }, [ resources ]);
+        ]) as Step[]);
+
+        addEmailVerificationNodes(processedSteps);
+
+        return processedSteps as Node[];
+    }, [ resources, addEmailVerificationNodes ]);
 
     /**
      * Validate edges based on the nodes.
@@ -537,6 +542,8 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             }
         }
 
+        addEmailVerificationEdges(edges);
+
         return edges;
     };
 
@@ -669,9 +676,19 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             {}
         );
 
+        const regStaticStepNodes: NodeTypes = Object.values(RegistrationStaticStepTypes).reduce(
+            (acc: NodeTypes, type: RegistrationStaticStepTypes) => {
+                acc[type] = (props: any) => <StaticNodeFactory type={ type } { ...props } />;
+
+                return acc;
+            },
+            {}
+        );
+
         return {
             ...staticStepNodes,
-            ...stepNodes
+            ...stepNodes,
+            ...regStaticStepNodes
         };
     };
 

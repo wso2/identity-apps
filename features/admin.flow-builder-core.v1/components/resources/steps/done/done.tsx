@@ -20,14 +20,14 @@ import Fab from "@oxygen-ui/react/Fab";
 import { CheckIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Handle, Node, Position } from "@xyflow/react";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, memo } from "react";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
 import "./done.scss";
 
 /**
  * Props interface of {@link Done}
  */
-export type DonePropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface;
+export type DonePropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface & Node;
 
 /**
  * Done Node component.
@@ -38,9 +38,10 @@ export type DonePropsInterface = CommonStepFactoryPropsInterface & IdentifiableC
  * @param props - Props injected to the component.
  * @returns Done node component.
  */
-const Done: FunctionComponent = ({
-    ["data-componentid"]: componentId = "done"
-}: DonePropsInterface & Node): ReactElement => {
+const Done: FunctionComponent = memo(({
+    ["data-componentid"]: componentId = "done",
+    data
+}: DonePropsInterface): ReactElement => {
     return (
         <div data-componentid={ componentId }>
             <Fab
@@ -52,8 +53,15 @@ const Done: FunctionComponent = ({
                 <CheckIcon data-componentid={ `${componentId}-done-node-check-icon` } />
             </Fab>
             <Handle type="target" position={ Position.Left } />
+            {
+                data?.end === false && (
+                    <Handle type="source" position={ Position.Right } id={ data?.sourceHandle as string } />
+                )
+            }
         </div>
     );
-};
+}, (prevProps: DonePropsInterface, nextProps: DonePropsInterface) => {
+    return prevProps.data?.end === nextProps.data?.end;
+});
 
 export default Done;
