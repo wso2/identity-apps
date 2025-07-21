@@ -19,6 +19,7 @@
 import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
+import FloatingPublishButton from "./floating-publish-button";
 import PasswordRecoveryFlowBuilderPageHeader from "./password-recovery-flow-builder-page-header";
 import PasswordRecoveryFlowBuilder from
     "../components/password-recovery-flow-builder";
@@ -59,6 +60,7 @@ const PasswordRecoveryFlowBuilderPage: FunctionComponent<PasswordRecoveryFlowBui
                     <PasswordRecoveryFlowBuilderPageHeader />
                 </div>
                 <PasswordRecoveryFlowBuilder />
+                <FloatingPublishButton />
             </div>
         </PasswordRecoveryFlowBuilderProvider>
     );

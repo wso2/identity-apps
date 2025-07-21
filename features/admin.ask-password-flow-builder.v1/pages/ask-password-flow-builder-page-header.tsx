@@ -18,15 +18,23 @@
 
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Box from "@oxygen-ui/react/Box";
-import Button from "@oxygen-ui/react/Button";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Link from "@oxygen-ui/react/Link";
+import Switch from "@oxygen-ui/react/Switch";
+import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { ArrowLeftIcon } from "@oxygen-ui/react-icons";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import updateFlowConfig from "@wso2is/admin.flows.v1/api/update-flow-config";
+import useGetFlowConfig from "@wso2is/admin.flows.v1/api/use-get-flow-config";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import useAskPasswordFlowBuilder from "../hooks/use-ask-password-flow-builder";
 
 /**
@@ -55,7 +63,29 @@ interface PathStateInterface {
 const AskPasswordFlowBuilderPageHeader: FunctionComponent<AskPasswordFlowBuilderPageHeaderProps> = ({
     ["data-componentid"]: componentId = "ask-password-flow-builder-page-header"
 }: AskPasswordFlowBuilderPageHeaderProps): ReactElement => {
-    const { isPublishing, onPublish } = useAskPasswordFlowBuilder();
+    const { onPublish } = useAskPasswordFlowBuilder();
+    const {
+        data: flowConfig,
+        mutate: mutateFlowConfig,
+        error: flowConfigError
+    } = useGetFlowConfig(FlowTypes.REGISTRATION);
+    const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
+
+    const [ isFlowConfigUpdating, setIsFlowConfigUpdating ] = useState<boolean>(false);
+
+    /**
+     * Handle flow config fetch errors using useEffect
+     */
+    useEffect(() => {
+        if (flowConfigError) {
+            dispatch(addAlert<AlertInterface>({
+                description: t("flows:askPassword.notifications.fetchFlowConfig.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("flows:askPassword.notifications.fetchFlowConfig.genericError.message")
+            }));
+        }
+    }, [ flowConfigError ]);
 
     /**
      * Handles the back button click event.
@@ -73,6 +103,57 @@ const AskPasswordFlowBuilderPageHeader: FunctionComponent<AskPasswordFlowBuilder
         }
 
         history.push(backPath);
+    };
+
+    /**
+     * Dispatches error alerts for flow config API errors.
+     *
+     * @param operation - The operation being performed (enable, disable).
+     */
+    const handleFlowConfigError = (operation: string): void => {
+        dispatch(addAlert<AlertInterface>({
+            description: t(`flows:askPassword.notifications.${operation}Flow.genericError.description`),
+            level: AlertLevels.ERROR,
+            message: t(`flows:askPassword.notifications.${operation}Flow.genericError.message`)
+        }));
+    };
+
+    /**
+     * Dispatches success alerts for flow config operations.
+     *
+     * @param operation - The operation that was successful (enable, disable, publish).
+     */
+    const handleFlowConfigSuccess = (operation: string): void => {
+        dispatch(addAlert<AlertInterface>({
+            description: t(`flows:askPassword.notifications.${operation}Flow.success.description`),
+            level: AlertLevels.SUCCESS,
+            message: t(`flows:askPassword.notifications.${operation}Flow.success.message`)
+        }));
+    };
+
+    /**
+     * Handles the toggle switch change event.
+     */
+    const handleToggleFlow = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
+        const isEnabled: boolean = event.target.checked;
+
+        setIsFlowConfigUpdating(true);
+
+        try {
+            await updateFlowConfig({
+                flowType: FlowTypes.REGISTRATION,
+                isEnabled
+            });
+            handleFlowConfigSuccess(isEnabled ? "enable" : "disable");
+            if (isEnabled) {
+                onPublish();
+            }
+        } catch (error) {
+            handleFlowConfigError(isEnabled ? "enable" : "disable");
+        } finally {
+            setIsFlowConfigUpdating(false);
+            mutateFlowConfig();
+        }
     };
 
     return (
@@ -95,7 +176,7 @@ const AskPasswordFlowBuilderPageHeader: FunctionComponent<AskPasswordFlowBuilder
                     >
                         Flows
                     </Link>
-                    <Typography sx={ { color: "text.primary" } }>Edit Invite User Password Flow</Typography>
+                    <Typography sx={ { color: "text.primary" } }>Edit Invite User Registration Flow</Typography>
                 </Breadcrumbs>
             </Box>
             <Box
@@ -103,9 +184,20 @@ const AskPasswordFlowBuilderPageHeader: FunctionComponent<AskPasswordFlowBuilder
                 justifyContent="flex-end"
                 alignItems="center"
             >
-                <Button variant="contained" onClick={ () => onPublish() } loading={ isPublishing }>
-                    Publish
-                </Button>
+                <Tooltip
+                    title={
+                        flowConfig?.isEnabled
+                            ? t("flows:askPassword.tooltip.disableFlow")
+                            : t("flows:askPassword.tooltip.enableFlow")
+                    }
+                >
+                    <Switch
+                        checked={ flowConfig?.isEnabled || false }
+                        onChange={ handleToggleFlow }
+                        disabled={ isFlowConfigUpdating }
+                        data-componentid={ `${componentId}-toggle-switch` }
+                    />
+                </Tooltip>
             </Box>
         </Box>
     );
