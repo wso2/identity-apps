@@ -67,5 +67,9 @@ export enum StaticStepTypes {
 
 export enum RedirectionTypes {
     GoogleFederation = "GoogleExecutor",
+    AppleFederation = "AppleExecutor",
+    FacebookFederation = "FacebookExecutor",
+    MicrosoftFederation = "Office365Executor",
+    GithubFederation = "GithubExecutor",
     PasskeyEnrollment = "FIDO2Executor"
 }
