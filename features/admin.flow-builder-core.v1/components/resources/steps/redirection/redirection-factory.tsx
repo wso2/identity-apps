@@ -51,7 +51,7 @@ export const RedirectionFactory: FC<RedirectionFactoryPropsInterface> = ({
     if ((data?.action as any)?.executor?.name === RedirectionTypes.AppleFederation) {
         return (
             <Box display="flex" gap={ 1 } data-componentid={ componentId } className="flow-builder-redirection apple">
-                <img src="https://www.svgrepo.com/show/494336/apple.svg" height="20" />
+                <img src="https://www.svgrepo.com/show/494331/apple-round.svg" height="20" />
                 <Typography variant="body1">Apple</Typography>
             </Box>
         );
