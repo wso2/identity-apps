@@ -606,7 +606,7 @@ export const applications: ApplicationsNS = {
                 noRolesAvailableForOrg: "No roles available for the selected organization.",
                 searchAvailableRolesPlaceholder: "Search available roles",
                 orgNotSelectedForRoleSharing: "To share roles, please select the organization from the left panel.",
-                rolesSharedPartially: "Roles are shared partially with this organization.",
+                rolesSharedPartially: "Roles are selectively shared with this organization.",
                 shareRoleSubsetWithSelectedOrgs: "Share a subset of roles with selected organizations",
                 shareRoleSubsetWithAllOrgs: "Share a subset of roles with all organizations",
                 subTitle: "Select the following options to share the application with the organizations.",

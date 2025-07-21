@@ -715,7 +715,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 roles: selectedRoles.map((role: RolesInterface) => {
                     return {
                         audience: {
-                            display: role.audience.display,
+                            display: role.audience.display ?? application?.name,
                             type: role.audience.type
                         },
                         displayName: role.displayName

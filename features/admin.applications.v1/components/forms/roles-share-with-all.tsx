@@ -149,7 +149,7 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
                 placeholder={ t("applications:edit.sections.sharedAccess.modes.shareWithSelectedPlaceholder") }
                 options={ applicationRolesList ?? [] }
                 value={ selectedRoles }
-                onChange={ (event: SyntheticEvent, value: RolesV2Interface[]) => {
+                onChange={ (_event: SyntheticEvent, value: RolesV2Interface[]) => {
                     handleRolesOnChange(value);
                 } }
                 disabled={ isReadOnly }
@@ -159,7 +159,7 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
                 isOptionEqualToValue={ (
                     option: RolesV2Interface,
                     value: RolesV2Interface) =>
-                    option?.id === value.id
+                    option?.displayName === value.displayName
                 }
                 renderInput={ (params: AutocompleteRenderInputParams) => (
                     <TextField

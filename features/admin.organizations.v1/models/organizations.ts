@@ -28,6 +28,11 @@ export interface OrganizationInterface {
     hasChildren?: boolean;
     parentId?: string;
     roles?: OrganizationRoleInterface[];
+    sharingMode?: {
+        roleSharing: {
+            mode: string;
+        }
+    }
 }
 
 export interface OrganizationLinkInterface {

@@ -156,7 +156,7 @@ const ConsoleRolesShareWithAll: FunctionComponent<ConsoleRolesShareWithAllPropsI
                 isOptionEqualToValue={ (
                     option: RolesInterface,
                     value: RolesInterface) =>
-                    option?.id === value.id
+                    option?.displayName === value.displayName
                 }
                 renderInput={ (params: AutocompleteRenderInputParams) => (
                     <TextField
