@@ -268,7 +268,7 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
                 data-testid={ `${ componentId }-cookie-policy-url` }
                 validation={ validateTemplatableURLs }
             />
-            { (invitedUserRegistrationFlowConfig.isEnabled || passwordRecoveryFlowConfig.isEnabled) && ( <Field.Input
+            { (invitedUserRegistrationFlowConfig?.isEnabled || passwordRecoveryFlowConfig?.isEnabled) && ( <Field.Input
                 ariaLabel="Branding preference recovery portal URL"
                 inputType="url"
                 name="urls.recoveryPortalURL"

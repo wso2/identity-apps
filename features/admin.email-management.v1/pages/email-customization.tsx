@@ -153,9 +153,9 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         const filterTemplates = (template: EmailTemplateType): boolean => {
             const name: string = template.displayName?.toLowerCase() || "";
 
-            if (!invitedUserRegistrationFlowConfig.isEnabled && name.includes("orchestrated")) {
+            if (!invitedUserRegistrationFlowConfig?.isEnabled && name.includes("orchestrated")) {
                 return false;
-            } else if (invitedUserRegistrationFlowConfig.isEnabled && blockedNames.includes(name)) {
+            } else if (invitedUserRegistrationFlowConfig?.isEnabled && blockedNames.includes(name)) {
                 return false;
             }
 
