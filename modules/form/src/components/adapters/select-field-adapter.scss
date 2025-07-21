@@ -16,10 +16,12 @@
  * under the License.
  */
 
-.multi-value-table-label {
-    padding: 5px;
-}
+.select-field-adapter {
+    .end-adornment {
+        margin-right: 10px;
+    }
 
-.text-btn {
-    padding: 0px 10px;
+    .MuiInputBase-root.Mui-disabled {
+        background-color: var(--oxygen-palette-ReadOnlyInput-bg);
+    }
 }
