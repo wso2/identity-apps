@@ -1,5 +1,16 @@
 # @wso2is/admin.email-management.v1
 
+## 2.25.208
+
+### Patch Changes
+
+- [#8579](https://github.com/wso2/identity-apps/pull/8579) [`7b50f9a554ba1672a0f5b94f918c3fd03ecac48e`](https://github.com/wso2/identity-apps/commit/7b50f9a554ba1672a0f5b94f918c3fd03ecac48e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Replace dynamic portal configuration with flow configuration API
+
+- Updated dependencies [[`7b50f9a554ba1672a0f5b94f918c3fd03ecac48e`](https://github.com/wso2/identity-apps/commit/7b50f9a554ba1672a0f5b94f918c3fd03ecac48e)]:
+  - @wso2is/admin.server-configurations.v1@2.35.7
+  - @wso2is/admin.branding.v1@2.31.4
+  - @wso2is/admin.core.v1@2.46.24
+
 ## 2.25.207
 
 ### Patch Changes
