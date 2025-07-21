@@ -40,6 +40,9 @@ export interface ProfileFieldFormRendererPropsInterface extends IdentifiableComp
      * The label to be displayed.
      */
     fieldLabel: string;
+    /**
+     * The name of the attribute field. If not provided, the schema name will be used.
+     */
     fieldName?: string;
     /**
      * Whether the field is in edit mode or not.
@@ -180,7 +183,7 @@ export interface MobileFieldFormPropsInterface extends Omit<ProfileFieldFormProp
 export interface CheckBoxFieldFormPropsInterface
     extends Omit<
         ProfileFieldFormPropsInterface,
-        "isActive" | "isEditable" | "isRequired" | "profileInfo" | "onEditClicked" | "onEditCancelClicked"
+        "isActive" | "isRequired" | "profileInfo" | "onEditClicked" | "onEditCancelClicked"
     > {}
 
 export interface DOBFieldFormPropsInterface extends ProfileFieldFormPropsInterface {}

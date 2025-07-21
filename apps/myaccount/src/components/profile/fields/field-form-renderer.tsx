@@ -279,6 +279,7 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
                     fieldSchema={ fieldSchema }
                     initialValue={ initialValue }
                     fieldLabel={ fieldLabel }
+                    isEditable={ isEditable }
                     setIsProfileUpdating={ setIsProfileUpdating }
                     isLoading={ isLoading }
                     isUpdating={ isUpdating }
