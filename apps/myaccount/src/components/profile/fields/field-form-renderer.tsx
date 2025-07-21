@@ -17,7 +17,7 @@
  */
 
 import { ProfileConstants } from "@wso2is/core/constants";
-import { ClaimDataType, PatchOperationRequest } from "@wso2is/core/models";
+import { ClaimInputFormat, PatchOperationRequest } from "@wso2is/core/models";
 import { FormValue } from "@wso2is/forms";
 import isEmpty from "lodash-es/isEmpty";
 import React, { Dispatch, FunctionComponent, ReactElement } from "react";
@@ -56,8 +56,7 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
     }: ProfileFieldFormRendererPropsInterface
 ): ReactElement => {
 
-    const { type, canonicalValues, multiValued: isMultiValuedSchema, extended: isExtendedSchema } = fieldSchema;
-    let fieldType: ClaimDataType = type?.toLocaleLowerCase() as ClaimDataType;
+    const { multiValued: isMultiValuedSchema, extended: isExtendedSchema } = fieldSchema;
 
     const dispatch: Dispatch<any> = useDispatch();
 
@@ -220,13 +219,11 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
         );
     }
 
-    if (canonicalValues?.length > 0) {
-        fieldType = ClaimDataType.OPTIONS;
-    }
+    const inputType: ClaimInputFormat = fieldSchema.inputFormat?.inputType ?? ClaimInputFormat.TEXT_INPUT;
 
     if (isMultiValuedSchema && isExtendedSchema) {
-        switch (fieldType) {
-            case ClaimDataType.INTEGER: {
+        switch (inputType) {
+            case ClaimInputFormat.NUMBER_INPUT: {
                 const valueList: number[] = isEmpty(initialValue)
                     ? []
                     : initialValue.split(",").map((value: string) => Number(value));
@@ -275,8 +272,8 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
         }
     }
 
-    switch (fieldType) {
-        case ClaimDataType.BOOLEAN:
+    switch (inputType) {
+        case ClaimInputFormat.CHECKBOX:
             return (
                 <CheckboxFieldForm
                     fieldSchema={ fieldSchema }
@@ -290,7 +287,7 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
                 />
             );
 
-        case ClaimDataType.INTEGER:
+        case ClaimInputFormat.NUMBER_INPUT:
             return (
                 <TextFieldForm
                     fieldSchema={ fieldSchema }
@@ -310,49 +307,7 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
                 />
             );
 
-        case ClaimDataType.DECIMAL:
-            return (
-                <TextFieldForm
-                    fieldSchema={ fieldSchema }
-                    initialValue={ initialValue }
-                    fieldLabel={ fieldLabel }
-                    isActive={ isActive }
-                    isEditable={ isEditable }
-                    onEditClicked={ onEditClicked }
-                    onEditCancelClicked={ onEditCancelClicked }
-                    isRequired={ isRequired }
-                    setIsProfileUpdating={ setIsProfileUpdating }
-                    isLoading={ isLoading }
-                    isUpdating={ isUpdating }
-                    data-componentid={ componentId }
-                    handleSubmit={ handleSubmit }
-                    type="number"
-                    step="any"
-                />
-            );
-
-        // As of now text field will be rendered for dates as well.
-        case ClaimDataType.DATE_TIME:
-        case ClaimDataType.STRING:
-            return (
-                <TextFieldForm
-                    fieldSchema={ fieldSchema }
-                    initialValue={ initialValue }
-                    fieldLabel={ fieldLabel }
-                    isActive={ isActive }
-                    isEditable={ isEditable }
-                    onEditClicked={ onEditClicked }
-                    onEditCancelClicked={ onEditCancelClicked }
-                    isRequired={ isRequired }
-                    setIsProfileUpdating={ setIsProfileUpdating }
-                    isLoading={ isLoading }
-                    isUpdating={ isUpdating }
-                    data-componentid={ componentId }
-                    handleSubmit={ handleSubmit }
-                />
-            );
-
-        case ClaimDataType.OPTIONS:
+        case ClaimInputFormat.DROPDOWN:
             return (
                 <DropdownFieldForm
                     fieldSchema={ fieldSchema }
@@ -371,6 +326,9 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
                 />
             );
 
+        // As of now text field will be rendered for dates as well.
+        case ClaimInputFormat.DATE_PICKER:
+        case ClaimInputFormat.TEXT_INPUT:
         default:
             return (
                 <TextFieldForm
