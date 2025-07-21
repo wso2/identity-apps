@@ -30,6 +30,8 @@
 <%!
     private static boolean dynamicPortalEnabled;
     private static String dynamicRegistrationPortalURL;
+    private static final String REGISTRATION_FLOW_ENDPOINT = "/api/server/v1/flow/config?flowType=REGISTRATION";
+    private static final String REGISTRATION_ENABLED_PROPERTY = "isEnabled";
 
     /**
      * Initialize them from a scriptlet (or via a setter).
@@ -108,7 +110,7 @@
 
     try {
         CommonDataRetrievalClient commonDataRetrievalClient = new CommonDataRetrievalClient();
-        isDynamicPortalEnabled = commonDataRetrievalClient.checkBooleanProperty("/api/server/v1/flow/config?flowType=REGISTRATION", tenantDomain, "isEnabled", false, true);
+        isDynamicPortalEnabled = commonDataRetrievalClient.checkBooleanProperty(REGISTRATION_FLOW_ENDPOINT, tenantDomain, REGISTRATION_ENABLED_PROPERTY, false, true);
     } catch (CommonDataRetrievalClientException e) {
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", AuthenticationEndpointUtil
