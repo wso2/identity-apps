@@ -16,31 +16,27 @@
  * under the License.
  */
 
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableRow from "@mui/material/TableRow";
-import IconButton from "@oxygen-ui/react/IconButton";
 import MenuItem from "@oxygen-ui/react/MenuItem";
-import Paper from "@oxygen-ui/react/Paper";
 import Select from "@oxygen-ui/react/Select";
 import Typography from "@oxygen-ui/react/Typography";
+import MultiValuedTextField from "@wso2is/common.ui.profile.v1/components/multi-valued-text-field";
 import { ProfileConstants } from "@wso2is/core/constants";
-import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import { FormValue } from "@wso2is/forms";
 import { Button, Popup, useMediaContext } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, List } from "semantic-ui-react";
 import EmptyValueField from "./empty-value-field";
+import { FinalForm, FormRenderProps } from "../../../../../../modules/form/src";
 import { MultiValueFieldFormPropsInterface } from "../../../models/profile-ui";
 import { EditSection } from "../../shared/edit-section";
+
+import "./field-form.scss";
 
 const MultiValueFieldForm = <T extends string | number>({
     fieldSchema: schema,
     fieldLabel,
-    type,
     initialValue,
     isEditable,
     isActive,
@@ -49,44 +45,17 @@ const MultiValueFieldForm = <T extends string | number>({
     onEditClicked,
     onEditCancelClicked,
     setIsProfileUpdating,
+    type = "text",
     handleSubmit,
     ["data-componentid"]: testId = "multi-value-field-form"
 }: MultiValueFieldFormPropsInterface<T>): ReactElement => {
     const { t } = useTranslation();
     const { isMobileViewport } = useMediaContext();
 
-    const [ valueList, setValueList ] = useState<T[]>(initialValue);
-
-    useEffect(() => {
-        setValueList(initialValue);
-    }, [ isActive ]);
-
-
-    const handleAddValue = (value: T): void => {
-        if (!valueList.includes(value)) {
-            setValueList((valueList: T[]) => [ ...valueList, value ]);
-        }
-    };
-
-    const handleRemoveValue = (value: T): void => {
-        const updatedValueList: T[] = valueList.filter((v: T) => v !== value);
-
-        setValueList(updatedValueList);
-    };
-
-    const validateField = (value: string, validation: Validation): void => {
-        if (!RegExp(schema.regEx).test(value)) {
-            validation.isValid = false;
-            validation.errorMessages.push(
-                t("myAccount:components.profile.forms.generic.inputs.validations.invalidFormat", {
-                    fieldName: fieldLabel
-                })
-            );
-        }
-    };
-
-    const onFormSubmit = (): void => {
+    const onFormSubmit = (values: Record<string, unknown>): void => {
         setIsProfileUpdating(true);
+
+        const valueList: T[] = Array.from(values[schema.name] as T[] ?? []);
 
         handleSubmit(schema.name, valueList as FormValue);
     };
@@ -122,138 +91,72 @@ const MultiValueFieldForm = <T extends string | number>({
     if (isActive) {
         return (
             <EditSection data-testid={ "profile-schema-editing-section" }>
-                <Grid>
+                <Grid className="multi-valued-field-form">
                     <Grid.Row columns={ 2 }>
                         <Grid.Column width={ 4 }>{ fieldLabel }</Grid.Column>
                         <Grid.Column width={ 12 }>
-                            <Forms
-                                onSubmit={ (values: Map<string, FormValue>) =>
-                                    handleAddValue(values.get(schema.name) as T) }
-                            >
-                                <Grid verticalAlign="middle" textAlign="right">
-                                    <Grid.Row className="p-0">
-                                        <Field
-                                            action={ { icon: "plus", type: "submit" } }
-                                            disabled={ isLoading || valueList?.length === ProfileConstants
-                                                .MAX_EMAIL_ADDRESSES_ALLOWED }
-                                            className="multi-input-box"
-                                            autoFocus={ true }
-                                            label=""
-                                            name={ schema.name }
-                                            placeholder={
-                                                t("myAccount:components.profile.forms.generic.inputs.placeholder",
-                                                    { fieldName: fieldLabel.toLowerCase() }) }
-                                            required={ isRequired }
-                                            requiredErrorMessage={
-                                                t("myAccount:components.profile.forms.generic.inputs.validations.empty",
-                                                    { fieldName: fieldLabel }) }
-                                            type={ type || "text" }
-                                            validation={ validateField }
-                                            maxLength={ ProfileConstants.CLAIM_VALUE_MAX_LENGTH }
-                                            data-componentid={
-                                                `${testId}-editing-section-${ schema.name.replace(".", "-") }-field`
-                                            }
-                                        />
-                                    </Grid.Row>
+                            <FinalForm
+                                onSubmit={ onFormSubmit }
+                                render={ ({ handleSubmit, values }: FormRenderProps) => {
+                                    const currentValueList: T[] = Array.from(values[schema.name] as T[] ?? []);
 
-                                    <Grid.Row>
-                                        <TableContainer
-                                            component={ Paper }
-                                            elevation={ 0 }
+                                    return (
+                                        <form
+                                            id="user-profile-form"
+                                            onSubmit={ handleSubmit }
+                                            className="user-profile-form"
                                             data-componentid={
-                                                `${testId}-editing-section-${schema.name.replace(".", "-")}-accordion`
-                                            }
+                                                `${testId}-editing-section-${ schema.name.replace(".", "-") }-form` }
+                                            data-testid={
+                                                `${testId}-editing-section-${ schema.name.replace(".", "-") }-form` }
                                         >
-                                            <Table
-                                                className="multi-value-table"
-                                                size="small"
-                                                aria-label="multi-attribute value table"
-                                            >
-                                                <TableBody>
-                                                    { valueList?.map(
-                                                        (value: T, index: number) => (
-                                                            <TableRow
-                                                                key={ index }
-                                                                className="multi-value-table-data-row"
-                                                            >
-                                                                <TableCell align="left">
-                                                                    <div className="table-c1">
-                                                                        <Typography
-                                                                            className="c1-value"
-                                                                            data-componentid={
-                                                                                `${testId}-editing-section-${
-                                                                                    schema.name.replace(".", "-")
-                                                                                }-value-${index}`
-                                                                            }
-                                                                        >
-                                                                            { String(value) }
-                                                                        </Typography>
-                                                                    </div>
-                                                                </TableCell>
-
-                                                                <TableCell align="right">
-                                                                    <div className="table-c2">
-                                                                        <IconButton
-                                                                            size="small"
-                                                                            onClick={ () => {
-                                                                                handleRemoveValue(value);
-                                                                            } }
-                                                                            disabled={ isRequired &&
-                                                                                valueList?.length === 1 }
-                                                                            data-componentid={
-                                                                                `${testId}-editing-section-${
-                                                                                    schema.name.replace(".", "-")
-                                                                                }-delete-button-${index}`
-                                                                            }
-                                                                        >
-                                                                            <Popup
-                                                                                size="tiny"
-                                                                                trigger={
-                                                                                    (
-                                                                                        <Icon name="trash alternate" />
-                                                                                    )
-                                                                                }
-                                                                                header={ t("common:delete") }
-                                                                                inverted
-                                                                            />
-                                                                        </IconButton>
-                                                                    </div>
-                                                                </TableCell>
-                                                            </TableRow>
-                                                        )
-                                                    ) }
-                                                </TableBody>
-                                            </Table>
-                                        </TableContainer>
-                                    </Grid.Row>
-
-                                    <Grid.Row>
-                                        <div className="text-field-actions">
-                                            <Button
-                                                primary
-                                                onClick={ onFormSubmit }
-                                                data-testid={ `${testId}-schema-mobile-editing-section-${
-                                                    schema.name.replace(
-                                                        ".",
-                                                        "-"
-                                                    )}-save-button` }
-                                            >
-                                                { t("common:save") }
-                                            </Button>
-                                            <Button
-                                                onClick={ onEditCancelClicked }
-                                                data-testid={
-                                                    `${testId}-schema-mobile-editing-section-${
-                                                        schema.name.replace(".", "-")
-                                                    }-cancel-button`
+                                            <MultiValuedTextField
+                                                schema={ schema }
+                                                fieldName={ schema.name }
+                                                fieldLabel={ fieldLabel }
+                                                showLabel={ false }
+                                                margin="none"
+                                                type={ type }
+                                                initialValue={ initialValue as string[] }
+                                                isReadOnly={ isLoading || currentValueList
+                                                    ?.length === ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED }
+                                                isRequired={ isRequired }
+                                                isUpdating={ false }
+                                                maxValueLimit={ ProfileConstants.MAX_MULTI_VALUES_ALLOWED }
+                                                placeholder={
+                                                    t("myAccount:components.profile.forms.generic.inputs.placeholder",
+                                                        { fieldName: fieldLabel.toLowerCase() }) }
+                                                data-componentid={
+                                                    `${testId}-editing-section-${ schema.name.replace(".", "-") }-field`
                                                 }
-                                            >
-                                                { t("common:cancel") }
-                                            </Button>
-                                        </div>
-                                    </Grid.Row>
-                                </Grid>
-                            </Forms>
+                                            />
+                                            <Grid.Row>
+                                                <Button
+                                                    primary
+                                                    type="submit"
+                                                    data-testid={ `${testId}-schema-mobile-editing-section-${
+                                                        schema.name.replace(
+                                                            ".",
+                                                            "-"
+                                                        )}-save-button` }
+                                                >
+                                                    { t("common:save") }
+                                                </Button>
+                                                <Button
+                                                    onClick={ onEditCancelClicked }
+                                                    data-testid={
+                                                        `${testId}-schema-mobile-editing-section-${
+                                                            schema.name.replace(".", "-")
+                                                        }-cancel-button`
+                                                    }
+                                                >
+                                                    { t("common:cancel") }
+                                                </Button>
+                                            </Grid.Row>
+                                        </form>
+                                    );
+                                } }
+                            />
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
