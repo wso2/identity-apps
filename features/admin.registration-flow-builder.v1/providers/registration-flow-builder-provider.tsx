@@ -26,8 +26,6 @@ import React, { FC, PropsWithChildren, ReactElement, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import configureRegistrationFlow from "../api/configure-registration-flow";
-import updateNewRegistrationPortalFeatureStatus from "../api/update-new-registration-portal-feature-status";
-import useNewRegistrationPortalFeatureStatus from "../api/use-new-registration-portal-feature-status";
 import ResourceProperties from "../components/resource-property-panel/resource-properties";
 import ElementFactory from "../components/resources/elements/element-factory";
 import RegistrationFlowConstants from "../constants/registration-flow-constants";
@@ -70,10 +68,6 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
     const dispatch: Dispatch = useDispatch();
 
     const { toObject } = useReactFlow();
-    const {
-        data: isNewRegistrationPortalEnabled,
-        mutate: mutateNewRegistrationPortalEnabledRequest
-    } = useNewRegistrationPortalFeatureStatus();
 
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Attribute[] }>({});
     const [ isPublishing, setIsPublishing ] = useState<boolean>(false);
@@ -82,22 +76,6 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
         setIsPublishing(true);
 
         const flow: any = toObject();
-
-        if (!isNewRegistrationPortalEnabled) {
-            try {
-                await updateNewRegistrationPortalFeatureStatus(true);
-            } catch(error) {
-                dispatch(
-                    addAlert({
-                        description: "Failed to enable the new registration flow experience.",
-                        level: AlertLevels.ERROR,
-                        message: "Flow Update Failure"
-                    })
-                );
-            }
-
-            mutateNewRegistrationPortalEnabledRequest();
-        }
 
         try {
             const registrationFlow: any = transformFlow(flow) as any;
@@ -129,7 +107,6 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
     return (
         <RegistrationFlowBuilderContext.Provider
             value={ {
-                isNewRegistrationPortalEnabled,
                 isPublishing,
                 onPublish: handlePublish,
                 selectedAttributes,

@@ -21,8 +21,8 @@ import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/bran
 import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import useGetRegistrationFlowBuilderEnabledStatus
-    from "@wso2is/admin.server-configurations.v1/api/use-get-self-registration-enabled-status";
+import useGetFlowConfig from "@wso2is/admin.flows.v1/api/use-get-flow-config";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -122,7 +122,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
     }, [ emailTemplatesFeatureConfig, allowedScopes ]);
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
-    const { data: isDynamicPortalEnabled } = useGetRegistrationFlowBuilderEnabledStatus();
+    const { data: invitedUserRegistrationFlowConfig } = useGetFlowConfig(FlowTypes.INVITED_USER_REGISTRATION);
 
     const {
         data: emailTemplatesList,
@@ -153,9 +153,9 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         const filterTemplates = (template: EmailTemplateType): boolean => {
             const name: string = template.displayName?.toLowerCase() || "";
 
-            if (!isDynamicPortalEnabled && name.includes("orchestrated")) {
+            if (!invitedUserRegistrationFlowConfig?.isEnabled && name.includes("orchestrated")) {
                 return false;
-            } else if (isDynamicPortalEnabled && blockedNames.includes(name)) {
+            } else if (invitedUserRegistrationFlowConfig?.isEnabled && blockedNames.includes(name)) {
                 return false;
             }
 
