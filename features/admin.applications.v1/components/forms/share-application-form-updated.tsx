@@ -29,7 +29,6 @@ import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables
 import { OperationStatus } from "@wso2is/admin.core.v1/models/common";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import {
-    OrganizationInterface,
     SelectedOrganizationRoleInterface
 } from "@wso2is/admin.organizations.v1/models";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
@@ -201,14 +200,6 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
         // If there is no sharing mode, it selective organization sharing is done.
         if (!applicationShareData.sharingMode) {
             setShareType(ShareType.SHARE_SELECTED);
-
-            if (applicationShareData.organizations?.length > 0) {
-                const sharedOrg: OrganizationInterface = applicationShareData.organizations[0];
-
-                // TODO: Determine the role sharing type based on the organization sharing policy.
-                // Awaiting on BE Support for this.
-
-            }
 
             return;
         }
