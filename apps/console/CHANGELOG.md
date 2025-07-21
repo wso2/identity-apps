@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.68.14
+
+### Patch Changes
+
+- [#8573](https://github.com/wso2/identity-apps/pull/8573) [`c95c6d9d0066555b78b0e851f1ca58dca67e0031`](https://github.com/wso2/identity-apps/commit/c95c6d9d0066555b78b0e851f1ca58dca67e0031) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Add social connection widgets
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.46.23
+  - @wso2is/admin.server-configurations.v1@2.35.6
+
 ## 2.68.13
 
 ### Patch Changes

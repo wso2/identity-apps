@@ -1,5 +1,14 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.9.3
+
+### Patch Changes
+
+- [#8573](https://github.com/wso2/identity-apps/pull/8573) [`c95c6d9d0066555b78b0e851f1ca58dca67e0031`](https://github.com/wso2/identity-apps/commit/c95c6d9d0066555b78b0e851f1ca58dca67e0031) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Add social connection widgets
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.46.23
+
 ## 0.9.2
 
 ### Patch Changes
