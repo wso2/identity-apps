@@ -79,6 +79,9 @@ export const flows: flowsNS = {
                 }
             }
         },
+        steps: {
+            emailConfirmation: "Email Confirmation"
+        },
         tooltip: {
             disableFlow: "Click to disable the registration flow",
             enableFlow: "Click to enable the registration flow"

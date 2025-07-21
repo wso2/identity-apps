@@ -83,8 +83,6 @@ const UserUnlockIcon: FunctionComponent<UserUnlockIconPropsInterface> = ({
  */
 export type UserAccountUnlockNodePropsInterface = IdentifiableComponentInterface;
 
-
-
 /**
  * UserAccountUnlockNode component.
  *

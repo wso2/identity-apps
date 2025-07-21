@@ -78,6 +78,9 @@ export interface flowsNS {
                 };
             };
         };
+        steps: {
+            emailConfirmation: string;
+        };
         tooltip: {
             disableFlow: string;
             enableFlow: string;

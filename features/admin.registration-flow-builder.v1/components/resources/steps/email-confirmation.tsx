@@ -26,6 +26,7 @@ import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/vi
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Handle, Position } from "@xyflow/react";
 import React, { FC, ReactElement, memo } from "react";
+import { useTranslation } from "react-i18next";
 import { RegistrationStaticStepTypes } from "../../../models/flow";
 
 /**
@@ -43,6 +44,7 @@ const EmailConfirmationNode: FC<EmailConfirmationPropsInterface> = memo(({
     ["data-componentid"]: componentId = "email-confirmation"
 }: EmailConfirmationPropsInterface): ReactElement => {
     const theme: Theme = useTheme();
+    const { t } = useTranslation();
 
     return (
         <Card
@@ -60,7 +62,7 @@ const EmailConfirmationNode: FC<EmailConfirmationPropsInterface> = memo(({
             />
             <Box display="flex" gap={ 1 } justifyContent="center" data-componentid={ componentId }>
                 <EnvelopeAtIcon size={ 25 } />
-                <Typography variant="body1">Email Confirmation</Typography>
+                <Typography variant="body1">{ t("flows:registrationFlow.steps.emailConfirmation") }</Typography>
             </Box>
             <Handle
                 type="source"
