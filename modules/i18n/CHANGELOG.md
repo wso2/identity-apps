@@ -1,5 +1,13 @@
 # @wso2is/i18n
 
+## 2.25.1
+
+### Patch Changes
+
+- [#8576](https://github.com/wso2/identity-apps/pull/8576) [`32f809bf44aa79cd7c87144466915fc9c6438ca5`](https://github.com/wso2/identity-apps/commit/32f809bf44aa79cd7c87144466915fc9c6438ca5) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for generating the legacy self-registration flow from the Flow Builder
+
+* [#8578](https://github.com/wso2/identity-apps/pull/8578) [`79d24deec910ce3f4628decedd65c2f3bcddddfe`](https://github.com/wso2/identity-apps/commit/79d24deec910ce3f4628decedd65c2f3bcddddfe) Thanks [@KD23243](https://github.com/KD23243)! - Add feature toggle and floating publish button for Ask Password & Password Recovery Flows
+
 ## 2.25.0
 
 ### Minor Changes

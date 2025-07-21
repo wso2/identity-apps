@@ -1,5 +1,23 @@
 # @wso2is/admin.core.v1
 
+## 2.46.25
+
+### Patch Changes
+
+- [#8578](https://github.com/wso2/identity-apps/pull/8578) [`79d24deec910ce3f4628decedd65c2f3bcddddfe`](https://github.com/wso2/identity-apps/commit/79d24deec910ce3f4628decedd65c2f3bcddddfe) Thanks [@KD23243](https://github.com/KD23243)! - Add feature toggle and floating publish button for Ask Password & Password Recovery Flows
+
+- Updated dependencies [[`99556bdcad5cac0105ecbfd893d8087497fd4033`](https://github.com/wso2/identity-apps/commit/99556bdcad5cac0105ecbfd893d8087497fd4033), [`32f809bf44aa79cd7c87144466915fc9c6438ca5`](https://github.com/wso2/identity-apps/commit/32f809bf44aa79cd7c87144466915fc9c6438ca5), [`79d24deec910ce3f4628decedd65c2f3bcddddfe`](https://github.com/wso2/identity-apps/commit/79d24deec910ce3f4628decedd65c2f3bcddddfe)]:
+  - @wso2is/admin.webhooks.v1@1.0.4
+  - @wso2is/admin.registration-flow-builder.v1@0.9.9
+  - @wso2is/admin.flow-builder-core.v1@0.9.4
+  - @wso2is/i18n@2.25.1
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.0.4
+  - @wso2is/admin.ask-password-flow-builder.v1@1.0.5
+  - @wso2is/admin.flows.v1@1.0.14
+  - @wso2is/admin.server-configurations.v1@2.35.8
+  - @wso2is/admin.branding.v1@2.31.5
+  - @wso2is/admin.email-management.v1@2.25.209
+
 ## 2.46.24
 
 ### Patch Changes
