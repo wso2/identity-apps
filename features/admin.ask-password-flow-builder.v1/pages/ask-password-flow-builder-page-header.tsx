@@ -68,7 +68,7 @@ const AskPasswordFlowBuilderPageHeader: FunctionComponent<AskPasswordFlowBuilder
         data: flowConfig,
         mutate: mutateFlowConfig,
         error: flowConfigError
-    } = useGetFlowConfig(FlowTypes.REGISTRATION);
+    } = useGetFlowConfig(FlowTypes.INVITED_USER_REGISTRATION);
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
@@ -141,7 +141,7 @@ const AskPasswordFlowBuilderPageHeader: FunctionComponent<AskPasswordFlowBuilder
 
         try {
             await updateFlowConfig({
-                flowType: FlowTypes.REGISTRATION,
+                flowType: FlowTypes.INVITED_USER_REGISTRATION,
                 isEnabled
             });
             handleFlowConfigSuccess(isEnabled ? "enable" : "disable");

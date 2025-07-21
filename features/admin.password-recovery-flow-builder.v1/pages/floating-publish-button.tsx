@@ -39,7 +39,7 @@ import "./floating-publish-button.scss";
 const FloatingPublishButton = (): ReactElement => {
     const { t } = useTranslation();
     const { isResourcePropertiesPanelOpen } = useAuthenticationFlowBuilderCore();
-    const { data: flowConfig, error: flowConfigError } = useGetFlowConfig(FlowTypes.REGISTRATION);
+    const { data: flowConfig, error: flowConfigError } = useGetFlowConfig(FlowTypes.PASSWORD_RECOVERY);
     const dispatch: Dispatch = useDispatch();
     const { isPublishing, onPublish } = usePasswordRecoveryFlowBuilder();
 
@@ -49,9 +49,9 @@ const FloatingPublishButton = (): ReactElement => {
     useEffect(() => {
         if (flowConfigError) {
             dispatch(addAlert<AlertInterface>({
-                description: t("flows:registrationFlow.notifications.fetchFlowConfig.genericError.description"),
+                description: t("flows:passwordRecovery.notifications.fetchFlowConfig.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: t("flows:registrationFlow.notifications.fetchFlowConfig.genericError.message")
+                message: t("flows:passwordRecovery.notifications.fetchFlowConfig.genericError.message")
             }));
         }
     }, [ flowConfigError ]);

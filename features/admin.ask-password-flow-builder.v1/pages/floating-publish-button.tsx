@@ -39,7 +39,7 @@ import "./floating-publish-button.scss";
 const FloatingPublishButton = (): ReactElement => {
     const { t } = useTranslation();
     const { isResourcePropertiesPanelOpen } = useAuthenticationFlowBuilderCore();
-    const { data: flowConfig, error: flowConfigError } = useGetFlowConfig(FlowTypes.REGISTRATION);
+    const { data: flowConfig, error: flowConfigError } = useGetFlowConfig(FlowTypes.INVITED_USER_REGISTRATION);
     const dispatch: Dispatch = useDispatch();
     const { isPublishing, onPublish } = useAskPasswordFlowBuilder();
 

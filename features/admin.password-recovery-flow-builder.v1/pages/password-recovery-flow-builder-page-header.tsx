@@ -68,7 +68,7 @@ const PasswordRecoveryFlowBuilderPageHeader: FunctionComponent<PasswordRecoveryF
         data: flowConfig,
         mutate: mutateFlowConfig,
         error: flowConfigError
-    } = useGetFlowConfig(FlowTypes.REGISTRATION);
+    } = useGetFlowConfig(FlowTypes.PASSWORD_RECOVERY);
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
@@ -141,7 +141,7 @@ const PasswordRecoveryFlowBuilderPageHeader: FunctionComponent<PasswordRecoveryF
 
         try {
             await updateFlowConfig({
-                flowType: FlowTypes.REGISTRATION,
+                flowType: FlowTypes.PASSWORD_RECOVERY,
                 isEnabled
             });
             handleFlowConfigSuccess(isEnabled ? "enable" : "disable");
