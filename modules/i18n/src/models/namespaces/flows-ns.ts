@@ -25,6 +25,14 @@ export interface flowsNS {
             richText: {
                 linkEditor: {
                     placeholder: string;
+                    predefinedUrls: {
+                        applicationAccessUrl: string;
+                        callbackOrApplicationAccessUrl: string;
+                        customUrl: string;
+                        privacyPolicyUrl: string;
+                        termsOfUseUrl: string;
+                    };
+                    urlTypeLabel: string;
                 };
                 placeholder: string;
             }
@@ -69,6 +77,9 @@ export interface flowsNS {
                     message: string;
                 };
             };
+        };
+        steps: {
+            emailConfirmation: string;
         };
         tooltip: {
             disableFlow: string;

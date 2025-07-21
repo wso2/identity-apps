@@ -25,7 +25,15 @@ export const flows: flowsNS = {
         elements: {
             richText: {
                 linkEditor: {
-                    placeholder: "Enter link URL here..."
+                    placeholder: "Enter link URL here...",
+                    predefinedUrls: {
+                        applicationAccessUrl: "Application Access URL",
+                        callbackOrApplicationAccessUrl: "Callback or Application Access URL",
+                        customUrl: "Custom URL",
+                        privacyPolicyUrl: "Privacy Policy URL",
+                        termsOfUseUrl: "Terms of Use URL"
+                    },
+                    urlTypeLabel: "URL Type"
                 },
                 placeholder: "Enter rich text content here..."
             }
@@ -70,6 +78,9 @@ export const flows: flowsNS = {
                     message: "Fetch Registration Flow Error"
                 }
             }
+        },
+        steps: {
+            emailConfirmation: "Email Confirmation"
         },
         tooltip: {
             disableFlow: "Click to disable the registration flow",

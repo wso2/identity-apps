@@ -16,22 +16,19 @@
  * under the License.
  */
 
-import { Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
+import { useContext } from "react";
+import { GlobalContext } from "../providers/global-context-provider";
 
 /**
- * Interface for a registration flow API schema.
+ * Custom hook to use the GlobalContext.
+ * @returns {Object} The global context data.
  */
-export interface RegistrationFlow {
-    /**
-     * Steps of the registration flow.
-     */
-    steps: Step[];
-}
+export const useGlobalContext = () => {
+    const context = useContext(GlobalContext);
 
-/**
- * Enum for static step types in the registration flow.
- */
-export enum RegistrationStaticStepTypes {
-    EMAIL_CONFIRMATION = "EmailConfirmation",
-    USER_ACCOUNT_UNLOCK = "UserAccountUnlock",
+    if (!context) {
+        throw new Error("useGlobalContext must be used within a GlobalContextProvider");
+    }
+
+    return context;
 };

@@ -16,22 +16,21 @@
  * under the License.
  */
 
-import { Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
+import PropTypes from "prop-types";
+import React, { createContext } from "react";
 
-/**
- * Interface for a registration flow API schema.
- */
-export interface RegistrationFlow {
-    /**
-     * Steps of the registration flow.
-     */
-    steps: Step[];
-}
+export const GlobalContext = createContext();
 
-/**
- * Enum for static step types in the registration flow.
- */
-export enum RegistrationStaticStepTypes {
-    EMAIL_CONFIRMATION = "EmailConfirmation",
-    USER_ACCOUNT_UNLOCK = "UserAccountUnlock",
+export const GlobalContextProvider = ({ globalData, children }) => {
+
+    return (
+        <GlobalContext.Provider value={ { contextData: globalData } }>
+            { children }
+        </GlobalContext.Provider>
+    );
+};
+
+GlobalContextProvider.propTypes = {
+    children: PropTypes.any.isRequired,
+    globalData: PropTypes.object.isRequired
 };
