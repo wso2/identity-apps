@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.27.12
+
+### Patch Changes
+
+- [#8584](https://github.com/wso2/identity-apps/pull/8584) [`aa3c836b43ea09fb782055023a51ca0a4e5907cb`](https://github.com/wso2/identity-apps/commit/aa3c836b43ea09fb782055023a51ca0a4e5907cb) Thanks [@KD23243](https://github.com/KD23243)! - Add dynamic password recovery portal switching
+
+* [#8583](https://github.com/wso2/identity-apps/pull/8583) [`1c28ab336261a10b8878f210129b1d39380e44a6`](https://github.com/wso2/identity-apps/commit/1c28ab336261a10b8878f210129b1d39380e44a6) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Add support for magic link execution
+
 ## 2.27.11
 
 ### Patch Changes
