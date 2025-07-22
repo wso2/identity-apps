@@ -196,6 +196,8 @@ export interface DOBFieldFormPropsInterface extends ProfileFieldFormPropsInterfa
 
 export interface DropdownFieldFormPropsInterface extends ProfileFieldFormPropsInterface {}
 
+export interface RadioFieldFormPropsInterface extends ProfileFieldFormPropsInterface {}
+
 export interface MultiValueFieldFormPropsInterface<T extends string | number>
     extends Omit<ProfileFieldFormPropsInterface, "initialValue"> {
     /**

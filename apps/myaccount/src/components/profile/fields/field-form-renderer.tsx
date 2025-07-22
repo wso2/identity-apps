@@ -29,6 +29,7 @@ import DropdownFieldForm from "./dropdown-field-form";
 import EmailFieldForm from "./email-field-form";
 import MobileFieldForm from "./mobile-field-form";
 import MultiValueFieldForm from "./multi-valued-field-form";
+import RadioFieldForm from "./radio-field-form";
 import SwitchFieldForm from "./switch-field-form";
 import TextFieldForm from "./text-field-form";
 import { CommonConstants } from "../../../constants";
@@ -304,6 +305,44 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
                 />
             );
 
+        case ClaimInputFormat.DROPDOWN:
+            return (
+                <DropdownFieldForm
+                    fieldSchema={ fieldSchema }
+                    initialValue={ initialValue }
+                    fieldLabel={ fieldLabel }
+                    isActive={ isActive }
+                    isEditable={ isEditable }
+                    onEditClicked={ onEditClicked }
+                    onEditCancelClicked={ onEditCancelClicked }
+                    isRequired={ isRequired }
+                    setIsProfileUpdating={ setIsProfileUpdating }
+                    isLoading={ isLoading }
+                    isUpdating={ isUpdating }
+                    data-componentid={ componentId }
+                    handleSubmit={ handleSubmit }
+                />
+            );
+
+        case ClaimInputFormat.RADIO_GROUP:
+            return (
+                <RadioFieldForm
+                    fieldSchema={ fieldSchema }
+                    initialValue={ initialValue }
+                    fieldLabel={ fieldLabel }
+                    isActive={ isActive }
+                    isEditable={ isEditable }
+                    onEditClicked={ onEditClicked }
+                    onEditCancelClicked={ onEditCancelClicked }
+                    isRequired={ isRequired }
+                    setIsProfileUpdating={ setIsProfileUpdating }
+                    isLoading={ isLoading }
+                    isUpdating={ isUpdating }
+                    data-componentid={ componentId }
+                    handleSubmit={ handleSubmit }
+                />
+            );
+
         case ClaimInputFormat.NUMBER_INPUT:
             return (
                 <TextFieldForm
@@ -321,25 +360,6 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
                     data-componentid={ componentId }
                     handleSubmit={ handleSubmit }
                     type="number"
-                />
-            );
-
-        case ClaimInputFormat.DROPDOWN:
-            return (
-                <DropdownFieldForm
-                    fieldSchema={ fieldSchema }
-                    initialValue={ initialValue }
-                    fieldLabel={ fieldLabel }
-                    isActive={ isActive }
-                    isEditable={ isEditable }
-                    onEditClicked={ onEditClicked }
-                    onEditCancelClicked={ onEditCancelClicked }
-                    isRequired={ isRequired }
-                    setIsProfileUpdating={ setIsProfileUpdating }
-                    isLoading={ isLoading }
-                    isUpdating={ isUpdating }
-                    data-componentid={ componentId }
-                    handleSubmit={ handleSubmit }
                 />
             );
 
