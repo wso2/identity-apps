@@ -115,7 +115,7 @@
                             <%
                                 for (int i=1; i <= orgCount; i++) { %>
                                     <input id="orgId" type="radio" name="orgId" value="<%=Encode.forHtmlAttribute(request.getParameter("orgId_" + i))%>" required>
-                                    <label><%=request.getParameter("org_" + i)%> : </label> <label><%=request.getParameter("orgDesc_" + i)%></label><br>
+                                    <label><%=Encode.forHtml(request.getParameter("org_" + i))%> : </label> <label><%=Encode.forHtml(request.getParameter("orgDesc_" + i))%></label><br>
                                 <%
                                 }%>
                             <input id="idp" name="idp" type="hidden" value="<%=Encode.forHtmlAttribute(idp)%>"/>
