@@ -61,8 +61,6 @@ export const fetchPendingApprovals = (
         url: approvalsUrl
     };
 
-    console.log("received url: ", approvalsUrl);
-
     // To fetch all the approvals from the api, the status
     // has to set to null.
     if (status === ApprovalStatus.ALL) {
