@@ -119,7 +119,7 @@
             applicationAccessUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, sp);
         }
     } catch (Exception e) {
-        spId = "";
+        spId = request.getParameter("spId") != null ? request.getParameter("spId") : "";
     }
 
     Boolean isValidCallBackURL = false;
