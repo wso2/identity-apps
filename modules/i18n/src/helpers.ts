@@ -179,27 +179,30 @@ export const isLanguageSupported = (detectedLanguage: string,
  * @param {I18nModuleOptionsInterface} i18nBundleOptions - I18n module options.
  * @return {string} Resolved path.
  */
-export const generateBackendPaths = (language: string[],
+export const generateBackendPaths = (
+    language: string[],
     namespace: string[],
     appBaseName: string,
     i18nBundleOptions: I18nModuleOptionsInterface,
-    metaFile: MetaI18N): string => {
+    metaFile: MetaI18N
+): string => {
+    let filePath: string = metaFile[language[0]]?.paths[namespace[0]];
+
+    // BACKWARD COMPATIBILITY: If the `filePath` doesn't start with `i18nBundleOptions.resourcePath`
+    // or `i18nBundleOptions.resourceExtensionsPath`, assume it's a older `meta.json` file and append
+    // the `i18nBundleOptions.resourcePath`.
+    if (
+        filePath &&
+        !filePath.includes(StringUtils.removeSlashesFromPath(i18nBundleOptions?.resourcePath)) &&
+        !filePath.includes(StringUtils.removeSlashesFromPath(i18nBundleOptions.resourceExtensionsPath))
+    ) {
+        filePath = `${StringUtils.removeSlashesFromPath(i18nBundleOptions?.resourcePath)}/${filePath}`;
+    }
 
     // If `appBaseName` is "", avoids adding a forward slash.
     const resolvedAppBaseName: string = StringUtils.removeSlashesFromPath(appBaseName)
         ? `${StringUtils.removeSlashesFromPath(appBaseName)}/`
         : "";
 
-    const fullResourcePath = `${ resolvedAppBaseName }${
-        StringUtils.removeSlashesFromPath(i18nBundleOptions?.resourcePath) }`;
-
-    const fileNames = metaFile[ language[ 0 ] ]?.paths[ namespace[ 0 ] ]?.split("/");
-    const fileName = fileNames ? fileNames[ fileNames?.length - 1 ] : "";
-
-    if (i18nBundleOptions?.namespaceDirectories.has(namespace[0])) {
-        return `/${ fullResourcePath }/${ language[0] }/${ i18nBundleOptions.namespaceDirectories.get(namespace[0]) }/${
-            fileName}`;
-    }
-
-    return `/${ fullResourcePath }/${ language[0] }/${ namespace[0] }.json`;
+    return `/${resolvedAppBaseName}${filePath}`;
 };
