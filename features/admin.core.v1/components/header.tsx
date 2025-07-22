@@ -19,16 +19,25 @@
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
+import Flag from "@oxygen-ui/react/CountryFlag";
 import Divider from "@oxygen-ui/react/Divider";
 import OxygenHeader, { HeaderProps } from "@oxygen-ui/react/Header";
 import Image from "@oxygen-ui/react/Image";
 import Link from "@oxygen-ui/react/Link";
+import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Menu from "@oxygen-ui/react/Menu";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Typography from "@oxygen-ui/react/Typography";
-import { DiamondIcon, DiscordIcon, StackOverflowIcon, TalkingHeadsetIcon } from "@oxygen-ui/react-icons";
+import {
+    ChevronDownIcon,
+    DiamondIcon,
+    DiscordIcon,
+    LanguageIcon,
+    StackOverflowIcon,
+    TalkingHeadsetIcon
+} from "@oxygen-ui/react-icons";
 import { FeatureStatus, Show, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
@@ -40,10 +49,11 @@ import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { FeatureAccessConfigInterface } from "@wso2is/core/src/models";
-import { StringUtils } from "@wso2is/core/utils";
-import { I18n } from "@wso2is/i18n";
+import { CookieStorageUtils, StringUtils, URLUtils } from "@wso2is/core/utils";
+import { I18n, I18nModuleConstants, LanguageChangeException, LocaleMeta, SupportedLanguagesMeta } from "@wso2is/i18n";
 import { useDocumentation } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
+import moment from "moment";
+import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { ReactComponent as LogoutIcon } from "../../themes/default/assets/images/icons/logout-icon.svg";
@@ -96,6 +106,12 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         useSelector((state: AppState) => state.config.ui.features.gettingStarted);
     const scopes: string = useSelector((state: AppState) => state.auth.allowedScopes);
     const userOrganizationID: string = useSelector((state: AppState) => state?.organization?.userOrganizationId);
+    const showLanguageSwitcher: boolean = useSelector(
+        (state: AppState) => state.config.ui.i18nConfigs.showLanguageSwitcher
+    );
+    const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
+        (state: AppState) => state.global.supportedI18nLanguages
+    );
 
     const hasGettingStartedViewPermission: boolean = useRequiredScopes(
         gettingStartedFeatureConfig?.scopes?.feature
@@ -122,6 +138,13 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
 
     const [ billingPortalURL, setBillingPortalURL ] = useState<string>(undefined);
     const [ upgradeButtonURL, setUpgradeButtonURL ] = useState<string>(undefined);
+    const [ openLanguageSwitcher, setOpenLanguageSwitcher ] = useState<boolean>(
+        false
+    );
+    const [ languageSwitcherAnchorEl, setLanguageSwitcherAnchorEl ] = useState<
+        HTMLElement
+    >(null);
+
     const { isOrganizationManagementEnabled } = useGlobalVariables();
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -170,7 +193,87 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         return "";
     };
 
+    /**
+     * Handles language switch action.
+
+     * @param language - Selected language.
+     */
+    const handleLanguageSwitch = (language: string): void => {
+        moment.locale(language ?? "en");
+        I18n.instance.changeLanguage(language).catch((error: string | Record<string, unknown>) => {
+            throw new LanguageChangeException(language, error);
+        });
+
+        const cookieSupportedLanguage: string = language.replace("-", "_");
+
+        CookieStorageUtils.setCookie(
+            I18nModuleConstants.PREFERENCE_STORAGE_KEY,
+            cookieSupportedLanguage,
+            { days: 30 },
+            URLUtils.getDomain(window.location.href),
+            { secure: true }
+        );
+    };
+
+    /**
+     * Handles the language switch trigger click event.
+     *
+     * @param e - Click event.
+     */
+    const handleLanguageSwitchTriggerClick = (e: MouseEvent<HTMLElement>) => {
+        setOpenLanguageSwitcher(!openLanguageSwitcher);
+        setLanguageSwitcherAnchorEl(e.currentTarget);
+    };
+
     const generateHeaderButtons = (): ReactElement[] => [
+        showLanguageSwitcher && (
+            <>
+                <Button
+                    color="inherit"
+                    startIcon={ <LanguageIcon /> }
+                    endIcon={ <ChevronDownIcon /> }
+                    key={ I18n.instance?.language }
+                    onClick={ handleLanguageSwitchTriggerClick }
+                    data-componentid="app-header-language-switcher-trigger"
+                >
+                    { supportedI18nLanguages[ I18n.instance?.language ]?.name }
+                </Button>
+                <Menu
+                    open={ openLanguageSwitcher }
+                    anchorEl={ languageSwitcherAnchorEl }
+                    onClose={ handleLanguageSwitchTriggerClick }
+                >
+                    { Object.entries(supportedI18nLanguages)?.map(
+                        ([ key, value ]: [ key: string, value: LocaleMeta ]) => {
+                            if (I18n.instance?.language === value.code) {
+                                return;
+                            }
+
+                            return (
+                                <MenuItem
+                                    key={ key }
+                                    onClick={ () => {
+                                        handleLanguageSwitch(value.code);
+                                        setOpenLanguageSwitcher(false);
+                                    } }
+                                >
+                                    <ListItem>
+                                        <ListItemIcon>
+                                            <Flag
+                                                countryCode={ value.flag }
+                                            />
+                                        </ListItemIcon>
+                                        <ListItemText>
+                                            { value.name }
+                                        </ListItemText>
+                                    </ListItem>
+                                </MenuItem>
+                            );
+                        }
+                    ) }
+                </Menu>
+            </>
+        ),
         window["AppUtils"].getConfig().docSiteUrl && (
             <Button
                 color="inherit"
