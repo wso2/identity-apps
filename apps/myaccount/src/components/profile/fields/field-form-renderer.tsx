@@ -38,7 +38,9 @@ import { ProfilePatchOperationValue } from "../../../models/profile";
 import { ProfileFieldFormRendererPropsInterface } from "../../../models/profile-ui";
 import { setActiveForm } from "../../../store/actions";
 
-const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsInterface> = (
+const ProfileFieldFormRenderer: FunctionComponent<
+    ProfileFieldFormRendererPropsInterface<string | number | boolean | string[]>
+> = (
     {
         fieldSchema,
         flattenedProfileSchema,
@@ -55,7 +57,7 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
         isEmailVerificationEnabled,
         isMobileVerificationEnabled,
         [ "data-componentid" ]: componentId
-    }: ProfileFieldFormRendererPropsInterface
+    }: ProfileFieldFormRendererPropsInterface<string | number | boolean | string[]>
 ): ReactElement => {
 
     const { multiValued: isMultiValuedSchema, extended: isExtendedSchema } = fieldSchema;
@@ -99,7 +101,7 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
                     [schemaNamesCanonicalTypes[0]]: [ { ...tempPatchValue, type: schemaNamesCanonicalTypes[1] } ]
                 };
             } else {
-                tempPatchValue = { [schemaName]: tempPatchValue ?? value };
+                tempPatchValue = { [schemaName]: tempPatchValue ?? value ?? "" };
             }
         }
 
@@ -127,7 +129,7 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
         return (
             <CountryFieldForm
                 fieldSchema={ fieldSchema }
-                initialValue={ initialValue }
+                initialValue={ initialValue as string }
                 fieldLabel={ fieldLabel }
                 isRequired={ isRequired }
                 isEditable={ isEditable }
@@ -154,7 +156,7 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
         return (
             <EmailFieldForm
                 fieldSchema={ fieldSchema }
-                initialValue={ initialValue }
+                initialValue={ initialValue as string }
                 profileInfo={ profileInfo }
                 fieldLabel={ fieldLabel }
                 isActive={ isActive }
@@ -183,7 +185,7 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
             <MobileFieldForm
                 fieldSchema={ fieldSchema }
                 flattenedProfileSchema={ flattenedProfileSchema }
-                initialValue={ initialValue }
+                initialValue={ initialValue as string }
                 profileInfo={ profileInfo }
                 fieldLabel={ fieldLabel }
                 isActive={ isActive }
@@ -205,7 +207,7 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
         return (
             <DOBFieldForm
                 fieldSchema={ fieldSchema }
-                initialValue={ initialValue }
+                initialValue={ initialValue as string }
                 fieldLabel={ fieldLabel }
                 isActive={ isActive }
                 isEditable={ isEditable }
@@ -224,16 +226,39 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
     const inputType: ClaimInputFormat = fieldSchema.inputFormat?.inputType ?? ClaimInputFormat.TEXT_INPUT;
 
     if (isMultiValuedSchema && isExtendedSchema) {
+        // Prepare initial value list from comma separated string.
+        const valueList: string[] = isEmpty(initialValue)
+            ? []
+            : (initialValue as string).split(",");
+
         switch (inputType) {
+            case ClaimInputFormat.MULTI_SELECT_DROPDOWN:
+                return (
+                    <DropdownFieldForm
+                        fieldSchema={ fieldSchema }
+                        initialValue={ valueList }
+                        fieldLabel={ fieldLabel }
+                        isActive={ isActive }
+                        isEditable={ isEditable }
+                        onEditClicked={ onEditClicked }
+                        onEditCancelClicked={ onEditCancelClicked }
+                        isRequired={ isRequired }
+                        setIsProfileUpdating={ setIsProfileUpdating }
+                        isLoading={ isLoading }
+                        isUpdating={ isUpdating }
+                        data-componentid={ componentId }
+                        handleSubmit={ handleSubmit }
+                        isMultiSelect
+                    />
+                );
+
             case ClaimInputFormat.NUMBER_INPUT: {
-                const valueList: number[] = isEmpty(initialValue)
-                    ? []
-                    : initialValue.split(",").map((value: string) => Number(value));
+                const _valueList: number[] = valueList.map((value: string) => Number(value));
 
                 return (
                     <MultiValueFieldForm<number>
                         fieldSchema={ fieldSchema }
-                        initialValue={ valueList }
+                        initialValue={ _valueList }
                         fieldLabel={ fieldLabel }
                         isActive={ isActive }
                         isEditable={ isEditable }
@@ -250,9 +275,7 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
                 );
             }
 
-            default: {
-                const valueList: string[] = isEmpty(initialValue) ? [] : initialValue.split(",");
-
+            default:
                 return (
                     <MultiValueFieldForm<string>
                         fieldSchema={ fieldSchema }
@@ -270,7 +293,6 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
                         handleSubmit={ handleSubmit }
                     />
                 );
-            }
         }
     }
 
@@ -279,7 +301,7 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
             return (
                 <CheckboxFieldForm
                     fieldSchema={ fieldSchema }
-                    initialValue={ initialValue }
+                    initialValue={ initialValue as boolean }
                     fieldLabel={ fieldLabel }
                     isEditable={ isEditable }
                     setIsProfileUpdating={ setIsProfileUpdating }
@@ -294,7 +316,7 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
             return (
                 <SwitchFieldForm
                     fieldSchema={ fieldSchema }
-                    initialValue={ initialValue }
+                    initialValue={ initialValue as boolean }
                     fieldLabel={ fieldLabel }
                     isEditable={ isEditable }
                     setIsProfileUpdating={ setIsProfileUpdating }
@@ -309,7 +331,7 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
             return (
                 <DropdownFieldForm
                     fieldSchema={ fieldSchema }
-                    initialValue={ initialValue }
+                    initialValue={ initialValue as string }
                     fieldLabel={ fieldLabel }
                     isActive={ isActive }
                     isEditable={ isEditable }
@@ -328,7 +350,7 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
             return (
                 <RadioFieldForm
                     fieldSchema={ fieldSchema }
-                    initialValue={ initialValue }
+                    initialValue={ initialValue as string }
                     fieldLabel={ fieldLabel }
                     isActive={ isActive }
                     isEditable={ isEditable }
@@ -347,7 +369,7 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
             return (
                 <TextFieldForm
                     fieldSchema={ fieldSchema }
-                    initialValue={ initialValue }
+                    initialValue={ initialValue as string }
                     fieldLabel={ fieldLabel }
                     isActive={ isActive }
                     isEditable={ isEditable }
@@ -370,7 +392,7 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
             return (
                 <TextFieldForm
                     fieldSchema={ fieldSchema }
-                    initialValue={ initialValue }
+                    initialValue={ initialValue as string }
                     fieldLabel={ fieldLabel }
                     isActive={ isActive }
                     isEditable={ isEditable }

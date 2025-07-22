@@ -58,7 +58,7 @@ const RadioFieldForm: FunctionComponent<RadioFieldFormPropsInterface> = ({
         // Validate the required field.
         if (isEmpty(value) && isRequired) {
             return (
-                t("user:profile.forms.generic.inputs.validations.required", { fieldName: fieldLabel })
+                t("myAccount:components.profile.forms.generic.inputs.validations.empty", { fieldLabel })
             );
         }
 
