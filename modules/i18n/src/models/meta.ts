@@ -17,6 +17,7 @@
  */
 
 export interface MetaI18NNamespace {
+    enabled?: boolean;
     code: string;
     flag: string;
     name: string;

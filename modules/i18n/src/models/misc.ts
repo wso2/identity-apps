@@ -97,5 +97,6 @@ export interface I18nModuleOptionsInterface {
     namespaceDirectories?: Map<string, string>;
     overrideOptions?: boolean;
     resourcePath?: string;
+    resourceExtensionsPath: string;
     xhrBackendPluginEnabled?: boolean;
 }
