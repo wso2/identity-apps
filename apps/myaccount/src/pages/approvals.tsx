@@ -20,9 +20,7 @@ import ApprovalsPage from "@wso2is/common.workflow-approvals.v1/pages/approvals"
 import React, { FunctionComponent } from "react";
 import { store } from "../store";
 
-
 const MyAccountApprovalsPage: FunctionComponent = () => {
-
 
     return (
         <ApprovalsPage
