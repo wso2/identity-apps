@@ -101,7 +101,7 @@
   {
     "resourceType": "TEMPLATE",
     "category": "STARTER",
-    "type": "INVITED_USER_REGISTRATION",
+    "type": "BASIC",
     "version": "0.1.0",
     "deprecated": false,
     "display": {
