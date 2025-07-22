@@ -102,7 +102,6 @@
         "@wso2is/admin.userstores.v1": "^2.27.37",
         "@wso2is/admin.validation.v1": "^2.27.144",
         "@wso2is/admin.webhooks.v1": "^1.0.4",
-        "@wso2is/admin.workflow-approvals.v1": "^2.26.7",
         "@wso2is/admin.wsfed-configuration.v1": "^2.25.204",
         "@wso2is/common.ui.v1": "^0.2.0",
         "@wso2is/common.workflow-approvals.v1": "^0.0.0",
