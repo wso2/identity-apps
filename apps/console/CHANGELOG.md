@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.68.18
+
+### Patch Changes
+
+- [#8589](https://github.com/wso2/identity-apps/pull/8589) [`24afa0f7473c9be72021f8821c12167ee127da9d`](https://github.com/wso2/identity-apps/commit/24afa0f7473c9be72021f8821c12167ee127da9d) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Change the default template type to basic in invited user registration
+
+* [#8595](https://github.com/wso2/identity-apps/pull/8595) [`8b439d966f93b1acd1878c2481ef8cc755eeaeab`](https://github.com/wso2/identity-apps/commit/8b439d966f93b1acd1878c2481ef8cc755eeaeab) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enhance the default template rendering when no saved flow is available
+
+* Updated dependencies [[`24afa0f7473c9be72021f8821c12167ee127da9d`](https://github.com/wso2/identity-apps/commit/24afa0f7473c9be72021f8821c12167ee127da9d), [`8b439d966f93b1acd1878c2481ef8cc755eeaeab`](https://github.com/wso2/identity-apps/commit/8b439d966f93b1acd1878c2481ef8cc755eeaeab)]:
+  - @wso2is/admin.ask-password-flow-builder.v1@1.0.7
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.0.6
+  - @wso2is/admin.core.v1@2.46.27
+
 ## 2.68.17
 
 ### Patch Changes
