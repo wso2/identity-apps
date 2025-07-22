@@ -598,8 +598,12 @@ export const applications: ApplicationsNS = {
                 tabName: "Provisioning"
             },
             sharedAccess: {
+                doNotShareApplication: "Do not share the application with any organization.",
+                shareAllApplication: "Share the application with all organizations.",
+                shareSelectedApplication: "Share the application with selected organizations.",
                 allRolesAndOrgsSharingMessage: "All roles of the application will be shared with all the organizations.",
                 allRolesAndOrgsNotSharingMessage: "No roles will be shared with any organization.",
+                doNotShareRolesWithAllOrgs: "Do not share roles with all organizations.",
                 manageRoleSharing: "Manage role sharing",
                 viewRoleSharing: "View shared roles",
                 noSharedOrgs: "This application is not shared with any organizations.",
@@ -610,6 +614,9 @@ export const applications: ApplicationsNS = {
                 shareRoleSubsetWithSelectedOrgs: "Share a subset of roles with selected organizations",
                 shareRoleSubsetWithAllOrgs: "Share a subset of roles with all organizations",
                 subTitle: "Select the following options to share the application with the organizations.",
+                shareAllRoles: "Share All Roles",
+                shareSelectedRoles: "Share Selected Roles",
+                doNotShareRoles: "Do Not Share Roles",
                 tabName: "Shared Access",
                 selectAnOrganizationToViewRoles: "Select an organization to view the shared roles.",
                 sharedAccessStatusOptions: {

@@ -117,16 +117,6 @@ export const ApplicationShareModalUpdated: FunctionComponent<ApplicationShareMod
             return;
         }
 
-        if (applicationGetRequestError.response?.data?.description) {
-            dispatch(addAlert({
-                description: applicationGetRequestError.response.data.description,
-                level: AlertLevels.ERROR,
-                message: t("applications:notifications.fetchApplication.error.message")
-            }));
-
-            return;
-        }
-
         dispatch(addAlert({
             description: t("applications:notifications.fetchApplication" +
                 ".genericError.description"),
@@ -345,7 +335,8 @@ export const ApplicationShareModalUpdated: FunctionComponent<ApplicationShareMod
                                                         `${ componentId }-share-selected-roles-all-orgs-toggle` }
                                                 />
                                             ) }
-                                            label={ "Do not share roles with all organizations" }
+                                            label={ t("applications:edit.sections.sharedAccess." +
+                                                        "doNotShareRolesWithAllOrgs") }
                                         />
                                         <Divider hidden className="mb-0 mt-2" />
                                         {

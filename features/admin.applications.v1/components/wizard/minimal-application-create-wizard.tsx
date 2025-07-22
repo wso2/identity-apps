@@ -99,8 +99,8 @@ import {
 } from "../../models/application-inbound";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { ApplicationShareModal } from "../modals/application-share-modal";
-import "./minimal-application-create-wizard.scss";
 import { ApplicationShareModalUpdated } from "../modals/application-share-modal-updated";
+import "./minimal-application-create-wizard.scss";
 
 /**
  * Prop types of the `MinimalAppCreateWizard` component.

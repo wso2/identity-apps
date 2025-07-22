@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Alert from "@oxygen-ui/react/Alert";
 import Button from "@oxygen-ui/react/Button";
 import FormControl from "@oxygen-ui/react/FormControl";
@@ -61,7 +63,6 @@ import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import OrgSelectiveShareWithAllRoles from "./org-selective-share-with-all-roles";
 import OrgSelectiveShareWithSelectiveRolesEdit from "./org-selective-share-with-selective-roles-edit";
-import OrgSelectiveShareWithSelectiveRolesView from "./org-selective-share-with-selective-roles-view";
 import RolesShareWithAll from "./roles-share-with-all";
 import {
     editApplicationRolesOfExistingOrganizations,
@@ -148,7 +149,6 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
     const [ selectedRoles, setSelectedRoles ] = useState<RolesInterface[]>([]);
     const [ selectedOrgIds, setSelectedOrgIds ] = useState<string[]>([]);
     const [ roleSelections, setRoleSelections ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
-    const [ enableRoleSharing, setEnableRoleSharing ] = useState<boolean>(false);
     const [ addedRoles, setAddedRoles ] = useState<Record<string, RoleSharingInterface[]>>({});
     const [ removedRoles, setRemovedRoles ] = useState<Record<string, RoleSharingInterface[]>>({});
     const [ addedOrgIds, setAddedOrgIds ] = useState<string[]>([]);
@@ -362,7 +362,12 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
 
             if (roleShareTypeSelected === RoleShareType.SHARE_WITH_ALL) {
                 // Share all roles with selected organizations
-                shareAllRolesWithSelectedOrgs();
+                shareAllorNoRolesWithSelectedOrgs(true);
+            }
+
+            if (roleShareTypeSelected === RoleShareType.SHARE_NONE) {
+                // Do not share any roles with selected organizations
+                shareAllorNoRolesWithSelectedOrgs(false);
             }
         }
     };
@@ -586,7 +591,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
         }
     };
 
-    const shareAllRolesWithSelectedOrgs = async (): Promise<void> => {
+    const shareAllorNoRolesWithSelectedOrgs = async (shareAllRoles: boolean): Promise<void> => {
         const sharedPromises: Promise<any>[] = [];
         let orgSharingSuccess: boolean = true;
 
@@ -598,7 +603,9 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                         orgId: orgId,
                         policy: ApplicationSharingPolicy.SELECTED_ORG_ONLY,
                         roleSharing: {
-                            mode: RoleSharingModes.ALL,
+                            mode: shareAllRoles
+                                ? RoleSharingModes.ALL
+                                : RoleSharingModes.NONE,
                             roles: []
                         }
                     };
@@ -739,8 +746,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
             });
     };
 
-
-    function handleAsyncSharingNotification(shareType: ShareType): void {
+    const handleAsyncSharingNotification = (shareType: ShareType): void => {
         if (shareType === ShareType.SHARE_ALL || shareType === ShareType.SHARE_SELECTED) {
             onOperationStarted?.();
             dispatch(
@@ -752,7 +758,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 })
             );
         }
-    }
+    };
 
     if (isLoading) {
         return (
@@ -779,7 +785,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                 value={ ShareType.UNSHARE }
                                 label={ (
                                     <>
-                                        { t("organizations:unshareApplicationRadio") }
+                                        { t("applications:edit.sections.sharedAccess.doNotShareApplication") }
                                         <Hint inline popup>
                                             { t(
                                                 "organizations:unshareApplicationInfo"
@@ -791,126 +797,9 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                 disabled={ readOnly }
                                 data-componentid={ `${ componentId }-unshare-with-all-orgs-checkbox` }
                             />
-
-                            <FormControlLabel
-                                value={ ShareType.SHARE_SELECTED }
-                                label={ t("organizations:shareWithSelectedOrgsRadio") }
-                                control={ <Radio /> }
-                                disabled={ readOnly }
-                                data-componentid={ `${ componentId }-share-with-selected-orgs-checkbox` }
-                            />
-                            <AnimatePresence mode="wait">
-                                {
-                                    shareType === ShareType.SHARE_SELECTED
-                                    && (
-                                        <motion.div
-                                            key="selected-orgs-block"
-                                            initial={ { height: 0, opacity: 0 } }
-                                            animate={ { height: "auto", opacity: 1 } }
-                                            exit={ { height: 0, opacity: 0 } }
-                                            transition={ { duration: 0.3 } }
-                                            className="ml-5"
-                                        >
-                                            <FormControlLabel
-                                                control={ (
-                                                    <Switch
-                                                        checked={ roleShareTypeSelected ===
-                                                            RoleShareType.SHARE_SELECTED }
-                                                        onChange={ (_event: ChangeEvent, checked: boolean) => {
-                                                            if (checked) {
-                                                                setRoleShareTypeSelected(RoleShareType.SHARE_SELECTED);
-                                                            } else {
-                                                                setRoleShareTypeSelected(RoleShareType.SHARE_WITH_ALL);
-                                                            }
-                                                        } }
-                                                        data-componentid={
-                                                            `${ componentId }-share-selected-roles-` +
-                                                            "selected-orgs-toggle" }
-                                                    />
-                                                ) }
-                                                label={ t("applications:edit.sections.sharedAccess." +
-                                                    "shareRoleSubsetWithSelectedOrgs") }
-                                            />
-                                            <Grid xs={ 14 }>
-                                                {
-                                                    roleShareTypeSelected === RoleShareType.SHARE_WITH_ALL
-                                                        ? (
-                                                            <OrgSelectiveShareWithAllRoles
-                                                                application={ application }
-                                                                selectedItems={ selectedOrgIds }
-                                                                setSelectedItems={ setSelectedOrgIds }
-                                                                addedOrgs={ addedOrgIds }
-                                                                setAddedOrgs={ setAddedOrgIds }
-                                                                removedOrgs={ removedOrgIds }
-                                                                setRemovedOrgs={ setRemovedOrgIds }
-                                                            />
-                                                        ) : (
-                                                            <>
-                                                                <AnimatePresence mode="wait">
-                                                                    <motion.div
-                                                                        key="selected-orgs-block"
-                                                                        initial={ { height: 0, opacity: 0 } }
-                                                                        animate={ { height: "auto", opacity: 1 } }
-                                                                        exit={ { height: 0, opacity: 0 } }
-                                                                        transition={ { duration: 0.3 } }
-                                                                    >
-                                                                        <Button
-                                                                            variant="text"
-                                                                            size="small"
-                                                                            onClick={ () => {
-                                                                                setEnableRoleSharing(
-                                                                                    !enableRoleSharing
-                                                                                );
-                                                                            } }
-                                                                            data-componentid={
-                                                                                `${ componentId }-manage-role-` +
-                                                                                "sharing-button" }
-                                                                        >
-                                                                            { enableRoleSharing
-                                                                                ? t("applications:edit.sections." +
-                                                                                    "sharedAccess.viewRoleSharing")
-                                                                                : t("applications:edit.sections." +
-                                                                                    "sharedAccess.manageRoleSharing")
-                                                                            }
-                                                                        </Button>
-                                                                    </motion.div>
-                                                                </AnimatePresence>
-                                                                {
-                                                                    enableRoleSharing
-                                                                        ? (
-                                                                            <OrgSelectiveShareWithSelectiveRolesEdit
-                                                                                application={ application }
-                                                                                selectedItems={ selectedOrgIds }
-                                                                                setSelectedItems={ setSelectedOrgIds }
-                                                                                addedOrgs={ addedOrgIds }
-                                                                                setAddedOrgs={ setAddedOrgIds }
-                                                                                removedOrgs={ removedOrgIds }
-                                                                                setRemovedOrgs={ setRemovedOrgIds }
-                                                                                roleSelections={ roleSelections }
-                                                                                setRoleSelections={ setRoleSelections }
-                                                                                addedRoles={ addedRoles }
-                                                                                setAddedRoles={ setAddedRoles }
-                                                                                removedRoles={ removedRoles }
-                                                                                setRemovedRoles={ setRemovedRoles }
-                                                                            />
-                                                                        )
-                                                                        : (
-                                                                            <OrgSelectiveShareWithSelectiveRolesView
-                                                                                application={ application }
-                                                                            />
-                                                                        )
-                                                                }
-                                                            </>
-                                                        )
-                                                }
-                                            </Grid>
-                                        </motion.div>
-                                    )
-                                }
-                            </AnimatePresence>
                             <FormControlLabel
                                 value={ ShareType.SHARE_ALL }
-                                label={ t("organizations:shareApplicationRadio") }
+                                label={ t("applications:edit.sections.sharedAccess.shareAllApplication") }
                                 control={ <Radio /> }
                                 disabled={ readOnly }
                                 data-componentid={ `${ componentId }-share-with-all-orgs-checkbox` }
@@ -961,6 +850,83 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                         />
                                                     )
                                             }
+                                        </motion.div>
+                                    )
+                                }
+                            </AnimatePresence>
+                            <FormControlLabel
+                                value={ ShareType.SHARE_SELECTED }
+                                label={ t("applications:edit.sections.sharedAccess.shareSelectedApplication") }
+                                control={ <Radio /> }
+                                disabled={ readOnly }
+                                data-componentid={ `${ componentId }-share-with-selected-orgs-checkbox` }
+                            />
+                            <AnimatePresence mode="wait">
+                                {
+                                    shareType === ShareType.SHARE_SELECTED
+                                    && (
+                                        <motion.div
+                                            key="selected-orgs-block"
+                                            initial={ { height: 0, opacity: 0 } }
+                                            animate={ { height: "auto", opacity: 1 } }
+                                            exit={ { height: 0, opacity: 0 } }
+                                            transition={ { duration: 0.3 } }
+                                            className="ml-5"
+                                        >
+                                            <ToggleButtonGroup
+                                                color="primary"
+                                                value={ roleShareTypeSelected }
+                                                exclusive
+                                                onChange={ (_event: any, value: RoleShareType) => {
+                                                    if (value) {
+                                                        setRoleShareTypeSelected(value);
+                                                    }
+                                                } }
+                                                data-componentid={ `${ componentId }-role-share-type-toggle` }
+                                            >
+                                                <ToggleButton value={ RoleShareType.SHARE_WITH_ALL }>
+                                                    Share All Roles
+                                                </ToggleButton>
+                                                <ToggleButton value={ RoleShareType.SHARE_SELECTED }>
+                                                    Share Selected Roles
+                                                </ToggleButton>
+                                                <ToggleButton value={ RoleShareType.SHARE_NONE }>
+                                                    Do Not Share Roles
+                                                </ToggleButton>
+                                            </ToggleButtonGroup>
+                                            <Grid xs={ 14 }>
+                                                {
+                                                    (roleShareTypeSelected === RoleShareType.SHARE_WITH_ALL ||
+                                                    roleShareTypeSelected === RoleShareType.SHARE_NONE)
+                                                        ? (
+                                                            <OrgSelectiveShareWithAllRoles
+                                                                application={ application }
+                                                                selectedItems={ selectedOrgIds }
+                                                                setSelectedItems={ setSelectedOrgIds }
+                                                                addedOrgs={ addedOrgIds }
+                                                                setAddedOrgs={ setAddedOrgIds }
+                                                                removedOrgs={ removedOrgIds }
+                                                                setRemovedOrgs={ setRemovedOrgIds }
+                                                            />
+                                                        ) : (
+                                                            <OrgSelectiveShareWithSelectiveRolesEdit
+                                                                application={ application }
+                                                                selectedItems={ selectedOrgIds }
+                                                                setSelectedItems={ setSelectedOrgIds }
+                                                                addedOrgs={ addedOrgIds }
+                                                                setAddedOrgs={ setAddedOrgIds }
+                                                                removedOrgs={ removedOrgIds }
+                                                                setRemovedOrgs={ setRemovedOrgIds }
+                                                                roleSelections={ roleSelections }
+                                                                setRoleSelections={ setRoleSelections }
+                                                                addedRoles={ addedRoles }
+                                                                setAddedRoles={ setAddedRoles }
+                                                                removedRoles={ removedRoles }
+                                                                setRemovedRoles={ setRemovedRoles }
+                                                            />
+                                                        )
+                                                }
+                                            </Grid>
                                         </motion.div>
                                     )
                                 }

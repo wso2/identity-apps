@@ -387,82 +387,80 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
     }
 
     return (
-        <>
-            <EmphasizedSegment padded="very">
-                <Grid container>
-                    <Grid xs={ 8 }>
-                        <Text className="mb-2" subHeading>
-                            { t("consoleSettings:sharedAccess.description") }
-                        </Text>
-                        <FormControl fullWidth>
-                            <RadioGroup
-                                value={ sharedAccessMode }
-                                onChange={ (event: ChangeEvent<HTMLInputElement>) => {
-                                    setSharedAccessMode(event.target.value as RoleSharedAccessModes);
-                                } }
-                                data-componentid={ `${componentId}-radio-group` }
-                            >
-                                <FormControlLabel
-                                    value={ RoleSharedAccessModes.SHARE_ALL_ROLES_WITH_ALL_ORGS }
-                                    label={ t("consoleSettings:sharedAccess.modes.shareAllRolesWithAllOrgs") }
-                                    control={ <Radio /> }
-                                    disabled={ isReadOnly }
-                                    data-componentid={ `${componentId}-share-all-roles-with-all-orgs-radio-btn` }
-                                />
-                                <FormControlLabel
-                                    value={ RoleSharedAccessModes.SHARE_WITH_ALL_ORGS }
-                                    label={ t("consoleSettings:sharedAccess.modes.shareWithAll") }
-                                    control={ <Radio /> }
-                                    disabled={ isReadOnly }
-                                    data-componentid={ `${componentId}-share-with-all-orgs-radio-btn` }
-                                />
-                                <AnimatePresence mode="wait">
-                                    {
-                                        sharedAccessMode === RoleSharedAccessModes.SHARE_WITH_ALL_ORGS
-                                        && (
-                                            <motion.div
-                                                key="selected-orgs-block"
-                                                initial={ { height: 0, opacity: 0 } }
-                                                animate={ { height: "auto", opacity: 1 } }
-                                                exit={ { height: 0, opacity: 0 } }
-                                                transition={ { duration: 0.3 } }
-                                            >
-                                                <ConsoleRolesShareWithAll
-                                                    selectedRoles={ selectedRoles }
-                                                    setSelectedRoles={ setSelectedRoles }
-                                                    administratorRole={ administratorRole?.Resources[0] }
-                                                />
-                                            </motion.div>
-                                        )
-                                    }
-                                </AnimatePresence>
-                            </RadioGroup>
-                        </FormControl>
-                        <Grid xs={ 12 } marginTop={ 2 }>
-                            <Heading as="h4">
-                                Advanced Role Sharing
-                            </Heading>
-                            <ConsoleRolesSelectiveShare
-                                setAddedRoles={ setAddedRoles }
-                                setRemovedRoles={ setRemovedRoles }
-                                readOnly={ readOnly }
-                                setReadOnly={ setReadOnly }
-                            />
-                        </Grid>
-                        <Button
-                            className="mt-5"
-                            data-componentid={ `${componentId}-save-button` }
-                            variant="contained"
-                            size="small"
-                            disabled={ isReadOnly }
-                            onClick={ () => submitSharedRoles() }
+        <EmphasizedSegment padded="very">
+            <Grid container>
+                <Grid xs={ 8 }>
+                    <Text className="mb-2" subHeading>
+                        { t("consoleSettings:sharedAccess.description") }
+                    </Text>
+                    <FormControl fullWidth>
+                        <RadioGroup
+                            value={ sharedAccessMode }
+                            onChange={ (event: ChangeEvent<HTMLInputElement>) => {
+                                setSharedAccessMode(event.target.value as RoleSharedAccessModes);
+                            } }
+                            data-componentid={ `${componentId}-radio-group` }
                         >
-                            { t("common:save") }
-                        </Button>
+                            <FormControlLabel
+                                value={ RoleSharedAccessModes.SHARE_ALL_ROLES_WITH_ALL_ORGS }
+                                label={ t("consoleSettings:sharedAccess.modes.shareAllRolesWithAllOrgs") }
+                                control={ <Radio /> }
+                                disabled={ isReadOnly }
+                                data-componentid={ `${componentId}-share-all-roles-with-all-orgs-radio-btn` }
+                            />
+                            <FormControlLabel
+                                value={ RoleSharedAccessModes.SHARE_WITH_ALL_ORGS }
+                                label={ t("consoleSettings:sharedAccess.modes.shareWithAll") }
+                                control={ <Radio /> }
+                                disabled={ isReadOnly }
+                                data-componentid={ `${componentId}-share-with-all-orgs-radio-btn` }
+                            />
+                            <AnimatePresence mode="wait">
+                                {
+                                    sharedAccessMode === RoleSharedAccessModes.SHARE_WITH_ALL_ORGS
+                                    && (
+                                        <motion.div
+                                            key="selected-orgs-block"
+                                            initial={ { height: 0, opacity: 0 } }
+                                            animate={ { height: "auto", opacity: 1 } }
+                                            exit={ { height: 0, opacity: 0 } }
+                                            transition={ { duration: 0.3 } }
+                                        >
+                                            <ConsoleRolesShareWithAll
+                                                selectedRoles={ selectedRoles }
+                                                setSelectedRoles={ setSelectedRoles }
+                                                administratorRole={ administratorRole?.Resources[0] }
+                                            />
+                                        </motion.div>
+                                    )
+                                }
+                            </AnimatePresence>
+                        </RadioGroup>
+                    </FormControl>
+                    <Grid xs={ 12 } marginTop={ 2 }>
+                        <Heading as="h4">
+                            Advanced Role Sharing
+                        </Heading>
+                        <ConsoleRolesSelectiveShare
+                            setAddedRoles={ setAddedRoles }
+                            setRemovedRoles={ setRemovedRoles }
+                            readOnly={ readOnly }
+                            setReadOnly={ setReadOnly }
+                        />
                     </Grid>
+                    <Button
+                        className="mt-5"
+                        data-componentid={ `${componentId}-save-button` }
+                        variant="contained"
+                        size="small"
+                        disabled={ isReadOnly }
+                        onClick={ () => submitSharedRoles() }
+                    >
+                        { t("common:save") }
+                    </Button>
                 </Grid>
-            </EmphasizedSegment>
-        </>
+            </Grid>
+        </EmphasizedSegment>
     );
 };
 

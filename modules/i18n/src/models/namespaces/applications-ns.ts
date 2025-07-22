@@ -778,8 +778,12 @@ export interface ApplicationsNS {
                 };
             };
             sharedAccess: {
+                doNotShareApplication: string;
+                shareAllApplication: string;
+                shareSelectedApplication: string;
                 allRolesAndOrgsSharingMessage: string;
                 allRolesAndOrgsNotSharingMessage: string;
+                doNotShareRolesWithAllOrgs: string;
                 subTitle: string;
                 tabName: string;
                 sharedAccessStatusOptions: {
@@ -798,6 +802,9 @@ export interface ApplicationsNS {
                 manageRoleSharing: string;
                 viewRoleSharing: string;
                 selectAnOrganizationToViewRoles: string;
+                shareAllRoles: string;
+                shareSelectedRoles: string;
+                doNotShareRoles: string;
                 notifications: {
                     fetchApplicationOrgTree: {
                         genericError: {

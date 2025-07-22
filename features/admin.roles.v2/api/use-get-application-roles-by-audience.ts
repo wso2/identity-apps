@@ -68,7 +68,7 @@ const useGetApplicationRolesByAudience = <Data = RolesV2ResponseInterface, Error
             filter,
             limit
         },
-        url:  `${ store.getState().config.endpoints.rolesV2 }`
+        url: `${ store.getState().config.endpoints.rolesV2 }`
     };
 
     const {
