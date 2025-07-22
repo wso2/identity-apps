@@ -1,5 +1,15 @@
 # @wso2is/admin.webhooks.v1
 
+## 1.0.4
+
+### Patch Changes
+
+- [#8580](https://github.com/wso2/identity-apps/pull/8580) [`99556bdcad5cac0105ecbfd893d8087497fd4033`](https://github.com/wso2/identity-apps/commit/99556bdcad5cac0105ecbfd893d8087497fd4033) Thanks [@malithie](https://github.com/malithie)! - Improve webhook management ui to support http publisher.
+
+- Updated dependencies [[`32f809bf44aa79cd7c87144466915fc9c6438ca5`](https://github.com/wso2/identity-apps/commit/32f809bf44aa79cd7c87144466915fc9c6438ca5), [`79d24deec910ce3f4628decedd65c2f3bcddddfe`](https://github.com/wso2/identity-apps/commit/79d24deec910ce3f4628decedd65c2f3bcddddfe)]:
+  - @wso2is/i18n@2.25.1
+  - @wso2is/admin.core.v1@2.46.25
+
 ## 1.0.3
 
 ### Patch Changes

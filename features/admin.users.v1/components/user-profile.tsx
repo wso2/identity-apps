@@ -18,6 +18,7 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
+import { getAllExternalClaims } from "@wso2is/admin.claims.v1/api/claims";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -35,10 +36,11 @@ import { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
 import { getAssociationType } from "@wso2is/admin.tenants.v1/utils/tenants";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { getUserNameWithoutDomain, resolveUserstore } from "@wso2is/core/helpers";
+import { getUserNameWithoutDomain, isFeatureEnabled, resolveUserstore } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
+    ExternalClaim,
     MultiValueAttributeInterface,
     ProfileInfoInterface,
     ProfileSchemaInterface,
@@ -66,6 +68,7 @@ import { CheckboxProps, Divider } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
 import { UserImpersonationAction } from "./user-impersonation-action";
 import LegacyUserProfileForm from "./user-profile/legacy-user-profile-form";
+import UserProfileForm from "./user-profile/user-profile-form";
 import { resendCode, updateUserInfo } from "../api";
 import {
     ACCOUNT_LOCK_REASON_MAP,
@@ -76,6 +79,7 @@ import {
     PASSWORD_RESET_PROPERTIES,
     RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP,
     RecoveryScenario,
+    UserFeatureDictionaryKeys,
     UserManagementConstants
 } from "../constants";
 import {
@@ -174,12 +178,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const profileSchemas: ProfileSchemaInterface[] =
-        useSelector((state: AppState) => state.profile.profileSchemas?.filter(
-            (schema: ProfileSchemaInterface) =>
-                !ClaimManagementConstants.AGENT_SCIM_SCHEMA_MAPPING.includes(schema.schemaId)
-        ));
-
+    const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
     const currentOrganization: string =  useSelector((state: AppState) => state?.config?.deployment?.tenant);
@@ -213,6 +212,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ adminRoleId, setAdminRoleId ] = useState<string>("");
     const [ associationType, setAssociationType ] = useState<string>("");
+    const [ duplicatedUserClaims, setDuplicatedUserClaims ] = useState<ExternalClaim[]>([]);
+    const [ isClaimsLoading, setIsClaimsLoading ] = useState<boolean>(true);
 
     const accountLocked: boolean = user[userConfig.userProfileSchema]?.accountLocked === "true" ||
         user[userConfig.userProfileSchema]?.accountLocked === true;
@@ -222,6 +223,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         user[userConfig.userProfileSchema]?.accountDisabled === true;
     const isCurrentUserAdmin: boolean = user?.roles?.some((role: RolesMemberInterface) =>
         role.display === administratorConfig.adminRoleName) ?? false;
+
+    const isLegacyUserProfileEnabled: boolean = isFeatureEnabled(
+        featureConfig?.users,
+        UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.UserLegacyProfile)
+    );
 
     useEffect(() => {
         if (connectorProperties && Array.isArray(connectorProperties) && connectorProperties?.length > 0) {
@@ -254,6 +260,57 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             // Admin role ID is only used by internal admins.
             getAdminRoleId();
         }
+    }, []);
+
+    /**
+     * This useEffect identifies external claims that are mapped to the same local claim
+     * between the Enterprise schema and the WSO2 System schema.
+     *
+     * These dual mappings occur only in migrated environments due to the SCIM2 schema restructuring
+     * introduced in https://github.com/wso2/product-is/issues/20850.
+     *
+     * The effect fetches both sets of external claims and detects overlaps by comparing their
+     * mappedLocalClaimURI values.
+     * Identified Enterprise claims are then excluded from the user profile UI to avoid redundancy.
+     */
+    useEffect(() => {
+        const calculateDuplicateClaims = async () => {
+            setIsClaimsLoading(true);
+
+            try {
+                const [ enterpriseClaims, systemClaims ] = await Promise.all([
+                    getAllExternalClaims(
+                        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_ENT_USER"),
+                        null
+                    ),
+                    getAllExternalClaims(
+                        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_SYSTEM"),
+                        null
+                    )
+                ]);
+
+                const systemMappedClaimURIs: Set<string> = new Set(
+                    systemClaims.map((claim: ExternalClaim) => claim.mappedLocalClaimURI).filter(Boolean)
+                );
+                const duplicates: ExternalClaim[] = enterpriseClaims.filter(
+                    (claim: ExternalClaim) =>
+                        claim.mappedLocalClaimURI &&
+                        systemMappedClaimURIs.has(claim.mappedLocalClaimURI)
+                );
+
+                setDuplicatedUserClaims(duplicates);
+                setIsClaimsLoading(false);
+
+            } catch (error) {
+                dispatch(addAlert({
+                    description: t("claims:external.notifications.fetchExternalClaims.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("claims:external.notifications.fetchExternalClaims.genericError.message")
+                }));
+            }
+        };
+
+        calculateDuplicateClaims();
     }, []);
 
     /**
@@ -1051,56 +1108,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         );
     };
 
-
-    /**
-     * If the profile schema is read only or the user is read only, the profile detail for a profile schema should
-     * only be displayed in the form only if there is a value for the schema. This function validates whether the
-     * filed should be displayed considering these factors.
-     *
-     * @param schema - The profile schema to be validated.
-     * @returns whether the field for the input schema should be displayed.
-     */
-    /*const isFieldDisplayable = (schema: ProfileSchemaInterface): boolean => {
-        if (!isMultipleEmailAndMobileNumberEnabled) {
-            if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE || schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
-                return false;
-            }
-        }
-        const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
-
-        // If the distinct attribute profiles feature is enabled, check the supportedByDefault flag.
-        if (!isDistinctAttributeProfilesDisabled) {
-            if (schema?.name === "userName") {
-                return true;
-            }
-            // The global supportedByDefault value is a string. Hence, it needs to be converted to a boolean.
-            let resolveSupportedByDefaultValue: boolean = schema?.supportedByDefault?.toLowerCase() === "true";
-
-            if (schema?.profiles?.console?.supportedByDefault !== undefined) {
-                resolveSupportedByDefaultValue = schema?.profiles?.console?.supportedByDefault;
-            }
-
-            // If the schema is not supported by default and the value is empty, the field should not be displayed.
-            if (!resolveSupportedByDefaultValue) {
-                return false;
-            }
-        }
-
-        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE || schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
-            return !isEmpty(multiValuedAttributeValues[schema.name])
-                || (!isReadOnly && resolvedMutabilityValue !== ProfileConstants.READONLY_SCHEMA);
-        }
-
-        const schemaClaimURI: string = `${schema.schemaId}:${schema.name}`;
-
-        if (duplicatedUserClaims?.some((claim: ExternalClaim) => claim.claimURI === schemaClaimURI)) {
-            return false;
-        }
-
-        return (!isEmpty(profileInfo.get(schema.name)) ||
-            (!isReadOnly && (resolvedMutabilityValue !== ProfileConstants.READONLY_SCHEMA)));
-    };*/
-
     /**
      * Resolves the user account locked reason text.
      *
@@ -1284,7 +1291,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     return (
-        !isReadOnlyUserStoresLoading && !isEmpty(profileInfo)
+        !isReadOnlyUserStoresLoading && !isClaimsLoading && !isEmpty(profileInfo)
             ? (<>
                 {
                     (accountLocked || accountDisabled) && (
@@ -1311,20 +1318,34 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         && editUserDisclaimerMessage
                     }
 
-                    <LegacyUserProfileForm
-                        profileData={ user }
-                        flattenedProfileData={ profileInfo }
-                        profileSchema={ profileSchema }
-                        isReadOnly={ isReadOnly }
-                        onUpdate={ handleUserUpdate }
-                        isUpdating={ isSubmitting }
-                        adminUserType={ adminUserType }
-                        setIsUpdating={ (isUpdating: boolean): void => setIsSubmitting(isUpdating) }
-                        onUserUpdate={ handleUserUpdate }
-                        accountConfigSettings={ configSettings }
-                        isUserManagedByParentOrg={ isUserManagedByParentOrg }
-                        data-componentid={ testId }
-                    />
+                    { isLegacyUserProfileEnabled ? (
+                        <LegacyUserProfileForm
+                            profileData={ user }
+                            flattenedProfileData={ profileInfo }
+                            profileSchema={ profileSchema }
+                            isReadOnly={ isReadOnly }
+                            onUpdate={ handleUserUpdate }
+                            isUpdating={ isSubmitting }
+                            adminUserType={ adminUserType }
+                            setIsUpdating={ (isUpdating: boolean): void => setIsSubmitting(isUpdating) }
+                            onUserUpdate={ handleUserUpdate }
+                            accountConfigSettings={ configSettings }
+                            isUserManagedByParentOrg={ isUserManagedByParentOrg }
+                            data-componentid={ testId }
+                        />
+                    ) : (
+                        <div className="form-container with-max-width">
+                            <UserProfileForm
+                                profileData={ user }
+                                duplicateClaims={ duplicatedUserClaims }
+                                isReadOnlyMode={ isReadOnly }
+                                accountConfigSettings={ configSettings }
+                                isUserManagedByParentOrg={ isUserManagedByParentOrg }
+                                onUserUpdated={ handleUserUpdate }
+                                data-componentid={ testId }
+                            />
+                        </div>
+                    ) }
                 </EmphasizedSegment>
                 <Divider hidden />
                 { resolveDangerActions() }

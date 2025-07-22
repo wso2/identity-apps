@@ -18,6 +18,7 @@
 
 import AuthenticationFlowBuilderCoreProvider
     from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useReactFlow } from "@xyflow/react";
@@ -25,13 +26,11 @@ import React, { FC, PropsWithChildren, ReactElement, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import configureRegistrationFlow from "../api/configure-registration-flow";
-import updateNewRegistrationPortalFeatureStatus from "../api/update-new-registration-portal-feature-status";
-import useNewRegistrationPortalFeatureStatus from "../api/use-new-registration-portal-feature-status";
 import ResourceProperties from "../components/resource-property-panel/resource-properties";
 import ElementFactory from "../components/resources/elements/element-factory";
+import RegistrationFlowConstants from "../constants/registration-flow-constants";
 import RegistrationFlowBuilderContext from "../context/registration-flow-builder-context";
 import { Attribute } from "../models/attributes";
-import RegistrationFlowConstants from "../constants/registration-flow-constants";
 import transformFlow from "../utils/transform-flow";
 
 /**
@@ -48,7 +47,11 @@ export type RegistrationFlowBuilderProviderProps = PropsWithChildren<unknown>;
 const RegistrationFlowBuilderProvider: FC<RegistrationFlowBuilderProviderProps> = ({
     children
 }: PropsWithChildren<RegistrationFlowBuilderProviderProps>): ReactElement => (
-    <AuthenticationFlowBuilderCoreProvider ElementFactory={ ElementFactory } ResourceProperties={ ResourceProperties }>
+    <AuthenticationFlowBuilderCoreProvider
+        ElementFactory={ ElementFactory }
+        ResourceProperties={ ResourceProperties }
+        flowType={ FlowTypes.REGISTRATION }
+    >
         <FlowContextWrapper>{ children }</FlowContextWrapper>
     </AuthenticationFlowBuilderCoreProvider>
 );
@@ -65,10 +68,6 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
     const dispatch: Dispatch = useDispatch();
 
     const { toObject } = useReactFlow();
-    const {
-        data: isNewRegistrationPortalEnabled,
-        mutate: mutateNewRegistrationPortalEnabledRequest
-    } = useNewRegistrationPortalFeatureStatus();
 
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Attribute[] }>({});
     const [ isPublishing, setIsPublishing ] = useState<boolean>(false);
@@ -78,24 +77,9 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
 
         const flow: any = toObject();
 
-        if (!isNewRegistrationPortalEnabled) {
-            try {
-                await updateNewRegistrationPortalFeatureStatus(true);
-            } catch(error) {
-                dispatch(
-                    addAlert({
-                        description: "Failed to enable the new registration flow experience.",
-                        level: AlertLevels.ERROR,
-                        message: "Flow Update Failure"
-                    })
-                );
-            }
-
-            mutateNewRegistrationPortalEnabledRequest();
-        }
-
         try {
-            const registrationFlow = transformFlow(flow) as any;
+            const registrationFlow: any = transformFlow(flow) as any;
+
             registrationFlow.flowType = RegistrationFlowConstants.REGISTRATION_FLOW_TYPE;
 
             await configureRegistrationFlow(registrationFlow);
@@ -123,7 +107,6 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
     return (
         <RegistrationFlowBuilderContext.Provider
             value={ {
-                isNewRegistrationPortalEnabled,
                 isPublishing,
                 onPublish: handlePublish,
                 selectedAttributes,

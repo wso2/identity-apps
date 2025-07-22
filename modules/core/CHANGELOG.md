@@ -1,5 +1,17 @@
 # @wso2is/core
 
+## 2.10.0
+
+### Minor Changes
+
+- [#8509](https://github.com/wso2/identity-apps/pull/8509) [`c3debfc1bfab856c701eda6df14b097c7b296cae`](https://github.com/wso2/identity-apps/commit/c3debfc1bfab856c701eda6df14b097c7b296cae) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add data format support for console user profile
+
+## 2.9.5
+
+### Patch Changes
+
+- [#8560](https://github.com/wso2/identity-apps/pull/8560) [`241192e2ac434969b87b22e22ff794e9b5844451`](https://github.com/wso2/identity-apps/commit/241192e2ac434969b87b22e22ff794e9b5844451) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for generating the basic template using the self-registration connector configurations
+
 ## 2.9.4
 
 ### Patch Changes

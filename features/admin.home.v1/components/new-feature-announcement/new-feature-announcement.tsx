@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IntegrationInstructions, ListAlt, ManageAccounts, Security } from "@mui/icons-material";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
@@ -28,18 +29,20 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
-import useNewRegistrationPortalFeatureStatus from
-    "@wso2is/admin.registration-flow-builder.v1/api/use-new-registration-portal-feature-status";
+import useGetFlowConfig from "@wso2is/admin.flows.v1/api/use-get-flow-config";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { AGENT_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import AIText from "@wso2is/common.ai.v1/components/ai-text";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { Heading, PrimaryButton, Button as SemanticButton } from "@wso2is/react-components";
 import classNames from "classnames";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { Grid, Message, Modal } from "semantic-ui-react";
 import BackgroundBlob from "./background-blob.png";
 import SignUpBox from "./sign-up-box";
 import { ReactComponent as PreviewFeaturesIcon } from "../../../themes/default/assets/images/icons/flask-icon.svg";
@@ -90,10 +93,12 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
                 <Box>
                     <Typography variant="h3">
                         { title }
-                        <Chip
-                            label={ t(FeatureStatusLabel.PREVIEW) }
-                            className="oxygen-menu-item-chip oxygen-chip-experimental"
-                        />
+                        { id !== "agents" && (
+                            <Chip
+                                label={ t(FeatureStatusLabel.PREVIEW) }
+                                className="oxygen-menu-item-chip oxygen-chip-experimental"
+                            />
+                        ) }
                     </Typography>
                     <Typography variant="body2">
                         { description }
@@ -122,7 +127,11 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
                         variant="contained"
                         onClick={ () => {
                             setSelectedPreviewFeatureToShow(id);
-                            setShowPreviewFeaturesModal(true);
+                            if (id !== "agents") {
+                                setShowPreviewFeaturesModal(true);
+                            } else {
+                                onTryOut();
+                            }
                         } }
                         loading={ isEnabledStatusLoading }
                     >
@@ -147,10 +156,12 @@ export const FeatureCarousel = () => {
         userStoresList
     } = useUserStores();
 
+    const [ showAgentFeatureAnnouncementModal, setShowAgentFeatureAnnouncementModal ] = useState<boolean>(false);
+
     const {
-        data: isNewRegistrationPortalEnabled,
-        isLoading: isNewRegistrationPortalEnabledRequestLoading
-    } = useNewRegistrationPortalFeatureStatus();
+        data: registrationFlowConfigs,
+        isLoading: isRegistrationFlowConfigsLoading
+    } = useGetFlowConfig(FlowTypes.REGISTRATION);
 
     const agentFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state?.config?.ui?.features?.agents);
@@ -172,7 +183,9 @@ export const FeatureCarousel = () => {
             id: "agents",
             isEnabled: isAgentManagementFeatureEnabledForOrganization,
             isEnabledStatusLoading: false,
-            onTryOut: () => {},
+            onTryOut: () => {
+                setShowAgentFeatureAnnouncementModal(true);
+            },
             title: "Identity for AI Agents "
         },
         {
@@ -186,17 +199,17 @@ export const FeatureCarousel = () => {
             illustration: <Box className="login-box">
                 <SignUpBox />
             </Box>,
-            isEnabled: isNewRegistrationPortalEnabled,
-            isEnabledStatusLoading: isNewRegistrationPortalEnabledRequestLoading,
+            isEnabled: registrationFlowConfigs?.isEnabled,
+            isEnabledStatusLoading: isRegistrationFlowConfigsLoading,
             onTryOut: () => {
                 history.push(AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER"));
             },
             title: "Design seamless self-registration experiences "
         }
     ].filter(Boolean), [
-        isNewRegistrationPortalEnabled,
+        registrationFlowConfigs,
         agentFeatureConfig,
-        isNewRegistrationPortalEnabledRequestLoading
+        isRegistrationFlowConfigsLoading
     ]);
 
     useEffect(() => {
@@ -257,6 +270,180 @@ export const FeatureCarousel = () => {
                     />
                 </motion.div>
             </AnimatePresence>
+
+            { showAgentFeatureAnnouncementModal && (
+                <Modal
+                    open={ true }
+                    className="wizard action-create-wizard"
+                    dimmer="blurring"
+                    size="small"
+                    onClose={ () => setShowAgentFeatureAnnouncementModal(false) }
+                    closeOnDimmerClick={ false }
+                    closeOnEscape
+                >
+                    <Modal.Header className="wizard-header">
+                        Identity for AI Agents
+                        <Heading as="h6">
+                            Extending identity management to autonomous agents and AI systems
+                        </Heading>
+                    </Modal.Header>
+                    <Modal.Content className="content-container" scrolling>
+
+                        { isAgentManagementFeatureEnabledForOrganization ? (
+                            <Message warning>
+This feature is experimental and still under active development. Some functionality may be limited or subject to change.
+                            </Message>
+                        ): (
+                            <Message info>
+                                AI agent management is coming soon to your organization! Create a fresh organization
+                                { " " }for instant access, or contact us { " " }
+                                for early access to this game-changing feature.
+                            </Message>
+                        ) }
+
+                        <Box display="flex" flexDirection="column" gap={ 3 } width="100%">
+                            <Box display="flex" gap={ 3 }>
+                                <Paper
+                                    elevation={ 3 }
+                                    sx={ {
+                                        alignItems: "flex-start",
+                                        borderLeft: 4,
+                                        borderLeftColor: "primary.main",
+                                        borderLeftStyle: "solid",
+                                        display: "flex",
+                                        flex: 1,
+                                        flexDirection: "column",
+                                        gap: 1.5,
+                                        p: 2
+                                    } }
+                                >
+                                    <Box color="primary.main" mb={ 1 }>
+                                        <Security fontSize="large" color="inherit" />
+                                    </Box>
+                                    <Typography
+                                        variant="subtitle1"
+                                        fontWeight={ 600 }
+                                    >Secure Agent Authentication</Typography>
+                                    <Typography variant="body2">
+                                        Enable AI agents to authenticate securely with time-limited tokens { " " }
+                                        and role-based permissions.
+                                    </Typography>
+                                </Paper>
+                                <Paper
+                                    elevation={ 3 }
+                                    sx={ {
+                                        alignItems: "flex-start",
+                                        borderLeft: 4,
+                                        borderLeftColor: "primary.main",
+                                        borderLeftStyle: "solid",
+                                        display: "flex",
+                                        flex: 1,
+                                        flexDirection: "column",
+                                        gap: 1.5,
+                                        p: 2
+                                    } }
+                                >
+                                    <Box color="primary.main" mb={ 1 }>
+                                        <ManageAccounts fontSize="large" color="inherit" />
+                                    </Box>
+                                    <Typography
+                                        variant="subtitle1"
+                                        fontWeight={ 600 }
+                                    >
+                                        Automated Access Management
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        Dynamically manage agent permissions based on tasks, context, and
+                                        { " " } security policies.
+                                    </Typography>
+                                </Paper>
+                            </Box>
+                            <Box display="flex" gap={ 3 }>
+                                <Paper
+                                    elevation={ 3 }
+                                    sx={ {
+                                        alignItems: "flex-start",
+                                        borderLeft: 4,
+                                        borderLeftColor: "primary.main",
+                                        borderLeftStyle: "solid",
+                                        display: "flex",
+                                        flex: 1,
+                                        flexDirection: "column",
+                                        gap: 1.5,
+                                        p: 2
+                                    } }>
+                                    <Box color="primary.main" mb={ 1 }>
+                                        <ListAlt fontSize="large" color="inherit" />
+                                    </Box>
+                                    <Typography
+                                        variant="subtitle1"
+                                        fontWeight={ 600 }
+                                    >
+                                        Comprehensive Audit Trail
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        Enables tracking every agent activity with comprehensive logging and
+                                        compliance reporting capabilities.
+                                    </Typography>
+                                </Paper>
+                                <Paper
+                                    elevation={ 3 }
+                                    sx={ {
+                                        alignItems: "flex-start",
+                                        borderLeft: 4,
+                                        borderLeftColor: "primary.main",
+                                        borderLeftStyle: "solid",
+                                        display: "flex",
+                                        flex: 1,
+                                        flexDirection: "column",
+                                        gap: 1.5,
+                                        p: 2
+                                    } }
+                                >
+                                    <Box color="primary.main" mb={ 1 }>
+                                        <IntegrationInstructions fontSize="large" color="inherit" />
+                                    </Box>
+                                    <Typography variant="subtitle1" fontWeight={ 600 }>
+                                        Seamless Integration
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        Works with your existing business infrastructure with minimum changes as
+                                        it’s built on auth standards.
+                                    </Typography>
+                                </Paper>
+                            </Box>
+                        </Box>
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Grid>
+                            <Grid.Row columns={ 2 }>
+                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                    <SemanticButton
+                                        className="link-button"
+                                        basic
+                                        primary
+                                        floated="left"
+                                        onClick={ () => setShowAgentFeatureAnnouncementModal(false) }
+                                    >
+                                    Cancel
+                                    </SemanticButton>
+                                </Grid.Column>
+                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                    { isAgentManagementFeatureEnabledForOrganization && (
+                                        <PrimaryButton
+                                            onClick={ () => {
+                                                history.push(AppConstants.getPaths().get("AGENTS"));
+                                            } }
+                                        >Try out</PrimaryButton>
+                                    ) }
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+
+                    </Modal.Actions>
+
+                </Modal>
+            ) }
         </div>
     );
 };

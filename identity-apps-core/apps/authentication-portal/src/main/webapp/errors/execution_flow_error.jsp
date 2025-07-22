@@ -48,7 +48,8 @@
     String errorMessage = request.getParameter("ERROR_MSG");
     String errorDescription = request.getParameter("ERROR_DESC");
     String spId = request.getParameter("SP_ID");
-    String registrationPortalURL = request.getParameter("PORTAL_URL") + "?spId=" + request.getParameter("SP_ID");
+    String sp = request.getParameter("SP");
+    String registrationPortalURL = request.getParameter("PORTAL_URL") + "?spId=" + request.getParameter("SP_ID") + "&sp=" + Encode.forUriComponent(sp);
     String errorCode = request.getParameter("errorCode");
     String flowType = request.getParameter("flowType");
     final String USER_REGISTRATION = "USER_REGISTRATION";

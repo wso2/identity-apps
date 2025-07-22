@@ -26,8 +26,14 @@ export interface FlowListItemInterface {
     featureStatusKey?: string;
 };
 
+export interface FlowConfigInterface {
+    flowType: FlowTypes;
+    isEnabled: boolean;
+    isAutoLoginEnabled?: boolean;
+}
+
 export enum FlowTypes {
     REGISTRATION = "REGISTRATION",
     PASSWORD_RECOVERY = "PASSWORD_RECOVERY",
-    INVITE_USER_PASSWORD_SETUP = "INVITE_USER_PASSWORD_SETUP",
+    INVITED_USER_REGISTRATION = "INVITED_USER_REGISTRATION",
 }

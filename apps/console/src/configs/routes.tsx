@@ -216,7 +216,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     exact: true,
                     id: "askPasswordFlowBuilder",
                     name: "Ask Password Flow Builder",
-                    path: AppConstants.getPaths().get("ASK_PASSWORD_FLOW_BUILDER"),
+                    path: AppConstants.getPaths().get("INVITE_USER_PASSWORD_SETUP_FLOW_BUILDER"),
                     protected: true,
                     showOnSidePanel: false
                 }

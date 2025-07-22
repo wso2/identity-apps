@@ -22,6 +22,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FC, ReactElement } from "react";
 import { RedirectionTypes } from "../../../../models/steps";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
+import "./redirection-factory.scss";
 
 /**
  * Props interface of {@link CommonStepFactory}
@@ -43,6 +44,42 @@ export const RedirectionFactory: FC<RedirectionFactoryPropsInterface> = ({
             <Box display="flex" gap={ 1 } data-componentid={ componentId }>
                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" height="20" />
                 <Typography variant="body1">Google</Typography>
+            </Box>
+        );
+    }
+
+    if ((data?.action as any)?.executor?.name === RedirectionTypes.AppleFederation) {
+        return (
+            <Box display="flex" gap={ 1 } data-componentid={ componentId } className="flow-builder-redirection apple">
+                <img src="https://www.svgrepo.com/show/494331/apple-round.svg" height="20" />
+                <Typography variant="body1">Apple</Typography>
+            </Box>
+        );
+    }
+
+    if ((data?.action as any)?.executor?.name === RedirectionTypes.FacebookFederation) {
+        return (
+            <Box display="flex" gap={ 1 } data-componentid={ componentId }>
+                <img src="https://www.svgrepo.com/show/448224/facebook.svg" height="20" />
+                <Typography variant="body1">Facebook</Typography>
+            </Box>
+        );
+    }
+
+    if ((data?.action as any)?.executor?.name === RedirectionTypes.MicrosoftFederation) {
+        return (
+            <Box display="flex" gap={ 1 } data-componentid={ componentId }>
+                <img src="https://www.svgrepo.com/show/448239/microsoft.svg" height="20" />
+                <Typography variant="body1">Microsoft</Typography>
+            </Box>
+        );
+    }
+
+    if ((data?.action as any)?.executor?.name === RedirectionTypes.GithubFederation) {
+        return (
+            <Box display="flex" gap={ 1 } data-componentid={ componentId } className="flow-builder-redirection github">
+                <img src="https://www.svgrepo.com/show/473620/github.svg" height="20" />
+                <Typography variant="body1">Github</Typography>
             </Box>
         );
     }

@@ -17,17 +17,137 @@
  */
 
 export interface flowsNS {
+    askPassword: {
+        breadcrumb: string;
+        notifications: {
+            disableFlow: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+            enableFlow: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+            fetchFlowConfig: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
+        tooltip: {
+            disableFlow: string;
+            enableFlow: string;
+        };
+    };
     core: {
         elements: {
             richText: {
-                placeholder: string;
                 linkEditor: {
                     placeholder: string;
+                    predefinedUrls: {
+                        applicationAccessUrl: string;
+                        callbackOrApplicationAccessUrl: string;
+                        customUrl: string;
+                        privacyPolicyUrl: string;
+                        termsOfUseUrl: string;
+                    };
+                    urlTypeLabel: string;
                 };
+                placeholder: string;
             }
-        }
+        };
+        errors: {
+            flowMetadataFetch: {
+                description: string;
+                message: string;
+            };
+        };
     };
+    label?: string;
     passwordRecovery: {
         name: string;
+        notifications: {
+            disableFlow: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+            enableFlow: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+            fetchFlowConfig: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
+        tooltip: {
+            disableFlow: string;
+            enableFlow: string;
+        };
+    };
+    registrationFlow: {
+        breadcrumb: string;
+        notifications: {
+            disableFlow: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+            enableFlow: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+            fetchFlowConfig: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
+        steps: {
+            emailConfirmation: string;
+        };
+        tooltip: {
+            disableFlow: string;
+            enableFlow: string;
+        };
     };
 }

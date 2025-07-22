@@ -1,5 +1,16 @@
 # @wso2is/form
 
+## 2.9.0
+
+### Minor Changes
+
+- [#8509](https://github.com/wso2/identity-apps/pull/8509) [`c3debfc1bfab856c701eda6df14b097c7b296cae`](https://github.com/wso2/identity-apps/commit/c3debfc1bfab856c701eda6df14b097c7b296cae) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Introduce new form field adapters
+
+### Patch Changes
+
+- Updated dependencies [[`c3debfc1bfab856c701eda6df14b097c7b296cae`](https://github.com/wso2/identity-apps/commit/c3debfc1bfab856c701eda6df14b097c7b296cae)]:
+  - @wso2is/core@2.10.0
+
 ## 2.8.1
 
 ### Patch Changes

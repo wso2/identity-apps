@@ -24,10 +24,6 @@ import { Attribute } from "../models/attributes";
  */
 export interface RegistrationFlowBuilderContextProps {
     /**
-     * Flag denoting whether the registration flow builder is enabled or not.
-     */
-    isNewRegistrationPortalEnabled: boolean;
-    /**
      * Is the registration flow publishing.
      */
     isPublishing: boolean;
@@ -54,7 +50,6 @@ const RegistrationFlowBuilderContext: Context<
     RegistrationFlowBuilderContextProps
 > = createContext<null | RegistrationFlowBuilderContextProps>(
     {
-        isNewRegistrationPortalEnabled: false,
         isPublishing: false,
         onPublish: () => {},
         selectedAttributes: {},

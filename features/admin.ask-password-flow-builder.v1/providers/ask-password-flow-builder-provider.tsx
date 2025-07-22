@@ -24,6 +24,7 @@ import { useReactFlow } from "@xyflow/react";
 import React, { FC, PropsWithChildren, ReactElement, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { FlowTypes } from "../../admin.flows.v1/models/flows";
 import configureAskPasswordFlow from "../api/configure-ask-password-flow";
 import updateNewAskPasswordPortalFeatureStatus from "../api/update-new-ask-password-portal-feature-status";
 import useNewAskPasswordPortalFeatureStatus from "../api/use-new-ask-password-portal-feature-status";
@@ -48,7 +49,11 @@ export type AskPasswordFlowBuilderProviderProps = PropsWithChildren<unknown>;
 const AskPasswordFlowBuilderProvider: FC<AskPasswordFlowBuilderProviderProps> = ({
     children
 }: PropsWithChildren<AskPasswordFlowBuilderProviderProps>): ReactElement => (
-    <AuthenticationFlowBuilderCoreProvider ElementFactory={ ElementFactory } ResourceProperties={ ResourceProperties }>
+    <AuthenticationFlowBuilderCoreProvider
+        ElementFactory={ ElementFactory }
+        ResourceProperties={ ResourceProperties }
+        flowType={ FlowTypes.INVITED_USER_REGISTRATION }
+    >
         <FlowContextWrapper>{ children }</FlowContextWrapper>
     </AuthenticationFlowBuilderCoreProvider>
 );
@@ -103,7 +108,7 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
 
             dispatch(
                 addAlert({
-                    description: "Password recovery flow updated successfully.",
+                    description: "Invite user registration flow updated successfully.",
                     level: AlertLevels.SUCCESS,
                     message: "Flow Updated Successfully"
                 })
@@ -111,7 +116,7 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
         } catch (error) {
             dispatch(
                 addAlert({
-                    description: "Failed to update the password recovery flow.",
+                    description: "Failed to update the invite user registration flow.",
                     level: AlertLevels.ERROR,
                     message: "Flow Update Failure"
                 })

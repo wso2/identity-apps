@@ -58,6 +58,10 @@ export default function AddAgentWizard({
             <Modal.Content>
                 <FinalForm
                     onSubmit={ (values: any) => {
+                        if (!values?.name) {
+                            return;
+                        }
+
                         const addAgentPayload: AgentScimSchema = {
                             "urn:scim:wso2:agent:schema": {
                                 Description: values?.description,
@@ -86,6 +90,7 @@ export default function AddAgentWizard({
                                 <FinalFormField
                                     name="name"
                                     label="Name"
+                                    required={ true }
                                     autoComplete="new-password"
                                     component={ TextFieldAdapter }
                                 />

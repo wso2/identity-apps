@@ -61,7 +61,11 @@ class VisualFlowConstants {
         WidgetTypes.EmailOTP,
         WidgetTypes.GoogleFederation,
         WidgetTypes.IdentifierPassword,
-        WidgetTypes.SMSOTP
+        WidgetTypes.SMSOTP,
+        WidgetTypes.AppleFederation,
+        WidgetTypes.FacebookFederation,
+        WidgetTypes.MicrosoftFederation,
+        WidgetTypes.GithubFederation
     ];
 
     public static readonly FLOW_BUILDER_FORM_ALLOWED_RESOURCE_TYPES: string[] = [

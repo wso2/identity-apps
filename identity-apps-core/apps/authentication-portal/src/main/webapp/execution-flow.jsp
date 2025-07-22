@@ -31,6 +31,8 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
+<jsp:directive.include file="includes/flow-utils.jsp"/>
+
 <% request.setAttribute("pageName", "self-registration"); %>
 
 <%
@@ -67,6 +69,8 @@
     String spId = request.getParameter("spId");
     String confirmationCode = request.getParameter("confirmation");
     String flowType = request.getParameter("flowType");
+    String mlt = request.getParameter("mlt");
+    String flowId = request.getParameter("flowId");
 
     try {
         byte[] jsonData = Files.readAllBytes(Paths.get(jsonFilePath));
@@ -162,7 +166,7 @@
             }
 
             const { createElement, useEffect, useState } = React;
-            const { DynamicContent, I18nProvider, executeFido2FLow, PasskeyEnrollment } = ReactUICore;
+            const { DynamicContent, GlobalContextProvider, I18nProvider, executeFido2FLow, PasskeyEnrollment } = ReactUICore;
 
             const Content = () => {
                 const baseUrl = "<%= identityServerEndpointContextParam %>";
@@ -174,6 +178,8 @@
                 const state = "<%= Encode.forJavaScript(state) != null ? Encode.forJavaScript(state) : null %>";
                 const confirmationCode = "<%= Encode.forJavaScript(confirmationCode) != null ? Encode.forJavaScript(confirmationCode) : null %>";
                 const flowType = "<%= Encode.forJavaScript(flowType) != null ? Encode.forJavaScript(flowType) : null %>";
+                const mlt = "<%= Encode.forJavaScript(mlt) != null ? Encode.forJavaScript(mlt) : null %>";
+                const flowId = "<%= Encode.forJavaScript(flowId) != null ? Encode.forJavaScript(flowId) : null %>";
 
                 const locale = "en-US";
                 const translations = <%= translationsJson %>;
@@ -202,6 +208,18 @@
                 }, [code, state]);
 
                 useEffect(() => {
+                    if (mlt !== "null" && flowId !== "null") {
+                        setPostBody({
+                            flowId: flowId,
+                            actionId: "",
+                            inputs: {
+                                mlt
+                            }
+                        });
+                    }
+                }, [mlt, flowId]);
+
+                useEffect(() => {
                     if (confirmationCode !== "null" && !confirmationEffectDone) {
                         setPostBody({
                             flowType: flowType,
@@ -214,11 +232,11 @@
                 }, [confirmationCode, confirmationEffectDone]);
 
                 useEffect(() => {
-                    if (!postBody && code === "null" && confirmationCode === "null" && flowType == "null") {
+                    if (!postBody && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType == "null") {
                         setPostBody({ applicationId: "new-application", flowType: "REGISTRATION" });
-                    } else if (!postBody && code === "null" && confirmationCode === "null" && flowType !== "null") {
+                    } else if (!postBody && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType !== "null") {
                         setPostBody({ applicationId: "new-application", flowType: flowType });
-                    } 
+                    }
                 }, []);
 
                 useEffect(() => {
@@ -276,9 +294,9 @@
                             portal_url = authPortalURL + "/recovery.do";
                         }
                         const errorPageURL = authPortalURL + "/execution_flow_error.do?" + "ERROR_MSG="
-                            + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID=" 
-                            + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + flowType + "&" + 
-                            "PORTAL_URL=" + portal_url;
+                            + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID="
+                            + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + flowType + "&" +
+                            "PORTAL_URL=" + portal_url + "&SP=" + "<%= Encode.forJavaScript(sp) %>";
 
                         window.location.href = errorPageURL;
                     }
@@ -399,11 +417,15 @@
             }
 
             ReactDOM.render(
-            createElement(
-                I18nProvider,
-                { locale: "en-US", translationsObject: <%= translationsJson %> },
-                createElement(Content)
-            ),
+                createElement(
+                    GlobalContextProvider,
+                    { globalData: <%= reactGlobalContextJson %> },
+                    createElement(
+                        I18nProvider,
+                        { locale: "en-US", translationsObject: <%= translationsJson %> },
+                        createElement(Content)
+                    )
+                ),
                 document.getElementById("react-root")
             );
         });

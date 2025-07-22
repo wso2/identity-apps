@@ -1,5 +1,33 @@
 # @wso2is/identity-apps-core
 
+## 2.27.12
+
+### Patch Changes
+
+- [#8584](https://github.com/wso2/identity-apps/pull/8584) [`aa3c836b43ea09fb782055023a51ca0a4e5907cb`](https://github.com/wso2/identity-apps/commit/aa3c836b43ea09fb782055023a51ca0a4e5907cb) Thanks [@KD23243](https://github.com/KD23243)! - Add dynamic password recovery portal switching
+
+* [#8583](https://github.com/wso2/identity-apps/pull/8583) [`1c28ab336261a10b8878f210129b1d39380e44a6`](https://github.com/wso2/identity-apps/commit/1c28ab336261a10b8878f210129b1d39380e44a6) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Add support for magic link execution
+
+## 2.27.11
+
+### Patch Changes
+
+- [#8558](https://github.com/wso2/identity-apps/pull/8558) [`a22e6e2976b023c761268173bbdb8c1d3518997c`](https://github.com/wso2/identity-apps/commit/a22e6e2976b023c761268173bbdb8c1d3518997c) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Fix Username field not hidden during self-registration when email is used as username
+
+* [#8576](https://github.com/wso2/identity-apps/pull/8576) [`32f809bf44aa79cd7c87144466915fc9c6438ca5`](https://github.com/wso2/identity-apps/commit/32f809bf44aa79cd7c87144466915fc9c6438ca5) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for generating the legacy self-registration flow from the Flow Builder
+
+## 2.27.10
+
+### Patch Changes
+
+- [#8556](https://github.com/wso2/identity-apps/pull/8556) [`214414dd7397ee1343340718086219426d651f10`](https://github.com/wso2/identity-apps/commit/214414dd7397ee1343340718086219426d651f10) Thanks [@KD23243](https://github.com/KD23243)! - Change registration portal url resolve api
+
+## 2.27.9
+
+### Patch Changes
+
+- [#8560](https://github.com/wso2/identity-apps/pull/8560) [`241192e2ac434969b87b22e22ff794e9b5844451`](https://github.com/wso2/identity-apps/commit/241192e2ac434969b87b22e22ff794e9b5844451) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for generating the basic template using the self-registration connector configurations
+
 ## 2.27.8
 
 ### Patch Changes

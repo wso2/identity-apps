@@ -56,13 +56,13 @@ export const agents: AgentsNS = {
     list: {
         featureUnavailable: {
             subtitle: {
-                0: {
-                    onprem: "To enable and try out this feature, configure a datastore for AI agents.",
-                    saas: "Agent management is an experimental feature and currently only available in new organizations. To get early access, create a new organization."
-                },
-                1: "Soon, Agents will be available by default for all organizations."
+                0: "Each AI agent requires a unique identity with specific permissions, roles, and access policies. Monitor usage, manage credentials, and ensure compliance across all automated systems.",
+                1: {
+                    onprem: "Configure agent datastore to enable and try out this feature now.",
+                    saas: "Create a fresh organization for instant access, or contact us for early access to this game-changing feature."
+                }
             },
-            title: "Agents are not currently available for this organization"
+            title: "AI agent management is coming soon to your organization!"
         }
     },
     new: {

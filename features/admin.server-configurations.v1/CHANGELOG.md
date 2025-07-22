@@ -1,5 +1,68 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.35.9
+
+### Patch Changes
+
+- Updated dependencies [[`e4bacc6f7fabba38a995428ea0b0bb785d2f1d35`](https://github.com/wso2/identity-apps/commit/e4bacc6f7fabba38a995428ea0b0bb785d2f1d35)]:
+  - @wso2is/admin.flows.v1@1.0.15
+  - @wso2is/admin.core.v1@2.46.26
+  - @wso2is/admin.flow-builder-core.v1@0.9.5
+  - @wso2is/admin.server-configurations.v1@2.35.9
+
+## 2.35.8
+
+### Patch Changes
+
+- Updated dependencies [[`32f809bf44aa79cd7c87144466915fc9c6438ca5`](https://github.com/wso2/identity-apps/commit/32f809bf44aa79cd7c87144466915fc9c6438ca5), [`79d24deec910ce3f4628decedd65c2f3bcddddfe`](https://github.com/wso2/identity-apps/commit/79d24deec910ce3f4628decedd65c2f3bcddddfe)]:
+  - @wso2is/admin.flow-builder-core.v1@0.9.4
+  - @wso2is/i18n@2.25.1
+  - @wso2is/admin.flows.v1@1.0.14
+  - @wso2is/admin.core.v1@2.46.25
+  - @wso2is/admin.server-configurations.v1@2.35.8
+
+## 2.35.7
+
+### Patch Changes
+
+- [#8579](https://github.com/wso2/identity-apps/pull/8579) [`7b50f9a554ba1672a0f5b94f918c3fd03ecac48e`](https://github.com/wso2/identity-apps/commit/7b50f9a554ba1672a0f5b94f918c3fd03ecac48e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Replace dynamic portal configuration with flow configuration API
+
+- Updated dependencies [[`7b50f9a554ba1672a0f5b94f918c3fd03ecac48e`](https://github.com/wso2/identity-apps/commit/7b50f9a554ba1672a0f5b94f918c3fd03ecac48e)]:
+  - @wso2is/admin.server-configurations.v1@2.35.7
+  - @wso2is/admin.core.v1@2.46.24
+
+## 2.35.6
+
+### Patch Changes
+
+- Updated dependencies [[`c95c6d9d0066555b78b0e851f1ca58dca67e0031`](https://github.com/wso2/identity-apps/commit/c95c6d9d0066555b78b0e851f1ca58dca67e0031)]:
+  - @wso2is/admin.flow-builder-core.v1@0.9.3
+  - @wso2is/admin.core.v1@2.46.23
+  - @wso2is/admin.server-configurations.v1@2.35.6
+
+## 2.35.5
+
+### Patch Changes
+
+- Updated dependencies [[`518889fccc67f829a5e497df54cfc6e238a06097`](https://github.com/wso2/identity-apps/commit/518889fccc67f829a5e497df54cfc6e238a06097)]:
+  - @wso2is/admin.flow-builder-core.v1@0.9.2
+  - @wso2is/admin.core.v1@2.46.18
+  - @wso2is/admin.server-configurations.v1@2.35.5
+
+## 2.35.4
+
+### Patch Changes
+
+- [#8560](https://github.com/wso2/identity-apps/pull/8560) [`241192e2ac434969b87b22e22ff794e9b5844451`](https://github.com/wso2/identity-apps/commit/241192e2ac434969b87b22e22ff794e9b5844451) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for generating the basic template using the self-registration connector configurations
+
+- Updated dependencies [[`241192e2ac434969b87b22e22ff794e9b5844451`](https://github.com/wso2/identity-apps/commit/241192e2ac434969b87b22e22ff794e9b5844451)]:
+  - @wso2is/admin.server-configurations.v1@2.35.4
+  - @wso2is/admin.flow-builder-core.v1@0.9.1
+  - @wso2is/admin.flows.v1@1.0.13
+  - @wso2is/i18n@2.24.18
+  - @wso2is/admin.core.v1@2.46.17
+  - @wso2is/core@2.9.5
+
 ## 2.35.3
 
 ### Patch Changes

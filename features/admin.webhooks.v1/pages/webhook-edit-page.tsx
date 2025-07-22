@@ -55,6 +55,7 @@ import { retrySubscriptionOrUnsubscription } from "../api/retry-webhook";
 import updateWebhook from "../api/update-webhook";
 import useGetDefaultEventProfile from "../api/use-get-default-event-profile";
 import useGetWebhookById from "../api/use-get-webhook-by-id";
+import useGetWebhooksMetadata from "../api/use-get-webhooks-metadata";
 import WebhookConfigForm from "../components/webhook-config-form";
 import { WebhookChannelConfigInterface } from "../models/event-profile";
 import {
@@ -64,6 +65,7 @@ import {
     WebhookStatus,
     WebhookUpdateRequestInterface
 } from "../models/webhooks";
+import { AdapterUtils } from "../utils/adapter-utils";
 import { useHandleWebhookError, useHandleWebhookSuccess } from "../utils/alert-utils";
 import { mapEventProfileApiToUI, mapFormDataToChannels } from "../utils/model-mapper-utils";
 
@@ -123,12 +125,18 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
         error: eventProfileError
     } = useGetDefaultEventProfile();
 
+    const {
+        data: webhooksMetadata,
+        isLoading: isWebhooksMetadataLoading,
+        error: webhooksMetadataError
+    } = useGetWebhooksMetadata();
+
     // Alert handlers
     const handleSuccess: ReturnType<typeof useHandleWebhookSuccess> = useHandleWebhookSuccess();
     const handleError: ReturnType<typeof useHandleWebhookError> = useHandleWebhookError();
 
     // Computed values
-    const isLoading: boolean = isWebhookLoading || isEventProfileLoading;
+    const isLoading: boolean = isWebhookLoading || isEventProfileLoading || isWebhooksMetadataLoading;
 
     const channelConfigs: WebhookChannelConfigInterface[] = useMemo(() => {
         return eventProfile
@@ -186,9 +194,12 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
 
     // Helper functions
     const isWebSubHubAdapterMode: () => boolean = useCallback((): boolean => {
-        // TODO: Fix to get the system configured adapter from metadata.
-        return true;
-    }, []);
+        if (!webhooksMetadata?.adapter) {
+            return false;
+        }
+
+        return AdapterUtils.isWebSubHub(webhooksMetadata.adapter);
+    }, [ webhooksMetadata ]);
 
     const isFormReadOnly: () => boolean = useCallback((): boolean => {
         if (isCreateMode) {
@@ -214,7 +225,7 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
             !isEmpty(webhook) &&
             (isWebSubHubAdapterMode()
                 ? webhook?.status === WebhookStatus.INACTIVE || webhook?.status === WebhookStatus.PARTIALLY_INACTIVE
-                : false)
+                : true)
         );
     }, [ isLoading, isCreateMode, webhook, isWebSubHubAdapterMode ]);
 
@@ -243,6 +254,12 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
             handleError(eventProfileError, "fetchEventProfile");
         }
     }, [ eventProfileError, handleError ]);
+
+    useEffect(() => {
+        if (webhooksMetadataError) {
+            handleError(webhooksMetadataError, "fetchWebhooksMetadata");
+        }
+    }, [ webhooksMetadataError, handleError ]);
 
     // Event handlers
     const handleWebhookSubmit: (formData: WebhookConfigFormPropertyInterface) => void = useCallback(

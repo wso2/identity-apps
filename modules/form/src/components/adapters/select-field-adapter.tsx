@@ -18,12 +18,18 @@
 
 import FormControl, { FormControlProps } from "@oxygen-ui/react/FormControl";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
+import IconButton from "@oxygen-ui/react/IconButton";
+import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import InputLabel from "@oxygen-ui/react/InputLabel";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectProps } from "@oxygen-ui/react/Select";
+import { XMarkIcon } from "@oxygen-ui/react-icons";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 import { FieldRenderProps } from "react-final-form";
+
+import "./select-field-adapter.scss";
 
 /**
  * Interface for the items passed as options.
@@ -37,7 +43,7 @@ interface DropDownItemInterface {
  * Props for the SelectFieldAdapter component.
  */
 export interface SelectFieldAdapterPropsInterface
-    extends FieldRenderProps<string | string[], HTMLElement, string | string> {
+    extends FieldRenderProps<string | string[], HTMLElement, string | string>, IdentifiableComponentInterface {
     /**
      * The label to display above the Select Field.
      */
@@ -56,6 +62,11 @@ export interface SelectFieldAdapterPropsInterface
      * Form control props.
      */
     FormControlProps?: FormControlProps;
+    /**
+     * Whether to show the clear button.
+     * Defaults to false.
+     */
+    isClearable?: boolean;
 }
 
 /**
@@ -78,13 +89,28 @@ const SelectFieldAdapter: FunctionComponent<SelectFieldAdapterPropsInterface> = 
         helperText,
         required,
         options,
+        isClearable = false,
+        readOnly = false,
+        "data-componentid": componentId = "select-field-adapter",
         ...rest
     } = props;
 
     const isError: boolean = (meta.error || meta.submitError) && meta.touched;
 
+    /**
+     * Clears the input value.
+     */
+    const onValueClear = () => {
+        input.onChange(input.multiple ? [] : "");
+    };
+
+    // Prepare the field value when the input value is empty.
+    const fieldValue: string | string[] = isEmpty(input.value) ? (input.multiple ? [] : "") : input.value;
+    // Clear button should be hidden when the field value is empty.
+    const showClearButton: boolean = isClearable && !isEmpty(fieldValue);
+
     return (
-        <div>
+        <div className="select-field-adapter" data-componentid={ componentId }>
             <InputLabel required={ required }>{ label }</InputLabel>
             <FormControl
                 error={ isError }
@@ -92,24 +118,46 @@ const SelectFieldAdapter: FunctionComponent<SelectFieldAdapterPropsInterface> = 
                 variant="outlined"
                 margin="dense"
                 fullWidth={ fullWidth }
+                disabled={ readOnly }
                 { ...FormControlProps }
             >
-                <InputLabel shrink={ false } disabled>
+                <InputLabel shrink={ false } data-componentid={ `${componentId}-placeholder` } disabled>
                     { isEmpty(input.value) ? placeholder : "" }
                 </InputLabel>
                 <Select
                     { ...input }
+                    value={ fieldValue }
                     margin="dense"
-                    { ...rest as SelectProps }
+                    endAdornment={
+                        showClearButton && (
+                            <InputAdornment className="end-adornment" position="end">
+                                <IconButton onClick={ () => onValueClear() }>
+                                    <XMarkIcon />
+                                </IconButton>
+                            </InputAdornment>
+                        )
+                    }
+                    data-componentid={ `${componentId}-input` }
+                    { ...(rest as SelectProps) }
                 >
-                    { options?.map((option: DropDownItemInterface) => (
-                        <MenuItem key={ option.value } value={ option.value }>
+                    { options?.map((option: DropDownItemInterface, index: number) => (
+                        <MenuItem
+                            data-componentid={ `${componentId}-input-${index}` }
+                            key={ option.value }
+                            value={ option.value }
+                        >
                             { option.text }
                         </MenuItem>
                     )) }
                 </Select>
-                { isError && <FormHelperText error>{ meta.error || meta.submitError }</FormHelperText> }
-                { helperText && <FormHelperText>{ helperText }</FormHelperText> }
+                { isError && (
+                    <FormHelperText data-componentid={ `${componentId}-error` } error>
+                        { meta.error || meta.submitError }
+                    </FormHelperText>
+                ) }
+                { helperText && (
+                    <FormHelperText data-componentid={ `${componentId}-helper-text` }>{ helperText }</FormHelperText>
+                ) }
             </FormControl>
         </div>
     );
