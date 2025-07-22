@@ -65,6 +65,17 @@
                     "update": []
                 }
             },
+            "approvals": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "read": [],
+                    "update": []
+                }
+            },
             "operations": {
                 "disabledFeatures": [],
                 "enabled": true,

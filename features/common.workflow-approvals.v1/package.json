@@ -1,8 +1,8 @@
 {
     "private": true,
-    "name": "@wso2is/admin.workflow-approvals.v1",
-    "version": "2.26.7",
-    "description": "WSO2 Identity Server Console",
+    "name": "@wso2is/common.workflow-approvals.v1",
+    "version": "0.0.0",
+    "description": "Workflow approvals feature package for WSO2 Identity Server.",
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {

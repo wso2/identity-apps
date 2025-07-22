@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,6 +35,88 @@ export const common: CommonNS = {
     applicationName: "Nombre de la aplicación",
     applications: "Aplicaciones",
     approvalStatus: "Estado de aprobación",
+    approvals: "Aprobaciones",
+    approvalsPage: {
+        list: {
+            columns: {
+                actions: "Acciones",
+                name: "Nombre"
+            }
+        },
+        modals: {
+            description: "Revise las tareas operativas que requieren su aprobación",
+            header: "Aprobaciones",
+            subHeader: "Revise las tareas operativas que requieren su aprobación"
+        },
+        notifications: {
+            fetchApprovalDetails: {
+                error: {
+                    description: "{{description}}",
+                    message: "Error al obtener los detalles de aprobación"
+                },
+                genericError: {
+                    description: "No se pudieron recuperar los detalles de aprobación.",
+                    message: "Algo salió mal"
+                }
+            },
+            fetchPendingApprovals: {
+                error: {
+                    description: "{{description}}",
+                    message: "Error al obtener las aprobaciones pendientes"
+                },
+                genericError: {
+                    description: "No se pudieron recuperar las aprobaciones pendientes.",
+                    message: "Algo salió mal"
+                }
+            },
+            updatePendingApprovals: {
+                error: {
+                    description: "{{description}}",
+                    message: "Error al actualizar la aprobación"
+                },
+                genericError: {
+                    description: "No se pudo actualizar la aprobación pendiente.",
+                    message: "Algo salió mal"
+                },
+                success: {
+                    description: "Aprobación actualizada con éxito.",
+                    message: "Actualización exitosa"
+                }
+            }
+        },
+        placeholders: {
+            emptyApprovalFilter: {
+                action: "Ver todo",
+                subtitles: {
+                    0: "Actualmente no hay aprobaciones en estado {{status}}.",
+                    1: "Por favor, verifique si tiene tareas en estado {{status}} para",
+                    2: "verlas aquí."
+                },
+                title: "No se encontraron resultados"
+            },
+            emptyApprovalList: {
+                action: "",
+                subtitles: {
+                    0: "Actualmente no hay aprobaciones para revisar.",
+                    1: "Por favor, verifique si ha agregado un flujo de trabajo para controlar las operaciones en el sistema.",
+                    2: ""
+                },
+                title: "No hay aprobaciones"
+            },
+            emptySearchResults: {
+                action: "Ver todo",
+                subtitles: {
+                    0: "No pudimos encontrar el flujo de trabajo que buscó.",
+                    1: "Por favor, verifique si tiene un flujo de trabajo con ese nombre en",
+                    2: "el sistema."
+                },
+                title: "No hay aprobaciones"
+            },
+            searchApprovals: "Buscar por nombre de flujo de trabajo"
+        },
+        subTitle: "Revise las tareas operativas que requieren su aprobación",
+        title: "Aprobaciones"
+    },
     approve: "Aprobar",
     apps: "Aplicaciones",
     assignee: "Cesionario",

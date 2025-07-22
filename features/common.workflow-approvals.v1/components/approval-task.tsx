@@ -16,15 +16,11 @@
  * under the License.
  */
 
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, Claim, ClaimsGetParams, TestableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { LinkButton, Media, Popup, Text, useMediaContext } from "@wso2is/react-components";
 import moment from "moment";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
 import {
     Button,
     Divider,
@@ -37,13 +33,12 @@ import {
     SemanticCOLORS,
     Table
 } from "semantic-ui-react";
-import { getAllLocalClaims } from "../../admin.claims.v1/api";
 import { ApprovalStatus, ApprovalTaskDetails } from "../models";
 
 /**
  * Prop-types for the approvals edit page component.
  */
-interface ApprovalTaskComponentPropsInterface extends TestableComponentInterface {
+interface ApprovalTaskComponentPropsInterface extends IdentifiableComponentInterface {
     /**
      * The selected approval task.
      */
@@ -96,74 +91,26 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
         openApprovalTaskModal,
         onCloseApprovalTaskModal,
         isSubmitting,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId = "approval-task"
     } = props;
 
     const { t } = useTranslation();
     const { isMobileViewport } = useMediaContext();
-    const dispatch: Dispatch = useDispatch();
-    const [ localClaims, setLocalClaims ] = useState<Claim[]>([]);
 
+    const getClaimDisplayName = (claim: string): string => {
+        const equalIndex: number = claim.indexOf("=");
 
-    const getLocalClaims = () => {
-        const params: ClaimsGetParams = {
-            "exclude-hidden-claims": true,
-            filter: null,
-            limit: null,
-            offset: null,
-            sort: null
-        };
+        if (equalIndex === -1) {
+            return claim.trim();
+        }
 
-        getAllLocalClaims(params).then((response: Claim[]) => {
-            setLocalClaims(response);
-        }).catch((error: IdentityAppsApiException) => {
-            dispatch(addAlert(
-                {
-                    description: error?.response?.data?.description
-                        || t("actions:notifications.genericError.userAttributes.getAttributes.description"),
-                    level: AlertLevels.ERROR,
-                    message: error?.response?.data?.message
-                        || t("actions:notifications.genericError.userAttributes.getAttributes.message")
-                }
-            ));
-            throw error;
-        });
+        const claimUri: string = claim.substring(0, equalIndex).trim();
+        const displayName: string = claimUri.split("/").pop();
+
+        return displayName || claim;
     };
 
-    const getClaimDisplayName: (claim: string) => string = useMemo(() => {
 
-        const claimMap: Map<string, string> = new Map();
-
-        localClaims.forEach((claim: Claim) => {
-            if (claim.claimURI && claim.displayName) {
-                claimMap.set(claim.claimURI, claim.displayName);
-            }
-        });
-
-        return (claim: string): string => {
-
-            const equalIndex: number = claim.indexOf("=");
-
-            if (equalIndex === -1) {
-                return claimMap.get(claim.trim()) ?? claim;
-            }
-
-            const claimUri: string = claim.substring(0, equalIndex).trim();
-
-            if (!claimUri) {
-                return claim;
-            }
-
-            const displayName: string | undefined = claimMap.get(claimUri);
-
-            return displayName ? displayName : claimUri;
-        };
-
-    }, [ localClaims ]);
-
-    useEffect(() => {
-        getLocalClaims();
-    }, []);
 
 
     /**
@@ -223,7 +170,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                 return (
                     <Table.Row key={ key }>
                         <Table.Cell className="key-cell">
-                            { t("console:manage.features.approvals.modals.approvalProperties." +`${ key }`) }
+                            { key }
                         </Table.Cell>
                         <Table.Cell collapsing className="values-cell">
                             <List className="values-list">
@@ -247,7 +194,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
         return (
             <Table.Row key={ key }>
                 <Table.Cell className="key-cell">
-                    { t("console:manage.features.approvals.modals.approvalProperties." +`${ key }`) }
+                    { key }
                 </Table.Cell>
                 <Table.Cell collapsing className="values-cell">
                     <Text truncate>{ value.endsWith(",") ? value.slice(0, -1) : value }</Text>
@@ -358,9 +305,9 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
             dimmer
         >
             <Modal.Header>
-                <Header as="h4" image data-testid={ `${ testId }-item-heading` }>
+                <Header as="h4" image data-componentid={ `${ componentId }-item-heading` }>
                     <Header.Content>
-                        { t("console:manage.features.approvals.modals.taskDetails.header") }
+                        { t("common:approvalsPage.modals.header") }
                         <Header.Subheader>
                             <Label
                                 circular
@@ -369,8 +316,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                 color={ resolveApprovalTagColor(approval?.taskStatus) }
                             />
 
-                            { "Your approval is needed to proceed with the request."
-                            }
+                            { t("common:approvalsPage.modals.subHeader") }
                         </Header.Subheader>
                     </Header.Content>
                 </Header>
@@ -410,8 +356,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                             {
                                                 approval?.description
                                                     ? approval?.description
-                                                    : t("console:manage.features.approvals.modals." +
-                                                    "taskDetails.description")
+                                                    : t("common:approvalsPage.modals.description")
                                             }
                                         </List.Description>
                                     </Grid.Column>

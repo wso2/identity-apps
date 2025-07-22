@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,6 +35,88 @@ export const common: CommonNS = {
     "applicationName": "Anwendungsname",
     "applications": "Anwendungen",
     "approvalStatus": "Freigabestand",
+    "approvals": "Genehmigungen",
+    "approvalsPage": {
+        "list": {
+            "columns": {
+                "actions": "Aktionen",
+                "name": "Name"
+            }
+        },
+        "modals": {
+            "description": "Überprüfen Sie die betrieblichen Aufgaben, die Ihre Genehmigung erfordern",
+            "header": "Genehmigungen",
+            "subHeader": "Überprüfen Sie die betrieblichen Aufgaben, die Ihre Genehmigung erfordern"
+        },
+        "notifications": {
+            "fetchApprovalDetails": {
+                "error": {
+                    "description": "{{description}}",
+                    "message": "Fehler beim Abrufen der Genehmigungsdetails"
+                },
+                "genericError": {
+                    "description": "Die Genehmigungsdetails konnten nicht abgerufen werden.",
+                    "message": "Da ist etwas schiefgelaufen"
+                }
+            },
+            "fetchPendingApprovals": {
+                "error": {
+                    "description": "{{description}}",
+                    "message": "Fehler beim Abrufen ausstehender Genehmigungen"
+                },
+                "genericError": {
+                    "description": "Die ausstehenden Genehmigungen konnten nicht abgerufen werden.",
+                    "message": "Da ist etwas schiefgelaufen"
+                }
+            },
+            "updatePendingApprovals": {
+                "error": {
+                    "description": "{{description}}",
+                    "message": "Fehler beim Aktualisieren der Genehmigung"
+                },
+                "genericError": {
+                    "description": "Die ausstehende Genehmigung konnte nicht aktualisiert werden.",
+                    "message": "Da ist etwas schiefgelaufen"
+                },
+                "success": {
+                    "description": "Die Genehmigung wurde erfolgreich aktualisiert.",
+                    "message": "Update erfolgreich"
+                }
+            }
+        },
+        "placeholders": {
+            "emptyApprovalFilter": {
+                "action": "Alle anzeigen",
+                "subtitles": {
+                    0: "Derzeit gibt es keine Genehmigungen im Status {{status}}.",
+                    1: "Bitte überprüfen Sie, ob Sie Aufgaben im Status {{status}} haben, um",
+                    2: "sie hier anzuzeigen."
+                },
+                "title": "Keine Ergebnisse gefunden"
+            },
+            "emptyApprovalList": {
+                "action": "",
+                "subtitles": {
+                    0: "Derzeit gibt es keine Genehmigungen zur Überprüfung.",
+                    1: "Bitte überprüfen Sie, ob Sie einen Workflow hinzugefügt haben, um die Vorgänge im System zu steuern.",
+                    2: ""
+                },
+                "title": "Keine Genehmigungen"
+            },
+            "emptySearchResults": {
+                "action": "Alle anzeigen",
+                "subtitles": {
+                    0: "Wir konnten den von Ihnen gesuchten Workflow nicht finden.",
+                    1: "Bitte überprüfen Sie, ob Sie einen Workflow mit diesem Namen in",
+                    2: "dem System haben."
+                },
+                "title": "Keine Genehmigungen"
+            },
+            "searchApprovals": "Nach Workflow-Namen suchen"
+        },
+        "subTitle": "Überprüfen Sie die betrieblichen Aufgaben, die Ihre Genehmigung erfordern",
+        "title": "Genehmigungen"
+    },
     "approve": "Genehmigen",
     "apps": "Anwendungen",
     "assignee": "Beauftragter",

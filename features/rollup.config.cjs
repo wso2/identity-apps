@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -86,7 +86,6 @@ module.exports = [
             "./admin.users.v1/public-api.ts",
             "./admin.userstores.v1/public-api.ts",
             "./admin.validation.v1/public-api.ts",
-            "./admin.workflow-approvals.v1/public-api.ts",
             "./admin.wsfed-configuration.v1/public-api.ts",
             "./admin.approval-workflows.v1/public-api.ts"
         ],
@@ -165,8 +164,6 @@ module.exports = [
                         "./admin.users.v1": "./admin.users.v1/public-api.js",
                         "./admin.userstores.v1": "./admin.userstores.v1/public-api.js",
                         "./admin.validation.v1": "./admin.validation.v1/public-api.js",
-                        "./admin.workflow-approvals.v1":
-                            "./admin.workflow-approvals.v1/public-api.js",
                         "./admin.wsfed-configuration.v1": "./admin.wsfed-configuration.v1/public-api.js"
                     },
                     main: "./index.js",

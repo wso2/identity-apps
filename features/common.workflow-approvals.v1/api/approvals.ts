@@ -16,37 +16,40 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
-import { store } from "@wso2is/admin.core.v1/store";
+import {
+    AsgardeoSPAClient,
+    HttpClientInstance,
+    HttpError,
+    HttpRequestConfig,
+    HttpResponse } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
-import { ApprovalStatus, ApprovalTaskDetails, ApprovalTaskListItemInterface, ApprovalTaskSummary } from "../models";
+import { ApprovalStatus, ApprovalTaskDetails, ApprovalTaskListItemInterface } from "../models";
 
 /**
  * Get an axios instance.
  *
  */
-const httpClient = AsgardeoSPAClient.getInstance()
+const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance())
     .bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Fetches the list of pending approvals from the list.
  *
- * @param {number} limit - Maximum number of records to return.
- * @param {number} offset - Number of records to skip for pagination
- * @param {ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.ALL} status -
- *     Approval task's status to filter tasks by their status.
- * @return {Promise<any>} A promise containing the response.
+ * @param limit - Maximum number of records to return.
+ * @param offset - Number of records to skip for pagination
+ * @param status - Approval task's status to filter tasks by their status.
+ * @returns A promise containing the response.
  */
 export const fetchPendingApprovals = (
     limit: number,
     offset: number,
-    status: string
+    status: string,
+    approvalsUrl: string
 ): Promise<ApprovalTaskListItemInterface[]> => {
-    let requestConfig = {
+    let requestConfig: HttpRequestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -55,8 +58,10 @@ export const fetchPendingApprovals = (
             offset,
             status
         },
-        url: store.getState().config.endpoints.approvals
+        url: approvalsUrl
     };
+
+    console.log("received url: ", approvalsUrl);
 
     // To fetch all the approvals from the api, the status
     // has to set to null.
@@ -71,10 +76,10 @@ export const fetchPendingApprovals = (
     }
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: HttpResponse) => {
             return Promise.resolve(response.data as ApprovalTaskListItemInterface[]);
         })
-        .catch((error) => {
+        .catch((error: HttpError) => {
             return Promise.reject(`Failed to retrieve the pending approvals - ${ error }`);
         });
 };
@@ -82,25 +87,24 @@ export const fetchPendingApprovals = (
 /**
  * Fetches approval details when the `id` is passed in.
  *
- * @param {string} id - `id` of the approval.
- * @return {Promise<any>} A promise containing the response.
+ * @param id - `id` of the approval.
+ * @returns A promise containing the response.
  */
-export const fetchPendingApprovalDetails = (id: string): Promise<any> => {
-    const requestConfig = {
+export const fetchPendingApprovalDetails = (id: string, approvalsUrl: string): Promise<any> => {
+    const requestConfig: HttpRequestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.approvals + "/" + id
+        url: approvalsUrl + "/" + id
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: HttpResponse) => {
             return Promise.resolve(response.data as ApprovalTaskDetails);
         })
-        .catch((error) => {
+        .catch((error: HttpError) => {
             return Promise.reject(`Failed to retrieve the pending approval details - ${ error }`);
         });
 };
@@ -108,34 +112,33 @@ export const fetchPendingApprovalDetails = (id: string): Promise<any> => {
 /**
  * Updates the approval status.
  *
- * @param {string} id - `id` of the approval.
- * @param {ApprovalStatus.CLAIM | ApprovalStatus.RELEASE | ApprovalStatus.APPROVE | ApprovalStatus.REJECT} status - New
- *     status.
- * @return {Promise<any>} A promise containing the response.
+ * @param id - `id` of the approval.
+ * @param status - New status.
+ * @returns A promise containing the response.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const updatePendingApprovalStatus = (
     id: string,
-    status: ApprovalStatus.CLAIM | ApprovalStatus.RELEASE | ApprovalStatus.APPROVE | ApprovalStatus.REJECT
+    status: ApprovalStatus.CLAIM | ApprovalStatus.RELEASE | ApprovalStatus.APPROVE | ApprovalStatus.REJECT,
+    approvalsUrl: string
 ): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: HttpRequestConfig = {
         data: {
             action: status
         },
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: store.getState().config.endpoints.approvals + "/" + id + "/state"
+        url: approvalsUrl + "/" + id + "/state"
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: HttpResponse) => {
             return Promise.resolve(response);
         })
-        .catch((error) => {
+        .catch((error: HttpError) => {
             return Promise.reject(`Failed to update the pending approval status - ${ error }`);
         });
 };

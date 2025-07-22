@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -32,6 +32,88 @@ export interface CommonNS {
     applications: string;
     approvalStatus: string;
     approve: string;
+    approvals: string;
+    approvalsPage: {
+        list: {
+            columns: {
+                actions: string;
+                name: string;
+            };
+        };
+        title: string;
+        notifications: {
+            fetchApprovalDetails: {
+                error: {
+                    message: string;
+                    description: string;
+                };
+                genericError: {
+                    message: string;
+                    description: string;
+                };
+            };
+            fetchPendingApprovals: {
+                error: {
+                    message: string;
+                    description: string;
+                };
+                genericError: {
+                    message: string;
+                    description: string;
+                };
+            };
+            updatePendingApprovals: {
+                error: {
+                    message: string;
+                    description: string;
+                };
+                genericError: {
+                    message: string;
+                    description: string;
+                };
+                success: {
+                    message: string;
+                    description: string;
+                };
+            };
+        };
+        placeholders: {
+                emptyApprovalList: {
+                    action: string;
+                    title: string;
+                    subtitles: {
+                        0: string;
+                        1: string;
+                        2: string;
+                    };
+                };
+                emptyApprovalFilter: {
+                    action: string;
+                    title: string;
+                    subtitles: {
+                        0: string;
+                        1: string;
+                        2: string;
+                    };
+                };
+                emptySearchResults: {
+                    action: string;
+                    title: string;
+                    subtitles: {
+                        0: string;
+                        1: string;
+                        2: string;
+                    };
+                };
+                searchApprovals: string;
+            };
+        subTitle: string;
+        modals: {
+            header: string;
+            subHeader: string;
+            description: string;
+        }
+    }
     apps: string;
     assignee: string;
     assignees: string;

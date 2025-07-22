@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,6 +35,88 @@ export const common: CommonNS = {
     applicationName: "Nom de l'application",
     applications: "Applications",
     approvalStatus: "Statut d'approbation",
+    approvals: "Approbations",
+    approvalsPage: {
+        list: {
+            columns: {
+                actions: "Actes",
+                name: "Nom"
+            }
+        },
+        modals: {
+            description: "Examinez les tâches opérationnelles nécessitant votre approbation",
+            header: "Approbations",
+            subHeader: "Examinez les tâches opérationnelles nécessitant votre approbation"
+        },
+        notifications: {
+            fetchApprovalDetails: {
+                error: {
+                    description: "{{description}}",
+                    message: "Erreur lors de la récupération des détails d'approbation"
+                },
+                genericError: {
+                    description: "Les détails d'approbation n'ont pas pu être récupérés.",
+                    message: "Une erreur s'est produite"
+                }
+            },
+            fetchPendingApprovals: {
+                error: {
+                    description: "{{description}}",
+                    message: "Erreur lors de la récupération des approbations en attente"
+                },
+                genericError: {
+                    description: "Les approbations en attente n'ont pas pu être récupérées.",
+                    message: "Une erreur s'est produite"
+                }
+            },
+            updatePendingApprovals: {
+                error: {
+                    description: "{{description}}",
+                    message: "Erreur lors de la mise à jour de l'approbation"
+                },
+                genericError: {
+                    description: "La demande d'approbation en attente n'a pas pu être mise à jour.",
+                    message: "Une erreur s'est produite"
+                },
+                success: {
+                    description: "La demande d'approbation a été mise à jour avec succès.",
+                    message: "Mise à jour réussie"
+                }
+            }
+        },
+        placeholders: {
+            emptyApprovalFilter: {
+                action: "Voir tout",
+                subtitles: {
+                    0: "Il n'y a actuellement aucune approbation dans l'état {{status}}.",
+                    1: "Veuillez vérifier si vous avez des tâches dans l'état {{status}} pour",
+                    2: "les voir ici."
+                },
+                title: "Aucun résultat trouvé"
+            },
+            emptyApprovalList: {
+                action: "",
+                subtitles: {
+                    0: "Il n'y a actuellement aucune approbation à examiner.",
+                    1: "Veuillez vérifier si vous avez ajouté un flux de travail pour contrôler les opérations dans le système.",
+                    2: ""
+                },
+                title: "Aucune approbation"
+            },
+            emptySearchResults: {
+                action: "Voir tout",
+                subtitles: {
+                    0: "Nous n'avons pas pu trouver le flux de travail que vous avez recherché.",
+                    1: "Veuillez vérifier si vous avez un flux de travail avec ce nom dans",
+                    2: "le système."
+                },
+                title: "Aucune approbation"
+            },
+            searchApprovals: "Rechercher par nom de flux de travail"
+        },
+        subTitle: "Examinez les tâches opérationnelles nécessitant votre approbation",
+        title: "Approbations"
+    },
     approve: "Approuver",
     apps: "Applications",
     assignee: "Cessionnaire",

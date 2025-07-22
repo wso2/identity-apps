@@ -67,7 +67,7 @@ import { getUserstoreResourceEndpoints } from "@wso2is/admin.userstores.v1/confi
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { getValidationServiceEndpoints } from "@wso2is/admin.validation.v1/configs";
 import { getWebhooksResourceEndpoints } from "@wso2is/admin.webhooks.v1/configs/endpoints";
-import { getApprovalsResourceEndpoints } from "@wso2is/admin.workflow-approvals.v1";
+import { getApprovalsResourceEndpoints } from "@wso2is/common.workflow-approvals.v1";
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
 import { AppConstants } from "../constants/app-constants";
 import { I18nConstants } from "../constants/i18n-constants";

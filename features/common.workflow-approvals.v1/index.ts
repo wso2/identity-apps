@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,16 +16,8 @@
  * under the License.
  */
 
-import { ApprovalsResourceEndpointsInterface } from "../models";
-
-/**
- * Get the resource endpoints for the Workflow approvals Management feature.
- *
- * @param {string} serverHost - Server Host.
- * @return {ApprovalsResourceEndpointsInterface}
- */
-export const getApprovalsResourceEndpoints = (serverHost: string): ApprovalsResourceEndpointsInterface => {
-    return {
-        approvals: `${ serverHost }/api/users/v1/me/approval-tasks`
-    };
-};
+export * from "./api";
+export * from "./components";
+export * from "./configs";
+export * from "./models";
+export * from "./pages";

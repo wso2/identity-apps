@@ -21,9 +21,9 @@ import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import {
     AlertLevels,
+    IdentifiableComponentInterface,
     LoadableComponentInterface,
-    SBACInterface,
-    TestableComponentInterface
+    SBACInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -55,7 +55,7 @@ import { ApprovalStatus, ApprovalTaskDetails, ApprovalTaskListItemInterface } fr
  * Prop types for the approvals list component.
  */
 interface ApprovalsListPropsInterface extends SBACInterface<FeatureConfigInterface>, LoadableComponentInterface,
-    TestableComponentInterface {
+    IdentifiableComponentInterface {
 
     /**
      * Resolve the label color of the task.
@@ -115,6 +115,10 @@ interface ApprovalsListPropsInterface extends SBACInterface<FeatureConfigInterfa
      * Specifies if the form is submitting
      */
     isSubmitting?: boolean;
+    /**
+     * Approvals URL.
+     */
+    approvalsUrl?: string;
 }
 
 /**
@@ -132,6 +136,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
     const dispatch: Dispatch = useDispatch();
 
     const {
+        approvalsUrl,
         getApprovalsList,
         onChangeStatusFilter,
         resolveApprovalTagColor,
@@ -140,11 +145,11 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
         filterStatus,
         isLoading,
         list,
-        selection,
+        selection = true,
         searchResult,
-        showListItemActions,
+        showListItemActions = true,
         isSubmitting,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId = "approvals-list"
     } = props;
 
     const [ isApprovalTaskDetailsLoading, setApprovalTaskDetailsLoading ] = useState<boolean>(false);
@@ -162,7 +167,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
     const getApprovalTaskDetails = (approval: ApprovalTaskListItemInterface): void => {
         setApprovalTaskDetailsLoading(true);
 
-        fetchPendingApprovalDetails(approval.id)
+        fetchPendingApprovalDetails(approval.id, approvalsUrl)
             .then((response: ApprovalTaskDetails) => {
                 let selectedApprovalTask: ApprovalTaskDetails = response;
 
@@ -178,19 +183,16 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.approvals.notifications.fetchApprovalDetails." +
-                            "error.message")
+                        message: t("common:approvalsPage.notifications.fetchApprovalDetails.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("console:manage.features.approvals.notifications.fetchApprovalDetails" +
-                        ".genericError.description"),
+                    description: t("common:approvalsPage.notifications.fetchApprovalDetails.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.approvals.notifications.fetchApprovalDetails." +
-                        "genericError.message")
+                    message: t("common:approvalsPage.notifications.fetchApprovalDetails.genericError.message")
                 }));
             })
             .finally(() => {
@@ -218,18 +220,18 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                 <EmptyPlaceholder
                     action={ (
                         <LinkButton onClick={ getApprovalsList }>
-                            { t("console:manage.features.approvals.placeholders.emptySearchResults.action") }
+                            { t("common:approvalsPage.placeholders.emptySearchResults.action") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("console:manage.features.approvals.placeholders.emptySearchResults.title") }
+                    title={ t("common:approvalsPage.placeholders.emptySearchResults.title") }
                     subtitle={ [
-                        t("console:manage.features.approvals.placeholders.emptySearchResults.subtitles.0"),
-                        t("console:manage.features.approvals.placeholders.emptySearchResults.subtitles.1"),
-                        t("console:manage.features.approvals.placeholders.emptySearchResults.subtitles.2")
+                        t("common:approvalsPage.placeholders.emptySearchResults.subtitles.0"),
+                        t("common:approvalsPage.placeholders.emptySearchResults.subtitles.1"),
+                        t("common:approvalsPage.placeholders.emptySearchResults.subtitles.2")
                     ] }
-                    data-testid={ `${ testId }-empty-search-placeholder` }
+                    data-componentid={ `${ componentId }-empty-search-placeholder` }
                 />
             );
         }
@@ -239,20 +241,20 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                 <EmptyPlaceholder
                     action={ (
                         <LinkButton onClick={ () => onChangeStatusFilter(ApprovalStatus.ALL) }>
-                            { t("console:manage.features.approvals.placeholders.emptySearchResults.action") }
+                            { t("common:approvalsPage.placeholders.emptySearchResults.action") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ t("console:manage.features.approvals.placeholders.emptyApprovalFilter.title") }
+                    title={ t("common:approvalsPage.placeholders.emptyApprovalFilter.title") }
                     subtitle={ [
-                        t("console:manage.features.approvals.placeholders.emptyApprovalFilter.subtitles.0",
+                        t("common:approvalsPage.placeholders.emptyApprovalFilter.subtitles.0",
                             { status: filterStatus }),
-                        t("console:manage.features.approvals.placeholders.emptyApprovalFilter.subtitles.1",
+                        t("common:approvalsPage.placeholders.emptyApprovalFilter.subtitles.1",
                             { status: filterStatus }),
-                        t("console:manage.features.approvals.placeholders.emptyApprovalFilter.subtitles.2")
+                        t("common:approvalsPage.placeholders.emptyApprovalFilter.subtitles.2")
                     ] }
-                    data-testid={ `${ testId }-empty-placeholder` }
+                    data-componentid={ `${ componentId }-empty-placeholder` }
                 />
             );
         }
@@ -262,13 +264,13 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                 <EmptyPlaceholder
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ t("console:manage.features.approvals.placeholders.emptyApprovalList.title") }
+                    title={ t("common:approvalsPage.placeholders.emptyApprovalList.title") }
                     subtitle={ [
-                        t("console:manage.features.approvals.placeholders.emptyApprovalList.subtitles.0"),
-                        t("console:manage.features.approvals.placeholders.emptyApprovalList.subtitles.1"),
-                        t("console:manage.features.approvals.placeholders.emptyApprovalList.subtitles.2")
+                        t("common:approvalsPage.placeholders.emptyApprovalList.subtitles.0"),
+                        t("common:approvalsPage.placeholders.emptyApprovalList.subtitles.1"),
+                        t("common:approvalsPage.placeholders.emptyApprovalList.subtitles.2")
                     ] }
-                    data-testid={ `${ testId }-empty-placeholder` }
+                    data-componentid={ `${ componentId }-empty-placeholder` }
                 />
             );
         }
@@ -288,7 +290,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
 
         return [
             {
-                "data-testid": `${ testId }-item-claim-button`,
+                "data-testid": `${ componentId }-item-claim-button`,
                 hidden: (approval: ApprovalTaskListItemInterface): boolean =>
                     approval?.approvalStatus === ApprovalStatus.COMPLETED ||
                     approval?.approvalStatus === ApprovalStatus.RESERVED ||
@@ -300,7 +302,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                 renderer: "semantic-icon"
             },
             {
-                "data-testid": `${ testId }-item-release-button`,
+                "data-testid": `${ componentId }-item-release-button`,
                 hidden: (approval: ApprovalTaskListItemInterface): boolean =>
                     approval?.approvalStatus === ApprovalStatus.COMPLETED||
                     approval?.approvalStatus === ApprovalStatus.READY ||
@@ -316,7 +318,6 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
     };
 
     function formatApprovalName(name: string): string {
-        // "Association for ADD_USER" → "User Addition Request"
         const [ , action ] = name.split(" for ");
 
         switch (action) {
@@ -352,7 +353,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                             image
                             as="h6"
                             className="header-with-icon"
-                            data-testid={ `${testId}-item-heading` }
+                            data-componentid={ `${componentId}-item-heading` }
                         >
                             <GenericIcon
                                 bordered
@@ -366,14 +367,12 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                             <Header.Content>
                                 { "Approval Required" + ":" }
                                 <Label circular>
-                                    { /* { "You have a new user creation request awaiting your approval." } */ }
-
                                 You have a new{ " " }
                                     <strong>{ formatApprovalName(approval.name) }</strong>{ " " }
                                 awaiting your approval.
                                 </Label>
 
-                                <Header.Subheader data-testid={ `${testId}-item-sub-heading` }>
+                                <Header.Subheader data-componentid={ `${componentId}-item-sub-heading` }>
                                     <div className="pb-2">
                                         <Label
                                             circular
@@ -387,7 +386,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                         </Header>
                     );
                 },
-                title: t("console:manage.features.approvals.list.columns.name")
+                title: t("common:approvalsPage.list.columns.name")
             },
             {
                 allowToggleVisibility: false,
@@ -395,7 +394,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("console:manage.features.approvals.list.columns.actions")
+                title: t("common:approvalsPage.list.columns.actions")
             }
         ];
     };
@@ -420,7 +419,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                 selectable={ selection }
                 showHeader={ false }
                 transparent={ !(isLoading || isApprovalTaskDetailsLoading) && (showPlaceholders() !== null) }
-                data-testid={ testId }
+                data-componentid={ componentId }
             />
             <ApprovalTaskComponent
                 resolveApprovalTagColor={ resolveApprovalTagColor }
@@ -432,13 +431,4 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
             />
         </>
     );
-};
-
-/**
- * Default props for the component.
- */
-ApprovalsList.defaultProps = {
-    "data-testid": "approvals-list",
-    selection: true,
-    showListItemActions: true
 };
