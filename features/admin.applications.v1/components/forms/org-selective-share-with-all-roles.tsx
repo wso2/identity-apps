@@ -371,8 +371,7 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
             setRemovedOrgs((prev: string[]) => prev.filter((item: string) => item !== selectedItem));
             // Select the parent nodes of the selected item
             selectParentNodes(selectedItem);
-        }
-        else {
+        } else {
             // Remove the selected item from the selectedItems list
             setSelectedItems((prev: string[]) => prev.filter((item: string) => item !== selectedItem));
             // Add to removedOrgs list if the organization is not already in the list
