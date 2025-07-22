@@ -95,7 +95,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
     const [ otherAttributeMappings, setOtherAttributeMappings ] = useState<ClaimDialect[]>([]);
     const cdmEnabled = true; // TODO: Replace with config value later
 
-
     const dispatch: Dispatch = useDispatch();
 
     const listAllAttributeDialects: boolean = useSelector(
@@ -352,125 +351,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                 </List.Item>
                                             </List>
                                         </EmphasizedSegment>
-                                        { cdmEnabled && (
-                                            isLoading ? (
-                                                renderSegmentPlaceholder()
-                                            ) : (
-                                                    <EmphasizedSegment
-                                                        className="clickable"
-                                                        data-testid={ `${ testId }-application-data-dialect-container` }
-                                                        onClick={ () => {
-                                                            history.push(AppConstants.getPaths().get("APPLICATION_DATA"));
-                                                        } }
-                                                    >
-                                                        <List>
-                                                            <List.Item>
-                                                                <Grid>
-                                                                    <Grid.Row columns={ 2 }>
-                                                                        <Grid.Column width={ 12 }>
-                                                                        <GenericIcon
-                                                                                verticalAlign="middle"
-                                                                                fill="primary"
-                                                                                transparent
-                                                                                icon={ getSidePanelIcons().applications }
-                                                                                spaced="right"
-                                                                                size="mini"
-                                                                                floated="left"
-                                                                            />
-                                                                            <List.Header>
-                                                                                { "Application Data"}
-                                                                            </List.Header>
-                                                                            <List.Description>
-                                                                                { "Update application data in profile "}
-                                                                            </List.Description>
-                                                                        </Grid.Column>
-                                                                        <Grid.Column
-                                                                            width={ 4 }
-                                                                            verticalAlign="middle"
-                                                                            textAlign="right"
-                                                                        >
-                                                                            <Popup
-                                                                                content={
-                                                                                    hasAttributeDialectsUpdatePermissions
-                                                                                        ? t("common:edit")
-                                                                                        : t("common:view")
-                                                                                }
-                                                                                trigger={
-                                                                                    hasAttributeDialectsUpdatePermissions
-                                                                                        ? <Icon color="grey" name="pencil" />
-                                                                                        : <Icon color="grey" name="eye" />
-                                                                                }
-                                                                                inverted
-                                                                            />
-                                                                        </Grid.Column>
-                                                                    </Grid.Row>
-                                                                </Grid>
-                                                            </List.Item>
-                                                        </List>
-                                                    </EmphasizedSegment>
-                                                )
-                                            )
-                                         }
-                                         { cdmEnabled && (
-                                            isLoading ? (
-                                                renderSegmentPlaceholder()
-                                            ) : (
-                                                    <EmphasizedSegment
-                                                        className="clickable"
-                                                        data-testid={ `${ testId }-application-data-dialect-container` }
-                                                        onClick={ () => {
-                                                            history.push(AppConstants.getPaths().get("TRAITS"));
-                                                        } }
-                                                    >
-                                                        <List>
-                                                            <List.Item>
-                                                                <Grid>
-                                                                    <Grid.Row columns={ 2 }>
-                                                                    <Grid.Column width={ 12 }>
-
-                                                                    <GenericIcon
-                                                                                verticalAlign="middle"
-                                                                                fill="primary"
-                                                                                transparent
-                                                                                icon={ getSidePanelIcons().users }
-                                                                                spaced="right"
-                                                                                size="mini"
-                                                                                floated="left"
-                                                                            />
-                                                                            <List.Header>
-                                                                                { "Traits"}
-                                                                            </List.Header>
-                                                                            <List.Description>
-                                                                                { "Update custom traits in profile "}
-                                                                            </List.Description>
-                                                                        </Grid.Column>
-                                                                        <Grid.Column
-                                                                            width={ 4 }
-                                                                            verticalAlign="middle"
-                                                                            textAlign="right"
-                                                                        >
-                                                                            <Popup
-                                                                                content={
-                                                                                    hasAttributeDialectsUpdatePermissions
-                                                                                        ? t("common:edit")
-                                                                                        : t("common:view")
-                                                                                }
-                                                                                trigger={
-                                                                                    hasAttributeDialectsUpdatePermissions
-                                                                                        ? <Icon color="grey" name="pencil" />
-                                                                                        : <Icon color="grey" name="eye" />
-                                                                                }
-                                                                                inverted
-                                                                            />
-                                                                        </Grid.Column>
-                                                                    </Grid.Row>
-                                                                </Grid>
-                                                            </List.Item>
-                                                        </List>
-                                                    </EmphasizedSegment>
-                                                )
-                                            )
-                                         }
                                         { !isSubOrganization() &&
                                         featureConfig?.attributeVerification?.enabled &&
                                         hasAttributeVerificationReadPermissions && (

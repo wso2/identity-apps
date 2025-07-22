@@ -373,7 +373,7 @@ export class AppConstants {
             [ "PROFILE_VIEW", `${AppConstants.getMainViewBasePath()}/profiles/:id/view` ],
             [ "UNIFICATION_RULES", `${AppConstants.getMainViewBasePath()}/unification-rules` ],
             [ "UNIFICATION_RULE_EDIT", `${AppConstants.getMainViewBasePath()}/unification-rules/:id` ],
-
+            ["PROFILE_SCHEMA", `${AppConstants.getMainViewBasePath()}/profile-schemas`],
             [ "USERS", `${AppConstants.getAdminViewBasePath()}/users` ],
             [ "USER_EDIT", `${AppConstants.getAdminViewBasePath()}/users/:id` ],
             [ "USERSTORES", `${AppConstants.getAdminViewBasePath()}/user-stores` ],

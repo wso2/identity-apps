@@ -1,58 +1,27 @@
-import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { HttpMethods } from "@wso2is/core/models";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
+import axios from "axios";
 
-const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
-    .httpRequest.bind(AsgardeoSPAClient.getInstance());
-
-const BASE = "http://localhost:8900/api/v1";
-
-export const getProfileTraitById = (traitId: string): Promise<any> => {
-    return httpClient({
-        method: HttpMethods.GET,
-        url: `${BASE}/profile-schema/${traitId}`
-    }).then(handleResponse).catch(handleError);
+export const getTraits = async (): Promise<Trait[]> => {
+    const response = await axios.get("http://localhost:8900/api/v1/profile-schema/traits");
+    return response.data;
 };
 
-export const createProfileTrait = (traitData: any): Promise<any> => {
-    return httpClient({
-        method: HttpMethods.POST,
-        url: `${BASE}/profile-schema`,
-        data: traitData
-    }).then(handleResponse).catch(handleError);
-};
+export interface SubAttribute {
+    attribute_id: string;
+    attribute_name: string;
+}
 
-export const updateProfileTrait = (traitId: string, updatedData: any): Promise<any> => {
-    return httpClient({
-        method: HttpMethods.PATCH,
-        url: `${BASE}/profile-schema/${traitId}`,
-        data: updatedData
-    }).then(handleResponse).catch(handleError);
-};
-
-export const deleteProfileTrait = (traitId: string): Promise<any> => {
-    return httpClient({
-        method: HttpMethods.DELETE,
-        url: `${BASE}/profile-schema/${traitId}`
-    }).then(handleResponse).catch(handleError);
-};
-
-// Utility handlers
-const handleResponse = (response: AxiosResponse) => {
-    if (response.status !== 200 && response.status !== 201) {
-        throw new IdentityAppsApiException(response.data?.description, null, response.status, response.request, response, response.config);
-    }
-    return Promise.resolve(response.data);
-};
-
-const handleError = (error: AxiosError) => {
-    throw new IdentityAppsApiException(
-        error.message,
-        error.stack,
-        error.response?.data?.code,
-        error.request,
-        error.response,
-        error.config
-    );
-};
+export interface CanonicalValue {
+    value: string;
+    label?: string;
+}
+export interface Trait {
+    attribute_id: string;
+    attribute_name: string;
+    description?: string;
+    value_type: string;
+    merge_strategy?: string;
+    multi_valued?: boolean;
+    mutability?: string;
+    sub_attributes?: SubAttribute[];
+    canonical_values?: CanonicalValue[];
+}

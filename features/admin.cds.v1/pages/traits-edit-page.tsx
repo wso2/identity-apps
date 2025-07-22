@@ -10,7 +10,8 @@ import {
     Form,
     Table,
     Segment,
-    Button
+    Button,
+    Image
 } from "semantic-ui-react";
 import axios from "axios";
 import {
@@ -118,13 +119,38 @@ const TraitsEditPage: FunctionComponent<RouteComponentProps<RouteParams>> = (
             .finally(() => setIsUpdating(false));
     };
 
+        const generateClaimLetter= (attribute_name: string): string => {
+            if (!attribute_name) {
+                return "?";
+            }
+            // const cleanName = attribute_name.replace(/^traits\./, "");
+            // return cleanName.charAt(0).toUpperCase();
+
+            const displayName = trait.attribute_name.replace(/^traits\./, "");
+            const initial = displayName.split(".").pop();
+            return initial ? initial.charAt(0).toUpperCase() : "?";
+        }
+
     return (
         <TabPageLayout
             isLoading={ isLoading }
-            image={<AnimatedAvatar name={trait?.attribute_name} size="tiny" />}
+            image={ (
+                <Image
+                    floated="left"
+                    verticalAlign="middle"
+                    rounded
+                    centered
+                    size="tiny"
+                >
+                    <AnimatedAvatar />
+                    <span className="claims-letter">
+                        { trait && generateClaimLetter(trait.attribute_name) }
+                    </span>
+                </Image>
+            ) }
             title={ trait?.attribute_name?.replace(/^traits\./, "") || "Edit Trait" }
             pageTitle="Edit Trait"
-            description="Edit trait details here."
+            description="Edit trait details."
             backButton={{
                 onClick: () => history.push(AppConstants.getPaths().get("TRAITS")),
                 text: t("common:back", { defaultValue: "Go back to Traits" })

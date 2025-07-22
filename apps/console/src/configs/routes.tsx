@@ -35,6 +35,7 @@ import {
     UserGroupIcon,
     WebhookIcon,
     UserPlusIcon,
+    UserDatabaseIcon,
 } from "@oxygen-ui/react-icons";
 import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -642,44 +643,30 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     protected: true,
                     showOnSidePanel: false
                 },
-                {
-                    component: lazy(() => import("@wso2is/admin.claims.v1/pages/traits-page")),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
-                    id: "traits",
-                    name: "Traits",
-                    path: AppConstants.getPaths().get("TRAITS"),
-                    protected: true,
-                    showOnSidePanel: false
-                },
-                {
-                    component: lazy(() => import("@wso2is/admin.claims.v1/pages/traits-edit-page")),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
-                    id: "traits",
-                    name: "Traits",
-                    path: AppConstants.getPaths().get("TRAITS_EDIT"),
-                    protected: true,
-                    showOnSidePanel: false
-                },
-                
                 // {
-                //     component: lazy(() => import("@wso2is/admin.cds.v1/pages/application-data")),
+                //     component: lazy(() => import("@wso2is/admin.cds.v1/pages/traits-page")),
                 //     exact: true,
                 //     icon: {
                 //         icon: getSidePanelIcons().childIcon
                 //     },
-                //     id: "applicationData",
-                //     name: "Application Data",
-                //     path: AppConstants.getPaths().get("APPLICATION_DATA"),
+                //     id: "traits",
+                //     name: "Traits",
+                //     path: AppConstants.getPaths().get("TRAITS"),
                 //     protected: true,
                 //     showOnSidePanel: false
-                // }
-            
+                // },
+                // {
+                //     component: lazy(() => import("@wso2is/admin.cds.v1/pages/traits-edit-page")),
+                //     exact: true,
+                //     icon: {
+                //         icon: getSidePanelIcons().childIcon
+                //     },
+                //     id: "traits",
+                //     name: "Traits",
+                //     path: AppConstants.getPaths().get("TRAITS_EDIT"),
+                //     protected: true,
+                //     showOnSidePanel: false
+                // },            
             ],
             component: lazy(() => import("@wso2is/admin.claims.v1/pages/claim-dialects")),
             exact: true,
@@ -1604,7 +1591,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         {
             category: "customerData",
             component: lazy(() =>
-                import("@wso2is/admin.cds.v1/pages/profile-list")
+                import("@wso2is/admin.cds.v1/pages/profile")
             ),
             exact: true,
             icon: {
@@ -1636,6 +1623,48 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         {
             category: "customerData",
             component: lazy(() =>
+                import("@wso2is/admin.cds.v1/pages/profile-schema")
+            ),
+            exact: true,
+            icon: {
+                icon: <UserDatabaseIcon className="icon" fill="black" />
+            },
+            id: "profileschema",
+            name: "Profile Schema",
+            order: 33,
+            path: AppConstants.getPaths().get("PROFILE_SCHEMA"), 
+            protected: true,
+            showOnSidePanel: true,
+            children: [
+                {
+                    component: lazy(() => import("@wso2is/admin.cds.v1/pages/traits-page")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "traits",
+                    name: "Traits",
+                    path: AppConstants.getPaths().get("TRAITS"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.cds.v1/pages/traits-edit-page")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "traits",
+                    name: "Traits",
+                    path: AppConstants.getPaths().get("TRAITS_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+            ]
+        },
+        {
+            category: "customerData",
+            component: lazy(() =>
                 import("@wso2is/admin.cds.v1/pages/profile-unification-rules")
             ),
             exact: true,
@@ -1644,7 +1673,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             },
             id: "unification",
             name: "Unification Rules",
-            order: 33,
+            order: 34,
             path: AppConstants.getPaths().get("UNIFICATION_RULES"), 
             protected: true,
             showOnSidePanel: true,

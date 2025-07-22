@@ -7,19 +7,15 @@ import {
     ConfirmationModal,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
-import {
-    AlertLevels,
-    DropdownItemProps,
-    DropdownProps
-} from "@wso2is/core/models";
-import { Icon } from "semantic-ui-react";
+import { DropdownItemProps, DropdownProps, Grid, Icon, List } from "semantic-ui-react";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import axios from "axios";
-import UnificationRuleAddModal from "../components/modals/unification-rule-add-modal";
-import { UnificationRulesList } from "./unification-rule-list";
+import UnificationRuleAddModal from "../components/modals/add-unification-rule";
 
-const SORT_BY: DropdownItemProps[] = [
+import { UnificationRulesList } from "../components/unification-rule-list";
+
+const SORT_BY = [
     { key: 0, text: "Name", value: "rule_name" },
     { key: 1, text: "Scope", value: "property_scope" },
     { key: 2, text: "Priority", value: "priority" }
@@ -72,7 +68,7 @@ const ProfileUnificationRulePage = () => {
             setOriginalRules(sorted);
             setRules(sorted);
         } catch (err) {
-            console.error("Failed to fetch resolution rules", err);
+            console.error("Failed to fetch unification rules", err);
         } finally {
             setIsLoading(false);
         }
@@ -90,25 +86,6 @@ const ProfileUnificationRulePage = () => {
             fetchRules();
         } catch (err) {
             console.error("Failed to toggle rule status", err);
-        }
-    };
-
-    const handleRuleDelete = async (ruleId: string) => {
-        setIsLoading(true);
-        try {
-            await axios.delete(`http://localhost:8900/api/v1/unification-rules/${ruleId}`);
-            setShowDeleteConfirmationModal(false);
-            setAlert(null);
-            fetchRules();
-        } catch (err) {
-            console.error("Failed to delete rule", err);
-            setAlert({
-                description: "Something went wrong while deleting the rule.",
-                level: AlertLevels.ERROR,
-                message: "Delete failed"
-            });
-        } finally {
-            setIsLoading(false);
         }
     };
 
@@ -142,7 +119,7 @@ const ProfileUnificationRulePage = () => {
     return (
         <PageLayout
             title="Unification Rules"
-            description="Manage profile unification rules here."
+            description="Manage profile unification rules."
             action={rules.length > 0 && (
                 <PrimaryButton onClick={() => setOpenModal(true)}>
                     <Icon name="add" />
@@ -174,7 +151,7 @@ const ProfileUnificationRulePage = () => {
                     onSortStrategyChange={handleSortStrategyChange}
                     onSortOrderChange={handleSortOrderChange}
                     isLoading={isLoading}
-                    onPageChange={(page: number) => setOffset((page - 1) * listItemLimit)}
+                    onPageChange={(_, data) => setOffset(((data.activePage as number) - 1) * listItemLimit)}
                     totalPages={Math.ceil(rules.length / listItemLimit)}
                     advancedSearch={
                         <AdvancedSearchWithBasicFilters
@@ -184,15 +161,16 @@ const ProfileUnificationRulePage = () => {
                             defaultSearchAttribute="rule_name"
                             defaultSearchOperator="co"
                             triggerClearQuery={triggerClearQuery}
-                            onSearchQueryClear={handleSearchQueryClear}
-                            searchQuery={searchQuery}
+            
                         />
                     }
                 >
                     <UnificationRulesList
                         rules={paginate(rules, listItemLimit, offset)}
                         isLoading={isLoading}
-                        onRefresh={fetchRules}
+                        onDelete={fetchRules}
+                        onSearchQueryClear={handleSearchQueryClear}
+                            searchQuery={searchQuery}
                     />
                 </ListLayout>
             )}

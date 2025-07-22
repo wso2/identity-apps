@@ -122,22 +122,26 @@ const UnificationRuleEditPage = () => {
                 uncontrolledForm={ true }
                 onSubmit={ handleSubmit }
                 initialValues={ rule }
+                id ="unification-rule-edit-form"
             >
                 <Field
                     name="rule_name"
                     label="Rule Name"
                     readOnly
+                    ariaLabel="Rule Name"
                 />
                 <Field
                     name="property_name"
                     label="Attribute"
                     readOnly
+                    ariaLabel="Attribute"
                 />
                 <Field
                     name="priority"
                     label="Priority"
                     type="number"
                     required
+                    ariaLabel="Priority"
                 />
                 <Hint>
                     Only priority can be updated. Rule name and attribute are fixed once created.

@@ -17,7 +17,7 @@ import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { AddTraitModal } from "../components/add/add-trait";
+import { AddTraitModal } from "../components/modals/add-trait";
 
 const TraitsPage: FunctionComponent = (): ReactElement => {
 
@@ -129,8 +129,8 @@ const TraitsPage: FunctionComponent = (): ReactElement => {
             pageTitle={ t("traits:page.title", { defaultValue: "Traits" }) }
             description={ t("traits:page.description", { defaultValue: "Manage user traits here." }) }
             backButton={{
-                onClick: () => { history.push(AppConstants.getPaths().get("CLAIM_DIALECTS")); },
-                text: t("common:back", { defaultValue: "Go back to Attributes and Mappings" })
+                onClick: () => { history.push(AppConstants.getPaths().get("PROFILE_SCHEMA")); },
+                text: "Go back to Profile Schema"
             }}
             action={ traits.length > 0 && (
                 <PrimaryButton onClick={ handleAddTrait }>
@@ -162,7 +162,11 @@ const TraitsPage: FunctionComponent = (): ReactElement => {
                         listItemLimit={ listItemLimit }
                         onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                         onPageChange={ handlePaginationChange }
-                        onSortStrategyChange={ handleSortStrategyChange }
+                        // onSortStrategyChange={ handleSortStrategyChange }
+                        // onSortOrderChange={ handleSortOrderChange }
+                        // sortOptions={ SORT_BY.length > 1 ? SORT_BY : undefined }
+                        // sortStrategy={ SORT_BY.length > 1 ? sortBy : undefined }
+                        // onSortStrategyChange={ SORT_BY.length > 1 ? handleSortStrategyChange : undefined }
                         onSortOrderChange={ handleSortOrderChange }
                         showPagination={ true }
                         showTopActionPanel={ true }
@@ -180,8 +184,7 @@ const TraitsPage: FunctionComponent = (): ReactElement => {
                                 defaultSearchAttribute="attribute_name"
                                 defaultSearchOperator="co"
                                 triggerClearQuery={ triggerClearQuery }
-                                onSearchQueryClear={ handleSearchQueryClear }
-                                searchQuery={ searchQuery }
+                                
                             />
                         }
                         isLoading={ isLoading }
@@ -190,6 +193,8 @@ const TraitsPage: FunctionComponent = (): ReactElement => {
                             traits={ paginate(traits, listItemLimit, offset) }
                             isLoading={ isLoading }
                             onRefresh={ fetchTraits }
+                            onSearchQueryClear={ handleSearchQueryClear }
+                            searchQuery={ searchQuery }
                         />
                     </ListLayout>
                 )

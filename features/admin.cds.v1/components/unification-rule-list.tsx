@@ -3,32 +3,63 @@ import {
     DataTable,
     AppAvatar,
     AnimatedAvatar,
-    ConfirmationModal
+    ConfirmationModal,
+    Popup
 } from "@wso2is/react-components";
 import {
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
-import { SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import { UnificationRuleInterface } from "../models/unification-rules";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import Chip from "@oxygen-ui/react/Chip/Chip";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { addAlert } from "@wso2is/core/store";
+import { AlertLevels } from "@wso2is/core/models";
 
 interface ResolutionRulesListProps {
     rules: UnificationRuleInterface[];
     isLoading: boolean;
-    onEdit: (rule: UnificationRuleInterface) => void;
+    // onEdit: (rule: UnificationRuleInterface) => void;
     onDelete: (rule: UnificationRuleInterface) => void;
+    onSearchQueryClear ?: () => void;
+                            searchQuery ?: string;
 }
 
 export const UnificationRulesList: FunctionComponent<ResolutionRulesListProps> = ({
     rules,
     isLoading,
+    onDelete,
 }: ResolutionRulesListProps): ReactElement => {
 
     const [ deletingRule, setDeletingRule ] = useState<UnificationRuleInterface>(null);
     const [ showDeleteModal, setShowDeleteModal ] = useState(false);
+
+    const dispatch = useDispatch();
+
+    const handleDelete = async () => {
+        try {
+            await axios.delete(`http://localhost:8900/api/v1/unification-rules/${deletingRule.rule_id}`);
+            dispatch(addAlert({
+                level: AlertLevels.SUCCESS,
+                message: "Deleted",
+                description: "The unification rule was successfully deleted."
+            }));
+            onDelete?.(deletingRule);
+        } catch (error) {
+            dispatch(addAlert({
+                level: AlertLevels.ERROR,
+                message: "Delete Failed",
+                description: error?.message || "Failed to delete the rule."
+            }));
+        } finally {
+            setShowDeleteModal(false);
+            setDeletingRule(null);90
+        }
+    };
 
     const columns: TableColumnInterface[] = [
         {
@@ -51,7 +82,41 @@ export const UnificationRulesList: FunctionComponent<ResolutionRulesListProps> =
                             size="mini"
                             spaced="right"
                         />
+                        <Header.Content>
+                            {
+                                rule.is_active
+                                    ? (
+                                        <Popup
+                                            trigger={ (
+                                                <Icon
+                                                    className="mr-2 ml-0 vertical-aligned-baseline"
+                                                    size="small"
+                                                    name="circle"
+                                                    color="green"
+                                                />
+                                            ) }
+                                            content={ "Enabled" }
+                                            inverted
+                                        />
+                                    ) : (
+                                        <Popup
+                                            trigger={ (
+                                                <Icon
+                                                    className="mr-2 ml-0 vertical-aligned-baseline"
+                                                    size="small"
+                                                    name="circle"
+                                                    color="orange"
+                                                />
+                                            ) }
+                                            content={ "Disabled" }
+                                            inverted
+                                        />
+                                    )
+                            }
+                        </Header.Content>
+                        <Header.Content>
                         { displayName }
+                        </Header.Content>
                     </div>
                 );
             }
@@ -137,10 +202,13 @@ export const UnificationRulesList: FunctionComponent<ResolutionRulesListProps> =
                 actions={ actions }
                 showHeader={ true }
                 showActions={ true }
-                onRowClick={ (_: SyntheticEvent, rule: UnificationRuleInterface): void => {
-                    if (rule.property_name !== "user_id") {
-                        history.push(AppConstants.getPaths().get("UNIFICATION_RULE_EDIT").replace(":id", rule.rule_id));
+                onRowClick={ (e: SyntheticEvent, rule: UnificationRuleInterface): void => {
+                    if (rule.property_name === "user_id") {
+                        e.preventDefault();
+                        return;
                     }
+                    history.push(AppConstants.getPaths().get("UNIFICATION_RULE_EDIT").replace(":id", rule.rule_id));
+                    
                 } }
             />
 
@@ -161,8 +229,7 @@ export const UnificationRulesList: FunctionComponent<ResolutionRulesListProps> =
                         setDeletingRule(null);
                     } }
                     onPrimaryActionClick={ () => {
-                        setShowDeleteModal(false);
-                        setDeletingRule(null);
+                        handleDelete();
                     } }
                     closeOnDimmerClick={ false }
                 >
