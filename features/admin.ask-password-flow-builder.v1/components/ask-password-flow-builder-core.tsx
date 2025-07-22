@@ -523,16 +523,7 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
 
         const steps: Step[] = basicTemplate?.config?.data?.steps || [];
 
-        const nodes: Node[] = generateSteps([
-            ...steps,
-            {
-                data: { displayOnly: true },
-                deletable: false,
-                id: INITIAL_FLOW_USER_ONBOARD_STEP_ID,
-                position: { x: steps[steps.length - 1].position.x + 600, y: steps[steps.length - 1].position.y + 200 },
-                type: StaticStepTypes.End
-            }
-        ]);
+        const nodes: Node[] = generateSteps(steps);
 
         const replacers: any = basicTemplate?.config?.data?.__generationMeta__?.replacers || [];
 
