@@ -27,6 +27,7 @@
         "@mui/utils": "^5.12.3",
         "@oxygen-ui/react": "^2.4.5",
         "@oxygen-ui/react-icons": "^2.4.5",
+        "@wso2is/admin.branding.v1": "workspace:^",
         "@wso2is/admin.core.v1": "^2.46.26",
         "@wso2is/admin.flows.v1": "workspace:^",
         "@wso2is/common.ai.v1": "^2.27.3",

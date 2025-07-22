@@ -100,6 +100,20 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * Metadata for the current flow builder.
      */
     metadata?: CommonMetadataInterface;
+    /**
+     * Configured i18n text from the branding or default fallback.
+     */
+    i18nText?: Record<string, string>;
+    /**
+     * The language of the i18n text.
+     */
+    language?: string;
+    /**
+     * Sets the language for the i18n text.
+     *
+     * @param language - The language to set.
+     */
+    setLanguage?: (language: string) => void;
 }
 
 /**
@@ -111,8 +125,10 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
     {
         ElementFactory: () => null,
         ResourceProperties: () => null,
+        i18nText: null,
         isResourcePanelOpen: true,
         isResourcePropertiesPanelOpen: false,
+        language: "",
         lastInteractedResource: null,
         lastInteractedStepId: "",
         metadata: null,
@@ -121,6 +137,7 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         selectedAttributes: {},
         setIsOpenResourcePropertiesPanel: () => {},
         setIsResourcePanelOpen: () => {},
+        setLanguage: () => {},
         setLastInteractedResource: () => {},
         setLastInteractedStepId: () => {},
         setResourcePropertiesPanelHeading: () => {},

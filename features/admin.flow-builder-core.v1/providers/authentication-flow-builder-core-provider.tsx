@@ -19,6 +19,8 @@
 import Avatar from "@oxygen-ui/react/Avatar";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
+import useGetCustomTextPreferenceResolve from "@wso2is/admin.branding.v1/api/use-get-custom-text-preference-resolve";
+import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { AlertLevels, Claim } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -28,6 +30,7 @@ import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode, u
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { PreviewScreenType } from "../../common.branding.v1/models";
 import useGetMetadata from "../api/use-metadata";
 import AuthenticationFlowBuilderCoreContext from "../context/authentication-flow-builder-core-context";
 import { Resource, ResourceTypes } from "../models/resources";
@@ -49,6 +52,10 @@ export interface AuthenticationFlowBuilderProviderProps {
      * The type of the flow.
      */
     flowType: FlowTypes;
+    /**
+     * Screen types for the i18n text.
+     */
+    screenTypes: PreviewScreenType[];
 }
 
 /**
@@ -72,8 +79,10 @@ const AuthenticationFlowBuilderCoreProvider = ({
     const [ lastInteractedElementInternal, setLastInteractedElementInternal ] = useState<Resource>(null);
     const [ lastInteractedStepId, setLastInteractedStepId ] = useState<string>("");
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Claim[] }>({});
+    const [ language, setLanguage ] = useState<string>(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
 
     const { data: flowMetadata, error: flowMetadataError } = useGetMetadata(flowType, !!flowType);
+    const {} = useGetCustomTextPreferenceResolve(true, );
 
     /**
      * Error handling for flow metadata fetch.
@@ -126,6 +135,7 @@ const AuthenticationFlowBuilderCoreProvider = ({
                     ResourceProperties,
                     isResourcePanelOpen,
                     isResourcePropertiesPanelOpen,
+                    language,
                     lastInteractedResource: lastInteractedElementInternal,
                     lastInteractedStepId,
                     metadata: flowMetadata,
@@ -134,6 +144,7 @@ const AuthenticationFlowBuilderCoreProvider = ({
                     selectedAttributes,
                     setIsOpenResourcePropertiesPanel,
                     setIsResourcePanelOpen,
+                    setLanguage,
                     setLastInteractedResource,
                     setLastInteractedStepId,
                     setResourcePropertiesPanelHeading,
