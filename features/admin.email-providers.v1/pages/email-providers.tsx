@@ -122,10 +122,6 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
         error: emailProviderConfigFetchRequestError
     } = useEmailProviderConfig();
 
-    const {
-        data: passwordProviderConfig
-    } = useEmailProviderConfigV1();
-
     const [ endpointAuthType, setEndpointAuthType ] = useState<AuthenticationType>(null);
     const [ showPrimarySecret, setShowPrimarySecret ] = useState<boolean>(false);
     const [ showSecondarySecret, setShowSecondarySecret ] = useState<boolean>(false);
