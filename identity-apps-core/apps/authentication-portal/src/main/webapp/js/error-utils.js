@@ -138,6 +138,48 @@ function getI18nKeyForError(errorCode, flowType) {
                 description: "orchestration.flow.error.invalid.actionId.description"
             };
 
+        case "FE-60010":
+
+            return {
+                message: "orchestration.flow.error.invalid.captcha.message",
+                description: "orchestration.flow.error.invalid.captch.description"
+            };
+
+        case "FE-60011":
+
+            return {
+                message: "orchestration.flow.error.no.flowType.message",
+                description: "orchestration.flow.error.invalid.captcha.description"
+            };
+
+        case "FE-60101":
+    
+            return {
+                message: "orchestration.flow.error.dynamic.portal.not.enabled.message",
+                description: "orchestration.flow.error.dynamic.portal.not.enabled.description"
+            };
+
+        case "FE-60102":
+        
+            return {
+                message: "orchestration.flow.error.self.registration.not.enabled.message",
+                description: "orchestration.flow.error.self.registration.not.enabled.description"
+            };
+
+        case "FE-60103":
+        
+            return {
+                message: "orchestration.flow.error.invalid.flowType.message",
+                description: "orchestration.flow.error.invalid.flowType.description"
+            };
+
+        case "FE-60104":
+        
+            return {
+                message: "orchestration.flow.error.disabled.flow.message",
+                description: "orchestration.flow.error.disabled.flow.description"
+            };
+
         default:
 
             return {
