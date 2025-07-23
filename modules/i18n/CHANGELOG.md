@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.25.2
+
+### Patch Changes
+
+- [#8597](https://github.com/wso2/identity-apps/pull/8597) [`a858a85e2fcd93f70936ffd1da005d3d06c5f0b1`](https://github.com/wso2/identity-apps/commit/a858a85e2fcd93f70936ffd1da005d3d06c5f0b1) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - UI fixes and improvements to address agent feature demo suggestions
+
 ## 2.25.1
 
 ### Patch Changes
