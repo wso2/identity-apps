@@ -1,5 +1,15 @@
 # @wso2is/admin.applications.v1
 
+## 2.36.9
+
+### Patch Changes
+
+- [#8602](https://github.com/wso2/identity-apps/pull/8602) [`b5be771da2053ee824732c3a3ee3340f15ac09f9`](https://github.com/wso2/identity-apps/commit/b5be771da2053ee824732c3a3ee3340f15ac09f9) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update agent compliant app text
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.46.29
+  - @wso2is/admin.roles.v2@2.27.168
+
 ## 2.36.8
 
 ### Patch Changes
