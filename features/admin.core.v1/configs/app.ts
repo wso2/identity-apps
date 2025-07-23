@@ -70,7 +70,13 @@ import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { getValidationServiceEndpoints } from "@wso2is/admin.validation.v1/configs";
 import { getWebhooksResourceEndpoints } from "@wso2is/admin.webhooks.v1/configs/endpoints";
 import { getApprovalsResourceEndpoints } from "@wso2is/admin.workflow-approvals.v1";
-import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
+import {
+    I18nModuleConstants,
+    I18nModuleInitOptions,
+    I18nModuleOptionsInterface,
+    MetaI18N,
+    generateBackendPaths
+} from "@wso2is/i18n";
 import { AppConstants } from "../constants/app-constants";
 import { I18nConstants } from "../constants/i18n-constants";
 import { UIConstants } from "../constants/ui-constants";
@@ -359,6 +365,17 @@ export class Config {
             saml2Meta: `${ this.resolveServerHost(false, true) }/identity/metadata/saml2`,
             wellKnown: `${ this.resolveServerHost(false, true) }/oauth2/token/.well-known/openid-configuration`
         };
+    }
+
+    /**
+     * Get a list of languages that can be translated in the UI.
+     * @remarks Currently, the Console only supports English.
+     * Tracker: https://github.com/wso2/product-is/issues/24778
+     *
+     * @returns List of translatable UI languages.
+     */
+    public static getTranslatableUILanguages(): string[] {
+        return [ I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE ];
     }
 
     /**
