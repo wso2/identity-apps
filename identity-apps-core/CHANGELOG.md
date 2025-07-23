@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.27.14
+
+### Patch Changes
+
+- [#8600](https://github.com/wso2/identity-apps/pull/8600) [`765f68afb515dfc2d44e49d05b3f7ee2f755c511`](https://github.com/wso2/identity-apps/commit/765f68afb515dfc2d44e49d05b3f7ee2f755c511) Thanks [@nilasini](https://github.com/nilasini)! - Handle error scenarios of orchestration flows
+
 ## 2.27.13
 
 ### Patch Changes
