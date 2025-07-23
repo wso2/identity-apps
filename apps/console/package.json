@@ -83,6 +83,7 @@
         "@wso2is/admin.ask-password-flow-builder.v1": "workspace:^",
         "@wso2is/admin.policy-administration.v1": "^1.0.121",
         "@wso2is/admin.private-key-jwt.v1": "^2.25.204",
+        "@wso2is/admin.cds.v1": "^0.0.1",
         "@wso2is/admin.push-providers.v1": "^1.0.92",
         "@wso2is/admin.remote-repository-configuration.v1": "^2.25.204",
         "@wso2is/admin.remote-userstores.v1": "^1.7.161",
@@ -104,6 +105,7 @@
         "@wso2is/admin.webhooks.v1": "^1.0.4",
         "@wso2is/admin.workflow-approvals.v1": "^2.26.7",
         "@wso2is/admin.wsfed-configuration.v1": "^2.25.204",
+
         "@wso2is/common.ui.v1": "^0.2.0",
         "@wso2is/core": "^2.10.0",
         "@wso2is/dynamic-forms": "^2.4.41",
@@ -138,6 +140,7 @@
         "react-notification-system": "^0.4.0",
         "react-redux": "^7.2.9",
         "react-router-dom": "^4.3.1",
+        "reactflow": "11.7.2",
         "recharts": "^2.6.2",
         "reduce-reducers": "^1.0.4",
         "redux": "^4.0.4",
