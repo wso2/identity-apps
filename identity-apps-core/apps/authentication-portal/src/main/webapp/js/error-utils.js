@@ -142,14 +142,14 @@ function getI18nKeyForError(errorCode, flowType) {
 
             return {
                 message: "orchestration.flow.error.invalid.captcha.message",
-                description: "orchestration.flow.error.invalid.captch.description"
+                description: "orchestration.flow.error.invalid.captcha.description"
             };
 
         case "FE-60011":
 
             return {
                 message: "orchestration.flow.error.no.flowType.message",
-                description: "orchestration.flow.error.invalid.captcha.description"
+                description: "orchestration.flow.error.no.flowType.description"
             };
 
         case "FE-60101":
