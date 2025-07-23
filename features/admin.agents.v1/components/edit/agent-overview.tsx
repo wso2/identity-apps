@@ -199,6 +199,11 @@ export default function AgentOverview({
                                                     return readOnlyAgentAttributes?.includes(agentAttribute.claimURI)
                                                         ? null : (
                                                             <FinalFormField
+                                                                data-componentid={
+                                                                    componentId + "-" +
+                                                                    agentAttribute?.properties.DisplayName +
+                                                                    "-attribute"
+                                                                }
                                                                 key={ agentAttribute.id }
                                                                 name={ agentAttribute.claimURI.split(":").pop() }
                                                                 label={ agentAttribute?.properties.DisplayName }
@@ -227,6 +232,7 @@ export default function AgentOverview({
                                                             type="submit"
                                                             loading={ submitting }
                                                             disabled={ submitting }
+                                                            data-componentid={ componentId + "-submit-btn" }
                                                         >
                                                             { t("common:update") }
                                                         </PrimaryButton>
