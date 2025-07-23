@@ -60,8 +60,7 @@ import { Dispatch } from "redux";
 import { Divider, Grid, Icon, Placeholder, Ref } from "semantic-ui-react";
 import { deleteEmailProviderConfigurations,
     updateEmailProviderConfigurations,
-    useEmailProviderConfig,
-    useEmailProviderConfigV1 } from "../api";
+    useEmailProviderConfig } from "../api";
 import {
     AuthenticationType,
     DropdownChild,
