@@ -143,7 +143,14 @@ const CountryFieldForm: FunctionComponent<CountryFieldFormPropsInterface> = ({
                     <List.Content>
                         <List.Description className="with-max-length">
                             { isEmpty(initialValue) ? (
-                                <EmptyValueField schema={ schema } fieldLabel={ fieldLabel } />
+                                <EmptyValueField
+                                    schema={ schema }
+                                    fieldLabel={ fieldLabel }
+                                    placeholderText={ t(
+                                        "myAccount:components.profile.forms.countryChangeForm." +
+                                        "inputs.country.placeholder"
+                                    ) }
+                                />
                             ) : (
                                 initialValue
                             ) }

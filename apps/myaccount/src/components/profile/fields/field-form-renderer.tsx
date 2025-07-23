@@ -23,6 +23,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { Dispatch, FunctionComponent, ReactElement } from "react";
 import { useDispatch } from "react-redux";
 import CheckboxFieldForm from "./checkbox-field-form";
+import CheckboxGroupFieldForm from "./checkbox-group-field-form";
 import CountryFieldForm from "./country-field-form";
 import DOBFieldForm from "./dob-field-form";
 import DropdownFieldForm from "./dropdown-field-form";
@@ -249,6 +250,25 @@ const ProfileFieldFormRenderer: FunctionComponent<
                         data-componentid={ componentId }
                         handleSubmit={ handleSubmit }
                         isMultiSelect
+                    />
+                );
+
+            case ClaimInputFormat.CHECKBOX_GROUP:
+                return (
+                    <CheckboxGroupFieldForm
+                        fieldSchema={ fieldSchema }
+                        initialValue={ valueList }
+                        fieldLabel={ fieldLabel }
+                        isActive={ isActive }
+                        isEditable={ isEditable }
+                        onEditClicked={ onEditClicked }
+                        onEditCancelClicked={ onEditCancelClicked }
+                        isRequired={ isRequired }
+                        setIsProfileUpdating={ setIsProfileUpdating }
+                        isLoading={ isLoading }
+                        isUpdating={ isUpdating }
+                        data-componentid={ componentId }
+                        handleSubmit={ handleSubmit }
                     />
                 );
 

@@ -202,6 +202,8 @@ export interface DropdownFieldFormPropsInterface extends ProfileFieldFormPropsIn
     isMultiSelect?: boolean;
 }
 
+export interface CheckboxGroupFieldFormPropsInterface extends ProfileFieldFormPropsInterface<string[]> { }
+
 export interface RadioFieldFormPropsInterface extends ProfileFieldFormPropsInterface<string> {}
 
 export interface MultiValueFieldFormPropsInterface<T extends string | number>
