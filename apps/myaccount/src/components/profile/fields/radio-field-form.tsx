@@ -48,7 +48,15 @@ const RadioFieldForm: FunctionComponent<RadioFieldFormPropsInterface> = ({
     const { isMobileViewport } = useMediaContext();
     const { t } = useTranslation();
 
-    const options: RadioOptionItem[] = schema.canonicalValues ?? [];
+    let options: RadioOptionItem[] = schema.canonicalValues ?? [];
+
+    if (!isRequired) {
+        // Add an empty value option when the field is optional.
+        options = [
+            { label: t("myAccount:components.profile.forms.generic.radioGroup.optionNone"), value: "" },
+            ...options
+        ];
+    }
 
     const selectedOption: RadioOptionItem = options.find((option: RadioOptionItem) => {
         return option.value === initialValue;
