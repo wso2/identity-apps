@@ -663,6 +663,10 @@ export const applications: ApplicationsNS = {
                             description: "Error occurred while fetching the organizations.",
                             message: "Fetching organizations failed!"
                         }
+                    },
+                    noRolesSelected: {
+                        description: "Please select at least one role to share with all the organizations.",
+                        message: "No roles selected!"
                     }
                 }
             },

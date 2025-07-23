@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Alert from "@oxygen-ui/react/Alert";
 import Button from "@oxygen-ui/react/Button";
 import FormControl from "@oxygen-ui/react/FormControl";
@@ -143,7 +141,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
 
     const [ shareType, setShareType ] = useState<ShareType>(ShareType.UNSHARE);
     const [ roleShareTypeAll, setRoleShareTypeAll ] = useState<RoleShareType>(RoleShareType.SHARE_WITH_ALL);
-    const [ roleShareTypeSelected, setRoleShareTypeSelected ] = useState<RoleShareType>(RoleShareType.SHARE_WITH_ALL);
+    const [ roleShareTypeSelected ] = useState<RoleShareType>(RoleShareType.SHARE_WITH_ALL);
     const { isOrganizationManagementEnabled } = useGlobalVariables();
     const [ showConfirmationModal, setShowConfirmationModal ] = useState(false);
     const [ selectedRoles, setSelectedRoles ] = useState<RolesInterface[]>([]);
@@ -705,6 +703,17 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
     };
 
     const shareSelectedRolesWithAllOrgs = (): void => {
+        if (selectedRoles.length < 1) {
+            dispatch(addAlert({
+                description: t("applications:edit.sections.sharedAccess.notifications.share." +
+                    "noRolesSelected.description"),
+                level: AlertLevels.ERROR,
+                message: t("applications:edit.sections.sharedAccess.notifications.share.noRolesSelected.message")
+            }));
+
+            return;
+        }
+
         const data: ShareApplicationWithAllOrganizationsDataInterface = {
             applicationId: application.id,
             policy: ApplicationSharingPolicy.ALL_EXISTING_AND_FUTURE_ORGS,
@@ -873,27 +882,6 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                             transition={ { duration: 0.3 } }
                                             className="ml-5"
                                         >
-                                            <ToggleButtonGroup
-                                                color="primary"
-                                                value={ roleShareTypeSelected }
-                                                exclusive
-                                                onChange={ (_event: any, value: RoleShareType) => {
-                                                    if (value) {
-                                                        setRoleShareTypeSelected(value);
-                                                    }
-                                                } }
-                                                data-componentid={ `${ componentId }-role-share-type-toggle` }
-                                            >
-                                                <ToggleButton value={ RoleShareType.SHARE_WITH_ALL }>
-                                                    Share All Roles
-                                                </ToggleButton>
-                                                <ToggleButton value={ RoleShareType.SHARE_SELECTED }>
-                                                    Share Selected Roles
-                                                </ToggleButton>
-                                                <ToggleButton value={ RoleShareType.SHARE_NONE }>
-                                                    Do Not Share Roles
-                                                </ToggleButton>
-                                            </ToggleButtonGroup>
                                             <Grid xs={ 14 }>
                                                 {
                                                     (roleShareTypeSelected === RoleShareType.SHARE_WITH_ALL ||

@@ -844,6 +844,10 @@ export interface ApplicationsNS {
                             description: string;
                         };
                     };
+                    noRolesSelected: {
+                        description: string;
+                        message: string;
+                    };
                 };
             };
             shareApplication: {

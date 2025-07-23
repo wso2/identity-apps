@@ -24,7 +24,7 @@
 .roles-selective-share-left-panel {
     height: 300px;
     overflow: auto;
-    background-color: var(--oxygen-palette-grey-200);
+    background-color: var(--oxygen-palette-grey-100);
     border-radius: var(--oxygen-shape-borderRadius) 0 0 var(--oxygen-shape-borderRadius);
 }
 
@@ -32,14 +32,14 @@
     height: 300px;
     overflow-x: auto;
     overflow-y: hidden;
-    background-color: var(--oxygen-palette-grey-100);
+    background-color: var(--oxygen-palette-grey-50);
     border-radius: 0 var(--oxygen-shape-borderRadius) var(--oxygen-shape-borderRadius) 0;
 }
 
 .roles-selective-share-all-roles {
     height: 300px;
     overflow: auto;
-    background-color: var(--oxygen-palette-grey-200);
+    background-color: var(--oxygen-palette-grey-100);
     border-radius: var(--oxygen-shape-borderRadius);
 }
 

@@ -44,14 +44,13 @@ import { AlertLevels,
     RolesInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ContentLoader, EmphasizedSegment, Heading, Text } from "@wso2is/react-components";
+import { ContentLoader, EmphasizedSegment, Text } from "@wso2is/react-components";
 import { AnimatePresence, motion } from "framer-motion";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import ConsoleRolesSelectiveShare from "./console-roles-selective-share";
 import ConsoleRolesShareWithAll from "./console-roles-share-with-all";
 import { ConsoleRolesOnboardingConstants } from "../../constants/console-roles-onboarding-constants";
 import useConsoleRoles from "../../hooks/use-console-roles";
@@ -120,7 +119,7 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
     const [ selectedRoles, setSelectedRoles ] = useState<RolesInterface[]>([]);
     const [ addedRoles, setAddedRoles ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
     const [ removedRoles, setRemovedRoles ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
-    const [ readOnly, setReadOnly ] = useState<boolean>(true);
+    const [ readOnly ] = useState<boolean>(true);
 
     /**
      * If the Administrator role is fetched, set it as the selected role.
@@ -437,17 +436,6 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                             </AnimatePresence>
                         </RadioGroup>
                     </FormControl>
-                    <Grid xs={ 12 } marginTop={ 2 }>
-                        <Heading as="h4">
-                            Advanced Role Sharing
-                        </Heading>
-                        <ConsoleRolesSelectiveShare
-                            setAddedRoles={ setAddedRoles }
-                            setRemovedRoles={ setRemovedRoles }
-                            readOnly={ readOnly }
-                            setReadOnly={ setReadOnly }
-                        />
-                    </Grid>
                     <Button
                         className="mt-5"
                         data-componentid={ `${componentId}-save-button` }
