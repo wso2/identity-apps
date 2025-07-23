@@ -25,9 +25,7 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { AGENT_USERSTORE_ID } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
-import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, ClaimDialect, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -82,13 +80,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
         featureConfig?.attributeVerification?.scopes?.read
     );
 
-    const isAgentsFeatureEnabled: boolean = featureConfig?.agents?.enabled;
-
     const { filterUserStores, userStoresList, mutateUserStoreList } = useUserStores();
-
-    const isAgentManagementEnabledForOrg: boolean = useMemo((): boolean => {
-        return userStoresList?.some((userStore: UserStoreListItem) => userStore.id === AGENT_USERSTORE_ID);
-    }, [ userStoresList ]);
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
     const [ addEditClaim, setAddEditClaim ] = useState(false);
@@ -97,7 +89,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
     const [ scimAttributeMappings, setScimAttributeMappings ] = useState<ClaimDialect[]>([]);
     const [ axschemaAttributeMappings, setAxschemaAttributeMappings ] = useState<ClaimDialect[]>([]);
     const [ eidasAttributeMappings, setEidasAttributeMappings ] = useState<ClaimDialect[]>([]);
-    const [ agentSchemaAttributeMappings, setAgentSchemaAttributeMappings ] = useState<ClaimDialect[]>([]);
     const [ otherAttributeMappings, setOtherAttributeMappings ] = useState<ClaimDialect[]>([]);
 
     const dispatch: Dispatch = useDispatch();
@@ -187,7 +178,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                 setAxschemaAttributeMappings(axschema);
                 // TODO: Remove eiDAS temporally. Need to update it to version 2 and re-enable it.
                 setEidasAttributeMappings(null);
-                setAgentSchemaAttributeMappings(agent);
                 setOtherAttributeMappings(others);
             })
             .catch((error: IdentityAppsApiException) => {
@@ -774,84 +764,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                     </List>
                                 </EmphasizedSegment>
                             )) }
-                            { isLoading ? (
-                                renderSegmentPlaceholder()
-                            ) : ( isAgentsFeatureEnabled &&
-                                isAgentManagementEnabledForOrg &&
-                                agentSchemaAttributeMappings?.length > 0 && (
-                                <EmphasizedSegment
-                                    className="clickable"
-                                    data-testid={ `${ testId }-oidc-dialect-container` }
-                                >
-                                    <List>
-                                        <List.Item
-                                            onClick={ () => {
-                                                history.push(
-                                                    AppConstants.getPaths()
-                                                        .get("ATTRIBUTE_MAPPINGS")
-                                                        .replace(":type", ClaimManagementConstants.AGENT)
-                                                        .replace(
-                                                            ":customAttributeMappingID",
-                                                            ""
-                                                        )
-                                                );
-                                            } }
-                                        >
-                                            <Grid>
-                                                <Grid.Row columns={ 2 }>
-                                                    <Grid.Column width={ 12 }>
-                                                        <GenericIcon
-                                                            transparent
-                                                            verticalAlign="middle"
-                                                            rounded
-                                                            icon={ getTechnologyLogos().scim }
-                                                            spaced="right"
-                                                            size="mini"
-                                                            floated="left"
-                                                        />
-                                                        <List.Header>
-                                                            { t(
-                                                                "claims:" +
-                                                                "dialects.sections." +
-                                                                "manageAttributeMappings.agent.heading"
-                                                            ) }
-                                                        </List.Header>
-                                                        <List.Description
-                                                            data-testid={ `${ testId }-agent-dialect` }
-                                                        >
-                                                            { t(
-                                                                "claims:attributeMappings." +
-                                                                "agent.description"
-                                                            ) }
-                                                        </List.Description>
-                                                    </Grid.Column>
-                                                    <Grid.Column
-                                                        width={ 4 }
-                                                        verticalAlign="middle"
-                                                        textAlign="right"
-                                                    >
-                                                        <Popup
-                                                            content={
-                                                                hasAttributeDialectsUpdatePermissions
-                                                                    ? t("common:edit")
-                                                                    : t("common:view")
-                                                            }
-                                                            trigger={
-                                                                hasAttributeDialectsUpdatePermissions
-                                                                    ? <Icon color="grey" name="pencil" />
-                                                                    : <Icon color="grey" name="eye" />
-                                                            }
-                                                            inverted
-                                                        />
-                                                    </Grid.Column>
-                                                </Grid.Row>
-                                            </Grid>
-                                        </List.Item>
-                                    </List>
-                                </EmphasizedSegment>
-                            )) }
-
-
                             { attributeConfig.showCustomAttributeMapping && (
                                 isLoading ? (
                                     renderSegmentPlaceholder()
