@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,6 +35,89 @@ export const common: CommonNS = {
     applicationName: "ඇප් එකේ නම",
     applications: "ඇප්ස්",
     approvalStatus: "අනුමත කිරීමේ තත්වය",
+    approvals: "අනුමත කිරීම්",
+    approvalsPage: {
+        list: {
+            columns: {
+                actions: "ක්‍රියා",
+                name: "නම"
+            }
+        },
+        modals: {
+            description: "ඔබගේ අනුමැතිය අවශ්‍ය මෙහෙයුම් කාර්යයන් සමාලෝචනය කරන්න",
+            header: "අනුමත කිරීම්",
+            subHeader: "ඔබගේ අනුමැතිය අවශ්‍ය මෙහෙයුම් කාර්යයන් සමාලෝචනය කරන්න"
+        },
+        notifications: {
+            fetchApprovalDetails: {
+                error: {
+                    description: "{{description}}",
+                    message: "අනුමත කිරීමේ විස්තර ලබා ගැනීමට දෝෂයක්"
+                },
+                genericError: {
+                    description: "අනුමත කිරීමේ විස්තර ලබා ගැනීමට නොහැකි විය.",
+                    message: "යමක් වැරදී ඇත"
+                }
+            },
+            fetchPendingApprovals: {
+                error: {
+                    description: "{{description}}",
+                    message: "අනුමත කිරීම් ලබා ගැනීමට දෝෂයක්"
+                },
+                genericError: {
+                    description: "අනුමත කිරීම් ලබා ගැනීමට නොහැකි විය.",
+                    message: "යමක් වැරදී ඇත"
+                }
+            },
+            updatePendingApprovals: {
+                error: {
+                    description: "{{description}}",
+                    message: "අනුමත කිරීම යාවත්කාලීන කිරීමට දෝෂයක්"
+                },
+                genericError: {
+                    description: "පැවරුම්කරු අනුමත කිරීම යාවත්කාලීන කිරීමට නොහැකි විය.",
+                    message: "යමක් වැරදී ඇත"
+                },
+                success: {
+                    description: "අනුමත කිරීම සාර්ථකව යාවත්කාලීන කරන ලදී.",
+                    message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                }
+            }
+        },
+        placeholders: {
+            emptyApprovalFilter: {
+                action: "සියල්ල බලන්න",
+                subtitles: {
+                    0: "{{status}} තත්වයේ දැනට කිසිදු අනුමැතියක් නොමැත.",
+                    1: "කරුණාකර {{status}} තත්වයේ ඔබට ඇති කාර්යයන් පරීක්ෂා කරන්න",
+                    2: "එහිදී ඒවා බලන්න."
+                },
+                title: "ප්‍රතිඵල කිසිවක් හමු නොවීය"
+            },
+            emptyApprovalList: {
+                action: "",
+                subtitles: {
+                    0: "සමාලෝචනය කිරීමට දැනට අනුමැතීන් නොමැත.",
+                    1: "කරුණාකර පද්ධතියේ මෙහෙයුම් පාලනය කිරීමට ඔබ වැඩපිළිවෙළක් එක් කර ඇතිදැයි පරීක්ෂා කරන්න.",
+                    2: ""
+                },
+                title: "අනුමත කිරීම් නොමැත"
+            },
+            emptySearchResults: {
+                action: "සියල්ල බලන්න",
+                subtitles: {
+                    0: "ඔබ සෙවූ මෙහෙයුම් කාර්යය අපට සොයාගත නොහැකි විය.",
+                    1: "කරුණාකර පද්ධතියේ එම නාමය ඇති මෙහෙයුම් කාර්යයන් තිබේදැයි පරීක්ෂා කරන්න.",
+                    2: ""
+                },
+                title: "අනුමත කිරීම් නොමැත"
+            },
+            searchApprovals: "කාර්ය ප්‍රවාහ නාමයෙන් සොයන්න"
+        },
+        subTitle: "අනුමැතිය අවශ්‍ය මෙහෙයුම් කාර්යයන් සමාලෝචනය කරන්න",
+        title: "අනුමත කිරීම්"
+    },
+
     approve: "අනුමත කරන්න",
     apps: "ඇප්ස්",
     assignee: "පැවරුම්කරු",

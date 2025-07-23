@@ -1276,13 +1276,13 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             category: "extensions:manage.sidePanel.categories.userManagement",
-            component: lazy(() => import("@wso2is/admin.workflow-approvals.v1/pages/approvals")),
+            component: lazy(() => import("../pages/approvals")),
             exact: true,
             icon: {
                 icon: <DocumentCheckIcon fill="black" className="icon" />
             },
             id: "approvals",
-            name: "console:manage.features.sidePanel.approvals",
+            name: "common:approvals",
             order: 26,
             path: AppConstants.getPaths().get("APPROVALS"),
             protected: true,
