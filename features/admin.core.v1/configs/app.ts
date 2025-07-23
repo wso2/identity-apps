@@ -297,8 +297,8 @@ export class Config {
                 ?? I18nConstants.LANG_AUTO_DETECT_ENABLED,
             namespaceDirectories: I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
             overrideOptions: I18nConstants.INIT_OPTIONS_OVERRIDE,
-            resourcePath: "/resources/i18n",
             resourceExtensionsPath: "/extensions/i18n",
+            resourcePath: "/resources/i18n",
             xhrBackendPluginEnabled: I18nConstants.XHR_BACKEND_PLUGIN_ENABLED
         };
     }
