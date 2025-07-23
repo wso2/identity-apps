@@ -1213,7 +1213,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                         ) => {
                                             setIsAgentCompliantApp(data.checked);
                                         } }
-                                        label={ "Mark as AI agent compliant app" }
+                                        label={ "Allow AI agents to sign into this application" }
                                     />
                                     <Hint inline popup>
                                                 If enabled, this will update the protocol configurations of this
