@@ -291,7 +291,7 @@ export const FeatureCarousel = () => {
 
                         { isAgentManagementFeatureEnabledForOrganization ? (
                             <Message warning>
-This feature is experimental and still under active development. Some functionality may be limited or subject to change.
+                                This feature is experimental. Some functionality may be limited or subject to change.
                             </Message>
                         ): (
                             <Message info>

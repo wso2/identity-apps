@@ -513,7 +513,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     // Temporary fix to check system claims and make them readonly
     const isReadOnly: boolean = useMemo(() => {
-        if (hideSpecialClaims) {
+        if (hideSpecialClaims || isAgentAttribute) {
             return true;
         } else {
             return !hasAttributeUpdatePermissions;
