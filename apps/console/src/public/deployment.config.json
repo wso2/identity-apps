@@ -1739,7 +1739,6 @@
         },
         "selfAppIdentifier": "Console",
         "showAppSwitchButton": true,
-        "showPasswordOfEmailProvider": true,
         "showSmsOtpPwdRecoveryFeatureStatusChip": false,
         "showStatusLabelForNewAuthzRuntimeFeatures": false,
         "systemAppsIdentifiers": [
