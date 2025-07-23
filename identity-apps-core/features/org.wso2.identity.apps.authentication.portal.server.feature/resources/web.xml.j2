@@ -42,6 +42,12 @@
         <param-name>ServiceProviderApp-/oauth2_consent.do</param-name>
         <param-value>http://localhost:8080/authenticationendpoint/oauth2_consent.do</param-value>
     </context-param-->
+    {% if localization.prioritize_param is defined %}
+        <context-param>
+            <param-name>isLocalizationParamPrioritized</param-name>
+            <param-value>{{ localization.prioritize_param }}</param-value>
+        </context-param>
+    {% endif %}
     {% if downtime_banner.enabled is defined %}
         <context-param>
             <param-name>isDowntimeBannerEnabled</param-name>
