@@ -38,6 +38,7 @@ import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@ws
 import { addAlert } from "@wso2is/core/store";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
+    ChangeEvent,
     ForwardRefExoticComponent,
     Dispatch as ReactDispatch,
     ReactElement,
@@ -57,6 +58,9 @@ import "./roles-selective-share.scss";
 import useGetApplicationShare from "../../api/use-get-application-share";
 import { ApplicationInterface } from "../../models/application";
 import { getChildrenOfOrganization, updateTreeWithChildren } from "../../utils/shared-access";
+import Checkbox from "@oxygen-ui/react/Checkbox";
+import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
+import { ShareType } from "../../constants/application-roles";
 
 interface OrgSelectiveShareWithAllRolesProps extends IdentifiableComponentInterface {
     application: ApplicationInterface;
@@ -66,6 +70,8 @@ interface OrgSelectiveShareWithAllRolesProps extends IdentifiableComponentInterf
     setAddedOrgs: ReactDispatch<SetStateAction<string[]>>;
     setRemovedOrgs: ReactDispatch<SetStateAction<string[]>>;
     setSelectedItems: ReactDispatch<SetStateAction<string[]>>;
+    shareType?: ShareType;
+    setShareType?: ReactDispatch<SetStateAction<ShareType>>;
 }
 
 interface TreeViewBaseItemWithRoles extends TreeViewBaseItem {
@@ -82,7 +88,9 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
         setAddedOrgs,
         setRemovedOrgs,
         selectedItems,
-        setSelectedItems
+        setSelectedItems,
+        shareType,
+        setShareType
     } = props;
 
     const organizationId: string = useSelector((state: AppState) => state?.organization?.organization?.id);
@@ -235,6 +243,14 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                 updateTreeWithChildren(organizationTree, expandedOrgId, childOrgTree);
 
             setOrganizationTree(updatedTree);
+
+            // If selectAll is true, select all the child organizations.
+            if (shareType === ShareType.SHARE_ALL) {
+                setSelectedItems((prev: string[]) => [
+                    ...prev,
+                    ...childOrgTree.map((item: TreeViewBaseItemWithRoles) => item.id)
+                ]);
+            }
         }
     }, [ originalOrganizations ]);
 
@@ -358,6 +374,7 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
     };
 
     const resolveSelectedItems = (selectedItem: string, isSelected: boolean) => {
+        setShareType(ShareType.SHARE_SELECTED);
         if (isSelected) {
             // Add the selected item to the selectedItems list if it is not already there
             if (!selectedItems.includes(selectedItem)) {
@@ -417,6 +434,21 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
 
                 // Recursively collapse child nodes
                 collapseChildNodes(childId);
+            });
+        }
+    };
+
+    const selectChildOrganizations = (parentId: string): void => {
+        const children: string[] = getChildrenOfOrganization(parentId, flatOrganizationMap);
+
+        // If there are no children, return
+        if (children?.length > 0) {
+            // Select all child nodes
+            setSelectedItems((prev: string[]) => [ ...prev, ...children ]);
+
+            // Recursively select all child nodes
+            children.forEach((childId: string) => {
+                selectChildOrganizations(childId);
             });
         }
     };
@@ -503,6 +535,33 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                         className="roles-selective-share-all-roles"
                         id="scrollableOrgContainer"
                     >
+                        <FormControlLabel
+                            label="Select all organizations"
+                            style={ { marginLeft: "1.7rem" } }
+                            control={ (
+                                <Checkbox
+                                    checked={ shareType === ShareType.SHARE_ALL }
+                                    indeterminate={ shareType !== ShareType.SHARE_ALL && selectedItems.length > 0 }
+                                    onChange={ (_: ChangeEvent<HTMLInputElement>, checked: boolean) => {
+                                        if (checked) {
+                                            setShareType(ShareType.SHARE_ALL);
+                                            // select all the items in the organization tree
+                                            setSelectedItems(
+                                                organizationTree.map((item: TreeViewBaseItemWithRoles) => item.id)
+                                            );
+                                            organizationTree.forEach((item: TreeViewBaseItemWithRoles) => {
+                                                selectChildOrganizations(item.id);
+                                            });
+                                        } else {
+                                            setShareType(ShareType.UNSHARE);
+                                            // deselect all the items in the organization tree
+                                            setSelectedItems([]);
+                                        }
+                                    } }
+                                />
+                            )
+                            }
+                        />
                         <InfiniteScroll
                             dataLength={ organizationTree.length }
                             next={ loadMoreOrganizations }

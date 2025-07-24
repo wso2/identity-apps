@@ -50,6 +50,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps } from "semantic-ui-react";
 import { ApplicationInterface } from "../../models/application";
+import Typography from "@oxygen-ui/react/Typography";
 
 /**
  * Props interface for the ConsoleRolesShareWithAll component.
@@ -141,6 +142,9 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
 
     return (
         <>
+            <Typography>
+                Select roles to share with the selected organizations
+            </Typography>
             <Autocomplete
                 fullWidth
                 multiple
