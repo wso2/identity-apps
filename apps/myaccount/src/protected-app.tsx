@@ -32,7 +32,7 @@ import {
     I18nInstanceInitException,
     I18nModuleConstants,
     LanguageChangeException,
-    MetaI18N,
+    SupportedLanguagesMeta,
     MetaI18NNamespace,
     isLanguageSupported
 } from "@wso2is/i18n";
@@ -175,7 +175,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     extendedMetaResponse = { data: undefined };
                 }
 
-                const mergedMeta: MetaI18N = merge(
+                const mergedMeta: SupportedLanguagesMeta = merge(
                     cloneDeep(defaultMetaResponse?.data),
                     cloneDeep(extendedMetaResponse?.data)
                 );

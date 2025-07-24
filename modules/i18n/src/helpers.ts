@@ -19,7 +19,8 @@
 import { StringUtils } from "@wso2is/core/utils";
 import { InitOptions, Resource } from "i18next";
 import { I18nModuleConstants } from "./constants";
-import { I18nModuleOptionsInterface, LocaleBundles, MetaI18N, SupportedLanguagesMeta } from "./models";
+import { I18nModuleOptionsInterface, LocaleBundles } from "./models";
+import { SupportedLanguagesMeta } from "./models/misc";
 
 /**
  * Generate the i18n options.
@@ -184,7 +185,7 @@ export const generateBackendPaths = (
     namespace: string[],
     appBaseName: string,
     i18nBundleOptions: I18nModuleOptionsInterface,
-    metaFile: MetaI18N
+    metaFile: SupportedLanguagesMeta
 ): string => {
     let filePath: string = metaFile[language[0]]?.paths[namespace[0]];
 

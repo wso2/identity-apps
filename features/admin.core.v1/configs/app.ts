@@ -56,7 +56,7 @@ import {
     I18nModuleConstants,
     I18nModuleInitOptions,
     I18nModuleOptionsInterface,
-    MetaI18N,
+    SupportedLanguagesMeta,
     generateBackendPaths
 } from "@wso2is/i18n";
 import { AppConstants } from "../constants/app-constants";
@@ -159,7 +159,7 @@ export class Config {
      * @param metaFile - Meta File.
      * @returns I18n init options.
      */
-    public static generateModuleInitOptions(metaFile: MetaI18N): I18nModuleInitOptions {
+    public static generateModuleInitOptions(metaFile: SupportedLanguagesMeta): I18nModuleInitOptions {
         return {
             backend: {
                 loadPath: (language: string[], namespace: string[]) => generateBackendPaths(
@@ -243,7 +243,7 @@ export class Config {
      * @param metaFile - Meta file.
      * @returns i18n config object.
      */
-    public static getI18nConfig(metaFile?: MetaI18N): I18nModuleOptionsInterface {
+    public static getI18nConfig(metaFile?: SupportedLanguagesMeta): I18nModuleOptionsInterface {
         return {
             initOptions: this.generateModuleInitOptions(metaFile),
             langAutoDetectEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.i18nConfigs?.langAutoDetectEnabled
@@ -310,7 +310,7 @@ export class Config {
      *
      * @returns List of translatable UI languages.
      */
-    public static getTranslatableUILanguages(): string[] {
+    public static getAppSupportedLocales(): string[] {
         return [ I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE ];
     }
 

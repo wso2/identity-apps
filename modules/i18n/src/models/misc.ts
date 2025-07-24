@@ -23,6 +23,15 @@ import { InitOptions } from "i18next";
  */
 export interface LocaleMeta {
     /**
+     * Whether the language is enabled in the application.
+     */
+    enabled?: boolean;
+    /**
+     * Whether to show this language in the language switcher UI.
+     * Defaults to true if `enabled` is true.
+     */
+    showOnLanguageSwitcher?: boolean;
+    /**
      * ISO language code.
      */
     code: string;
