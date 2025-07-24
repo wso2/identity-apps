@@ -119,7 +119,7 @@ const LocaleField: FunctionComponent<LocaleFieldPropsInterface> = ({
             }
             readOnly={ isReadOnly || isUpdating }
             required={ isRequired }
-            disableClearable={ isRequired }
+            isClearable={ !isRequired }
             data-testid={ `${ componentId }-input` }
             data-componentid={ `${ componentId }-input` }
         />
