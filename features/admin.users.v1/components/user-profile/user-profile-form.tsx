@@ -715,7 +715,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                     continue;
                 }
                 // Convert the nested dirtyTree into a flat list of leaf-paths.
-                // Ex: { "name": { "givenName": "John" }, ""urn:scim:wso2:schema"": { "country": "Argentina" } }
+                // Ex: { "name": { "givenName": "John" }, "urn:scim:wso2:schema": { "country": "Argentina" } }
                 const attributePaths: string[] = Object.entries(dirtyTree)
                     .flatMap(([ key, value ]: [string, unknown]) =>
                         value === true
