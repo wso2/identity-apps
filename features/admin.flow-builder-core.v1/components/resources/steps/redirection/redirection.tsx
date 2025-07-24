@@ -16,16 +16,14 @@
  * under the License.
  */
 
-import { Theme, useTheme } from "@mui/material/styles";
-import Card from "@oxygen-ui/react/Card";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Handle, Position, useNodeId, useReactFlow } from "@xyflow/react";
-import React, { FC, ReactElement, useMemo } from "react";
-import RedirectionFactory from "./redirection-factory";
+import React, { FC, ReactElement, memo } from "react";
+import RedirectionMinimal from "./redirection-minimal";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
-import { Step } from "../../../../models/steps";
+import { RedirectionTypes } from "../../../../models/steps";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
+import View from "../view/view";
 
 /**
  * Props interface of {@link Redirection}
@@ -34,50 +32,66 @@ export type RedirectionPropsInterface = CommonStepFactoryPropsInterface & Identi
 
 /**
  * Redirection Node component.
- * This is a custom node supported by react flow renderer library.
- * See {@link https://reactflow.dev/docs/api/node-types/} for its documentation
- * and {@link https://reactflow.dev/examples/custom-node/} for an example
  *
  * @param props - Props injected to the component.
  * @returns Redirection node component.
  */
-const Redirection: FC<RedirectionPropsInterface> = ({
-    ["data-componentid"]: componentId = "done",
+const Redirection: FC<RedirectionPropsInterface> = memo(({
     id,
-    ...rest
+    data,
+    resource
 }: RedirectionPropsInterface): ReactElement => {
-    const stepId: string = useNodeId();
-    const { getNode } = useReactFlow();
     const { setLastInteractedResource, setLastInteractedStepId } = useAuthenticationFlowBuilderCore();
-    const theme: Theme = useTheme();
 
-    const redirection = useMemo(() => getNode(id), [ id, getNode ]);
+    const components: Element[] = data?.components as Element[] || [];
+
+    /**
+     * Resolves the redirection name based on the type.
+     *
+     * @param redirectionType - The type of the redirection.
+     * @returns Resolved redirection name.
+     */
+    const resolveRedirectionName = (redirectionType: RedirectionTypes): string => {
+        switch (redirectionType) {
+            case RedirectionTypes.GoogleFederation:
+                return "Google";
+            case RedirectionTypes.AppleFederation:
+                return "Apple";
+            case RedirectionTypes.GithubFederation:
+                return "GitHub";
+            case RedirectionTypes.FacebookFederation:
+                return "Facebook";
+            case RedirectionTypes.MicrosoftFederation:
+                return "Microsoft";
+            case RedirectionTypes.PasskeyEnrollment:
+                return "Enroll Passkey";
+            default:
+                return "Redirection";
+        }
+    };
 
     return (
-        <Card
-            data-componentid={ componentId }
-            sx={ {
-                backgroundColor: (theme as any).colorSchemes.dark.palette.background.default,
-                color: (theme as any).colorSchemes.dark.palette.text.primary
-            } }
-            onClick={ () => {
-                setLastInteractedStepId(stepId);
-                setLastInteractedResource(redirection as Step);
-            } }
-        >
-            <Handle
-                type="target"
-                id={ `${id}${VisualFlowConstants.FLOW_BUILDER_PREVIOUS_HANDLE_SUFFIX}` }
-                position={ Position.Left }
-            />
-            <RedirectionFactory id={ id } resource={ redirection as Step } { ...rest } />
-            <Handle
-                type="source"
-                id={ `${id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}` }
-                position={ Position.Right }
-            />
-        </Card>
+        components && components.length > 0
+            ? (
+                <View
+                    heading={ resolveRedirectionName((data?.action as any)?.executor?.name) }
+                    data={ data }
+                    enableSourceHandle={ true }
+                    droppableAllowedTypes={ VisualFlowConstants.FLOW_BUILDER_STATIC_CONTENT_ALLOWED_RESOURCE_TYPES }
+                    onActionPanelDoubleClick={
+                        () => {
+                            setLastInteractedStepId(id);
+                            setLastInteractedResource(resource);
+                        }
+                    }
+                />
+            )
+            : <RedirectionMinimal id={ id } data={ data } resource={ resource } />
     );
-};
+}, (prevProps: RedirectionPropsInterface, nextProps: RedirectionPropsInterface) => {
+    return prevProps.id === nextProps.id &&
+        JSON.stringify(prevProps.data) === JSON.stringify(nextProps.data) &&
+        JSON.stringify(prevProps.resource) === JSON.stringify(nextProps.resource);
+});
 
 export default Redirection;

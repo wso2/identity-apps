@@ -27,7 +27,8 @@ import "./redirection-factory.scss";
 /**
  * Props interface of {@link CommonStepFactory}
  */
-export type RedirectionFactoryPropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface;
+export type RedirectionFactoryPropsInterface = Pick<CommonStepFactoryPropsInterface, "data"> &
+    IdentifiableComponentInterface;
 
 /**
  * Factory for creating redirection types.

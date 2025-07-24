@@ -77,6 +77,13 @@ class VisualFlowConstants {
         ElementTypes.Image
     ];
 
+    public static readonly FLOW_BUILDER_STATIC_CONTENT_ALLOWED_RESOURCE_TYPES: string[] = [
+        ElementTypes.Typography,
+        ElementTypes.RichText,
+        ElementTypes.Divider,
+        ElementTypes.Image
+    ];
+
     public static readonly FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER: string = "uniqueName";
 }
 

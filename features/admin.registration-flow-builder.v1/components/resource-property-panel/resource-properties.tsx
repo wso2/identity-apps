@@ -151,11 +151,14 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
             }
 
             return (
-                <FederationProperties
-                    resource={ resource }
-                    data-componentid="federation-properties"
-                    onChange={ onChange }
-                />
+                <>
+                    <FederationProperties
+                        resource={ resource }
+                        data-componentid="federation-properties"
+                        onChange={ onChange }
+                    />
+                    { renderElementPropertyFactory() }
+                </>
             );
         default:
             return (

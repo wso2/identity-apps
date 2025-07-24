@@ -44,6 +44,7 @@ import useComponentDelete from "../../hooks/use-component-delete";
 import useConfirmPasswordField from "../../hooks/use-confirm-password-field";
 import useDeleteRedirectionResource from "../../hooks/use-delete-redirection-resource";
 import useGenerateStepElement from "../../hooks/use-generate-step-element";
+import useStaticContentField from "../../hooks/use-static-content-field";
 import { Element } from "../../models/elements";
 import { EventTypes } from "../../models/extension";
 import { Resource, ResourceTypes } from "../../models/resources";
@@ -109,6 +110,9 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
 
     // Event handlers for ON_PROPERTY_PANEL_OPEN event.
     useConfirmPasswordField();
+
+    // Event handlers for static content in redirection steps.
+    useStaticContentField();
 
     const { screenToFlowPosition, updateNodeData } = useReactFlow();
     const { generateStepElement } = useGenerateStepElement();
