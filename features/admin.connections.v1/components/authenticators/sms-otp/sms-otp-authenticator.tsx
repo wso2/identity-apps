@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -81,7 +81,7 @@ export const SmsOTPAuthenticator: FunctionComponent<SmsOTPAuthenticatorInterface
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config?.ui?.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const { isSubOrganization, organizationType } = useGetCurrentOrganizationType();
+    const { organizationType } = useGetCurrentOrganizationType();
 
     const isReadOnly: boolean =
         !hasRequiredScopes(
@@ -89,8 +89,7 @@ export const SmsOTPAuthenticator: FunctionComponent<SmsOTPAuthenticatorInterface
             featureConfig?.identityProviders?.scopes?.update,
             allowedScopes,
             organizationType
-        )
-        || isSubOrganization();
+        );
 
     return (
         <>

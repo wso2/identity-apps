@@ -598,13 +598,76 @@ export const applications: ApplicationsNS = {
                 tabName: "Provisioning"
             },
             sharedAccess: {
+                doNotShareApplication: "Do not share the application with any organization.",
+                shareAllApplication: "Share the application with all organizations.",
+                shareSelectedApplication: "Share the application with selected organizations.",
+                allRolesAndOrgsSharingMessage: "All roles of the application will be shared with all the organizations.",
+                allRolesAndOrgsNotSharingMessage: "No roles will be shared with any organization.",
+                doNotShareRolesWithAllOrgs: "Do not share roles with all organizations.",
+                manageRoleSharing: "Manage role sharing",
+                viewRoleSharing: "View shared roles",
+                noSharedOrgs: "This application is not shared with any organizations.",
+                noRolesAvailableForOrg: "No roles available for the selected organization.",
+                searchAvailableRolesPlaceholder: "Search available roles",
+                orgNotSelectedForRoleSharing: "To share roles, please select the organization from the left panel.",
+                rolesSharedPartially: "Roles are selectively shared with this organization.",
+                shareRoleSubsetWithSelectedOrgs: "Share a subset of roles with selected organizations",
+                shareRoleSubsetWithAllOrgs: "Share a subset of roles with all organizations",
                 subTitle: "Select the following options to share the application with the organizations.",
+                shareAllRoles: "Share All Roles",
+                shareSelectedRoles: "Share Selected Roles",
+                doNotShareRoles: "Do Not Share Roles",
                 tabName: "Shared Access",
+                selectAnOrganizationToViewRoles: "Select an organization to view the shared roles.",
                 sharedAccessStatusOptions: {
                     all: "All",
                     success: "Success",
                     failed: "Failed",
                     partiallyCompleted: "Partially Completed"
+                },
+                notifications: {
+                    unshare: {
+                        success: {
+                            description: "Application unshared with the organization(s) successfully",
+                            message: "Application unshared!"
+                        },
+                        error: {
+                            description: "Application unsharing failed. Please try again",
+                            message: "Application unsharing failed!"
+                        }
+                    },
+                    share: {
+                        success: {
+                            description: "Application shared with the organization(s) successfully",
+                            message: "Application shared!"
+                        },
+                        error: {
+                            description: "Application sharing failed. Please try again",
+                            message: "Application sharing failed!"
+                        }
+                    },
+                    fetchApplicationOrgTree: {
+                        genericError: {
+                            description: "Error occurred while fetching the shared organizations.",
+                            message: "Fetching shared organizations failed!"
+                        }
+                    },
+                    fetchApplicationRoles: {
+                        genericError: {
+                            description: "Error occurred while fetching the shared roles of the application.",
+                            message: "Fetching roles failed!"
+                        }
+                    },
+                    fetchOrganizations: {
+                        genericError: {
+                            description: "Error occurred while fetching the organizations.",
+                            message: "Fetching organizations failed!"
+                        }
+                    },
+                    noRolesSelected: {
+                        description: "Please select at least one role to share with all the organizations.",
+                        message: "No roles selected!"
+                    }
                 }
             },
             shareApplication: {

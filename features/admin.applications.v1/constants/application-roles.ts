@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -37,4 +37,16 @@ export class ApplicationRolesConstants {
      * Organization Login authenticator name
      */
     public static readonly ORGANIZATION_LOGIN: string = "Organization Login";
+}
+
+export enum ShareType {
+    SHARE_ALL = "SHARE_ALL",
+    SHARE_SELECTED = "SHARE_SELECTED",
+    UNSHARE = "UNSHARE"
+}
+
+export enum RoleShareType {
+    SHARE_WITH_ALL = "SHARE_ALL",
+    SHARE_SELECTED = "SHARE_SELECTED",
+    SHARE_NONE = "SHARE_NONE"
 }

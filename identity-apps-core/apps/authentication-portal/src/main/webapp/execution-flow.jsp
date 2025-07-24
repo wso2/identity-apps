@@ -289,13 +289,14 @@
                 useEffect(() => {
                     if (error && error.code) {
                         const errorDetails = getI18nKeyForError(error.code, flowType);
-                        const portal_url = authPortalURL + "/register.do";
-                        if (flowType === "INVITE_USER_REGISTRATION" || flowType === "PASSWORD_RECOVERY") {
+                        let portal_url = authPortalURL + "/register.do";
+                        if (flowType === "INVITED_USER_REGISTRATION" || flowType === "PASSWORD_RECOVERY") {
                             portal_url = authPortalURL + "/recovery.do";
                         }
                         const errorPageURL = authPortalURL + "/execution_flow_error.do?" + "ERROR_MSG="
                             + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID="
-                            + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + flowType + "&" +
+                            + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + flowType + "&" + "confirmation="
+                            + "<%= Encode.forJavaScript(confirmationCode) %>" + "&" + 
                             "PORTAL_URL=" + portal_url + "&SP=" + "<%= Encode.forJavaScript(sp) %>";
 
                         window.location.href = errorPageURL;
@@ -304,7 +305,7 @@
                     if (flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error) {
                         setFlowError(flowData.data.additionalData.error);
                     }
-                }, [ error, flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error ]);
+                }, [ error, flowType, flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error ]);
 
                 const handleInternalPrompt = (flowData) => {
                     let providedInputs = {};

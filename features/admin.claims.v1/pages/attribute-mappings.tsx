@@ -358,11 +358,6 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                     filteredDialect.forEach((attributeMapping: ClaimDialect) => {
                         if (ClaimManagementConstants.OIDC_MAPPING.includes(attributeMapping.dialectURI)) {
                             type === ClaimManagementConstants.OIDC && attributeMappings.push(attributeMapping);
-                        }
-                        else if (
-                            ClaimManagementConstants.AGENT_SCIM_SCHEMA_MAPPING.includes(attributeMapping.dialectURI)
-                        ) {
-                            type === ClaimManagementConstants.AGENT && attributeMappings.push(attributeMapping);
                         } else if (Object.values(ClaimManagementConstants.SCIM_TABS).map(
                             (tab: { name: string; uri: string }) => tab.uri).includes(attributeMapping.dialectURI)) {
                             type === ClaimManagementConstants.SCIM && attributeMappings.push(attributeMapping);

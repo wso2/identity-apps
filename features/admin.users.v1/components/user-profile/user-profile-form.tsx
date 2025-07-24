@@ -702,7 +702,20 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                  * Following logics map the values from the form with the dirty fields and
                  * build the patch operations.
                  */
+                // If the dirtyTree is a boolean, it means the field is a leaf node.
+                // Ex: { "locale": "en_US" }
+                if (dirtyTree === true) {
+                    data.Operations.push({
+                        op: "replace",
+                        value: {
+                            [decodedFieldName]: values[fieldName] ?? ""
+                        } as unknown as PatchUserOperationValue
+                    });
+
+                    continue;
+                }
                 // Convert the nested dirtyTree into a flat list of leaf-paths.
+                // Ex: { "name": { "givenName": "John" }, "urn:scim:wso2:schema": { "country": "Argentina" } }
                 const attributePaths: string[] = Object.entries(dirtyTree)
                     .flatMap(([ key, value ]: [string, unknown]) =>
                         value === true
