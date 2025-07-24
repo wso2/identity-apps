@@ -619,7 +619,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         <EmphasizedSegment padded="very" className="list-role-users-section">
             <Box display="flex" justifyContent="space-between" alignItems="center">
                 <div>
-                    <Heading as="h4">
+                    <Heading as="h4" data-componentid={ componentId + "-heading" }>
                         { t(baseI18nKey + "heading") }
                     </Heading>
                     <Heading subHeading ellipsis as="h6">

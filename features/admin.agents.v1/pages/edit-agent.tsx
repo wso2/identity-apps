@@ -156,7 +156,7 @@ export default function EditAgent({
             bottomMargin={ false }
             data-componentid={ componentId + "-page-layout" }
         >
-            <ResourceTab panes={ renderedTabPanes } />
+            <ResourceTab panes={ renderedTabPanes } data-componentid={ componentId + "-tab-pane" }/>
         </TabPageLayout>
 
     );
