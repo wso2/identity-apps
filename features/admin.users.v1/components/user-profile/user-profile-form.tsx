@@ -708,7 +708,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                     data.Operations.push({
                         op: "replace",
                         value: {
-                            [decodedFieldName]: values[fieldName]
+                            [decodedFieldName]: values[fieldName] ?? ""
                         } as unknown as PatchUserOperationValue
                     });
 
