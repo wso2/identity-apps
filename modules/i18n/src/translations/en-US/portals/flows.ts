@@ -63,6 +63,7 @@ export const flows: flowsNS = {
                         callbackOrApplicationAccessUrl: "Callback or Application Access URL",
                         customUrl: "Custom URL",
                         privacyPolicyUrl: "Privacy Policy URL",
+                        supportEmail: "Contact Support Email",
                         termsOfUseUrl: "Terms of Use URL"
                     },
                     urlTypeLabel: "URL Type"
