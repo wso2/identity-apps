@@ -76,7 +76,7 @@ const useBulkAssignAdministratorRoles = (): UseBulkAssignAdministratorRolesInter
      */
 
     const roleAssignmentFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.role_assignment);
+        (state: AppState) => state?.config?.ui?.features?.role_assignments);
     const hasRoleV3UpdateScopes: boolean = useRequiredScopes(roleAssignmentFeatureConfig?.scopes?.update);
 
     const updateUserRoleAssignmentFunction: (
