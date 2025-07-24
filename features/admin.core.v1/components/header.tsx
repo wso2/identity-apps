@@ -166,12 +166,19 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     const { isOrganizationManagementEnabled } = useGlobalVariables();
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    // Filter out the languages that are supported to be used to translate the app.
-    // TODO: Remove this logic once https://github.com/wso2/product-is/issues/24778 is addressed.
     const filteredSupportedI18nLanguages: SupportedLanguagesMeta = useMemo(() => {
         return Object.entries(supportedI18nLanguages)
-            .filter(([ _, value ]: [ string, LocaleMeta ]) => value.showOnLanguageSwitcher !== false)
-            .reduce((acc: SupportedLanguagesMeta, [ key, value ]: [ string, LocaleMeta ]) => {
+            .filter(([
+                _,
+                value
+            ]: [ string, LocaleMeta ]) => (
+                value.showOnLanguageSwitcher === true ||
+                (value.enabled && value.showOnLanguageSwitcher === undefined)
+            ))
+            .reduce((
+                acc: SupportedLanguagesMeta,
+                [ key, value ]: [ string, LocaleMeta ]
+            ) => {
                 acc[key] = value;
 
                 return acc;
