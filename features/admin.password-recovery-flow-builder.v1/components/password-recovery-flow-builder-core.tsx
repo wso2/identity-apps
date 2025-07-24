@@ -71,6 +71,7 @@ import {
 } from "../constants/password-recovery-flow-ai-constants";
 import PasswordRecoveryFlowExecutorConstants from "../constants/password-recovery-flow-executor-constants";
 import useAIGeneratedPasswordRecoveryFlow from "../hooks/use-ai-generated-password-recovery-flow";
+import useDefaultFlow from "../hooks/use-default-flow";
 import useGeneratePasswordRecoveryFlow, {
     UseGeneratePasswordRecoveryFlowFunction
 } from "../hooks/use-generate-password-recovery-flow";
@@ -128,6 +129,7 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
     const { data: resources } = useGetPasswordRecoveryFlowBuilderResources();
 
     const { steps, templates } = resources;
+    const defaultTemplate: Template = useDefaultFlow(templates);
 
     const INITIAL_FLOW_START_STEP_ID: string = StaticStepTypes.Start.toLowerCase();
     const INITIAL_FLOW_USER_ONBOARD_STEP_ID: string = StaticStepTypes.End;
@@ -517,18 +519,16 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
     };
 
     const initialNodes: Node[] = useMemo<Node[]>(() => {
-        const basicTemplate: Template = cloneDeep(
-            templates.find((template: Template) => template.type === TemplateTypes.Basic)
-        );
+        const template: Template = cloneDeep(defaultTemplate);
 
-        const steps: Step[] = basicTemplate?.config?.data?.steps || [];
+        const steps: Step[] = template?.config?.data?.steps || [];
 
         const nodes: Node[] = generateSteps(steps);
 
-        const replacers: any = basicTemplate?.config?.data?.__generationMeta__?.replacers || [];
+        const replacers: any = template?.config?.data?.__generationMeta__?.replacers || [];
 
         return updateTemplatePlaceholderReferences(nodes, replacers)[0] as Node[];
-    }, [ generateSteps ]);
+    }, [ generateSteps, defaultTemplate ]);
 
     const [ nodes, setNodes, onNodesChange ] = useNodesState([]);
     const [ edges, setEdges, onEdgesChange ] = useEdgesState([]);
