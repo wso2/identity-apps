@@ -1,5 +1,19 @@
 # @wso2is/admin.validation.v1
 
+## 2.27.145
+
+### Patch Changes
+
+- [#8524](https://github.com/wso2/identity-apps/pull/8524) [`80a30c172e3931592b7fc6f4ac4900b25d754816`](https://github.com/wso2/identity-apps/commit/80a30c172e3931592b7fc6f4ac4900b25d754816) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Provide capability to configure and revert login & registration configurations in sub-organizations.
+
+- Updated dependencies [[`80a30c172e3931592b7fc6f4ac4900b25d754816`](https://github.com/wso2/identity-apps/commit/80a30c172e3931592b7fc6f4ac4900b25d754816), [`9d8a7df0c0602b2a58f37522a73d8428f35fdd17`](https://github.com/wso2/identity-apps/commit/9d8a7df0c0602b2a58f37522a73d8428f35fdd17)]:
+  - @wso2is/admin.server-configurations.v1@2.35.10
+  - @wso2is/i18n@2.25.3
+  - @wso2is/admin.organizations.v1@2.26.211
+  - @wso2is/admin.roles.v2@2.27.169
+  - @wso2is/core@2.10.1
+  - @wso2is/admin.core.v1@2.46.30
+
 ## 2.27.144
 
 ### Patch Changes

@@ -1,5 +1,23 @@
 # @wso2is/admin.applications.v1
 
+## 2.36.10
+
+### Patch Changes
+
+- [#8363](https://github.com/wso2/identity-apps/pull/8363) [`9d8a7df0c0602b2a58f37522a73d8428f35fdd17`](https://github.com/wso2/identity-apps/commit/9d8a7df0c0602b2a58f37522a73d8428f35fdd17) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Implement role sharing feature for console application
+
+- Updated dependencies [[`80a30c172e3931592b7fc6f4ac4900b25d754816`](https://github.com/wso2/identity-apps/commit/80a30c172e3931592b7fc6f4ac4900b25d754816), [`9d8a7df0c0602b2a58f37522a73d8428f35fdd17`](https://github.com/wso2/identity-apps/commit/9d8a7df0c0602b2a58f37522a73d8428f35fdd17)]:
+  - @wso2is/admin.server-configurations.v1@2.35.10
+  - @wso2is/admin.wsfed-configuration.v1@2.25.205
+  - @wso2is/admin.identity-providers.v1@2.26.207
+  - @wso2is/admin.connections.v1@2.33.99
+  - @wso2is/i18n@2.25.3
+  - @wso2is/admin.console-settings.v1@2.25.214
+  - @wso2is/admin.organizations.v1@2.26.211
+  - @wso2is/admin.roles.v2@2.27.169
+  - @wso2is/core@2.10.1
+  - @wso2is/admin.core.v1@2.46.30
+
 ## 2.36.9
 
 ### Patch Changes

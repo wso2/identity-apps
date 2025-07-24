@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.27.15
+
+### Patch Changes
+
+- [#8607](https://github.com/wso2/identity-apps/pull/8607) [`4f4af33c141e11d272a3f4c0cde2d2341a49394e`](https://github.com/wso2/identity-apps/commit/4f4af33c141e11d272a3f4c0cde2d2341a49394e) Thanks [@nilasini](https://github.com/nilasini)! - Update the error description
+
 ## 2.27.14
 
 ### Patch Changes
