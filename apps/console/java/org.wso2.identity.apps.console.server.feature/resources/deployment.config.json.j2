@@ -1017,21 +1017,21 @@
                 }
             },
             {% endif %}
-            {% if console.entitlement is defined %}
-            "entitlement": {
+            {% if console.role_assignment is defined %}
+            "role_assignment": {
                 "disabledFeatures": [
-                    {% if console.entitlement.disabled_features is defined %}
-                    {% for feature in console.entitlement.disabled_features %}
+                    {% if console.role_assignment.disabled_features is defined %}
+                    {% for feature in console.role_assignment.disabled_features %}
                     "{{ feature }}"{{ "," if not loop.last }}
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {% if console.entitlement.enabled is defined %} {{ console.entitlement.enabled }},
+                "enabled": {% if console.role_assignment.enabled is defined %} {{ console.role_assignment.enabled }},
                 {% else %} true,
                 {% endif %}
                 "scopes": {
-                    {% if console.entitlement.scopes is defined %}
-                    {% for operation, scopes in console.entitlement.scopes.items() %}
+                    {% if console.role_assignment.scopes is defined %}
+                    {% for operation, scopes in console.role_assignment.scopes.items() %}
                     "{{ operation }}": [
                         {% for scope in scopes %}
                             "{{ scope }}"{{ "," if not loop.last }}

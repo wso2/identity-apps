@@ -27,10 +27,10 @@ export class ConsoleRolesOnboardingConstants {
 
     public static readonly ADD_NEW_ROLE_FORM_ID: string = "add-new-console-role-wizard-form";
 
-    public static readonly ENTITLEMENT_MANAGEMENT_ROLE_ID: string = "entitlement";
+    public static readonly ROLE_ASSIGNMENT_ROLE_ID: string = "role_assignment";
     public static readonly ROLE_V1_API_RESOURCES_COLLECTION_NAME: string = "rolesV1";
     public static readonly ROLE_API_RESOURCES_COLLECTION_NAME: string = "roles";
-    public static readonly ORG_ENTITLEMENT_MANAGEMENT_ROLE_ID: string = "org_entitlement";
+    public static readonly ORG_ROLE_ASSIGNMENT_ROLE_ID: string = "org_role_assignment";
     public static readonly ORG_ROLE_V1_API_RESOURCES_COLLECTION_NAME: string = "org_rolesV1";
     public static readonly ORG_ROLE_API_RESOURCES_COLLECTION_NAME: string = "org_roles";
 }

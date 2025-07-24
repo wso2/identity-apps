@@ -170,7 +170,7 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
 
         if(!enableSCIM2RoleAPIV3) {
             filteringAPIResourceCollectionNames.push(
-                ConsoleRolesOnboardingConstants.ENTITLEMENT_MANAGEMENT_ROLE_ID);
+                ConsoleRolesOnboardingConstants.ROLE_ASSIGNMENT_ROLE_ID);
         }
 
         filteringAPIResourceCollectionNames.push(
@@ -202,7 +202,7 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
 
         if(!enableSCIM2RoleAPIV3) {
             filteringAPIResourceCollectionNames.push(
-                ConsoleRolesOnboardingConstants.ORG_ENTITLEMENT_MANAGEMENT_ROLE_ID);
+                ConsoleRolesOnboardingConstants.ORG_ROLE_ASSIGNMENT_ROLE_ID);
         }
 
         filteringAPIResourceCollectionNames.push(

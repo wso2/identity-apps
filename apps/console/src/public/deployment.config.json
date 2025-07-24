@@ -738,7 +738,7 @@
                     ]
                 }
             },
-            "entitlement": {
+            "role_assignment": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "featureFlags": [],
@@ -746,7 +746,7 @@
                     "create": [],
                     "delete": [],
                     "feature": [
-                        "console:entitlement",
+                        "console:role_assignment",
                         "console:roles"
                     ],
                     "read": [
