@@ -166,6 +166,18 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     const { isOrganizationManagementEnabled } = useGlobalVariables();
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
+    // Filter out the languages that are supported to be used to translate the app.
+    // TODO: Remove this logic once https://github.com/wso2/product-is/issues/24778 is addressed.
+    const filteredSupportedI18nLanguages: SupportedLanguagesMeta = useMemo(() => {
+        return Object.entries(supportedI18nLanguages)
+            .filter(([ _, value ]: [ string, LocaleMeta ]) => value.showOnLanguageSwitcher !== false)
+            .reduce((acc: SupportedLanguagesMeta, [ key, value ]: [ string, LocaleMeta ]) => {
+                acc[key] = value;
+
+                return acc;
+            }, {} as SupportedLanguagesMeta);
+    }, [ supportedI18nLanguages ]);
+
     const {
         data: myAccountApplicationData,
         isLoading: isMyAccountAppDataLoading
@@ -249,7 +261,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     };
 
     const generateHeaderButtons = (): ReactElement[] => [
-        showLanguageSwitcher && (
+        showLanguageSwitcher && Object.entries(filteredSupportedI18nLanguages)?.length > 1 && (
             <>
                 <Button
                     color="inherit"
@@ -259,14 +271,14 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                     onClick={ handleLanguageSwitchTriggerClick }
                     data-componentid="app-header-language-switcher-trigger"
                 >
-                    { supportedI18nLanguages[ I18n.instance?.language ]?.name }
+                    { filteredSupportedI18nLanguages[ I18n.instance?.language ]?.name }
                 </Button>
                 <Menu
                     open={ openLanguageSwitcher }
                     anchorEl={ languageSwitcherAnchorEl }
                     onClose={ handleLanguageSwitchTriggerClick }
                 >
-                    { Object.entries(supportedI18nLanguages)?.map(
+                    { Object.entries(filteredSupportedI18nLanguages)?.map(
                         ([ key, value ]: [ key: string, value: LocaleMeta ]) => {
                             if (I18n.instance?.language === value.code) {
                                 return;

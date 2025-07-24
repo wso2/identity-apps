@@ -16,7 +16,13 @@
  * under the License.
  */
 
-import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
+import {
+    I18nModuleInitOptions,
+    I18nModuleOptionsInterface,
+    LocaleMeta,
+    SupportedLanguagesMeta,
+    generateBackendPaths
+} from "@wso2is/i18n";
 import { I18nConstants } from "../constants";
 import { AppConstants } from "../constants/app-constants";
 import { UserManagementConstants } from "../constants/user-management-constants";
@@ -190,7 +196,7 @@ export class Config {
      * @param metaFile - Meta file.
      * @returns I18nModuleInitOptions - I18n init options.
      */
-    public static generateModuleInitOptions(metaFile: MetaI18N): I18nModuleInitOptions {
+    public static generateModuleInitOptions(metaFile: SupportedLanguagesMeta): I18nModuleInitOptions {
         return {
             backend: {
                 loadPath: (language: any, namespace: any) =>
@@ -221,7 +227,7 @@ export class Config {
      *
      * @returns I18nModuleOptionsInterface - i18n config object.
      */
-    public static getI18nConfig(metaFile?: MetaI18N): I18nModuleOptionsInterface {
+    public static getI18nConfig(metaFile?: SupportedLanguagesMeta): I18nModuleOptionsInterface {
         return {
             initOptions: this.generateModuleInitOptions(metaFile),
             langAutoDetectEnabled: window["AppUtils"]?.getConfig()?.ui?.i18nConfigs?.langAutoDetectEnabled

@@ -19,4 +19,3 @@
 export * from "./namespaces";
 export * from "./misc";
 export * from "./common";
-export * from "./meta";

@@ -60,8 +60,8 @@ import {
     I18nInstanceInitException,
     I18nModuleConstants,
     LanguageChangeException,
-    MetaI18N,
-    MetaI18NNamespace,
+    LocaleMeta,
+    SupportedLanguagesMeta,
     isLanguageSupported
 } from "@wso2is/i18n";
 import axios, { AxiosResponse } from "axios";
@@ -317,7 +317,34 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         (async () => {
             try {
                 const defaultMetaResponse: AxiosResponse = await axios.get(metaPath);
+                let defaultMeta: SupportedLanguagesMeta = cloneDeep(defaultMetaResponse?.data);
                 let extendedMetaResponse: Partial<AxiosResponse>;
+
+                // Filter out the languages that are supported to be used to translate the app.
+                // TODO: Remove this logic once https://github.com/wso2/product-is/issues/24778 is addressed.
+                defaultMeta = Object.keys(defaultMeta).reduce((acc: SupportedLanguagesMeta, lang: string) => {
+                    const bundle: LocaleMeta = defaultMeta[lang];
+
+                    acc[lang] = {
+                        showOnLanguageSwitcher: bundle.showOnLanguageSwitcher ?? bundle.enabled,
+                        ...bundle
+                    };
+
+                    if (acc[lang].showOnLanguageSwitcher === undefined) {
+                        let showOnLanguageSwitcher: boolean = true;
+
+                        if (!Config.getAppSupportedLocales().includes(lang)) {
+                            showOnLanguageSwitcher = false;
+                        }
+
+                        acc[lang] = {
+                            showOnLanguageSwitcher,
+                            ...bundle
+                        };
+                    }
+
+                    return acc;
+                }, {});
 
                 try {
                     extendedMetaResponse = await axios.get(metaExtensionsPath);
@@ -325,15 +352,15 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     extendedMetaResponse = { data: undefined };
                 }
 
-                const mergedMeta: MetaI18N = merge(
-                    cloneDeep(defaultMetaResponse?.data),
+                const mergedMeta: SupportedLanguagesMeta = merge(
+                    defaultMeta,
                     cloneDeep(extendedMetaResponse?.data)
                 );
 
                 // Filter out bundles with enabled: false, treat missing enabled as enabled (backward compatible)
                 if (mergedMeta && typeof mergedMeta === "object") {
                     Object.keys(mergedMeta).forEach((lang: string) => {
-                        const bundle: MetaI18NNamespace = mergedMeta[lang];
+                        const bundle: LocaleMeta = mergedMeta[lang];
 
                         if (bundle && typeof bundle === "object" && "enabled" in bundle && bundle.enabled === false) {
                             delete mergedMeta[lang];
