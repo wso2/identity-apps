@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.68.24
+
+### Patch Changes
+
+- [#8614](https://github.com/wso2/identity-apps/pull/8614) [`1140c35a7fd7bf4a53fb9ebdc97acc783ab628f5`](https://github.com/wso2/identity-apps/commit/1140c35a7fd7bf4a53fb9ebdc97acc783ab628f5) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues with locale field in user profile
+
+- Updated dependencies [[`3d46bb595f4d6ae284d9eff54073dead6034ad70`](https://github.com/wso2/identity-apps/commit/3d46bb595f4d6ae284d9eff54073dead6034ad70)]:
+  - @wso2is/admin.users.v1@2.34.2
+  - @wso2is/admin.agents.v1@1.0.16
+  - @wso2is/admin.core.v1@2.46.32
+  - @wso2is/admin.roles.v2@2.27.171
+
 ## 2.68.23
 
 ### Patch Changes
