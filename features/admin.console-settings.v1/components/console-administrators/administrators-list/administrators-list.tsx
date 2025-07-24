@@ -148,8 +148,8 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const enableScim2RolesV3Api: boolean = useSelector(
-        (state: AppState) => state.config.ui.enableScim2RolesV3Api
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
     );
 
     const consoleSettingsFeatureConfig: FeatureAccessConfigInterface = useSelector(
@@ -256,7 +256,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
     const [ loading, setLoading ] = useState(false);
 
     const adminActionPermissionScopes: string[] = useMemo(() => {
-        const userRoleUpdateScopes: string[] = enableScim2RolesV3Api
+        const userRoleUpdateScopes: string[] = userRolesV3FeatureEnabled
             ? [ AdministratorConstants.INTERNAL_ROLE_MGT_USERS_UPDATE_PERMISSION ]
             : featureConfig?.userRoles?.scopes?.update;
 
@@ -264,7 +264,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
             ...featureConfig?.users?.scopes?.create,
             ...userRoleUpdateScopes
         ];
-    }, [ enableScim2RolesV3Api, featureConfig ]);
+    }, [ userRolesV3FeatureEnabled, featureConfig ]);
 
     /**
      * Resolves the attributes by which the users can be searched.

@@ -159,12 +159,12 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
 
     const consoleId: string = filteredApplicationList?.applications[0]?.id;
 
-    const enableScim2RolesV3Api: boolean = useSelector(
-        (state: AppState) => state.config.ui.enableScim2RolesV3Api
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
     );
 
     const roleUpdateFunction: (roleId: string, roleData: PatchRoleDataInterface) => Promise<AxiosResponse> =
-        enableScim2RolesV3Api ? assignGroupstoRoles : updateRoleDetails;
+        userRolesV3FeatureEnabled ? assignGroupstoRoles : updateRoleDetails;
 
     const {
         data: fetchedRoleList,
@@ -317,7 +317,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
                 const roleData: PatchRoleDataInterface = {
                     "Operations": [ {
                         "op": "add",
-                        "value": enableScim2RolesV3Api
+                        "value": userRolesV3FeatureEnabled
                             ? [ {
                                 "display": createdGroup.displayName,
                                 "value": createdGroup.id

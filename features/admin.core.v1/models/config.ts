@@ -459,10 +459,6 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     enableIdentityClaims?: boolean;
     /**
-     * Flag to check whether to use the SCIM2 Roles V3 API in console.
-     */
-    enableScim2RolesV3Api?: boolean;
-    /**
      * Flag to check whether email as a username feature is enabled.
      */
     enableEmailDomain?: boolean;

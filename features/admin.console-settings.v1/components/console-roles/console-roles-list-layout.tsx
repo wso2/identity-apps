@@ -82,13 +82,11 @@ const ConsoleRolesListLayout: FunctionComponent<ConsoleRolesListLayoutPropsInter
 
     const { t } = useTranslation();
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-
-    const enableScim2RolesV3Api: boolean = useSelector(
-        (state: AppState) => state.config.ui.enableScim2RolesV3Api
-    );
-
     const userRolesV3FeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRolesV3
+    );
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
     );
 
     const consoleSettingsFeatureConfig : FeatureAccessConfigInterface =
@@ -216,7 +214,7 @@ const ConsoleRolesListLayout: FunctionComponent<ConsoleRolesListLayoutPropsInter
                 (
                     <Show
                         when={
-                            enableScim2RolesV3Api
+                            userRolesV3FeatureEnabled
                                 ? userRolesV3FeatureConfig?.scopes?.create
                                 : featureConfig?.userRoles?.scopes?.create
                         }

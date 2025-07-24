@@ -70,8 +70,8 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const userRolesV3FeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRolesV3);
-    const enableScim2RolesV3Api: boolean = useSelector(
-        (state: AppState) => state.config.ui.enableScim2RolesV3Api
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
     );
 
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
@@ -83,10 +83,10 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
     const { data: consoleApplicationFilter } = useApplicationList(null, null, null, "name eq Console");
 
     const roleCreationScope: string[] = useMemo(() => {
-        return enableScim2RolesV3Api
+        return userRolesV3FeatureEnabled
             ? userRolesV3FeatureConfig?.scopes?.create
             : featureConfig?.userRoles?.scopes?.create;
-    }, [ enableScim2RolesV3Api, userRolesV3FeatureConfig, featureConfig ]);
+    }, [ userRolesV3FeatureEnabled, userRolesV3FeatureConfig, featureConfig ]);
 
     const consoleId: string = useMemo(() => {
         return consoleApplicationFilter?.applications[0]?.id;

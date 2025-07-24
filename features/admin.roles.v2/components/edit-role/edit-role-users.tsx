@@ -128,12 +128,12 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ showAddNewUserModal, setShowAddNewUserModal ] = useState<boolean>(false);
 
-    const enableScim2RolesV3Api: boolean = useSelector(
-        (state: AppState) => state.config.ui.enableScim2RolesV3Api
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
     );
 
     const updateUsersOfRoleFunction: (roleId: string, roleData: PatchRoleDataInterface) => Promise<any> =
-        enableScim2RolesV3Api ? updateUsersForRole : updateRoleDetails;
+        userRolesV3FeatureEnabled ? updateUsersForRole : updateRoleDetails;
 
     const shouldShowUserstoreDropdown: boolean =
     selectedUserStoreDomainName !== "AGENT" &&
@@ -287,7 +287,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             };
         });
 
-        const roleData: PatchRoleDataInterface = enableScim2RolesV3Api ? {
+        const roleData: PatchRoleDataInterface = userRolesV3FeatureEnabled ? {
             Operations: [
                 {
                     op: "add",
@@ -363,7 +363,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
      * @param user - user to be unassigned.
      */
     const unassignUserFromRole = (user: UserBasicInterface): void => {
-        const roleData: PatchRoleDataInterface = enableScim2RolesV3Api ? {
+        const roleData: PatchRoleDataInterface = userRolesV3FeatureEnabled ? {
             Operations: [ {
                 "op": "remove",
                 "path": `value eq ${ user.id }`

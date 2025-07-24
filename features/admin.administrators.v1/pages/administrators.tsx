@@ -223,17 +223,17 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         startIndex: 0,
         totalResults: 0
     });
-    const enaleSCIM2RoleAPIV3: boolean = useSelector(
-        (state: AppState) => state.config.ui.enableScim2RolesV3Api
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
     );
 
     const { data: roleDataV3, error: roleErrorV3, mutate: mutateRoleV3 } =
-        useGetRoleByIdV3(enaleSCIM2RoleAPIV3 ? adminRoleId : null);
+        useGetRoleByIdV3(userRolesV3FeatureEnabled ? adminRoleId : null);
 
     // Create a function that uses the appropriate method based on the API version
     const getRoleByIdFunction: (roleId: string) => Promise<AxiosResponse> = useCallback(
         (roleId: string): Promise<AxiosResponse> => {
-            if (enaleSCIM2RoleAPIV3) {
+            if (userRolesV3FeatureEnabled) {
                 return new Promise((resolve: (value: AxiosResponse) => void, reject: (reason?: any) => void) => {
                     if (roleDataV3) {
                         resolve({ data: roleDataV3 } as AxiosResponse);
@@ -249,7 +249,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                 return getRoleById(roleId);
             }
         },
-        [ enaleSCIM2RoleAPIV3, roleDataV3, roleErrorV3, mutateRoleV3 ]
+        [ userRolesV3FeatureEnabled, roleDataV3, roleErrorV3, mutateRoleV3 ]
     );
 
     const organizationName: string = store.getState().auth.tenantDomain;

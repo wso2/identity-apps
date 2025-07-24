@@ -84,8 +84,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     const agentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.agents
     );
-
-    const rolesV3featureConfig: FeatureAccessConfigInterface = useSelector(
+    const userRolesV3FeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRolesV3);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const administratorRoleDisplayName: string = useSelector(
@@ -93,17 +92,17 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     const userRolesDisabledFeatures: string[] = useSelector((state: AppState) => {
         return state.config.ui.features?.userRoles?.disabledFeatures;
     });
-    const enableScim2RolesV3Api: boolean = useSelector(
-        (state: AppState) => state.config.ui.enableScim2RolesV3Api
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
     );
     const hasGroupUpdatePermission: boolean = useRequiredScopes(
-        enableScim2RolesV3Api
+        userRolesV3FeatureEnabled
             ? [ LocalRoleConstants.ROLE_GROUPS_UPDATE ]
             : featureConfig?.scopes?.update
     );
 
     const hasUserUpdatePermission: boolean = useRequiredScopes(
-        enableScim2RolesV3Api
+        userRolesV3FeatureEnabled
             ? [ LocalRoleConstants.ROLE_USERS_UPDATE ]
             : usersFeatureConfig?.scopes?.update
     );
@@ -113,12 +112,12 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
             property?.name === LocalRoleConstants.IS_SHARED_ROLE && property?.value === "true"), [ roleObject ]);
 
     const isReadOnly: boolean = useMemo(() => {
-        if (enableScim2RolesV3Api) {
+        if (userRolesV3FeatureEnabled) {
             return !isFeatureEnabled(
                 featureConfig,
                 LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE"))
-                || !hasRequiredScopes(rolesV3featureConfig,
-                    rolesV3featureConfig?.scopes?.update, allowedScopes)
+                || !hasRequiredScopes(userRolesV3FeatureConfig,
+                    userRolesV3FeatureConfig?.scopes?.update, allowedScopes)
                 || roleObject?.meta?.systemRole;
         } else {
             return !isFeatureEnabled(
@@ -128,7 +127,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                     featureConfig?.scopes?.update, allowedScopes)
                 || roleObject?.meta?.systemRole;
         }
-    }, [ enableScim2RolesV3Api, featureConfig, rolesV3featureConfig, allowedScopes, roleObject ]);
+    }, [ userRolesV3FeatureEnabled, featureConfig, userRolesV3FeatureConfig, allowedScopes, roleObject ]);
 
     const isGroupReadOnly: boolean = useMemo(() => {
 
@@ -142,7 +141,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
 
     const isUserReadOnly: boolean = useMemo(() => {
 
-        if (enableScim2RolesV3Api) {
+        if (userRolesV3FeatureEnabled) {
             const featureEnabled: boolean = isFeatureEnabled(featureConfig,
                 LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE"));
             const result: boolean = !featureEnabled || !hasUserUpdatePermission;
@@ -156,7 +155,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
 
         return result;
     }, [
-        enableScim2RolesV3Api,
+        userRolesV3FeatureEnabled,
         featureConfig,
         hasUserUpdatePermission,
         isReadOnly,

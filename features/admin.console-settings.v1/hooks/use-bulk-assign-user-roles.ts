@@ -75,9 +75,9 @@ const useBulkAssignAdministratorRoles = (): UseBulkAssignAdministratorRolesInter
      * @param onAdministratorRoleAssignSuccess - Success callback.
      */
 
-    const entitlementFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.entitlement);
-    const hasRoleV3UpdateScopes: boolean = useRequiredScopes(entitlementFeatureConfig?.scopes?.update);
+    const roleAssignmentFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.role_assignments);
+    const hasRoleV3UpdateScopes: boolean = useRequiredScopes(roleAssignmentFeatureConfig?.scopes?.update);
 
     const updateUserRoleAssignmentFunction: (
         roleId: string,

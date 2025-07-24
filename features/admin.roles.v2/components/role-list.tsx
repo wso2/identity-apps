@@ -104,8 +104,8 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     const administratorRoleDisplayName: string = useSelector(
         (state: AppState) => state?.config?.ui?.administratorRoleDisplayName);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const enableScim2RolesV3Api: boolean = useSelector(
-        (state: AppState) => state.config.ui.enableScim2RolesV3Api
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
     );
     const isEditingSystemRolesAllowed: boolean =
         useSelector((state: AppState) => state?.config?.ui?.isSystemRolesEditAllowed);
@@ -118,10 +118,10 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     }, [ userRolesFeatureConfig, allowedScopes ]);
 
     const roleCreationScope: string[] = useMemo(() => {
-        return enableScim2RolesV3Api
+        return userRolesV3FeatureEnabled
             ? userRolesV3FeatureConfig?.scopes?.create
             : featureConfig?.userRoles?.scopes?.create;
-    }, [ enableScim2RolesV3Api, userRolesV3FeatureConfig, featureConfig ]);
+    }, [ userRolesV3FeatureEnabled, userRolesV3FeatureConfig, featureConfig ]);
 
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ currentDeletedRole, setCurrentDeletedRole ] = useState<RolesInterface>();

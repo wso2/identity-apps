@@ -129,13 +129,12 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     const userRolesV3FeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRolesV3
     );
-
-    const enableScim2RolesV3Api: boolean = useSelector(
-        (state: AppState) => state.config.ui.enableScim2RolesV3Api
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
     );
 
     const hasRoleCreatePermissions: boolean = useRequiredScopes(
-        enableScim2RolesV3Api
+        userRolesV3FeatureEnabled
             ? userRolesV3FeatureConfig?.scopes?.create
             : featureConfig?.userRoles?.scopes?.create
     );
@@ -153,7 +152,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
         null,
         null,
         "users,groups,permissions,associatedApplications",
-        enableScim2RolesV3Api
+        userRolesV3FeatureEnabled
     );
 
     /**
@@ -193,7 +192,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
      * Fetch application roles.
      */
     const getApplicationRoles = (shouldUpdateSelectedRolesList?: boolean): void => {
-        if (enableScim2RolesV3Api) {
+        if (userRolesV3FeatureEnabled) {
             // For V3 API, use SWR data
             if (rolesV3Data) {
                 const rolesArray: BasicRoleInterface[] = [];
@@ -362,7 +361,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
      * Handles the on role created callback.
      */
     const onRoleCreated = () => {
-        if (enableScim2RolesV3Api) {
+        if (userRolesV3FeatureEnabled) {
             // For V3 API, use SWR mutate to refresh data
             mutateRolesV3();
         } else {
@@ -375,7 +374,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     return (
         <>
             <EmphasizedSegment
-                loading={ enableScim2RolesV3Api ? isRolesV3Loading : isLoading }
+                loading={ userRolesV3FeatureEnabled ? isRolesV3Loading : isLoading }
                 padded="very"
                 data-componentid={ componentId }
             >
@@ -487,7 +486,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                     multiple
                                     disableCloseOnSelect
                                     readOnly={ readOnly }
-                                    loading={ enableScim2RolesV3Api ? isRolesV3Loading : isLoading }
+                                    loading={ userRolesV3FeatureEnabled ? isRolesV3Loading : isLoading }
                                     options={ roleList }
                                     value={ selectedRoles ?? [] }
                                     data-componentid={ `${ componentId }-assigned-roles-list` }
