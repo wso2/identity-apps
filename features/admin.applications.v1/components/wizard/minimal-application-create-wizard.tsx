@@ -103,6 +103,7 @@ import {
 } from "../../models/application-inbound";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { ApplicationShareModal } from "../modals/application-share-modal";
+import { ApplicationShareModalUpdated } from "../modals/application-share-modal-updated";
 import "./minimal-application-create-wizard.scss";
 
 /**
@@ -196,6 +197,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
     );
+    const isRoleSharingEnabled: boolean = isFeatureEnabled(
+        featureConfig?.applications,
+        ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_ROLE_SHARING"));
 
     const [ templateSettings, setTemplateSettings ] = useState<ApplicationTemplateInterface>(null);
     const [ protocolFormValues, setProtocolFormValues ] = useState<Record<string, any>>(undefined);
@@ -1386,12 +1390,21 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 { renderHelpPanel() }
             </ModalWithSidePanel>
             { showAppShareModal && (
-                <ApplicationShareModal
-                    open={ showAppShareModal }
-                    applicationId={ applicationId }
-                    onClose={ () => setShowAppShareModal(false) }
-                    onApplicationSharingCompleted={ handleApplicationSharingCompletion }
-                />
+                isRoleSharingEnabled ?  (
+                    <ApplicationShareModalUpdated
+                        open={ showAppShareModal }
+                        applicationId={ applicationId }
+                        onClose={ () => setShowAppShareModal(false) }
+                        onApplicationSharingCompleted={ handleApplicationSharingCompletion }
+                    />
+                ) : (
+                    <ApplicationShareModal
+                        open={ showAppShareModal }
+                        applicationId={ applicationId }
+                        onClose={ () => setShowAppShareModal(false) }
+                        onApplicationSharingCompleted={ handleApplicationSharingCompletion }
+                    />
+                )
             ) }
         </>
     );
