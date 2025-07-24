@@ -1991,7 +1991,7 @@
                 }
             },
             {% endif %}
-            {% if console.user_roles_v3 is defined %}
+            {% if console.user_roles_v3 is defined && scim2.enable_scim2_roles_v3_api is defined %}
             "userRolesV3": {
                 "disabledFeatures": [
                     {% if console.user_roles_v3.disabled_features is defined %}
@@ -2000,7 +2000,7 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {% if console.user_roles_v3.enabled is defined %} {{ console.user_roles_v3.enabled }},
+                "enabled": {% if scim2.enable_scim2_roles_v3_api is defined %} {{ scim2.enable_scim2_roles_v3_api }},
                 {% else %} true,
                 {% endif %}
                 "scopes": {
