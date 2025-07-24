@@ -516,6 +516,8 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 customTextScreenMeta,
                 getLocales: (requestingView: BrandingSubFeatures): SupportedLanguagesMeta => {
                     if (requestingView === BrandingSubFeatures.CUSTOM_TEXT) {
+                        console.log("supportedI18nLanguages", JSON.stringify(supportedI18nLanguages));
+                        console.log("Custom text meta locales: ", JSON.stringify(customTextMeta?.locales));
                         return pick(supportedI18nLanguages, customTextMeta?.locales);
                     }
 

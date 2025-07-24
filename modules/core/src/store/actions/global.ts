@@ -22,6 +22,7 @@ import {
     HideAJAXTopLoadingBarAction,
     InitializeAlertSystemAction,
     SetSupportedI18nLanguagesActionInterface,
+    SetSupportedLocaleExtensionsActionInterface,
     ShowAJAXTopLoadingBarAction
 } from "./types";
 
@@ -75,4 +76,15 @@ export const addAlert = <T = {}>(alert: T): AddAlertAction<T> => ({
 export const setSupportedI18nLanguages = <T = {}>(languages: T): SetSupportedI18nLanguagesActionInterface<T> => ({
     payload: languages,
     type: CommonGlobalActionTypes.SET_SUPPORTED_I18N_LANGUAGES
+});
+
+/**
+ * Redux action to set the supported locale extensions.
+ *
+ * @param locales - Supported locale extensions.
+ * @returns an action of type `SET_SUPPORTED_LOCALE_EXTENSIONS`
+ */
+export const setSupportedLocaleExtensions = <T = {}>(languages: T): SetSupportedLocaleExtensionsActionInterface<T> => ({
+    payload: languages,
+    type: CommonGlobalActionTypes.SET_SUPPORTED_LOCALE_EXTENSIONS
 });

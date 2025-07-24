@@ -56,6 +56,11 @@ export const commonGlobalReducer = <T, S, U>(initialState: CommonGlobalReducerSt
                 ...state,
                 supportedI18nLanguages: action.payload
             };
+        case CommonGlobalActionTypes.SET_SUPPORTED_LOCALE_EXTENSIONS:
+            return {
+                ...state,
+                supportedLocaleExtensions: action.payload
+            };
         default:
             return state;
     }

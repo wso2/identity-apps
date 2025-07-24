@@ -49,7 +49,13 @@ export enum CommonGlobalActionTypes {
      *
      * @type {string}
      */
-    SET_SUPPORTED_I18N_LANGUAGES = "SET_SUPPORTED_I18N_LANGUAGES"
+    SET_SUPPORTED_I18N_LANGUAGES = "SET_SUPPORTED_I18N_LANGUAGES",
+    /**
+     * Action type to set the supported locale extensions.
+     *
+     * @type {string}
+     */
+    SET_SUPPORTED_LOCALE_EXTENSIONS = "SET_SUPPORTED_LOCALE_EXTENSIONS"
 }
 
 /**
@@ -98,10 +104,19 @@ export interface SetSupportedI18nLanguagesActionInterface <U = {}>extends Common
 }
 
 /**
+ * Set supported locale extensions action interface.
+ */
+export interface SetSupportedLocaleExtensionsActionInterface <U = {}>extends CommonGlobalBaseAction {
+    payload: U;
+    type: CommonGlobalActionTypes.SET_SUPPORTED_LOCALE_EXTENSIONS;
+}
+
+/**
  * Export action interfaces.
  */
 export type CommonGlobalActions<T, S, U> = ShowAJAXTopLoadingBarAction
     | HideAJAXTopLoadingBarAction
     | AddAlertAction<T>
     | InitializeAlertSystemAction<S>
+    | SetSupportedLocaleExtensionsActionInterface<U>
     | SetSupportedI18nLanguagesActionInterface<U>;
