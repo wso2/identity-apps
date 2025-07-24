@@ -26,6 +26,8 @@ import EmptyValueField from "./empty-value-field";
 import { RadioFieldFormPropsInterface } from "../../../models/profile-ui";
 import { EditSection } from "../../shared/edit-section";
 
+import "./field-form.scss";
+
 interface RadioOptionItem {
     label: string;
     value: string;
@@ -66,7 +68,7 @@ const RadioFieldForm: FunctionComponent<RadioFieldFormPropsInterface> = ({
         // Validate the required field.
         if (isEmpty(value) && isRequired) {
             return (
-                t("myAccount:components.profile.forms.generic.inputs.validations.empty", { fieldLabel })
+                t("myAccount:components.profile.forms.generic.inputs.validations.empty", { fieldName: fieldLabel })
             );
         }
 
@@ -83,7 +85,7 @@ const RadioFieldForm: FunctionComponent<RadioFieldFormPropsInterface> = ({
         return (
             <EditSection data-testid={ "profile-schema-editing-section" }>
                 <Grid>
-                    <Grid.Row columns={ 2 }>
+                    <Grid.Row columns={ 2 } verticalAlign="middle">
                         <Grid.Column width={ 4 }>{ fieldLabel }</Grid.Column>
                         <Grid.Column width={ 12 }>
                             <FinalForm
@@ -91,9 +93,8 @@ const RadioFieldForm: FunctionComponent<RadioFieldFormPropsInterface> = ({
                                 render={ ({ handleSubmit }: FormRenderProps) => {
                                     return (
                                         <form
-                                            id="user-profile-form"
+                                            className="radio-group-field-form"
                                             onSubmit={ handleSubmit }
-                                            className="user-profile-form"
                                             data-componentid={
                                                 `${testId}-editing-section-${ schema.name.replace(".", "-") }-form` }
                                             data-testid={
@@ -120,7 +121,7 @@ const RadioFieldForm: FunctionComponent<RadioFieldFormPropsInterface> = ({
                                                     `${testId}-editing-section-${ schema.name.replace(".", "-") }-field`
                                                 }
                                             />
-                                            <Grid.Row>
+                                            <Grid.Row className="form-actions-wrapper">
                                                 <Button
                                                     primary
                                                     type="submit"

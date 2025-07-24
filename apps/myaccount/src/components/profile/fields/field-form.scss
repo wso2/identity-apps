@@ -16,8 +16,60 @@
  * under the License.
  */
 
+.form-actions-wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
 .multi-valued-field-form {
-    .OxygenPaper-root {
+    .MuiTableContainer-root {
         margin: 8px 0;
+    }
+
+    .OxygenTextField-root {
+        background-color: var(--asg-input-field-base-background-color);
+    }
+
+    .form-actions-wrapper {
+        justify-content: flex-start !important;
+    }
+}
+
+.radio-group-field-form {
+    .OxygenFormControl-root {
+        margin-bottom: 8px;
+
+        .OxygenRadioGroup-root {
+            padding-left: 4px;
+            background-color: var(--asg-input-field-base-background-color);
+        }
+    }
+
+    .form-actions-wrapper {
+        justify-content: flex-start !important;
+    }
+}
+
+.checkbox-group-field-form {
+    .OxygenFormControl-root {
+        margin-bottom: 8px;
+
+        .OxygenFormGroup-root {
+            padding-left: 4px;
+            background-color: var(--asg-input-field-base-background-color);
+        }
+    }
+
+    .form-actions-wrapper {
+        justify-content: flex-start !important;
+    }
+}
+
+.dropdown-field-form {
+    .OxygenSelect-root {
+        background-color: var(--asg-input-field-base-background-color);
     }
 }

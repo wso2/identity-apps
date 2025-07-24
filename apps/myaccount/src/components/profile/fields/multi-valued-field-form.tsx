@@ -129,7 +129,7 @@ const MultiValueFieldForm = <T extends string | number>({
                                                     `${testId}-editing-section-${ schema.name.replace(".", "-") }-field`
                                                 }
                                             />
-                                            <Grid.Row>
+                                            <Grid.Row className="form-actions-wrapper">
                                                 <Button
                                                     primary
                                                     type="submit"
