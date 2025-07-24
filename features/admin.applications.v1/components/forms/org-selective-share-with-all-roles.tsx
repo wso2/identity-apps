@@ -256,11 +256,11 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
         if (topLevelOrganizationsFetchRequestError || organizationsFetchRequestError) {
             dispatch(
                 addAlert({
-                    description: t("applications:edit.sections.sharedAccess.notifications" +
-                        ".fetchOrgTree.genericError.description"),
+                    description: t("consoleSettings:sharedAccess.notifications" +
+                        ".fetchOrgTree.error.description"),
                     level: AlertLevels.ERROR,
-                    message: t("applications:edit.sections.sharedAccess.notifications" +
-                        ".fetchOrgTree.genericError.message")
+                    message: t("consoleSettings:sharedAccess.notifications" +
+                        ".fetchOrgTree.error.message")
                 })
             );
         }

@@ -207,9 +207,9 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
         if (originalOrganizationTreeFetchRequestError) {
             dispatch(
                 addAlert({
-                    description: t("consoleSettings:sharedAccess.notifications.fetchOrgTree.genericError.description"),
+                    description: t("consoleSettings:sharedAccess.notifications.fetchOrgTree.error.description"),
                     level: AlertLevels.ERROR,
-                    message: t("consoleSettings:sharedAccess.notifications.fetchOrgTree.genericError.message")
+                    message: t("consoleSettings:sharedAccess.notifications.fetchOrgTree.error.message")
                 })
             );
         }
