@@ -148,6 +148,9 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const enableScim2RolesV3Api: boolean = useSelector(
+        (state: AppState) => state.config.ui.enableScim2RolesV3Api
+    );
 
     const consoleSettingsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features.consoleSettings
@@ -251,6 +254,17 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
     ];
 
     const [ loading, setLoading ] = useState(false);
+
+    const adminActionPermissionScopes: string[] = useMemo(() => {
+        const userRoleUpdateScopes: string[] = enableScim2RolesV3Api
+            ? [ AdministratorConstants.INTERNAL_ROLE_MGT_USERS_UPDATE_PERMISSION ]
+            : featureConfig?.userRoles?.scopes?.update;
+
+        return [
+            ...featureConfig?.users?.scopes?.create,
+            ...userRoleUpdateScopes
+        ];
+    }, [ enableScim2RolesV3Api, featureConfig ]);
 
     /**
      * Resolves the attributes by which the users can be searched.
@@ -536,10 +550,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
                 isFeatureEnabled(consoleSettingsFeatureConfig,
                     ConsoleAdministratorOnboardingConstants.FEATURE_DICTIONARY
                         .get("CONSOLE_SETTINGS_ADD_ADMINISTRATOR")) && (<Show
-                    when={
-                        [ ...featureConfig?.users?.scopes?.create,
-                            ...featureConfig?.userRoles?.scopes?.update
-                        ] }>
+                    when={ adminActionPermissionScopes }>
                     { !isSubOrganization() && isPrivilegedUsersInConsoleSettingsEnabled && (
                         <Button
                             data-componentid={ `${componentId}-admin-settings-button` }

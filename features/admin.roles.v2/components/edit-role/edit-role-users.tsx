@@ -65,7 +65,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Dropdown, DropdownProps, Header, Icon, PaginationProps, SemanticICONS } from "semantic-ui-react";
 import { AddRoleUserModal } from "./add-role-user-modal";
-import { updateRoleDetails } from "../../api";
+import { updateRoleDetails, updateUsersForRole } from "../../api";
 import { CreateRoleMemberInterface, PatchRoleDataInterface, RoleEditSectionsInterface } from "../../models/roles";
 import "./edit-role.scss";
 
@@ -127,6 +127,13 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const [ paginatedUsers, setPaginatedUsers ] = useState<UserBasicInterface[]>([]);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ showAddNewUserModal, setShowAddNewUserModal ] = useState<boolean>(false);
+
+    const enableScim2RolesV3Api: boolean = useSelector(
+        (state: AppState) => state.config.ui.enableScim2RolesV3Api
+    );
+
+    const updateUsersOfRoleFunction: (roleId: string, roleData: PatchRoleDataInterface) => Promise<any> =
+        enableScim2RolesV3Api ? updateUsersForRole : updateRoleDetails;
 
     const shouldShowUserstoreDropdown: boolean =
     selectedUserStoreDomainName !== "AGENT" &&
@@ -280,7 +287,15 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             };
         });
 
-        const roleData: PatchRoleDataInterface = {
+        const roleData: PatchRoleDataInterface = enableScim2RolesV3Api ? {
+            Operations: [
+                {
+                    op: "add",
+                    value: addedUsers
+                }
+            ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        } : {
             Operations: [
                 {
                     op: "add",
@@ -293,7 +308,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         };
 
         setIsSubmitting(true);
-        updateRoleDetails(role.id, roleData)
+        updateUsersOfRoleFunction(role.id, roleData)
             .then((response: AxiosResponse) => {
                 if (response?.status === 200) {
                     dispatch(
@@ -348,7 +363,13 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
      * @param user - user to be unassigned.
      */
     const unassignUserFromRole = (user: UserBasicInterface): void => {
-        const roleData: PatchRoleDataInterface = {
+        const roleData: PatchRoleDataInterface = enableScim2RolesV3Api ? {
+            Operations: [ {
+                "op": "remove",
+                "path": `value eq ${ user.id }`
+            } ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        } : {
             Operations: [ {
                 "op": "remove",
                 "path": `users[value eq ${ user.id }]`
@@ -357,7 +378,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         };
 
         setIsSubmitting(true);
-        updateRoleDetails(role.id, roleData)
+        updateUsersOfRoleFunction(role.id, roleData)
             .then((response: AxiosResponse) => {
                 if (response?.status === 200) {
                     dispatch(

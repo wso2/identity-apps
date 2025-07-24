@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,36 +21,36 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
-import { AppState, store } from "@wso2is/admin.core.v1/store";
-import { HttpMethods, RoleListInterface } from "@wso2is/core/models";
-import { useSelector } from "react-redux";
+import { store } from "@wso2is/admin.core.v1/store";
+import { HttpMethods } from "@wso2is/core/models";
+import { RoleAudienceTypes } from "../constants/role-constants";
+import { RolesV2ResponseInterface } from "../models/roles";
 
 /**
- * Hook to retrieve the list of roles.
+ * Hook to get application roles by audience using SCIM2 Roles V3 API.
  *
- * @param count - Number of records to fetch.
- * @param startIndex - Index of the first record to fetch.
- * @param filter - Search filter.
+ * @param audience - The audience type.
+ * @param appId - The application ID.
+ * @param before - Before link.
+ * @param after - After link.
+ * @param limit - Limit.
  * @param excludedAttributes - Attributes to exclude from the response.
  * @param shouldFetch - Should fetch the data.
- *
- * @returns The object containing the roles list.
+ * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useGetRolesList = <Data = RoleListInterface, Error = RequestErrorInterface>(
-    count?: number,
-    startIndex?: number,
-    filter?: string,
+const useGetApplicationRolesByAudienceV3 = <Data = RolesV2ResponseInterface, Error = RequestErrorInterface>(
+    audience: string,
+    appId: string,
+    before?: string,
+    after?: string,
+    limit?: number,
     excludedAttributes?: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
-    const enableScim2RolesV3Api: boolean = useSelector(
-        (state: AppState) => state.config.ui.enableScim2RolesV3Api
-    );
-
-    const rolesEndpoint: string = enableScim2RolesV3Api
-        ? store.getState().config.endpoints.rolesV3
-        : store.getState().config.endpoints.rolesV2;
+    const filter: string = audience === RoleAudienceTypes.APPLICATION
+        ? `audience.value eq ${ appId }`
+        : `audience.type eq ${ audience.toLowerCase() }`;
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -59,31 +59,27 @@ const useGetRolesList = <Data = RoleListInterface, Error = RequestErrorInterface
         },
         method: HttpMethods.GET,
         params: {
-            count,
+            after,
+            before,
             excludedAttributes,
             filter,
-            startIndex
+            limit
         },
-        url: rolesEndpoint
+        url: `${ store.getState().config.endpoints.rolesV3 }`
     };
 
-    const {
-        data,
-        error,
-        isLoading,
-        isValidating,
-        mutate,
-        response
-    } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
+    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
+        shouldFetch ? requestConfig : null,
+        { shouldRetryOnError: false }
+    );
 
     return {
         data,
         error,
         isLoading,
         isValidating,
-        mutate,
-        response
+        mutate
     };
 };
 
-export default useGetRolesList;
+export default useGetApplicationRolesByAudienceV3;

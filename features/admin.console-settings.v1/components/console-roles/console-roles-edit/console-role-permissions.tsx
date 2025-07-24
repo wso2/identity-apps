@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
 import { Schemas } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { CreateRolePermissionInterface, PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
@@ -37,7 +38,7 @@ import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import useGetAPIResourceCollections from "../../../api/use-get-api-resource-collections";
 import { ConsoleRolesOnboardingConstants } from "../../../constants/console-roles-onboarding-constants";
@@ -113,6 +114,10 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
 
     const [ permissions, setPermissions ] = useState<CreateRolePermissionInterface[]>(undefined);
 
+    const enableSCIM2RoleAPIV3: boolean = useSelector(
+        (state: AppState) => state.config.ui.enableScim2RolesV3Api
+    );
+
     const filteredTenantAPIResourceCollections: APIResourceCollectionResponseInterface = useMemo(() => {
 
         if (!tenantAPIResourceCollections) {
@@ -122,6 +127,11 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
         const clonedTenantAPIResourceCollections: APIResourceCollectionResponseInterface =
             cloneDeep(tenantAPIResourceCollections);
         const filteringAPIResourceCollectionNames: string[] = [];
+
+        if(!enableSCIM2RoleAPIV3) {
+            filteringAPIResourceCollectionNames.push(
+                ConsoleRolesOnboardingConstants.ENTITLEMENT_MANAGEMENT_ROLE_ID);
+        }
 
         filteringAPIResourceCollectionNames.push(
             ConsoleRolesOnboardingConstants.ROLE_V1_API_RESOURCES_COLLECTION_NAME);
@@ -144,6 +154,12 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
         const clonedOrganizationAPIResourceCollections: APIResourceCollectionResponseInterface =
             cloneDeep(organizationAPIResourceCollections);
         const filteringAPIResourceCollectionNames: string[] = [];
+
+        if(!enableSCIM2RoleAPIV3) {
+            filteringAPIResourceCollectionNames.push(
+                ConsoleRolesOnboardingConstants.ORG_ENTITLEMENT_MANAGEMENT_ROLE_ID);
+
+        }
 
         filteringAPIResourceCollectionNames.push(
             ConsoleRolesOnboardingConstants.ORG_ROLE_V1_API_RESOURCES_COLLECTION_NAME);
