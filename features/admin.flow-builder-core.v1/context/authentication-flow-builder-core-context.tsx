@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { Claim } from "@wso2is/core/models";
 import { Context, Dispatch, FunctionComponent, ReactNode, SetStateAction, createContext } from "react";
 import { Base } from "../models/base";
@@ -103,7 +104,11 @@ export interface AuthenticationFlowBuilderCoreContextProps {
     /**
      * Configured i18n text from the branding or default fallback.
      */
-    i18nText?: Record<string, string>;
+    i18nText?: { [key in PreviewScreenType]?: Record<string, string> };
+    /**
+     * Indicates whether the i18n text is still loading.
+     */
+    i18nTextLoading?: boolean;
     /**
      * The language of the i18n text.
      */
@@ -114,6 +119,28 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * @param language - The language to set.
      */
     setLanguage?: (language: string) => void;
+    /**
+     * Adds a new i18n key for the specified screen.
+     *
+     * @param screen - The screen type for the i18n key.
+     * @param i18nKey - The i18n key to add.
+     * @param value - The value for the i18n key.
+     * @returns A promise that resolves when the i18n key is added.
+     */
+    addI18nKey?: (i18nKey: string, value: string) => Promise<void>;
+    /**
+     * Updates an existing i18n key for the specified screen.
+     *
+     * @param screenType - The screen type for the i18n key.
+     * @param i18nKey - The i18n key to update.
+     * @param value - The new value for the i18n key.
+     * @returns A promise that resolves when the i18n key is updated.
+     */
+    updateI18nKey?: (screenType: string, i18nKey: string, value: string) => Promise<void>;
+    /**
+     * Indicates whether the i18n key related operations are in progress.
+     */
+    isI18nSubmitting?: boolean;
 }
 
 /**
@@ -126,6 +153,7 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         ElementFactory: () => null,
         ResourceProperties: () => null,
         i18nText: null,
+        i18nTextLoading: false,
         isResourcePanelOpen: true,
         isResourcePropertiesPanelOpen: false,
         language: "",

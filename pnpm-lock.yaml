@@ -8924,9 +8924,15 @@ importers:
       '@wso2is/admin.flows.v1':
         specifier: workspace:^
         version: link:../admin.flows.v1
+      '@wso2is/admin.organizations.v1':
+        specifier: workspace:^
+        version: link:../admin.organizations.v1
       '@wso2is/common.ai.v1':
         specifier: ^2.27.3
         version: link:../common.ai.v1
+      '@wso2is/common.branding.v1':
+        specifier: workspace:^
+        version: link:../common.branding.v1
       '@wso2is/core':
         specifier: ^2.9.5
         version: link:../../modules/core

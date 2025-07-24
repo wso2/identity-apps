@@ -71,9 +71,25 @@ export const flows: flowsNS = {
             }
         },
         errors: {
+            addI18nKey: {
+                description: "An error occurred while adding the new i18n key to the flow.",
+                message: "Add I18n Key Error"
+            },
+            fallbackTextPreferenceFetch: {
+                description: "An error occurred while fetching the fallback text preferences.",
+                message: "Fallback Text Preference Fetch Error"
+            },
             flowMetadataFetch: {
                 description: "An error occurred while fetching the flow metadata.",
                 message: "Flow Metadata Fetch Error"
+            },
+            textPreferenceFetch: {
+                description: "An error occurred while fetching the custom text preferences.",
+                message: "Text Preference Fetch Error"
+            },
+            updateI18nKey: {
+                description: "An error occurred while updating the custom text in the flow.",
+                message: "Update Custom Text Error"
             }
         }
     },

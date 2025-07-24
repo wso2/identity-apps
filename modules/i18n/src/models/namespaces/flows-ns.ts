@@ -70,7 +70,23 @@ export interface flowsNS {
             }
         };
         errors: {
+            addI18nKey: {
+                description: string;
+                message: string;
+            };
+            fallbackTextPreferenceFetch: {
+                description: string;
+                message: string;
+            };
             flowMetadataFetch: {
+                description: string;
+                message: string;
+            };
+            textPreferenceFetch: {
+                description: string;
+                message: string;
+            };
+            updateI18nKey: {
                 description: string;
                 message: string;
             };
