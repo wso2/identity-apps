@@ -1,5 +1,27 @@
 # @wso2is/admin.flows.v1
 
+## 1.0.15
+
+### Patch Changes
+
+- [#8586](https://github.com/wso2/identity-apps/pull/8586) [`e4bacc6f7fabba38a995428ea0b0bb785d2f1d35`](https://github.com/wso2/identity-apps/commit/e4bacc6f7fabba38a995428ea0b0bb785d2f1d35) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enable password recovery and invited user registration flow builders
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.46.26
+  - @wso2is/admin.registration-flow-builder.v1@0.9.10
+  - @wso2is/admin.server-configurations.v1@2.35.9
+
+## 1.0.14
+
+### Patch Changes
+
+- [#8578](https://github.com/wso2/identity-apps/pull/8578) [`79d24deec910ce3f4628decedd65c2f3bcddddfe`](https://github.com/wso2/identity-apps/commit/79d24deec910ce3f4628decedd65c2f3bcddddfe) Thanks [@KD23243](https://github.com/KD23243)! - Add feature toggle and floating publish button for Ask Password & Password Recovery Flows
+
+- Updated dependencies [[`32f809bf44aa79cd7c87144466915fc9c6438ca5`](https://github.com/wso2/identity-apps/commit/32f809bf44aa79cd7c87144466915fc9c6438ca5), [`79d24deec910ce3f4628decedd65c2f3bcddddfe`](https://github.com/wso2/identity-apps/commit/79d24deec910ce3f4628decedd65c2f3bcddddfe)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.9.9
+  - @wso2is/admin.core.v1@2.46.25
+  - @wso2is/admin.server-configurations.v1@2.35.8
+
 ## 1.0.13
 
 ### Patch Changes

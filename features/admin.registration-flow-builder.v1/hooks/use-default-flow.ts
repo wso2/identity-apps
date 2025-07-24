@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Button from "@oxygen-ui/react/Button";
 import useGetAllLocalClaims from "@wso2is/admin.claims.v1/api/use-get-all-local-claims";
 import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from
@@ -23,12 +24,17 @@ import useAuthenticationFlowBuilderCore from
 import { Element, InputVariants } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { EventTypes } from "@wso2is/admin.flow-builder-core.v1/models/extension";
 import { Resource } from "@wso2is/admin.flow-builder-core.v1/models/resources";
+import { StaticStepTypes, Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { TemplateTypes } from "@wso2is/admin.flow-builder-core.v1/models/templates";
 import PluginRegistry from "@wso2is/admin.flow-builder-core.v1/plugins/plugin-registry";
 import generateResourceId from "@wso2is/admin.flow-builder-core.v1/utils/generate-resource-id";
+import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1";
+import useGovernanceConnector from "@wso2is/admin.server-configurations.v1/api/user-governance-connector";
 import { Claim } from "@wso2is/core/models";
+import { Edge, MarkerType, Node, NodeTypes } from "@xyflow/react";
 import cloneDeep from "lodash-es/cloneDeep";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
+import { RegistrationStaticStepTypes } from "../models/flow";
 
 const EMAIL_CLAIM_URI: string = "http://wso2.org/claims/emailaddress";
 const FIRST_NAME_CLAIM_URI: string = "http://wso2.org/claims/givenname";
@@ -66,9 +72,18 @@ const FIELD: Element = {
 } as Element;
 
 /**
+ * Return type of the hook.
+ */
+interface DefaultFlowReturnType {
+    generateProfileAttributes: (resource: Resource) => boolean;
+    addEmailVerificationNodes: (steps: Step[]) => void;
+    addEmailVerificationEdges: (edges: Edge[]) => void;
+};
+
+/**
  * Hook to handle default flow for registration flow builder.
  */
-const useDefaultFlow = (): void => {
+const useDefaultFlow = (): DefaultFlowReturnType => {
 
     const { metadata } = useAuthenticationFlowBuilderCore();
     const { data: claims } = useGetAllLocalClaims({
@@ -80,6 +95,10 @@ const useDefaultFlow = (): void => {
         profile: metadata?.attributeProfile,
         sort: null
     }, !!metadata?.attributeProfile);
+    const { data: selfSignUpConnectorConfig } = useGovernanceConnector(
+        ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+        ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID
+    );
 
     /**
      * Resolve the input variant based on the claim URI.
@@ -141,29 +160,13 @@ const useDefaultFlow = (): void => {
         return field;
     };
 
-    useEffect(() => {
-        if (!claims) {
-            return;
-        }
-
-        generateProfileAttributes[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER] =
-            "generateProfileAttributes";
-
-        PluginRegistry.getInstance().registerSync(EventTypes.ON_TEMPLATE_LOAD, generateProfileAttributes);
-
-        return () => {
-            PluginRegistry.getInstance().unregister(EventTypes.ON_TEMPLATE_LOAD,
-                generateProfileAttributes[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER]);
-        };
-    }, [ claims ]);
-
     /**
      * Generate profile attributes for the given resource.
      *
      * @param resource - The resource to generate profile attributes for.
      * @returns True.
      */
-    const generateProfileAttributes = (resource: Resource): boolean => {
+    const generateProfileAttributes: (resource: Resource) => boolean = useCallback((resource: Resource): boolean => {
         if (resource.type === TemplateTypes.Basic) {
             const formComponents: Element[] = resource.config.data.steps[0].data.components[1].components;
 
@@ -199,7 +202,149 @@ const useDefaultFlow = (): void => {
         }
 
         return true;
+    }, [ claims ]);
+
+    useEffect(() => {
+        generateProfileAttributes[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER] =
+            "generateProfileAttributes";
+
+        PluginRegistry.getInstance().registerSync(EventTypes.ON_TEMPLATE_LOAD, generateProfileAttributes);
+
+        return () => {
+            PluginRegistry.getInstance().unregister(EventTypes.ON_TEMPLATE_LOAD,
+                generateProfileAttributes[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER]);
+        };
+    }, [ generateProfileAttributes ]);
+
+    const registerEmailConfirmationNode = (nodeTypes: NodeTypes): boolean => {
+
+        nodeTypes["email-confirmation"] = Button;
+
+        return true;
     };
+
+    useEffect(() => {
+        registerEmailConfirmationNode[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER] =
+            "registerEmailConfirmationNode";
+
+        PluginRegistry.getInstance().registerSync(EventTypes.ON_CUSTOM_NODE_REGISTER,
+            registerEmailConfirmationNode);
+
+        return () => {
+            PluginRegistry.getInstance().unregister(EventTypes.ON_CUSTOM_NODE_REGISTER,
+                registerEmailConfirmationNode[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER]);
+        };
+    }, []);
+
+    /**
+     * Add email verification nodes to the flow if email verification is enabled.
+     *
+     * @param steps - The steps to add the email verification nodes to.
+     */
+    const addEmailVerificationNodes: (steps: Step[]) => void = useCallback((steps: Step[]): void => {
+        const emailVerificationEnabled: string = selfSignUpConnectorConfig?.properties
+            .find((property: any) => property.name ===  ServerConfigurationsConstants.ACCOUNT_CONFIRMATION)?.value;
+
+        if (emailVerificationEnabled === "true") {
+            let nodeExists: boolean = false;
+            let useOnboardNode: Step;
+
+            steps.forEach((step: Step) => {
+                if (step.type === RegistrationStaticStepTypes.EMAIL_CONFIRMATION) {
+                    nodeExists = true;
+                } else if (step.type === StaticStepTypes.UserOnboard) {
+                    useOnboardNode = step;
+                }
+            });
+
+            if (!nodeExists && useOnboardNode) {
+                useOnboardNode.data["end"] = false;
+                useOnboardNode.data["sourceHandle"] = useOnboardNode.id +
+                    VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX;
+                const confirmationStep: Node = {
+                    data: {
+                        displayOnly: true
+                    },
+                    deletable: false,
+                    id: RegistrationStaticStepTypes.EMAIL_CONFIRMATION.toString(),
+                    position: { x: useOnboardNode.position.x + 300, y: useOnboardNode.position.y },
+                    type: RegistrationStaticStepTypes.EMAIL_CONFIRMATION
+                };
+                const accountUnlock: Node = {
+                    data: {
+                        displayOnly: true
+                    },
+                    deletable: false,
+                    id: RegistrationStaticStepTypes.USER_ACCOUNT_UNLOCK.toString(),
+                    position: { x: useOnboardNode.position.x + 800, y: useOnboardNode.position.y },
+                    type: RegistrationStaticStepTypes.USER_ACCOUNT_UNLOCK
+                };
+
+                steps.push(confirmationStep as Step);
+                steps.push(accountUnlock as Step);
+            }
+        }
+    }, [ selfSignUpConnectorConfig ]);
+
+    /**
+     * Add email verification edges to the flow if email verification is enabled.
+     *
+     * @param edges - The edges to add the email verification edges to.
+     */
+    const addEmailVerificationEdges: (edges: Edge[]) => void = useCallback((edges: Edge[]): void => {
+        const emailVerificationEnabled: string = selfSignUpConnectorConfig?.properties
+            .find((property: any) => property.name ===  ServerConfigurationsConstants.ACCOUNT_CONFIRMATION)?.value;
+
+        if (emailVerificationEnabled === "true") {
+            let edgeExists: boolean = false;
+            let onboardEdge: Edge;
+
+            edges.forEach((edge: Edge) => {
+                if (edge.target === RegistrationStaticStepTypes.EMAIL_CONFIRMATION) {
+                    edgeExists = true;
+                } else if (edge.target === StaticStepTypes.UserOnboard) {
+                    onboardEdge = edge;
+                }
+            });
+
+            if (!edgeExists && onboardEdge) {
+                const emailConfirmationEdge: Edge = {
+                    animated: false,
+                    deletable: false,
+                    id: `${onboardEdge.target}-${RegistrationStaticStepTypes.EMAIL_CONFIRMATION}`,
+                    markerEnd: {
+                        type: MarkerType.Arrow
+                    },
+                    source: onboardEdge.target,
+                    sourceHandle: `${onboardEdge.target}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}`,
+                    target: RegistrationStaticStepTypes.EMAIL_CONFIRMATION.toString(),
+                    type: "base-edge"
+                };
+                const userAccountUnlockEdge: Edge = {
+                    animated: false,
+                    deletable: false,
+                    id: `${RegistrationStaticStepTypes.EMAIL_CONFIRMATION}-`
+                        + RegistrationStaticStepTypes.USER_ACCOUNT_UNLOCK,
+                    markerEnd: {
+                        type: MarkerType.Arrow
+                    },
+                    source: RegistrationStaticStepTypes.EMAIL_CONFIRMATION.toString(),
+                    sourceHandle: RegistrationStaticStepTypes.EMAIL_CONFIRMATION +
+                        VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX,
+                    style: {
+                        strokeDasharray: "5, 5"
+                    },
+                    target: RegistrationStaticStepTypes.USER_ACCOUNT_UNLOCK.toString(),
+                    type: "base-edge"
+                };
+
+                edges.push(emailConfirmationEdge);
+                edges.push(userAccountUnlockEdge);
+            }
+        }
+    }, [ selfSignUpConnectorConfig ]);
+
+    return { addEmailVerificationEdges, addEmailVerificationNodes, generateProfileAttributes };
 };
 
 export default useDefaultFlow;

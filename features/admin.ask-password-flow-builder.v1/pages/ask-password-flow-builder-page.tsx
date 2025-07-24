@@ -20,6 +20,7 @@ import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences"
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import AskPasswordFlowBuilderPageHeader from "./ask-password-flow-builder-page-header";
+import FloatingPublishButton from "./floating-publish-button";
 import AskPasswordFlowBuilder from
     "../components/ask-password-flow-builder";
 import AskPasswordFlowBuilderProvider from
@@ -59,6 +60,7 @@ const AskPasswordFlowBuilderPage: FunctionComponent<AskPasswordFlowBuilderPagePr
                     <AskPasswordFlowBuilderPageHeader />
                 </div>
                 <AskPasswordFlowBuilder />
+                <FloatingPublishButton />
             </div>
         </AskPasswordFlowBuilderProvider>
     );

@@ -69,7 +69,7 @@ export default function AgentOverview({
     } = useGetAgent(agentId);
 
     useEffect(() => {
-        setIsAgentLocked(agentInfo["urn:scim:wso2:schema"].accountLocked);
+        setIsAgentLocked(agentInfo["urn:scim:wso2:schema"]?.accountLocked);
     }, [ agentInfo ]);
 
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
@@ -260,12 +260,12 @@ export default function AgentOverview({
 
                     <DangerZone
                         data-componentId={ `${ componentId }-danger-zone-toggle` }
-                        actionTitle={ "Block Agent" }
+                        actionTitle={ "Deactivate Agent" }
                         header={
-                            "Block Agent"
+                            "Deactivate Agent"
                         }
                         subheader={
-                            "Once the agent is blocked, it will not be able to access any resources. "
+                            "Once the agent is deactivated, it will not be able to access any resources."
                         }
                         onActionClick={ undefined }
                         toggle={ {
@@ -276,14 +276,14 @@ export default function AgentOverview({
                                 updateAgentLockStatus(agentId, toggleData.target.checked)
                                     .then(() => {
                                         dispatch(addAlert({
-                                            description: "The agent account is " +
+                                            description: "The agent account " +
                                                 (toggleData.target.checked
-                                                    ? "blocked"
-                                                    : "unblocked"
+                                                    ? "deactivated"
+                                                    : "activated"
                                                 ) + " successfully.",
                                             level: AlertLevels.SUCCESS,
                                             message: "Agent account is " +
-                                                (toggleData.target.checked ? "blocked" : "unblocked")
+                                                (toggleData.target.checked ? "deactivated" : "active")
                                         }));
                                     })
                                     .catch((_error: AxiosError) => {

@@ -29,8 +29,8 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
-import useNewRegistrationPortalFeatureStatus from
-    "@wso2is/admin.registration-flow-builder.v1/api/use-new-registration-portal-feature-status";
+import useGetFlowConfig from "@wso2is/admin.flows.v1/api/use-get-flow-config";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { AGENT_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
@@ -159,9 +159,9 @@ export const FeatureCarousel = () => {
     const [ showAgentFeatureAnnouncementModal, setShowAgentFeatureAnnouncementModal ] = useState<boolean>(false);
 
     const {
-        data: isNewRegistrationPortalEnabled,
-        isLoading: isNewRegistrationPortalEnabledRequestLoading
-    } = useNewRegistrationPortalFeatureStatus();
+        data: registrationFlowConfigs,
+        isLoading: isRegistrationFlowConfigsLoading
+    } = useGetFlowConfig(FlowTypes.REGISTRATION);
 
     const agentFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state?.config?.ui?.features?.agents);
@@ -199,17 +199,17 @@ export const FeatureCarousel = () => {
             illustration: <Box className="login-box">
                 <SignUpBox />
             </Box>,
-            isEnabled: isNewRegistrationPortalEnabled,
-            isEnabledStatusLoading: isNewRegistrationPortalEnabledRequestLoading,
+            isEnabled: registrationFlowConfigs?.isEnabled,
+            isEnabledStatusLoading: isRegistrationFlowConfigsLoading,
             onTryOut: () => {
                 history.push(AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER"));
             },
             title: "Design seamless self-registration experiences "
         }
     ].filter(Boolean), [
-        isNewRegistrationPortalEnabled,
+        registrationFlowConfigs,
         agentFeatureConfig,
-        isNewRegistrationPortalEnabledRequestLoading
+        isRegistrationFlowConfigsLoading
     ]);
 
     useEffect(() => {
@@ -291,7 +291,7 @@ export const FeatureCarousel = () => {
 
                         { isAgentManagementFeatureEnabledForOrganization ? (
                             <Message warning>
-This feature is experimental and still under active development. Some functionality may be limited or subject to change.
+                                This feature is experimental. Some functionality may be limited or subject to change.
                             </Message>
                         ): (
                             <Message info>

@@ -165,7 +165,7 @@ export default function Agents ({
                         defaultSearchAttribute="name"
                         defaultSearchOperator="co"
                         predefinedDefaultSearchStrategy={
-                            "urn:scim:wso2:agent:schema.DisplayName co %search-value% or id co %search-value%"
+                            "urn:scim:wso2:agent:schema.DisplayName co %search-value%"
                         }
                         triggerClearQuery={ false }
                         data-testid={ `${ componentId }-list-advanced-search` }

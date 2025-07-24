@@ -2959,7 +2959,7 @@ export const console: ConsoleNS = {
                         heading: "OpenID Connect"
                     },
                     scim: {
-                        description: "The SCIM2 protocol representation for user "
+                        description: "The SCIM2 protocol representation for "
                             + "attributes that will be used in the SCIM2 API.",
                         heading: "SCIM 2.0"
                     }

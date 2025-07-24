@@ -76,7 +76,14 @@ const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
 
     return (
         <div className="adapter button-adapter">
-            <Button sx={ resource?.config.styles } startIcon={ image && <img src={ image } height={ 20 } /> } { ...config }>
+            <Button
+                sx={ resource?.config.styles }
+                startIcon={ resource?.config?.image
+                    ? <img src={ resource?.config?.image } height={ 20 } />
+                    : image && <img src={ image } height={ 20 } />
+                }
+                { ...config }
+            >
                 { resource?.config?.text }
             </Button>
             <Handle

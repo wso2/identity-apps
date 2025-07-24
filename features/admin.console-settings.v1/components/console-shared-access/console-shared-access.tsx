@@ -170,6 +170,15 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                 // add it to the initial roles in the first position.
                 if (!isAdministratorRoleAvailable) {
                     tempInitialRoles.unshift(administratorRole?.Resources[0]);
+                } else {
+                    // If the administrator role is available, move it to the first position.
+                    const administratorRoleIndex: number = tempInitialRoles.findIndex(
+                        (role: RolesInterface) =>
+                            role.displayName === ConsoleRolesOnboardingConstants.ADMINISTRATOR
+                    );
+
+                    tempInitialRoles.splice(administratorRoleIndex, 1);
+                    tempInitialRoles.unshift(administratorRole?.Resources[0]);
                 }
 
                 setSelectedRoles(tempInitialRoles);

@@ -19,11 +19,11 @@
 // Link editor styles
 .rich-text-toolbar-link-editor {
     position: absolute;
-    z-index: 1500;
+    z-index: 1200;
     top: -10000px;
     left: -10000px;
     margin-top: -6px;
-    max-width: 300px;
+    max-width: 350px;
     width: 100%;
     opacity: 0;
     background-color: #fff;
@@ -33,14 +33,21 @@
 
     .link-input {
         display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
+        flex-direction: column;
+        gap: 8px;
         margin: 8px 12px;
         padding: 8px 12px;
         border-radius: 8px;
         background-color: #fafafa;
         position: relative;
+
+        // Row for displaying existing link
+        &:has(a) {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0;
+        }
 
         a {
             overflow: hidden;
@@ -51,7 +58,12 @@
 
         .oxygen-text-field {
             width: 100%;
-            padding-right: 5px;
+        }
+
+        .link-input-save-button {
+            width: fit-content;
+            align-self: self-end;
+            padding: 5px 24px;
         }
     }
 }

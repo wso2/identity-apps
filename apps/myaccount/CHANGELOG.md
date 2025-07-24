@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.20.6
+
+### Patch Changes
+
+- [#8604](https://github.com/wso2/identity-apps/pull/8604) [`279702a44505b74e11bd3a558fb953a6e76d0079`](https://github.com/wso2/identity-apps/commit/279702a44505b74e11bd3a558fb953a6e76d0079) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove stylus and stylus-loader libraries
+
 ## 2.20.5
 
 ### Patch Changes

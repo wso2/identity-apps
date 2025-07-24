@@ -380,7 +380,7 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
                                             listSubItem={ isForNonHumanUser
                                                 ? user["urn:scim:wso2:agent:schema"]?.DisplayName && resolvedUsername
                                                 : resolvedGivenName && (
-                                                    <Code compact withBackground={ false }>{ "sdjksjdk" }</Code>
+                                                    <Code compact withBackground={ false }>{ resolvedUsername }</Code>
                                                 ) }
                                             data-componentid={
                                                 `${ componentId }-unselected-transfer-list-item-${ index }` }

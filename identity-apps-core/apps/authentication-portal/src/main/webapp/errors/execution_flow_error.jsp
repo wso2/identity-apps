@@ -45,15 +45,27 @@
 <% request.setAttribute("pageName","execution-flow-error"); %>
 
 <%
+
+    final String USER_REGISTRATION = "USER_REGISTRATION";
+    final String INVITED_USER_REGISTRATION = "INVITED_USER_REGISTRATION";
+    final String PASSWORD_RECOVERY = "PASSWORD_RECOVERY";
+    
     String errorMessage = request.getParameter("ERROR_MSG");
     String errorDescription = request.getParameter("ERROR_DESC");
     String spId = request.getParameter("SP_ID");
-    String registrationPortalURL = request.getParameter("PORTAL_URL") + "?spId=" + request.getParameter("SP_ID");
+    String sp = request.getParameter("SP");
     String errorCode = request.getParameter("errorCode");
     String flowType = request.getParameter("flowType");
-    final String USER_REGISTRATION = "USER_REGISTRATION";
-    final String INVITE_USER_REGISTRATION = "INVITE_USER_REGISTRATION";
-    final String PASSWORD_RECOVERY = "PASSWORD_RECOVERY";
+    String confirmationCode = request.getParameter("confirmation");
+
+    // Build the registration portal URL
+    String registrationPortalURL = String.format("%s?spId=%s&sp=%s&flowType=%s&confirmation=%s",
+            request.getParameter("PORTAL_URL"),
+            spId,
+            Encode.forUriComponent(sp),
+            flowType,
+            confirmationCode);
+    
 
     if (StringUtils.isNotEmpty(errorMessage) || StringUtils.isNotEmpty(errorDescription)) {
         if (StringUtils.isNotEmpty(errorMessage)) {
@@ -70,7 +82,7 @@
                 case USER_REGISTRATION:
                     errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "sign.up.error.unexpected.message");
                     break;
-                case INVITE_USER_REGISTRATION:
+                case INVITED_USER_REGISTRATION:
                     errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "invite.user.registration.error.unexpected.message");
                     break;
                 case PASSWORD_RECOVERY:
@@ -91,7 +103,7 @@
                 case USER_REGISTRATION:
                     errorDescription = AuthenticationEndpointUtil.i18n(resourceBundle, "sign.up.error.unexpected.description");
                     break;
-                case INVITE_USER_REGISTRATION:
+                case INVITED_USER_REGISTRATION:
                     errorDescription = AuthenticationEndpointUtil.i18n(resourceBundle, "invite.user.registration.error.unexpected.description");
                     break;
                 case PASSWORD_RECOVERY:

@@ -1,5 +1,36 @@
 # @wso2is/admin.password-recovery-flow-builder.v1
 
+## 1.0.6
+
+### Patch Changes
+
+- [#8595](https://github.com/wso2/identity-apps/pull/8595) [`8b439d966f93b1acd1878c2481ef8cc755eeaeab`](https://github.com/wso2/identity-apps/commit/8b439d966f93b1acd1878c2481ef8cc755eeaeab) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enhance the default template rendering when no saved flow is available
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.46.27
+
+## 1.0.5
+
+### Patch Changes
+
+- Updated dependencies [[`e4bacc6f7fabba38a995428ea0b0bb785d2f1d35`](https://github.com/wso2/identity-apps/commit/e4bacc6f7fabba38a995428ea0b0bb785d2f1d35)]:
+  - @wso2is/admin.flows.v1@1.0.15
+  - @wso2is/admin.core.v1@2.46.26
+  - @wso2is/admin.flow-builder-core.v1@0.9.5
+  - @wso2is/admin.server-configurations.v1@2.35.9
+
+## 1.0.4
+
+### Patch Changes
+
+- [#8578](https://github.com/wso2/identity-apps/pull/8578) [`79d24deec910ce3f4628decedd65c2f3bcddddfe`](https://github.com/wso2/identity-apps/commit/79d24deec910ce3f4628decedd65c2f3bcddddfe) Thanks [@KD23243](https://github.com/KD23243)! - Add feature toggle and floating publish button for Ask Password & Password Recovery Flows
+
+- Updated dependencies [[`32f809bf44aa79cd7c87144466915fc9c6438ca5`](https://github.com/wso2/identity-apps/commit/32f809bf44aa79cd7c87144466915fc9c6438ca5), [`79d24deec910ce3f4628decedd65c2f3bcddddfe`](https://github.com/wso2/identity-apps/commit/79d24deec910ce3f4628decedd65c2f3bcddddfe)]:
+  - @wso2is/admin.flow-builder-core.v1@0.9.4
+  - @wso2is/admin.flows.v1@1.0.14
+  - @wso2is/admin.core.v1@2.46.25
+  - @wso2is/admin.server-configurations.v1@2.35.8
+
 ## 1.0.3
 
 ### Patch Changes

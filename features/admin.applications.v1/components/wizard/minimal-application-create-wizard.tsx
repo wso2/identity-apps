@@ -35,6 +35,9 @@ import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { RoleAudienceTypes, RoleConstants } from "@wso2is/admin.roles.v2/constants/role-constants";
+import { AGENT_USERSTORE_ID } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
@@ -65,6 +68,7 @@ import React, {
     ReactNode,
     Suspense,
     useEffect,
+    useMemo,
     useRef,
     useState
 } from "react";
@@ -169,6 +173,14 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const { isOrganizationManagementEnabled } = useGlobalVariables();
     const tenantName: string = store.getState().config.deployment.tenant;
 
+    const {
+        userStoresList
+    } = useUserStores();
+
+    const isAgentManagementEnabledForOrg: boolean = useMemo((): boolean => {
+        return userStoresList?.some((userStore: UserStoreListItem) => userStore.id === AGENT_USERSTORE_ID);
+    }, [ userStoresList ]);
+
     const [ submit, setSubmit ] = useTrigger();
     const [ submitProtocolForm, setSubmitProtocolForm ] = useTrigger();
 
@@ -204,6 +216,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const [ protocolValuesChange, setProtocolValuesChange ] = useState<boolean>(false);
     const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
     const [ isAppSharingEnabled, setIsAppSharingEnabled ] = useState<boolean>(false);
+    const [ isAgentCompliantApp, setIsAgentCompliantApp ] = useState<boolean>(false);
 
     const [ showAppShareModal, setShowAppShareModal ] = useState(false);
     const [ applicationId, setApplicationId ] = useState<string>(undefined);
@@ -388,6 +401,25 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     ]
                 }
             };
+        }
+
+        if (isAgentCompliantApp
+            && application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+        ) {
+            set(application, "inboundProtocolConfiguration.oidc.pkce.mandatory", true);
+            set(application, "inboundProtocolConfiguration.oidc.pkce.supportPlainTransformAlgorithm", false);
+            set(application, "advancedConfigurations.enableAPIBasedAuthentication", true);
+
+            set(application, "inboundProtocolConfiguration.oidc.accessToken.type", "JWT");
+            set(application, "inboundProtocolConfiguration.oidc.accessToken.accessTokenAttributes", []);
+            set(application,
+                "inboundProtocolConfiguration.oidc.accessToken.applicationAccessTokenExpiryInSeconds",
+                3600
+            );
+            set(application,
+                "inboundProtocolConfiguration.oidc.accessToken.userAccessTokenExpiryInSeconds",
+                3600
+            );
         }
 
         setIsSubmitting(true);
@@ -1160,6 +1192,38 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                         </div>
                                     </Grid.Column>
                                 </Grid.Row>
+                            </Show>
+                        )
+                    }
+                    {
+                        featureConfig?.agents?.enabled
+                        && isAgentManagementEnabledForOrg
+                        && orgType !== OrganizationType.SUBORGANIZATION
+                        && (
+                            selectedTemplate.authenticationProtocol === SupportedAuthProtocolTypes.OIDC ||
+                            selectedTemplate.authenticationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC ||
+                            (selectedTemplate.authenticationProtocol === "" &&
+                                customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC)
+                        )
+                        && (
+                            <Show
+                                when={ featureConfig?.applications?.scopes?.update }
+                            >
+                                <div className="pt-0 mt-0">
+                                    <Checkbox
+                                        onChange={ (
+                                            event: React.FormEvent<HTMLInputElement>,
+                                            data: CheckboxProps
+                                        ) => {
+                                            setIsAgentCompliantApp(data.checked);
+                                        } }
+                                        label={ "Allow AI agents to sign into this application" }
+                                    />
+                                    <Hint inline popup>
+                                                If enabled, this will update the protocol configurations of this
+                                                application to be accessible by AI agents.
+                                    </Hint>
+                                </div>
                             </Show>
                         )
                     }

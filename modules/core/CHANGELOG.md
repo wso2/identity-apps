@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.10.1
+
+### Patch Changes
+
+- [#8363](https://github.com/wso2/identity-apps/pull/8363) [`9d8a7df0c0602b2a58f37522a73d8428f35fdd17`](https://github.com/wso2/identity-apps/commit/9d8a7df0c0602b2a58f37522a73d8428f35fdd17) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Implement role sharing feature for console application
+
 ## 2.10.0
 
 ### Minor Changes

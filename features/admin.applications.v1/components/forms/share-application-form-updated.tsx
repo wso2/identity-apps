@@ -234,6 +234,8 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 if (initialRoles?.length > 0) {
                     setSelectedRoles(initialRoles);
                 }
+            } else if (roleSharingMode === RoleSharingModes.NONE) {
+                setRoleShareTypeAll(RoleShareType.SHARE_SELECTED);
             }
         }
     }, [ applicationShareData ]);
@@ -709,21 +711,10 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
     };
 
     const shareSelectedRolesWithAllOrgs = (): void => {
-        if (selectedRoles.length < 1) {
-            dispatch(addAlert({
-                description: t("applications:edit.sections.sharedAccess.notifications.share." +
-                    "noRolesSelected.description"),
-                level: AlertLevels.ERROR,
-                message: t("applications:edit.sections.sharedAccess.notifications.share.noRolesSelected.message")
-            }));
-
-            return;
-        }
-
         const data: ShareApplicationWithAllOrganizationsDataInterface = {
             applicationId: application.id,
             policy: ApplicationSharingPolicy.ALL_EXISTING_AND_FUTURE_ORGS,
-            roleSharing: {
+            roleSharing: selectedRoles.length > 0 ? {
                 mode: RoleSharingModes.SELECTED,
                 roles: selectedRoles.map((role: RolesInterface) => {
                     return {
@@ -734,6 +725,9 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                         displayName: role.displayName
                     };
                 })
+            } : {
+                mode: RoleSharingModes.NONE,
+                roles: []
             }
         };
 
