@@ -90,7 +90,7 @@ const LocaleField: FunctionComponent<LocaleFieldPropsInterface> = ({
     return (
         <FinalFormField
             component={ SelectFieldAdapter }
-            initialValue={ selectedLocale.value as string | string[] }
+            initialValue={ selectedLocale?.value as string | string[] }
             ariaLabel={ fieldLabel }
             name={ fieldName }
             label={ fieldLabel }
