@@ -117,7 +117,7 @@ const CheckboxGroupFieldForm: FunctionComponent<CheckboxGroupFieldFormPropsInter
         return (
             <EditSection data-testid={ "profile-schema-editing-section" }>
                 <Grid>
-                    <Grid.Row columns={ 2 }>
+                    <Grid.Row columns={ 2 } verticalAlign="middle">
                         <Grid.Column width={ 4 }>{ fieldLabel }</Grid.Column>
                         <Grid.Column width={ 12 }>
                             <FinalForm
@@ -125,9 +125,8 @@ const CheckboxGroupFieldForm: FunctionComponent<CheckboxGroupFieldFormPropsInter
                                 render={ ({ handleSubmit }: FormRenderProps) => {
                                     return (
                                         <form
-                                            id="user-profile-form"
                                             onSubmit={ handleSubmit }
-                                            className="user-profile-form"
+                                            className="checkbox-group-field-form"
                                             data-componentid={
                                                 `${testId}-editing-section-${ schema.name.replace(".", "-") }-form` }
                                             data-testid={
@@ -151,7 +150,7 @@ const CheckboxGroupFieldForm: FunctionComponent<CheckboxGroupFieldFormPropsInter
                                                 data-componentid={
                                                     `${testId}-${schema.name.replace(".", "-")}-field` }
                                             />
-                                            <Grid.Row>
+                                            <Grid.Row className="form-actions-wrapper">
                                                 <Button
                                                     primary
                                                     type="submit"

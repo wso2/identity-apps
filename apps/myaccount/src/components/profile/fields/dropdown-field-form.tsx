@@ -65,7 +65,7 @@ const DropdownFieldForm: FunctionComponent<DropdownFieldFormPropsInterface> = ({
         // Validate the required field.
         if (isEmpty(value) && isRequired) {
             return (
-                t("myAccount:components.profile.forms.generic.inputs.validations.empty", { fieldLabel })
+                t("myAccount:components.profile.forms.generic.inputs.validations.empty", { fieldName: fieldLabel })
             );
         }
 
@@ -122,7 +122,7 @@ const DropdownFieldForm: FunctionComponent<DropdownFieldFormPropsInterface> = ({
         return (
             <EditSection data-testid={ "profile-schema-editing-section" }>
                 <Grid>
-                    <Grid.Row columns={ 2 }>
+                    <Grid.Row columns={ 2 } verticalAlign="middle">
                         <Grid.Column width={ 4 }>{ fieldLabel }</Grid.Column>
                         <Grid.Column width={ 12 }>
                             <FinalForm
@@ -130,62 +130,76 @@ const DropdownFieldForm: FunctionComponent<DropdownFieldFormPropsInterface> = ({
                                 render={ ({ handleSubmit }: FormRenderProps) => {
                                     return (
                                         <form
-                                            id="user-profile-form"
                                             onSubmit={ handleSubmit }
-                                            className="user-profile-form"
+                                            className="dropdown-field-form"
                                             data-componentid={
                                                 `${testId}-editing-section-${ schema.name.replace(".", "-") }-form` }
                                             data-testid={
                                                 `${testId}-editing-section-${ schema.name.replace(".", "-") }-form` }
                                         >
-                                            <FinalFormField
-                                                component={ SelectFieldAdapter }
-                                                initialValue={ initialValue }
-                                                isClearable={ !isRequired }
-                                                ariaLabel={ fieldLabel }
-                                                name={ schema.name }
-                                                validate={ validateField }
-                                                placeholder={ t(
-                                                    "myAccount:components.profile.forms.generic.dropdown.placeholder",
-                                                    { fieldName: fieldLabel.toLowerCase() }
-                                                ) }
-                                                options={ options?.map(({ label, value }: LabelValue) => {
-                                                    return {
-                                                        text: label,
-                                                        value
-                                                    };
-                                                }) }
-                                                multiple={ isMultiSelect }
-                                                readOnly={ !isEditable || isUpdating }
-                                                disableClearable={ isRequired }
-                                                data-testid={
-                                                    `${testId}-${schema.name.replace(".", "-")}-select-field` }
-                                                data-componentid={
-                                                    `${testId}-${schema.name.replace(".", "-")}-select-field` }
-                                            />
-                                            <Grid.Row>
-                                                <Button
-                                                    primary
-                                                    type="submit"
-                                                    data-testid={ `${testId}-schema-mobile-editing-section-${
-                                                        schema.name.replace(
-                                                            ".",
-                                                            "-"
-                                                        )}-save-button` }
-                                                >
-                                                    { t("common:save") }
-                                                </Button>
-                                                <Button
-                                                    onClick={ onEditCancelClicked }
-                                                    data-testid={
-                                                        `${testId}-schema-mobile-editing-section-${
-                                                            schema.name.replace(".", "-")
-                                                        }-cancel-button`
-                                                    }
-                                                >
-                                                    { t("common:cancel") }
-                                                </Button>
-                                            </Grid.Row>
+                                            <Grid verticalAlign="middle">
+                                                <Grid.Row columns={ 2 }>
+                                                    <Grid.Column width={ 10 }>
+                                                        <FinalFormField
+                                                            component={ SelectFieldAdapter }
+                                                            initialValue={ initialValue }
+                                                            isClearable={ !isRequired }
+                                                            ariaLabel={ fieldLabel }
+                                                            name={ schema.name }
+                                                            validate={ validateField }
+                                                            placeholder={ t(
+                                                                "myAccount:components.profile.forms.generic" +
+                                                                ".dropdown.placeholder", {
+                                                                    fieldName: fieldLabel.toLowerCase()
+                                                                }
+                                                            ) }
+                                                            options={ options?.map(({ label, value }: LabelValue) => {
+                                                                return {
+                                                                    text: label,
+                                                                    value
+                                                                };
+                                                            }) }
+                                                            multiple={ isMultiSelect }
+                                                            readOnly={ !isEditable || isUpdating }
+                                                            disableClearable={ isRequired }
+                                                            data-testid={
+                                                                `${testId}-${
+                                                                    schema.name.replace(".", "-")}-select-field` }
+                                                            data-componentid={
+                                                                `${testId}-${
+                                                                    schema.name.replace(".", "-")}-select-field` }
+                                                        />
+                                                    </Grid.Column>
+                                                    <Grid.Column
+                                                        width={ 6 }
+                                                    >
+                                                        <div className="form-actions-wrapper">
+                                                            <Button
+                                                                primary
+                                                                type="submit"
+                                                                data-testid={
+                                                                    `${testId}-schema-mobile-editing-section-${
+                                                                        schema.name.replace(
+                                                                            ".",
+                                                                            "-"
+                                                                        )}-save-button` }
+                                                            >
+                                                                { t("common:save") }
+                                                            </Button>
+                                                            <Button
+                                                                onClick={ onEditCancelClicked }
+                                                                data-testid={
+                                                                    `${testId}-schema-mobile-editing-section-${
+                                                                        schema.name.replace(".", "-")
+                                                                    }-cancel-button`
+                                                                }
+                                                            >
+                                                                { t("common:cancel") }
+                                                            </Button>
+                                                        </div>
+                                                    </Grid.Column>
+                                                </Grid.Row>
+                                            </Grid>
                                         </form>
                                     );
                                 } }
