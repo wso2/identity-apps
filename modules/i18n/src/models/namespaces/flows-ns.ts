@@ -61,6 +61,7 @@ export interface flowsNS {
                         applicationAccessUrl: string;
                         callbackOrApplicationAccessUrl: string;
                         customUrl: string;
+                        supportEmail: string;
                         privacyPolicyUrl: string;
                         termsOfUseUrl: string;
                     };

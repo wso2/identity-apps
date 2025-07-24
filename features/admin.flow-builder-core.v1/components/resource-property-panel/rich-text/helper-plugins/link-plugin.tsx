@@ -90,6 +90,11 @@ const PREDEFINED_URLS: PredefinedUrlOption[] = [
         value: "{{branding.termsOfUseUrl}}"
     },
     {
+        label: "flows:core.elements.richText.linkEditor.predefinedUrls.supportEmail",
+        placeholder: "{{SUPPORT_EMAIL}}",
+        value: "mailto:{{branding.supportEmail}}"
+    },
+    {
         label: "flows:core.elements.richText.linkEditor.predefinedUrls.customUrl",
         placeholder: "",
         value: "CUSTOM"

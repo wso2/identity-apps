@@ -60,6 +60,7 @@ public static String toJson(JsonObject jsonObject) {
     JsonObject reactGlobalContext = new JsonObject();
     addValue(reactGlobalContext, "branding.privacyPolicyUrl", privacyPolicyURL);
     addValue(reactGlobalContext, "branding.termsOfUseUrl", termsOfUseURL);
+    addValue(reactGlobalContext, "branding.supportEmail", supportEmail);
 
     String backToUrl = Encode.forJavaScript(IdentityManagementEndpointUtil.encodeURL(request.getParameter("callback")));
     String sp = Encode.forJava(request.getParameter("sp"));
