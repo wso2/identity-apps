@@ -100,6 +100,10 @@ export interface CommonGlobalReducerStateInterface<T, S, U> {
      * Supported languages.
      */
     supportedI18nLanguages: U;
+    /**
+     * Supported locale extensions.
+     */
+    supportedLocaleExtensions: U;
 }
 
 /**

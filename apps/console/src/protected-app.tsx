@@ -47,6 +47,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     setDeploymentConfigs,
     setSupportedI18nLanguages,
+    setSupportedLocaleExtensions,
     setUIConfigs
 } from "@wso2is/core/store";
 import {
@@ -375,6 +376,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 );
 
                 store.dispatch(setSupportedI18nLanguages(mergedMeta));
+                store.dispatch(setSupportedLocaleExtensions(extendedMetaResponse?.data));
 
                 const isSupported: boolean = isLanguageSupported(I18n.instance.language, null, mergedMeta);
 

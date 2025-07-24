@@ -22,7 +22,10 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
+import { SupportedLanguagesMeta } from "@wso2is/i18n";
+import { useSelector } from "react-redux";
 import { CustomTextPreferenceMeta } from "../models/custom-text-preference";
 
 /**
@@ -35,6 +38,10 @@ const useGetCustomTextPreferenceMeta = <
     Data = CustomTextPreferenceMeta,
     Error = RequestErrorInterface
 >(shouldFetch: boolean = true): RequestResultInterface<Data, Error> => {
+    const supportedLocaleExtensions: SupportedLanguagesMeta = useSelector(
+        (state: AppState) => state?.global?.supportedLocaleExtensions
+    );
+
     const basename: string = AppConstants.getAppBasename() ? `/${AppConstants.getAppBasename()}` : "";
     const url: string = `https://${window.location.host}${basename}/resources/branding/i18n/meta.json`;
 
@@ -51,6 +58,13 @@ const useGetCustomTextPreferenceMeta = <
         attachToken: false,
         shouldRetryOnError: false
     });
+
+    if (Array.isArray((data as CustomTextPreferenceMeta)?.locales) && supportedLocaleExtensions) {
+        (data as CustomTextPreferenceMeta).locales = [
+            ...(data as CustomTextPreferenceMeta).locales,
+            ...Object.keys(supportedLocaleExtensions)
+        ];
+    }
 
     return {
         data,

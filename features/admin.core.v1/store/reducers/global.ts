@@ -25,5 +25,6 @@ export const commonGlobalReducerInitialState: GlobalReducerStateInterface = {
     alert: null,
     alertSystem: null,
     isAJAXTopLoaderVisible: false,
-    supportedI18nLanguages: null
+    supportedI18nLanguages: null,
+    supportedLocaleExtensions: null
 };
