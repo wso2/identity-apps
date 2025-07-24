@@ -746,7 +746,7 @@
                     "create": [],
                     "delete": [],
                     "feature": [
-                        "console:role_assignment",
+                        "console:role_assignments",
                         "console:roles"
                     ],
                     "read": [

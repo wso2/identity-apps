@@ -193,10 +193,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         featureConfig?.users?.scopes?.update
     );
 
-    const entitlementConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.entitlement);
-    const hasRoleV3UpdatePermissions: boolean = useRequiredScopes(entitlementConfig?.scopes?.update);
-    const updateUserRoleAssignmentFunction: (roleId: string, data: PatchRoleDataInterface) => Promise<AxiosResponse> =
+    const roleAssignmentsConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.role_assignments);
+    const hasRoleV3UpdatePermissions: boolean = useRequiredScopes(roleAssignmentsConfig?.scopes?.update);
+    const updateUserRoleAssignmentsFunction: (roleId: string, data: PatchRoleDataInterface) => Promise<AxiosResponse> =
         hasRoleV3UpdatePermissions ? updateUsersForRole : updateRoleDetails;
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
