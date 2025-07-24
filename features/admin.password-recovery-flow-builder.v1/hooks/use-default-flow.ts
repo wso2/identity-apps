@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import useAuthenticationFlowBuilderCore 
+import useAuthenticationFlowBuilderCore
     from "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import { Template, TemplateTypes } from "@wso2is/admin.flow-builder-core.v1/models/templates";
 import { useMemo } from "react";
