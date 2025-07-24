@@ -231,9 +231,9 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
         if (originalOrganizationTreeFetchRequestError || originalTopLevelOrganizationTreeFetchRequestError) {
             dispatch(
                 addAlert({
-                    description: t("consoleSettings:sharedAccess.notifications.fetchOrgTree.genericError.description"),
+                    description: t("consoleSettings:sharedAccess.notifications.fetchOrgTree.error.description"),
                     level: AlertLevels.ERROR,
-                    message: t("consoleSettings:sharedAccess.notifications.fetchOrgTree.genericError.message")
+                    message: t("consoleSettings:sharedAccess.notifications.fetchOrgTree.error.message")
                 })
             );
         }
@@ -243,10 +243,10 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
         if (consoleRolesFetchRequestError) {
             dispatch(
                 addAlert({
-                    description: t("consoleSettings:sharedAccess.notifications.fetchConsoleRoles." +
-                        "genericError.description"),
+                    description: t("consoleSettings:sharedAccess.notifications.fetchRoles." +
+                        "error.description"),
                     level: AlertLevels.ERROR,
-                    message: t("consoleSettings:sharedAccess.notifications.fetchConsoleRoles.genericError.message")
+                    message: t("consoleSettings:sharedAccess.notifications.fetchRoles.error.message")
                 })
             );
         }
