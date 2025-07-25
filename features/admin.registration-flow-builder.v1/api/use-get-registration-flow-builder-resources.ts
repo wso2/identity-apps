@@ -67,7 +67,6 @@ const useGetRegistrationFlowBuilderResources = <Data = Resources, Error = Reques
                 ...widgets
             ]
         };
-        console.log("Core resources: ", coreResources);
     }, [ coreResources, aiFeature ]);
 
     return {
