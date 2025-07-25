@@ -518,9 +518,6 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
         return (
             <>
                 { t(headingKey) }
-                <DocumentationLink link={ getLink("develop.webhooks.learnMore") } showEmptyLink={ false }>
-                    { t("common:learnMore") }
-                </DocumentationLink>
             </>
         );
     }, [ isCreateMode, isWebSubHubAdapterMode, t, getLink ]);
