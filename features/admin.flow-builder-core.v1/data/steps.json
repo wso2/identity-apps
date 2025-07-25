@@ -28,25 +28,12 @@
     {
         "resourceType": "STEP",
         "category": "WORKFLOW",
-        "type": "REDIRECTION",
-        "version": "0.1.0",
-        "deprecated": false,
-        "display": {
-            "label": "Redirection",
-            "image": "https://www.svgrepo.com/show/510970/external-link.svg",
-            "showOnResourcePanel": false
-        },
-        "config": {}
-    },
-    {
-        "resourceType": "STEP",
-        "category": "WORKFLOW",
         "type": "EXECUTION",
         "version": "0.1.0",
         "deprecated": false,
         "display": {
             "label": "Execution",
-            "image": "https://www.svgrepo.com/show/475726/play.svg",
+            "image": "https://www.svgrepo.com/show/476381/play.svg",
             "showOnResourcePanel": false
         },
         "config": {}

@@ -820,12 +820,12 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
         // Handle BASIC_FEDERATED template case
         if (template.type === TemplateTypes.BasicFederated) {
-            const googleRedirectionStep: Node | undefined = templateSteps.find(
-                (step: Node) => step.type === "REDIRECTION"
+            const googleExecutionStep: Node | undefined = templateSteps.find(
+                (step: Node) => step.type === StepTypes.Execution
             );
 
-            if (googleRedirectionStep) {
-                return [ templateSteps, templateEdges, googleRedirectionStep as Resource, googleRedirectionStep.id ];
+            if (googleExecutionStep) {
+                return [ templateSteps, templateEdges, googleExecutionStep as Resource, googleExecutionStep.id ];
             }
         }
 

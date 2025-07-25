@@ -769,14 +769,14 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
             templateSteps
         ) as Edge[];
 
-        // Handle BASIC_FEDERATED template case
+        // Handle BASIC_FEDERATED template case.
         if (template.type === TemplateTypes.BasicFederated) {
-            const googleRedirectionStep: any = templateSteps.find(
-                (step: Node) => step.type === "REDIRECTION"
+            const googleExecutionStep: any = templateSteps.find(
+                (step: Node) => step.type === StepTypes.Execution
             );
 
-            if (googleRedirectionStep) {
-                return [ templateSteps, templateEdges, googleRedirectionStep as Resource, googleRedirectionStep.id ];
+            if (googleExecutionStep) {
+                return [ templateSteps, templateEdges, googleExecutionStep as Resource, googleExecutionStep.id ];
             }
         }
 

@@ -32,7 +32,7 @@ import ButtonExtendedProperties from "./extended-properties/button-extended-prop
 import FieldExtendedProperties from "./extended-properties/field-extended-properties";
 import RulesProperties from "./nodes/rules-properties";
 import ResourcePropertyFactory from "./resource-property-factory";
-import FederationProperties from "./steps/redirection/federation-properties";
+import FederationProperties from "./steps/execution/federation-properties";
 
 /**
  * Props interface of {@link ResourceProperties}
