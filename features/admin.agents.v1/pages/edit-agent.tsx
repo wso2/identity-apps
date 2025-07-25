@@ -39,7 +39,7 @@ import useGetAgent from "../hooks/use-get-agent";
 type EditAgentPageProps = IdentifiableComponentInterface;
 
 export default function EditAgent({
-    [ "data-componentid" ]: componentId
+    [ "data-componentid" ]: componentId = "edit-agent"
 }: EditAgentPageProps) {
 
     const agentId: string = useMemo(() => {
@@ -109,9 +109,13 @@ export default function EditAgent({
                 return;
             }
 
-            const userInfo: any = await getUserDetails(agentOwnerUserId, "userName");
+            try {
+                const userInfo: any = await getUserDetails(agentOwnerUserId, "userName");
 
-            setAgentOwnerDisplayName(userInfo?.userName);
+                setAgentOwnerDisplayName(userInfo?.userName);
+            } catch (_err) {
+                // Safely ignore the error
+            }
         };
 
         if (!agentOwnerDisplayName && agentInfo?.["urn:scim:wso2:agent:schema"]?.Owner) {
@@ -131,7 +135,10 @@ export default function EditAgent({
                 <Typography variant="body1">{
                     agentInfo?.["urn:scim:wso2:agent:schema"]?.DisplayName && agentInfo?.id
                 }</Typography>
-                <Typography variant="body1">Created by <strong>{ agentOwnerDisplayName }</strong></Typography>
+                { agentOwnerDisplayName && (
+                    <Typography variant="body1">Created by <strong>{ agentOwnerDisplayName }</strong></Typography>
+                ) }
+
             </>) }
             isLoading={ isAgentInfoLoading }
             backButton={ {
@@ -147,8 +154,9 @@ export default function EditAgent({
                 />
             ) }
             bottomMargin={ false }
+            data-componentid={ componentId + "-page-layout" }
         >
-            <ResourceTab panes={ renderedTabPanes } />
+            <ResourceTab panes={ renderedTabPanes } data-componentid={ componentId + "-tab-pane" }/>
         </TabPageLayout>
 
     );

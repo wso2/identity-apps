@@ -205,6 +205,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                                 activeUserStore="AGENT"
                                 onRoleUpdate={ onRoleUpdate }
                                 tabIndex={ 3 }
+                                data-componentid="edit-role-agents"
                             />
                         </ResourceTab.Pane>
                     )

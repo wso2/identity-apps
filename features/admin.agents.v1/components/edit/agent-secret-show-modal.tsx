@@ -191,6 +191,7 @@ export function AgentSecretShowModal({
                             } }
                             loading={ isSecretRegenerationLoading }
                             disabled={ isSecretRegenerationLoading }
+                            data-componentid={ componentId + "-proceed-btn" }
                         >
                             Proceed
                             <Icon name="arrow right" />
@@ -202,10 +203,11 @@ export function AgentSecretShowModal({
                         primary={ true }
                         type="submit"
                         onClick={ () => {
+                            setShouldShowSecretRegeneration(false);
                             onClose();
                         }
                         }
-                        data-testid={ `${componentId}-confirmation-modal-actions-continue-button` }
+                        data-testid={ `${componentId}-done-button` }
                     >
                             Done
                     </Button>
