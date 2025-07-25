@@ -118,7 +118,7 @@ const useStaticContentField = (): void => {
         if (resource?.type === StepTypes.Execution) {
             const components: Element[] = (node?.data?.components as Element[]) || [];
 
-            properties["staticContentEnabled"] = components.length > 0;
+            properties[STATIC_CONTENT_ENABLED_PROPERTY] = components.length > 0;
         }
 
         return true;
