@@ -41,7 +41,7 @@ import "./view.scss";
 /**
  * Props interface of {@link View}
  */
-export interface ViewPropsInterface extends Pick<CommonStepFactoryPropsInterface, "data">,
+export interface ViewPropsInterface extends Pick<CommonStepFactoryPropsInterface, "data" | "resource">,
     IdentifiableComponentInterface {
     /**
      * Name of the view.
