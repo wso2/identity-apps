@@ -1,5 +1,24 @@
 # @wso2is/admin.branding.v1
 
+## 2.31.7
+
+### Patch Changes
+
+- [#8627](https://github.com/wso2/identity-apps/pull/8627) [`9dcb1d2a14640ac710d0a6947c46162ce63f67ed`](https://github.com/wso2/identity-apps/commit/9dcb1d2a14640ac710d0a6947c46162ce63f67ed) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add component IDs required for Agent Identity E2E tests & other fixes
+
+- Updated dependencies [[`9dcb1d2a14640ac710d0a6947c46162ce63f67ed`](https://github.com/wso2/identity-apps/commit/9dcb1d2a14640ac710d0a6947c46162ce63f67ed)]:
+  - @wso2is/admin.server-configurations.v1@2.35.13
+  - @wso2is/admin.organizations.v1@2.26.212
+  - @wso2is/admin.feature-gate.v1@1.7.7
+  - @wso2is/admin.branding.ai.v1@2.27.101
+  - @wso2is/admin.extensions.v1@2.40.1
+  - @wso2is/common.branding.v1@2.28.2
+  - @wso2is/react-components@2.9.21
+  - @wso2is/admin.core.v1@2.46.35
+  - @wso2is/dynamic-forms@2.4.42
+  - @wso2is/form@2.9.1
+  - @wso2is/admin.flows.v1@1.0.16
+
 ## 2.31.6
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @wso2is/admin.rules.v1
 
+## 0.6.1
+
+### Patch Changes
+
+- [#8627](https://github.com/wso2/identity-apps/pull/8627) [`9dcb1d2a14640ac710d0a6947c46162ce63f67ed`](https://github.com/wso2/identity-apps/commit/9dcb1d2a14640ac710d0a6947c46162ce63f67ed) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add component IDs required for Agent Identity E2E tests & other fixes
+
+- Updated dependencies [[`9dcb1d2a14640ac710d0a6947c46162ce63f67ed`](https://github.com/wso2/identity-apps/commit/9dcb1d2a14640ac710d0a6947c46162ce63f67ed)]:
+  - @wso2is/admin.core.v1@2.46.35
+
 ## 0.6.0
 
 ### Minor Changes

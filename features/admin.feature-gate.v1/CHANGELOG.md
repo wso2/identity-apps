@@ -1,5 +1,15 @@
 # @wso2is/admin.feature-gate.v1
 
+## 1.7.7
+
+### Patch Changes
+
+- [#8627](https://github.com/wso2/identity-apps/pull/8627) [`9dcb1d2a14640ac710d0a6947c46162ce63f67ed`](https://github.com/wso2/identity-apps/commit/9dcb1d2a14640ac710d0a6947c46162ce63f67ed) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add component IDs required for Agent Identity E2E tests & other fixes
+
+- Updated dependencies [[`9dcb1d2a14640ac710d0a6947c46162ce63f67ed`](https://github.com/wso2/identity-apps/commit/9dcb1d2a14640ac710d0a6947c46162ce63f67ed)]:
+  - @wso2is/admin.organizations.v1@2.26.212
+  - @wso2is/admin.core.v1@2.46.35
+
 ## 1.7.6
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.9.8
+
+### Patch Changes
+
+- [#8627](https://github.com/wso2/identity-apps/pull/8627) [`9dcb1d2a14640ac710d0a6947c46162ce63f67ed`](https://github.com/wso2/identity-apps/commit/9dcb1d2a14640ac710d0a6947c46162ce63f67ed) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add component IDs required for Agent Identity E2E tests & other fixes
+
+- Updated dependencies [[`9dcb1d2a14640ac710d0a6947c46162ce63f67ed`](https://github.com/wso2/identity-apps/commit/9dcb1d2a14640ac710d0a6947c46162ce63f67ed)]:
+  - @wso2is/admin.core.v1@2.46.35
+  - @wso2is/common.ai.v1@2.27.4
+  - @wso2is/admin.flows.v1@1.0.16
+
 ## 0.9.7
 
 ### Patch Changes

@@ -1,5 +1,20 @@
 # @wso2is/admin.actions.v1
 
+## 1.13.5
+
+### Patch Changes
+
+- [#8627](https://github.com/wso2/identity-apps/pull/8627) [`9dcb1d2a14640ac710d0a6947c46162ce63f67ed`](https://github.com/wso2/identity-apps/commit/9dcb1d2a14640ac710d0a6947c46162ce63f67ed) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add component IDs required for Agent Identity E2E tests & other fixes
+
+- Updated dependencies [[`9dcb1d2a14640ac710d0a6947c46162ce63f67ed`](https://github.com/wso2/identity-apps/commit/9dcb1d2a14640ac710d0a6947c46162ce63f67ed)]:
+  - @wso2is/admin.feature-gate.v1@1.7.7
+  - @wso2is/admin.extensions.v1@2.40.1
+  - @wso2is/admin.claims.v1@2.28.10
+  - @wso2is/react-components@2.9.21
+  - @wso2is/admin.rules.v1@0.6.1
+  - @wso2is/admin.core.v1@2.46.35
+  - @wso2is/form@2.9.1
+
 ## 1.13.4
 
 ### Patch Changes

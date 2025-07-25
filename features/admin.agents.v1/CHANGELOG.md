@@ -1,5 +1,39 @@
 # @wso2is/admin.agents.v1
 
+## 1.0.18
+
+### Patch Changes
+
+- [#8627](https://github.com/wso2/identity-apps/pull/8627) [`9dcb1d2a14640ac710d0a6947c46162ce63f67ed`](https://github.com/wso2/identity-apps/commit/9dcb1d2a14640ac710d0a6947c46162ce63f67ed) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add component IDs required for Agent Identity E2E tests & other fixes
+
+- Updated dependencies [[`9dcb1d2a14640ac710d0a6947c46162ce63f67ed`](https://github.com/wso2/identity-apps/commit/9dcb1d2a14640ac710d0a6947c46162ce63f67ed), [`7645d05f3a1abc096c78bd21a7bb2227a9cfa77c`](https://github.com/wso2/identity-apps/commit/7645d05f3a1abc096c78bd21a7bb2227a9cfa77c)]:
+  - @wso2is/admin.server-configurations.v1@2.35.13
+  - @wso2is/admin.wsfed-configuration.v1@2.25.206
+  - @wso2is/admin.identity-providers.v1@2.26.208
+  - @wso2is/admin.login-flow-builder.v1@2.26.4
+  - @wso2is/admin.console-settings.v1@2.25.216
+  - @wso2is/admin.api-resources.v2@2.26.3
+  - @wso2is/admin.authorization.v1@2.25.90
+  - @wso2is/admin.impersonation.v1@1.6.205
+  - @wso2is/admin.login-flow.ai.v1@2.27.102
+  - @wso2is/admin.organizations.v1@2.26.212
+  - @wso2is/admin.applications.v1@2.36.12
+  - @wso2is/admin.feature-gate.v1@1.7.7
+  - @wso2is/admin.connections.v1@2.33.100
+  - @wso2is/admin.oidc-scopes.v1@2.25.205
+  - @wso2is/admin.extensions.v1@2.40.1
+  - @wso2is/admin.userstores.v1@2.27.38
+  - @wso2is/admin.validation.v1@2.27.146
+  - @wso2is/admin.branding.v1@2.31.7
+  - @wso2is/admin.secrets.v1@2.25.205
+  - @wso2is/admin.claims.v1@2.28.10
+  - @wso2is/react-components@2.9.21
+  - @wso2is/admin.roles.v2@2.27.173
+  - @wso2is/admin.users.v1@2.34.3
+  - @wso2is/admin.core.v1@2.46.35
+  - @wso2is/admin.logs.v1@1.6.6
+  - @wso2is/form@2.9.1
+
 ## 1.0.17
 
 ### Patch Changes

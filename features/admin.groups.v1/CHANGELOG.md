@@ -1,5 +1,24 @@
 # @wso2is/admin.groups.v1
 
+## 2.27.123
+
+### Patch Changes
+
+- [#8627](https://github.com/wso2/identity-apps/pull/8627) [`9dcb1d2a14640ac710d0a6947c46162ce63f67ed`](https://github.com/wso2/identity-apps/commit/9dcb1d2a14640ac710d0a6947c46162ce63f67ed) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add component IDs required for Agent Identity E2E tests & other fixes
+
+- Updated dependencies [[`9dcb1d2a14640ac710d0a6947c46162ce63f67ed`](https://github.com/wso2/identity-apps/commit/9dcb1d2a14640ac710d0a6947c46162ce63f67ed), [`7645d05f3a1abc096c78bd21a7bb2227a9cfa77c`](https://github.com/wso2/identity-apps/commit/7645d05f3a1abc096c78bd21a7bb2227a9cfa77c)]:
+  - @wso2is/admin.authorization.v1@2.25.90
+  - @wso2is/admin.organizations.v1@2.26.212
+  - @wso2is/admin.applications.v1@2.36.12
+  - @wso2is/admin.extensions.v1@2.40.1
+  - @wso2is/admin.userstores.v1@2.27.38
+  - @wso2is/react-components@2.9.21
+  - @wso2is/admin.roles.v2@2.27.173
+  - @wso2is/admin.users.v1@2.34.3
+  - @wso2is/admin.core.v1@2.46.35
+  - @wso2is/dynamic-forms@2.4.42
+  - @wso2is/form@2.9.1
+
 ## 2.27.122
 
 ### Patch Changes
