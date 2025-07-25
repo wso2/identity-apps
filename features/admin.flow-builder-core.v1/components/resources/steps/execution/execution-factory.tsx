@@ -97,6 +97,20 @@ export const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
         );
     }
 
+    if ((data?.action as any)?.executor?.name === ExecutionTypes.MagicLinkExecutor) {
+        return (
+            <Box
+                display="flex"
+                gap={ 1 }
+                data-componentid={ componentId }
+                className="flow-builder-execution magic-link"
+            >
+                <img src="https://www.svgrepo.com/show/524687/link.svg" height="20"/>
+                <Typography variant="body1">{ t("flows:core.executions.names.magicLink") }</Typography>
+            </Box>
+        );
+    }
+
     if ((data?.action as any)?.executor?.name === ExecutionTypes.ConfirmationCode) {
         return (
             <Box

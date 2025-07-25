@@ -64,7 +64,8 @@ class VisualFlowConstants {
         WidgetTypes.AppleFederation,
         WidgetTypes.FacebookFederation,
         WidgetTypes.MicrosoftFederation,
-        WidgetTypes.GithubFederation
+        WidgetTypes.GithubFederation,
+        WidgetTypes.PasskeyEnrollment
     ];
 
     public static readonly FLOW_BUILDER_FORM_ALLOWED_RESOURCE_TYPES: string[] = [

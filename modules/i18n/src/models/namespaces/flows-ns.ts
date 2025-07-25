@@ -86,6 +86,7 @@ export interface flowsNS {
                 google: string;
                 microsoft: string;
                 passkeyEnrollment: string;
+                magicLink: string;
             };
         };
     };

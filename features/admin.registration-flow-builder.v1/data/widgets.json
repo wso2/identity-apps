@@ -695,5 +695,79 @@
                 ]
             }
         }
+    },
+    {
+    "resourceType": "WIDGET",
+    "category": "FLOW",
+    "type": "PASSKEY_ENROLLMENT",
+    "version": "0.1.0",
+    "deprecated": false,
+    "display": {
+        "label": "Continue with Passkey",
+        "description": "Registration experience using Passkeys",
+        "image": "https://www.svgrepo.com/show/340307/fingerprint-recognition.svg",
+        "showOnResourcePanel": true
+    },
+    "config": {
+        "data": {
+            "__generationMeta__": {
+                "defaultPropertySelectorId": "{{PASSKEY_EXECUTION_STEP_ID}}",
+                "replacers": [
+                    {
+                        "key": "PASSKEY_EXECUTION_STEP_ID",
+                        "type": "ID"
+                    }
+                ]
+            },
+            "steps": [
+                {
+                    "__generationMeta__": {
+                        "strategy": "MERGE_WITH_DROP_POINT"
+                    },
+                    "type": "VIEW",
+                    "data": {
+                        "components": [
+                            {
+                                "id": "{{ID}}",
+                                "category": "ACTION",
+                                "type": "BUTTON",
+                                "variant": "SOCIAL",
+                                "config": {
+                                    "type": "button",
+                                    "text": "Continue with Passkey",
+                                    "image": "https://www.svgrepo.com/show/340307/fingerprint-recognition.svg"
+                                },
+                                "action": {
+                                    "type": "NEXT",
+                                    "next": "{{PASSKEY_EXECUTION_STEP_ID}}"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "id": "{{PASSKEY_EXECUTION_STEP_ID}}",
+                    "type": "EXECUTION",
+                    "size": {
+                        "width": 350,
+                        "height": 291
+                    },
+                    "position": {
+                        "x": 690,
+                        "y": 500
+                    },
+                    "data": {
+                        "action": {
+                            "type": "EXECUTOR",
+                            "executor": {
+                                "name": "FIDO2Executor"
+                            },
+                            "next": "USER_ONBOARD"
+                        }
+                    }
+                }
+            ]
+        }
     }
+}
 ]
