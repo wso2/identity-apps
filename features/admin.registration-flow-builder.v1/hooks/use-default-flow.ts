@@ -28,17 +28,20 @@ import { StaticStepTypes, Step } from "@wso2is/admin.flow-builder-core.v1/models
 import { TemplateTypes } from "@wso2is/admin.flow-builder-core.v1/models/templates";
 import PluginRegistry from "@wso2is/admin.flow-builder-core.v1/plugins/plugin-registry";
 import generateResourceId from "@wso2is/admin.flow-builder-core.v1/utils/generate-resource-id";
-import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1";
-import useGovernanceConnector from "@wso2is/admin.server-configurations.v1/api/user-governance-connector";
+import { useValidationConfigData } from "@wso2is/admin.validation.v1/api/validation-config";
+import { ValidationConfInterface, ValidationDataInterface } from "@wso2is/admin.validation.v1/models";
 import { Claim } from "@wso2is/core/models";
 import { Edge, MarkerType, Node, NodeTypes } from "@xyflow/react";
 import cloneDeep from "lodash-es/cloneDeep";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { RegistrationStaticStepTypes } from "../models/flow";
 
 const EMAIL_CLAIM_URI: string = "http://wso2.org/claims/emailaddress";
 const FIRST_NAME_CLAIM_URI: string = "http://wso2.org/claims/givenname";
 const LAST_NAME_CLAIM_URI: string = "http://wso2.org/claims/lastname";
+const USERNAME_CLAIM_URI: string = "http://wso2.org/claims/username";
+const USERNAME_FIELD: string = "username";
+const ALPHANUMERIC_VALIDATOR: string = "AlphanumericValidator";
 
 const EXCLUDED_CLAIMS: string[] = [
     EMAIL_CLAIM_URI,
@@ -95,10 +98,24 @@ const useDefaultFlow = (): DefaultFlowReturnType => {
         profile: metadata?.attributeProfile,
         sort: null
     }, !!metadata?.attributeProfile);
-    const { data: selfSignUpConnectorConfig } = useGovernanceConnector(
-        ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
-        ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID
-    );
+    const { data: validationConfig } = useValidationConfigData();
+
+    /**
+     * Check if the username field is alphanumeric based on the validation configuration.
+     */
+    const isAlphanumericUsername: boolean = useMemo(() => {
+        if (!validationConfig) {
+            return false;
+        }
+
+        const usernameValidators: ValidationConfInterface[] = validationConfig.find(
+            (validator: ValidationDataInterface) => {
+                return validator.field === USERNAME_FIELD;
+            })?.rules || [];
+
+        return usernameValidators.find(
+            (rule: ValidationConfInterface) => rule.validator === ALPHANUMERIC_VALIDATOR) !== undefined;
+    }, [ validationConfig ]);
 
     /**
      * Resolve the input variant based on the claim URI.
@@ -174,10 +191,21 @@ const useDefaultFlow = (): DefaultFlowReturnType => {
             const firstNameClaim: Claim = claims?.find((claim: Claim) => claim.claimURI === FIRST_NAME_CLAIM_URI);
             const lastNameClaim: Claim = claims?.find((claim: Claim) => claim.claimURI === LAST_NAME_CLAIM_URI);
 
+            if (isAlphanumericUsername) {
+                const field: Element = buildFieldFromClaim({
+                    claimURI: USERNAME_CLAIM_URI,
+                    displayName: "Username",
+                    readOnly: false,
+                    required: true
+                } as Claim);
+
+                formComponents.splice(0, 0, field);
+            }
+
             if (emailClaim) {
                 const field: Element = buildFieldFromClaim(emailClaim);
 
-                formComponents.splice(1, 0, field);
+                formComponents.splice(isAlphanumericUsername ? 1 : 0, 0, field);
             }
 
             const claimsForRegistration: Element[] = [];
@@ -202,7 +230,7 @@ const useDefaultFlow = (): DefaultFlowReturnType => {
         }
 
         return true;
-    }, [ claims ]);
+    }, [ claims, isAlphanumericUsername ]);
 
     useEffect(() => {
         generateProfileAttributes[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER] =
@@ -242,10 +270,8 @@ const useDefaultFlow = (): DefaultFlowReturnType => {
      * @param steps - The steps to add the email verification nodes to.
      */
     const addEmailVerificationNodes: (steps: Step[]) => void = useCallback((steps: Step[]): void => {
-        const emailVerificationEnabled: string = selfSignUpConnectorConfig?.properties
-            .find((property: any) => property.name ===  ServerConfigurationsConstants.ACCOUNT_CONFIRMATION)?.value;
 
-        if (emailVerificationEnabled === "true") {
+        if (metadata?.connectorConfigs?.accountVerificationEnabled) {
             let nodeExists: boolean = false;
             let useOnboardNode: Step;
 
@@ -284,7 +310,7 @@ const useDefaultFlow = (): DefaultFlowReturnType => {
                 steps.push(accountUnlock as Step);
             }
         }
-    }, [ selfSignUpConnectorConfig ]);
+    }, [ metadata?.connectorConfigs?.accountVerificationEnabled ]);
 
     /**
      * Add email verification edges to the flow if email verification is enabled.
@@ -292,10 +318,8 @@ const useDefaultFlow = (): DefaultFlowReturnType => {
      * @param edges - The edges to add the email verification edges to.
      */
     const addEmailVerificationEdges: (edges: Edge[]) => void = useCallback((edges: Edge[]): void => {
-        const emailVerificationEnabled: string = selfSignUpConnectorConfig?.properties
-            .find((property: any) => property.name ===  ServerConfigurationsConstants.ACCOUNT_CONFIRMATION)?.value;
 
-        if (emailVerificationEnabled === "true") {
+        if (metadata?.connectorConfigs?.accountVerificationEnabled) {
             let edgeExists: boolean = false;
             let onboardEdge: Edge;
 
@@ -342,7 +366,7 @@ const useDefaultFlow = (): DefaultFlowReturnType => {
                 edges.push(userAccountUnlockEdge);
             }
         }
-    }, [ selfSignUpConnectorConfig ]);
+    }, [ metadata?.connectorConfigs?.accountVerificationEnabled ]);
 
     return { addEmailVerificationEdges, addEmailVerificationNodes, generateProfileAttributes };
 };

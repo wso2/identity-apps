@@ -3210,9 +3210,6 @@ importers:
       '@wso2is/admin.claims.v1':
         specifier: ^2.27.125
         version: link:../admin.claims.v1
-      '@wso2is/admin.connections.v1':
-        specifier: ^2.33.96
-        version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
         specifier: ^2.46.34
         version: link:../admin.core.v1
@@ -3220,7 +3217,7 @@ importers:
         specifier: ^1.7.2
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.flow-builder-core.v1':
-        specifier: ^0.9.7
+        specifier: workspace:^
         version: link:../admin.flow-builder-core.v1
       '@wso2is/admin.flows.v1':
         specifier: workspace:^
@@ -13156,9 +13153,6 @@ importers:
       '@wso2is/admin.claims.v1':
         specifier: ^2.27.125
         version: link:../admin.claims.v1
-      '@wso2is/admin.connections.v1':
-        specifier: ^2.33.96
-        version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
         specifier: ^2.46.34
         version: link:../admin.core.v1
@@ -13166,7 +13160,7 @@ importers:
         specifier: ^1.7.2
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.flow-builder-core.v1':
-        specifier: ^0.9.7
+        specifier: workspace:^
         version: link:../admin.flow-builder-core.v1
       '@wso2is/admin.flows.v1':
         specifier: workspace:^
@@ -14547,9 +14541,6 @@ importers:
       '@wso2is/admin.claims.v1':
         specifier: ^2.27.125
         version: link:../admin.claims.v1
-      '@wso2is/admin.connections.v1':
-        specifier: ^2.33.96
-        version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
         specifier: ^2.46.34
         version: link:../admin.core.v1
@@ -14565,9 +14556,9 @@ importers:
       '@wso2is/admin.rules.v1':
         specifier: ^0.6.0
         version: link:../admin.rules.v1
-      '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.12
-        version: link:../admin.server-configurations.v1
+      '@wso2is/admin.validation.v1':
+        specifier: workspace:^
+        version: link:../admin.validation.v1
       '@wso2is/common.ai.v1':
         specifier: ^2.27.3
         version: link:../common.ai.v1
@@ -26924,7 +26915,6 @@ packages:
   /@mui/base@5.0.0-alpha.108(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-KjzRUts2i/ODlMfywhFTqTzQl+Cr9nlDSZxJcnYjrbOV/iRyQNBTDoiFJt+XEdRi0fZBHnk74AFbnP56ehybsA==}
     engines: {node: '>=12.0.0'}
-    deprecated: This package has been replaced by @base-ui-components/react
     peerDependencies:
       '@types/react': 18.0.18
       react: ^17.0.0 || ^18.0.0

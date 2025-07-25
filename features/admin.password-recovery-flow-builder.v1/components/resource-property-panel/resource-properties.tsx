@@ -33,6 +33,7 @@ import FieldExtendedProperties from "./extended-properties/field-extended-proper
 import RulesProperties from "./nodes/rules-properties";
 import ResourcePropertyFactory from "./resource-property-factory";
 import FederationProperties from "./steps/execution/federation-properties";
+import PasswordRecoveryFlowBuilderConstants from "../../constants/password-recovery-flow-builder-constants";
 
 /**
  * Props interface of {@link ResourceProperties}
@@ -54,6 +55,7 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
     const selectedVariant: Element = useMemo(() => {
         return resource?.variants?.find((_element: Element) => _element.variant === resource.variant);
     }, [ resource.variants, resource.variant ]);
+    console.log("ResourceProperties", resource);
 
     const renderElementId = (): ReactElement => {
         return (
@@ -145,11 +147,20 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
             break;
         case StepCategories.Workflow:
             return (
-                <FederationProperties
-                    resource={ resource }
-                    data-componentid="federation-properties"
-                    onChange={ onChange }
-                />
+                <>
+                    { renderElementId() }
+                    {
+                        !PasswordRecoveryFlowBuilderConstants.FEDERATION_CONFIG_SKIPPED_EXECUTORS.includes(
+                            resource?.data?.action?.executor?.name) && (
+                            <FederationProperties
+                                resource={ resource }
+                                data-componentid="federation-properties"
+                                onChange={ onChange }
+                            />
+                        )
+                    }
+                    { renderElementPropertyFactory() }
+                </>
             );
         default:
             return (

@@ -36,7 +36,7 @@ const useDefaultFlow = (templates: Template[]): Template => {
             return null;
         }
 
-        const connectorConfig: any = metadata?.connectorConfig ?? {};
+        const connectorConfig: any = metadata?.connectorConfigs ?? {};
 
         const emailOTPEnabled: boolean = connectorConfig.passwordRecoveryEmailOtpEnabled === true
             || connectorConfig.passwordRecoveryEmailOtpEnabled === "true";
