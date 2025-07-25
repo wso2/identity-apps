@@ -1274,7 +1274,7 @@
                     ]
                 }
             },
-            "role_assignments": {
+            "roleAssignments": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "featureFlags": [],
