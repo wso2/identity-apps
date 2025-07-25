@@ -326,10 +326,10 @@
         "config": {
             "data": {
                 "__generationMeta__": {
-                    "defaultPropertySelectorId": "{{GOOGLE_REDIRECTION_STEP_ID}}",
+                    "defaultPropertySelectorId": "{{GOOGLE_EXECUTION_STEP_ID}}",
                     "replacers": [
                         {
-                            "key": "GOOGLE_REDIRECTION_STEP_ID",
+                            "key": "GOOGLE_EXECUTION_STEP_ID",
                             "type": "ID"
                         }
                     ]
@@ -354,15 +354,15 @@
                                     },
                                     "action": {
                                         "type": "NEXT",
-                                        "next": "{{GOOGLE_REDIRECTION_STEP_ID}}"
+                                        "next": "{{GOOGLE_EXECUTION_STEP_ID}}"
                                     }
                                 }
                             ]
                         }
                     },
                     {
-                        "id": "{{GOOGLE_REDIRECTION_STEP_ID}}",
-                        "type": "REDIRECTION",
+                        "id": "{{GOOGLE_EXECUTION_STEP_ID}}",
+                        "type": "EXECUTION",
                         "size": {
                             "width": 350,
                             "height": 291
@@ -403,10 +403,10 @@
         "config": {
             "data": {
                 "__generationMeta__": {
-                    "defaultPropertySelectorId": "{{APPLE_REDIRECTION_STEP_ID}}",
+                    "defaultPropertySelectorId": "{{APPLE_EXECUTION_STEP_ID}}",
                     "replacers": [
                         {
-                            "key": "APPLE_REDIRECTION_STEP_ID",
+                            "key": "APPLE_EXECUTION_STEP_ID",
                             "type": "ID"
                         }
                     ]
@@ -431,15 +431,15 @@
                                     },
                                     "action": {
                                         "type": "NEXT",
-                                        "next": "{{APPLE_REDIRECTION_STEP_ID}}"
+                                        "next": "{{APPLE_EXECUTION_STEP_ID}}"
                                     }
                                 }
                             ]
                         }
                     },
                     {
-                        "id": "{{APPLE_REDIRECTION_STEP_ID}}",
-                        "type": "REDIRECTION",
+                        "id": "{{APPLE_EXECUTION_STEP_ID}}",
+                        "type": "EXECUTION",
                         "size": {
                             "width": 350,
                             "height": 291
@@ -480,10 +480,10 @@
         "config": {
             "data": {
                 "__generationMeta__": {
-                    "defaultPropertySelectorId": "{{FACEBOOK_REDIRECTION_STEP_ID}}",
+                    "defaultPropertySelectorId": "{{FACEBOOK_EXECUTION_STEP_ID}}",
                     "replacers": [
                         {
-                            "key": "FACEBOOK_REDIRECTION_STEP_ID",
+                            "key": "FACEBOOK_EXECUTION_STEP_ID",
                             "type": "ID"
                         }
                     ]
@@ -508,15 +508,15 @@
                                     },
                                     "action": {
                                         "type": "NEXT",
-                                        "next": "{{FACEBOOK_REDIRECTION_STEP_ID}}"
+                                        "next": "{{FACEBOOK_EXECUTION_STEP_ID}}"
                                     }
                                 }
                             ]
                         }
                     },
                     {
-                        "id": "{{FACEBOOK_REDIRECTION_STEP_ID}}",
-                        "type": "REDIRECTION",
+                        "id": "{{FACEBOOK_EXECUTION_STEP_ID}}",
+                        "type": "EXECUTION",
                         "size": {
                             "width": 350,
                             "height": 291
@@ -557,10 +557,10 @@
         "config": {
             "data": {
                 "__generationMeta__": {
-                    "defaultPropertySelectorId": "{{MICROSOFT_REDIRECTION_STEP_ID}}",
+                    "defaultPropertySelectorId": "{{MICROSOFT_EXECUTION_STEP_ID}}",
                     "replacers": [
                         {
-                            "key": "MICROSOFT_REDIRECTION_STEP_ID",
+                            "key": "MICROSOFT_EXECUTION_STEP_ID",
                             "type": "ID"
                         }
                     ]
@@ -585,15 +585,15 @@
                                     },
                                     "action": {
                                         "type": "NEXT",
-                                        "next": "{{MICROSOFT_REDIRECTION_STEP_ID}}"
+                                        "next": "{{MICROSOFT_EXECUTION_STEP_ID}}"
                                     }
                                 }
                             ]
                         }
                     },
                     {
-                        "id": "{{MICROSOFT_REDIRECTION_STEP_ID}}",
-                        "type": "REDIRECTION",
+                        "id": "{{MICROSOFT_EXECUTION_STEP_ID}}",
+                        "type": "EXECUTION",
                         "size": {
                             "width": 350,
                             "height": 291
@@ -634,10 +634,10 @@
         "config": {
             "data": {
                 "__generationMeta__": {
-                    "defaultPropertySelectorId": "{{GITHUB_REDIRECTION_STEP_ID}}",
+                    "defaultPropertySelectorId": "{{GITHUB_EXECUTION_STEP_ID}}",
                     "replacers": [
                         {
-                            "key": "GITHUB_REDIRECTION_STEP_ID",
+                            "key": "GITHUB_EXECUTION_STEP_ID",
                             "type": "ID"
                         }
                     ]
@@ -662,15 +662,15 @@
                                     },
                                     "action": {
                                         "type": "NEXT",
-                                        "next": "{{GITHUB_REDIRECTION_STEP_ID}}"
+                                        "next": "{{GITHUB_EXECUTION_STEP_ID}}"
                                     }
                                 }
                             ]
                         }
                     },
                     {
-                        "id": "{{GITHUB_REDIRECTION_STEP_ID}}",
-                        "type": "REDIRECTION",
+                        "id": "{{GITHUB_EXECUTION_STEP_ID}}",
+                        "type": "EXECUTION",
                         "size": {
                             "width": 350,
                             "height": 291

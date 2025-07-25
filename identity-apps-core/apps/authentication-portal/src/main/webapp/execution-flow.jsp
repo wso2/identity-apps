@@ -296,7 +296,7 @@
                         const errorPageURL = authPortalURL + "/execution_flow_error.do?" + "ERROR_MSG="
                             + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID="
                             + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + flowType + "&" + "confirmation="
-                            + "<%= Encode.forJavaScript(confirmationCode) %>" + "&" + 
+                            + "<%= Encode.forJavaScript(confirmationCode) %>" + "&" +
                             "PORTAL_URL=" + portal_url + "&SP=" + "<%= Encode.forJavaScript(sp) %>";
 
                         window.location.href = errorPageURL;
@@ -348,7 +348,7 @@
                 const handleStepType = (flow) => {
                     if (!flow) return false;
                     switch (flow.type) {
-                        case "REDIRECTION":
+                        case "EXECUTION":
                             setLoading(true);
                             window.location.href = flow.data.redirectURL;
                             break;

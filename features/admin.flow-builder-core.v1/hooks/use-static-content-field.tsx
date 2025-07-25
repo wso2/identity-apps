@@ -57,7 +57,7 @@ const useStaticContentField = (): void => {
     }, [ resources ]);
 
     /**
-     * Adds static content to the redirection node when staticContentEnabled is checked.
+     * Adds static content to the execution node when staticContentEnabled is checked.
      *
      * @param propertyKey - The key of the property being changed.
      * @param newValue - The new value of the property.
@@ -68,8 +68,8 @@ const useStaticContentField = (): void => {
     const addStaticContent = async (propertyKey: string, newValue: any, element: Element,
         stepId: string): Promise<boolean> => {
 
-        // Check if this is a redirection step and the property is staticContentEnabled.
-        if (element?.type === StepTypes.Redirection && propertyKey === STATIC_CONTENT_ENABLED_PROPERTY) {
+        // Check if this is a execution step and the property is staticContentEnabled.
+        if (element?.type === StepTypes.Execution && propertyKey === STATIC_CONTENT_ENABLED_PROPERTY) {
             updateNodeData(stepId, (node: Node) => {
                 const components: Element[] = cloneDeep(node?.data?.components || []) as Element[];
 
@@ -104,7 +104,7 @@ const useStaticContentField = (): void => {
     };
 
     /**
-     * Adds staticContentEnabled property to the redirection step property panel.
+     * Adds staticContentEnabled property to the execution step property panel.
      *
      * @param resource - The resource element to which properties are being added.
      * @param properties - The properties object to which static content property will be added.
@@ -114,8 +114,8 @@ const useStaticContentField = (): void => {
     const addStaticContentProperties = (resource: Element, properties: Properties, stepId: string): boolean => {
         const node: Node = getNode(stepId);
 
-        // Check if this is a redirection step.
-        if (resource?.type === StepTypes.Redirection) {
+        // Check if this is a execution step.
+        if (resource?.type === StepTypes.Execution) {
             const components: Element[] = (node?.data?.components as Element[]) || [];
 
             properties["staticContentEnabled"] = components.length > 0;

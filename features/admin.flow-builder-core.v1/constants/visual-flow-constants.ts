@@ -42,7 +42,6 @@ class VisualFlowConstants {
     public static readonly FLOW_BUILDER_CANVAS_ALLOWED_RESOURCE_TYPES: string[] = [
         StepTypes.View,
         StepTypes.Rule,
-        StepTypes.Redirection,
         StepTypes.Execution,
         TemplateTypes.Basic,
         TemplateTypes.BasicFederated,

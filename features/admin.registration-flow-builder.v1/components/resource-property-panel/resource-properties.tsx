@@ -24,7 +24,7 @@ import {
 import { FieldKey, FieldValue } from "@wso2is/admin.flow-builder-core.v1/models/base";
 import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { Resource } from "@wso2is/admin.flow-builder-core.v1/models/resources";
-import { RedirectionTypes, StepCategories, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
+import { ExecutionTypes, StepCategories, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "react";
@@ -32,7 +32,7 @@ import ButtonExtendedProperties from "./extended-properties/button-extended-prop
 import FieldExtendedProperties from "./extended-properties/field-extended-properties";
 import RulesProperties from "./nodes/rules-properties";
 import ResourcePropertyFactory from "./resource-property-factory";
-import FederationProperties from "./steps/redirection/federation-properties";
+import FederationProperties from "./steps/execution/federation-properties";
 
 /**
  * Props interface of {@link ResourceProperties}
@@ -144,7 +144,7 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
 
             break;
         case StepCategories.Workflow:
-            if (resource?.data?.action?.executor?.name === RedirectionTypes.PasskeyEnrollment) {
+            if (resource?.data?.action?.executor?.name === ExecutionTypes.PasskeyEnrollment) {
                 renderElementId();
 
                 break;

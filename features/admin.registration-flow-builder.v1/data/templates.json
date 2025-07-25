@@ -233,10 +233,10 @@
         "config": {
             "data": {
                 "__generationMeta__": {
-                    "defaultPropertySelectorId": "{{GOOGLE_REDIRECTION_STEP_ID}}",
+                    "defaultPropertySelectorId": "{{GOOGLE_EXECUTION_STEP_ID}}",
                     "replacers": [
                         {
-                            "key": "GOOGLE_REDIRECTION_STEP_ID",
+                            "key": "GOOGLE_EXECUTION_STEP_ID",
                             "type": "ID"
                         }
                     ]
@@ -328,15 +328,15 @@
                                     },
                                     "action": {
                                         "type": "NEXT",
-                                        "next": "{{GOOGLE_REDIRECTION_STEP_ID}}"
+                                        "next": "{{GOOGLE_EXECUTION_STEP_ID}}"
                                     }
                                 }
                             ]
                         }
                     },
                     {
-                        "id": "{{GOOGLE_REDIRECTION_STEP_ID}}",
-                        "type": "REDIRECTION",
+                        "id": "{{GOOGLE_EXECUTION_STEP_ID}}",
+                        "type": "EXECUTION",
                         "size": {
                             "width": 350,
                             "height": 291
@@ -504,7 +504,7 @@
                     },
                     {
                         "id": "{{PASSKEY_ENROLLMENT_STEP_ID}}",
-                        "type": "REDIRECTION",
+                        "type": "EXECUTION",
                         "size": {
                             "width": 350,
                             "height": 291

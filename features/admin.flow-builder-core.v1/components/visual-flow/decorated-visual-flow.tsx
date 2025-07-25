@@ -42,7 +42,7 @@ import VisualFlowConstants from "../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import useComponentDelete from "../../hooks/use-component-delete";
 import useConfirmPasswordField from "../../hooks/use-confirm-password-field";
-import useDeleteRedirectionResource from "../../hooks/use-delete-redirection-resource";
+import useDeleteExecutionResource from "../../hooks/use-delete-execution-resource";
 import useGenerateStepElement from "../../hooks/use-generate-step-element";
 import useStaticContentField from "../../hooks/use-static-content-field";
 import { Element } from "../../models/elements";
@@ -106,12 +106,12 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
 }: DecoratedVisualFlowPropsInterface): ReactElement => {
 
     // Event handlers for ON_NODE_DELETE event.
-    useDeleteRedirectionResource();
+    useDeleteExecutionResource();
 
     // Event handlers for ON_PROPERTY_PANEL_OPEN event.
     useConfirmPasswordField();
 
-    // Event handlers for static content in redirection steps.
+    // Event handlers for static content in execution steps.
     useStaticContentField();
 
     const { screenToFlowPosition, updateNodeData } = useReactFlow();

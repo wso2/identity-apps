@@ -20,27 +20,27 @@ import Box from "@oxygen-ui/react/Box";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FC, ReactElement } from "react";
-import { RedirectionTypes } from "../../../../models/steps";
+import { ExecutionTypes } from "../../../../models/steps";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
-import "./redirection-factory.scss";
+import "./execution-factory.scss";
 
 /**
  * Props interface of {@link CommonStepFactory}
  */
-export type RedirectionFactoryPropsInterface = Pick<CommonStepFactoryPropsInterface, "data"> &
+export type ExecutionFactoryPropsInterface = Pick<CommonStepFactoryPropsInterface, "data"> &
     IdentifiableComponentInterface;
 
 /**
- * Factory for creating redirection types.
+ * Factory for creating execution types.
  *
  * @param props - Props injected to the component.
- * @returns The RedirectionFactory component.
+ * @returns The ExecutionFactory component.
  */
-export const RedirectionFactory: FC<RedirectionFactoryPropsInterface> = ({
+export const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
     data,
-    "data-componentid": componentId = "redirection-factory"
-}: RedirectionFactoryPropsInterface): ReactElement => {
-    if ((data?.action as any)?.executor?.name === RedirectionTypes.GoogleFederation) {
+    "data-componentid": componentId = "execution-factory"
+}: ExecutionFactoryPropsInterface): ReactElement => {
+    if ((data?.action as any)?.executor?.name === ExecutionTypes.GoogleFederation) {
         return (
             <Box display="flex" gap={ 1 } data-componentid={ componentId }>
                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" height="20" />
@@ -49,16 +49,16 @@ export const RedirectionFactory: FC<RedirectionFactoryPropsInterface> = ({
         );
     }
 
-    if ((data?.action as any)?.executor?.name === RedirectionTypes.AppleFederation) {
+    if ((data?.action as any)?.executor?.name === ExecutionTypes.AppleFederation) {
         return (
-            <Box display="flex" gap={ 1 } data-componentid={ componentId } className="flow-builder-redirection apple">
+            <Box display="flex" gap={ 1 } data-componentid={ componentId } className="flow-builder-execution apple">
                 <img src="https://www.svgrepo.com/show/494331/apple-round.svg" height="20" />
                 <Typography variant="body1">Apple</Typography>
             </Box>
         );
     }
 
-    if ((data?.action as any)?.executor?.name === RedirectionTypes.FacebookFederation) {
+    if ((data?.action as any)?.executor?.name === ExecutionTypes.FacebookFederation) {
         return (
             <Box display="flex" gap={ 1 } data-componentid={ componentId }>
                 <img src="https://www.svgrepo.com/show/448224/facebook.svg" height="20" />
@@ -67,7 +67,7 @@ export const RedirectionFactory: FC<RedirectionFactoryPropsInterface> = ({
         );
     }
 
-    if ((data?.action as any)?.executor?.name === RedirectionTypes.MicrosoftFederation) {
+    if ((data?.action as any)?.executor?.name === ExecutionTypes.MicrosoftFederation) {
         return (
             <Box display="flex" gap={ 1 } data-componentid={ componentId }>
                 <img src="https://www.svgrepo.com/show/448239/microsoft.svg" height="20" />
@@ -76,16 +76,16 @@ export const RedirectionFactory: FC<RedirectionFactoryPropsInterface> = ({
         );
     }
 
-    if ((data?.action as any)?.executor?.name === RedirectionTypes.GithubFederation) {
+    if ((data?.action as any)?.executor?.name === ExecutionTypes.GithubFederation) {
         return (
-            <Box display="flex" gap={ 1 } data-componentid={ componentId } className="flow-builder-redirection github">
+            <Box display="flex" gap={ 1 } data-componentid={ componentId } className="flow-builder-execution github">
                 <img src="https://www.svgrepo.com/show/473620/github.svg" height="20" />
                 <Typography variant="body1">Github</Typography>
             </Box>
         );
     }
 
-    if ((data?.action as any)?.executor?.name === RedirectionTypes.PasskeyEnrollment) {
+    if ((data?.action as any)?.executor?.name === ExecutionTypes.PasskeyEnrollment) {
         return (
             <Box display="flex" gap={ 1 } data-componentid={ componentId }>
                 <img src="https://www.svgrepo.com/show/246819/fingerprint.svg" height="20" />
@@ -96,9 +96,9 @@ export const RedirectionFactory: FC<RedirectionFactoryPropsInterface> = ({
 
     return (
         <Box display="flex" gap={ 1 } data-componentid={ componentId }>
-            <Typography variant="body1">Redirection</Typography>
+            <Typography variant="body1">Execution</Typography>
         </Box>
     );
 };
 
-export default RedirectionFactory;
+export default ExecutionFactory;

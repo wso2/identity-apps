@@ -21,29 +21,29 @@ import Card from "@oxygen-ui/react/Card";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Handle, Position } from "@xyflow/react";
 import React, { FC, ReactElement } from "react";
-import RedirectionFactory from "./redirection-factory";
+import ExecutionFactory from "./execution-factory";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
 
 /**
- * Props interface of {@link RedirectionMinimal}
+ * Props interface of {@link ExecutionMinimal}
  */
-export type RedirectionMinimalPropsInterface = Pick<CommonStepFactoryPropsInterface, "id" | "data" | "resource"> &
+export type ExecutionMinimalPropsInterface = Pick<CommonStepFactoryPropsInterface, "id" | "data" | "resource"> &
     IdentifiableComponentInterface;
 
 /**
- * Redirection (Minimal) Node component.
+ * Execution (Minimal) Node component.
  *
  * @param props - Props injected to the component.
- * @returns Redirection (Minimal) node component.
+ * @returns Execution (Minimal) node component.
  */
-const RedirectionMinimal: FC<RedirectionMinimalPropsInterface> = ({
+const ExecutionMinimal: FC<ExecutionMinimalPropsInterface> = ({
     id,
     data,
     resource,
-    ["data-componentid"]: componentId = "minimal-redirection"
-}: RedirectionMinimalPropsInterface): ReactElement => {
+    ["data-componentid"]: componentId = "minimal-execution"
+}: ExecutionMinimalPropsInterface): ReactElement => {
     const { setLastInteractedResource, setLastInteractedStepId } = useAuthenticationFlowBuilderCore();
     const theme: Theme = useTheme();
 
@@ -64,7 +64,7 @@ const RedirectionMinimal: FC<RedirectionMinimalPropsInterface> = ({
                 id={ `${id}${VisualFlowConstants.FLOW_BUILDER_PREVIOUS_HANDLE_SUFFIX}` }
                 position={ Position.Left }
             />
-            <RedirectionFactory data={ data } />
+            <ExecutionFactory data={ data } />
             <Handle
                 type="source"
                 id={ `${id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}` }
@@ -74,4 +74,4 @@ const RedirectionMinimal: FC<RedirectionMinimalPropsInterface> = ({
     );
 };
 
-export default RedirectionMinimal;
+export default ExecutionMinimal;
