@@ -75,6 +75,18 @@ export interface flowsNS {
                 message: string;
             };
         };
+        executions: {
+            names: {
+                apple: string;
+                confirmationCode: string;
+                default: string;
+                facebook: string;
+                github: string;
+                google: string;
+                microsoft: string;
+                passkeyEnrollment: string;
+            };
+        };
     };
     label?: string;
     passwordRecovery: {

@@ -18,6 +18,7 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FC, ReactElement, memo } from "react";
+import { useTranslation } from "react-i18next";
 import ExecutionMinimal from "./execution-minimal";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
@@ -42,6 +43,7 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
     resource
 }: ExecutionPropsInterface): ReactElement => {
     const { setLastInteractedResource, setLastInteractedStepId } = useAuthenticationFlowBuilderCore();
+    const { t } = useTranslation();
 
     const components: Element[] = data?.components as Element[] || [];
 
@@ -54,21 +56,21 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
     const resolveExecutionName = (executionType: ExecutionTypes): string => {
         switch (executionType) {
             case ExecutionTypes.GoogleFederation:
-                return "Google";
+                return t("flows:core.executions.names.google");
             case ExecutionTypes.AppleFederation:
-                return "Apple";
+                return t("flows:core.executions.names.apple");
             case ExecutionTypes.GithubFederation:
-                return "GitHub";
+                return t("flows:core.executions.names.github");
             case ExecutionTypes.FacebookFederation:
-                return "Facebook";
+                return t("flows:core.executions.names.facebook");
             case ExecutionTypes.MicrosoftFederation:
-                return "Microsoft";
+                return t("flows:core.executions.names.microsoft");
             case ExecutionTypes.PasskeyEnrollment:
-                return "Enroll Passkey";
+                return t("flows:core.executions.names.passkeyEnrollment");
             case ExecutionTypes.ConfirmationCode:
-                return "Confirmation Code";
+                return t("flows:core.executions.names.confirmationCode");
             default:
-                return "Execution";
+                return t("flows:core.executions.names.default");
         }
     };
 

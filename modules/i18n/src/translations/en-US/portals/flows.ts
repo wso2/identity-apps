@@ -75,6 +75,18 @@ export const flows: flowsNS = {
                 description: "An error occurred while fetching the flow metadata.",
                 message: "Flow Metadata Fetch Error"
             }
+        },
+        executions: {
+            names: {
+                apple: "Apple",
+                confirmationCode: "Confirmation Code",
+                default: "Execution",
+                facebook: "Facebook",
+                github: "GitHub",
+                google: "Google",
+                microsoft: "Microsoft",
+                passkeyEnrollment: "Enroll Passkey"
+            }
         }
     },
     label: "Flows",

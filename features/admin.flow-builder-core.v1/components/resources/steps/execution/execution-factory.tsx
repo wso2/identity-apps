@@ -20,6 +20,7 @@ import Box from "@oxygen-ui/react/Box";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FC, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { ExecutionTypes } from "../../../../models/steps";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
 import "./execution-factory.scss";
@@ -40,11 +41,13 @@ export const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
     data,
     "data-componentid": componentId = "execution-factory"
 }: ExecutionFactoryPropsInterface): ReactElement => {
+    const { t } = useTranslation();
+
     if ((data?.action as any)?.executor?.name === ExecutionTypes.GoogleFederation) {
         return (
             <Box display="flex" gap={ 1 } data-componentid={ componentId }>
                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" height="20" />
-                <Typography variant="body1">Google</Typography>
+                <Typography variant="body1">{ t("flows:core.executions.names.google") }</Typography>
             </Box>
         );
     }
@@ -53,7 +56,7 @@ export const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
         return (
             <Box display="flex" gap={ 1 } data-componentid={ componentId } className="flow-builder-execution apple">
                 <img src="https://www.svgrepo.com/show/494331/apple-round.svg" height="20" />
-                <Typography variant="body1">Apple</Typography>
+                <Typography variant="body1">{ t("flows:core.executions.names.apple") }</Typography>
             </Box>
         );
     }
@@ -62,7 +65,7 @@ export const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
         return (
             <Box display="flex" gap={ 1 } data-componentid={ componentId }>
                 <img src="https://www.svgrepo.com/show/448224/facebook.svg" height="20" />
-                <Typography variant="body1">Facebook</Typography>
+                <Typography variant="body1">{ t("flows:core.executions.names.facebook") }</Typography>
             </Box>
         );
     }
@@ -71,7 +74,7 @@ export const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
         return (
             <Box display="flex" gap={ 1 } data-componentid={ componentId }>
                 <img src="https://www.svgrepo.com/show/448239/microsoft.svg" height="20" />
-                <Typography variant="body1">Microsoft</Typography>
+                <Typography variant="body1">{ t("flows:core.executions.names.microsoft") }</Typography>
             </Box>
         );
     }
@@ -80,7 +83,7 @@ export const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
         return (
             <Box display="flex" gap={ 1 } data-componentid={ componentId } className="flow-builder-execution github">
                 <img src="https://www.svgrepo.com/show/473620/github.svg" height="20" />
-                <Typography variant="body1">Github</Typography>
+                <Typography variant="body1">{ t("flows:core.executions.names.github") }</Typography>
             </Box>
         );
     }
@@ -89,14 +92,27 @@ export const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
         return (
             <Box display="flex" gap={ 1 } data-componentid={ componentId }>
                 <img src="https://www.svgrepo.com/show/246819/fingerprint.svg" height="20" />
-                <Typography variant="body1">Enroll Passkey</Typography>
+                <Typography variant="body1">{ t("flows:core.executions.names.passkeyEnrollment") }</Typography>
+            </Box>
+        );
+    }
+
+    if ((data?.action as any)?.executor?.name === ExecutionTypes.ConfirmationCode) {
+        return (
+            <Box display="flex" gap={ 1 } data-componentid={ componentId }>
+                <img
+                    src="https://www.svgrepo.com/show/488853/check-square.svg"
+                    className="flow-builder-execution github"
+                    height="20"
+                />
+                <Typography variant="body1">{ t("flows:core.executions.names.confirmationCode") }</Typography>
             </Box>
         );
     }
 
     return (
         <Box display="flex" gap={ 1 } data-componentid={ componentId }>
-            <Typography variant="body1">Execution</Typography>
+            <Typography variant="body1">{ t("flows:core.executions.names.default") }</Typography>
         </Box>
     );
 };
