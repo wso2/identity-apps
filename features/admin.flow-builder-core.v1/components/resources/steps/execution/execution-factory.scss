@@ -19,7 +19,8 @@
 .flow-builder-execution {
 
     &.apple,
-    &.github {
+    &.github,
+    &.confirmation-code {
         img {
             filter: invert(100%);
         }

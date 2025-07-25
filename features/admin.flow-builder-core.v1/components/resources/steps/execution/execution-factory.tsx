@@ -99,12 +99,13 @@ export const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
 
     if ((data?.action as any)?.executor?.name === ExecutionTypes.ConfirmationCode) {
         return (
-            <Box display="flex" gap={ 1 } data-componentid={ componentId }>
-                <img
-                    src="https://www.svgrepo.com/show/488853/check-square.svg"
-                    className="flow-builder-execution github"
-                    height="20"
-                />
+            <Box
+                display="flex"
+                gap={ 1 }
+                data-componentid={ componentId }
+                className="flow-builder-execution confirmation-code"
+            >
+                <img src="https://www.svgrepo.com/show/468264/check-mark-square-2.svg" height="20"/>
                 <Typography variant="body1">{ t("flows:core.executions.names.confirmationCode") }</Typography>
             </Box>
         );
