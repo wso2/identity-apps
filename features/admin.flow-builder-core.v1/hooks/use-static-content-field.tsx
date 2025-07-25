@@ -28,7 +28,7 @@ import { StepTypes } from "../models/steps";
 import PluginRegistry from "../plugins/plugin-registry";
 import generateResourceId from "../utils/generate-resource-id";
 
-const STATIC_CONTENT_ENABLED_PROPERTY: string = "staticContentEnabled";
+const STATIC_CONTENT_ENABLED_PROPERTY: string = "enableStaticContent";
 
 /**
  * Custom hook to manage static content field in execution nodes.
