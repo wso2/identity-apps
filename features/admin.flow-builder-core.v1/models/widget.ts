@@ -45,5 +45,6 @@ export enum WidgetTypes {
     AppleFederation = "APPLE_FEDERATION",
     FacebookFederation = "FACEBOOK_FEDERATION",
     MicrosoftFederation = "MICROSOFT_FEDERATION",
-    GithubFederation = "GITHUB_FEDERATION"
+    GithubFederation = "GITHUB_FEDERATION",
+    PasskeyEnrollment = "PASSKEY_ENROLLMENT",
 }
