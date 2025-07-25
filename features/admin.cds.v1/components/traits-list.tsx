@@ -10,6 +10,7 @@ import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
 import axios from "axios";
 import { error } from "console";
+import { CDM_BASE_URL } from "../models/constants";
 
 interface TraitsListProps {
     traits: Trait[];
@@ -89,7 +90,7 @@ export const TraitsList: FunctionComponent<TraitsListProps> = ({
     const handleDelete = async () => {
         try {
                 axios
-                    .delete(`http://localhost:8900/api/v1/profile-schema/traits/${deletingTrait.attribute_id}`)
+                    .delete(`${CDM_BASE_URL}/profile-schema/traits/${deletingTrait.attribute_id}`)
                     .then((res) => {
                         dispatch(addAlert({
                             level: AlertLevels.SUCCESS,

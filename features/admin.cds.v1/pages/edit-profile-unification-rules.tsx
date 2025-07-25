@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
 import axios from "axios";
 import { AlertLevels } from "@wso2is/core/models";
+import { CDM_BASE_URL } from "../models/constants";
 
 const UnificationRuleEditPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -28,7 +29,7 @@ const UnificationRuleEditPage = () => {
     const [ showDeleteConfirm, setShowDeleteConfirm ] = useState(false);
 
     useEffect(() => {
-        axios.get(`http://localhost:8900/api/v1/unification-rules/${id}`)
+        axios.get(`${CDM_BASE_URL}/unification-rules/${id}`)
             .then(res => {
                 setRule(res.data);
             })
@@ -44,7 +45,7 @@ const UnificationRuleEditPage = () => {
     const handleSubmit = async (values) => {
         setIsSubmitting(true);
         try {
-            await axios.patch(`http://localhost:8900/api/v1/unification-rules/${id}`, {
+            await axios.patch(`${CDM_BASE_URL}/unification-rules/${id}`, {
                 priority: values.priority
             });
             dispatch(addAlert({
@@ -64,7 +65,7 @@ const UnificationRuleEditPage = () => {
     const toggleStatus = async () => {
         setIsToggling(true);
         try {
-            await axios.patch(`http://localhost:8900/api/v1/unification-rules/${id}`, {
+            await axios.patch(`${CDM_BASE_URL}/unification-rules/${id}`, {
                 is_active: !rule.is_active
             });
             setRule(prev => ({ ...prev, is_active: !prev.is_active }));
@@ -86,7 +87,7 @@ const UnificationRuleEditPage = () => {
     const deleteRule = async () => {
         setIsDeleting(true);
         try {
-            await axios.delete(`http://localhost:8900/api/v1/unification-rules/${id}`);
+            await axios.delete(`${CDM_BASE_URL}/unification-rules/${id}`);
             dispatch(addAlert({
                 level: AlertLevels.SUCCESS,
                 message: "Rule deleted"

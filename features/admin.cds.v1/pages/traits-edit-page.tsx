@@ -26,6 +26,7 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { TrashIcon } from "@oxygen-ui/react-icons";
 import { Trait } from "../api/traits";
+import { CDM_BASE_URL } from "../models/constants";
 
 interface RouteParams {
     id: string;
@@ -58,7 +59,7 @@ const TraitsEditPage: FunctionComponent<RouteComponentProps<RouteParams>> = (
 
     const fetchTrait = () => {
         setIsLoading(true);
-        axios.get(`http://localhost:8900/api/v1/profile-schema/traits/${traitId}`)
+        axios.get(`${CDM_BASE_URL}/profile-schema/traits/${traitId}`)
             .then((response) => {
                 setTrait(response.data);
                 setSubAttributes(response.data?.sub_attributes?.map((s: any) => s.attribute_name) || []);
@@ -75,7 +76,7 @@ const TraitsEditPage: FunctionComponent<RouteComponentProps<RouteParams>> = (
 
     const fetchSubAttributeOptions = (attributeName: string) => {
         const prefix = attributeName.replace(/^traits\./, "") + ".";
-        axios.get(`http://localhost:8900/api/v1/profile-schema/traits?filter=attribute_name+co+traits.${prefix}`)
+        axios.get(`${CDM_BASE_URL}/profile-schema/traits?filter=attribute_name+co+traits.${prefix}`)
             .then((response) => {
                 const options = response.data.map((attr: Trait) => ({
                     key: attr.attribute_id,
@@ -93,7 +94,7 @@ const TraitsEditPage: FunctionComponent<RouteComponentProps<RouteParams>> = (
         };
 
         setIsUpdating(true);
-        axios.put(`http://localhost:8900/api/v1/profile-schema/traits/${traitId}`, {
+        axios.put(`${CDM_BASE_URL}/profile-schema/traits/${traitId}`, {
             attribute_name: updatedTrait.attribute_name,
             value_type: updatedTrait.value_type,
             merge_strategy: updatedTrait.merge_strategy,

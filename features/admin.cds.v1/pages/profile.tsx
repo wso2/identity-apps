@@ -9,12 +9,13 @@ import { PageLayout, ListLayout, EmptyPlaceholder } from "@wso2is/react-componen
 import { useDispatch } from "react-redux";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { AdvancedSearchWithMultipleFilters, FilterAttributeOption } from "@wso2is/admin.core.v1/components/advanced-search-with-multipe-filters";
 import { Dropdown, DropdownItemProps, DropdownProps, PaginationProps } from "semantic-ui-react";
 import axios from "axios";
 import ProfilesList from "../components/profile-list";
 import { ProfileModel, ApplicationDataItem } from "../models/profile";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { CDM_BASE_URL } from "../models/constants";
 
 const ProfilesPage: FunctionComponent = (): ReactElement => {
 
@@ -23,7 +24,7 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
-    const [ offset, setOffset ] = useState<number>(1);
+    const [ offset, setOffset ] = useState<number>(0);
     const [ limit, setLimit ] = useState<number>(10);
     const [ isNextPageAvailable, setIsNextPageAvailable ] = useState<boolean>(false);
     const [rules, setRules] = useState([]);
@@ -51,6 +52,11 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
         });
     };
 
+    useEffect(() => {
+        if (!profileList) return;
+        setIsNextPageAvailable(profileList.length > limit);
+    }, [ profileList, limit ]);
+
     const handlePaginationChange = (
         event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps
     ) => {
@@ -71,26 +77,28 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
     };
 
     const fetchProfiles = async () => {
-        setIsLoading(true);
-        setError(null);
-
-        try {
-            const res = await axios.get("http://localhost:8900/api/v1/profiles");
-
-            const normalized = (res.data || []).map((profile: ProfileModel) => ({
-                ...profile,
-                application_data: normalizeApplicationData(profile.application_data)
-            }));
-
-            const sorted = sortProfiles(normalized, sortBy.value as string, sortOrder);
-            setProfileList(sorted);
-        } catch (err) {
-            console.error("Failed to fetch profiles", err);
-            setError(err);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+            setIsLoading(true);
+            setError(null);
+        
+            try {
+                const url = `${CDM_BASE_URL}/api/v1/profiles`;
+                const res = await axios.get(url, {
+                    params: searchQuery ? { filter: searchQuery } : {}
+                });        
+                let normalized = (res.data || []).map((profile: ProfileModel) => ({
+                    ...profile,
+                    application_data: normalizeApplicationData(profile.application_data)
+                }));
+        
+                const sorted = sortProfiles(normalized, sortBy.value as string, sortOrder);
+                setProfileList(sorted);
+            } catch (err) {
+                console.error("Failed to fetch profiles", err);
+                setError(err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
 
     const handleAlerts = (alert: AlertInterface) => {
         dispatch(addAlert(alert));
@@ -114,7 +122,7 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
 
     useEffect(() => {
         fetchProfiles();
-    }, [ sortBy, sortOrder ]);
+    }, [ sortBy, sortOrder, searchQuery ]);
 
     useEffect(() => {
         if (!profileList) return;
@@ -138,14 +146,49 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
     }, [ error ]);
 
     const handleRuleSearch = (query: string): void => {
-        const filtered = originalRules.filter(rule =>
-            rule.rule_name?.toLowerCase().includes(query.toLowerCase()) ||
-            rule.property_name?.toLowerCase().includes(query.toLowerCase()) ||
-            rule.property_scope?.toLowerCase().includes(query.toLowerCase())
-        );
-        setRules(filtered);
+        // const filtered = originalRules.filter(rule =>
+        //     rule.rule_name?.toLowerCase().includes(query.toLowerCase()) ||
+        //     rule.property_name?.toLowerCase().includes(query.toLowerCase()) ||
+        //     rule.property_scope?.toLowerCase().includes(query.toLowerCase())
+        // );
+        // setRules(filtered);
+        console.log("Final query:", query);
+
         setSearchQuery(query);
     };
+
+    const [ filterAttributeOptions, setFilterAttributeOptions ] = useState<FilterAttributeOption[]>([]);
+
+    useEffect(() => {
+        const fetchSchemaAttributes = async () => {
+            try {
+                const url = `${CDM_BASE_URL}/api/v1/profile-schema`;
+                const res = await axios.get(url);
+    
+                const attributes = res.data || [];
+    
+                const options = attributes.map((attr: any) => {
+                    const parts = attr.attribute_name?.split(".");
+                    const scope = parts?.length > 1 ? parts[0] : "default";
+    
+                    return {
+                        scope,
+                        label: attr.attribute_name, // You can replace with attr.label if your schema provides display names
+                        value: attr.attribute_name,
+                        key: attr.attribute_name
+                    };
+                });
+    
+                setFilterAttributeOptions(options);
+            } catch (error) {
+                console.error("Failed to fetch profile schema attributes", error);
+            }
+        };
+    
+        fetchSchemaAttributes();
+    }, []);
+    
+
 
     return (
         <PageLayout
@@ -175,16 +218,14 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
                 isLoading={ isLoading }
                 data-testid="profiles-list-layout"
                 advancedSearch={
-                    <AdvancedSearchWithBasicFilters
+                    <AdvancedSearchWithMultipleFilters
                         onFilter={handleRuleSearch}
-                        filterAttributeOptions={[
-                            { key: 0, text: "Profile ID", value: "profile_id" },
-                            { key: 1, text: "User ID", value: "user_id" },
-                        ]}
+                        filterAttributeOptions={ filterAttributeOptions }
                         placeholder="Search by Rule Name or Scope"
                         defaultSearchAttribute="rule_name"
                         defaultSearchOperator="co"
                         triggerClearQuery={triggerClearQuery}
+                        scopes={["identity_attributes", "traits"]} // Assuming these are the scopes you want to search
                     />
                     }
                 >

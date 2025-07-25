@@ -132,7 +132,8 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPageInterface> = (
                             { cdmEnabled && (
                                 <>
                                     { renderSegmentItem("APPLICATION_DATA", getSidePanelIcons().applications, "Application Data", "Update application data in profile") }
-                                    { renderSegmentItem("TRAITS", getSidePanelIcons().users, "Traits", "Update custom traits in profile") }
+                                    {/* { renderSegmentItem("APPLICATION_DATA", getSidePanelIcons().appData, "Application Data", "Update application data in profile") } */}
+                                    { renderSegmentItem("TRAITS", getSidePanelIcons().traits, "Traits", "Update custom traits in profile") }
                                 </>
                             )}
                         </>

@@ -1,17 +1,18 @@
 import React, {
     FunctionComponent,
     ReactElement,
+    ReactNode,
     SyntheticEvent,
     useState
 } from "react";
-import { DataTable, ConfirmationModal } from "@wso2is/react-components";
+import { DataTable, ConfirmationModal, UserAvatar } from "@wso2is/react-components";
 import { TableActionsInterface, TableColumnInterface } from "@wso2is/react-components";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
-import { SemanticICONS } from "semantic-ui-react";
+import { Header, SemanticICONS } from "semantic-ui-react";
 import axios from "axios";
 import { ProfileModel } from "../models/profile";
 import Chip from "@oxygen-ui/react/Chip/Chip";
@@ -42,6 +43,35 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
             id: "profile_id",
             key: "profile_id",
             title: "Profile ID",
+            render: (profile: ProfileModel): ReactNode => {
+                return (
+                    <Header
+                        image
+                        as="h6"
+                        className="header-with-icon"
+                        // data-componentid={ `${ testId }-item-heading` }
+                    >
+                        <UserAvatar
+                            data-componentid="users-list-item-image"
+                            name={ typeof profile.profile_id === "string" ? profile.profile_id.charAt(0).toUpperCase() : "U" }
+                            size="mini"
+                            // image={ user.profileUrl }
+                            spaced="right"
+                            data-suppress=""
+                        />   
+                         <Header.Content>
+                            { profile.profile_id }
+                            <Header.Subheader>
+                                {
+                                    profile.identity_attributes?.givenname && profile.identity_attributes?.lastname
+                                        ? `${ profile.identity_attributes.givenname } ${ profile.identity_attributes.lastname }`.trim()
+                                        : ""
+                                }
+                            </Header.Subheader>
+                        </Header.Content>                     
+                    </Header>
+                );
+            },
         },
         // {
         //     allowToggleVisibility: true,
@@ -58,7 +88,7 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
             title: "User Account",
             dataIndex: "user_name",
             render: (profile: ProfileModel) => {
-                const username = profile.identity_attributes?.user_name;
+                const username = profile.identity_attributes?.username;
         
                 return username ? (
                     username
@@ -130,6 +160,7 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
         <>
             <DataTable<ProfileModel>
                 isLoading={ isLoading }
+                rowKey="profile_id"
                 columns={ columns }
                 data={ profiles }
                 actions={ actions }

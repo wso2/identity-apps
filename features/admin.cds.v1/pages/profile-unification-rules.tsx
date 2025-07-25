@@ -14,6 +14,7 @@ import axios from "axios";
 import UnificationRuleAddModal from "../components/modals/add-unification-rule";
 
 import { UnificationRulesList } from "../components/unification-rule-list";
+import { CDM_BASE_URL } from "../models/constants";
 
 const SORT_BY = [
     { key: 0, text: "Name", value: "rule_name" },
@@ -55,7 +56,8 @@ const ProfileUnificationRulePage = () => {
     const fetchRules = async () => {
         setIsLoading(true);
         try {
-            const res = await axios.get("http://localhost:8900/api/v1/unification-rules");
+            const url = `${CDM_BASE_URL}/api/v1/unification-rules`;
+            const res = await axios.get(url);
             const enriched = (res.data || []).map(rule => {
                 let scope = "Default";
                 const prop = rule.property_name;
@@ -80,7 +82,7 @@ const ProfileUnificationRulePage = () => {
 
     const performToggle = async (ruleId: string, current: boolean) => {
         try {
-            await axios.patch(`http://localhost:8900/api/v1/unification-rules/${ruleId}`, {
+            await axios.patch(`${CDM_BASE_URL}/unification-rules/${ruleId}`, {
                 is_active: !current
             });
             fetchRules();

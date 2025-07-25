@@ -13,6 +13,8 @@ import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
 import { LinkButton } from "@wso2is/react-components/src/components/button/link-button";
+import { CDM_BASE_URL } from "../../models/constants";
+import { url } from "inspector";
 
 interface AddTraitModalProps {
     open: boolean;
@@ -55,7 +57,7 @@ export const AddTraitModal: FunctionComponent<AddTraitModalProps> = ({
         if (trait.attribute_name && trait.value_type === "complex") {
             const prefix = trait.attribute_name + ".";
             axios
-                .get(`http://localhost:8900/api/v1/profile-schema/traits?filter=attribute_name+co+traits.${prefix}`)
+                .get(`${CDM_BASE_URL}/profile-schema/traits?filter=attribute_name+co+traits.${prefix}`)
                 .then((res) => {
                     const data = res.data ?? [];
                     setSubAttributeOptions(
@@ -80,7 +82,7 @@ export const AddTraitModal: FunctionComponent<AddTraitModalProps> = ({
 
         const timeoutId = setTimeout(() => {
             setIsCheckingName(true);
-            axios.get(`http://localhost:8900/api/v1/profile-schema/traits?filter=attribute_name+eq+traits.${trait.attribute_name}`)
+            axios.get(`${CDM_BASE_URL}/profile-schema/traits?filter=attribute_name+eq+traits.${trait.attribute_name}`)
                 .then(res => {
                     setIsValidName(res.data.length === 0);
                 })
@@ -96,7 +98,8 @@ export const AddTraitModal: FunctionComponent<AddTraitModalProps> = ({
             ? canonicalValues.map(({ key, value }) => ({ label: key, value }))
             : undefined;
 
-        axios.post("http://localhost:8900/api/v1/profile-schema/traits", [{
+        const url = `${CDM_BASE_URL}/profile-schema/traits`;
+        axios.post(url, [{
             ...trait,
             attribute_name: `traits.${trait.attribute_name?.trim()}`,
             value_type: dataType === "options" ? "string" : trait.value_type,

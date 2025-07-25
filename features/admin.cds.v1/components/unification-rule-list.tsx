@@ -19,6 +19,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
+import { CDM_BASE_URL } from "../models/constants";
 
 interface ResolutionRulesListProps {
     rules: UnificationRuleInterface[];
@@ -40,9 +41,42 @@ export const UnificationRulesList: FunctionComponent<ResolutionRulesListProps> =
 
     const dispatch = useDispatch();
 
+    const getChipStyles = (scope: string) => {
+        switch (scope) {
+            case "identity Attribute":
+                return {
+                    backgroundColor: "#e0f2f1",
+                    color: "#00796b",
+                    fontWeight: 500,
+                    border : "none"
+                };
+            case "Application Data":
+                return {
+                    backgroundColor: "#fce4ec",
+                    color: "#c2185b",
+                    fontWeight: 500,
+                    border : "none"
+                };
+            case "Trait":
+                return {
+                    backgroundColor: "#dcf0fa",
+                    color: "#0082c3",
+                    fontWeight: 500,
+                    border : "none"
+                };
+            default:
+                return {
+                    backgroundColor: "#f5f5f5",
+                    color: "#616161",
+                    fontWeight: 500,
+                    // borderColor: "#bdbdbd"
+                };
+        }
+    };
+    
     const handleDelete = async () => {
         try {
-            await axios.delete(`http://localhost:8900/api/v1/unification-rules/${deletingRule.rule_id}`);
+            await axios.delete(`${CDM_BASE_URL}/unification-rules/${deletingRule.rule_id}`);
             dispatch(addAlert({
                 level: AlertLevels.SUCCESS,
                 message: "Deleted",
@@ -66,7 +100,7 @@ export const UnificationRulesList: FunctionComponent<ResolutionRulesListProps> =
             dataIndex: "rule_name",
             id: "rule_name",
             key: "rule_name",
-            title: "Rule Name",
+            title: "Rule",
             render: (rule: UnificationRuleInterface) => {
                 const displayName = rule.rule_name;
 
@@ -147,7 +181,7 @@ export const UnificationRulesList: FunctionComponent<ResolutionRulesListProps> =
                     <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                         <span>{ suffix }</span>
                         { scope && (
-                            <Chip size="small" color="primary" variant="outlined" label={ scope } />
+                            <Chip size="small" sx={ getChipStyles(scope) } variant="outlined" label={ scope } />
                         ) }
                     </div>
                 );
