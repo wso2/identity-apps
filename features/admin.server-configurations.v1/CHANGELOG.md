@@ -1,5 +1,15 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.35.11
+
+### Patch Changes
+
+- Updated dependencies [[`2e0c31a4c3f39f409ed3aa4b630007b81dea5bea`](https://github.com/wso2/identity-apps/commit/2e0c31a4c3f39f409ed3aa4b630007b81dea5bea)]:
+  - @wso2is/admin.flow-builder-core.v1@0.9.6
+  - @wso2is/i18n@2.25.4
+  - @wso2is/admin.core.v1@2.46.33
+  - @wso2is/admin.server-configurations.v1@2.35.11
+
 ## 2.35.10
 
 ### Patch Changes
