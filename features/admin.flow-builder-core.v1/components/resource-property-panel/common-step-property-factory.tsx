@@ -84,7 +84,7 @@ const CommonStepPropertyFactory: FunctionComponent<CommonStepPropertyFactoryProp
     if (typeof propertyValue === "boolean") {
         return (
             <FormControlLabel
-                control={ <Checkbox /> }
+                control={ <Checkbox checked={ propertyValue } /> }
                 label={ startCase(propertyKey) }
                 onChange={ (e: ChangeEvent<HTMLInputElement>) =>
                     onChange(propertyKey, e.target.checked, resource)

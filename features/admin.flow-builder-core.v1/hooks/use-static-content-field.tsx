@@ -65,12 +65,11 @@ const useStaticContentField = (): void => {
      * @param stepId - The ID of the step where the element is located.
      * @returns Returns false if the static content is added/removed, true otherwise.
      */
-    const addStaticContent = async (propertyKey: string, newValue: any, _element: Element,
+    const addStaticContent = async (propertyKey: string, newValue: any, element: Element,
         stepId: string): Promise<boolean> => {
-        const node: Node = getNode(stepId);
 
         // Check if this is a redirection step and the property is staticContentEnabled.
-        if (node?.type === StepTypes.Redirection && propertyKey === STATIC_CONTENT_ENABLED_PROPERTY) {
+        if (element?.type === StepTypes.Redirection && propertyKey === STATIC_CONTENT_ENABLED_PROPERTY) {
             updateNodeData(stepId, (node: Node) => {
                 const components: Element[] = cloneDeep(node?.data?.components || []) as Element[];
 
@@ -112,11 +111,11 @@ const useStaticContentField = (): void => {
      * @param stepId - The ID of the step where the resource is located.
      * @returns return true.
      */
-    const addStaticContentProperties = (_resource: Element, properties: Properties, stepId: string): boolean => {
+    const addStaticContentProperties = (resource: Element, properties: Properties, stepId: string): boolean => {
         const node: Node = getNode(stepId);
 
         // Check if this is a redirection step.
-        if (node?.type === StepTypes.Redirection) {
+        if (resource?.type === StepTypes.Redirection) {
             const components: Element[] = (node?.data?.components as Element[]) || [];
 
             properties["staticContentEnabled"] = components.length > 0;
