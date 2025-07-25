@@ -20,8 +20,7 @@ import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
-import { FeatureAccessConfigInterface, Show, useRequiredScopes } from "@wso2is/access-control";
-import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -57,11 +56,13 @@ import useGetDefaultEventProfile from "../api/use-get-default-event-profile";
 import useGetWebhookById from "../api/use-get-webhook-by-id";
 import useGetWebhooksMetadata from "../api/use-get-webhooks-metadata";
 import WebhookConfigForm from "../components/webhook-config-form";
+import useWebhookNavigation from "../hooks/use-webhook-navigation";
 import { WebhookChannelConfigInterface } from "../models/event-profile";
 import {
     WebhookChannelSubscriptionInterface,
     WebhookConfigFormPropertyInterface,
     WebhookCreateRequestInterface,
+    WebhookResponseInterface,
     WebhookStatus,
     WebhookUpdateRequestInterface
 } from "../models/webhooks";
@@ -88,6 +89,7 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
     );
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+    const { navigateToWebhookEditById, navigateToWebhooksList } = useWebhookNavigation();
 
     // Permission checks
     const hasWebhookUpdatePermissions: boolean = useRequiredScopes(webhooksFeatureConfig?.scopes?.update);
@@ -99,7 +101,7 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
         const pathParts: string[] = history.location.pathname.split("/");
 
         return pathParts[pathParts.length - 1];
-    }, []);
+    }, [ history.location.pathname ]);
 
     const isCreateMode: boolean = !webhookId || webhookId === "new" || webhookId === "";
 
@@ -219,15 +221,24 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
     }, [ isCreateMode, hasWebhookUpdatePermissions ]);
 
     const shouldShowDeleteSection: () => boolean = useCallback((): boolean => {
-        return (
-            !isLoading &&
-            !isCreateMode &&
-            !isEmpty(webhook) &&
-            (isWebSubHubAdapterMode()
-                ? webhook?.status === WebhookStatus.INACTIVE || webhook?.status === WebhookStatus.PARTIALLY_INACTIVE
-                : true)
-        );
-    }, [ isLoading, isCreateMode, webhook, isWebSubHubAdapterMode ]);
+        if (isLoading || isCreateMode || isEmpty(webhook)) {
+            return false;
+        }
+
+        if (!hasWebhookDeletePermissions) {
+            return false;
+        }
+
+        return true;
+    }, [ isLoading, isCreateMode, webhook, hasWebhookDeletePermissions ]);
+
+    const isDeleteActionDisabled: () => boolean = useCallback((): boolean => {
+        if (isWebSubHubAdapterMode() && webhook) {
+            return webhook.status === WebhookStatus.ACTIVE || webhook.status === WebhookStatus.PARTIALLY_ACTIVE;
+        }
+
+        return false;
+    }, [ isWebSubHubAdapterMode, webhook ]);
 
     // Effects
     useEffect(() => {
@@ -283,9 +294,9 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
 
                 setIsSubmitting(true);
                 createWebhook(webhookCreatePayload)
-                    .then(() => {
+                    .then((response: WebhookResponseInterface) => {
                         handleSuccess("createWebhook");
-                        history.push(AppConstants.getPaths().get("WEBHOOKS"));
+                        navigateToWebhookEditById(response.id);
                     })
                     .catch((error: AxiosError) => {
                         handleError(error, "createWebhook");
@@ -336,7 +347,8 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
             webhookId,
             handleSuccess,
             handleError,
-            mutateWebhook
+            mutateWebhook,
+            navigateToWebhookEditById
         ]
     );
 
@@ -397,7 +409,7 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
         deleteWebhook(webhookId)
             .then(() => {
                 handleSuccess("deleteWebhook");
-                history.push(AppConstants.getPaths().get("WEBHOOKS"));
+                navigateToWebhooksList();
             })
             .catch((error: AxiosError) => {
                 handleError(error, "deleteWebhook");
@@ -406,11 +418,11 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
                 setIsDeletingWebhook(false);
                 setShowDeleteConfirmationModal(false);
             });
-    }, [ hasWebhookDeletePermissions, webhookId, handleSuccess, handleError ]);
+    }, [ hasWebhookDeletePermissions, webhookId, handleSuccess, handleError, navigateToWebhooksList ]);
 
     const handleBackButtonClick: () => void = useCallback((): void => {
-        history.push(AppConstants.getPaths().get("WEBHOOKS"));
-    }, []);
+        navigateToWebhooksList();
+    }, [ navigateToWebhooksList ]);
 
     // Render helpers
     const getWebhookStatusAlert: () => WebhookStatusAlert | null = useCallback((): WebhookStatusAlert | null => {
@@ -546,15 +558,16 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
         if (!shouldShowDeleteSection()) return null;
 
         return (
-            <Show when={ webhooksFeatureConfig?.scopes?.delete }>
+            <>
                 <DangerZoneGroup sectionHeader={ t("webhooks:dangerZone.heading") }>
                     <DangerZone
                         data-componentid={ `${_componentId}-danger-zone` }
                         actionTitle={ t("webhooks:dangerZone.delete.actionTitle") }
                         header={ t("webhooks:dangerZone.delete.heading") }
                         subheader={ t("webhooks:dangerZone.delete.subHeading") }
+                        isButtonDisabled={ isDeleteActionDisabled() }
                         onActionClick={ () => {
-                            if (hasWebhookDeletePermissions) {
+                            if (hasWebhookDeletePermissions && !isDeleteActionDisabled()) {
                                 setShowDeleteConfirmationModal(true);
                             }
                         } }
@@ -588,17 +601,17 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
                         { t("webhooks:confirmations.delete.content") }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
-            </Show>
+            </>
         );
     }, [
         shouldShowDeleteSection,
-        webhooksFeatureConfig,
         t,
         _componentId,
         hasWebhookDeletePermissions,
         isDeletingWebhook,
         showDeleteConfirmationModal,
-        handleWebhookDelete
+        handleWebhookDelete,
+        isDeleteActionDisabled
     ]);
 
     return (

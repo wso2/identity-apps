@@ -96,7 +96,11 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
     const handleSuccess: (action: string) => void = useHandleWebhookSuccess();
     const handleError: (error: unknown, action: string) => void = useHandleWebhookError();
 
-    const isLoading: boolean = isWebhookListFetchRequestLoading || isDeletingWebhook || isWebhooksMetadataLoading;
+    const isLoading: boolean =
+        isWebhookListFetchRequestLoading ||
+        isDeletingWebhook ||
+        isWebhooksMetadataLoading ||
+        (!webhookListResponse && !webhookListFetchRequestError);
 
     useEffect(() => {
         resetToFirstPage();
@@ -151,7 +155,6 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
      * Handles webhook edit navigation with permission check.
      */
     const handleWebhookEdit = (webhook: WebhookListItemInterface): void => {
-        // Allow to navigage to edit page if the user has view permissions
         navigateToWebhookEdit(webhook);
     };
 
@@ -233,16 +236,15 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
             data-componentid={ `${_componentId}-page-layout` }
         >
             <ListLayout
-                advancedSearch={ renderAdvancedSearch() }
+                advancedSearch={ !isLoading ? renderAdvancedSearch() : null }
                 currentListSize={ paginatedWebhooks.length }
                 isLoading={ isLoading }
                 listItemLimit={ itemsPerPage }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
-                showPagination={ totalPages > 1 }
+                showPagination={ totalPages > 1 && !isLoading }
                 showTopActionPanel={
-                    isWebhookListFetchRequestLoading ||
-                    isWebhooksMetadataLoading ||
+                    isLoading ||
                     !((!searchQuery || searchQuery.trim() === "") && enhancedWebhookList?.totalResults <= 0)
                 }
                 totalPages={ totalPages }
