@@ -1380,7 +1380,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     {
                         claim && UIConfig?.isClaimUniquenessValidationEnabled
                             && !hideSpecialClaims
-                            && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI) 
+                            && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
                             && !isAgentAttribute && (
                             <Field.Dropdown
                                 ariaLabel="uniqueness-scope-dropdown"
