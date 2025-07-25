@@ -510,38 +510,59 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                             loader={ (<LinearProgress/>) }
                             scrollableTarget="scrollableOrgContainer"
                         >
-                            <RichTreeView
-                                data-componentid={ `${ componentId }-tree-view` }
-                                className="roles-selective-share-tree-view"
-                                items={ organizationTree }
-                                expandedItems={ expandedItems }
-                                selectedItems={ selectedItems }
-                                onItemSelectionToggle={ (
-                                    _e: SyntheticEvent,
-                                    itemId: string,
-                                    isSelected: boolean
-                                ) =>
-                                    resolveSelectedItems(itemId, isSelected) }
-                                onItemExpansionToggle={ (_e: SyntheticEvent, itemId: string, expanded: boolean) => {
-                                    if (expanded) {
-                                        setExpandedOrgId(itemId);
-                                        setExpandedItems((prev: string[]) => [ ...prev, itemId ]);
-                                    } else {
-                                        setExpandedItems((prev: string[]) =>
-                                            prev.filter((id: string) => id !== itemId));
-                                        collapseChildNodes(itemId);
-                                    }
-                                } }
-                                selectionPropagation={ {
-                                    descendants: false,
-                                    parents: false
-                                } }
-                                checkboxSelection={ true }
-                                multiSelect={ true }
-                                slots={ {
-                                    item: TreeItemsContents
-                                } }
-                            />
+                            {
+                                organizationTree.length > 0 ? (
+                                    <RichTreeView
+                                        data-componentid={ `${ componentId }-tree-view` }
+                                        className="roles-selective-share-tree-view"
+                                        items={ organizationTree }
+                                        expandedItems={ expandedItems }
+                                        selectedItems={ selectedItems }
+                                        onItemSelectionToggle={ (
+                                            _e: SyntheticEvent,
+                                            itemId: string,
+                                            isSelected: boolean
+                                        ) =>
+                                            resolveSelectedItems(itemId, isSelected) }
+                                        onItemExpansionToggle={ (
+                                            _e: SyntheticEvent,
+                                            itemId: string,
+                                            expanded: boolean
+                                        ) => {
+                                            if (expanded) {
+                                                setExpandedOrgId(itemId);
+                                                setExpandedItems((prev: string[]) => [ ...prev, itemId ]);
+                                            } else {
+                                                setExpandedItems((prev: string[]) =>
+                                                    prev.filter((id: string) => id !== itemId));
+                                                collapseChildNodes(itemId);
+                                            }
+                                        } }
+                                        selectionPropagation={ {
+                                            descendants: false,
+                                            parents: false
+                                        } }
+                                        checkboxSelection={ true }
+                                        multiSelect={ true }
+                                        slots={ {
+                                            item: TreeItemsContents
+                                        } }
+                                    />
+                                ) : (
+                                    <Box
+                                        data-componentid={ `${ componentId }-no-orgs` }
+                                        display="flex"
+                                        flexDirection="column"
+                                        justifyContent="center"
+                                        alignItems="center"
+                                        height="100%"
+                                    >
+                                        <Typography variant="body1">
+                                            { t("organizations:placeholders.emptyList.subtitles.0") }
+                                        </Typography>
+                                    </Box>
+                                )
+                            }
                         </InfiniteScroll>
                     </Grid>
                 )
