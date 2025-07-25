@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.68.26
+
+### Patch Changes
+
+- [#8626](https://github.com/wso2/identity-apps/pull/8626) [`dfea993a1e91411a2f8628369880fe051a19c04b`](https://github.com/wso2/identity-apps/commit/dfea993a1e91411a2f8628369880fe051a19c04b) Thanks [@malithie](https://github.com/malithie)! - add console to changeset
+
+- Updated dependencies [[`ba0150266a14126ec608086da6f54a6245f056b2`](https://github.com/wso2/identity-apps/commit/ba0150266a14126ec608086da6f54a6245f056b2), [`f40251fff4f28ec0e7dece04288841b7f9d9e673`](https://github.com/wso2/identity-apps/commit/f40251fff4f28ec0e7dece04288841b7f9d9e673), [`8b7759446e0515ebfedce5b51aede89d6a323b9f`](https://github.com/wso2/identity-apps/commit/8b7759446e0515ebfedce5b51aede89d6a323b9f)]:
+  - @wso2is/admin.webhooks.v1@1.0.5
+  - @wso2is/admin.actions.v1@1.13.4
+
 ## 2.68.25
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @wso2is/admin.webhooks.v1
 
+## 1.0.5
+
+### Patch Changes
+
+- [#8622](https://github.com/wso2/identity-apps/pull/8622) [`ba0150266a14126ec608086da6f54a6245f056b2`](https://github.com/wso2/identity-apps/commit/ba0150266a14126ec608086da6f54a6245f056b2) Thanks [@malithie](https://github.com/malithie)! - Fix doc link issue in edit page heading
+
+* [#8621](https://github.com/wso2/identity-apps/pull/8621) [`8b7759446e0515ebfedce5b51aede89d6a323b9f`](https://github.com/wso2/identity-apps/commit/8b7759446e0515ebfedce5b51aede89d6a323b9f) Thanks [@malithie](https://github.com/malithie)! - Fix delete section view of webhooks in websubhub mode.
+
 ## 1.0.4
 
 ### Patch Changes
