@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.27.17
+
+### Patch Changes
+
+- [#8620](https://github.com/wso2/identity-apps/pull/8620) [`c9834ab6efad973327ef6cfbbd558f5c88496f32`](https://github.com/wso2/identity-apps/commit/c9834ab6efad973327ef6cfbbd558f5c88496f32) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add static content support for execution steps
+
 ## 2.27.16
 
 ### Patch Changes

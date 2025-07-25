@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.68.27
+
+### Patch Changes
+
+- [#8620](https://github.com/wso2/identity-apps/pull/8620) [`c9834ab6efad973327ef6cfbbd558f5c88496f32`](https://github.com/wso2/identity-apps/commit/c9834ab6efad973327ef6cfbbd558f5c88496f32) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add static content support for execution steps
+
+- Updated dependencies [[`c9834ab6efad973327ef6cfbbd558f5c88496f32`](https://github.com/wso2/identity-apps/commit/c9834ab6efad973327ef6cfbbd558f5c88496f32)]:
+  - @wso2is/admin.ask-password-flow-builder.v1@1.0.8
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.0.8
+  - @wso2is/i18n@2.25.5
+  - @wso2is/admin.core.v1@2.46.34
+  - @wso2is/admin.server-configurations.v1@2.35.12
+
 ## 2.68.26
 
 ### Patch Changes
