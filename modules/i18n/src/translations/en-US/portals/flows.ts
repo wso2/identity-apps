@@ -85,6 +85,7 @@ export const flows: flowsNS = {
                 facebook: "Facebook",
                 github: "GitHub",
                 google: "Google",
+                magicLink: "Magic Link",
                 microsoft: "Microsoft",
                 passkeyEnrollment: "Enroll Passkey"
             }

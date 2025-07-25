@@ -71,5 +71,6 @@ export enum ExecutionTypes {
     MicrosoftFederation = "Office365Executor",
     GithubFederation = "GithubExecutor",
     PasskeyEnrollment = "FIDO2Executor",
-    ConfirmationCode = "ConfirmationCodeValidationExecutor"
+    ConfirmationCode = "ConfirmationCodeValidationExecutor",
+    MagicLinkExecutor = "MagicLinkExecutor"
 }
