@@ -185,7 +185,7 @@
     String usernameLabel = i18n(recoveryResourceBundle, customText, "Username");
     String usernamePlaceHolder = "Enter.your.username.here";
 
-    if (StringUtils.isNotBlank(emailUsernameEnable) && Boolean.parseBoolean(emailUsernameEnable) 
+    if ((StringUtils.isNotBlank(emailUsernameEnable) && Boolean.parseBoolean(emailUsernameEnable)) 
             || (isEmailAsUsernameEnabled && hideUsernameFieldWhenEmailAsUsernameIsEnabled)) {
         usernameLabel = i18n(recoveryResourceBundle, customText, "email.username");
         usernamePlaceHolder = "enter.your.email";
