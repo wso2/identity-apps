@@ -55,7 +55,6 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
     const selectedVariant: Element = useMemo(() => {
         return resource?.variants?.find((_element: Element) => _element.variant === resource.variant);
     }, [ resource.variants, resource.variant ]);
-    console.log("ResourceProperties", resource);
 
     const renderElementId = (): ReactElement => {
         return (

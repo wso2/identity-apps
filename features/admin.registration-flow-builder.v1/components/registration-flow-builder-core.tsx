@@ -275,7 +275,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     };
 
     const initialTemplateComponents: Element[] = useMemo(
-        () => getBasicTemplateComponents(), [ resources, generateProfileAttributes ]);
+        () => { console.log("Initial template components"); return getBasicTemplateComponents();}, [ resources, generateProfileAttributes ]);
     const blankTemplateComponents: Element[] = useMemo(() => getBlankTemplateComponents(), [ resources ]);
 
     const generateSteps: (steps: Node[]) => Node[] = useCallback((steps: Node[]): Node[] => {
@@ -548,6 +548,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     };
 
     const initialNodes: Node[] = useMemo<Node[]>(() => {
+        console.log("Hi");
         return generateSteps([
             {
                 data: {

@@ -85,6 +85,8 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
                 return t("flows:core.executions.names.passkeyEnrollment");
             case ExecutionTypes.ConfirmationCode:
                 return t("flows:core.executions.names.confirmationCode");
+            case ExecutionTypes.MagicLinkExecutor:
+                return t("flows:core.executions.names.magicLink");
             default:
                 return t("flows:core.executions.names.default");
         }
@@ -101,7 +103,7 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
                     onActionPanelDoubleClick={
                         () => {
                             setLastInteractedStepId(id);
-                            setLastInteractedResource(resource);
+                            setLastInteractedResource(fullResource);
                         }
                     }
                     resource={ fullResource }

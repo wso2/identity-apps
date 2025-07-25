@@ -18,7 +18,7 @@
 
 import { ActionTypes } from "../models/actions";
 import { BlockTypes, ElementTypes } from "../models/elements";
-import { StepTypes } from "../models/steps";
+import { ExecutionTypes, StepTypes } from "../models/steps";
 import { TemplateTypes } from "../models/templates";
 import { WidgetTypes } from "../models/widget";
 
@@ -85,6 +85,10 @@ class VisualFlowConstants {
     ];
 
     public static readonly FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER: string = "uniqueName";
+
+    public static readonly FLOW_BUILDER_STATIC_CONTENT_ALLOWED_EXECUTION_TYPES: ExecutionTypes[] = [
+        ExecutionTypes.MagicLinkExecutor
+    ];
 }
 
 export default VisualFlowConstants;

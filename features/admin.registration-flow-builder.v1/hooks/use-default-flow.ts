@@ -229,6 +229,21 @@ const useDefaultFlow = (): DefaultFlowReturnType => {
             formComponents.splice(formComponents.length - 3, 0, ...claimsForRegistration);
         }
 
+        if (resource.type === TemplateTypes.BasicPasskey) {
+            const formComponents: Element[] = resource.config.data.steps[0].data.components[1].components;
+
+            if (isAlphanumericUsername) {
+                const field: Element = buildFieldFromClaim({
+                    claimURI: USERNAME_CLAIM_URI,
+                    displayName: "Username",
+                    readOnly: false,
+                    required: true
+                } as Claim);
+
+                formComponents.splice(0, 0, field);
+            }
+        }
+
         return true;
     }, [ claims, isAlphanumericUsername ]);
 
