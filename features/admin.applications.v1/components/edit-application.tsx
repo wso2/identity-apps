@@ -70,6 +70,7 @@ import { GeneralApplicationSettings } from "./settings/general-application-setti
 import { Info } from "./settings/info";
 import { ProvisioningSettings } from "./settings/provisioning/provisioning-settings";
 import { SharedAccess } from "./settings/shared-access";
+import { SharedAccessAlt } from "./settings/shared-access-alt";
 import { SignOnMethods } from "./settings/sign-on-methods/sign-on-methods";
 import { disableApplication, getInboundProtocolConfig } from "../api/application";
 import { ApplicationManagementConstants } from "../constants/application-management";
@@ -676,6 +677,17 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         </ResourceTab.Pane>
     );
 
+    const SharedAccessAltTabPane = (): ReactElement => (
+        <ResourceTab.Pane controlledSegmentation>
+            <SharedAccessAlt
+                application={ application }
+                onUpdate={ handleApplicationUpdate }
+                readOnly={ readOnly }
+                data-componentid={ `${ componentId }-shared-access` }
+            />
+        </ResourceTab.Pane>
+    );
+
     const InfoTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <Info
@@ -927,6 +939,28 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         "data-tabid": ApplicationTabIDs.SHARED_ACCESS,
                         menuItem: t("applications:edit.sections.sharedAccess.tabName"),
                         render: SharedAccessTabPane
+                    });
+            }
+            if (isFeatureEnabled(featureConfig?.applications,
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_SHARED_ACCESS"))
+                    && !isFragmentApp
+                    && !isM2MApplication
+                    && applicationConfig.editApplication.showApplicationShare
+                    && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
+                    && hasApplicationUpdatePermissions
+                    && orgType !== OrganizationType.SUBORGANIZATION
+                    && !ApplicationManagementConstants.SYSTEM_APPS.includes(application?.clientId)) {
+                applicationConfig.editApplication.
+                    isTabEnabledForApp(
+                        inboundProtocolConfig?.oidc?.clientId,
+                        ApplicationTabTypes.INFO,
+                        tenantDomain
+                    ) &&
+                    panes.push({
+                        componentId: "shared-access-alt",
+                        "data-tabid": ApplicationTabIDs.SHARED_ACCESS + "-alt",
+                        menuItem: "Shared Access (Alt)",
+                        render: SharedAccessAltTabPane
                     });
             }
             if (isFeatureEnabled(featureConfig?.applications,

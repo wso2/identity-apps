@@ -142,9 +142,6 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
 
     return (
         <>
-            <Typography>
-                Select roles to share with the selected organizations
-            </Typography>
             <Autocomplete
                 fullWidth
                 multiple

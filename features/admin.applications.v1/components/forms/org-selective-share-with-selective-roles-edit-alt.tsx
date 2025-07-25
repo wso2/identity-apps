@@ -63,11 +63,6 @@ import {
     getChildrenOfOrganization,
     updateTreeWithChildren
 } from "../../utils/shared-access";
-import { RoleShareType, ShareType } from "../../constants/application-roles";
-import RolesShareWithAll from "./roles-share-with-all";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import ToggleButton from "@mui/material/ToggleButton";
-import FormControlLabel from "@mui/material/FormControlLabel";
 
 interface OrgSelectiveShareWithSelectiveRolesEditProps extends IdentifiableComponentInterface {
     application: ApplicationInterface;
@@ -83,12 +78,6 @@ interface OrgSelectiveShareWithSelectiveRolesEditProps extends IdentifiableCompo
     setAddedRoles: ReactDispatch<SetStateAction<Record<string, RoleSharingInterface[]>>>;
     removedRoles: Record<string, RoleSharingInterface[]>;
     setRemovedRoles: ReactDispatch<SetStateAction<Record<string, RoleSharingInterface[]>>>;
-    shareType?: ShareType;
-    setShareType?: ReactDispatch<SetStateAction<ShareType>>;
-    roleShareType?: RoleShareType;
-    setRoleShareType?: ReactDispatch<SetStateAction<RoleShareType>>;
-    selectedRoles?: RolesInterface[];
-    setSelectedRoles?: ReactDispatch<SetStateAction<RolesInterface[]>>;
 }
 
 interface TreeViewBaseItemWithRoles extends TreeViewBaseItem {
@@ -96,7 +85,7 @@ interface TreeViewBaseItemWithRoles extends TreeViewBaseItem {
     parentId?: string;
 }
 
-const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSelectiveRolesEditProps) => {
+const OrgSelectiveShareWithSelectiveRolesEditAlt = (props: OrgSelectiveShareWithSelectiveRolesEditProps) => {
     const {
         [ "data-componentid" ]: componentId = "org-selective-share-with-selective-roles-edit",
         application,
@@ -111,13 +100,7 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
         addedRoles,
         setAddedRoles,
         removedRoles,
-        setRemovedRoles,
-        roleShareType,
-        setRoleShareType,
-        selectedRoles,
-        setSelectedRoles,
-        shareType,
-        setShareType
+        setRemovedRoles
     } = props;
 
     const organizationId: string = useSelector((state: AppState) => state?.organization?.organization?.id);
@@ -746,59 +729,7 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
         }
     };
 
-    const selectChildOrganizations = (parentId: string): void => {
-        const children: string[] = getChildrenOfOrganization(parentId, flatOrganizationMap);
-
-        // If there are no children, return
-        if (children?.length > 0) {
-            // Select all child nodes
-            setSelectedItems((prev: string[]) => [ ...prev, ...children ]);
-
-            // Recursively select all child nodes
-            children.forEach((childId: string) => {
-                selectChildOrganizations(childId);
-            });
-        }
-    };
-
     const resolveRoleSelectionPane = (): ReactNode => {
-        if (isEmpty(selectedItems)) {
-            return (
-                <Alert
-                    severity="info"
-                    data-componentid={ `${ componentId }-no-orgs-selected-alert` }
-                >
-                    To share roles, select an organization from the left panel.
-                </Alert>
-            );
-        }
-
-        if (roleShareType === RoleShareType.SHARE_NONE) {
-            return (
-                <Alert severity="info">
-                    No roles will be shared with the selected organizations.
-                </Alert>
-            );
-        }
-
-        if (roleShareType === RoleShareType.SHARE_WITH_ALL) {
-            return (
-                <Alert severity="info">
-                    All roles of the application will be shared with the selected organizations.
-                </Alert>
-            );
-        }
-
-        if (roleShareType === RoleShareType.SHARE_COMMON_SET) {
-            return (
-                <RolesShareWithAll
-                    application={ application }
-                    selectedRoles={ selectedRoles }
-                    setSelectedRoles={ setSelectedRoles }
-                />
-            );
-        }
-
         if (isEmpty(selectedOrgId)) {
             return (
                 <Alert
@@ -922,33 +853,6 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                             className="roles-selective-share-left-panel"
                             id="scrollableOrgContainer"
                         >
-                            <FormControlLabel
-                                label="Select all organizations"
-                                style={ { marginLeft: "1.7rem" } }
-                                control={ (
-                                    <Checkbox
-                                        checked={ shareType === ShareType.SHARE_ALL }
-                                        indeterminate={ shareType === ShareType.SHARE_SELECTED }
-                                        onChange={ (_: ChangeEvent<HTMLInputElement>, checked: boolean) => {
-                                            if (checked) {
-                                                setShareType(ShareType.SHARE_ALL);
-                                                // select all the items in the organization tree
-                                                setSelectedItems(
-                                                    organizationTree.map((item: TreeViewBaseItemWithRoles) => item.id)
-                                                );
-                                                organizationTree.forEach((item: TreeViewBaseItemWithRoles) => {
-                                                    selectChildOrganizations(item.id);
-                                                });
-                                            } else {
-                                                setShareType(ShareType.UNSHARE);
-                                                // deselect all the items in the organization tree
-                                                setSelectedItems([]);
-                                            }
-                                        } }
-                                    />
-                                )
-                                }
-                            />
                             <InfiniteScroll
                                 dataLength={ organizationTree.length }
                                 next={ loadMoreOrganizations }
@@ -1007,32 +911,6 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                                 <Box
                                     className="role-list-container"
                                 >
-                                    <ToggleButtonGroup
-                                        color="primary"
-                                        value={ !isEmpty(selectedItems) && roleShareType }
-                                        exclusive
-                                        onChange={ (_event: any, value: RoleShareType) => {
-                                            if (value) {
-                                                setRoleShareType(value);
-                                            }
-                                        } }
-                                        data-componentid={ `${ componentId }-role-share-type-toggle` }
-                                        size="small"
-                                        disabled={ isEmpty(selectedItems) }
-                                    >
-                                        <ToggleButton value={ RoleShareType.SHARE_WITH_ALL }>
-                                            Share All Roles
-                                        </ToggleButton>
-                                        <ToggleButton value={ RoleShareType.SHARE_COMMON_SET }>
-                                            Share Common Set of Roles
-                                        </ToggleButton>
-                                        <ToggleButton value={ RoleShareType.SHARE_NONE }>
-                                            Do Not Share Roles
-                                        </ToggleButton>
-                                        <ToggleButton value={ RoleShareType.SHARE_SELECTED }>
-                                            Advanced Role Sharing
-                                        </ToggleButton>
-                                    </ToggleButtonGroup>
                                     { resolveRoleSelectionPane() }
                                 </Box>
 
@@ -1045,4 +923,4 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
     );
 };
 
-export default OrgSelectiveShareWithSelectiveRolesEdit;
+export default OrgSelectiveShareWithSelectiveRolesEditAlt;

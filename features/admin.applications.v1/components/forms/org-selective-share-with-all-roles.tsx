@@ -541,7 +541,7 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                             control={ (
                                 <Checkbox
                                     checked={ shareType === ShareType.SHARE_ALL }
-                                    indeterminate={ shareType !== ShareType.SHARE_ALL && selectedItems.length > 0 }
+                                    indeterminate={ shareType === ShareType.SHARE_SELECTED }
                                     onChange={ (_: ChangeEvent<HTMLInputElement>, checked: boolean) => {
                                         if (checked) {
                                             setShareType(ShareType.SHARE_ALL);
