@@ -16,17 +16,13 @@
  * under the License.
  */
 
-import { TreeItem, TreeItemProps } from "@mui/x-tree-view";
 import { TreeViewBaseItem } from "@mui/x-tree-view/models";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import Box from "@oxygen-ui/react/Box";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import Grid from "@oxygen-ui/react/Grid";
 import LinearProgress from "@oxygen-ui/react/LinearProgress";
-import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
-import { CircleInfoIcon } from "@oxygen-ui/react-icons";
-import { RoleSharingModes } from "@wso2is/admin.console-settings.v1/models/shared-access";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
@@ -38,14 +34,9 @@ import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@ws
 import { addAlert } from "@wso2is/core/store";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
-    ForwardRefExoticComponent,
     Dispatch as ReactDispatch,
-    ReactElement,
-    ReactNode,
-    Ref,
     SetStateAction,
     SyntheticEvent,
-    forwardRef,
     useEffect,
     useState
 } from "react";
@@ -97,7 +88,6 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
     const [ organizationTree, setOrganizationTree ] = useState<TreeViewBaseItemWithRoles[]>([]);
     // This will store the flat map of organizations to easily access them by ID.
     const [ flatOrganizationMap, setFlatOrganizationMap ] = useState<Record<string, OrganizationInterface>>({});
-    const [ flatApplicationRolesMap, setFlatApplicationRolesMap ] = useState<Record<string, OrganizationInterface>>({});
     const [ isNextPageAvailable, setIsNextPageAvailable ] = useState<boolean>(false);
     const [ nextPageLink, setNextPageLink ] = useState<string>();
     const [ afterCursor, setAfterCursor ] = useState<string>();
@@ -159,7 +149,6 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                 applicationRolesMap[org.id] = org;
             });
 
-            setFlatApplicationRolesMap(applicationRolesMap);
             setSelectedItems(applicationOrgIds);
         } else {
             setSelectedItems([]);
@@ -421,63 +410,6 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
         }
     };
 
-    const TreeItemsContents: ForwardRefExoticComponent<
-    TreeItemProps & React.RefAttributes<unknown>> = forwardRef((
-        props: TreeItemProps & { itemId: string },
-        ref: Ref<HTMLLIElement>
-    ): ReactElement => {
-        const { itemId } = props;
-
-        let isRolePartiallyShared: boolean = false;
-        const applicationRoles: OrganizationInterface | undefined = itemId
-            ? flatApplicationRolesMap[itemId] : undefined;
-
-        if (applicationRoles?.sharingMode?.roleSharing?.mode === RoleSharingModes.SELECTED ||
-            applicationRoles?.sharingMode?.roleSharing?.mode === RoleSharingModes.NONE) {
-            isRolePartiallyShared = true;
-        }
-
-        return (
-            <TreeItem
-                { ...props }
-                ref={ ref }
-                slots={ {
-                    label: ({
-                        children
-                    }: {
-                        children: ReactNode;
-                        props: TreeItemProps;
-                    }) => (
-                        <Tooltip
-                            data-componentid={ `${ componentId }-tree-item-tooltip` }
-                            title={ isRolePartiallyShared && t("applications:edit.sections.sharedAccess" +
-                                ".rolesSharedPartially") }
-                            placement="right"
-                        >
-                            <Box
-                                display="flex"
-                                alignItems="center"
-                                justifyContent="space-between"
-                                gap={ 1 }
-                            >
-                                <Typography
-                                    data-componentid={ `${ componentId }-tree-item-content` }
-                                >
-                                    { children }
-                                </Typography>
-                                {
-                                    isRolePartiallyShared && (
-                                        <CircleInfoIcon size={ 12 } />
-                                    )
-                                }
-                            </Box>
-                        </Tooltip>
-                    )
-                } }
-            />
-        );
-    });
-
     return (
         <Grid
             container
@@ -544,9 +476,6 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                                         } }
                                         checkboxSelection={ true }
                                         multiSelect={ true }
-                                        slots={ {
-                                            item: TreeItemsContents
-                                        } }
                                     />
                                 ) : (
                                     <Box
