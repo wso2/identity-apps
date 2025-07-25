@@ -86,6 +86,7 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
                             setLastInteractedResource(resource);
                         }
                     }
+                    resource={ resource }
                 />
             )
             : <ExecutionMinimal id={ id } data={ data } resource={ resource } />
