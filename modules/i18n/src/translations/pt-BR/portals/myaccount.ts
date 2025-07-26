@@ -1201,6 +1201,9 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 generic: {
+                    dropdown: {
+                        placeholder: "Selecione seu {{fieldName}}"
+                    },
                     inputs: {
                         placeholder: "Insira seu {{fieldName}}",
                         readonly: {
@@ -1211,6 +1214,9 @@ export const myAccount: MyAccountNS = {
                             empty: "{{fieldName}} é um campo obrigatório",
                             invalidFormat: "O formato do {{fieldName}} inserido está incorreto"
                         }
+                    },
+                    radioGroup: {
+                        optionNone: "Nenhum"
                     }
                 },
                 mobileChangeForm: {

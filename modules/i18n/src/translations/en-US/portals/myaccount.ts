@@ -1233,6 +1233,9 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 generic: {
+                    dropdown: {
+                        placeholder: "Select your {{fieldName}}"
+                    },
                     inputs: {
                         placeholder: "Enter your {{fieldName}}",
                         readonly: {
@@ -1243,6 +1246,9 @@ export const myAccount: MyAccountNS = {
                             empty: "{{fieldName}} is a required field",
                             invalidFormat: "The format of the {{fieldName}} entered is incorrect"
                         }
+                    },
+                    radioGroup: {
+                        optionNone: "None"
                     }
                 },
                 mobileChangeForm: {

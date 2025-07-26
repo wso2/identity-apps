@@ -1246,6 +1246,9 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 generic: {
+                    dropdown: {
+                        placeholder: "உங்கள் {{fieldName}} ஐத் தேர்ந்தெடுக்கவும்"
+                    },
                     inputs: {
                         placeholder: "{{fieldName}} ஐ உள்ளிடவும்",
                         readonly: {
@@ -1256,6 +1259,9 @@ export const myAccount: MyAccountNS = {
                             empty: "{{fieldName}} ஒரு கட்டாயா களமாகும்",
                             invalidFormat: "{{fieldName}} சரியான வடிவத்தில் இல்லை"
                         }
+                    },
+                    radioGroup: {
+                        optionNone: "இல்லை"
                     }
                 },
                 mobileChangeForm: {
