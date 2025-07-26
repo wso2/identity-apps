@@ -115,7 +115,8 @@ const useStaticContentField = (): void => {
         const node: Node = getNode(stepId);
 
         // Check if this is a execution step.
-        if (resource?.type === StepTypes.Execution) {
+        if (resource?.type === StepTypes.Execution && VisualFlowConstants
+            .FLOW_BUILDER_STATIC_CONTENT_ALLOWED_EXECUTION_TYPES.includes(resource?.data?.action?.executor?.name)) {
             const components: Element[] = (node?.data?.components as Element[]) || [];
 
             properties[STATIC_CONTENT_ENABLED_PROPERTY] = components.length > 0;

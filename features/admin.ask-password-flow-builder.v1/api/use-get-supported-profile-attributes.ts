@@ -34,11 +34,12 @@ import { Attribute } from "../models/attributes";
  * For more details, refer to the documentation:
  * {@link https://is.docs.wso2.com/en/latest/apis/tenant-management-rest-api/#tag/Tenants/operation/retrieveTenants}
  *
- * @param params - Additional parameters for pagination, sorting, and filtering.
+ * @param profile - The profile for which to get the supported attributes.
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
 const useGetSupportedProfileAttributes = <Data = Attribute[], Error = RequestErrorInterface>(
+    profile: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
@@ -48,7 +49,13 @@ const useGetSupportedProfileAttributes = <Data = Attribute[], Error = RequestErr
         },
         method: HttpMethods.GET,
         params: {
-            "exclude-hidden-claims": true
+            "exclude-hidden-claims": true,
+            "exclude-identity-claims": true,
+            filter: null,
+            limit: null,
+            offset: null,
+            profile,
+            sort: null
         },
         url: store.getState().config.endpoints.localClaims
     };
@@ -57,19 +64,29 @@ const useGetSupportedProfileAttributes = <Data = Attribute[], Error = RequestErr
         shouldFetch ? requestConfig : null
     );
 
-    const filterSupportedAttributes = (data: Attribute[]) => {
-        return data?.filter((attribute: any) => {
-            // TODO: This is a temporary fix since `username` claim `supportedByDefault` is set to `false`.
-            if (attribute.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI) {
-                return true;
-            }
+    const enrichSupportedAttributes = (data: Attribute[]) => {
+        if (!data) {
+            return [];
+        }
 
-            return attribute.supportedByDefault;
-        });
+        const usernameExists: boolean = data.some(
+            ((attribute: Attribute) => attribute.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI));
+
+        if (usernameExists) {
+            return data;
+        }
+
+        return [
+            {
+                claimURI: ClaimManagementConstants.USER_NAME_CLAIM_URI,
+                displayName: "Username"
+            },
+            ...data
+        ];
     };
 
     return {
-        data: filterSupportedAttributes(data as Attribute[]) as Data,
+        data: enrichSupportedAttributes(data as Attribute[]) as Data,
         error,
         isLoading,
         isValidating,

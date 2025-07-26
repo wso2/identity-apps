@@ -169,7 +169,11 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
 
         const updatedResource: Resource = cloneDeep(lastInteractedResource);
 
-        set(updatedResource, propertyKey, newValue);
+        if (propertyKey.startsWith("config.")) {
+            set(updatedResource, propertyKey, newValue);
+        } else {
+            set(updatedResource.data, propertyKey, newValue);
+        }
         setLastInteractedResource(updatedResource);
     };
 

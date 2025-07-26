@@ -24,7 +24,7 @@ import useRequest, {
 import { store } from "@wso2is/admin.core.v1/store";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { HttpMethods } from "@wso2is/core/models";
-import { CommonMetadataInterface } from "../models/metadata";
+import { MetadataInterface } from "../models/metadata";
 
 /**
  * Hook to get the metadata for a specific flow type.
@@ -36,7 +36,7 @@ import { CommonMetadataInterface } from "../models/metadata";
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useGetMetadata = <Data = CommonMetadataInterface, Error = RequestErrorInterface>(
+const useGetMetadata = <Data = MetadataInterface, Error = RequestErrorInterface>(
     flowType: FlowTypes,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {

@@ -17,12 +17,13 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FC, ReactElement, memo } from "react";
+import cloneDeep from "lodash-es/cloneDeep";
+import React, { FC, ReactElement, memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import ExecutionMinimal from "./execution-minimal";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
-import { ExecutionTypes } from "../../../../models/steps";
+import { ExecutionTypes, Step } from "../../../../models/steps";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
 import View from "../view/view";
 
@@ -48,6 +49,21 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
     const components: Element[] = data?.components as Element[] || [];
 
     /**
+     * Full resource object with data included.
+     */
+    const fullResource: Step = useMemo(() => {
+        if (!resource || !data) {
+            return;
+        }
+
+        return cloneDeep({
+            id,
+            ...resource,
+            data
+        }) as Step;
+    }, [ data, resource ]);
+
+    /**
      * Resolves the execution name based on the type.
      *
      * @param executionType - The type of the execution.
@@ -69,6 +85,8 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
                 return t("flows:core.executions.names.passkeyEnrollment");
             case ExecutionTypes.ConfirmationCode:
                 return t("flows:core.executions.names.confirmationCode");
+            case ExecutionTypes.MagicLinkExecutor:
+                return t("flows:core.executions.names.magicLink");
             default:
                 return t("flows:core.executions.names.default");
         }
@@ -85,13 +103,13 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
                     onActionPanelDoubleClick={
                         () => {
                             setLastInteractedStepId(id);
-                            setLastInteractedResource(resource);
+                            setLastInteractedResource(fullResource);
                         }
                     }
-                    resource={ resource }
+                    resource={ fullResource }
                 />
             )
-            : <ExecutionMinimal id={ id } data={ data } resource={ resource } />
+            : <ExecutionMinimal id={ id } data={ data } resource={ fullResource } />
     );
 }, (prevProps: ExecutionPropsInterface, nextProps: ExecutionPropsInterface) => {
     return prevProps.id === nextProps.id &&

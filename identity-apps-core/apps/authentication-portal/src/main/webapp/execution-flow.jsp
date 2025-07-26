@@ -348,8 +348,7 @@
                 const handleStepType = (flow) => {
                     if (!flow) return false;
                     switch (flow.type) {
-                        case "EXECUTION":
-                            setLoading(true);
+                        case "REDIRECTION":
                             window.location.href = flow.data.redirectURL;
                             break;
 
