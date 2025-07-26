@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.68.32
+
+### Patch Changes
+
+- [#8650](https://github.com/wso2/identity-apps/pull/8650) [`2b8df70c9f8acfbe2eeeb9a9d0053b107beb232b`](https://github.com/wso2/identity-apps/commit/2b8df70c9f8acfbe2eeeb9a9d0053b107beb232b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the reported bugs in the Runtime Portal during the testing round
+
+- Updated dependencies []:
+  - @wso2is/admin.ask-password-flow-builder.v1@1.0.11
+  - @wso2is/admin.core.v1@2.46.38
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.0.11
+  - @wso2is/admin.server-configurations.v1@2.35.14
+
 ## 2.68.31
 
 ### Patch Changes
