@@ -1,5 +1,14 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.9.9
+
+### Patch Changes
+
+- [#8650](https://github.com/wso2/identity-apps/pull/8650) [`2b8df70c9f8acfbe2eeeb9a9d0053b107beb232b`](https://github.com/wso2/identity-apps/commit/2b8df70c9f8acfbe2eeeb9a9d0053b107beb232b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the reported bugs in the Runtime Portal during the testing round
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.46.38
+
 ## 0.9.8
 
 ### Patch Changes
