@@ -17,16 +17,21 @@
  */
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import {
+    AlertInterface,
+    AlertLevels,
+    IdentifiableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
-import { deleteRoleById, updateRoleDetails } from "../../api";
+import { deleteRoleById, deleteRoleByIdV3, updateRoleDetails, updateRoleDetailsUsingV3Api } from "../../api";
 import useGetRolesList from "../../api/use-get-roles-list";
 import { RoleAudienceTypes, RoleConstants, Schemas } from "../../constants";
 import { PatchRoleDataInterface, RoleBasicInterface, RoleEditSectionsInterface } from "../../models/roles";
@@ -70,6 +75,13 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     const [ isUpdateButtonDisabled, setIsUpdateButtonDisabled ] = useState<boolean>(true);
     const [ roleNameSearchQuery, setRoleNameSearchQuery ] = useState<string>(undefined);
 
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
+    );
+
+    const updateRoleInformationFunction: (roleId: string, roleData: PatchRoleDataInterface) => Promise<any> =
+        userRolesV3FeatureEnabled ? updateRoleDetailsUsingV3Api : updateRoleDetails;
+
     const {
         data: rolesList,
         isLoading: isRolesListLoading,
@@ -106,7 +118,11 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
      * @param id - Role ID which needs to be deleted
      */
     const handleOnDelete = (): void => {
-        deleteRoleById(role.id).then(() => {
+
+        const deleteRoleFunction: (roleId: string) => Promise<any> =
+            userRolesV3FeatureEnabled ? deleteRoleByIdV3 : deleteRoleById;
+
+        deleteRoleFunction(role.id).then(() => {
             handleAlerts({
                 description: t("roles:notifications.deleteRole.success.description"),
                 level: AlertLevels.SUCCESS,
@@ -165,7 +181,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
 
         setIsSubmitting(true);
 
-        updateRoleDetails(role.id, roleData)
+        updateRoleInformationFunction(role.id, roleData)
             .then(() => {
                 onRoleUpdate(tabIndex);
                 handleAlerts({

@@ -17,7 +17,8 @@
  */
 
 import Typography from "@oxygen-ui/react/Typography";
-import { createRole } from "@wso2is/admin.roles.v2/api/roles";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { createRole, createRoleUsingV3Api } from "@wso2is/admin.roles.v2/api/roles";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { CreateRoleInterface, CreateRolePermissionInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -28,7 +29,7 @@ import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, MouseEvent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Modal, ModalProps } from "semantic-ui-react";
 import CreateConsoleRoleWizardBasicInfoForm from "./create-console-role-wizard-basic-info-form";
@@ -64,6 +65,12 @@ const CreateConsoleRoleWizard: FunctionComponent<CreateConsoleRoleWizardPropsInt
 
     const [ permissions, setPermissions ] = useState<CreateRolePermissionInterface[]>([]);
 
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
+    );
+
+    const createRoleFunction: typeof createRole = userRolesV3FeatureEnabled ? createRoleUsingV3Api : createRole;
+
     /**
      * Handles the API resource creation.
      */
@@ -73,7 +80,7 @@ const CreateConsoleRoleWizard: FunctionComponent<CreateConsoleRoleWizardPropsInt
             return;
         }
 
-        createRole({
+        createRoleFunction({
             audience: {
                 display: consoleDisplayName,
                 type: RoleAudienceTypes.APPLICATION,

@@ -21,13 +21,17 @@ import { AuthenticationStepInterface, AuthenticatorInterface } from "@wso2is/adm
 import {
     FederatedAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     PatchGroupAddOpInterface,
     PatchGroupRemoveOpInterface
 } from "@wso2is/admin.groups.v1/models/groups";
 import { useIdentityProviderList } from "@wso2is/admin.identity-providers.v1/api/identity-provider";
 import { IdentityProviderInterface, StrictIdentityProviderInterface } from "@wso2is/admin.identity-providers.v1/models";
-import { AlertLevels, IdentifiableComponentInterface, RoleGroupsInterface } from "@wso2is/core/models";
+import {
+    AlertLevels,
+    IdentifiableComponentInterface,
+    RoleGroupsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, Heading } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -38,12 +42,12 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import { EditRoleFederatedGroupsAccordion } from "./edit-role-federated-groups-accordion";
 import { EditRoleLocalGroupsAccordion } from "./edit-role-local-groups-accordion";
-import { updateRoleDetails } from "../../api";
+import { assignGroupstoRoles, updateRoleDetails } from "../../api";
 import { RoleAudienceTypes, Schemas } from "../../constants";
 import { PatchRoleDataInterface, RoleEditSectionsInterface } from "../../models/roles";
 import { RoleManagementUtils } from "../../utils";
@@ -92,6 +96,13 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID,
         FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID
     ];
+
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
+    );
+
+    const assignGroupstoRoleFunction: (roleId: string, roleData: PatchRoleDataInterface) => Promise<any> =
+        userRolesV3FeatureEnabled ? assignGroupstoRoles : updateRoleDetails;
 
     /**
      * Filter out the IDPs.
@@ -197,30 +208,50 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
 
         const patchOperations: PatchGroupAddOpInterface[] | PatchGroupRemoveOpInterface[] = [];
 
-        patchOperations.push({
-            "op": "add",
-            "value": {
-                "groups": groupIDsToBeAdded?.map((groupID: string) => {
+        if (userRolesV3FeatureEnabled) {
+            // SCIM 2.0 Roles V3 API format
+            patchOperations.push({
+                "op": "add",
+                "value": groupIDsToBeAdded?.map((groupID: string) => {
                     return {
                         "value": groupID
                     };
                 })
-            }
-        });
-
-        groupIDsToBeRemoved.forEach((groupID: string) => {
-            patchOperations.push({
-                "op": "remove",
-                "path": `groups[value eq ${ groupID }]`
             });
-        });
+
+            groupIDsToBeRemoved.forEach((groupID: string) => {
+                patchOperations.push({
+                    "op": "remove",
+                    "path": `value eq ${groupID}`
+                });
+            });
+        } else {
+            // Legacy format
+            patchOperations.push({
+                "op": "add",
+                "value": {
+                    "groups": groupIDsToBeAdded?.map((groupID: string) => {
+                        return {
+                            "value": groupID
+                        };
+                    })
+                }
+            });
+
+            groupIDsToBeRemoved.forEach((groupID: string) => {
+                patchOperations.push({
+                    "op": "remove",
+                    "path": `groups[value eq ${groupID}]`
+                });
+            });
+        }
 
         const roleUpdateData: PatchRoleDataInterface = {
             Operations: patchOperations,
             schemas: [ Schemas.PATCH_OP ]
         };
 
-        updateRoleDetails(role.id, roleUpdateData)
+        assignGroupstoRoleFunction(role.id, roleUpdateData)
             .then(() => {
                 dispatch(
                     addAlert({

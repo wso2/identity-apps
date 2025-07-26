@@ -25,7 +25,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
-import { updateRoleDetails } from "@wso2is/admin.roles.v2/api";
+import { assignGroupstoRoles, updateRoleDetails } from "@wso2is/admin.roles.v2/api";
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
 import { RoleConstants } from "@wso2is/admin.roles.v2/constants";
 import {
@@ -158,6 +158,13 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
     } = useApplicationList(null, null, null, "name eq Console");
 
     const consoleId: string = filteredApplicationList?.applications[0]?.id;
+
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
+    );
+
+    const roleUpdateFunction: (roleId: string, roleData: PatchRoleDataInterface) => Promise<AxiosResponse> =
+        userRolesV3FeatureEnabled ? assignGroupstoRoles : updateRoleDetails;
 
     const {
         data: fetchedRoleList,
@@ -310,19 +317,24 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
                 const roleData: PatchRoleDataInterface = {
                     "Operations": [ {
                         "op": "add",
-                        "value": {
-                            "groups": [ {
+                        "value": userRolesV3FeatureEnabled
+                            ? [ {
                                 "display": createdGroup.displayName,
                                 "value": createdGroup.id
                             } ]
-                        }
+                            : {
+                                "groups": [ {
+                                    "display": createdGroup.displayName,
+                                    "value": createdGroup.id
+                                } ]
+                            }
                     } ],
                     "schemas": [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
                 };
 
                 if (rolesList?.length > 0) {
                     Promise.all(rolesList.map((roleId: string) => {
-                        return updateRoleDetails(roleId, roleData);
+                        return roleUpdateFunction(roleId, roleData);
                     })).then(() => {
                         dispatch(
                             addAlert({

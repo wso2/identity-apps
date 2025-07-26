@@ -99,9 +99,14 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const userRolesFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRoles);
+    const userRolesV3FeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3);
     const administratorRoleDisplayName: string = useSelector(
         (state: AppState) => state?.config?.ui?.administratorRoleDisplayName);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
+    );
     const isEditingSystemRolesAllowed: boolean =
         useSelector((state: AppState) => state?.config?.ui?.isSystemRolesEditAllowed);
 
@@ -111,6 +116,12 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
             !hasRequiredScopes(userRolesFeatureConfig,
                 userRolesFeatureConfig?.scopes?.update, allowedScopes);
     }, [ userRolesFeatureConfig, allowedScopes ]);
+
+    const roleCreationScope: string[] = useMemo(() => {
+        return userRolesV3FeatureEnabled
+            ? userRolesV3FeatureConfig?.scopes?.create
+            : featureConfig?.userRoles?.scopes?.create;
+    }, [ userRolesV3FeatureEnabled, userRolesV3FeatureConfig, featureConfig ]);
 
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ currentDeletedRole, setCurrentDeletedRole ] = useState<RolesInterface>();
@@ -170,7 +181,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 <EmptyPlaceholder
                     data-componentid={ `${ componentId }-empty-list-empty-placeholder` }
                     action={ (
-                        <Show when={ featureConfig?.userRoles?.scopes?.create }>
+                        <Show when={ roleCreationScope }>
                             <PrimaryButton
                                 data-componentid={ `${ componentId }-empty-list-empty-placeholder-add-button` }
                                 onClick={ onEmptyListPlaceholderActionClick }

@@ -349,6 +349,20 @@ export interface PayloadInterface {
 }
 
 /**
+ * Interface for the SCIM2 Roles V3 API payload.
+ */
+export interface PayloadRolesV3Interface {
+    Operations: {
+        op: string;
+        value: {
+            display: string;
+            value: string;
+        }[];
+      }[];
+      schemas: string[];
+}
+
+/**
  * Interface for the bulk user import operation response.
  */
 export interface BulkUserImportOperationResponse {
