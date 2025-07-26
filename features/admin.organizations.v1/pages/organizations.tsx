@@ -475,9 +475,14 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      * @returns The constructed search query string.
      */
     const getQuery = (values: Map<string, FormValue>): string => {
-        setShouldSearchRecursive(
-            JSON.parse(values.get(AdvanceSearchConstants.FILTER_RECURSIVE_FIELD_IDENTIFIER) as string)
+        const newRecursiveState: boolean = JSON.parse(
+            values.get(AdvanceSearchConstants.FILTER_RECURSIVE_FIELD_IDENTIFIER) as string
         );
+
+        // To avoid unnecessary rerenders
+        if (newRecursiveState !== shouldSearchRecursive) {
+            setShouldSearchRecursive(newRecursiveState);
+        }
 
         if (shouldShowMetaAttributeComponent && selectedMetaAttribute) {
             return values.get(AdvanceSearchConstants.FILTER_ATTRIBUTE_FIELD_IDENTIFIER)
