@@ -109,6 +109,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         ORGANIZATIONS_LIST_SORTING_OPTIONS[ 0 ]
     );
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
+    const [ shouldSearchRecursive, setShouldSearchRecursive ] = useState(false);
     const [ isOrganizationListRequestLoading, setOrganizationListRequestLoading ] = useState<boolean>(true);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ isOrganizationsNextPageAvailable, setIsOrganizationsNextPageAvailable ] = useState<boolean>(undefined);
@@ -191,9 +192,9 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         filter?: string,
         after?: string,
         before?: string,
-        _recursive?: boolean
+        recursive?: boolean
         ) => void = useCallback(
-            (limit?: number, filter?: string, after?: string, before?: string, _recursive?: boolean): void => {
+            (limit?: number, filter?: string, after?: string, before?: string, recursive?: boolean): void => {
                 if (!hasOrganizationListViewPermissions) {
                     // If the user does not have the required scopes, do not proceed.
                     // This is to avoid unnecessary requests to the when performing the org switch.
@@ -201,7 +202,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                 }
 
                 setOrganizationListRequestLoading(true);
-                getOrganizations(filter, limit, after, before, false)
+                getOrganizations(filter, limit, after, before, recursive)
                     .then((response: OrganizationListInterface) => {
                         setOrganizationList(response);
                     })
@@ -245,8 +246,8 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         );
 
     useEffect(() => {
-        getOrganizationLists(listItemLimit, filterQuery, null, null);
-    }, [ listItemLimit, getOrganizationLists, filterQuery ]);
+        getOrganizationLists(listItemLimit, filterQuery, null, null, shouldSearchRecursive);
+    }, [ listItemLimit, shouldSearchRecursive, getOrganizationLists, filterQuery ]);
 
     /**
      * Retrieves the list of authorized organizations.
@@ -433,6 +434,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      */
     const handleFilterAttributeOptionsChange = (values: Map<string, FormValue>): void => {
         setHasErrors(false);
+
         if (values.get(AdvanceSearchConstants.FILTER_ATTRIBUTE_FIELD_IDENTIFIER) === "attributes") {
             setShouldShowMetaAttributeComponent(true);
         } else {
@@ -447,7 +449,6 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      * @param value - The field value.
      */
     const handleMetaAttributeChange = (value: string) => {
-
         setHasErrors(false);
         setSelectedMetaAttribute(value);
     };
@@ -461,12 +462,23 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     };
 
     /**
+     * Resets the recursive search state.
+     */
+    const resetRecursiveSearchState = () => {
+        setShouldSearchRecursive(false);
+    };
+
+    /**
      * Constructs the custom search query.
      *
      * @param values - The collection of form values.
      * @returns The constructed search query string.
      */
     const getQuery = (values: Map<string, FormValue>): string => {
+        setShouldSearchRecursive(
+            JSON.parse(values.get(AdvanceSearchConstants.FILTER_RECURSIVE_FIELD_IDENTIFIER) as string)
+        );
+
         if (shouldShowMetaAttributeComponent && selectedMetaAttribute) {
             return values.get(AdvanceSearchConstants.FILTER_ATTRIBUTE_FIELD_IDENTIFIER)
             + "."
@@ -544,6 +556,8 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                             onFilterAttributeOptionsChange={ handleFilterAttributeOptionsChange }
                             onSubmitError={ handleMetaAttributeSubmitError }
                             getQuery={ getQuery }
+                            resetRecursiveSearchState={ resetRecursiveSearchState }
+                            recursiveSearch={ true }
                             filterAttributeOptions={ [
                                 {
                                     key: 0,
