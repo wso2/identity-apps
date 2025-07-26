@@ -22,12 +22,10 @@ import TextField from "@oxygen-ui/react/TextField";
 import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
-import useAuthenticationFlowBuilderCore from
-    "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import { InputVariants } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "react";
-import useGetSupportedProfileAttributes from "../../../api/use-get-supported-profile-attributes";
+import usePasswordRecoveryFlowBuilder from "../../../hooks/use-password-recovery-flow-builder";
 import { Attribute } from "../../../models/attributes";
 
 /**
@@ -47,9 +45,7 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
     resource,
     onChange
 }: FieldExtendedPropertiesPropsInterface): ReactElement => {
-    const { metadata } = useAuthenticationFlowBuilderCore();
-    const { data: attributes } = useGetSupportedProfileAttributes(metadata?.attributeProfile,
-        !!metadata?.attributeProfile);
+    const { supportedAttributes: attributes } = usePasswordRecoveryFlowBuilder();
 
     const selectedValue: Attribute = useMemo(() => {
         return attributes?.find((attribute: Attribute) => attribute?.claimURI === resource.config.identifier);

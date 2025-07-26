@@ -45,6 +45,10 @@ export interface AskPasswordFlowBuilderContextProps {
      * Sets the selected attributes for the flow.
      */
     setSelectedAttributes: Dispatch<SetStateAction<{ [key: string]: Attribute[] }>>;
+    /**
+     * Supported attributes for the ask password flow.
+     */
+    supportedAttributes: Attribute[];
 }
 
 /**
@@ -58,7 +62,8 @@ const AskPasswordFlowBuilderContext: Context<
         isPublishing: false,
         onPublish: () => {},
         selectedAttributes: {},
-        setSelectedAttributes: () => {}
+        setSelectedAttributes: () => {},
+        supportedAttributes: []
     }
 );
 

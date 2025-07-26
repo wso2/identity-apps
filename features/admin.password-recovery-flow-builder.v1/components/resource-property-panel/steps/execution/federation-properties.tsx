@@ -30,7 +30,7 @@ import useAuthenticationFlowBuilderCore from
     "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import { ExecutorConnectionInterface } from "@wso2is/admin.flow-builder-core.v1/models/metadata";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "react";
+import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useMemo } from "react";
 
 /**
  * Props interface of {@link FederationProperties}
@@ -73,18 +73,27 @@ const FederationProperties: FunctionComponent<FederationPropertiesPropsInterface
             return "";
         }
 
-        if (resource?.data?.action?.executor?.meta?.idpName === IDP_NAME_PLACEHOLDER
-            && availableConnections.length > 0) {
-            onChange("action.executor.meta.idpName", availableConnections[0], resource);
-
-            return "";
-        }
-
         return availableConnections.find(
             (connection: string) =>
                 connection === resource?.data?.action?.executor?.meta?.idpName
         ) || "";
     }, [ availableConnections, resource?.data?.action?.executor?.meta?.idpName ]);
+
+    /**
+     * If the IDP name is a placeholder, set the first available connection as the default.
+     */
+    useEffect(() => {
+        if (resource?.data?.action?.executor?.meta?.idpName !== IDP_NAME_PLACEHOLDER
+            || availableConnections.length < 0) {
+            return;
+        }
+
+        const timeoutId: ReturnType<typeof setTimeout> = setTimeout(() => {
+            onChange("action.executor.meta.idpName", availableConnections[0], resource);
+        }, 500);
+
+        return () => clearTimeout(timeoutId);
+    }, [ resource.data?.action?.executor?.meta?.idpName, availableConnections ]);
 
     const handleCreateConnection = (): void => {
         history.push(AppConstants.getPaths().get("CONNECTION_TEMPLATES"));
