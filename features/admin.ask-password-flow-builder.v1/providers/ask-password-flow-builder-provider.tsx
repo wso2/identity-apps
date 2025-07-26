@@ -27,6 +27,7 @@ import { Dispatch } from "redux";
 import { FlowTypes } from "../../admin.flows.v1/models/flows";
 import configureAskPasswordFlow from "../api/configure-ask-password-flow";
 import updateNewAskPasswordPortalFeatureStatus from "../api/update-new-ask-password-portal-feature-status";
+import useGetSupportedProfileAttributes from "../api/use-get-supported-profile-attributes";
 import useNewAskPasswordPortalFeatureStatus from "../api/use-new-ask-password-portal-feature-status";
 import ResourceProperties from "../components/resource-property-panel/resource-properties";
 import ElementFactory from "../components/resources/elements/element-factory";
@@ -70,6 +71,7 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
     const dispatch: Dispatch = useDispatch();
 
     const { toObject } = useReactFlow();
+    const { data: supportedAttributes } = useGetSupportedProfileAttributes();
     const {
         data: isNewAskPasswordPortalEnabled,
         mutate: mutateNewAskPasswordPortalEnabledRequest
@@ -133,7 +135,8 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
                 isPublishing,
                 onPublish: handlePublish,
                 selectedAttributes,
-                setSelectedAttributes
+                setSelectedAttributes,
+                supportedAttributes
             } }
         >
             { children }

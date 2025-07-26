@@ -45,6 +45,10 @@ export interface PasswordRecoveryFlowBuilderContextProps {
      * Sets the selected attributes for the flow.
      */
     setSelectedAttributes: Dispatch<SetStateAction<{ [key: string]: Attribute[] }>>;
+    /**
+     * Supported attributes for the password recovery flow.
+     */
+    supportedAttributes: Attribute[];
 }
 
 /**
@@ -58,7 +62,8 @@ const PasswordRecoveryFlowBuilderContext: Context<
         isPublishing: false,
         onPublish: () => {},
         selectedAttributes: {},
-        setSelectedAttributes: () => {}
+        setSelectedAttributes: () => {},
+        supportedAttributes: null
     }
 );
 

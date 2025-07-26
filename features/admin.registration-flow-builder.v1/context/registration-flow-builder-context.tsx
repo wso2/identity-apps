@@ -41,6 +41,10 @@ export interface RegistrationFlowBuilderContextProps {
      * Sets the selected attributes for the flow.
      */
     setSelectedAttributes: Dispatch<SetStateAction<{ [key: string]: Attribute[] }>>;
+    /**
+     * Supported attributes for the registration flow.
+     */
+    supportedAttributes: Attribute[];
 }
 
 /**
@@ -53,7 +57,8 @@ const RegistrationFlowBuilderContext: Context<
         isPublishing: false,
         onPublish: () => {},
         selectedAttributes: {},
-        setSelectedAttributes: () => {}
+        setSelectedAttributes: () => {},
+        supportedAttributes: null
     }
 );
 

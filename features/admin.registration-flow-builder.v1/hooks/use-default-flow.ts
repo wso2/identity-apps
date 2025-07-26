@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import Button from "@oxygen-ui/react/Button";
-import useGetAllLocalClaims from "@wso2is/admin.claims.v1/api/use-get-all-local-claims";
 import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from
     "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
@@ -31,9 +29,10 @@ import generateResourceId from "@wso2is/admin.flow-builder-core.v1/utils/generat
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api/validation-config";
 import { ValidationConfInterface, ValidationDataInterface } from "@wso2is/admin.validation.v1/models";
 import { Claim } from "@wso2is/core/models";
-import { Edge, MarkerType, Node, NodeTypes } from "@xyflow/react";
+import { Edge, MarkerType, Node } from "@xyflow/react";
 import cloneDeep from "lodash-es/cloneDeep";
 import { useCallback, useEffect, useMemo } from "react";
+import useRegistrationFlowBuilder from "./use-registration-flow-builder";
 import { RegistrationStaticStepTypes } from "../models/flow";
 
 const EMAIL_CLAIM_URI: string = "http://wso2.org/claims/emailaddress";
@@ -56,7 +55,8 @@ const EXCLUDED_CLAIMS: string[] = [
     "http://wso2.org/claims/emailAddresses",
     "http://wso2.org/claims/verifiedEmailAddresses",
     "http://wso2.org/claims/mobileNumbers",
-    "http://wso2.org/claims/verifiedMobileNumbers"
+    "http://wso2.org/claims/verifiedMobileNumbers",
+    "http://wso2.org/claims/username"
 ];
 
 const FIELD: Element = {
@@ -89,15 +89,7 @@ interface DefaultFlowReturnType {
 const useDefaultFlow = (): DefaultFlowReturnType => {
 
     const { metadata } = useAuthenticationFlowBuilderCore();
-    const { data: claims } = useGetAllLocalClaims({
-        "exclude-hidden-claims": true,
-        "exclude-identity-claims": true,
-        filter: null,
-        limit: null,
-        offset: null,
-        profile: metadata?.attributeProfile,
-        sort: null
-    }, !!metadata?.attributeProfile);
+    const { supportedAttributes: claims } = useRegistrationFlowBuilder();
     const { data: validationConfig } = useValidationConfigData();
 
     /**
@@ -258,26 +250,6 @@ const useDefaultFlow = (): DefaultFlowReturnType => {
                 generateProfileAttributes[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER]);
         };
     }, [ generateProfileAttributes ]);
-
-    const registerEmailConfirmationNode = (nodeTypes: NodeTypes): boolean => {
-
-        nodeTypes["email-confirmation"] = Button;
-
-        return true;
-    };
-
-    useEffect(() => {
-        registerEmailConfirmationNode[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER] =
-            "registerEmailConfirmationNode";
-
-        PluginRegistry.getInstance().registerSync(EventTypes.ON_CUSTOM_NODE_REGISTER,
-            registerEmailConfirmationNode);
-
-        return () => {
-            PluginRegistry.getInstance().unregister(EventTypes.ON_CUSTOM_NODE_REGISTER,
-                registerEmailConfirmationNode[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER]);
-        };
-    }, []);
 
     /**
      * Add email verification nodes to the flow if email verification is enabled.

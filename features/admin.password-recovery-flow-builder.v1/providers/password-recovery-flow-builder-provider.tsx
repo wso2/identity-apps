@@ -27,6 +27,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import configurePasswordRecoveryFlow from "../api/configure-password-recovery-flow";
 import updateNewPasswordRecoveryPortalFeatureStatus from "../api/update-new-password-recovery-portal-feature-status";
+import useGetSupportedProfileAttributes from "../api/use-get-supported-profile-attributes";
 import useNewPasswordRecoveryPortalFeatureStatus from "../api/use-new-password-recovery-portal-feature-status";
 import ResourceProperties from "../components/resource-property-panel/resource-properties";
 import ElementFactory from "../components/resources/elements/element-factory";
@@ -70,6 +71,7 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
     const dispatch: Dispatch = useDispatch();
 
     const { toObject } = useReactFlow();
+    const { data: supportedAttributes } = useGetSupportedProfileAttributes();
     const {
         data: isNewPasswordRecoveryPortalEnabled,
         mutate: mutateNewPasswordRecoveryPortalEnabledRequest
@@ -133,7 +135,8 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
                 isPublishing,
                 onPublish: handlePublish,
                 selectedAttributes,
-                setSelectedAttributes
+                setSelectedAttributes,
+                supportedAttributes
             } }
         >
             { children }
