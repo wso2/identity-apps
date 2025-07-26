@@ -120,7 +120,7 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
         (state: AppState) => state?.application?.oidcConfigurations);
     const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
     const clientOrigin: string = useSelector((state: AppState) => state?.config?.deployment?.clientOrigin);
-    const serverOrigin: string = useSelector((state: AppState) => state?.config?.deployment?.idpConfigs?.serverOrigin);
+    const serverOrigin: string = useSelector((state: AppState) => state?.config?.deployment?.serverOrigin);
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
     const accountAppURL: string = useSelector((state: AppState) =>
         state?.config?.deployment?.accountApp?.tenantQualifiedPath);
