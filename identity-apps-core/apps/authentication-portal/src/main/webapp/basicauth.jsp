@@ -246,12 +246,18 @@
     private static final String AUTHENTICATION_ENDPOINT_LOGIN = "/authenticationendpoint/login.do";
     private static final String PASSWORD_RECOVERY_FLOW_ENDPOINT = "/api/server/v1/flow/config?flowType=PASSWORD_RECOVERY";
     private static final String SELF_SIGNUP_FLOW_ENDPOINT = "/api/server/v1/flow/config?flowType=REGISTRATION";
-    private static final String DYNAMIC_SELF_SIGNUP_URL   = "register.do?flowType=REGISTRATION";
     private static final String IS_ENABLED_PROPERTY = "isEnabled";
-    private static final String DYNAMIC_PASSWORD_RECOVERY_URL =
-            "recovery.do?flowType=PASSWORD_RECOVERY";
     private static final String CONSOLE = "Console";
     private Log log = LogFactory.getLog(this.getClass());
+%>
+
+<%
+    String serviceProviderAppId = request.getParameter("spId");
+    String serviceProviderAppName = request.getParameter("sp");
+    String DYNAMIC_SELF_SIGNUP_URL = "register.do?flowType=REGISTRATION" + "&spId=" + serviceProviderAppId 
+            + "&sp=" + serviceProviderAppName;
+    String DYNAMIC_PASSWORD_RECOVERY_URL = "recovery.do?flowType=PASSWORD_RECOVERY" + "&spId=" + serviceProviderAppId 
+            + "&sp=" + serviceProviderAppName;
 %>
 
 <%
@@ -783,7 +789,7 @@
        && !isIdentifierFirstLogin(inputType) 
        && !isLoginHintAvailable(inputType) 
        && ( (isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences) 
-            || isDynamicPortalSREnabled) ) { %>
+            || (isDynamicPortalSREnabled && !isIdentifierFirstLogin(inputType) && !CONSOLE.equals(sp)) ) ) { %>
         <div class="mt-4 mb-4">
             <div class="mt-3 external-link-container text-small">
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "dont.have.an.account")%>

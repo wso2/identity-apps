@@ -81,7 +81,7 @@ const ButtonAdapter = ({ component, handleButtonAction }) => {
                     >
                         <img
                             className="ui image"
-                            src={ getConnectionLogo(component.config.text) }
+                            src={ component.config.image }
                             alt="Connection Login icon"
                             role="presentation"></img>
                         <span>{ resolveElementText(translations, component.config.text) }</span>
@@ -109,6 +109,7 @@ ButtonAdapter.propTypes = {
     component: PropTypes.shape({
         action: PropTypes.object.isRequired,
         config: PropTypes.shape({
+            image: PropTypes.string.isRequired,
             text: PropTypes.string.isRequired,
             type: PropTypes.string.isRequired
         }).isRequired,
