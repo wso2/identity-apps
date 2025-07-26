@@ -1,5 +1,14 @@
 # @wso2is/admin.password-recovery-flow-builder.v1
 
+## 1.0.10
+
+### Patch Changes
+
+- [#8644](https://github.com/wso2/identity-apps/pull/8644) [`71dc19d893aa238adaa5c6da0dabfb41a5941a75`](https://github.com/wso2/identity-apps/commit/71dc19d893aa238adaa5c6da0dabfb41a5941a75) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the state issue in resource property panel
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.46.37
+
 ## 1.0.9
 
 ### Patch Changes

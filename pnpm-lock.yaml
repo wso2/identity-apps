@@ -540,7 +540,7 @@ importers:
         specifier: ^2.25.215
         version: link:../../features/admin.console-settings.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.36
+        specifier: ^2.46.37
         version: link:../../features/admin.core.v1
       '@wso2is/admin.email-and-sms.v1':
         specifier: ^2.25.204
@@ -3211,7 +3211,7 @@ importers:
         specifier: ^2.27.125
         version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.35
+        specifier: ^2.46.37
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.7.2
@@ -6422,7 +6422,7 @@ importers:
         specifier: ^1.0.92
         version: link:../admin.push-providers.v1
       '@wso2is/admin.registration-flow-builder.v1':
-        specifier: ^0.9.12
+        specifier: ^0.9.13
         version: link:../admin.registration-flow-builder.v1
       '@wso2is/admin.remote-repository-configuration.v1':
         specifier: ^2.25.204
@@ -13157,7 +13157,7 @@ importers:
         specifier: ^2.27.125
         version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.35
+        specifier: ^2.46.37
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.7.2
@@ -14545,7 +14545,7 @@ importers:
         specifier: ^2.27.125
         version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.35
+        specifier: ^2.46.37
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.7.5
