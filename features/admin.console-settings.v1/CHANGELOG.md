@@ -1,5 +1,16 @@
 # @wso2is/admin.console-settings.v1
 
+## 2.25.216
+
+### Patch Changes
+
+- [#8655](https://github.com/wso2/identity-apps/pull/8655) [`5a06f4b77163bb4abcbeeb86a5ac1b1279d1acbb`](https://github.com/wso2/identity-apps/commit/5a06f4b77163bb4abcbeeb86a5ac1b1279d1acbb) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - [Temp] Comment out unscoped selective role sharing styles
+
+- Updated dependencies [[`5a06f4b77163bb4abcbeeb86a5ac1b1279d1acbb`](https://github.com/wso2/identity-apps/commit/5a06f4b77163bb4abcbeeb86a5ac1b1279d1acbb)]:
+  - @wso2is/admin.applications.v1@2.36.13
+  - @wso2is/admin.core.v1@2.46.39
+  - @wso2is/admin.roles.v2@2.27.174
+
 ## 2.25.215
 
 ### Patch Changes
