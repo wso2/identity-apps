@@ -49,6 +49,9 @@ export const console: ConsoleNS = {
                         validations: {
                             empty: "Filter value is a required field."
                         }
+                    },
+                    filterRecursiveToggle: {
+                        label: "Search in nested levels"
                     }
                 }
             },
