@@ -7,4 +7,4 @@
 "@wso2is/identity-apps-core": patch
 ---
 
-Integrate Meta API into Flow Builder
+Force release modules
