@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/console",
-    "version": "2.68.30",
+    "version": "2.68.31",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -71,7 +71,7 @@
         "@wso2is/admin.feature-gate.v1": "^1.7.6",
         "@wso2is/admin.flows.v1": "^1.0.15",
         "@wso2is/admin.groups.v1": "^2.27.122",
-        "@wso2is/admin.home.v1": "^1.7.19",
+        "@wso2is/admin.home.v1": "^1.7.20",
         "@wso2is/admin.identity-verification-providers.v1": "^2.27.204",
         "@wso2is/admin.impersonation.v1": "^1.6.204",
         "@wso2is/admin.logs.v1": "^1.6.5",
