@@ -1,5 +1,15 @@
 # @wso2is/admin.claims.v1
 
+## 2.28.10
+
+### Patch Changes
+
+- [#8642](https://github.com/wso2/identity-apps/pull/8642) [`347cdeeb523ee6112d66328c87416b5db7a09d37`](https://github.com/wso2/identity-apps/commit/347cdeeb523ee6112d66328c87416b5db7a09d37) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Minor agent ux fixes
+
+- Updated dependencies [[`8e6d88e654e91569695162a888adfac2d12ef576`](https://github.com/wso2/identity-apps/commit/8e6d88e654e91569695162a888adfac2d12ef576), [`347cdeeb523ee6112d66328c87416b5db7a09d37`](https://github.com/wso2/identity-apps/commit/347cdeeb523ee6112d66328c87416b5db7a09d37)]:
+  - @wso2is/admin.core.v1@2.46.36
+  - @wso2is/admin.claims.v1@2.28.10
+
 ## 2.28.9
 
 ### Patch Changes
