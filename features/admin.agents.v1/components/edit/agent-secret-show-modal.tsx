@@ -86,7 +86,7 @@ export function AgentSecretShowModal({
         setIsSecretRegenerationLoading(true);
 
         const newPassword: string = generatePassword(
-            Number(passwordValidationConfig.minLength),
+            16,
             Number(passwordValidationConfig.minLowerCaseCharacters) > 0,
             Number(passwordValidationConfig.minUpperCaseCharacters) > 0,
             Number(passwordValidationConfig.minNumbers) > 0,
