@@ -18,7 +18,6 @@
 
 import { BasicUserInfo } from "@asgardeo/auth-react";
 import Breadcrumbs from "@oxygen-ui/react/Breadcrumbs";
-import Link from "@oxygen-ui/react/Link";
 import Typography from "@oxygen-ui/react/Typography/Typography";
 import { BuildingAltIcon, CloneIcon } from "@oxygen-ui/react-icons";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
@@ -399,23 +398,27 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                 </Header.Content>
                             </Header>
                             { ( organization.id === selectedOrgId ) && (
-                                <Breadcrumbs className="organization-path-breadcrumb">
+                                <Breadcrumbs
+                                    className="organization-path-breadcrumb"
+                                    aria-label="Organization hierarchy navigation"
+                                >
                                     { selectedOrgDetails?.ancestorPath.map((
                                         pathSegment: OrganizationAncestorPathSegmentInterface,
                                         index: number) => (
-                                        <>
-                                            { (index === 0) &&
-                                                <CloneIcon size={ 14 } className="organization-path-breadcrumb-icon" />
-                                            }
-                                            <Link
-                                                underline="hover"
+                                        <React.Fragment key={ index }>
+                                            <Typography
                                                 color="inherit"
-                                                href="/"
                                                 key={ index }
                                             >
+                                                { (index === 0) && (
+                                                    <CloneIcon
+                                                        size={ 14 }
+                                                        className="organization-path-breadcrumb-icon"
+                                                    />
+                                                ) }
                                                 { pathSegment.name }
-                                            </Link>
-                                        </>
+                                            </Typography>
+                                        </React.Fragment>
                                     )) }
                                     <Typography color="text.primary">
                                         <BuildingAltIcon size={ 14 } className="organization-path-breadcrumb-icon" />
