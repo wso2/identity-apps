@@ -73,13 +73,6 @@ const FederationProperties: FunctionComponent<FederationPropertiesPropsInterface
             return "";
         }
 
-        if (resource?.data?.action?.executor?.meta?.idpName === IDP_NAME_PLACEHOLDER
-            && availableConnections.length > 0) {
-            onChange("action.executor.meta.idpName", availableConnections[0], resource);
-
-            return "";
-        }
-
         return availableConnections.find(
             (connection: string) =>
                 connection === resource?.data?.action?.executor?.meta?.idpName
