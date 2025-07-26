@@ -2271,11 +2271,6 @@
         {% else %}
             "enableOldUIForEmailProvider": false,
         {% endif %}
-        {% if console.ui.show_password_of_email_provider is defined %}
-            "showPasswordOfEmailProvider": {{ console.ui.show_password_of_email_provider }},
-        {% else %}
-            "showPasswordOfEmailProvider": true,
-        {% endif %}
         {% if console.ui.enable_custom_sms_templates is defined %}
             "enableCustomSmsTemplates": {{ console.ui.enable_custom_sms_templates }},
         {% else %}

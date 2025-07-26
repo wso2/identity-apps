@@ -475,10 +475,6 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     enableOldUIForEmailProvider: boolean;
     /**
-     * Show password of email provider.
-     */
-    showPasswordOfEmailProvider: boolean;
-    /**
      * Enable/Disable custom email template feature
      */
     enableCustomEmailTemplates: boolean;

@@ -306,7 +306,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             },
             selfAppIdentifier: "",
             showAppSwitchButton: undefined,
-            showPasswordOfEmailProvider: undefined,
             showSmsOtpPwdRecoveryFeatureStatusChip: undefined,
             showStatusLabelForNewAuthzRuntimeFeatures: undefined,
             systemAppsIdentifiers: [],
