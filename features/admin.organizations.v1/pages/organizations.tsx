@@ -263,7 +263,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         authorizedListNextCursor,
         authorizedListPrevCursor,
         ApplicationManagementConstants.CONSOLE_APP_NAME,
-        false
+        shouldSearchRecursive
     );
 
     /**
