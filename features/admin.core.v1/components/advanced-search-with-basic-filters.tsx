@@ -113,7 +113,7 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableCo
     /**
      * Enable recursive search option checkbox
      */
-    recursiveSearch?: boolean
+    recursiveSearch?: boolean;
     /**
      * Custom CSS styles for main text input box.
      */
