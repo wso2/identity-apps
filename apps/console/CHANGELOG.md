@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.68.28
+
+### Patch Changes
+
+- [#8638](https://github.com/wso2/identity-apps/pull/8638) [`827bdf5a896acc202e411a9e8a6dfaaeaf0439fe`](https://github.com/wso2/identity-apps/commit/827bdf5a896acc202e411a9e8a6dfaaeaf0439fe) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Force release modules
+
+- Updated dependencies [[`827bdf5a896acc202e411a9e8a6dfaaeaf0439fe`](https://github.com/wso2/identity-apps/commit/827bdf5a896acc202e411a9e8a6dfaaeaf0439fe)]:
+  - @wso2is/admin.ask-password-flow-builder.v1@1.0.9
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.0.9
+  - @wso2is/i18n@2.25.6
+  - @wso2is/admin.core.v1@2.46.35
+  - @wso2is/admin.server-configurations.v1@2.35.13
+
 ## 2.68.27
 
 ### Patch Changes
