@@ -476,7 +476,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      */
     const getQuery = (values: Map<string, FormValue>): string => {
         const newRecursiveState: boolean = JSON.parse(
-            values.get(AdvanceSearchConstants.FILTER_RECURSIVE_FIELD_IDENTIFIER) as string
+            (values.get(AdvanceSearchConstants.FILTER_RECURSIVE_FIELD_IDENTIFIER) || "false") as string
         );
 
         // To avoid unnecessary rerenders

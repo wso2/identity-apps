@@ -402,7 +402,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                     className="organization-path-breadcrumb"
                                     aria-label="Organization hierarchy navigation"
                                 >
-                                    { selectedOrgDetails?.ancestorPath.map((
+                                    { (selectedOrgDetails?.ancestorPath || []).map((
                                         pathSegment: OrganizationAncestorPathSegmentInterface,
                                         index: number) => (
                                         <React.Fragment key={ index }>
