@@ -227,7 +227,8 @@ export const FeatureCarousel = () => {
     ].filter(Boolean), [
         registrationFlowConfigs,
         agentFeatureConfig,
-        isRegistrationFlowConfigsLoading
+        isRegistrationFlowConfigsLoading,
+        isAgentManagementFeatureEnabledForOrganization
     ]);
 
     useEffect(() => {
