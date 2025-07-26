@@ -45,6 +45,9 @@ export interface ConsoleNS {
                             empty: string;
                         };
                     };
+                    filterRecursiveToggle: {
+                        label: string;
+                    }
                 };
             };
             hints: {
