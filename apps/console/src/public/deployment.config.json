@@ -1588,12 +1588,7 @@
                 "disabledFeatures": [
                 ],
                 "enabled": true,
-                "featureFlags": [
-                    {
-                        "feature": "webhooks",
-                        "flag": "PREVIEW"
-                    }
-                ],
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                             "internal_webhook_mgt_create"

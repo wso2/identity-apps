@@ -1195,6 +1195,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         featureConfig?.agents?.enabled
                         && isAgentManagementEnabledForOrg
                         && orgType !== OrganizationType.SUBORGANIZATION
+                        && template?.id !== ApplicationTemplateIdTypes.M2M_APPLICATION
                         && (
                             selectedTemplate.authenticationProtocol === SupportedAuthProtocolTypes.OIDC ||
                             selectedTemplate.authenticationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC ||
