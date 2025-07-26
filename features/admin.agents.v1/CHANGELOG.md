@@ -1,5 +1,17 @@
 # @wso2is/admin.agents.v1
 
+## 1.0.19
+
+### Patch Changes
+
+- [#8653](https://github.com/wso2/identity-apps/pull/8653) [`446a97126c02997eea517bd9f23d96de57375fe7`](https://github.com/wso2/identity-apps/commit/446a97126c02997eea517bd9f23d96de57375fe7) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improve form submission UX in add agent wizard and update agent secret length
+
+- Updated dependencies [[`5a06f4b77163bb4abcbeeb86a5ac1b1279d1acbb`](https://github.com/wso2/identity-apps/commit/5a06f4b77163bb4abcbeeb86a5ac1b1279d1acbb)]:
+  - @wso2is/admin.console-settings.v1@2.25.216
+  - @wso2is/admin.applications.v1@2.36.13
+  - @wso2is/admin.core.v1@2.46.39
+  - @wso2is/admin.roles.v2@2.27.174
+
 ## 1.0.18
 
 ### Patch Changes
