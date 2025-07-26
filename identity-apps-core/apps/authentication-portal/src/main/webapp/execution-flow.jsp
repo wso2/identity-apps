@@ -349,6 +349,7 @@
                     if (!flow) return false;
                     switch (flow.type) {
                         case "REDIRECTION":
+                            setLoading(true);
                             window.location.href = flow.data.redirectURL;
                             break;
 

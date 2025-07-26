@@ -21,6 +21,7 @@ import React from "react";
 
 import ButtonFieldAdapter from "./adapters/button-field-adapter";
 import CaptchaWidgetAdapter from "./adapters/captcha-widget-adapter";
+import ImageFieldAdapter from "./adapters/image-field-adapter";
 import InputFieldAdapter from "./adapters/input-field-adapter";
 import RichTextAdapter from "./adapters/rich-text-field-adapter";
 import TypographyAdapter from "./adapters/typography-field-adapter";
@@ -55,6 +56,8 @@ const Field = ({
             return <DividerAdapter component={ component } />;
         case "CAPTCHA":
             return <CaptchaWidgetAdapter component={ component } ref={ recaptchaRef } />;
+        case "IMAGE":
+            return <ImageFieldAdapter component={ component } />;
         default:
             return (
                 <InputFieldAdapter

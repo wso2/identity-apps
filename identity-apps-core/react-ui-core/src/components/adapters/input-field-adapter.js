@@ -21,6 +21,7 @@ import React from "react";
 import CheckboxFieldAdapter from "./checkbox-field-adapter";
 import CountryFieldAdapter from "./country-field-adapter";
 import DateFieldAdapter from "./date-field-adapter";
+import NumberFieldAdapter from "./number-field-adapter";
 import OTPFieldAdapter from "./otp-field-adapter";
 import PasswordFieldAdapter from "./password-field-adapter";
 import PhoneNumberFieldAdapter from "./phone-number-field-adapter";
@@ -94,6 +95,15 @@ const InputFieldAdapter = ({ component, formState, formStateHandler, formFieldEr
                 <CheckboxFieldAdapter
                     component={ component }
                     formStateHandler={ formStateHandler }
+                />
+            );
+        case "NUMBER":
+            return (
+                <NumberFieldAdapter
+                    component={ component }
+                    formState={ formState }
+                    formStateHandler={ formStateHandler }
+                    fieldErrorHandler={ formFieldError }
                 />
             );
         default:
