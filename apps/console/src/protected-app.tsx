@@ -30,6 +30,7 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { MultitenantConstants } from "@wso2is/admin.core.v1/constants/multitenant-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { AppComponentProps } from "@wso2is/admin.core.v1/models/common";
 import { DeploymentConfigInterface, UIConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { setFilteredDevelopRoutes, setSanitizedDevelopRoutes } from "@wso2is/admin.core.v1/store/actions/routes";
@@ -77,7 +78,7 @@ import { Dispatch } from "redux";
 import { getAppViewRoutes } from "./configs/routes";
 import useRoutes from "./hooks/use-routes";
 
-const App: LazyExoticComponent<FunctionComponent> = lazy(() => import("./app"));
+const App: LazyExoticComponent<FunctionComponent<AppComponentProps>> = lazy(() => import("./app"));
 
 type AppPropsInterface = IdentifiableComponentInterface;
 
@@ -104,8 +105,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
     const { data: tenantTier } = useGetTenantTier();
 
-    const { filterRoutes } = useRoutes();
-
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
     );
@@ -113,6 +112,11 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const [ renderApp, setRenderApp ] = useState<boolean>(false);
     const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
     const [ isUserTenantless, setIsUserTenantless ] = useState(undefined);
+    const [ isAgentManagementEnabledForOrg ,setIsAgentManagementEnabledForOrg ] = useState(false);
+
+    const { filterRoutes } = useRoutes({
+        isAgentManagementEnabledForOrg
+    });
 
     useEffect(() => {
         dispatch(
@@ -377,7 +381,11 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         >
             <I18nextProvider i18n={ I18n.instance }>
                 <SubscriptionProvider tierName={ tenantTier?.tierName ?? TenantTier.FREE }>
-                    { renderApp && routesFiltered ? <App /> : <PreLoader /> }
+                    { renderApp && routesFiltered ? (<App
+                        onAgentManagementEnableStatusChange={ (status: boolean) => {
+                            setIsAgentManagementEnabledForOrg(status);
+                        } }
+                    />) : <PreLoader /> }
                 </SubscriptionProvider>
             </I18nextProvider>
         </SecureApp>
