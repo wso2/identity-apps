@@ -564,7 +564,7 @@ importers:
         specifier: ^2.27.122
         version: link:../../features/admin.groups.v1
       '@wso2is/admin.home.v1':
-        specifier: ^1.7.19
+        specifier: ^1.7.20
         version: link:../../features/admin.home.v1
       '@wso2is/admin.identity-verification-providers.v1':
         specifier: ^2.27.204
