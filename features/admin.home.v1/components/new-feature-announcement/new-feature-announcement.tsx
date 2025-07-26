@@ -136,7 +136,10 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
                         loading={ isEnabledStatusLoading }
                     >
                         <Box display="flex" alignItems="center" gap={ 1 }>
-                            <PreviewFeaturesIcon /> { id !== "agents" ? "Enable and try out" : "Try Out" }
+                            { id !== "agents" ? (<>
+                                <PreviewFeaturesIcon />
+                                Enable and try out
+                            </>) : "Contact Us" }
                         </Box>
                     </Button>
                 ) }
@@ -425,7 +428,7 @@ export const FeatureCarousel = () => {
                                         floated="left"
                                         onClick={ () => setShowAgentFeatureAnnouncementModal(false) }
                                     >
-                                    Cancel
+                                    Close
                                     </SemanticButton>
                                 </Grid.Column>
                                 <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
