@@ -31,6 +31,8 @@ import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import useGetFlowConfig from "@wso2is/admin.flows.v1/api/use-get-flow-config";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
+import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
+import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import { AGENT_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
@@ -139,7 +141,7 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
                             { id !== "agents" ? (<>
                                 <PreviewFeaturesIcon />
                                 Enable and try out
-                            </>) : "Contact Us" }
+                            </>) : "Contact Us for Early Access" }
                         </Box>
                     </Button>
                 ) }
@@ -161,6 +163,9 @@ export const FeatureCarousel = () => {
 
     const [ showAgentFeatureAnnouncementModal, setShowAgentFeatureAnnouncementModal ] = useState<boolean>(false);
 
+    const supportEmail: string = useSelector((state: AppState) =>
+        state.config.deployment.extensions?.supportEmail as string);
+
     const {
         data: registrationFlowConfigs,
         isLoading: isRegistrationFlowConfigsLoading
@@ -169,11 +174,13 @@ export const FeatureCarousel = () => {
     const agentFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state?.config?.ui?.features?.agents);
 
+    const { tierName }: UseSubscriptionInterface = useSubscription();
+
     const isAgentManagementFeatureEnabledForOrganization: boolean = useMemo(() => {
         const agentUserStore: UserStoreListItem =
             userStoresList?.find((userStore: UserStoreListItem) => userStore?.name === AGENT_USERSTORE);
 
-        if (agentUserStore) {
+        if (agentFeatureConfig?.enabled && agentUserStore) {
             return true;
         }
 
@@ -187,7 +194,15 @@ export const FeatureCarousel = () => {
             isEnabled: isAgentManagementFeatureEnabledForOrganization,
             isEnabledStatusLoading: false,
             onTryOut: () => {
-                setShowAgentFeatureAnnouncementModal(true);
+                if (isAgentManagementFeatureEnabledForOrganization) {
+                    setShowAgentFeatureAnnouncementModal(true);
+                } else {
+                    const url: string = tierName === TenantTier.FREE
+                        ? `mailto:${supportEmail}`
+                        : window["AppUtils"].getConfig().extensions.getHelp.helpCenterURL;
+
+                    window.open(url, "_blank");
+                }
             },
             title: "Identity for AI Agents "
         },
@@ -299,8 +314,13 @@ export const FeatureCarousel = () => {
                         ): (
                             <Message info>
                                 AI agent management is coming soon to your organization! Create a fresh organization
-                                { " " }for instant access, or contact us { " " }
-                                for early access to this game-changing feature.
+                                { " " }for instant access, or <a
+                                    href={
+                                        tierName === TenantTier.FREE
+                                            ? "mailto:" + supportEmail
+                                            : window["AppUtils"].getConfig().extensions.getHelp.helpCenterURL
+                                    }>contact us</a> { " " }
+                                for early access.
                             </Message>
                         ) }
 
