@@ -21,7 +21,6 @@ import React from "react";
 import { Button } from "semantic-ui-react";
 import { useTranslations } from "../../hooks/use-translations";
 import { resolveElementText } from "../../utils/i18n-utils";
-import { getConnectionLogo } from "../../utils/ui-utils";
 
 const ButtonAdapter = ({ component, handleButtonAction }) => {
 

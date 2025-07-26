@@ -33,7 +33,7 @@ const CheckboxFieldAdapter = ({ component, formStateHandler }) => {
             <Checkbox
                 name={ identifier }
                 label={ resolveElementText(translations, label) }
-                onChange={ (e) => formStateHandler(identifier, e.target.checked) }
+                onChange={ (e, data) => formStateHandler(identifier, data.checked) }
             />
             {
                 hint && ( <Hint hint={ hint } /> )
