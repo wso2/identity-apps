@@ -74,7 +74,7 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Attribute[] }>({});
     const [ isPublishing, setIsPublishing ] = useState<boolean>(false);
 
-    const handlePublish = async (): Promise<void> => {
+    const handlePublish = async (): Promise<boolean> => {
         setIsPublishing(true);
 
         const flow: any = toObject();
@@ -93,6 +93,8 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
                     message: "Flow Updated Successfully"
                 })
             );
+
+            return true;
         } catch (error) {
             dispatch(
                 addAlert({
@@ -101,6 +103,8 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
                     message: "Flow Update Failure"
                 })
             );
+
+            return false;
         } finally {
             setIsPublishing(false);
         }
