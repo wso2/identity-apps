@@ -982,7 +982,7 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
             }
         }
 
-        return step;
+        return generateIdsForResources<Step>(step);
     };
 
     const handleResourceAdd = (resource: Resource): void => {
