@@ -172,14 +172,16 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
                 return { ...data };
             });
 
-            const updatedResource: Resource = cloneDeep(lastInteractedResource);
+            if (propertyKey != "action") {
+                const updatedResource: Resource = cloneDeep(lastInteractedResource);
 
-            if (propertyKey.startsWith("config.")) {
-                set(updatedResource, propertyKey, newValue);
-            } else {
-                set(updatedResource.data, propertyKey, newValue);
+                if (propertyKey.startsWith("config.")) {
+                    set(updatedResource, propertyKey, newValue);
+                } else {
+                    set(updatedResource.data, propertyKey, newValue);
+                }
+                setLastInteractedResource(updatedResource);
             }
-            setLastInteractedResource(updatedResource);
         }, 300);
 
     return (
