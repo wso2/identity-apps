@@ -140,19 +140,24 @@ const PasswordRecoveryFlowBuilderPageHeader: FunctionComponent<PasswordRecoveryF
         setIsFlowConfigUpdating(true);
 
         try {
-            await updateFlowConfig({
-                flowType: FlowTypes.PASSWORD_RECOVERY,
-                isEnabled
-            });
-            handleFlowConfigSuccess(isEnabled ? "enable" : "disable");
+            let isPublishSuccess: boolean = true;
+
             if (isEnabled) {
-                onPublish();
+                isPublishSuccess = await onPublish();
+            }
+
+            if (isPublishSuccess) {
+                await updateFlowConfig({
+                    flowType: FlowTypes.PASSWORD_RECOVERY,
+                    isEnabled
+                });
+                handleFlowConfigSuccess(isEnabled ? "enable" : "disable");
+                await mutateFlowConfig();
             }
         } catch (error) {
             handleFlowConfigError(isEnabled ? "enable" : "disable");
         } finally {
             setIsFlowConfigUpdating(false);
-            mutateFlowConfig();
         }
     };
 
