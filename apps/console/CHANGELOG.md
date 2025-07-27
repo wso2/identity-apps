@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.68.34
+
+### Patch Changes
+
+- [#8656](https://github.com/wso2/identity-apps/pull/8656) [`6c3e55ec90a4c4ccd69c4e05ab8c1e4406fd3dd1`](https://github.com/wso2/identity-apps/commit/6c3e55ec90a4c4ccd69c4e05ab8c1e4406fd3dd1) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add steps for SMS OTP, Email OTP, Username & Password, and Passkeys
+
+- Updated dependencies [[`6c3e55ec90a4c4ccd69c4e05ab8c1e4406fd3dd1`](https://github.com/wso2/identity-apps/commit/6c3e55ec90a4c4ccd69c4e05ab8c1e4406fd3dd1)]:
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.0.12
+  - @wso2is/admin.ask-password-flow-builder.v1@1.0.12
+  - @wso2is/admin.server-configurations.v1@2.35.15
+  - @wso2is/admin.core.v1@2.46.40
+
 ## 2.68.33
 
 ### Patch Changes
