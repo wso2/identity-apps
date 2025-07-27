@@ -213,6 +213,27 @@
     },
     {
         "resourceType": "STEP",
+        "category": "WORKFLOW",
+        "type": "EXECUTION",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Passkey View",
+            "image": "https://www.svgrepo.com/show/242814/passkey-access.svg",
+            "showOnResourcePanel": true
+        },
+        "data": {
+            "action": {
+                "type": "EXECUTOR",
+                "executor": {
+                    "name": "FIDO2Executor"
+                },
+                "next": ""
+            }
+        }
+    },
+    {
+        "resourceType": "STEP",
         "category": "DECISION",
         "type": "RULE",
         "version": "0.1.0",
