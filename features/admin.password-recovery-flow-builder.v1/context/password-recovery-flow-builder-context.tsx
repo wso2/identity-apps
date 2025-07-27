@@ -34,7 +34,7 @@ export interface PasswordRecoveryFlowBuilderContextProps {
     /**
      * Callback to publish the flow.
      */
-    onPublish: () => void;
+    onPublish: () => Promise<boolean>;
     /**
      * The set of attributes that are selected for the flow that are maintained per node.
      */
@@ -60,7 +60,7 @@ const PasswordRecoveryFlowBuilderContext: Context<
     {
         isNewPasswordRecoveryPortalEnabled: false,
         isPublishing: false,
-        onPublish: () => {},
+        onPublish: () => Promise.resolve(false),
         selectedAttributes: {},
         setSelectedAttributes: () => {},
         supportedAttributes: null

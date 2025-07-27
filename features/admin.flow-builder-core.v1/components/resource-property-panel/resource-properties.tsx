@@ -21,6 +21,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useReactFlow } from "@xyflow/react";
 import cloneDeep from "lodash-es/cloneDeep";
+import debounce from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
 import merge from "lodash-es/merge";
 import set from "lodash-es/set";
@@ -133,49 +134,53 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
         });
     };
 
-    const handlePropertyChange = async (propertyKey: string, newValue: any, element: Element) => {
+    /**
+     * Handles the property change event.
+     */
+    const handlePropertyChange: (propertyKey: string, newValue: any, element: Element) => Promise<void> = debounce(
+        async (propertyKey: string, newValue: any, element: Element) => {
 
-        // Execute plugins for ON_PROPERTY_CHANGE event.
-        if (!await PluginRegistry.getInstance().executeAsync(EventTypes.ON_PROPERTY_CHANGE, propertyKey,
-            newValue, element, lastInteractedStepId)) {
-            return;
-        }
-
-        const updateComponent = (components: Element[]): Element[] => {
-            return components.map((component: Element) => {
-                if (component.id === element.id) {
-                    set(component, propertyKey, newValue);
-                }
-
-                if (component.components) {
-                    component.components = updateComponent(component.components);
-                }
-
-                return component;
-            });
-        };
-
-        updateNodeData(lastInteractedStepId, (node: any) => {
-            const data: StepData = node?.data || {};
-
-            if (!isEmpty(node?.data?.components)) {
-                data.components = updateComponent(cloneDeep(node?.data?.components) || []);
-            } else {
-                set(data, propertyKey, newValue);
+            // Execute plugins for ON_PROPERTY_CHANGE event.
+            if (!await PluginRegistry.getInstance().executeAsync(EventTypes.ON_PROPERTY_CHANGE, propertyKey,
+                newValue, element, lastInteractedStepId)) {
+                return;
             }
 
-            return { ...data };
-        });
+            const updateComponent = (components: Element[]): Element[] => {
+                return components.map((component: Element) => {
+                    if (component.id === element.id) {
+                        set(component, propertyKey, newValue);
+                    }
 
-        const updatedResource: Resource = cloneDeep(lastInteractedResource);
+                    if (component.components) {
+                        component.components = updateComponent(component.components);
+                    }
 
-        if (propertyKey.startsWith("config.")) {
-            set(updatedResource, propertyKey, newValue);
-        } else {
-            set(updatedResource.data, propertyKey, newValue);
-        }
-        setLastInteractedResource(updatedResource);
-    };
+                    return component;
+                });
+            };
+
+            updateNodeData(lastInteractedStepId, (node: any) => {
+                const data: StepData = node?.data || {};
+
+                if (!isEmpty(node?.data?.components)) {
+                    data.components = updateComponent(cloneDeep(node?.data?.components) || []);
+                } else {
+                    set(data, propertyKey, newValue);
+                }
+
+                return { ...data };
+            });
+
+            const updatedResource: Resource = cloneDeep(lastInteractedResource);
+
+            if (propertyKey.startsWith("config.")) {
+                set(updatedResource, propertyKey, newValue);
+            } else {
+                set(updatedResource.data, propertyKey, newValue);
+            }
+            setLastInteractedResource(updatedResource);
+        }, 300);
 
     return (
         <div className="flow-builder-element-properties" data-componentid={ componentId }>

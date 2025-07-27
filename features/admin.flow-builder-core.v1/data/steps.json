@@ -219,7 +219,7 @@
         "deprecated": false,
         "display": {
             "label": "Passkey View",
-            "image": "https://www.svgrepo.com/show/242814/passkey-access.svg",
+            "image": "https://www.svgrepo.com/show/39582/passkey.svg",
             "showOnResourcePanel": true
         },
         "data": {
