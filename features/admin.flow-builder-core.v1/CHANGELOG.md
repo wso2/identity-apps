@@ -1,5 +1,14 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.9.10
+
+### Patch Changes
+
+- [#8656](https://github.com/wso2/identity-apps/pull/8656) [`6c3e55ec90a4c4ccd69c4e05ab8c1e4406fd3dd1`](https://github.com/wso2/identity-apps/commit/6c3e55ec90a4c4ccd69c4e05ab8c1e4406fd3dd1) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add steps for SMS OTP, Email OTP, Username & Password, and Passkeys
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.46.40
+
 ## 0.9.9
 
 ### Patch Changes
