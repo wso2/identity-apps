@@ -1,5 +1,24 @@
 # @wso2is/admin.core.v1
 
+## 2.46.42
+
+### Patch Changes
+
+- [#8605](https://github.com/wso2/identity-apps/pull/8605) [`f53aa7eec0893f28795ccb6afb92082be934a44c`](https://github.com/wso2/identity-apps/commit/f53aa7eec0893f28795ccb6afb92082be934a44c) Thanks [@lashinijay](https://github.com/lashinijay)! - Remove showPasswordOfEmailProvider config
+
+- Updated dependencies [[`77d11a6c896349c744d48a0ec354c8009fe91264`](https://github.com/wso2/identity-apps/commit/77d11a6c896349c744d48a0ec354c8009fe91264), [`f53aa7eec0893f28795ccb6afb92082be934a44c`](https://github.com/wso2/identity-apps/commit/f53aa7eec0893f28795ccb6afb92082be934a44c), [`c927fb9e513ddc042cde81251cde106ca0a09c32`](https://github.com/wso2/identity-apps/commit/c927fb9e513ddc042cde81251cde106ca0a09c32)]:
+  - @wso2is/admin.console-settings.v1@2.25.218
+  - @wso2is/admin.applications.v1@2.36.14
+  - @wso2is/admin.email-providers.v1@2.27.3
+  - @wso2is/core@2.10.2
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.0.13
+  - @wso2is/admin.ask-password-flow-builder.v1@1.0.13
+  - @wso2is/admin.registration-flow-builder.v1@0.9.16
+  - @wso2is/admin.flow-builder-core.v1@0.9.11
+  - @wso2is/admin.agents.v1@1.0.21
+  - @wso2is/admin.server-configurations.v1@2.35.16
+  - @wso2is/admin.roles.v2@2.27.176
+
 ## 2.46.41
 
 ### Patch Changes

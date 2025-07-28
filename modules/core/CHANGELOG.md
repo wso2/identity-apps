@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.10.2
+
+### Patch Changes
+
+- [#8605](https://github.com/wso2/identity-apps/pull/8605) [`f53aa7eec0893f28795ccb6afb92082be934a44c`](https://github.com/wso2/identity-apps/commit/f53aa7eec0893f28795ccb6afb92082be934a44c) Thanks [@lashinijay](https://github.com/lashinijay)! - Remove showPasswordOfEmailProvider config
+
 ## 2.10.1
 
 ### Patch Changes

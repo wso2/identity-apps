@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.27.20
+
+### Patch Changes
+
+- [#8664](https://github.com/wso2/identity-apps/pull/8664) [`c927fb9e513ddc042cde81251cde106ca0a09c32`](https://github.com/wso2/identity-apps/commit/c927fb9e513ddc042cde81251cde106ca0a09c32) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add component and step metadata to support step views
+
 ## 2.27.19
 
 ### Patch Changes

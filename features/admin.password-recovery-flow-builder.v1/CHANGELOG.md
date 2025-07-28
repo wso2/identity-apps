@@ -1,5 +1,17 @@
 # @wso2is/admin.password-recovery-flow-builder.v1
 
+## 1.0.13
+
+### Patch Changes
+
+- [#8664](https://github.com/wso2/identity-apps/pull/8664) [`c927fb9e513ddc042cde81251cde106ca0a09c32`](https://github.com/wso2/identity-apps/commit/c927fb9e513ddc042cde81251cde106ca0a09c32) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add component and step metadata to support step views
+
+- Updated dependencies [[`f53aa7eec0893f28795ccb6afb92082be934a44c`](https://github.com/wso2/identity-apps/commit/f53aa7eec0893f28795ccb6afb92082be934a44c), [`c927fb9e513ddc042cde81251cde106ca0a09c32`](https://github.com/wso2/identity-apps/commit/c927fb9e513ddc042cde81251cde106ca0a09c32)]:
+  - @wso2is/admin.core.v1@2.46.42
+  - @wso2is/core@2.10.2
+  - @wso2is/admin.flow-builder-core.v1@0.9.11
+  - @wso2is/admin.server-configurations.v1@2.35.16
+
 ## 1.0.12
 
 ### Patch Changes

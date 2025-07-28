@@ -1,5 +1,18 @@
 # @wso2is/admin.applications.v1
 
+## 2.36.14
+
+### Patch Changes
+
+- [#8666](https://github.com/wso2/identity-apps/pull/8666) [`77d11a6c896349c744d48a0ec354c8009fe91264`](https://github.com/wso2/identity-apps/commit/77d11a6c896349c744d48a0ec354c8009fe91264) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add null check in application role sharing UI
+
+- Updated dependencies [[`77d11a6c896349c744d48a0ec354c8009fe91264`](https://github.com/wso2/identity-apps/commit/77d11a6c896349c744d48a0ec354c8009fe91264), [`f53aa7eec0893f28795ccb6afb92082be934a44c`](https://github.com/wso2/identity-apps/commit/f53aa7eec0893f28795ccb6afb92082be934a44c)]:
+  - @wso2is/admin.console-settings.v1@2.25.218
+  - @wso2is/admin.core.v1@2.46.42
+  - @wso2is/core@2.10.2
+  - @wso2is/admin.server-configurations.v1@2.35.16
+  - @wso2is/admin.roles.v2@2.27.176
+
 ## 2.36.13
 
 ### Patch Changes
