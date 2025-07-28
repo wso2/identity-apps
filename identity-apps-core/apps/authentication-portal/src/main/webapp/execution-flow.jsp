@@ -180,6 +180,7 @@
                 const flowType = "<%= Encode.forJavaScript(flowType) != null ? Encode.forJavaScript(flowType) : null %>";
                 const mlt = "<%= Encode.forJavaScript(mlt) != null ? Encode.forJavaScript(mlt) : null %>";
                 const flowId = "<%= Encode.forJavaScript(flowId) != null ? Encode.forJavaScript(flowId) : null %>";
+                const spId = "<%= !StringUtils.isBlank(spId) && spId != "null" ? Encode.forJavaScript(spId) : "new-application" %>";
 
                 const locale = "en-US";
                 const translations = <%= translationsJson %>;
@@ -233,9 +234,9 @@
 
                 useEffect(() => {
                     if (!postBody && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType == "null") {
-                        setPostBody({ applicationId: "new-application", flowType: "REGISTRATION" });
+                        setPostBody({ applicationId: spId, flowType: "REGISTRATION" });
                     } else if (!postBody && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType !== "null") {
-                        setPostBody({ applicationId: "new-application", flowType: flowType });
+                        setPostBody({ applicationId: spId, flowType: flowType });
                     }
                 }, []);
 
@@ -332,8 +333,10 @@
                         case "COMPLETE":
                             localStorage.clear();
 
-                            if (flow.data.url !== null) {
-                                window.location.href = flow.data.url;
+                            if (flow.data.redirectURL !== null) {
+                                window.location.href = flow.data.redirectURL;
+
+                                return true;
                             }
 
                             window.location.href = defaultMyAccountUrl;

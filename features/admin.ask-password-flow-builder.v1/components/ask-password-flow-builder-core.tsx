@@ -252,8 +252,6 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
         );
     };
 
-    const blankTemplateComponents: any = useMemo(() => getBlankTemplateComponents(), [ resources ]);
-
     const generateSteps = (steps: Node[]): Node[] => {
         const START_STEP: Node = {
             data: {
@@ -976,13 +974,25 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
                     ...step,
                     data: {
                         ...step.data,
-                        components: blankTemplateComponents
+                        components: getBlankTemplateComponents()
                     }
                 };
             }
         }
 
-        return generateIdsForResources<Step>(step);
+        const processedStep: Step = generateIdsForResources<Step>(step);
+
+        if (processedStep?.data?.components) {
+            processedStep.data.components = resolveComponentMetadata(
+                resources,
+                processedStep.data.components
+            );
+        }
+
+        return resolveStepMetadata(
+            resources,
+            [ processedStep ]
+        )[0] as Step;
     };
 
     const handleResourceAdd = (resource: Resource): void => {
