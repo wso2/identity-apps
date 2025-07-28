@@ -498,20 +498,14 @@
                 "enabled": false,
                 "featureFlags": [],
                 "scopes": {
-                    "create": [
-                        "internal_humantask_view"
-                    ],
-                    "delete": [
-                        "internal_humantask_view"
-                    ],
                     "feature": [
                         "console:workflowApprovals"
                     ],
                     "read": [
-                        "internal_humantask_view"
+                        "internal_approval_task_view"
                     ],
                     "update": [
-                        "internal_humantask_view"
+                        "internal_approval_task_update"
                     ]
                 }
             },
