@@ -1029,7 +1029,19 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             }
         }
 
-        return generateIdsForResources<Step>(step);
+        const processedStep: Step = generateIdsForResources<Step>(cloneDeep(step));
+
+        if (processedStep?.data?.components) {
+            processedStep.data.components = resolveComponentMetadata(
+                resources,
+                processedStep.data.components
+            );
+        }
+
+        return resolveStepMetadata(
+            resources,
+            [ processedStep ]
+        )[0] as Step;
     };
 
     const handleResourceAdd = (resource: Resource): void => {
