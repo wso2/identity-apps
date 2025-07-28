@@ -81,7 +81,7 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
             setError(null);
         
             try {
-                const url = `${CDM_BASE_URL}/api/v1/profiles`;
+                const url = `${CDM_BASE_URL}/profiles`;
                 const res = await axios.get(url, {
                     params: searchQuery ? { filter: searchQuery } : {}
                 });        
@@ -162,7 +162,7 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
     useEffect(() => {
         const fetchSchemaAttributes = async () => {
             try {
-                const url = `${CDM_BASE_URL}/api/v1/profile-schema`;
+                const url = `${CDM_BASE_URL}/profile-schema`;
                 const res = await axios.get(url);
     
                 const attributes = res.data || [];

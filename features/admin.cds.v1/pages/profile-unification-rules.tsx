@@ -56,7 +56,7 @@ const ProfileUnificationRulePage = () => {
     const fetchRules = async () => {
         setIsLoading(true);
         try {
-            const url = `${CDM_BASE_URL}/api/v1/unification-rules`;
+            const url = `${CDM_BASE_URL}/unification-rules`;
             const res = await axios.get(url);
             const enriched = (res.data || []).map(rule => {
                 let scope = "Default";

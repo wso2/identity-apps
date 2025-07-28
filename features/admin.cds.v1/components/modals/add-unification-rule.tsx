@@ -9,6 +9,7 @@ import { LinkButton } from "@wso2is/react-components/src/components/button/link-
 import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
+import {CDM_BASE_URL} from "../../models/constants";
 
 interface UnificationRuleAddModalProps {
     open: boolean;
@@ -46,10 +47,9 @@ export const UnificationRuleAddModal: FunctionComponent<UnificationRuleAddModalP
 
     useEffect(() => {
         if (!open) return;
-    
+        const url = `${CDM_BASE_URL}/unification-rules`;
         fetchAttributes(form.scope);
-    
-        axios.get("http://localhost:8900/api/v1/unification-rules")
+        axios.get(url)
             .then((res) => setExistingRules(res.data || []))
             .catch(() => setExistingRules([]));
     }, [open]);
@@ -68,18 +68,18 @@ export const UnificationRuleAddModal: FunctionComponent<UnificationRuleAddModalP
             setPriorityConflict(false);
             return;
         }
-    
+
         const fullAttribute = `${form.scope}.${form.attribute}`;
-    
+
         setRuleNameConflict(existingRules.some(rule => rule.rule_name === form.rule_name));
         setAttributeConflict(existingRules.some(rule => rule.property_name === fullAttribute));
         setPriorityConflict(existingRules.some(rule => rule.priority === form.priority));
     }, [form, existingRules]);
-    
+
 
     const fetchAttributes = async (scope: string) => {
         try {
-            const response = await axios.get(`http://localhost:8900/api/v1/profile-schema/${scope}`);
+            const response = await axios.get(`${CDM_BASE_URL}/profile-schema/${scope}`);
             const options = (response.data || [])
                 .filter((item: any) => {
                     // Exclude complex types and entries with empty names
@@ -95,20 +95,21 @@ export const UnificationRuleAddModal: FunctionComponent<UnificationRuleAddModalP
                         value: suffix
                     };
                 });
-    
+
             setAttributeOptions(options);
         } catch (error) {
             console.error("Failed to fetch attributes", error);
             setAttributeOptions([]);
         }
     };
-    
+
 
     const handleSubmit = async () => {
         if (!form.rule_name || !form.attribute || form.priority <= 0) return;
 
         try {
-            await axios.post("http://localhost:8900/api/v1/unification-rules", {
+            const url = `${CDM_BASE_URL}/unification-rules`;
+            await axios.post(url, {
                 rule_name: form.rule_name,
                 property_name: `${form.scope}.${form.attribute}`,
                 priority: form.priority,

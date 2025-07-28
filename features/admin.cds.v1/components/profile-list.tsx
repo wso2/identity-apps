@@ -16,6 +16,7 @@ import { Header, SemanticICONS } from "semantic-ui-react";
 import axios from "axios";
 import { ProfileModel } from "../models/profile";
 import Chip from "@oxygen-ui/react/Chip/Chip";
+import { CDM_BASE_URL } from "../models/constants";
 
 interface ProfilesListProps {
     profiles?: ProfileModel[];
@@ -135,7 +136,7 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
 
     const handleDelete = async (): Promise<void> => {
         try {
-            await axios.delete(`http://localhost:8900/api/v1/profiles/${deletingProfile.profile_id}`);
+            await axios.delete(`${CDM_BASE_URL}/profiles/${deletingProfile.profile_id}`);
 
             dispatch(addAlert({
                 level: AlertLevels.SUCCESS,
