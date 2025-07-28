@@ -218,7 +218,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
 
                 // If there is selective role sharing, set the selected roles.
                 const initialRoles: RolesInterface[] =
-                    applicationShareData?.sharingMode?.roleSharing?.roles.map(
+                    applicationShareData?.sharingMode?.roleSharing?.roles?.map(
                         (role: RoleSharingInterface) => ({
                             audience: {
                                 display: role.audience.display,
