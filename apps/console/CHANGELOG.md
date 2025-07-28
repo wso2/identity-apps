@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.68.36
+
+### Patch Changes
+
+- [#8660](https://github.com/wso2/identity-apps/pull/8660) [`6f7d5c7bca8480cf679b6dd8500d4d9f907ed71b`](https://github.com/wso2/identity-apps/commit/6f7d5c7bca8480cf679b6dd8500d4d9f907ed71b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the missing Google icon to the Google federated template
+
 ## 2.68.35
 
 ### Patch Changes
