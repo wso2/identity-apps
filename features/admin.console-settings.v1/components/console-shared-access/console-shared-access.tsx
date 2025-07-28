@@ -147,7 +147,7 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
             setSharedAccessMode(RoleSharedAccessModes.SHARE_WITH_ALL_ORGS);
 
             const initialRoles: RolesInterface[] =
-                originalOrganizationTree?.sharingMode?.roleSharing?.roles.map(
+                originalOrganizationTree?.sharingMode?.roleSharing?.roles?.map(
                     (role: RoleSharingInterface) => ({
                         audience: {
                             display: role.audience.display,
