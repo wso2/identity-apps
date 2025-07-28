@@ -26,7 +26,13 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
+import {
+    AlertInterface,
+    AlertLevels,
+    FeatureAccessConfigInterface,
+    IdentifiableComponentInterface,
+    RolesInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, ListLayout, PageLayout, PrimaryButton, useDocumentation } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -62,6 +68,11 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
 
     const { organizationType } = useGetCurrentOrganizationType();
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const userRolesV3FeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3);
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
+    );
 
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
@@ -70,6 +81,12 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
 
     const isSubOrg: boolean = organizationType === OrganizationType.SUBORGANIZATION;
     const { data: consoleApplicationFilter } = useApplicationList(null, null, null, "name eq Console");
+
+    const roleCreationScope: string[] = useMemo(() => {
+        return userRolesV3FeatureEnabled
+            ? userRolesV3FeatureConfig?.scopes?.create
+            : featureConfig?.userRoles?.scopes?.create;
+    }, [ userRolesV3FeatureEnabled, userRolesV3FeatureConfig, featureConfig ]);
 
     const consoleId: string = useMemo(() => {
         return consoleApplicationFilter?.applications[0]?.id;
@@ -222,7 +239,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
                 (
                     !isRolesListLoading && (rolesList?.totalResults > 0)
                         ? (
-                            <Show when={ featureConfig?.userRoles?.scopes?.create }>
+                            <Show when={ roleCreationScope }>
                                 <PrimaryButton
                                     data-componentid={ `${componentId}-add-button` }
                                     onClick={ () => handleCreateRole() }

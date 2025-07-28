@@ -20,7 +20,7 @@ import Grid from "@oxygen-ui/react/Grid";
 import { VerticalStepper, VerticalStepperStepInterface } from "@wso2is/admin.core.v1/components/vertical-stepper";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { store } from "@wso2is/admin.core.v1/store";
+import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -28,9 +28,9 @@ import { EmphasizedSegment, PageLayout } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { createRole } from "../api/roles";
+import { createRole, createRoleUsingV3Api } from "../api/roles";
 import { RoleBasics } from "../components/wizard-updated/role-basics";
 import { RolePermissionsList } from "../components/wizard-updated/role-permissions/role-permissions";
 import { RoleAudienceTypes } from "../constants";
@@ -67,6 +67,13 @@ const CreateRolePage: FunctionComponent<CreateRoleProps> = (props: CreateRolePro
     const [ isPermissionStepNextButtonDisabled, setIsPermissionStepNextButtonDisabled ] = useState<boolean>(true);
     const [ selectedPermissions, setSelectedPermissions ] = useState<SelectedPermissionsInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
+    );
+
+    const createRoleFunction: (roleData: CreateRoleInterface) => Promise<AxiosResponse> =
+        userRolesV3FeatureEnabled ? createRoleUsingV3Api : createRole;
 
     // External trigger to submit the authorization step.
     let submitRoleBasic: () => void;
@@ -119,7 +126,7 @@ const CreateRolePage: FunctionComponent<CreateRoleProps> = (props: CreateRolePro
             }
 
             // Create Role API Call.
-            createRole(roleData)
+            createRoleFunction(roleData)
                 .then((response: AxiosResponse) => {
                     if (response.status === 201) {
                         dispatch(addAlert({
