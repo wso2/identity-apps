@@ -132,7 +132,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     }, [ aiGeneratedFlow ]);
 
     const addCanvasNode = (event: any, sourceData: any, _targetData: any): void => {
-        const { dragged: sourceResource } = sourceData;
+        const sourceResource: any = cloneDeep(sourceData.dragged);
         const { clientX, clientY } = event?.nativeEvent;
 
         const position: XYPosition = screenToFlowPosition({
