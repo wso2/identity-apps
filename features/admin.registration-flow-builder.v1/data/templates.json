@@ -310,7 +310,8 @@
                                     "variant": "SOCIAL",
                                     "config": {
                                         "type": "button",
-                                        "text": "Continue with Google"
+                                        "text": "Continue with Google",
+                                        "image": "https://www.svgrepo.com/show/475656/google-color.svg"
                                     },
                                     "action": {
                                         "type": "NEXT",
