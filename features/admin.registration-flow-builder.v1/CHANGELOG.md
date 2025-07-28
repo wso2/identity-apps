@@ -1,5 +1,11 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.9.15
+
+### Patch Changes
+
+- [#8660](https://github.com/wso2/identity-apps/pull/8660) [`6f7d5c7bca8480cf679b6dd8500d4d9f907ed71b`](https://github.com/wso2/identity-apps/commit/6f7d5c7bca8480cf679b6dd8500d4d9f907ed71b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the missing Google icon to the Google federated template
+
 ## 0.9.14
 
 ### Patch Changes
