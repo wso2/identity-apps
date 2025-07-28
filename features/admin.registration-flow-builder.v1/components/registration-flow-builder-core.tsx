@@ -276,7 +276,6 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
     const initialTemplateComponents: Element[] = useMemo(
         () => getBasicTemplateComponents(), [ resources, generateProfileAttributes ]);
-    const blankTemplateComponents: Element[] = useMemo(() => getBlankTemplateComponents(), [ resources ]);
 
     const generateSteps: (steps: Node[]) => Node[] = useCallback((steps: Node[]): Node[] => {
         const START_STEP: Node = {
@@ -1023,13 +1022,13 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                     ...step,
                     data: {
                         ...step.data,
-                        components: blankTemplateComponents
+                        components: getBlankTemplateComponents()
                     }
                 };
             }
         }
 
-        const processedStep: Step = generateIdsForResources<Step>(cloneDeep(step));
+        const processedStep: Step = generateIdsForResources<Step>(step);
 
         if (processedStep?.data?.components) {
             processedStep.data.components = resolveComponentMetadata(
