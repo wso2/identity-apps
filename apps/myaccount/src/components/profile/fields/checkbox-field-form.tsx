@@ -16,9 +16,6 @@
  * under the License.
  */
 
-import { FormValue } from "@wso2is/forms";
-import React, { FunctionComponent, ReactElement } from "react";
-import { Grid, List } from "semantic-ui-react";
 import {
     CheckboxFieldAdapter,
     FinalForm,
@@ -26,7 +23,10 @@ import {
     FormRenderProps,
     FormSpy,
     FormState
-} from "../../../../../../modules/form/src";
+} from "@wso2is/form";
+import { FormValue } from "@wso2is/forms";
+import React, { FunctionComponent, ReactElement } from "react";
+import { Grid, List } from "semantic-ui-react";
 import { CheckBoxFieldFormPropsInterface } from "../../../models/profile-ui";
 
 const CheckboxFieldForm: FunctionComponent<CheckBoxFieldFormPropsInterface> = ({

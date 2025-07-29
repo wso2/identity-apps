@@ -21,13 +21,13 @@ import Select from "@oxygen-ui/react/Select";
 import Typography from "@oxygen-ui/react/Typography";
 import MultiValuedTextField from "@wso2is/common.ui.profile.v1/components/multi-valued-text-field";
 import { ProfileConstants } from "@wso2is/core/constants";
+import { FinalForm, FormRenderProps } from "@wso2is/form";
 import { Button, Popup, useMediaContext } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, List } from "semantic-ui-react";
 import EmptyValueField from "./empty-value-field";
-import { FinalForm, FormRenderProps } from "../../../../../../modules/form/src";
 import { MultiValueFieldFormPropsInterface } from "../../../models/profile-ui";
 import { EditSection } from "../../shared/edit-section";
 

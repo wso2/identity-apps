@@ -21,13 +21,13 @@ import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import { CommonUtils } from "@wso2is/core/utils";
+import { FinalForm, FinalFormField, FormRenderProps, SelectFieldAdapter } from "@wso2is/form";
 import { Button, Popup, useMediaContext } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { DropdownItemProps, Grid, Icon, List } from "semantic-ui-react";
 import EmptyValueField from "./empty-value-field";
-import { FinalForm, FinalFormField, FormRenderProps, SelectFieldAdapter } from "../../../../../../modules/form/src";
 import { CountryFieldFormPropsInterface } from "../../../models/profile-ui";
 import { EditSection } from "../../shared/edit-section";
 

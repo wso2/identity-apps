@@ -16,9 +16,6 @@
  * under the License.
  */
 
-import { FormValue } from "@wso2is/forms";
-import React, { FunctionComponent, ReactElement } from "react";
-import { Grid, List } from "semantic-ui-react";
 import {
     FinalForm,
     FinalFormField,
@@ -26,7 +23,10 @@ import {
     FormSpy,
     FormState,
     SwitchFieldAdapter
-} from "../../../../../../modules/form/src";
+} from "@wso2is/form";
+import { FormValue } from "@wso2is/forms";
+import React, { FunctionComponent, ReactElement } from "react";
+import { Grid, List } from "semantic-ui-react";
 import { SwitchFieldFormPropsInterface } from "../../../models/profile-ui";
 
 const SwitchFieldForm: FunctionComponent<SwitchFieldFormPropsInterface> = ({
