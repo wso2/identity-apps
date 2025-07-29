@@ -143,7 +143,22 @@
                 "description": "This email is resent to request credentials from the user when a new account is created and the registration flow is incomplete",
                 "displayName": "Resend New User Credentials Email",
                 "id": "T3JjaGVzdHJhdGVkUmVzZW5kQXNrUGFzc3dvcmQ"
-              }
+            },
+            {
+                "description": "This email OTP is sent to the user to set their password",
+                "displayName": "Invite user to set password via Email OTP",
+                "id": "YXNrUGFzc3dvcmRFbWFpbE90cA"
+            },
+            {
+                "description": "This email is resent to the user to set their password via Email OTP",
+                "displayName": "Invite user to set password via Email OTP Resend",
+                "id": "YXNrUGFzc3dvcmRSZXNlbmRFbWFpbE90cA"
+            },
+            {
+                "description": "This email is sent to confirm the user email address via Email OTP",
+                "displayName": "Confirm Email Address via Email OTP",
+                "id": "ZW1haWxDb25maXJtV2l0aE90cA"
+            }
         ],
         "outboundProvisioningConnectors": [],
         "smsTemplates": [
