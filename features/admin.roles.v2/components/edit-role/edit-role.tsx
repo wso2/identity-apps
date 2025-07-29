@@ -19,7 +19,11 @@
 import { useRequiredScopes } from "@wso2is/access-control";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
+import { AGENT_USERSTORE_ID } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { RoleConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -76,6 +80,18 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     } = props;
 
     const { t } = useTranslation();
+
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+
+    const {
+        isLoading: isUserStoresListFetchRequestLoading,
+        userStoresList
+    } = useUserStores();
+
+    const isAgentManagementEnabledForOrg: boolean = useMemo((): boolean => {
+        return !isUserStoresListFetchRequestLoading &&
+            userStoresList?.some((userStore: UserStoreListItem) => userStore.id === AGENT_USERSTORE_ID);
+    }, [ userStoresList, isUserStoresListFetchRequestLoading ]);
 
     const featureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRoles);
@@ -245,7 +261,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
             );
         }
 
-        if (agentsFeatureConfig?.enabled) {
+        if (agentsFeatureConfig?.enabled && isAgentManagementEnabledForOrg && !isSubOrganization()) {
             panes.push(
                 {
                     menuItem: t("roles:edit.menuItems.agents"),
