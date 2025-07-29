@@ -178,10 +178,15 @@
         (isEmailLinkBasedPasswordRecoveryEnabledByTenant || isEmailOtpBasedPasswordRecoveryEnabledByTenant);
     String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
     Boolean isEmailUsernameEnabled = false;
+    Boolean isEmailAsUsernameEnabled = MultitenantUtils.isEmailUserName();
+    boolean hideUsernameFieldWhenEmailAsUsernameIsEnabled = Boolean.parseBoolean(config.getServletContext().getInitParameter(
+        "HideUsernameWhenEmailAsUsernameEnabled"));
+
     String usernameLabel = i18n(recoveryResourceBundle, customText, "Username");
     String usernamePlaceHolder = "Enter.your.username.here";
 
-    if (StringUtils.isNotBlank(emailUsernameEnable) && Boolean.parseBoolean(emailUsernameEnable)) {
+    if ((StringUtils.isNotBlank(emailUsernameEnable) && Boolean.parseBoolean(emailUsernameEnable)) 
+            || (isEmailAsUsernameEnabled && hideUsernameFieldWhenEmailAsUsernameIsEnabled)) {
         usernameLabel = i18n(recoveryResourceBundle, customText, "email.username");
         usernamePlaceHolder = "enter.your.email";
     } else if (isMultiAttributeLoginEnabledInTenant) {
