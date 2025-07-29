@@ -22,23 +22,28 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import merge from "lodash-es/merge";
-import useGetCustomTextPreferenceExtensionsMeta from "./use-get-custom-text-preference-extensions-meta";
+import { SupportedLanguagesMeta } from "@wso2is/i18n";
+import { useSelector } from "react-redux";
 import { CustomTextPreferenceMeta } from "../models/custom-text-preference";
 
 /**
- * Hook to get the platform default branding preference text customization metadata from the distribution.
+ * Hook to get the extended preference text customization metadata from the distribution.
  *
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isValidating, mutate.
  */
-const useGetCustomTextPreferenceMeta = <
+const useGetCustomTextPreferenceExtensionsMeta = <
     Data = CustomTextPreferenceMeta,
     Error = RequestErrorInterface
 >(shouldFetch: boolean = true): RequestResultInterface<Data, Error> => {
+    const supportedLocaleExtensions: SupportedLanguagesMeta = useSelector(
+        (state: AppState) => state?.global?.supportedLocaleExtensions
+    );
+
     const basename: string = AppConstants.getAppBasename() ? `/${AppConstants.getAppBasename()}` : "";
-    const url: string = `https://${window.location.host}${basename}/resources/branding/i18n/meta.json`;
+    const url: string = `https://${window.location.host}${basename}/extensions/branding/i18n/meta.json`;
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -54,38 +59,30 @@ const useGetCustomTextPreferenceMeta = <
         shouldRetryOnError: false
     });
 
-    // Use the extensions hook to get additional locale data
-    const {
-        data: extensionsData,
-        error: extensionsError,
-        isValidating: extensionsIsValidating
-    } = useGetCustomTextPreferenceExtensionsMeta<Data, Error>(shouldFetch);
-
     let mergedData: Data = data;
 
-    if (data && extensionsData) {
-        // Both main and extensions data exist - deep merge the entire objects
-        const mainData: CustomTextPreferenceMeta = data as CustomTextPreferenceMeta;
-        const extensionData: CustomTextPreferenceMeta = extensionsData as CustomTextPreferenceMeta;
-
-        mergedData = merge({}, mainData, extensionData, {
-            locales: Array.from(new Set([
-                ...(mainData.locales || []),
-                ...(extensionData.locales || [])
-            ]))
-        }) as Data;
-    } else if (!data && extensionsData) {
-        // Only extensions data exists
-        mergedData = extensionsData;
+    // If 404, gracefully return a meta object with only supportedLocaleExtensions as locales
+    if (error && (error as any)?.response?.status === 404 && supportedLocaleExtensions) {
+        mergedData = {
+            locales: Object.keys(supportedLocaleExtensions)
+        } as Data;
+    } else if (Array.isArray((data as CustomTextPreferenceMeta)?.locales) && supportedLocaleExtensions) {
+        (data as CustomTextPreferenceMeta).locales = [
+            ...(data as CustomTextPreferenceMeta).locales,
+            ...Object.keys(supportedLocaleExtensions)
+        ];
+        // Remove duplicates
+        (data as CustomTextPreferenceMeta).locales = Array.from(new Set((data as CustomTextPreferenceMeta).locales));
+        mergedData = data;
     }
 
     return {
         data: mergedData,
-        error: error || extensionsError,
-        isLoading: (!error && !data) || (!extensionsError && !extensionsData),
-        isValidating: isValidating || extensionsIsValidating,
+        error,
+        isLoading: !error && !mergedData,
+        isValidating,
         mutate
     };
 };
 
-export default useGetCustomTextPreferenceMeta;
+export default useGetCustomTextPreferenceExtensionsMeta;

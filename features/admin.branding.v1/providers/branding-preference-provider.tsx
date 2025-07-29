@@ -516,9 +516,31 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 customTextScreenMeta,
                 getLocales: (requestingView: BrandingSubFeatures): SupportedLanguagesMeta => {
                     if (requestingView === BrandingSubFeatures.CUSTOM_TEXT) {
-                        console.log("supportedI18nLanguages", JSON.stringify(supportedI18nLanguages));
-                        console.log("Custom text meta locales: ", JSON.stringify(customTextMeta?.locales));
-                        return pick(supportedI18nLanguages, customTextMeta?.locales);
+                        // If all locales are in supportedI18nLanguages, return the picked set
+                        const missingLocales: string[] = (customTextMeta?.locales ?? []).filter(
+                            (locale: string) => !supportedI18nLanguages[locale]
+                        );
+
+                        if (missingLocales.length === 0) {
+                            return pick(supportedI18nLanguages, customTextMeta?.locales);
+                        }
+
+                        // Otherwise, return a derived SupportedLanguagesMeta for all locales
+                        const derived: SupportedLanguagesMeta = {};
+
+                        (customTextMeta?.locales ?? []).forEach((locale: string) => {
+                            if (supportedI18nLanguages[locale]) {
+                                derived[locale] = supportedI18nLanguages[locale];
+                            } else {
+                                derived[locale] = {
+                                    code: locale,
+                                    name: locale,
+                                    namespaces: []
+                                };
+                            }
+                        });
+
+                        return derived;
                     }
 
                     return null;
