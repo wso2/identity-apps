@@ -1,5 +1,16 @@
 # @wso2is/admin.roles.v2
 
+## 2.27.177
+
+### Patch Changes
+
+- [#8669](https://github.com/wso2/identity-apps/pull/8669) [`a8d5223bcc5a6505b14f95ac9282f6bd65e60e92`](https://github.com/wso2/identity-apps/commit/a8d5223bcc5a6505b14f95ac9282f6bd65e60e92) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Conditionally display AGENT userstore and other UI bug fixes
+
+- Updated dependencies [[`a8d5223bcc5a6505b14f95ac9282f6bd65e60e92`](https://github.com/wso2/identity-apps/commit/a8d5223bcc5a6505b14f95ac9282f6bd65e60e92)]:
+  - @wso2is/admin.users.v1@2.34.4
+  - @wso2is/admin.agents.v1@1.0.22
+  - @wso2is/admin.core.v1@2.46.43
+
 ## 2.27.176
 
 ### Patch Changes
