@@ -16,12 +16,10 @@
  * under the License.
  */
 
-.flow-builder-redirection {
+import { TreeViewBaseItem } from "@mui/x-tree-view/models";
+import { RolesInterface } from "@wso2is/core/models";
 
-    &.apple,
-    &.github {
-        img {
-            filter: invert(100%);
-        }
-    }
+export interface TreeViewBaseItemWithRoles extends TreeViewBaseItem {
+    roles?: RolesInterface[];
+    parentId?: string;
 }

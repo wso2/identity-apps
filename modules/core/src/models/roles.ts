@@ -78,7 +78,7 @@ export interface RoleGroupsInterface {
  * Interface to contain role audiences information
  */
 export interface RoleAudiencesInterface {
-    value: string;
+    value?: string;
     display: string;
     type: string;
 }

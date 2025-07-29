@@ -368,9 +368,9 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                 toggle
                 onChange={ handleToggle }
                 checked={ isActive }
-                readOnly={ !hasActionUpdatePermissions }
+                readOnly={ !hasActionUpdatePermissions || isSubmitting }
                 data-componentId={ `${ _componentId }-${ actionTypeApiPath }-enable-toggle` }
-                disabled={ !hasActionUpdatePermissions }
+                disabled={ !hasActionUpdatePermissions || isSubmitting }
             />
         );
     };

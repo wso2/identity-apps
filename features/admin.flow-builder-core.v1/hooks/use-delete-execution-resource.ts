@@ -27,45 +27,45 @@ import { StepTypes } from "../models/steps";
 import PluginRegistry from "../plugins/plugin-registry";
 
 /**
- * Custom hook to handle the deletion of redirection resources in the flow builder.
+ * Custom hook to handle the deletion of execution resources in the flow builder.
  *
  * This hook registers an event listener for node deletion events and ensures that
- * any associated redirection action nodes are also deleted when a redirection node is removed.
+ * any associated execution action nodes are also deleted when an execution node is removed.
  */
-const useDeleteRedirectionResource = (): void => {
+const useDeleteExecutionResource = (): void => {
 
     const { setIsOpenResourcePropertiesPanel } = useAuthenticationFlowBuilderCore();
     const { getEdges, getNodes, updateNodeData, setNodes } = useReactFlow();
 
     useEffect(() => {
         deleteComponentAndNode[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER] = "deleteComponentAndNode";
-        deleteRedirectionNode[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER] = "deleteRedirectionNode";
-        deleteRedirectionActionNode[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER] =
-            "deleteRedirectionActionNode";
+        deleteExecutionNode[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER] = "deleteExecutionNode";
+        deleteExecutionActionNode[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER] =
+            "deleteExecutionActionNode";
 
-        PluginRegistry.getInstance().registerAsync(EventTypes.ON_NODE_DELETE, deleteRedirectionActionNode);
-        PluginRegistry.getInstance().registerAsync(EventTypes.ON_NODE_ELEMENT_DELETE, deleteRedirectionNode);
+        PluginRegistry.getInstance().registerAsync(EventTypes.ON_NODE_DELETE, deleteExecutionActionNode);
+        PluginRegistry.getInstance().registerAsync(EventTypes.ON_NODE_ELEMENT_DELETE, deleteExecutionNode);
         PluginRegistry.getInstance().registerAsync(EventTypes.ON_EDGE_DELETE, deleteComponentAndNode);
 
         return () => {
             PluginRegistry.getInstance().unregister(EventTypes.ON_NODE_DELETE,
-                deleteRedirectionActionNode[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER]);
+                deleteExecutionActionNode[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER]);
             PluginRegistry.getInstance().unregister(EventTypes.ON_NODE_ELEMENT_DELETE,
-                deleteRedirectionNode[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER]);
+                deleteExecutionNode[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER]);
             PluginRegistry.getInstance().unregister(EventTypes.ON_EDGE_DELETE,
                 deleteComponentAndNode[VisualFlowConstants.FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER]);
         };
     }, []);
 
     /**
-     * Deletes associated redirection components when redirection nodes are removed.
+     * Deletes associated execution components when execution nodes are removed.
      *
-     * This utility function ensures that when a redirection node is deleted from the flow,
-     * any related redirection initiation action components are also removed to maintain consistency.
+     * This utility function ensures that when an execution node is deleted from the flow,
+     * any related execution initiation action components are also removed to maintain consistency.
      *
      * @param deleted - An array of nodes that have been deleted from the flow.
      */
-    const deleteRedirectionActionNode = async (
+    const deleteExecutionActionNode = async (
         deleted: Node[]
     ): Promise<boolean> => {
 
@@ -75,7 +75,7 @@ const useDeleteRedirectionResource = (): void => {
         const actionComponentIds: string[] = [];
 
         deleted.forEach((node: Node) => {
-            if (node?.type === StepTypes.Redirection) {
+            if (node?.type === StepTypes.Execution) {
                 const actionNode: Node[] = nodes?.filter((n: Node) => {
                     return edges?.some((edge: Edge) => {
                         if (edge.target === node.id && edge.source === n.id
@@ -118,20 +118,20 @@ const useDeleteRedirectionResource = (): void => {
     };
 
     /**
-     * Deletes the redirection node when a redirection action is removed.
+     * Deletes the execution node when a execution action is removed.
      *
      * @param _stepId - The ID of the step from which the element is being deleted.
-     * @param element - The element being deleted, which is expected to be a redirection action.
+     * @param element - The element being deleted, which is expected to be a execution action.
      * @returns Returns true if the deletion was successful.
      */
-    const deleteRedirectionNode = async (
+    const deleteExecutionNode = async (
         _stepId: string,
         element: Element
     ): Promise<boolean> => {
 
         if (element.category === ElementCategories.Action && element?.action?.type === ActionTypes.Next) {
             setNodes((nodes: Node[]) => nodes?.filter((node: Node) =>
-                node.id !== element?.action?.next || node.type !== StepTypes.Redirection));
+                node.id !== element?.action?.next || node.type !== StepTypes.Execution));
         }
 
         return true;
@@ -148,26 +148,26 @@ const useDeleteRedirectionResource = (): void => {
     ): Promise<boolean> => {
 
         const nodes: Node[] = getNodes();
-        const redirectionNodeIds: string[] = [];
+        const executionNodeIds: string[] = [];
         const actionNodeIds: string[] = [];
         const actionComponentIds: string[] = [];
 
         deleted.forEach((edge: Edge) => {
             nodes.forEach((node: Node) => {
-                if (node.type === StepTypes.Redirection && edge.target === node.id) {
+                if (node.type === StepTypes.Execution && edge.target === node.id) {
                     actionComponentIds.push(edge.sourceHandle.slice(0,
                         -VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX.length));
                     actionNodeIds.push(edge.source);
-                    redirectionNodeIds.push(edge.target);
+                    executionNodeIds.push(edge.target);
                 }
             });
         });
 
-        if (redirectionNodeIds.length === 0) {
+        if (executionNodeIds.length === 0) {
             return true;
         }
 
-        setNodes((nodes: Node[]) => nodes?.filter((node: Node) => !redirectionNodeIds.includes(node.id)));
+        setNodes((nodes: Node[]) => nodes?.filter((node: Node) => !executionNodeIds.includes(node.id)));
 
         actionNodeIds.forEach((actionNodeId: string) => {
             updateNodeData(actionNodeId, (node: Node) => {
@@ -186,4 +186,4 @@ const useDeleteRedirectionResource = (): void => {
     };
 };
 
-export default useDeleteRedirectionResource;
+export default useDeleteExecutionResource;

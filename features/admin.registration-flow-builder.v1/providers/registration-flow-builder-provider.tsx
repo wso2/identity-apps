@@ -26,6 +26,7 @@ import React, { FC, PropsWithChildren, ReactElement, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import configureRegistrationFlow from "../api/configure-registration-flow";
+import useGetSupportedProfileAttributes from "../api/use-get-supported-profile-attributes";
 import ResourceProperties from "../components/resource-property-panel/resource-properties";
 import ElementFactory from "../components/resources/elements/element-factory";
 import RegistrationFlowConstants from "../constants/registration-flow-constants";
@@ -68,11 +69,12 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
     const dispatch: Dispatch = useDispatch();
 
     const { toObject } = useReactFlow();
+    const { data: supportedAttributes } = useGetSupportedProfileAttributes();
 
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Attribute[] }>({});
     const [ isPublishing, setIsPublishing ] = useState<boolean>(false);
 
-    const handlePublish = async (): Promise<void> => {
+    const handlePublish = async (): Promise<boolean> => {
         setIsPublishing(true);
 
         const flow: any = toObject();
@@ -91,6 +93,8 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
                     message: "Flow Updated Successfully"
                 })
             );
+
+            return true;
         } catch (error) {
             dispatch(
                 addAlert({
@@ -99,6 +103,8 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
                     message: "Flow Update Failure"
                 })
             );
+
+            return false;
         } finally {
             setIsPublishing(false);
         }
@@ -110,7 +116,8 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
                 isPublishing,
                 onPublish: handlePublish,
                 selectedAttributes,
-                setSelectedAttributes
+                setSelectedAttributes,
+                supportedAttributes
             } }
         >
             { children }

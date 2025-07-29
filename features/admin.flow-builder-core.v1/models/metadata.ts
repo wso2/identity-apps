@@ -21,7 +21,7 @@ import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 /**
  * Interface for common metadata.
  */
-export interface CommonMetadataInterface {
+export interface MetadataInterface {
     /**
      * The type of the flow.
      */
@@ -33,19 +33,71 @@ export interface CommonMetadataInterface {
     /**
      * Connector configuration for the flow.
      */
-    connectorConfig: BaseConnectorConfig;
+    connectorConfigs: ConnectorConfigs;
     /**
      * The default attribute profile to be used.
      */
     attributeProfile: string;
+    /**
+     * Metadata for attributes used in the flow.
+     */
+    attributeMetadata: AttributeMetadataInterface[];
+    /**
+     * List of executor connections.
+     */
+    executorConnections: ExecutorConnectionInterface[];
 };
 
 /**
  * Common connector configuration interface.
  */
-export interface BaseConnectorConfig {
+export interface ConnectorConfigs {
     /**
      * Indicates if multi-attribute login is enabled.
      */
     multiAttributeLoginEnabled: boolean;
+    /**
+     * Indicates if account verification is enabled.
+     */
+    accountVerificationEnabled: boolean;
+}
+
+/**
+ * Interface for attribute metadata.
+ */
+export interface AttributeMetadataInterface {
+    /**
+     * The name of the attribute.
+     */
+    name: string;
+    /**
+     * Claim URI of the attribute.
+     */
+    claimURI: string;
+    /**
+     * Indicates if the attribute is required.
+     */
+    required: boolean;
+    /**
+     * Indicates if the attribute is read-only.
+     */
+    readOnly: boolean;
+    /**
+     * List of validators for the attribute.
+     */
+    validators: string[];
+}
+
+/**
+ * Interface for executor connection.
+ */
+export interface ExecutorConnectionInterface {
+    /**
+     * The name of the executor.
+     */
+    executorName: string;
+    /**
+     * List of connections for the executor.
+     */
+    connections: string[];
 }

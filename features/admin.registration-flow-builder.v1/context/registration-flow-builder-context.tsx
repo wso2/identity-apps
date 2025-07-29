@@ -30,7 +30,7 @@ export interface RegistrationFlowBuilderContextProps {
     /**
      * Callback to publish the flow.
      */
-    onPublish: () => void;
+    onPublish: () => Promise<boolean>;
     /**
      * The set of attributes that are selected for the flow that are maintained per node.
      */
@@ -41,6 +41,10 @@ export interface RegistrationFlowBuilderContextProps {
      * Sets the selected attributes for the flow.
      */
     setSelectedAttributes: Dispatch<SetStateAction<{ [key: string]: Attribute[] }>>;
+    /**
+     * Supported attributes for the registration flow.
+     */
+    supportedAttributes: Attribute[];
 }
 
 /**
@@ -51,9 +55,10 @@ const RegistrationFlowBuilderContext: Context<
 > = createContext<null | RegistrationFlowBuilderContextProps>(
     {
         isPublishing: false,
-        onPublish: () => {},
+        onPublish: () => Promise.resolve(false),
         selectedAttributes: {},
-        setSelectedAttributes: () => {}
+        setSelectedAttributes: () => {},
+        supportedAttributes: null
     }
 );
 

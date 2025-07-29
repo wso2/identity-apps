@@ -1,5 +1,14 @@
 # @wso2is/admin.application-templates.v1
 
+## 1.5.7
+
+### Patch Changes
+
+- [#8570](https://github.com/wso2/identity-apps/pull/8570) [`1cd2c4ed34098ce360ea05a33af1b0d4ebf22af0`](https://github.com/wso2/identity-apps/commit/1cd2c4ed34098ce360ea05a33af1b0d4ebf22af0) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Update the template markdown serverOrigin
+
+- Updated dependencies [[`86a1c84f5ad6986d1398cd8f0d03918d1e73d766`](https://github.com/wso2/identity-apps/commit/86a1c84f5ad6986d1398cd8f0d03918d1e73d766)]:
+  - @wso2is/admin.core.v1@2.46.41
+
 ## 1.5.6
 
 ### Patch Changes

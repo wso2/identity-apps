@@ -20,7 +20,7 @@ import { PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-pr
 import { Claim } from "@wso2is/core/models";
 import { Context, Dispatch, FunctionComponent, ReactNode, SetStateAction, createContext } from "react";
 import { Base } from "../models/base";
-import { CommonMetadataInterface } from "../models/metadata";
+import { MetadataInterface } from "../models/metadata";
 import { Resource } from "../models/resources";
 
 /**
@@ -100,7 +100,7 @@ export interface AuthenticationFlowBuilderCoreContextProps {
     /**
      * Metadata for the current flow builder.
      */
-    metadata?: CommonMetadataInterface;
+    metadata?: MetadataInterface;
     /**
      * Configured i18n text from the branding or default fallback.
      */

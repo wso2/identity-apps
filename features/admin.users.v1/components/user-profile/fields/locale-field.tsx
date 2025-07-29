@@ -90,7 +90,7 @@ const LocaleField: FunctionComponent<LocaleFieldPropsInterface> = ({
     return (
         <FinalFormField
             component={ SelectFieldAdapter }
-            initialValue={ selectedLocale.value as string | string[] }
+            initialValue={ selectedLocale?.value as string | string[] }
             ariaLabel={ fieldLabel }
             name={ fieldName }
             label={ fieldLabel }
@@ -119,7 +119,7 @@ const LocaleField: FunctionComponent<LocaleFieldPropsInterface> = ({
             }
             readOnly={ isReadOnly || isUpdating }
             required={ isRequired }
-            disableClearable={ isRequired }
+            isClearable={ !isRequired }
             data-testid={ `${ componentId }-input` }
             data-componentid={ `${ componentId }-input` }
         />

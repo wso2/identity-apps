@@ -172,6 +172,8 @@ export const common: CommonNS = {
     search: "සොයන්න",
     searching: "සොයමින්",
     security: "ආරක්ෂාව",
+    selectAll: "සියල්ල තෝරන්න",
+    selectNone: "කිසිවක් තෝරන්න",
     services: "සේවාවන්",
     settings: "සැකසුම්",
     setup: "සැලසුම",

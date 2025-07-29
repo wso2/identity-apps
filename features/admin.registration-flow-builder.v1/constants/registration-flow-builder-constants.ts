@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { ExecutionTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
+
 /**
  * Constants related to the tenant management operations.
  *
@@ -38,6 +40,12 @@ class RegistrationFlowBuilderConstants {
 
     public static readonly FLOW_CONFIG_UPDATE_ERROR: string =
         "An error occurred while configuring the registration flow.";
+
+    public static readonly FEDERATION_CONFIG_SKIPPED_EXECUTORS: ExecutionTypes[] = [
+        ExecutionTypes.PasskeyEnrollment,
+        ExecutionTypes.ConfirmationCode,
+        ExecutionTypes.MagicLinkExecutor
+    ];
 }
 
 export default RegistrationFlowBuilderConstants;

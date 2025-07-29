@@ -286,7 +286,7 @@ const WebhookList: FunctionComponent<WebhookListPropsInterface> = ({
             );
         }
 
-        if (list?.totalResults === 0) {
+        if (list?.totalResults === 0 && !isLoading) {
             return (
                 <EmptyPlaceholder
                     action={

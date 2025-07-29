@@ -63,6 +63,7 @@ export const flows: flowsNS = {
                         callbackOrApplicationAccessUrl: "Callback or Application Access URL",
                         customUrl: "Custom URL",
                         privacyPolicyUrl: "Privacy Policy URL",
+                        supportEmail: "Contact Support Email",
                         termsOfUseUrl: "Terms of Use URL"
                     },
                     urlTypeLabel: "URL Type"
@@ -90,6 +91,19 @@ export const flows: flowsNS = {
             updateI18nKey: {
                 description: "An error occurred while updating the custom text in the flow.",
                 message: "Update Custom Text Error"
+            }
+        },
+        executions: {
+            names: {
+                apple: "Apple",
+                confirmationCode: "Confirmation Code",
+                default: "Execution",
+                facebook: "Facebook",
+                github: "GitHub",
+                google: "Google",
+                magicLink: "Magic Link",
+                microsoft: "Microsoft",
+                passkeyEnrollment: "Enroll Passkey"
             }
         }
     },

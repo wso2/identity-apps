@@ -34,7 +34,7 @@ export interface AskPasswordFlowBuilderContextProps {
     /**
      * Callback to publish the flow.
      */
-    onPublish: () => void;
+    onPublish: () => Promise<boolean>;
     /**
      * The set of attributes that are selected for the flow that are maintained per node.
      */
@@ -45,6 +45,10 @@ export interface AskPasswordFlowBuilderContextProps {
      * Sets the selected attributes for the flow.
      */
     setSelectedAttributes: Dispatch<SetStateAction<{ [key: string]: Attribute[] }>>;
+    /**
+     * Supported attributes for the ask password flow.
+     */
+    supportedAttributes: Attribute[];
 }
 
 /**
@@ -56,9 +60,10 @@ const AskPasswordFlowBuilderContext: Context<
     {
         isNewAskPasswordPortalEnabled: false,
         isPublishing: false,
-        onPublish: () => {},
+        onPublish: () => Promise.resolve(false),
         selectedAttributes: {},
-        setSelectedAttributes: () => {}
+        setSelectedAttributes: () => {},
+        supportedAttributes: []
     }
 );
 
