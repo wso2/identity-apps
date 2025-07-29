@@ -462,10 +462,15 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             data-componentid="app-header-language-switcher-trigger"
                         >
                             {
-                            isMobileViewport
-                                ? <Flag countryCode={ filteredSupportedI18nLanguages[I18n.instance?.language]?.flag } />
-                                : supportedI18nLanguages[I18n.instance?.language]?.name
-                        }
+                                isMobileViewport
+                                    ? (
+                                        <Flag
+                                            countryCode={
+                                                filteredSupportedI18nLanguages[I18n.instance?.language]?.flag
+                                            }
+                                        />
+                                    ) : supportedI18nLanguages[I18n.instance?.language]?.name
+                            }
                         </Button>
                         <Menu
                             open={ openLanguageSwitcher }
@@ -485,7 +490,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                                 handleLanguageSwitch(value.code);
                                                 setOpenLanguageSwitcher(false);
                                                 handleDirection(value.code);
-                                        } }
+                                            } }
                                         >
                                             <ListItem>
                                                 <ListItemIcon>
