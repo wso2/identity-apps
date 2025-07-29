@@ -30,7 +30,7 @@
     }
 
     .OxygenTextField-root {
-        background-color: var(--asg-input-field-base-background-color);
+        background-color: var(--asg-input-field-base-background-color, #fff);
     }
 
     .form-actions-wrapper {
@@ -44,7 +44,7 @@
 
         .OxygenRadioGroup-root {
             padding-left: 4px;
-            background-color: var(--asg-input-field-base-background-color);
+            background-color: var(--asg-input-field-base-background-color, #fff);
         }
     }
 
@@ -59,7 +59,7 @@
 
         .OxygenFormGroup-root {
             padding-left: 4px;
-            background-color: var(--asg-input-field-base-background-color);
+            background-color: var(--asg-input-field-base-background-color, #fff);
         }
     }
 
@@ -70,6 +70,6 @@
 
 .dropdown-field-form {
     .OxygenSelect-root {
-        background-color: var(--asg-input-field-base-background-color);
+        background-color: var(--asg-input-field-base-background-color, #fff);
     }
 }
