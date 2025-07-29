@@ -1,5 +1,14 @@
 # @wso2is/admin.home.v1
 
+## 1.7.21
+
+### Patch Changes
+
+- [#8669](https://github.com/wso2/identity-apps/pull/8669) [`a8d5223bcc5a6505b14f95ac9282f6bd65e60e92`](https://github.com/wso2/identity-apps/commit/a8d5223bcc5a6505b14f95ac9282f6bd65e60e92) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Conditionally display AGENT userstore and other UI bug fixes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.46.43
+
 ## 1.7.20
 
 ### Patch Changes
