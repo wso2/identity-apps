@@ -23,6 +23,9 @@
         "v1"
     ],
     "dependencies": {
+        "@oxygen-ui/react": "^2.4.6",
+        "@oxygen-ui/react-icons": "^2.4.6",
+        "@wso2is/form": "^2.9.0",
         "lodash-es": "^4.17.21",
         "react-redux": "^7.2.9",
         "redux": "^4.0.4"

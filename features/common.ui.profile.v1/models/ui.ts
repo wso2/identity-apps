@@ -58,6 +58,9 @@ interface ProfileFormFieldProps<T> extends IdentifiableComponentInterface {
      * Placeholder for the field. If not provided, placeholder will be derived from the field label.
      */
     placeholder?: string;
+    /**
+     * Margin for the field.
+     */
     margin?: "none" | "normal" | "dense";
 }
 

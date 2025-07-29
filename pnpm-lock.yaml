@@ -21858,6 +21858,15 @@ importers:
 
   features/common.ui.profile.v1:
     dependencies:
+      '@oxygen-ui/react':
+        specifier: ^2.4.6
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+      '@oxygen-ui/react-icons':
+        specifier: ^2.4.6
+        version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+      '@wso2is/form':
+        specifier: ^2.9.0
+        version: link:../../modules/form
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
