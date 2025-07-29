@@ -112,4 +112,5 @@ export type GlobalActions = ShowGlobalLoaderAction
     | InitializeAlertSystemAction
     | AddAlertAction
     | SetSupportedI18nLanguagesActionInterface
+    | SetSupportedLocaleExtensionsActionInterface
     | SetOpenAction;

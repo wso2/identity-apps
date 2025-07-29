@@ -476,6 +476,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             open={ openLanguageSwitcher }
                             anchorEl={ languageSwitcherAnchorEl }
                             onClose={ handleLanguageSwitching }
+                            className="app-header-language-switcher-menu"
                         >
                             { Object.entries(filteredSupportedI18nLanguages)?.map(
                                 ([ key, value ]: [ key: string, value: LocaleMeta ]) => {
@@ -491,13 +492,14 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                                 setOpenLanguageSwitcher(false);
                                                 handleDirection(value.code);
                                             } }
+                                            className="app-header-language-switcher-menu-item"
                                         >
                                             <ListItem>
-                                                <ListItemIcon>
-                                                    <Flag
-                                                        countryCode={ value.flag }
-                                                    />
-                                                </ListItemIcon>
+                                                { value.flag && (
+                                                    <ListItemIcon>
+                                                        <Flag countryCode={ value.flag } />
+                                                    </ListItemIcon>
+                                                ) }
                                                 <ListItemText>
                                                     { value.name }
                                                 </ListItemText>
