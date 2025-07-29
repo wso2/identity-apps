@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,38 +22,26 @@
 export enum CommonGlobalActionTypes {
     /**
      * Action type to show the top AJAX loading bar.
-     *
-     * @type {string}
      */
     SHOW_AJAX_TOP_LOADING_BAR = "SHOW_AJAX_TOP_LOADING_BAR",
     /**
      * Action type to hide the top AJAX loading bar.
-     *
-     * @type {string}
      */
     HIDE_AJAX_TOP_LOADING_BAR = "HIDE_GLOBAL_LOADER",
     /**
      * Action type to initialize the alert system.
-     *
-     * @type {string}
      */
     INITIALIZE_ALERT_SYSTEM = "INITIALIZE_ALERT_SYSTEM",
     /**
      * Action type to add an alert.
-     *
-     * @type {string}
      */
     ADD_ALERT = "ADD_ALERT",
     /**
      * Action type to set the supported languages.
-     *
-     * @type {string}
      */
     SET_SUPPORTED_I18N_LANGUAGES = "SET_SUPPORTED_I18N_LANGUAGES",
     /**
      * Action type to set the supported locale extensions.
-     *
-     * @type {string}
      */
     SET_SUPPORTED_LOCALE_EXTENSIONS = "SET_SUPPORTED_LOCALE_EXTENSIONS"
 }
@@ -82,7 +70,7 @@ export interface HideAJAXTopLoadingBarAction extends CommonGlobalBaseAction {
 /**
  * Alert system initialize action interface.
  */
-export interface InitializeAlertSystemAction<S = {}> extends CommonGlobalBaseAction {
+export interface InitializeAlertSystemAction<S = any> extends CommonGlobalBaseAction {
     payload: S;
     type: CommonGlobalActionTypes.INITIALIZE_ALERT_SYSTEM;
 }
@@ -90,7 +78,7 @@ export interface InitializeAlertSystemAction<S = {}> extends CommonGlobalBaseAct
 /**
  * Add alert action interface.
  */
-export interface AddAlertAction<T = {}> extends CommonGlobalBaseAction {
+export interface AddAlertAction<T = Record<string, unknown>> extends CommonGlobalBaseAction {
     payload: T;
     type: CommonGlobalActionTypes.ADD_ALERT;
 }
@@ -98,7 +86,7 @@ export interface AddAlertAction<T = {}> extends CommonGlobalBaseAction {
 /**
  * Set supported i18n languages action interface.
  */
-export interface SetSupportedI18nLanguagesActionInterface <U = {}>extends CommonGlobalBaseAction {
+export interface SetSupportedI18nLanguagesActionInterface<U = Record<string, unknown>> extends CommonGlobalBaseAction {
     payload: U;
     type: CommonGlobalActionTypes.SET_SUPPORTED_I18N_LANGUAGES;
 }
@@ -106,7 +94,8 @@ export interface SetSupportedI18nLanguagesActionInterface <U = {}>extends Common
 /**
  * Set supported locale extensions action interface.
  */
-export interface SetSupportedLocaleExtensionsActionInterface <U = {}>extends CommonGlobalBaseAction {
+export interface SetSupportedLocaleExtensionsActionInterface<U = Record<string, unknown>>
+    extends CommonGlobalBaseAction {
     payload: U;
     type: CommonGlobalActionTypes.SET_SUPPORTED_LOCALE_EXTENSIONS;
 }
@@ -114,7 +103,8 @@ export interface SetSupportedLocaleExtensionsActionInterface <U = {}>extends Com
 /**
  * Export action interfaces.
  */
-export type CommonGlobalActions<T, S, U> = ShowAJAXTopLoadingBarAction
+export type CommonGlobalActions<T, S, U> =
+    | ShowAJAXTopLoadingBarAction
     | HideAJAXTopLoadingBarAction
     | AddAlertAction<T>
     | InitializeAlertSystemAction<S>
