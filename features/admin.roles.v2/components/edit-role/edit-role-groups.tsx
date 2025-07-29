@@ -294,7 +294,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             <Heading as="h4">
                 { t("roles:edit.groups.heading") }
             </Heading>
-            <Heading subHeading ellipsis as="h6">
+            <Heading subHeading as="h6">
                 { t("roles:edit.groups.subHeading") }
             </Heading>
             <Heading as="h5">
