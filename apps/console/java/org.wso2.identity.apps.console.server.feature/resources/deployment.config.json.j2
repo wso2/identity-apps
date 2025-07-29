@@ -1630,7 +1630,7 @@
                 }
             },
             {% endif %}
-            {% if console.role_assignments is defined %}
+            {% if console.role_assignments && scim2.enable_scim2_roles_v3_api is defined %}
             "roleAssignments": {
                 "disabledFeatures": [
                     {% if console.role_assignments.disabled_features is defined %}
@@ -1639,7 +1639,7 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {% if console.role_assignments.enabled is defined %} {{ console.role_assignments.enabled }},
+                "enabled": {% if scim2.enable_scim2_roles_v3_api is defined %} {{ scim2.enable_scim2_roles_v3_api }},
                 {% else %} true,
                 {% endif %}
                 "scopes": {
