@@ -166,6 +166,8 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         (state: AppState) => state.global.supportedI18nLanguages);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
+    const systemReservedUserStores: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.systemReservedUserStores);
 
     const [ askPasswordOption, setAskPasswordOption ] = useState<string>(userConfig.defautlAskPasswordOption);
     const [ password, setPassword ] = useState<string>(initialValues?.newPassword ?? "");
@@ -331,7 +333,12 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                 const isReadOnly: boolean = isUserStoreReadOnly(store.name);
                 const isEnabled: boolean = store.enabled;
 
-                if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName && !isReadOnly && isEnabled) {
+                if (
+                    store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName &&
+                    !isReadOnly &&
+                    isEnabled &&
+                    !systemReservedUserStores?.includes(store.name.toUpperCase())
+                ) {
                     const storeOption: DropdownItemProps = {
                         key: index,
                         text: store.name,
