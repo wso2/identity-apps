@@ -225,6 +225,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         state.config.ui.features.bulkUserImport.fileImportTimeout);
     const userLimit: number = useSelector((state: AppState) =>
         state.config.ui.features.bulkUserImport.userLimit);
+
+    const systemReservedUserStores: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.systemReservedUserStores);
+
     const csvFileProcessingStrategy: CSVFileStrategy = useMemo( () => {
         return new CSVFileStrategy(
             undefined,  // Mimetype.
@@ -299,7 +303,12 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 const isReadOnly: boolean = isUserStoreReadOnly(item.name);
                 const isEnabled: boolean = item.enabled;
 
-                if (isEnabled && !isReadOnly && isBulkImportSupportedUserStore(item)) {
+                if (
+                    isEnabled &&
+                    !isReadOnly &&
+                    isBulkImportSupportedUserStore(item) &&
+                    !systemReservedUserStores?.includes(item?.name)
+                ) {
                     userStoreArray.push({
                         key: index,
                         text: item.name,
