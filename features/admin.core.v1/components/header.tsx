@@ -262,7 +262,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
      *
      * @param e - Click event.
      */
-    const handleLanguageSwitchTriggerClick = (e: MouseEvent<HTMLElement>) => {
+    const handleLanguageSwitchTriggerClick = (e: MouseEvent<HTMLElement>): void => {
         setOpenLanguageSwitcher(!openLanguageSwitcher);
         setLanguageSwitcherAnchorEl(e.currentTarget);
     };

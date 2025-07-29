@@ -30,6 +30,9 @@ import { CustomTextPreferenceMeta } from "../models/custom-text-preference";
 /**
  * Hook to get the platform default branding preference text customization metadata from the distribution.
  *
+ * @remarks Use the extensions hook to get additional locale data and if both main and extensions data exist,
+ * deep merge the entire objects.
+ *
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isValidating, mutate.
  */
@@ -54,7 +57,6 @@ const useGetCustomTextPreferenceMeta = <
         shouldRetryOnError: false
     });
 
-    // Use the extensions hook to get additional locale data
     const {
         data: extensionsData,
         error: extensionsError,
@@ -64,7 +66,6 @@ const useGetCustomTextPreferenceMeta = <
     let mergedData: Data = data;
 
     if (data && extensionsData) {
-        // Both main and extensions data exist - deep merge the entire objects
         const mainData: CustomTextPreferenceMeta = data as CustomTextPreferenceMeta;
         const extensionData: CustomTextPreferenceMeta = extensionsData as CustomTextPreferenceMeta;
 
@@ -75,7 +76,6 @@ const useGetCustomTextPreferenceMeta = <
             ]))
         }) as Data;
     } else if (!data && extensionsData) {
-        // Only extensions data exists
         mergedData = extensionsData;
     }
 
