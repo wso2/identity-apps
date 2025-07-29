@@ -22,8 +22,8 @@ import { OrganizationAction, OrganizationActionTypes } from "../actions/types/or
 
 const initialState: OrganizationReducerStateInterface = {
     organizationType: OrganizationType.SUPER_ORGANIZATION,
-    userOrganizationId: "",
-    userOrganizationHandle: ""
+    userOrganizationHandle: "",
+    userOrganizationId: ""
 };
 
 export const organizationReducer = (

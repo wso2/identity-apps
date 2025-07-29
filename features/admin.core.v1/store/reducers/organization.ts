@@ -41,8 +41,8 @@ const initialState: OrganizationReducerStateInterface = {
     },
     organizationType: OrganizationType.SUPER_ORGANIZATION,
     superAdmin: "",
-    userOrganizationId: "",
-    userOrganizationHandle: ""
+    userOrganizationHandle: "",
+    userOrganizationId: ""
 };
 
 export const organizationReducer = (

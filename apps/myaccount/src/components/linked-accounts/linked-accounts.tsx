@@ -69,9 +69,8 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
 
     const linkedAccounts: LinkedAccountInterface[] = useSelector((state: AppState) => state.profile.linkedAccounts);
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
-    const userOrganizationHandle: string = useSelector((state: AppState) => state?.organization?.userOrganizationHandle);
-    const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
-    const tenantDomain: string = useSelector((state: AppState) => state?.authenticationInformation?.tenantDomain);
+    const userOrganizationHandle: string
+        = useSelector((state: AppState) => state?.organization?.userOrganizationHandle);
 
     /**
      * Set the linked accounts.
@@ -94,15 +93,9 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
         const superTenant: string = "carbon.super";
         let userId: string = username;
 
-        if (organizationType === OrganizationType.SUBORGANIZATION) {
-            if (usernameSplit?.length >= 1 && !usernameSplit.includes(userOrganizationHandle)) {
-                userId = username + "@" + userOrganizationHandle;
-            }
-
-        } else {
-            if (usernameSplit?.length >= 1 && tenantDomain !== superTenant && !usernameSplit.includes(tenantDomain)) {
-                userId = username + "@" + tenantDomain;
-            }
+        if (usernameSplit?.length >= 1 && userOrganizationHandle !== superTenant
+                    && !usernameSplit.includes(userOrganizationHandle)) {
+            userId = username + "@" + userOrganizationHandle;
         }
 
         const data: {

@@ -84,7 +84,8 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
     const endUserSession: () => Promise<boolean> = useEndUserSession();
 
     const userOrganizationId: string = useSelector((state: AppState) => state?.organization?.userOrganizationId);
-    const userOrganizationHandle: string = useSelector((state: AppState) => state?.organization?.userOrganizationHandle);
+    const userOrganizationHandle: string
+        = useSelector((state: AppState) => state?.organization?.userOrganizationHandle);
     const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
     const isSubOrgUser: boolean = (organizationType === OrganizationType.SUBORGANIZATION);
 
@@ -183,7 +184,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
      */
     const changePassword = () => {
 
-        updatePassword(currentPassword, newPassword, isSubOrgUser, userOrganizationId, userOrganizationHandle)
+        updatePassword(currentPassword, newPassword, isSubOrgUser, userOrganizationHandle)
             .then((response: any) => {
                 if (response.status && response.status === 200) {
                     // reset the form.

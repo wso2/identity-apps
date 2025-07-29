@@ -105,7 +105,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     const gettingStartedFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state.config.ui.features.gettingStarted);
     const scopes: string = useSelector((state: AppState) => state.auth.allowedScopes);
-    const userOrganizationHandle: string = useSelector((state: AppState) => state?.organization?.userOrganizationHandle);
+    const userOrganizationID: string = useSelector((state: AppState) => state?.organization?.userOrganizationId);
     const loginAndRegistrationFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state?.config?.ui?.features?.loginAndRegistration);
     const isCentralDeploymentEnabled: boolean = useSelector((state: AppState) => {
@@ -339,7 +339,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
             return false;
         }
 
-        return !userOrganizationHandle || userOrganizationHandle === window["AppUtils"].getConfig().organizationName;
+        return !userOrganizationID || userOrganizationID === window["AppUtils"].getConfig().organizationName;
     };
 
     /**

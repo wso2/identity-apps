@@ -54,7 +54,7 @@ export const setOrganizationType = (orgType: OrganizationType): SetOrganizationT
 /**
  * This action sets the user organization handle in the redux store.
  *
- * @param orgId - The user organization handle.
+ * @param orgHandle - The user organization handle.
  *
  * @returns - A set user organization handle action.
  */

@@ -21,7 +21,7 @@ import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 export enum OrganizationActionTypes {
     SET_ORGANIZATION_TYPE = "SET_ORGANIZATION_TYPE",
     SET_USER_ORGANIZATION_ID = "SET_USER_ORGANIZATION_ID",
-    SET_USER_ORGANIZATION_HANDLE = "SET_ORGANIZATION_HANDLE",
+    SET_USER_ORGANIZATION_HANDLE = "SET_ORGANIZATION_HANDLE"
 }
 
 export interface SetOrganizationTypeInterface {
