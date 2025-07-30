@@ -32,6 +32,7 @@ const initialState: OrganizationReducerStateInterface = {
         id: OrganizationManagementConstants.ROOT_ORGANIZATION.id,
         lastModified: new Date().toString(),
         name: OrganizationManagementConstants.ROOT_ORGANIZATION.name,
+        orgHandle: OrganizationManagementConstants.ROOT_ORGANIZATION.orgHandle,
         parent: {
             id: "",
             ref: ""

@@ -39,6 +39,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import BrandingCore from "./branding-core";
+import { CustomPageEditor } from "./custom-page-editor/custom-page-editor";
 import { useApplicationList } from "../../admin.applications.v1/api/application";
 import { ApplicationManagementConstants } from "../../admin.applications.v1/constants/application-management";
 import { ApplicationListItemInterface } from "../../admin.applications.v1/models/application";
@@ -75,7 +76,8 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         selectedApplication,
         setSelectedApplication,
         activeTab,
-        updateActiveTab
+        updateActiveTab,
+        isCustomLayoutEditorEnabled
     } = useBrandingPreference();
 
     const {
@@ -413,15 +415,20 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
             className="branding-page"
         >
             <LayoutGroup>
-                {
-                    !brandingDisabledFeatures?.includes(AI_BRANDING_FEATURE_ID) &&
-                    !isSubOrganization() && (
-                        <BrandingAIBanner
-                            readonly={ brandingMode === BrandingModes.APPLICATION && !selectedApplication }
-                        />
-                    )
-                }
-                <BrandingCore />
+                { isCustomLayoutEditorEnabled ? (
+                    <CustomPageEditor />
+                ) : (
+                    <>
+                        {
+                            !brandingDisabledFeatures?.includes(AI_BRANDING_FEATURE_ID) && !isSubOrganization() && (
+                                <BrandingAIBanner
+                                    readonly={ brandingMode === BrandingModes.APPLICATION && !selectedApplication }
+                                />
+                            )
+                        }
+                        <BrandingCore />
+                    </>
+                ) }
             </LayoutGroup>
         </PageLayout>
     );

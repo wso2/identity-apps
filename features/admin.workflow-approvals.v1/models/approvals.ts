@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -97,7 +97,7 @@ export interface ApprovalTaskDetails {
     /**
      * Status of the Approval task
      */
-    taskStatus?: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED;
+    taskStatus?: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.BLOCKED;
     /**
      * The time that the operation for approval initiated
      */
@@ -126,7 +126,6 @@ export interface ApprovalAction {
  * Enum for approval statuses.
  *
  * @readonly
- * @enum {string}
  */
 export enum ApprovalStatus {
     READY = "READY",
@@ -137,6 +136,7 @@ export enum ApprovalStatus {
     RELEASE = "RELEASE",
     APPROVE = "APPROVE",
     REJECT = "REJECT",
+    BLOCKED = "BLOCKED",
     ALL = "ALL"
 }
 
@@ -164,7 +164,7 @@ export interface ApprovalTaskListItemInterface {
     /**
      * Status of the Approval Task
      */
-    status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED;
+    approvalStatus: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.BLOCKED;
     /**
      * Priority of the Approval task
      */

@@ -273,6 +273,12 @@ export interface ApplicationsNS {
             content: string;
             assertionHint: string;
         };
+        inProgressReshare: {
+            header: string;
+            message: string;
+            content: string;
+            assertionHint: string;
+        };
         clientSecretHashDisclaimer: {
             modal: {
                 header: string;
@@ -635,6 +641,9 @@ export interface ApplicationsNS {
                         };
                     };
                     landing: {
+                        banners: {
+                            registrationConfiguration: string;
+                        };
                         defaultConfig: {
                             description: {
                                 0: string;
@@ -769,8 +778,77 @@ export interface ApplicationsNS {
                 };
             };
             sharedAccess: {
+                doNotShareApplication: string;
+                shareAllApplication: string;
+                shareSelectedApplication: string;
+                allRolesAndOrgsSharingMessage: string;
+                allRolesAndOrgsNotSharingMessage: string;
+                doNotShareRolesWithAllOrgs: string;
                 subTitle: string;
                 tabName: string;
+                sharedAccessStatusOptions: {
+                    all: string;
+                    success: string;
+                    failed: string;
+                    partiallyCompleted: string;
+                };
+                orgNotSelectedForRoleSharing: string;
+                noRolesAvailableForOrg: string;
+                noSharedOrgs: string;
+                rolesSharedPartially: string;
+                shareRoleSubsetWithSelectedOrgs: string;
+                shareRoleSubsetWithAllOrgs: string;
+                searchAvailableRolesPlaceholder: string;
+                manageRoleSharing: string;
+                viewRoleSharing: string;
+                selectAnOrganizationToViewRoles: string;
+                shareAllRoles: string;
+                shareSelectedRoles: string;
+                doNotShareRoles: string;
+                notifications: {
+                    fetchApplicationOrgTree: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchOrganizations: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchApplicationRoles: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    unshare: {
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    share: {
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    noRolesSelected: {
+                        description: string;
+                        message: string;
+                    };
+                };
             };
             shareApplication: {
                 heading: string;
@@ -811,7 +889,46 @@ export interface ApplicationsNS {
                         description: string;
                     };
                 };
+                completedSharingNotification: {
+                    failure: {
+                        message: string;
+                        description: string;
+                    },
+                    success: {
+                        message: string;
+                        description: string;
+                    },
+                    partialSuccess: {
+                        message: string;
+                        description: string;
+                    }
+                },
+                addAsyncSharingNotification: {
+                    message: string,
+                    description: string,
+                },
+                asyncOperationStatus: {
+                    inProgress: {
+                        heading: string,
+                        description: string
+                    },
+                    failed: {
+                        heading: string,
+                        description: string,
+                        actionText: string
+                    },
+                    partiallyCompleted: {
+                        heading: string,
+                        description: string,
+                        actionText: string
+                    }
+                },
                 switchToSelectiveShareFromSharingWithAllSuborgsWarning: string;
+                applicationShareFailureSummaryDefaultStatus: {
+                    success: string,
+                    failed: string,
+                    partiallyCompleted: string
+                }
             };
             apiAuthorization: {
                 m2mPolicyMessage: string;
@@ -1335,6 +1452,18 @@ export interface ApplicationsNS {
                                 ssoBinding: {
                                     label: string;
                                 };
+                                cookie: {
+                                    label: string;
+                                };
+                                clientRequest: {
+                                    label: string;
+                                };
+                                certificate: {
+                                    label: string;
+                                };
+                                deviceFlow: {
+                                    label: string;
+                                };
                             };
                             description: string;
                             label: string;
@@ -1342,6 +1471,7 @@ export interface ApplicationsNS {
                                 cookie: string;
                                 none: string;
                                 sso_session: string;
+                                dpop: string;
                             };
                         };
                         expiry: {
@@ -2947,5 +3077,14 @@ export interface ApplicationsNS {
                 description2: string;
             };
         };
+        sharedAccessStatus: {
+            heading: string,
+            subHeading: string,
+            actionText: string,
+            banner: {
+                partiallyCompleted: string,
+                failed: string
+            }
+        }
     };
 }

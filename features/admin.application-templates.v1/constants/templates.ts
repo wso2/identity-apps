@@ -31,9 +31,14 @@ export class ApplicationTemplateConstants {
             id: "DEFAULT"
         },
         {
+            description: "applicationTemplates:categories.technology.description",
+            displayOrder: 1,
+            id: "TECHNOLOGY"
+        },
+        {
             description: "applicationTemplates:categories.ssoIntegration.description",
             displayName: "applicationTemplates:categories.ssoIntegration.displayName",
-            displayOrder: 1,
+            displayOrder: 2,
             id: "SSO-INTEGRATION"
         }
     ];

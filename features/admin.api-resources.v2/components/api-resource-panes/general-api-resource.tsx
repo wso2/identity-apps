@@ -38,6 +38,7 @@ import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import { deleteAPIResource } from "../../api/api-resources";
 import { APIResourcesConstants } from "../../constants/api-resources-constants";
+import useApiResourcesPageContent from "../../hooks/use-api-resources-page-content";
 import {
     APIResourceInterface,
     APIResourcePanesCommonPropsInterface,
@@ -75,6 +76,11 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
+    const {
+        deleteResourceWizardContent,
+        resourceServerTypeDisplayName
+    } = useApiResourcesPageContent();
+
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ isFormValidationError, setIsFormValidationError ] = useState<boolean>(true);
@@ -94,9 +100,13 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
                     description: t("extensions:develop.apiResource.notifications.deleteAPIResource.success" +
-                        ".description"),
+                        ".description", {
+                        resourceType: resourceServerTypeDisplayName
+                    }),
                     level: AlertLevels.SUCCESS,
-                    message: t("extensions:develop.apiResource.notifications.deleteAPIResource.success.message")
+                    message: t("extensions:develop.apiResource.notifications.deleteAPIResource.success.message", {
+                        resourceType: resourceServerTypeDisplayName
+                    })
                 }));
 
                 setShowDeleteConfirmationModal(false);
@@ -105,7 +115,9 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
             .catch(() => {
                 dispatch(addAlert<AlertInterface>({
                     description: t("extensions:develop.apiResource.notifications.deleteAPIResource" +
-                        ".genericError.description"),
+                        ".genericError.description", {
+                        resourceType: resourceServerTypeDisplayName
+                    }),
                     level: AlertLevels.ERROR,
                     message: t("extensions:develop.apiResource.notifications.deleteAPIResource" +
                         ".genericError.message")
@@ -136,13 +148,9 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
                             >
                                 <DangerZone
                                     data-testid={ `${componentId}-danger-zone` }
-                                    actionTitle={ t("extensions:develop.apiResource.tabs.general.dangerZoneGroup" +
-                                        ".deleteApiResource.button") }
-                                    header={ t("extensions:develop.apiResource.tabs.general.dangerZoneGroup" +
-                                        ".deleteApiResource.header") }
-                                    subheader={ t("extensions:develop.apiResource.tabs.general.dangerZoneGroup" +
-                                        ".deleteApiResource.subHeading")
-                                    }
+                                    actionTitle={ deleteResourceWizardContent?.buttonText }
+                                    header={ deleteResourceWizardContent?.heading }
+                                    subheader={ deleteResourceWizardContent?.subHeading }
                                     onActionClick={ (): void => {
                                         setShowDeleteConfirmationModal(true);
                                         setDeletingAPIResource(apiResourceData);
@@ -293,12 +301,16 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
                                     negative
                                     data-testid={ `${componentId}-delete-confirmation-modal-message` }
                                 >
-                                    { t("extensions:develop.apiResource.confirmations.deleteAPIResource.message") }
+                                    { t("extensions:develop.apiResource.confirmations.deleteAPIResource.message", {
+                                        resourceType: resourceServerTypeDisplayName
+                                    }) }
                                 </ConfirmationModal.Message>
                                 <ConfirmationModal.Content
                                     data-testid={ `${componentId}-delete-confirmation-modal-content` }
                                 >
-                                    { t("extensions:develop.apiResource.confirmations.deleteAPIResource.content") }
+                                    { t("extensions:develop.apiResource.confirmations.deleteAPIResource.content", {
+                                        resourceType: resourceServerTypeDisplayName
+                                    }) }
                                 </ConfirmationModal.Content>
                             </ConfirmationModal>
                         )

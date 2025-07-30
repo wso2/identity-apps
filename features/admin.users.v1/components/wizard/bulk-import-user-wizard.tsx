@@ -30,26 +30,34 @@ import InputLabel from "@oxygen-ui/react/InputLabel/InputLabel";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "@wso2is/admin.claims.v1/api";
+import useGetAllLocalClaims from "@wso2is/admin.claims.v1/api/use-get-all-local-claims";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
 import { getCertificateIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { UserStoreProperty } from "@wso2is/admin.core.v1/models/user-store";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { userConfig, userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
 import { getGroupList, useGroupList } from "@wso2is/admin.groups.v1/api/groups";
 import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
-import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import { useGetUserStore } from "@wso2is/admin.userstores.v1/api/use-get-user-store";
+import {
+    PRIMARY_USERSTORE,
+    USERSTORE_REGEX_PROPERTIES,
+    UserStoreManagementConstants
+} from "@wso2is/admin.userstores.v1/constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import {
     AlertLevels,
+    Claim,
     ClaimDialect,
     ExternalClaim,
     HttpMethods,
@@ -76,7 +84,6 @@ import {
     useDocumentation,
     useWizardAlert
 } from "@wso2is/react-components";
-import { FormValidation } from "@wso2is/validation";
 import Axios,  { AxiosResponse }from "axios";
 import toUpper from "lodash-es/toUpper";
 import React, { FunctionComponent, HTMLAttributes, ReactElement, Suspense, useEffect, useMemo, useState } from "react";
@@ -176,6 +183,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
     const { t } = useTranslation();
     const { isSubOrganization } = useGetCurrentOrganizationType();
+    const { UIConfig } = useUIConfig();
     const {
         isLoading: isUserStoresFetchRequestLoading,
         isUserStoreReadOnly,
@@ -217,6 +225,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         state.config.ui.features.bulkUserImport.fileImportTimeout);
     const userLimit: number = useSelector((state: AppState) =>
         state.config.ui.features.bulkUserImport.userLimit);
+
+    const systemReservedUserStores: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.systemReservedUserStores);
+
     const csvFileProcessingStrategy: CSVFileStrategy = useMemo( () => {
         return new CSVFileStrategy(
             undefined,  // Mimetype.
@@ -237,6 +249,33 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         selectedUserStore,
         "members"
     );
+
+    const {
+        data: fetchedAttributes,
+        error: attributesRequestError,
+        isLoading: isAttributesRequestLoading
+    } = useGetAllLocalClaims({
+        "exclude-identity-claims": true,
+        filter: null,
+        limit: null,
+        offset: null,
+        sort: null
+    });
+
+    /**
+     * Handle the attributes fetch request error.
+     */
+    useEffect(() => {
+        if (attributesRequestError) {
+            dispatch(addAlert(
+                {
+                    description: t("claims:local.notifications.getClaims.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("claims:local.notifications.getClaims.genericError.message")
+                }
+            ));
+        }
+    }, [ attributesRequestError ]);
 
     useEffect(() => {
         if (groupsError) {
@@ -264,7 +303,12 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 const isReadOnly: boolean = isUserStoreReadOnly(item.name);
                 const isEnabled: boolean = item.enabled;
 
-                if (isEnabled && !isReadOnly && isBulkImportSupportedUserStore(item)) {
+                if (
+                    isEnabled &&
+                    !isReadOnly &&
+                    isBulkImportSupportedUserStore(item) &&
+                    !systemReservedUserStores?.includes(item?.name)
+                ) {
                     userStoreArray.push({
                         key: index,
                         text: item.name,
@@ -276,6 +320,32 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
         setReadWriteUserStoresList(userStoreArray);
     }, [ isUserStoresFetchRequestLoading, userStoresList ]);
+
+    const {
+        data: originalUserStore
+    } = useGetUserStore(
+        userstore.toLowerCase()
+    );
+
+    const userStoreUsernameRegEx: string = useMemo(() => {
+
+        if (originalUserStore) {
+            return originalUserStore?.properties?.find(
+                (property: UserStoreProperty) => property.name === USERSTORE_REGEX_PROPERTIES.UsernameRegEx)?.value;
+        }
+    }, [ originalUserStore ]);
+
+    const emailClaimRegex: string = useMemo(() => {
+        if (fetchedAttributes && !isAttributesRequestLoading) {
+            const emailAttribute: Claim = fetchedAttributes?.find(
+                (attribute: Claim) =>
+                    attribute?.[ClaimManagementConstants.CLAIM_URI_ATTRIBUTE_KEY] ===
+                    ClaimManagementConstants.EMAIL_CLAIM_URI
+            );
+
+            return emailAttribute?.regEx;
+        }
+    }, [ fetchedAttributes ]);
 
     /**
      * Check the given user store is bulk import supported.
@@ -341,7 +411,20 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     // Validate the input string is an email address.
     const validateEmail = (emailList: string[]) => {
 
-        const emailValidation: boolean = FormValidation.email(emailList[emailList.length-1]);
+        let emailValidation: boolean = undefined;
+
+        if (UIConfig?.enableEmailDomain && !isAttributesRequestLoading) {
+            emailValidation =
+                SharedUserStoreUtils.validateInputAgainstRegEx(
+                    emailList[emailList.length - 1],
+                    userStoreUsernameRegEx
+                ) && SharedUserStoreUtils.validateInputAgainstRegEx(emailList[emailList.length - 1], emailClaimRegex);
+        } else {
+            emailValidation = SharedUserStoreUtils.validateInputAgainstRegEx(
+                emailList[emailList.length - 1],
+                emailClaimRegex
+            );
+        }
 
         if (!emailValidation) {
             setIsEmailDataError(true);
@@ -730,7 +813,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     if (isEmptyAttribute(attributeValue)) {
                         setEmptyDataFieldError(attribute.attributeName);
                         throw new Error(DATA_VALIDATION_ERROR);
-                    } else if (!FormValidation.email(attributeValue)) {
+                    } else if (
+                        !isAttributesRequestLoading &&
+                        !SharedUserStoreUtils.validateInputAgainstRegEx(attributeValue, emailClaimRegex)
+                    ) {
                         setAlert({
                             description:  t(
                                 "user:forms.addUserForm.inputs.email." +

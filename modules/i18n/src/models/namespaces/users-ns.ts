@@ -186,6 +186,17 @@ export interface usersNS {
         };
     };
     advancedSearch: {
+        accountStatusFilter: {
+            label: string;
+            options: {
+                disabled: string;
+                locked: string;
+                pendingInitialPasswordSetup: string;
+                pendingPasswordReset: string;
+                pendingPrimaryEmailVerification: string;
+                pendingPrimaryMobileVerification: string;
+            };
+        };
         form: {
             dropdown: {
                 filterAttributeOptions: {
@@ -339,6 +350,12 @@ export interface usersNS {
                 description: string;
             };
         };
+        deleteUserPendingApproval: {
+            success: {
+                message: string;
+                description: string;
+            }
+        };
         fetchUsers: {
             error: {
                 message: string;
@@ -354,6 +371,20 @@ export interface usersNS {
             };
         };
         getAdminRole: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
+        impersonateUser: {
             error: {
                 message: string;
                 description: string;
@@ -432,6 +463,7 @@ export interface usersNS {
                 subTitle: {
                     0: string;
                     1: string;
+                    2: string;
                 };
                 title: string;
             };

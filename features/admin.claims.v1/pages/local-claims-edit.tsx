@@ -78,6 +78,8 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
 
     const claimID: string = match.params.id;
     const hiddenUserStores: string[] = useSelector((state: AppState) => state?.config?.ui?.hiddenUserStores);
+    const systemReservedUserStores: string[] =
+        useSelector((state: AppState) => state?.config?.ui?.systemReservedUserStores);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
 
@@ -96,10 +98,8 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
         }
 
         if (!isUserStoreListFetchRequestLoading && userStoresList?.length > 0) {
-            const filteredUserStores: UserStoreBasicData[] = hiddenUserStores?.length > 0
-                ? userStoresList.filter((store: UserStoreBasicData) =>
-                    !hiddenUserStores?.includes(store?.name))
-                : userStoresList;
+            const filteredUserStores: UserStoreBasicData[] = userStoresList.filter((store: UserStoreBasicData) =>
+                !hiddenUserStores?.includes(store?.name) && !systemReservedUserStores?.includes(store?.name));
 
             userStores.push(...filteredUserStores);
         }

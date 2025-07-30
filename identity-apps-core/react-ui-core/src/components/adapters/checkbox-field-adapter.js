@@ -21,24 +21,31 @@ import React from "react";
 import { Checkbox } from "semantic-ui-react";
 import { useTranslations } from "../../hooks/use-translations";
 import { resolveElementText } from "../../utils/i18n-utils";
+import Hint from "../hint";
 
 const CheckboxFieldAdapter = ({ component, formStateHandler }) => {
 
-    const { identifier, label } = component.config;
+    const { identifier, label, hint } = component.config;
     const { translations } = useTranslations();
 
     return (
-        <Checkbox
-            name={ identifier }
-            label={ resolveElementText(translations, label) }
-            onChange={ (e) => formStateHandler(identifier, e.target.checked) }
-        />
+        <>
+            <Checkbox
+                name={ identifier }
+                label={ resolveElementText(translations, label) }
+                onChange={ (e, data) => formStateHandler(identifier, data.checked) }
+            />
+            {
+                hint && ( <Hint hint={ hint } /> )
+            }
+        </>
     );
 };
 
 CheckboxFieldAdapter.propTypes = {
     component: PropTypes.shape({
         config: PropTypes.shape({
+            hint: PropTypes.string,
             identifier: PropTypes.string.isRequired,
             label: PropTypes.string.isRequired
         }).isRequired,

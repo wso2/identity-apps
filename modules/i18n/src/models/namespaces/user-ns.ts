@@ -88,6 +88,20 @@ export interface userNS {
                 part2: string;
             };
         };
+        userActionZoneGroup: {
+            impersonateUserZone: {
+                actionTitle: string;
+                buttonDisableHints: {
+                    insufficientPermissions: string;
+                    myAccountDisabled: string;
+                    myAccountLoginFlowIncompatible: string;
+                    userAccountDisabled: string;
+                    userAccountLocked: string;
+                };
+                header: string;
+                subheader: string;
+            };
+        };
     };
     forms: {
         addUserForm: {
@@ -400,6 +414,7 @@ export interface userNS {
                     validations: {
                         empty: string;
                         invalidFormat: string;
+                        required: string;
                     };
                 };
             };
@@ -414,6 +429,20 @@ export interface userNS {
                         };
                         note: string;
                     };
+                };
+            };
+            email: {
+                primaryEmail: {
+                    validations: {
+                        empty: string;
+                    }
+                };
+            };
+            mobile: {
+                primaryMobile: {
+                    validations: {
+                        empty: string;
+                    }
                 };
             };
             mobileChangeForm: {

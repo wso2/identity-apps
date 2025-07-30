@@ -28,6 +28,10 @@ import { Extensions } from "../../models";
 export const extensions: Extensions = {
     develop: {
         apiResource: {
+            resourceTypes: {
+                api: "API resource",
+                mcp: "MCP server"
+            },
             pageHeader: {
                 description: "Create and manage the APIs used to define the API scopes/permissions that can be consumed by your applications.",
                 subOrgDescription: "View the APIs that define scopes and permissions for your applications.",
@@ -46,16 +50,16 @@ export const extensions: Extensions = {
             confirmations: {
                 deleteAPIResource: {
                     assertionHint: "Please confirm your action.",
-                    content: "This action is irreversible and will permanently delete the API resource.",
+                    content: "This action is irreversible and will permanently delete the {{ resourceType }}.",
                     header: "Are you sure?",
-                    message: "If you delete this API resource, some functionalities may not work properly. " +
+                    message: "If you delete this {{ resourceType }}, some functionalities may not work properly. " +
                         "Please proceed with caution."
                 },
                 deleteAPIResourcePermission: {
                     assertionHint: "Please confirm your action.",
-                    content: "This action is irreversible and will permanently remove the permission from the API resource.",
+                    content: "This action is irreversible and will permanently remove the permission from the {{ resourceType }}.",
                     header: "Are you sure?",
-                    message: "If you remove this permission from the API resource, some functionalities may not work properly. " +
+                    message: "If you remove this permission from this {{ resourceType }}, some functionalities may not work properly. " +
                         "Please proceed with caution."
                 }
             },
@@ -74,43 +78,43 @@ export const extensions: Extensions = {
             notifications: {
                 deleteAPIResource: {
                     unauthorizedError: {
-                        description: "You are not authorized to delete the API resource.",
+                        description: "You are not authorized to delete the {{ resourceType }}.",
                         message: "Unauthorized"
                     },
                     notFoundError: {
-                        description: "The API resource you are trying to delete does not exist.",
-                        message: "API resource not found"
+                        description: "The {{ resourceType }} you are trying to delete does not exist.",
+                        message: "{{ resourceType }} not found"
                     },
                     genericError: {
-                        description: "Failed to delete the API resource.",
+                        description: "Failed to delete the {{ resourceType }}.",
                         message: "Something went wrong"
                     },
                     success: {
-                        description: "Successfully deleted the API resource.",
-                        message: "API resource deleted"
+                        description: "Successfully deleted the {{ resourceType }}.",
+                        message: "{{ resourceType }} deleted"
                     }
                 },
                 getAPIResource: {
                     unauthorizedError: {
-                        description: "You are not authorized to view the API resource.",
+                        description: "You are not authorized to view the {{ resourceType }}.",
                         message: "Unauthorized"
                     },
                     notFoundError: {
-                        description: "The API resource you are trying to view does not exist.",
-                        message: "API resource not found"
+                        description: "The {{ resourceType }} you are trying to view does not exist.",
+                        message: "{{ resourceType }} not found"
                     },
                     genericError: {
-                        description: "Failed to retrieve the API resource.",
+                        description: "Failed to retrieve the {{ resourceType }}.",
                         message: "Something went wrong"
                     }
                 },
                 getAPIResources: {
                     unauthorizedError: {
-                        description: "You are not authorized to view the API resources.",
+                        description: "You are not authorized to view the {{ resourceType }}s.",
                         message: "Unauthorized"
                     },
                     genericError: {
-                        description: "Failed to retrieve the API resources.",
+                        description: "Failed to retrieve the {{ resourceType }}s.",
                         message: "Something went wrong"
                     }
                 },
@@ -120,20 +124,20 @@ export const extensions: Extensions = {
                         message: "Invalid request payload"
                     },
                     unauthorizedError: {
-                        description: "You are not authorized to update the API resource.",
+                        description: "You are not authorized to update the {{ resourceType }}.",
                         message: "Unauthorized"
                     },
                     notFoundError: {
-                        description: "The API resource you are trying to update does not exist.",
-                        message: "API resource not found"
+                        description: "The {{ resourceType }} you are trying to update does not exist.",
+                        message: "{{ resourceType }} not found"
                     },
                     genericError: {
-                        description: "Failed to update the API resource.",
+                        description: "Failed to update the {{ resourceType }}.",
                         message: "Something went wrong"
                     },
                     success: {
-                        description: "Successfully updated the API resource.",
-                        message: "API resource updated"
+                        description: "Successfully updated the {{ resourceType }}.",
+                        message: "{{ resourceType }} updated"
                     }
                 },
                 addAPIResource: {
@@ -142,24 +146,24 @@ export const extensions: Extensions = {
                         message: "Invalid request payload"
                     },
                     unauthorizedError: {
-                        description: "You are not authorized to create a API resource.",
+                        description: "You are not authorized to create {{ resourceType }}.",
                         message: "Unauthorized"
                     },
                     alreadyExistsError: {
-                        description: "The API resource you are trying to create already exist.",
-                        message: "API resource already exists"
+                        description: "The {{ resourceType }} you are trying to create already exist.",
+                        message: "{{ resourceType }} already exists"
                     },
                     permissionAlreadyExistsError: {
                         description: "This permission (scope) you are trying to add already exists in the organization. Please choose a different one.",
                         message: "Permission already exists"
                     },
                     genericError: {
-                        description: "Failed to create the API resource.",
+                        description: "Failed to create the {{ resourceType }}.",
                         message: "Something went wrong"
                     },
                     success: {
-                        description: "Successfully created the API resource.",
-                        message: "API resource created"
+                        description: "Successfully created the {{ resourceType }}.",
+                        message: "{{ resourceType }} created"
                     }
                 }
             },
@@ -407,27 +411,34 @@ export const extensions: Extensions = {
                             }
                         }
                     },
+                    resourceAuthorization: {
+                        title: "Authorization"
+                    },
                     apiAuthorization: {
                         title: "API Authorization",
+                        resourceText: {
+                            apiResource: "API resource",
+                            genericResource: "resource"
+                        },
                         sections: {
                             apiSubscriptions: {
-                                heading: "Manage access to the API Resources",
-                                subHeading: "Manage API resources consumed by this application.",
-                                search: "Search API resources by display name",
-                                unsubscribeAPIResourcePopOver: "Unsubscribe the API resource",
-                                allAPIAuthorizedPopOver: "All API resources are authorized",
+                                heading: "Manage access to the {{ resourceText }}s",
+                                subHeading: "Manage {{ resourceText }}s consumed by this application.",
+                                search: "Search {{ resourceText }}s by display name",
+                                unsubscribeAPIResourcePopOver: "Unsubscribe the {{ resourceText }}",
+                                allAPIAuthorizedPopOver: "All {{ resourceText }}s are authorized",
                                 choreoApiEditWarning: "Updating the authorized scopes will create unforeseen errors as this is an API resource managed by Choreo. <1>Proceed with caution.</1>",
                                 buttons: {
-                                    subAPIResource: "Authorize an API Resource",
-                                    noAPIResourcesLink: "Create an API Resource",
-                                    emptySearchButton: "View all API resources"
+                                    subAPIResource: "Authorize {{ resourceText }}",
+                                    noAPIResourcesLink: "Create {{ resourceText }}",
+                                    emptySearchButton: "View all {{ resourceText }}s"
                                 },
                                 placeHolderTexts: {
-                                    emptyText: "There are no API resources authorized",
-                                    noAPIResources: "There are no API resources available to subscribe",
+                                    emptyText: "There are no {{ resourceText }}s authorized",
+                                    noAPIResources: "There are no {{ resourceText }}s available to subscribe",
                                     errorText: {
                                         subtitles: {
-                                            0: "An error occurred while retrieving the API resources.",
+                                            0: "An error occurred while retrieving the {{ resourceText }}s.",
                                             1: "Please try again."
                                         },
                                         title: "Something went wrong"
@@ -435,7 +446,7 @@ export const extensions: Extensions = {
                                     emptySearch: {
                                         title: "No results found",
                                         subTitle: {
-                                            0: "We couldn't find the API resource you searched for.",
+                                            0: "We couldn't find the {{ resourceText }} you searched for.",
                                             1: "Please try using a different parameter."
                                         }
                                     }
@@ -443,20 +454,20 @@ export const extensions: Extensions = {
                                 notifications: {
                                     unSubscribe: {
                                         unauthorizedError: {
-                                            description: "You are not authorized to unsubcribe the API resource.",
+                                            description: "You are not authorized to unsubcribe the {{ resourceText }}.",
                                             message: "Unauthorized"
                                         },
                                         notFoundError: {
-                                            description: "The API resource you are trying to unsubcribe does not exist.",
-                                            message: "API resource not found"
+                                            description: "The {{ resourceText }} you are trying to unsubcribe does not exist.",
+                                            message: "{{ resourceText }} not found"
                                         },
                                         genericError: {
-                                            description: "Failed to unsubcribe the API resource.",
+                                            description: "Failed to unsubcribe the {{ resourceText }}.",
                                             message: "Something went wrong"
                                         },
                                         success: {
-                                            description: "Successfully unsubcribed the API resource.",
-                                            message: "API resource unsubcribed"
+                                            description: "Successfully unsubcribed the {{ resourceText }}.",
+                                            message: "{{ resourceText }} unsubcribed"
                                         }
                                     },
                                     patchScopes: {
@@ -495,9 +506,9 @@ export const extensions: Extensions = {
                                 confirmations: {
                                     unsubscribeAPIResource: {
                                         assertionHint: "Please confirm your action.",
-                                        content: "This action is irreversible and will permanently unsubscribe the API resource.",
+                                        content: "This action is irreversible and will permanently unsubscribe the {{ resourceText }}.",
                                         header: "Are you sure?",
-                                        message: "If you unsubscribe this API resource, some functionalities may not work properly. " +
+                                        message: "If you unsubscribe this {{ resourceText }}, some functionalities may not work properly. " +
                                             "Please proceed with caution."
                                     },
                                     unsubscribeChoreoAPIResource: {
@@ -518,18 +529,18 @@ export const extensions: Extensions = {
                                 },
                                 wizards: {
                                     authorizeAPIResource: {
-                                        title: "Authorize an API Resource",
-                                        subTitle: "Authorize a new API resource to the application.",
+                                        title: "Authorize {{ resourceText }}",
+                                        subTitle: "Authorize a new {{ resourceText }} to the application.",
                                         fields: {
                                             apiResource: {
-                                                label: "API Resource",
-                                                placeholder: "Enter the display name of the API resource",
-                                                requiredErrorMessage: "API resource is required"
+                                                label: "{{ resourceText }}",
+                                                placeholder: "Enter the display name of the {{ resourceText }}",
+                                                requiredErrorMessage: "{{ resourceText }} is required"
                                             },
                                             scopes: {
                                                 label: "Authorized Scopes",
-                                                placeholder: "No scopes are authorized for this API resource",
-                                                hint: "The scopes of the API resource that the application is allowed to access."
+                                                placeholder: "No scopes are authorized for this {{ resourceText }}",
+                                                hint: "The scopes of the {{ resourceText }} that the application is allowed to access."
                                             },
                                             policy: {
                                                 label: "Authorization Policy",
@@ -962,6 +973,11 @@ export const extensions: Extensions = {
                                 hint: "Link to a statement or a legal document that states how your organization collects, handles, and processes the data of your customers and visitors. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages.",
                                 label: "Privacy Policy",
                                 placeholder: "https://myapp.com/{{locale}}/privacy-policy"
+                            },
+                            recoveryPortalURL: {
+                                hint: "Link to your organization's recovery portal URL. This URL will only be used in orchestrated flows. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages.",
+                                label: "Recovery Portal",
+                                placeholder: "https://myapp.com/account-recovery"
                             },
                             selfSignUpURL: {
                                 hint: "Link to your organization's Self Signup webpage. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages.",
@@ -1626,7 +1642,7 @@ export const extensions: Extensions = {
                                 description: "You can now incorporate a custom layout for login, "
                                     + "registration, and recovery pages. Refer to our "
                                     + "documentation for detailed instructions.",
-                                subTitle: "The custom layout has been successfully enabled.",
+                                subTitle: "The custom layout is ready to be enabled.",
                                 title: "Custom Layout"
                             }
                         }
@@ -1647,7 +1663,7 @@ export const extensions: Extensions = {
             goBack: "Go back to Notification Providers",
             confirmationModal: {
                 assertionHint: "Please confirm your action.",
-                content: "If you delete this configuration, the emails will be sent from the Asgardeo Email Address. " +
+                content: "If you delete this configuration, emails will be sent from the default email provider. " +
                     "Please proceed with caution.",
                 header: "Are you sure?",
                 message: "This action is irreversible and will permanently delete the email provider configurations."
@@ -1656,8 +1672,7 @@ export const extensions: Extensions = {
                 header: "Danger Zone",
                 revertConfig: {
                     heading: "Revert Configurations",
-                    subHeading: "This action will revert mail server configurations to default configurations. " +
-                        "Once reverted, you will receive emails from the Asgardeo domain.",
+                    subHeading: "This action will revert mail server configurations to default configurations.",
                     actionTitle: "Revert"
                 }
             },
@@ -2419,6 +2434,7 @@ export const extensions: Extensions = {
         },
         sidePanel: {
             apiResources: "API Resources",
+            mcpServers: "MCP Servers",
             branding: "Branding",
             stylesAndText: "Styles & Text",
             monitor: "Logs",
@@ -2574,6 +2590,16 @@ export const extensions: Extensions = {
     manage: {
         accountLogin: {
             notifications: {
+                revert: {
+                    error: {
+                        description: "An error occurred while reverting the username validation configuration.",
+                        message: "Revert error"
+                    },
+                    success: {
+                        description: "Successfully reverted username validation configuration.",
+                        message: "Revert successful"
+                    }
+                },
                 success: {
                     description: "Successfully updated username validation configuration.",
                     message: "Update successful"
@@ -2684,6 +2710,7 @@ export const extensions: Extensions = {
                     makeDefaultOrganization: "Make default organization",
                     backButton: "Go back",
                     copyOrganizationId: "Copy organization ID",
+                    copyOrganizationHandle: "Copy organization Handle",
                     copied: "Copied!",
                     tenantSearch: {
                         placeholder: "Search organization",
@@ -3597,7 +3624,15 @@ export const extensions: Extensions = {
                 label: "Password expires in ",
                 timeFormat: "days"
             },
-            passwordValidationHeading: "Password Input Validation",
+            passwordValidation: {
+                heading: "Password Input Validation",
+                passwordValidationRegexLabel: "Password pattern regex",
+                passwordValidationRegexHint: "Provide a valid regular expression for the password pattern. The regex must be between 3 and 255 characters.",
+                passwordValidationRegexPlaceholder: "Enter password pattern regex",
+                passwordValidationErrorLabel: "Error message on pattern violation",
+                passwordValidationErrorHint: "This error message will be displayed when a pattern violation is detected.",
+                passwordValidationErrorPlaceholder: "Enter the error message"
+            },
             userOnboarding: {
                 backButton: "Go back to Self Registration",
                 heading: "Self Registration",
@@ -3895,7 +3930,8 @@ export const extensions: Extensions = {
             categories: {
                 attributeManagement: "Attribute Management",
                 AccountManagement: "Account Management",
-                userManagement: "User Management",
+                userManagement: "Identity Management",
+                approvalWorkflows: "Approval Workflows",
                 organizationSettings: "Organization Settings"
             }
         }

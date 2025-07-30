@@ -17,10 +17,10 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store/index";
 import { RoleConstants as CommonRoleConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
@@ -47,6 +47,7 @@ import React, { ReactElement, ReactNode, SyntheticEvent, useMemo, useState } fro
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
+import { isMyAccountImpersonationRole } from "./role-utils";
 import { RoleDeleteErrorConfirmation } from "./wizard/role-delete-error-confirmation";
 import { RoleAudienceTypes, RoleConstants } from "../constants/role-constants";
 
@@ -98,9 +99,14 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const userRolesFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRoles);
+    const userRolesV3FeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3);
     const administratorRoleDisplayName: string = useSelector(
         (state: AppState) => state?.config?.ui?.administratorRoleDisplayName);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
+    );
     const isEditingSystemRolesAllowed: boolean =
         useSelector((state: AppState) => state?.config?.ui?.isSystemRolesEditAllowed);
 
@@ -110,6 +116,12 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
             !hasRequiredScopes(userRolesFeatureConfig,
                 userRolesFeatureConfig?.scopes?.update, allowedScopes);
     }, [ userRolesFeatureConfig, allowedScopes ]);
+
+    const roleCreationScope: string[] = useMemo(() => {
+        return userRolesV3FeatureEnabled
+            ? userRolesV3FeatureConfig?.scopes?.create
+            : featureConfig?.userRoles?.scopes?.create;
+    }, [ userRolesV3FeatureEnabled, userRolesV3FeatureConfig, featureConfig ]);
 
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ currentDeletedRole, setCurrentDeletedRole ] = useState<RolesInterface>();
@@ -169,7 +181,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 <EmptyPlaceholder
                     data-componentid={ `${ componentId }-empty-list-empty-placeholder` }
                     action={ (
-                        <Show when={ featureConfig?.userRoles?.scopes?.create }>
+                        <Show when={ roleCreationScope }>
                             <PrimaryButton
                                 data-componentid={ `${ componentId }-empty-list-empty-placeholder-add-button` }
                                 onClick={ onEmptyListPlaceholderActionClick }
@@ -318,7 +330,8 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                         RoleConstants.FEATURE_DICTIONARY.get("ROLE_DELETE"))
                     || !hasRequiredScopes(userRolesFeatureConfig,
                         userRolesFeatureConfig?.scopes?.delete, allowedScopes)
-                    || isSharedRole;
+                    || isSharedRole
+                    || isMyAccountImpersonationRole(role?.displayName, role?.audience?.display);
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void => {

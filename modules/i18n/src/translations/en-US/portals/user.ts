@@ -93,6 +93,20 @@ export const user: userNS = {
                 part1:"Enter the",
                 part2: "in the format YYYY-MM-DD"
             }
+        },
+        userActionZoneGroup: {
+            impersonateUserZone: {
+                actionTitle: "Impersonate User",
+                buttonDisableHints: {
+                    insufficientPermissions: "Logged in user should be assigned with Impersonator My Account application role.",
+                    myAccountDisabled: "My account application should be enabled to impersonate the user.",
+                    myAccountLoginFlowIncompatible: "My account Login Flow is incompatible.",
+                    userAccountDisabled: "User account should be enabled to impersonate the user.",
+                    userAccountLocked: "User account should be unlocked to impersonate the user."
+                },
+                header: "Impersonate User",
+                subheader: "Once user impersonation has started, the initiator will no longer be able to log in with their own identity until the existing session is terminated."
+            }
         }
     },
     forms: {
@@ -422,6 +436,13 @@ export const user: userNS = {
             userName: "Username"
         },
         forms: {
+            email: {
+                primaryEmail: {
+                    validations: {
+                        empty: "Primary email address is required"
+                    }
+                }
+            },
             emailChangeForm: {
                 inputs: {
                     email: {
@@ -441,7 +462,15 @@ export const user: userNS = {
                     placeholder: "Enter your {{fieldName}}",
                     validations: {
                         empty: "{{fieldName}} is a required field",
-                        invalidFormat: "The {{fieldName}} is not of the correct format"
+                        invalidFormat: "The {{fieldName}} is not of the correct format",
+                        required: "{{fieldName}} is required"
+                    }
+                }
+            },
+            mobile: {
+                primaryMobile: {
+                    validations: {
+                        empty: "Primary mobile number is required"
                     }
                 }
             },

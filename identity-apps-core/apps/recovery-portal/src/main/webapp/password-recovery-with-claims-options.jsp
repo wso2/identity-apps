@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -70,7 +70,7 @@
 
     try {
         PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
-        isEmailOtpBasedPasswordRecoveryEnabledByTenant = 
+        isEmailOtpBasedPasswordRecoveryEnabledByTenant =
             preferenceRetrievalClient.checkEmailOTPBasedPasswordRecovery(tenantDomain);
     } catch (PreferenceRetrievalClientException e) {
         request.setAttribute("error", true);
@@ -83,7 +83,7 @@
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }
- 
+
     List<Claim> claims;
     UsernameRecoveryApi usernameRecoveryApi = new UsernameRecoveryApi();
     try {
@@ -202,10 +202,7 @@
     }
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "medium");
-%>
+<% request.setAttribute("pageName", "password-recovery-with-claims-options"); %>
 
 <!doctype html>
 <html lang="en-US">
@@ -219,7 +216,7 @@
     <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout recovery-layout">
+<body class="login-portal layout recovery-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
@@ -249,9 +246,9 @@
                     <form class="ui large form" method="post" action="verify.do" id="recoverDetailsForm">
                         <div class="segment" style="text-align: left;">
                         <% if (isNotificationBasedRecoveryEnabled) { %>
-                        <% if (isEmailEnabled) { 
+                        <% if (isEmailEnabled) {
                             String emailSendLabel = isEmailOtpBasedPasswordRecoveryEnabledByTenant
-                                                        ? "send.email.otp" 
+                                                        ? "send.email.otp"
                                                         : "send.email.link";
                         %>
                             <div class="field">

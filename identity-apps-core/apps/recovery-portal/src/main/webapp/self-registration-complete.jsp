@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2016-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -220,6 +220,8 @@
     <input type="hidden" id="userId" name="userId" value="<%= Encode.forHtmlAttribute(userId) %>" />
 <% } %>
 
+<% request.setAttribute("pageName", "self-registration-complete"); %>
+
 <%-- Data for the layout from the page --%>
 <%
     layoutData.put("isResponsePage", true);
@@ -239,7 +241,7 @@
     <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout">
+<body class="login-portal layout" data-response-type="success" data-page="<%= request.getAttribute("pageName") %>">
     <script>
         function redirect(redirectURL) {
             var url = redirectURL;
@@ -307,7 +309,7 @@
                             String url = "";
                             if (StringUtils.isNotBlank(confirm)) { %>
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "your.account.with.username")%>
-                                <b><%=resendUsername%></b>
+                                <b><%=Encode.forHtml(resendUsername)%></b>
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "has.been.verified.successfully")%>
                             <%
                                 if (!StringUtils.isBlank(sp) && sp.equals("My Account")) {
@@ -336,7 +338,11 @@
                             %>
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "check.your.inbox.at")%>
                                 <b><span id="maskedEmail"></span></b> <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "for.instructions.to.activate.your.account")%>
-                                <script>maskEmail('<%= emailValue %>');</script>
+                                <script>
+                                    <% if (StringUtils.isNotBlank(emailValue)) { %>
+                                        maskEmail('<%= Encode.forJavaScript(emailValue) %>');
+                                    <% } %>                                
+                                </script>
                                 </br></br>
                         <%
                             if (showBackButton && StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)) {

@@ -33,9 +33,17 @@ import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { ProfileInfoInterface, ProfileSchemaInterface, SharedProfileValueResolvingMethod } from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
 import { DropdownChild } from "@wso2is/forms";
+import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
-import { UserManagementConstants } from "../constants/user-management-constants";
+import {
+    EMAIL_ADDRESSES_ATTRIBUTE,
+    EMAIL_ATTRIBUTE,
+    LocaleJoiningSymbol,
+    MOBILE_ATTRIBUTE,
+    MOBILE_NUMBERS_ATTRIBUTE,
+    UserManagementConstants
+} from "../constants/user-management-constants";
 import { MultipleInviteMode, MultipleInvitesDisplayNames, UserBasicInterface } from "../models/user";
 
 /**
@@ -279,6 +287,53 @@ export const isMultipleEmailsAndMobileNumbersEnabled = (
 };
 
 /**
+ * Check if multiple emails and mobile numbers feature is enabled for a user store.
+ *
+ * @param profileSchema - User profile schema list.
+ * @param userStoreDomain - User store domain to check.
+ */
+export const isMultipleEmailsAndMobileNumbersEnabledForUserStore = (
+    profileSchema: ProfileSchemaInterface[],
+    userStoreDomain: string
+): boolean => {
+
+    const multipleEmailsAndMobileFeatureRelatedAttributes: string[] = [
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS")
+    ];
+
+    // Check each required attribute exists and domain is not excluded in the excluded user store list.
+    const attributeCheck: boolean = multipleEmailsAndMobileFeatureRelatedAttributes.every(
+        (attribute: string) => {
+            const schema: ProfileSchemaInterface = profileSchema?.find(
+                (schema: ProfileSchemaInterface) => schema?.name === attribute);
+
+            if (!schema) {
+                return false;
+            }
+
+            // The global supportedByDefault value is a string. Hence, it needs to be converted to a boolean.
+            const resolveSupportedByDefaultValue: boolean = schema?.supportedByDefault?.toLowerCase() === "true";
+
+            // Currently BE check if global supported by default is enabled for these attributes to enable the feature.
+            if (!resolveSupportedByDefaultValue) {
+                return false;
+            }
+
+            const excludedUserStores: string[] =
+                schema?.excludedUserStores?.split(",")?.map((store: string) => store?.trim().toUpperCase()) || [];
+
+            return !excludedUserStores.includes(userStoreDomain);
+        });
+
+    return attributeCheck;
+};
+
+/**
  * Retrieve values of each validator.
  */
 const getValidationConfig = (
@@ -476,3 +531,175 @@ export const resolveUserSearchAttributes = (
  */
 export const generateAttributesString = (attributeIterator: IterableIterator<string>) =>
     Array.from(attributeIterator).filter((attr: string) => attr !== "").join(",");
+
+/**
+ * The profile schema is displayed only if the schema is BOTH supported by default and required
+ *
+ * @param schema - The profile schema to be validated.
+ * @returns whether the field for the input schema should be displayed.
+ */
+export const isFieldDisplayableInUserCreationWizard = (
+    schema: ProfileSchemaInterface,
+    isDistinctAttributeProfilesDisabled: boolean
+): boolean => {
+    let resolvedRequiredValue: boolean = schema?.required;
+    let resolveSupportedByDefaultValue: boolean = schema?.supportedByDefault?.toLowerCase() === "true";
+
+    // If the distinct attribute profiles feature is enabled, check the profiles object for flag.
+    if (!isDistinctAttributeProfilesDisabled) {
+        if (schema?.profiles?.console?.supportedByDefault !== undefined) {
+            resolveSupportedByDefaultValue = schema?.profiles?.console?.supportedByDefault;
+        }
+
+        if (schema?.profiles?.console?.required !== undefined) {
+            resolvedRequiredValue = schema?.profiles?.console?.required;
+        }
+    }
+
+    // The field should be displayed if both required and supported by default are true.
+    return resolveSupportedByDefaultValue && resolvedRequiredValue;
+};
+
+/**
+ * The function returns the normalized format of locale.
+ *
+ * @param locale - locale value.
+ * @param localeJoiningSymbol - symbol used to join language and region parts of locale.
+ * @param updateSupportedLanguage - If supported languages needs to be updated with the given localString or not.
+ * @param supportedI18nLanguages - Supported languages.
+ */
+export const normalizeLocaleFormat = (
+    locale: string,
+    localeJoiningSymbol: LocaleJoiningSymbol,
+    updateSupportedLanguage: boolean,
+    supportedI18nLanguages: SupportedLanguagesMeta
+): string => {
+    if (!locale) {
+        return locale;
+    }
+
+    const separatorIndex: number = locale.search(/[-_]/);
+
+    let normalizedLocale: string = locale;
+
+    if (separatorIndex !== -1) {
+        const language: string = locale.substring(0, separatorIndex).toLowerCase();
+        const region: string = locale.substring(separatorIndex + 1).toUpperCase();
+
+        normalizedLocale = `${language}${localeJoiningSymbol}${region}`;
+    }
+
+    if (updateSupportedLanguage && !supportedI18nLanguages[normalizedLocale]) {
+        supportedI18nLanguages[normalizedLocale] = {
+            code: normalizedLocale,
+            name: UserManagementConstants.GLOBE,
+            namespaces: []
+        };
+    }
+
+    return normalizedLocale;
+};
+
+type JsonValue = string | number | boolean | null | JsonObject | JsonArray;
+interface JsonObject { [key: string]: JsonValue; }
+interface JsonArray extends Array<JsonValue> {}
+
+const deepMerge = <T extends JsonValue>(target: T, source: T): T => {
+    if (Array.isArray(target) && Array.isArray(source)) {
+        return [ ...target, ...source ] as T;
+    }
+
+    if (
+        typeof target === "object" &&
+        typeof source === "object" &&
+        target !== null &&
+        source !== null &&
+        !Array.isArray(target) &&
+        !Array.isArray(source)
+    ) {
+        const merged: JsonObject = { ...target };
+
+        for (const key in source) {
+            if (key in merged) {
+                merged[key] = deepMerge(merged[key], (source as JsonObject)[key]);
+            } else {
+                merged[key] = (source as JsonObject)[key];
+            }
+        }
+
+        return merged as T;
+    }
+
+    // Fallback overwrite
+    return source;
+};
+
+export const groupByTopLevelKey = <T extends Record<string, JsonValue>>(inputArray: T[]): T => {
+    const grouped: Record<string, JsonValue> = {};
+
+    for (const obj of inputArray) {
+        for (const key in obj) {
+            if (grouped[key] === undefined) {
+                grouped[key] = obj[key];
+            } else {
+                grouped[key] = deepMerge(grouped[key], obj[key]);
+            }
+        }
+    }
+
+    return grouped as T;
+};
+
+/**
+ * Flattens a nested object into a map with dot-separated keys.
+ *
+ * @param obj - The object to flatten.
+ * @param prefix - The prefix for the keys (used for recursion).
+ * @returns A map with dot-separated keys and their corresponding values.
+ */
+export const flattenValues = (obj: Record<string, any>, prefix: string = ""): Map<string, string> => {
+    const map: Map<string, string> = new Map<string, string>();
+
+    for (const key in obj) {
+        if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
+
+        const value: any = obj[key];
+        const path: string = prefix ? `${prefix}.${key}` : key;
+
+        if (typeof value === "object" && !isEmpty(value) && !Array.isArray(value)) {
+            const subMap: Map<string, string> = flattenValues(value, path);
+
+            subMap.forEach((v: string, k: string) => map.set(k, v));
+        } else {
+            map.set(path, value);
+        }
+    }
+
+    return map;
+};
+
+/**
+ * This function returns the verification pending attribute value for email and mobile attributes.
+ * @param schemaName - Schema name.
+ * @returns Verification pending attribute value.
+ */
+export const getVerificationPendingAttributeValue = (schemaName: string, user: ProfileInfoInterface): string | null => {
+    if (schemaName === EMAIL_ATTRIBUTE || schemaName === EMAIL_ADDRESSES_ATTRIBUTE) {
+        const pendingAttributes: Array<{value: string}> | undefined = user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]
+            ?.[ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PENDING_EMAILS")];
+
+        return Array.isArray(pendingAttributes)
+            && pendingAttributes.length > 0
+            && pendingAttributes[0]?.value !== undefined
+            ? pendingAttributes[0].value
+            : null;
+    } else if (schemaName === MOBILE_ATTRIBUTE || schemaName === MOBILE_NUMBERS_ATTRIBUTE) {
+        const pendingMobileAttribute: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PENDING_MOBILE");
+
+        return !isEmpty(user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.[pendingMobileAttribute])
+            ? user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.[pendingMobileAttribute]
+            : null;
+    }
+
+    return null;
+};

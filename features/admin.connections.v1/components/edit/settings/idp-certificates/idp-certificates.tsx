@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,11 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
+import FormControl from "@oxygen-ui/react/FormControl";
+import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Grid from "@oxygen-ui/react/Grid";
+import Radio from "@oxygen-ui/react/Radio";
+import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import { Show } from "@wso2is/access-control";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
@@ -35,12 +39,10 @@ import {
     Heading,
     Hint,
     Message,
-    PrimaryButton,
-    Switcher,
-    SwitcherOptionProps
+    PrimaryButton
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -88,7 +90,7 @@ const JWKS: string = "jwks";
  *
  *  +======================================================================+
  *  |                                                                      |
- *  |   (?) Below is the {@link Switcher} component. When user clicks      |
+ *  |   (?) Below is the {@link RadioGroup} component. When user clicks      |
  *  |       on one switch it will change the subcomponent input type.      |
  *  |                                                                      |
  *  |   +==============+====================+                              |
@@ -141,12 +143,12 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
     : ReactElement => {
 
     const {
-        [ "data-componentid" ]: testId,
+        [ "data-componentid" ]: testId = "idp-certificates",
         editingIDP,
         onUpdate,
         isReadOnly,
-        isJWKSEnabled,
-        isPEMEnabled,
+        isJWKSEnabled = true,
+        isPEMEnabled = true,
         templateType
     } = props;
 
@@ -187,8 +189,8 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
         }
     };
 
-    const onSelectionChange = ({ value }: SwitcherOptionProps): void => {
-        setSelectedConfigurationMode(value as CertificateConfigurationMode);
+    const onSelectionChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setSelectedConfigurationMode((event.target as HTMLInputElement).value as CertificateConfigurationMode);
     };
 
     const openAddCertificatesWizard = (): void => {
@@ -428,25 +430,32 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                 ) }
                 { isJWKSEnabled && isPEMEnabled && (
                     <Grid md={ 12 } lg={ 6 }>
-                        <Switcher
-                            widths="two"
-                            compact
-                            data-testid={ `${ testId }-switcher` }
-                            selectedValue={ selectedConfigurationMode }
-                            onChange={ onSelectionChange }
-                            options={ [
-                                {
-                                    label: t("authenticationProvider:forms." +
-                                        "certificateSection.certificateEditSwitch.jwks"),
-                                    value: (JWKS as CertificateConfigurationMode)
-                                },
-                                {
-                                    label: t("authenticationProvider:forms." +
-                                        "certificateSection.certificateEditSwitch.pem"),
-                                    value: ("certificates" as CertificateConfigurationMode)
-                                }
-                            ] }
-                        />
+                        <FormControl>
+                            <RadioGroup
+                                row
+                                name="certificate-type"
+                                onChange={ onSelectionChange }
+                                data-testid={ `${ testId }-radio-group` }
+                                value={ selectedConfigurationMode }
+                            >
+                                <FormControlLabel
+                                    control={ <Radio checked={ selectedConfigurationMode === "jwks" } /> }
+                                    label={
+                                        t("console:develop.features.authenticationProvider.forms." +
+                                        "certificateSection.certificateEditSwitch.jwks")
+                                    }
+                                    value="jwks"
+                                />
+                                <FormControlLabel
+                                    control={ <Radio checked={ selectedConfigurationMode === "certificates" } /> }
+                                    label={
+                                        t("console:develop.features.authenticationProvider.forms." +
+                                        "certificateSection.certificateEditSwitch.pem")
+                                    }
+                                    value="certificates"
+                                />
+                            </RadioGroup>
+                        </FormControl>
                     </Grid>
                 ) }
                 <Grid md={ 12 } lg={ 6 }>
@@ -476,13 +485,4 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
         </EmphasizedSegment>
     );
 
-};
-
-/**
- * Default props of {@link IdpCertificates}
- */
-IdpCertificates.defaultProps = {
-    "data-componentid": "idp-certificates",
-    isJWKSEnabled: true,
-    isPEMEnabled: true
 };

@@ -50,12 +50,14 @@
         "appName": "Console",
         "appTitle": "WSO2 Identity Server Console",
         "appWhiteLogoPath": "/assets/images/branding/logo-inverted.svg",
+        "asyncOperationStatusPollingInterval": 5000,
         "connectionResourcesUrl": "",
         "cookiePolicyUrl": "/authenticationendpoint/cookie_policy.do",
         "emailTemplates": {
             "defaultLogoUrl": "/libs/themes/default/assets/images/branding/logo.svg",
             "defaultWhiteLogoUrl": "/libs/themes/default/assets/images/branding/logo-inverted.svg"
         },
+        "enableOldUIForEmailProvider": false,
         "enableCustomEmailTemplates": true,
         "enableCustomSmsTemplates": true,
         "enableEmailDomain": false,
@@ -893,9 +895,17 @@
                 }
             },
             "remoteLogging": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "hide.config.secrets"
+                ],
                 "enabled": true,
-                "scopes": {}
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [],
+                    "update": []
+                }
             },
             "residentOutboundProvisioning": {
                 "disabledFeatures": [],

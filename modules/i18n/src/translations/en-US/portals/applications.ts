@@ -358,6 +358,12 @@ export const applications: ApplicationsNS = {
             header: "Are you sure?",
             message: "If you revoke this application, authentication flows for this application will " +
                 "stop working. Please proceed with caution."
+        },
+        inProgressReshare: {
+            assertionHint: "Please confirm your action.",
+            content: "This action is irreversible and will discard the application sharing operations currently in progress",
+            header: "Are you sure?",
+            message: "Sharing application with organizations is in progress. Cancelling will terminate the operation."
         }
     },
     dangerZoneGroup: {
@@ -592,8 +598,77 @@ export const applications: ApplicationsNS = {
                 tabName: "Provisioning"
             },
             sharedAccess: {
+                doNotShareApplication: "Do not share the application with any organization.",
+                shareAllApplication: "Share the application with all organizations.",
+                shareSelectedApplication: "Share the application with selected organizations.",
+                allRolesAndOrgsSharingMessage: "All roles of the application will be shared with all the organizations.",
+                allRolesAndOrgsNotSharingMessage: "No roles will be shared with any organization.",
+                doNotShareRolesWithAllOrgs: "Do not share roles with all organizations.",
+                manageRoleSharing: "Manage role sharing",
+                viewRoleSharing: "View shared roles",
+                noSharedOrgs: "This application is not shared with any organizations.",
+                noRolesAvailableForOrg: "No roles available for the selected organization.",
+                searchAvailableRolesPlaceholder: "Search available roles",
+                orgNotSelectedForRoleSharing: "To share roles, please select the organization from the left panel.",
+                rolesSharedPartially: "Roles are selectively shared with this organization.",
+                shareRoleSubsetWithSelectedOrgs: "Share a subset of roles with selected organizations",
+                shareRoleSubsetWithAllOrgs: "Share a subset of roles with all organizations",
                 subTitle: "Select the following options to share the application with the organizations.",
-                tabName: "Shared Access"
+                shareAllRoles: "Share All Roles",
+                shareSelectedRoles: "Share Selected Roles",
+                doNotShareRoles: "Do Not Share Roles",
+                tabName: "Shared Access",
+                selectAnOrganizationToViewRoles: "Select an organization to view the shared roles.",
+                sharedAccessStatusOptions: {
+                    all: "All",
+                    success: "Success",
+                    failed: "Failed",
+                    partiallyCompleted: "Partially Completed"
+                },
+                notifications: {
+                    unshare: {
+                        success: {
+                            description: "Application unshared with the organization(s) successfully",
+                            message: "Application unshared!"
+                        },
+                        error: {
+                            description: "Application unsharing failed. Please try again",
+                            message: "Application unsharing failed!"
+                        }
+                    },
+                    share: {
+                        success: {
+                            description: "Application shared with the organization(s) successfully",
+                            message: "Application shared!"
+                        },
+                        error: {
+                            description: "Application sharing failed. Please try again",
+                            message: "Application sharing failed!"
+                        }
+                    },
+                    fetchApplicationOrgTree: {
+                        genericError: {
+                            description: "Error occurred while fetching the shared organizations.",
+                            message: "Fetching shared organizations failed!"
+                        }
+                    },
+                    fetchApplicationRoles: {
+                        genericError: {
+                            description: "Error occurred while fetching the shared roles of the application.",
+                            message: "Fetching roles failed!"
+                        }
+                    },
+                    fetchOrganizations: {
+                        genericError: {
+                            description: "Error occurred while fetching the organizations.",
+                            message: "Fetching organizations failed!"
+                        }
+                    },
+                    noRolesSelected: {
+                        description: "Please select at least one role to share with all the organizations.",
+                        message: "No roles selected!"
+                    }
+                }
             },
             shareApplication: {
                 addSharingNotification: {
@@ -605,6 +680,10 @@ export const applications: ApplicationsNS = {
                         description: "Application shared with the organization(s) successfully",
                         message: "Application shared!"
                     }
+                },
+                addAsyncSharingNotification: {
+                    description: "Application sharing may take a while to complete.",
+                    message: "Application sharing in progress."
                 },
                 getSharedOrganizations: {
                     genericError: {
@@ -634,9 +713,44 @@ export const applications: ApplicationsNS = {
                         message: "Application sharing stopped successfully!"
                     }
                 },
+                completedSharingNotification: {
+                    failure: {
+                        description: "Application sharing completed with failure for all organizations.",
+                        message: "Application sharing failed."
+                    },
+                    success: {
+                        description: "Application was shared with organizations successfully.",
+                        message: "Application sharing successful."
+                    },
+                    partialSuccess: {
+                        description: "Application sharing completed with partial success for some organizations.",
+                        message: "Application sharing partially successful."
+                    }
+                },
                 switchToSelectiveShareFromSharingWithAllSuborgsWarning: "Switching from sharing the app with all organizations to " +
                     "sharing with selected organizations will " +
-                    "reset the application configurations in all organizations."
+                    "reset the application configurations in all organizations.",
+                asyncOperationStatus: {
+                    inProgress: {
+                        heading: "Update In Progress.",
+                        description: "Updating shared access is in progress."
+                    },
+                    failed: {
+                        heading: "Update Failed.",
+                        description: "Updating shared access failed.",
+                        actionText: "View"
+                    },
+                    partiallyCompleted: {
+                        heading: "Update Partialy Successful.",
+                        description: "Updating shared access completed with partial success.",
+                        actionText: "View"
+                    }
+                },
+                applicationShareFailureSummaryDefaultStatus: {
+                    success: "Application shared successfully.",
+                    failed: "Application sharing failed.",
+                    partiallyCompleted: "Application sharing partially completed."
+                }
             },
             signOnMethod: {
                 sections: {
@@ -835,6 +949,10 @@ export const applications: ApplicationsNS = {
                         }
                     },
                     landing: {
+                        banners: {
+                            registrationConfiguration: "Want to customize your organization's user " +
+                                "<1>self-registration</1> flow? Click <3>configure</3> to get started."
+                        },
                         defaultConfig: {
                             description: {
                                 0: "This application is configured with <1>Username & Password</1> Login",
@@ -1600,8 +1718,20 @@ export const applications: ApplicationsNS = {
                         },
                         bindingType: {
                             children: {
+                                cookie: {
+                                    label: "Cookie"
+                                },
+                                clientRequest: {
+                                    label: "Client Request"
+                                },
+                                certificate: {
+                                    label: "Certificate"
+                                },
+                                deviceFlow: {
+                                    label: "Device Flow"
+                                },
                                 ssoBinding: {
-                                    label: "SSO-session"
+                                    label: "SSO Session"
                                 }
                             },
                             description: "Select type <1>SSO-session</1> to allow {{productName}} to " +
@@ -1616,7 +1746,9 @@ export const applications: ApplicationsNS = {
                                     "when the token expires or is revoked.",
                                 sso_session: "Binds the access token to the login session. " +
                                     "{{productName}} will issue a new access token for each new login " +
-                                    "and revoke the token upon logout."
+                                    "and revoke the token upon logout.",
+                                dpop: "Binds the access token to the client's public key. The client must present"+
+                                    " a signed DPoP proof in each request to prove posession of the corresponding private key."
                             }
                         },
                         expiry: {
@@ -3247,6 +3379,15 @@ export const applications: ApplicationsNS = {
                         }
                     }
                 }
+            }
+        },
+        sharedAccessStatus: {
+            heading: "Summary - Update application shared access",
+            subHeading: "Summary of detailed application sharing failures.",
+            actionText: "Close",
+            banner: {
+                partiallyCompleted: "Partially Completed: ",
+                failed: "Failed: "
             }
         }
     },

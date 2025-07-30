@@ -44,7 +44,7 @@ const generateRegistrationFlow = (
             "Trace-Id": traceId
         },
         method: HttpMethods.POST,
-        url: `${ store.getState().config.endpoints.registrationFlow }/generate/flow`
+        url: `${ store.getState().config.endpoints.registrationFlowAI }/generate/flow`
     };
 
     return httpClient(requestConfig)

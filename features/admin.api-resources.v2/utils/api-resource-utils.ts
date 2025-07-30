@@ -18,6 +18,7 @@
 
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { DropdownItemProps } from "semantic-ui-react";
 import { APIResourceCategories, APIResourcesConstants } from "../constants/api-resources-constants";
 import { Property } from "../models/api-resources";
 
@@ -93,7 +94,7 @@ export class APIResourceUtils {
      */
     public static isSystemAPI(type: string): boolean {
 
-        return type !== APIResourcesConstants.BUSINESS;
+        return type !== APIResourcesConstants.BUSINESS && type !== APIResourcesConstants.MCP;
     }
 
     public static resolveApiResourceGroup = (groupName: string): string => {
@@ -104,6 +105,8 @@ export class APIResourceUtils {
                 return "Organization APIs";
             case APIResourceCategories.BUSINESS:
                 return "Business APIs";
+            case APIResourceCategories.MCP:
+                return "MCP (Model Context Protocol) Servers";
             default:
                 return groupName;
         }
@@ -154,5 +157,19 @@ export class APIResourceUtils {
         }
 
         return false;
-    }
+    };
+
+    public static sortApiResourceTypes = (firstItem: DropdownItemProps, secondItem: DropdownItemProps) => {
+        const apiResourceSortingOrder: APIResourceCategories[] = [
+            APIResourceCategories.BUSINESS,
+            APIResourceCategories.MCP,
+            APIResourceCategories.TENANT,
+            APIResourceCategories.ORGANIZATION
+        ];
+        const aIndex: number = apiResourceSortingOrder.indexOf(firstItem?.type);
+        const bIndex: number = apiResourceSortingOrder.indexOf(secondItem?.type);
+
+        return (aIndex === -1 ? apiResourceSortingOrder.length : aIndex)
+                - (bIndex === -1 ? apiResourceSortingOrder.length : bIndex);
+    };
 }

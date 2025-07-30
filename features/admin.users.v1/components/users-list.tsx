@@ -48,7 +48,7 @@ import {
     TableColumnInterface,
     UserAvatar
 } from "@wso2is/react-components";
-import { AxiosError } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -193,9 +193,9 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
 
     const handleUserDelete = (userId: string): Promise<void> => {
         return deleteUser(userId)
-            .then(() => {
-                dispatch(
-                    addAlert({
+            .then((response: AxiosResponse) => {
+                if (response.status === 204) {
+                    dispatch(addAlert({
                         description: t(
                             "users:notifications.deleteUser.success.description"
                         ),
@@ -204,30 +204,39 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                             "users:notifications.deleteUser.success.message"
                         )
                     })
-                );
+                    );
+                } else if (response.status === 202) {
+                    dispatch(addAlert({
+                        description: t(
+                            "users:notifications.deleteUserPendingApproval.success.description"
+                        ),
+                        level: AlertLevels.WARNING,
+                        message: t(
+                            "users:notifications.deleteUserPendingApproval.success.message"
+                        )
+                    })
+                    );
+                }
                 onUserDelete();
             }).catch((error: AxiosError) => {
-                if (error.response && error.response.data && error.response.data.description) {
+                if (error.response && error.response.data) {
+                    let errorDescription: string = t("users:notifications.deleteUser.genericError.description");
+
+                    if (error.response.data.description) {
+                        errorDescription = error.response.data.description;
+                    } else if (error.response.data.detail) {
+                        errorDescription = error.response.data.detail;
+                    }
                     dispatch(
                         addAlert({
-                            description: error.response.data.description,
+                            description: errorDescription,
                             level: AlertLevels.ERROR,
-                            message: t("users:" +
-                        "notifications.deleteUser.error.message")
+                            message: t("users:notifications.deleteUser.error.message")
                         })
                     );
 
                     return;
                 }
-                dispatch(
-                    addAlert({
-                        description: t("users:" +
-                            "notifications.deleteUser.genericError.description"),
-                        level: AlertLevels.ERROR,
-                        message: t("users:" +
-                            "notifications.deleteUser.genericError.message")
-                    })
-                );
             });
     };
 
@@ -562,8 +571,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     imageSize="tiny"
                     title={ t("users:usersList.search.emptyResultPlaceholder.title") }
                     subtitle={ [
-                        t("users:usersList.search.emptyResultPlaceholder.subTitle.0",
-                            { query: searchQuery }),
+                        t("users:usersList.search.emptyResultPlaceholder.subTitle.2"),
                         t("users:usersList.search.emptyResultPlaceholder.subTitle.1")
                     ] }
                 />

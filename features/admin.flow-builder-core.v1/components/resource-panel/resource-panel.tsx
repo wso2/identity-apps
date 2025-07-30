@@ -24,14 +24,16 @@ import Drawer, { DrawerProps } from "@oxygen-ui/react/Drawer";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
-import { ChevronRightIcon } from "@oxygen-ui/react-icons";
+import { ChevronDownIcon } from "@oxygen-ui/react-icons";
 import AICard from "@wso2is/common.ai.v1/components/ai-card";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
+import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, HTMLAttributes, ReactElement, SVGProps } from "react";
+import { useSelector } from "react-redux";
 import ResourcePanelDraggable from "./resource-panel-draggable";
 import ResourcePanelStatic from "./resource-panel-static";
-import { Element } from "../../models/elements";
+import { Element, ElementTypes } from "../../models/elements";
 import { Resource, Resources } from "../../models/resources";
 import { Step } from "../../models/steps";
 import { Template } from "../../models/templates";
@@ -142,6 +144,8 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
         templates: unfilteredTemplates
     } = resources;
 
+    const aiFeature: FeatureAccessConfigInterface = useSelector((state: any) => state?.config?.ui?.features?.ai);
+
     const elements: Element[] = unfilteredElements.filter(
         (element: Element) => element.display?.showOnResourcePanel !== false
     );
@@ -202,7 +206,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                     >
                         <AccordionSummary
                             className="flow-builder-element-panel-category-heading"
-                            expandIcon={ <ChevronRightIcon size={ 14 } /> }
+                            expandIcon={ <ChevronDownIcon size={ 14 } /> }
                             aria-controls="panel1-content"
                             id="panel1-header"
                         >
@@ -213,7 +217,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                                 Choose one of these templates to start building registration experience
                             </Typography>
                             <Stack direction="column" spacing={ 1 }>
-                                { AITemplates.map((aiTemplate: Template, index: number) => (
+                                { aiFeature?.enabled && AITemplates.map((aiTemplate: Template, index: number) => (
                                     <ResourcePanelStatic
                                         id={ `${aiTemplate.resourceType}-${aiTemplate.type}-${index}` }
                                         key={ aiTemplate.type }
@@ -236,7 +240,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                     <Accordion square disableGutters className={ classNames("flow-builder-element-panel-categories") }>
                         <AccordionSummary
                             className="flow-builder-element-panel-category-heading"
-                            expandIcon={ <ChevronRightIcon size={ 14 } /> }
+                            expandIcon={ <ChevronDownIcon size={ 14 } /> }
                             aria-controls="panel1-content"
                             id="panel1-header"
                         >
@@ -247,7 +251,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                         </AccordionSummary>
                         <AccordionDetails className="flow-builder-element-panel-category-details">
                             <Typography variant="body2">
-                                Use these widgets to build up the flow using per-created flow blocks
+                                Use these widgets to build up the flow using pre-created flow blocks
                             </Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { widgets.map((widget: Widget, index: number) => (
@@ -263,7 +267,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                     <Accordion square disableGutters className={ classNames("flow-builder-element-panel-categories") }>
                         <AccordionSummary
                             className="flow-builder-element-panel-category-heading"
-                            expandIcon={ <ChevronRightIcon size={ 14 } /> }
+                            expandIcon={ <ChevronDownIcon size={ 14 } /> }
                             aria-controls="panel1-content"
                             id="panel1-header"
                         >
@@ -278,7 +282,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                                 { steps.map((step: Step, index: number) => (
                                     <ResourcePanelDraggable
                                         id={ `${step.resourceType}-${step.type}-${index}` }
-                                        key={ step.type }
+                                        key={ `${step.type}-${kebabCase(step.display.label)}` }
                                         resource={ step }
                                     />
                                 )) }
@@ -288,7 +292,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                     <Accordion square disableGutters className={ classNames("flow-builder-element-panel-categories") }>
                         <AccordionSummary
                             className="flow-builder-element-panel-category-heading"
-                            expandIcon={ <ChevronRightIcon size={ 14 } /> }
+                            expandIcon={ <ChevronDownIcon size={ 14 } /> }
                             aria-controls="panel1-content"
                             id="panel1-header"
                         >
@@ -298,12 +302,13 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                             <Typography variant="h6">Components</Typography>
                         </AccordionSummary>
                         <AccordionDetails className="flow-builder-element-panel-category-details">
-                            <Typography variant="body2">Use these components to build up your vies</Typography>
+                            <Typography variant="body2">Use these components to build up your views</Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { elements.map((element: Element, index: number) => (
                                     <ResourcePanelDraggable
                                         id={ `${element.resourceType}-${element.type}-${index}` }
-                                        key={ element.type }
+                                        key={ element.type === ElementTypes.Input ?
+                                            `${element.type}_${element.variant}` : element.type }
                                         resource={ element }
                                     />
                                 )) }

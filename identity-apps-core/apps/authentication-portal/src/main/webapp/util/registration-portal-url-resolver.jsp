@@ -16,8 +16,8 @@
   ~ under the License.
 --%>
 
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.CommonDataRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.CommonDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
 <%@ page import="javax.servlet.http.HttpServletRequest" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
@@ -30,6 +30,8 @@
 <%!
     private static boolean dynamicPortalEnabled;
     private static String dynamicRegistrationPortalURL;
+    private static final String REGISTRATION_FLOW_ENDPOINT = "/api/server/v1/flow/config?flowType=REGISTRATION";
+    private static final String REGISTRATION_ENABLED_PROPERTY = "isEnabled";
 
     /**
      * Initialize them from a scriptlet (or via a setter).
@@ -61,6 +63,30 @@
 
         return registrationEndpointUrl;
     }
+
+    /**
+     * Returns the recovery portal URL.
+     * 
+     * @param passwordRecoveryOverrideURL The password recovery endpoint URL.
+     * @param recoveryPortalOverrideURL   The recovery portal URL.
+     * @param localeString                The locale string to append.
+     * @return The final recovery portal URL.
+     */
+     public static String getRecoveryPortalUrl(String passwordRecoveryOverrideURL, String recoveryPortalOverrideURL, 
+        String localeString) {
+
+        String baseURL = passwordRecoveryOverrideURL;
+
+        if (dynamicPortalEnabled && StringUtils.isNotBlank(recoveryPortalOverrideURL)) {
+            baseURL = recoveryPortalOverrideURL;
+        }
+
+        if (StringUtils.isNotBlank(baseURL) && StringUtils.isNotBlank(localeString)) {
+            String separator = baseURL.contains("?") ? "&" : "?";
+            baseURL = baseURL + separator + "ui_locales=" + localeString;
+        }
+        return baseURL;
+    }
 %>
 
 <%
@@ -83,9 +109,9 @@
     }
 
     try {
-        PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
-        isDynamicPortalEnabled = preferenceRetrievalClient.checkSelfRegistrationEnableDynamicPortal(tenantDomain);
-    } catch (PreferenceRetrievalClientException e) {
+        CommonDataRetrievalClient commonDataRetrievalClient = new CommonDataRetrievalClient();
+        isDynamicPortalEnabled = commonDataRetrievalClient.checkBooleanProperty(REGISTRATION_FLOW_ENDPOINT, tenantDomain, REGISTRATION_ENABLED_PROPERTY, false, true);
+    } catch (CommonDataRetrievalClientException e) {
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", AuthenticationEndpointUtil
                 .i18n(resourceBundle, "something.went.wrong.contact.admin"));

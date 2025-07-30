@@ -1,0 +1,109 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+ .share-application-status-response-list {
+   width: 100%;
+
+   .header {
+      display: flex;
+      flex-direction: column; 
+      align-items: left; 
+      text-align: left;
+      justify-content: left;
+      color: black;
+   }
+
+   .org-handler {
+      font-size: 15px;
+      margin-top: 5px;
+      color: rgb(0, 0, 0) !important;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 230px;
+      display: inline-block;
+      vertical-align: middle;
+      flex-shrink: 1;
+      line-height: 2.0;
+   }
+
+   .org-id {
+      font-size: 11px;
+      color: gray;
+   }
+
+   .org-id-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      max-width: 80%;
+      gap: 0.5rem;
+   }
+
+   .ellipsis-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 80%;
+      display: inline-block;
+      vertical-align: middle;
+      flex-shrink: 1;
+      line-height: 2.0;
+   }
+   
+   .copy-icon-container {
+      position: absolute;
+      right: 0;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.1s ease, visibility 0s 0.1s;
+   }
+
+   .org-id-wrapper:hover .copy-icon-container {
+      visibility: visible;
+      opacity: 1;
+      transition: opacity 0.1s ease, visibility 0s 0s;
+   }
+
+   .copy-icon {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.1s ease, visibility 0s 0.1s;
+      cursor: pointer;
+      font-size: 1rem;
+      vertical-align: middle;
+      line-height: 1;
+   }
+
+   .copy-icon.visible {
+      opacity: 1;
+      visibility: visible;
+   }
+
+   .custom-list-layout-override {
+      display: block !important; 
+      margin-right: 0px !important;
+      width: 100% !important;
+   }
+
+   .infinite-scroll-loader {
+      justify-content: center;
+      align-items: center;
+      height: 100px; 
+   }
+ }

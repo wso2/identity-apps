@@ -23,10 +23,15 @@ import {
     ApplicationTemplateLoadingStrategies
 } from "@wso2is/admin.applications.v1/models/application";
 import { ApplicationsResourceEndpointsInterface } from "@wso2is/admin.applications.v1/models/endpoints";
+import {
+    WorkflowAssociationsResourceEndpointsInterface,
+    WorkflowsResourceEndpointsInterface
+} from "@wso2is/admin.approval-workflows.v1/models/endpoints";
 import { BrandingPreferenceResourceEndpointsInterface } from "@wso2is/admin.branding.v1/models/endpoints";
 import { CertificatesResourceEndpointsInterface } from "@wso2is/admin.certificates.v1";
 import { ClaimResourceEndpointsInterface } from "@wso2is/admin.claims.v1/models/endpoints";
 import { ConnectionResourceEndpointsInterface } from "@wso2is/admin.connections.v1";
+import { FlowBuilderCoreResourceEndpointsInterface } from "@wso2is/admin.flow-builder-core.v1/models/endpoints";
 import { GroupsResourceEndpointsInterface } from "@wso2is/admin.groups.v1/models/endpoints";
 import { RemoteLoggingResourceEndpointsInterface } from "@wso2is/admin.logs.v1/models/endpoints";
 import { ScopesResourceEndpointsInterface } from "@wso2is/admin.oidc-scopes.v1";
@@ -74,6 +79,10 @@ export interface FeatureConfigInterface {
      */
     actions?: FeatureAccessConfigInterface;
     /**
+     * Agent management feature.
+     */
+    agents?: FeatureAccessConfigInterface;
+    /**
      * Admin user management feature.
      */
     administrators?: FeatureAccessConfigInterface;
@@ -117,6 +126,10 @@ export interface FeatureConfigInterface {
      * Email providers feature.
      */
     emailProviders?: FeatureAccessConfigInterface;
+    /**
+     * Flow orchestration feature.
+     */
+    flows?: FeatureAccessConfigInterface;
     /**
      * Getting started feature.
      */
@@ -273,6 +286,10 @@ export interface FeatureConfigInterface {
      * Notification sending feature.
      */
     internalNotificationSending?: FeatureAccessConfigInterface;
+    /**
+     * Registration flow builder feature.
+     */
+    registrationFlowBuilder?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -311,6 +328,11 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      * Configs of multiple application protocol.
      */
     allowMultipleAppProtocols?: boolean;
+    /**
+     * Region selection enabled.
+     * This is used to enable/disable the region selection in the organization creation page.
+     */
+    regionSelectionEnabled?: boolean;
 }
 
 /**
@@ -397,6 +419,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     identityProviderTemplates: IdentityProviderTemplatesConfigInterface;
     /**
+     * Should the admin data separation notice be enabled.
+     */
+    isAdminDataSeparationNoticeEnabled?: boolean;
+    /**
      * Should default dialects be allowed for editing.
      */
     isDefaultDialectEditingEnabled?: boolean;
@@ -445,6 +471,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isSAASDeployment: boolean;
     /**
+     * Enable old UI of email provider.
+     */
+    enableOldUIForEmailProvider: boolean;
+    /**
      * Enable/Disable custom email template feature
      */
     enableCustomEmailTemplates: boolean;
@@ -488,6 +518,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Hidden userstores
      */
     hiddenUserStores: string[];
+    /**
+     * System reserved userstores
+     */
+    systemReservedUserStores: string[];
     /**
      * App Logos
      */
@@ -548,6 +582,22 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Multi-tenancy related configurations.
      */
     multiTenancy: MultiTenancyConfigInterface;
+    /**
+     * Async Operation Polling Interval.
+     */
+    asyncOperationStatusPollingInterval: number;
+    /**
+     * Custom content configurations.
+     */
+    customContent: CustomContentConfigInterface;
+    /**
+     * Privacy policy URL.
+     */
+    privacyPolicyUrl?: string;
+    /**
+     * Terms of service URL.
+     */
+    termsOfUseUrl?: string;
 }
 
 /**
@@ -627,14 +677,18 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     SMSTemplateResourceEndpointsInterface,
     ActionsResourceEndpointsInterface,
     PolicyAdministrationEndpointsInterface,
+    WorkflowsResourceEndpointsInterface,
+    WorkflowAssociationsResourceEndpointsInterface,
     RulesEndpointsInterface,
-    RemoteLoggingResourceEndpointsInterface {
+    RemoteLoggingResourceEndpointsInterface,
+    FlowBuilderCoreResourceEndpointsInterface {
 
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details
     me: string;
     saml2Meta: string;
     wellKnown: string;
+    asyncStatus: string;
 }
 
 export interface ResourceEndpointsInterface {
@@ -643,4 +697,14 @@ export interface ResourceEndpointsInterface {
 
 export interface RouteConfigInterface {
     organizationEnabledRoutes: string[];
+}
+
+/**
+ * Interface for custom content configurations.
+ */
+export interface CustomContentConfigInterface {
+    /**
+     * Maximum file size allowed for custom content.
+     */
+    maxFileSize?: number;
 }

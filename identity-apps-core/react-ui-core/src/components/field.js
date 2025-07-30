@@ -20,14 +20,27 @@ import PropTypes from "prop-types";
 import React from "react";
 
 import ButtonFieldAdapter from "./adapters/button-field-adapter";
+import CaptchaWidgetAdapter from "./adapters/captcha-widget-adapter";
+import ImageFieldAdapter from "./adapters/image-field-adapter";
 import InputFieldAdapter from "./adapters/input-field-adapter";
+import RichTextAdapter from "./adapters/rich-text-field-adapter";
 import TypographyAdapter from "./adapters/typography-field-adapter";
 import DividerAdapter from "./divider";
 
-const Field = ({ component, formState, formStateHandler, formFieldError, flowActionHandler }) => {
+const Field = ({
+    component,
+    formState,
+    formStateHandler,
+    formFieldError,
+    flowActionHandler,
+    recaptchaRef
+}) => {
+
     switch (component.type) {
         case "TYPOGRAPHY":
             return <TypographyAdapter component={ component } />;
+        case "RICH_TEXT":
+            return <RichTextAdapter component={ component } />;
         case "INPUT":
             return (
                 <InputFieldAdapter
@@ -38,9 +51,13 @@ const Field = ({ component, formState, formStateHandler, formFieldError, flowAct
                 />
             );
         case "BUTTON":
-            return <ButtonFieldAdapter component={ component } handleButtonAction={ flowActionHandler }/>;
+            return <ButtonFieldAdapter component={ component } handleButtonAction={ flowActionHandler } />;
         case "DIVIDER":
             return <DividerAdapter component={ component } />;
+        case "CAPTCHA":
+            return <CaptchaWidgetAdapter component={ component } ref={ recaptchaRef } />;
+        case "IMAGE":
+            return <ImageFieldAdapter component={ component } />;
         default:
             return (
                 <InputFieldAdapter
@@ -56,9 +73,11 @@ const Field = ({ component, formState, formStateHandler, formFieldError, flowAct
 Field.propTypes = {
     component: PropTypes.object.isRequired,
     flowActionHandler: PropTypes.func,
-    formFieldError: PropTypes.func.isRequired,
-    formState: PropTypes.isRequired,
-    formStateHandler: PropTypes.func.isRequired
+    formFieldError: PropTypes.func,
+    formState: PropTypes.object,
+    formStateHandler: PropTypes.func,
+    recaptchaRef: PropTypes.object,
+    setRecaptchaRef: PropTypes.func
 };
 
 export default Field;

@@ -16,7 +16,12 @@
  * under the License.
  */
 
-import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
+import {
+    I18nModuleInitOptions,
+    I18nModuleOptionsInterface,
+    SupportedLanguagesMeta,
+    generateBackendPaths
+} from "@wso2is/i18n";
 import { I18nConstants } from "../constants";
 import { AppConstants } from "../constants/app-constants";
 import { UserManagementConstants } from "../constants/user-management-constants";
@@ -63,6 +68,7 @@ export class Config {
             serverOrigin: window["AppUtils"]?.getConfig()?.serverOrigin,
             superTenant: window["AppUtils"]?.getConfig()?.superTenant,
             tenant: window["AppUtils"]?.getConfig()?.tenant,
+            tenantContext: window["AppUtils"]?.getConfig()?.tenantContext,
             tenantPath: window["AppUtils"]?.getConfig()?.tenantPath,
             tenantPrefix: window["AppUtils"]?.getConfig()?.tenantPrefix
         };
@@ -189,7 +195,7 @@ export class Config {
      * @param metaFile - Meta file.
      * @returns I18nModuleInitOptions - I18n init options.
      */
-    public static generateModuleInitOptions(metaFile: MetaI18N): I18nModuleInitOptions {
+    public static generateModuleInitOptions(metaFile: SupportedLanguagesMeta): I18nModuleInitOptions {
         return {
             backend: {
                 loadPath: (language: any, namespace: any) =>
@@ -220,13 +226,14 @@ export class Config {
      *
      * @returns I18nModuleOptionsInterface - i18n config object.
      */
-    public static getI18nConfig(metaFile?: MetaI18N): I18nModuleOptionsInterface {
+    public static getI18nConfig(metaFile?: SupportedLanguagesMeta): I18nModuleOptionsInterface {
         return {
             initOptions: this.generateModuleInitOptions(metaFile),
             langAutoDetectEnabled: window["AppUtils"]?.getConfig()?.ui?.i18nConfigs?.langAutoDetectEnabled
                 ?? I18nConstants.LANG_AUTO_DETECT_ENABLED,
             namespaceDirectories: I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
             overrideOptions: I18nConstants.INIT_OPTIONS_OVERRIDE,
+            resourceExtensionsPath: "/extensions/i18n",
             resourcePath: "/resources/i18n",
             xhrBackendPluginEnabled: I18nConstants.XHR_BACKEND_PLUGIN_ENABLED
         };

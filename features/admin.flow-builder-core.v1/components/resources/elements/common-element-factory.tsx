@@ -20,6 +20,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Node } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
 import ButtonAdapter from "./adapters/button-adapter";
+import CaptchaAdapter from "./adapters/captcha-adapter";
 import ChoiceAdapter from "./adapters/choice-adapter";
 import DividerAdapter from "./adapters/divider-adapter";
 import FormAdapter from "./adapters/form-adapter";
@@ -31,6 +32,8 @@ import PhoneNumberInputAdapter from "./adapters/input/phone-number-input-adapter
 import RichTextAdapter from "./adapters/rich-text-adapter";
 import TypographyAdapter from "./adapters/typography-adapter";
 import { BlockTypes, Element, ElementTypes, InputVariants } from "../../../models/elements";
+import { EventTypes } from "../../../models/extension";
+import PluginRegistry from "../../../plugins/plugin-registry";
 
 /**
  * Props interface of {@link CommonElementFactory}
@@ -56,6 +59,16 @@ export const CommonElementFactory: FunctionComponent<CommonElementFactoryPropsIn
     stepId,
     resource
 }: CommonElementFactoryPropsInterface & Node): ReactElement => {
+
+    const overrideElements: ReactElement[] = [];
+
+    if (!PluginRegistry.getInstance().executeSync(EventTypes.ON_NODE_ELEMENT_RENDER, stepId, resource,
+        overrideElements)) {
+        if (overrideElements.length > 0) {
+            return <>{ overrideElements }</>;
+        }
+    }
+
     if (resource.type === BlockTypes.Form) {
         return <FormAdapter stepId={ stepId } resource={ resource } />;
     } else if (resource.type === ElementTypes.Input) {
@@ -84,6 +97,8 @@ export const CommonElementFactory: FunctionComponent<CommonElementFactoryPropsIn
         return <DividerAdapter stepId={ stepId } resource={ resource } />;
     } else if (resource.type === ElementTypes.Image) {
         return <ImageAdapter stepId={ stepId } resource={ resource } />;
+    } else if (resource.type === ElementTypes.Captcha) {
+        return <CaptchaAdapter stepId={ stepId } resource={ resource } />;
     }
 
     return null;

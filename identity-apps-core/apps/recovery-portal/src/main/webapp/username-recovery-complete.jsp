@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2016-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -20,6 +20,7 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.IdentityRecoveryException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="java.io.File" %>
@@ -58,6 +59,8 @@
     }
 %>
 
+<% request.setAttribute("pageName", "username-recovery-complete"); %>
+
 <%-- Data for the layout from the page --%>
 <%
     layoutData.put("isResponsePage", true);
@@ -76,7 +79,7 @@
     <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body  class="login-portal layout">
+<body  class="login-portal layout" data-response-type="success" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader" >
             <%-- product-title --%>
@@ -98,7 +101,7 @@
                     <%=i18n(recoveryResourceBundle, customText, successMessageDescrition)%>
                     <br><br>
                     <%
-                        if(StringUtils.isNotBlank(callback)) {
+                        if(StringUtils.isNotBlank(callback) && AuthenticationEndpointUtil.isSchemeSafeURL(callback)) {
                     %>
                         <br/><br/>
                         <i class="caret left icon primary"></i>

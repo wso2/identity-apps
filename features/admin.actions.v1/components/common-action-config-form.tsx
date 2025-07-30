@@ -22,10 +22,8 @@ import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import ActionEndpointConfigForm from "./action-endpoint-config-form";
-import {
-    ActionConfigFormPropertyInterface,
-    AuthenticationType
-} from "../models/actions";
+import { ActionConfigFormPropertyInterface, AuthenticationType } from "../models/actions";
+import "./common-action-config-form.scss";
 
 interface CommonActionConfigFormInterface extends IdentifiableComponentInterface {
     /**
@@ -46,7 +44,7 @@ interface CommonActionConfigFormInterface extends IdentifiableComponentInterface
      * @param updatedValue - The new authentication type selected.
      * @param change - Indicates whether the change is detected.
      */
-    onAuthenticationTypeChange:  (updatedValue: AuthenticationType, change: boolean) => void;
+    onAuthenticationTypeChange: (updatedValue: AuthenticationType, change: boolean) => void;
 }
 
 const CommonActionConfigForm: FunctionComponent<CommonActionConfigFormInterface> = ({
@@ -54,44 +52,45 @@ const CommonActionConfigForm: FunctionComponent<CommonActionConfigFormInterface>
     isCreateFormState,
     isReadOnly,
     onAuthenticationTypeChange,
-    [ "data-componentid" ]: _componentId = "common-action-config-form"
+    ["data-componentid"]: _componentId = "common-action-config-form"
 }: CommonActionConfigFormInterface): ReactElement => {
-
     const { t } = useTranslation();
 
     return (
-        <>
-            <FinalFormField
-                key="name"
-                className="text-field-container"
-                width={ 16 }
-                FormControlProps={ {
-                    margin: "dense"
-                } }
-                ariaLabel="actionName"
-                required={ true }
-                data-componentid={ `${_componentId}-action-name` }
-                name="name"
-                type="text"
-                label={ t("actions:fields.name.label") }
-                placeholder={ t("actions:fields.name.placeholder") }
-                helperText={ (
-                    <Hint className="hint" compact>
-                        { t("actions:fields.name.hint") }
-                    </Hint>
-                ) }
-                component={ TextFieldAdapter }
-                maxLength={ 100 }
-                minLength={ 0 }
-                disabled={ isReadOnly }
-            />
+        <div className="common-action-config-form">
+            <div className="form-field-wrapper">
+                <FinalFormField
+                    key="name"
+                    className="text-field-container"
+                    width={ 16 }
+                    FormControlProps={ {
+                        margin: "dense"
+                    } }
+                    ariaLabel="actionName"
+                    required={ true }
+                    data-componentid={ `${_componentId}-action-name` }
+                    name="name"
+                    type="text"
+                    label={ t("actions:fields.name.label") }
+                    placeholder={ t("actions:fields.name.placeholder") }
+                    helperText={
+                        (<Hint className="hint" compact>
+                            { t("actions:fields.name.hint") }
+                        </Hint>)
+                    }
+                    component={ TextFieldAdapter }
+                    maxLength={ 100 }
+                    minLength={ 0 }
+                    disabled={ isReadOnly }
+                />
+            </div>
             <ActionEndpointConfigForm
                 initialValues={ initialValues }
                 isCreateFormState={ isCreateFormState }
                 onAuthenticationTypeChange={ onAuthenticationTypeChange }
                 isReadOnly={ isReadOnly }
             />
-        </>
+        </div>
     );
 };
 

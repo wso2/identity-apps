@@ -47,6 +47,7 @@ import { UserInviteInterface } from "@wso2is/admin.users.v1/components/guests/mo
 import { AdminAccountTypes, InvitationStatus, UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { resolveUserSearchAttributes } from "@wso2is/admin.users.v1/utils";
 import { UserStoreDropdownItem } from "@wso2is/admin.userstores.v1/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -62,6 +63,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import AdministratorsTable from "./administrators-table";
+import { ConsoleAdministratorOnboardingConstants } from "../../../constants/console-administrator-onboarding-constants";
 import useAdministrators from "../../../hooks/use-administrators";
 import useBulkAssignAdministratorRoles from "../../../hooks/use-bulk-assign-user-roles";
 import AddExistingUserWizard from "../add-existing-user-wizard/add-existing-user-wizard";
@@ -146,6 +148,9 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
+    );
 
     const consoleSettingsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features.consoleSettings
@@ -183,6 +188,8 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
                 ? primaryUserStoreDomainName
                 : userstoresConfig?.primaryUserstoreName
         );
+        // Resets the invitation status option when the selected administrator group changes.
+        setInvitationStatusOption(InvitationStatus.ACCEPTED);
     },[ isPrivilegedUsersInConsoleSettingsEnabled, selectedAdministratorGroup ]);
 
     const {
@@ -247,6 +254,17 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
     ];
 
     const [ loading, setLoading ] = useState(false);
+
+    const adminActionPermissionScopes: string[] = useMemo(() => {
+        const userRoleUpdateScopes: string[] = userRolesV3FeatureEnabled
+            ? [ AdministratorConstants.INTERNAL_ROLE_MGT_USERS_UPDATE_PERMISSION ]
+            : featureConfig?.userRoles?.scopes?.update;
+
+        return [
+            ...featureConfig?.users?.scopes?.create,
+            ...userRoleUpdateScopes
+        ];
+    }, [ userRolesV3FeatureEnabled, featureConfig ]);
 
     /**
      * Resolves the attributes by which the users can be searched.
@@ -529,11 +547,10 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
             } }
             rightActionPanel={ renderRightActionPanel() }
             topActionPanelExtension={ (
-                <Show
-                    when={
-                        [ ...featureConfig?.users?.scopes?.create,
-                            ...featureConfig?.userRoles?.scopes?.update
-                        ] }>
+                isFeatureEnabled(consoleSettingsFeatureConfig,
+                    ConsoleAdministratorOnboardingConstants.FEATURE_DICTIONARY
+                        .get("CONSOLE_SETTINGS_ADD_ADMINISTRATOR")) && (<Show
+                    when={ adminActionPermissionScopes }>
                     { !isSubOrganization() && isPrivilegedUsersInConsoleSettingsEnabled && (
                         <Button
                             data-componentid={ `${componentId}-admin-settings-button` }
@@ -543,7 +560,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
                         </Button>
                     ) }
                     { renderAdministratorAddOptions() }
-                </Show>
+                </Show>)
             ) }
         >
             { invitationStatusOption === InvitationStatus.ACCEPTED ? adminUserListFetchError ? (
@@ -559,7 +576,9 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
                     defaultListItemLimit={ defaultListItemLimit }
                     administrators={ administrators }
                     onUserEdit={ handleUserEdit }
-                    onUserDelete={ isCentralDeploymentEnabled ? handleGuestUserDelete : handleUserDelete }
+                    onUserDelete={ isCentralDeploymentEnabled &&
+                        selectedUserStore !== userstoresConfig?.primaryUserstoreName  ?
+                        handleGuestUserDelete : handleUserDelete }
                     isLoading={ loading }
                     readOnlyUserStores={ readOnlyUserStores }
                     onSearchQueryClear={ handleSearchQueryClear }

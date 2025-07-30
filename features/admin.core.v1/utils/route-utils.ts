@@ -26,6 +26,9 @@ import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/featur
 import { NavCategory, NavRouteInterface, RouteInterface } from "@wso2is/core/models";
 import groupBy from "lodash-es/groupBy";
 import sortBy from "lodash-es/sortBy";
+import {
+    ReactComponent as ResourceServersIcon
+} from "../../themes/wso2is/assets/images/icons/outline-icons/resource-servers-outline.svg";
 import { AppConstants } from "../constants/app-constants";
 import { history } from "../helpers/history";
 
@@ -254,6 +257,9 @@ export class RouteUtils {
 
     public static groupNavbarRoutes(routes: RouteInterface[], saasFeatureStatus?: FeatureStatus): NavRouteInterface[] {
 
+        const isMcpServersFeatureEnabled: boolean =
+            window["AppUtils"]?.getConfig()?.ui?.features?.mcpServers?.enabled;
+
         const userManagement: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: SquareUserIcon,
             id: "userManagement",
@@ -265,6 +271,13 @@ export class RouteUtils {
             icon: DatabaseDocumentIcon,
             id: "userAttributesAndStores",
             name: "User Attributes & Stores",
+            order: 2
+        };
+
+        const resourceServers: Omit<RouteInterface, "showOnSidePanel"> = {
+            icon: ResourceServersIcon,
+            id: "resourceServers",
+            name: "Resources",
             order: 2
         };
 
@@ -287,6 +300,11 @@ export class RouteUtils {
         const manage: NavCategory = {
             id: "manage",
             order: 2
+        };
+
+        const workflows: NavCategory = {
+            id: "workflows",
+            order: 3
         };
 
         const organizations: NavCategory = {
@@ -360,12 +378,25 @@ export class RouteUtils {
                 category: build,
                 id: "apiResources",
                 order: 2,
+                parent: isMcpServersFeatureEnabled ? resourceServers : null,
                 selected: history.location.pathname.includes("/api-resources")
+            },
+            {
+                category: build,
+                id: "mcpServers",
+                order: 2,
+                parent: resourceServers,
+                selected: history.location.pathname.includes("/mcp-servers")
             },
             {
                 category: organizations,
                 id: "organizations",
                 selected: history.location.pathname.includes("/organizations")
+            },
+            {
+                category: workflows,
+                id: "workflows",
+                selected: history.location.pathname.includes("/workflows")
             },
             {
                 category: manage,
@@ -376,7 +407,7 @@ export class RouteUtils {
             {
                 category: manage,
                 id: "groups",
-                order: 1,
+                order: 2,
                 parent: userManagement
             },
             {
@@ -388,13 +419,13 @@ export class RouteUtils {
             {
                 category: manage,
                 id: "userRoles",
-                order: 2,
+                order: 3,
                 parent: userManagement
             },
             {
                 category: manage,
                 id: "userV1Roles",
-                order: 2,
+                order: 3,
                 parent: userManagement
             },
             {
@@ -402,6 +433,12 @@ export class RouteUtils {
                 id: "roles",
                 order: 2,
                 parent: userManagement
+            },
+            {
+                category: manage,
+                id: "agents",
+                order: 1,
+                selected: history.location.pathname.includes("/agents")
             },
             {
                 category: manage,
@@ -442,6 +479,11 @@ export class RouteUtils {
                 category: build,
                 id: "smsTemplates",
                 parent: branding
+            },
+            {
+                category: preferences,
+                id: "flows",
+                selected: history.location.pathname.includes("/flows")
             },
             {
                 category: preferences,
@@ -491,8 +533,14 @@ export class RouteUtils {
             },
             {
                 category: extensions,
+                id: "webhooks",
+                order: 1,
+                selected: history.location.pathname.includes("/webhooks")
+            },
+            {
+                category: extensions,
                 id: "eventPublishing",
-                order: 1
+                order: 2
             }
         ];
 

@@ -16,13 +16,16 @@
  * under the License.
  */
 
+import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
 import Table from "@oxygen-ui/react/Table";
 import TableBody from "@oxygen-ui/react/TableBody";
 import TableCell from "@oxygen-ui/react/TableCell";
 import TableHead from "@oxygen-ui/react/TableHead";
 import TableRow from "@oxygen-ui/react/TableRow";
+import { TrashIcon } from "@oxygen-ui/react-icons";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
+import useGetAllLocalClaims from "@wso2is/admin.claims.v1/api/use-get-all-local-claims";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
@@ -45,7 +48,9 @@ import {
     AlertInterface,
     AlertLevels,
     Claim,
+    ClaimDataType,
     ClaimDialect,
+    ClaimInputFormat,
     ExternalClaim,
     ProfileSchemaInterface,
     SharedProfileValueResolvingMethod,
@@ -54,8 +59,10 @@ import {
 } from "@wso2is/core/models";
 import { Property } from "@wso2is/core/src/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
+
 import { Field, Form } from "@wso2is/form";
 import { DropDownItemInterface } from "@wso2is/form/src";
+import { DynamicField , KeyValue } from "@wso2is/forms";
 import {
     ConfirmationModal,
     CopyInputField,
@@ -86,6 +93,7 @@ import { Divider, Grid, Icon, Form as SemanticForm } from "semantic-ui-react";
 import { deleteAClaim, getExternalClaims, updateAClaim } from "../../../api";
 import useGetClaimDialects from "../../../api/use-get-claim-dialects";
 import { ClaimManagementConstants } from "../../../constants";
+import "./edit-basic-details-local-claims.scss";
 
 /**
  * Prop types for `EditBasicDetailsLocalClaims` component
@@ -134,6 +142,11 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ hasMapping, setHasMapping ] = useState<boolean>(false);
     const [ mappingChecked, setMappingChecked ] = useState<boolean>(false);
+    const [ dataType, setDataType ] = useState<string>(claim?.dataType || "");
+    const [ inputType, setInputType ] = useState<string>(claim?.inputFormat?.inputType || ClaimInputFormat.TEXT_INPUT);
+    const [ multiValued, setMultiValued ] = useState<boolean>(claim?.multiValued || false);
+    const [ subAttributes, setSubAttributes ] = useState<string[]>([]);
+    const [ canonicalValues, setCanonicalValues ] = useState<KeyValue[]>();
 
     const nameField: MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
     const regExField: MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
@@ -173,6 +186,14 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     const { UIConfig } = useUIConfig();
 
+    const isAgentAttribute: boolean = useMemo(() => {
+        const agentAttributeProperty: Property = claim?.properties?.find(
+            (property: Property) => property.key === "isAgentClaim"
+        );
+
+        return agentAttributeProperty?.value === "true";
+    }, [ claim ]);
+
     const sharedProfileValueResolvingMethodOptions: DropDownItemInterface[] = [
         {
             text: t("claims:local.forms." +
@@ -190,10 +211,54 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             value: SharedProfileValueResolvingMethod.FROM_FIRST_FOUND_IN_HIERARCHY
         }
     ];
+
+    const dataTypeOptions: DropDownItemInterface[] = [
+        {
+            text: t("claims:local.forms.dataType.options.text"),
+            value: ClaimDataType.TEXT
+        },
+        {
+            text: t("claims:local.forms.dataType.options.options"),
+            value: ClaimDataType.OPTIONS
+        },
+        {
+            text: t("claims:local.forms.dataType.options.integer"),
+            value: ClaimDataType.INTEGER
+        },
+        {
+            text: t("claims:local.forms.dataType.options.decimal"),
+            value: ClaimDataType.DECIMAL
+        },
+        {
+            text: t("claims:local.forms.dataType.options.boolean"),
+            value: ClaimDataType.BOOLEAN
+        },
+        {
+            text: t("claims:local.forms.dataType.options.dateTime"),
+            value: ClaimDataType.DATE_TIME
+        },
+        {
+            text: t("claims:local.forms.dataType.options.object"),
+            value: ClaimDataType.COMPLEX
+        }
+    ];
+
     const {
         data: fetchedDialects,
         error: fetchDialectsRequestError
     } = useGetClaimDialects(null);
+
+    const enableIdentityClaims: boolean = useSelector((state: AppState) => state?.config?.ui?.enableIdentityClaims);
+
+    const {
+        data: fetchedAttributes
+    } = useGetAllLocalClaims({
+        "exclude-identity-claims": !enableIdentityClaims,
+        filter: null,
+        limit: null,
+        offset: null,
+        sort: null
+    });
 
     // Extract custom user schema ID.
     const customUserSchemaID: string = useMemo(() => fetchedDialects?.find(
@@ -225,6 +290,31 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
      * Update attribute profile states from claims
      */
     useEffect(() => {
+
+        if (claim?.canonicalValues && Array.isArray(claim.canonicalValues)) {
+            setCanonicalValues(
+                claim.canonicalValues.map((item: any) => ({
+                    key: item.label,
+                    value: item.value
+                }))
+            );
+        } else {
+            setCanonicalValues([]);
+        }
+
+        if (claim && claim.subAttributes && Array.isArray(claim.subAttributes)) {
+            setSubAttributes(claim.subAttributes);
+        }
+
+        if (claim?.dataType === ClaimDataType.STRING && claim?.canonicalValues?.length > 0) {
+            setDataType(ClaimDataType.OPTIONS);
+        } else if (claim?.dataType === ClaimDataType.STRING) {
+            setDataType(ClaimDataType.TEXT);
+        } else {
+            setDataType(claim?.dataType || ClaimDataType.STRING);
+        }
+
+        setInputType(claim?.inputFormat?.inputType || ClaimInputFormat.TEXT_INPUT);
         setIsConsoleRequired(claim?.profiles?.console?.required ?? claim?.required);
         setIsEndUserRequired(claim?.profiles?.endUser?.required ?? claim?.required);
         setIsSelfRegistrationRequired(claim?.profiles?.selfRegistration?.required ?? claim?.required);
@@ -423,7 +513,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     // Temporary fix to check system claims and make them readonly
     const isReadOnly: boolean = useMemo(() => {
-        if (hideSpecialClaims) {
+        if (hideSpecialClaims || isAgentAttribute) {
             return true;
         } else {
             return !hasAttributeUpdatePermissions;
@@ -524,14 +614,73 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             });
     };
 
+    const subAttributeDropdownOptions: DropDownItemInterface[] = useMemo(() => {
+        if (!props.claim) return [];
+
+        return fetchedAttributes
+            ?.filter((claim: Claim) => {
+                const isSystemClaim: boolean = claim.properties?.some(
+                    (property: Property) =>
+                        property.key === "isSystemClaim" && property.value === "true"
+                );
+                const isCurrentClaim: boolean = claim.claimURI === props.claim.claimURI;
+                const isAlreadySelected: boolean = subAttributes.includes(claim.claimURI);
+
+                return !isSystemClaim && !isCurrentClaim && !isAlreadySelected;
+            })
+            .map((claim: Claim) => ({
+                text: claim.claimURI,
+                value: claim.claimURI
+            }))
+            .sort(
+                (a: { text: string }, b: { text: string }) =>
+                    a.text.localeCompare(b.text)
+            ) ?? [];
+    }, [ fetchedAttributes, subAttributes, props.claim?.claimURI ]);
+
     const onSubmit = (values: Record<string, unknown>) => {
         let data: Claim;
 
+        if (dataType === ClaimDataType.COMPLEX && subAttributes.length === 0) {
+            dispatch(
+                addAlert({
+                    description: t("claims:local.forms.subAttributes.validationError"),
+                    level: AlertLevels.ERROR,
+                    message: t("claims:local.forms.subAttributes.validationErrorMessage")
+                })
+            );
+
+            return;
+        }
+
+        if (dataType === ClaimDataType.OPTIONS && canonicalValues.length === 0) {
+            dispatch(
+                addAlert({
+                    description: t("claims:local.forms.canonicalValues.validationError"),
+                    level: AlertLevels.ERROR,
+                    message: t("claims:local.forms.canonicalValues.validationErrorMessage")
+                })
+            );
+
+            return;
+        }
         if (isDistinctAttributeProfilesDisabled) {
             // Use the legacy configuration.
             data = {
                 attributeMapping: claim.attributeMapping,
+                canonicalValues: values?.canonicalValues !== undefined
+                    ? (values.canonicalValues as KeyValue[]).map((item: KeyValue) => ({
+                        label: item.key,
+                        value: item.value
+                    }))
+                    : canonicalValues?.map((item: KeyValue) => ({
+                        label: item.key,
+                        value: item.value
+                    })),
                 claimURI: claim.claimURI,
+                dataType: dataType === ClaimDataType.TEXT || dataType === ClaimDataType.OPTIONS
+                    ? ClaimDataType.STRING
+                    : dataType,
                 description: values?.description !== undefined
                     ? values.description?.toString()
                     : claim?.description,
@@ -540,8 +689,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     : claim?.displayName,
                 displayOrder: attributeConfig.editAttributes.getDisplayOrder(
                     claim.displayOrder, values.displayOrder?.toString()),
-                multiValued: values?.multiValued !== undefined
-                    ? !!values.multiValued : claim?.multiValued,
+                inputFormat: inputType ? { inputType: inputType } : claim?.inputFormat,
+                multiValued: multiValued,
                 properties: claim?.properties,
                 readOnly: values?.readOnly !== undefined
                     ? !!values.readOnly
@@ -555,6 +704,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 sharedProfileValueResolvingMethod: values?.sharedProfileValueResolvingMethod !== undefined
                     ? values?.sharedProfileValueResolvingMethod as SharedProfileValueResolvingMethod
                     : claim?.sharedProfileValueResolvingMethod,
+                subAttributes: dataType === ClaimDataType.COMPLEX ? subAttributes : undefined,
                 supportedByDefault: values?.supportedByDefault !== undefined
                     ? !!values.supportedByDefault
                     : claim?.supportedByDefault,
@@ -566,7 +716,19 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             // Use the new configuration.
             data = {
                 attributeMapping: claim.attributeMapping,
+                canonicalValues: values?.canonicalValues !== undefined
+                    ? (values.canonicalValues as KeyValue[]).map((item: KeyValue) => ({
+                        label: item.key,
+                        value: item.value
+                    }))
+                    : canonicalValues?.map((item: KeyValue) => ({
+                        label: item.key,
+                        value: item.value
+                    })),
                 claimURI: claim.claimURI,
+                dataType: dataType === ClaimDataType.TEXT || dataType === ClaimDataType.OPTIONS
+                    ? ClaimDataType.STRING
+                    : dataType,
                 description: values?.description !== undefined
                     ? values.description?.toString()
                     : claim?.description,
@@ -575,8 +737,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     : claim?.displayName,
                 displayOrder: attributeConfig.editAttributes.getDisplayOrder(
                     claim.displayOrder, values.displayOrder?.toString()),
-                multiValued: values?.multiValued !== undefined
-                    ? !!values.multiValued : claim?.multiValued,
+                inputFormat: inputType ? { inputType: inputType } : claim?.inputFormat,
+                multiValued: multiValued,
                 profiles: {
                     console: {
                         readOnly: values?.consoleReadOnly !== undefined ?
@@ -619,6 +781,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 sharedProfileValueResolvingMethod: values?.sharedProfileValueResolvingMethod !== undefined
                     ? values?.sharedProfileValueResolvingMethod as SharedProfileValueResolvingMethod
                     : claim?.sharedProfileValueResolvingMethod,
+                subAttributes: dataType === ClaimDataType.COMPLEX ? subAttributes : undefined,
                 supportedByDefault: values?.supportedByDefault !== undefined
                     ? !!values.supportedByDefault : claim?.supportedByDefault,
                 uniquenessScope: values?.uniquenessScope !== undefined
@@ -740,6 +903,93 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 </TableCell>
             </TableRow>
         );
+    };
+
+    const setDefaultInputTypeForDataType = (dataType: ClaimDataType, multiValued: boolean): void => {
+
+        switch (dataType) {
+            case ClaimDataType.OPTIONS:
+                setInputType(multiValued ? ClaimInputFormat.MULTI_SELECT_DROPDOWN : ClaimInputFormat.DROPDOWN);
+
+                break;
+            case ClaimDataType.BOOLEAN:
+                setInputType(ClaimInputFormat.CHECKBOX);
+
+                break;
+            default:
+                setInputType(ClaimInputFormat.TEXT_INPUT);
+        }
+    };
+
+    const resolveInputFormatOptions = (dataType: ClaimDataType, multiValued: boolean): DropDownItemInterface[] => {
+
+        const textInputOption: DropDownItemInterface[] = [
+            {
+                text: t("claims:local.forms.inputFormat.options.textInput"),
+                value: ClaimInputFormat.TEXT_INPUT
+            }
+        ];
+
+        if (dataType === ClaimDataType.DATE_TIME) {
+            return [
+                ...textInputOption,
+                {
+                    text: t("claims:local.forms.inputFormat.options.datePicker"),
+                    value: ClaimInputFormat.DATE_PICKER
+                }
+            ];
+        }
+
+        if (dataType === ClaimDataType.OPTIONS) {
+            if (multiValued) {
+                return [
+                    {
+                        text: t("claims:local.forms.inputFormat.options.multiSelectDropdown"),
+                        value: ClaimInputFormat.MULTI_SELECT_DROPDOWN
+                    },
+                    {
+                        text: t("claims:local.forms.inputFormat.options.checkBoxGroup"),
+                        value: ClaimInputFormat.CHECKBOX_GROUP
+                    }
+                ];
+            }
+
+            return [
+                {
+                    text: t("claims:local.forms.inputFormat.options.radioGroup"),
+                    value: ClaimInputFormat.RADIO_GROUP
+                },
+                {
+                    text: t("claims:local.forms.inputFormat.options.dropdown"),
+                    value: ClaimInputFormat.DROPDOWN
+                }
+            ];
+        }
+
+        if (dataType === ClaimDataType.INTEGER) {
+            return [
+                ...textInputOption,
+                {
+                    text: t("claims:local.forms.inputFormat.options.numberInput"),
+                    value: ClaimInputFormat.NUMBER_INPUT
+                }
+            ];
+        }
+
+        if (dataType === ClaimDataType.BOOLEAN) {
+            return [
+                {
+                    text: t("claims:local.forms.inputFormat.options.checkbox"),
+                    value: ClaimInputFormat.CHECKBOX
+                },
+                {
+                    text: t("claims:local.forms.inputFormat.options.toggle"),
+                    value: ClaimInputFormat.TOGGLE
+                }
+            ];
+        }
+
+        return textInputOption;
     };
 
     const resolveAttributeRequiredRow = (): ReactElement => {
@@ -957,18 +1207,140 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         hint={ t("claims:local.forms.descriptionHint") }
                         readOnly={ isSubOrganization() || isReadOnly }
                     />
+                    <Field.Dropdown
+                        ariaLabel={ t("claims:local.forms.dataType.label") }
+                        name="dataType"
+                        label={ t("claims:local.forms.dataType.label") }
+                        data-testid={ `${testId}-form-data-type-input` }
+                        hint={ t("claims:local.forms.dataType.hint") }
+                        disabled={ isSubOrganization() || isSystemClaim || isReadOnly }
+                        options={ dataTypeOptions }
+                        value={ dataType }
+                        onChange={ (
+                            event: React.SyntheticEvent<HTMLElement, Event>,
+                            data: { value: string }
+                        ) => {
+                            setSubAttributes([]);
+                            setCanonicalValues([]);
+                            setDataType(data.value);
+                            setDefaultInputTypeForDataType(data.value as ClaimDataType, multiValued);
+                            if (data.value === ClaimDataType.COMPLEX || data.value === ClaimDataType.BOOLEAN) {
+                                setMultiValued(false);
+                            }
+                        } }
+                    />
+
+                    { dataType === ClaimDataType.COMPLEX && (
+                        <>
+                            <Field.Dropdown
+                                ariaLabel="subAttributes-dropdown"
+                                name="subAttributesDropdown"
+                                label={ t("claims:local.forms.subAttributes.label") }
+                                placeholder={ t("claims:local.forms.subAttributes.placeholder") }
+                                options={ subAttributeDropdownOptions }
+                                onChange={ (
+                                    event: React.SyntheticEvent<HTMLElement, Event>,
+                                    data: { value: string }
+                                ) => {
+                                    if (event.type === "click" && !subAttributes.includes(data.value)) {
+                                        setSubAttributes([ ...subAttributes, data.value ]);
+                                    }
+                                } }
+                                data-testid={ `${testId}-form-sub-attributes-dropdown` }
+                                disabled={ isSubOrganization() || isSystemClaim || isReadOnly }
+                                search
+                            />
+                            <div className="sub-attribute-list">
+                                { subAttributes.map((attribute: string, index: number) => (
+                                    <div
+                                        className="sub-attribute-row"
+                                        key={ index }>
+                                        <span>{ attribute }</span>
+                                        { !(isSubOrganization() || isSystemClaim || isReadOnly) && (
+                                            <IconButton
+                                                className="sub-attribute-delete-btn"
+                                                disabled={ isReadOnly }
+                                                onClick={ () => {
+                                                    setSubAttributes(
+                                                        subAttributes.filter(
+                                                            (item: string) => item !== attribute
+                                                        )
+                                                    );
+                                                } }
+                                                data-componentid={ `${testId}-delete-sub-attribute-${index}` }
+                                                style={ { marginLeft: "auto" } }
+                                            >
+                                                <TrashIcon />
+                                            </IconButton>
+                                        ) }
+                                    </div>
+                                )) }
+                            </div>
+                        </>
+                    ) }
+
+                    { dataType === ClaimDataType.OPTIONS && (
+                        <>
+                            <p>{ t("claims:local.forms.canonicalValues.hint") }</p>
+                            <DynamicField
+                                data={ canonicalValues.map((value: KeyValue) =>
+                                    ({ key: value.key, value: value.value })) }
+                                keyType="text"
+                                keyName={ t("claims:local.forms.canonicalValues.keyLabel") }
+                                valueName={ t("claims:local.forms.canonicalValues.valueLabel") }
+                                keyRequiredMessage={ t("claims:local.forms.canonicalValues.keyRequiredErrorMessage") }
+                                valueRequiredErrorMessage=
+                                    { t("claims:local.forms.canonicalValues.valueRequiredErrorMessage") }
+                                requiredField={ true }
+                                listen={ (data: KeyValue[]) => {
+                                    setCanonicalValues(data.map((item: KeyValue) =>
+                                        ({ key: item.key, value: item.value })));
+                                } }
+                                data-testid={ `${testId}-form-canonical-values-dynamic-field` }
+                                readOnly={ isSubOrganization() || isReadOnly }
+                            />
+                        </>
+                    ) }
+
                     <Field.Checkbox
                         ariaLabel={ t("claims:local.forms.multiValued.label") }
                         name="multiValued"
                         label={ t("claims:local.forms.multiValued.label") }
                         required={ false }
-                        defaultValue={ claim?.multiValued }
-                        data-testid={ `${testId}-form-multi-valued-input` }
+                        checked={ multiValued }
+                        data-componentid={ `${testId}-form-multi-valued-input` }
                         hint={ isSystemClaim
-                            ? t("claims:local.forms.multiValuedDisabledHint")
+                            ? t("claims:local.forms.multiValuedSystemClaimHint")
                             : t("claims:local.forms.multiValuedHint") }
-                        readOnly={ isSubOrganization() || isSystemClaim || isReadOnly }
+                        readOnly={ isSubOrganization() || isSystemClaim || isReadOnly
+                            || dataType === ClaimDataType.COMPLEX || dataType === ClaimDataType.BOOLEAN
+                        }
+                        listen={ (checked: boolean) => {
+                            setMultiValued(checked);
+                            if (dataType === ClaimDataType.OPTIONS) {
+                                setDefaultInputTypeForDataType(dataType as ClaimDataType, checked);
+                            }
+                        } }
                     />
+
+                    { dataType !== ClaimDataType.COMPLEX && (
+                        <Field.Dropdown
+                            ariaLabel={ t("claims:local.forms.inputFormat.label") }
+                            name="inputFormat"
+                            label={ t("claims:local.forms.inputFormat.label") }
+                            data-componentid={ `${testId}-form-input-format-input` }
+                            hint={ t("claims:local.forms.inputFormat.hint") }
+                            disabled={ isSubOrganization() || isReadOnly }
+                            options={ resolveInputFormatOptions(dataType as ClaimDataType, multiValued) }
+                            value={ inputType }
+                            onChange={ (
+                                event: React.SyntheticEvent<HTMLElement, Event>,
+                                data: { value: string }
+                            ) => {
+                                setInputType(data.value);
+                            } }
+                        />
+                    ) }
                     { !attributeConfig.localAttributes.createWizard.showRegularExpression && !hideSpecialClaims
                         && (
                             <Field.Input
@@ -1008,7 +1380,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     {
                         claim && UIConfig?.isClaimUniquenessValidationEnabled
                             && !hideSpecialClaims
-                            && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI) && (
+                            && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
+                            && !isAgentAttribute && (
                             <Field.Dropdown
                                 ariaLabel="uniqueness-scope-dropdown"
                                 name={ ClaimManagementConstants.UNIQUENESS_SCOPE_PROPERTY_NAME }
@@ -1036,7 +1409,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     }
                     { !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI) && mappingChecked
                         ? (
-                            !hideSpecialClaims && !hasMapping &&
+                            !hideSpecialClaims && !hasMapping && !isAgentAttribute &&
                             (<Grid.Row columns={ 1 } >
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                                     <Message
@@ -1212,7 +1585,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     {
                         // Hides on groups claim
                         !isDistinctAttributeProfilesDisabled && claim && !hideSpecialClaims && mappingChecked
-                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI && (
+                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI &&
+                            !isAgentAttribute && (
                             <>
                                 <Divider />
                                 <Heading as="h4">

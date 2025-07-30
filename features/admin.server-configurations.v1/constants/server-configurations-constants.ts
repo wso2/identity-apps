@@ -208,11 +208,6 @@ export class ServerConfigurationsConstants {
     public static readonly SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED: string =
         "SelfRegistration.Notification.InternallyManage";
 
-    /**
-     * This will be used to enable the dynamic portal for self registration flow customization.
-     */
-    public static readonly SELF_REGISTRATION_FLOW_BUILDER_ENABLED: string = "SelfRegistration.EnableDynamicPortal";
-
     public static readonly ACCOUNT_CONFIRMATION: string = "SelfRegistration.SendConfirmationOnCreation";
     public static readonly RE_CAPTCHA: string = "SelfRegistration.ReCaptcha";
     public static readonly VERIFICATION_CODE_EXPIRY_TIME: string = "SelfRegistration.VerificationCode.ExpiryTime";
@@ -359,8 +354,14 @@ export class ServerConfigurationsConstants {
     public static readonly CONFIGS_UPDATE_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
 		"code while updating the configurations.";
 
+    public static readonly CONFIGS_REVERT_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
+        "code while reverting the configurations to default.";
+
     public static readonly CONFIGS_UPDATE_REQUEST_ERROR: string = "An error occurred while updating the " +
 		"configurations.";
+
+    public static readonly CONFIGS_REVERT_REQUEST_ERROR: string = "An error occurred while reverting the " +
+        "configurations to default.";
 
     public static readonly ADMIN_ADVISORY_BANNER_CONFIGS_UPDATE_REQUEST_ERROR: string = "An error occurred " +
         "while updating the admin advisory banner configurations.";

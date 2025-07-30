@@ -19,6 +19,10 @@ import { ClaimsNS } from "../../../models";
 
 export const claims: ClaimsNS = {
     attributeMappings: {
+        agent: {
+            description: "The SCIM protocol representation for AI agent attributes used in agent identity management APIs.",
+            heading: "SCIM 2.0 for AI Agents"
+        },
         axschema: {
             description: "The Attribute Exchange Schema (axschema) representation "
                 + "for user attributes.",
@@ -39,7 +43,7 @@ export const claims: ClaimsNS = {
             heading: "OpenID Connect"
         },
         scim: {
-            description: "The SCIM2 protocol representation for user "
+            description: "The SCIM2 protocol representation for "
                 + "attributes that will be used in the SCIM2 API.",
             heading: "SCIM 2.0"
         }
@@ -183,6 +187,10 @@ export const claims: ClaimsNS = {
         },
         sections: {
             manageAttributeMappings: {
+                agent: {
+                    description: "The SCIM protocol representation for AI agent attributes used in agent identity management APIs.",
+                    heading: "SCIM 2.0 for AI Agents"
+                },
                 custom: {
                     description: "Communicate information about the user via custom mappings.",
                     heading: "Custom Attribute Mapping"
@@ -451,6 +459,28 @@ export const claims: ClaimsNS = {
                 placeholder: "Enter an attribute name",
                 requiredErrorMessage: "Attribute name is required"
             },
+            canonicalValues: {
+                hint: "Provide the allowed values for the attribute.",
+                keyLabel: "Display Value",
+                keyRequiredErrorMessage: "Display value is required",
+                validationError: "At least one option must be provided.",
+                validationErrorMessage: "No options provided.",
+                valueLabel: "Value",
+                valueRequiredErrorMessage: "Value is required"
+            },
+            dataType: {
+                hint: "The data type of the attribute.",
+                label: "Data Type",
+                options: {
+                    boolean: "Boolean",
+                    dateTime: "DateTime",
+                    decimal: "Decimal",
+                    integer: "Integer",
+                    object: "Object",
+                    options: "Options",
+                    text: "Text"
+                }
+            },
             description: {
                 label: "Description",
                 placeholder: "Enter a description",
@@ -469,12 +499,28 @@ export const claims: ClaimsNS = {
                 disabledConfigInfo: "Please note that below section is disabled as there is no " +
                     "external claim mapping found for this claim attribute."
             },
+            inputFormat: {
+                hint: "The input format of the attribute.",
+                label: "Input Format",
+                options: {
+                    checkBoxGroup: "Checkbox Group",
+                    checkbox: "Checkbox",
+                    datePicker: "Date Picker",
+                    dropdown: "Dropdown",
+                    multiSelectDropdown: "Multi-Select Dropdown",
+                    numberInput: "Number Input",
+                    radioGroup: "Radio Group",
+                    textArea: "Text Area",
+                    textInput: "Text Input",
+                    toggle: "Toggle"
+                }
+            },
             multiValued: {
                 label: "Allow multiple values for this attribute",
                 placeholder: "Select a user attribute"
             },
-            multiValuedDisabledHint: "This setting cannot be modified for system claims.",
             multiValuedHint: "Select this option if the attribute can have multiple values.",
+            multiValuedSystemClaimHint: "Indicate whether the attribute supports multiple values.",
             name: {
                 label: "Attribute Display Name",
                 placeholder: "Enter the display name",
@@ -527,6 +573,12 @@ export const claims: ClaimsNS = {
                     fromOrigin: "From Origin",
                     fromSharedProfile: "From Shared Profile"
                 }
+            },
+            subAttributes: {
+                label: "The sub-attributes of the attribute",
+                placeholder: "Select subattributes",
+                validationError: "At least one sub-attribute must be provided.",
+                validationErrorMessage: "Sub-attributes are required for complex data types."
             },
             supportedByDefault: {
                 label: "Display this attribute on the user's profile"

@@ -30,8 +30,10 @@ import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     GovernanceConnectorUtils,
+    RevertGovernanceConnectorConfigInterface,
     ServerConfigurationsConstants,
-    getConnectorDetails
+    getConnectorDetails,
+    revertGovernanceConnectorProperties
 } from "@wso2is/admin.server-configurations.v1";
 import { getConfiguration } from "@wso2is/admin.users.v1/utils/generate-password.utils";
 import {
@@ -42,6 +44,8 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import {
     ContentLoader,
+    DangerZone,
+    DangerZoneGroup,
     DocumentationLink,
     EmphasizedSegment,
     Heading,
@@ -62,9 +66,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Ref } from "semantic-ui-react";
-import { updateValidationConfigData, useValidationConfigData } from "../api";
+import { revertValidationConfigData, updateValidationConfigData, useValidationConfigData } from "../api";
 import { PasswordExpiryRuleList } from "../components/password-expiry-rule-list";
-import { ValidationConfigConstants } from "../constants/validation-config-constants";
+import { ValidationConfigConstants, ValidationConfigurationFields } from "../constants/validation-config-constants";
 import {
     PasswordExpiryRule,
     PasswordExpiryRuleAttribute,
@@ -447,6 +451,111 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         );
     };
 
+    const handleRevertValidationRules = async (): Promise<void> => {
+        setSubmitting(true);
+        let isError: boolean = false;
+
+        if (isPasswordInputValidationEnabled) {
+            try {
+                await revertValidationConfigData([ ValidationConfigurationFields.PASSWORD ]);
+                mutateValidationConfigFetchRequest();
+            } catch (error) {
+                setSubmitting(false);
+                isError = true;
+                dispatch(
+                    addAlert({
+                        description: t("validation:revertValidationConfigData.error.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("validation:revertValidationConfigData.error.message")
+                    })
+                );
+            }
+        } else {
+            const revertRequest: RevertGovernanceConnectorConfigInterface = {
+                properties: []
+            };
+
+            legacyPasswordPolicies.forEach((property: ConnectorPropertyInterface) => {
+                revertRequest.properties.push(property.name);
+            });
+
+            try {
+                await revertGovernanceConnectorProperties(
+                    ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID,
+                    ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID,
+                    revertRequest
+                );
+
+                getLegacyPasswordPolicyProperties();
+            } catch (error) {
+                setSubmitting(false);
+                isError = true;
+                dispatch(
+                    addAlert({
+                        description: error?.response?.data?.detail ??
+                            t("validation:revertValidationConfigData.error.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("validation:revertValidationConfigData.error.message")
+                    })
+                );
+            }
+        }
+
+        try {
+            const passwordHistoryRevertRequest: RevertGovernanceConnectorConfigInterface = {
+                properties: []
+            };
+            const passwordExpiryRevertRequest: RevertGovernanceConnectorConfigInterface = {
+                properties: []
+            };
+
+            passwordHistoryCountData.properties?.forEach((property: ConnectorPropertyInterface) => {
+                passwordHistoryRevertRequest.properties.push(property.name);
+            });
+            passwordExpiryData.properties?.forEach((property: ConnectorPropertyInterface) => {
+                passwordExpiryRevertRequest.properties.push(property.name);
+            });
+
+            await revertGovernanceConnectorProperties(
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID,
+                ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID,
+                passwordHistoryRevertRequest
+            );
+            await revertGovernanceConnectorProperties(
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID,
+                ServerConfigurationsConstants.PASSWORD_EXPIRY_CONNECTOR_ID,
+                passwordExpiryRevertRequest
+            );
+
+            mutatePasswordHistoryCount();
+            mutatePasswordExpiry();
+            setSubmitting(false);
+            if (!isError) {
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "validation:revertValidationConfigData.success.description"
+                        ),
+                        level: AlertLevels.SUCCESS,
+                        message: t(
+                            "validation:revertValidationConfigData.success.message"
+                        )
+                    })
+                );
+            }
+        } catch (error) {
+            setSubmitting(false);
+            dispatch(
+                addAlert({
+                    description: error?.response?.data?.detail ??
+                        t("validation:revertValidationConfigData.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("validation:revertValidationConfigData.error.message")
+                })
+            );
+        }
+    };
+
     const getLegacyPasswordPolicyProperties = (): void => {
         getConnectorDetails(
             ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID,
@@ -705,7 +814,11 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
 
     const resolveLegacyPasswordValidation: () => ReactElement = (): ReactElement => {
         return (
-            <>
+            <div className="validation-configurations-form">
+                <Divider className="heading-divider" />
+                <Heading as="h4">
+                    { t("extensions:manage.serverConfigurations.passwordValidation.heading") }
+                </Heading>
                 <Field.Checkbox
                     className="toggle mb-4"
                     ariaLabel="passwordPolicy.enable"
@@ -787,7 +900,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         />
                         <label>and</label>
                         <Field.Input
-                            ariaLabel="Minimum length of the password"
+                            ariaLabel="Maximum length of the password"
                             inputType="number"
                             name={
                                 GovernanceConnectorUtils.encodeConnectorPropertyName("passwordPolicy.max.length")
@@ -857,10 +970,12 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     type="text"
                     width={ 12 }
                     required
-                    placeholder={ "Enter password pattern regex" }
+                    placeholder={ t(
+                        "extensions:manage.serverConfigurations.passwordValidation.passwordValidationRegexPlaceholder"
+                    ) }
                     labelPosition="top"
                     minLength={ 3 }
-                    maxLength={ 100 }
+                    maxLength={ 255 }
                     readOnly={ isReadOnly }
                     listen={ (
                         value: string
@@ -878,7 +993,8 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         GovernanceConnectorUtils.resolveFieldLabel(
                             "Password Validation",
                             "passwordPolicy.pattern",
-                            "Password pattern regex")
+                            t("extensions:manage.serverConfigurations.passwordValidation.passwordValidationRegexLabel")
+                        )
                     }
                     disabled={ !isLegacyPasswordPolicyEnabled }
                 />
@@ -887,9 +1003,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         GovernanceConnectorUtils.resolveFieldHint(
                             "Password Validation",
                             "passwordPolicy.pattern",
-                            "Length of the OTP for SMS and" +
-                            " e-mail verifications. OTP length" +
-                            " must be 4-10."
+                            t("extensions:manage.serverConfigurations.passwordValidation.passwordValidationRegexHint")
                         )
                     }
                 </Hint>
@@ -902,10 +1016,13 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     type="text"
                     width={ 12 }
                     required
-                    placeholder={ "Enter password pattern regex" }
+                    placeholder={ t(
+                        "extensions:manage.serverConfigurations.passwordValidation." +
+                        "passwordValidationErrorPlaceholder"
+                    ) }
                     labelPosition="top"
                     minLength={ 3 }
-                    maxLength={ 100 }
+                    maxLength={ 255 }
                     readOnly={ isReadOnly }
                     listen={ (
                         value: string
@@ -923,7 +1040,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         GovernanceConnectorUtils.resolveFieldLabel(
                             "Password Validation",
                             "passwordPolicy.errorMsg",
-                            "Error message on pattern violation")
+                            t("extensions:manage.serverConfigurations.passwordValidation.passwordValidationErrorLabel"))
                     }
                     disabled={ !isLegacyPasswordPolicyEnabled }
                 />
@@ -932,12 +1049,11 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         GovernanceConnectorUtils.resolveFieldHint(
                             "Password Validation",
                             "passwordPolicy.errorMsg",
-                            "This error message will be displayed" +
-                            " when a pattern violation is detected."
+                            t("extensions:manage.serverConfigurations.passwordValidation.passwordValidationErrorHint")
                         )
                     }
                 </Hint>
-            </>
+            </div>
         );
     };
 
@@ -985,7 +1101,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             <div className="validation-configurations-form">
                 <Divider className="heading-divider" />
                 <Heading as="h4">
-                    { t("extensions:manage.serverConfigurations.passwordValidationHeading") }
+                    { t("extensions:manage.serverConfigurations.passwordValidation.heading") }
                 </Heading>
                 <div className="criteria">
                     <label>
@@ -1593,69 +1709,84 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             className="password-validation-form"
         >
             <Ref innerRef={ pageContextRef }>
-                <EmphasizedSegment
-                    className="form-wrapper"
-                    padded="very"
-                >
-                    <div className="validation-configurations password-validation-configurations">
-                        { !(isLoading
-                            || (!isRuleBasedPasswordExpiryDisabled
-                            && (isRolesListLoading || isGroupListLoading))) ? (
-                                <Form
-                                    id={ FORM_ID }
-                                    initialValues={ initialFormValues }
-                                    uncontrolledForm={ true }
-                                    validate={ null }
-                                    onSubmit={ (
-                                        values: ValidationFormInterface
-                                    ) =>
-                                        handleUpdateMyAccountData(
-                                            values
-                                        )
-                                    }
-                                    enableReInitialize={ true }
-                                >
-                                    { isRuleType && (
-                                        <div className="validation-configurations-form">
-                                            { isRuleBasedPasswordExpiryDisabled
-                                                ? serverConfigurationConfig.passwordExpiryComponent(
-                                                    componentId,
-                                                    passwordExpiryEnabled,
-                                                    setPasswordExpiryEnabled,
-                                                    t,
-                                                    isReadOnly )
-                                                : resolvePasswordExpiration() }
-                                            <Divider className="heading-divider" />
-                                            { serverConfigurationConfig.passwordHistoryCountComponent(
-                                                componentId,
-                                                passwordHistoryEnabled,
-                                                setPasswordHistoryEnabled,
-                                                t,
-                                                isReadOnly
+                <Grid container spacing={ 2 } direction="column">
+                    <Grid xs={ 12 }>
+                        <EmphasizedSegment
+                            className="form-wrapper"
+                            padded="very"
+                        >
+                            <div className="validation-configurations password-validation-configurations">
+                                { !(isLoading
+                                    || (!isRuleBasedPasswordExpiryDisabled
+                                    && (isRolesListLoading || isGroupListLoading))) ? (
+                                        <Form
+                                            id={ FORM_ID }
+                                            initialValues={ initialFormValues }
+                                            uncontrolledForm={ true }
+                                            validate={ null }
+                                            onSubmit={ (
+                                                values: ValidationFormInterface
+                                            ) =>
+                                                handleUpdateMyAccountData(
+                                                    values
+                                                )
+                                            }
+                                            enableReInitialize={ true }
+                                        >
+                                            { isRuleType && (
+                                                <div className="validation-configurations-form">
+                                                    { isRuleBasedPasswordExpiryDisabled
+                                                        ? serverConfigurationConfig.passwordExpiryComponent(
+                                                            componentId,
+                                                            passwordExpiryEnabled,
+                                                            setPasswordExpiryEnabled,
+                                                            t,
+                                                            isReadOnly )
+                                                        : resolvePasswordExpiration() }
+                                                    <Divider className="heading-divider" />
+                                                    { serverConfigurationConfig.passwordHistoryCountComponent(
+                                                        componentId,
+                                                        passwordHistoryEnabled,
+                                                        setPasswordHistoryEnabled,
+                                                        t,
+                                                        isReadOnly
+                                                    ) }
+                                                </div>
                                             ) }
-                                        </div>
+                                            { isPasswordInputValidationEnabled
+                                                ? resolvePasswordValidation()
+                                                : resolveLegacyPasswordValidation()
+                                            }
+                                            <Field.Button
+                                                form={ FORM_ID }
+                                                size="small"
+                                                buttonType="primary_btn"
+                                                ariaLabel="Validation configuration update button"
+                                                name="update-button"
+                                                data-testid={ `${ componentId }-submit-button` }
+                                                loading={ isSubmitting }
+                                                label={ t("common:update") }
+                                                hidden={ isReadOnly }
+                                            />
+                                        </Form>
+                                    ) : (
+                                        <ContentLoader />
                                     ) }
-                                    { isPasswordInputValidationEnabled
-                                        ? resolvePasswordValidation()
-                                        : resolveLegacyPasswordValidation()
-                                    }
-                                    <Field.Button
-                                        form={ FORM_ID }
-                                        size="small"
-                                        buttonType="primary_btn"
-                                        ariaLabel="Validation configuration update button"
-                                        name="update-button"
-                                        data-testid={ `${ componentId }-submit-button` }
-                                        loading={ isSubmitting }
-                                        label={ t("common:update") }
-                                        hidden={ isReadOnly }
-                                    />
-                                </Form>
-                            ) : (
-                                <ContentLoader />
-                            ) }
-                    </div>
-                </EmphasizedSegment>
+                            </div>
+                        </EmphasizedSegment>
+                    </Grid>
+                    <Grid xs={ 12 }>
+                        <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                            <DangerZone
+                                actionTitle={ t("governanceConnectors:dangerZone.actionTitle") }
+                                header= { t("governanceConnectors:dangerZone.heading") }
+                                subheader= { t("governanceConnectors:dangerZone.subHeading") }
+                                onActionClick={ () => handleRevertValidationRules() }
+                                data-testid={ `${ componentId }-danger-zone` }
+                            />
+                        </DangerZoneGroup>
+                    </Grid>
+                </Grid>
             </Ref>
         </PageLayout>
     );

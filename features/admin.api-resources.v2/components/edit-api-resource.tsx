@@ -26,7 +26,8 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { AuthorizationAPIResource, GeneralAPIResource, PermissionAPIResource } from "./api-resource-panes";
 import { deleteScopeFromAPIResource, updateAPIResource } from "../api";
-import { APIResourceInterface, UpdatedAPIResourceInterface } from "../models";
+import useApiResourcesPageContent from "../hooks/use-api-resources-page-content";
+import { APIResourceInterface, ResourceServerType, UpdatedAPIResourceInterface } from "../models";
 
 /**
  * Prop-types for the API resources page component.
@@ -74,6 +75,11 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
+    const {
+        resourceServerType,
+        resourceServerTypeDisplayName
+    } = useApiResourcesPageContent();
+
     /**
      * Panes for the resource tab.
      * @returns `ResourceTab.Pane[]`
@@ -107,7 +113,7 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
                 </ResourceTab.Pane>
             )
         },
-        {
+        resourceServerType === ResourceServerType.API && {
             menuItem: t("extensions:develop.apiResource.tabs.authorization.label"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
@@ -132,9 +138,13 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
                     description: t("extensions:develop.apiResource.notifications.updateAPIResource.success" +
-                        ".description"),
+                        ".description", {
+                        resourceType: resourceServerTypeDisplayName
+                    }),
                     level: AlertLevels.SUCCESS,
-                    message: t("extensions:develop.apiResource.notifications.updateAPIResource.success.message")
+                    message: t("extensions:develop.apiResource.notifications.updateAPIResource.success.message", {
+                        resourceType: resourceServerTypeDisplayName
+                    })
                 }));
                 mutateAPIResource();
             })
@@ -168,16 +178,22 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
                     description: t("extensions:develop.apiResource.notifications.updateAPIResource.success" +
-                        ".description"),
+                        ".description", {
+                        resourceType: resourceServerTypeDisplayName
+                    }),
                     level: AlertLevels.SUCCESS,
-                    message: t("extensions:develop.apiResource.notifications.updateAPIResource.success.message")
+                    message: t("extensions:develop.apiResource.notifications.updateAPIResource.success.message", {
+                        resourceType: resourceServerTypeDisplayName
+                    })
                 }));
                 mutateAPIResource();
             })
             .catch(() => {
                 dispatch(addAlert<AlertInterface>({
                     description: t("extensions:develop.apiResource.notifications.updateAPIResource" +
-                        ".genericError.description"),
+                        ".genericError.description", {
+                        resourceType: resourceServerTypeDisplayName
+                    }),
                     level: AlertLevels.ERROR,
                     message: t("extensions:develop.apiResource.notifications.updateAPIResource" +
                         ".genericError.message")

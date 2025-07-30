@@ -19,10 +19,16 @@
 import Avatar from "@oxygen-ui/react/Avatar";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
-import { Claim } from "@wso2is/core/models";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
+import { AlertLevels, Claim } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { ReactFlowProvider } from "@xyflow/react";
 import startCase from "lodash-es/startCase";
-import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode, useState } from "react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import useGetMetadata from "../api/use-metadata";
 import AuthenticationFlowBuilderCoreContext from "../context/authentication-flow-builder-core-context";
 import { Resource, ResourceTypes } from "../models/resources";
 import { StepTypes } from "../models/steps";
@@ -39,6 +45,10 @@ export interface AuthenticationFlowBuilderProviderProps {
      * The factory for creating element properties.
      */
     ResourceProperties: FunctionComponent<any>;
+    /**
+     * The type of the flow.
+     */
+    flowType: FlowTypes;
 }
 
 /**
@@ -50,14 +60,33 @@ export interface AuthenticationFlowBuilderProviderProps {
 const AuthenticationFlowBuilderCoreProvider = ({
     ElementFactory,
     ResourceProperties,
-    children
+    children,
+    flowType
 }: PropsWithChildren<AuthenticationFlowBuilderProviderProps>): ReactElement => {
+    const dispatch: Dispatch = useDispatch();
+    const { t } = useTranslation();
+
     const [ isResourcePanelOpen, setIsResourcePanelOpen ] = useState<boolean>(true);
     const [ isResourcePropertiesPanelOpen, setIsOpenResourcePropertiesPanel ] = useState<boolean>(false);
     const [ resourcePropertiesPanelHeading, setResourcePropertiesPanelHeading ] = useState<ReactNode>(null);
     const [ lastInteractedElementInternal, setLastInteractedElementInternal ] = useState<Resource>(null);
     const [ lastInteractedStepId, setLastInteractedStepId ] = useState<string>("");
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Claim[] }>({});
+
+    const { data: flowMetadata, error: flowMetadataError } = useGetMetadata(flowType, !!flowType);
+
+    /**
+     * Error handling for flow metadata fetch.
+     */
+    useEffect(() => {
+        if (flowMetadataError) {
+            dispatch(addAlert({
+                description: t("flows:core.errors.flowMetadataFetch.description"),
+                level: AlertLevels.ERROR,
+                message: t("flows:core.errors.flowMetadataFetch.message")
+            }));
+        }
+    }, [ flowMetadataError ]);
 
     const onResourceDropOnCanvas = (resource: Resource, stepId: string): void => {
         setLastInteractedResource(resource);
@@ -99,6 +128,7 @@ const AuthenticationFlowBuilderCoreProvider = ({
                     isResourcePropertiesPanelOpen,
                     lastInteractedResource: lastInteractedElementInternal,
                     lastInteractedStepId,
+                    metadata: flowMetadata,
                     onResourceDropOnCanvas,
                     resourcePropertiesPanelHeading,
                     selectedAttributes,

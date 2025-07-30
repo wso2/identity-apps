@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,6 +23,15 @@ import { InitOptions } from "i18next";
  */
 export interface LocaleMeta {
     /**
+     * Whether the language is enabled in the application.
+     */
+    enabled?: boolean;
+    /**
+     * Whether to show this language in the language switcher UI.
+     * Defaults to true if `enabled` is true.
+     */
+    showOnLanguageSwitcher?: boolean;
+    /**
      * ISO language code.
      */
     code: string;
@@ -34,6 +43,10 @@ export interface LocaleMeta {
      * Display name for the language.
      */
     name: string;
+    /**
+     * Text direction for the language.
+     */
+    direction?: string;
     /**
      * Set of available namespaces
      */
@@ -93,5 +106,6 @@ export interface I18nModuleOptionsInterface {
     namespaceDirectories?: Map<string, string>;
     overrideOptions?: boolean;
     resourcePath?: string;
+    resourceExtensionsPath: string;
     xhrBackendPluginEnabled?: boolean;
 }

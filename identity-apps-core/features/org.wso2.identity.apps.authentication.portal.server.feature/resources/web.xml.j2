@@ -47,6 +47,10 @@
             <param-name>isDowntimeBannerEnabled</param-name>
             <param-value>{{ downtime_banner.enabled }}</param-value>
         </context-param>
+        <context-param>
+            <param-name>downtimeBannerMessage</param-name>
+            <param-value>{{ downtime_banner.content }}</param-value>
+        </context-param>
     {% endif %}
     {% set cookie_consent = authenticationendpoint.ui.is_cookie_consent_banner_enabled
         if authenticationendpoint.ui.is_cookie_consent_banner_enabled is defined else ui.is_cookie_consent_banner_enabled %}
@@ -360,10 +364,12 @@
         {"name": "duo_error.do", "jsp": "/duoError.jsp", "url": "/duo_error.do"},
         {"name": "magic_link_notification.do", "jsp": "/magic_link_notification.jsp", "url": "/magic_link_notification.do"},
         {"name": "org_name.do", "jsp": "/org_name.jsp", "url": "/org_name.do"},
+        {"name": "org_handle.do", "jsp": "/org_handle.jsp", "url": "/org_handle.do"},
         {"name": "org_discovery.do", "jsp": "/org_discovery.jsp", "url": "/org_discovery.do"},
         {"name": "select_org.do", "jsp": "/select_org.jsp", "url": "/select_org.do"},
-        {"name": "register.do", "jsp": "/self-registration.jsp", "url": "/register.do"},
-        {"name": "registration_error.do", "jsp": "/errors/registration_error.jsp", "url": "/registration_error.do"}
+        {"name": "register.do", "jsp": "/execution-flow.jsp", "url": "/register.do"},
+        {"name": "recovery.do", "jsp": "/execution-flow.jsp", "url": "/recovery.do"},
+        {"name": "execution_flow_error.do", "jsp": "/errors/execution_flow_error.jsp", "url": "/execution_flow_error.do"}
     ] %}
     {% for servlet_item in default_servlets %}
         {% set key_name = servlet_item['name'] %}
@@ -399,59 +405,77 @@
       {% endif %}
     {% endfor %}
 
+    <!-- *************** Custom Error Page Configurations ********************** -->
+    {% set all_error_pages = [] %}
+    {# --- Add custom error pages first --- #}
+    {% for error_page in authenticationendpoint.error_pages %}
     <error-page>
-        <exception-type>java.lang.Throwable</exception-type>
-        <location>/generic-exception-response.jsp</location>
+        {% if error_page['exception-type'] is defined %}
+            <exception-type>{{ error_page['exception-type'] }}</exception-type>
+            <location>{{ error_page.location }}</location>
+        {% elif error_page.code is defined %}
+            <error-code>{{ error_page.code }}</error-code>
+            <location>{{ error_page.location }}</location>
+        {% else %}
+            <location>{{ error_page.location }}</location>
+        {% endif %}
     </error-page>
+    {% endfor %}
+    <!-- *************** End of Custom Error Page Configurations ********************** -->
 
-    <!-- custom error pages -->
+    {# --- Now add defaults, only if not already handled --- #}
+    {% set handled_codes = [] %}
+    {% for error_page in authenticationendpoint.error_pages %}
+        {% if error_page.code is defined %}
+            {% set _ = handled_codes.append(error_page.code) %}
+        {% elif error_page['exception-type'] is defined %}
+            {% set _ = handled_codes.append(error_page['exception-type']) %}
+        {% else %}
+            {% set _ = handled_codes.append('default') %}
+        {% endif %}
+    {% endfor %}
+
+    {% set default_error_pages = [
+        {"exception-type": "java.lang.Throwable", "location": "/error.jsp"},
+        {"code": 400, "location": "/errors/error_400.jsp"},
+        {"code": 401, "location": "/errors/error_401.jsp"},
+        {"code": 403, "location": "/errors/error_403.jsp"},
+        {"code": 404, "location": "/errors/error_404.jsp"},
+        {"code": 405, "location": "/errors/error_405.jsp"},
+        {"code": 408, "location": "/errors/error_408.jsp"},
+        {"code": 410, "location": "/errors/error_410.jsp"},
+        {"code": 500, "location": "/errors/error_500.jsp"},
+        {"code": 502, "location": "/errors/error_502.jsp"},
+        {"code": 503, "location": "/errors/error_503.jsp"},
+        {"code": 504, "location": "/errors/error_504.jsp"},
+        {"location": "/errors/error.jsp"}
+    ] %}
+
+    <!-- *************** Default Error Page Configurations ********************** -->
+    {% for error_page in default_error_pages %}
+        {% if error_page.code is defined %}
+            {% set code_name = error_page.code %}
+        {% elif error_page['exception-type'] is defined %}
+            {% set code_name = error_page['exception-type'] %}
+        {% else %}
+            {% set code_name = 'default' %}
+        {% endif %}
+
+    {% if code_name not in handled_codes %}
     <error-page>
-        <error-code>400</error-code>
-        <location>/errors/error_400.jsp</location>
+        {% if error_page['exception-type'] is defined %}
+            <exception-type>{{ error_page['exception-type'] }}</exception-type>
+            <location>{{ error_page.location }}</location>
+        {% elif error_page.code is defined %}
+            <error-code>{{ error_page.code }}</error-code>
+            <location>{{ error_page.location }}</location>
+        {% else %}
+            <location>{{ error_page.location }}</location>
+        {% endif %}
     </error-page>
-    <error-page>
-        <error-code>401</error-code>
-        <location>/errors/error_401.jsp</location>
-    </error-page>
-    <error-page>
-        <error-code>403</error-code>
-        <location>/errors/error_403.jsp</location>
-    </error-page>
-    <error-page>
-        <error-code>404</error-code>
-        <location>/errors/error_404.jsp</location>
-    </error-page>
-    <error-page>
-        <error-code>405</error-code>
-        <location>/errors/error_405.jsp</location>
-    </error-page>
-    <error-page>
-        <error-code>408</error-code>
-        <location>/errors/error_408.jsp</location>
-    </error-page>
-    <error-page>
-        <error-code>410</error-code>
-        <location>/errors/error_410.jsp</location>
-    </error-page>
-    <error-page>
-        <error-code>500</error-code>
-        <location>/errors/error_500.jsp</location>
-    </error-page>
-    <error-page>
-        <error-code>502</error-code>
-        <location>/errors/error_502.jsp</location>
-    </error-page>
-    <error-page>
-        <error-code>503</error-code>
-        <location>/errors/error_503.jsp</location>
-    </error-page>
-    <error-page>
-        <error-code>504</error-code>
-        <location>/errors/error_504.jsp</location>
-    </error-page>
-    <error-page>
-        <location>/errors/error.jsp</location>
-    </error-page>
+    {% endif %}
+    {% endfor %}
+    <!-- *************** End of Default Error Page Configurations ********************** -->
 
     <session-config>
         <cookie-config>

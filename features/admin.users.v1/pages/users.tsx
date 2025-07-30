@@ -17,6 +17,7 @@
  */
 
 import Chip from "@oxygen-ui/react/Chip";
+import { XMarkIcon } from "@oxygen-ui/react-icons";
 import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
@@ -82,8 +83,9 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps, TabProps } from "semantic-ui-react";
+import { Dropdown, DropdownItemProps, DropdownProps, Icon, Label, PaginationProps, TabProps } from "semantic-ui-react";
 import { useUsersList } from "../api";
+import AccountStatusFilterDropdown from "../components/AccountStatusFilterDropdown";
 import { useGetParentOrgUserInvites } from "../components/guests/api/use-get-parent-org-user-invites";
 import { UserInviteInterface } from "../components/guests/models/invite";
 import { GuestUsersList } from "../components/guests/pages/guest-users-list";
@@ -92,6 +94,7 @@ import { AddUserWizard } from "../components/wizard/add-user-wizard";
 import { BulkImportUserWizard } from "../components/wizard/bulk-import-user-wizard";
 import { InviteParentOrgUserWizard } from "../components/wizard/invite-parent-org-user-wizard";
 import {
+    USER_ACCOUNT_STATUS_FILTER_OPTIONS,
     UserAccountTypes,
     UserAccountTypesMain,
     UserAddOptionTypes,
@@ -110,7 +113,6 @@ type UsersPageInterface = IdentifiableComponentInterface & RouteComponentProps &
  * Temporary value to append to the list limit to figure out if the next button is there.
  */
 const TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET: number = 1;
-const NUMBER_OF_PAGES_FOR_LDAP: number = 100;
 
 /**
  * Users info page.
@@ -184,6 +186,10 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ invitedUserListOffset, setInvitedUserListOffset ] = useState<number>(1);
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state?.profile?.profileSchemas);
+    const systemReservedUserStores: string[] =
+        useSelector((state: AppState) => state?.config?.ui?.systemReservedUserStores);
+
+    const [ selectedAccountStatusFilters, setSelectedAccountStatusFilters ] = useState<string[]>([]);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -221,6 +227,32 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         !isSubOrganization()
     );
 
+    // Combine the search query and account status filters query.
+    const combinedUserFilter: string = useMemo(() => {
+        let baseFilter: string | null = searchQuery === "" ? null : searchQuery;
+
+        if (selectedAccountStatusFilters.length > 0) {
+            const scimFilterExpressions: string[] = selectedAccountStatusFilters.map((filterKey: string) => {
+                const filterOption: DropdownChild = USER_ACCOUNT_STATUS_FILTER_OPTIONS.find(
+                    (option: DropdownChild) => option.key === filterKey);
+
+                return filterOption ? filterOption.value : "";
+            }).filter((scimFilterExpression: string) => scimFilterExpression !== "");
+
+            if (scimFilterExpressions.length > 0) {
+                const accountStatusFilter: string = scimFilterExpressions.join(" and ");
+
+                if (baseFilter) {
+                    baseFilter = `${baseFilter} and ${accountStatusFilter}`;
+                } else {
+                    baseFilter = accountStatusFilter;
+                }
+            }
+        }
+
+        return baseFilter;
+    }, [ searchQuery, selectedAccountStatusFilters ]);
+
     // Get users list.
     const {
         data: originalUserList,
@@ -230,7 +262,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     } = useUsersList(
         modifiedLimit,
         listOffset,
-        searchQuery === "" ? null : searchQuery,
+        combinedUserFilter,
         null,
         selectedUserStore,
         excludedAttributes
@@ -253,7 +285,11 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
         if (userStoresList?.length > 0) {
             userStoresList.forEach((store: UserStoreListItem, index: number) => {
-                if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName && store.enabled) {
+                if (
+                    store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName
+                        && store.enabled
+                        && !systemReservedUserStores?.includes(store.name)
+                ) {
                     const storeOption: UserStoreItem = {
                         disabled: store.typeName === RemoteUserStoreManagerType.RemoteUserStoreManager,
                         key: index,
@@ -484,6 +520,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const handleSearchQueryClear = (): void => {
         setTriggerClearQuery(!triggerClearQuery);
         setSearchQuery("");
+        setSelectedAccountStatusFilters([]);
     };
 
     /**
@@ -505,6 +542,11 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         setSearchQuery(query);
         setListOffset(1);
         setInvitedUserListOffset(1);
+    };
+
+    const handleSelectedAccountStatusFiltersChange = (statuses: string[]): void => {
+        setSelectedAccountStatusFilters(statuses);
+        setListOffset(1);
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
@@ -632,6 +674,18 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     );
 
     /**
+     * Renders the account status filter component.
+     *
+     * @returns The account status filter component.
+     */
+    const accountStatusFilter = (): ReactElement => ((
+        <AccountStatusFilterDropdown
+            selectedFilters={ selectedAccountStatusFilters }
+            onChange={ handleSelectedAccountStatusFiltersChange }
+        />
+    ));
+
+    /**
      * Handles the `onClose` callback action from the bulk import wizard.
      */
     const handleBulkImportWizardClose = (): void => {
@@ -644,7 +698,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             <ListLayout
                 // TODO add sorting functionality.
                 className="sub-org-users-list"
-                advancedSearch={ advancedSearchFilter(true) }
+                advancedSearch={ (
+                    <>
+                        { advancedSearchFilter(true) }
+                        { accountStatusFilter() }
+                    </>
+                ) }
                 currentListSize={ usersList?.itemsPerPage }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
@@ -672,6 +731,33 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 } }
                 isLoading={ isUserListFetchRequestLoading }
             >
+                { selectedAccountStatusFilters.length > 0 && (
+                    <Label.Group>
+                        { selectedAccountStatusFilters.map((filterKey: string) => {
+                            const filterOption: DropdownChild =
+                                USER_ACCOUNT_STATUS_FILTER_OPTIONS
+                                    .find((option: DropdownChild) => option.key === filterKey);
+
+                            if (!filterOption) {
+                                return null;
+                            }
+
+                            return (
+                                <Label
+                                    key={ filterKey }
+                                    className="filter-label active basic"
+                                    as="a"
+                                    onClick={ () => handleAccountStatusFilterRemove(filterKey) }
+                                    data-componentid={
+                                        `${componentId}-account-status-filter-label-${filterKey}` }
+                                >
+                                    { t(filterOption.text as string) }
+                                    <XMarkIcon className="filter-label-close-icon" />
+                                </Label>
+                            );
+                        }) }
+                    </Label.Group>
+                ) }
                 { !isUserStoreListFetchRequestLoading && userStoreOptions?.length === 0
                     ? (<EmptyPlaceholder
                         subtitle={ [ t("users:placeholders.userstoreError.subtitles.0"),
@@ -688,7 +774,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         realmConfigs={ realmConfigs }
                         onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
                         onSearchQueryClear={ handleSearchQueryClear }
-                        searchQuery={ searchQuery }
+                        searchQuery={ combinedUserFilter }
                         data-testid="user-mgt-user-list"
                         featureConfig={ featureConfig }
                         isReadOnlyUserStore={ isReadOnlyUserStore }
@@ -903,15 +989,15 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     };
 
     const resolveTotalPages = (): number => {
-        if (selectedUserStore === userstoresConfig.primaryUserstoreName) {
-            return Math.ceil(usersList?.totalResults / listItemLimit);
-        } else {
-            /** Response from the LDAP only contains the total items per page.
-             * No way to resolve the total number of items. So a large value will be set here and the
-             * next button will be disabled if there are no more items to fetch.
-            */
-            return NUMBER_OF_PAGES_FOR_LDAP;
-        }
+
+        /**
+         * The total number of pages is required for the pagination component.
+         *
+         * Based on the listOffset and listItemLimit, we can calculate the current page number.
+         * Setting the total number of pages to current page number + 1 ensures that the
+         * Next button in the pagination component is functioning properly.
+         */
+        return ((listOffset - 1) / listItemLimit) + 2;
     };
 
     const renderMultipleInviteConfirmationModel = (): ReactElement => {
@@ -957,6 +1043,21 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const handleInviteParentUserWizardClose = (): void => {
         setShowInviteParentUserWizard(false);
         mutateParentOrgUserInviteList();
+    };
+
+    /**
+     * Handles removing a account status filter.
+     *
+     * @param filterKey - The key of the filter to remove
+     */
+    const handleAccountStatusFilterRemove = (filterKey: string): void => {
+        setSelectedAccountStatusFilters(
+            (statusFilterKeys: string[]) =>
+                statusFilterKeys.filter(
+                    (statusFilterKey: string) =>
+                        statusFilterKey !== filterKey
+                ));
+        setListOffset(1);
     };
 
     return (
@@ -1005,11 +1106,19 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         } }
                         emailVerificationEnabled={ emailVerificationEnabled }
                         onSuccessfulUserAddition={ (id: string) => {
+                            if (!id) {
+                                history.push(AppConstants.getPaths().get("USERS"));
+
+                                return;
+                            }
+
                             mutateParentOrgUserInviteList();
                             mutateUserListFetchRequest();
                             eventPublisher.publish("manage-users-finish-creating-user");
-                            history.push(AppConstants.getPaths().get("USER_EDIT").replace(":id", id));
+
+                            history.push(AppConstants.getPaths().get("USER_EDIT")?.replace(":id", id));
                         } }
+
                         defaultUserTypeSelection={ selectedAddUserType }
                         userTypeSelection={ userType }
                         listOffset={ listOffset }

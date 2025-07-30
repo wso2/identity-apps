@@ -22,6 +22,10 @@ import { FormAttributes, Notification, NotificationItem } from "@wso2is/i18n";
 export interface Extensions {
     develop: {
         apiResource: {
+            resourceTypes: {
+                api: string;
+                mcp: string;
+            },
             pageHeader: {
                 description: string;
                 subOrgDescription: string;
@@ -394,8 +398,15 @@ export interface Extensions {
                             };
                         };
                     };
+                    resourceAuthorization: {
+                        title: string;
+                    };
                     apiAuthorization: {
                         title: string;
+                        resourceText: {
+                            apiResource: string;
+                            genericResource: string;
+                        };
                         sections: {
                             apiSubscriptions: {
                                 heading: string;
@@ -903,6 +914,11 @@ export interface Extensions {
                                 placeholder: string;
                             };
                             privacyPolicyURL: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                            };
+                            recoveryPortalURL: {
                                 hint: string;
                                 label: string;
                                 placeholder: string;
@@ -2269,6 +2285,7 @@ export interface Extensions {
         };
         sidePanel: {
             apiResources: string;
+            mcpServers: string;
             branding: string;
             stylesAndText: string;
             monitor: string;
@@ -2423,6 +2440,16 @@ export interface Extensions {
     manage: {
         accountLogin: {
             notifications: {
+                revert: {
+                    error: {
+                        description: string;
+                        message: string;
+                    },
+                    success: {
+                        description: string;
+                        message: string;
+                    }
+                };
                 success: {
                     description: string;
                     message: string;
@@ -2511,6 +2538,7 @@ export interface Extensions {
                     makeDefaultOrganization: string;
                     backButton: string;
                     copyOrganizationId: string;
+                    copyOrganizationHandle: string;
                     copied: string;
                     tenantSearch: {
                         placeholder: string;
@@ -2998,7 +3026,15 @@ export interface Extensions {
                 label: string;
                 timeFormat: string;
             };
-            passwordValidationHeading: string;
+            passwordValidation: {
+                heading: string;
+                passwordValidationRegexLabel: string;
+                passwordValidationRegexHint: string;
+                passwordValidationRegexPlaceholder: string;
+                passwordValidationErrorLabel: string;
+                passwordValidationErrorHint: string;
+                passwordValidationErrorPlaceholder: string;
+            };
             userOnboarding: {
                 heading: string;
                 subHeading: string;
@@ -3262,6 +3298,7 @@ export interface Extensions {
                 attributeManagement: string;
                 AccountManagement: string;
                 userManagement: string;
+                approvalWorkflows: string;
                 organizationSettings: string;
             };
         };

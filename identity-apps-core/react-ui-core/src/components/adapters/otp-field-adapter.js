@@ -23,15 +23,16 @@ import { Input } from "semantic-ui-react";
 import useFieldValidation from "../../hooks/use-field-validations";
 import { useTranslations } from "../../hooks/use-translations";
 import { resolveElementText } from "../../utils/i18n-utils";
+import Hint from "../hint";
 import ValidationError from "../validation-error";
 
 const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHandler, validations }) => {
-    const { placeholder, identifier, label, length, required } = component.config;
-    
-    const [ otpLength, ] = useState(length ? length : 6);
+    const { hint, identifier, label, length, placeholder, required } = component.config;
+
+    const [ otpLength ] = useState(length ? length : 6);
     const [ otpValues, setOtpValues ] = useState(Array(otpLength).fill(""));
     const [ showOTP, setShowOTP ] = useState(false);
-    
+
     const { translations } = useTranslations();
     const { fieldErrors, validate } = useFieldValidation(validations,
         otpValues ? (otpLength <= 6 ? otpValues.join("") : otpValues) : "");
@@ -66,7 +67,7 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
      * @param {string} value - The new input value for that OTP box.
      */
     const handleInputChange = (index, value) => {
-        const cleaned = value.replace(/[^0-9]/g, "").slice(0, 1);
+        const cleaned = value.replace(/[^a-zA-Z0-9]/g, "").slice(0, 1);
         const newOtpValues = [ ...otpValues ];
 
         newOtpValues[index] = cleaned;
@@ -84,11 +85,12 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
         const currentValue = event.target.value;
 
         if ((key === 8 || key === 46) && !currentValue && index > 0) {
-            document.getElementById(`otp-field-${ index - 1 }`)?.focus();
+            document.getElementById(`otp-field-${ index - 1 }`).focus();
+
             return;
         }
         if (currentValue && index < otpLength - 1) {
-            document.getElementById(`otp-field-${ index + 1 }`)?.focus();
+            document.getElementById(`otp-field-${ index + 1 }`).focus();
         }
     };
 
@@ -100,7 +102,7 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
     const handlePaste = (event) => {
         const pastedData = event.clipboardData.getData("Text");
 
-        if (pastedData.length === otpLength && /^[0-9]+$/.test(pastedData)) {
+        if (pastedData.length === otpLength && /^[a-zA-Z0-9]+$/.test(pastedData)) {
             setOtpValues(pastedData.split(""));
         }
     };
@@ -113,7 +115,7 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
                     <div
                         className="sms-otp-fields equal width fields"
                         onPaste={ handlePaste }
-                        style={{ display: "flex", gap: "0.8rem", margin: "auto 0" }}
+                        style={ { display: "flex", gap: "0.8rem", margin: "auto 0" } }
                     >
                         <input
                             hidden
@@ -135,10 +137,10 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
                                         onKeyUp={ (e) => movetoNext(e, i) }
                                         placeholder="·"
                                         maxLength="1"
-                                        style={{
-                                            width: "3.1rem",
-                                            textAlign: "center"
-                                        }}
+                                        style={ {
+                                            textAlign: "center",
+                                            width: "3.1rem"
+                                        } }
                                     />
                                 );
                             })
@@ -165,9 +167,12 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
                 )
             }
             {
+                hint && ( <Hint hint={ hint } /> )
+            }
+            {
                 <ValidationError
                     name={ identifier }
-                    errors={ { formStateErrors: formState ? formState.errors : [], fieldErrors: fieldErrors } }
+                    errors={ { fieldErrors: fieldErrors, formStateErrors: formState ? formState.errors : [] } }
                 />
             }
         </>
@@ -177,12 +182,19 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
 OTPFieldAdapter.propTypes = {
     component: PropTypes.shape({
         config: PropTypes.shape({
+            hint: PropTypes.string,
+            identifier: PropTypes.string,
             label: PropTypes.string,
-            identifier: PropTypes.string
+            length: PropTypes.number,
+            placeholder: PropTypes.string,
+            required: PropTypes.bool
         }).isRequired
     }).isRequired,
+    fieldErrorHandler: PropTypes.func,
+    formState: PropTypes.object,
     formStateHandler: PropTypes.func.isRequired,
-    otpLength: PropTypes.number
+    otpLength: PropTypes.number,
+    validations: PropTypes.object
 };
 
 export default OTPFieldAdapter;

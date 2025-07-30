@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,8 +21,8 @@ import { extendTheme } from "@oxygen-ui/react/theme";
 import { ThemeProviderContextProps } from "../contexts/theme-provider-context";
 import { ThemeConfigInterface } from "../models/branding-preferences";
 
-export const generateTheme: (branding: ThemeProviderContextProps) => Theme = (
-    branding: ThemeProviderContextProps
+export const generateTheme: (branding: ThemeProviderContextProps, direction: string) => Theme = (
+    branding: ThemeProviderContextProps, direction: string
 ) => {
     const mode: string = branding?.themePreference?.preference?.theme?.activeTheme.toLowerCase() ?? "light";
     const brandingTheme: ThemeConfigInterface = branding?.themePreference?.preference?.theme[mode.toUpperCase()];
@@ -123,6 +123,7 @@ export const generateTheme: (branding: ThemeProviderContextProps) => Theme = (
                 }
             }
         },
+        direction,
         shape: {
             borderRadius: 4
         },

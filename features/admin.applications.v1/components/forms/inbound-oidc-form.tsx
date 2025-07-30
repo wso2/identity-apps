@@ -243,6 +243,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const { isOrganizationManagementEnabled } = useGlobalVariables();
     const [ isEncryptionEnabled, setEncryptionEnable ] = useState(false);
     const [ isPublicClient, setPublicClient ] = useState<boolean>(false);
+    const [ isDPoPSelected, setDPoPSelected ] = useState<boolean>(false);
     const [ callBackUrls, setCallBackUrls ] = useState("");
     const [ audienceUrls, setAudienceUrls ] = useState("");
     const [ showURLError, setShowURLError ] = useState(false);
@@ -330,6 +331,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ isMobileApplication, setMobileApplication ] = useState<boolean>(false);
     const [ isM2MApplication, setM2MApplication ] = useState<boolean>(false);
     const [ isMcpClientApplication, setIsMcpClientApplication ] = useState<boolean>(false);
+    const [ isReactApplication, setIsReactApplication ] = useState<boolean>(false);
+    const [ isNextJSApplication, setIsNextJSApplication ] = useState<boolean>(false);
 
     const [ isFormStale, setIsFormStale ] = useState<boolean>(false);
 
@@ -606,8 +609,20 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     }, [ template ]);
 
     useEffect(() => {
-        if (template?.["originalTemplateId"] === "mcp-client-application") {
+        if (template?.[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY] ===
+            ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION
+        ) {
             setIsMcpClientApplication(true);
+        }
+
+        if (template?.[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY] ===
+            ApplicationTemplateIdTypes.REACT_APPLICATION) {
+            setIsReactApplication(true);
+        }
+
+        if (template?.[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY] ===
+            ApplicationTemplateIdTypes.NEXT_JS_APPLICATION) {
+            setIsNextJSApplication(true);
         }
     }, [ template ]);
 
@@ -805,6 +820,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         if (initialValues?.accessToken?.bindingType !== SupportedAccessTokenBindingTypes?.NONE) {
             setIsTokenBindingTypeSelected(true);
         }
+
+        // Removes validate binding type option when DPoP is selected.
+        if (initialValues?.accessToken?.bindingType === SupportedAccessTokenBindingTypes?.DPOP) {
+            setDPoPSelected(true);
+        }
     }, [ initialValues?.accessToken ]);
 
     /**
@@ -878,6 +898,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             case "jwt":
                 return t("applications:forms.inboundOIDC.sections" +
                     ".accessToken.fields.type.valueDescriptions.jwt");
+            case "dpop":
+                return t("applications:forms.inboundOIDC.sections" +
+                    ".accessToken.fields.bindingType.valueDescriptions.dpop");
             default:
                 return undefined;
         }
@@ -909,6 +932,18 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             case "sso-session":
                 return t("applications:forms.inboundOIDC.sections" +
                     ".accessToken.fields.bindingType.children.ssoBinding.label");
+            case "cookie":
+                return t("applications:forms.inboundOIDC.sections" +
+                    ".accessToken.fields.bindingType.children.cookie.label");
+            case "certificate":
+                return t("applications:forms.inboundOIDC.sections" +
+                    ".accessToken.fields.bindingType.children.certificate.label");
+            case "device-flow":
+                return t("applications:forms.inboundOIDC.sections" +
+                    ".accessToken.fields.bindingType.children.deviceFlow.label");
+            case "client-request":
+                return t("applications:forms.inboundOIDC.sections" +
+                    ".accessToken.fields.bindingType.children.clientRequest.label");
             default:
                 return label;
         }
@@ -1003,7 +1038,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     });
                 // Cookie binding was hidden from the UI for SPAs & Traditional OIDC with
                 // https://github.com/wso2/identity-apps/pull/2254
-                } else if ((isSPAApplication || isOIDCWebApplication) && isBinding && ele === "cookie") {
+                // Also, hide the cookie binding option for React and Next.js applications,
+                // as they are analogous to SPA and OIDC web applications, respectively.
+                } else if ((isSPAApplication || isOIDCWebApplication || isReactApplication
+                    || isNextJSApplication) && isBinding && ele === "cookie") {
                     return false;
                 } else {
                     allowedList.push({
@@ -1018,10 +1056,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
 
         return allowedList.sort((a: RadioChild, b: RadioChild) => {
-            if (a.label < b.label) return -1;
-            if (a.label > b.label) return 1;
 
-            return 0;
+            if (a.label === SupportedAccessTokenBindingTypes.NONE) return -1;
+            if (b.label === SupportedAccessTokenBindingTypes.NONE) return 1;
+
+            return a.label.localeCompare(b.label);
         });
     };
 
@@ -1222,8 +1261,21 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 }
 
                 if (
-                    template?.["originalTemplateId"] &&
-                    !applicationConfig.allowedGrantTypes[template["originalTemplateId"]]?.includes(name)
+                    template?.[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY] &&
+                    !applicationConfig.allowedGrantTypes[
+                        template[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY]]?.includes(name)
+                ) {
+                    return;
+                }
+
+                // Hide client credentials grant type in mcp client app template
+                // if the client is marked as public
+                if (
+                    template?.[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY] &&
+                    template?.[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY] ===
+                        ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION &&
+                    isPublicClient &&
+                    name === ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
                 ) {
                     return;
                 }
@@ -1369,9 +1421,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         : Number(metadata?.defaultApplicationAccessTokenExpiryTime),
                     bindingType: values.get("bindingType"),
                     revokeTokensWhenIDPSessionTerminated: values.get("RevokeAccessToken")?.length > 0,
-                    type: values.get("type"),
+                    type: isMcpClientApplication ? JWT : values.get("type"),
                     userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds")),
-                    validateTokenBinding: values.get("ValidateTokenBinding")?.length > 0
+                    validateTokenBinding: isDPoPSelected || values.get("ValidateTokenBinding")?.length > 0
                 },
                 grantTypes: values.get("grant"),
                 idToken: {
@@ -1589,7 +1641,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 bindingType: values.get("bindingType"),
                 revokeTokensWhenIDPSessionTerminated: getRevokeStateForSPA(values),
                 type: values.get("type"),
-                userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds"))
+                userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds")),
+                validateTokenBinding: isDPoPSelected || values.get("ValidateTokenBinding")?.length > 0
             },
             grantTypes: values.get("grant"),
             idToken: {
@@ -1870,11 +1923,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         && !isMobileApplication
         && !isFAPIApplication
         && (
-            selectedGrantTypes?.includes(
-                ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)
-            || selectedGrantTypes?.includes(ApplicationManagementConstants.DEVICE_GRANT)
-            || selectedGrantTypes?.includes(
-                ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE)
+            selectedGrantTypes?.some((grantType: string) => {
+                const grantTypeOption: GrantTypeInterface = metadata?.allowedGrantTypes?.options?.find(
+                    (option: GrantTypeInterface) => option.name === grantType
+                );
+
+                return grantTypeOption?.publicClientAllowed === true;
+            })
         )
         && !isSystemApplication
         && !isDefaultApplication;
@@ -2200,7 +2255,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     type="checkbox"
                                     value={ initialValues?.pkce && findPKCE(initialValues.pkce) }
                                     listen={ pkceValuesChangeListener }
-                                    children={ (!isSPAApplication && !isMobileApplication && !isMcpClientApplication)
+                                    children={ (!isSPAApplication && !isMobileApplication && !isMcpClientApplication
+                                        && !isReactApplication)
                                         ? [
                                             {
                                                 label: t("applications:forms.inboundOIDC" +
@@ -2337,7 +2393,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             { /* Client Authentication*/ }
             {
                 isClientAuthenticationSectionEnabled && (
-                    <>
+                    <div data-componentid={ testId + "-client-authentication" }>
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Divider />
@@ -2540,7 +2596,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 </Grid.Row>
                             )
                         }
-                    </>
+                    </div>
                 )
             }
 
@@ -2897,6 +2953,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     setIsTokenBindingTypeSelected(
                                         values.get("bindingType") !== SupportedAccessTokenBindingTypes.NONE
                                     );
+                                    setDPoPSelected(
+                                        values.get("bindingType") === SupportedAccessTokenBindingTypes.DPOP
+                                    );
                                 } }
                             />
                             <Hint>
@@ -2927,43 +2986,45 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 && !isDefaultApplication
                 && !isMcpClientApplication
                 && (
-                    <>
-                        <Grid.Row columns={ 1 } data-componentid={ testId + "-validate-token-binding" }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Field
-                                    ref={ validateTokenBinding }
-                                    name="ValidateTokenBinding"
-                                    label=""
-                                    required={ false }
-                                    requiredErrorMessage=""
-                                    type="checkbox"
-                                    value={
-                                        isValidateTokenBindingEnabled() ? [ "validateTokenBinding" ] : []
-                                    }
-                                    children={ [
-                                        {
-                                            label: t("applications:forms.inboundOIDC" +
+                    <div data-componentid={ testId + "-validate-token-binding-and-revokation" }>
+                        { !isDPoPSelected && (
+                            <Grid.Row columns={ 1 } data-componentid={ testId + "-validate-token-binding" }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Field
+                                        ref={ validateTokenBinding }
+                                        name="ValidateTokenBinding"
+                                        label=""
+                                        required={ false }
+                                        requiredErrorMessage=""
+                                        type="checkbox"
+                                        value={
+                                            isValidateTokenBindingEnabled() ? [ "validateTokenBinding" ] : []
+                                        }
+                                        children={ [
+                                            {
+                                                label: t("applications:forms.inboundOIDC" +
                                                 ".sections.accessToken.fields.validateBinding.label"),
-                                            value: "validateTokenBinding"
-                                        }
-                                    ] }
-                                    readOnly={ readOnly || isFAPIApplication }
-                                    data-testid={ `${ testId }-access-token-validate-binding-checkbox` }
-                                />
-                                <Hint>
-                                    <Trans
-                                        i18nKey={
-                                            "applications:forms.inboundOIDC.sections" +
+                                                value: "validateTokenBinding"
+                                            }
+                                        ] }
+                                        readOnly={ readOnly || isFAPIApplication }
+                                        data-testid={ `${ testId }-access-token-validate-binding-checkbox` }
+                                    />
+                                    <Hint>
+                                        <Trans
+                                            i18nKey={
+                                                "applications:forms.inboundOIDC.sections" +
                                             ".accessToken.fields.validateBinding.hint"
-                                        }
-                                    >
+                                            }
+                                        >
                                         Validate the binding attributes at the token validation. The client needs to
                                         present the <Code withBackground>access_token</Code> + cookie for successful
                                         authorization.
-                                    </Trans>
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
+                                        </Trans>
+                                    </Hint>
+                                </Grid.Column>
+                            </Grid.Row>
+                        ) }
                         <Grid.Row columns={ 1 } data-componentid={ testId + "-revoke-access-token-upon-user-logout" }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
@@ -3003,7 +3064,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
-                    </>
+                    </div>
                 )
             }
             {
@@ -3975,7 +4036,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 && !isSubOrganization()
                 && !isDefaultApplication
                 && (
-                    <Grid.Row columns={ 1 }>
+                    <Grid.Row columns={ 1 } data-componentid={ testId + "-certificate" }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <ApplicationCertificateWrapper
                                 protocol={ SupportedAuthProtocolTypes.OIDC }
@@ -4505,7 +4566,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 initialValues?.clientSecret
                             && (initialValues?.state !== State.REVOKED)
                             && (!isSPAApplication))
-                            && (!isMobileApplication)
+                            && !isMobileApplication
+                            && !isPublicClient
                             && !isSystemApplication
                             && !isDefaultApplication
                             && (

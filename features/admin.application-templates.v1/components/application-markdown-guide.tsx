@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,6 +28,7 @@ import {
     SupportedAuthProtocolTypes,
     WSTrustConfigurationInterface
 } from "@wso2is/admin.applications.v1/models/application-inbound";
+import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-app-configs";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { MarkdownGuide } from "@wso2is/admin.template-core.v1/components/markdown-guide";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -69,6 +70,10 @@ export interface ApplicationMarkdownGuidePropsInterface extends IdentifiableComp
  */
 interface ModeratedData {
     pemCertificate?: string;
+    scopes?: {
+        spaceSeperatedList?: string;
+        commaSeperatedList?: string;
+    };
 }
 
 /**
@@ -91,6 +96,7 @@ interface MarkdownGuideDataInterface {
     serverOrigin?: string;
     productName?: string;
     accountAppURL?: string;
+    docSiteURL?: string;
     moderatedData?: ModeratedData;
 }
 
@@ -114,10 +120,11 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
         (state: AppState) => state?.application?.oidcConfigurations);
     const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
     const clientOrigin: string = useSelector((state: AppState) => state?.config?.deployment?.clientOrigin);
-    const serverOrigin: string = useSelector((state: AppState) => state?.config?.deployment?.idpConfigs?.serverOrigin);
+    const serverOrigin: string = useSelector((state: AppState) => state?.config?.deployment?.serverOrigin);
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
     const accountAppURL: string = useSelector((state: AppState) =>
         state?.config?.deployment?.accountApp?.tenantQualifiedPath);
+    const { deploymentConfig } = useDeploymentConfig();
 
     /**
      * Convert certificate into the pem format.
@@ -145,6 +152,13 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
         if (samlConfigurations?.certificate) {
             data.pemCertificate = btoa(getPemFormatCertificate(samlConfigurations?.certificate));
         }
+
+        // TODO: Dynmically update the scopes based on the application configured scopes.
+        // Default to OAuth 2.0 scopes.
+        data.scopes = {
+            commaSeperatedList: "'openid', 'profile'",
+            spaceSeperatedList: "openid profile"
+        };
 
         return data;
     };
@@ -181,6 +195,7 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
         markdownDataObject.serverOrigin = serverOrigin;
         markdownDataObject.productName = productName;
         markdownDataObject.accountAppURL = accountAppURL;
+        markdownDataObject.docSiteURL = deploymentConfig?.docSiteURL;
         markdownDataObject.moderatedData = getModeratedData();
 
         return markdownDataObject;

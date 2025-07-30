@@ -74,10 +74,12 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             idpConfigs: null,
             loginCallbackUrl: "",
             organizationPrefix: "",
+            regionSelectionEnabled: undefined,
             serverHost: "",
             serverOrigin: "",
             superTenant: "",
             tenant: "",
+            tenantContext: null,
             tenantPath: "",
             tenantPrefix: ""
         },
@@ -92,6 +94,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             applicationTemplate: "",
             applicationTemplateMetadata: "",
             applications: "",
+            asyncStatus: "",
             authenticatorTags: "",
             authenticators: "",
             brandingPreference: "",
@@ -118,6 +121,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             extensions: "",
             externalClaims: "",
             fidoConfigs: "",
+            flowMeta: "",
             getSecret: "",
             getSecretList: "",
             getSecretType: "",
@@ -151,6 +155,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             resourceTypes: "",
             roles: "",
             rolesV2: "",
+            rolesV3: "",
             rolesWithoutOrgPath: "",
             rootOrganization: "",
             rootUsersOrganization: "",
@@ -175,7 +180,9 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             usersSuperOrganization: "",
             validationServiceMgt: "",
             validationServiceMgtSubOrg: "",
-            wellKnown: ""
+            wellKnown: "",
+            workflowAssociations: "",
+            workflows: ""
         },
         features: {
             applications: null,
@@ -205,13 +212,16 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             appName: "",
             appTitle: "",
             applicationTemplateLoadingStrategy: undefined,
+            asyncOperationStatusPollingInterval: null,
             connectionResourcesUrl: "",
             cookiePolicyUrl: "",
+            customContent: {},
             emailTemplates: {
                 defaultLogoUrl: "",
                 defaultWhiteLogoUrl: ""
             },
             enableCustomEmailTemplates: undefined,
+            enableOldUIForEmailProvider: undefined,
             features: {
                 applications: null,
                 approvals: null,
@@ -263,6 +273,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                     enabled: false
                 }
             },
+            isAdminDataSeparationNoticeEnabled: undefined,
             isClaimUniquenessValidationEnabled: undefined,
             isClientSecretHashEnabled: undefined,
             isCookieConsentBannerEnabled: undefined,
@@ -299,6 +310,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             showSmsOtpPwdRecoveryFeatureStatusChip: undefined,
             showStatusLabelForNewAuthzRuntimeFeatures: undefined,
             systemAppsIdentifiers: [],
+            systemReservedUserStores: [],
             theme: {
                 name: "",
                 path: "",

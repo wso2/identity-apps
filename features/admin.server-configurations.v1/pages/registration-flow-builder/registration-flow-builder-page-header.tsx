@@ -18,21 +18,41 @@
 
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Box from "@oxygen-ui/react/Box";
-import Button from "@oxygen-ui/react/Button";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Link from "@oxygen-ui/react/Link";
+import Switch from "@oxygen-ui/react/Switch";
+import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { ArrowLeftIcon } from "@oxygen-ui/react-icons";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import updateFlowConfig from "@wso2is/admin.flows.v1/api/update-flow-config";
+import useGetFlowConfig from "@wso2is/admin.flows.v1/api/use-get-flow-config";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import useRegistrationFlowBuilder from "@wso2is/admin.registration-flow-builder.v1/hooks/use-registration-flow-builder";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 
 /**
  * Props interface of {@link RegistrationFlowBuilderPageHeader}
  */
 export type RegistrationFlowBuilderPageHeaderProps = IdentifiableComponentInterface;
+
+/**
+ * Interface for the path state.
+ */
+interface PathStateInterface {
+    from?: {
+        /**
+         * Path to navigate back to.
+         */
+        pathname?: string;
+    }
+}
 
 /**
  * Header for the Registration flow builder page.
@@ -43,7 +63,103 @@ export type RegistrationFlowBuilderPageHeaderProps = IdentifiableComponentInterf
 const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuilderPageHeaderProps> = ({
     ["data-componentid"]: componentId = "registration-flow-builder-page-header"
 }: RegistrationFlowBuilderPageHeaderProps): ReactElement => {
-    const { isPublishing, onPublish } = useRegistrationFlowBuilder();
+    const { onPublish } = useRegistrationFlowBuilder();
+    const {
+        data: flowConfig,
+        mutate: mutateFlowConfig,
+        error: flowConfigError
+    } = useGetFlowConfig(FlowTypes.REGISTRATION);
+    const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
+
+    const [ isFlowConfigUpdating, setIsFlowConfigUpdating ] = useState<boolean>(false);
+
+    /**
+     * Handle flow config fetch errors using useEffect
+     */
+    useEffect(() => {
+        if (flowConfigError) {
+            dispatch(addAlert<AlertInterface>({
+                description: t("flows:registrationFlow.notifications.fetchFlowConfig.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("flows:registrationFlow.notifications.fetchFlowConfig.genericError.message")
+            }));
+        }
+    }, [ flowConfigError ]);
+
+    /**
+     * Handles the back button click event.
+     */
+    const handleBackButtonClick = (): void => {
+
+        let backPath: string = AppConstants.getPaths().get("FLOWS");
+
+        if (history?.location?.state) {
+            const state: PathStateInterface = history.location.state as PathStateInterface;
+
+            if (state?.from?.pathname) {
+                backPath = state.from.pathname;
+            }
+        }
+
+        history.push(backPath);
+    };
+
+    /**
+     * Dispatches error alerts for flow config API errors.
+     *
+     * @param operation - The operation being performed (enable, disable).
+     */
+    const handleFlowConfigError = (operation: string): void => {
+        dispatch(addAlert<AlertInterface>({
+            description: t(`flows:registrationFlow.notifications.${operation}Flow.genericError.description`),
+            level: AlertLevels.ERROR,
+            message: t(`flows:registrationFlow.notifications.${operation}Flow.genericError.message`)
+        }));
+    };
+
+    /**
+     * Dispatches success alerts for flow config operations.
+     *
+     * @param operation - The operation that was successful (enable, disable, publish).
+     */
+    const handleFlowConfigSuccess = (operation: string): void => {
+        dispatch(addAlert<AlertInterface>({
+            description: t(`flows:registrationFlow.notifications.${operation}Flow.success.description`),
+            level: AlertLevels.SUCCESS,
+            message: t(`flows:registrationFlow.notifications.${operation}Flow.success.message`)
+        }));
+    };
+
+    /**
+     * Handles the toggle switch change event.
+     */
+    const handleToggleFlow = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
+        const isEnabled: boolean = event.target.checked;
+
+        setIsFlowConfigUpdating(true);
+
+        try {
+            let isPublishSuccess: boolean = true;
+
+            if (isEnabled) {
+                isPublishSuccess = await onPublish();
+            }
+
+            if (isPublishSuccess) {
+                await updateFlowConfig({
+                    flowType: FlowTypes.REGISTRATION,
+                    isEnabled
+                });
+                handleFlowConfigSuccess(isEnabled ? "enable" : "disable");
+                await mutateFlowConfig();
+            }
+        } catch (error) {
+            handleFlowConfigError(isEnabled ? "enable" : "disable");
+        } finally {
+            setIsFlowConfigUpdating(false);
+        }
+    };
 
     return (
         <Box
@@ -54,18 +170,20 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
             data-componentid={ componentId }
         >
             <Box display="flex" gap={ 3 } alignItems="center">
-                <IconButton onClick={ () => history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION")) }>
+                <IconButton onClick={ handleBackButtonClick }>
                     <ArrowLeftIcon />
                 </IconButton>
                 <Breadcrumbs aria-label="breadcrumb" className="registration-flow-builder-page-header-breadcrumbs">
                     <Link
                         underline="hover"
                         color="inherit"
-                        onClick={ () => history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION")) }
+                        onClick={ () => history.push(AppConstants.getPaths().get("FLOWS")) }
                     >
-                        Login & Registration
+                        { t("flows:label") }
                     </Link>
-                    <Typography sx={ { color: "text.primary" } }>Edit Registration Flow</Typography>
+                    <Typography>
+                        { t("flows:registrationFlow.breadcrumb") }
+                    </Typography>
                 </Breadcrumbs>
             </Box>
             <Box
@@ -73,9 +191,20 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
                 justifyContent="flex-end"
                 alignItems="center"
             >
-                <Button variant="contained" onClick={ () => onPublish() } loading={ isPublishing }>
-                    Publish
-                </Button>
+                <Tooltip
+                    title={
+                        flowConfig?.isEnabled
+                            ? t("flows:registrationFlow.tooltip.disableFlow")
+                            : t("flows:registrationFlow.tooltip.enableFlow")
+                    }
+                >
+                    <Switch
+                        checked={ flowConfig?.isEnabled || false }
+                        onChange={ handleToggleFlow }
+                        disabled={ isFlowConfigUpdating }
+                        data-componentid={ `${componentId}-toggle-switch` }
+                    />
+                </Tooltip>
             </Box>
         </Box>
     );

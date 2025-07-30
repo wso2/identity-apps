@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,32 +16,52 @@
  * under the License.
  */
 
-import { MutableRefObject, useEffect } from "react";
+import { MutableRefObject, useCallback, useEffect, useRef } from "react";
 
-export const useInfiniteScroll = (
-    container: MutableRefObject<Element>,
-    lastItem: MutableRefObject<Element>,
+export function useInfiniteScroll(
     hasMore: boolean,
-    fetcher: () => void
-): void => {
-    useEffect(() => {
-        if (!container.current || !lastItem.current) {
-            return;
+    loadMore: () => void,
+    container?: MutableRefObject<Element | null>,
+    lastItem?: MutableRefObject<Element | null>,
+    isLoading?: boolean
+) {
+    const observerRef: MutableRefObject<IntersectionObserver | null> = useRef(null);
+    const sentinelRef: MutableRefObject<Element | null> = useRef(null);
+
+    const observe = useCallback((node: Element | null) => {
+        if (!node || isLoading || !hasMore) return;
+
+        if (observerRef.current) {
+            observerRef.current.disconnect();
         }
+
         const options: IntersectionObserverInit = {
-            root: container.current,
+            root: container?.current || null,
+            rootMargin: "50px",
             threshold: 0.1
         };
-        const observer = new IntersectionObserver(entries => {
-            if (entries[ 0 ].isIntersecting && hasMore) {
-                fetcher();
+
+        observerRef.current = new IntersectionObserver(([ entry ]) => {
+            if (entry.isIntersecting) {
+                loadMore();
             }
         }, options);
 
-        observer.observe(lastItem.current);
+        observerRef.current.observe(node);
+        sentinelRef.current = node;
+    }, [ container, hasMore, isLoading, loadMore ]);
+
+    useEffect(() => {
+        if (!lastItem?.current || isLoading || !hasMore) return;
+
+        observe(lastItem.current);
 
         return () => {
-            lastItem.current && observer.unobserve(lastItem.current);
+            if (observerRef.current) {
+                observerRef.current.disconnect();
+            }
         };
-    }, [ container, lastItem, hasMore ]);
-};
+    }, [ lastItem?.current, isLoading, hasMore, observe ]);
+
+    return { observe };
+}

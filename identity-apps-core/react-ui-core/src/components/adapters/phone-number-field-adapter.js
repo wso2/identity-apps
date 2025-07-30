@@ -24,23 +24,24 @@ import countryData from "../../data/country-data.js";
 import useFieldValidation from "../../hooks/use-field-validations";
 import { useTranslations } from "../../hooks/use-translations";
 import { resolveElementText } from "../../utils/i18n-utils";
+import Hint from "../hint.js";
 import ValidationError from "../validation-error";
 import "./phone-number-field-adapter.css";
 
 const PhoneNumberFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHandler }) => {
 
-    const { identifier, required, label, placeholder, validations } = component.config;
+    const { identifier, required, label, placeholder, validations, hint } = component.config;
 
     const dropdownRef = useRef(null);
     const { translations } = useTranslations();
     const { fieldErrors, validate } = useFieldValidation(validations, fullNumber);
 
     const [ selectedCountry, setSelectedCountry ] = useState({
-        key: "us",
-        value: "us",
+        dialCode: "+1",
         flag: "us",
+        key: "us",
         text: "United States",
-        dialCode: "+1"
+        value: "us"
     });
     const [ phoneNumber, setPhoneNumber ] = useState("");
     const [ fullNumber, setFullNumber ] = useState("");
@@ -163,9 +164,12 @@ const PhoneNumberFieldAdapter = ({ component, formState, formStateHandler, field
                 />
             </div>
             {
+                hint && ( <Hint hint={ hint } /> )
+            }
+            {
                 <ValidationError
                     name={ identifier }
-                    errors={ { formStateErrors: formState.errors, fieldErrors: fieldErrors } }
+                    errors={ { fieldErrors: fieldErrors, formStateErrors: formState.errors } }
                 />
             }
         </div>
