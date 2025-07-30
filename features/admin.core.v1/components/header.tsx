@@ -351,48 +351,48 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                     onClose={ onCloseHelpMenu }
                 >
                     { window["AppUtils"].getConfig().extensions.getHelp.helpCenterURL && (
-                        <>
-                            <MenuItem
-                                className="get-help-dropdown-item contact-support-dropdown-item"
-                                onClick={ () => {
-                                    window.open(
-                                        window["AppUtils"].getConfig().extensions.getHelp.helpCenterURL,
-                                        "_blank",
-                                        "noopener noreferrer"
-                                    );
-                                } }
-                            >
-                                <>
-                                    <ListItemIcon className="contact-support-icon get-help-icon">
-                                        <TalkingHeadsetIcon />
-                                    </ListItemIcon>
-                                    <ListItemText
-                                        primary={
-                                            (
-                                                <span className="contact-support-title">
-                                                    { t("console:common.help.helpCenterLink.title") }
-                                                    <Chip
-                                                        icon={ <DiamondIcon /> }
-                                                        label={ t(FeatureStatusLabel.PREMIUM) }
-                                                        className="oxygen-menu-item-chip oxygen-chip-premium"
-                                                    />
-                                                </span>
-                                            )
-                                        }
-                                        secondary={
-                                            (
-                                                <Typography className="contact-support-subtitle" variant="inherit">
-                                                    { t("console:common.help.helpCenterLink.subtitle",
-                                                        { productName }) }
-                                                </Typography>
-                                            )
-                                        }
-                                    />
-                                </>
-                            </MenuItem>
-                            <Divider className="get-help-dropdown-divider" />
-                        </>
+                        <MenuItem
+                            className="get-help-dropdown-item contact-support-dropdown-item"
+                            onClick={ () => {
+                                window.open(
+                                    window["AppUtils"].getConfig().extensions.getHelp.helpCenterURL,
+                                    "_blank",
+                                    "noopener noreferrer"
+                                );
+                            } }
+                        >
+                            <>
+                                <ListItemIcon className="contact-support-icon get-help-icon">
+                                    <TalkingHeadsetIcon />
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary={
+                                        (
+                                            <span className="contact-support-title">
+                                                { t("console:common.help.helpCenterLink.title") }
+                                                <Chip
+                                                    icon={ <DiamondIcon /> }
+                                                    label={ t(FeatureStatusLabel.PREMIUM) }
+                                                    className="oxygen-menu-item-chip oxygen-chip-premium"
+                                                />
+                                            </span>
+                                        )
+                                    }
+                                    secondary={
+                                        (
+                                            <Typography className="contact-support-subtitle" variant="inherit">
+                                                { t("console:common.help.helpCenterLink.subtitle",
+                                                    { productName }) }
+                                            </Typography>
+                                        )
+                                    }
+                                />
+                            </>
+                        </MenuItem>
                     ) }
+                    { window["AppUtils"].getConfig().extensions.getHelp.helpCenterURL &&
+                        <Divider className="get-help-dropdown-divider" />
+                    }
                     { window["AppUtils"].getConfig().extensions.getHelp.communityLinks.discord && (
                         <MenuItem
                             className="get-help-dropdown-item"
@@ -550,7 +550,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                         <Box key="footer" className="user-dropdown-footer">
                                             { store.getState()?.config?.ui?.privacyPolicyUrl && (
                                                 <Link
-                                                    variant="body3"
+                                                    variant="body2"
                                                     href={ store.getState()?.config?.ui?.privacyPolicyUrl ?? "" }
                                                     target="_blank"
                                                     rel="noreferrer"
@@ -560,7 +560,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                             ) }
                                             { store.getState()?.config?.ui?.cookiePolicyUrl && (
                                                 <Link
-                                                    variant="body3"
+                                                    variant="body2"
                                                     href={ store.getState()?.config?.ui?.cookiePolicyUrl ?? "" }
                                                     target="_blank"
                                                     rel="noreferrer"
@@ -570,7 +570,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                             ) }
                                             { store.getState()?.config?.ui?.termsOfUseUrl && (
                                                 <Link
-                                                    variant="body3"
+                                                    variant="body2"
                                                     href={ store.getState()?.config?.ui?.termsOfUseUrl ?? "" }
                                                     target="_blank"
                                                     rel="noreferrer"
@@ -583,7 +583,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                     </>) : undefined }
                                 { productVersion && (
                                     <Box className="user-dropdown-version">
-                                        <Typography variant="body3">
+                                        <Typography variant="body2">
                                             { `${productName} ${productVersion}` }
                                         </Typography>
                                     </Box>
