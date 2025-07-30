@@ -634,6 +634,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                     </Alert>
                 ) }
             </div>
+            { showHeadersAndParams && renderAllowedHeadersAndParamsSection() }
             <Divider className="divider-container" />
             <Typography variant="h6" className="heading-container">
                 { t("actions:fields.authentication.label") }
