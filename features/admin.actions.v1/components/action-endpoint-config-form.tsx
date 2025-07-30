@@ -26,7 +26,7 @@ import { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalFormField, FormSpy, TextFieldAdapter, __DEPRECATED__SelectFieldAdapter } from "@wso2is/form/src";
-import { Hint } from "@wso2is/react-components";
+import { Hint, URLInput } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon } from "semantic-ui-react";
@@ -48,6 +48,10 @@ interface ActionEndpointConfigFormInterface extends IdentifiableComponentInterfa
      */
     isCreateFormState: boolean;
     /**
+     * Specifies whether the headers and parameters section should be show/hide.
+     */
+    showHeadersAndParams?: boolean;
+    /**
      * Specifies whether the form is read-only.
      */
     isReadOnly: boolean;
@@ -64,6 +68,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
     initialValues,
     isCreateFormState,
     isReadOnly,
+    showHeadersAndParams,
     onAuthenticationTypeChange,
     ["data-componentid"]: _componentId = "action-endpoint-config-form"
 }: ActionEndpointConfigFormInterface): ReactElement => {
@@ -454,6 +459,142 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
             : renderAuthenticationUpdateWidget();
     };
 
+    const allowedHeadersSection = (props: any) => {
+        const { input } = props;
+        const headersCSV: string = Array.isArray(input.value) ? input.value.join(",") : "";
+
+        return (
+            <URLInput
+                isAllowEnabled={ false }
+                labelEnabled={ false }
+                urlState={ headersCSV }
+                setURLState={ (value: string) => {
+                    const modifiedHeadersList: string[] = value
+                        .split(",")
+                        .map((header: string) => header.trim())
+                        .filter((header: string) => header !== "");
+
+                    const headersUnmodified: boolean = modifiedHeadersList.length === input.value.length
+                        && modifiedHeadersList.every((value: string, i: number) => value === input.value[i]);
+
+                    if (!headersUnmodified) {
+                        input.onChange(modifiedHeadersList);
+                    }
+                } }
+                labelName={ t("actions:fields.allowedHeaders.label") }
+                required={ false }
+                value={ headersCSV }
+                validation={ (value: string) => {
+                    const modifiedHeadersList: string[] = value
+                        .split(",")
+                        .map((header: string) => header.trim())
+                        .filter((header: string) => header !== "");
+
+                    return modifiedHeadersList.every((header: string) =>
+                        ActionsConstants.API_HEADER_REGEX.test(header));
+                } }
+                placeholder={ t("actions:fields.allowedHeaders.placeholder") }
+                validationErrorMsg={  t("actions:fields.allowedHeaders.validations.invalid") }
+                showPredictions={ false }
+                readOnly={ isReadOnly }
+                addURLTooltip={ t("common:addURL") }
+                duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                skipInternalValidation
+            />
+        );
+    };
+
+    const allowedParametersSection = (props: any) => {
+        const { input } = props;
+        const parametersCSV: string = Array.isArray(input.value) ? input.value.join(",") : "";
+
+        return (
+            <URLInput
+                isAllowEnabled={ false }
+                labelEnabled={ false }
+                urlState={ parametersCSV }
+                setURLState={ (modifiedParamsCSV: string) => {
+                    const modifiedParamsList: string[] = modifiedParamsCSV
+                        .split(",")
+                        .map((param: string) => param.trim())
+                        .filter((param: string) => param !== "");
+
+                    const paramsUnmodified: boolean = modifiedParamsList.length === input.value.length
+                        && modifiedParamsList.every((value: string, i: number) => value === input.value[i]);
+
+                    if (!paramsUnmodified) {
+                        input.onChange(modifiedParamsList);
+                    }
+                } }
+                labelName={ t("actions:fields.allowedParameters.label") }
+                required={ false }
+                value={ parametersCSV }
+                validation={ (value: string) => {
+                    const modifiedParamsList: string[] = value
+                        .split(",")
+                        .map((param: string) => param.trim())
+                        .filter((param: string) => param !== "");
+
+                    return modifiedParamsList.every((param: string) =>
+                        !ActionsConstants.REQUEST_PARAMETER_REGEX.test(param));
+                } }
+                placeholder={ t("actions:fields.allowedParameters.placeholder") }
+                validationErrorMsg={  t("actions:fields.allowedParameters.validations.invalid") }
+                showError={ false }
+                showPredictions={ false }
+                readOnly={ isReadOnly }
+                duplicateURLErrorMessage={ t("") }
+                skipInternalValidation
+            />
+        );
+    };
+
+    const renderAllowedHeadersAndParamsSection = (): ReactElement => (
+        <>
+            <Divider className="divider-container"/>
+            <FinalFormField
+                key="allowedHeaders"
+                name="allowedHeaders"
+                className="text-field-container"
+                width={ 16 }
+                FormControlProps={ {
+                    margin: "dense"
+                } }
+                ariaLabel="allowedHeaders"
+                required={ false }
+                data-componentid={ `${_componentId}-action-allowedHeaders` }
+                type="text"
+                component={ allowedHeadersSection }
+                maxLength={ 100 }
+                minLength={ 0 }
+                disabled={ isReadOnly }
+            />
+            <Hint className="endpoint-hint" compact>
+                { t("actions:fields.allowedHeaders.hint") }
+            </Hint>
+            <FinalFormField
+                key="allowedParameters"
+                name="allowedParameters"
+                className="text-field-container"
+                width={ 16 }
+                FormControlProps={ {
+                    margin: "dense"
+                } }
+                ariaLabel="allowedParameters"
+                required={ false }
+                data-componentid={ `${_componentId}-action-allowedHeaders` }
+                type="text"
+                component={ allowedParametersSection }
+                maxLength={ 100 }
+                minLength={ 0 }
+                disabled={ isReadOnly }
+            />
+            <Hint className="endpoint-hint" compact>
+                { t("actions:fields.allowedParameters.hint") }
+            </Hint>
+        </>
+    );
+
     return (
         <div className="action-endpoint-config-form">
             <div className="form-field-wrapper">
@@ -493,6 +634,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                     </Alert>
                 ) }
             </div>
+            { showHeadersAndParams && renderAllowedHeadersAndParamsSection() }
             <Divider className="divider-container" />
             <Typography variant="h6" className="heading-container">
                 { t("actions:fields.authentication.label") }
