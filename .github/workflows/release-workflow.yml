@@ -99,6 +99,11 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-pnpm-store-
 
+            - name: 🔄 Enter Changeset Pre-release Mode (next branch only)
+              id: changeset-pre-release
+              if: github.ref_name == 'next'
+              run: pnpm changeset pre enter next
+
             - name: 🧩 Install Dependencies
               id: install-dependencies
               run: pnpm install
