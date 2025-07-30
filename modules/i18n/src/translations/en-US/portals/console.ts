@@ -8423,6 +8423,68 @@ export const console: ConsoleNS = {
                     title: "SQL Query Types",
                     update: "Update"
                 }
+            },
+            workflowRequests: {
+                dangerZone: {
+                    delete: {
+                        actionTitle: "Delete Workflow Request",
+                        header: "Delete Workflow Request",
+                        subheader: "Once you delete a workflow request, there is no going back. "
+                            + "Please be certain."
+                    }
+                },
+                notifications: {
+                    deleteWorkflowRequest: {
+                        genericError: {
+                            description: "There was an error while deleting the workflow request.",
+                            message: "Something went wrong!"
+                        },
+                        success: {
+                            description: "The workflow request has been deleted successfully!",
+                            message: "Workflow request deleted successfully!"
+                        }
+                    },
+                    fetchWorkflowRequests: {
+                        genericError: {
+                            description: "An error occurred while fetching workflow requests.",
+                            message: "Something went wrong!"
+                        }
+                    },
+                    fetchWorkflowRequestDetails: {
+                        genericError: {
+                            description: "An error occurred while fetching workflow request details.",
+                            message: "Something went wrong!"
+                        },
+                        success: {
+                            description: "Successfully retrieved workflow request details.",
+                            message: "Retrieval successful!"
+                        }
+                    },
+                    searchWorkflowRequests: {
+                        genericError: {
+                            description: "An error occurred while searching workflow requests.",
+                            message: "Something went wrong!"
+                        }
+                    }
+                },
+                details: {
+                    header: "Workflow Request Details",
+                    fields: {
+                        id: "ID",
+                        eventType: "Event Type",
+                        requestInitiator: "Request Initiator",
+                        status: "Status",
+                        createdAt: "Created At",
+                        updatedAt: "Updated At",
+                        requestParams: "Request Params"
+                    },
+                    loading: "Loading...",
+                    error: {
+                        header: "Error",
+                        content: "Failed to load workflow Request details."
+                    },
+                    backButton: "Back"
+                },
             }
         },
         notifications: {

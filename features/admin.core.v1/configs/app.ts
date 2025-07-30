@@ -62,6 +62,7 @@ import { getValidationServiceEndpoints } from "@wso2is/admin.validation.v1/confi
 import { getWebhooksResourceEndpoints } from "@wso2is/admin.webhooks.v1/configs/endpoints";
 import { getApprovalsResourceEndpoints } from "@wso2is/admin.workflow-approvals.v1";
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
+import { getWorkflowRequestsResourceEndpoints } from "../../admin.workflow-requests.v1/types/workflow-requests";
 import { AppConstants } from "../constants/app-constants";
 import { I18nConstants } from "../constants/i18n-constants";
 import { UIConstants } from "../constants/ui-constants";
@@ -266,7 +267,8 @@ export class Config {
                 I18nConstants.PUSH_PROVIDERS_NAMESPACE,
                 I18nConstants.EMAIL_PROVIDERS_NAMESPACE,
                 I18nConstants.WEBHOOKS_NAMESPACE,
-                I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE
+                I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE,
+                I18nConstants.WORKFLOW_REQUESTS_NAMESPACE
             ],
             preload: []
         };
@@ -332,6 +334,7 @@ export class Config {
             ...getRemoteLoggingEndpoints(this.resolveServerHost()),
             ...getWorkflowsResourceEndpoints(this.resolveServerHost()),
             ...getWorkflowAssociationsResourceEndpoints(this.resolveServerHost()),
+            ...getWorkflowRequestsResourceEndpoints(this.resolveServerHost()),
             ...getRegistrationFlowBuilderResourceEndpoints(this.resolveServerHost()),
             ...getWebhooksResourceEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.resolveServerHostFromConfig() }/api/server/v1/cors/origins`,

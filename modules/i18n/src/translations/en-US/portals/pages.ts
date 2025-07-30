@@ -132,5 +132,9 @@ export const pages: pagesNS = {
     webhooks: {
         subTitle: "Create webhooks to notify external services when certain events happen.",
         title: "Webhooks"
-    }
+    },
+    workflowRequestsPage: {
+        subTitle: "View and manage workflow requests.",
+        title: "Workflow Requests"
+    },
 };

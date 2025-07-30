@@ -318,6 +318,11 @@ export class I18nConstants {
         I18nModuleConstants.APPROVAL_WORKFLOWS_NAMESPACE;
 
     /**
+     * Workflow requests namespace.
+     */
+    public static readonly WORKFLOW_REQUESTS_NAMESPACE: string = "workflow-requests";
+
+    /**
      * Locations of the I18n namespaces.
      */
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
@@ -376,7 +381,8 @@ export class I18nConstants {
         [ I18nConstants.RULES_NAMESPACE, "portals" ],
         [ I18nConstants.PUSH_PROVIDERS_NAMESPACE, "portals" ],
         [ I18nConstants.EMAIL_PROVIDERS_NAMESPACE, "portals" ],
-        [ I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE, "portals" ]
+        [ I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE, "portals" ],
+        [ I18nConstants.WORKFLOW_REQUESTS_NAMESPACE, "portals" ]
     ]);
 
     /**
