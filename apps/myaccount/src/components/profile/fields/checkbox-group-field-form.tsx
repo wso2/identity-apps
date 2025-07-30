@@ -197,6 +197,10 @@ const CheckboxGroupFieldForm: FunctionComponent<CheckboxGroupFieldFormPropsInter
                                 <EmptyValueField
                                     schema={ schema }
                                     fieldLabel={ fieldLabel }
+                                    placeholderText={ t(
+                                        "myAccount:components.profile.forms.generic.dropdown.placeholder",
+                                        { fieldName: fieldLabel.toLowerCase() }
+                                    ) }
                                 />
                             ) : (
                                 renderInactiveFieldContent()
