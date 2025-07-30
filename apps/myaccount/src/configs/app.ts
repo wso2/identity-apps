@@ -19,7 +19,6 @@
 import {
     I18nModuleInitOptions,
     I18nModuleOptionsInterface,
-    LocaleMeta,
     SupportedLanguagesMeta,
     generateBackendPaths
 } from "@wso2is/i18n";
