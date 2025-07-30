@@ -1,5 +1,17 @@
 # @wso2is/myaccount
 
+## 2.21.1-next.0
+
+### Patch Changes
+
+- [`f683c3c15832c3271c91dc22edcb20a99830c9b9`](https://github.com/wso2/identity-apps/commit/f683c3c15832c3271c91dc22edcb20a99830c9b9) Thanks [@brionmario](https://github.com/brionmario)! - Next Release testing
+
+* [#8206](https://github.com/wso2/identity-apps/pull/8206) [`ba917ba62a07de5898c251fc385558ddb562122a`](https://github.com/wso2/identity-apps/commit/ba917ba62a07de5898c251fc385558ddb562122a) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Switch to the org handle in places where org id is used as tenant domain
+
+* Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.212-next.0
+  - @wso2is/common.branding.v1@2.28.2-next.0
+
 ## 2.21.0
 
 ### Minor Changes

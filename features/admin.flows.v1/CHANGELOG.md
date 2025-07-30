@@ -1,5 +1,15 @@
 # @wso2is/admin.flows.v1
 
+## 1.0.16-next.0
+
+### Patch Changes
+
+- Updated dependencies [[`ba917ba62a07de5898c251fc385558ddb562122a`](https://github.com/wso2/identity-apps/commit/ba917ba62a07de5898c251fc385558ddb562122a)]:
+  - @wso2is/admin.core.v1@2.47.1-next.0
+  - @wso2is/admin.feature-gate.v1@1.7.7-next.0
+  - @wso2is/admin.registration-flow-builder.v1@0.9.17-next.0
+  - @wso2is/admin.server-configurations.v1@2.35.17-next.0
+
 ## 1.0.15
 
 ### Patch Changes

@@ -1,5 +1,20 @@
 # @wso2is/admin.home.v1
 
+## 1.7.22-next.0
+
+### Patch Changes
+
+- Updated dependencies [[`ba917ba62a07de5898c251fc385558ddb562122a`](https://github.com/wso2/identity-apps/commit/ba917ba62a07de5898c251fc385558ddb562122a)]:
+  - @wso2is/admin.core.v1@2.47.1-next.0
+  - @wso2is/admin.extensions.v1@2.40.1-next.0
+  - @wso2is/admin.organizations.v1@2.26.212-next.0
+  - @wso2is/admin.applications.v1@2.36.15-next.0
+  - @wso2is/admin.feature-gate.v1@1.7.7-next.0
+  - @wso2is/admin.flows.v1@1.0.16-next.0
+  - @wso2is/admin.subscription.v1@1.5.205-next.0
+  - @wso2is/admin.userstores.v1@2.27.38-next.0
+  - @wso2is/common.ai.v1@2.27.4-next.0
+
 ## 1.7.21
 
 ### Patch Changes
