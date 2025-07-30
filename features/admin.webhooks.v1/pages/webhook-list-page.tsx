@@ -28,11 +28,13 @@ import { useSelector } from "react-redux";
 import { Icon } from "semantic-ui-react";
 import deleteWebhook from "../api/delete-webhook";
 import useGetWebhooks from "../api/use-get-webhooks";
+import useGetWebhooksMetadata from "../api/use-get-webhooks-metadata";
 import WebhookList from "../components/webhook-list";
 import usePagination from "../hooks/use-pagination";
 import useWebhookNavigation from "../hooks/use-webhook-navigation";
 import useWebhookSearch from "../hooks/use-webhook-search";
 import { WebhookListInterface, WebhookListItemInterface } from "../models/webhooks";
+import { AdapterUtils } from "../utils/adapter-utils";
 import { useHandleWebhookError, useHandleWebhookSuccess } from "../utils/alert-utils";
 
 type WebhooksPageInterface = IdentifiableComponentInterface;
@@ -58,6 +60,12 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
         error: webhookListFetchRequestError,
         mutate: mutateWebhooks
     } = useGetWebhooks();
+
+    const {
+        data: webhooksMetadata,
+        isLoading: isWebhooksMetadataLoading,
+        error: webhooksMetadataError
+    } = useGetWebhooksMetadata();
 
     const webhooks: WebhookListItemInterface[] = useMemo(() => {
         return webhookListResponse?.webhooks || [];
@@ -88,6 +96,12 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
     const handleSuccess: (action: string) => void = useHandleWebhookSuccess();
     const handleError: (error: unknown, action: string) => void = useHandleWebhookError();
 
+    const isLoading: boolean =
+        isWebhookListFetchRequestLoading ||
+        isDeletingWebhook ||
+        isWebhooksMetadataLoading ||
+        (!webhookListResponse && !webhookListFetchRequestError);
+
     useEffect(() => {
         resetToFirstPage();
     }, [ searchQuery, resetToFirstPage ]);
@@ -97,6 +111,23 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
             handleError(webhookListFetchRequestError, "fetchWebhooks");
         }
     }, [ webhookListFetchRequestError, handleError ]);
+
+    useEffect(() => {
+        if (webhooksMetadataError) {
+            handleError(webhooksMetadataError, "fetchWebhooksMetadata");
+        }
+    }, [ webhooksMetadataError, handleError ]);
+
+    /**
+     * Check if webhook uses WebSubHub adapter based on metadata.
+     */
+    const isWebSubHubAdapterMode = (): boolean => {
+        if (!webhooksMetadata?.adapter) {
+            return false;
+        }
+
+        return AdapterUtils.isWebSubHub(webhooksMetadata.adapter);
+    };
 
     /**
      * Handles the deletion of a webhook with permission checks.
@@ -124,7 +155,6 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
      * Handles webhook edit navigation with permission check.
      */
     const handleWebhookEdit = (webhook: WebhookListItemInterface): void => {
-        // Allow to navigage to edit page if the user has view permissions
         navigateToWebhookEdit(webhook);
     };
 
@@ -206,15 +236,15 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
             data-componentid={ `${_componentId}-page-layout` }
         >
             <ListLayout
-                advancedSearch={ renderAdvancedSearch() }
+                advancedSearch={ !isLoading ? renderAdvancedSearch() : null }
                 currentListSize={ paginatedWebhooks.length }
-                isLoading={ isWebhookListFetchRequestLoading || isDeletingWebhook }
+                isLoading={ isLoading }
                 listItemLimit={ itemsPerPage }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
-                showPagination={ totalPages > 1 }
+                showPagination={ totalPages > 1 && !isLoading }
                 showTopActionPanel={
-                    isWebhookListFetchRequestLoading ||
+                    isLoading ||
                     !((!searchQuery || searchQuery.trim() === "") && enhancedWebhookList?.totalResults <= 0)
                 }
                 totalPages={ totalPages }
@@ -222,8 +252,9 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
                 data-componentid={ `${_componentId}-list-layout` }
             >
                 <WebhookList
-                    isLoading={ isWebhookListFetchRequestLoading || isDeletingWebhook }
+                    isLoading={ isLoading }
                     list={ enhancedWebhookList }
+                    isWebSubHubAdapterMode={ isWebSubHubAdapterMode() }
                     onWebhookDelete={ handleWebhookDelete }
                     onWebhookEdit={ handleWebhookEdit }
                     onEmptyListPlaceholderActionClick={ handleWebhookCreate }

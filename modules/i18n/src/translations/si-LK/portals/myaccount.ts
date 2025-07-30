@@ -514,6 +514,13 @@ export const myAccount: MyAccountNS = {
                 },
                 tooltip: "Apps"
             },
+            dropdown: {
+                footer: {
+                    cookiePolicy: "කුකී නීතිය",
+                    privacyPolicy: "පුද්ගලිකත්වය",
+                    termsOfService: "සේවා නියමයන්"
+                }
+            },
             organizationLabel: "මෙම ගිණුම කළමනාකරණය කරන්නේ"
         },
         linkedAccounts: {

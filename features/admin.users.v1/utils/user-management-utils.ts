@@ -287,6 +287,53 @@ export const isMultipleEmailsAndMobileNumbersEnabled = (
 };
 
 /**
+ * Check if multiple emails and mobile numbers feature is enabled for a user store.
+ *
+ * @param profileSchema - User profile schema list.
+ * @param userStoreDomain - User store domain to check.
+ */
+export const isMultipleEmailsAndMobileNumbersEnabledForUserStore = (
+    profileSchema: ProfileSchemaInterface[],
+    userStoreDomain: string
+): boolean => {
+
+    const multipleEmailsAndMobileFeatureRelatedAttributes: string[] = [
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS")
+    ];
+
+    // Check each required attribute exists and domain is not excluded in the excluded user store list.
+    const attributeCheck: boolean = multipleEmailsAndMobileFeatureRelatedAttributes.every(
+        (attribute: string) => {
+            const schema: ProfileSchemaInterface = profileSchema?.find(
+                (schema: ProfileSchemaInterface) => schema?.name === attribute);
+
+            if (!schema) {
+                return false;
+            }
+
+            // The global supportedByDefault value is a string. Hence, it needs to be converted to a boolean.
+            const resolveSupportedByDefaultValue: boolean = schema?.supportedByDefault?.toLowerCase() === "true";
+
+            // Currently BE check if global supported by default is enabled for these attributes to enable the feature.
+            if (!resolveSupportedByDefaultValue) {
+                return false;
+            }
+
+            const excludedUserStores: string[] =
+                schema?.excludedUserStores?.split(",")?.map((store: string) => store?.trim().toUpperCase()) || [];
+
+            return !excludedUserStores.includes(userStoreDomain);
+        });
+
+    return attributeCheck;
+};
+
+/**
  * Retrieve values of each validator.
  */
 const getValidationConfig = (
@@ -638,8 +685,8 @@ export const flattenValues = (obj: Record<string, any>, prefix: string = ""): Ma
  */
 export const getVerificationPendingAttributeValue = (schemaName: string, user: ProfileInfoInterface): string | null => {
     if (schemaName === EMAIL_ATTRIBUTE || schemaName === EMAIL_ADDRESSES_ATTRIBUTE) {
-        const pendingAttributes: Array<{value: string}> | undefined =
-        user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.["pendingEmails"];
+        const pendingAttributes: Array<{value: string}> | undefined = user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]
+            ?.[ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PENDING_EMAILS")];
 
         return Array.isArray(pendingAttributes)
             && pendingAttributes.length > 0
@@ -647,8 +694,10 @@ export const getVerificationPendingAttributeValue = (schemaName: string, user: P
             ? pendingAttributes[0].value
             : null;
     } else if (schemaName === MOBILE_ATTRIBUTE || schemaName === MOBILE_NUMBERS_ATTRIBUTE) {
-        return !isEmpty(user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.["pendingMobileNumber"])
-            ? user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.["pendingMobileNumber"]
+        const pendingMobileAttribute: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PENDING_MOBILE");
+
+        return !isEmpty(user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.[pendingMobileAttribute])
+            ? user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.[pendingMobileAttribute]
             : null;
     }
 

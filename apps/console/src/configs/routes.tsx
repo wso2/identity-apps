@@ -199,7 +199,28 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
-            children: [],
+            children: [
+                {
+                    component: lazy(() => import(
+                        "@wso2is/admin.password-recovery-flow-builder.v1/pages/password-recovery-flow-builder-page")),
+                    exact: true,
+                    id: "passwordRecoveryFlowBuilder",
+                    name: "Password Recovery Flow Builder",
+                    path: AppConstants.getPaths().get("PASSWORD_RECOVERY_FLOW_BUILDER"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import(
+                        "@wso2is/admin.ask-password-flow-builder.v1/pages/ask-password-flow-builder-page")),
+                    exact: true,
+                    id: "askPasswordFlowBuilder",
+                    name: "Ask Password Flow Builder",
+                    path: AppConstants.getPaths().get("INVITE_USER_PASSWORD_SETUP_FLOW_BUILDER"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
             component: lazy(() => import("@wso2is/admin.flows.v1/pages/flows")),
             exact: false,
             featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.FLOWS,
@@ -415,6 +436,35 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             protected: true,
             showOnSidePanel: true
         },
+
+        {
+            category: "console:develop.features.sidePanel.categories.userManagement",
+            children: [
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.agents.v1/pages/edit-agent")),
+                    exact: true,
+                    id: "editAgent",
+                    name: "Edit Agent",
+                    path: AppConstants.getPaths().get("AGENT_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("@wso2is/admin.agents.v1/pages/agents")),
+            exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.AGENTS,
+            icon: {
+                icon: getSidePanelIcons().agents
+            },
+            id: "agents",
+            name: "Agents",
+            order: 1,
+            path: AppConstants.getPaths().get("AGENTS"),
+            protected: true,
+            showOnSidePanel: true
+        },
+
         {
             category: "extensions:manage.sidePanel.categories.userManagement",
             children: [

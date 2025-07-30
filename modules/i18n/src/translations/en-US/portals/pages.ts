@@ -30,6 +30,10 @@ export const pages: pagesNS = {
         subTitle: null,
         title: "Add New Template"
     },
+    agents: {
+        subTitle: "Configure and manage AI agent identities for your organizaton",
+        title: "Agents"
+    },
     approvalWorkflows: {
         subTitle: "Create and manage approval workflows.",
         title: "Approval Workflows"

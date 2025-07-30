@@ -16,26 +16,28 @@
  * under the License.
  */
 
-import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
+import Alert from "@oxygen-ui/react/Alert";
+import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Box from "@oxygen-ui/react/Box";
+import Button from "@oxygen-ui/react/Button";
 import List from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemText from "@oxygen-ui/react/ListItemText";
-import Paper from "@oxygen-ui/react/Paper";
 import Typography from "@oxygen-ui/react/Typography";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Grid } from "semantic-ui-react";
-import "./admin-data-separation-notice.scss";
+import { Icon } from "semantic-ui-react";
 
 /**
  * Props interface of {@link AdminDataSeparationNotice}
  */
 export interface AdminDataSeparationNoticeProps extends IdentifiableComponentInterface {
+
+    setDisplayBanner?: (display: boolean) => void;
 }
 
 /**
@@ -45,10 +47,11 @@ export interface AdminDataSeparationNoticeProps extends IdentifiableComponentInt
  * @returns AdminDataSeparationNotice component.
  */
 const AdminDataSeparationNotice: FunctionComponent<AdminDataSeparationNoticeProps> = ({
-    ...rest
+    setDisplayBanner
 }: AdminDataSeparationNoticeProps): ReactElement => {
 
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
+    const [ viewDetails, setViewDetails ] = useState<boolean>(true);
 
     /**
      * Function to resolve the details of the banner view.
@@ -57,14 +60,26 @@ const AdminDataSeparationNotice: FunctionComponent<AdminDataSeparationNoticeProp
      */
     const resolveBannerViewDetails = (): ReactElement => {
         return (
-            <Grid className="banner-grid">
-                <List dense>
+            <Box className="banner-grid" sx={ { overflowX: "auto", width: "100%" } }>
+                <List
+                    dense
+                    sx={ {
+                        listStylePosition: "outside",
+                        listStyleType: "disc",
+                        pl: 4
+                    } }>
                     <ListItem
                         component="li"
-                        sx={ { display: "list-item", listStyleType: "disc" } }
+                        disablePadding
+                        sx={ {
+                            display: "list-item",
+                            listStylePosition: "inherit",
+                            listStyleType: "inherit",
+                            wordBreak: "break-word"
+                        } }
                     >
                         <ListItemText>
-                            <Typography variant="body2">
+                            <Typography variant="body1">
                                 <Trans>
                                     Admin users can continue to sign in to both the EU and US regions
                                     using the same credentials. However, <strong>password changes made
@@ -75,54 +90,97 @@ const AdminDataSeparationNotice: FunctionComponent<AdminDataSeparationNoticeProp
                             </Typography>
                         </ListItemText>
                     </ListItem>
-
                     <ListItem
                         component="li"
-                        sx={ { display: "list-item", listStyleType: "disc" } }
+                        disablePadding
+                        sx={ {
+                            display: "list-item",
+                            listStylePosition: "inherit",
+                            listStyleType: "inherit",
+                            wordBreak: "break-word"
+                        } }
                     >
                         <ListItemText>
-                            <Typography variant="body2">
+                            <Typography variant="body1">
                                 <Trans>
-                                    <strong>Billing and subscription data</strong> related to admin accounts
+                                    <strong>Billing and subscription data</strong> related to accounts
                                     will be <strong>managed independently within each region.</strong>
                                 </Trans>
                             </Typography>
                         </ListItemText>
                     </ListItem>
                 </List>
-            </Grid>
+            </Box>
         );
     };
 
+    const classes: any = classNames( { "admin-data-alert-expanded-view": viewDetails } );
+
     return (
-        <Paper
-            className={ classNames("admin-data-separation-notice") }
-            data-componentid="region-separation-announcement"
-            variant="outlined"
-            { ...rest }
+        <Alert
+            className={ classes }
+            severity="warning"
+            sx={ {
+                boxSizing: "border-box",
+                paddingRight: "150px",
+                position: "relative",
+                width: "100%"
+            } }
         >
+            <AlertTitle className="alert-title" variant="h5">
+                <Trans components={ { strong: <strong /> } }>
+                    Changes to Admin Data Handling
+                </Trans>
+            </AlertTitle>
 
-            <Box className="admin-data-separation-notice-content">
-                <Box>
-                    <Typography variant="h3" display="flex" alignItems="center" gap={ 1 } mb={ 1 }>
-                        <WarningAmberOutlinedIcon color="warning" sx={ { fontSize: 28, verticalAlign: "middle" } } />
-                        Changes to Admin Data Handling
-                    </Typography>
-                    <Typography variant="body2">
-                        Effective from <strong>June 27, 2025</strong>, we are
-                        introducing <strong>region-based separation of admin user data</strong> in { productName } to
-                        meet compliance and data residency requirements. With this change,
-                    </Typography>
-                    { (
-                        <Typography variant="body2" sx={ { pl: 4 } } >
-                            { resolveBannerViewDetails() }
-                        </Typography>
-                    ) }
+            <Box
+                sx={ {
+                    alignItems: "center",
+                    backgroundColor: "inherit",
+                    columnGap: 1,
+                    display: "flex",
+                    position: "absolute",
+                    right: 8,
+                    top: 8,
+                    width: 140,
+                    zIndex: 10
+                } }
+            >
+                <Button
+                    className="banner-view-hide-details"
+                    data-componentid="outdated-app-view-details-button"
+                    size="small"
+                    onClick={ () => setViewDetails(!viewDetails) }
+                    sx={ {
+                        minWidth: 110,
+                        whiteSpace: "nowrap"
+                    } }
+                >
+                    { viewDetails ? "Hide Details" : "View Details" }
+                </Button>
 
-                </Box>
+                <Icon
+                    link
+                    onClick={ () => setDisplayBanner(false) }
+                    size="small"
+                    color="grey"
+                    name="close"
+                    data-componentid="close-btn"
+                    sx={ { cursor: "pointer" } }
+                />
             </Box>
 
-        </Paper>
+            <Typography variant="body1" sx={ { mt: 1 } }>
+                <Trans>
+                    As of <strong>June 27, 2025</strong>, we have
+                    introduced <strong>region-based separation of admin user data</strong> in { productName } to
+                    meet compliance and data residency requirements.
+                </Trans>
+            </Typography>
+
+            { viewDetails && resolveBannerViewDetails() }
+        </Alert>
+
     );
 };
 

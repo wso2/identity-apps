@@ -26,7 +26,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Button, Grid, Icon } from "semantic-ui-react";
+import { Button, Grid, Header, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
 import { patchUserStore, testConnection } from "../../api";
 import { JDBC } from "../../constants";
@@ -480,15 +480,6 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                         setConnectionFailed(false);
                                                         setConnectionSuccessful(true);
                                                     } else {
-                                                        dispatch(addAlert({
-                                                            description: t("userstores:" +
-                                                                "notifications.testConnection.genericError" +
-                                                                ".description"),
-                                                            level: AlertLevels.ERROR,
-                                                            message: t(
-                                                                "userstores:notifications.testConnection.genericError" +
-                                                                ".message")
-                                                        }));
                                                         setConnectionSuccessful(false);
                                                         setConnectionFailed(true);
                                                     }
@@ -526,6 +517,11 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                     />
                                     { t("userstores:forms.connection.testButton") }
                                 </Button>
+                                { connectionFailed && (
+                                    <Header as="h6" color="red">
+                                        { t("userstores:forms.connection.connectionErrorMessage") }
+                                    </Header>
+                                ) }
                             </Grid.Column>
                         </Grid.Row>
                     ) }

@@ -23,6 +23,8 @@ import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models
 import { addAlert } from "@wso2is/core/store";
 import {
     ContentLoader,
+    DangerZone,
+    DangerZoneGroup,
     DocumentationLink,
     EmphasizedSegment,
     Hint,
@@ -35,10 +37,14 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps } from "semantic-ui-react";
-import { updateGovernanceConnector, useGetGovernanceConnectorById } from "../api/governance-connectors";
+import { revertGovernanceConnectorProperties,
+    updateGovernanceConnector,
+    useGetGovernanceConnectorById
+} from "../api/governance-connectors";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
+    RevertGovernanceConnectorConfigInterface,
     UpdateGovernanceConnectorConfigInterface,
     UpdateGovernanceConnectorConfigPropertyInterface
 } from "../models/governance-connectors";
@@ -103,6 +109,55 @@ export const AccountDisablePage: FC<AccountDisablePageInterface> = (
             );
         }
     }, [ accountDisableFetchRequestError ]);
+
+    const onConfigRevert = (): void => {
+        const revertData: RevertGovernanceConnectorConfigInterface = {
+            properties: [
+                ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE
+            ]
+        };
+
+        revertGovernanceConnectorProperties(
+            ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CATEGORY_ID,
+            ServerConfigurationsConstants.ACCOUNT_DISABLE_CONNECTOR_ID,
+            revertData
+        )
+            .then(() => {
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "governanceConnectors:connectorCategories.accountManagement.connectors" +
+                            ".accountDisableHandler.notifications.revertConfiguration.success.description"
+                        ),
+                        level: AlertLevels.SUCCESS,
+                        message: t(
+                            "governanceConnectors:connectorCategories.accountManagement.connectors" +
+                            ".accountDisableHandler.notifications.revertConfiguration.success.message"
+                        )
+                    })
+                );
+                setIsAccountDisableEnabled(false);
+            })
+            .catch(() => {
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "governanceConnectors:connectorCategories.accountManagement.connectors" +
+                                ".accountDisableHandler.notifications.revertConfiguration.error.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "governanceConnectors:connectorCategories.accountManagement.connectors" +
+                                ".accountDisableHandler.notifications.revertConfiguration.error.message"
+                        )
+                    })
+                );
+            })
+            .finally(() => {
+                mutateAccountDisableFetchRequest();
+            }
+            );
+    };
 
     /**
      * Update Account Disable Config Value
@@ -219,39 +274,52 @@ export const AccountDisablePage: FC<AccountDisablePageInterface> = (
             pageHeaderMaxWidth={ true }
             isLoading={ accountDisableFetchRequestLoading }
         >
-            <Grid className={ "mt-5" }>
-                <EmphasizedSegment className="form-wrapper" padded={ "very" }>
-                    {
-                        accountDisableFetchRequestLoading
-                            ? <ContentLoader />
-                            : (
-                                <>
-                                    <Checkbox
-                                        ariaLabel={ t("governanceConnectors:connectorCategories." +
+            <Grid container spacing={ 2 } direction="column">
+                <Grid xs = { 12 }>
+                    <EmphasizedSegment className="form-wrapper" padded={ "very" }>
+                        {
+                            accountDisableFetchRequestLoading
+                                ? <ContentLoader />
+                                : (
+                                    <>
+                                        <Checkbox
+                                            ariaLabel={ t("governanceConnectors:connectorCategories." +
                                             "accountManagement.connectors.accountDisableHandler.properties." +
                                             "accountDisableHandlerEnable.label") }
-                                        name="accountDisable"
-                                        label={ t("governanceConnectors:connectorCategories." +
+                                            name="accountDisable"
+                                            label={ t("governanceConnectors:connectorCategories." +
                                             "accountManagement.connectors.accountDisableHandler.properties." +
                                             "accountDisableHandlerEnable.label") }
-                                        width={ 16 }
-                                        data-componentid={
-                                            `${componentId}-toggle` }
-                                        toggle
-                                        onChange={ (event: FormEvent<HTMLInputElement>, data: CheckboxProps) => {
-                                            handleCheckboxToggle(data);
-                                        } }
-                                        checked={ isAccountDisableEnabled }
-                                    />
-                                    <Hint>
-                                        { t("governanceConnectors:connectorCategories." +
+                                            width={ 16 }
+                                            data-componentid={
+                                                `${componentId}-toggle` }
+                                            toggle
+                                            onChange={ (event: FormEvent<HTMLInputElement>, data: CheckboxProps) => {
+                                                handleCheckboxToggle(data);
+                                            } }
+                                            checked={ isAccountDisableEnabled }
+                                        />
+                                        <Hint>
+                                            { t("governanceConnectors:connectorCategories." +
                                             "accountManagement.connectors.accountDisableHandler.properties." +
                                             "accountDisableHandlerEnable.hint") }
-                                    </Hint>
-                                </>
-                            )
-                    }
-                </EmphasizedSegment>
+                                        </Hint>
+                                    </>
+                                )
+                        }
+                    </EmphasizedSegment>
+                </Grid>
+                <Grid xs={ 12 }>
+                    <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                        <DangerZone
+                            actionTitle= { t("governanceConnectors:dangerZone.actionTitle") }
+                            header= { t("governanceConnectors:dangerZone.heading") }
+                            subheader= { t("governanceConnectors:dangerZone.subHeading") }
+                            onActionClick={ () => onConfigRevert() }
+                            data-testid={ `${ componentId }-danger-zone` }
+                        />
+                    </DangerZoneGroup>
+                </Grid>
             </Grid>
         </PageLayout>
     );

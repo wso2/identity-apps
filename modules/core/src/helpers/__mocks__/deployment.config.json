@@ -895,9 +895,17 @@
                 }
             },
             "remoteLogging": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "hide.config.secrets"
+                ],
                 "enabled": true,
-                "scopes": {}
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [],
+                    "update": []
+                }
             },
             "residentOutboundProvisioning": {
                 "disabledFeatures": [],
@@ -1321,7 +1329,6 @@
         },
         "selfAppIdentifier": "Console",
         "showAppSwitchButton": true,
-        "showPasswordOfEmailProvider": true,
         "showSmsOtpPwdRecoveryFeatureStatusChip": false,
         "showStatusLabelForNewAuthzRuntimeFeatures": false,
         "systemAppsIdentifiers": [

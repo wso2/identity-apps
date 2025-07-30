@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.logs.v1",
-    "version": "1.6.4",
+    "version": "1.6.5",
     "description": "Query your logs to troubleshoot issues and monitor resource activities.",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -30,7 +30,7 @@
         "@mui/material": "^5.13.0",
         "@mui/system": "^5.12.3",
         "@mui/utils": "^5.12.3",
-        "@oxygen-ui/react": "^2.4.5",
+        "@oxygen-ui/react": "^2.4.6",
         "@wso2is/admin.core.v1": "^2.45.2",
         "@wso2is/core": "^2.7.0",
         "@wso2is/form": "^2.7.1",

@@ -689,6 +689,11 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 return null;
             }
 
+            if (application?.originalTemplateId === ApplicationTemplateIdTypes.REACT_APPLICATION ||
+                application?.originalTemplateId === ApplicationTemplateIdTypes.NEXT_JS_APPLICATION) {
+                return null;
+            }
+
             return (
                 <Fragment>
                     <Message

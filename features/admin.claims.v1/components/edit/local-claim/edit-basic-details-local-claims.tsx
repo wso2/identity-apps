@@ -186,6 +186,14 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     const { UIConfig } = useUIConfig();
 
+    const isAgentAttribute: boolean = useMemo(() => {
+        const agentAttributeProperty: Property = claim?.properties?.find(
+            (property: Property) => property.key === "isAgentClaim"
+        );
+
+        return agentAttributeProperty?.value === "true";
+    }, [ claim ]);
+
     const sharedProfileValueResolvingMethodOptions: DropDownItemInterface[] = [
         {
             text: t("claims:local.forms." +
@@ -505,7 +513,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     // Temporary fix to check system claims and make them readonly
     const isReadOnly: boolean = useMemo(() => {
-        if (hideSpecialClaims) {
+        if (hideSpecialClaims || isAgentAttribute) {
             return true;
         } else {
             return !hasAttributeUpdatePermissions;
@@ -682,8 +690,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 displayOrder: attributeConfig.editAttributes.getDisplayOrder(
                     claim.displayOrder, values.displayOrder?.toString()),
                 inputFormat: inputType ? { inputType: inputType } : claim?.inputFormat,
-                multiValued: values?.multiValued !== undefined
-                    ? !!values.multiValued : claim?.multiValued,
+                multiValued: multiValued,
                 properties: claim?.properties,
                 readOnly: values?.readOnly !== undefined
                     ? !!values.readOnly
@@ -731,8 +738,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 displayOrder: attributeConfig.editAttributes.getDisplayOrder(
                     claim.displayOrder, values.displayOrder?.toString()),
                 inputFormat: inputType ? { inputType: inputType } : claim?.inputFormat,
-                multiValued: values?.multiValued !== undefined
-                    ? !!values.multiValued : claim?.multiValued,
+                multiValued: multiValued,
                 profiles: {
                     console: {
                         readOnly: values?.consoleReadOnly !== undefined ?
@@ -1218,6 +1224,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             setCanonicalValues([]);
                             setDataType(data.value);
                             setDefaultInputTypeForDataType(data.value as ClaimDataType, multiValued);
+                            if (data.value === ClaimDataType.COMPLEX || data.value === ClaimDataType.BOOLEAN) {
+                                setMultiValued(false);
+                            }
                         } }
                     />
 
@@ -1293,24 +1302,27 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         </>
                     ) }
 
-                    { dataType !== ClaimDataType.BOOLEAN && (
-                        <Field.Checkbox
-                            ariaLabel={ t("claims:local.forms.multiValued.label") }
-                            name="multiValued"
-                            label={ t("claims:local.forms.multiValued.label") }
-                            required={ false }
-                            defaultValue={ claim?.multiValued }
-                            data-componentid={ `${testId}-form-multi-valued-input` }
-                            hint={ isSystemClaim
-                                ? t("claims:local.forms.multiValuedSystemClaimHint")
-                                : t("claims:local.forms.multiValuedHint") }
-                            readOnly={ isSubOrganization() || isSystemClaim || isReadOnly }
-                            listen={ (checked: boolean) => {
-                                setMultiValued(checked);
+                    <Field.Checkbox
+                        ariaLabel={ t("claims:local.forms.multiValued.label") }
+                        name="multiValued"
+                        label={ t("claims:local.forms.multiValued.label") }
+                        required={ false }
+                        checked={ multiValued }
+                        data-componentid={ `${testId}-form-multi-valued-input` }
+                        hint={ isSystemClaim
+                            ? t("claims:local.forms.multiValuedSystemClaimHint")
+                            : t("claims:local.forms.multiValuedHint") }
+                        readOnly={ isSubOrganization() || isSystemClaim || isReadOnly
+                            || dataType === ClaimDataType.COMPLEX || dataType === ClaimDataType.BOOLEAN
+                        }
+                        listen={ (checked: boolean) => {
+                            setMultiValued(checked);
+                            if (dataType === ClaimDataType.OPTIONS) {
                                 setDefaultInputTypeForDataType(dataType as ClaimDataType, checked);
-                            } }
-                        />
-                    ) }
+                            }
+                        } }
+                    />
+
                     { dataType !== ClaimDataType.COMPLEX && (
                         <Field.Dropdown
                             ariaLabel={ t("claims:local.forms.inputFormat.label") }
@@ -1368,7 +1380,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     {
                         claim && UIConfig?.isClaimUniquenessValidationEnabled
                             && !hideSpecialClaims
-                            && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI) && (
+                            && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
+                            && !isAgentAttribute && (
                             <Field.Dropdown
                                 ariaLabel="uniqueness-scope-dropdown"
                                 name={ ClaimManagementConstants.UNIQUENESS_SCOPE_PROPERTY_NAME }
@@ -1396,7 +1409,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     }
                     { !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI) && mappingChecked
                         ? (
-                            !hideSpecialClaims && !hasMapping &&
+                            !hideSpecialClaims && !hasMapping && !isAgentAttribute &&
                             (<Grid.Row columns={ 1 } >
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                                     <Message
@@ -1572,7 +1585,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     {
                         // Hides on groups claim
                         !isDistinctAttributeProfilesDisabled && claim && !hideSpecialClaims && mappingChecked
-                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI && (
+                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI &&
+                            !isAgentAttribute && (
                             <>
                                 <Divider />
                                 <Heading as="h4">

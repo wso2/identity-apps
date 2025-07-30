@@ -109,3 +109,49 @@ export interface WebhookChannelConfigInterface {
      */
     key: string;
 }
+
+/**
+ * Interface for event profile list item in metadata response.
+ */
+export interface EventProfileListItemInterface {
+    /**
+     * Name of the event profile.
+     */
+    name: string;
+    /**
+     * URI of the event profile.
+     */
+    uri: string;
+    /**
+     * Self link for the event profile.
+     */
+    self: string;
+}
+
+/**
+ * Interface for adapter information in metadata response.
+ */
+export interface AdapterMetadataInterface {
+    /**
+     * Name of the adapter (e.g., "httppublisher", "websubhub").
+     */
+    name: string;
+    /**
+     * Type of the adapter (e.g., "Publisher", "PublisherSubscriber").
+     */
+    type: string;
+}
+
+/**
+ * Interface for webhooks metadata API response.
+ */
+export interface WebhooksMetadataApiResponseInterface {
+    /**
+     * List of available event profiles.
+     */
+    profiles: EventProfileListItemInterface[];
+    /**
+     * Active adapter information.
+     */
+    adapter: AdapterMetadataInterface;
+}

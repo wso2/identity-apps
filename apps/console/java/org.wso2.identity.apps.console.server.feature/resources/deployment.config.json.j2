@@ -228,13 +228,13 @@
                     {% endif %}
                 ],
                 "enabled": {{ feature.enabled }},
-                "featureFlags": {
+                "featureFlags": [
                     {% if feature.feature_flags is defined %}
                     {% for flag, value in feature.feature_flags.items() %}
                     "{{ flag }}": {{ value }}{{ "," if not loop.last }}
                     {% endfor %}
                     {% endif %}
-                },
+                ],
                 "scopes": {
                     {% if feature.scopes is defined %}
                     {% for operation, scopes in feature.scopes.items() %}
@@ -277,6 +277,37 @@
                     {% endfor %}
                     {% else %}
                         "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
+            {% if console.agents is defined %}
+            "agents": {
+                "disabledFeatures": [
+                    {% if console.agents.disabled_features is defined %}
+                    {% for feature in console.agents.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if agent_identity.enabled is defined %} {{ agent_identity.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.agents.scopes is defined %}
+                    {% for operation, scopes in console.agents.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "feature": [],
                         "read": [],
                         "update": [],
                         "delete": []
@@ -1565,6 +1596,70 @@
                 }
             },
             {% endif %}
+            {% if console.remote_logging is defined %}
+            "remoteLogging": {
+                "disabledFeatures": [
+                    {% if remote_logging.hide_secrets is not defined or remote_logging.hide_secrets != true %}
+                    "hide.config.secrets"{{ "," if console.remoteLogging.disabled_features is defined }}
+                    {% endif %}
+                    {% if console.remote_logging.disabled_features is defined %}
+                    {% for feature in console.remote_logging.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.remote_logging.enabled is defined %} {{ console.remote_logging.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.remote_logging.scopes is defined %}
+                    {% for operation, scopes in console.remote_logging.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "feature": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
+            {% if console.role_assignments && scim2.enable_scim2_roles_v3_api is defined %}
+            "roleAssignments": {
+                "disabledFeatures": [
+                    {% if console.role_assignments.disabled_features is defined %}
+                    {% for feature in console.role_assignments.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if scim2.enable_scim2_roles_v3_api is defined %} {{ scim2.enable_scim2_roles_v3_api }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.role_assignments.scopes is defined %}
+                    {% for operation, scopes in console.role_assignments.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
             {% if console.server is defined %}
             "server": {
                 "disabledFeatures": [
@@ -1896,6 +1991,36 @@
                 }
             },
             {% endif %}
+            {% if console.user_roles_v3 is defined && scim2.enable_scim2_roles_v3_api is defined %}
+            "userRolesV3": {
+                "disabledFeatures": [
+                    {% if console.user_roles_v3.disabled_features is defined %}
+                    {% for feature in console.user_roles_v3.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if scim2.enable_scim2_roles_v3_api is defined %} {{ scim2.enable_scim2_roles_v3_api }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.user_roles_v3.scopes is defined %}
+                    {% for operation, scopes in console.user_roles_v3.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
             {% if console.tenants is defined %}
             "tenants": {
                 "disabledFeatures": [
@@ -2118,6 +2243,13 @@
                 {% endfor %}
             {% endif %}
         ],
+        "systemReservedUserStores": [
+            {% if console.ui.system_reserved_user_stores is defined %}
+                {% for value in console.ui.system_reserved_user_stores %}
+                "{{ value }}"{{ "," if not loop.last }}
+                {% endfor %}
+            {% endif %}
+        ],
         "i18nConfigs": {
             {% if console.ui.i18n_configs.items() is defined %}
             {% for key, value in console.ui.i18n_configs.items() %}
@@ -2154,6 +2286,12 @@
         {% endif %}
         {% if console.ui.cookie_policy_url is defined %}
         "cookiePolicyUrl": "{{ console.ui.cookie_policy_url }}",
+        {% endif %}
+        {% if console.ui.privacy_policy_url is defined %}
+        "privacyPolicyUrl": "{{ console.ui.privacy_policy_url }}",
+        {% endif %}
+        {% if console.ui.terms_of_service_url is defined %}
+        "termsOfUseUrl": "{{ console.ui.terms_of_service_url }}",
         {% endif %}
         {% if console.ui.is_marketing_consent_banner_enabled is defined %}
         "isMarketingConsentBannerEnabled": {{ console.ui.is_marketing_consent_banner_enabled }},
@@ -2192,11 +2330,6 @@
             "enableOldUIForEmailProvider": {{ console.ui.enable_old_ui_for_email_provider }},
         {% else %}
             "enableOldUIForEmailProvider": false,
-        {% endif %}
-        {% if console.ui.show_password_of_email_provider is defined %}
-            "showPasswordOfEmailProvider": {{ console.ui.show_password_of_email_provider }},
-        {% else %}
-            "showPasswordOfEmailProvider": true,
         {% endif %}
         {% if console.ui.enable_custom_sms_templates is defined %}
             "enableCustomSmsTemplates": {{ console.ui.enable_custom_sms_templates }},

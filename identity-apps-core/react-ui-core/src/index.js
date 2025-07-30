@@ -24,12 +24,15 @@ export { default as Form } from "./components/form";
 export { default as ValidationCriteria } from "./components/validation-criteria";
 export { default as Field } from "./components/field";
 export { default as DynamicContent } from "./components/dynamic-content";
+export { default as PasskeyEnrollment } from "./components/passkey-enrollment";
 
 export * from "./hooks/use-field-validations";
 export * from "./hooks/use-translations";
 
 export { I18nProvider } from "./providers/i18n-provider";
+export { GlobalContextProvider } from "./providers/global-context-provider";
 
 export * from "./utils/i18n-utils";
 export * from "./utils/ui-utils";
 export * from "./utils/validation-utils";
+export * from "./utils/fido2-utils";

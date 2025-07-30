@@ -145,11 +145,15 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                 const scim: ClaimDialect[] = [];
                 const axschema: ClaimDialect[] = [];
                 const eidas: ClaimDialect[] = [];
+                const agent: ClaimDialect[] = [];
                 const others: ClaimDialect[] = [];
 
                 filteredDialect.forEach((attributeMapping: ClaimDialect) => {
                     if (ClaimManagementConstants.OIDC_MAPPING.includes(attributeMapping.dialectURI)) {
                         oidc.push(attributeMapping);
+                    }
+                    else if (ClaimManagementConstants.AGENT_SCIM_SCHEMA_MAPPING.includes(attributeMapping.dialectURI)) {
+                        agent.push(attributeMapping);
                     } else if (Object.values(ClaimManagementConstants.SCIM_TABS).map(
                         (tab: { name: string; uri: string }) => tab.uri).includes(attributeMapping.dialectURI)) {
                         scim.push(attributeMapping);

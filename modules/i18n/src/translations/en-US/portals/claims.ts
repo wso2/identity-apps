@@ -19,6 +19,10 @@ import { ClaimsNS } from "../../../models";
 
 export const claims: ClaimsNS = {
     attributeMappings: {
+        agent: {
+            description: "The SCIM protocol representation for AI agent attributes used in agent identity management APIs.",
+            heading: "SCIM 2.0 for AI Agents"
+        },
         axschema: {
             description: "The Attribute Exchange Schema (axschema) representation "
                 + "for user attributes.",
@@ -39,7 +43,7 @@ export const claims: ClaimsNS = {
             heading: "OpenID Connect"
         },
         scim: {
-            description: "The SCIM2 protocol representation for user "
+            description: "The SCIM2 protocol representation for "
                 + "attributes that will be used in the SCIM2 API.",
             heading: "SCIM 2.0"
         }
@@ -183,6 +187,10 @@ export const claims: ClaimsNS = {
         },
         sections: {
             manageAttributeMappings: {
+                agent: {
+                    description: "The SCIM protocol representation for AI agent attributes used in agent identity management APIs.",
+                    heading: "SCIM 2.0 for AI Agents"
+                },
                 custom: {
                     description: "Communicate information about the user via custom mappings.",
                     heading: "Custom Attribute Mapping"

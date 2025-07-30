@@ -934,3 +934,80 @@ export enum SubjectTypes {
     PUBLIC = "public",
     PAIRWISE = "pairwise"
 }
+
+/**
+ * Interface to contain role audiences information
+ */
+export interface RoleAudiencesInterface {
+    display: string;
+    type: string;
+}
+
+export interface RoleSharingInterface {
+    displayName: string;
+    audience:  RoleAudiencesInterface;
+};
+
+/**
+ * Interface for sharing the application with all organizations.
+ */
+export interface ShareApplicationWithAllOrganizationsDataInterface {
+    applicationId: string;
+    policy: string;
+    roleSharing: {
+        mode: string;
+        roles?: RoleSharingInterface[];
+    }
+}
+
+/**
+ * Interface for unsharing the application with all organizations.
+ */
+export interface UnshareApplicationWithAllOrganizationsDataInterface {
+    applicationId: string;
+}
+
+/**
+ * Interface for shared organization and roles.
+ */
+export interface SharedOrganizationAndRolesInterface {
+    orgId: string;
+    policy: string;
+    roleSharing: {
+        mode: string;
+        roles: RoleSharingInterface[];
+    }
+}
+
+/**
+ * Interface for sharing the application with selected organization and roles.
+ */
+export interface ShareApplicationWithSelectedOrganizationsAndRolesDataInterface {
+    applicationId: string;
+    organizations: SharedOrganizationAndRolesInterface[];
+}
+
+/**
+ * Interface for the patch operation to share the application with selected organizations and roles.
+ */
+export interface ShareOrganizationsAndRolesPatchOperationInterface {
+    op: string;
+    path: string;
+    value: RoleSharingInterface[];
+}
+
+/**
+ * Interface for the patch data to share the application with selected organizations and roles.
+ */
+export interface ShareOrganizationsAndRolesPatchDataInterface {
+    applicationId: string;
+    Operations: ShareOrganizationsAndRolesPatchOperationInterface[];
+}
+
+/**
+ * Interface for unsharing the application from organizations.
+ */
+export interface UnshareOrganizationsDataInterface {
+    applicationId: string;
+    orgIds: string[];
+}

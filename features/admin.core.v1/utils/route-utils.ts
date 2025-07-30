@@ -407,7 +407,7 @@ export class RouteUtils {
             {
                 category: manage,
                 id: "groups",
-                order: 1,
+                order: 2,
                 parent: userManagement
             },
             {
@@ -419,13 +419,13 @@ export class RouteUtils {
             {
                 category: manage,
                 id: "userRoles",
-                order: 2,
+                order: 3,
                 parent: userManagement
             },
             {
                 category: manage,
                 id: "userV1Roles",
-                order: 2,
+                order: 3,
                 parent: userManagement
             },
             {
@@ -433,6 +433,12 @@ export class RouteUtils {
                 id: "roles",
                 order: 2,
                 parent: userManagement
+            },
+            {
+                category: manage,
+                id: "agents",
+                order: 1,
+                selected: history.location.pathname.includes("/agents")
             },
             {
                 category: manage,
@@ -477,7 +483,7 @@ export class RouteUtils {
             {
                 category: preferences,
                 id: "flows",
-                selected: history.location.pathname.includes("flows")
+                selected: history.location.pathname.includes("/flows")
             },
             {
                 category: preferences,

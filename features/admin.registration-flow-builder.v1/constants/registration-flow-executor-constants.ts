@@ -37,7 +37,7 @@ class RegistrationFlowExecutorConstants {
 
     public static readonly EMAIL_OTP_EXECUTOR: string = "EmailOTPExecutor";
 
-    public static readonly GOOGLE_SIGNUP_EXECUTOR: string = "GoogleSignupExecutor";
+    public static readonly GOOGLE_EXECUTOR: string = "GoogleExecutor";
 }
 
 export default RegistrationFlowExecutorConstants;

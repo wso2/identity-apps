@@ -441,7 +441,13 @@ export class AppConstants {
             [ "POLICY_ADMINISTRATION", `${AppConstants.getAdminViewBasePath()}/policy-administration` ],
             [ "EDIT_POLICY", `${AppConstants.getAdminViewBasePath()}/policy-administration/edit-policy/:id` ],
             [ "MCP_SERVERS", `${ AppConstants.getDeveloperViewBasePath() }/mcp-servers` ],
-            [ "MCP_SERVER_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/mcp-servers/:id` ]
+            [ "MCP_SERVER_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/mcp-servers/:id` ],
+            [ "PASSWORD_RECOVERY_FLOW_BUILDER",
+                `${ AppConstants.getDeveloperViewBasePath() }/edit-password-recovery-flow` ],
+            [ "INVITE_USER_PASSWORD_SETUP_FLOW_BUILDER",
+                `${ AppConstants.getDeveloperViewBasePath() }/edit-invite-user-registration-flow` ],
+            [ "AGENTS", `${AppConstants.getAdminViewBasePath()}/agents` ],
+            [ "AGENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/agents/:id` ]
         ]);
 
         return paths;
@@ -545,6 +551,11 @@ export class AppConstants {
      * Route id of the console settings page.
      */
     public static readonly CONSOLE_SETTINGS_ROUTE: string = "consoleSettings";
+
+    /**
+     * Route id of the console settings page.
+     */
+    public static readonly AGENTS_ROUTE: string = "agents";
 
     /**
      * Name of the root node

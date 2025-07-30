@@ -21,6 +21,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useReactFlow } from "@xyflow/react";
 import cloneDeep from "lodash-es/cloneDeep";
+import debounce from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
 import merge from "lodash-es/merge";
 import set from "lodash-es/set";
@@ -29,8 +30,10 @@ import ResourcePropertyPanelConstants from "../../constants/resource-property-pa
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import { Properties } from "../../models/base";
 import { Element } from "../../models/elements";
+import { EventTypes } from "../../models/extension";
 import { Resource } from "../../models/resources";
 import { StepData } from "../../models/steps";
+import PluginRegistry from "../../plugins/plugin-registry";
 import "./resource-properties.scss";
 
 /**
@@ -74,6 +77,29 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
         lastInteractedStepId
     } = useAuthenticationFlowBuilderCore();
 
+    /**
+     * Get the filtered properties of the last interacted resource.
+     *
+     * @returns Filtered properties of the last interacted resource.
+     */
+    const getFilteredProperties = (): Properties => {
+        const filteredProperties: Properties = Object.keys(lastInteractedResource?.config || {}).reduce(
+            (acc: Properties, key: string) => {
+                if (!ResourcePropertyPanelConstants.EXCLUDED_PROPERTIES.includes(key)) {
+                    acc[key] = lastInteractedResource?.config[key];
+                }
+
+                return acc;
+            },
+            {} as Properties
+        );
+
+        PluginRegistry.getInstance().executeSync(EventTypes.ON_PROPERTY_PANEL_OPEN,
+            lastInteractedResource, filteredProperties, lastInteractedStepId);
+
+        return cloneDeep(filteredProperties);
+    };
+
     const changeSelectedVariant = (selected: string, element?: Partial<Element>) => {
         let selectedVariant: Element = lastInteractedResource?.variants?.find(
             (resource: Element) => resource.variant === selected
@@ -108,44 +134,55 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
         });
     };
 
-    const handlePropertyChange = (propertyKey: string, newValue: any, element: Element) => {
-        const updateComponent = (components: Element[]): Element[] => {
-            return components.map((component: Element) => {
-                if (component.id === element.id) {
-                    set(component, propertyKey, newValue);
+    /**
+     * Handles the property change event.
+     */
+    const handlePropertyChange: (propertyKey: string, newValue: any, element: Element) => Promise<void> = debounce(
+        async (propertyKey: string, newValue: any, element: Element) => {
+
+            // Execute plugins for ON_PROPERTY_CHANGE event.
+            if (!await PluginRegistry.getInstance().executeAsync(EventTypes.ON_PROPERTY_CHANGE, propertyKey,
+                newValue, element, lastInteractedStepId)) {
+                return;
+            }
+
+            const updateComponent = (components: Element[]): Element[] => {
+                return components.map((component: Element) => {
+                    if (component.id === element.id) {
+                        set(component, propertyKey, newValue);
+                    }
+
+                    if (component.components) {
+                        component.components = updateComponent(component.components);
+                    }
+
+                    return component;
+                });
+            };
+
+            updateNodeData(lastInteractedStepId, (node: any) => {
+                const data: StepData = node?.data || {};
+
+                if (!isEmpty(node?.data?.components)) {
+                    data.components = updateComponent(cloneDeep(node?.data?.components) || []);
+                } else {
+                    set(data, propertyKey, newValue);
                 }
 
-                if (component.components) {
-                    component.components = updateComponent(component.components);
-                }
-
-                return component;
+                return { ...data };
             });
-        };
 
-        updateNodeData(lastInteractedStepId, (node: any) => {
-            const data: StepData = node?.data || {};
+            if (propertyKey != "action") {
+                const updatedResource: Resource = cloneDeep(lastInteractedResource);
 
-            if (!isEmpty(node?.data?.components)) {
-                data.components = updateComponent(cloneDeep(node?.data?.components) || []);
-            } else {
-                set(data, propertyKey, newValue);
+                if (propertyKey.startsWith("config.")) {
+                    set(updatedResource, propertyKey, newValue);
+                } else {
+                    set(updatedResource.data, propertyKey, newValue);
+                }
+                setLastInteractedResource(updatedResource);
             }
-
-            return { ...data };
-        });
-    };
-
-    const filteredProperties: Properties = Object.keys(lastInteractedResource?.config || {}).reduce(
-        (acc: Properties, key: string) => {
-            if (!ResourcePropertyPanelConstants.EXCLUDED_PROPERTIES.includes(key)) {
-                acc[key] = lastInteractedResource?.config[key];
-            }
-
-            return acc;
-        },
-        {} as Properties
-    );
+        }, 300);
 
     return (
         <div className="flow-builder-element-properties" data-componentid={ componentId }>
@@ -154,7 +191,7 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
                     { lastInteractedResource && (
                         <ResourceProperties
                             resource={ cloneDeep(lastInteractedResource) }
-                            properties={ cloneDeep(filteredProperties) }
+                            properties={ getFilteredProperties() }
                             onChange={ handlePropertyChange }
                             onVariantChange={ changeSelectedVariant }
                         />

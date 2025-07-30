@@ -2,7 +2,7 @@
     margin-top: 16px;
     margin-bottom: 16px;
     position: relative;
-    width: 520px;;
+    width: 400px;
 }
 
 .delete-button {
@@ -34,21 +34,8 @@
     z-index: 10;
     padding: 0;
 
-    .delete-button-icon {
-        width: 8px;
-        height: 8px;
-    }
-
     &:hover {
         background-color: #f9f9f9;
-    }
-}
-
-.rules-component {
-    .box-container {
-        background-color: #f9fafb;
-        border-radius: 8px;
-        padding: 10px;
     }
 }
 

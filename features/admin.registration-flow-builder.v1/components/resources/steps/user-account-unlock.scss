@@ -1,0 +1,41 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+ :root {
+    --wso2is-flow-builder-done-step-icon-color: var(--oxygen-customComponents-Chip-properties-new-border-color);;
+}
+
+.user-account-unlock.MuiFab-root {
+    pointer-events: none;
+    box-shadow: none;
+    color: var(--oxygen-palette-common-white);
+    background-color: rgba(0, 0, 0, 0);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(131deg, rgba(117, 237, 161, 0.70) 28.46%, rgb(52 146 86 / 60%) 119.09%);
+
+    svg {
+        path {
+            stroke: var(--wso2is-flow-builder-done-step-icon-color);
+        }
+    }
+}

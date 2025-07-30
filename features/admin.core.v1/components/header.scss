@@ -141,3 +141,15 @@ $contact-support-subtitle-margin-top: 4px !important;
     line-height: $contact-support-subtitle-line-height;
     margin-top: $contact-support-subtitle-margin-top;
 }
+
+.user-dropdown-footer-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .user-dropdown-version {
+        display: flex;
+        justify-content: center;
+        margin-top: 8px;
+    }
+}

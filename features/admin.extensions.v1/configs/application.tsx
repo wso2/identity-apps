@@ -161,12 +161,14 @@ export const applicationConfig: ApplicationConfig = {
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
             ApplicationManagementConstants.IMPLICIT_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
+            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
         ],
         [ "react-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.IMPLICIT_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
         ],
         [ "sub-organization-application" ]: [
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
@@ -327,6 +329,7 @@ export const applicationConfig: ApplicationConfig = {
                             <ResourceTab.Pane controlledSegmentation>
                                 <ApplicationRoles
                                     onUpdate={ onApplicationUpdate }
+                                    originalTemplateId={ application?.originalTemplateId }
                                     readOnly={ isReadOnly || application?.advancedConfigurations?.fragment }
                                 />
                             </ResourceTab.Pane>

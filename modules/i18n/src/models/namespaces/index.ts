@@ -71,3 +71,5 @@ export * from "./custom-authenticator-ns";
 export * from "./push-providers-ns";
 export * from "./webhooks-ns";
 export * from "./approval-workflows-ns";
+export * from "./agents-ns";
+export * from "./flows-ns";

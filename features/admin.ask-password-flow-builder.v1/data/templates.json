@@ -1,0 +1,218 @@
+[
+    {
+        "resourceType": "TEMPLATE",
+        "category": "STARTER",
+        "type": "BLANK",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Blank",
+            "description": "Start a new flow from scratch with confirmation code validation",
+            "image": "https://www.svgrepo.com/show/533698/refresh-ccw-alt-3.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "replacers": [
+                        {
+                            "key": "CONFIRMATION_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "FORM_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "id": "{{CONFIRMATION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 150,
+                            "height": 22
+                        },
+                        "position": {
+                            "x": 100,
+                            "y": 200
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "ConfirmationCodeValidationExecutor"
+                                },
+                                "next": "{{FORM_STEP_ID}}"
+                            }
+                        }
+                    },
+                    {
+                        "id": "{{FORM_STEP_ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 400,
+                            "y": 200
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Heading"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "NEXT",
+                                                "next": "End"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "resourceType": "TEMPLATE",
+        "category": "STARTER",
+        "type": "BASIC",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Invited User Registration.",
+            "description": "Registration flow where the invited user validates a confirmation code and sets a password",
+            "image": "https://www.svgrepo.com/show/533122/lock.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "replacers": [
+                        {
+                            "key": "CONFIRMATION_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "PASSWORD_RESET_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "flowType": "INVITED_USER_REGISTRATION",
+                "steps": [
+                    {
+                        "id": "{{CONFIRMATION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 150,
+                            "height": 22
+                        },
+                        "position": {
+                            "x": 200,
+                            "y": 200
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "ConfirmationCodeValidationExecutor"
+                                },
+                                "next": "{{PASSWORD_RESET_STEP_ID}}"
+                            }
+                        }
+                    },
+                    {
+                        "id": "{{PASSWORD_RESET_STEP_ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 453
+                        },
+                        "position": {
+                            "x": 500,
+                            "y": 319
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Set Password"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "PASSWORD",
+                                            "config": {
+                                                "identifier": "password",
+                                                "type": "password",
+                                                "hint": "",
+                                                "label": "Password",
+                                                "required": false,
+                                                "placeholder": "Enter your password"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "PasswordProvisioningExecutor"
+                                                },
+                                                "next": "End"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    }
+]

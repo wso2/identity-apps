@@ -31,6 +31,7 @@ import { BrandingPreferenceResourceEndpointsInterface } from "@wso2is/admin.bran
 import { CertificatesResourceEndpointsInterface } from "@wso2is/admin.certificates.v1";
 import { ClaimResourceEndpointsInterface } from "@wso2is/admin.claims.v1/models/endpoints";
 import { ConnectionResourceEndpointsInterface } from "@wso2is/admin.connections.v1";
+import { FlowBuilderCoreResourceEndpointsInterface } from "@wso2is/admin.flow-builder-core.v1/models/endpoints";
 import { GroupsResourceEndpointsInterface } from "@wso2is/admin.groups.v1/models/endpoints";
 import { RemoteLoggingResourceEndpointsInterface } from "@wso2is/admin.logs.v1/models/endpoints";
 import { ScopesResourceEndpointsInterface } from "@wso2is/admin.oidc-scopes.v1";
@@ -77,6 +78,10 @@ export interface FeatureConfigInterface {
      * Action management feature.
      */
     actions?: FeatureAccessConfigInterface;
+    /**
+     * Agent management feature.
+     */
+    agents?: FeatureAccessConfigInterface;
     /**
      * Admin user management feature.
      */
@@ -470,10 +475,6 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     enableOldUIForEmailProvider: boolean;
     /**
-     * Show password of email provider.
-     */
-    showPasswordOfEmailProvider: boolean;
-    /**
      * Enable/Disable custom email template feature
      */
     enableCustomEmailTemplates: boolean;
@@ -517,6 +518,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Hidden userstores
      */
     hiddenUserStores: string[];
+    /**
+     * System reserved userstores
+     */
+    systemReservedUserStores: string[];
     /**
      * App Logos
      */
@@ -585,6 +590,14 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Custom content configurations.
      */
     customContent: CustomContentConfigInterface;
+    /**
+     * Privacy policy URL.
+     */
+    privacyPolicyUrl?: string;
+    /**
+     * Terms of service URL.
+     */
+    termsOfUseUrl?: string;
 }
 
 /**
@@ -667,7 +680,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     WorkflowsResourceEndpointsInterface,
     WorkflowAssociationsResourceEndpointsInterface,
     RulesEndpointsInterface,
-    RemoteLoggingResourceEndpointsInterface {
+    RemoteLoggingResourceEndpointsInterface,
+    FlowBuilderCoreResourceEndpointsInterface {
 
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details

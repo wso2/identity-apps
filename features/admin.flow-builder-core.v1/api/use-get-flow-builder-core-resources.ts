@@ -17,6 +17,7 @@
  */
 
 import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import { useMemo } from "react";
 import elements from "../data/elements.json";
 import steps from "../data/steps.json";
 import templates from "../data/templates.json";
@@ -36,13 +37,18 @@ import { Resources } from "../models/resources";
 const useGetFlowBuilderCoreResources = <Data = Resources, Error = RequestErrorInterface>(
     _shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
-    return {
-        data: ({
+
+    const data: unknown = useMemo(() => {
+        return {
             elements,
             steps,
             templates,
             widgets
-        } as unknown) as Data,
+        };
+    }, []);
+
+    return {
+        data: data as Data,
         error: null,
         isLoading: false,
         isValidating: false,

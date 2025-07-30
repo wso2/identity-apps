@@ -194,6 +194,7 @@ export interface approvalWorkflowsNS {
         };
         configurations: {
             template: {
+                condition: string;
                 label: string;
                 placeholder: string;
                 roles: {
