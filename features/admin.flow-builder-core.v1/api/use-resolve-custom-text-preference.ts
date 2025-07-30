@@ -54,6 +54,11 @@ const fetchCustomTextPreference = async (
         return (response as CustomTextPreferenceAPIResponseInterface)?.preference?.text;
     } catch (error) {
         const axiosError: AxiosError = error as AxiosError;
+
+        if (axiosError.response?.status === 404) {
+            return {};
+        }
+
         const errorMessage: string = axiosError.response?.data?.message || "Unknown error occurred";
 
         throw new IdentityAppsApiException(

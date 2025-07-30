@@ -1,0 +1,138 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.flow-builder-resource-property-panel-text-field {
+    .oxygen-text-field {
+        .MuiInputBase-adornedEnd {
+            padding-right: var(--oxygen-spacing-1);
+        }
+
+        .icon-button {
+            padding: var(--oxygen-spacing-1);
+            width: 24px;
+            height: 24px;
+            border: 1px solid var(--oxygen-palette-divider);
+            border-radius: var(--oxygen-shape-borderRadius);
+            background-color: var(--oxygen-palette-background-paper);
+
+            &:hover {
+                background-color: var(--oxygen-palette-action-hover);
+                border-color: var(--oxygen-palette-action-selected);
+            }
+
+            svg {
+                font-size: 14px;
+            }
+        }
+    }
+
+    &.card-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: transparent;
+        z-index: 1300;
+
+        .card {
+            position: absolute;
+            max-width: 350px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            border: 1px solid var(--oxygen-palette-divider);
+            border-radius: var(--oxygen-shape-borderRadius);
+            background-color: var(--oxygen-palette-background-paper);
+            z-index: 1301;
+
+            .card-header {
+                border-bottom: 1px solid var(--oxygen-palette-divider);
+                padding: 16px 0;
+
+                .MuiCardHeader-title {
+                    font-size: 1rem;
+                    font-weight: 500;
+                }
+            }
+
+            .card-content {
+                margin: 10px 0;
+                padding: 16px 0;
+                max-height: 300px;
+                overflow-y: auto;
+            }
+
+            .card-actions {
+                justify-content: flex-end;
+            }
+
+            .i18n-config-container {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+
+                .i18n-selection-row {
+                    align-items: center;
+                    display: flex;
+                    gap: 8px;
+
+                    .MuiAutocomplete-root, .oxygen-text-field {
+                        flex-grow: 1;
+                    }
+
+                    .add-icon-button {
+                        border: 1px solid var(--oxygen-palette-divider);
+                        border-radius: var(--oxygen-shape-borderRadius);
+                        background-color: var(--oxygen-palette-background-paper);
+
+                        &:hover {
+                            background-color: var(--oxygen-palette-action-hover);
+                            border-color: var(--oxygen-palette-primary-main);
+                        }
+
+                        &:disabled {
+                            background-color: var(--oxygen-palette-action-disabledBackground);
+                            color: var(--oxygen-palette-action-disabled);
+                            border-color: var(--oxygen-palette-divider);
+                        }
+
+                        svg {
+                            font-size: 16px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .option-item {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 10px;
+
+        .option-text {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .delete-icon-button {
+            color: var(--oxygen-palette-error-main);
+        }
+    }
+}

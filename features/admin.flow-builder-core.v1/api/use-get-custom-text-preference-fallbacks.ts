@@ -48,6 +48,13 @@ const fetchScreenFallback = async (
             method: "GET"
         });
 
+        if (response.status === 404) {
+            return {
+                data: {},
+                screen
+            };
+        }
+
         if (!response.ok) {
             throw new Error(`Failed to fetch ${screen}: ${response.statusText}`);
         }

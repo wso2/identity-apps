@@ -68,7 +68,26 @@ export interface flowsNS {
                     urlTypeLabel: string;
                 };
                 placeholder: string;
-            }
+            };
+            textPropertyField: {
+                i18nCard: {
+                    i18nKey: string;
+                    languageText: string;
+                    languageTextPlaceholder: string;
+                    screenName: string;
+                    selectI18nKey: string;
+                    selectLanguage: string;
+                    selectScreenName: string;
+                    selectScreenTypeFirst: string;
+                    title: string;
+                };
+                placeholder: string;
+                tooltip: {
+                    addI18nKey: string;
+                    addScreenName: string;
+                    configureInternationalization: string;
+                };
+            };
         };
         errors: {
             addI18nKey: {
