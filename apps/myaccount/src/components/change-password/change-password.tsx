@@ -83,7 +83,6 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
 
     const endUserSession: () => Promise<boolean> = useEndUserSession();
 
-    const userOrganizationId: string = useSelector((state: AppState) => state?.organization?.userOrganizationId);
     const userOrganizationHandle: string
         = useSelector((state: AppState) => state?.organization?.userOrganizationHandle);
     const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
