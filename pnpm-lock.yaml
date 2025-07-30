@@ -656,6 +656,9 @@ importers:
       '@wso2is/admin.workflow-approvals.v1':
         specifier: ^2.26.7
         version: link:../../features/admin.workflow-approvals.v1
+      '@wso2is/admin.workflow-requests.v1':
+        specifier: ^1.0.0
+        version: link:../../features/admin.workflow-requests.v1
       '@wso2is/admin.wsfed-configuration.v1':
         specifier: ^2.25.205
         version: link:../../features/admin.wsfed-configuration.v1
@@ -675,7 +678,7 @@ importers:
         specifier: ^2.3.22
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.26.1
+        specifier: workspace:^
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.20
@@ -20989,6 +20992,12 @@ importers:
         specifier: ^4.6.4
         version: 4.9.5
 
+  features/admin.workflow-requests.v1:
+    dependencies:
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
+
   features/admin.wsfed-configuration.v1:
     dependencies:
       '@asgardeo/auth-react':
@@ -33826,6 +33835,7 @@ packages:
     dependencies:
       webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack-bundle-analyzer@4.10.2)(webpack-dev-server@3.11.3)(webpack@5.84.1)
+    dev: true
 
   /@webpack-cli/info@1.5.0(webpack-cli@4.10.0):
     resolution: {integrity: sha512-e8tSXZpw2hPl2uMJY6fsMswaok5FdlGNRTktvFk2sD8RjH0hE2+XistawJx1vmKteh4NmGmNUrp+Tb2w+udPcQ==}
@@ -33844,6 +33854,7 @@ packages:
     dependencies:
       webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack-bundle-analyzer@4.10.2)(webpack-dev-server@3.11.3)(webpack@5.84.1)
+    dev: true
 
   /@webpack-cli/serve@1.7.0(webpack-cli@4.10.0)(webpack-dev-server@3.11.3):
     resolution: {integrity: sha512-oxnCNGj88fL+xzV+dacXs44HcDwf1ovs3AuEzvP7mqXw7fQntqIhQ1BRmynh4qEKQSSSRSWVyXRjmTbZIX9V2Q==}
@@ -33871,6 +33882,7 @@ packages:
       webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack-bundle-analyzer@4.10.2)(webpack-dev-server@3.11.3)(webpack@5.84.1)
       webpack-dev-server: 3.11.3(webpack-cli@4.10.0)(webpack@5.84.1)
+    dev: true
 
   /@webpack-contrib/schema-utils@1.0.0-beta.0(webpack@5.84.1):
     resolution: {integrity: sha512-LonryJP+FxQQHsjGBi6W786TQB1Oym+agTpY0c+Kj8alnIw+DLUJb6SI8Y1GHGhLCH1yPRrucjObUmxNICQ1pg==}
@@ -40976,6 +40988,7 @@ packages:
   /interpret@3.1.1:
     resolution: {integrity: sha512-6xwYfHbajpoF0xLW+iwLkhwgvLoZDfjYfoFNu8ftMoXINzwuymNLd9u/KmwtdT2GbR+/Cz66otEGEVVUHX9QLQ==}
     engines: {node: '>=10.13.0'}
+    dev: true
 
   /invariant@2.2.4:
     resolution: {integrity: sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==}
@@ -43412,8 +43425,6 @@ packages:
       webpack: '*'
     peerDependenciesMeta:
       webpack:
-        optional: true
-      webpack-sources:
         optional: true
     dependencies:
       webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@4.10.0)
@@ -48238,6 +48249,7 @@ packages:
     engines: {node: '>= 10.13.0'}
     dependencies:
       resolve: 1.22.10
+    dev: true
 
   /redent@1.0.0:
     resolution: {integrity: sha512-qtW5hKzGQZqKoh6JNSD+4lfitfPKGz42e6QwiRmPM5mmKtR0N41AbJRYu0xJi7nhOJ4WDgRkKvAk6tw4WIwR4g==}
@@ -50628,7 +50640,7 @@ packages:
       schema-utils: 4.3.0
       serialize-javascript: 6.0.2
       terser: 5.38.0
-      webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@5.1.4)
+      webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@4.10.0)
 
   /terser@4.8.1:
     resolution: {integrity: sha512-4GnLC0x667eJG0ewJTa6z/yXrbLGv80D9Ru6HIpCQmO+Q4PfEtBFi0ObSckqwL6VyQv/7ENJieXHo2ANmdQwgw==}
@@ -52021,6 +52033,7 @@ packages:
       webpack-bundle-analyzer: 4.10.2
       webpack-dev-server: 3.11.3(webpack-cli@4.10.0)(webpack@5.84.1)
       webpack-merge: 5.10.0
+    dev: true
 
   /webpack-dev-middleware@3.7.3(webpack@5.84.1):
     resolution: {integrity: sha512-djelc/zGiz9nZj/U7PTBi2ViorGJXEWo/3ltkPbDyxCXhhEXkW0ce99falaok4TPj+AsxLiXJR0EBOb0zh9fKQ==}
@@ -52349,6 +52362,7 @@ packages:
       - '@swc/core'
       - esbuild
       - uglify-js
+    dev: true
 
   /websocket-driver@0.7.4:
     resolution: {integrity: sha512-b17KeDIQVjvb0ssuSDF2cYXSg2iztliJ4B9WdsuB6J952qCPKmnVq4DyW5motImXHDC1cBT/1UezrJVsKw5zjg==}

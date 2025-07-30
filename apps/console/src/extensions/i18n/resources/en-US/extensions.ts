@@ -3930,8 +3930,8 @@ export const extensions: Extensions = {
             categories: {
                 attributeManagement: "Attribute Management",
                 AccountManagement: "Account Management",
-                userManagement: "Identity Management",
-                approvalWorkflows: "Approval Workflows",
+                userManagement: "User Management",
+                workflows: "Workflows",
                 organizationSettings: "Organization Settings"
             }
         }

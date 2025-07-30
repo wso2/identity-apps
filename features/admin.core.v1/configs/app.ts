@@ -77,6 +77,7 @@ import {
     SupportedLanguagesMeta,
     generateBackendPaths
 } from "@wso2is/i18n";
+import { getWorkflowRequestsResourceEndpoints } from "../../admin.workflow-requests.v1/types/workflow-requests";
 import { AppConstants } from "../constants/app-constants";
 import { I18nConstants } from "../constants/i18n-constants";
 import { UIConstants } from "../constants/ui-constants";
@@ -283,6 +284,7 @@ export class Config {
                 I18nConstants.EMAIL_PROVIDERS_NAMESPACE,
                 I18nConstants.WEBHOOKS_NAMESPACE,
                 I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE,
+                I18nConstants.WORKFLOW_REQUESTS_NAMESPACE,
                 I18nConstants.AGENTS_NAMESPACE,
                 I18nConstants.FLOWS_NAMESPACE
             ],
@@ -351,6 +353,7 @@ export class Config {
             ...getRemoteLoggingEndpoints(this.resolveServerHost()),
             ...getWorkflowsResourceEndpoints(this.resolveServerHost()),
             ...getWorkflowAssociationsResourceEndpoints(this.resolveServerHost()),
+            ...getWorkflowRequestsResourceEndpoints(this.resolveServerHost()),
             ...getRegistrationFlowBuilderResourceEndpoints(this.resolveServerHost()),
             ...getPasswordRecoveryFlowBuilderResourceEndpoints(this.resolveServerHost()),
             ...getAskPasswordFlowBuilderResourceEndpoints(this.resolveServerHost()),
