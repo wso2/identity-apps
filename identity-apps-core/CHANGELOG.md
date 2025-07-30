@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.27.22-next.0
+
+### Patch Changes
+
+- [`f683c3c15832c3271c91dc22edcb20a99830c9b9`](https://github.com/wso2/identity-apps/commit/f683c3c15832c3271c91dc22edcb20a99830c9b9) Thanks [@brionmario](https://github.com/brionmario)! - Next Release testing
+
 ## 2.27.21
 
 ### Patch Changes

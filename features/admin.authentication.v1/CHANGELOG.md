@@ -1,5 +1,19 @@
 # @wso2is/admin.authentication.v1
 
+## 2.25.207-next.0
+
+### Patch Changes
+
+- [#8206](https://github.com/wso2/identity-apps/pull/8206) [`ba917ba62a07de5898c251fc385558ddb562122a`](https://github.com/wso2/identity-apps/commit/ba917ba62a07de5898c251fc385558ddb562122a) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Switch to the org handle in places where org id is used as tenant domain
+
+- Updated dependencies [[`ba917ba62a07de5898c251fc385558ddb562122a`](https://github.com/wso2/identity-apps/commit/ba917ba62a07de5898c251fc385558ddb562122a)]:
+  - @wso2is/admin.core.v1@2.47.1-next.0
+  - @wso2is/admin.extensions.v1@2.40.1-next.0
+  - @wso2is/admin.organizations.v1@2.26.212-next.0
+  - @wso2is/admin.users.v1@2.34.5-next.0
+  - @wso2is/admin.tenants.v1@2.29.17-next.0
+  - @wso2is/admin.userstores.v1@2.27.38-next.0
+
 ## 2.25.206
 
 ### Patch Changes
