@@ -517,6 +517,7 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
 
     const handleMobileUpdateModalClose = (isRevalidate: boolean = false) => {
         setIsMobileUpdateModalOpen(false);
+        setIsProfileUpdating(false);
 
         if (isRevalidate) {
             // Re-fetch the profile information.
@@ -592,9 +593,11 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                         onClose={ handleMobileUpdateModalClose }
                         onCancel={ () => {
                             setIsMobileUpdateModalOpen(false);
+                            setIsProfileUpdating(false);
                             onEditCancelClicked();
                         } }
                         isMultiValued={ false }
+                        isMobileRequired={ isRequired }
                         data-testid={ `${testId}-mobile-verification-wizard` }
                     />
                 </EditSection>
@@ -854,6 +857,7 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                     onClose={ handleMobileUpdateModalClose }
                     onCancel={ (isRevalidate: boolean = false) => {
                         setIsMobileUpdateModalOpen(false);
+                        setIsProfileUpdating(false);
                         onEditCancelClicked();
 
                         if (isRevalidate) {
@@ -863,6 +867,7 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                     } }
                     data-testid={ `${testId}-mobile-verification-wizard` }
                     initialStep={ 1 }
+                    isMobileRequired={ isRequired }
                     isMultiValued
                 />
 
