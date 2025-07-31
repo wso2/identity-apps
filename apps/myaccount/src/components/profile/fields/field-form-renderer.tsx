@@ -28,6 +28,7 @@ import CountryFieldForm from "./country-field-form";
 import DOBFieldForm from "./dob-field-form";
 import DropdownFieldForm from "./dropdown-field-form";
 import EmailFieldForm from "./email-field-form";
+import LocaleFieldForm from "./locale-field-form";
 import MobileFieldForm from "./mobile-field-form";
 import MultiValueFieldForm from "./multi-valued-field-form";
 import RadioFieldForm from "./radio-field-form";
@@ -129,6 +130,27 @@ const ProfileFieldFormRenderer: FunctionComponent<
     if (fieldSchema.schemaUri === SCIMExtensionConfigs.scimSystemSchema.country) {
         return (
             <CountryFieldForm
+                fieldSchema={ fieldSchema }
+                initialValue={ initialValue as string }
+                fieldLabel={ fieldLabel }
+                isRequired={ isRequired }
+                isEditable={ isEditable }
+                isActive={ isActive }
+                setIsProfileUpdating={ setIsProfileUpdating }
+                isLoading={ isLoading }
+                isUpdating={ isUpdating }
+                handleSubmit={ handleSubmit }
+                onEditClicked={ onEditClicked }
+                onEditCancelClicked={ onEditCancelClicked }
+                data-componentid={ componentId }
+            />
+        );
+    }
+
+    // Render locale dropdown.
+    if (fieldSchema.name === "locale") {
+        return (
+            <LocaleFieldForm
                 fieldSchema={ fieldSchema }
                 initialValue={ initialValue as string }
                 fieldLabel={ fieldLabel }

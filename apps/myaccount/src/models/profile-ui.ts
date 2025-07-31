@@ -144,6 +144,8 @@ export interface TextFieldFormPropsInterface extends ProfileFieldFormPropsInterf
 
 export interface CountryFieldFormPropsInterface extends ProfileFieldFormPropsInterface<string> {}
 
+export interface LocaleFieldFormPropsInterface extends ProfileFieldFormPropsInterface<string> {}
+
 export interface EmailFieldFormPropsInterface extends Omit<ProfileFieldFormPropsInterface<string>, "handleSubmit"> {
     /**
      * Mapped user profile data.
