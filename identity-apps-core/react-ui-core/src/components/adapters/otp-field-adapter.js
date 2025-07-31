@@ -67,7 +67,7 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
      * @param {string} value - The new input value for that OTP box.
      */
     const handleInputChange = (index, value) => {
-        const cleaned = value.replace(/[^0-9]/g, "").slice(0, 1);
+        const cleaned = value.replace(/[^a-zA-Z0-9]/g, "").slice(0, 1);
         const newOtpValues = [ ...otpValues ];
 
         newOtpValues[index] = cleaned;
@@ -102,7 +102,7 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
     const handlePaste = (event) => {
         const pastedData = event.clipboardData.getData("Text");
 
-        if (pastedData.length === otpLength && /^[0-9]+$/.test(pastedData)) {
+        if (pastedData.length === otpLength && /^[a-zA-Z0-9]+$/.test(pastedData)) {
             setOtpValues(pastedData.split(""));
         }
     };

@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AuthenticationType, AuthenticationTypeDropdownOption } from "../../admin.actions.v1/models/actions";
+
 /**
  * Constants related to the tenant management operations.
  *
@@ -74,16 +76,32 @@ export default class TenantConstants {
 
     public static readonly FEATURE_DICTIONARY: {
         ADD_TENANTS_FROM_DROPDOWN: string;
+        HIDE_REMOTE_LOG_CONFIG_SECRETS: string;
         MAKING_TENANTS_DEFAULT: string;
         MANAGING_TENANTS_FROM_DROPDOWN: string;
         ORGANIZATIONS_QUICK_NAV_FROM_DROPDOWN: string;
         TENANT_DELETION: string;
     } = {
             ADD_TENANTS_FROM_DROPDOWN: "tenants.add.tenant.from.dropdown",
+            HIDE_REMOTE_LOG_CONFIG_SECRETS: "hide.config.secrets",
             MAKING_TENANTS_DEFAULT: "tenants.make.default",
             MANAGING_TENANTS_FROM_DROPDOWN: "tenants.manage.tenants.from.dropdown",
             ORGANIZATIONS_QUICK_NAV_FROM_DROPDOWN: "tenants.organizations.quick.nav.from.dropdown",
             TENANT_DELETION: "tenants.deletion"
         };
 
+    public static readonly AUTH_TYPES: AuthenticationTypeDropdownOption[] = [
+        {
+            key: AuthenticationType.NONE,
+            text: "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
+                "basicAuthConfig.types.none.name",
+            value: AuthenticationType.NONE
+        },
+        {
+            key: AuthenticationType.BASIC,
+            text: "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
+                "basicAuthConfig.types.basic.name",
+            value: AuthenticationType.BASIC
+        }
+    ];
 }

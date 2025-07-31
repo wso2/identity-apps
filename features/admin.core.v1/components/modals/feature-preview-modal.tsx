@@ -34,19 +34,18 @@ import ListItemText from "@oxygen-ui/react/ListItemText";
 import Stack from "@oxygen-ui/react/Stack";
 import Switch from "@oxygen-ui/react/Switch";
 import Typography from "@oxygen-ui/react/Typography";
-import {
-    ConnectorPropertyInterface,
-    ServerConfigurationsConstants,
-    updateGovernanceConnector,
-    useGetGovernanceConnectorById
-} from "@wso2is/admin.server-configurations.v1";
+import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
+import updateFlowConfig from "@wso2is/admin.flows.v1/api/update-flow-config";
+import useGetFlowConfig from "@wso2is/admin.flows.v1/api/use-get-flow-config";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import NewSelfRegistrationImage from "../../assets/illustrations/preview-features/new-self-registration.png";
 import { AppConstants } from "../../constants/app-constants";
 import "./feature-preview-modal.scss";
 import { history } from "../../helpers/history";
+
 
 /**
  * Feature preview modal component props interface. {@link FeaturePreviewModal}
@@ -78,6 +77,11 @@ interface PreviewFeaturesListInterface {
     name: string;
 
     /**
+     * React component to be rendered
+     */
+    component?: ReactElement;
+
+    /**
      * Feature description.
      */
     description: string;
@@ -91,6 +95,11 @@ interface PreviewFeaturesListInterface {
      * Feature image.
      */
     image?: string;
+
+    /**
+     * Whether the feature is enabled
+     */
+    enabled?: boolean;
 
     /**
      * Feature value.
@@ -119,41 +128,47 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
 
     const { t } = useTranslation();
 
-    const { data: connectorDetails, mutate: connectorDetailsMutate } = useGetGovernanceConnectorById(
-        ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
-        ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID
-    );
+    const { selectedPreviewFeatureToShow } = useFeatureGate();
+
+    const {
+        data: registrationFlowConfig, mutate:
+        mutateRegistrationFlowConfig
+    } = useGetFlowConfig(FlowTypes.REGISTRATION);
 
     {/* TODO: Get this from an Organization Preferences API */}
-    const previewFeaturesList: PreviewFeaturesListInterface[] = [
+    const previewFeaturesList: PreviewFeaturesListInterface[] = useMemo(() => ([
         {
             action: "Try Flow Composer",
             description: "This feature enables you to customize the user self-registration flow and " +
                 "secure your user onboarding experience with multiple authentication methods and verification steps.",
+            enabled: registrationFlowConfig?.isEnabled,
             id: "self-registration-orchestration",
             image: NewSelfRegistrationImage,
             message: {
                 content: "Once this feature is enabled, existing self-registration flow configurations will be " +
                     "changed. So, update your settings accordingly.",
-                type: "warning"
+                type: "warning" as const
             },
             name: "Self-Registration Orchestration",
             value: "SelfRegistration.EnableDynamicPortal"
         }
-    ];
+    ].filter(Boolean)), [
+        registrationFlowConfig
+    ]);
 
-    const [ selected, setSelected ] = useState(previewFeaturesList[0]);
-    const [ isEnableDynamicSelfRegistrationPortal, setIsEnableDynamicSelfRegistrationPortal ] = useState(false);
+    const [ selectedFeatureIndex, setSelectedFeatureIndex ] = useState(0);
+
+    const selected: PreviewFeaturesListInterface = useMemo(() => {
+        return previewFeaturesList[selectedFeatureIndex];
+    }, [ selectedFeatureIndex, previewFeaturesList ]);
 
     useEffect(() => {
-        if (connectorDetails) {
-            const SelfRegistrationEnableDynamicPortal: string = connectorDetails?.properties?.find(
-                (item: ConnectorPropertyInterface) =>
-                    item.name === "SelfRegistration.EnableDynamicPortal")?.value || "false";
+        const activePreviewFeatureIndex: number = previewFeaturesList.findIndex(
+            (feature: PreviewFeaturesListInterface) => feature?.id === selectedPreviewFeatureToShow
+        );
 
-            setIsEnableDynamicSelfRegistrationPortal(JSON.parse(SelfRegistrationEnableDynamicPortal));
-        }
-    }, [ connectorDetails, selected ]);
+        setSelectedFeatureIndex(activePreviewFeatureIndex > 0 ? activePreviewFeatureIndex : 0);
+    }, [ selectedPreviewFeatureToShow ]);
 
     const handleClose = () => {
         onClose();
@@ -171,19 +186,11 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
     const handleToggleChange = async (e: ChangeEvent<HTMLInputElement>, actionId: string) => {
         switch (actionId) {
             case "self-registration-orchestration":
-                setIsEnableDynamicSelfRegistrationPortal(e.target.checked);
-                await updateGovernanceConnector(
-                    {
-                        operation: "UPDATE",
-                        properties:[ {
-                            name: e.target.value,
-                            value: e.target.checked
-                        } ]
-                    },
-                    ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
-                    ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID
-                );
-                connectorDetailsMutate();
+                await updateFlowConfig({
+                    flowType: FlowTypes.REGISTRATION,
+                    isEnabled: e.target.checked
+                });
+                mutateRegistrationFlowConfig();
 
                 break;
             default:
@@ -212,10 +219,10 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
                                             (e: ChangeEvent<HTMLInputElement>) => handleToggleChange(e, selected?.id)
                                         }
                                         value={ selected?.value }
-                                        checked={ isEnableDynamicSelfRegistrationPortal }
+                                        checked={ selected?.enabled }
                                     />
                                 ) }
-                                label={ isEnableDynamicSelfRegistrationPortal ?
+                                label={ selected?.enabled ?
                                     t("common:enabled") : t("common:disabled") }
                                 labelPlacement="start"
                             />
@@ -229,12 +236,12 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
                         { (previewFeaturesList?.length > 1) && (
                             <Grid xs={ 4 }>
                                 <List style={ { padding: "0" } }>
-                                    { previewFeaturesList?.map((item: PreviewFeaturesListInterface) => (
+                                    { previewFeaturesList?.map((item: PreviewFeaturesListInterface, index: number) => (
                                         <ListItem key={ item.name } disablePadding>
                                             <Card className="preview-feature-menu-card">
                                                 <ListItemButton
                                                     selected={ selected === item }
-                                                    onClick={ () => setSelected(item) }
+                                                    onClick={ () => setSelectedFeatureIndex(index) }
                                                 >
                                                     <ListItemText primary={ item.name } />
                                                 </ListItemButton>
@@ -262,10 +269,10 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
                                                             handleToggleChange(e, selected?.id)
                                                     }
                                                     value={ selected?.value }
-                                                    checked={ isEnableDynamicSelfRegistrationPortal }
+                                                    checked={ selected?.enabled }
                                                 />
                                             ) }
-                                            label={ isEnableDynamicSelfRegistrationPortal ?
+                                            label={ selected?.enabled ?
                                                 t("common:enabled") : t("common:disabled") }
                                             labelPlacement="start"
                                         />
@@ -275,9 +282,12 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
                             <div>
                                 <p>{ selected?.description }</p>
                             </div>
-                            <Alert severity={ selected?.message?.type } sx={ { marginTop: "10px" } }>
-                                { selected?.message?.content }
-                            </Alert>
+                            { selected?.message?.type && selected?.message?.content && (
+                                <Alert severity={ selected?.message?.type } sx={ { marginTop: "10px" } }>
+                                    { selected?.message?.content }
+                                </Alert>
+                            ) }
+
                             { selected?.image &&
                                 (
                                     <img
@@ -286,21 +296,23 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
                                     />
                                 )
                             }
+                            { selected?.component && selected?.component }
                             {
-                                previewFeaturesList?.length > 1 && isEnableDynamicSelfRegistrationPortal && (
-                                    <Stack direction="row" justifyContent="flex-end">
-                                        <Button
-                                            onClick={ () => {
-                                                handleClose();
-                                                handlePageRedirection(selected?.id);
-                                            } }
-                                            color="primary"
-                                            variant="contained"
-                                        >
-                                            { selected?.action || "Try it out" }
-                                        </Button>
-                                    </Stack>
-                                )
+                                previewFeaturesList?.length > 1 && selected?.enabled &&
+                                 (
+                                     <Stack direction="row" justifyContent="flex-end">
+                                         <Button
+                                             onClick={ () => {
+                                                 handleClose();
+                                                 handlePageRedirection(selected?.id);
+                                             } }
+                                             color="primary"
+                                             variant="contained"
+                                         >
+                                             { selected?.action || "Try it out" }
+                                         </Button>
+                                     </Stack>
+                                 )
                             }
                         </Grid>
                     </Grid>
@@ -313,7 +325,7 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
                             { t("common:close") }
                         </Button>
                         {
-                            previewFeaturesList?.length === 1 && isEnableDynamicSelfRegistrationPortal && (
+                            previewFeaturesList?.length === 1 && selected?.enabled && (
                                 <Button
                                     onClick={ () => {
                                         handleClose();

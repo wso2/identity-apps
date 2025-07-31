@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,6 +22,7 @@ import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface  } from "@wso2is/admin.core.v1/models/config";
 import { AppState, store  } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, ReferableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -74,6 +75,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPasswordInputValidationEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isPasswordInputValidationEnabled);
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const hasGovernanceConnectorReadPermission: boolean = useRequiredScopes(
         featureConfig?.governanceConnectors?.scopes?.read
@@ -211,6 +213,12 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                 const connectorCategory: GovernanceConnectorCategoryInterface | null =
                     await loadCategoryConnectors(category.id);
 
+                // Filter out the SIFT connector from sub-organizations.
+                if (isSubOrganization() && connectorCategory?.connectors.length > 0) {
+                    connectorCategory.connectors =
+                        connectorCategory?.connectors?.filter((connector: GovernanceConnectorInterface) =>
+                            connector.id !== ServerConfigurationsConstants.SIFT_CONNECTOR_ID);
+                }
                 connectorCategory && dynamicConnectorCategoryArray.push(connectorCategory);
             }
         }

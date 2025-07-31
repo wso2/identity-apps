@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { ExecutionTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
+
 /**
  * Constants related to the tenant management operations.
  *
@@ -33,13 +35,17 @@ class RegistrationFlowBuilderConstants {
      */
     private constructor() {}
 
-    public static readonly FLOW_BUILDER_STATUS_CONFIG_KEY: string = "SelfRegistration.EnableDynamicPortal";
-
     public static readonly FLOW_CONFIG_INVALID_STATUS_ERROR: string =
         "An invalid status code was received while configuring the registration flow.";
 
     public static readonly FLOW_CONFIG_UPDATE_ERROR: string =
         "An error occurred while configuring the registration flow.";
+
+    public static readonly FEDERATION_CONFIG_SKIPPED_EXECUTORS: ExecutionTypes[] = [
+        ExecutionTypes.PasskeyEnrollment,
+        ExecutionTypes.ConfirmationCode,
+        ExecutionTypes.MagicLinkExecutor
+    ];
 }
 
 export default RegistrationFlowBuilderConstants;

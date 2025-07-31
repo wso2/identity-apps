@@ -17,6 +17,7 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
+import { useGetAgents } from "@wso2is/admin.agents.v1/hooks/use-get-agents";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
@@ -48,7 +49,7 @@ import {
     TableColumnInterface,
     UserAvatar
 } from "@wso2is/react-components";
-import { AxiosError } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
@@ -64,7 +65,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Dropdown, DropdownProps, Header, Icon, PaginationProps, SemanticICONS } from "semantic-ui-react";
 import { AddRoleUserModal } from "./add-role-user-modal";
-import { updateRoleDetails } from "../../api";
+import { updateRoleDetails, updateUsersForRole } from "../../api";
 import { CreateRoleMemberInterface, PatchRoleDataInterface, RoleEditSectionsInterface } from "../../models/roles";
 import "./edit-role.scss";
 
@@ -80,6 +81,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         isReadOnly,
         tabIndex,
         activeUserStore,
+        isForNonHumanUser,
         isPrivilegedUsersToggleVisible = false,
         [ "data-componentid" ]: componentId = "edit-role-users"
     } = props;
@@ -87,8 +89,23 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
+    const {
+        data: agentList
+    } = useGetAgents(
+        UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+        0,
+        null,
+        null,
+        isForNonHumanUser
+    );
+
+    const baseI18nKey: string = isForNonHumanUser ? "roles:edit.agents." : "roles:edit.users.";
+
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
+
+    const systemReservedUserStores: string[] = useSelector((state: AppState) =>
+        state.config.ui?.systemReservedUserStores);
 
     const consoleSettingsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consoleSettings
@@ -111,40 +128,63 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ showAddNewUserModal, setShowAddNewUserModal ] = useState<boolean>(false);
 
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
+    );
+
+    const updateUsersOfRoleFunction: (roleId: string, roleData: PatchRoleDataInterface) => Promise<any> =
+        userRolesV3FeatureEnabled ? updateUsersForRole : updateRoleDetails;
+
+    const shouldShowUserstoreDropdown: boolean =
+    selectedUserStoreDomainName !== "AGENT" &&
+    (
+        (!isPrivilegedUsersToggleVisible && isUserstoreSelectionInAdministratorsEnabled) ||
+        selectedUserStoreDomainName !== PRIMARY_USERSTORE
+    );
+
     const {
         isLoading: isUserStoresLoading,
         userStoresList
     } = useUserStores();
 
     const availableUserStores: UserStoreDropdownItem[] = useMemo(() => {
-        const storeOptions: UserStoreDropdownItem[] = [
-            {
-                key: -1,
-                text: userstoresConfig?.primaryUserstoreName,
-                value: userstoresConfig?.primaryUserstoreName
-            }
-        ];
+        const storeOptions: UserStoreDropdownItem[] = isForNonHumanUser
+            ? [
+                {
+                    key: -1,
+                    text: "AGENT",
+                    value: "AGENT"
+                }
+            ] : [
+                {
+                    key: -1,
+                    text: userstoresConfig?.primaryUserstoreName,
+                    value: userstoresConfig?.primaryUserstoreName
+                }
+            ];
 
-        if (userStoresList && !isUserStoresLoading) {
+        if (userStoresList && !isUserStoresLoading && !isForNonHumanUser) {
             if (userStoresList?.length > 0) {
-                userStoresList.forEach((store: UserStoreListItem, index: number) => {
-                    const isEnabled: boolean = store.enabled;
+                userStoresList
+                    ?.filter((userStore: UserStoreListItem) => !systemReservedUserStores?.includes(userStore.name))
+                    ?.forEach((store: UserStoreListItem, index: number) => {
+                        const isEnabled: boolean = store.enabled;
 
-                    if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName && isEnabled) {
-                        const storeOption: UserStoreDropdownItem = {
-                            key: index,
-                            text: store.name,
-                            value: store.name
-                        };
+                        if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName && isEnabled) {
+                            const storeOption: UserStoreDropdownItem = {
+                                key: index,
+                                text: store.name,
+                                value: store.name
+                            };
 
-                        storeOptions.push(storeOption);
-                    }
-                });
+                            storeOptions.push(storeOption);
+                        }
+                    });
             }
         }
 
         return storeOptions;
-    }, [ userStoresList, isUserStoresLoading ]);
+    }, [ userStoresList, isUserStoresLoading, isForNonHumanUser, systemReservedUserStores ]);
 
     useEffect(() => {
         if (!role?.users?.length) {
@@ -247,7 +287,15 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             };
         });
 
-        const roleData: PatchRoleDataInterface = {
+        const roleData: PatchRoleDataInterface = userRolesV3FeatureEnabled ? {
+            Operations: [
+                {
+                    op: "add",
+                    value: addedUsers
+                }
+            ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        } : {
             Operations: [
                 {
                     op: "add",
@@ -260,15 +308,25 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         };
 
         setIsSubmitting(true);
-        updateRoleDetails(role.id, roleData)
-            .then(() => {
-                dispatch(
-                    addAlert({
-                        description: t("roles:edit.users.notifications.success.description"),
-                        level: AlertLevels.SUCCESS,
-                        message: t("roles:edit.users.notifications.success.message")
-                    })
-                );
+        updateUsersOfRoleFunction(role.id, roleData)
+            .then((response: AxiosResponse) => {
+                if (response?.status === 200) {
+                    dispatch(
+                        addAlert({
+                            description: t(baseI18nKey + "notifications.success.description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t(baseI18nKey + "notifications.success.message")
+                        })
+                    );
+                } else if (response?.status === 202) {
+                    dispatch(
+                        addAlert({
+                            description: t(baseI18nKey + "notifications.pendingApproval.description"),
+                            level: AlertLevels.WARNING,
+                            message: t(baseI18nKey + "notifications.pendingApproval.message")
+                        })
+                    );
+                }
                 onRoleUpdate(tabIndex);
             })
             .catch( (error: AxiosError) => {
@@ -305,7 +363,13 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
      * @param user - user to be unassigned.
      */
     const unassignUserFromRole = (user: UserBasicInterface): void => {
-        const roleData: PatchRoleDataInterface = {
+        const roleData: PatchRoleDataInterface = userRolesV3FeatureEnabled ? {
+            Operations: [ {
+                "op": "remove",
+                "path": `value eq ${ user.id }`
+            } ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        } : {
             Operations: [ {
                 "op": "remove",
                 "path": `users[value eq ${ user.id }]`
@@ -314,15 +378,25 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         };
 
         setIsSubmitting(true);
-        updateRoleDetails(role.id, roleData)
-            .then(() => {
-                dispatch(
-                    addAlert({
-                        description: t("roles:edit.users.notifications.success.description"),
-                        level: AlertLevels.SUCCESS,
-                        message: t("roles:edit.users.notifications.success.message")
-                    })
-                );
+        updateUsersOfRoleFunction(role.id, roleData)
+            .then((response: AxiosResponse) => {
+                if (response?.status === 200) {
+                    dispatch(
+                        addAlert({
+                            description: t(baseI18nKey + "notifications.success.description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t(baseI18nKey + "notifications.success.message")
+                        })
+                    );
+                } else if (response?.status === 202) {
+                    dispatch(
+                        addAlert({
+                            description: t(baseI18nKey + "notifications.pendingApproval.description"),
+                            level: AlertLevels.WARNING,
+                            message: t(baseI18nKey + "notifications.pendingApproval.message")
+                        })
+                    );
+                }
                 onRoleUpdate(tabIndex);
             })
             .catch( (error: AxiosError) => {
@@ -426,10 +500,10 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         if (paginatedUsers.length === 0) {
             return (
                 <EmptyPlaceholder
-                    title={ t("roles:edit.users.list." +
+                    title={ t(baseI18nKey + "list." +
                         "emptyPlaceholder.title") }
                     subtitle={ [
-                        t("roles:edit.users.list." +
+                        t(baseI18nKey + "list." +
                             "emptyPlaceholder.subtitles", { type: "role" })
                     ] }
                     image={ getEmptyPlaceholderIllustrations().emptyList }
@@ -439,6 +513,23 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         }
 
         return null;
+    };
+
+    /**
+     * Retrieves the agent display name if available.
+     *
+     * Note: This is a hack to display the agent's display name
+     * in the role assign wizard. Ideally, the role details API
+     * response should include the agent's display name.
+     *
+     * @param user - The user object.
+     * @returns The display name of the agent if available, otherwise undefined.
+     */
+    const getAgentDisplayName = (user: UserBasicInterface): string => {
+        const matchingAgent: UserBasicInterface =
+            agentList?.Resources?.find((agent: UserBasicInterface) => agent.userName === user.userName);
+
+        return matchingAgent?.["urn:scim:wso2:agent:schema"]?.DisplayName;
     };
 
     /**
@@ -454,7 +545,9 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                 id: "name",
                 key: "name",
                 render: (user: UserBasicInterface): ReactNode => {
-                    const header: string = getUserNameWithoutDomain(user?.userName);
+                    const header: ReactNode = isForNonHumanUser
+                        ? getAgentDisplayName(user) ?? getUserNameWithoutDomain(user?.userName)
+                        : getUserNameWithoutDomain(user?.userName);
 
                     return (
                         <Header
@@ -465,7 +558,10 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                         >
                             <UserAvatar
                                 data-componentid={ `${ componentId }-list-item-image` }
-                                name={ UserManagementUtils.resolveAvatarUsername(user) }
+                                name={ isForNonHumanUser
+                                    ? getAgentDisplayName(user) ?? "Agent"
+                                    : UserManagementUtils.resolveAvatarUsername(user)
+                                }
                                 size="mini"
                                 image={ user.profileUrl }
                                 spaced="right"
@@ -474,12 +570,20 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                             <Header.Content>
                                 <div>
                                     { header as ReactNode }
+                                    { isForNonHumanUser && (
+                                        <Header.Subheader
+                                            data-testid={ `${ componentId }-item-sub-heading` }
+                                        >
+                                            { getAgentDisplayName(user) &&
+                                                getUserNameWithoutDomain(user?.userName) }
+                                        </Header.Subheader>
+                                    ) }
                                 </div>
                             </Header.Content>
                         </Header>
                     );
                 },
-                title: "User"
+                title: null
             }
         ];
 
@@ -524,7 +628,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             onFilter={ (query: string) => handleUserFilter(query?.trim()) }
             disableSearchFilterDropdown
             filterAttributeOptions={ [] }
-            placeholder={ t("console:manage.features.groups.advancedSearch.placeholder") }
+            placeholder={ t("users:advancedSearch.placeholder") }
             defaultSearchAttribute=""
             defaultSearchOperator=""
             triggerClearQuery={ triggerClearQuery }
@@ -536,11 +640,11 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         <EmphasizedSegment padded="very" className="list-role-users-section">
             <Box display="flex" justifyContent="space-between" alignItems="center">
                 <div>
-                    <Heading as="h4">
-                        { t("roles:edit.users.heading") }
+                    <Heading as="h4" data-componentid={ componentId + "-heading" }>
+                        { t(baseI18nKey + "heading") }
                     </Heading>
                     <Heading subHeading ellipsis as="h6">
-                        { t("roles:edit.users.subHeading") }
+                        { t(baseI18nKey + "subHeading") }
                     </Heading>
                 </div>
                 { !isReadOnly && (
@@ -551,7 +655,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                         onClick={ handleOpenAddNewUserModal }
                     >
                         <Icon name="plus"/>
-                        { t("console:manage.features.roles.edit.users.list." +
+                        { t(baseI18nKey + "list." +
                             "emptyPlaceholder.action") }
                     </PrimaryButton>
                 ) }
@@ -569,16 +673,17 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                 totalListSize={ selectedUsersFromUserStore?.length }
                 isLoading={ isUserStoresLoading || isSubmitting }
                 showPaginationPageLimit={ !isReadOnly }
-                rightActionPanel={ ((!isPrivilegedUsersToggleVisible && isUserstoreSelectionInAdministratorsEnabled) ||
-                    selectedUserStoreDomainName !== PRIMARY_USERSTORE) && (
-                    <Dropdown
-                        data-componentid={ `${ componentId }-list-usertore-dropdown` }
-                        selection
-                        options={ availableUserStores }
-                        placeholder={ t("console:manage.features.groups.list.storeOptions") }
-                        onChange={ handleDomainChange }
-                        defaultValue={ userstoresConfig.primaryUserstoreName }
-                    />
+                rightActionPanel={ (
+                    shouldShowUserstoreDropdown && (
+                        <Dropdown
+                            data-componentid={ `${ componentId }-list-usertore-dropdown` }
+                            selection
+                            options={ availableUserStores }
+                            placeholder={ t("console:manage.features.groups.list.storeOptions") }
+                            onChange={ handleDomainChange }
+                            defaultValue={ activeUserStore ? activeUserStore : userstoresConfig.primaryUserstoreName }
+                        />
+                    )
                 ) }
             >
                 <DataTable<UserBasicInterface>
@@ -612,6 +717,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                             ? availableUserStores
                             : []
                         }
+                        isForNonHumanUser={ isForNonHumanUser }
                     />
                 )
             }

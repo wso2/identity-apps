@@ -122,7 +122,7 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
         /**
          * Execute plugins for ON_NODE_ELEMENT_DELETE event.
          */
-        await PluginRegistry.getInstance().execute(EventTypes.ON_NODE_ELEMENT_DELETE, stepId, element);
+        await PluginRegistry.getInstance().executeAsync(EventTypes.ON_NODE_ELEMENT_DELETE, stepId, element);
 
         deleteComponent(stepId, element);
         setIsOpenResourcePropertiesPanel(false);

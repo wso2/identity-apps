@@ -16,13 +16,23 @@
  * under the License.
  */
 
-import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Encode } from "@wso2is/core/utils";
-import parse, { domToReact } from "html-react-parser";
+import DOMPurify from "dompurify";
+import parse from "html-react-parser";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Element } from "../../../../models/elements";
 import { CommonElementFactoryPropsInterface } from "../common-element-factory";
+import "./rich-text-adapter.scss";
+
+// Register DOMPurify hook once at module level to handle anchor tags.
+DOMPurify.addHook("afterSanitizeAttributes", (node: Element) => {
+    if (node.hasAttribute("target")) {
+        const target: string | null = node.getAttribute("target");
+
+        if (target === "_blank") {
+            node.setAttribute("rel", "noopener noreferrer");
+        }
+    }
+});
 
 /**
  * Props interface of {@link RichTextAdapter}
@@ -37,16 +47,16 @@ export type RichTextAdapterPropsInterface = IdentifiableComponentInterface & Com
  */
 const RichTextAdapter: FunctionComponent<RichTextAdapterPropsInterface> = ({
     resource
-}: RichTextAdapterPropsInterface): ReactElement => (
-    <>
-        { parse(Encode.forHtml(resource?.config?.text), {
-            replace(domNode: any) {
-                if (((domNode as unknown) as any).name === "h1") {
-                    <Typography variant="h1">{ domToReact(((domNode as unknown) as any).children) }</Typography>;
-                }
-            }
-        }) }
-    </>
-);
+}: RichTextAdapterPropsInterface): ReactElement => {
+    const sanitizedHtml: string = DOMPurify.sanitize(resource?.config?.text || "", {
+        ADD_ATTR: [ "target" ]
+    });
+
+    return (
+        <div className="rich-text-content">
+            { parse(sanitizedHtml) }
+        </div>
+    );
+};
 
 export default RichTextAdapter;

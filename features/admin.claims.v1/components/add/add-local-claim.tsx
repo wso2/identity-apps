@@ -98,6 +98,8 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     const skipSCIM: MutableRefObject<boolean> = useRef(false);
 
     const hiddenUserStores: string[] = useSelector((state: AppState) => state.config.ui.hiddenUserStores);
+    const systemReservedUserStores: string[] =
+        useSelector((state: AppState) => state.config.ui.systemReservedUserStores);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
     const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
@@ -136,6 +138,12 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
                 setShowMapAttributes(state.length > 0 && userStoresEnabled);
             });
+        } else if (systemReservedUserStores?.length > 0) {
+            const userPluggedUserStores: UserStoreListItem[] = userStoresList.filter(
+                (userStore: UserStoreListItem) => !systemReservedUserStores?.includes(userStore.name)
+            );
+
+            setShowMapAttributes(userPluggedUserStores?.length > 0);
         } else if (userStoresList?.length > 0) {
             setShowMapAttributes(true);
         } else {

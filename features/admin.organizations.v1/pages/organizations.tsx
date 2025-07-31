@@ -56,6 +56,7 @@ import { FormValue } from "../../../modules/form/src";
 import { getOrganizations, useAuthorizedOrganizationsList } from "../api";
 import { AddOrganizationModal, OrganizationList } from "../components";
 import MetaAttributeAutoComplete from "../components/meta-attribute-auto-complete";
+import { OrganizationManagementConstants } from "../constants";
 import {
     OrganizationInterface,
     OrganizationLinkInterface,
@@ -503,20 +504,22 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                     !isOrganizationListRequestLoading && !isAuthorizedOrganizationListRequestLoading &&
                     !(!searchQuery && (isEmpty(organizationList) || organizationList?.organizations?.length <= 0)) &&
                     (
-                        <Show when={ featureConfig?.organizations?.scopes?.create }>
-                            <PrimaryButton
-                                disabled={ isOrganizationListRequestLoading }
-                                loading={ isOrganizationListRequestLoading }
-                                onClick={ (): void => {
-                                    eventPublisher.publish("organization-click-new-organization-button");
-                                    setShowWizard(true);
-                                } }
-                                data-componentid={ `${ testId }-list-layout-add-button` }
-                            >
-                                <Icon name="add" />
-                                { t("organizations:list.actions.add") }
-                            </PrimaryButton>
-                        </Show>
+                        isFeatureEnabled(featureConfig.organizations,
+                            OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_CREATE")) && (
+                            <Show when={ featureConfig?.organizations?.scopes?.create }>
+                                <PrimaryButton
+                                    disabled={ isOrganizationListRequestLoading }
+                                    loading={ isOrganizationListRequestLoading }
+                                    onClick={ (): void => {
+                                        eventPublisher.publish("organization-click-new-organization-button");
+                                        setShowWizard(true);
+                                    } }
+                                    data-componentid={ `${ testId }-list-layout-add-button` }
+                                >
+                                    <Icon name="add" />
+                                    { t("organizations:list.actions.add") }
+                                </PrimaryButton>
+                            </Show>)
                     )
                 }
                 pageTitle={ t("pages:organizations.title") }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,7 +26,8 @@ export enum OrganizationActionTypes {
     SET_GET_ORGANIZATION_LOADING = "SET_GET_ORGANIZATION_LOADING",
     SET_IS_FIRST_LEVEL_ORGANIZATION = "SET_IS_FIRST_LEVEL_ORGANIZATION",
     SET_ORGANIZATION_TYPE = "SET_ORGANIZATION_TYPE",
-    SET_USER_ORGANIZATION_ID = "SET_USER_ORGANIZATION_ID"
+    SET_USER_ORGANIZATION_ID = "SET_USER_ORGANIZATION_ID",
+    SET_USER_ORGANIZATION_HANDLE = "SET_USER_ORGANIZATION_HANDLE"
 }
 
 export interface SetOrganizationActionInterface {
@@ -64,6 +65,11 @@ export interface SetUserOrganizationIdInterface {
     type: OrganizationActionTypes.SET_USER_ORGANIZATION_ID;
 }
 
+export interface SetUserOrganizationHandleInterface {
+    payload: string;
+    type: OrganizationActionTypes.SET_USER_ORGANIZATION_HANDLE;
+}
+
 export type OrganizationAction =
     | SetSuperAdminTypeInterface
     | SetCurrentOrganizationActionInterface
@@ -71,4 +77,5 @@ export type OrganizationAction =
     | SetGetOrganizationLoadingActionInterface
     | SetIsFirstLevelOrganizationInterface
     | SetOrganizationTypeInterface
-    | SetUserOrganizationIdInterface;
+    | SetUserOrganizationIdInterface
+    | SetUserOrganizationHandleInterface;

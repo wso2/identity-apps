@@ -23,13 +23,15 @@ import { APIResourceInterface } from "@wso2is/admin.api-resources.v2/models";
 import { APIResourceUtils } from "@wso2is/admin.api-resources.v2/utils/api-resource-utils";
 import useSubscribedAPIResources from "@wso2is/admin.applications.v1/api/use-subscribed-api-resources";
 import { AuthorizedAPIListItemInterface } from "@wso2is/admin.applications.v1/models/api-authorization";
-import { ApplicationInterface } from "@wso2is/admin.applications.v1/models/application";
+import { ApplicationInterface, ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models/application";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
 import { Code, ContentLoader, EmphasizedSegment, Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
+import startCase from "lodash-es/startCase";
 import React, {
     FunctionComponent,
     MutableRefObject,
@@ -40,10 +42,10 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Grid, Header, Label, Modal } from "semantic-ui-react";
-import { createRole } from "../../api";
+import { createRole, createRoleUsingV3Api } from "../../api";
 import useGetRolesList from "../../api/use-get-roles-list";
 import { RoleAudienceTypes, RoleConstants } from "../../constants";
 import { ScopeInterface } from "../../models/apiResources";
@@ -61,6 +63,10 @@ interface ApplicationRoleWizardPropsInterface extends IdentifiableComponentInter
     closeWizard: () => void;
     setUserListRequestLoading: (value: boolean) => void;
     onRoleCreated: () => void;
+    /**
+     * Original template ID of the application to which the app role is assigned.
+     */
+    originalTemplateId?: string;
 }
 
 /**
@@ -76,6 +82,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
         closeWizard,
         application,
         onRoleCreated,
+        originalTemplateId,
         ["data-componentid"]: componentId
     } = props;
 
@@ -85,7 +92,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ selectedPermissions, setSelectedPermissions ] = useState<SelectedPermissionsInterface[]>([]);
     const [ selectedAPIResources, setSelectedAPIResources ] = useState<APIResourceInterface[]>([]);
-    const [ apiResourcesListOptions, setAPIResourcesListOptions ] = useState<DropdownProps[]>([]);
+    const [ apiResourcesListOptions, setAPIResourcesListOptions ] = useState<DropdownItemProps[]>([]);
     const [ applicationName, setApplicationName ] = useState<string>(application?.name);
     const [ selectedApplication, setSelectedApplication ] = useState<DropdownItemProps[]>([]);
     const [ isFormError, setIsFormError ] = useState<boolean>(false);
@@ -95,6 +102,13 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
     const appId: string = path[path.length - 1].split("#")[0];
     const FORM_ID: string = "application-role-creation-form";
     const formRef: MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
+
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
+    );
+
+    const createRoleFunction: (role: CreateRoleInterface) => Promise<AxiosResponse> =
+        userRolesV3FeatureEnabled ? createRoleUsingV3Api : createRole;
 
     const {
         data: subscribedAPIResourcesListData,
@@ -120,7 +134,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
     }, [ application ]);
 
     useEffect(() => {
-        const options: DropdownProps[] = [];
+        const options: DropdownItemProps[] = [];
 
         subscribedAPIResourcesListData?.map((apiResource: AuthorizedAPIListItemInterface) => {
             const isNotSelected: boolean = !selectedAPIResources
@@ -236,7 +250,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
         };
 
         // Create Role API Call.
-        createRole(roleData)
+        createRoleFunction(roleData)
             .then((response: AxiosResponse) => {
                 if (response.status === 201) {
                     dispatch(addAlert({
@@ -456,14 +470,13 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                                             option.value === value.value
                                     }
                                     options={
-                                        apiResourcesListOptions?.filter((item: DropdownProps) =>
+                                        apiResourcesListOptions?.filter((item: DropdownItemProps) =>
                                             item?.type === APIResourceCategories.TENANT ||
                                             item?.type === APIResourceCategories.ORGANIZATION ||
-                                            item?.type === APIResourceCategories.BUSINESS
-                                        ).sort((a: DropdownProps, b: DropdownProps) =>
-                                            APIResourceUtils.resolveApiResourceGroup(a?.type)
-                                                ?.localeCompare(APIResourceUtils
-                                                    .resolveApiResourceGroup(b?.type))
+                                            item?.type === APIResourceCategories.BUSINESS ||
+                                            item?.type === APIResourceCategories.MCP
+                                        ).sort((a: DropdownItemProps, b: DropdownItemProps) =>
+                                            APIResourceUtils.sortApiResourceTypes(a, b)
                                         )
                                     }
                                     onChange={ onAPIResourceSelected }
@@ -480,13 +493,25 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                                             label={ t("extensions:develop.applications.edit." +
                                                 "sections.apiAuthorization.sections.apiSubscriptions." +
                                                 "wizards.authorizeAPIResource.fields.apiResource.label", {
-                                                resourceText: t("extensions:develop.apiResource.resourceTypes.api")
+                                                resourceText: originalTemplateId ===
+                                                    ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION
+                                                    ? startCase(t("extensions:develop.applications.edit.sections" +
+                                                        ".apiAuthorization.resourceText.genericResource"))
+                                                    : t("extensions:develop.applications.edit.sections.apiAuthorization"
+                                                        + ".resourceText.apiResource")
+
                                             }) }
                                             placeholder={ t("extensions:develop.applications.edit." +
                                                 "sections.apiAuthorization.sections.apiSubscriptions." +
                                                 "wizards.authorizeAPIResource.fields.apiResource." +
                                                 "placeholder", {
-                                                resourceText: t("extensions:develop.apiResource.resourceTypes.api")
+                                                resourceText: originalTemplateId ===
+                                                    ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION
+                                                    ? startCase(t("extensions:develop.applications.edit.sections" +
+                                                        ".apiAuthorization.resourceText.genericResource"))
+                                                    : t("extensions:develop.applications.edit.sections.apiAuthorization"
+                                                        + ".resourceText.apiResource")
+
                                             }) }
                                             size="small"
                                             variant="outlined"

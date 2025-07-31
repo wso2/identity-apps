@@ -41,8 +41,10 @@ import VisualFlow, { VisualFlowPropsInterface } from "./visual-flow";
 import VisualFlowConstants from "../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import useComponentDelete from "../../hooks/use-component-delete";
-import useDeleteRedirectionResource from "../../hooks/use-delete-redirection-resource";
+import useConfirmPasswordField from "../../hooks/use-confirm-password-field";
+import useDeleteExecutionResource from "../../hooks/use-delete-execution-resource";
 import useGenerateStepElement from "../../hooks/use-generate-step-element";
+import useStaticContentField from "../../hooks/use-static-content-field";
 import { Element } from "../../models/elements";
 import { EventTypes } from "../../models/extension";
 import { Resource, ResourceTypes } from "../../models/resources";
@@ -104,7 +106,13 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
 }: DecoratedVisualFlowPropsInterface): ReactElement => {
 
     // Event handlers for ON_NODE_DELETE event.
-    useDeleteRedirectionResource();
+    useDeleteExecutionResource();
+
+    // Event handlers for ON_PROPERTY_PANEL_OPEN event.
+    useConfirmPasswordField();
+
+    // Event handlers for static content in execution steps.
+    useStaticContentField();
 
     const { screenToFlowPosition, updateNodeData } = useReactFlow();
     const { generateStepElement } = useGenerateStepElement();
@@ -124,7 +132,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     }, [ aiGeneratedFlow ]);
 
     const addCanvasNode = (event: any, sourceData: any, _targetData: any): void => {
-        const { dragged: sourceResource } = sourceData;
+        const sourceResource: any = cloneDeep(sourceData.dragged);
         const { clientX, clientY } = event?.nativeEvent;
 
         const position: XYPosition = screenToFlowPosition({
@@ -303,7 +311,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     const onNodesDelete: OnNodesDelete<Node> = useCallback(
         async (deleted: Node[]) => {
             // Execute plugins for ON_NODE_DELETE event.
-            await PluginRegistry.getInstance().execute(EventTypes.ON_NODE_DELETE, deleted);
+            await PluginRegistry.getInstance().executeAsync(EventTypes.ON_NODE_DELETE, deleted);
 
             setEdges(
                 deleted?.reduce((acc: Edge[], node: Node) => {
@@ -336,7 +344,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     const onEdgesDelete: (deleted: Edge[]) => void = useCallback(
         async (deleted: Edge[]) => {
             // Execute plugins for ON_EDGE_DELETE event.
-            await PluginRegistry.getInstance().execute(EventTypes.ON_EDGE_DELETE, deleted);
+            await PluginRegistry.getInstance().executeAsync(EventTypes.ON_EDGE_DELETE, deleted);
         },
         []
     );
@@ -346,6 +354,13 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         if (resource.resourceType !== ResourceTypes.Template) {
             return;
         }
+
+        resource = cloneDeep(resource);
+
+        /**
+         * Execute plugins for ON_TEMPLATE_LOAD event.
+         */
+        PluginRegistry.getInstance().executeSync(EventTypes.ON_TEMPLATE_LOAD, resource);
 
         // Users need to add a prompt first when they select the AI template.
         // TODO: Handle this better.

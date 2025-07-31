@@ -16,9 +16,15 @@
  * under the License.
  */
 
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import useGetFlowBuilderCoreResources from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-builder-core-resources";
 import { Resources } from "@wso2is/admin.flow-builder-core.v1/models/resources";
+import { Template, TemplateTypes } from "@wso2is/admin.flow-builder-core.v1/models/templates";
+import { useMemo } from "react";
+import { useSelector } from "react-redux";
 import templates from "../data/templates.json";
 import widgets from "../data/widgets.json";
 
@@ -38,18 +44,33 @@ const useGetRegistrationFlowBuilderResources = <Data = Resources, Error = Reques
 ): RequestResultInterface<Data, Error> => {
     const { data: coreResources } = useGetFlowBuilderCoreResources();
 
-    return {
-        data: ({
+    const aiFeature: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.ai
+    );
+
+    const data: unknown = useMemo(() => {
+        const isAiFeatureDisabled: boolean = !aiFeature?.enabled || aiFeature?.disabledFeatures?.includes(
+            FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.AI_FLOWS_TYPES_REGISTRATION);
+
+        const filteredTemplates: Template[] = (templates as Template[]).filter((template: Template) => {
+            return !isAiFeatureDisabled || template?.type !== TemplateTypes.GeneratedWithAI;
+        });
+
+        return {
             ...coreResources,
             templates: [
                 ...coreResources?.templates,
-                ...templates
+                ...filteredTemplates
             ],
             widgets: [
                 ...coreResources?.widgets,
                 ...widgets
             ]
-        } as unknown) as Data,
+        };
+    }, [ coreResources, aiFeature ]);
+
+    return {
+        data: data as Data,
         error: null,
         isLoading: false,
         isValidating: false,

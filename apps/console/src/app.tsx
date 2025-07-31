@@ -25,6 +25,7 @@ import { DocumentationLinks } from "@wso2is/admin.core.v1/configs/documentation"
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
+import { AppComponentProps } from "@wso2is/admin.core.v1/models/common";
 import {
     FeatureConfigInterface,
     ServiceResourceEndpointsInterface
@@ -41,6 +42,9 @@ import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { featureGateConfig } from "@wso2is/admin.extensions.v1/configs/feature-gate";
 import useGetAllFeatures from "@wso2is/admin.feature-gate.v1/api/use-get-all-features";
+import { AGENT_USERSTORE_ID } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import UserStoresProvider from "@wso2is/admin.userstores.v1/providers/user-stores-provider";
 import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -62,7 +66,7 @@ import has from "lodash-es/has";
 import isEmpty from "lodash-es/isEmpty";
 import set from "lodash-es/set";
 import * as moment from "moment";
-import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
+import React, { ReactElement, Suspense, useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Trans } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -75,12 +79,81 @@ import { getBaseRoutes } from "./configs/routes";
 import DecoratedApp from "./decorated-app";
 import "./app.scss";
 
+const Base = ({
+    onAgentManagementEnableStatusChange
+}: AppComponentProps) => {
+    /**
+     * Listen for base name changes and updated the routes.
+     */
+    const baseRoutes: RouteInterface[] = useMemo(() => {
+        return getBaseRoutes();
+    }, [ AppConstants.getTenantQualifiedAppBasename() ]);
+
+    const {
+        isLoading: isUserStoresListFetchRequestLoading,
+        userStoresList
+    } = useUserStores();
+
+    useEffect(() => {
+        const isAgentManagementEnabledForOrg: boolean =
+            userStoresList?.some((userStore: UserStoreListItem) => userStore.id === AGENT_USERSTORE_ID);
+
+        onAgentManagementEnableStatusChange(isAgentManagementEnabledForOrg);
+
+    }, [ userStoresList, isUserStoresListFetchRequestLoading ]);
+
+    return (
+        <Switch>
+            <Redirect
+                exact
+                from="/"
+                to={ AppConstants.getAppHomePath() }
+            />
+            {
+                baseRoutes.map((route: RouteInterface, index: number) => {
+                    return (
+                        route.protected ?
+                            (
+                                <ProtectedRoute
+                                    component={ route.component }
+                                    path={ route.path }
+                                    key={ index }
+                                    exact={ route.exact }
+                                />
+                            )
+                            :
+                            (
+                                <Route
+                                    path={ route.path }
+                                    render={
+                                        (props:  RouteComponentProps<
+                                                                                { [p: string]: string },
+                                                                                StaticContext, unknown
+                                                                            >) => {
+                                            return (<route.component
+                                                { ...props }
+                                            />);
+                                        }
+                                    }
+                                    key={ index }
+                                    exact={ route.exact }
+                                />
+                            )
+                    );
+                })
+            }
+        </Switch>
+    );
+};
+
 /**
  * Main App component.
  *
  * @returns App Root component.
  */
-export const App: FunctionComponent<Record<string, never>> = (): ReactElement => {
+export const App = ({
+    onAgentManagementEnableStatusChange
+}: AppComponentProps): ReactElement => {
     const featureGateConfigUpdated : FeatureGateInterface = { ...featureGateConfig };
 
     const dispatch: Dispatch<any> = useDispatch();
@@ -101,7 +174,6 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
 
-    const [ baseRoutes, setBaseRoutes ] = useState<RouteInterface[]>(getBaseRoutes());
     const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
     const [ featureGateConfigData, setFeatureGateConfigData ] =
         useState<FeatureGateInterface | null>(featureGateConfigUpdated);
@@ -132,13 +204,6 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
         dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
         dispatch(setI18nConfigs<I18nModuleOptionsInterface>(Config.getI18nConfig()));
         setResourceEndpoints(Config.getServiceResourceEndpoints() as any);
-    }, [ AppConstants.getTenantQualifiedAppBasename() ]);
-
-    /**
-     * Listen for base name changes and updated the routes.
-     */
-    useEffect(() => {
-        setBaseRoutes(getBaseRoutes());
     }, [ AppConstants.getTenantQualifiedAppBasename() ]);
 
     /**
@@ -478,46 +543,11 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                 }
                                             />
                                             <UserStoresProvider>
-                                                <Switch>
-                                                    <Redirect
-                                                        exact
-                                                        from="/"
-                                                        to={ AppConstants.getAppHomePath() }
-                                                    />
-                                                    {
-                                                        baseRoutes.map((route: RouteInterface, index: number) => {
-                                                            return (
-                                                                route.protected ?
-                                                                    (
-                                                                        <ProtectedRoute
-                                                                            component={ route.component }
-                                                                            path={ route.path }
-                                                                            key={ index }
-                                                                            exact={ route.exact }
-                                                                        />
-                                                                    )
-                                                                    :
-                                                                    (
-                                                                        <Route
-                                                                            path={ route.path }
-                                                                            render={
-                                                                                (props:  RouteComponentProps<
-                                                                                { [p: string]: string },
-                                                                                StaticContext, unknown
-                                                                            >) => {
-                                                                                    return (<route.component
-                                                                                        { ...props }
-                                                                                    />);
-                                                                                }
-                                                                            }
-                                                                            key={ index }
-                                                                            exact={ route.exact }
-                                                                        />
-                                                                    )
-                                                            );
-                                                        })
+                                                <Base
+                                                    onAgentManagementEnableStatusChange={
+                                                        onAgentManagementEnableStatusChange
                                                     }
-                                                </Switch>
+                                                />
                                             </UserStoresProvider>
                                         </>
                                     </SessionManagementProvider>

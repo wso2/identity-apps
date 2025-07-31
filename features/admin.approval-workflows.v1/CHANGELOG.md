@@ -1,5 +1,24 @@
 # @wso2is/admin.approval-workflows.v1
 
+## 1.0.6
+
+### Patch Changes
+
+- [#8529](https://github.com/wso2/identity-apps/pull/8529) [`e113a4fcf94e5d7eb190b5caf4548e1148f28dc2`](https://github.com/wso2/identity-apps/commit/e113a4fcf94e5d7eb190b5caf4548e1148f28dc2) Thanks [@Malith-19](https://github.com/Malith-19)! - Improve the claim display method and fix the cross icon not displaying issue in the workflow feature.
+
+- Updated dependencies [[`9ba2b7eaf1cdb3bcf533d92b915fe686f8ebaa53`](https://github.com/wso2/identity-apps/commit/9ba2b7eaf1cdb3bcf533d92b915fe686f8ebaa53), [`d6d767eebc955a94dc0a3b878edd410090d493cb`](https://github.com/wso2/identity-apps/commit/d6d767eebc955a94dc0a3b878edd410090d493cb)]:
+  - @wso2is/admin.core.v1@2.46.9
+
+## 1.0.5
+
+### Patch Changes
+
+- [#8471](https://github.com/wso2/identity-apps/pull/8471) [`c562eed1c1930ca8da84c8ce3f49d30a57773bbe`](https://github.com/wso2/identity-apps/commit/c562eed1c1930ca8da84c8ce3f49d30a57773bbe) Thanks [@Malith-19](https://github.com/Malith-19)! - Add UI support for update users in role in workflow operations.
+
+- Updated dependencies [[`c562eed1c1930ca8da84c8ce3f49d30a57773bbe`](https://github.com/wso2/identity-apps/commit/c562eed1c1930ca8da84c8ce3f49d30a57773bbe)]:
+  - @wso2is/admin.roles.v2@2.27.158
+  - @wso2is/i18n@2.24.10
+
 ## 1.0.4
 
 ### Patch Changes

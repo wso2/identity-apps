@@ -503,6 +503,13 @@ export const myAccount: MyAccountNS = {
                 },
                 "tooltip": "Anwendungen"
             },
+            "dropdown": {
+                "footer": {
+                    "cookiePolicy": "Cookies",
+                    "privacyPolicy": "Datenschutz",
+                    "termsOfService": "Bedingungen"
+                }
+            },
             "organizationLabel": "Dieses Konto wird verwaltet von"
         },
         "linkedAccounts": {

@@ -29,6 +29,10 @@ export interface pagesNS {
         subTitle: string;
         backButton: string;
     };
+    agents: {
+        title: string;
+        subTitle: string;
+    },
     approvalsPage: {
         title: string;
         subTitle: string;

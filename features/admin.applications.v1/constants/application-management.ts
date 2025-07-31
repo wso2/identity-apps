@@ -88,7 +88,8 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_OUTDATED_APP_BANNER", "applications.outdatedAppBanner")
         .set("APPLICATION_EDIT_ACCESS_CONFIG_BACK_CHANNEL_LOGOUT",
             "applications.edit.accessConfiguration.backChannelLogout")
-        .set("APPLICATION_SHARED_ACCESS_STATUS", "applications.sharedAccess.status");
+        .set("APPLICATION_SHARED_ACCESS_STATUS", "applications.sharedAccess.status")
+        .set("APPLICATION_ROLE_SHARING", "applications.sharedAccess.roleSharing");
 
     /**
      * Key for the URL search param for application state.

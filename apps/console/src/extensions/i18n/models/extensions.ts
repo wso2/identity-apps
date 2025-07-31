@@ -2440,6 +2440,16 @@ export interface Extensions {
     manage: {
         accountLogin: {
             notifications: {
+                revert: {
+                    error: {
+                        description: string;
+                        message: string;
+                    },
+                    success: {
+                        description: string;
+                        message: string;
+                    }
+                };
                 success: {
                     description: string;
                     message: string;
@@ -2528,6 +2538,7 @@ export interface Extensions {
                     makeDefaultOrganization: string;
                     backButton: string;
                     copyOrganizationId: string;
+                    copyOrganizationHandle: string;
                     copied: string;
                     tenantSearch: {
                         placeholder: string;
