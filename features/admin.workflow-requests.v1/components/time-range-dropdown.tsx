@@ -17,9 +17,9 @@
  */
 
 import React, { useRef, useState, useEffect } from "react";
-import { Button, Dropdown } from "semantic-ui-react";
+import { Button, Dropdown, Form, Icon, Input, Portal, Segment } from "semantic-ui-react";
 import { useTranslation } from "react-i18next";
-import "../styles/workflow-requests.css";
+import "./time-range-dropdown.scss";
 
 interface TimeRangeDropdownProps {
     label: string;
@@ -40,7 +40,7 @@ const TimeRangeDropdown: React.FC<TimeRangeDropdownProps> = ({
     disabled = false,
     style
 }) => {
-    const { t } = useTranslation(["workflow-requests"]);
+    const { t } = useTranslation(["approvalWorkflows"]);
     const [showCustomModal, setShowCustomModal] = useState(false);
     const prevSelectedRangeRef = useRef(selectedRange);
     const [customStartDate, setCustomStartDate] = useState("");
@@ -49,15 +49,15 @@ const TimeRangeDropdown: React.FC<TimeRangeDropdownProps> = ({
     const [customEndTime, setCustomEndTime] = useState("23:59");
 
     const TIME_RANGE_OPTIONS = [
-        { key: -2, text: t("timeRanges.all"), value: -2 },
-        { key: 6, text: t("timeRanges.last6Hours"), value: 6 },
-        { key: 12, text: t("timeRanges.last12Hours"), value: 12 },
-        { key: 24, text: t("timeRanges.last24Hours"), value: 24 },
-        { key: 48, text: t("timeRanges.last2Days"), value: 48 },
-        { key: 168, text: t("timeRanges.last7Days"), value: 168 },
-        { key: 336, text: t("timeRanges.last14Days"), value: 336 },
-        { key: 720, text: t("timeRanges.last30Days"), value: 720 },
-        { key: -1, text: t("timeRanges.customRange"), value: -1 }
+        { key: -2, text: t("approvalWorkflows:timeRanges.all"), value: -2 },
+        { key: 6, text: t("approvalWorkflows:timeRanges.last6Hours"), value: 6 },
+        { key: 12, text: t("approvalWorkflows:timeRanges.last12Hours"), value: 12 },
+        { key: 24, text: t("approvalWorkflows:timeRanges.last24Hours"), value: 24 },
+        { key: 48, text: t("approvalWorkflows:timeRanges.last2Days"), value: 48 },
+        { key: 168, text: t("approvalWorkflows:timeRanges.last7Days"), value: 168 },
+        { key: 336, text: t("approvalWorkflows:timeRanges.last14Days"), value: 336 },
+        { key: 720, text: t("approvalWorkflows:timeRanges.last30Days"), value: 720 },
+        { key: -1, text: t("approvalWorkflows:timeRanges.customRange"), value: -1 }
     ];
 
     const handleRangeChange = (e: React.SyntheticEvent<HTMLElement>, { value }: { value: number }) => {
@@ -89,33 +89,11 @@ const TimeRangeDropdown: React.FC<TimeRangeDropdownProps> = ({
         }
     };
 
-    const handleCancel = () => {
-        onRangeChange(prevSelectedRangeRef.current);
+    const handleExternalPortalClose = (): void => {
+        if (!(customStartTime && customEndTime && customStartDate && customEndDate)) {
+            onRangeChange(prevSelectedRangeRef.current);
+        }
         setShowCustomModal(false);
-        setCustomStartDate("");
-        setCustomEndDate("");
-        setCustomStartTime("00:00");
-        setCustomEndTime("23:59");
-    };
-
-    // Handle escape key
-    useEffect(() => {
-        const handleEscape = (e: KeyboardEvent) => {
-            if (e.key === 'Escape' && showCustomModal) {
-                handleCancel();
-            }
-        };
-
-        if (showCustomModal) {
-            document.addEventListener('keydown', handleEscape);
-            return () => document.removeEventListener('keydown', handleEscape);
-        }
-    }, [showCustomModal]);
-
-    const handleBackdropClick = (e: React.MouseEvent) => {
-        if (e.target === e.currentTarget) {
-            handleCancel();
-        }
     };
 
     const formatDateForInput = (date: Date): string => {
@@ -138,81 +116,103 @@ const TimeRangeDropdown: React.FC<TimeRangeDropdownProps> = ({
                 style={style}
                 data-componentid={componentId}
             />
-            {showCustomModal && (
-                <div
-                    className="time-range-custom-modal"
-                    onClick={handleBackdropClick}
-                >
-                    <div className="modal-content">
-                        <h3 className="modal-title">
-                            {t('workflow-requests:timeRanges.customRangeTitle', { label: label.replace('Time Range', t('workflow-requests:timeRanges.range')) })}
-                        </h3>
-                        <form onSubmit={handleCustomSubmit}>
-                            <div className="form-group">
-                                <label className="form-label">
-                                    {t('common:from')}
-                                </label>
-                                <div className="input-group">
-                                    <input
-                                        type="date"
-                                        value={customStartDate}
-                                        min={formatDateForInput(thirtyDaysAgo)}
-                                        max={formatDateForInput(now)}
-                                        onChange={(e) => setCustomStartDate(e.target.value)}
-                                        className="form-input"
-                                        required
-                                    />
-                                    <input
-                                        type="time"
-                                        value={customStartTime}
-                                        onChange={(e) => setCustomStartTime(e.target.value)}
-                                        className="form-input"
-                                        required
-                                    />
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="form-label">
-                                    {t('common:to')}
-                                </label>
-                                <div className="input-group">
-                                    <input
-                                        type="date"
-                                        value={customEndDate}
-                                        min={customStartDate || formatDateForInput(thirtyDaysAgo)}
-                                        max={formatDateForInput(now)}
-                                        onChange={(e) => setCustomEndDate(e.target.value)}
-                                        className="form-input"
-                                        required
-                                    />
-                                    <input
-                                        type="time"
-                                        value={customEndTime}
-                                        onChange={(e) => setCustomEndTime(e.target.value)}
-                                        className="form-input"
-                                        required
-                                    />
-                                </div>
-                            </div>
-                            <div className="form-actions">
-                                <Button
-                                    type="button"
-                                    onClick={handleCancel}
-                                >
-                                    {t('common:cancel')}
-                                </Button>
-                                <Button
-                                    type="submit"
-                                    primary
-                                    onClick={handleCustomSubmit}
-                                >
-                                    {t('common:apply')}
-                                </Button>
-                            </div>
-                        </form>
+            <Portal
+                onOpen={ () => setShowCustomModal(true) }
+                open={ showCustomModal } >
+                <Segment className="custom-portal-wrapper">
+                    <div
+                        className="main-container"
+                        onClick={ (e: React.MouseEvent<HTMLDivElement, MouseEvent>) =>
+                            e.stopPropagation()
+                        }
+                    >
+                        <Form
+                            className="date-picker-form"
+                            onSubmit={ handleCustomSubmit }
+                        >
+                            <Form.Group>
+                                <Form.Field width={ 16 }>
+                                    <label>
+                                        {t('common:from')}
+                                    </label>
+                                    <div className="date-time-picker-row">
+                                        <div>
+                                            <Input
+                                                className="date-input"
+                                                type="date"
+                                                value={ customStartDate }
+                                                min={ formatDateForInput(thirtyDaysAgo) }
+                                                max={ formatDateForInput(now) }
+                                                onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                                                    setCustomStartDate(e.target.value)
+                                                }
+                                                required
+                                            />
+                                        </div>
+                                        <div>
+                                            <Input
+                                                className="time-input"
+                                                type="time"
+                                                value={ customStartTime }
+                                                onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                                                    setCustomStartTime(e.target.value)
+                                                }
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+                                </Form.Field>
+                            </Form.Group>
+
+                            <Form.Group>
+                                <Form.Field width={ 16 }>
+                                    <label>
+                                        {t('common:to')}
+                                    </label>
+                                    <div className="date-time-picker-row">
+                                        <div>
+                                            <Input
+                                                className="date-input"
+                                                type="date"
+                                                min={
+                                                    customStartDate ||
+                                                        formatDateForInput(thirtyDaysAgo)
+                                                }
+                                                max={ formatDateForInput(now) }
+                                                value={ customEndDate }
+                                                onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                                                    setCustomEndDate(e.target.value)
+                                                }
+                                                required
+                                            />
+                                        </div>
+                                        <div>
+                                            <Input
+                                                className="time-input"
+                                                type="time"
+                                                value={ customEndTime }
+                                                onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                                                    setCustomEndTime(e.target.value)
+                                                }
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+                                </Form.Field>
+                            </Form.Group>
+
+                            <Form.Group>
+                                <Form.Field width={ 8 }>
+                                    <Button fluid icon="close" type="button" onClick={ handleExternalPortalClose } />
+                                </Form.Field>
+                                <Form.Field width={ 8 }>
+                                    <Button fluid icon="check" type="submit" />
+                                </Form.Field>
+                            </Form.Group>
+                        </Form>
                     </div>
-                </div>
-            )}
+                </Segment>
+            </Portal>
         </div>
     );
 };

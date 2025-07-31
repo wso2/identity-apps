@@ -16,5 +16,10 @@
  * under the License.
  */
 
-export * from "./workflowRequests";
-export * from "./endpoints";
+.workflow-requests-filter-dropdown {
+    width: 100%;
+
+    .ui.dropdown {
+        width: 100%;
+    }
+} 

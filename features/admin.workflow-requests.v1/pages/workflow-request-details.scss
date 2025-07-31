@@ -16,5 +16,22 @@
  * under the License.
  */
 
-export * from "./workflow-requests";
-export { default as WorkflowRequestDetailsPage } from "./workflow-request-details";
+// ===================================
+// Workflow Request Details Styles
+// ===================================
+
+.workflow-request-details-table {
+    .ui.table td {
+        vertical-align: top;
+
+        &.param-key {
+            font-weight: 500;
+            vertical-align: top;
+        }
+
+        &.param-value {
+            word-break: break-all;
+            vertical-align: top;
+        }
+    }
+} 

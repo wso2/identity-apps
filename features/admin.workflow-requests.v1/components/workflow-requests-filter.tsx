@@ -20,7 +20,7 @@ import React from "react";
 import { WorkflowRequestOperationTypeDropdown, WorkflowRequestRequestTypeDropdown, WorkflowRequestsStatusDropdown } from "./filter-dropdowns";
 import TimeRangeDropdown from "./time-range-dropdown";
 import { useTranslation } from "react-i18next";
-import "../styles/workflow-requests.css";
+import "./workflow-requests-filter.scss";
 
 interface WorkflowRequestsFilterProps {
     requestType: string;
@@ -53,7 +53,7 @@ const WorkflowRequestsFilter: React.FC<WorkflowRequestsFilterProps> = ({
     handleUpdatedTimeRangeChange,
     handleUpdatedCustomDateChange
 }) => {
-    const { t } = useTranslation(["workflow-requests"]);
+    const { t } = useTranslation();
     
     return (
         <form className="workflow-requests-filter-bar advanced-search ui form" autoComplete="off">
@@ -66,7 +66,7 @@ const WorkflowRequestsFilter: React.FC<WorkflowRequestsFilterProps> = ({
                                 setRequestType(data.value as string);
                             }}
                             data-componentid="workflow-requests-event-type-dropdown"
-                            placeholder={t("filters.requestType")}
+                            placeholder={t("approvalWorkflows:filters.requestType")}
                         />
                     </div>
                 </div>
@@ -78,7 +78,7 @@ const WorkflowRequestsFilter: React.FC<WorkflowRequestsFilterProps> = ({
                                 setStatus(data.value as string);
                             }}
                             data-componentid="workflow-requests-status-dropdown"
-                            placeholder={t("filters.status")}
+                            placeholder={t("approvalWorkflows:filters.status")}
                         />
                     </div>
                 </div>
@@ -90,14 +90,14 @@ const WorkflowRequestsFilter: React.FC<WorkflowRequestsFilterProps> = ({
                                 setOperationType(data.value as string);
                             }}
                             data-componentid="workflow-requests-operation-type-dropdown"
-                            placeholder={t("filters.operationType")}
+                            placeholder={t("approvalWorkflows:filters.operationType")}
                         />
                     </div>
                 </div>
                 <div className="field">
                     <div>
                         <TimeRangeDropdown
-                            label={t("filters.createdTimeRange")}
+                            label={t("approvalWorkflows:filters.createdTimeRange")}
                             selectedRange={createdTimeRange}
                             onRangeChange={(range) => {
                                 handleCreatedTimeRangeChange(range);
@@ -113,7 +113,7 @@ const WorkflowRequestsFilter: React.FC<WorkflowRequestsFilterProps> = ({
                 <div className="field">
                     <div>
                         <TimeRangeDropdown
-                            label={t("filters.updatedTimeRange")}
+                            label={t("approvalWorkflows:filters.updatedTimeRange")}
                             selectedRange={updatedTimeRange}
                             onRangeChange={(range) => {
                                 handleUpdatedTimeRangeChange(range);

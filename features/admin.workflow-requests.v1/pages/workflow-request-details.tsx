@@ -18,31 +18,41 @@
 
 import React, { useEffect, useState } from "react";
 import { fetchWorkflowInstance, deleteWorkflowInstance } from "../api/workflow-requests";
+import { useGetWorkflowInstance } from "../api/use-get-workflow-instance";
 import { WorkflowInstanceResponseInterface } from "../models/workflowRequests";
 import { TabPageLayout } from "@wso2is/react-components";
 import { useTranslation } from "react-i18next";
-import { history } from "../../admin.core.v1/helpers/history";
-import { AppConstants } from "../../admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { Button, Icon, Message, Table } from "semantic-ui-react";
 import { DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import { Modal } from "semantic-ui-react";
 import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
-import "../styles/workflow-requests.css";
+import "./workflow-request-details.scss";
 
 const WorkflowRequestDetailsPage: React.FC = () => {
-    const { t } = useTranslation([ "workflow-requests" ]);
-    const [ workflowRequest, setWorkflowRequest ] = useState<WorkflowInstanceResponseInterface | null>(null);
-    const [ loading, setLoading ] = useState(false);
-    const [ error, setError ] = useState<string | null>(null);
+    const { t } = useTranslation();
     const [ showDeleteModal, setShowDeleteModal ] = useState(false);
     const dispatch = useDispatch();
 
     const path: string[] = history.location.pathname.split("/");
     const id: string = path[path.length - 1];
 
-    // Helper function to format date in human-readable format
+    const {
+        data: workflowRequest,
+        isLoading: loading,
+        error: workflowInstanceError,
+        mutate: mutateWorkflowInstance
+    } = useGetWorkflowInstance(id, !!id);
+
+    useEffect(() => {
+        if (workflowInstanceError) {
+            // Error handling is done by the hook
+        }
+    }, [workflowInstanceError]);
+
     const formatHumanReadableDate = (dateString: string): string => {
         if (!dateString) return "-";
         
@@ -190,33 +200,10 @@ const WorkflowRequestDetailsPage: React.FC = () => {
         return result;
     };
 
-    useEffect(() => {
-        setLoading(true);
-        fetchWorkflowInstance(id)
-            .then((data) => {
-                setWorkflowRequest(data);
-                setError(null);
-            })
-            .catch(() => {
-                setError(t("details.error.content"));
-            })
-            .finally(() => setLoading(false));
-    }, [id, t]);
+    // The hook automatically handles fetching when id changes
 
     const handleBackButtonClick = () => {
-        if (window.location.href.includes(AppConstants.getPaths().get("ADMINISTRATORS"))) {
-            history.push(AppConstants.getPaths().get("ADMINISTRATORS"));
-        } else {
-            history.push(AppConstants.getPaths().get("WORKFLOW_LOGS"));
-        }
-    };
-
-    const getBackButtonText = (): string => {
-        if (window.location.href.includes(AppConstants.getPaths().get("ADMINISTRATORS"))) {
-            return t("pages:usersEdit.backButton", { type: "Administrators" });
-        } else {
-            return t("details.backButton");
-        }
+        history.push(AppConstants.getPaths().get("WORKFLOW_REQUESTS"));
     };
 
     // Details table as a component for tab content
@@ -230,31 +217,31 @@ const WorkflowRequestDetailsPage: React.FC = () => {
             <Table definition className="workflow-request-details-table">
                 <Table.Body>
                     <Table.Row>
-                        <Table.Cell width={3}>{t("details.fields.id")}</Table.Cell>
+                        <Table.Cell width={3}>{t("approvalWorkflows:details.fields.id")}</Table.Cell>
                         <Table.Cell>{workflowRequest.workflowInstanceId}</Table.Cell>
                     </Table.Row>
                     <Table.Row>
-                        <Table.Cell>{t("details.fields.eventType")}</Table.Cell>
+                        <Table.Cell>{t("approvalWorkflows:details.fields.eventType")}</Table.Cell>
                         <Table.Cell>{workflowRequest.eventType}</Table.Cell>
                     </Table.Row>
                     <Table.Row>
-                        <Table.Cell>{t("details.fields.requestInitiator")}</Table.Cell>
+                        <Table.Cell>{t("approvalWorkflows:details.fields.requestInitiator")}</Table.Cell>
                         <Table.Cell>{workflowRequest.requestInitiator || "-"}</Table.Cell>
                     </Table.Row>
                     <Table.Row>
-                        <Table.Cell>{t("details.fields.status")}</Table.Cell>
+                        <Table.Cell>{t("approvalWorkflows:details.fields.status")}</Table.Cell>
                         <Table.Cell>{workflowRequest.status}</Table.Cell>
                     </Table.Row>
                     <Table.Row>
-                        <Table.Cell>{t("details.fields.createdAt")}</Table.Cell>
+                        <Table.Cell>{t("approvalWorkflows:details.fields.createdAt")}</Table.Cell>
                         <Table.Cell>{formatHumanReadableDate(workflowRequest.createdAt)}</Table.Cell>
                     </Table.Row>
                     <Table.Row>
-                        <Table.Cell>{t("details.fields.updatedAt")}</Table.Cell>
+                        <Table.Cell>{t("approvalWorkflows:details.fields.updatedAt")}</Table.Cell>
                         <Table.Cell>{formatHumanReadableDate(workflowRequest.updatedAt)}</Table.Cell>
                     </Table.Row>
                     <Table.Row>
-                        <Table.Cell>{t("details.fields.requestParams")}</Table.Cell>
+                        <Table.Cell>{t("approvalWorkflows:details.fields.requestParams")}</Table.Cell>
                         <Table.Cell>
                             {params && Object.keys(params).length > 0 ? (
                                 <Table celled compact size="small">
@@ -279,7 +266,6 @@ const WorkflowRequestDetailsPage: React.FC = () => {
 
     const handleDelete = async () => {
         if (!workflowRequest) return;
-        setLoading(true);
         try {
             await deleteWorkflowInstance(workflowRequest.workflowInstanceId);
             dispatch(addAlert({
@@ -288,38 +274,36 @@ const WorkflowRequestDetailsPage: React.FC = () => {
                 message: t("console:manage.features.workflowRequests.notifications.deleteWorkflowRequest.success.message")
             }));
             setShowDeleteModal(false);
-            history.push(AppConstants.getPaths().get("WORKFLOW_LOGS"));
+            history.push(AppConstants.getPaths().get("WORKFLOW_REQUESTS"));
         } catch (err: any) {
             dispatch(addAlert({
                 description: t("console:manage.features.workflowRequests.notifications.deleteWorkflowRequest.error.description", { description: err?.response?.data?.detail || "" }),
                 level: AlertLevels.ERROR,
                 message: t("console:manage.features.workflowRequests.notifications.deleteWorkflowRequest.error.message")
             }));
-        } finally {
-            setLoading(false);
         }
     };
 
     return (
         <TabPageLayout
             isLoading={loading}
-            title={t("details.header")}
+                            title={t("approvalWorkflows:details.header")}
             backButton={{
                 "data-testid": "workflow-requests-details-back-button",
                 onClick: handleBackButtonClick,
-                text: getBackButtonText()
+                text: t("approvalWorkflows:details.backButton")
             }}
             titleTextAlign="left"
             bottomMargin={false}
         >
-            {error && <Message negative header={t("workflowRequests:details.error.header")} content={error} />}
+                            {workflowInstanceError && <Message negative header={t("approvalWorkflows:details.error.header")} content={t("approvalWorkflows:details.error.content")} />}
             {workflowRequest && renderDetailsTable()}
             {workflowRequest && (
-                <DangerZoneGroup sectionHeader={t("workflowRequests:details.dangerZone.header")}>
+                <DangerZoneGroup sectionHeader={t("approvalWorkflows:details.dangerZone.header")}>
                     <DangerZone
-                        actionTitle={t("workflowRequests:details.dangerZone.delete.actionTitle")}
-                        header={t("workflowRequests:details.dangerZone.delete.header")}
-                        subheader={t("workflowRequests:details.dangerZone.delete.subheader")}
+                        actionTitle={t("approvalWorkflows:details.dangerZone.delete.actionTitle")}
+                        header={t("approvalWorkflows:details.dangerZone.delete.header")}
+                        subheader={t("approvalWorkflows:details.dangerZone.delete.subheader")}
                         onActionClick={() => setShowDeleteModal(true)}
                         data-testid="workflow-requests-details-danger-zone-delete"
                     />
@@ -330,9 +314,9 @@ const WorkflowRequestDetailsPage: React.FC = () => {
                 size="small"
                 onClose={() => setShowDeleteModal(false)}
             >
-                <Modal.Header>{t("workflowRequests:details.dangerZone.delete.header")}</Modal.Header>
+                                    <Modal.Header>{t("approvalWorkflows:details.dangerZone.delete.header")}</Modal.Header>
                 <Modal.Content>
-                    <p>{t("workflowRequests:details.dangerZone.delete.confirm")}</p>
+                                            <p>{t("approvalWorkflows:details.dangerZone.delete.confirm")}</p>
                 </Modal.Content>
                 <Modal.Actions>
                     <Button onClick={() => setShowDeleteModal(false)}>{t("common:cancel")}</Button>

@@ -389,7 +389,6 @@ export class I18nConstants {
         [ I18nConstants.PUSH_PROVIDERS_NAMESPACE, "portals" ],
         [ I18nConstants.EMAIL_PROVIDERS_NAMESPACE, "portals" ],
         [ I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE, "portals" ],
-        [ I18nConstants.WORKFLOW_REQUESTS_NAMESPACE, "portals" ],
         [ I18nConstants.AGENTS_NAMESPACE, "portals" ],
         [ I18nConstants.FLOWS_NAMESPACE, "portals" ]
     ]);
