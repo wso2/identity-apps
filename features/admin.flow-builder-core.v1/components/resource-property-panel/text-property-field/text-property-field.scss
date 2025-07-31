@@ -52,7 +52,7 @@
 
         .card {
             position: absolute;
-            max-width: 350px;
+            width: 350px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
             border: 1px solid var(--oxygen-palette-divider);
             border-radius: var(--oxygen-shape-borderRadius);
@@ -66,6 +66,7 @@
                 .MuiCardHeader-title {
                     font-size: 1rem;
                     font-weight: 500;
+                    margin-right: 5px;
                 }
             }
 
@@ -78,6 +79,12 @@
 
             .card-actions {
                 justify-content: flex-end;
+                padding: 8px 0;
+                gap: 8px;
+
+                .oxygen-button {
+                    min-width: auto;
+                }
             }
 
             .i18n-config-container {

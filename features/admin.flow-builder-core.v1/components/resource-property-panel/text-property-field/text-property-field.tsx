@@ -108,7 +108,7 @@ const TextPropertyField: FunctionComponent<TextPropertyFieldPropsInterface> = ({
                         <InputAdornment position="end">
                             <Tooltip
                                 title={
-                                    t("flows:core.elements.textPropertyField.tooltip.configureInternationalization")
+                                    t("flows:core.elements.textPropertyField.tooltip.configureTranslation")
                                 }
                             >
                                 <IconButton
@@ -116,7 +116,7 @@ const TextPropertyField: FunctionComponent<TextPropertyFieldPropsInterface> = ({
                                     onClick={ handleI18nToggle }
                                     size="small"
                                     aria-label={
-                                        t("flows:core.elements.textPropertyField.tooltip.configureInternationalization")
+                                        t("flows:core.elements.textPropertyField.tooltip.configureTranslation")
                                     }
                                     aria-pressed={ isI18nCardOpen }
                                     className="flow-builder-resource-property-panel-i18n icon-button"

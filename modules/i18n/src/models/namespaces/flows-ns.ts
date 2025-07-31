@@ -71,10 +71,13 @@ export interface flowsNS {
             };
             textPropertyField: {
                 i18nCard: {
+                    configure: string;
+                    configureTitle: string;
                     i18nKey: string;
                     languageText: string;
                     languageTextPlaceholder: string;
                     screenName: string;
+                    selectOrAddI18nKey: string;
                     selectI18nKey: string;
                     selectLanguage: string;
                     selectScreenName: string;
@@ -84,8 +87,7 @@ export interface flowsNS {
                 placeholder: string;
                 tooltip: {
                     addI18nKey: string;
-                    addScreenName: string;
-                    configureInternationalization: string;
+                    configureTranslation: string;
                 };
             };
         };

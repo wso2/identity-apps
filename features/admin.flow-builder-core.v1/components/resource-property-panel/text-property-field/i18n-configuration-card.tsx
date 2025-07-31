@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { SelectChangeEvent } from "@mui/material/Select";
 import Autocomplete from "@oxygen-ui/react/Autocomplete";
 import Button from "@oxygen-ui/react/Button";
 import Card from "@oxygen-ui/react/Card";
@@ -25,15 +24,16 @@ import CardContent from "@oxygen-ui/react/CardContent";
 import CardHeader from "@oxygen-ui/react/CardHeader";
 import IconButton from "@oxygen-ui/react/IconButton";
 import MenuItem from "@oxygen-ui/react/MenuItem";
-import Select from "@oxygen-ui/react/Select";
+import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
-import { PlusIcon, TrashIcon, XMarkIcon } from "@oxygen-ui/react-icons";
+import { GearIcon, PlusIcon, TrashIcon, XMarkIcon } from "@oxygen-ui/react-icons";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import lowerCase from "lodash-es/lowerCase";
+import upperFirst from "lodash-es/upperFirst";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
@@ -108,15 +108,18 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
     );
 
     // State for screen types and i18n keys
-    const [ screenTypes, setScreenTypes ] = useState<ScreenTypeOption[]>([
+    const [ screenTypes ] = useState<ScreenTypeOption[]>([
         { id: "login", label: "Login Screen" },
         { id: "signup", label: "Sign Up Screen" },
         { id: "profile", label: "Profile Screen This is tool login screen name" },
         { id: "settings", label: "Settings Screen" }
     ]);
     const [ selectedScreenType, setSelectedScreenType ] = useState<ScreenTypeOption | null>(null);
-    const [ screenTypeInputValue, setScreenTypeInputValue ] = useState<string>("");
 
+    // State for card view toggle
+    const [ isCustomizeView, setIsCustomizeView ] = useState<boolean>(false);
+
+    // State for i18n keys
     const [ i18nKeys, setI18nKeys ] = useState<Record<string, I18nKeyOption[]>>({
         login: [
             { label: "login.title" },
@@ -176,30 +179,14 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
     }, [ supportedLocales, selectedLanguage ]);
 
     /**
-     * Handles adding a new screen type.
+     * Handles screen type selection change.
      */
-    const handleAddScreenType = (): void => {
-        if (screenTypeInputValue.trim()) {
-            const newScreenType: ScreenTypeOption = {
-                id: screenTypeInputValue.toLowerCase().replace(/\s+/g, "-"),
-                label: screenTypeInputValue.trim()
-            };
-
-            setScreenTypes([ ...screenTypes, newScreenType ]);
-            setI18nKeys({ ...i18nKeys, [newScreenType.id]: [] });
-            setSelectedScreenType(newScreenType);
-            setScreenTypeInputValue("");
-        }
-    };
-
-    /**
-     * Checks if the screen type input contains a new value not in the existing options.
-     */
-    const isNewScreenType = (): boolean => {
-        return screenTypeInputValue.trim() !== "" &&
-               !screenTypes.some((type: ScreenTypeOption) =>
-                   type.label.toLowerCase() === screenTypeInputValue.toLowerCase().trim()
-               );
+    const handleScreenTypeChange = (
+        _event: React.SyntheticEvent,
+        newValue: ScreenTypeOption | null
+    ): void => {
+        setSelectedScreenType(newValue);
+        setSelectedI18nKey(null);
     };
 
     /**
@@ -233,21 +220,6 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
         return !i18nKeys[selectedScreenType.id]?.some((key: I18nKeyOption) =>
             key.label.toLowerCase() === inputKey.toLowerCase()
         );
-    };
-
-    /**
-     * Handles deleting a screen type.
-     */
-    const handleDeleteScreenType = (screenTypeId: string): void => {
-        setScreenTypes(screenTypes.filter((type: ScreenTypeOption) => type.id !== screenTypeId));
-        const updatedI18nKeys: Record<string, I18nKeyOption[]> = { ...i18nKeys };
-
-        delete updatedI18nKeys[screenTypeId];
-        setI18nKeys(updatedI18nKeys);
-        if (selectedScreenType?.id === screenTypeId) {
-            setSelectedScreenType(null);
-            setSelectedI18nKey(null);
-        }
     };
 
     /**
@@ -330,17 +302,35 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                 window.removeEventListener("resize", handleResize);
             };
         }
-    }, [ open, anchorEl ]);
+    }, [ open, anchorEl, isCustomizeView ]);
 
     /**
-     * Handles the save action of the i18n configuration card.
+     * Handles entering customize view.
      */
-    const handleSave = (): void => {
+    const handleCustomizeView = (): void => {
+        setIsCustomizeView(true);
+    };
+
+    /**
+     * Handles returning from customize view.
+     */
+    const handleBackToSimpleView = (): void => {
+        setIsCustomizeView(false);
+        setSelectedScreenType(null);
+        setSelectedI18nKey(null);
+        setLanguageTexts({});
+    };
+
+    /**
+     * Handles save in customize view and return to simple view.
+     */
+    const handleSaveCustomize = (): void => {
         if (selectedScreenType && selectedI18nKey) {
             // TODO: Implement save logic here - update the property with selected i18n key
             // eslint-disable-next-line no-console
             console.log("Saving i18n configuration:", {
                 i18nKey: selectedI18nKey,
+                languageTexts,
                 propertyKey,
                 screenType: selectedScreenType
             });
@@ -351,7 +341,7 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
 
             return;
         }
-        onClose();
+        setIsCustomizeView(false);
     };
 
     if (!open) {
@@ -375,9 +365,12 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                 data-componentid={ componentId }
             >
                 <CardHeader
-                    title={ t("flows:core.elements.textPropertyField.i18nCard.title", {
-                        propertyKey: lowerCase(propertyKey)
-                    }) }
+                    title={ isCustomizeView
+                        ? t("flows:core.elements.textPropertyField.i18nCard.configureTitle")
+                        : t("flows:core.elements.textPropertyField.i18nCard.title", {
+                            propertyKey: upperFirst(lowerCase(propertyKey))
+                        })
+                    }
                     action={ (
                         <IconButton
                             aria-label={ t("common:close") }
@@ -390,236 +383,253 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                     className="card-header"
                 />
                 <CardContent className="card-content">
-                    <div className="i18n-config-container">
-                        <div>
-                            <Typography variant="subtitle2" gutterBottom>
-                                { t("flows:core.elements.textPropertyField.i18nCard.screenName") }
-                            </Typography>
-                            <div className="i18n-selection-row">
-                                <Autocomplete
-                                    freeSolo
-                                    options={ screenTypes }
-                                    getOptionLabel={ (option: ScreenTypeOption | string) =>
-                                        typeof option === "string" ? option : option.label
-                                    }
-                                    value={ selectedScreenType }
-                                    inputValue={ screenTypeInputValue }
-                                    onChange={ (
-                                        _event: React.SyntheticEvent,
-                                        newValue: ScreenTypeOption | string | null
-                                    ) => {
-                                        if (typeof newValue === "string") {
-                                            // Handle free solo input
-                                            setScreenTypeInputValue(newValue);
-                                            setSelectedScreenType(null);
-                                        } else {
-                                            setSelectedScreenType(newValue);
-                                            setScreenTypeInputValue(newValue?.label || "");
-                                        }
-                                        setSelectedI18nKey(null);
-                                    } }
-                                    onInputChange={ (_event: React.SyntheticEvent, newInputValue: string) => {
-                                        setScreenTypeInputValue(newInputValue);
-                                        if (newInputValue === "") {
-                                            setSelectedScreenType(null);
-                                        }
-                                    } }
-                                    renderInput={ (params: any) => (
-                                        <TextField
-                                            { ...params }
-                                            placeholder={
-                                                t("flows:core.elements.textPropertyField.i18nCard.selectScreenName")
-                                            }
-                                            size="small"
-                                        />
-                                    ) }
-                                    renderOption={ (props: any, option: ScreenTypeOption) => (
-                                        <li { ...props } className="option-item">
-                                            <Tooltip title={ option.label } placement="top">
-                                                <span className="option-text">{ option.label }</span>
-                                            </Tooltip>
-                                            <IconButton
-                                                size="small"
-                                                onClick={ (e: React.MouseEvent) => {
-                                                    e.stopPropagation();
-                                                    handleDeleteScreenType(option.id);
-                                                } }
-                                                aria-label={ t("common:delete") }
-                                                className="delete-icon-button"
-                                            >
-                                                <TrashIcon />
-                                            </IconButton>
-                                        </li>
-                                    ) }
-                                    slotProps={ {
-                                        popper: {
-                                            className: "flow-builder-resource-property-panel-text-field"
-                                        }
-                                    } }
-                                />
-                                <Tooltip
-                                    title={ t("flows:core.elements.textPropertyField.tooltip.addScreenName") }
-                                >
-                                    <span>
-                                        <IconButton
-                                            size="small"
-                                            onClick={ handleAddScreenType }
-                                            disabled={ !isNewScreenType() }
-                                            className="add-icon-button"
-                                        >
-                                            <PlusIcon />
-                                        </IconButton>
-                                    </span>
-                                </Tooltip>
-                            </div>
-                        </div>
-
-                        <div>
-                            <Typography variant="subtitle2" gutterBottom>
-                                { t("flows:core.elements.textPropertyField.i18nCard.i18nKey") }
-                            </Typography>
-                            <div className="i18n-selection-row">
-                                <Autocomplete
-                                    freeSolo
-                                    options={ getAvailableI18nKeys() }
-                                    getOptionLabel={ (option: I18nKeyOption) =>
-                                        `${option.label}`
-                                    }
-                                    value={ selectedI18nKey }
-                                    inputValue={ i18nKeyInputValue }
-                                    onChange={ (
-                                        _event: React.SyntheticEvent,
-                                        newValue: I18nKeyOption | string | null
-                                    ) => {
-                                        if (typeof newValue === "string") {
-                                            // Handle free solo input
-                                            setI18nKeyInputValue(newValue);
-                                            setSelectedI18nKey(null);
-                                        } else {
+                    { !isCustomizeView ? (
+                        <div className="i18n-config-container">
+                            <div>
+                                <Typography variant="subtitle2" gutterBottom>
+                                    { t("flows:core.elements.textPropertyField.i18nCard.i18nKey") }
+                                </Typography>
+                                <div className="i18n-selection-row">
+                                    <Autocomplete
+                                        options={ Object.values(i18nKeys).flat() }
+                                        getOptionLabel={ (option: I18nKeyOption) => `${option.label}` }
+                                        value={ selectedI18nKey }
+                                        onChange={ (
+                                            _event: React.SyntheticEvent,
+                                            newValue: I18nKeyOption | null
+                                        ) => {
                                             setSelectedI18nKey(newValue);
-                                            setI18nKeyInputValue(newValue ? `${newValue.label}` : "");
-                                        }
-                                    } }
-                                    onInputChange={ (_event: React.SyntheticEvent, newInputValue: string) => {
-                                        setI18nKeyInputValue(newInputValue);
-                                        if (newInputValue === "") {
-                                            setSelectedI18nKey(null);
-                                        }
-                                    } }
-                                    disabled={ !selectedScreenType }
-                                    renderInput={ (params: any) => (
-                                        <TextField
-                                            { ...params }
-                                            placeholder={ selectedScreenType
-                                                ? t("flows:core.elements.textPropertyField.i18nCard.selectI18nKey")
-                                                : t("flows:core.elements.textPropertyField.i18nCard.selectScreen"
-                                                        + "TypeFirst")
-                                            }
-                                            size="small"
-                                        />
-                                    ) }
-                                    renderOption={ (props: any, option: I18nKeyOption) => (
-                                        <li { ...props } className="option-item">
-                                            <Tooltip title={ option.label } placement="top">
-                                                <span className="option-text">{ option.label }</span>
-                                            </Tooltip>
-                                            <IconButton
+                                        } }
+                                        renderInput={ (params: any) => (
+                                            <TextField
+                                                { ...params }
+                                                placeholder={
+                                                    t("flows:core.elements.textPropertyField.i18nCard.selectI18nKey")
+                                                }
                                                 size="small"
-                                                onClick={ (e: React.MouseEvent) => {
-                                                    e.stopPropagation();
-                                                    handleDeleteI18nKey(option.label);
-                                                } }
-                                                aria-label={ t("common:delete") }
-                                                className="delete-icon-button"
-                                            >
-                                                <TrashIcon />
-                                            </IconButton>
-                                        </li>
-                                    ) }
-                                    slotProps={ {
-                                        popper: {
-                                            className: "flow-builder-resource-property-panel-text-field"
-                                        }
-                                    } }
-                                />
-                                <Tooltip
-                                    title={ t("flows:core.elements.textPropertyField.tooltip.addI18nKey") }
-                                >
-                                    <span>
-                                        <IconButton
-                                            size="small"
-                                            onClick={ handleAddI18nKey }
-                                            disabled={ !selectedScreenType || !isNewI18nKey() }
-                                            className="add-icon-button"
-                                        >
-                                            <PlusIcon />
-                                        </IconButton>
-                                    </span>
-                                </Tooltip>
+                                            />
+                                        ) }
+                                        renderOption={ (props: any, option: I18nKeyOption) => (
+                                            <li { ...props } className="option-item">
+                                                <Tooltip title={ option.label } placement="top">
+                                                    <span className="option-text">{ option.label }</span>
+                                                </Tooltip>
+                                            </li>
+                                        ) }
+                                        slotProps={ {
+                                            popper: {
+                                                className: "flow-builder-resource-property-panel-text-field"
+                                            }
+                                        } }
+                                    />
+                                </div>
                             </div>
                         </div>
-
-                        <div>
-                            <Typography variant="subtitle2" gutterBottom>
-                                { t("flows:core.elements.textPropertyField.i18nCard.languageText") }
-                            </Typography>
-                            <div className="i18n-selection-row">
-                                <TextField
-                                    fullWidth
-                                    size="small"
-                                    placeholder={
-                                        t("flows:core.elements.textPropertyField.i18nCard.languageTextPlaceholder")
-                                    }
-                                    value={ languageTexts[selectedLanguage] || "" }
-                                    onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
-                                        handleLanguageTextChange(e.target.value)
-                                    }
-                                    disabled={ !selectedScreenType || !selectedI18nKey }
-                                />
-                                <Select
-                                    value={ selectedLanguage }
-                                    onChange={ handleLanguageChange }
-                                    displayEmpty
-                                    size="small"
-                                    disabled={ !selectedScreenType || !selectedI18nKey }
-                                    placeholder={ t("flows:core.elements.textPropertyField.i18nCard.selectLanguage") }
-                                    renderValue={ (value: string) => (
-                                        <i
-                                            className={
-                                                `${supportedI18nLanguages[value]?.flag} flag`
+                    ) : (
+                        <div className="i18n-config-container">
+                            <div>
+                                <Typography variant="subtitle2" gutterBottom>
+                                    { t("flows:core.elements.textPropertyField.i18nCard.screenName") }
+                                </Typography>
+                                <div className="i18n-selection-row">
+                                    <Autocomplete
+                                        options={ screenTypes }
+                                        getOptionLabel={ (option: ScreenTypeOption) => option.label }
+                                        value={ selectedScreenType }
+                                        onChange={ handleScreenTypeChange }
+                                        renderInput={ (params: any) => (
+                                            <TextField
+                                                { ...params }
+                                                placeholder={
+                                                    t("flows:core.elements.textPropertyField.i18nCard.selectScreenName")
+                                                }
+                                                size="small"
+                                            />
+                                        ) }
+                                        renderOption={ (props: any, option: ScreenTypeOption) => (
+                                            <li { ...props } className="option-item">
+                                                <Tooltip title={ option.label } placement="top">
+                                                    <span className="option-text">{ option.label }</span>
+                                                </Tooltip>
+                                            </li>
+                                        ) }
+                                        slotProps={ {
+                                            popper: {
+                                                className: "flow-builder-resource-property-panel-text-field"
                                             }
-                                        ></i>
-                                    ) }
-                                >
-                                    { supportedLocales.map((locale: LocaleOption) => (
-                                        <MenuItem
-                                            key={ locale.code }
-                                            value={ locale.value }
-                                        >
+                                        } }
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <Typography variant="subtitle2" gutterBottom>
+                                    { t("flows:core.elements.textPropertyField.i18nCard.i18nKey") }
+                                </Typography>
+                                <div className="i18n-selection-row">
+                                    <Autocomplete
+                                        freeSolo
+                                        options={ getAvailableI18nKeys() }
+                                        getOptionLabel={ (option: I18nKeyOption) => `${option.label}` }
+                                        value={ selectedI18nKey }
+                                        inputValue={ i18nKeyInputValue }
+                                        onChange={ (
+                                            _event: React.SyntheticEvent,
+                                            newValue: I18nKeyOption | string | null
+                                        ) => {
+                                            if (typeof newValue === "string") {
+                                                // Handle free solo input
+                                                setI18nKeyInputValue(newValue);
+                                                setSelectedI18nKey(null);
+                                            } else {
+                                                setSelectedI18nKey(newValue);
+                                                setI18nKeyInputValue(newValue ? `${newValue.label}` : "");
+                                            }
+                                        } }
+                                        onInputChange={ (_event: React.SyntheticEvent, newInputValue: string) => {
+                                            setI18nKeyInputValue(newInputValue);
+                                            if (newInputValue === "") {
+                                                setSelectedI18nKey(null);
+                                            }
+                                        } }
+                                        disabled={ !selectedScreenType }
+                                        renderInput={ (params: any) => (
+                                            <TextField
+                                                { ...params }
+                                                placeholder={ selectedScreenType
+                                                    ? t("flows:core.elements.textPropertyField.i18nCard." +
+                                                                "selectOrAddI18nKey")
+                                                    : t("flows:core.elements.textPropertyField.i18nCard.selectScreen"
+                                                            + "TypeFirst")
+                                                }
+                                                size="small"
+                                            />
+                                        ) }
+                                        renderOption={ (props: any, option: I18nKeyOption) => (
+                                            <li { ...props } className="option-item">
+                                                <Tooltip title={ option.label } placement="top">
+                                                    <span className="option-text">{ option.label }</span>
+                                                </Tooltip>
+                                                <IconButton
+                                                    size="small"
+                                                    onClick={ (e: React.MouseEvent) => {
+                                                        e.stopPropagation();
+                                                        handleDeleteI18nKey(option.label);
+                                                    } }
+                                                    aria-label={ t("common:delete") }
+                                                    className="delete-icon-button"
+                                                >
+                                                    <TrashIcon />
+                                                </IconButton>
+                                            </li>
+                                        ) }
+                                        slotProps={ {
+                                            popper: {
+                                                className: "flow-builder-resource-property-panel-text-field"
+                                            }
+                                        } }
+                                    />
+                                    <Tooltip
+                                        title={ t("flows:core.elements.textPropertyField.tooltip.addI18nKey") }
+                                    >
+                                        <span>
+                                            <IconButton
+                                                size="small"
+                                                onClick={ handleAddI18nKey }
+                                                disabled={ !selectedScreenType || !isNewI18nKey() }
+                                                className="add-icon-button"
+                                            >
+                                                <PlusIcon />
+                                            </IconButton>
+                                        </span>
+                                    </Tooltip>
+                                </div>
+                            </div>
+
+                            <div>
+                                <Typography variant="subtitle2" gutterBottom>
+                                    { t("flows:core.elements.textPropertyField.i18nCard.languageText") }
+                                </Typography>
+                                <div className="i18n-selection-row">
+                                    <TextField
+                                        fullWidth
+                                        size="small"
+                                        placeholder={
+                                            t("flows:core.elements.textPropertyField.i18nCard.languageTextPlaceholder")
+                                        }
+                                        value={ languageTexts[selectedLanguage] || "" }
+                                        onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                                            handleLanguageTextChange(e.target.value)
+                                        }
+                                        disabled={ !selectedScreenType || !selectedI18nKey }
+                                    />
+                                    <Select
+                                        value={ selectedLanguage }
+                                        onChange={ handleLanguageChange }
+                                        displayEmpty
+                                        size="small"
+                                        disabled={ !selectedScreenType || !selectedI18nKey }
+                                        placeholder={
+                                            t("flows:core.elements.textPropertyField.i18nCard.selectLanguage")
+                                        }
+                                        renderValue={ (value: string) => (
                                             <i
                                                 className={
-                                                    `${supportedI18nLanguages[locale.code]?.flag} flag`
+                                                    `${supportedI18nLanguages[value]?.flag} flag`
                                                 }
                                             ></i>
-                                            <span>
-                                                { supportedI18nLanguages[locale.code]?.name }, { locale.code }
-                                            </span>
-                                        </MenuItem>
-                                    )) }
-                                </Select>
+                                        ) }
+                                    >
+                                        { supportedLocales.map((locale: LocaleOption) => (
+                                            <MenuItem
+                                                key={ locale.code }
+                                                value={ locale.value }
+                                            >
+                                                <i
+                                                    className={
+                                                        `${supportedI18nLanguages[locale.code]?.flag} flag`
+                                                    }
+                                                ></i>
+                                                <span>
+                                                    { supportedI18nLanguages[locale.code]?.name }, { locale.code }
+                                                </span>
+                                            </MenuItem>
+                                        )) }
+                                    </Select>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    ) }
                 </CardContent>
                 <CardActions className="card-actions">
-                    <Button
-                        size="small"
-                        onClick={ handleSave }
-                        variant="contained"
-                        color="primary"
-                    >
-                        { t("common:save") }
-                    </Button>
+                    { !isCustomizeView ? (
+                        <Button
+                            variant="text"
+                            size="small"
+                            onClick={ handleCustomizeView }
+                            startIcon={ <GearIcon /> }
+                        >
+                            { t("flows:core.elements.textPropertyField.i18nCard.configure") }
+                        </Button>
+                    ) : (
+                        <>
+                            <Button
+                                size="small"
+                                onClick={ handleBackToSimpleView }
+                                variant="outlined"
+                            >
+                                { t("common:back") }
+                            </Button>
+                            <Button
+                                size="small"
+                                onClick={ handleSaveCustomize }
+                                variant="contained"
+                                color="primary"
+                            >
+                                { t("common:save") }
+                            </Button>
+                        </>
+                    ) }
                 </CardActions>
             </Card>
         </div>,

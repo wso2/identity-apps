@@ -72,21 +72,23 @@ export const flows: flowsNS = {
             },
             textPropertyField: {
                 i18nCard: {
-                    i18nKey: "Internationalization key",
+                    configure: "More",
+                    configureTitle: "Configure Translation Keys",
+                    i18nKey: "Translation key",
                     languageText: "Language text configuration",
                     languageTextPlaceholder: "Enter text for the selected language",
                     screenName: "Screen name",
-                    selectI18nKey: "Select or add an internationalization key",
+                    selectI18nKey: "Select a translation key",
                     selectLanguage: "Select language",
-                    selectScreenName: "Select or add a screen name",
+                    selectOrAddI18nKey: "Select or add a translation key",
+                    selectScreenName: "Select a screen name",
                     selectScreenTypeFirst: "Please select a screen name first",
-                    title: "Configure {{propertyKey}} internationalization"
+                    title: "{{propertyKey}} translation"
                 },
                 placeholder: "Enter {{propertyName}}",
                 tooltip: {
-                    addI18nKey: "Add a new internationalization key",
-                    addScreenName: "Add a new screen name",
-                    configureInternationalization: "Configure internationalization"
+                    addI18nKey: "Add a new translation key",
+                    configureTranslation: "Configure translation"
                 }
             }
         },
