@@ -16,50 +16,44 @@
  * under the License.
  */
 
-import MenuItem from "@oxygen-ui/react/MenuItem";
-import Select from "@oxygen-ui/react/Select";
-import Typography from "@oxygen-ui/react/Typography";
-import { LabelValue } from "@wso2is/core/models";
+import CountryFlag from "@oxygen-ui/react/CountryFlag";
+import ListItem from "@oxygen-ui/react/ListItem";
+import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
+import ListItemText from "@oxygen-ui/react/ListItemText";
 import { FinalForm, FinalFormField, FormRenderProps, SelectFieldAdapter } from "@wso2is/form";
+import { LocaleMeta, SupportedLanguagesMeta } from "@wso2is/i18n";
 import { Button, Popup, useMediaContext } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Grid, Icon, List } from "semantic-ui-react";
 import EmptyValueField from "./empty-value-field";
-import { DropdownFieldFormPropsInterface } from "../../../models/profile-ui";
+import { LocaleJoiningSymbol, ProfileConstants } from "../../../constants";
+import { LocaleFieldFormPropsInterface } from "../../../models/profile-ui";
+import { AppState } from "../../../store";
 import { EditSection } from "../../shared/edit-section";
 
-/**
- * Interface for the dropdown option item.
- */
-interface DropdownOptionItem {
-    label: string;
-    value: string;
-}
-
-/**
- * User profile dropdown field form component.
- */
-const DropdownFieldForm: FunctionComponent<DropdownFieldFormPropsInterface> = ({
+const LocaleFieldForm: FunctionComponent<LocaleFieldFormPropsInterface> = ({
     fieldSchema: schema,
     initialValue,
     fieldLabel,
+    isRequired,
+    isActive,
     isEditable,
     onEditClicked,
     onEditCancelClicked,
-    isActive,
-    isRequired,
-    isUpdating,
     setIsProfileUpdating,
     handleSubmit,
-    isMultiSelect = false,
-    ["data-componentid"]: testId = "dropdown-field-form"
-}: DropdownFieldFormPropsInterface): ReactElement => {
-    const { isMobileViewport } = useMediaContext();
+    isUpdating,
+    ["data-componentid"]: componentId = "locale-field-form"
+}: LocaleFieldFormPropsInterface): ReactElement => {
     const { t } = useTranslation();
+    const { isMobileViewport } = useMediaContext();
 
-    const options: DropdownOptionItem[] = schema.canonicalValues ?? [];
+    const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
+        (state: AppState) => state.global.supportedI18nLanguages
+    );
 
     const validateField = (value: unknown): string | undefined => {
         // Validate the required field.
@@ -78,45 +72,79 @@ const DropdownFieldForm: FunctionComponent<DropdownFieldFormPropsInterface> = ({
         handleSubmit(schema.name, values[schema.name]);
     };
 
-    const renderInactiveFieldContent = (): ReactElement => {
-        if (!isMultiSelect) {
-            const selectedOption: DropdownOptionItem = options.find((option: DropdownOptionItem) => {
-                return option.value === (initialValue as string);
-            });
+    /**
+     * Returns the options for the dropdown.
+     */
+    const getLocaleOptions = (): {text: ReactNode, value: string}[] => {
+        return Object.entries(supportedI18nLanguages ?? {}).map(([ key, localMeta ]: [string, LocaleMeta]) => {
+            const localeDisplayText: string = localMeta.name === ProfileConstants.GLOBE
+                ? localMeta.code : `${localMeta.name}, ${localMeta.code}`;
 
-            return <>{ selectedOption?.label ?? "" }</>;
+            return {
+                text: (
+                    <ListItem
+                        key={ key }
+                        className="p-0"
+                        data-componentid={ `${componentId}-profile-form-locale-dropdown-${localMeta.code}` }
+                    >
+                        <ListItemIcon>
+                            <CountryFlag
+                                countryCode={ (localMeta.flag ?? ProfileConstants.GLOBE) as string }
+                            />
+                        </ListItemIcon>
+                        <ListItemText>{ localeDisplayText }</ListItemText>
+                    </ListItem>
+                ),
+                value: localMeta.code
+            };
+        });
+    };
+
+    /**
+     * The function returns the normalized format of locale.
+     * Refer https://github.com/wso2/identity-apps/pull/5980 for more details.
+     *
+     * @param locale - locale value.
+     * @param localeJoiningSymbol - symbol used to join language and region parts of locale.
+     * @param updateSupportedLanguage - If supported languages needs to be updated with the given localString or not.
+     */
+    const normalizeLocaleFormat = (
+        locale: string,
+        localeJoiningSymbol: LocaleJoiningSymbol,
+        updateSupportedLanguage: boolean
+    ): string => {
+        if (!locale) {
+            return locale;
         }
 
-        const selectedOptions: DropdownOptionItem[] = options.filter((option: DropdownOptionItem) => {
-            return (initialValue as string[]).includes(option.value);
-        });
+        const separatorIndex: number = locale.search(/[-_]/);
 
-        return (
-            <Select
-                className="multi-attribute-dropdown"
-                value={ selectedOptions[0].value }
-                disableUnderline
-                variant="standard"
-                data-componentid={ `${testId}-${schema.name.replace(".", "-")}-readonly-dropdown` }
-            >
-                { selectedOptions.map(({ label, value }: DropdownOptionItem, index: number) => (
-                    <MenuItem key={ index } value={ value } className="read-only-menu-item">
-                        <div className="dropdown-row">
-                            <Typography
-                                className="dropdown-label"
-                                data-componentid={ `${testId}-readonly-section-${schema.name.replace(
-                                    ".",
-                                    "-"
-                                )}-value-${index}` }
-                            >
-                                { label }
-                            </Typography>
-                        </div>
-                    </MenuItem>
-                )) }
-            </Select>
-        );
+        let normalizedLocale: string = locale;
+
+        if (separatorIndex !== -1) {
+            const language: string = locale.substring(0, separatorIndex).toLowerCase();
+            const region: string = locale.substring(separatorIndex + 1).toUpperCase();
+
+            normalizedLocale = `${language}${localeJoiningSymbol}${region}`;
+        }
+
+        if (updateSupportedLanguage && !supportedI18nLanguages[normalizedLocale]) {
+            supportedI18nLanguages[normalizedLocale] = {
+                code: normalizedLocale,
+                name: ProfileConstants.GLOBE,
+                namespaces: []
+            };
+        }
+
+        return normalizedLocale;
     };
+
+    /**
+     * Returns the normalized initial value.
+     */
+    const normalizedInitialValue: string = useMemo(() => {
+        return normalizeLocaleFormat(initialValue, LocaleJoiningSymbol.HYPHEN, true);
+    }, [ initialValue ]);
 
     if (isActive) {
         return (
@@ -133,40 +161,35 @@ const DropdownFieldForm: FunctionComponent<DropdownFieldFormPropsInterface> = ({
                                             onSubmit={ handleSubmit }
                                             className="dropdown-field-form"
                                             data-componentid={
-                                                `${testId}-editing-section-${ schema.name.replace(".", "-") }-form` }
+                                                `${componentId}-editing-section-${
+                                                    schema.name.replace(".", "-") }-form` }
                                             data-testid={
-                                                `${testId}-editing-section-${ schema.name.replace(".", "-") }-form` }
+                                                `${componentId}-editing-section-${
+                                                    schema.name.replace(".", "-") }-form` }
                                         >
                                             <Grid verticalAlign="middle">
                                                 <Grid.Row columns={ 2 }>
                                                     <Grid.Column width={ 10 }>
                                                         <FinalFormField
                                                             component={ SelectFieldAdapter }
-                                                            initialValue={ initialValue }
+                                                            initialValue={ normalizedInitialValue }
                                                             isClearable={ !isRequired }
                                                             ariaLabel={ fieldLabel }
                                                             name={ schema.name }
                                                             validate={ validateField }
                                                             placeholder={ t(
-                                                                "myAccount:components.profile.forms.generic" +
-                                                                ".dropdown.placeholder", {
-                                                                    fieldName: fieldLabel.toLowerCase()
-                                                                }
+                                                                "myAccount:components.profile.forms." +
+                                                                "generic.dropdown.placeholder",
+                                                                { fieldName: fieldLabel.toLowerCase() }
                                                             ) }
-                                                            options={ options?.map(({ label, value }: LabelValue) => {
-                                                                return {
-                                                                    text: label,
-                                                                    value
-                                                                };
-                                                            }) }
-                                                            multiple={ isMultiSelect }
+                                                            options={ getLocaleOptions() }
                                                             readOnly={ !isEditable || isUpdating }
                                                             disableClearable={ isRequired }
                                                             data-testid={
-                                                                `${testId}-${
+                                                                `${componentId}-${
                                                                     schema.name.replace(".", "-")}-select-field` }
                                                             data-componentid={
-                                                                `${testId}-${
+                                                                `${componentId}-${
                                                                     schema.name.replace(".", "-")}-select-field` }
                                                         />
                                                     </Grid.Column>
@@ -178,7 +201,7 @@ const DropdownFieldForm: FunctionComponent<DropdownFieldFormPropsInterface> = ({
                                                                 primary
                                                                 type="submit"
                                                                 data-testid={
-                                                                    `${testId}-schema-mobile-editing-section-${
+                                                                    `${componentId}-schema-mobile-editing-section-${
                                                                         schema.name.replace(
                                                                             ".",
                                                                             "-"
@@ -189,7 +212,7 @@ const DropdownFieldForm: FunctionComponent<DropdownFieldFormPropsInterface> = ({
                                                             <Button
                                                                 onClick={ onEditCancelClicked }
                                                                 data-testid={
-                                                                    `${testId}-schema-mobile-editing-section-${
+                                                                    `${componentId}-schema-mobile-editing-section-${
                                                                         schema.name.replace(".", "-")
                                                                     }-cancel-button`
                                                                 }
@@ -230,7 +253,7 @@ const DropdownFieldForm: FunctionComponent<DropdownFieldFormPropsInterface> = ({
                                     ) }
                                 />
                             ) : (
-                                renderInactiveFieldContent()
+                                initialValue
                             ) }
                         </List.Description>
                     </List.Content>
@@ -271,4 +294,4 @@ const DropdownFieldForm: FunctionComponent<DropdownFieldFormPropsInterface> = ({
     );
 };
 
-export default DropdownFieldForm;
+export default LocaleFieldForm;
