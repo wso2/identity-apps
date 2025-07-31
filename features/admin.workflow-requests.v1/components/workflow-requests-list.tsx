@@ -17,10 +17,10 @@
  */
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
-import { getEmptyPlaceholderIllustrations } from "../../admin.core.v1/configs/ui";
-import { UIConstants } from "../../admin.core.v1/constants/ui-constants";
-import { FeatureConfigInterface } from "../../admin.core.v1/models/config";
-import { AppState } from "../../admin.core.v1/store";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface, LoadableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import {
     ConfirmationModal,
@@ -40,7 +40,7 @@ import {
 } from "../models/workflowRequests";
 import { humanizeDateString, formatDateString } from "../../admin.secrets.v1/utils/secrets.date.utils";
 import moment from "moment";
-import "../styles/workflow-requests.css";
+import "./workflow-requests-list.scss";
 
 /**
  * Props interface for the Workflow Requests List component.
@@ -108,7 +108,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
         ["data-componentid"]: componentId = "workflow-requests-list"
     } = props;
 
-    const { t } = useTranslation(["workflow-requests"]);
+    const { t } = useTranslation(["approvalWorkflows"]);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -132,14 +132,14 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     data-componentid={ `${componentId}-empty-placeholder-search` }
                     action={ (
                         <LinkButton onClick={ onSearchQueryClear }>
-                            { t("workflowRequests:form.placeholders.emptySearch.action") }
+                            { t("approvalWorkflows:form.placeholders.emptySearch.action") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("workflowRequests:form.placeholders.emptySearch.title") }
+                    title={ t("approvalWorkflows:form.placeholders.emptySearch.title") }
                     subtitle={ [
-                        t("workflowRequests:form.placeholders.emptySearch.subtitles", { searchQuery })
+                        t("approvalWorkflows:form.placeholders.emptySearch.subtitles", { searchQuery })
                     ] }
                 />
             );
@@ -151,8 +151,8 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     data-componentid={ `${componentId}-empty-placeholder-readonly` }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ t("workflowRequests:form.placeholders.emptyListReadOnly.title") }
-                    subtitle={ [ t("workflowRequests:form.placeholders.emptyListReadOnly.subtitles") ] }
+                    title={ t("approvalWorkflows:form.placeholders.emptyListReadOnly.title") }
+                                          subtitle={ [ t("approvalWorkflows:form.placeholders.emptyListReadOnly.subtitles") ] }
                 />
             );
         }
@@ -167,8 +167,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
      * @returns The color for the status label.
      */
     const resolveInstanceStatusColor = (
-        status: WorkflowInstanceStatus.ALL_TASKS | WorkflowInstanceStatus.PENDING | WorkflowInstanceStatus.APPROVED |
-        WorkflowInstanceStatus.DELETED | WorkflowInstanceStatus.FAILED | WorkflowInstanceStatus.REJECTED,
+        status: WorkflowInstanceStatus,
     ): SemanticCOLORS => {
         switch (status) {
             case WorkflowInstanceStatus.APPROVED:
@@ -200,10 +199,41 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                 setCurrentDeletedWorkflowRequest(workflowRequestItem);
                 setShowWorkflowRequestDeleteConfirmationModal(true);
             },
-            popupText: (): string => t("workflowRequests:pageLayout.list.popups.delete"),
+                            popupText: (): string => t("approvalWorkflows:pageLayout.list.popups.delete"),
             renderer: "semantic-icon"
         }
     ];
+
+    /**
+     * Formats the operation type to display user-friendly names.
+     *
+     * @param eventType - The operation type to format.
+     * @returns User-friendly operation type name.
+     */
+    const formatOperationType = (eventType: string): string => {
+        switch (eventType) {
+            case "ADD_USER":
+                return t("approvalWorkflows:operationType.createUser");
+            case "DELETE_USER":
+                return t("approvalWorkflows:operationType.deleteUser");
+            case "ADD_ROLE":
+                return t("approvalWorkflows:operationType.createRole");
+            case "DELETE_ROLE":
+                return t("approvalWorkflows:operationType.deleteRole");
+            case "UPDATE_ROLES_OF_USERS":
+                return t("approvalWorkflows:operationType.updateUserRoles");
+            case "UPDATE_ROLE_NAME":
+                return t("approvalWorkflows:operationType.updateRoleName");
+            case "UPDATE_USERS_OF_ROLES":
+                return t("approvalWorkflows:operationType.updateRoleUsers");
+            case "DELETE_USER_CLAIMS":
+                return t("approvalWorkflows:operationType.deleteUserClaims");
+            case "UPDATE_USER_CLAIMS":
+                return t("approvalWorkflows:operationType.updateUserClaims");
+            default:
+                return eventType;
+        }
+    };
 
     /**
      * Resolves data table columns.
@@ -219,14 +249,11 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
             render: (workflowRequest: WorkflowInstanceListItemInterface): ReactNode => (
                 <div className="workflow-requests-list-event-type-cell">
                     <Header as="h6" className="workflow-requests-list-event-type">
-                        {workflowRequest.eventType}
+                        {formatOperationType(workflowRequest.eventType)}
                     </Header>
-                    <Header.Subheader>
-                        {workflowRequest.requestInitiator || "-"} {resolveMeLabel(workflowRequest.requestInitiator, true)}
-                    </Header.Subheader>
                 </div>
             ),
-            title: t("workflowRequests:list.columns.workflowInstanceId")
+                                    title: t("approvalWorkflows:list.columns.workflowInstanceId")
         },
         {
             allowToggleVisibility: false,
@@ -244,7 +271,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     </span>
                 );
             },
-            title: t("workflowRequests:list.columns.status")
+                                    title: t("approvalWorkflows:list.columns.status")
         },
         {
             allowToggleVisibility: false,
@@ -256,7 +283,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     {getFriendlyDate(workflowRequest.createdAt)}
                 </Header>
             ),
-            title: t("workflowRequests:list.columns.createdAt")
+                                    title: t("approvalWorkflows:list.columns.createdAt")
         },
         {
             allowToggleVisibility: false,
@@ -268,7 +295,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     {getFriendlyDate(workflowRequest.updatedAt)}
                 </Header>
             ),
-            title: t("workflowRequests:list.columns.updatedAt")
+                                    title: t("approvalWorkflows:list.columns.updatedAt")
         },
         {
             allowToggleVisibility: false,
@@ -276,7 +303,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
             id: "actions",
             key: "actions",
             textAlign: "right",
-            title: t("workflowRequests:list.columns.actions")
+                                    title: t("approvalWorkflows:list.columns.actions")
         }
     ];
 
@@ -284,7 +311,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
         if (authenticatedUser && initiator && authenticatedUser.includes(initiator)) {
             return (
                 <Label size={mini ? "mini" : "small"} className="me-label">
-                    Me
+                    {t("approvalWorkflows:list.meLabel")}
                 </Label>
             );
         }
@@ -313,7 +340,22 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
     // Helper to convert status to proper case
     const formatStatus = (status: string): string => {
         if (!status) return "-";
-        return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+        
+        // Use i18n for status labels
+        switch (status.toUpperCase()) {
+            case "PENDING":
+                return t("approvalWorkflows:status.pending");
+            case "APPROVED":
+                return t("approvalWorkflows:status.approved");
+            case "REJECTED":
+                return t("approvalWorkflows:status.rejected");
+            case "FAILED":
+                return t("approvalWorkflows:status.failed");
+            case "DELETED":
+                return t("approvalWorkflows:status.deleted");
+            default:
+                return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+        }
     };
 
     return (
@@ -342,10 +384,10 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     onClose={ (): void => setShowWorkflowRequestDeleteConfirmationModal(false) }
                     type="negative"
                     open={ showWorkflowRequestDeleteConfirmation }
-                    assertionHint={ t("workflowRequests:confirmation.hint") }
+                    assertionHint={ t("approvalWorkflows:confirmation.hint") }
                     assertionType="checkbox"
-                    primaryAction="Confirm"
-                    secondaryAction="Cancel"
+                    primaryAction={t("common:confirm")}
+                    secondaryAction={t("common:cancel")}
                     onSecondaryActionClick={ (): void => setShowWorkflowRequestDeleteConfirmationModal(false) }
                     onPrimaryActionClick={ (): void => {
                         handleWorkflowRequestDelete(currentDeletedWorkflowRequest);
@@ -354,17 +396,17 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     closeOnDimmerClick={ false }
                 >
                     <ConfirmationModal.Header data-componentid={ `${componentId}-delete-confirmation-modal-header` }>
-                        { t("workflowRequests:confirmation.header") }
+                        { t("approvalWorkflows:confirmation.header") }
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message
                         attached
                         negative
                         data-componentid={ `${componentId}-delete-confirmation-modal-message` }
                     >
-                        { t("workflowRequests:confirmation.message") }
+                        { t("approvalWorkflows:confirmation.message") }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content data-componentid={ `${componentId}-delete-confirmation-modal-content` }>
-                        { t("workflowRequests:confirmation.content") }
+                        { t("approvalWorkflows:confirmation.content") }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             ) }

@@ -1288,7 +1288,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             category: "extensions:manage.sidePanel.categories.workflows",
-            component: lazy(() => import("../../../../features/admin.workflow-requests.v1/pages/workflow-requests")),
+            component: lazy(() => import("@wso2is/admin.workflow-requests.v1/pages/workflow-requests")),
             exact: true,
             icon: {
                 icon: <LogsDocumentIcon fill="black" className="icon" />
@@ -1302,7 +1302,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             category: "extensions:manage.sidePanel.categories.workflows",
-            component: lazy(() => import("../../../../features/admin.workflow-requests.v1/pages/workflow-request-details")),
+            component: lazy(() => import("@wso2is/admin.workflow-requests.v1/pages/workflow-request-details")),
             exact: true,
             id: "workflowRequestDetails",
             name: "Workflow Request Details",

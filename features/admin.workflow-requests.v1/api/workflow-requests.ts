@@ -44,7 +44,6 @@ export const fetchWorkflowInstances = (
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -77,7 +76,6 @@ export const fetchWorkflowInstance = (
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -102,7 +100,6 @@ export const fetchWorkflowInstance = (
 export const deleteWorkflowInstance = (workflowInstanceId: string): Promise<void> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,

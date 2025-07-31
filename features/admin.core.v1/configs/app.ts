@@ -267,8 +267,7 @@ export class Config {
                 I18nConstants.PUSH_PROVIDERS_NAMESPACE,
                 I18nConstants.EMAIL_PROVIDERS_NAMESPACE,
                 I18nConstants.WEBHOOKS_NAMESPACE,
-                I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE,
-                I18nConstants.WORKFLOW_REQUESTS_NAMESPACE
+                I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE
             ],
             preload: []
         };

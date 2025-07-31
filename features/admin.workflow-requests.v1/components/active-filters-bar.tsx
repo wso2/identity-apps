@@ -19,7 +19,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Icon } from "semantic-ui-react";
-import "../styles/workflow-requests.css";
+import "./active-filters-bar.scss";
 
 export interface FilterTag {
     key: string;
@@ -38,7 +38,7 @@ interface ActiveFiltersBarProps {
 const ActiveFiltersBar: React.FC<ActiveFiltersBarProps> = (
     { filters, onRemove, onClearAll, ..._rest }: ActiveFiltersBarProps
 ) => {
-    const { t } = useTranslation([ "workflow-requests" ]);
+    const { t } = useTranslation();
 
     return (
         <div className="workflow-requests-active-filters-bar modern-active-filters-bar">
@@ -59,7 +59,7 @@ const ActiveFiltersBar: React.FC<ActiveFiltersBarProps> = (
                             <span
                                 role="button"
                                 tabIndex={0}
-                                aria-label={t('workflowRequests:activeFiltersBar.removeFilter', { filter: filter.label })}
+                                aria-label={t('approvalWorkflows:activeFiltersBar.removeFilter', { filter: filter.label })}
                                 onClick={() => onRemove(filter)}
                                 onKeyPress={e => { if (e.key === 'Enter' || e.key === ' ') onRemove(filter); }}
                                 className="filter-remove-button"
@@ -70,7 +70,7 @@ const ActiveFiltersBar: React.FC<ActiveFiltersBarProps> = (
                     ))
                 ) : (
                     <span className="no-filters-text">
-                        {t("activeFiltersBar.noActiveFilters")}
+                        {t("approvalWorkflows:activeFiltersBar.noActiveFilters")}
                     </span>
                 )}
             </div>
@@ -83,7 +83,7 @@ const ActiveFiltersBar: React.FC<ActiveFiltersBarProps> = (
                     className="clear-all-button"
                 >
                     <Icon name="close" size="small" className="icon" />
-                    {t("activeFiltersBar.clearAll")}
+                    {t("approvalWorkflows:activeFiltersBar.clearAll")}
                 </Button>
             )}
         </div>
