@@ -113,6 +113,39 @@ export interface approvalWorkflowsNS {
             message: string;
             description: string;
         };
+        // Workflow Requests notifications
+        deleteWorkflowRequest: {
+            genericError: {
+                description: string;
+                message: string;
+            };
+            success: {
+                description: string;
+                message: string;
+            };
+        };
+        fetchWorkflowRequestDetails: {
+            genericError: {
+                description: string;
+                message: string;
+            };
+            success: {
+                description: string;
+                message: string;
+            };
+        };
+        fetchWorkflowRequests: {
+            genericError: {
+                description: string;
+                message: string;
+            };
+        };
+        searchWorkflowRequests: {
+            genericError: {
+                description: string;
+                message: string;
+            };
+        };
     };
     confirmation: {
         hint: string;
@@ -240,46 +273,133 @@ export interface approvalWorkflowsNS {
             description: {
                 label: string,
                 placeholder: string
-            },
-    },
-    dangerZone: {
-        delete: {
-            actionTitle: string;
+            }
+        },
+        dangerZone: {
+            delete: {
+                actionTitle: string;
+                header: string;
+                subheader: string;
+            };
+        };
+        placeholders: {
+            emptySearch: {
+                action: string;
+                title: string;
+                subtitles: string;
+            };
+            emptyList: {
+                action: string;
+                title: string;
+                subtitles: string;
+            };
+            emptyListReadOnly: {
+                title: string;
+                subtitles: string;
+            };
+            ApprovalWorkflowError: {
+                subtitles: {
+                    0: string,
+                    1: string;
+                },
+                title: string;
+            }
+        };
+        sqlEditor: {
+            reset: string;
+            title: string;
+            create: string;
+            update: string;
+            read: string;
+            delete: string;
+            darkMode: string;
+        };
+    };
+    // Workflow Requests specific properties
+    list: {
+        columns: {
+            workflowInstanceId: string;
+            status: string;
+            requestInitiator: string;
+            createdAt: string;
+            updatedAt: string;
+            actions: string;
+        };
+    };
+    status: {
+        all: string;
+        approved: string;
+        deleted: string;
+        failed: string;
+        pending: string;
+        rejected: string;
+    };
+    eventType: {
+        all: string;
+        myTasks: string;
+    };
+    operationType: {
+        all: string;
+        createUser: string;
+        deleteUser: string;
+        updateUserRoles: string;
+        createRole: string;
+        deleteRole: string;
+        updateRoleName: string;
+        updateRoleUsers: string;
+        deleteUserClaims: string;
+        updateUserClaims: string;
+    };
+    details: {
+        header: string;
+        fields: {
+            id: string;
+            eventType: string;
+            requestInitiator: string;
+            status: string;
+            createdAt: string;
+            updatedAt: string;
+            requestParams: string;
+        };
+        loading: string;
+        error: {
             header: string;
-            subheader: string;
+            content: string;
+        };
+        backButton: string;
+        dangerZone: {
+            header: string;
+            delete: {
+                actionTitle: string;
+                header: string;
+                subheader: string;
+                confirm: string;
+            };
         };
     };
-    placeholders: {
-        emptySearch: {
-            action: string;
-            title: string;
-            subtitles: string;
-        };
-        emptyList: {
-            action: string;
-            title: string;
-            subtitles: string;
-        };
-        emptyListReadOnly: {
-            title: string;
-            subtitles: string;
-        };
-        ApprovalWorkflowError: {
-            subtitles: {
-                0: string,
-                1: string;
-            },
-            title: string;
-        }
+    timeRanges: {
+        all: string;
+        last6Hours: string;
+        last12Hours: string;
+        last24Hours: string;
+        last2Days: string;
+        last7Days: string;
+        last14Days: string;
+        last30Days: string;
+        customRange: string;
+        customRangeTitle: string;
+        range: string;
     };
-    sqlEditor: {
-        reset: string;
-        title: string;
-        create: string;
-        update: string;
-        read: string;
-        delete: string;
-        darkMode: string;
+    activeFiltersBar: {
+        removeFilter: string;
+        noActiveFilters: string;
+        clearAll: string;
     };
-}
+    filters: {
+        requestType: string;
+        status: string;
+        operationType: string;
+        createdTimeRange: string;
+        updatedTimeRange: string;
+    };
 }

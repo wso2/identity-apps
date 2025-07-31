@@ -26,6 +26,7 @@ import {
     GearIcon,
     LightbulbOnIcon,
     LinearNodesIcon,
+    LogsDocumentIcon,
     NodesIcon,
     ProgressFlowIcon,
     UserCircleDotIcon,
@@ -1289,7 +1290,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
-            category: "extensions:manage.sidePanel.categories.approvalWorkflows",
+            category: "extensions:manage.sidePanel.categories.workflows",
             children: [
                 {
                     component: lazy(() =>
@@ -1328,12 +1329,36 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             icon: {
                 icon: <DocumentCheckIcon fill="black" className="icon" />
             },
-            id: "workflows",
+            id: "approvalWorkflows",
             name: "console:manage.features.sidePanel.approvalWorkflows",
             order: 8,
             path: AppConstants.getPaths().get("APPROVAL_WORKFLOWS"),
             protected: true,
             showOnSidePanel: true
+        },
+        {
+            category: "extensions:manage.sidePanel.categories.workflows",
+            component: lazy(() => import("@wso2is/admin.workflow-requests.v1/pages/workflow-requests")),
+            exact: true,
+            icon: {
+                icon: <LogsDocumentIcon fill="black" className="icon" />
+            },
+            id: "workflowRequests",
+            name: "Requests",
+            order: 9,
+            path: AppConstants.getPaths().get("WORKFLOW_REQUESTS"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            category: "extensions:manage.sidePanel.categories.workflows",
+            component: lazy(() => import("@wso2is/admin.workflow-requests.v1/pages/workflow-request-details")),
+            exact: true,
+            id: "workflowRequestDetails",
+            name: "Workflow Request Details",
+            path: `${AppConstants.getPaths().get("WORKFLOW_REQUESTS")}/:id`,
+            protected: true,
+            showOnSidePanel: false
         },
         {
             category: "console:manage.features.sidePanel.categories.legacy",

@@ -296,6 +296,7 @@ export class AppConstants {
                 `${ AppConstants.getAdminViewBasePath() }/create-workflow-associations` ],
             [ "APPROVAL_WORKFLOW_ASSOCIATIONS_EDIT",
                 `${ AppConstants.getAdminViewBasePath() }/workflow-associations/:id` ],
+            [ "WORKFLOW_REQUESTS", `${ AppConstants.getAdminViewBasePath() }/workflow-requests` ],
             [ "BRANDING", `${ AppConstants.getDeveloperViewBasePath() }/branding` ],
             [ "CERTIFICATES", `${ AppConstants.getAdminViewBasePath() }/certificates` ],
             [ "CLAIM_DIALECTS", `${ AppConstants.getAdminViewBasePath() }/attributes-and-mappings` ],

@@ -131,4 +131,8 @@ export interface pagesNS {
         title: string;
         subTitle: string;
     };
+    workflowRequestsPage: {
+        title: string;
+        subTitle: string;
+    };
 }
