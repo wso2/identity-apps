@@ -516,6 +516,13 @@ export const myAccount: MyAccountNS = {
                 },
                 tooltip: "Apps"
             },
+            dropdown: {
+                footer: {
+                    cookiePolicy: "Cookies",
+                    privacyPolicy: "Privacy",
+                    termsOfService: "Terms"
+                }
+            },
             organizationLabel: "This account is managed by"
         },
         linkedAccounts: {

@@ -126,7 +126,7 @@
                                     "type": "TYPOGRAPHY",
                                     "variant": "H3",
                                     "config": {
-                                        "text": "Register Account"
+                                        "text": "Sign Up"
                                     }
                                 },
                                 {
@@ -135,62 +135,6 @@
                                     "config": {},
                                     "id": "{{ID}}",
                                     "components": [
-                                        {
-                                            "id": "{{ID}}",
-                                            "category": "FIELD",
-                                            "type": "INPUT",
-                                            "variant": "TEXT",
-                                            "config": {
-                                                "type": "text",
-                                                "hint": "",
-                                                "label": "Username",
-                                                "required": true,
-                                                "placeholder": "Enter your username",
-                                                "identifier": "http://wso2.org/claims/username"
-                                            }
-                                        },
-                                        {
-                                            "id": "{{ID}}",
-                                            "category": "FIELD",
-                                            "type": "INPUT",
-                                            "variant": "EMAIL",
-                                            "config": {
-                                                "type": "email",
-                                                "hint": "",
-                                                "label": "Email",
-                                                "required": true,
-                                                "placeholder": "Enter your email",
-                                                "identifier": "http://wso2.org/claims/emailaddress"
-                                            }
-                                        },
-                                        {
-                                            "id": "{{ID}}",
-                                            "category": "FIELD",
-                                            "type": "INPUT",
-                                            "variant": "TEXT",
-                                            "config": {
-                                                "type": "text",
-                                                "hint": "",
-                                                "label": "First Name",
-                                                "required": false,
-                                                "placeholder": "Enter your first name",
-                                                "identifier": "http://wso2.org/claims/givenname"
-                                            }
-                                        },
-                                        {
-                                            "id": "{{ID}}",
-                                            "category": "FIELD",
-                                            "type": "INPUT",
-                                            "variant": "TEXT",
-                                            "config": {
-                                                "type": "text",
-                                                "hint": "",
-                                                "label": "Last Name",
-                                                "required": false,
-                                                "placeholder": "Enter your last name",
-                                                "identifier": "http://wso2.org/claims/lastname"
-                                            }
-                                        },
                                         {
                                             "id": "{{ID}}",
                                             "category": "FIELD",
@@ -206,13 +150,21 @@
                                             }
                                         },
                                         {
+                                            "category": "DISPLAY",
+                                            "config": {
+                                                "text": "<p class=\"rich-text-paragraph\"><br></p><p class=\"rich-text-paragraph\"><span class=\"rich-text-pre-wrap\">When you click Sign Up, you are agreeing to our </span><a href=\"{{branding.termsOfUseUrl}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"rich-text-link\"><span class=\"rich-text-pre-wrap\">Terms of Service</span></a><span class=\"rich-text-pre-wrap\"> and </span><a href=\"{{branding.privacyPolicyUrl}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"rich-text-link\"><span class=\"rich-text-pre-wrap\">Privacy Policy</span></a></p>"
+                                            },
+                                            "id": "{{ID}}",
+                                            "type": "RICH_TEXT"
+                                        },
+                                        {
                                             "id": "{{ID}}",
                                             "category": "ACTION",
                                             "type": "BUTTON",
                                             "variant": "PRIMARY",
                                             "config": {
                                                 "type": "submit",
-                                                "text": "Continue"
+                                                "text": "Sign Up"
                                             },
                                             "action": {
                                                 "type": "EXECUTOR",
@@ -221,6 +173,14 @@
                                                 },
                                                 "next": "USER_ONBOARD"
                                             }
+                                        },
+                                        {
+                                            "category": "DISPLAY",
+                                            "config": {
+                                                "text": "<p class=\"rich-text-paragraph\"><br></p><p class=\"rich-text-paragraph\"><span class=\"rich-text-pre-wrap\">Already have an account? </span><a href=\"{{application.callbackOrAccessUrl}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"rich-text-link\"><span class=\"rich-text-pre-wrap\">Sign in</span></a></p>"
+                                            },
+                                            "id": "{{ID}}",
+                                            "type": "RICH_TEXT"
                                         }
                                     ]
                                 }
@@ -259,10 +219,10 @@
         "config": {
             "data": {
                 "__generationMeta__": {
-                    "defaultPropertySelectorId": "{{GOOGLE_REDIRECTION_STEP_ID}}",
+                    "defaultPropertySelectorId": "{{GOOGLE_EXECUTION_STEP_ID}}",
                     "replacers": [
                         {
-                            "key": "GOOGLE_REDIRECTION_STEP_ID",
+                            "key": "GOOGLE_EXECUTION_STEP_ID",
                             "type": "ID"
                         }
                     ]
@@ -350,19 +310,20 @@
                                     "variant": "SOCIAL",
                                     "config": {
                                         "type": "button",
-                                        "text": "Continue with Google"
+                                        "text": "Continue with Google",
+                                        "image": "https://www.svgrepo.com/show/475656/google-color.svg"
                                     },
                                     "action": {
                                         "type": "NEXT",
-                                        "next": "{{GOOGLE_REDIRECTION_STEP_ID}}"
+                                        "next": "{{GOOGLE_EXECUTION_STEP_ID}}"
                                     }
                                 }
                             ]
                         }
                     },
                     {
-                        "id": "{{GOOGLE_REDIRECTION_STEP_ID}}",
-                        "type": "REDIRECTION",
+                        "id": "{{GOOGLE_EXECUTION_STEP_ID}}",
+                        "type": "EXECUTION",
                         "size": {
                             "width": 350,
                             "height": 291
@@ -375,10 +336,161 @@
                             "action": {
                                 "type": "EXECUTOR",
                                 "executor": {
-                                    "name": "GoogleSignupExecutor",
+                                    "name": "GoogleExecutor",
                                     "meta": {
                                         "idpName": "{{IDP_NAME}}"
                                     }
+                                },
+                                "next": "USER_ONBOARD"
+                            }
+                        }
+                    },
+                    {
+                        "id": "USER_ONBOARD",
+                        "type": "USER_ONBOARD",
+                        "size": {
+                            "width": 56,
+                            "height": 56
+                        },
+                        "position": {
+                            "x": 900,
+                            "y": 408
+                        },
+                        "data": {}
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "resourceType": "TEMPLATE",
+        "category": "STARTER",
+        "type": "BASIC_PASSKEY",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Basic + Passkey",
+            "description": "Basic registration experience with passkey enrollment",
+            "image": "https://www.svgrepo.com/show/340307/fingerprint-recognition.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "defaultPropertySelectorId": "{{PASSKEY_ENROLLMENT_STEP_ID}}",
+                    "replacers": [
+                        {
+                            "key": "PASSKEY_ENROLLMENT_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "id": "{{ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 0,
+                            "y": 330
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Register Account"
+                                    }
+                                },
+                                {
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "id": "{{ID}}",
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "EMAIL",
+                                            "config": {
+                                                "type": "email",
+                                                "hint": "",
+                                                "label": "Email",
+                                                "required": true,
+                                                "placeholder": "Enter your email",
+                                                "identifier": "http://wso2.org/claims/emailaddress"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "TEXT",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "label": "First Name",
+                                                "required": false,
+                                                "placeholder": "Enter your first name",
+                                                "identifier": "http://wso2.org/claims/givenname"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "TEXT",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "label": "Last Name",
+                                                "required": false,
+                                                "placeholder": "Enter your last name",
+                                                "identifier": "http://wso2.org/claims/lastname"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "NEXT",
+                                                "next": "{{PASSKEY_ENROLLMENT_STEP_ID}}"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{PASSKEY_ENROLLMENT_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 500,
+                            "y": 900
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "FIDO2Executor"
                                 },
                                 "next": "USER_ONBOARD"
                             }

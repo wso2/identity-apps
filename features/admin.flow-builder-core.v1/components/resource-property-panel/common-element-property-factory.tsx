@@ -23,9 +23,9 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import startCase from "lodash-es/startCase";
 import React, { ChangeEvent, FunctionComponent, ReactElement } from "react";
 import RichText from "./rich-text/rich-text";
+import FlowBuilderElementConstants from "../../constants/flow-builder-element-constants";
 import { ElementTypes } from "../../models/elements";
 import { Resource } from "../../models/resources";
-import FlowBuilderElementConstants from "../../constants/flow-builder-element-constants";
 
 /**
  * Props interface of {@link CommonElementPropertyFactory}
@@ -72,14 +72,20 @@ const CommonElementPropertyFactory: FunctionComponent<CommonElementPropertyFacto
 }: CommonElementPropertyFactoryPropsInterface): ReactElement | null => {
     if (propertyKey === "text") {
         if (resource.type === ElementTypes.RichText) {
-            return <RichText ToolbarProps={ { history: false, strikeThrough: false } } { ...rest } />;
+            return (
+                <RichText
+                    onChange={ (html: string) => onChange(`config.${propertyKey}`, html, resource) }
+                    resource={ resource }
+                    { ...rest }
+                />
+            );
         }
     }
 
     if (typeof propertyValue === "boolean") {
         return (
             <FormControlLabel
-                control={ <Checkbox defaultChecked={ propertyValue } /> }
+                control={ <Checkbox checked={ propertyValue } /> }
                 label={ startCase(propertyKey) }
                 onChange={ (e: ChangeEvent<HTMLInputElement>) =>
                     onChange(`config.${propertyKey}`, e.target.checked, resource)

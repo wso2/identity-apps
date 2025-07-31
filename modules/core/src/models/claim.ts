@@ -127,6 +127,7 @@ export interface ClaimsGetParams {
     attributes?: string;
     "exclude-identity-claims"?: boolean;
     "exclude-hidden-claims"?: boolean;
+    profile?: string;
 }
 
 /**

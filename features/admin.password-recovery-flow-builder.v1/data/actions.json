@@ -1,0 +1,32 @@
+[
+    {
+        "types": [
+            {
+                "action": {
+                    "type": "EXECUTOR",
+                    "executor": {
+                        "name": "UserResolveExecutor"
+                    }
+                },
+                "display": {
+                    "label": "Resolve User",
+                    "image": "https://www.svgrepo.com/show/479898/magnifying-glass-10.svg",
+                    "defaultVariant": "PRIMARY"
+                }
+            },
+            {
+                "action": {
+                    "type": "EXECUTOR",
+                    "executor": {
+                        "name": "PasswordProvisioningExecutor"
+                    }
+                },
+                "display": {
+                    "label": "Provision Password",
+                    "image": "https://www.svgrepo.com/show/479398/stamp-2.svg",
+                    "defaultVariant": "PRIMARY"
+                }
+            }
+        ]
+    }
+]

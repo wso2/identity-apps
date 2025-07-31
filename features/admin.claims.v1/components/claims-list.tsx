@@ -245,6 +245,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
 
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
+    const systemReservedUserStores: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.systemReservedUserStores);
 
     const [ submitExternalClaim, setSubmitExternalClaim ] = useTrigger();
 
@@ -277,11 +279,13 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     const checkUserStoreMapping = (claim: Claim): string[] => {
         const userStoresNotSet: string[] = [];
 
-        userStores?.forEach((userStore: UserStoreListItem) => {
-            claim?.attributeMapping?.find((attribute: AttributeMapping) => {
-                return attribute.userstore.toLowerCase() === userStore.name.toLowerCase();
-            }) ?? userStoresNotSet.push(userStore.name);
-        });
+        userStores
+            ?.filter((userStore: UserStoreListItem) => !systemReservedUserStores?.includes(userStore.name))
+            ?.forEach((userStore: UserStoreListItem) => {
+                claim?.attributeMapping?.find((attribute: AttributeMapping) => {
+                    return attribute.userstore.toLowerCase() === userStore.name.toLowerCase();
+                }) ?? userStoresNotSet.push(userStore.name);
+            });
 
         claim?.attributeMapping?.find((attribute: AttributeMapping) => {
             return attribute.userstore === primaryUserStoreDomainName;

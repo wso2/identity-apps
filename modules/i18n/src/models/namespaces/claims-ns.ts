@@ -17,6 +17,10 @@
  */
 export interface ClaimsNS {
     attributeMappings: {
+        agent: {
+            heading: string;
+            description: string
+        };
         axschema: {
             heading: string;
             description: string;
@@ -170,6 +174,10 @@ export interface ClaimsNS {
                     heading: string;
                     description: string;
                 };
+                agent: {
+                    heading: string;
+                    description: string;
+                }
             };
         };
         confirmations: {

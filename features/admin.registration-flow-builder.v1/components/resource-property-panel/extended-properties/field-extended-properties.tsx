@@ -17,18 +17,15 @@
  */
 
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
-import Checkbox from "@oxygen-ui/react/Checkbox";
-import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Stack from "@oxygen-ui/react/Stack";
 import TextField from "@oxygen-ui/react/TextField";
 import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
-import FlowBuilderElementConstants from "@wso2is/admin.flow-builder-core.v1/constants/flow-builder-element-constants";
 import { InputVariants } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "react";
-import useGetSupportedProfileAttributes from "../../../api/use-get-supported-profile-attributes";
+import useRegistrationFlowBuilder from "../../../hooks/use-registration-flow-builder";
 import { Attribute } from "../../../models/attributes";
 
 /**
@@ -48,36 +45,14 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
     resource,
     onChange
 }: FieldExtendedPropertiesPropsInterface): ReactElement => {
-    const { data: attributes } = useGetSupportedProfileAttributes();
+    const { supportedAttributes: attributes } = useRegistrationFlowBuilder();
 
     const selectedValue: Attribute = useMemo(() => {
         return attributes?.find((attribute: Attribute) => attribute?.claimURI === resource.config.identifier);
     }, [ resource.config.identifier, attributes ]);
 
     if (resource.variant === InputVariants.Password) {
-        return (
-            <FormControlLabel
-                control={
-                    (<Checkbox
-                        defaultChecked={
-                            resource?.config?.identifier ===
-                            FlowBuilderElementConstants.CONFIRM_PASSWORD_IDENTIFIER
-                        }
-                    />)
-                }
-                label="Confirmation"
-                onChange={ (e: ChangeEvent<HTMLInputElement>) =>
-                    onChange(
-                        "config.identifier",
-                        e.target.checked
-                            ? FlowBuilderElementConstants.CONFIRM_PASSWORD_IDENTIFIER
-                            : FlowBuilderElementConstants.PASSWORD_IDENTIFIER,
-                        resource
-                    )
-                }
-                data-componentid={ `${componentId}-confirm-password` }
-            />
-        );
+        return null;
     }
 
     return (

@@ -60,8 +60,7 @@ import { Dispatch } from "redux";
 import { Divider, Grid, Icon, Placeholder, Ref } from "semantic-ui-react";
 import { deleteEmailProviderConfigurations,
     updateEmailProviderConfigurations,
-    useEmailProviderConfig,
-    useEmailProviderConfigV1 } from "../api";
+    useEmailProviderConfig } from "../api";
 import {
     AuthenticationType,
     DropdownChild,
@@ -115,9 +114,6 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
     const enableOldUIForEmailProvider: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.enableOldUIForEmailProvider);
 
-    const showPasswordOfEmailProvider: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.showPasswordOfEmailProvider);
-
     const {
         data: originalEmailProviderConfig,
         isLoading: isEmailProviderConfigFetchRequestLoading,
@@ -125,20 +121,11 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
         error: emailProviderConfigFetchRequestError
     } = useEmailProviderConfig();
 
-    const {
-        data: passwordProviderConfig
-    } = useEmailProviderConfigV1();
-    const [ displayBanner, setDisplayBanner ] = useState<boolean>(false);
-
     const [ endpointAuthType, setEndpointAuthType ] = useState<AuthenticationType>(null);
     const [ showPrimarySecret, setShowPrimarySecret ] = useState<boolean>(false);
     const [ showSecondarySecret, setShowSecondarySecret ] = useState<boolean>(false);
 
     useEffect(() => {
-
-        if (showPasswordOfEmailProvider) {
-            setDisplayBanner(true);
-        }
 
         if (originalEmailProviderConfig instanceof IdentityAppsApiException || emailProviderConfigFetchRequestError) {
             handleRetrieveError();
@@ -444,11 +431,6 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                 .find((property: EmailProviderConfigPropertiesInterface) =>
                     property.key === EmailProviderConstants.SCOPES)?.value);
             formState.current.change("clientSecret", null);
-        }
-        if (showPasswordOfEmailProvider && passwordProviderConfig[0].password) {
-            formState.current.change("password",  passwordProviderConfig[0].password);
-        } else {
-            formState.current.change("password", null);
         }
     };
 
@@ -823,55 +805,8 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
         history.push(`${AppConstants.getPaths().get("EMAIL_MANAGEMENT")}`);
     };
 
-    /**
-     * Resolves the application banner content.
-     *
-     * @returns Alert banner.
-     */
-    const resolveAlertBanner = (): ReactElement => {
-        return (showPasswordOfEmailProvider && displayBanner && (
-            <div className={ `${componentId}-password-deprecated-banner` }>
-                <div className="banner-wrapper">
-                    <Alert
-                        severity="warning"
-                        action={
-                            (
-                                <Box display="flex">
-                                    <Button
-                                        data-componentid={ `${componentId}-password-deprecated-ignore-button` }
-                                        className="ignore-once-button"
-                                        onClick={ () => setDisplayBanner(false) }>
-                                        <Icon
-                                            link
-                                            onClick={ () => setDisplayBanner(false) }
-                                            size="small"
-                                            color="grey"
-                                            name="close"
-                                            data-componentid={ `${componentId}-close-btn` }
-                                        />
-                                    </Button>
-                                </Box>
-                            )
-                        }
-                    >
-                        <AlertTitle className="alert-title">
-                            <Trans components={ { strong: <strong/> } } >
-                                { t("emailProviders:showPassword.alert.title") }
-                            </Trans>
-                        </AlertTitle>
-                        <Trans>
-                            { t("emailProviders:showPassword.alert.content") }
-                        </Trans>
-                    </Alert>
-                </div>
-            </div>
-        )
-        );
-    };
-
     return (
         <PageLayout
-            alertBanner={ showPasswordOfEmailProvider && resolveAlertBanner() }
             title={ t("extensions:develop.emailProviders.heading") }
             pageTitle={ t("extensions:develop.emailProviders.heading") }
             description={ resolvePageDescription() }
@@ -1216,8 +1151,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                         }
                                                                         width={ 16 }
                                                                     />
-                                                                    { (!showPasswordOfEmailProvider) &&
-                                                                        showAuthSecretsHint() }
+                                                                    { showAuthSecretsHint() }
 
                                                                     { renderEndpointAuthPropertyFields() }
 

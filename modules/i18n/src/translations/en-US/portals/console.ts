@@ -351,7 +351,7 @@ export const console: ConsoleNS = {
                 description: "Configure login and registration settings."
             },
             userAttributesAndStores: "User Attributes & Stores",
-            userManagement: "User Management",
+            userManagement: "Identity Management",
             branding: "Branding",
             tenants: "Root Organizations",
             policyAdministration: "Policy Administration"
@@ -2672,7 +2672,10 @@ export const console: ConsoleNS = {
                         Permissions: "Permissions",
                         Users: "Users",
                         Audience: "Audience",
-                        "Audience ID": "Audience ID"
+                        "Audience ID": "Audience ID",
+                        "Users to be Added": "Users to be added",
+                        "Users to be Deleted": "Users to be deleted",
+                        "Role ID": "Role ID"
                     },
                     taskDetails: {
                         description: "You have a request to approve an operational action of a user.",
@@ -2956,7 +2959,7 @@ export const console: ConsoleNS = {
                         heading: "OpenID Connect"
                     },
                     scim: {
-                        description: "The SCIM2 protocol representation for user "
+                        description: "The SCIM2 protocol representation for "
                             + "attributes that will be used in the SCIM2 API.",
                         heading: "SCIM 2.0"
                     }
@@ -6391,32 +6394,97 @@ export const console: ConsoleNS = {
                                 }
                             },
                             verifyHostname: {
-                                label: "Verify the hostname"
+                                label: "Verify the hostname",
+                                hint: "Enable verifying the remote server's hostname against its SSL certificate."
                             },
                             basicAuthConfig: {
-                                title: "Basic Authentication Configuration",
+                                title: "Authentication Configuration",
+                                info: {
+                                    message: "If you are changing the authentication, be aware that the authentication" +
+                                    " secrets of the remote server need to be updated.",
+                                    title: {
+                                        noneAuthType: "No authentication is configured.",
+                                        otherAuthType: "<strong>{{ authType }}</strong> authentication scheme is configured."
+                                    }
+                                },
+                                types: {
+                                    none: {
+                                        name: "None"
+                                    },
+                                    basic: {
+                                        name: "Basic"
+                                    }
+                                },
+                                authenticationType: {
+                                    hint: {
+                                        create: "Once added, this secret will not be displayed. You will only be able to update them.",
+                                        update: "Once updated, this secret will not be displayed. You will only be able to update them."
+                                    },
+                                    label: "Authentication Scheme",
+                                    placeholder: "Select Authentication Scheme"
+                                },
+                                buttons: {
+                                    changeAuthentication: "Change Authentication"
+                                },
                                 serverUsername: {
                                     label: "Remote server username",
-                                    placeholder: "username"
+                                    placeholder: "username",
+                                    error: {
+                                        required: "Remote server username is required"
+                                    }
                                 },
                                 serverPassword: {
                                     label: "Remote server password",
-                                    placeholder: "*****"
+                                    placeholder: "*****",
+                                    error: {
+                                        required: "Remote server password is required"
+                                    }
                                 }
                             },
                             sslConfig: {
                                 title: "SSL Configuration",
+                                info: {
+                                    sslConfigured: {
+                                        message: "The connections will be secured using SSL",
+                                        title: "SSL Already Configured"
+                                    },
+                                    notConfigured: {
+                                        message: "SSL is not currently configured. Please set it up to secure your connections.",
+                                        title: "SSL Not Configured"
+                                    }
+                                },
+                                buttons: {
+                                    addSslConfig: "Add SSL Configuration",
+                                    changeSslConfig: "Update SSL Configuration",
+                                    clearSslConfig: "Remove SSL Configuration"
+                                },
                                 keystorePath: {
-                                    label: "Keystore location"
+                                    label: "Keystore location",
+                                    placeholder: "Path to the keystore file",
+                                    error: {
+                                        required: "Keystore location is required"
+                                    }
                                 },
                                 keystorePassword: {
-                                    label: "Keystore password"
+                                    label: "Keystore password",
+                                    placeholder: "*****",
+                                    error: {
+                                        required: "Keystore password is required"
+                                    }
                                 },
                                 truststorePath: {
-                                    label: "Truststore location"
+                                    label: "Truststore location",
+                                    placeholder: "Path to the truststore file",
+                                    error: {
+                                        required: "Truststore location is required"
+                                    }
                                 },
                                 truststorePassword: {
-                                    label: "Truststore password"
+                                    label: "Truststore password",
+                                    placeholder: "*****",
+                                    error: {
+                                        required: "Truststore password is required"
+                                    }
                                 }
                             }
                         }

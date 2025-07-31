@@ -18,7 +18,7 @@
 
 import { ActionTypes } from "../models/actions";
 import { BlockTypes, ElementTypes } from "../models/elements";
-import { StepTypes } from "../models/steps";
+import { ExecutionTypes, StepTypes } from "../models/steps";
 import { TemplateTypes } from "../models/templates";
 import { WidgetTypes } from "../models/widget";
 
@@ -42,10 +42,11 @@ class VisualFlowConstants {
     public static readonly FLOW_BUILDER_CANVAS_ALLOWED_RESOURCE_TYPES: string[] = [
         StepTypes.View,
         StepTypes.Rule,
-        StepTypes.Redirection,
+        StepTypes.Execution,
         TemplateTypes.Basic,
         TemplateTypes.BasicFederated,
-        TemplateTypes.Blank
+        TemplateTypes.Blank,
+        TemplateTypes.BasicPasskey
     ];
 
     public static readonly FLOW_BUILDER_VIEW_ALLOWED_RESOURCE_TYPES: string[] = [
@@ -59,7 +60,12 @@ class VisualFlowConstants {
         WidgetTypes.EmailOTP,
         WidgetTypes.GoogleFederation,
         WidgetTypes.IdentifierPassword,
-        WidgetTypes.SMSOTP
+        WidgetTypes.SMSOTP,
+        WidgetTypes.AppleFederation,
+        WidgetTypes.FacebookFederation,
+        WidgetTypes.MicrosoftFederation,
+        WidgetTypes.GithubFederation,
+        WidgetTypes.PasskeyEnrollment
     ];
 
     public static readonly FLOW_BUILDER_FORM_ALLOWED_RESOURCE_TYPES: string[] = [
@@ -69,6 +75,19 @@ class VisualFlowConstants {
         ElementTypes.RichText,
         ElementTypes.Divider,
         ElementTypes.Image
+    ];
+
+    public static readonly FLOW_BUILDER_STATIC_CONTENT_ALLOWED_RESOURCE_TYPES: string[] = [
+        ElementTypes.Typography,
+        ElementTypes.RichText,
+        ElementTypes.Divider,
+        ElementTypes.Image
+    ];
+
+    public static readonly FLOW_BUILDER_PLUGIN_FUNCTION_IDENTIFIER: string = "uniqueName";
+
+    public static readonly FLOW_BUILDER_STATIC_CONTENT_ALLOWED_EXECUTION_TYPES: ExecutionTypes[] = [
+        ExecutionTypes.MagicLinkExecutor
     ];
 }
 

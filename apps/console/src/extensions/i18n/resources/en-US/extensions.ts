@@ -2590,6 +2590,16 @@ export const extensions: Extensions = {
     manage: {
         accountLogin: {
             notifications: {
+                revert: {
+                    error: {
+                        description: "An error occurred while reverting the username validation configuration.",
+                        message: "Revert error"
+                    },
+                    success: {
+                        description: "Successfully reverted username validation configuration.",
+                        message: "Revert successful"
+                    }
+                },
                 success: {
                     description: "Successfully updated username validation configuration.",
                     message: "Update successful"
@@ -2700,6 +2710,7 @@ export const extensions: Extensions = {
                     makeDefaultOrganization: "Make default organization",
                     backButton: "Go back",
                     copyOrganizationId: "Copy organization ID",
+                    copyOrganizationHandle: "Copy organization Handle",
                     copied: "Copied!",
                     tenantSearch: {
                         placeholder: "Search organization",
@@ -3919,8 +3930,9 @@ export const extensions: Extensions = {
             categories: {
                 attributeManagement: "Attribute Management",
                 AccountManagement: "Account Management",
-                userManagement: "User Management",
+                userManagement: "Identity Management",
                 workflows: "Workflows",
+
                 organizationSettings: "Organization Settings"
             }
         }

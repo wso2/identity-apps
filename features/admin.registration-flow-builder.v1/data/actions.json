@@ -1,1 +1,19 @@
-[]
+[
+    {
+        "types": [
+            {
+                "action": {
+                    "type": "EXECUTOR",
+                    "executor": {
+                        "name": "PasswordOnboardExecutor"
+                    }
+                },
+                "display": {
+                    "label": "Onboard Password",
+                    "image": "https://www.svgrepo.com/show/526627/password.svg",
+                    "defaultVariant": "PRIMARY"
+                }
+            }
+        ]
+    }
+]

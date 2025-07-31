@@ -16,16 +16,51 @@
  * under the License.
  */
 
-.heading-container {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    font-weight: normal;
+.action-endpoint-config-form {
+    .form-field-wrapper {
+        padding: 14px 0;
+
+        &:first-child {
+            padding-top: 0;
+        }
+
+        &:last-child {
+            padding-bottom: 0;
+        }
+    }
+
+    .auth-field-wrapper {
+        padding-bottom: 14px;
+
+        &:last-child {
+            padding-bottom: 0;
+        }
+    }
+
+    .alert-nutral {
+        background-color: var(--oxygen-palette-grey-100);
+    }
+
+    .endpoint-uri-alert {
+        margin-top: 10px;
+        margin-bottom: 0;
+    }
+
+    .select-field-container {
+        margin-bottom: 0 !important;
+
+        .MuiFormControl-root {
+            margin-bottom: 0 !important;
+        }
+    }
+
+    .heading-container {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        font-weight: normal;
+    }
 }
 
 .alert-nutral {
     background-color: var(--oxygen-palette-grey-100);
-}
-
-.endpoint-uri-alert {
-    margin-top: 10px;
 }

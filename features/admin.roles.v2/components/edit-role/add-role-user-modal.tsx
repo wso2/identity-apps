@@ -17,6 +17,7 @@
  */
 
 import Button from "@oxygen-ui/react/Button";
+import { useGetAgents } from "@wso2is/admin.agents.v1/hooks/use-get-agents";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { useUsersList } from "@wso2is/admin.users.v1/api";
@@ -70,6 +71,10 @@ interface AddRoleUserModalProps extends IdentifiableComponentInterface {
      * List of available user stores.
      */
     availableUserStores: UserStoreDropdownItem[];
+    /**
+     * Is for role assignment to a non-human user.
+     */
+    isForNonHumanUser?: boolean;
 }
 
 export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
@@ -81,6 +86,7 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
         [ "data-componentid" ]: componentId = "edit-role-users-add-user-modal",
         handleAddUserSubmit,
         handleCloseAddNewUserModal,
+        isForNonHumanUser,
         showAddNewUserModal,
         role,
         userstore
@@ -99,6 +105,8 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
     const [ searchQuery, setSearchQuery ] = useState<string>(null);
     const [ selectedUserstore, setSelectedUserStore ] = useState<string>(userstore);
 
+    const baseI18nKey: string = isForNonHumanUser ? "edit.agents" : "edit.users";
+
     /**
      * Fetch the user list.
      */
@@ -113,8 +121,25 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
         searchQuery,
         null,
         selectedUserstore,
-        null
+        null,
+        !isForNonHumanUser
     );
+
+    const {
+        data: agentList,
+        isLoading: isAgentListLoading
+    } = useGetAgents(
+        UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+        0,
+        searchQuery,
+        null,
+        isForNonHumanUser
+    );
+
+    const entityList: UserBasicInterface[] = isForNonHumanUser ? agentList?.Resources : originalUserList?.Resources;
+    const isEntityListLoading: boolean = isForNonHumanUser
+        ? isAgentListLoading
+        : isUserListFetchRequestLoading || isUserListFetchRequestValidating;
 
     /**
      * Set the user list.
@@ -123,14 +148,14 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
      * If the user is already assigned to the role, it will be added to the selected users list.
      */
     useEffect(() => {
-        if (isUserListFetchRequestLoading) {
+        if (isEntityListLoading) {
             return;
         }
 
-        if (originalUserList && originalUserList.Resources) {
+        if (entityList && entityList.length > 0) {
             const filteredUsers: UserBasicInterface[] = [];
 
-            originalUserList.Resources.map((user: UserBasicInterface) => {
+            entityList.forEach((user: UserBasicInterface) => {
                 let isUserExistInRole: boolean = false;
 
                 if (role?.users?.length > 0) {
@@ -151,7 +176,7 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
         } else {
             setUserList([]);
         }
-    }, [ originalUserList, isUserListFetchRequestLoading ]);
+    }, [ entityList, isEntityListLoading ]);
 
     /**
      * Handles the user list fetch request error.
@@ -244,9 +269,9 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
         }
 
         if (isEmpty(searchQuery)) {
-            return t("roles:edit.users.placeholders.beginSearch");
+            return t("roles:" + baseI18nKey + ".placeholders.beginSearch");
         } else {
-            return t("roles:edit.users.placeholders.emptySearchResult");
+            return t("roles:" + baseI18nKey + ".placeholders.emptySearchResult");
         }
     };
 
@@ -260,13 +285,20 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
         >
             <Modal.Header>
                 {
-                    t("roles:addRoleWizard.users.assignUserModal.heading",
-                        { type: "Role" })
+                    isForNonHumanUser
+                        ? t("roles:addRoleWizard.agents.assignAgentModal.heading",
+                            { type: "Role" })
+                        : t("roles:addRoleWizard.users.assignUserModal.heading",
+                            { type: "Role" })
                 }
                 <Heading subHeading ellipsis as="h6">
                     {
-                        t("roles:addRoleWizard.users.assignUserModal.subHeading",
-                            { type: "role" })
+                        isForNonHumanUser
+                            ? t("roles:addRoleWizard.agents.assignAgentModal.subHeading",
+                                { type: "role" })
+                            :
+                            t("roles:addRoleWizard.users.assignUserModal.subHeading",
+                                { type: "role" })
                     }
                 </Heading>
             </Modal.Header>
@@ -278,16 +310,18 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
                         basic
                         className="one-column-selection"
                         selectionComponent
-                        searchPlaceholder={ t("groups:edit.users.searchUsers") }
-                        isLoading={ isUserListFetchRequestLoading || isUserListFetchRequestValidating }
+                        searchPlaceholder={ isForNonHumanUser
+                            ? t("roles:addRoleWizard.agents.assignAgentModal.search")
+                            : t("groups:edit.users.searchUsers") }
+                        isLoading={ isEntityListLoading }
                         handleHeaderCheckboxChange={ () => selectAllAssignedList() }
                         isHeaderCheckboxChecked={ isSelectAllUsers }
                         handleUnelectedListSearch={ (e: FormEvent<HTMLInputElement>, { value }: { value: string }) => {
                             handleSearchFieldChange(e, value);
                         } }
-                        showSelectAllCheckbox={ !isUserListFetchRequestLoading && userList.length > 0 }
+                        showSelectAllCheckbox={ !isEntityListLoading && userList.length > 0 }
                         data-componentid={ `${ componentId }-transfer-component` }
-                        leftActionPanel={ availableUserStores?.length > 0 && (
+                        leftActionPanel={ !isForNonHumanUser && availableUserStores?.length > 0 && (
                             <GridColumn width={ 1 } className="add-role-user-modal-userstore-dropdown">
                                 <Dropdown
                                     fluid
@@ -314,7 +348,7 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
                             bordered={ true }
                             selectionComponent
                             isListEmpty={ isEmpty(userList) || userList.length <= 0 }
-                            isLoading={ isUserListFetchRequestLoading || isUserListFetchRequestValidating }
+                            isLoading={ isEntityListLoading }
                             listType="unselected"
                             selectAllCheckboxLabel={ t("groups:edit.users.selectAllUsers") }
                             data-componentid={ `${ componentId }-unselected-transfer-list` }
@@ -332,7 +366,9 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
                                         <TransferListItem
                                             handleItemChange={ () => handleItemCheckboxChange(user) }
                                             key={ index }
-                                            listItem={ resolvedGivenName ?? resolvedUsername }
+                                            listItem={ isForNonHumanUser
+                                                ? user["urn:scim:wso2:agent:schema"]?.DisplayName ?? resolvedUsername
+                                                : resolvedGivenName ?? resolvedUsername }
                                             listItemId={ user.id }
                                             listItemIndex={ index }
                                             isItemChecked={
@@ -341,9 +377,11 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
                                             }
                                             showSecondaryActions={ false }
                                             showListSubItem={ true }
-                                            listSubItem={ resolvedGivenName && (
-                                                <Code compact withBackground={ false }>{ resolvedUsername }</Code>
-                                            ) }
+                                            listSubItem={ isForNonHumanUser
+                                                ? user["urn:scim:wso2:agent:schema"]?.DisplayName && resolvedUsername
+                                                : resolvedGivenName && (
+                                                    <Code compact withBackground={ false }>{ resolvedUsername }</Code>
+                                                ) }
                                             data-componentid={
                                                 `${ componentId }-unselected-transfer-list-item-${ index }` }
                                         />

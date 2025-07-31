@@ -208,6 +208,16 @@ export const CONSUMER_USERSTORE: string = "DEFAULT";
 export const PRIMARY_USERSTORE: string = "PRIMARY";
 
 /**
+ * Name of the agent userstore.
+ */
+export const AGENT_USERSTORE: string = "AGENT";
+
+/**
+ * ID of the agent userstore.
+ */
+export const AGENT_USERSTORE_ID: string = "QUdFTlQ";
+
+/**
  * Character limit for userstore name.
  */
 export const USERSTORE_NAME_CHARACTER_LIMIT: number = 50;

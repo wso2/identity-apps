@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,100 +18,149 @@
 
 import FormControl, { FormControlProps } from "@oxygen-ui/react/FormControl";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
+import IconButton from "@oxygen-ui/react/IconButton";
+import InputAdornment from "@oxygen-ui/react/InputAdornment";
+import InputLabel from "@oxygen-ui/react/InputLabel";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectProps } from "@oxygen-ui/react/Select";
+import { XMarkIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { ChangeEvent, FunctionComponent, ReactElement, ReactNode } from "react";
+import isEmpty from "lodash-es/isEmpty";
+import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 import { FieldRenderProps } from "react-final-form";
 
+import "./select-field-adapter.scss";
+
 /**
- * Interface for the DropDownItem.
+ * Interface for the items passed as options.
  */
-export interface DropDownItemInterface {
+interface DropDownItemInterface {
     text: ReactNode;
     value: string;
 }
 
 /**
- * Props interface of {@link SelectFieldAdapter}
+ * Props for the SelectFieldAdapter component.
  */
 export interface SelectFieldAdapterPropsInterface
-    extends FieldRenderProps<string, HTMLElement, string>,
-        Omit<SelectProps, "input">,
-        IdentifiableComponentInterface {
+    extends FieldRenderProps<string | string[], HTMLElement, string | string>, IdentifiableComponentInterface {
+    /**
+     * The label to display above the Select Field.
+     */
+    label: string;
+    /**
+     * Options list for the Select Field.
+     * @see DropDownItemInterface
+     */
+    options: DropDownItemInterface[];
+    /**
+     * Whether the TextField should take full width.
+     * Defaults to true.
+     */
+    fullWidth?: boolean;
     /**
      * Form control props.
      */
     FormControlProps?: FormControlProps;
+    /**
+     * Whether to show the clear button.
+     * Defaults to false.
+     */
+    isClearable?: boolean;
 }
 
 /**
- * A custom Select field adapter for the React Final Form library.
- * This adapter wraps a Material-UI Select component and integrates it with React Final Form.
+ * A custom SelectField adapter for use with React Final Form.
+ * This adapter wraps a Oxygen-UI Select component and integrates it with React Final Form.
  *
  * @param props - The component props.
- * @returns The rendered Select component.
+ * @returns The rendered SelectField component.
  */
 const SelectFieldAdapter: FunctionComponent<SelectFieldAdapterPropsInterface> = (
     props: SelectFieldAdapterPropsInterface
 ): ReactElement => {
     const {
         input,
-        name,
-        meta,
         label,
+        meta,
+        fullWidth = true,
         FormControlProps = {},
         placeholder,
-        options,
-        fullWidth,
-        required,
         helperText,
-        onChange,
+        required,
+        options,
+        isClearable = false,
+        readOnly = false,
+        "data-componentid": componentId = "select-field-adapter",
         ...rest
     } = props;
 
     const isError: boolean = (meta.error || meta.submitError) && meta.touched;
 
-    return (
-        <FormControl
-            required={ required }
-            error={ isError }
-            size="small"
-            variant="outlined"
-            fullWidth={ fullWidth }
-            { ...FormControlProps }
-        >
-            <Select
-                { ...input }
-                name={ name }
-                value={ input.value || "" }
-                onChange={ (e: ChangeEvent, child: ReactNode) => {
-                    input.onChange((e?.target as any)?.value as string);
-                    onChange && onChange(e as any, child);
-                } }
-                margin="dense"
-                label={ label }
-                // Need any to avoid 'children' does not exist on type 'IntrinsicAttributes & SelectProps' error.
-                { ...rest as (SelectProps & any) }
-            >
-                <MenuItem value="" disabled>
-                    { placeholder }
-                </MenuItem>
-                { options?.map((option: DropDownItemInterface) => (
-                    <MenuItem key={ option.value } value={ option.value }>
-                        { option.text }
-                    </MenuItem>
-                )) }
-            </Select>
-            <FormHelperText id={ `${input.name}-helper-text` }>
-                { helperText }
-            </FormHelperText>
-        </FormControl>
-    );
-};
+    /**
+     * Clears the input value.
+     */
+    const onValueClear = () => {
+        input.onChange(input.multiple ? [] : "");
+    };
 
-SelectFieldAdapter.defaultProps = {
-    fullWidth: true
+    // Prepare the field value when the input value is empty.
+    const fieldValue: string | string[] = isEmpty(input.value) ? (input.multiple ? [] : "") : input.value;
+    // Clear button should be hidden when the field value is empty.
+    const showClearButton: boolean = isClearable && !isEmpty(fieldValue);
+
+    return (
+        <div className="select-field-adapter" data-componentid={ componentId }>
+            <InputLabel required={ required }>{ label }</InputLabel>
+            <FormControl
+                error={ isError }
+                size="small"
+                variant="outlined"
+                margin="dense"
+                fullWidth={ fullWidth }
+                disabled={ readOnly }
+                { ...FormControlProps }
+            >
+                <InputLabel shrink={ false } data-componentid={ `${componentId}-placeholder` } disabled>
+                    { isEmpty(input.value) ? placeholder : "" }
+                </InputLabel>
+                <Select
+                    { ...input }
+                    value={ fieldValue }
+                    margin="dense"
+                    endAdornment={
+                        showClearButton && (
+                            <InputAdornment className="end-adornment" position="end">
+                                <IconButton onClick={ () => onValueClear() }>
+                                    <XMarkIcon />
+                                </IconButton>
+                            </InputAdornment>
+                        )
+                    }
+                    data-componentid={ `${componentId}-input` }
+                    { ...(rest as SelectProps) }
+                >
+                    { options?.map((option: DropDownItemInterface, index: number) => (
+                        <MenuItem
+                            data-componentid={ `${componentId}-input-${index}` }
+                            key={ option.value }
+                            value={ option.value }
+                        >
+                            { option.text }
+                        </MenuItem>
+                    )) }
+                </Select>
+                { isError && (
+                    <FormHelperText data-componentid={ `${componentId}-error` } error>
+                        { meta.error || meta.submitError }
+                    </FormHelperText>
+                ) }
+                { helperText && (
+                    <FormHelperText data-componentid={ `${componentId}-helper-text` }>{ helperText }</FormHelperText>
+                ) }
+            </FormControl>
+        </div>
+    );
 };
 
 export default SelectFieldAdapter;

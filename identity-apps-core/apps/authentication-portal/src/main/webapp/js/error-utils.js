@@ -24,69 +24,167 @@
  * @param {string} errorCode - The error code (e.g., "60001")
  * @returns {object} The i18n keys for the given error code.
  */
-function getI18nKeyForError(errorCode) {
+function getI18nKeyForError(errorCode, flowType) {
     switch (errorCode) {
-        case "RFE-60001":
+        case "FE-60001":
 
             return {
-                message: "sign.up.error.invalid.flow.id.message",
-                description: "sign.up.error.invalid.flow.id.description"
+                message: "orchestration.flow.error.invalid.flow.id.message",
+                description: "orchestration.flow.error.invalid.flow.id.description"
             };
 
-        case "RFE-60002":
+        case "FE-60002":
 
             return {
                 message: "sign.up.error.username.not.provided.message",
                 description: "sign.up.error.username.not.provided.description"
             };
 
-        case "RFE-60003":
+        case "FE-60003":
 
             return {
                 message: "sign.up.error.username.already.exists.message",
                 description: "sign.up.error.username.already.exists.description"
             };
 
-        case "RFE-60004":
-
+        case "FE-60004":
+            
+            if( flowType === "USER_REGISTRATION") {
+                return {
+                    message: "sign.up.flow.error.undefined.flow.id.message",
+                    description: "sign.up.flow.error.undefined.flow.id.description"
+                };
+            } else if (flowType === "INVITED_USER_REGISTRATION") {
+                return {
+                    message: "invite.user.registration.flow.error.undefined.flow.id.message",
+                    description: "invite.user.registration.flow.error.undefined.flow.id.description"
+                };
+            } else if( flowType === "PASSWORD_RECOVERY") {
+                return {
+                    message: "password.reset.flow.error.undefined.flow.id.message",
+                    description: "password.reset.flow.error.undefined.flow.id.description"
+                };
+            }
             return {
-                message: "sign.up.error.undefined.flow.id.message",
-                description: "sign.up.error.undefined.flow.id.description"
+                message: "orchestration.flow.error.undefined.flow.id.message",
+                description: "orchestration.flow.error.undefined.flow.id.description"
             };
 
-        case "RFE-60005":
+        case "FE-60005":
 
             return {
                 message: "sign.up.error.invalid.username.message", 
                 description: "sign.up.error.invalid.username.description" 
             };
 
-        case "RFE-60006":
+        case "FE-60006":
 
+            if( flowType === "USER_REGISTRATION") { 
+                return {
+                    message: "sign.up.error.failed.message",
+                    description: "sign.up.error.failed.description"
+                };
+            } else if (flowType === "INVITED_USER_REGISTRATION") {
+                return {
+                    message: "invite.user.registration.failed.message",
+                    description: "invite.user.registration.failed.description"
+                };
+            } else if( flowType === "PASSWORD_RECOVERY") {
+                return {
+                    message: "password.reset.failed.message",
+                    description: "password.reset.failed.description"
+                };
+            }        
             return {
-                message: "sign.up.error.registration.failed.message",
-                description: "sign.up.error.registration.failed.description"
+                message: "orchestration.flow.error.failed.message",
+                description: "orchestration.flow.error.failed.description"
+            };
+            
+
+        case "FE-60007":
+
+            if( flowType === "USER_REGISTRATION") {
+                return {
+                    message: "sign.up.error.request.processing.failed.message",
+                    description: "sign.up.error.request.processing.failed.description"
+                };
+            } else if (flowType === "INVITED_USER_REGISTRATION") {
+                return {
+                    message: "invite.user.registration.error.request.processing.failed.message",
+                    description: "invite.user.registration.error.request.processing.failed.description"
+                };
+            } else if( flowType === "PASSWORD_RECOVERY") {
+                return {
+                    message: "password.reset.error.request.processing.failed.message",
+                    description: "password.reset.error.request.processing.failed.description"
+                };
+            }   
+            return {
+                message: "orchestration.flow.error.request.processing.failed.message",
+                description: "orchestration.flow.error.request.processing.failed.description"
             };
 
-        case "RFE-60007":
+        case "FE-60008":
 
             return {
-                message: "sign.up.error.request.processing.failed.message",
-                description: "sign.up.error.request.processing.failed.description"
+                message: "orchestration.flow.error.invalid.user.input.message",
+                description: "orchestration.flow.error.invalid.user.input.description"
             };
 
-        case "RFE-60008":
+        case "FE-60009":
+            
+            return {
+                message: "orchestration.flow.error.invalid.actionId.message",
+                description: "orchestration.flow.error.invalid.actionId.description"
+            };
+
+        case "FE-60010":
 
             return {
-                message: "sign.up.error.registration.failed.message",
-                description: "sign.up.error.invalid.user.input.description"
+                message: "orchestration.flow.error.invalid.captcha.message",
+                description: "orchestration.flow.error.invalid.captcha.description"
+            };
+
+        case "FE-60011":
+
+            return {
+                message: "orchestration.flow.error.no.flowType.message",
+                description: "orchestration.flow.error.no.flowType.description"
+            };
+
+        case "FE-60101":
+    
+            return {
+                message: "orchestration.flow.error.dynamic.portal.not.enabled.message",
+                description: "orchestration.flow.error.dynamic.portal.not.enabled.description"
+            };
+
+        case "FE-60102":
+        
+            return {
+                message: "orchestration.flow.error.self.registration.not.enabled.message",
+                description: "orchestration.flow.error.self.registration.not.enabled.description"
+            };
+
+        case "FE-60103":
+        
+            return {
+                message: "orchestration.flow.error.invalid.flowType.message",
+                description: "orchestration.flow.error.invalid.flowType.description"
+            };
+
+        case "FE-60104":
+        
+            return {
+                message: "orchestration.flow.error.disabled.flow.message",
+                description: "orchestration.flow.error.disabled.flow.description"
             };
 
         default:
 
             return {
-                message: "sign.up.error.registration.failed.message",
-                description: "sign.up.error.registration.failed.description"
+                message: "orchestration.flow.error.failed.message",
+                description: "orchestration.flow.error.failed.description"
             };
     }
 }

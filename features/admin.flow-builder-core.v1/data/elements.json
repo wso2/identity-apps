@@ -123,7 +123,7 @@
             "hint": "",
             "label": "Date",
             "required": false,
-            "placeholder": "yyyy-mm-dd"
+            "placeholder": "dd-mm-yyyy"
         }
     },
     {
@@ -190,6 +190,7 @@
             "image": "https://www.svgrepo.com/show/339836/boolean.svg",
             "showOnResourcePanel": false
         },
+        "variant": "DROPDOWN",
         "config": {
             "hint": "",
             "label": "Choice",
@@ -435,10 +436,10 @@
         "display": {
             "label": "Rich Text",
             "image": "https://www.svgrepo.com/show/374852/display-rich-text.svg",
-            "showOnResourcePanel": false
+            "showOnResourcePanel": true
         },
         "config": {
-            "text": "<h3 class=\"ui header\">Rich Text</h3>"
+            "text": "<h3>Rich Text</h3>"
         }
     },
     {

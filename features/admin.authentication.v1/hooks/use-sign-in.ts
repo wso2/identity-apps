@@ -37,6 +37,7 @@ import {
     setIsFirstLevelOrganization,
     setOrganization,
     setOrganizationType,
+    setUserOrganizationHandle,
     setUserOrganizationId
 } from "@wso2is/admin.core.v1/store/actions/organization";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
@@ -323,6 +324,7 @@ const useSignIn = (): UseSignInInterface => {
 
         dispatch(setOrganizationType(orgType));
         window["AppUtils"].updateOrganizationType(orgType);
+        dispatch(setUserOrganizationHandle(orgHandle));
         dispatch(setUserOrganizationId(userOrganizationId));
 
         if (window["AppUtils"].getConfig().organizationName || isFirstLevelOrg) {
@@ -339,6 +341,7 @@ const useSignIn = (): UseSignInInterface => {
                     id: orgId,
                     lastModified: new Date().toString(),
                     name: orgName,
+                    orgHandle: orgHandle,
                     parent: {
                         id: "",
                         ref: ""

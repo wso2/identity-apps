@@ -23,8 +23,8 @@ import {
     FilePickerAdapter,
     FinalFormField,
     FormApi,
-    SelectFieldAdapter,
-    TextFieldAdapter
+    TextFieldAdapter,
+    __DEPRECATED__SelectFieldAdapter
 } from "@wso2is/form";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
@@ -166,7 +166,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                             displayEmpty={ true }
                             label={ field?.label }
                             placeholder={ field?.placeholder }
-                            component={ SelectFieldAdapter }
+                            component={ __DEPRECATED__SelectFieldAdapter }
                             readOnly={ readOnly || field?.readOnly }
                             required={ field?.required }
                             options={ (field as DynamicDropdownFieldInterface)?.options }
