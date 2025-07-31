@@ -138,11 +138,11 @@
                                 .equals(errorCode)) {
                     %>
                         <%=i18n(recoveryResourceBundle, customText, "email.link.expiry.message")%>
-                    <% } else  if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_LOCKED_ACCOUNT.getCode()
-                        .equals(errorCode)) {
-                        String[] splitErrorMsg = errorMsg.split("-");
-                        String username = splitErrorMsg[1].trim();
-                        String finalMessage = i18n(recoveryResourceBundle, customText, "user.account.locked") + (" - ") + username;
+                    <% } else if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_LOCKED_ACCOUNT.getCode()
+                                .equals(errorCode)) {
+                            String[] splitErrorMsg = errorMsg.split("-");
+                            String username = splitErrorMsg[1].trim();
+                            String finalMessage = i18n(recoveryResourceBundle, customText, "user.account.locked") + (" - ") + username;
                     %>
                         <%=finalMessage%>
                     <% } else if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_PENDING_SELF_REGISTERED_ACCOUNT.getCode().equals(errorCode)) {
@@ -172,7 +172,7 @@
                                 .append(attributeString)
                                 .append(i18n(recoveryResourceBundle, customText, "are.already.used.by.different.users"))
                                 .toString();
-                        }   else {
+                        } else {
                             finalMessage = new StringBuilder()
                                 .append(i18n(recoveryResourceBundle, customText, "values.defined.for"))
                                 .append(attributeString)
