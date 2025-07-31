@@ -368,7 +368,7 @@ const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
     const handleAddEmailAddress = (values: Record<string, string>): void => {
         setIsProfileUpdating(true);
 
-        const emailAddress: string = values["emails"];
+        const emailAddress: string = values["emailAddresses"];
         const data: PatchOperationRequest<ProfilePatchOperationValue> = {
             Operations: [],
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
@@ -467,7 +467,7 @@ const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
             });
         }
 
-        triggerUpdate(data);
+        triggerUpdate(data, false);
     };
 
     const handleSingleEmailUpdate = (_: string, value: string): void => {
@@ -704,7 +704,7 @@ const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
                                             <FinalFormField
                                                 component={ TextFieldAdapter }
                                                 ariaLabel={ fieldLabel }
-                                                name="emails"
+                                                name="emailAddresses"
                                                 type="text"
                                                 placeholder={
                                                     t("myAccount:components.profile.forms.generic.inputs.placeholder",
@@ -772,6 +772,7 @@ const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
                         selectedAttributeInfo={ { schema, value: selectedEmailAddress.value } }
                         onClose={ () => setSelectedEmailAddress(undefined) }
                         onConfirm={ handleEmailAddressDelete }
+                        data-componentid={ testId }
                     />
                 ) }
             </EditSection>

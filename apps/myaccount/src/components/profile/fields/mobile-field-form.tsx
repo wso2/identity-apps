@@ -332,20 +332,12 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
-        const updatedPhoneNumbersList: MultiValue[] = [];
-
-        for (const phoneNumber of profileDetails?.profileInfo?.phoneNumbers) {
-            if (phoneNumber.value === "mobile") {
-                updatedPhoneNumbersList.push({ ...phoneNumber, value: mobileNumber });
-            } else {
-                updatedPhoneNumbersList.push(phoneNumber);
-            }
-        }
-
         data.Operations.push({
-            op: "replace",
+            op: "add",
             value: {
-                [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: updatedPhoneNumbersList
+                [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
+                    { type: "mobile", value: mobileNumber }
+                ]
             }
         });
 
@@ -385,7 +377,7 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
     const handleAddMobileNumber = (values: Record<string, string>): void => {
         setIsProfileUpdating(true);
 
-        const mobileNumber: string = values["phoneNumbers"];
+        const mobileNumber: string = values["mobileNumbers"];
         const data: PatchOperationRequest<ProfilePatchOperationValue> = {
             Operations: [],
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
@@ -484,7 +476,7 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
             });
         }
 
-        triggerUpdate(data);
+        triggerUpdate(data, false);
     };
 
     const handleSingleMobileUpdate = (_: string, value: string): void => {
@@ -792,7 +784,7 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                                             <FinalFormField
                                                 component={ TextFieldAdapter }
                                                 ariaLabel={ fieldLabel }
-                                                name="phoneNumbers"
+                                                name="mobileNumbers"
                                                 type="text"
                                                 placeholder={
                                                     t("myAccount:components.profile.forms.generic.inputs.placeholder",
@@ -879,6 +871,7 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                         selectedAttributeInfo={ { schema, value: selectedMobileNumber.value } }
                         onClose={ () => setSelectedMobileNumber(undefined) }
                         onConfirm={ handleMobileNumberDelete }
+                        data-componentid={ testId }
                     />
                 ) }
             </EditSection>

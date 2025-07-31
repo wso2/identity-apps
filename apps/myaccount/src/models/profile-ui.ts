@@ -67,8 +67,9 @@ export interface ProfileFieldFormRendererPropsInterface<T> extends IdentifiableC
      * Callback to trigger the profile update.
      *
      * @param data - Patch operation data.
+     * @param clearActiveForm - Whether to clear the active form or not.
      */
-    triggerUpdate: (data: PatchOperationRequest<ProfilePatchOperationValue>) => void;
+    triggerUpdate: (data: PatchOperationRequest<ProfilePatchOperationValue>, clearActiveForm?: boolean) => void;
     /**
      * Mapped user profile data. This is used in the email, mobile number fields.
      * Ex: Retrieve the primary email address.
@@ -156,8 +157,9 @@ export interface EmailFieldFormPropsInterface extends Omit<ProfileFieldFormProps
      * Callback to trigger the update.
      *
      * @param data - Patch operation data.
+     * @param clearActiveForm - Whether to clear the active form or not.
      */
-    triggerUpdate: (data: PatchOperationRequest<ProfilePatchOperationValue>) => void;
+    triggerUpdate: (data: PatchOperationRequest<ProfilePatchOperationValue>, clearActiveForm?: boolean) => void;
 }
 
 export interface MobileFieldFormPropsInterface extends Omit<ProfileFieldFormPropsInterface<string>, "handleSubmit"> {
@@ -173,8 +175,9 @@ export interface MobileFieldFormPropsInterface extends Omit<ProfileFieldFormProp
      * Callback to trigger the update.
      *
      * @param data - Patch operation data.
+     * @param clearActiveForm - Whether to clear the active form or not.
      */
-    triggerUpdate: (data: PatchOperationRequest<ProfilePatchOperationValue>) => void;
+    triggerUpdate: (data: PatchOperationRequest<ProfilePatchOperationValue>, clearActiveForm?: boolean) => void;
     /**
      * Flattened profile schema.
      */

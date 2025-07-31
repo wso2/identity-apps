@@ -138,6 +138,7 @@ const SelectFieldAdapter: FunctionComponent<SelectFieldAdapterPropsInterface> = 
                         )
                     }
                     data-componentid={ `${componentId}-input` }
+                    MenuProps={ { "data-componentid": `${componentId}-menu` } as any }
                     { ...(rest as SelectProps) }
                 >
                     { options?.map((option: DropDownItemInterface, index: number) => (
