@@ -214,10 +214,12 @@ export interface userNS {
             subTitle: string;
             askPassword: {
                 emailVerificationDisabled: string;
+                mobileNumberAlreadyExists: string;
                 emailInvalid: string;
                 alphanumericUsernameEnabled: string;
                 inviteViaEmail: string;
                 inviteOffline: string;
+                inviteViaSMS: string;
             };
             steps: {
                 basicDetails: string;
@@ -389,6 +391,8 @@ export interface userNS {
         };
         accountState: {
             pendingAskPassword: string;
+            pendingAskPasswordSMSOTP: string;
+            pendingAskPasswordEmailOTP: string;
         };
         fields: {
             createdDate: string;

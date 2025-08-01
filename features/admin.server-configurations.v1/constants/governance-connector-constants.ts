@@ -29,11 +29,19 @@ export class GovernanceConnectorConstants {
         EXPIRY_TIME_MAX_VALUE: number;
         EXPIRY_TIME_MIN_LENGTH: number;
         EXPIRY_TIME_MIN_VALUE: number;
+        OTP_CODE_LENGTH_MAX_LENGTH: number;
+        OTP_CODE_LENGTH_MAX_VALUE: number;
+        OTP_CODE_LENGTH_MIN_LENGTH: number;
+        OTP_CODE_LENGTH_MIN_VALUE: number;
     } = {
             EXPIRY_TIME_MAX_LENGTH: 5,
             EXPIRY_TIME_MAX_VALUE: 10080,
             EXPIRY_TIME_MIN_LENGTH: 1,
-            EXPIRY_TIME_MIN_VALUE: -1
+            EXPIRY_TIME_MIN_VALUE: -1,
+            OTP_CODE_LENGTH_MAX_LENGTH: 2,
+            OTP_CODE_LENGTH_MAX_VALUE: 10,
+            OTP_CODE_LENGTH_MIN_LENGTH: 1,
+            OTP_CODE_LENGTH_MIN_VALUE: 4
         };
 
     /**

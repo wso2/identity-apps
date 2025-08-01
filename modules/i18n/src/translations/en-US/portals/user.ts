@@ -228,7 +228,9 @@ export const user: userNS = {
                 emailVerificationDisabled: "To invite users to set the password, enable email invitations " +
                     "for user password setup from <1>Login & Registration settings</1>.",
                 inviteOffline: "Invite offline",
-                inviteViaEmail: "Invite via email"
+                inviteViaEmail: "Invite via email",
+                inviteViaSMS: "Invite via SMS",
+                mobileNumberAlreadyExists: "Mobile number is required for SMS OTP, please enable mobile number attribute from <1>Attributes</1>."
             },
             buttons: {
                 next: "Next",
@@ -409,7 +411,9 @@ export const user: userNS = {
             pendingSelfRegistration: "The account is locked pending user verification via the self-registration email."
         },
         accountState: {
-            pendingAskPassword: "The user has not yet set a password using the setup email sent."
+            pendingAskPassword: "The user has not yet set a password using the setup email sent.",
+            pendingAskPasswordEmailOTP: "The user has not yet set a password using the email OTP sent.",
+            pendingAskPasswordSMSOTP: "The user has not yet set a password using the SMS OTP sent."
         },
         confirmationModals: {
             deleteAttributeConfirmation: {

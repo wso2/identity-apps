@@ -6815,8 +6815,10 @@ export const console: ConsoleNS = {
                                 "alphanumeric username feature.",
                             emailInvalid: "To invite users to set the password, please enter a valid email address.",
                             emailVerificationDisabled: "To invite users to set the password, enable email invitations for user password setup from <1>Login & Registration settings</1>.",
+                            mobileNumberAlreadyExists: "Mobile number is required for SMS OTP, please enable mobile number attribute from <1>Attributes</1>.",
                             inviteOffline: "Invite offline",
-                            inviteViaEmail: "Invite via email"
+                            inviteViaEmail: "Invite via email",
+                            inviteViaSMS: "Invite via SMS"
                         },
                         buttons: {
                             next: "Next",

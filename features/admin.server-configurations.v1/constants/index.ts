@@ -19,3 +19,4 @@
 export * from "./server-configurations-constants";
 export * from "./governance-connector-constants";
 export * from "./password-recovery-constants";
+export * from "./ask-password-constants";

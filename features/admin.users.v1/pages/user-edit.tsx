@@ -175,9 +175,12 @@ const UserEditPage = (): ReactElement => {
 
         if (originalUserOnboardingConnectorData) {
             originalUserOnboardingConnectorData.map((connector: GovernanceConnectorInterface) => {
-                if (connector.id === ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID) {
+                if (connector.id === ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID
+                    || connector.id === ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID) {
                     connector.properties.map((property: ConnectorPropertyInterface) => {
-                        if (property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) {
+                        if (property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION
+                            || property.name === ServerConfigurationsConstants.ASK_PASSWORD_EMAIL_OTP
+                            || property.name === ServerConfigurationsConstants.ASK_PASSWORD_SMS_OTP) {
                             properties.push(property);
                         }
                     });
