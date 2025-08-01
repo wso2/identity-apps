@@ -107,9 +107,9 @@ const ApprovalWorkflowList: React.FunctionComponent<ApprovalWorkflowListProps> =
     const [ currentDeletedApprovalWorkflow, setCurrentDeletedApprovalWorkflow ] = useState<WorkflowListItemInterface>();
     const isPrivilegedUser: any = useSelector((state: AppState) => state.auth.isPrivilegedUser);
 
-    const hasApprovalWorkflowCreatePermissions: boolean = useRequiredScopes(featureConfig?.userStores?.scopes?.create);
-    const hasApprovalWorkflowUpdatePermissions: boolean = useRequiredScopes(featureConfig?.userStores?.scopes?.update);
-    const hasApprovalWorkflowDeletePermissions: boolean = useRequiredScopes(featureConfig?.userStores?.scopes?.delete);
+    const hasApprovalWorkflowCreatePermissions: boolean = useRequiredScopes(featureConfig?.workflows?.scopes?.create);
+    const hasApprovalWorkflowUpdatePermissions: boolean = useRequiredScopes(featureConfig?.workflows?.scopes?.update);
+    const hasApprovalWorkflowDeletePermissions: boolean = useRequiredScopes(featureConfig?.workflows?.scopes?.delete);
 
     const handleApprovalWorkflowEdit = (approvalWorkflowId: string) => {
         history.push(AppConstants.getPaths().get("APPROVAL_WORKFLOW_EDIT").replace(":id", approvalWorkflowId));
