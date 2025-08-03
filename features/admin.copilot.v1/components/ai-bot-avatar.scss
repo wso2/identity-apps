@@ -1,0 +1,48 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+// Import theme variables
+@import "../styles/copilot-variables";
+
+.ai-bot-avatar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    &.circular {
+        border-radius: 50%;
+        background: $copilot-primary-color;
+        padding: 20%;
+
+        img {
+            width: 60% !important;
+            height: auto !important;
+            object-fit: contain !important;
+            display: block !important;
+        }
+    }
+
+    &.standard {
+        img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: contain !important;
+            display: block !important;
+        }
+    }
+}
