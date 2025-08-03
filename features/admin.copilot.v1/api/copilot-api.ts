@@ -266,28 +266,24 @@ export class CopilotApiService {
 
         const headers = this.generateHeaders();
 
-        try {
-            const response = await fetch(`${this.baseUrl}/clear`, {
-                method: HttpMethods.POST,
-                headers
-            });
+        const response = await fetch(`${this.baseUrl}/clear`, {
+            method: HttpMethods.POST,
+            headers
+        });
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                const errorData = safeParse(errorText);
-                throw new Error(errorData.detail || errorData.message || `HTTP ${response.status}: Failed to clear chat`);
-            }
-
-            const responseText = await response.text();
-            const result = safeParse(responseText) as CopilotClearResponse;
-            if (!result || typeof result !== 'object') {
-                throw new Error('Invalid JSON response from server');
-            }
-
-            return result;
-        } catch (error: any) {
-            throw error;
+        if (!response.ok) {
+            const errorText = await response.text();
+            const errorData = safeParse(errorText);
+            throw new Error(errorData.detail || errorData.message || `HTTP ${response.status}: Failed to clear chat`);
         }
+
+        const responseText = await response.text();
+        const result = safeParse(responseText) as CopilotClearResponse;
+        if (!result || typeof result !== 'object') {
+            throw new Error('Invalid JSON response from server');
+        }
+
+        return result;
     }
 
     /**
