@@ -66,8 +66,8 @@ const CopilotHeader: React.FunctionComponent<CopilotHeaderProps> = (
     } = props;
 
 
-    const [isRefreshing, setIsRefreshing] = useState(false);
-    const [showClearChatModal, setShowClearChatModal] = useState(false);
+    const [ isRefreshing, setIsRefreshing ] = useState(false);
+    const [ showClearChatModal, setShowClearChatModal ] = useState(false);
 
     const {
         clearChat,
@@ -77,77 +77,80 @@ const CopilotHeader: React.FunctionComponent<CopilotHeaderProps> = (
     /**
      * Handle clear chat button click - show confirmation modal.
      */
-    const handleClearChatClick = useCallback(() => {
+    const handleClearChatClick: () => void = useCallback(() => {
         setShowClearChatModal(true);
     }, []);
 
     /**
      * Handle clear chat confirmation.
      */
-    const handleClearChatConfirm = useCallback(() => {
+    const handleClearChatConfirm: () => void = useCallback(() => {
         setIsRefreshing(true);
+
         try {
             clearChat();
         } finally {
             // Reset refresh state after animation
             setTimeout(() => setIsRefreshing(false), 1000);
         }
-    }, [clearChat]);
+    }, [ clearChat ]);
 
     /**
      * Handle expand/collapse toggle.
      */
-    const handleToggleExpand = useCallback(() => {
+    const handleToggleExpand: () => void = useCallback(() => {
         if (onToggleExpand) {
             onToggleExpand();
         }
-    }, [onToggleExpand]);
+    }, [ onToggleExpand ]);
 
     return (
-        <Box className="copilot-header" data-componentid={componentId}>
+        <Box className="copilot-header" data-componentid={ componentId }>
             <Box className="copilot-header-content">
-                {/* Left side - Logo and Title */}
+                { /* Left side - Logo and Title */ }
                 <Box className="copilot-header-left">
                     <Box className="copilot-avatar-container">
-                        <AISparkleIcon width={24} height={24} />
+                        <AISparkleIcon width={ 24 } height={ 24 } />
                     </Box>
                     <Typography variant="h6" component="h2" className="copilot-header-title">
                         Copilot
                     </Typography>
                 </Box>
 
-                {/* Right side - Action buttons */}
+                { /* Right side - Action buttons */ }
                 <Box className="copilot-header-actions">
-                    {messages.length > 0 && (
+                    { messages.length > 0 && (
                         <Tooltip title="Clear Chat">
                             <IconButton
                                 size="small"
-                                onClick={handleClearChatClick}
-                                disabled={isRefreshing}
-                                data-componentid={`${componentId}-refresh-button`}
-                                className={`copilot-action-button ${isRefreshing ? 'refreshing' : ''}`}
+                                onClick={ handleClearChatClick }
+                                disabled={ isRefreshing }
+                                data-componentid={ `${componentId}-refresh-button` }
+                                className={ `copilot-action-button ${isRefreshing ? "refreshing" : ""}` }
                             >
                                 <RefreshIcon fontSize="small" />
                             </IconButton>
                         </Tooltip>
-                    )}
-                    {onToggleExpand && (
-                        <Tooltip title={isExpanded ? "Collapse" : "Expand"}>
+                    ) }
+                    { onToggleExpand && (
+                        <Tooltip title={ isExpanded ? "Collapse" : "Expand" }>
                             <IconButton
                                 size="small"
-                                onClick={handleToggleExpand}
-                                data-componentid={`${componentId}-expand-button`}
+                                onClick={ handleToggleExpand }
+                                data-componentid={ `${componentId}-expand-button` }
                                 className="copilot-action-button"
                             >
-                                {isExpanded ? <FullscreenExitIcon fontSize="small" /> : <FullscreenIcon fontSize="small" />}
+                                { isExpanded
+                                    ? <FullscreenExitIcon fontSize="small" />
+                                    : <FullscreenIcon fontSize="small" /> }
                             </IconButton>
                         </Tooltip>
-                    )}
+                    ) }
                     <Tooltip title="Close">
                         <IconButton
                             size="small"
-                            onClick={onClose}
-                            data-componentid={`${componentId}-close-button`}
+                            onClick={ onClose }
+                            data-componentid={ `${componentId}-close-button` }
                             className="copilot-action-button"
                         >
                             <CloseIcon fontSize="small" />
@@ -156,12 +159,12 @@ const CopilotHeader: React.FunctionComponent<CopilotHeaderProps> = (
                 </Box>
             </Box>
 
-            {/* Clear Chat Confirmation Modal */}
+            { /* Clear Chat Confirmation Modal */ }
             <ClearChatConfirmationModal
-                open={showClearChatModal}
-                onClose={() => setShowClearChatModal(false)}
-                onConfirm={handleClearChatConfirm}
-                data-componentid={`${componentId}-clear-chat-modal`}
+                open={ showClearChatModal }
+                onClose={ () => setShowClearChatModal(false) }
+                onConfirm={ handleClearChatConfirm }
+                data-componentid={ `${componentId}-clear-chat-modal` }
             />
         </Box>
     );

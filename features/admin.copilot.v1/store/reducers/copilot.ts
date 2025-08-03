@@ -21,6 +21,7 @@ import {
     CopilotActionTypes,
     CopilotActions,
     CopilotContentType,
+    CopilotMessage,
     CopilotPanelState
 } from "../types/copilot-action-types";
 
@@ -64,12 +65,12 @@ export const copilotReducer: Reducer<CopilotPanelState> = (
         case CopilotActionTypes.ADD_COPILOT_MESSAGE:
             return {
                 ...state,
-                messages: [...state.messages, action.payload]
+                messages: [ ...state.messages, action.payload ]
             };
         case CopilotActionTypes.UPDATE_COPILOT_MESSAGE:
             return {
                 ...state,
-                messages: state.messages.map(message =>
+                messages: state.messages.map((message: CopilotMessage) =>
                     message.id === action.payload.id
                         ? { ...message, content: action.payload.content }
                         : message

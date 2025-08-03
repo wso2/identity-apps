@@ -16,10 +16,10 @@
  * under the License.
  */
 
+import { useAuthContext } from "@asgardeo/auth-react";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { useAuthContext } from "@asgardeo/auth-react";
 import {
     addCopilotMessage,
     clearCopilotChatWithApi,
@@ -100,51 +100,53 @@ const useCopilotPanel = (): UseCopilotPanelInterface => {
 
     // Use a generic selector that works with any app state structure
     const copilotState: CopilotPanelState = useSelector((state: any) => state.copilot);
-    
-    const showPanel = useCallback(() => {
+
+    const showPanel: () => void = useCallback(() => {
         dispatch(setCopilotPanelVisibility(true));
-    }, [dispatch]);
-    
-    const hidePanel = useCallback(() => {
+    }, [ dispatch ]);
+
+    const hidePanel: () => void = useCallback(() => {
         dispatch(setCopilotPanelVisibility(false));
-    }, [dispatch]);
-    
-    const togglePanel = useCallback(() => {
+    }, [ dispatch ]);
+
+    const togglePanel: () => void = useCallback(() => {
         dispatch(toggleCopilotPanel());
-    }, [dispatch]);
-    
-    const sendMessage = useCallback(async (message: string) => {
+    }, [ dispatch ]);
+
+    const sendMessage: (message: string) => Promise<void> = useCallback(async (message: string) => {
         try {
             // TODO: get access token from the context
-            const accessToken = await getAccessToken();
+            const accessToken: string = await getAccessToken();
+
             dispatch(sendCopilotMessage(message, accessToken) as any);
         } catch (error) {
             dispatch(sendCopilotMessage(message) as any);
         }
-    }, [dispatch, getAccessToken]);
-    
-    const addMessage = useCallback((message: CopilotMessage) => {
+    }, [ dispatch, getAccessToken ]);
+
+    const addMessage: (message: CopilotMessage) => void = useCallback((message: CopilotMessage) => {
         dispatch(addCopilotMessage(message));
-    }, [dispatch]);
-    
-    const clearChat = useCallback(async () => {
+    }, [ dispatch ]);
+
+    const clearChat: () => Promise<void> = useCallback(async () => {
         try {
             // TODO: get access token from the context
-            const accessToken = await getAccessToken();
+            const accessToken: string = await getAccessToken();
+
             dispatch(clearCopilotChatWithApi(accessToken) as any);
         } catch (error) {
             dispatch(clearCopilotChatWithApi() as any);
         }
-    }, [dispatch, getAccessToken]);
+    }, [ dispatch, getAccessToken ]);
 
-    const setContentType = useCallback((contentType: CopilotContentType) => {
+    const setContentType: (contentType: CopilotContentType) => void = useCallback((contentType: CopilotContentType) => {
         dispatch(setCopilotContentType(contentType));
-    }, [dispatch]);
-    
-    const setLoading = useCallback((isLoading: boolean) => {
+    }, [ dispatch ]);
+
+    const setLoading: (isLoading: boolean) => void = useCallback((isLoading: boolean) => {
         dispatch(setCopilotPanelLoading(isLoading));
-    }, [dispatch]);
-    
+    }, [ dispatch ]);
+
     return {
         addMessage,
         clearChat,

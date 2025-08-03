@@ -70,36 +70,36 @@ const CopilotToggleButton: React.FunctionComponent<CopilotToggleButtonProps> = (
     /**
      * Handle button click.
      */
-    const handleClick = useCallback(() => {
+    const handleClick: () => void = useCallback(() => {
         togglePanel();
-    }, [togglePanel]);
+    }, [ togglePanel ]);
 
-    const inlineButton = (
+    const inlineButton: ReactElement = (
         <Button
-            className={`copilot-toggle-button ${isVisible ? 'active' : ''} ${className || ''}`}
+            className={ `copilot-toggle-button ${isVisible ? "active" : ""} ${className || ""}` }
             variant="contained"
             color="primary"
-            onClick={handleClick}
-            data-componentid={componentId}
-            startIcon={<AISparkleIcon width={20} height={20} />}
+            onClick={ handleClick }
+            data-componentid={ componentId }
+            startIcon={ <AISparkleIcon width={ 20 } height={ 20 } /> }
         >
             Copilot
         </Button>
     );
 
     return (
-        <Tooltip title={isVisible ? t("console:Hide Copilot") : t("console:Show Copilot")}>
-            {showBadge ? (
+        <Tooltip title={ isVisible ? t("console:Hide Copilot") : t("console:Show Copilot") }>
+            { showBadge ? (
                 <Badge
-                    badgeContent={badgeContent}
+                    badgeContent={ badgeContent }
                     color="error"
-                    data-componentid={`${componentId}-badge`}
+                    data-componentid={ `${componentId}-badge` }
                 >
-                    {inlineButton}
+                    { inlineButton }
                 </Badge>
             ) : (
                 inlineButton
-            )}
+            ) }
         </Tooltip>
     );
 };
