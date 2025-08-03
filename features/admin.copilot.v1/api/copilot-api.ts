@@ -19,6 +19,17 @@
 import { HttpMethods } from "@wso2is/core/models";
 
 /**
+ * Safely parse JSON string, returning empty object if parsing fails.
+ */
+const safeParse = (str: string) => {
+    try {
+        return JSON.parse(str);
+    } catch {
+        return {};
+    }
+};
+
+/**
  * Interface for chat message request.
  */
 export interface CopilotChatRequest {
@@ -158,12 +169,7 @@ export class CopilotApiService {
 
             if (!response.ok) {
                 const errorText = await response.text();
-                let errorData: any = {};
-                try {
-                    errorData = JSON.parse(errorText);
-                } catch (parseError) {
-                    // Ignore parse error
-                }
+                const errorData = safeParse(errorText);
                 throw new Error(errorData.detail || errorData.message || `HTTP ${response.status}: Failed to send message`);
             }
 
@@ -173,11 +179,9 @@ export class CopilotApiService {
             }
 
             const responseText = await response.text();
-            let result: CopilotChatResponse;
-            try {
-                result = JSON.parse(responseText);
-            } catch (parseError) {
-                throw new Error(`Invalid JSON response from server: ${parseError.message}`);
+            const result = safeParse(responseText) as CopilotChatResponse;
+            if (!result || typeof result !== 'object') {
+                throw new Error('Invalid JSON response from server');
             }
 
             return result;
@@ -203,12 +207,14 @@ export class CopilotApiService {
         let buffer = '';
 
         try {
-            while (true) {
-                const { done, value } = await reader.read();
+            let done = false;
+            while (!done) {
+                const result = await reader.read();
+                done = result.done;
                 if (done) break;
 
                 // Decode the chunk and add to buffer
-                const chunk = decoder.decode(value, { stream: true });
+                const chunk = decoder.decode(result.value, { stream: true });
                 buffer += chunk;
 
                 // Process complete lines
@@ -219,31 +225,23 @@ export class CopilotApiService {
                     const trimmedLine = line.trim();
                     if (!trimmedLine) continue;
 
-                    try {
-                        const parsed: CopilotStreamChunk = JSON.parse(trimmedLine);
-                        if (parsed.type === 'STREAM' && parsed.content) {
-                            fullAnswer += parsed.content;
-                            if (onStream) {
-                                onStream(parsed);
-                            }
-                        }
-                    } catch (parseError) {
-                        // Ignore parse errors for malformed chunks
-                    }
-                }
-            }
-
-            if (buffer.trim()) {
-                try {
-                    const parsed: CopilotStreamChunk = JSON.parse(buffer.trim());
-                    if (parsed.type === 'STREAM' && parsed.content) {
+                    const parsed = safeParse(trimmedLine) as CopilotStreamChunk;
+                    if (parsed && parsed.type === 'STREAM' && parsed.content) {
                         fullAnswer += parsed.content;
                         if (onStream) {
                             onStream(parsed);
                         }
                     }
-                } catch (parseError) {
-                    // Ignore parse errors for final buffer
+                }
+            }
+
+            if (buffer.trim()) {
+                const parsed = safeParse(buffer.trim()) as CopilotStreamChunk;
+                if (parsed && parsed.type === 'STREAM' && parsed.content) {
+                    fullAnswer += parsed.content;
+                    if (onStream) {
+                        onStream(parsed);
+                    }
                 }
             }
 
@@ -276,21 +274,14 @@ export class CopilotApiService {
 
             if (!response.ok) {
                 const errorText = await response.text();
-                let errorData: any = {};
-                try {
-                    errorData = JSON.parse(errorText);
-                } catch (parseError) {
-                    // Ignore parse error
-                }
+                const errorData = safeParse(errorText);
                 throw new Error(errorData.detail || errorData.message || `HTTP ${response.status}: Failed to clear chat`);
             }
 
             const responseText = await response.text();
-            let result: CopilotClearResponse;
-            try {
-                result = JSON.parse(responseText);
-            } catch (parseError) {
-                throw new Error(`Invalid JSON response from server: ${parseError.message}`);
+            const result = safeParse(responseText) as CopilotClearResponse;
+            if (!result || typeof result !== 'object') {
+                throw new Error('Invalid JSON response from server');
             }
 
             return result;
