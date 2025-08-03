@@ -184,6 +184,17 @@ export const webhooks: webhooksNS = {
                 message: "Webhook updated"
             }
         },
+        updateWebhookSettings: {
+            error: {
+                description: "{{description}}",
+                genericDescription: "Something went wrong while updating the webhook settings.",
+                message: "Failed to update webhook settings."
+            },
+            success: {
+                description: "Webhook settings have been successfully updated.",
+                message: "Webhook settings updated"
+            }
+        },
         updateWebhookStatus: {
             error: {
                 description: "{{description}}",

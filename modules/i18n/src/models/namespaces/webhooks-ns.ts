@@ -183,6 +183,17 @@ export interface webhooksNS {
                 description: string;
             };
         };
+        updateWebhookSettings: {
+            error: {
+                message: string;
+                description: string;
+                genericDescription: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        }
         updateWebhookStatus: {
             success: {
                 message: string;

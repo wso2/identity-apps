@@ -109,11 +109,9 @@ export const WebhookSettingsForm: FunctionComponent<WebhookSettingsFormPropsInte
     const handleUpdateSuccess = () => {
         dispatch(
             addAlert({
-                description: t("console:develop.pages.applicationsSettings.notifications.success.description"),
+                description: t("webhooks:notifications.updateWebhookSettings.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t(
-                    "console:develop.pages.applicationsSettings.notifications.success.message"
-                )
+                message: t("webhooks:notifications.updateWebhookSettings.success.message")
             })
         );
     };
@@ -124,7 +122,7 @@ export const WebhookSettingsForm: FunctionComponent<WebhookSettingsFormPropsInte
     const resolveUpdateErrorMessage = (error: AxiosError): string => {
 
         return (
-            t("console:develop.pages.applicationsSettings.notifications.error.description",
+            t("webhooks:notifications.updateWebhookSettings.error.description",
                 { description: error.response.data.description })
         );
     };
@@ -139,7 +137,7 @@ export const WebhookSettingsForm: FunctionComponent<WebhookSettingsFormPropsInte
                     description: resolveUpdateErrorMessage(error),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:develop.pages.applicationsSettings.notifications.error.message"
+                        "webhooks:notifications.updateWebhookSettings.error.message"
                     )
                 })
             );
@@ -148,11 +146,11 @@ export const WebhookSettingsForm: FunctionComponent<WebhookSettingsFormPropsInte
             dispatch(
                 addAlert({
                     description: t(
-                        "console:develop.pages.applicationsSettings.notifications.genericError.description"
+                        "webhooks:notifications.updateWebhookSettings.error.genericDescription"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:develop.pages.applicationsSettings.notifications.genericError.message"
+                        "webhooks:notifications.updateWebhookSettings.error.message"
                     )
                 })
             );
