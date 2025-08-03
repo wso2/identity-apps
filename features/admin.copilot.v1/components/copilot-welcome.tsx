@@ -60,91 +60,96 @@ const CopilotWelcome: React.FunctionComponent<CopilotWelcomeProps> = (
 
     const { t } = useTranslation();
     const { sendMessage, isLoading } = useCopilotPanel();
-    const [inputValue, setInputValue] = useState<string>("");
+    const [ inputValue, setInputValue ] = useState<string>("");
 
     // Suggested actions
     // TODO: Make this dynamic based on user context
-    const suggestedActions = [
+    const suggestedActions: Array<{
+        action: string;
+        id: string;
+        text: string;
+    }> = [
         {
+            action: "How can I create a new application in Asgardeo?",
             id: "create-application",
-            text: t("console:copilot.welcome.actions.createApplication", { 
-                defaultValue: "How can I create a new application?" 
-            }),
-            action: "How can I create a new application in Asgardeo?"
+            text: t("console:copilot.welcome.actions.createApplication", {
+                defaultValue: "How can I create a new application?"
+            })
         },
         {
+            action: "What are the different authentication methods available?",
             id: "authentication-methods",
-            text: t("console:copilot.welcome.actions.authenticationMethods", { 
-                defaultValue: "Authentication methods available" 
-            }),
-            action: "What are the different authentication methods available?"
+            text: t("console:copilot.welcome.actions.authenticationMethods", {
+                defaultValue: "Authentication methods available"
+            })
         },
         {
+            action: "How do I configure SAML SSO for my application?",
             id: "configure-saml",
-            text: t("console:copilot.welcome.actions.configureSaml", { 
-                defaultValue: "Configure SAML SSO" 
-            }),
-            action: "How do I configure SAML SSO for my application?"
+            text: t("console:copilot.welcome.actions.configureSaml", {
+                defaultValue: "Configure SAML SSO"
+            })
         },
         {
+            action: "How can I manage user roles and permissions?",
             id: "manage-roles",
-            text: t("console:copilot.welcome.actions.manageRoles", { 
-                defaultValue: "Manage user roles and permissions" 
-            }),
-            action: "How can I manage user roles and permissions?"
+            text: t("console:copilot.welcome.actions.manageRoles", {
+                defaultValue: "Manage user roles and permissions"
+            })
         }
     ];
 
     /**
      * Handle suggested action click.
      */
-    const handleSuggestedAction = useCallback((action: string) => {
+    const handleSuggestedAction: (action: string) => void = useCallback((action: string) => {
         if (onSuggestedAction) {
             onSuggestedAction(action);
         } else {
             sendMessage(action);
         }
-    }, [onSuggestedAction, sendMessage]);
+    }, [ onSuggestedAction, sendMessage ]);
 
     /**
      * Handle input change.
      */
-    const handleInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-        setInputValue(event.target.value);
-    }, []);
+    const handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            setInputValue(event.target.value);
+        }, []);
 
     /**
      * Handle send message.
      */
-    const handleSendMessage = useCallback(() => {
+    const handleSendMessage: () => void = useCallback(() => {
         if (inputValue.trim() && !isLoading) {
             sendMessage(inputValue.trim());
             setInputValue("");
         }
-    }, [inputValue, isLoading, sendMessage]);
+    }, [ inputValue, isLoading, sendMessage ]);
 
     /**
      * Handle key down for Enter key.
      */
-    const handleKeyDown = useCallback((event: React.KeyboardEvent) => {
+    const handleKeyDown: (event: React.KeyboardEvent) => void = useCallback((event: React.KeyboardEvent) => {
         if (event.key === "Enter" && !event.shiftKey) {
             event.preventDefault();
             handleSendMessage();
         }
-    }, [handleSendMessage]);
+    }, [ handleSendMessage ]);
 
     return (
         <Box
-            className={`copilot-welcome ${className || ""}`}
-            data-componentid={componentId}
+            className={ `copilot-welcome ${className || ""}` }
+            data-componentid={ componentId }
 
         >
-            {/* Welcome Section */}
+            { /* Welcome Section */ }
             <Box className="copilot-welcome-content">
-                {/* Main welcome content */}
+                { /* Main welcome content */ }
                 <Box className="copilot-welcome-main">
                     <Box className="copilot-avatar-container">
-                        <AiBotAvatar size={120} />
+                        <AiBotAvatar size={ 120 } />
                     </Box>
 
                     <Typography variant="h6" className="copilot-welcome-title">
@@ -156,57 +161,57 @@ const CopilotWelcome: React.FunctionComponent<CopilotWelcomeProps> = (
                     </Typography>
                 </Box>
 
-                {/* Suggested Actions */}
+                { /* Suggested Actions */ }
                 <Box className="copilot-suggestions">
                     <Typography variant="overline" className="copilot-suggestions-title">
                         TRY ASKING ABOUT
                     </Typography>
 
                     <Box className="copilot-suggestions-list">
-                        {suggestedActions.map((item) => (
+                        { suggestedActions.map((item: { action: string; id: string; text: string }) => (
                             <Button
-                                key={item.id}
+                                key={ item.id }
                                 variant="outlined"
-                                onClick={() => handleSuggestedAction(item.action)}
-                                data-componentid={`${componentId}-action-${item.id}`}
+                                onClick={ () => handleSuggestedAction(item.action) }
+                                data-componentid={ `${componentId}-action-${item.id}` }
                                 fullWidth
                                 className="copilot-suggestion-button"
                             >
-                                {item.text}
+                                { item.text }
                             </Button>
-                        ))}
+                        )) }
                     </Box>
                 </Box>
             </Box>
 
-            {/* Input Area - Always visible at bottom */}
+            { /* Input Area - Always visible at bottom */ }
             <Box className="copilot-input-container">
                 <Box className="copilot-input-wrapper">
                     <TextField
                         fullWidth
                         multiline
-                        maxRows={4}
+                        maxRows={ 4 }
                         placeholder="Enter your message here..."
-                        value={inputValue}
-                        onChange={handleInputChange}
-                        onKeyDown={handleKeyDown}
-                        disabled={isLoading}
-                        data-componentid={`${componentId}-input`}
+                        value={ inputValue }
+                        onChange={ handleInputChange }
+                        onKeyDown={ handleKeyDown }
+                        disabled={ isLoading }
+                        data-componentid={ `${componentId}-input` }
                         className="copilot-input-field"
                     />
 
-                    {/* Send Button */}
+                    { /* Send Button */ }
                     <IconButton
-                        onClick={handleSendMessage}
-                        disabled={!inputValue.trim() || isLoading}
-                        data-componentid={`${componentId}-send-button`}
+                        onClick={ handleSendMessage }
+                        disabled={ !inputValue.trim() || isLoading }
+                        data-componentid={ `${componentId}-send-button` }
                         className="copilot-send-button"
                     >
                         <ArrowUpwardIcon fontSize="small" />
                     </IconButton>
                 </Box>
 
-                {/* Footer */}
+                { /* Footer */ }
                 <Typography variant="caption" className="copilot-disclaimer">
                     Use Copilot mindfully as AI can make mistakes.
                 </Typography>

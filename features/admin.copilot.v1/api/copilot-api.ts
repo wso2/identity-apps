@@ -87,7 +87,7 @@ export class CopilotApiService {
     private constructor() {
         // TODO: Get the base URL from config
         // Example: this.baseUrl = 'https://<host>:<port>/t/<tenant>/api/server/v1/copilot'
-        this.baseUrl = '';
+        this.baseUrl = "";
     }
 
     /**
@@ -97,6 +97,7 @@ export class CopilotApiService {
         if (!CopilotApiService.instance) {
             CopilotApiService.instance = new CopilotApiService();
         }
+
         return CopilotApiService.instance;
     }
 
@@ -118,18 +119,18 @@ export class CopilotApiService {
      * Generate request headers.
      */
     private generateHeaders(): Record<string, string> {
-        const accessToken = this.getAccessToken();
-        const requestId = crypto.randomUUID();
-        const correlationId = `corr-${Date.now()}`;
+        const accessToken: string | null = this.getAccessToken();
+        const requestId: string = crypto.randomUUID();
+        const correlationId: string = `corr-${Date.now()}`;
 
         const headers: Record<string, string> = {
-            'Content-Type': 'application/json',
-            'x-request-id': requestId,
-            'correlation-id': correlationId
+            "Content-Type": "application/json",
+            "correlation-id": correlationId,
+            "x-request-id": requestId
         };
 
         if (accessToken) {
-            headers['Authorization'] = `Bearer ${accessToken}`;
+            headers["Authorization"] = `Bearer ${accessToken}`;
         }
 
         return headers;
@@ -142,12 +143,13 @@ export class CopilotApiService {
      */
     public async sendMessage(question: string, onStream?: StreamingCallback): Promise<CopilotChatResponse> {
         if (!question.trim()) {
-            throw new Error('Question cannot be empty');
+            throw new Error("Question cannot be empty");
         }
 
-        const accessToken = this.getAccessToken();
+        const accessToken: string | null = this.getAccessToken();
+
         if (!accessToken) {
-            throw new Error('Authentication required. Please log in to continue.');
+            throw new Error("Authentication required. Please log in to continue.");
         }
 
         // Create new abort controller for this request
@@ -157,37 +159,41 @@ export class CopilotApiService {
             question: question.trim()
         };
 
-        const headers = this.generateHeaders();
+        const headers: Record<string, string> = this.generateHeaders();
 
         try {
-            const response = await fetch(`${this.baseUrl}/chat`, {
-                method: HttpMethods.POST,
-                headers,
+            const response: Response = await fetch(`${this.baseUrl}/chat`, {
                 body: JSON.stringify(payload),
+                headers,
+                method: HttpMethods.POST,
                 signal: this.abortController.signal
             });
 
             if (!response.ok) {
-                const errorText = await response.text();
-                const errorData = safeParse(errorText);
-                throw new Error(errorData.detail || errorData.message || `HTTP ${response.status}: Failed to send message`);
+                const errorText: string = await response.text();
+                const errorData: any = safeParse(errorText);
+
+                throw new Error(errorData.detail || errorData.message ||
+                    `HTTP ${response.status}: Failed to send message`);
             }
 
-            const contentType = response.headers.get('content-type') || '';
-            if (contentType.includes('text/event-stream') || contentType.includes('text/plain')) {
+            const contentType: string = response.headers.get("content-type") || "";
+
+            if (contentType.includes("text/event-stream") || contentType.includes("text/plain")) {
                 return this.handleStreamingResponse(response, onStream);
             }
 
-            const responseText = await response.text();
-            const result = safeParse(responseText) as CopilotChatResponse;
-            if (!result || typeof result !== 'object') {
-                throw new Error('Invalid JSON response from server');
+            const responseText: string = await response.text();
+            const result: CopilotChatResponse = safeParse(responseText) as CopilotChatResponse;
+
+            if (!result || typeof result !== "object") {
+                throw new Error("Invalid JSON response from server");
             }
 
             return result;
         } catch (error: any) {
-            if (error.name === 'AbortError') {
-                throw new Error('Request was cancelled');
+            if (error.name === "AbortError") {
+                throw new Error("Request was cancelled");
             }
             throw error;
         }
@@ -196,37 +202,47 @@ export class CopilotApiService {
     /**
      * Handle streaming response from the server.
      */
-    private async handleStreamingResponse(response: Response, onStream?: StreamingCallback): Promise<CopilotChatResponse> {
-        const reader = response.body?.getReader();
+    private async handleStreamingResponse(
+        response: Response,
+        onStream?: StreamingCallback
+    ): Promise<CopilotChatResponse> {
+        const reader: ReadableStreamDefaultReader<Uint8Array> | undefined = response.body?.getReader();
+
         if (!reader) {
-            throw new Error('Response body is not readable');
+            throw new Error("Response body is not readable");
         }
 
-        const decoder = new TextDecoder();
-        let fullAnswer = '';
-        let buffer = '';
+        const decoder: TextDecoder = new TextDecoder();
+        let fullAnswer: string = "";
+        let buffer: string = "";
 
         try {
-            let done = false;
+            let done: boolean = false;
+
             while (!done) {
-                const result = await reader.read();
+                const result: ReadableStreamReadResult<Uint8Array> = await reader.read();
+
                 done = result.done;
                 if (done) break;
 
                 // Decode the chunk and add to buffer
-                const chunk = decoder.decode(result.value, { stream: true });
+                const chunk: string = decoder.decode(result.value, { stream: true });
+
                 buffer += chunk;
 
                 // Process complete lines
-                const lines = buffer.split('\n');
-                buffer = lines.pop() || ''; // Keep incomplete line in buffer
+                const lines: string[] = buffer.split("\n");
+
+                buffer = lines.pop() || ""; // Keep incomplete line in buffer
 
                 for (const line of lines) {
-                    const trimmedLine = line.trim();
+                    const trimmedLine: string = line.trim();
+
                     if (!trimmedLine) continue;
 
-                    const parsed = safeParse(trimmedLine) as CopilotStreamChunk;
-                    if (parsed && parsed.type === 'STREAM' && parsed.content) {
+                    const parsed: CopilotStreamChunk = safeParse(trimmedLine) as CopilotStreamChunk;
+
+                    if (parsed && parsed.type === "STREAM" && parsed.content) {
                         fullAnswer += parsed.content;
                         if (onStream) {
                             onStream(parsed);
@@ -236,8 +252,9 @@ export class CopilotApiService {
             }
 
             if (buffer.trim()) {
-                const parsed = safeParse(buffer.trim()) as CopilotStreamChunk;
-                if (parsed && parsed.type === 'STREAM' && parsed.content) {
+                const parsed: CopilotStreamChunk = safeParse(buffer.trim()) as CopilotStreamChunk;
+
+                if (parsed && parsed.type === "STREAM" && parsed.content) {
                     fullAnswer += parsed.content;
                     if (onStream) {
                         onStream(parsed);
@@ -259,28 +276,31 @@ export class CopilotApiService {
      * Clear the chat conversation.
      */
     public async clearChat(): Promise<CopilotClearResponse> {
-        const accessToken = this.getAccessToken();
+        const accessToken: string | null = this.getAccessToken();
+
         if (!accessToken) {
-            throw new Error('Authentication required. Please log in to continue.');
+            throw new Error("Authentication required. Please log in to continue.");
         }
 
-        const headers = this.generateHeaders();
+        const headers: Record<string, string> = this.generateHeaders();
 
-        const response = await fetch(`${this.baseUrl}/clear`, {
-            method: HttpMethods.POST,
-            headers
+        const response: Response = await fetch(`${this.baseUrl}/clear`, {
+            headers,
+            method: HttpMethods.POST
         });
 
         if (!response.ok) {
-            const errorText = await response.text();
-            const errorData = safeParse(errorText);
+            const errorText: string = await response.text();
+            const errorData: any = safeParse(errorText);
+
             throw new Error(errorData.detail || errorData.message || `HTTP ${response.status}: Failed to clear chat`);
         }
 
-        const responseText = await response.text();
-        const result = safeParse(responseText) as CopilotClearResponse;
-        if (!result || typeof result !== 'object') {
-            throw new Error('Invalid JSON response from server');
+        const responseText: string = await response.text();
+        const result: CopilotClearResponse = safeParse(responseText) as CopilotClearResponse;
+
+        if (!result || typeof result !== "object") {
+            throw new Error("Invalid JSON response from server");
         }
 
         return result;
@@ -305,4 +325,4 @@ export class CopilotApiService {
 }
 
 // Export singleton instance
-export const copilotApiService = CopilotApiService.getInstance();
+export const copilotApiService: CopilotApiService = CopilotApiService.getInstance();

@@ -19,7 +19,11 @@
 /**
  * Copilot panel constants.
  */
-export const COPILOT_PANEL_CONSTANTS = {
+export const COPILOT_PANEL_CONSTANTS: {
+    DEFAULT_WIDTH: number;
+    MOBILE_BREAKPOINT: number;
+    Z_INDEX: number;
+} = {
     DEFAULT_WIDTH: 400,
     MOBILE_BREAKPOINT: 768,
     Z_INDEX: 1700 // Above header (1201), navbar, and all other elements
@@ -28,8 +32,12 @@ export const COPILOT_PANEL_CONSTANTS = {
 /**
  * Copilot feature flags.
  */
-export const COPILOT_FEATURE_FLAGS = {
-    ENABLED: "copilot.enabled",
+export const COPILOT_FEATURE_FLAGS: {
+    CHAT_ENABLED: string;
+    ENABLED: string;
+    HELP_ENABLED: string;
+} = {
     CHAT_ENABLED: "copilot.chat.enabled",
+    ENABLED: "copilot.enabled",
     HELP_ENABLED: "copilot.help.enabled"
 };
