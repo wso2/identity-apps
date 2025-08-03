@@ -145,6 +145,16 @@ export interface AdapterMetadataInterface {
 }
 
 /**
+ * Interface for organization policy metadata.
+ */
+export interface OrganizationPolicyMetadataInterface {
+    /**
+     * Name of the organization policy.
+     */
+    policyName: EventPublishingOrgSharePolicy;
+}
+
+/**
  * Interface for webhooks metadata API response.
  */
 export interface WebhooksMetadataApiResponseInterface {
@@ -159,5 +169,5 @@ export interface WebhooksMetadataApiResponseInterface {
     /**
      * Organizion share policy for event publishing.
      */
-    organizationPolicy: EventPublishingOrgSharePolicy;
+    organizationPolicy: OrganizationPolicyMetadataInterface;
 }

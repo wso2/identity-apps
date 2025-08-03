@@ -26,45 +26,24 @@ export interface WebhookSettingsFormValuesInterface {
     /**
      * Event publishing organization scope.
      */
-    organizationPolicy: EventPublishingOrgSharePolicy;
+    organizationPolicy: OrganizationPolicyFormValuesInterface;
 }
 
 /**
- * Event publishing settings values interface.
+ * Organization policy form values interface.
  */
-// export interface OrganizationSharePolicyValuesInterface {
-//     /**
-//      * Should publish events of this organization only to webhooks.
-//      */
-//     publishEventsOfThisOrgOnly: boolean;
-//     /**
-//      * Should publish events of this organization and its immediate child organizations to webhooks.
-//      */
-//     publishEventsOfThisOrgAndImmediateChild: boolean;
-// }
+export interface OrganizationPolicyFormValuesInterface {
+    /**
+     * Name of the organization policy.
+     */
+    policyName: EventPublishingOrgSharePolicy;
+}
 
 /**
  * Proptypes for the webhook settings form component.
  */
-export interface WebhookSettingsPropsInterface extends IdentifiableComponentInterface {
-    /**
-     * Event publishing organization scope.
-     */
-    organizationPolicy: EventPublishingOrgSharePolicy;
-}
+export interface WebhookSettingsFormPropsInterface extends IdentifiableComponentInterface {
 
-/**
- * Interface for the event publishing organization scope.
- */
-export interface OrganizationSharePolicyPropsInterface {
-    /**
-     * Should publish events of this organization only to webhooks.
-     */
-    publishEventsOfThisOrgOnly: boolean;
-    /**
-     * Should publish events of this organization and its immediate child organizations to webhooks.
-     */
-    publishEventsOfThisOrgAndImmediateChild: boolean;
 }
 
 /**
@@ -74,7 +53,17 @@ export interface WebhookMetadataUpdateRequestInterface {
     /**
      * Event publishing organization scope.
      */
-    organizationPolicy: EventPublishingOrgSharePolicy;
+    organizationPolicy: OrganizationPolicyUpdateInterface;
+}
+
+/**
+ * Interface for organization policy update.
+ */
+export interface OrganizationPolicyUpdateInterface {
+    /**
+     * Name of the organization policy.
+     */
+    policyName: EventPublishingOrgSharePolicy;
 }
 
 /**

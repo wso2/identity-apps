@@ -26,33 +26,24 @@ import { RadioChild } from "@wso2is/forms";
 import {
     ContentLoader,
     EmphasizedSegment,
-    PageLayout,
-    useDocumentation } from "@wso2is/react-components";
+    PageLayout } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import updateWebhookMetadata from "../api/update-webhook-metadata";
 import useGetWebhooksMetadata from "../api/use-get-webhooks-metadata";
 import { EventPublishingOrgSharePolicy } from "../models/shared-access";
 import {
     WebhookMetadataUpdateRequestInterface,
-    WebhookSettingsFormValuesInterface,
-    WebhookSettingsPropsInterface
+    WebhookSettingsFormPropsInterface,
+    WebhookSettingsFormValuesInterface
 } from "../models/webhook-settings";
 import { useHandleWebhookError } from "../utils/alert-utils";
 import "./webhook-settings-page.scss";
-import updateWebhookMetadata from "../api/update-webhook-metadata";
 
 const FORM_ID: string = "webhook-settings";
-
-/**
- * Enum for event publishing organization policy settings in webhooks.
- */
-enum OrganizationPolicyOptionType {
-    CURRENT_ORG_ONLY = "currentOrgOnly",
-    CURRENT_ORG_AND_IMMEDIATE_CHILD = "currentOrgAndImmediateChild"
-}
 
 /**
  * This will be used to render the event publishing organization policy radio options.
@@ -60,11 +51,11 @@ enum OrganizationPolicyOptionType {
 const ORGANIZATION_POLICY_RADIO_OPTIONS: RadioChild[] = [
     {
         label: "webhooks:pages.settings.organizationPolicy.radioOptions.currentOrgOnly",
-        value: OrganizationPolicyOptionType.CURRENT_ORG_ONLY
+        value: EventPublishingOrgSharePolicy.CURRENT_ORG_ONLY
     },
     {
         label: "webhooks:pages.settings.organizationPolicy.radioOptions.currentOrgAndImmediateChild",
-        value: OrganizationPolicyOptionType.CURRENT_ORG_AND_IMMEDIATE_CHILD
+        value: EventPublishingOrgSharePolicy.CURRENT_ORG_AND_IMMEDIATE_CHILD
     }
 ];
 
@@ -74,29 +65,18 @@ const ORGANIZATION_POLICY_RADIO_OPTIONS: RadioChild[] = [
  * @param props - Props injected to the component.
  * @returns Functional Component.
  */
-export const WebhookSettingsForm: FunctionComponent<WebhookSettingsPropsInterface> = (
-    props: WebhookSettingsPropsInterface
-): ReactElement => {
-
-    const {
-        organizationPolicy,
-        ["data-componentid"]: componentId
-    } = props;
+export const WebhookSettingsForm: FunctionComponent<WebhookSettingsFormPropsInterface> = ({
+    ["data-componentid"]: componentId
+}: WebhookSettingsFormPropsInterface): ReactElement => {
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    // const [ isEnabledForCurrentOrgOnly, setIsEnabledForCurrentOrgOnly ] =
-    //     useState<boolean>(organizationPolicy?.publishEventsOfThisOrgOnly);
-    // const [ isEnabledForCurrentOrgAndImmediateChild, setIsEnabledForCurrentOrgAndImmediateChild ] =
-    //     useState<boolean>(organizationPolicy?.publishEventsOfThisOrgAndImmediateChild);
-    // const [ eventPublishingSettingsRadioOption, setEventPublishingSettingsRadioOption ] =
-    //     useState<string>(OrganizationPolicyOptionType.CURRENT_ORG_ONLY);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
 
     /**
-     * Get initial webhook settings.
+     * Get initial webhook metadata.
      */
     const {
         data: webhooksMetadata,
@@ -113,18 +93,6 @@ export const WebhookSettingsForm: FunctionComponent<WebhookSettingsPropsInterfac
     useEffect(() => {
         setIsLoading(isWebhooksMetadataLoading);
     }, [ isWebhooksMetadataLoading ]);
-
-    /**
-     * Set initial values for the form.
-     */
-    // useEffect(() => {
-    //     if (webhooksMetadata) {
-    //         setIsEnabledForCurrentOrgOnly(webhooksMetadata.organizationPolicy ===
-    //             EventPublishingOrgSharePolicy.CURRENT_ORG_ONLY);
-    //         setIsEnabledForCurrentOrgAndImmediateChild(webhooksMetadata.organizationPolicy ===
-    //             EventPublishingOrgSharePolicy.CURRENT_ORG_AND_IMMEDIATE_CHILD);
-    //     }
-    // }, [ webhooksMetadata ]);
 
     /**
      * Handles the error scenario of the webhooks metadata fetch.
@@ -196,28 +164,26 @@ export const WebhookSettingsForm: FunctionComponent<WebhookSettingsPropsInterfac
      *
      * @param values - Form values.
      */
-    // const updateConfigurations = (values: WebhookSettingsFormValuesInterface) => {
-    //     setIsSubmitting(true);
+    const updateWebhookSettings = (values: WebhookSettingsFormValuesInterface) => {
+        setIsSubmitting(true);
 
-    //     const updateData: WebhookMetadataUpdateRequestInterface = { // EventPublishingOrgSharePolicy
-    //         // organizationPolicy: values.organizationPolicy === OrganizationPolicyOptionType.CURRENT_ORG_ONLY
-    //         //     ? EventPublishingOrgSharePolicy.CURRENT_ORG_ONLY
-    //         //     : EventPublishingOrgSharePolicy.CURRENT_ORG_AND_IMMEDIATE_CHILD
-    //         organizationPolicy: values.organizationPolicy
-    //         // organizationPolicy: EventPublishingOrgSharePolicy.CURRENT_ORG_ONLY
-    //     };
+        const updateMetadata: WebhookMetadataUpdateRequestInterface = {
+            organizationPolicy: {
+                policyName: values.organizationPolicy.policyName
+            }
+        };
 
-    //     updateWebhookMetadata(updateData)
-    //         .then(() => {
-    //             handleUpdateSuccess();
-    //         })
-    //         .catch((error: AxiosError) => {
-    //             handleUpdateError(error);
-    //         })
-    //         .finally(() => {
-    //             setIsSubmitting(false);
-    //         });
-    // };
+        updateWebhookMetadata(updateMetadata)
+            .then(() => {
+                handleUpdateSuccess();
+            })
+            .catch((error: AxiosError) => {
+                handleUpdateError(error);
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+            });
+    };
 
     /**
      * This handles back button navigation.
@@ -234,11 +200,6 @@ export const WebhookSettingsForm: FunctionComponent<WebhookSettingsPropsInterfac
                     description={ (
                         <>
                             { t("webhooks:pages.settings.subHeading") }
-                            { /* <DocumentationLink
-                            link={ getLink("develop.applications.applicationsSettings.dcr.learnMore") }
-                        >
-                            { t("console:develop.pages.applicationsSettings.learnMore") }
-                        </DocumentationLink> */ }
                         </>
                     ) }
                     backButton={ {
@@ -255,16 +216,15 @@ export const WebhookSettingsForm: FunctionComponent<WebhookSettingsPropsInterfac
                         <Form
                             id={ FORM_ID }
                             uncontrolledForm={ false }
-                            // onSubmit={ (values: WebhookSettingsFormValuesInterface) => {
-                            //     updateConfigurations(values);
-                            // } }
-                            // onSubmit={ (values) => updateConfigurations(values) }
-                            onSubmit={ () => {} }
-                            // initialValues={ {
-                            //     organizationPolicy: isEnabledForCurrentOrgOnly ?
-                            //         OrganizationPolicyOptionType.CURRENT_ORG_ONLY :
-                            //         OrganizationPolicyOptionType.CURRENT_ORG_AND_IMMEDIATE_CHILD
-                            // } }
+                            onSubmit={ (values: WebhookSettingsFormValuesInterface) => {
+                                updateWebhookSettings(values);
+                            } }
+                            initialValues={ {
+                                organizationPolicy: {
+                                    policyName: webhooksMetadata?.organizationPolicy?.policyName ||
+                                        EventPublishingOrgSharePolicy.CURRENT_ORG_ONLY
+                                }
+                            } }
                             data-componentid={ `${componentId}-form` }
                         >
                             <Typography variant="h6" className="heading-container">
@@ -276,15 +236,11 @@ export const WebhookSettingsForm: FunctionComponent<WebhookSettingsPropsInterfac
                                         key={ option.value }
                                         ariaLabel={ t(option.label) }
                                         label={ t(option.label) }
-                                        name="organizationPolicy"
+                                        name="organizationPolicy.policyName"
                                         type="radio"
                                         value={ option.value }
-                                        // checked={ organizationPolicy === option.value }
-                                        // listen={ () => setOrganizationPolicy(option.value) }
-                                        // readOnly={ readOnly }
                                         data-componentid={ `${ componentId }-organization-policy-radio-` +
                                                     `option-${ option.value }` }
-                                    // disabled={ !isDiscoverable }
                                     />
                                 ))
                             }
@@ -298,14 +254,6 @@ export const WebhookSettingsForm: FunctionComponent<WebhookSettingsPropsInterfac
                                 disabled={ isSubmitting }
                                 loading={ isSubmitting }
                                 label={ t("common:update") }
-                            // hidden={
-                            //     isSharedApp || !hasRequiredScope || (
-                            //         readOnly
-                            //                     && applicationConfig.generalSettings.getFieldReadOnlyStatus(
-                            //                         application, "ACCESS_URL"
-                            //                     )
-                            //     )
-                            // }
                             />
                         </Form>
                     </EmphasizedSegment>

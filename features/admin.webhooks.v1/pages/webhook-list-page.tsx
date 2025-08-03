@@ -16,11 +16,21 @@
  * under the License.
  */
 
+import { GearIcon } from "@oxygen-ui/react-icons";
 import { FeatureAccessConfigInterface, Show, useRequiredScopes } from "@wso2is/access-control";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { DocumentationLink, ListLayout, PageLayout, Popup, PrimaryButton, useDocumentation } from "@wso2is/react-components";
+import {
+    DocumentationLink,
+    ListLayout,
+    PageLayout,
+    Popup,
+    PrimaryButton,
+    useDocumentation
+} from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -36,9 +46,6 @@ import useWebhookSearch from "../hooks/use-webhook-search";
 import { WebhookListInterface, WebhookListItemInterface } from "../models/webhooks";
 import { AdapterUtils } from "../utils/adapter-utils";
 import { useHandleWebhookError, useHandleWebhookSuccess } from "../utils/alert-utils";
-import { GearIcon } from "@oxygen-ui/react-icons";
-import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 
 type WebhooksPageInterface = IdentifiableComponentInterface;
 

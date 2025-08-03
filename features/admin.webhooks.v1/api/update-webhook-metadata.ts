@@ -37,7 +37,7 @@ const updateWebhookMetadata = (
 ): Promise<WebhookMetadataUpdateResponseInterface> => {
     const requestConfig: RequestConfigInterface = {
         data: webhookMetadata,
-        method: HttpMethods.PUT,
+        method: HttpMethods.PATCH,
         url: `${store.getState().config.endpoints.webhooksMetadata}`
     };
 
