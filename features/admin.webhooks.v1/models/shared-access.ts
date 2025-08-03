@@ -16,5 +16,7 @@
  * under the License.
  */
 
-export { default as WebhookEditPage } from "./pages/webhook-edit-page";
-export { default as WebhookSettingsPage } from "./pages/webhook-settings-page";
+export enum EventPublishingOrgSharePolicy {
+    CURRENT_ORG_ONLY = "NO_SHARING",
+    CURRENT_ORG_AND_IMMEDIATE_CHILD = "IMMEDIATE_EXISTING_AND_FUTURE_ORGS",
+}

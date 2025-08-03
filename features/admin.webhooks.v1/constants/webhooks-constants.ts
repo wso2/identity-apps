@@ -43,6 +43,7 @@ export class WebhooksConstants {
         FETCH_WEBHOOK_INVALID_STATUS_CODE: "Failed to fetch webhook. Unexpected response status.",
         RETRY_WEBHOOK_INVALID_STATUS_CODE: "Failed to resend requests. Unexpected response status.",
         UPDATE_WEBHOOK_INVALID_STATUS_CODE: "Failed to update webhook. Unexpected response status.",
+        UPDATE_WEBHOOK_METADATA_INVALID_STATUS_CODE: "Failed to update webhook metadata. Unexpected response status.",
         UPDATE_WEBHOOK_STATUS_INVALID_STATUS_CODE: "Failed to update webhook status. Unexpected response status."
     };
 }

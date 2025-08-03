@@ -208,7 +208,8 @@ export const webhooks: webhooksNS = {
         },
         list: {
             buttons: {
-                add: "Add Webhook"
+                add: "Add Webhook",
+                settings: "Webhook Settings"
             },
             columns: {
                 status: "Status",
@@ -219,6 +220,18 @@ export const webhooks: webhooksNS = {
             },
             heading: "Webhooks",
             subHeading: "Create and manage webhooks to notify external services when certain events happen."
+        },
+        settings: {
+            backButton: "Go back to Webhooks",
+            heading: "Webhook Settings",
+            organizationPolicy: {
+                heading: "Select organizations whose events will be sent to webhooks.",
+                radioOptions: {
+                    currentOrgAndImmediateChild: "Publish events from this organization and its immediate child organization.",
+                    currentOrgOnly: "Publish events from this organization only."
+                }
+            },
+            subHeading: "Settings related to webhook configurations."
         }
     },
     sidePanel: {
