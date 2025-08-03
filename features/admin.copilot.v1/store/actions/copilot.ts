@@ -109,7 +109,7 @@ export const clearCopilotChatWithApi = (accessToken?: string | null) => {
             }
             await copilotApiService.clearChat();
         } catch (error: any) {
-            if (!error.message?.includes('Failed to fetch') && !error.message?.includes('Network error')) {
+            if (!error.message?.includes("Failed to fetch") && !error.message?.includes("Network error")) {
                 const errorMessage: CopilotMessage = {
                     content: `Note: Chat cleared locally, but server history may not be cleared: ${error.message}`,
                     id: `warning-${Date.now()}`,
@@ -117,6 +117,7 @@ export const clearCopilotChatWithApi = (accessToken?: string | null) => {
                     timestamp: Date.now(),
                     type: "error"
                 };
+
                 dispatch(addCopilotMessage(errorMessage));
             }
         }
@@ -156,23 +157,24 @@ export const sendCopilotMessage = (userMessage: string, accessToken?: string | n
         dispatch(setCopilotPanelLoading(true));
 
         try {
-            let accumulatedContent = '';
-            let isFirstChunk = true;
+            let accumulatedContent: string = "";
+            let isFirstChunk: boolean = true;
             let assistantMessageId: string;
 
             if (accessToken) {
                 copilotApiService.setAccessToken(accessToken);
             }
-            const response = await copilotApiService.sendMessage(userMessage, (chunk) => {
+            const response: any = await copilotApiService.sendMessage(userMessage, (chunk: any) => {
                 if (isFirstChunk) {
                     assistantMessageId = `ai-${Date.now()}`;
                     const aiResponse: CopilotMessage = {
-                        content: '',
+                        content: "",
                         id: assistantMessageId,
                         sender: "copilot",
                         timestamp: Date.now(),
                         type: "text"
                     };
+
                     dispatch(addCopilotMessage(aiResponse));
                     dispatch(setCopilotPanelLoading(false));
                     isFirstChunk = false;
@@ -181,8 +183,8 @@ export const sendCopilotMessage = (userMessage: string, accessToken?: string | n
                 if (chunk.content) {
                     accumulatedContent += chunk.content;
                     dispatch(updateCopilotMessage({
-                        id: assistantMessageId,
-                        content: accumulatedContent
+                        content: accumulatedContent,
+                        id: assistantMessageId
                     }));
                 }
             });
@@ -195,23 +197,25 @@ export const sendCopilotMessage = (userMessage: string, accessToken?: string | n
                     timestamp: Date.now(),
                     type: "text"
                 };
+
                 dispatch(addCopilotMessage(aiResponse));
             } else {
                 if (response.answer && response.answer !== accumulatedContent) {
                     dispatch(updateCopilotMessage({
-                        id: assistantMessageId,
-                        content: response.answer
+                        content: response.answer,
+                        id: assistantMessageId
                     }));
                 }
             }
             dispatch(setCopilotPanelLoading(false));
         } catch (error: any) {
-            let errorContent = "Sorry, I encountered an error while processing your request. Please try again.";
-            if (error.message?.includes('Authentication required')) {
+            let errorContent: string = "Sorry, I encountered an error while processing your request. Please try again.";
+
+            if (error.message?.includes("Authentication required")) {
                 errorContent = "Authentication required. Please log in to continue using the copilot.";
-            } else if (error.message?.includes('Request was cancelled')) {
+            } else if (error.message?.includes("Request was cancelled")) {
                 errorContent = "Request was cancelled.";
-            } else if (error.message?.includes('Failed to fetch')) {
+            } else if (error.message?.includes("Failed to fetch")) {
                 errorContent = "Connection failed. Please check if the server is running and try again.";
             }
 
@@ -222,6 +226,7 @@ export const sendCopilotMessage = (userMessage: string, accessToken?: string | n
                 timestamp: Date.now(),
                 type: "error"
             };
+
             dispatch(addCopilotMessage(errorMessage));
         } finally {
             dispatch(setCopilotPanelLoading(false));
