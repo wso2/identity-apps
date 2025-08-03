@@ -1,0 +1,142 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+// Import theme variables
+@import "../styles/copilot-variables";
+
+.clear-chat-confirmation-modal {
+    .MuiDialog-paper {
+        border-radius: $copilot-border-radius-lg !important;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+        max-width: 320px !important;
+        width: auto !important;
+        margin: $copilot-spacing-lg !important;
+        background-color: $copilot-background-color !important;
+        border: 1px solid $copilot-border-color-light !important;
+    }
+
+    .clear-chat-modal-title {
+        padding: $copilot-spacing-lg $copilot-spacing-lg $copilot-spacing-md !important;
+        border-bottom: none !important;
+
+        .clear-chat-modal-title-content {
+            display: flex !important;
+            align-items: center !important;
+            gap: $copilot-spacing-sm !important;
+
+            .clear-chat-warning-icon {
+                color: $copilot-warning-color !important;
+                font-size: 24px !important;
+            }
+
+            .MuiTypography-h6 {
+                font-size: $copilot-font-size-lg !important;
+                font-weight: $copilot-font-weight-semibold !important;
+                color: $copilot-text-color-primary !important;
+                margin: 0 !important;
+            }
+        }
+    }
+
+    .clear-chat-modal-content {
+        padding: 0 $copilot-spacing-lg $copilot-spacing-md !important;
+
+        .clear-chat-modal-message {
+            font-size: $copilot-font-size-md !important;
+            font-weight: $copilot-font-weight-normal !important;
+            color: $copilot-text-color-primary !important;
+            margin-bottom: $copilot-spacing-xs !important;
+            line-height: $copilot-line-height-normal !important;
+        }
+
+        .clear-chat-modal-submessage {
+            font-size: $copilot-font-size-sm !important;
+            color: $copilot-text-color-secondary !important;
+            margin: 0 !important;
+            line-height: $copilot-line-height-normal !important;
+        }
+    }
+
+    .clear-chat-modal-actions {
+        padding: $copilot-spacing-md $copilot-spacing-lg $copilot-spacing-lg !important;
+        gap: $copilot-spacing-sm !important;
+        justify-content: flex-end !important;
+
+        .clear-chat-cancel-button {
+            border-color: $copilot-border-color !important;
+            color: $copilot-text-color-secondary !important;
+            background-color: transparent !important;
+            
+            &:hover {
+                background-color: $copilot-background-color-hover !important;
+                border-color: $copilot-text-color-secondary !important;
+            }
+        }
+
+        .clear-chat-confirm-button {
+            background-color: $copilot-primary-color !important;
+            color: $copilot-text-color-inverse !important;
+            
+            &:hover {
+                background-color: $copilot-primary-color-hover !important;
+            }
+        }
+
+        .MuiButton-root {
+            border-radius: $copilot-border-radius-md !important;
+            padding: $copilot-spacing-xs $copilot-spacing-lg !important;
+            font-size: $copilot-font-size-sm !important;
+            font-weight: $copilot-font-weight-medium !important;
+            text-transform: none !important;
+            min-width: auto !important;
+            transition: all $copilot-transition-duration $copilot-transition-timing-function !important;
+        }
+    }
+}
+
+// Ensure modal appears within copilot panel container
+.copilot-panel-container {
+    position: relative !important;
+
+    .clear-chat-confirmation-modal {
+        .MuiDialog-root {
+            position: absolute !important;
+            z-index: $copilot-z-index-modal !important;
+        }
+
+        .MuiDialog-container {
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            z-index: $copilot-z-index-modal !important;
+
+            // Center the modal within the copilot container
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        .MuiDialog-paper {
+            position: relative !important;
+            margin: $copilot-spacing-lg !important;
+            max-height: calc(100% - #{$copilot-spacing-lg * 2}) !important;
+        }
+    }
+}
