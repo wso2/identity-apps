@@ -107,6 +107,29 @@ export interface ConsoleNS {
                 };
             };
         };
+        copilot: {
+            title: string;
+            show: string;
+            hide: string;
+            close: string;
+            clearChat: string;
+            tabs: {
+                chat: string;
+                help: string;
+            };
+            chat: {
+                empty: string;
+                placeholder: string;
+                thinking: string;
+                error: string;
+            };
+            help: {
+                content: string;
+            };
+            documentation: {
+                content: string;
+            };
+        };
         help: {
             communityLinks: {
                 discord: string;

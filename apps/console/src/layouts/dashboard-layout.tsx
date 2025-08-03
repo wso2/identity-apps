@@ -34,6 +34,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
 import { CommonUtils as ConsoleCommonUtils } from "@wso2is/admin.core.v1/utils/common-utils";
 import { RouteUtils } from "@wso2is/admin.core.v1/utils/route-utils";
+import { CopilotPanel } from "@wso2is/admin.copilot.v1/components";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
@@ -474,6 +475,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                         <Switch>{ resolveRoutes() as ReactNode[] }</Switch>
                     </Suspense>
                 </ErrorBoundary>
+                <CopilotPanel data-componentid="dashboard-copilot-panel" />
             </AppShell>
         </>
     );

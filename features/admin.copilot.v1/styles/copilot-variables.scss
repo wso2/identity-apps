@@ -1,0 +1,182 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+// ==============================================
+// COPILOT THEME VARIABLES
+// ==============================================
+
+// WSO2 Theme Color Mappings
+// Using colors from modules/theme/src/themes/wso2is/globals/site.variables
+// and modules/theme/src/themes/default/globals/site.variables
+
+// Colors - Primary
+$copilot-primary-color: #FF7300; // @primaryColor
+$copilot-primary-color-hover: lighten(#FF7300, 10%); // Lighter variant
+$copilot-primary-color-light: lighten(#FF7300, 20%); // Even lighter
+$copilot-primary-color-dark: darken(#FF7300, 10%); // Darker variant
+
+// Colors - Background
+$copilot-background-color: #ffffff; // @white
+$copilot-background-color-surface: #ffffff; // @white
+$copilot-background-color-muted: #f9fafb; // @athensGray
+$copilot-background-color-hover: #f5f5f5; // @whiteSmoke
+
+// Colors - Background (Dark Theme)
+$copilot-background-color-dark: #212A32; // @ebonyClay
+$copilot-background-color-surface-dark: #454d52; // @mako
+$copilot-background-color-muted-dark: #464646; // @black
+
+// Colors - Text
+$copilot-text-color-primary: #464646; // @black
+$copilot-text-color-secondary: #969696; // @nobel
+$copilot-text-color-muted: #9c9c9c; // @dustyGray
+$copilot-text-color-inverse: #ffffff; // @white
+
+// Colors - Text (Dark Theme)
+$copilot-text-color-primary-dark: #ffffff; // @white
+$copilot-text-color-secondary-dark: #eeeeee; // @galleryGray
+$copilot-text-color-muted-dark: #d6d6d6; // @paleGray
+
+// Colors - Borders
+$copilot-border-color: #d9d9d9; // @darkGray
+$copilot-border-color-light: #f1f1f1; // @lightGray
+$copilot-border-color-dark: #454d52; // @mako
+
+// Colors - Status
+$copilot-success-color: #7cd25a; // @green
+$copilot-warning-color: #EBA91C; // @warningColor
+$copilot-error-color: #E53535; // @negativeColor
+$copilot-info-color: #006faa; // @blue
+
+// Spacing (based on 4px base unit)
+$copilot-spacing-xs: 4px;
+$copilot-spacing-sm: 8px;
+$copilot-spacing-md: 12px;
+$copilot-spacing-lg: 16px;
+$copilot-spacing-xl: 20px;
+$copilot-spacing-xxl: 24px;
+
+// Typography
+$copilot-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+$copilot-font-size-xs: 10px;
+$copilot-font-size-sm: 12px;
+$copilot-font-size-md: 14px;
+$copilot-font-size-lg: 16px;
+$copilot-font-size-xl: 18px;
+$copilot-font-size-xxl: 20px;
+
+// Font Weights
+$copilot-font-weight-normal: 400;
+$copilot-font-weight-medium: 500;
+$copilot-font-weight-semibold: 600;
+$copilot-font-weight-bold: 700;
+
+// Line Heights
+$copilot-line-height-tight: 1.25;
+$copilot-line-height-normal: 1.5;
+$copilot-line-height-relaxed: 1.75;
+
+// Border Radius
+$copilot-border-radius-sm: 4px;
+$copilot-border-radius-md: 8px;
+$copilot-border-radius-lg: 12px;
+$copilot-border-radius-xl: 16px;
+
+// Border Width
+$copilot-border-width: 1px;
+$copilot-border-width-thick: 2px;
+
+// Shadows
+$copilot-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+$copilot-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+$copilot-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+// Z-Index
+$copilot-z-index-base: 1;
+$copilot-z-index-dropdown: 1000;
+$copilot-z-index-sticky: 1020;
+$copilot-z-index-fixed: 1030;
+$copilot-z-index-modal-backdrop: 1040;
+$copilot-z-index-modal: 1050;
+$copilot-z-index-popover: 1060;
+$copilot-z-index-tooltip: 1070;
+
+// Transitions
+$copilot-transition-duration: 0.3s;
+$copilot-transition-duration-fast: 0.15s;
+$copilot-transition-duration-slow: 0.6s;
+$copilot-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+
+// ==============================================
+// COPILOT SPECIFIC VARIABLES
+// ==============================================
+
+// Panel Dimensions
+$copilot-panel-width: 600px;
+$copilot-panel-width-mobile: 100vw;
+$copilot-panel-z-index: $copilot-z-index-fixed;
+
+// Header
+$copilot-header-height: 64px;
+$copilot-header-padding: $copilot-spacing-lg;
+
+// Avatar Sizes
+$copilot-avatar-size-sm: 24px;
+$copilot-avatar-size-md: 32px;
+$copilot-avatar-size-lg: 48px;
+$copilot-avatar-size-xl: 120px;
+
+// Message Bubbles
+$copilot-message-bubble-padding: $copilot-spacing-md;
+$copilot-message-bubble-margin: $copilot-spacing-sm;
+$copilot-message-bubble-border-radius: $copilot-border-radius-lg;
+$copilot-message-bubble-max-width: 80%;
+
+// Input Field
+$copilot-input-height: 48px;
+$copilot-input-padding: $copilot-spacing-md;
+$copilot-input-border-radius: $copilot-border-radius-md;
+
+// Suggested Actions
+$copilot-suggested-action-padding: $copilot-spacing-md $copilot-spacing-lg;
+$copilot-suggested-action-border-radius: $copilot-border-radius-md;
+$copilot-suggested-action-gap: $copilot-spacing-sm;
+
+// Welcome Screen
+$copilot-welcome-avatar-size: $copilot-avatar-size-xl;
+$copilot-welcome-title-margin: $copilot-spacing-lg 0 $copilot-spacing-md;
+$copilot-welcome-description-margin: 0 0 $copilot-spacing-xxl;
+
+// Chat Area
+$copilot-chat-padding: $copilot-spacing-lg;
+$copilot-chat-message-gap: $copilot-spacing-md;
+
+// Responsive Breakpoints
+$copilot-breakpoint-mobile: 768px;
+$copilot-breakpoint-tablet: 1024px;
+$copilot-breakpoint-desktop: 1200px;
+
+// Animation Curves
+$copilot-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+$copilot-ease-out: cubic-bezier(0.0, 0, 0.2, 1);
+$copilot-ease-in: cubic-bezier(0.4, 0, 1, 1);
+
+// Focus States
+$copilot-focus-ring-width: 2px;
+$copilot-focus-ring-color: $copilot-primary-color;
+$copilot-focus-ring-offset: 2px;

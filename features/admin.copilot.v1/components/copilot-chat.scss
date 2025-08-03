@@ -1,0 +1,374 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+// Import theme variables
+@import "../styles/copilot-variables";
+
+.copilot-chat {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .copilot-chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px 0;
+        width: 100%;
+        box-sizing: border-box;
+        scroll-behavior: auto;
+  
+        .copilot-empty-state {
+            padding: $copilot-spacing-xxl;
+            text-align: center;
+
+            .copilot-empty-text {
+                color: $copilot-text-color-secondary;
+            }
+        }
+        
+        .copilot-message {
+            margin-bottom: $copilot-spacing-lg;
+            padding: 0 $copilot-spacing-lg;
+
+            &.user-message {
+                width: 100% !important;
+                text-align: right !important;
+                margin-bottom: $copilot-spacing-lg !important;
+                padding: 0 $copilot-spacing-lg 0 0 !important;
+
+                .copilot-message-content {
+                    display: inline-block !important;
+                    max-width: 80% !important;
+                    text-align: right !important;
+
+                    .copilot-message-time {
+                        color: $copilot-text-color-secondary !important;
+                        font-size: $copilot-font-size-sm !important;
+                        margin-bottom: $copilot-spacing-xs !important;
+                        display: block !important;
+                        text-align: right !important;
+                    }
+
+                    .copilot-message-bubble {
+                        padding: $copilot-spacing-lg !important;
+                        background-color: $copilot-primary-color !important;
+                        color: $copilot-text-color-inverse !important;
+                        border-radius: $copilot-spacing-lg $copilot-spacing-lg $copilot-spacing-xs $copilot-spacing-lg !important;
+                        font-size: $copilot-font-size-md !important;
+                        line-height: $copilot-line-height-normal !important;
+                        word-wrap: break-word !important;
+                        text-align: left !important;
+                        display: inline-block !important;
+                    }
+                }
+            }
+            
+            &.bot-message {
+                display: flex;
+                align-items: flex-start;
+                margin-bottom: $copilot-spacing-lg;
+                
+                .copilot-message-content {
+                    max-width: 80%;
+                    
+                    .copilot-message-header {
+                        display: flex;
+                        align-items: center;
+                        margin-bottom: $copilot-spacing-xs;
+
+                        .copilot-message-sender {
+                            color: $copilot-text-color-secondary;
+                            font-size: $copilot-font-size-sm;
+                            font-weight: $copilot-font-weight-semibold;
+                            margin-right: $copilot-spacing-xs;
+                        }
+
+                        .copilot-message-time {
+                            color: $copilot-text-color-secondary;
+                            font-size: $copilot-font-size-sm;
+                        }
+                    }
+                    
+                    .copilot-message-bubble {
+                        padding: $copilot-spacing-lg;
+                        background-color: $copilot-background-color-muted;
+                        color: $copilot-text-color-primary;
+                        border-radius: $copilot-spacing-lg $copilot-spacing-lg $copilot-spacing-lg $copilot-spacing-xs;
+                        font-size: $copilot-font-size-md;
+                        line-height: $copilot-line-height-normal;
+                        word-wrap: break-word;
+                        border: $copilot-border-width solid $copilot-border-color;
+                        // Optimize rendering performance during streaming
+                        will-change: auto;
+                        contain: layout style;
+
+                        &.error-message {
+                            background-color: lighten($copilot-error-color, 45%);
+                            border-color: lighten($copilot-error-color, 25%);
+                            color: $copilot-error-color;
+                        }
+
+                        // Markdown content styling within message bubbles
+                        .markdown-content {
+                            // Optimize rendering performance during streaming
+                            contain: layout style;
+
+                            // Reset margins for first and last elements
+                            > *:first-child {
+                                margin-top: 0;
+                            }
+
+                            > *:last-child {
+                                margin-bottom: 0;
+                            }
+
+                            // Headings
+                            h1, h2, h3, h4, h5, h6 {
+                                color: inherit;
+                                margin: $copilot-spacing-md 0 $copilot-spacing-sm 0;
+                                line-height: $copilot-line-height-tight;
+                            }
+
+                            h1 { font-size: $copilot-font-size-xl; }
+                            h2 { font-size: $copilot-font-size-lg; }
+                            h3 { font-size: $copilot-font-size-md; font-weight: $copilot-font-weight-semibold; }
+                            h4, h5, h6 { font-size: $copilot-font-size-md; font-weight: $copilot-font-weight-medium; }
+
+                            // Paragraphs
+                            p {
+                                margin: $copilot-spacing-sm 0;
+                                line-height: $copilot-line-height-normal;
+                            }
+
+                            // Lists
+                            ul, ol {
+                                margin: $copilot-spacing-sm 0;
+                                padding-left: $copilot-spacing-xl;
+                            }
+
+                            li {
+                                margin: $copilot-spacing-xs 0;
+                            }
+
+                            // Code blocks
+                            pre {
+                                background-color: rgba(0, 0, 0, 0.05);
+                                border: 1px solid rgba(0, 0, 0, 0.1);
+                                border-radius: $copilot-border-radius-sm;
+                                padding: $copilot-spacing-md;
+                                margin: $copilot-spacing-md 0;
+                                overflow-x: auto;
+                                font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+                                font-size: $copilot-font-size-sm;
+                                line-height: $copilot-line-height-tight;
+                            }
+
+                            // Inline code
+                            code {
+                                background-color: rgba(0, 0, 0, 0.08);
+                                padding: 2px 4px;
+                                border-radius: 3px;
+                                font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+                                font-size: 0.9em;
+                            }
+
+                            // Blockquotes
+                            blockquote {
+                                border-left: 3px solid $copilot-primary-color;
+                                padding-left: $copilot-spacing-md;
+                                margin: $copilot-spacing-md 0;
+                                color: rgba(0, 0, 0, 0.7);
+                                font-style: italic;
+                            }
+
+                            // Links
+                            a {
+                                color: $copilot-primary-color;
+                                text-decoration: none;
+
+                                &:hover {
+                                    text-decoration: underline;
+                                }
+                            }
+
+                            // Tables
+                            table {
+                                border-collapse: collapse;
+                                width: 100%;
+                                margin: $copilot-spacing-md 0;
+                            }
+
+                            th, td {
+                                border: 1px solid rgba(0, 0, 0, 0.1);
+                                padding: $copilot-spacing-sm;
+                                text-align: left;
+                            }
+
+                            th {
+                                background-color: rgba(0, 0, 0, 0.05);
+                                font-weight: $copilot-font-weight-semibold;
+                            }
+
+                            // Horizontal rules
+                            hr {
+                                border: none;
+                                border-top: 1px solid rgba(0, 0, 0, 0.1);
+                                margin: $copilot-spacing-lg 0;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            &.loading-message {
+                display: flex;
+                align-items: flex-start;
+                margin-bottom: 16px;
+                
+                .copilot-message-content {
+                    max-width: 80%;
+                    
+                    .copilot-message-header {
+                        display: flex;
+                        align-items: center;
+                        margin-bottom: 4px;
+                        
+                        .copilot-message-sender {
+                            color: $copilot-text-color-secondary;
+                            font-size: 12px;
+                            font-weight: 600;
+                        }
+                    }
+                    
+                    .copilot-message-bubble {
+                        padding: 16px;
+                        background-color: $copilot-background-color-hover;
+                        border-radius: 16px 16px 16px 4px;
+                        border: 1px solid $copilot-border-color;
+                        
+                        .copilot-loading-content {
+                            display: flex;
+                            align-items: center;
+                            
+                            .copilot-loading-spinner {
+                                color: $copilot-primary-color;
+                                margin-right: 8px;
+                            }
+
+                            .copilot-loading-text {
+                                font-size: 14px;
+                                color: $copilot-text-color-primary;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    .copilot-input-container {
+        border-top: 1px solid $copilot-border-color;
+        padding: 16px;
+        background-color: $copilot-background-color;
+        
+        .copilot-input-wrapper {
+            position: relative;
+            
+            .copilot-input-field {
+                .MuiOutlinedInput-root {
+                    border-radius: 24px;
+                    background-color: $copilot-background-color-hover;
+                    border: 1px solid $copilot-border-color;
+                    padding-right: 48px;
+
+                    &:hover {
+                        border-color: $copilot-border-color-light;
+                    }
+
+                    &.Mui-focused {
+                        border-color: $copilot-primary-color;
+                        background-color: $copilot-background-color;
+                    }
+                    
+                    .MuiOutlinedInput-notchedOutline {
+                        border: none;
+                    }
+                    
+                    .MuiInputBase-input {
+                        padding: 12px 16px;
+                        font-size: 14px;
+                        line-height: 1.4;
+                        
+                        &::placeholder {
+                            color: $copilot-text-color-muted;
+                            opacity: 1;
+                        }
+                    }
+                }
+            }
+            
+            .copilot-send-button {
+                position: absolute;
+                right: 8px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 32px;
+                height: 32px;
+                background-color: $copilot-primary-color;
+                color: $copilot-text-color-inverse;
+
+                &:hover {
+                    background-color: $copilot-primary-color-dark;
+                }
+
+                &:disabled {
+                    background-color: $copilot-border-color-light;
+                    color: $copilot-text-color-muted;
+                }
+            }
+        }
+        
+        .copilot-disclaimer {
+            color: $copilot-text-color-secondary;
+            font-size: 12px;
+            text-align: center !important;
+            margin-top: 12px;
+            line-height: 1.4;
+            display: block !important;
+            width: 100% !important;
+        }
+    }
+}
+
+// Additional specific rules to ensure user message alignment
+.copilot-chat .copilot-chat-messages .copilot-message.user-message {
+    display: flex !important;
+    justify-content: flex-end !important;
+    width: 100% !important;
+    padding: 0 16px 0 0 !important;
+
+    .copilot-message-content {
+        margin-left: auto !important;
+        margin-right: 0 !important;
+
+        .copilot-message-bubble {
+            background-color: $copilot-primary-color !important;
+            margin-left: auto !important;
+        }
+    }
+}

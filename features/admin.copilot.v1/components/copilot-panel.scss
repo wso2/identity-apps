@@ -1,0 +1,521 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+// Import theme variables
+@import "../styles/copilot-variables";
+
+.copilot-panel {
+    z-index: $copilot-panel-z-index !important; // Within layout structure
+    margin: 0 !important;
+    padding: 0 !important;
+
+    // Remove any default MUI margins
+    .MuiDrawer-root {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    // Smooth transitions for all state changes
+    * {
+        transition-timing-function: $copilot-transition-timing-function !important;
+    }
+
+    // Smooth slide animations for show/hide
+    &.MuiDrawer-root {
+        .MuiDrawer-paper {
+            transition: transform $copilot-transition-duration $copilot-transition-timing-function !important;
+        }
+    }
+
+    // Prevent layout issues when drawer is closed
+    &:not(.MuiDrawer-root) {
+        .MuiDrawer-docked {
+            width: 0 !important;
+        }
+    }
+
+    // Expanded state styles with smooth transition
+    &.copilot-panel-expanded {
+        .copilot-panel-paper {
+            width: 100% !important;
+            left: 0 !important;
+            right: 0 !important;
+            transition: width $copilot-transition-duration-slow $copilot-transition-timing-function, left $copilot-transition-duration-slow $copilot-transition-timing-function, transform $copilot-transition-duration-slow $copilot-transition-timing-function !important;
+        }
+    }
+
+    // Ensure smooth transition when collapsing (not expanded)
+    &:not(.copilot-panel-expanded) {
+        .copilot-panel-paper {
+            transition: width $copilot-transition-duration-slow $copilot-transition-timing-function, left $copilot-transition-duration-slow $copilot-transition-timing-function, transform $copilot-transition-duration-slow $copilot-transition-timing-function !important;
+        }
+    }
+
+    .copilot-panel-paper {
+        border-left: $copilot-border-width solid $copilot-border-color !important;
+        border-right: none !important;
+        border-top: none !important;
+        border-bottom: none !important;
+        box-shadow: none !important;
+        background-color: $copilot-background-color !important;
+        width: $copilot-panel-width !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        top: 0 !important;
+        left: auto !important;
+        right: 0 !important;
+        height: 100% !important;
+        max-height: 100% !important;
+        position: absolute !important;
+        transition: width $copilot-transition-duration-slow $copilot-transition-timing-function, left $copilot-transition-duration-slow $copilot-transition-timing-function, transform $copilot-transition-duration-slow $copilot-transition-timing-function !important;
+
+        // Ensure panel respects parent container boundaries
+        overflow: hidden !important;
+        contain: layout !important;
+
+        .copilot-panel-container {
+            position: relative;
+            height: 100%;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            background-color: $copilot-background-color;
+
+            .copilot-panel-content {
+                height: calc(100% - #{$copilot-header-height});
+                overflow: hidden;
+                background-color: $copilot-background-color;
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+            }
+        }
+    }
+
+    // Override any MUI Drawer default styles that might add margins
+    &.MuiDrawer-root {
+        margin: 0 !important;
+        padding: 0 !important;
+
+        .MuiDrawer-paper {
+            margin: 0 !important;
+            padding: 0 !important;
+            top: 0 !important;
+            left: auto !important;
+            right: 0 !important;
+        }
+    }
+}
+
+// Panel header styles
+.copilot-panel-header {
+    position: relative !important;
+    width: 100% !important;
+    height: $copilot-header-height !important;
+    border-bottom: $copilot-border-width solid $copilot-border-color !important;
+    background-color: $copilot-background-color !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 $copilot-spacing-md !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
+
+    // Header left side - logo and title
+    .copilot-header-left {
+        display: flex;
+        align-items: center;
+
+        .copilot-avatar-container {
+            margin-right: $copilot-spacing-sm;
+        }
+
+        .copilot-title-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+
+            .copilot-title {
+                font-size: $copilot-font-size-lg;
+                font-weight: $copilot-font-weight-semibold;
+                color: $copilot-text-color-primary;
+                margin: 0;
+                line-height: 1.2;
+            }
+
+            .copilot-preview-label {
+                font-size: $copilot-font-size-xs;
+                font-weight: $copilot-font-weight-medium;
+                color: $copilot-text-color-secondary;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin: 0;
+                line-height: 1;
+                background-color: $copilot-background-color-muted;
+                padding: 2px 6px;
+                border-radius: $copilot-border-radius-sm;
+                border: 1px solid $copilot-border-color-light;
+            }
+        }
+    }
+
+    // Header right side - action buttons
+    .copilot-header-actions {
+        display: flex;
+        align-items: center;
+        gap: $copilot-spacing-xs;
+
+        .copilot-action-button {
+            color: $copilot-text-color-secondary;
+        }
+    }
+}
+
+.copilot-header {
+    border-bottom: 1px solid $copilot-border-color !important;
+    background: $copilot-background-color !important;
+    background-color: $copilot-background-color !important;
+    min-height: 64px !important;
+    height: 64px !important;
+    flex-shrink: 0 !important;
+    z-index: 1000 !important;
+    position: relative !important;
+    display: flex !important;
+    visibility: visible !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    opacity: 1 !important;
+
+    .copilot-header-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 20px;
+
+        .copilot-header-left {
+            display: flex;
+            align-items: center;
+
+            .copilot-header-title {
+                font-size: 16px;
+                font-weight: 600;
+                color: $copilot-text-color-primary;
+                margin: 0;
+            }
+        }
+
+        .copilot-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            .MuiIconButton-root {
+                color: $copilot-text-color-secondary;
+                transition: all 0.2s ease;
+
+                &:hover {
+                    background-color: $copilot-background-color-hover;
+                    color: $copilot-text-color-primary;
+                }
+            }
+        }
+    }
+}
+
+.copilot-chat {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .copilot-chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 16px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        min-height: 0;
+
+        .copilot-chat-empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+        }
+
+        .copilot-message {
+            display: flex;
+            flex-direction: column;
+            max-width: 100%;
+
+            &.user {
+                align-self: flex-end;
+
+                .copilot-message-content-wrapper {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-end;
+                }
+            }
+
+            &.assistant {
+                align-self: flex-start;
+
+                .copilot-message-header {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 6px;
+                    font-size: 12px;
+                    color: $copilot-text-color-secondary;
+                }
+
+                .copilot-message-content-wrapper {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+
+                &.loading .copilot-message-content {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                }
+            }
+
+            .copilot-message-content {
+                word-wrap: break-word;
+                font-size: 14px;
+                line-height: 1.5;
+            }
+        }
+    }
+
+    .copilot-chat-input {
+        border-top: 1px solid $copilot-border-color;
+        background: $copilot-background-color;
+
+        .copilot-input-container {
+            padding: 16px 20px;
+        }
+
+        .copilot-footer {
+            padding: 12px 20px;
+            background-color: $copilot-background-color-muted;
+        }
+    }
+}
+
+// Welcome Screen Styles
+.copilot-welcome {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .copilot-welcome-section {
+        padding: 48px 20px;
+        text-align: center;
+        border-bottom: 1px solid $copilot-border-color;
+
+        .copilot-welcome-avatar {
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .copilot-welcome-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: $copilot-text-color-primary;
+            margin-bottom: 8px;
+        }
+
+        .copilot-welcome-subtitle {
+            font-size: 14px;
+            color: $copilot-text-color-secondary;
+            line-height: 1.4;
+        }
+    }
+
+    .copilot-suggested-actions {
+        padding: 20px;
+
+        .copilot-actions-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: $copilot-text-color-secondary;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .copilot-action-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+
+            .copilot-action-card {
+                padding: 12px 16px;
+                border: 1px solid $copilot-primary-color;
+                border-radius: 8px;
+                font-size: 14px;
+                color: $copilot-text-color-primary;
+                text-transform: none;
+                justify-content: flex-start;
+                transition: all 0.2s ease;
+
+                &:hover {
+                    background-color: $copilot-background-color-hover;
+                    border-color: $copilot-primary-color;
+                    transform: translateY(-1px);
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                }
+            }
+        }
+    }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+    .copilot-panel {
+        .copilot-panel-paper {
+            width: 100vw !important;
+            max-width: none;
+        }
+    }
+
+    .copilot-header {
+        .copilot-header-content {
+            padding: 12px 16px;
+        }
+    }
+
+    .copilot-welcome {
+        .copilot-welcome-section {
+            padding: 32px 16px;
+        }
+
+        .copilot-suggested-actions {
+            padding: 16px;
+        }
+    }
+
+    .copilot-chat {
+        .copilot-chat-messages {
+            padding: 12px 16px;
+        }
+
+        .copilot-chat-input {
+            .copilot-input-container {
+                padding: 12px 16px;
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .copilot-header {
+        .copilot-header-content {
+            .copilot-header-actions {
+                gap: 4px;
+
+                .MuiIconButton-root {
+                    padding: 6px;
+                }
+            }
+        }
+    }
+
+    .copilot-welcome {
+        .copilot-welcome-title {
+            font-size: 16px;
+        }
+
+        .copilot-welcome-subtitle {
+            font-size: 13px;
+        }
+
+        .copilot-suggested-actions {
+            .copilot-action-cards {
+                .copilot-action-card {
+                    padding: 10px 12px;
+                    font-size: 13px;
+                }
+            }
+        }
+    }
+
+    .copilot-chat {
+        .copilot-message {
+            .copilot-message-content {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+        }
+    }
+}
+
+// Dark theme support
+@media (prefers-color-scheme: dark) {
+    .copilot-panel {
+        .copilot-panel-paper {
+            background-color: $copilot-background-color-dark;
+            border-left-color: $copilot-border-color-dark;
+        }
+    }
+
+    .copilot-header {
+        background-color: $copilot-background-color-dark;
+        border-bottom-color: $copilot-border-color-dark;
+
+        .copilot-header-content {
+            .copilot-header-left {
+                .copilot-header-title {
+                    color: $copilot-text-color-primary-dark;
+                }
+            }
+        }
+    }
+
+    .copilot-welcome {
+        .copilot-welcome-section {
+            border-bottom-color: $copilot-border-color-dark;
+
+            .copilot-welcome-title {
+                color: $copilot-text-color-primary-dark;
+            }
+        }
+    }
+
+    .copilot-chat {
+        .copilot-chat-input {
+            background-color: $copilot-background-color-dark;
+            border-top-color: $copilot-border-color-dark;
+
+            .copilot-footer {
+                background-color: $copilot-background-color-surface-dark;
+            }
+        }
+    }
+}
