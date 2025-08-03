@@ -19,29 +19,33 @@
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
 import Typography from "@oxygen-ui/react/Typography";
-import { LabelValue } from "@wso2is/core/models";
-import { FinalForm, FinalFormField, FormRenderProps, SelectFieldAdapter } from "@wso2is/form";
+import {
+    CheckboxGroupFieldAdapter,
+    FinalForm,
+    FinalFormField,
+    FormRenderProps
+} from "@wso2is/form";
 import { Button, Popup, useMediaContext } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, List } from "semantic-ui-react";
 import EmptyValueField from "./empty-value-field";
-import { DropdownFieldFormPropsInterface } from "../../../models/profile-ui";
+import { CheckboxGroupFieldFormPropsInterface } from "../../../models/profile-ui";
 import { EditSection } from "../../shared/edit-section";
 
 /**
  * Interface for the dropdown option item.
  */
-interface DropdownOptionItem {
+interface CheckboxOptionItem {
     label: string;
     value: string;
 }
 
 /**
- * User profile dropdown field form component.
+ * User profile checkbox group field form component.
  */
-const DropdownFieldForm: FunctionComponent<DropdownFieldFormPropsInterface> = ({
+const CheckboxGroupFieldForm: FunctionComponent<CheckboxGroupFieldFormPropsInterface> = ({
     fieldSchema: schema,
     initialValue,
     fieldLabel,
@@ -53,13 +57,12 @@ const DropdownFieldForm: FunctionComponent<DropdownFieldFormPropsInterface> = ({
     isUpdating,
     setIsProfileUpdating,
     handleSubmit,
-    isMultiSelect = false,
-    ["data-componentid"]: testId = "dropdown-field-form"
-}: DropdownFieldFormPropsInterface): ReactElement => {
+    ["data-componentid"]: testId = "checkbox-group-field-form"
+}: CheckboxGroupFieldFormPropsInterface): ReactElement => {
     const { isMobileViewport } = useMediaContext();
     const { t } = useTranslation();
 
-    const options: DropdownOptionItem[] = schema.canonicalValues ?? [];
+    const options: CheckboxOptionItem[] = schema.canonicalValues ?? [];
 
     const validateField = (value: unknown): string | undefined => {
         // Validate the required field.
@@ -79,16 +82,8 @@ const DropdownFieldForm: FunctionComponent<DropdownFieldFormPropsInterface> = ({
     };
 
     const renderInactiveFieldContent = (): ReactElement => {
-        if (!isMultiSelect) {
-            const selectedOption: DropdownOptionItem = options.find((option: DropdownOptionItem) => {
-                return option.value === (initialValue as string);
-            });
-
-            return <>{ selectedOption?.label ?? "" }</>;
-        }
-
-        const selectedOptions: DropdownOptionItem[] = options.filter((option: DropdownOptionItem) => {
-            return (initialValue as string[]).includes(option.value);
+        const selectedOptions: CheckboxOptionItem[] = options.filter((option: CheckboxOptionItem) => {
+            return initialValue.includes(option.value);
         });
 
         return (
@@ -99,7 +94,7 @@ const DropdownFieldForm: FunctionComponent<DropdownFieldFormPropsInterface> = ({
                 variant="standard"
                 data-componentid={ `${testId}-${schema.name.replace(".", "-")}-readonly-dropdown` }
             >
-                { selectedOptions.map(({ label, value }: DropdownOptionItem, index: number) => (
+                { selectedOptions.map(({ label, value }: CheckboxOptionItem, index: number) => (
                     <MenuItem key={ index } value={ value } className="read-only-menu-item">
                         <div className="dropdown-row">
                             <Typography
@@ -131,75 +126,53 @@ const DropdownFieldForm: FunctionComponent<DropdownFieldFormPropsInterface> = ({
                                     return (
                                         <form
                                             onSubmit={ handleSubmit }
-                                            className="dropdown-field-form"
+                                            className="checkbox-group-field-form"
                                             data-componentid={
                                                 `${testId}-editing-section-${ schema.name.replace(".", "-") }-form` }
                                             data-testid={
                                                 `${testId}-editing-section-${ schema.name.replace(".", "-") }-form` }
                                         >
-                                            <Grid verticalAlign="middle">
-                                                <Grid.Row columns={ 2 }>
-                                                    <Grid.Column width={ 10 }>
-                                                        <FinalFormField
-                                                            component={ SelectFieldAdapter }
-                                                            initialValue={ initialValue }
-                                                            isClearable={ !isRequired }
-                                                            ariaLabel={ fieldLabel }
-                                                            name={ schema.name }
-                                                            validate={ validateField }
-                                                            placeholder={ t(
-                                                                "myAccount:components.profile.forms.generic" +
-                                                                ".dropdown.placeholder", {
-                                                                    fieldName: fieldLabel.toLowerCase()
-                                                                }
-                                                            ) }
-                                                            options={ options?.map(({ label, value }: LabelValue) => {
-                                                                return {
-                                                                    text: label,
-                                                                    value
-                                                                };
-                                                            }) }
-                                                            multiple={ isMultiSelect }
-                                                            readOnly={ !isEditable || isUpdating }
-                                                            disableClearable={ isRequired }
-                                                            data-testid={
-                                                                `${testId}-${
-                                                                    schema.name.replace(".", "-")}-select-field` }
-                                                            data-componentid={
-                                                                `${testId}-${
-                                                                    schema.name.replace(".", "-")}-select-field` }
-                                                        />
-                                                    </Grid.Column>
-                                                    <Grid.Column
-                                                        width={ 6 }
-                                                    >
-                                                        <div className="form-actions-wrapper">
-                                                            <Button
-                                                                primary
-                                                                type="submit"
-                                                                data-testid={
-                                                                    `${testId}-schema-mobile-editing-section-${
-                                                                        schema.name.replace(
-                                                                            ".",
-                                                                            "-"
-                                                                        )}-save-button` }
-                                                            >
-                                                                { t("common:save") }
-                                                            </Button>
-                                                            <Button
-                                                                onClick={ onEditCancelClicked }
-                                                                data-testid={
-                                                                    `${testId}-schema-mobile-editing-section-${
-                                                                        schema.name.replace(".", "-")
-                                                                    }-cancel-button`
-                                                                }
-                                                            >
-                                                                { t("common:cancel") }
-                                                            </Button>
-                                                        </div>
-                                                    </Grid.Column>
-                                                </Grid.Row>
-                                            </Grid>
+                                            <FinalFormField
+                                                component={ CheckboxGroupFieldAdapter }
+                                                initialValue={ initialValue }
+                                                ariaLabel={ fieldLabel }
+                                                name={ schema.name }
+                                                validate={ validateField }
+                                                readOnly={ !isEditable || isUpdating }
+                                                disabled={ !isEditable || isUpdating }
+                                                FormControlProps={ {
+                                                    fullWidth: true,
+                                                    margin: "dense"
+                                                } }
+                                                options={ options }
+                                                data-testid={
+                                                    `${testId}-${schema.name.replace(".", "-")}-field` }
+                                                data-componentid={
+                                                    `${testId}-${schema.name.replace(".", "-")}-field` }
+                                            />
+                                            <Grid.Row className="form-actions-wrapper">
+                                                <Button
+                                                    primary
+                                                    type="submit"
+                                                    data-testid={ `${testId}-schema-mobile-editing-section-${
+                                                        schema.name.replace(
+                                                            ".",
+                                                            "-"
+                                                        )}-save-button` }
+                                                >
+                                                    { t("common:save") }
+                                                </Button>
+                                                <Button
+                                                    onClick={ onEditCancelClicked }
+                                                    data-testid={
+                                                        `${testId}-schema-mobile-editing-section-${
+                                                            schema.name.replace(".", "-")
+                                                        }-cancel-button`
+                                                    }
+                                                >
+                                                    { t("common:cancel") }
+                                                </Button>
+                                            </Grid.Row>
                                         </form>
                                     );
                                 } }
@@ -271,4 +244,4 @@ const DropdownFieldForm: FunctionComponent<DropdownFieldFormPropsInterface> = ({
     );
 };
 
-export default DropdownFieldForm;
+export default CheckboxGroupFieldForm;

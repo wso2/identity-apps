@@ -1229,6 +1229,9 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 generic: {
+                    dropdown: {
+                        placeholder: "ඔබගේ {{fieldName}} තෝරන්න"
+                    },
                     inputs: {
                         placeholder: "{{fieldName}} ඇතුල් කරන්න",
                         readonly: {
@@ -1239,6 +1242,9 @@ export const myAccount: MyAccountNS = {
                             empty: "{{fieldName}} අත්\u200Dයවශ්\u200Dය ක්ෂේත්\u200Dරයකි",
                             invalidFormat: "ඇතුළත් කළ {{fieldName}} ආකෘතිය වැරදිය"
                         }
+                    },
+                    radioGroup: {
+                        optionNone: "කිසිවක් නැත"
                     }
                 },
                 mobileChangeForm: {

@@ -17,19 +17,19 @@
  */
 
 import {
-    CheckboxFieldAdapter,
     FinalForm,
     FinalFormField,
     FormRenderProps,
     FormSpy,
-    FormState
+    FormState,
+    SwitchFieldAdapter
 } from "@wso2is/form";
 import { FormValue } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Grid, List } from "semantic-ui-react";
-import { CheckBoxFieldFormPropsInterface } from "../../../models/profile-ui";
+import { SwitchFieldFormPropsInterface } from "../../../models/profile-ui";
 
-const CheckboxFieldForm: FunctionComponent<CheckBoxFieldFormPropsInterface> = ({
+const SwitchFieldForm: FunctionComponent<SwitchFieldFormPropsInterface> = ({
     fieldSchema: schema,
     initialValue,
     fieldLabel,
@@ -38,7 +38,7 @@ const CheckboxFieldForm: FunctionComponent<CheckBoxFieldFormPropsInterface> = ({
     handleSubmit,
     isUpdating,
     ["data-componentid"]: componentId
-}: CheckBoxFieldFormPropsInterface): ReactElement => {
+}: SwitchFieldFormPropsInterface): ReactElement => {
 
     const onFormSubmit = (values: Record<string, boolean>): void => {
         setIsProfileUpdating(true);
@@ -63,15 +63,15 @@ const CheckboxFieldForm: FunctionComponent<CheckBoxFieldFormPropsInterface> = ({
                                     return (
                                         <form onSubmit={ handleSubmit }>
                                             <FinalFormField
-                                                component={ CheckboxFieldAdapter }
+                                                component={ SwitchFieldAdapter }
                                                 initialValue={ initialValue ?? false }
                                                 name={ schema.name }
                                                 readOnly={ !isEditable || isUpdating }
                                                 disabled={ !isEditable || isUpdating }
                                                 data-testid= {
-                                                    `${componentId}-${schema.name.replace(".", "-")}-checkbox-field` }
+                                                    `${componentId}-${schema.name.replace(".", "-")}-switch-field` }
                                                 data-componentid= {
-                                                    `${componentId}-${schema.name.replace(".", "-")}-checkbox-field` }
+                                                    `${componentId}-${schema.name.replace(".", "-")}-switch-field` }
                                             />
                                             <FormSpy
                                                 subscription={ { dirty: true, values: true } }
@@ -93,4 +93,4 @@ const CheckboxFieldForm: FunctionComponent<CheckBoxFieldFormPropsInterface> = ({
     );
 };
 
-export default CheckboxFieldForm;
+export default SwitchFieldForm;

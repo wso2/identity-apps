@@ -16,116 +16,108 @@
  * under the License.
  */
 
-import MenuItem from "@oxygen-ui/react/MenuItem";
-import Select from "@oxygen-ui/react/Select";
-import Typography from "@oxygen-ui/react/Typography";
-import MultiValuedTextField from "@wso2is/common.ui.profile.v1/components/multi-valued-text-field";
-import { ProfileConstants } from "@wso2is/core/constants";
-import { FinalForm, FormRenderProps } from "@wso2is/form";
+import { FinalForm, FinalFormField, FormRenderProps, RadioGroupFieldAdapter } from "@wso2is/form";
 import { Button, Popup, useMediaContext } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { ReactElement } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, List } from "semantic-ui-react";
 import EmptyValueField from "./empty-value-field";
-import { MultiValueFieldFormPropsInterface } from "../../../models/profile-ui";
+import { RadioFieldFormPropsInterface } from "../../../models/profile-ui";
 import { EditSection } from "../../shared/edit-section";
 
 import "./field-form.scss";
 
-const MultiValueFieldForm = <T extends string | number>({
+interface RadioOptionItem {
+    label: string;
+    value: string;
+}
+
+const RadioFieldForm: FunctionComponent<RadioFieldFormPropsInterface> = ({
     fieldSchema: schema,
-    fieldLabel,
     initialValue,
+    fieldLabel,
     isEditable,
-    isActive,
-    isRequired,
-    isLoading,
     onEditClicked,
     onEditCancelClicked,
+    isActive,
+    isRequired,
+    isUpdating,
     setIsProfileUpdating,
-    type = "text",
     handleSubmit,
-    ["data-componentid"]: testId = "multi-value-field-form"
-}: MultiValueFieldFormPropsInterface<T>): ReactElement => {
-    const { t } = useTranslation();
+    ["data-componentid"]: testId = "radio-field-form"
+}: RadioFieldFormPropsInterface): ReactElement => {
     const { isMobileViewport } = useMediaContext();
+    const { t } = useTranslation();
 
-    const onFormSubmit = (values: Record<string, unknown>): void => {
-        setIsProfileUpdating(true);
+    let options: RadioOptionItem[] = schema.canonicalValues ?? [];
 
-        const valueList: T[] = Array.from(values[schema.name] as T[] ?? []);
+    if (!isRequired) {
+        // Add an empty value option when the field is optional.
+        options = [
+            { label: t("myAccount:components.profile.forms.generic.radioGroup.optionNone"), value: "" },
+            ...options
+        ];
+    }
 
-        handleSubmit(schema.name, valueList as string[]);
+    const selectedOption: RadioOptionItem = options.find((option: RadioOptionItem) => {
+        return option.value === initialValue;
+    });
+
+    const validateField = (value: unknown): string | undefined => {
+        // Validate the required field.
+        if (isEmpty(value) && isRequired) {
+            return (
+                t("myAccount:components.profile.forms.generic.inputs.validations.empty", { fieldName: fieldLabel })
+            );
+        }
+
+        return undefined;
     };
 
-    const renderInactiveFieldContent = (): ReactElement => {
-        return (
-            <Select
-                className="multi-attribute-dropdown"
-                value={ initialValue[0] }
-                disableUnderline
-                variant="standard"
-                data-componentid={ `${testId}-${schema.name.replace(".", "-")}-readonly-dropdown` }
-            >
-                { initialValue.map((value: T, index: number) => (
-                    <MenuItem key={ index } value={ value } className="read-only-menu-item">
-                        <div className="dropdown-row">
-                            <Typography
-                                className="dropdown-label"
-                                data-componentid={ `${testId}-readonly-section-${schema.name.replace(
-                                    ".",
-                                    "-"
-                                )}-value-${index}` }
-                            >
-                                { String(value) }
-                            </Typography>
-                        </div>
-                    </MenuItem>
-                )) }
-            </Select>
-        );
+    const onFormSubmit = (values: Record<string, string>): void => {
+        setIsProfileUpdating(true);
+
+        handleSubmit(schema.name, values[schema.name]);
     };
 
     if (isActive) {
         return (
             <EditSection data-testid={ "profile-schema-editing-section" }>
-                <Grid className="multi-valued-field-form">
-                    <Grid.Row columns={ 2 }>
+                <Grid>
+                    <Grid.Row columns={ 2 } verticalAlign="middle">
                         <Grid.Column width={ 4 }>{ fieldLabel }</Grid.Column>
                         <Grid.Column width={ 12 }>
                             <FinalForm
                                 onSubmit={ onFormSubmit }
-                                render={ ({ handleSubmit, values }: FormRenderProps) => {
-                                    const currentValueList: T[] = Array.from(values[schema.name] as T[] ?? []);
-
+                                render={ ({ handleSubmit }: FormRenderProps) => {
                                     return (
                                         <form
-                                            id="user-profile-form"
+                                            className="radio-group-field-form"
                                             onSubmit={ handleSubmit }
-                                            className="user-profile-form"
                                             data-componentid={
                                                 `${testId}-editing-section-${ schema.name.replace(".", "-") }-form` }
                                             data-testid={
                                                 `${testId}-editing-section-${ schema.name.replace(".", "-") }-form` }
                                         >
-                                            <MultiValuedTextField
-                                                schema={ schema }
-                                                fieldName={ schema.name }
-                                                fieldLabel={ fieldLabel }
-                                                showLabel={ false }
-                                                margin="none"
-                                                type={ type }
-                                                initialValue={ initialValue as string[] }
-                                                isReadOnly={ isLoading || currentValueList
-                                                    ?.length === ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED }
-                                                isRequired={ isRequired }
-                                                isUpdating={ false }
-                                                maxValueLimit={ ProfileConstants.MAX_MULTI_VALUES_ALLOWED }
-                                                placeholder={
-                                                    t("myAccount:components.profile.forms.generic.inputs.placeholder",
-                                                        { fieldName: fieldLabel.toLowerCase() }) }
+                                            <FinalFormField
+                                                component={ RadioGroupFieldAdapter }
+                                                initialValue={ initialValue }
+                                                ariaLabel={ fieldLabel }
+                                                name={ schema.name }
+                                                options={ options }
+                                                validate={ validateField }
+                                                readOnly={ !isEditable || isUpdating }
+                                                disabled={ !isEditable || isUpdating }
+                                                required={ isRequired }
+                                                FormControlProps={ {
+                                                    fullWidth: true,
+                                                    margin: "dense"
+                                                } }
                                                 data-componentid={
+                                                    `${testId}-editing-section-${ schema.name.replace(".", "-") }-field`
+                                                }
+                                                data-testid={
                                                     `${testId}-editing-section-${ schema.name.replace(".", "-") }-field`
                                                 }
                                             />
@@ -172,10 +164,17 @@ const MultiValueFieldForm = <T extends string | number>({
                 <Grid.Column mobile={ 8 } computer={ 10 }>
                     <List.Content>
                         <List.Description className="with-max-length">
-                            { isEmpty(initialValue) ? (
-                                <EmptyValueField schema={ schema } fieldLabel={ fieldLabel } />
+                            { isEmpty(selectedOption) ? (
+                                <EmptyValueField
+                                    schema={ schema }
+                                    fieldLabel={ fieldLabel }
+                                    placeholderText={ t(
+                                        "myAccount:components.profile.forms.generic.dropdown.placeholder",
+                                        { fieldName: fieldLabel.toLowerCase() }
+                                    ) }
+                                />
                             ) : (
-                                renderInactiveFieldContent()
+                                selectedOption?.label
                             ) }
                         </List.Description>
                     </List.Content>
@@ -216,4 +215,4 @@ const MultiValueFieldForm = <T extends string | number>({
     );
 };
 
-export default MultiValueFieldForm;
+export default RadioFieldForm;

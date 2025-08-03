@@ -24,14 +24,17 @@ import TableRow from "@mui/material/TableRow";
 import Button from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
 import IconButton from "@oxygen-ui/react/IconButton";
+import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Paper from "@oxygen-ui/react/Paper";
 import Select from "@oxygen-ui/react/Select";
+import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
+import { PlusIcon } from "@oxygen-ui/react-icons";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { AlertLevels, PatchOperationRequest } from "@wso2is/core/models";
-import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { Popup, useMediaContext } from "@wso2is/react-components";
+import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
+import { Popup, Button as SemanticButton, useMediaContext } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { Dispatch, FunctionComponent, ReactElement, useMemo, useState } from "react";
@@ -52,6 +55,8 @@ import { getProfileInformation } from "../../../store/actions/authenticate";
 import { addAlert, setActiveForm } from "../../../store/actions/global";
 import { EditSection } from "../../shared/edit-section";
 import MobileUpdateWizardV2 from "../../shared/mobile-update-wizard-v2/mobile-update-wizard-v2";
+
+import "./field-form.scss";
 
 interface SortedMobileNumber {
     value: string;
@@ -253,7 +258,7 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
         );
     };
 
-    const validateField = (value: string, validation: Validation): void => {
+    const validateField = (value: string): string | undefined => {
         let regEx: string = schema.regEx;
 
         // Validate multi-valued mobile numbers
@@ -263,13 +268,12 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
         }
 
         if (!isEmpty(regEx) && !RegExp(regEx).test(value)) {
-            validation.isValid = false;
-            validation.errorMessages.push(
-                t(profileExtensionConfig?.attributes?.getRegExpValidationError(
-                    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")
-                ),{ fieldName: fieldLabel } )
-            );
+            return t(profileExtensionConfig?.attributes?.getRegExpValidationError(
+                ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")
+            ),{ fieldName: fieldLabel } );
         }
+
+        return undefined;
     };
 
     const handleVerifyMobile = (mobileNumber: string): void => {
@@ -328,20 +332,12 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
-        const updatedPhoneNumbersList: MultiValue[] = [];
-
-        for (const phoneNumber of profileDetails?.profileInfo?.phoneNumbers) {
-            if (phoneNumber.value === "mobile") {
-                updatedPhoneNumbersList.push({ ...phoneNumber, value: mobileNumber });
-            } else {
-                updatedPhoneNumbersList.push(phoneNumber);
-            }
-        }
-
         data.Operations.push({
-            op: "replace",
+            op: "add",
             value: {
-                [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: updatedPhoneNumbersList
+                [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
+                    { type: "mobile", value: mobileNumber }
+                ]
             }
         });
 
@@ -378,9 +374,10 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
         triggerUpdate(data);
     };
 
-    const handleAddMobileNumber = (mobileNumber: string): void => {
+    const handleAddMobileNumber = (values: Record<string, string>): void => {
         setIsProfileUpdating(true);
 
+        const mobileNumber: string = values["mobileNumbers"];
         const data: PatchOperationRequest<ProfilePatchOperationValue> = {
             Operations: [],
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
@@ -479,7 +476,7 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
             });
         }
 
-        triggerUpdate(data);
+        triggerUpdate(data, false);
     };
 
     const handleSingleMobileUpdate = (_: string, value: string): void => {
@@ -520,6 +517,7 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
 
     const handleMobileUpdateModalClose = (isRevalidate: boolean = false) => {
         setIsMobileUpdateModalOpen(false);
+        setIsProfileUpdating(false);
 
         if (isRevalidate) {
             // Re-fetch the profile information.
@@ -595,9 +593,11 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                         onClose={ handleMobileUpdateModalClose }
                         onCancel={ () => {
                             setIsMobileUpdateModalOpen(false);
+                            setIsProfileUpdating(false);
                             onEditCancelClicked();
                         } }
                         isMultiValued={ false }
+                        isMobileRequired={ isRequired }
                         data-testid={ `${testId}-mobile-verification-wizard` }
                     />
                 </EditSection>
@@ -623,6 +623,148 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
         );
     }
 
+    const renderMobileNumbersTable = (): ReactElement => {
+        return (
+            <TableContainer
+                component={ Paper }
+                elevation={ 0 }
+                data-componentid={
+                    `${testId}-editing-section-${schema.name.replace(".", "-")}-accordion`
+                }
+            >
+                <Table
+                    className="multi-value-table"
+                    size="small"
+                    aria-label="multi-attribute value table"
+                >
+                    <TableBody>
+                        { sortedMobileNumbersList?.map(
+                            (mobileNumber: SortedMobileNumber, index: number) => (
+                                <TableRow key={ index } className="multi-value-table-data-row">
+                                    <TableCell align="left">
+                                        <div className="table-c1">
+                                            <Typography
+                                                className="c1-value"
+                                                data-componentid={
+                                                    `${testId}-editing-section-${
+                                                        schema.name.replace(".", "-")
+                                                    }-value-${index}`
+                                                }
+                                            >
+                                                { mobileNumber.value }
+                                            </Typography>
+                                            {
+                                                isVerificationEnabled &&
+                                                mobileNumber.isVerified && (
+                                                    <div
+                                                        className="verified-icon"
+                                                        data-componentid={
+                                                            `${testId}-editing-section-${
+                                                                schema.name.replace(".", "-")
+                                                            }-verified-icon-${index}`
+                                                        }
+                                                    >
+                                                        { renderVerifiedIcon() }
+                                                    </div>
+                                                )
+                                            }
+                                            {
+                                                mobileNumber.isPrimary && (
+                                                    <div
+                                                        className="verified-icon"
+                                                        data-componentid={
+                                                            `${testId}-editing-section-${
+                                                                schema.name.replace(".", "-")
+                                                            }-primary-icon-${index}`
+                                                        }
+                                                    >
+                                                        <Chip
+                                                            label={ t("common:primary") }
+                                                            size="small"
+                                                        />
+                                                    </div>
+                                                )
+                                            }
+                                        </div>
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        <div className="table-c2">
+                                            <Button
+                                                size="small"
+                                                variant="text"
+                                                className="text-btn"
+                                                hidden={ !isVerificationEnabled ||
+                                                    mobileNumber.isVerified }
+                                                onClick={
+                                                    () => handleVerifyMobile(mobileNumber.value) }
+                                                disabled={ isLoading }
+                                                data-componentid={
+                                                    `${testId}-editing-section-${
+                                                        schema.name.replace(".", "-")
+                                                    }-verify-button-${index}`
+                                                }
+                                            >
+                                                { t("common:verify") }
+                                            </Button>
+                                            <Button
+                                                size="small"
+                                                variant="text"
+                                                className="text-btn"
+                                                hidden={ mobileNumber.isPrimary ||
+                                                    (isVerificationEnabled &&
+                                                        !mobileNumber.isVerified)
+                                                }
+                                                onClick={
+                                                    () => handleMakeMobilePrimary(
+                                                        mobileNumber.value)
+                                                }
+                                                disabled={ isLoading }
+                                                data-componentid={
+                                                    `${testId}-editing-section-${
+                                                        schema.name.replace(".", "-")
+                                                    }-make-primary-button-${index}`
+                                                }
+                                            >
+                                                { t("common:makePrimary") }
+                                            </Button>
+                                            <IconButton
+                                                size="small"
+                                                onClick={ () => {
+                                                    setSelectedMobileNumber(mobileNumber);
+                                                } }
+                                                disabled={ isLoading ||
+                                                    (mobileNumber.isPrimary &&
+                                                        primaryMobileSchema?.required) ||
+                                                    (isRequired &&
+                                                        sortedMobileNumbersList.length === 1) }
+                                                data-componentid={
+                                                    `${testId}-editing-section-${
+                                                        schema.name.replace(".", "-")
+                                                    }-delete-button-${index}`
+                                                }
+                                            >
+                                                <Popup
+                                                    size="tiny"
+                                                    trigger={
+                                                        (
+                                                            <Icon name="trash alternate" />
+                                                        )
+                                                    }
+                                                    header={ t("common:delete") }
+                                                    inverted
+                                                />
+                                            </IconButton>
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            )
+                        ) }
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        );
+    };
+
     if (isActive) {
         return (
             <EditSection data-testid={ "profile-schema-editing-section" }>
@@ -630,185 +772,81 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                     <Grid.Row columns={ 2 }>
                         <Grid.Column width={ 4 }>{ fieldLabel }</Grid.Column>
                         <Grid.Column width={ 12 }>
-                            <Forms
-                                onSubmit={ (values: Map<string, FormValue>) =>
-                                    handleAddMobileNumber(values.get("phoneNumbers") as string) }
-                            >
-                                <Field
-                                    action={ { icon: "plus", type: "submit" } }
-                                    disabled={ isLoading ||
-                                        sortedMobileNumbersList
-                                            ?.length === ProfileConstants.MAX_MOBILE_NUMBERS_ALLOWED }
-                                    className="multi-input-box"
-                                    autoFocus={ true }
-                                    label=""
-                                    name="phoneNumbers"
-                                    placeholder={ t("myAccount:components.profile.forms.generic.inputs.placeholder",
-                                        { fieldName: fieldLabel.toLowerCase() }) }
-                                    required={ isRequired }
-                                    requiredErrorMessage={
-                                        t("myAccount:components.profile.forms.generic.inputs.validations.empty",
-                                            { fieldName: fieldLabel }) }
-                                    type="text"
-                                    validation={ validateField }
-                                    maxLength={ primaryMobileSchema?.maxLength
-                                        ?? ProfileConstants.CLAIM_VALUE_MAX_LENGTH }
-                                    data-componentid={
-                                        `${testId}-editing-section-${ schema.name.replace(".", "-") }-field`
-                                    }
-                                />
-
-                                <TableContainer
-                                    component={ Paper }
-                                    elevation={ 0 }
-                                    data-componentid={
-                                        `${testId}-editing-section-${schema.name.replace(".", "-")}-accordion`
-                                    }
-                                >
-                                    <Table
-                                        className="multi-value-table"
-                                        size="small"
-                                        aria-label="multi-attribute value table"
-                                    >
-                                        <TableBody>
-                                            { sortedMobileNumbersList?.map(
-                                                (mobileNumber: SortedMobileNumber, index: number) => (
-                                                    <TableRow key={ index } className="multi-value-table-data-row">
-                                                        <TableCell align="left">
-                                                            <div className="table-c1">
-                                                                <Typography
-                                                                    className="c1-value"
-                                                                    data-componentid={
-                                                                        `${testId}-editing-section-${
-                                                                            schema.name.replace(".", "-")
-                                                                        }-value-${index}`
-                                                                    }
-                                                                >
-                                                                    { mobileNumber.value }
-                                                                </Typography>
-                                                                {
-                                                                    isVerificationEnabled &&
-                                                                    mobileNumber.isVerified && (
-                                                                        <div
-                                                                            className="verified-icon"
-                                                                            data-componentid={
-                                                                                `${testId}-editing-section-${
-                                                                                    schema.name.replace(".", "-")
-                                                                                }-verified-icon-${index}`
-                                                                            }
-                                                                        >
-                                                                            { renderVerifiedIcon() }
-                                                                        </div>
-                                                                    )
+                            <FinalForm
+                                onSubmit={ handleAddMobileNumber }
+                                render={ ({ handleSubmit, hasValidationErrors }: FormRenderProps) => {
+                                    return (
+                                        <form
+                                            onSubmit={ handleSubmit }
+                                            className="multi-valued-field-form"
+                                            data-componentid={
+                                                `${testId}-editing-section-${ schema.name.replace(".", "-") }-form` }
+                                            data-testid={
+                                                `${testId}-editing-section-${ schema.name.replace(".", "-") }-form` }
+                                        >
+                                            <FinalFormField
+                                                component={ TextFieldAdapter }
+                                                ariaLabel={ fieldLabel }
+                                                name="mobileNumbers"
+                                                type="text"
+                                                placeholder={
+                                                    t("myAccount:components.profile.forms.generic.inputs.placeholder",
+                                                        { fieldName: fieldLabel.toLowerCase() }) }
+                                                validate={ validateField }
+                                                maxLength={ primaryMobileSchema?.maxLength
+                                                    ?? ProfileConstants.CLAIM_VALUE_MAX_LENGTH }
+                                                readOnly={
+                                                    !isEditable ||
+                                                    isUpdating ||
+                                                    sortedMobileNumbersList?.length === ProfileConstants
+                                                        .MAX_EMAIL_ADDRESSES_ALLOWED
+                                                }
+                                                required={ isRequired }
+                                                endAdornment={ (
+                                                    <InputAdornment position="end">
+                                                        <Tooltip title="Add">
+                                                            <IconButton
+                                                                data-componentid={ `${ testId }-multivalue-add-icon` }
+                                                                size="large"
+                                                                disabled={
+                                                                    isUpdating ||
+                                                                    hasValidationErrors ||
+                                                                    sortedMobileNumbersList.length >= ProfileConstants
+                                                                        .MAX_EMAIL_ADDRESSES_ALLOWED
                                                                 }
-                                                                {
-                                                                    mobileNumber.isPrimary && (
-                                                                        <div
-                                                                            className="verified-icon"
-                                                                            data-componentid={
-                                                                                `${testId}-editing-section-${
-                                                                                    schema.name.replace(".", "-")
-                                                                                }-primary-icon-${index}`
-                                                                            }
-                                                                        >
-                                                                            <Chip
-                                                                                label={ t("common:primary") }
-                                                                                size="small"
-                                                                            />
-                                                                        </div>
-                                                                    )
-                                                                }
-                                                            </div>
-                                                        </TableCell>
-                                                        <TableCell align="right">
-                                                            <div className="table-c2">
-                                                                <Button
-                                                                    size="small"
-                                                                    variant="text"
-                                                                    className="text-btn"
-                                                                    hidden={ !isVerificationEnabled ||
-                                                                        mobileNumber.isVerified }
-                                                                    onClick={
-                                                                        () => handleVerifyMobile(mobileNumber.value) }
-                                                                    disabled={ isLoading }
-                                                                    data-componentid={
-                                                                        `${testId}-editing-section-${
-                                                                            schema.name.replace(".", "-")
-                                                                        }-verify-button-${index}`
-                                                                    }
-                                                                >
-                                                                    { t("common:verify") }
-                                                                </Button>
-                                                                <Button
-                                                                    size="small"
-                                                                    variant="text"
-                                                                    className="text-btn"
-                                                                    hidden={ mobileNumber.isPrimary ||
-                                                                        (isVerificationEnabled &&
-                                                                            !mobileNumber.isVerified)
-                                                                    }
-                                                                    onClick={
-                                                                        () => handleMakeMobilePrimary(
-                                                                            mobileNumber.value)
-                                                                    }
-                                                                    disabled={ isLoading }
-                                                                    data-componentid={
-                                                                        `${testId}-editing-section-${
-                                                                            schema.name.replace(".", "-")
-                                                                        }-make-primary-button-${index}`
-                                                                    }
-                                                                >
-                                                                    { t("common:makePrimary") }
-                                                                </Button>
-                                                                <IconButton
-                                                                    size="small"
-                                                                    onClick={ () => {
-                                                                        setSelectedMobileNumber(mobileNumber);
-                                                                    } }
-                                                                    disabled={ isLoading ||
-                                                                        (mobileNumber.isPrimary &&
-                                                                            primaryMobileSchema?.required) ||
-                                                                        (isRequired &&
-                                                                            sortedMobileNumbersList.length === 1) }
-                                                                    data-componentid={
-                                                                        `${testId}-editing-section-${
-                                                                            schema.name.replace(".", "-")
-                                                                        }-delete-button-${index}`
-                                                                    }
-                                                                >
-                                                                    <Popup
-                                                                        size="tiny"
-                                                                        trigger={
-                                                                            (
-                                                                                <Icon name="trash alternate" />
-                                                                            )
-                                                                        }
-                                                                        header={ t("common:delete") }
-                                                                        inverted
-                                                                    />
-                                                                </IconButton>
-                                                            </div>
-                                                        </TableCell>
-                                                    </TableRow>
-                                                )
-                                            ) }
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
+                                                                onClick={ handleSubmit }
+                                                            >
+                                                                <PlusIcon />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                    </InputAdornment>
+                                                ) }
+                                                data-componentid={
+                                                    `${testId}-editing-section-${ schema.name.replace(".", "-") }-field`
+                                                }
+                                                data-testid={
+                                                    `${testId}-editing-section-${ schema.name.replace(".", "-") }-field`
+                                                }
+                                            />
 
-                                <Field
-                                    className="link-button mv-cancel-btn"
-                                    onClick={ onEditCancelClicked }
-                                    size="small"
-                                    type="button"
-                                    value={ t("common:cancel").toString() }
-                                    data-testid={
-                                        `${testId}-schema-mobile-editing-section-${
-                                            schema.name.replace(".", "-")
-                                        }-cancel-button`
-                                    }
-                                />
-                            </Forms>
+                                            { renderMobileNumbersTable() }
+
+                                            <SemanticButton
+                                                type="button"
+                                                onClick={ onEditCancelClicked }
+                                                data-testid={
+                                                    `${testId}-schema-mobile-editing-section-${
+                                                        schema.name.replace(".", "-")
+                                                    }-cancel-button`
+                                                }
+                                            >
+                                                { t("common:cancel") }
+                                            </SemanticButton>
+
+                                        </form>
+                                    );
+                                } }
+                            />
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
@@ -819,6 +857,7 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                     onClose={ handleMobileUpdateModalClose }
                     onCancel={ (isRevalidate: boolean = false) => {
                         setIsMobileUpdateModalOpen(false);
+                        setIsProfileUpdating(false);
                         onEditCancelClicked();
 
                         if (isRevalidate) {
@@ -828,6 +867,7 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                     } }
                     data-testid={ `${testId}-mobile-verification-wizard` }
                     initialStep={ 1 }
+                    isMobileRequired={ isRequired }
                     isMultiValued
                 />
 
@@ -836,6 +876,7 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                         selectedAttributeInfo={ { schema, value: selectedMobileNumber.value } }
                         onClose={ () => setSelectedMobileNumber(undefined) }
                         onConfirm={ handleMobileNumberDelete }
+                        data-componentid={ testId }
                     />
                 ) }
             </EditSection>

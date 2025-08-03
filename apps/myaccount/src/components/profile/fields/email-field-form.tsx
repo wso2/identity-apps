@@ -24,14 +24,17 @@ import TableRow from "@mui/material/TableRow";
 import Button from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
 import IconButton from "@oxygen-ui/react/IconButton";
+import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Paper from "@oxygen-ui/react/Paper";
 import Select from "@oxygen-ui/react/Select";
+import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
+import { PlusIcon } from "@oxygen-ui/react-icons";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { PatchOperationRequest } from "@wso2is/core/models";
-import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { Popup, useMediaContext } from "@wso2is/react-components";
+import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
+import { Popup, Button as SemanticButton, useMediaContext } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -46,6 +49,8 @@ import { MultiValue, ProfilePatchOperationValue, ProfileSchema } from "../../../
 import { EmailFieldFormPropsInterface } from "../../../models/profile-ui";
 import { AppState } from "../../../store";
 import { EditSection } from "../../shared/edit-section";
+
+import "./field-form.scss";
 
 interface SortedEmailAddress {
     value: string;
@@ -284,7 +289,7 @@ const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
         );
     };
 
-    const validateField = (value: string, validation: Validation): void => {
+    const validateField = (value: string): string | undefined => {
         let regEx: string = schema.regEx;
 
         // Validate multi-valued email addresses
@@ -294,11 +299,10 @@ const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
         }
 
         if (!isEmpty(regEx) && !RegExp(regEx).test(value)) {
-            validation.isValid = false;
-            validation.errorMessages.push(
-                t("myAccount:components.profile.forms.emailChangeForm.inputs.email.validations.invalidFormat")
-            );
+            return t("myAccount:components.profile.forms.emailChangeForm.inputs.email.validations.invalidFormat");
         }
+
+        return undefined;
     };
 
     const handleVerifyEmail = (emailAddress: string): void => {
@@ -361,9 +365,10 @@ const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
         triggerUpdate(data);
     };
 
-    const handleAddEmailAddress = (emailAddress: string): void => {
+    const handleAddEmailAddress = (values: Record<string, string>): void => {
         setIsProfileUpdating(true);
 
+        const emailAddress: string = values["emailAddresses"];
         const data: PatchOperationRequest<ProfilePatchOperationValue> = {
             Operations: [],
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
@@ -462,7 +467,7 @@ const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
             });
         }
 
-        triggerUpdate(data);
+        triggerUpdate(data, false);
     };
 
     const handleSingleEmailUpdate = (_: string, value: string): void => {
@@ -521,6 +526,162 @@ const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
         );
     }
 
+    const renderEmailAddressesTable = (): ReactElement => {
+        return (
+            <TableContainer
+                component={ Paper }
+                elevation={ 0 }
+                data-componentid={
+                    `${testId}-editing-section-${schema.name.replace(".", "-")}-accordion`
+                }
+            >
+                <Table
+                    className="multi-value-table"
+                    size="small"
+                    aria-label="multi-attribute-value-table"
+                >
+                    <TableBody>
+                        { sortedEmailAddressesList?.map(
+                            (emailAddress: SortedEmailAddress, index: number) => (
+                                <TableRow key={ index } className="multi-value-table-data-row">
+                                    <TableCell align="left">
+                                        <div className="table-c1">
+                                            <Typography
+                                                className="c1-value"
+                                                data-componentid={
+                                                    `${testId}-editing-section-${
+                                                        schema.name.replace(".", "-")
+                                                    }-value-${index}`
+                                                }
+                                            >
+                                                { emailAddress.value }
+                                            </Typography>
+                                            {
+                                                isVerificationEnabled &&
+                                                emailAddress.isVerificationPending && (
+                                                    <div
+                                                        className="verified-icon"
+                                                        data-componentid={
+                                                            `${testId}-editing-section-${
+                                                                schema.name.replace(".", "-")
+                                                            }-pending-email-${index}`
+                                                        }
+                                                    >
+                                                        { renderPendingVerificationIcon() }
+                                                    </div>
+                                                )
+                                            }
+                                            {
+                                                isVerificationEnabled &&
+                                                emailAddress.isVerified && (
+                                                    <div
+                                                        className="verified-icon"
+                                                        data-componentid={
+                                                            `${testId}-editing-section-${
+                                                                schema.name.replace(".", "-")
+                                                            }-verified-icon-${index}`
+                                                        }
+                                                    >
+                                                        { renderVerifiedIcon() }
+                                                    </div>
+                                                )
+                                            }
+                                            {
+                                                emailAddress.isPrimary && (
+                                                    <div
+                                                        className="verified-icon"
+                                                        data-componentid={
+                                                            `${testId}-editing-section-${
+                                                                schema.name.replace(".", "-")
+                                                            }-primary-icon-${index}`
+                                                        }
+                                                    >
+                                                        <Chip
+                                                            label={ t("common:primary") }
+                                                            size="small"
+                                                        />
+                                                    </div>
+                                                )
+                                            }
+                                        </div>
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        <div className="table-c2">
+                                            <Button
+                                                size="small"
+                                                variant="text"
+                                                className="text-btn"
+                                                hidden={ !isVerificationEnabled ||
+                                                    emailAddress.isVerified }
+                                                onClick={
+                                                    () => handleVerifyEmail(emailAddress.value) }
+                                                disabled={ isLoading }
+                                                data-componentid={
+                                                    `${testId}-editing-section-${
+                                                        schema.name.replace(".", "-")
+                                                    }-verify-button-${index}`
+                                                }
+                                            >
+                                                { t("common:verify") }
+                                            </Button>
+                                            <Button
+                                                size="small"
+                                                variant="text"
+                                                className="text-btn"
+                                                hidden={ emailAddress.isPrimary ||
+                                                    (isVerificationEnabled &&
+                                                        !emailAddress.isVerified)
+                                                }
+                                                onClick={
+                                                    () => handleMakeEmailPrimary(emailAddress.value)
+                                                }
+                                                disabled={ isLoading }
+                                                data-componentid={
+                                                    `${testId}-editing-section-${
+                                                        schema.name.replace(".", "-")
+                                                    }-make-primary-button-${index}`
+                                                }
+                                            >
+                                                { t("common:makePrimary") }
+                                            </Button>
+                                            <IconButton
+                                                size="small"
+                                                onClick={ () => {
+                                                    setSelectedEmailAddress(emailAddress);
+                                                } }
+                                                disabled={ isLoading ||
+                                                    (emailAddress.isPrimary &&
+                                                        primaryEmailSchema?.required) ||
+                                                    (isRequired &&
+                                                        sortedEmailAddressesList?.length === 1) }
+                                                data-componentid={
+                                                    `${testId}-editing-section-${
+                                                        schema.name.replace(".", "-")
+                                                    }-delete-button-${index}`
+                                                }
+                                            >
+                                                <Popup
+                                                    size="tiny"
+                                                    trigger={
+                                                        (
+                                                            <Icon name="trash alternate" />
+                                                        )
+                                                    }
+                                                    header={ t("common:delete") }
+                                                    inverted
+                                                />
+                                            </IconButton>
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            )
+                        ) }
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        );
+    };
+
     if (isActive) {
         return (
             <EditSection data-testid={ "profile-schema-editing-section" }>
@@ -528,199 +689,81 @@ const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
                     <Grid.Row columns={ 2 }>
                         <Grid.Column width={ 4 }>{ fieldLabel }</Grid.Column>
                         <Grid.Column width={ 12 }>
-                            <Forms
-                                onSubmit={ (values: Map<string, FormValue>) =>
-                                    handleAddEmailAddress(values.get("emails") as string) }
-                            >
-                                <Field
-                                    action={ { icon: "plus", type: "submit" } }
-                                    disabled={ isLoading ||
-                                        sortedEmailAddressesList?.length === ProfileConstants
-                                            .MAX_EMAIL_ADDRESSES_ALLOWED }
-                                    className="multi-input-box"
-                                    autoFocus={ true }
-                                    label=""
-                                    name="emails"
-                                    placeholder={ t("myAccount:components.profile.forms.generic.inputs.placeholder",
-                                        { fieldName: fieldLabel.toLowerCase() }) }
-                                    required={ isRequired }
-                                    requiredErrorMessage={
-                                        t("myAccount:components.profile.forms.generic.inputs.validations.empty",
-                                            { fieldName: fieldLabel }) }
-                                    type="text"
-                                    validation={ validateField }
-                                    maxLength={ primaryEmailSchema?.maxLength
-                                        ?? ProfileConstants.CLAIM_VALUE_MAX_LENGTH }
-                                    data-componentid={
-                                        `${testId}-editing-section-${ schema.name.replace(".", "-") }-field`
-                                    }
-                                />
+                            <FinalForm
+                                onSubmit={ handleAddEmailAddress }
+                                render={ ({ handleSubmit, hasValidationErrors }: FormRenderProps) => {
+                                    return (
+                                        <form
+                                            onSubmit={ handleSubmit }
+                                            className="multi-valued-field-form"
+                                            data-componentid={
+                                                `${testId}-editing-section-${ schema.name.replace(".", "-") }-form` }
+                                            data-testid={
+                                                `${testId}-editing-section-${ schema.name.replace(".", "-") }-form` }
+                                        >
+                                            <FinalFormField
+                                                component={ TextFieldAdapter }
+                                                ariaLabel={ fieldLabel }
+                                                name="emailAddresses"
+                                                type="text"
+                                                placeholder={
+                                                    t("myAccount:components.profile.forms.generic.inputs.placeholder",
+                                                        { fieldName: fieldLabel.toLowerCase() }) }
+                                                validate={ validateField }
+                                                maxLength={ primaryEmailSchema?.maxLength
+                                                    ?? ProfileConstants.CLAIM_VALUE_MAX_LENGTH }
+                                                readOnly={
+                                                    !isEditable ||
+                                                    isUpdating ||
+                                                    sortedEmailAddressesList?.length === ProfileConstants
+                                                        .MAX_EMAIL_ADDRESSES_ALLOWED
+                                                }
+                                                required={ isRequired }
+                                                endAdornment={ (
+                                                    <InputAdornment position="end">
+                                                        <Tooltip title="Add">
+                                                            <IconButton
+                                                                data-componentid={ `${ testId }-multivalue-add-icon` }
+                                                                size="large"
+                                                                disabled={
+                                                                    isUpdating ||
+                                                                    hasValidationErrors ||
+                                                                    sortedEmailAddressesList.length >= ProfileConstants
+                                                                        .MAX_EMAIL_ADDRESSES_ALLOWED
+                                                                }
+                                                                onClick={ handleSubmit }
+                                                            >
+                                                                <PlusIcon />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                    </InputAdornment>
+                                                ) }
+                                                data-componentid={
+                                                    `${testId}-editing-section-${ schema.name.replace(".", "-") }-field`
+                                                }
+                                                data-testid={
+                                                    `${testId}-editing-section-${ schema.name.replace(".", "-") }-field`
+                                                }
+                                            />
 
-                                <TableContainer
-                                    component={ Paper }
-                                    elevation={ 0 }
-                                    data-componentid={
-                                        `${testId}-editing-section-${schema.name.replace(".", "-")}-accordion`
-                                    }
-                                >
-                                    <Table
-                                        className="multi-value-table"
-                                        size="small"
-                                        aria-label="multi-attribute value table"
-                                    >
-                                        <TableBody>
-                                            { sortedEmailAddressesList?.map(
-                                                (emailAddress: SortedEmailAddress, index: number) => (
-                                                    <TableRow key={ index } className="multi-value-table-data-row">
-                                                        <TableCell align="left">
-                                                            <div className="table-c1">
-                                                                <Typography
-                                                                    className="c1-value"
-                                                                    data-componentid={
-                                                                        `${testId}-editing-section-${
-                                                                            schema.name.replace(".", "-")
-                                                                        }-value-${index}`
-                                                                    }
-                                                                >
-                                                                    { emailAddress.value }
-                                                                </Typography>
-                                                                {
-                                                                    isVerificationEnabled &&
-                                                                    emailAddress.isVerificationPending && (
-                                                                        <div
-                                                                            className="verified-icon"
-                                                                            data-componentid={
-                                                                                `${testId}-editing-section-${
-                                                                                    schema.name.replace(".", "-")
-                                                                                }-pending-email-${index}`
-                                                                            }
-                                                                        >
-                                                                            { renderPendingVerificationIcon() }
-                                                                        </div>
-                                                                    )
-                                                                }
-                                                                {
-                                                                    isVerificationEnabled &&
-                                                                    emailAddress.isVerified && (
-                                                                        <div
-                                                                            className="verified-icon"
-                                                                            data-componentid={
-                                                                                `${testId}-editing-section-${
-                                                                                    schema.name.replace(".", "-")
-                                                                                }-verified-icon-${index}`
-                                                                            }
-                                                                        >
-                                                                            { renderVerifiedIcon() }
-                                                                        </div>
-                                                                    )
-                                                                }
-                                                                {
-                                                                    emailAddress.isPrimary && (
-                                                                        <div
-                                                                            className="verified-icon"
-                                                                            data-componentid={
-                                                                                `${testId}-editing-section-${
-                                                                                    schema.name.replace(".", "-")
-                                                                                }-primary-icon-${index}`
-                                                                            }
-                                                                        >
-                                                                            <Chip
-                                                                                label={ t("common:primary") }
-                                                                                size="small"
-                                                                            />
-                                                                        </div>
-                                                                    )
-                                                                }
-                                                            </div>
-                                                        </TableCell>
-                                                        <TableCell align="right">
-                                                            <div className="table-c2">
-                                                                <Button
-                                                                    size="small"
-                                                                    variant="text"
-                                                                    className="text-btn"
-                                                                    hidden={ !isVerificationEnabled ||
-                                                                        emailAddress.isVerified }
-                                                                    onClick={
-                                                                        () => handleVerifyEmail(emailAddress.value) }
-                                                                    disabled={ isLoading }
-                                                                    data-componentid={
-                                                                        `${testId}-editing-section-${
-                                                                            schema.name.replace(".", "-")
-                                                                        }-verify-button-${index}`
-                                                                    }
-                                                                >
-                                                                    { t("common:verify") }
-                                                                </Button>
-                                                                <Button
-                                                                    size="small"
-                                                                    variant="text"
-                                                                    className="text-btn"
-                                                                    hidden={ emailAddress.isPrimary ||
-                                                                        (isVerificationEnabled &&
-                                                                            !emailAddress.isVerified)
-                                                                    }
-                                                                    onClick={
-                                                                        () => handleMakeEmailPrimary(emailAddress.value)
-                                                                    }
-                                                                    disabled={ isLoading }
-                                                                    data-componentid={
-                                                                        `${testId}-editing-section-${
-                                                                            schema.name.replace(".", "-")
-                                                                        }-make-primary-button-${index}`
-                                                                    }
-                                                                >
-                                                                    { t("common:makePrimary") }
-                                                                </Button>
-                                                                <IconButton
-                                                                    size="small"
-                                                                    onClick={ () => {
-                                                                        setSelectedEmailAddress(emailAddress);
-                                                                    } }
-                                                                    disabled={ isLoading ||
-                                                                        (emailAddress.isPrimary &&
-                                                                            primaryEmailSchema?.required) ||
-                                                                        (isRequired &&
-                                                                            sortedEmailAddressesList?.length === 1) }
-                                                                    data-componentid={
-                                                                        `${testId}-editing-section-${
-                                                                            schema.name.replace(".", "-")
-                                                                        }-delete-button-${index}`
-                                                                    }
-                                                                >
-                                                                    <Popup
-                                                                        size="tiny"
-                                                                        trigger={
-                                                                            (
-                                                                                <Icon name="trash alternate" />
-                                                                            )
-                                                                        }
-                                                                        header={ t("common:delete") }
-                                                                        inverted
-                                                                    />
-                                                                </IconButton>
-                                                            </div>
-                                                        </TableCell>
-                                                    </TableRow>
-                                                )
-                                            ) }
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
+                                            { renderEmailAddressesTable() }
 
-                                <Field
-                                    className="link-button mv-cancel-btn"
-                                    onClick={ onEditCancelClicked }
-                                    size="small"
-                                    type="button"
-                                    value={ t("common:cancel").toString() }
-                                    data-testid={
-                                        `${testId}-schema-mobile-editing-section-${
-                                            schema.name.replace(".", "-")
-                                        }-cancel-button`
-                                    }
-                                />
-                            </Forms>
+                                            <SemanticButton
+                                                type="button"
+                                                onClick={ onEditCancelClicked }
+                                                data-testid={
+                                                    `${testId}-schema-mobile-editing-section-${
+                                                        schema.name.replace(".", "-")
+                                                    }-cancel-button`
+                                                }
+                                            >
+                                                { t("common:cancel") }
+                                            </SemanticButton>
+
+                                        </form>
+                                    );
+                                } }
+                            />
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
@@ -729,6 +772,7 @@ const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
                         selectedAttributeInfo={ { schema, value: selectedEmailAddress.value } }
                         onClose={ () => setSelectedEmailAddress(undefined) }
                         onConfirm={ handleEmailAddressDelete }
+                        data-componentid={ testId }
                     />
                 ) }
             </EditSection>

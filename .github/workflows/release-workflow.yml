@@ -22,7 +22,7 @@ name: 🚀 Release
 
 on:
     push:
-        branches: [ master ]
+        branches: [ master, next ]
         paths-ignore:
             - "LICENSE"
     workflow_dispatch:
@@ -98,6 +98,11 @@ jobs:
                   key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
                   restore-keys: |
                       ${{ runner.os }}-pnpm-store-
+
+            - name: 🔄 Enter Changeset Pre-release Mode (next branch only)
+              id: changeset-pre-release
+              if: github.ref_name == 'next'
+              run: pnpm changeset pre enter next
 
             - name: 🧩 Install Dependencies
               id: install-dependencies
@@ -179,4 +184,10 @@ jobs:
               working-directory: .github/workflows
               run: |
                   PACKAGES="${{ toJson(steps.changesets.outputs.publishedPackages) }}"
-                  bash ./scripts/release.sh "$PACKAGES" ${{ github.run_number }} ${{ env.IS_HOTFIX }}
+                  # Detect pre-release for 'next' branch
+                  if [ "${GITHUB_REF##*/}" = "next" ]; then
+                    PRE_RELEASE="next"
+                  else
+                    PRE_RELEASE=""
+                  fi
+                  bash ./scripts/release.sh "$PACKAGES" ${{ github.run_number }} ${{ env.IS_HOTFIX }} "$PRE_RELEASE"

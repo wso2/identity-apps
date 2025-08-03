@@ -1198,6 +1198,9 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 "generic": {
+                    "dropdown": {
+                        "placeholder": "{{fieldname}}を選択します"
+                    },
                     "inputs": {
                         "placeholder": "{{fieldName}}を入力します",
                         "readonly": {
@@ -1208,6 +1211,9 @@ export const myAccount: MyAccountNS = {
                             "empty": "{{fieldName}}は必須フィールドです",
                             "invalidFormat": "入力された{{fieldName}}の形式は正しくありません"
                         }
+                    },
+                    "radioGroup": {
+                        "optionNone": "なし"
                     }
                 },
                 "mobileChangeForm": {
