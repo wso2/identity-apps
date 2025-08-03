@@ -18,7 +18,8 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ReactElement } from "react";
-import { ReactComponent as AIIcon } from "../../../modules/theme/src/themes/wso2is/assets/images/icons/solid-icons/ai-icon.svg";
+import { ReactComponent as AIIcon } from
+    "../../../modules/theme/src/themes/wso2is/assets/images/icons/solid-icons/ai-icon.svg";
 import "./ai-sparkle-icon.scss";
 
 /**
@@ -57,10 +58,10 @@ const AISparkleIcon: React.FunctionComponent<AISparkleIconProps> = (
 
     return (
         <AIIcon
-            className={`ai-sparkle-icon ${className || ''}`}
-            width={width}
-            height={height}
-            data-componentid={componentId}
+            className={ `ai-sparkle-icon ${className || ""}` }
+            data-componentid={ componentId }
+            height={ height }
+            width={ width }
         />
     );
 };

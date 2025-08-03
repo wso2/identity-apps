@@ -63,7 +63,7 @@ const ClearChatConfirmationModal: React.FunctionComponent<ClearChatConfirmationM
         ["data-componentid"]: componentId = "clear-chat-confirmation-modal"
     } = props;
 
-    const { t } = useTranslation();
+    const { t: _t } = useTranslation();
 
     /**
      * Handle confirm action.
@@ -75,14 +75,14 @@ const ClearChatConfirmationModal: React.FunctionComponent<ClearChatConfirmationM
 
     return (
         <Dialog
-            open={open}
-            onClose={onClose}
             className="clear-chat-confirmation-modal"
-            data-componentid={componentId}
-            maxWidth="sm"
+            data-componentid={ componentId }
+            disablePortal={ true }
             fullWidth
-            disablePortal={true}
-            hideBackdrop={true}
+            hideBackdrop={ true }
+            maxWidth="sm"
+            onClose={ onClose }
+            open={ open }
         >
             <DialogTitle className="clear-chat-modal-title">
                 <Box className="clear-chat-modal-title-content">
@@ -92,7 +92,7 @@ const ClearChatConfirmationModal: React.FunctionComponent<ClearChatConfirmationM
                     </Typography>
                 </Box>
             </DialogTitle>
-            
+
             <DialogContent className="clear-chat-modal-content">
                 <Typography variant="body1" className="clear-chat-modal-message">
                     Are you sure you want to clear the chat?
@@ -101,13 +101,13 @@ const ClearChatConfirmationModal: React.FunctionComponent<ClearChatConfirmationM
                     This action cannot be undone.
                 </Typography>
             </DialogContent>
-            
+
             <DialogActions className="clear-chat-modal-actions">
                 <Button
                     variant="outlined"
                     color="inherit"
-                    onClick={onClose}
-                    data-componentid={`${componentId}-cancel-button`}
+                    onClick={ onClose }
+                    data-componentid={ `${componentId}-cancel-button` }
                     className="clear-chat-cancel-button"
                 >
                     Cancel
@@ -115,8 +115,8 @@ const ClearChatConfirmationModal: React.FunctionComponent<ClearChatConfirmationM
                 <Button
                     variant="contained"
                     color="primary"
-                    onClick={handleConfirm}
-                    data-componentid={`${componentId}-confirm-button`}
+                    onClick={ handleConfirm }
+                    data-componentid={ `${componentId}-confirm-button` }
                     className="clear-chat-confirm-button"
                 >
                     Clear Chat

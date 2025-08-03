@@ -65,21 +65,21 @@ const AiBotAvatar: React.FunctionComponent<AiBotAvatarProps> = (
     if (circular) {
         return (
             <Box
-                className={`ai-bot-avatar circular ${className || ''}`}
-                data-componentid={componentId}
-                style={{
-                    width: size,
-                    height: size,
+                className={ `ai-bot-avatar circular ${className || ""}` }
+                data-componentid={ componentId }
+                style={ {
                     background: backgroundColor,
-                    padding: `${size * 0.2}px`
-                }}
+                    height: size,
+                    padding: `${size * 0.2}px`,
+                    width: size
+                } }
             >
                 <img
-                    src={AiBotIllustration}
                     alt="AI Bot"
-                    style={{
+                    src={ AiBotIllustration }
+                    style={ {
                         width: `${size * 0.6}px`
-                    }}
+                    } }
                 />
             </Box>
         );
@@ -87,16 +87,16 @@ const AiBotAvatar: React.FunctionComponent<AiBotAvatarProps> = (
 
     return (
         <Box
-            className={`ai-bot-avatar standard ${className || ''}`}
-            data-componentid={componentId}
-            style={{
-                width: size,
-                height: size
-            }}
+            className={ `ai-bot-avatar standard ${className || ""}` }
+            data-componentid={ componentId }
+            style={ {
+                height: size,
+                width: size
+            } }
         >
             <img
-                src={AiBotIllustration}
                 alt="AI Bot"
+                src={ AiBotIllustration }
             />
         </Box>
     );
