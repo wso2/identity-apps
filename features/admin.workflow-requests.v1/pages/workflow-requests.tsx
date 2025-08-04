@@ -50,7 +50,7 @@ interface FilterTag {
     key: string;
     label: string;
     value: string;
-    type: 'requestType' | 'status' | 'dateCategory' | 'createdTimeRange' | 'updatedTimeRange' | 'operationType';
+    type: "requestType" | "status" | "dateCategory" | "createdTimeRange" | "updatedTimeRange" | "operationType";
 }
 
 const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
@@ -64,20 +64,20 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const [workflowRequests, setWorkflowRequests] = useState<WorkflowInstanceListItemInterface[]>([]);
-    const [requestType, setRequestType] = useState<string>("ALL_TASKS");
-    const [status, setStatus] = useState<string>("ALL_TASKS");
-    const [operationType, setOperationType] = useState<string>("ALL");
-    const [createdTimeRange, setCreatedTimeRange] = useState<number | undefined>(-2);
-    const [createdFromTime, setCreatedFromTime] = useState<string>("");
-    const [createdToTime, setCreatedToTime] = useState<string>("");
-    const [updatedTimeRange, setUpdatedTimeRange] = useState<number | undefined>(-2);
-    const [updatedFromTime, setUpdatedFromTime] = useState<string>("");
-    const [updatedToTime, setUpdatedToTime] = useState<string>("");
-    const [filterString, setFilterString] = useState<string>("");
-    const [limit, setLimit] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
-    const [offset, setOffset] = useState<number>(0);
-    const [totalResults, setTotalResults] = useState<number>(0);
+    const [ workflowRequests, setWorkflowRequests ] = useState<WorkflowInstanceListItemInterface[]>([]);
+    const [ requestType, setRequestType ] = useState<string>("ALL_TASKS");
+    const [ status, setStatus ] = useState<string>("ALL_TASKS");
+    const [ operationType, setOperationType ] = useState<string>("ALL");
+    const [ createdTimeRange, setCreatedTimeRange ] = useState<number | undefined>(-2);
+    const [ createdFromTime, setCreatedFromTime ] = useState<string>("");
+    const [ createdToTime, setCreatedToTime ] = useState<string>("");
+    const [ updatedTimeRange, setUpdatedTimeRange ] = useState<number | undefined>(-2);
+    const [ updatedFromTime, setUpdatedFromTime ] = useState<string>("");
+    const [ updatedToTime, setUpdatedToTime ] = useState<string>("");
+    const [ filterString, setFilterString ] = useState<string>("");
+    const [ limit, setLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
+    const [ offset, setOffset ] = useState<number>(0);
+    const [ totalResults, setTotalResults ] = useState<number>(0);
 
     const {
         data: workflowInstancesData,
@@ -99,7 +99,8 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
                     && workflowInstancesError.response.data.detail) {
                 dispatch(addAlert({
                     description: t(
-                        "console:manage.features.workflowRequests.notifications.fetchWorkflowRequests.error.description",
+                        "console:manage.features.workflowRequests.notifications." +
+                        "fetchWorkflowRequests.error.description",
                         { description: workflowInstancesError.response.data.detail }
                     ),
                     level: AlertLevels.ERROR,
@@ -110,16 +111,18 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
             } else {
                 dispatch(addAlert({
                     description: t(
-                        "console:manage.features.workflowRequests.notifications.fetchWorkflowRequests.genericError.description"
+                        "console:manage.features.workflowRequests.notifications." +
+                        "fetchWorkflowRequests.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.workflowRequests.notifications.fetchWorkflowRequests.genericError.message"
+                        "console:manage.features.workflowRequests.notifications." +
+                        "fetchWorkflowRequests.genericError.message"
                     )
                 }));
             }
         }
-    }, [workflowInstancesError, dispatch, t]);
+    }, [ workflowInstancesError, dispatch, t ]);
 
     const getDateFilterParams = () => {
         let dateCategory = "";
