@@ -495,23 +495,17 @@
             },
             "approvals": {
                 "disabledFeatures": [],
-                "enabled": false,
+                "enabled": true,
                 "featureFlags": [],
                 "scopes": {
-                    "create": [
-                        "internal_humantask_view"
-                    ],
-                    "delete": [
-                        "internal_humantask_view"
-                    ],
                     "feature": [
                         "console:workflowApprovals"
                     ],
                     "read": [
-                        "internal_humantask_view"
+                        "internal_approval_task_view"
                     ],
                     "update": [
-                        "internal_humantask_view"
+                        "internal_approval_task_update"
                     ]
                 }
             },
@@ -1667,23 +1661,27 @@
             },
              "workflows": {
                 "disabledFeatures": [],
-                "enabled": false,
+                "enabled": true,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
-                        "internal_humantask_view"
+                        "internal_workflow_association_create",
+                        "internal_workflow_create"
                     ],
                     "delete": [
-                        "internal_humantask_view"
+                        "internal_workflow_association_delete",
+                        "internal_workflow_delete"
                     ],
                     "feature": [
                         "console:workflowApprovals"
                     ],
                     "read": [
-                        "internal_humantask_view"
+                        "internal_workflow_association_view",
+                        "internal_workflow_view"
                     ],
                     "update": [
-                        "internal_humantask_view"
+                        "internal_workflow_association_update",
+                        "internal_workflow_update"
                     ]
                 }
             },
