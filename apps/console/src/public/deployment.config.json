@@ -496,6 +496,7 @@
             "approvals": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "enabled": true,
                 "featureFlags": [],
                 "scopes": {
                     "feature": [
@@ -1662,21 +1663,26 @@
              "workflows": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "enabled": true,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
+                        "internal_workflow_association_create",
                         "internal_workflow_create"
                     ],
                     "delete": [
+                        "internal_workflow_association_delete",
                         "internal_workflow_delete"
                     ],
                     "feature": [
                         "console:workflows"
                     ],
                     "read": [
+                        "internal_workflow_association_view",
                         "internal_workflow_view"
                     ],
                     "update": [
+                        "internal_workflow_association_update",
                         "internal_workflow_update"
                     ]
                 }
