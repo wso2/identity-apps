@@ -57,8 +57,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { AddUserUpdated } from "./steps/add-user-basic";
 import { AddUserGroups } from "./steps/add-user-groups";
+import { LegacyAddUser } from "./steps/legacy-add-user-basic";
 import { AddUserWizardSummary } from "./user-wizard-summary";
 import { addUser } from "../../api";
 import { getUserWizardStepIcons } from "../../configs";
@@ -751,7 +751,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const getUserBasicWizardStep = (): WizardStepInterface => {
         return {
             content: (
-                <AddUserUpdated
+                <LegacyAddUser
                     triggerSubmit={ submitGeneralSettings }
                     initialValues={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] }
                     emailVerificationEnabled={ emailVerificationEnabled }
