@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Dropdown, Form, Icon, Input, Portal, Segment } from "semantic-ui-react";
+import { Button, Dropdown, Form, Input, Portal, Segment } from "semantic-ui-react";
 import "./time-range-dropdown.scss";
 
 interface TimeRangeDropdownProps {
@@ -31,24 +31,24 @@ interface TimeRangeDropdownProps {
     style?: React.CSSProperties;
 }
 
-const TimeRangeDropdown: React.FC<TimeRangeDropdownProps> = ({ 
-    label, 
-    selectedRange, 
-    onRangeChange, 
+const TimeRangeDropdown: React.FC<TimeRangeDropdownProps> = ({
+    label,
+    selectedRange,
+    onRangeChange,
     onCustomDateChange,
     componentId,
     disabled = false,
     style
-}) => {
-    const { t } = useTranslation( [ "approvalWorkflows" ] );
-    const [showCustomModal, setShowCustomModal] = useState(false);
-    const prevSelectedRangeRef = useRef(selectedRange);
-    const [customStartDate, setCustomStartDate] = useState("");
-    const [customEndDate, setCustomEndDate] = useState("");
-    const [customStartTime, setCustomStartTime] = useState("00:00");
-    const [customEndTime, setCustomEndTime] = useState("23:59");
+}: TimeRangeDropdownProps) => {
+    const { t } = useTranslation([ "approvalWorkflows" ]);
+    const [ showCustomModal, setShowCustomModal ] = useState<boolean>(false);
+    const prevSelectedRangeRef: React.MutableRefObject<number | undefined> = useRef<number | undefined>(selectedRange);
+    const [ customStartDate, setCustomStartDate ] = useState<string>("");
+    const [ customEndDate, setCustomEndDate ] = useState<string>("");
+    const [ customStartTime, setCustomStartTime ] = useState<string>("00:00");
+    const [ customEndTime, setCustomEndTime ] = useState<string>("23:59");
 
-    const TIME_RANGE_OPTIONS = [
+    const TIME_RANGE_OPTIONS: Array<{ key: number; text: string; value: number }> = [
         { key: -2, text: t("approvalWorkflows:timeRanges.all"), value: -2 },
         { key: 6, text: t("approvalWorkflows:timeRanges.last6Hours"), value: 6 },
         { key: 12, text: t("approvalWorkflows:timeRanges.last12Hours"), value: 12 },
@@ -75,17 +75,18 @@ const TimeRangeDropdown: React.FC<TimeRangeDropdownProps> = ({
         }
         onRangeChange(value);
 
-        const current = new Date().getTime();
-        const fromTime = (current - 3600 * 1000 * value).toString();
-        const toTime = current.toString();
+        const current: number = new Date().getTime();
+        const fromTime: string = (current - 3600 * 1000 * value).toString();
+        const toTime: string = current.toString();
+
         onCustomDateChange(fromTime, toTime);
     };
 
     const handleCustomSubmit = (e?: React.FormEvent) => {
         if (e && typeof e.preventDefault === "function") e.preventDefault();
         if (customStartDate && customEndDate && customStartTime && customEndTime) {
-            const fromTime = new Date(`${customStartDate}T${customStartTime}`).getTime().toString();
-            const toTime = new Date(`${customEndDate}T${customEndTime}`).getTime().toString();
+            const fromTime: string = new Date(`${customStartDate}T${customStartTime}`).getTime().toString();
+            const toTime: string = new Date(`${customEndDate}T${customEndTime}`).getTime().toString();
 
             onCustomDateChange(fromTime, toTime);
             setShowCustomModal(false);
@@ -103,8 +104,8 @@ const TimeRangeDropdown: React.FC<TimeRangeDropdownProps> = ({
         return date.toISOString().split("T")[0];
     };
 
-    const now = new Date();
-    const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+    const now: Date = new Date();
+    const thirtyDaysAgo: Date = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
 
     return (
         <div className="time-range-dropdown">

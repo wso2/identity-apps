@@ -18,27 +18,23 @@
 
 /**
  * Utility function to generate a filter string.
- * @param {string} requestType - Type of the request (e.g., "ALL_TASKS").
- * @param {string} status - Status of the workflow (e.g., "COMPLETED").
- * @param {string} operationType - Operation type of the workflow (e.g., "ALL", "CREATE").
- * @param {string} dateCategory - Category of the date (e.g., "CREATED", "UPDATED").
- * @param {string} startDate - Start date for filtering
- * @param {string} endDate - End date for filtering
+ * @param status - Status of the workflow (e.g., "COMPLETED").
+ * @param operationType - Operation type of the workflow (e.g., "ALL", "CREATE").
+ * @param createdFromTime - Created start date for filtering
+ * @param createdToTime - Created end date for filtering
+ * @param updatedFromTime - Updated start date for filtering
+ * @param updatedToTime - Updated end date for filtering
  */
 
 export const generateFilterString = (
-    requestType: string,
     status: string,
     operationType: string,
-    dateCategory: string,
-    startDate: string,
-    endDate: string
+    createdFromTime: string,
+    createdToTime: string,
+    updatedFromTime: string,
+    updatedToTime: string
 ): string => {
     const filters: string[] = [];
-
-    if (requestType !== "ALL_TASKS") {
-        filters.push(`requestType+eq+${requestType}`);
-    }
 
     if (status !== "ALL_TASKS" && status !== "") {
         filters.push(`status+eq+${status}`);
@@ -48,10 +44,20 @@ export const generateFilterString = (
         filters.push(`operationType+eq+${operationType}`);
     }
 
-    if (startDate && endDate) {
-        filters.push(`beginDate+ge+${startDate}`);
-        filters.push(`endDate+le+${endDate}`);
-        filters.push(`dateCategory+eq+${dateCategory}`);
+    if (createdFromTime) {
+        filters.push(`createdAt+ge+${createdFromTime}`);
+    }
+
+    if (createdToTime) {
+        filters.push(`createdAt+le+${createdToTime}`);
+    }
+
+    if (updatedFromTime) {
+        filters.push(`updatedAt+ge+${updatedFromTime}`);
+    }
+
+    if (updatedToTime) {
+        filters.push(`updatedAt+le+${updatedToTime}`);
     }
 
     return filters.length > 0 ? filters.join("+and+") : "";

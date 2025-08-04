@@ -17,24 +17,24 @@
  */
 
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { store } from "../../admin.core.v1/store";
 import { WorkflowInstanceListResponseInterface, WorkflowInstanceResponseInterface } from "../models/workflowRequests";
 
 /**
  * Get an axios instance.
  */
-const httpClient = AsgardeoSPAClient.getInstance()
+const httpClient: (config: any) => Promise<AxiosResponse<any>> = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Fetches workflow instances with pagination and filtering.
  *
- * @param {number} limit - Number of results to return.
- * @param {number} offset - Starting index of the results.
- * @param {string} filter - Filter query string.
- * @return {Promise<WorkflowInstancesResponseInterface>} A promise containing the workflow instances response.
+ * @param limit - Number of results to return.
+ * @param offset - Starting index of the results.
+ * @param filter - Filter query string.
+ * @returns A promise containing the workflow instances response.
  */
 export const fetchWorkflowInstances = (
     limit: number,
@@ -42,7 +42,19 @@ export const fetchWorkflowInstances = (
     filter?: string
 ): Promise<WorkflowInstanceListResponseInterface> => {
 
-    const requestConfig = {
+    const requestConfig: {
+        headers: {
+            Accept: string;
+            "Content-Type": string;
+        };
+        method: HttpMethods;
+        params: {
+            limit: number;
+            offset: number;
+            filter?: string;
+        };
+        url: string;
+    } = {
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
@@ -68,13 +80,20 @@ export const fetchWorkflowInstances = (
 /**
  * Fetches a single workflow instance by ID.
  *
- * @param {string} workflowInstanceId - ID of the workflow instance.
- * @return {Promise<WorkflowInstanceResponseInterface>} A promise containing the workflow instance.
+ * @param workflowInstanceId - ID of the workflow instance.
+ * @returns A promise containing the workflow instance.
  */
 export const fetchWorkflowInstance = (
     workflowInstanceId: string
 ): Promise<WorkflowInstanceResponseInterface> => {
-    const requestConfig = {
+    const requestConfig: {
+        headers: {
+            Accept: string;
+            "Content-Type": string;
+        };
+        method: HttpMethods;
+        url: string;
+    } = {
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
@@ -95,11 +114,17 @@ export const fetchWorkflowInstance = (
 /**
  * Deletes a workflow instance by ID.
  *
- * @param {string} workflowInstanceId - ID of the workflow instance to delete.
- * @return {Promise<void>} A promise that resolves if the deletion is successful.
+ * @param workflowInstanceId - ID of the workflow instance to delete.
+ * @returns A promise that resolves if the deletion is successful.
  */
 export const deleteWorkflowInstance = (workflowInstanceId: string): Promise<void> => {
-    const requestConfig = {
+    const requestConfig: {
+        headers: {
+            "Content-Type": string;
+        };
+        method: HttpMethods;
+        url: string;
+    } = {
         headers: {
             "Content-Type": "application/json"
         },

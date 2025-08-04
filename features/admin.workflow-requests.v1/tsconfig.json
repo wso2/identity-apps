@@ -15,7 +15,7 @@
       "moduleResolution": "node",
       "skipLibCheck": true,
       "sourceMap": true,
-      "target": "es2015",
+      "target": "es2015"
   },
   "exclude": [
       "build",
@@ -38,5 +38,5 @@
       "**/*.spec.ts",
       "**/*.spec.tsx"
   ],
-  "compileOnSave": false,
+  "compileOnSave": false
 }

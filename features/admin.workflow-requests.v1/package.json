@@ -1,7 +1,8 @@
-{   "private": true,
+{   
+    "private": true,
     "name": "@wso2is/admin.workflow-requests.v1",
-    "version": "0.0.0",
-    "description": "WSO2 Identity Server Admin Workflow Requests",
+    "version": "2.26.7",
+    "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
@@ -138,4 +139,4 @@
     "browserslist": [
         "> 0.2%"
     ]
-} 
+}
