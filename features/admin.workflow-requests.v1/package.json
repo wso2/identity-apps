@@ -4,12 +4,6 @@
     "description": "WSO2 Identity Server Admin Workflow Requests",
     "author": "WSO2",
     "license": "Apache-2.0",
-    "scripts": {
-        "build": "echo 'Build script placeholder'",
-        "test": "echo 'Test script placeholder'"
-    },
-    "author": "WSO2",
-    "license": "Apache-2.0",
     "dependencies": {
         "@asgardeo/auth-react": "^5.1.2",
         "@emotion/react": "^11.11.0",

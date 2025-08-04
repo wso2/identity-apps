@@ -33,5 +33,6 @@ export const formatMsToBackend = (ms: string, isStart: boolean): string => {
     const mm = String(date.getMinutes()).padStart(2, '0');
     const ss = String(date.getSeconds()).padStart(2, '0');
     const SSS = String(date.getMilliseconds()).padStart(3, '0');
+
     return `${yyyy}-${MM}-${dd}:${HH}:${mm}:${ss}.${SSS}`;
 };

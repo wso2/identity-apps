@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout } from "@wso2is/react-components";
@@ -23,25 +24,22 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Button, DropdownItemProps, DropdownProps, PaginationProps } from "semantic-ui-react";
-import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
-import { deleteWorkflowInstance } from "../api/workflow-requests";
+import { DropdownItemProps, DropdownProps, PaginationProps } from "semantic-ui-react";
+import { AppConstants } from "../../admin.core.v1/constants/app-constants";
+import { history } from "../../admin.core.v1/helpers/history";
 import { useGetWorkflowInstances } from "../api/use-get-workflow-instances";
+import { deleteWorkflowInstance } from "../api/workflow-requests";
+import ActiveFiltersBar from "../components/active-filters-bar";
+import WorkflowRequestsFilter from "../components/workflow-requests-filter";
+import WorkflowRequestsList from "../components/workflow-requests-list";
 import { 
     WorkflowInstanceListItemInterface,
-    WorkflowInstanceListResponseInterface,
     WorkflowInstanceOperationType,
     WorkflowInstanceRequestType,
     WorkflowInstanceStatus
 } from "../models/workflowRequests";
-import { generateFilterString } from "../utils/generateFilterString";
-import WorkflowRequestsList from "../components/workflow-requests-list";
-import ActiveFiltersBar from "../components/active-filters-bar";
-import { history } from "../../admin.core.v1/helpers/history";
-import { AppConstants } from "../../admin.core.v1/constants/app-constants";
 import { formatMsToBackend } from "../utils/formatDateTimeToBackend";
-import WorkflowRequestsFilter from "../components/workflow-requests-filter";
-import { error } from "console";
+import { generateFilterString } from "../utils/generateFilterString";
 import "./workflow-requests.scss";
 
 type WorkflowsLogsPageInterface = IdentifiableComponentInterface & {
@@ -97,7 +95,8 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
 
     useEffect(() => {
         if (workflowInstancesError) {
-            if (workflowInstancesError.response && workflowInstancesError.response.data && workflowInstancesError.response.data.detail) {
+            if (workflowInstancesError.response && workflowInstancesError.response.data
+                    && workflowInstancesError.response.data.detail) {
                 dispatch(addAlert({
                     description: t(
                         "console:manage.features.workflowRequests.notifications.fetchWorkflowRequests.error.description",
@@ -126,6 +125,7 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
         let dateCategory = "";
         let beginDate = "";
         let endDate = "";
+
         if (createdTimeRange !== undefined && createdTimeRange !== -2) {
             dateCategory = "CREATED";
             beginDate = createdFromTime ? formatMsToBackend(createdFromTime, true) : "";
@@ -135,6 +135,7 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
             beginDate = updatedFromTime ? formatMsToBackend(updatedFromTime, true) : "";
             endDate = updatedToTime ? formatMsToBackend(updatedToTime, false) : "";
         }
+
         return { dateCategory, beginDate, endDate };
     };
 
@@ -152,18 +153,6 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
         { key: WorkflowInstanceRequestType.MY_TASKS, text: t("approvalWorkflows:eventType.myTasks"), value: "MY_TASKS" }
     ];
 
-    const OPERATION_TYPES: DropdownItemProps[] = [
-        { key: WorkflowInstanceOperationType.ALL, text: t("approvalWorkflows:operationType.all"), value: "ALL" },
-        { key: WorkflowInstanceOperationType.ADD_USER, text: t("approvalWorkflows:operationType.createUser"), value: "ADD_USER" },
-        { key: WorkflowInstanceOperationType.DELETE_USER, text: t("approvalWorkflows:operationType.deleteUser"), value: "DELETE_USER" },
-        { key: WorkflowInstanceOperationType.UPDATE_ROLES_OF_USERS, text: t("approvalWorkflows:operationType.updateUserRoles"), value: "UPDATE_ROLES_OF_USERS" },
-        { key: WorkflowInstanceOperationType.ADD_ROLE, text: t("approvalWorkflows:operationType.createRole"), value: "ADD_ROLE" },
-        { key: WorkflowInstanceOperationType.DELETE_ROLE, text: t("approvalWorkflows:operationType.deleteRole"), value: "DELETE_ROLE" },
-        { key: WorkflowInstanceOperationType.UPDATE_ROLE_NAME, text: t("approvalWorkflows:operationType.updateRoleName"), value: "UPDATE_ROLE_NAME" },
-        { key: WorkflowInstanceOperationType.UPDATE_USERS_OF_ROLES, text: t("approvalWorkflows:operationType.updateRoleUsers"), value: "UPDATE_USERS_OF_ROLES" },
-        { key: WorkflowInstanceOperationType.DELETE_USER_CLAIMS, text: t("approvalWorkflows:operationType.deleteUserClaims"), value: "DELETE_USER_CLAIMS" },
-        { key: WorkflowInstanceOperationType.UPDATE_USER_CLAIMS, text: t("approvalWorkflows:operationType.updateUserClaims"), value: "UPDATE_USER_CLAIMS" }
-    ];
 
     const TIME_RANGE_OPTIONS = [
         { key: -2, text: t("approvalWorkflows:timeRanges.all"), value: -2 },
@@ -181,30 +170,42 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
 
     const getDisplayLabel = (type: string, value: string): string => {
         switch (type) {
-            case 'operationType':
+            case "operationType":
                 switch (value) {
-                    case 'ALL': return t('approvalWorkflows:operationType.all');
-                    case 'ADD_USER': return t('approvalWorkflows:operationType.createUser');
-                    case 'DELETE_USER': return t('approvalWorkflows:operationType.deleteUser');
-                    case 'UPDATE_ROLES_OF_USERS': return t('approvalWorkflows:operationType.updateUserRoles');
-                    case 'ADD_ROLE': return t('approvalWorkflows:operationType.createRole');
-                    case 'DELETE_ROLE': return t('approvalWorkflows:operationType.deleteRole');
-                    case 'UPDATE_ROLE_NAME': return t('approvalWorkflows:operationType.updateRoleName');
-                    case 'UPDATE_USERS_OF_ROLES': return t('approvalWorkflows:operationType.updateRoleUsers');
-                    case 'DELETE_USER_CLAIMS': return t('approvalWorkflows:operationType.deleteUserClaims');
-                    case 'UPDATE_USER_CLAIMS': return t('approvalWorkflows:operationType.updateUserClaims');
+                    case WorkflowInstanceOperationType.ALL:
+                        return t("approvalWorkflows:operationType.all");
+                    case WorkflowInstanceOperationType.ADD_USER:
+                        return t("approvalWorkflows:operationType.createUser");
+                    case WorkflowInstanceOperationType.DELETE_USER:
+                        return t("approvalWorkflows:operationType.deleteUser");
+                    case WorkflowInstanceOperationType.UPDATE_ROLES_OF_USERS:
+                        return t("approvalWorkflows:operationType.updateUserRoles");
+                    case WorkflowInstanceOperationType.ADD_ROLE:
+                        return t("approvalWorkflows:operationType.createRole");
+                    case WorkflowInstanceOperationType.DELETE_ROLE:
+                        return t("approvalWorkflows:operationType.deleteRole");
+                    case WorkflowInstanceOperationType.UPDATE_ROLE_NAME:
+                        return t("approvalWorkflows:operationType.updateRoleName");
+                    case WorkflowInstanceOperationType.UPDATE_USERS_OF_ROLES:
+                        return t("approvalWorkflows:operationType.updateRoleUsers");
+                    case WorkflowInstanceOperationType.DELETE_USER_CLAIMS:
+                        return t("approvalWorkflows:operationType.deleteUserClaims");
+                    case WorkflowInstanceOperationType.UPDATE_USER_CLAIMS:
+                        return t("approvalWorkflows:operationType.updateUserClaims");
                     default: return value;
                 }
-            case 'requestType':
+            case "requestType":
                 return REQUEST_TYPES.find(item => item.value === value)?.text?.toString() || value;
-            case 'status':
+            case "status":
                 return INSTANCE_STATUSES.find(item => item.value === value)?.text?.toString() || value;
-            case 'dateCategory':
+            case "dateCategory":
                 return TIME_RANGE_OPTIONS.find(item => item.value === Number(value))?.text || value;
-            case 'createdTimeRange':
-            case 'updatedTimeRange': {
+            case "createdTimeRange":
+            case "updatedTimeRange": {
                 if (value === "-1") return TIME_RANGE_OPTIONS.find(item => item.value === -1)?.text || value;
+
                 const option = TIME_RANGE_OPTIONS.find(item => item.value === Number(value));
+
                 return option ? option.text : value;
             }
             default:
@@ -217,46 +218,46 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
 
         if (requestType !== "ALL_TASKS") {
             filters.push({
-                key: 'requestType',
-                label: getDisplayLabel('requestType', requestType),
-                value: requestType,
-                type: 'requestType'
+                key: "requestType",
+                label: getDisplayLabel("requestType", requestType),
+                type: "requestType",
+                value: requestType
             });
         }
 
         if (status !== "ALL_TASKS") {
             filters.push({
-                key: 'status',
-                label: getDisplayLabel('status', status),
-                value: status,
-                type: 'status'
+                key: "status",
+                label: getDisplayLabel("status", status),
+                type: "status",
+                value: status
             });
         }
 
         if (operationType !== "ALL") {
             filters.push({
-                key: 'operationType',
-                label: getDisplayLabel('operationType', operationType),
-                value: operationType,
-                type: 'operationType'
+                key: "operationType",
+                label: getDisplayLabel("operationType", operationType),
+                type: "operationType",
+                value: operationType
             });
         }
 
         if (createdTimeRange !== undefined && createdTimeRange !== -2) {
             filters.push({
-                key: 'createdTimeRange',
-                label: `${getDisplayLabel('createdTimeRange', createdTimeRange.toString())}`,
-                value: createdTimeRange.toString(),
-                type: 'createdTimeRange'
+                key: "createdTimeRange",
+                label: `${getDisplayLabel("createdTimeRange", createdTimeRange.toString())}`,
+                type: "createdTimeRange",
+                value: createdTimeRange.toString()
             });
         }
 
         if (updatedTimeRange !== undefined && updatedTimeRange !== -2) {
             filters.push({
-                key: 'updatedTimeRange',
-                label: `${getDisplayLabel('updatedTimeRange', updatedTimeRange.toString())}`,
-                value: updatedTimeRange.toString(),
-                type: 'updatedTimeRange'
+                key: "updatedTimeRange",
+                label: `${getDisplayLabel("updatedTimeRange", updatedTimeRange.toString())}`,
+                type: "updatedTimeRange",
+                value: updatedTimeRange.toString()
             });
         }
 
@@ -265,24 +266,29 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
 
     const removeFilter = (filterToRemove: FilterTag): void => {
         switch (filterToRemove.type) {
-            case 'requestType':
+            case "requestType":
                 setRequestType("ALL_TASKS");
+
                 break;
-            case 'status':
+            case "status":
                 setStatus("ALL_TASKS");
+
                 break;
-            case 'operationType':
+            case "operationType":
                 setOperationType("ALL");
+
                 break;
-            case 'createdTimeRange':
+            case "createdTimeRange":
                 setCreatedTimeRange(undefined);
                 setCreatedFromTime("");
                 setCreatedToTime("");
+
                 break;
-            case 'updatedTimeRange':
+            case "updatedTimeRange":
                 setUpdatedTimeRange(undefined);
                 setUpdatedFromTime("");
                 setUpdatedToTime("");
+
                 break;
         }
     };
@@ -342,63 +348,11 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
             beginDate,
             endDate
         );
-        console.log("Generated filter:", generatedFilter);
+
         setFilterString(generatedFilter);
         setOffset(0);
         // The hook will automatically refetch when filterString changes
     };
-
-    // Fetch workflow request details
-    // const fetchWorkflowRequestDetails = (id: string): void => {
-    //     fetchWorkflowInstance(id)
-    //         .then((instance: WorkflowInstanceResponseInterface) => {
-    //             console.log("=== Workflow Instance Details ===");
-    //             console.log("ID:", instance.workflowInstanceId);
-    //             console.log("Event Type:", instance.eventType);
-    //             console.log("Status:", instance.status);
-    //             console.log("Request Initiator:", instance.requestInitiator);
-    //             console.log("Created At:", instance.createdAt);
-    //             console.log("Updated At:", instance.updatedAt);
-    //             console.log("Request Params:", instance.requestParams);
-    //             console.log("Full Response Object:", instance);
-    //             console.log("================================");
-
-    //             dispatch(addAlert({
-    //                 description: t(
-    //                     "console:manage.features.workflowRequests.notifications.fetchWorkflowRequestDetails.success.description",
-    //                     { id: instance.workflowInstanceId }
-    //                 ),
-    //                 level: AlertLevels.SUCCESS,
-    //                 message: t(
-    //                     "console:manage.features.workflowRequests.notifications.fetchWorkflowRequestDetails.success.message"
-    //                 )
-    //             }));
-    //         })
-    //         .catch((error: any) => {
-    //             if (error.response && error.response.data && error.response.data.detail) {
-    //                 dispatch(addAlert({
-    //                     description: t(
-    //                         "console:manage.features.workflowRequests.notifications.fetchWorkflowRequestDetails.error.description",
-    //                         { description: error.response.data.detail }
-    //                     ),
-    //                     level: AlertLevels.ERROR,
-    //                     message: t(
-    //                         "console:manage.features.workflowRequests.notifications.fetchWorkflowRequestDetails.error.message"
-    //                     )
-    //                 }));
-    //             } else {
-    //                 dispatch(addAlert({
-    //                     description: t(
-    //                         "console:manage.features.workflowRequests.notifications.fetchWorkflowRequestDetails.genericError.description"
-    //                     ),
-    //                     level: AlertLevels.ERROR,
-    //                     message: t(
-    //                         "console:manage.features.workflowRequests.notifications.fetchWorkflowRequestDetails.genericError.message"
-    //                     )
-    //                 }));
-    //             }
-    //         });
-    // };
 
     // Delete workflow request
     const deleteWorkflowRequest = (id: string): void => {
@@ -467,7 +421,8 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
 
     useEffect(() => {
         searchWorkflowRequests();
-    }, [requestType, status, createdTimeRange, createdFromTime, createdToTime, updatedTimeRange, updatedFromTime, updatedToTime, operationType]);
+    }, [ requestType, status, createdTimeRange, createdFromTime, createdToTime, updatedTimeRange, updatedFromTime,
+        updatedToTime, operationType ]);
 
     const activeFilters = getActiveFilters();
 
@@ -480,28 +435,28 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
         >
             <div className="workflow-requests-page-content">
                 <ActiveFiltersBar
-                    filters={activeFilters}
-                    onRemove={removeFilter}
-                    onClearAll={clearAllFilters}
+                    filters={ activeFilters }
+                    onRemove={ removeFilter }
+                    onClearAll={ clearAllFilters }
                     data-componentid="workflow-requests-active-filters-bar"
                 />
                 <WorkflowRequestsFilter
-                    requestType={requestType}
-                    setRequestType={setRequestType}
-                    status={status}
-                    setStatus={setStatus}
-                    operationType={operationType}
-                    setOperationType={setOperationType}
-                    createdTimeRange={createdTimeRange}
-                    handleCreatedTimeRangeChange={handleCreatedTimeRangeChange}
-                    handleCreatedCustomDateChange={handleCreatedCustomDateChange}
-                    updatedTimeRange={updatedTimeRange}
-                    handleUpdatedTimeRangeChange={handleUpdatedTimeRangeChange}
-                    handleUpdatedCustomDateChange={handleUpdatedCustomDateChange}
-                    searchWorkflowRequests={searchWorkflowRequests}
-                    loading={isWorkflowInstancesLoading}
+                    requestType={ requestType }
+                    setRequestType={ setRequestType }
+                    status={ status }
+                    setStatus={ setStatus }
+                    operationType={ operationType }
+                    setOperationType={ setOperationType }
+                    createdTimeRange={ createdTimeRange }
+                    handleCreatedTimeRangeChange={ handleCreatedTimeRangeChange }
+                    handleCreatedCustomDateChange={ handleCreatedCustomDateChange }
+                    updatedTimeRange={ updatedTimeRange }
+                    handleUpdatedTimeRangeChange={ handleUpdatedTimeRangeChange }
+                    handleUpdatedCustomDateChange={ handleUpdatedCustomDateChange }
+                    searchWorkflowRequests={ searchWorkflowRequests }
+                    loading={ isWorkflowInstancesLoading }
                 />
-                
+
                 <ListLayout
                     currentListSize={ workflowRequests.length }
                     listItemLimit={ limit }
@@ -519,7 +474,8 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
                         handleWorkflowRequestDelete={ (workflowRequest) => {
                             if (workflowRequest) deleteWorkflowRequest(workflowRequest.workflowInstanceId);
                         } }
-                        handleWorkflowRequestView={ (workflowRequest) => history.push(AppConstants.getPaths().get("WORKFLOW_REQUESTS") + "/" + workflowRequest.workflowInstanceId) }
+                        handleWorkflowRequestView={ (workflowRequest) => history.push(AppConstants.getPaths()
+                            .get("WORKFLOW_REQUESTS") + "/" + workflowRequest.workflowInstanceId) }
                         onSearchQueryClear={ clearAllFilters }
                         searchQuery={ null }
                         data-componentid="workflow-requests-list"

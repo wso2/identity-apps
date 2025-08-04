@@ -46,10 +46,6 @@ $status-grey: #a0aec0;
     &-event-type {
         margin-bottom: 0;
 
-        &-cell {
-            // Event type cell styles
-        }
-
         + .sub.header {
             font-weight: 400;
             margin-left: 0;
@@ -125,4 +121,4 @@ $status-grey: #a0aec0;
         margin-top: 0 !important;
         margin-bottom: 0 !important;
     }
-} 
+}
