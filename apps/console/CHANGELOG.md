@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.69.2
+
+### Patch Changes
+
+- [#8663](https://github.com/wso2/identity-apps/pull/8663) [`9c6f4420e05b809e6b8c5b6bed3cea72d3d11631`](https://github.com/wso2/identity-apps/commit/9c6f4420e05b809e6b8c5b6bed3cea72d3d11631) Thanks [@Malith-19](https://github.com/Malith-19)! - Update the scopes of the workflow approval feature & enable the workflow feature.
+
 ## 2.69.1
 
 ### Patch Changes
