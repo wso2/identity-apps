@@ -104,7 +104,7 @@ import "./add-user-basic.scss";
 /**
  * Proptypes for the add user component.
  */
-export interface AddUserProps extends IdentifiableComponentInterface {
+interface LegacyAddUserProps extends IdentifiableComponentInterface {
     initialValues: any;
     triggerSubmit: boolean;
     emailVerificationEnabled: boolean;
@@ -129,8 +129,8 @@ export interface AddUserProps extends IdentifiableComponentInterface {
  *
  * @returns ReactElement
  */
-export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
-    props: AddUserProps): ReactElement => {
+export const LegacyAddUser: React.FunctionComponent<LegacyAddUserProps> = (
+    props: LegacyAddUserProps): ReactElement => {
 
     const {
         initialValues,
