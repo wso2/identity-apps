@@ -44,24 +44,25 @@ const ActiveFiltersBar: React.FC<ActiveFiltersBarProps> = (
         <div className="workflow-requests-active-filters-bar modern-active-filters-bar">
             <div className="filters-container">
                 {filters && filters.length > 0 ? (
-                    filters.map((filter) => (
+                    filters.map(( filter ) => (
                         <div
-                            key={filter.key}
-                            data-componentid={`active-filters-bar-filter-${filter.key}`}
+                            key={ filter.key }
+                            data-componentid={ `active-filters-bar-filter-${filter.key}` }
                             className="filter-tag"
                         >
                             <span className="filter-type">
-                                {filter.type}:
+                                { filter.type }:
                             </span>
                             <span className="filter-value">
-                                {filter.label}
+                                { filter.label }
                             </span>
                             <span
                                 role="button"
-                                tabIndex={0}
-                                aria-label={t('approvalWorkflows:activeFiltersBar.removeFilter', { filter: filter.label })}
-                                onClick={() => onRemove(filter)}
-                                onKeyPress={e => { if (e.key === 'Enter' || e.key === ' ') onRemove(filter); }}
+                                tabIndex={ 0 }
+                                aria-label={ t("approvalWorkflows:activeFiltersBar.removeFilter",
+                                    { filter: filter.label }) }
+                                onClick={ () => onRemove(filter) }
+                                onKeyPress={ e => { if (e.key === "Enter" || e.key === " ") onRemove(filter); } }
                                 className="filter-remove-button"
                             >
                                 <Icon name="close" size="small" className="icon" />
@@ -70,12 +71,12 @@ const ActiveFiltersBar: React.FC<ActiveFiltersBarProps> = (
                     ))
                 ) : (
                     <span className="no-filters-text">
-                        {t("approvalWorkflows:activeFiltersBar.noActiveFilters")}
+                        { t("approvalWorkflows:activeFiltersBar.noActiveFilters") }
                     </span>
                 )}
             </div>
 
-            {filters && filters.length > 0 && (
+            { filters && filters.length > 0 && (
                 <Button
                     size="small"
                     onClick={ onClearAll }
@@ -83,7 +84,7 @@ const ActiveFiltersBar: React.FC<ActiveFiltersBarProps> = (
                     className="clear-all-button"
                 >
                     <Icon name="close" size="small" className="icon" />
-                    {t("approvalWorkflows:activeFiltersBar.clearAll")}
+                    { t("approvalWorkflows:activeFiltersBar.clearAll") }
                 </Button>
             )}
         </div>

@@ -17,8 +17,8 @@
  */
 
 import React, { useRef, useState, useEffect } from "react";
-import { Button, Dropdown, Form, Icon, Input, Portal, Segment } from "semantic-ui-react";
 import { useTranslation } from "react-i18next";
+import { Button, Dropdown, Form, Icon, Input, Portal, Segment } from "semantic-ui-react";
 import "./time-range-dropdown.scss";
 
 interface TimeRangeDropdownProps {
@@ -40,7 +40,7 @@ const TimeRangeDropdown: React.FC<TimeRangeDropdownProps> = ({
     disabled = false,
     style
 }) => {
-    const { t } = useTranslation(["approvalWorkflows"]);
+    const { t } = useTranslation( [ "approvalWorkflows" ] );
     const [showCustomModal, setShowCustomModal] = useState(false);
     const prevSelectedRangeRef = useRef(selectedRange);
     const [customStartDate, setCustomStartDate] = useState("");
@@ -65,14 +65,16 @@ const TimeRangeDropdown: React.FC<TimeRangeDropdownProps> = ({
             prevSelectedRangeRef.current = selectedRange;
             onRangeChange(-1);
             setShowCustomModal(true);
+
             return;
         }
         else if (value === -2) {
             onRangeChange(-2);
+
             return;
         }
         onRangeChange(value);
-        // Calculate time range
+
         const current = new Date().getTime();
         const fromTime = (current - 3600 * 1000 * value).toString();
         const toTime = current.toString();
@@ -84,6 +86,7 @@ const TimeRangeDropdown: React.FC<TimeRangeDropdownProps> = ({
         if (customStartDate && customEndDate && customStartTime && customEndTime) {
             const fromTime = new Date(`${customStartDate}T${customStartTime}`).getTime().toString();
             const toTime = new Date(`${customEndDate}T${customEndTime}`).getTime().toString();
+
             onCustomDateChange(fromTime, toTime);
             setShowCustomModal(false);
         }
@@ -97,7 +100,7 @@ const TimeRangeDropdown: React.FC<TimeRangeDropdownProps> = ({
     };
 
     const formatDateForInput = (date: Date): string => {
-        return date.toISOString().split('T')[0];
+        return date.toISOString().split("T")[0];
     };
 
     const now = new Date();
@@ -107,14 +110,14 @@ const TimeRangeDropdown: React.FC<TimeRangeDropdownProps> = ({
         <div className="time-range-dropdown">
             <Dropdown
                 selection
-                options={TIME_RANGE_OPTIONS}
-                value={selectedRange}
-                onChange={handleRangeChange}
-                disabled={disabled}
-                placeholder={label}
-                text={label}
-                style={style}
-                data-componentid={componentId}
+                options={ TIME_RANGE_OPTIONS }
+                value={ selectedRange }
+                onChange={ handleRangeChange }
+                disabled={ disabled }
+                placeholder={ label }
+                text={ label }
+                style={ style }
+                data-componentid={ componentId }
             />
             <Portal
                 onOpen={ () => setShowCustomModal(true) }
@@ -133,7 +136,7 @@ const TimeRangeDropdown: React.FC<TimeRangeDropdownProps> = ({
                             <Form.Group>
                                 <Form.Field width={ 16 }>
                                     <label>
-                                        {t('common:from')}
+                                        { t( "common:from" ) }
                                     </label>
                                     <div className="date-time-picker-row">
                                         <div>
@@ -167,7 +170,7 @@ const TimeRangeDropdown: React.FC<TimeRangeDropdownProps> = ({
                             <Form.Group>
                                 <Form.Field width={ 16 }>
                                     <label>
-                                        {t('common:to')}
+                                        { t( "common:to" ) }
                                     </label>
                                     <div className="date-time-picker-row">
                                         <div>

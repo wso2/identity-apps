@@ -17,9 +17,9 @@
  */
 
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { WorkflowRequestOperationTypeDropdown, WorkflowRequestRequestTypeDropdown, WorkflowRequestsStatusDropdown } from "./filter-dropdowns";
 import TimeRangeDropdown from "./time-range-dropdown";
-import { useTranslation } from "react-i18next";
 import "./workflow-requests-filter.scss";
 
 interface WorkflowRequestsFilterProps {
@@ -39,7 +39,7 @@ interface WorkflowRequestsFilterProps {
     loading: boolean;
 }
 
-const WorkflowRequestsFilter: React.FC<WorkflowRequestsFilterProps> = ({
+const WorkflowRequestsFilter: React.FC<WorkflowRequestsFilterProps> = ( {
     requestType,
     setRequestType,
     status,
@@ -54,58 +54,58 @@ const WorkflowRequestsFilter: React.FC<WorkflowRequestsFilterProps> = ({
     handleUpdatedCustomDateChange
 }) => {
     const { t } = useTranslation();
-    
+
     return (
         <form className="workflow-requests-filter-bar advanced-search ui form" autoComplete="off">
             <div className="fields">
                 <div className="field">
                     <div>
                         <WorkflowRequestRequestTypeDropdown
-                            value={requestType}
-                            onChange={(e, data) => {
+                            value={ requestType }
+                            onChange={ (e, data) => {
                                 setRequestType(data.value as string);
-                            }}
+                            } }
                             data-componentid="workflow-requests-event-type-dropdown"
-                            placeholder={t("approvalWorkflows:filters.requestType")}
+                            placeholder={ t("approvalWorkflows:filters.requestType") }
                         />
                     </div>
                 </div>
                 <div className="field">
                     <div>
                         <WorkflowRequestsStatusDropdown
-                            value={status}
-                            onChange={(e, data) => {
+                            value={ status }
+                            onChange={ (e, data) => {
                                 setStatus(data.value as string);
-                            }}
+                            } }
                             data-componentid="workflow-requests-status-dropdown"
-                            placeholder={t("approvalWorkflows:filters.status")}
+                            placeholder={ t("approvalWorkflows:filters.status")}
                         />
                     </div>
                 </div>
                 <div className="field">
                     <div>
                         <WorkflowRequestOperationTypeDropdown
-                            value={operationType}
-                            onChange={(e, data) => {
+                            value={ operationType }
+                            onChange={ (e, data) => {
                                 setOperationType(data.value as string);
-                            }}
+                            } }
                             data-componentid="workflow-requests-operation-type-dropdown"
-                            placeholder={t("approvalWorkflows:filters.operationType")}
+                            placeholder={ t("approvalWorkflows:filters.operationType") }
                         />
                     </div>
                 </div>
                 <div className="field">
                     <div>
                         <TimeRangeDropdown
-                            label={t("approvalWorkflows:filters.createdTimeRange")}
-                            selectedRange={createdTimeRange}
-                            onRangeChange={(range) => {
+                            label={ t("approvalWorkflows:filters.createdTimeRange") }
+                            selectedRange={ createdTimeRange }
+                            onRangeChange={ (range) => {
                                 handleCreatedTimeRangeChange(range);
-                            }}
-                            onCustomDateChange={(from, to) => {
+                            } }
+                            onCustomDateChange={ (from, to) => {
                                 handleCreatedCustomDateChange(from, to);
-                            }}
-                            disabled={updatedTimeRange !== undefined && updatedTimeRange !== -2}
+                            } }
+                            disabled={ updatedTimeRange !== undefined && updatedTimeRange !== -2 }
                             componentId="created-time-range"
                         />
                     </div>
@@ -113,15 +113,15 @@ const WorkflowRequestsFilter: React.FC<WorkflowRequestsFilterProps> = ({
                 <div className="field">
                     <div>
                         <TimeRangeDropdown
-                            label={t("approvalWorkflows:filters.updatedTimeRange")}
-                            selectedRange={updatedTimeRange}
-                            onRangeChange={(range) => {
+                            label={ t("approvalWorkflows:filters.updatedTimeRange") }
+                            selectedRange={ updatedTimeRange }
+                            onRangeChange={ (range) => {
                                 handleUpdatedTimeRangeChange(range);
-                            }}
-                            onCustomDateChange={(from, to) => {
+                            } }
+                            onCustomDateChange={ (from, to) => {
                                 handleUpdatedCustomDateChange(from, to);
-                            }}
-                            disabled={createdTimeRange !== undefined && createdTimeRange !== -2}
+                            } }
+                            disabled={ createdTimeRange !== undefined && createdTimeRange !== -2 }
                             componentId="updated-time-range"
                         />
                     </div>

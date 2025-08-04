@@ -20,7 +20,7 @@ import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { store } from "../../admin.core.v1/store";
-import { WorkflowInstanceResponseInterface, WorkflowInstanceListItemInterface, WorkflowInstanceListResponseInterface } from "../models";
+import { WorkflowInstanceListResponseInterface, WorkflowInstanceResponseInterface } from "../models/workflowRequests";
 
 /**
  * Get an axios instance.
@@ -41,6 +41,7 @@ export const fetchWorkflowInstances = (
     offset: number,
     filter?: string
 ): Promise<WorkflowInstanceListResponseInterface> => {
+
     const requestConfig = {
         headers: {
             "Accept": "application/json",
