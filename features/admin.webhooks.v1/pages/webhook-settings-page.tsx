@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -51,11 +51,11 @@ const FORM_ID: string = "webhook-settings";
 const ORGANIZATION_POLICY_RADIO_OPTIONS: RadioChild[] = [
     {
         label: "webhooks:pages.settings.organizationPolicy.radioOptions.currentOrgOnly",
-        value: EventPublishingOrgSharePolicy.CURRENT_ORG_ONLY
+        value: EventPublishingOrgSharePolicy.NO_SHARING
     },
     {
         label: "webhooks:pages.settings.organizationPolicy.radioOptions.currentOrgAndImmediateChild",
-        value: EventPublishingOrgSharePolicy.CURRENT_ORG_AND_IMMEDIATE_CHILD
+        value: EventPublishingOrgSharePolicy.IMMEDIATE_EXISTING_AND_FUTURE_ORGS
     }
 ];
 
@@ -192,7 +192,13 @@ export const WebhookSettingsForm: FunctionComponent<WebhookSettingsFormPropsInte
 
     return (
         <div className="webhook-settings-page">
-            { !isLoading ?
+            { isLoading ?
+                (
+                    <EmphasizedSegment padded="very">
+                        <ContentLoader inline="centered" active />
+                    </EmphasizedSegment>
+                )
+                :
                 (<PageLayout
                     title={ t("webhooks:pages.settings.heading") }
                     description={ (
@@ -220,7 +226,7 @@ export const WebhookSettingsForm: FunctionComponent<WebhookSettingsFormPropsInte
                             initialValues={ {
                                 organizationPolicy: {
                                     policyName: webhooksMetadata?.organizationPolicy?.policyName ||
-                                        EventPublishingOrgSharePolicy.CURRENT_ORG_ONLY
+                                        EventPublishingOrgSharePolicy.NO_SHARING
                                 }
                             } }
                             data-componentid={ `${componentId}-form` }
@@ -255,11 +261,7 @@ export const WebhookSettingsForm: FunctionComponent<WebhookSettingsFormPropsInte
                             />
                         </Form>
                     </EmphasizedSegment>
-                </PageLayout>) :
-                (
-                    <EmphasizedSegment padded="very">
-                        <ContentLoader inline="centered" active />
-                    </EmphasizedSegment>
+                </PageLayout>
                 )
             }
         </div>

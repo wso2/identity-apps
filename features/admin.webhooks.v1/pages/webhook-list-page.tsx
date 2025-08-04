@@ -22,6 +22,7 @@ import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     DocumentationLink,
@@ -40,6 +41,7 @@ import deleteWebhook from "../api/delete-webhook";
 import useGetWebhooks from "../api/use-get-webhooks";
 import useGetWebhooksMetadata from "../api/use-get-webhooks-metadata";
 import WebhookList from "../components/webhook-list";
+import { WebhooksConstants } from "../constants/webhooks-constants";
 import usePagination from "../hooks/use-pagination";
 import useWebhookNavigation from "../hooks/use-webhook-navigation";
 import useWebhookSearch from "../hooks/use-webhook-search";
@@ -52,6 +54,7 @@ type WebhooksPageInterface = IdentifiableComponentInterface;
 const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
     ["data-componentid"]: _componentId = "webhook-list-page"
 }: WebhooksPageInterface): ReactElement => {
+
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
@@ -111,6 +114,10 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
         isDeletingWebhook ||
         isWebhooksMetadataLoading ||
         (!webhookListResponse && !webhookListFetchRequestError);
+
+    // Temporarily disable webhook settings.
+    const showWebhookSettings: boolean = isFeatureEnabled(
+        webhooksFeatureConfig, WebhooksConstants.FEATURE_DICTIONARY.get("WEBHOOK_SETTINGS"));
 
     useEffect(() => {
         resetToFirstPage();
@@ -192,26 +199,30 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
     const renderWebhookControls = (): ReactElement | null =>
         enhancedWebhookList?.totalResults > 0 ? (
             <>
-                <Show when={ webhooksFeatureConfig?.scopes?.create }>
-                    {
-                        (
-                            <Popup
-                                trigger={ (
-                                    < Button
-                                        data-componentid={ "webhooks-settings-button" }
-                                        icon={ GearIcon }
-                                        onClick={ handleSettingsButton }
+                {
+                    showWebhookSettings && (
+                        <Show when={ webhooksFeatureConfig?.scopes?.create }>
+                            {
+                                (
+                                    <Popup
+                                        trigger={ (
+                                            < Button
+                                                data-componentid={ "webhook-settings-button" }
+                                                icon={ GearIcon }
+                                                onClick={ handleSettingsButton }
+                                            />
+                                        ) }
+                                        content={ t("webhooks:pages.list.buttons.settings") }
+                                        position="top center"
+                                        size="mini"
+                                        hideOnScroll
+                                        inverted
                                     />
-                                ) }
-                                content={ t("webhooks:pages.list.buttons.settings") }
-                                position="top center"
-                                size="mini"
-                                hideOnScroll
-                                inverted
-                            />
-                        )
-                    }
-                </Show>
+                                )
+                            }
+                        </Show>
+                    )
+                }
                 <Show when={ webhooksFeatureConfig?.scopes?.create }>
                     <PrimaryButton
                         onClick={ handleWebhookCreate }
