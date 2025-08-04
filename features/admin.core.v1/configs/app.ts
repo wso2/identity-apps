@@ -76,7 +76,6 @@ import {
     I18nModuleInitOptions,
     I18nModuleOptionsInterface,
     SupportedLanguagesMeta,
-    MetaI18N,
     generateBackendPaths
 } from "@wso2is/i18n";
 import { AppConstants } from "../constants/app-constants";

@@ -133,7 +133,7 @@ const TimeRangeDropdown: React.FC<TimeRangeDropdownProps> = ({
                             <Form.Group>
                                 <Form.Field width={ 16 }>
                                     <label>
-                                        {t('common:from')}
+                                        {t("common:from")}
                                     </label>
                                     <div className="date-time-picker-row">
                                         <div>
@@ -167,7 +167,7 @@ const TimeRangeDropdown: React.FC<TimeRangeDropdownProps> = ({
                             <Form.Group>
                                 <Form.Field width={ 16 }>
                                     <label>
-                                        {t('common:to')}
+                                        {t("common:to")}
                                     </label>
                                     <div className="date-time-picker-row">
                                         <div>

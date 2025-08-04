@@ -41,7 +41,6 @@ import { history } from "../../admin.core.v1/helpers/history";
 import { AppConstants } from "../../admin.core.v1/constants/app-constants";
 import { formatMsToBackend } from "../utils/formatDateTimeToBackend";
 import WorkflowRequestsFilter from "../components/workflow-requests-filter";
-import { error } from "console";
 import "./workflow-requests.scss";
 
 type WorkflowsLogsPageInterface = IdentifiableComponentInterface & {
@@ -342,7 +341,7 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
             beginDate,
             endDate
         );
-        console.log("Generated filter:", generatedFilter);
+
         setFilterString(generatedFilter);
         setOffset(0);
         // The hook will automatically refetch when filterString changes
