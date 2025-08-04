@@ -496,7 +496,6 @@
             "approvals": {
                 "disabledFeatures": [],
                 "enabled": true,
-                "enabled": true,
                 "featureFlags": [],
                 "scopes": {
                     "feature": [
@@ -1662,7 +1661,6 @@
             },
              "workflows": {
                 "disabledFeatures": [],
-                "enabled": true,
                 "enabled": true,
                 "featureFlags": [],
                 "scopes": {
