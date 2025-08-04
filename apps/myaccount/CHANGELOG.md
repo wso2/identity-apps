@@ -1,5 +1,21 @@
 # @wso2is/myaccount
 
+## 2.22.0
+
+### Minor Changes
+
+- [#8572](https://github.com/wso2/identity-apps/pull/8572) [`564da925830812508013488549b897bc5098572a`](https://github.com/wso2/identity-apps/commit/564da925830812508013488549b897bc5098572a) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update user profile implementation to honor claim input format
+
+### Patch Changes
+
+- [#8206](https://github.com/wso2/identity-apps/pull/8206) [`ba917ba62a07de5898c251fc385558ddb562122a`](https://github.com/wso2/identity-apps/commit/ba917ba62a07de5898c251fc385558ddb562122a) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Switch to the org handle in places where org id is used as tenant domain
+
+* [#8680](https://github.com/wso2/identity-apps/pull/8680) [`3fde77aefb33fb28010b2f7d7bd631633fd05ec4`](https://github.com/wso2/identity-apps/commit/3fde77aefb33fb28010b2f7d7bd631633fd05ec4) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in single value mobile number update flow
+
+* Updated dependencies [[`1cf2a69f382401824625df187fecbcac9a32d28a`](https://github.com/wso2/identity-apps/commit/1cf2a69f382401824625df187fecbcac9a32d28a), [`1cf2a69f382401824625df187fecbcac9a32d28a`](https://github.com/wso2/identity-apps/commit/1cf2a69f382401824625df187fecbcac9a32d28a)]:
+  - @wso2is/common.ui.profile.v1@0.1.0
+  - @wso2is/i18n@2.26.1
+
 ## 2.21.0
 
 ### Minor Changes
