@@ -1,0 +1,31 @@
+{
+    "flows": [
+        {
+            "id": "registration",
+            "heading": "Self Registration",
+            "description": "Design and customize the user registration journey with a flexible, no-code flow composer.",
+            "featureStatusKey": "flows.types.list.registration",
+            "path": "REGISTRATION_FLOW_BUILDER",
+            "type": "REGISTRATION",
+            "disabled": false
+        },
+        {
+            "id": "password-recovery",
+            "heading": "Password Recovery",
+            "description": "Design and customize the user password recovery journey with a flexible, no-code flow composer.",
+            "featureStatusKey": "flows.types.list.passwordRecovery",
+            "path": "PASSWORD_RECOVERY_FLOW_BUILDER",
+            "type": "PASSWORD_RECOVERY",
+            "disabled": false
+        },
+        {
+            "id": "invite-user-to-set-password",
+            "heading": "Invite User Registration",
+            "description": "Design and customize the invite-user registration journey with a flexible, no-code flow composer.",
+            "featureStatusKey": "flows.types.list.inviteUserToSetPassword",
+            "path": "INVITE_USER_PASSWORD_SETUP_FLOW_BUILDER",
+            "type": "INVITED_USER_REGISTRATION",
+            "disabled": false
+        }
+    ]
+}

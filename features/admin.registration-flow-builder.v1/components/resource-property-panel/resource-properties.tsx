@@ -32,7 +32,8 @@ import ButtonExtendedProperties from "./extended-properties/button-extended-prop
 import FieldExtendedProperties from "./extended-properties/field-extended-properties";
 import RulesProperties from "./nodes/rules-properties";
 import ResourcePropertyFactory from "./resource-property-factory";
-import FederationProperties from "./steps/redirection/federation-properties";
+import FederationProperties from "./steps/execution/federation-properties";
+import RegistrationFlowBuilderConstants from "../../constants/registration-flow-builder-constants";
 
 /**
  * Props interface of {@link ResourceProperties}
@@ -145,11 +146,20 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
             break;
         case StepCategories.Workflow:
             return (
-                <FederationProperties
-                    resource={ resource }
-                    data-componentid="federation-properties"
-                    onChange={ onChange }
-                />
+                <>
+                    { renderElementId() }
+                    {
+                        !RegistrationFlowBuilderConstants.FEDERATION_CONFIG_SKIPPED_EXECUTORS.includes(
+                            resource?.data?.action?.executor?.name) && (
+                            <FederationProperties
+                                resource={ resource }
+                                data-componentid="federation-properties"
+                                onChange={ onChange }
+                            />
+                        )
+                    }
+                    { renderElementPropertyFactory() }
+                </>
             );
         default:
             return (

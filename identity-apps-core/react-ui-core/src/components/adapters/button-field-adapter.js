@@ -21,7 +21,6 @@ import React from "react";
 import { Button } from "semantic-ui-react";
 import { useTranslations } from "../../hooks/use-translations";
 import { resolveElementText } from "../../utils/i18n-utils";
-import { getConnectionLogo } from "../../utils/ui-utils";
 
 const ButtonAdapter = ({ component, handleButtonAction }) => {
 
@@ -81,7 +80,7 @@ const ButtonAdapter = ({ component, handleButtonAction }) => {
                     >
                         <img
                             className="ui image"
-                            src={ getConnectionLogo(component.config.text) }
+                            src={ component.config.image }
                             alt="Connection Login icon"
                             role="presentation"></img>
                         <span>{ resolveElementText(translations, component.config.text) }</span>
@@ -109,6 +108,7 @@ ButtonAdapter.propTypes = {
     component: PropTypes.shape({
         action: PropTypes.object.isRequired,
         config: PropTypes.shape({
+            image: PropTypes.string.isRequired,
             text: PropTypes.string.isRequired,
             type: PropTypes.string.isRequired
         }).isRequired,

@@ -974,6 +974,11 @@ export const extensions: Extensions = {
                                 label: "Privacy Policy",
                                 placeholder: "https://myapp.com/{{locale}}/privacy-policy"
                             },
+                            recoveryPortalURL: {
+                                hint: "Link to your organization's recovery portal URL. This URL will only be used in orchestrated flows. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages.",
+                                label: "Recovery Portal",
+                                placeholder: "https://myapp.com/account-recovery"
+                            },
                             selfSignUpURL: {
                                 hint: "Link to your organization's Self Signup webpage. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages.",
                                 label: "Self Signup",
@@ -1637,7 +1642,7 @@ export const extensions: Extensions = {
                                 description: "You can now incorporate a custom layout for login, "
                                     + "registration, and recovery pages. Refer to our "
                                     + "documentation for detailed instructions.",
-                                subTitle: "The custom layout has been successfully enabled.",
+                                subTitle: "The custom layout is ready to be enabled.",
                                 title: "Custom Layout"
                             }
                         }
@@ -2585,6 +2590,16 @@ export const extensions: Extensions = {
     manage: {
         accountLogin: {
             notifications: {
+                revert: {
+                    error: {
+                        description: "An error occurred while reverting the username validation configuration.",
+                        message: "Revert error"
+                    },
+                    success: {
+                        description: "Successfully reverted username validation configuration.",
+                        message: "Revert successful"
+                    }
+                },
                 success: {
                     description: "Successfully updated username validation configuration.",
                     message: "Update successful"
@@ -2695,6 +2710,7 @@ export const extensions: Extensions = {
                     makeDefaultOrganization: "Make default organization",
                     backButton: "Go back",
                     copyOrganizationId: "Copy organization ID",
+                    copyOrganizationHandle: "Copy organization Handle",
                     copied: "Copied!",
                     tenantSearch: {
                         placeholder: "Search organization",
@@ -3914,7 +3930,7 @@ export const extensions: Extensions = {
             categories: {
                 attributeManagement: "Attribute Management",
                 AccountManagement: "Account Management",
-                userManagement: "User Management",
+                userManagement: "Identity Management",
                 approvalWorkflows: "Approval Workflows",
                 organizationSettings: "Organization Settings"
             }

@@ -3418,6 +3418,16 @@ export interface ConsoleNS {
                         Roles: string;
                         "User Store Domain": string;
                         Username: string;
+                        "Role Name": string;
+                        Groups: string;
+                        "Tenant Domain": string;
+                        Permissions: string;
+                        Users: string;
+                        Audience: string;
+                        "Audience ID": string;
+                        "Users to be Added": string;
+                        "Users to be Deleted": string;
+                        "Role ID": string;
                     };
                     taskDetails: {
                         header: string;
@@ -6403,31 +6413,95 @@ export interface ConsoleNS {
                             };
                             verifyHostname: {
                                 label: string;
+                                hint: string;
                             };
                             basicAuthConfig: {
                                 title: string;
+                                info: {
+                                    message: string;
+                                    title: {
+                                        noneAuthType: string;
+                                        otherAuthType: string;
+                                    };
+                                };
+                                types: {
+                                    none: {
+                                        name: string;
+                                    },
+                                    basic: {
+                                        name: string;
+                                    }
+                                },
+                                authenticationType: {
+                                    label: string;
+                                    placeholder: string;
+                                    hint: {
+                                        create: string;
+                                        update: string;
+                                    };
+                                },
+                                buttons: {
+                                    changeAuthentication: string;
+                                }
                                 serverUsername: {
                                     label: string;
                                     placeholder: string;
+                                    error: {
+                                        required: string;
+                                    }
                                 };
                                 serverPassword: {
                                     label: string;
                                     placeholder: string;
+                                    error: {
+                                        required: string;
+                                    }
                                 };
                             };
                             sslConfig: {
                                 title: string;
+                                info: {
+                                    sslConfigured: {
+                                        message: string;
+                                        title: string;
+                                    };
+                                    notConfigured: {
+                                        message: string;
+                                        title: string;
+                                    };
+                                };
+                                buttons: {
+                                    addSslConfig: string;
+                                    changeSslConfig: string;
+                                    clearSslConfig: string;
+                                };
                                 keystorePath: {
                                     label: string;
+                                    placeholder: string;
+                                    error: {
+                                        required: string;
+                                    }
                                 };
                                 keystorePassword: {
                                     label: string;
+                                    placeholder: string;
+                                    error: {
+                                        required: string;
+                                    }
                                 };
                                 truststorePath: {
                                     label: string;
+                                    placeholder: string;
+                                    error: {
+                                        required: string;
+                                    }
                                 };
                                 truststorePassword: {
                                     label: string;
+                                    placeholder: string;
+                                    error: {
+                                        required: string;
+                                    }
                                 };
                             };
                         };

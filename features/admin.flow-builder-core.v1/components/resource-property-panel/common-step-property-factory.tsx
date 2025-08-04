@@ -44,12 +44,11 @@ export interface CommonStepPropertyFactoryPropsInterface extends IdentifiableCom
     propertyValue: any;
     /**
      * The event handler for the property change.
-     * @param propertyKey - The key of the property.
-     * @param previousValue - The previous value of the property.
+     * @param propertyKey - The key of the property.=
      * @param newValue - The new value of the property.
      * @param resource - The resource associated with the property.
      */
-    onChange: (propertyKey: string, previousValue: any, newValue: any, resource: Resource) => void;
+    onChange: (propertyKey: string, newValue: any, resource: Resource) => void;
     /**
      * Additional props.
      */
@@ -72,17 +71,23 @@ const CommonStepPropertyFactory: FunctionComponent<CommonStepPropertyFactoryProp
 }: CommonStepPropertyFactoryPropsInterface): ReactElement | null => {
     if (propertyKey === "text") {
         if (resource.type === ElementTypes.RichText) {
-            return <RichText ToolbarProps={ { history: false, strikeThrough: false } } { ...rest } />;
+            return (
+                <RichText
+                    onChange={ (html: string) => onChange(propertyKey, html, resource) }
+                    resource={ resource }
+                    { ...rest }
+                />
+            );
         }
     }
 
     if (typeof propertyValue === "boolean") {
         return (
             <FormControlLabel
-                control={ <Checkbox /> }
+                control={ <Checkbox checked={ propertyValue } /> }
                 label={ startCase(propertyKey) }
                 onChange={ (e: ChangeEvent<HTMLInputElement>) =>
-                    onChange(propertyKey, propertyValue, e.target.checked, resource)
+                    onChange(propertyKey, e.target.checked, resource)
                 }
                 data-componentid={ `${componentId}-${propertyKey}` }
                 { ...rest }
@@ -97,7 +102,7 @@ const CommonStepPropertyFactory: FunctionComponent<CommonStepPropertyFactoryProp
                 label={ startCase(propertyKey) }
                 defaultValue={ propertyValue }
                 onChange={ (e: ChangeEvent<HTMLInputElement>) =>
-                    onChange(propertyKey, propertyValue, e.target.value, resource)
+                    onChange(propertyKey, e.target.value, resource)
                 }
                 placeholder={ `Enter ${startCase(propertyKey)}` }
                 data-componentid={ `${componentId}-${propertyKey}` }

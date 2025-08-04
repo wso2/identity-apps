@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { getAllExternalClaims, getDialects } from "@wso2is/admin.claims.v1/api";
 import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -23,6 +24,9 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 
 import { SCIMConfigs, attributeConfig } from "@wso2is/admin.extensions.v1";
+import { AGENT_USERSTORE_ID } from "@wso2is/admin.userstores.v1/constants";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, ClaimDialect, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -35,7 +39,7 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import Axios from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteChildrenProps } from "react-router";
@@ -84,6 +88,16 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
         const [ mappedLocalclaims, setMappedLocalClaims ] = useState<string[]>([]);
         const [ triggerFetchMappedClaims, setTriggerFetchMappedClaims ] = useState<boolean>(true);
         const [ triigerFetchDialects, setTriggerFetchDialects ] = useState<boolean>(true);
+
+        const {
+            userStoresList
+        } = useUserStores();
+
+        const agentFeatureConfig: FeatureAccessConfigInterface =
+            useSelector((state: AppState) => state?.config?.ui?.features?.agents);
+        const isAgentManagementEnabledForOrg: boolean = useMemo((): boolean => {
+            return userStoresList?.some((userStore: UserStoreListItem) => userStore.id === AGENT_USERSTORE_ID);
+        }, [ userStoresList ]);
 
         useEffect(() => {
             getDialect();
@@ -161,6 +175,10 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
          */
         const resolvePageHeading = (): string => {
             switch (type) {
+                case ClaimManagementConstants.AGENT:
+                    return t(
+                        "claims:attributeMappings.agent.heading"
+                    );
                 case ClaimManagementConstants.OIDC:
                     return t(
                         "claims:attributeMappings.oidc.heading"
@@ -193,6 +211,17 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
          */
         const resolvePageDescription = (): ReactElement => {
             switch (type) {
+                case ClaimManagementConstants.AGENT:
+                    return (
+                        <>
+                            { t("claims:attributeMappings.agent.description") }
+                            <DocumentationLink
+                                link={ getLink("manage.attributes.oidcAttributes.learnMore") }
+                            >
+                                { t("common:learnMore") }
+                            </DocumentationLink>
+                        </>
+                    );
                 case ClaimManagementConstants.OIDC:
                     return (
                         <>
@@ -319,7 +348,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                 sort
             })
                 .then((response: ClaimDialect[]) => {
-                    const filteredDialect: ClaimDialect[] = response.filter((claim: ClaimDialect) => {
+                    let filteredDialect: ClaimDialect[] = response.filter((claim: ClaimDialect) => {
                         if (!listAllAttributeDialects) {
                             return (
                                 claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("LOCAL") &&
@@ -337,6 +366,13 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             claim.id !== ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP") &&
                             claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("OPENID_NET");
                     });
+
+                    if (!agentFeatureConfig?.enabled || !isAgentManagementEnabledForOrg) {
+                        filteredDialect = filteredDialect.filter((claimDialect: ClaimDialect) => {
+                            return claimDialect.id !=
+                                ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_FOR_AGENTS");
+                        });
+                    }
 
                     const attributeMappings: ClaimDialect[] = [];
 

@@ -16,9 +16,14 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
+import { AGENT_USERSTORE_ID } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { RoleConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -76,34 +81,102 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
 
     const { t } = useTranslation();
 
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+
+    const {
+        isLoading: isUserStoresListFetchRequestLoading,
+        userStoresList
+    } = useUserStores();
+
+    const isAgentManagementEnabledForOrg: boolean = useMemo((): boolean => {
+        return !isUserStoresListFetchRequestLoading &&
+            userStoresList?.some((userStore: UserStoreListItem) => userStore.id === AGENT_USERSTORE_ID);
+    }, [ userStoresList, isUserStoresListFetchRequestLoading ]);
+
     const featureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRoles);
     const usersFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.users);
+    const agentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.agents
+    );
+    const userRolesV3FeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const administratorRoleDisplayName: string = useSelector(
         (state: AppState) => state?.config?.ui?.administratorRoleDisplayName);
     const userRolesDisabledFeatures: string[] = useSelector((state: AppState) => {
         return state.config.ui.features?.userRoles?.disabledFeatures;
     });
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
+    );
+    const hasGroupUpdatePermission: boolean = useRequiredScopes(
+        userRolesV3FeatureEnabled
+            ? [ LocalRoleConstants.ROLE_GROUPS_UPDATE ]
+            : featureConfig?.scopes?.update
+    );
+
+    const hasUserUpdatePermission: boolean = useRequiredScopes(
+        userRolesV3FeatureEnabled
+            ? [ LocalRoleConstants.ROLE_USERS_UPDATE ]
+            : usersFeatureConfig?.scopes?.update
+    );
+
     const isSharedRole: boolean = useMemo(() => roleObject?.properties?.some(
         (property: RolePropertyInterface) =>
             property?.name === LocalRoleConstants.IS_SHARED_ROLE && property?.value === "true"), [ roleObject ]);
 
     const isReadOnly: boolean = useMemo(() => {
-        return !isFeatureEnabled(featureConfig,
-            LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE"))
-            || !hasRequiredScopes(featureConfig,
-                featureConfig?.scopes?.update, allowedScopes)
-            || roleObject?.meta?.systemRole;
-    }, [ featureConfig, allowedScopes ]);
+        if (userRolesV3FeatureEnabled) {
+            return !isFeatureEnabled(
+                featureConfig,
+                LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE"))
+                || !hasRequiredScopes(userRolesV3FeatureConfig,
+                    userRolesV3FeatureConfig?.scopes?.update, allowedScopes)
+                || roleObject?.meta?.systemRole;
+        } else {
+            return !isFeatureEnabled(
+                featureConfig,
+                LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE"))
+                || !hasRequiredScopes(featureConfig,
+                    featureConfig?.scopes?.update, allowedScopes)
+                || roleObject?.meta?.systemRole;
+        }
+    }, [ userRolesV3FeatureEnabled, featureConfig, userRolesV3FeatureConfig, allowedScopes, roleObject ]);
+
+    const isGroupReadOnly: boolean = useMemo(() => {
+
+        const featureEnabled: boolean = isFeatureEnabled(featureConfig,
+            LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE"));
+
+        const result: boolean = !featureEnabled || !hasGroupUpdatePermission || roleObject?.meta?.systemRole;
+
+        return result;
+    }, [ featureConfig, hasGroupUpdatePermission, roleObject ]);
 
     const isUserReadOnly: boolean = useMemo(() => {
-        return !isFeatureEnabled(usersFeatureConfig,
-            UserManagementConstants.FEATURE_DICTIONARY.get("USER_CREATE")) ||
-            !hasRequiredScopes(usersFeatureConfig,
-                usersFeatureConfig?.scopes?.update, allowedScopes);
-    }, [ usersFeatureConfig, allowedScopes ]);
+
+        if (userRolesV3FeatureEnabled) {
+            const featureEnabled: boolean = isFeatureEnabled(featureConfig,
+                LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE"));
+            const result: boolean = !featureEnabled || !hasUserUpdatePermission;
+
+            return result;
+        }
+
+        const userFeatureEnabled: boolean = isFeatureEnabled(usersFeatureConfig,
+            UserManagementConstants.FEATURE_DICTIONARY.get("USER_CREATE"));
+        const result: boolean = isReadOnly || !userFeatureEnabled || !hasUserUpdatePermission;
+
+        return result;
+    }, [
+        userRolesV3FeatureEnabled,
+        featureConfig,
+        hasUserUpdatePermission,
+        isReadOnly,
+        usersFeatureConfig
+    ]);
 
     const [ isAdminRole, setIsAdminRole ] = useState<boolean>(false);
     const [ isEveryoneRole, setIsEveryoneRole ] = useState<boolean>(false);
@@ -158,7 +231,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <RoleGroupsList
-                            isReadOnly={ isReadOnly }
+                            isReadOnly={ isGroupReadOnly }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 2 }
@@ -177,10 +250,31 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                     render: () => (
                         <ResourceTab.Pane controlledSegmentation attached={ false }>
                             <RoleUsersList
-                                isReadOnly={ isReadOnly || isUserReadOnly }
+                                isReadOnly={ isUserReadOnly }
                                 role={ roleObject }
                                 onRoleUpdate={ onRoleUpdate }
                                 tabIndex={ 3 }
+                            />
+                        </ResourceTab.Pane>
+                    )
+                }
+            );
+        }
+
+        if (agentsFeatureConfig?.enabled && isAgentManagementEnabledForOrg && !isSubOrganization()) {
+            panes.push(
+                {
+                    menuItem: t("roles:edit.menuItems.agents"),
+                    render: () => (
+                        <ResourceTab.Pane controlledSegmentation attached={ false }>
+                            <RoleUsersList
+                                isReadOnly={ isReadOnly || isUserReadOnly }
+                                role={ roleObject }
+                                isForNonHumanUser={ true }
+                                activeUserStore="AGENT"
+                                onRoleUpdate={ onRoleUpdate }
+                                tabIndex={ 3 }
+                                data-componentid="edit-role-agents"
                             />
                         </ResourceTab.Pane>
                     )

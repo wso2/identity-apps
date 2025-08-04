@@ -199,82 +199,6 @@
     {
         "resourceType": "WIDGET",
         "category": "FLOW",
-        "type": "GOOGLE_FEDERATION",
-        "version": "0.1.0",
-        "deprecated": false,
-        "display": {
-            "label": "Continue with Google",
-            "description": "Registration experience with Google",
-            "image": "https://www.svgrepo.com/show/461597/google.svg",
-            "showOnResourcePanel": true
-        },
-        "config": {
-            "data": {
-                "__generationMeta__": {
-                    "defaultPropertySelectorId": "{{GOOGLE_REDIRECTION_STEP_ID}}",
-                    "replacers": [
-                        {
-                            "key": "GOOGLE_REDIRECTION_STEP_ID",
-                            "type": "ID"
-                        }
-                    ]
-                },
-                "steps": [
-                    {
-                        "__generationMeta__": {
-                            "strategy": "MERGE_WITH_DROP_POINT"
-                        },
-                        "type": "VIEW",
-                        "data": {
-                            "components": [
-                                {
-                                    "id": "{{ID}}",
-                                    "category": "ACTION",
-                                    "type": "BUTTON",
-                                    "variant": "SOCIAL",
-                                    "config": {
-                                        "type": "button",
-                                        "text": "Continue with Google"
-                                    },
-                                    "action": {
-                                        "type": "NEXT",
-                                        "next": "{{GOOGLE_REDIRECTION_STEP_ID}}"
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "id": "{{GOOGLE_REDIRECTION_STEP_ID}}",
-                        "type": "REDIRECTION",
-                        "size": {
-                            "width": 350,
-                            "height": 291
-                        },
-                        "position": {
-                            "x": 690,
-                            "y": 500
-                        },
-                        "data": {
-                            "action": {
-                                "type": "EXECUTOR",
-                                "executor": {
-                                    "name": "GoogleSignupExecutor",
-                                    "meta": {
-                                        "idpName": "{{IDP_NAME}}"
-                                    }
-                                },
-                                "next": "USER_ONBOARD"
-                            }
-                        }
-                    }
-                ]
-            }
-        }
-    },
-    {
-        "resourceType": "WIDGET",
-        "category": "FLOW",
         "type": "SMS_OTP",
         "version": "0.1.0",
         "deprecated": false,
@@ -386,5 +310,464 @@
                 ]
             }
         }
+    },
+    {
+        "resourceType": "WIDGET",
+        "category": "FLOW",
+        "type": "GOOGLE_FEDERATION",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Continue with Google",
+            "description": "Registration experience with Google",
+            "image": "https://www.svgrepo.com/show/461597/google.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "defaultPropertySelectorId": "{{GOOGLE_EXECUTION_STEP_ID}}",
+                    "replacers": [
+                        {
+                            "key": "GOOGLE_EXECUTION_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "__generationMeta__": {
+                            "strategy": "MERGE_WITH_DROP_POINT"
+                        },
+                        "type": "VIEW",
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "ACTION",
+                                    "type": "BUTTON",
+                                    "variant": "SOCIAL",
+                                    "config": {
+                                        "type": "button",
+                                        "text": "Continue with Google",
+                                        "image": "https://www.svgrepo.com/show/475656/google-color.svg"
+                                    },
+                                    "action": {
+                                        "type": "NEXT",
+                                        "next": "{{GOOGLE_EXECUTION_STEP_ID}}"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{GOOGLE_EXECUTION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 690,
+                            "y": 500
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "GoogleExecutor",
+                                    "meta": {
+                                        "idpName": "{{IDP_NAME}}"
+                                    }
+                                },
+                                "next": "USER_ONBOARD"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "resourceType": "WIDGET",
+        "category": "FLOW",
+        "type": "APPLE_FEDERATION",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Continue with Apple",
+            "description": "Registration experience with Apple",
+            "image": "https://www.svgrepo.com/show/494336/apple.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "defaultPropertySelectorId": "{{APPLE_EXECUTION_STEP_ID}}",
+                    "replacers": [
+                        {
+                            "key": "APPLE_EXECUTION_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "__generationMeta__": {
+                            "strategy": "MERGE_WITH_DROP_POINT"
+                        },
+                        "type": "VIEW",
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "ACTION",
+                                    "type": "BUTTON",
+                                    "variant": "SOCIAL",
+                                    "config": {
+                                        "type": "button",
+                                        "text": "Continue with Apple",
+                                        "image": "https://www.svgrepo.com/show/494336/apple.svg"
+                                    },
+                                    "action": {
+                                        "type": "NEXT",
+                                        "next": "{{APPLE_EXECUTION_STEP_ID}}"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{APPLE_EXECUTION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 690,
+                            "y": 500
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "AppleExecutor",
+                                    "meta": {
+                                        "idpName": "{{IDP_NAME}}"
+                                    }
+                                },
+                                "next": "USER_ONBOARD"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "resourceType": "WIDGET",
+        "category": "FLOW",
+        "type": "FACEBOOK_FEDERATION",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Continue with Facebook",
+            "description": "Registration experience with Facebook",
+            "image": "https://www.svgrepo.com/show/503338/facebook.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "defaultPropertySelectorId": "{{FACEBOOK_EXECUTION_STEP_ID}}",
+                    "replacers": [
+                        {
+                            "key": "FACEBOOK_EXECUTION_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "__generationMeta__": {
+                            "strategy": "MERGE_WITH_DROP_POINT"
+                        },
+                        "type": "VIEW",
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "ACTION",
+                                    "type": "BUTTON",
+                                    "variant": "SOCIAL",
+                                    "config": {
+                                        "type": "button",
+                                        "text": "Continue with Facebook",
+                                        "image": "https://www.svgrepo.com/show/448224/facebook.svg"
+                                    },
+                                    "action": {
+                                        "type": "NEXT",
+                                        "next": "{{FACEBOOK_EXECUTION_STEP_ID}}"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{FACEBOOK_EXECUTION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 690,
+                            "y": 500
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "FacebookExecutor",
+                                    "meta": {
+                                        "idpName": "{{IDP_NAME}}"
+                                    }
+                                },
+                                "next": "USER_ONBOARD"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "resourceType": "WIDGET",
+        "category": "FLOW",
+        "type": "MICROSOFT_FEDERATION",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Continue with Microsoft",
+            "description": "Registration experience with Microsoft",
+            "image": "https://www.svgrepo.com/show/503422/microsoft.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "defaultPropertySelectorId": "{{MICROSOFT_EXECUTION_STEP_ID}}",
+                    "replacers": [
+                        {
+                            "key": "MICROSOFT_EXECUTION_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "__generationMeta__": {
+                            "strategy": "MERGE_WITH_DROP_POINT"
+                        },
+                        "type": "VIEW",
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "ACTION",
+                                    "type": "BUTTON",
+                                    "variant": "SOCIAL",
+                                    "config": {
+                                        "type": "button",
+                                        "text": "Continue with Microsoft",
+                                        "image": "https://www.svgrepo.com/show/448239/microsoft.svg"
+                                    },
+                                    "action": {
+                                        "type": "NEXT",
+                                        "next": "{{MICROSOFT_EXECUTION_STEP_ID}}"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{MICROSOFT_EXECUTION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 690,
+                            "y": 500
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "Office365Executor",
+                                    "meta": {
+                                        "idpName": "{{IDP_NAME}}"
+                                    }
+                                },
+                                "next": "USER_ONBOARD"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "resourceType": "WIDGET",
+        "category": "FLOW",
+        "type": "GITHUB_FEDERATION",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Continue with GitHub",
+            "description": "Registration experience with GitHub",
+            "image": "https://www.svgrepo.com/show/473620/github.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "defaultPropertySelectorId": "{{GITHUB_EXECUTION_STEP_ID}}",
+                    "replacers": [
+                        {
+                            "key": "GITHUB_EXECUTION_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "__generationMeta__": {
+                            "strategy": "MERGE_WITH_DROP_POINT"
+                        },
+                        "type": "VIEW",
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "ACTION",
+                                    "type": "BUTTON",
+                                    "variant": "SOCIAL",
+                                    "config": {
+                                        "type": "button",
+                                        "text": "Continue with GitHub",
+                                        "image": "https://www.svgrepo.com/show/473620/github.svg"
+                                    },
+                                    "action": {
+                                        "type": "NEXT",
+                                        "next": "{{GITHUB_EXECUTION_STEP_ID}}"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{GITHUB_EXECUTION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 690,
+                            "y": 500
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "GithubExecutor",
+                                    "meta": {
+                                        "idpName": "{{IDP_NAME}}"
+                                    }
+                                },
+                                "next": "USER_ONBOARD"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+    "resourceType": "WIDGET",
+    "category": "FLOW",
+    "type": "PASSKEY_ENROLLMENT",
+    "version": "0.1.0",
+    "deprecated": false,
+    "display": {
+        "label": "Continue with Passkey",
+        "description": "Registration experience using Passkeys",
+        "image": "https://www.svgrepo.com/show/340307/fingerprint-recognition.svg",
+        "showOnResourcePanel": true
+    },
+    "config": {
+        "data": {
+            "__generationMeta__": {
+                "defaultPropertySelectorId": "{{PASSKEY_EXECUTION_STEP_ID}}",
+                "replacers": [
+                    {
+                        "key": "PASSKEY_EXECUTION_STEP_ID",
+                        "type": "ID"
+                    }
+                ]
+            },
+            "steps": [
+                {
+                    "__generationMeta__": {
+                        "strategy": "MERGE_WITH_DROP_POINT"
+                    },
+                    "type": "VIEW",
+                    "data": {
+                        "components": [
+                            {
+                                "id": "{{ID}}",
+                                "category": "ACTION",
+                                "type": "BUTTON",
+                                "variant": "SOCIAL",
+                                "config": {
+                                    "type": "button",
+                                    "text": "Continue with Passkey",
+                                    "image": "https://www.svgrepo.com/show/340307/fingerprint-recognition.svg"
+                                },
+                                "action": {
+                                    "type": "NEXT",
+                                    "next": "{{PASSKEY_EXECUTION_STEP_ID}}"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "id": "{{PASSKEY_EXECUTION_STEP_ID}}",
+                    "type": "EXECUTION",
+                    "size": {
+                        "width": 350,
+                        "height": 291
+                    },
+                    "position": {
+                        "x": 690,
+                        "y": 500
+                    },
+                    "data": {
+                        "action": {
+                            "type": "EXECUTOR",
+                            "executor": {
+                                "name": "FIDO2Executor"
+                            },
+                            "next": "USER_ONBOARD"
+                        }
+                    }
+                }
+            ]
+        }
     }
+}
 ]

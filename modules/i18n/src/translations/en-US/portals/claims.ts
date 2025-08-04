@@ -19,6 +19,10 @@ import { ClaimsNS } from "../../../models";
 
 export const claims: ClaimsNS = {
     attributeMappings: {
+        agent: {
+            description: "The SCIM protocol representation for AI agent attributes used in agent identity management APIs.",
+            heading: "SCIM 2.0 for AI Agents"
+        },
         axschema: {
             description: "The Attribute Exchange Schema (axschema) representation "
                 + "for user attributes.",
@@ -39,7 +43,7 @@ export const claims: ClaimsNS = {
             heading: "OpenID Connect"
         },
         scim: {
-            description: "The SCIM2 protocol representation for user "
+            description: "The SCIM2 protocol representation for "
                 + "attributes that will be used in the SCIM2 API.",
             heading: "SCIM 2.0"
         }
@@ -183,6 +187,10 @@ export const claims: ClaimsNS = {
         },
         sections: {
             manageAttributeMappings: {
+                agent: {
+                    description: "The SCIM protocol representation for AI agent attributes used in agent identity management APIs.",
+                    heading: "SCIM 2.0 for AI Agents"
+                },
                 custom: {
                     description: "Communicate information about the user via custom mappings.",
                     heading: "Custom Attribute Mapping"
@@ -490,6 +498,22 @@ export const claims: ClaimsNS = {
                     "only affect the customer users' profiles.",
                 disabledConfigInfo: "Please note that below section is disabled as there is no " +
                     "external claim mapping found for this claim attribute."
+            },
+            inputFormat: {
+                hint: "The input format of the attribute.",
+                label: "Input Format",
+                options: {
+                    checkBoxGroup: "Checkbox Group",
+                    checkbox: "Checkbox",
+                    datePicker: "Date Picker",
+                    dropdown: "Dropdown",
+                    multiSelectDropdown: "Multi-Select Dropdown",
+                    numberInput: "Number Input",
+                    radioGroup: "Radio Group",
+                    textArea: "Text Area",
+                    textInput: "Text Input",
+                    toggle: "Toggle"
+                }
             },
             multiValued: {
                 label: "Allow multiple values for this attribute",

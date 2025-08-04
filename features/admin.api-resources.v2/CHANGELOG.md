@@ -1,5 +1,20 @@
 # @wso2is/admin.api-resources.v2
 
+## 2.26.2
+
+### Patch Changes
+
+- [#8511](https://github.com/wso2/identity-apps/pull/8511) [`90acfab75f677280eb39db0fc26d4e8e63024985`](https://github.com/wso2/identity-apps/commit/90acfab75f677280eb39db0fc26d4e8e63024985) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - UI improvements to the agents feature
+
+- Updated dependencies [[`90acfab75f677280eb39db0fc26d4e8e63024985`](https://github.com/wso2/identity-apps/commit/90acfab75f677280eb39db0fc26d4e8e63024985)]:
+  - @wso2is/admin.core.v1@2.46.7
+
+## 2.26.1
+
+### Patch Changes
+
+- [#8469](https://github.com/wso2/identity-apps/pull/8469) [`d9bd2b38be9511fc6d8b7836a96e052efa515e9a`](https://github.com/wso2/identity-apps/commit/d9bd2b38be9511fc6d8b7836a96e052efa515e9a) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Fix issue in learn more button for api resources sub org description
+
 ## 2.26.0
 
 ### Minor Changes

@@ -25,7 +25,7 @@ import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import FormGroup from "@oxygen-ui/react/FormGroup";
 import Radio from "@oxygen-ui/react/Radio";
 import TextField from "@oxygen-ui/react/TextField";
-import { useRequiredScopes } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { updateApplicationDetails } from "@wso2is/admin.applications.v1/api/application";
 import { useGetApplication } from "@wso2is/admin.applications.v1/api/use-get-application";
 import { ApplicationInterface } from "@wso2is/admin.applications.v1/models/application";
@@ -60,6 +60,7 @@ import { AutoCompleteRenderOption } from "./auto-complete-render-option";
 import { ApplicationRoleWizard } from "./wizard-updated/application-role-wizard";
 import { getApplicationRolesByAudience } from "../api/roles";
 import { RoleAudienceTypes } from "../constants/role-constants";
+import useGetApplicationRolesByAudienceV3 from "../hooks/use-get-application-roles-by-audience-v3";
 import {
     AssociatedRolesPatchObjectInterface,
     BasicRoleInterface, RolesV2Interface,
@@ -76,6 +77,10 @@ interface ApplicationRolesSettingsInterface extends IdentifiableComponentInterfa
      * Make the component read only.
      */
     readOnly?: boolean;
+    /**
+     * Original template ID of the application for which the roles are created.
+     */
+    originalTemplateId?: string;
 }
 
 /**
@@ -89,6 +94,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
 
     const {
         onUpdate,
+        originalTemplateId,
         readOnly,
         [ "data-componentid" ]: componentId
     } = props;
@@ -120,8 +126,34 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const userRolesV3FeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3
+    );
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
+    );
 
-    const hasRoleCreatePermissions: boolean = useRequiredScopes(featureConfig?.userRoles?.scopes?.create);
+    const hasRoleCreatePermissions: boolean = useRequiredScopes(
+        userRolesV3FeatureEnabled
+            ? userRolesV3FeatureConfig?.scopes?.create
+            : featureConfig?.userRoles?.scopes?.create
+    );
+
+    // Use the SWR hook for V3 API or fallback to direct API call for legacy
+    const {
+        data: rolesV3Data,
+        error: rolesV3Error,
+        isLoading: isRolesV3Loading,
+        mutate: mutateRolesV3
+    } = useGetApplicationRolesByAudienceV3(
+        roleAudience,
+        appId,
+        null,
+        null,
+        null,
+        "users,groups,permissions,associatedApplications",
+        userRolesV3FeatureEnabled
+    );
 
     /**
      * Fetch application roles on component load and audience switch.
@@ -160,12 +192,12 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
      * Fetch application roles.
      */
     const getApplicationRoles = (shouldUpdateSelectedRolesList?: boolean): void => {
-        getApplicationRolesByAudience(roleAudience, appId, null, null, null,
-            "users,groups,permissions,associatedApplications")
-            .then((response: RolesV2ResponseInterface) => {
+        if (userRolesV3FeatureEnabled) {
+            // For V3 API, use SWR data
+            if (rolesV3Data) {
                 const rolesArray: BasicRoleInterface[] = [];
 
-                response?.Resources?.forEach((role: RolesV2Interface) => {
+                rolesV3Data?.Resources?.forEach((role: RolesV2Interface) => {
                     rolesArray.push({
                         id: role?.id,
                         name: role?.displayName
@@ -177,15 +209,17 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                 if (shouldUpdateSelectedRolesList) {
                     setSelectedRoles(rolesArray);
                 }
-            }).catch((error: AxiosError) => {
-                if (error?.response?.data?.description) {
+            }
+
+            if (rolesV3Error) {
+                if (rolesV3Error?.response?.data?.description) {
                     dispatch(addAlert({
-                        description: error?.response?.data?.description ??
-                            error?.response?.data?.detail ??
+                        description: rolesV3Error?.response?.data?.description ??
+                            rolesV3Error?.response?.data?.detail ??
                             t("extensions:develop.applications.edit.sections.roles.notifications." +
                                 "fetchApplicationRoles.error.description"),
                         level: AlertLevels.ERROR,
-                        message: error?.response?.data?.message ??
+                        message: rolesV3Error?.response?.data?.message ??
                             t("extensions:develop.applications.edit.sections.roles.notifications." +
                                 "fetchApplicationRoles.error.message")
                     }));
@@ -201,10 +235,56 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                 }));
 
                 setRoleList([]);
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
+            }
+        } else {
+            // For legacy API, use direct API call
+            setIsLoading(true);
+            getApplicationRolesByAudience(roleAudience, appId, null, null, null,
+                "users,groups,permissions,associatedApplications")
+                .then((response: RolesV2ResponseInterface) => {
+                    const rolesArray: BasicRoleInterface[] = [];
+
+                    response?.Resources?.forEach((role: RolesV2Interface) => {
+                        rolesArray.push({
+                            id: role?.id,
+                            name: role?.displayName
+                        });
+                    });
+
+                    setRoleList(rolesArray);
+
+                    if (shouldUpdateSelectedRolesList) {
+                        setSelectedRoles(rolesArray);
+                    }
+                }).catch((error: AxiosError) => {
+                    if (error?.response?.data?.description) {
+                        dispatch(addAlert({
+                            description: error?.response?.data?.description ??
+                                error?.response?.data?.detail ??
+                                t("extensions:develop.applications.edit.sections.roles.notifications." +
+                                    "fetchApplicationRoles.error.description"),
+                            level: AlertLevels.ERROR,
+                            message: error?.response?.data?.message ??
+                                t("extensions:develop.applications.edit.sections.roles.notifications." +
+                                    "fetchApplicationRoles.error.message")
+                        }));
+
+                        return;
+                    }
+                    dispatch(addAlert({
+                        description: t("extensions:develop.applications.edit.sections.roles.notifications." +
+                            "fetchApplicationRoles.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("extensions:develop.applications.edit.sections.roles.notifications." +
+                            "fetchApplicationRoles.genericError.message")
+                    }));
+
+                    setRoleList([]);
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
+        }
     };
 
     /**
@@ -281,14 +361,20 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
      * Handles the on role created callback.
      */
     const onRoleCreated = () => {
-        getApplicationRoles(true);
+        if (userRolesV3FeatureEnabled) {
+            // For V3 API, use SWR mutate to refresh data
+            mutateRolesV3();
+        } else {
+            // For legacy API, use direct API call
+            getApplicationRoles(true);
+        }
         onUpdate(appId);
     };
 
     return (
         <>
             <EmphasizedSegment
-                loading={ isLoading }
+                loading={ userRolesV3FeatureEnabled ? isRolesV3Loading : isLoading }
                 padded="very"
                 data-componentid={ componentId }
             >
@@ -400,7 +486,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                     multiple
                                     disableCloseOnSelect
                                     readOnly={ readOnly }
-                                    loading={ isLoading }
+                                    loading={ userRolesV3FeatureEnabled ? isRolesV3Loading : isLoading }
                                     options={ roleList }
                                     value={ selectedRoles ?? [] }
                                     data-componentid={ `${ componentId }-assigned-roles-list` }
@@ -550,6 +636,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                         } }
                         application={ application }
                         onRoleCreated={ onRoleCreated }
+                        originalTemplateId={ originalTemplateId }
                     />
                 )
             }

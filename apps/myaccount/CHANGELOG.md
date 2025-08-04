@@ -1,5 +1,73 @@
 # @wso2is/myaccount
 
+## 2.22.0
+
+### Minor Changes
+
+- [#8572](https://github.com/wso2/identity-apps/pull/8572) [`564da925830812508013488549b897bc5098572a`](https://github.com/wso2/identity-apps/commit/564da925830812508013488549b897bc5098572a) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update user profile implementation to honor claim input format
+
+### Patch Changes
+
+- [#8206](https://github.com/wso2/identity-apps/pull/8206) [`ba917ba62a07de5898c251fc385558ddb562122a`](https://github.com/wso2/identity-apps/commit/ba917ba62a07de5898c251fc385558ddb562122a) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Switch to the org handle in places where org id is used as tenant domain
+
+* [#8680](https://github.com/wso2/identity-apps/pull/8680) [`3fde77aefb33fb28010b2f7d7bd631633fd05ec4`](https://github.com/wso2/identity-apps/commit/3fde77aefb33fb28010b2f7d7bd631633fd05ec4) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in single value mobile number update flow
+
+* Updated dependencies [[`1cf2a69f382401824625df187fecbcac9a32d28a`](https://github.com/wso2/identity-apps/commit/1cf2a69f382401824625df187fecbcac9a32d28a), [`1cf2a69f382401824625df187fecbcac9a32d28a`](https://github.com/wso2/identity-apps/commit/1cf2a69f382401824625df187fecbcac9a32d28a)]:
+  - @wso2is/common.ui.profile.v1@0.1.0
+  - @wso2is/i18n@2.26.1
+
+## 2.21.0
+
+### Minor Changes
+
+- [#8588](https://github.com/wso2/identity-apps/pull/8588) [`8294cbfd28e252ebb145a153d0e74106515a28b8`](https://github.com/wso2/identity-apps/commit/8294cbfd28e252ebb145a153d0e74106515a28b8) Thanks [@brionmario](https://github.com/brionmario)! - Extension model for i18n in Console & My Account
+
+### Patch Changes
+
+- Updated dependencies [[`8294cbfd28e252ebb145a153d0e74106515a28b8`](https://github.com/wso2/identity-apps/commit/8294cbfd28e252ebb145a153d0e74106515a28b8)]:
+  - @wso2is/core@2.11.0
+  - @wso2is/i18n@2.26.0
+
+## 2.20.6
+
+### Patch Changes
+
+- [#8604](https://github.com/wso2/identity-apps/pull/8604) [`279702a44505b74e11bd3a558fb953a6e76d0079`](https://github.com/wso2/identity-apps/commit/279702a44505b74e11bd3a558fb953a6e76d0079) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove stylus and stylus-loader libraries
+
+## 2.20.5
+
+### Patch Changes
+
+- [#8526](https://github.com/wso2/identity-apps/pull/8526) [`f51252a6332f950f52c5685a22e27d25b46fe308`](https://github.com/wso2/identity-apps/commit/f51252a6332f950f52c5685a22e27d25b46fe308) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Add customisability for cookie policy privacy policy and terms of service urls in the console user dropdown
+
+## 2.20.4
+
+### Patch Changes
+
+- [#8452](https://github.com/wso2/identity-apps/pull/8452) [`017eff166dcad4c9337ac1047191e337c14184f3`](https://github.com/wso2/identity-apps/commit/017eff166dcad4c9337ac1047191e337c14184f3) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Revamp My Account user profile codebase
+
+- Updated dependencies [[`017eff166dcad4c9337ac1047191e337c14184f3`](https://github.com/wso2/identity-apps/commit/017eff166dcad4c9337ac1047191e337c14184f3)]:
+  - @wso2is/core@2.9.2
+
+## 2.20.3
+
+### Patch Changes
+
+- [#8405](https://github.com/wso2/identity-apps/pull/8405) [`8bb032d47f2e830c5434665bfdf0db9ffeb6d3d8`](https://github.com/wso2/identity-apps/commit/8bb032d47f2e830c5434665bfdf0db9ffeb6d3d8) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Revert to deriving tenant domain from subject instead of using org_handle
+
+- Updated dependencies [[`615709472c3c0ac89783f37a8cb3b07d414b5d75`](https://github.com/wso2/identity-apps/commit/615709472c3c0ac89783f37a8cb3b07d414b5d75)]:
+  - @wso2is/i18n@2.24.6
+
+## 2.20.2
+
+### Patch Changes
+
+- [#8336](https://github.com/wso2/identity-apps/pull/8336) [`90d6c0be05e8b957cc1fa0c239ec3fb9b5a3fa72`](https://github.com/wso2/identity-apps/commit/90d6c0be05e8b957cc1fa0c239ec3fb9b5a3fa72) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Switch to org_handle where org_name/org_id claims are used for root and sub orgs respectively
+
+- Updated dependencies [[`d324ef56d7f9db7fff78ed46d23d7bcaae69e216`](https://github.com/wso2/identity-apps/commit/d324ef56d7f9db7fff78ed46d23d7bcaae69e216), [`2981081634e150d84bb16833410fd99001f35162`](https://github.com/wso2/identity-apps/commit/2981081634e150d84bb16833410fd99001f35162)]:
+  - @wso2is/i18n@2.24.3
+  - @wso2is/theme@2.8.1
+
 ## 2.20.1
 
 ### Patch Changes

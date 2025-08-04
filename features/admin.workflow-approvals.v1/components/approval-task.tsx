@@ -16,11 +16,15 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { AlertLevels, Claim, ClaimsGetParams, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { LinkButton, Media, Popup, Text, useMediaContext } from "@wso2is/react-components";
 import moment from "moment";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import {
     Button,
     Divider,
@@ -33,6 +37,7 @@ import {
     SemanticCOLORS,
     Table
 } from "semantic-ui-react";
+import { getAllLocalClaims } from "../../admin.claims.v1/api";
 import { ApprovalStatus, ApprovalTaskDetails } from "../models";
 
 /**
@@ -65,7 +70,7 @@ interface ApprovalTaskComponentPropsInterface extends TestableComponentInterface
      * @param status - Status of the approval.
      */
     resolveApprovalTagColor?: (
-        status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED
+        status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.BLOCKED
     ) => SemanticCOLORS;
     /**
      * Specifies if the form is submitting
@@ -96,6 +101,70 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
 
     const { t } = useTranslation();
     const { isMobileViewport } = useMediaContext();
+    const dispatch: Dispatch = useDispatch();
+    const [ localClaims, setLocalClaims ] = useState<Claim[]>([]);
+
+
+    const getLocalClaims = () => {
+        const params: ClaimsGetParams = {
+            "exclude-hidden-claims": true,
+            filter: null,
+            limit: null,
+            offset: null,
+            sort: null
+        };
+
+        getAllLocalClaims(params).then((response: Claim[]) => {
+            setLocalClaims(response);
+        }).catch((error: IdentityAppsApiException) => {
+            dispatch(addAlert(
+                {
+                    description: error?.response?.data?.description
+                        || t("actions:notifications.genericError.userAttributes.getAttributes.description"),
+                    level: AlertLevels.ERROR,
+                    message: error?.response?.data?.message
+                        || t("actions:notifications.genericError.userAttributes.getAttributes.message")
+                }
+            ));
+            throw error;
+        });
+    };
+
+    const getClaimDisplayName: (claim: string) => string = useMemo(() => {
+
+        const claimMap: Map<string, string> = new Map();
+
+        localClaims.forEach((claim: Claim) => {
+            if (claim.claimURI && claim.displayName) {
+                claimMap.set(claim.claimURI, claim.displayName);
+            }
+        });
+
+        return (claim: string): string => {
+
+            const equalIndex: number = claim.indexOf("=");
+
+            if (equalIndex === -1) {
+                return claimMap.get(claim.trim()) ?? claim;
+            }
+
+            const claimUri: string = claim.substring(0, equalIndex).trim();
+
+            if (!claimUri) {
+                return claim;
+            }
+
+            const displayName: string | undefined = claimMap.get(claimUri);
+
+            return displayName ? displayName : claimUri;
+        };
+
+    }, [ localClaims ]);
+
+    useEffect(() => {
+        getLocalClaims();
+    }, []);
+
 
     /**
      * Removes unnecessary commas at the end of property values and splits
@@ -110,35 +179,63 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
      * @param value - Property value.
      * @returns A cleaned up string.
      */
-    const cleanupPropertyValues = (key: string, value: string): string | JSX.Element => {
+    const populateProperties = (key: string, value: string): string | JSX.Element => {
         if (key === "Claims") {
+            value = value.replace(/^\{|\}$/g, "").trim();
             const claims: string[] = value.split(",");
 
             return (
-                <List className="values-list" items={ claims }>
-                    { claims.map((claim: string, index: number) => (
-                        <Popup
-                            inverted
-                            position="top left"
-                            key={ `${ claim }-popup` }
-                            content={ claim }
-                            trigger={ (
-                                <ListItem key={ index } className="ellipsis">
-                                    <Text truncate>{ claim }</Text>
-                                </ListItem>
-                            ) }
-                        />
-                    )) }
-                </List>
+                <>
+                    { claims.map((claim: string, index: number) => {
+                        const claimValue: string = claim.split("=")[1]?.trim();
+
+                        return (
+                            <Table.Row key={ `${key}-${index}` }>
+                                <Table.Cell className="key-cell">
+                                    { getClaimDisplayName(claim) }
+                                </Table.Cell>
+                                <Table.Cell collapsing className="values-cell">
+                                    <Popup
+                                        content={ claimValue }
+                                        trigger={ (
+                                            <Text truncate>
+                                                { claimValue }
+                                            </Text>
+                                        ) }
+                                        position="top left"
+                                        inverted
+                                    />
+                                </Table.Cell>
+                            </Table.Row>
+                        );
+                    }) }
+                </>
             );
         }
 
-        if (key === "Roles") {
+        if (key === "Roles" || key == "Permissions" || key === "Groups" || key === "Users" ||
+            key === "Users to be Added" || key === "Users to be Deleted") {
+            value = value.replace(/^\[|\]$/g, "").trim();
 
             try {
-                const roles: string[] = value.split(",");
+                const valueList: string[] = value.split(",");
 
-                return <List className="values-list" items={ roles } />;
+                return (
+                    <Table.Row key={ key }>
+                        <Table.Cell className="key-cell">
+                            { t("console:manage.features.approvals.modals.approvalProperties." +`${ key }`) }
+                        </Table.Cell>
+                        <Table.Cell collapsing className="values-cell">
+                            <List className="values-list">
+                                { valueList.map((item: string, index: number) => (
+                                    <ListItem key={ index }>
+                                        <Text truncate>{ item.trim() }</Text>
+                                    </ListItem>
+                                )) }
+                            </List>
+                        </Table.Cell>
+                    </Table.Row>
+                );
             } catch(e) {
                 // Let it pass through and use the default behavior.
                 // Add debug logs here one a logger is added.
@@ -146,49 +243,18 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
             }
         }
 
-        const lastChar: string = value.substr(value.length - 1);
-
-        if (lastChar !== ",") {
-            return value;
-        }
-
-        return value.slice(0, -1);
+        // Handle other properties that don't need special formatting.
+        return (
+            <Table.Row key={ key }>
+                <Table.Cell className="key-cell">
+                    { t("console:manage.features.approvals.modals.approvalProperties." +`${ key }`) }
+                </Table.Cell>
+                <Table.Cell collapsing className="values-cell">
+                    <Text truncate>{ value.endsWith(",") ? value.slice(0, -1) : value }</Text>
+                </Table.Cell>
+            </Table.Row>
+        );
     };
-
-    /**
-     * Assignees table sub component.
-     *
-     * @param assignees - List of assignees.
-     * @returns - A table containing the list of assignees.
-     */
-    const assigneesTable = (assignees: { key: string, value: string }[]): JSX.Element => (
-        <Table celled compact className="edit-segment-table">
-            <Table.Header>
-                <Table.Row>
-                    <Table.HeaderCell>
-                        { t("common:type") }
-                    </Table.HeaderCell>
-                    <Table.HeaderCell>
-                        { t("common:assignee") }
-                    </Table.HeaderCell>
-                </Table.Row>
-            </Table.Header>
-            <Table.Body>
-                {
-                    assignees.map((assignee: { key: string, value: string }, i: number) => (
-                        <Table.Row key={ i }>
-                            <Table.Cell className="key-cell">
-                                { assignee.key }
-                            </Table.Cell>
-                            <Table.Cell className="values-cell">
-                                { assignee.value }
-                            </Table.Cell>
-                        </Table.Row>
-                    ))
-                }
-            </Table.Body>
-        </Table>
-    );
 
     /**
      * Properties table sub component.
@@ -200,18 +266,10 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
         <Table celled compact className="approval-tasks-table" verticalAlign="top">
             <Table.Body>
                 {
-                    properties.map((property: { key: string, value: string }, i: number) => (
+                    properties.map((property: { key: string, value: string }) => (
                         property.key && property.value
                             ? (
-                                <Table.Row key={ i }>
-                                    <Table.Cell className="key-cell">
-                                        { t("console:manage.features.approvals.modals.approvalProperties." +
-                                        `${ property.key }`) }
-                                    </Table.Cell>
-                                    <Table.Cell collapsing className="values-cell">
-                                        { cleanupPropertyValues(property.key, property.value) }
-                                    </Table.Cell>
-                                </Table.Row>
+                                populateProperties(property.key, property.value)
                             )
                             : null
                     )
@@ -244,33 +302,41 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                             { t("common:claim") }
                         </Button>
                     )
-                    : (
+                    : editingApproval?.taskStatus === ApprovalStatus.RESERVED
+                        ? (
+                            <Button
+                                default
+                                className="mb-1x"
+                                fluid={ isMobileViewport }
+                                onClick={ () => {
+                                    updateApprovalStatus(editingApproval.id, ApprovalStatus.RELEASE);
+                                    onCloseApprovalTaskModal();
+                                } }
+                            >
+                                { t("common:release") }
+                            </Button>
+                        )
+                        : null
+            }
+            {
+                editingApproval?.taskStatus != ApprovalStatus.BLOCKED
+                    ? (
                         <Button
-                            default
+                            primary
                             className="mb-1x"
                             fluid={ isMobileViewport }
                             onClick={ () => {
-                                updateApprovalStatus(editingApproval.id, ApprovalStatus.RELEASE);
+                                updateApprovalStatus(editingApproval.id, ApprovalStatus.APPROVE);
                                 onCloseApprovalTaskModal();
                             } }
+                            loading={ isSubmitting }
+                            disabled={ isSubmitting }
                         >
-                            { t("common:release") }
+                            { t("common:approve") }
                         </Button>
                     )
+                    : null
             }
-            <Button
-                primary
-                className="mb-1x"
-                fluid={ isMobileViewport }
-                onClick={ () => {
-                    updateApprovalStatus(editingApproval.id, ApprovalStatus.APPROVE);
-                    onCloseApprovalTaskModal();
-                } }
-                loading={ isSubmitting }
-                disabled={ isSubmitting }
-            >
-                { t("common:approve") }
-            </Button>
             <Button
                 negative
                 className="mb-1x"
@@ -315,7 +381,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                         <List.Content>
                             <Grid padded>
                                 <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 4 }>
+                                    <Grid.Column width={ 3 }>
                                         { t("common:createdOn") }
                                     </Grid.Column>
                                     <Grid.Column width={ 12 }>
@@ -336,7 +402,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                         <List.Content>
                             <Grid padded>
                                 <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 4 }>
+                                    <Grid.Column width={ 3 }>
                                         { t("common:description") }
                                     </Grid.Column>
                                     <Grid.Column width={ 12 }>
@@ -359,7 +425,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                         <List.Content>
                             <Grid padded>
                                 <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 4 }>
+                                    <Grid.Column width={ 3 }>
                                         { t("common:priority") }
                                     </Grid.Column>
                                     <Grid.Column width={ 12 }>
@@ -377,7 +443,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                         <List.Content>
                             <Grid padded>
                                 <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 4 }>
+                                    <Grid.Column width={ 3 }>
                                         { t("common:initiator") }
                                     </Grid.Column>
                                     <Grid.Column width={ 12 }>
@@ -395,7 +461,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                         <List.Content>
                             <Grid padded>
                                 <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 4 }>
+                                    <Grid.Column width={ 3 }>
                                         { t("common:approvalStatus") }
                                     </Grid.Column>
                                     <Grid.Column width={ 12 }>
@@ -409,33 +475,6 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                     </Grid.Column>
                 </Grid.Row>
                 {
-                    approval?.assignees
-                        ? (
-                            <Grid.Row>
-                                <Grid.Column>
-                                    <List.Content>
-                                        <Grid padded>
-                                            <Grid.Row columns={ 2 }>
-                                                <Grid.Column width={ 4 }>
-                                                    { t("common:assignees") }
-                                                </Grid.Column>
-                                                <Grid.Column mobile={ 16 } computer={ 12 }>
-                                                    <List.Description>
-                                                        <Media lessThan="tablet">
-                                                            <Divider hidden />
-                                                        </Media>
-                                                        { assigneesTable(approval?.assignees) }
-                                                    </List.Description>
-                                                </Grid.Column>
-                                            </Grid.Row>
-                                        </Grid>
-                                    </List.Content>
-                                </Grid.Column>
-                            </Grid.Row>
-                        )
-                        : null
-                }
-                {
                     approval?.properties
                         ? (
                             <Grid.Row>
@@ -443,7 +482,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                     <List.Content>
                                         <Grid padded>
                                             <Grid.Row columns={ 2 }>
-                                                <Grid.Column width={ 4 }>
+                                                <Grid.Column width={ 3 }>
                                                     { t("common:properties") }
                                                 </Grid.Column>
                                                 <Grid.Column mobile={ 16 } computer={ 12 }>

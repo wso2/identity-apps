@@ -50,6 +50,7 @@ import {
     Claim,
     ClaimDataType,
     ClaimDialect,
+    ClaimInputFormat,
     ExternalClaim,
     ProfileSchemaInterface,
     SharedProfileValueResolvingMethod,
@@ -142,6 +143,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const [ hasMapping, setHasMapping ] = useState<boolean>(false);
     const [ mappingChecked, setMappingChecked ] = useState<boolean>(false);
     const [ dataType, setDataType ] = useState<string>(claim?.dataType || "");
+    const [ inputType, setInputType ] = useState<string>(claim?.inputFormat?.inputType || ClaimInputFormat.TEXT_INPUT);
+    const [ multiValued, setMultiValued ] = useState<boolean>(claim?.multiValued || false);
     const [ subAttributes, setSubAttributes ] = useState<string[]>([]);
     const [ canonicalValues, setCanonicalValues ] = useState<KeyValue[]>();
 
@@ -182,6 +185,14 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const { data: validationData } = useValidationConfigData();
 
     const { UIConfig } = useUIConfig();
+
+    const isAgentAttribute: boolean = useMemo(() => {
+        const agentAttributeProperty: Property = claim?.properties?.find(
+            (property: Property) => property.key === "isAgentClaim"
+        );
+
+        return agentAttributeProperty?.value === "true";
+    }, [ claim ]);
 
     const sharedProfileValueResolvingMethodOptions: DropDownItemInterface[] = [
         {
@@ -303,6 +314,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             setDataType(claim?.dataType || ClaimDataType.STRING);
         }
 
+        setInputType(claim?.inputFormat?.inputType || ClaimInputFormat.TEXT_INPUT);
         setIsConsoleRequired(claim?.profiles?.console?.required ?? claim?.required);
         setIsEndUserRequired(claim?.profiles?.endUser?.required ?? claim?.required);
         setIsSelfRegistrationRequired(claim?.profiles?.selfRegistration?.required ?? claim?.required);
@@ -501,7 +513,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     // Temporary fix to check system claims and make them readonly
     const isReadOnly: boolean = useMemo(() => {
-        if (hideSpecialClaims) {
+        if (hideSpecialClaims || isAgentAttribute) {
             return true;
         } else {
             return !hasAttributeUpdatePermissions;
@@ -677,8 +689,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     : claim?.displayName,
                 displayOrder: attributeConfig.editAttributes.getDisplayOrder(
                     claim.displayOrder, values.displayOrder?.toString()),
-                multiValued: values?.multiValued !== undefined
-                    ? !!values.multiValued : claim?.multiValued,
+                inputFormat: inputType ? { inputType: inputType } : claim?.inputFormat,
+                multiValued: multiValued,
                 properties: claim?.properties,
                 readOnly: values?.readOnly !== undefined
                     ? !!values.readOnly
@@ -725,8 +737,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     : claim?.displayName,
                 displayOrder: attributeConfig.editAttributes.getDisplayOrder(
                     claim.displayOrder, values.displayOrder?.toString()),
-                multiValued: values?.multiValued !== undefined
-                    ? !!values.multiValued : claim?.multiValued,
+                inputFormat: inputType ? { inputType: inputType } : claim?.inputFormat,
+                multiValued: multiValued,
                 profiles: {
                     console: {
                         readOnly: values?.consoleReadOnly !== undefined ?
@@ -891,6 +903,93 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 </TableCell>
             </TableRow>
         );
+    };
+
+    const setDefaultInputTypeForDataType = (dataType: ClaimDataType, multiValued: boolean): void => {
+
+        switch (dataType) {
+            case ClaimDataType.OPTIONS:
+                setInputType(multiValued ? ClaimInputFormat.MULTI_SELECT_DROPDOWN : ClaimInputFormat.DROPDOWN);
+
+                break;
+            case ClaimDataType.BOOLEAN:
+                setInputType(ClaimInputFormat.CHECKBOX);
+
+                break;
+            default:
+                setInputType(ClaimInputFormat.TEXT_INPUT);
+        }
+    };
+
+    const resolveInputFormatOptions = (dataType: ClaimDataType, multiValued: boolean): DropDownItemInterface[] => {
+
+        const textInputOption: DropDownItemInterface[] = [
+            {
+                text: t("claims:local.forms.inputFormat.options.textInput"),
+                value: ClaimInputFormat.TEXT_INPUT
+            }
+        ];
+
+        if (dataType === ClaimDataType.DATE_TIME) {
+            return [
+                ...textInputOption,
+                {
+                    text: t("claims:local.forms.inputFormat.options.datePicker"),
+                    value: ClaimInputFormat.DATE_PICKER
+                }
+            ];
+        }
+
+        if (dataType === ClaimDataType.OPTIONS) {
+            if (multiValued) {
+                return [
+                    {
+                        text: t("claims:local.forms.inputFormat.options.multiSelectDropdown"),
+                        value: ClaimInputFormat.MULTI_SELECT_DROPDOWN
+                    },
+                    {
+                        text: t("claims:local.forms.inputFormat.options.checkBoxGroup"),
+                        value: ClaimInputFormat.CHECKBOX_GROUP
+                    }
+                ];
+            }
+
+            return [
+                {
+                    text: t("claims:local.forms.inputFormat.options.radioGroup"),
+                    value: ClaimInputFormat.RADIO_GROUP
+                },
+                {
+                    text: t("claims:local.forms.inputFormat.options.dropdown"),
+                    value: ClaimInputFormat.DROPDOWN
+                }
+            ];
+        }
+
+        if (dataType === ClaimDataType.INTEGER) {
+            return [
+                ...textInputOption,
+                {
+                    text: t("claims:local.forms.inputFormat.options.numberInput"),
+                    value: ClaimInputFormat.NUMBER_INPUT
+                }
+            ];
+        }
+
+        if (dataType === ClaimDataType.BOOLEAN) {
+            return [
+                {
+                    text: t("claims:local.forms.inputFormat.options.checkbox"),
+                    value: ClaimInputFormat.CHECKBOX
+                },
+                {
+                    text: t("claims:local.forms.inputFormat.options.toggle"),
+                    value: ClaimInputFormat.TOGGLE
+                }
+            ];
+        }
+
+        return textInputOption;
     };
 
     const resolveAttributeRequiredRow = (): ReactElement => {
@@ -1124,6 +1223,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             setSubAttributes([]);
                             setCanonicalValues([]);
                             setDataType(data.value);
+                            setDefaultInputTypeForDataType(data.value as ClaimDataType, multiValued);
+                            if (data.value === ClaimDataType.COMPLEX || data.value === ClaimDataType.BOOLEAN) {
+                                setMultiValued(false);
+                            }
                         } }
                     />
 
@@ -1144,6 +1247,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     }
                                 } }
                                 data-testid={ `${testId}-form-sub-attributes-dropdown` }
+                                disabled={ isSubOrganization() || isSystemClaim || isReadOnly }
                                 search
                             />
                             <div className="sub-attribute-list">
@@ -1152,21 +1256,23 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                         className="sub-attribute-row"
                                         key={ index }>
                                         <span>{ attribute }</span>
-                                        <IconButton
-                                            className="sub-attribute-delete-btn"
-                                            disabled={ isReadOnly }
-                                            onClick={ () => {
-                                                setSubAttributes(
-                                                    subAttributes.filter(
-                                                        (item: string) => item !== attribute
-                                                    )
-                                                );
-                                            } }
-                                            data-componentid={ `${testId}-delete-sub-attribute-${index}` }
-                                            style={ { marginLeft: "auto" } }
-                                        >
-                                            <TrashIcon />
-                                        </IconButton>
+                                        { !(isSubOrganization() || isSystemClaim || isReadOnly) && (
+                                            <IconButton
+                                                className="sub-attribute-delete-btn"
+                                                disabled={ isReadOnly }
+                                                onClick={ () => {
+                                                    setSubAttributes(
+                                                        subAttributes.filter(
+                                                            (item: string) => item !== attribute
+                                                        )
+                                                    );
+                                                } }
+                                                data-componentid={ `${testId}-delete-sub-attribute-${index}` }
+                                                style={ { marginLeft: "auto" } }
+                                            >
+                                                <TrashIcon />
+                                            </IconButton>
+                                        ) }
                                     </div>
                                 )) }
                             </div>
@@ -1191,23 +1297,48 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                         ({ key: item.key, value: item.value })));
                                 } }
                                 data-testid={ `${testId}-form-canonical-values-dynamic-field` }
-                                readOnly={ isReadOnly }
+                                readOnly={ isSubOrganization() || isReadOnly }
                             />
                         </>
                     ) }
 
-                    { dataType !== ClaimDataType.BOOLEAN && (
-                        <Field.Checkbox
-                            ariaLabel={ t("claims:local.forms.multiValued.label") }
-                            name="multiValued"
-                            label={ t("claims:local.forms.multiValued.label") }
-                            required={ false }
-                            defaultValue={ claim?.multiValued }
-                            data-testid={ `${testId}-form-multi-valued-input` }
-                            hint={ isSystemClaim
-                                ? t("claims:local.forms.multiValuedSystemClaimHint")
-                                : t("claims:local.forms.multiValuedHint") }
-                            readOnly={ isSubOrganization() || isSystemClaim || isReadOnly }
+                    <Field.Checkbox
+                        ariaLabel={ t("claims:local.forms.multiValued.label") }
+                        name="multiValued"
+                        label={ t("claims:local.forms.multiValued.label") }
+                        required={ false }
+                        checked={ multiValued }
+                        data-componentid={ `${testId}-form-multi-valued-input` }
+                        hint={ isSystemClaim
+                            ? t("claims:local.forms.multiValuedSystemClaimHint")
+                            : t("claims:local.forms.multiValuedHint") }
+                        readOnly={ isSubOrganization() || isSystemClaim || isReadOnly
+                            || dataType === ClaimDataType.COMPLEX || dataType === ClaimDataType.BOOLEAN
+                        }
+                        listen={ (checked: boolean) => {
+                            setMultiValued(checked);
+                            if (dataType === ClaimDataType.OPTIONS) {
+                                setDefaultInputTypeForDataType(dataType as ClaimDataType, checked);
+                            }
+                        } }
+                    />
+
+                    { dataType !== ClaimDataType.COMPLEX && (
+                        <Field.Dropdown
+                            ariaLabel={ t("claims:local.forms.inputFormat.label") }
+                            name="inputFormat"
+                            label={ t("claims:local.forms.inputFormat.label") }
+                            data-componentid={ `${testId}-form-input-format-input` }
+                            hint={ t("claims:local.forms.inputFormat.hint") }
+                            disabled={ isSubOrganization() || isReadOnly }
+                            options={ resolveInputFormatOptions(dataType as ClaimDataType, multiValued) }
+                            value={ inputType }
+                            onChange={ (
+                                event: React.SyntheticEvent<HTMLElement, Event>,
+                                data: { value: string }
+                            ) => {
+                                setInputType(data.value);
+                            } }
                         />
                     ) }
                     { !attributeConfig.localAttributes.createWizard.showRegularExpression && !hideSpecialClaims
@@ -1249,7 +1380,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     {
                         claim && UIConfig?.isClaimUniquenessValidationEnabled
                             && !hideSpecialClaims
-                            && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI) && (
+                            && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
+                            && !isAgentAttribute && (
                             <Field.Dropdown
                                 ariaLabel="uniqueness-scope-dropdown"
                                 name={ ClaimManagementConstants.UNIQUENESS_SCOPE_PROPERTY_NAME }
@@ -1277,7 +1409,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     }
                     { !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI) && mappingChecked
                         ? (
-                            !hideSpecialClaims && !hasMapping &&
+                            !hideSpecialClaims && !hasMapping && !isAgentAttribute &&
                             (<Grid.Row columns={ 1 } >
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                                     <Message
@@ -1453,7 +1585,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     {
                         // Hides on groups claim
                         !isDistinctAttributeProfilesDisabled && claim && !hideSpecialClaims && mappingChecked
-                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI && (
+                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI &&
+                            !isAgentAttribute && (
                             <>
                                 <Divider />
                                 <Heading as="h4">

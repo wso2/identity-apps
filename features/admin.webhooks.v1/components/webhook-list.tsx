@@ -35,8 +35,9 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Header, Icon, Label, SemanticCOLORS } from "semantic-ui-react";
+import { Header, Icon, Label } from "semantic-ui-react";
 import { WebhookListInterface, WebhookListItemInterface, WebhookStatus } from "../models/webhooks";
+import "./webhook-list.scss";
 
 export interface WebhookListPropsInterface extends IdentifiableComponentInterface {
     /**
@@ -56,10 +57,14 @@ export interface WebhookListPropsInterface extends IdentifiableComponentInterfac
      */
     list: WebhookListInterface;
     /**
+     * Specifies whether the WebSub Hub adapter mode is enabled.
+     */
+    isWebSubHubAdapterMode?: boolean;
+    /**
      * Callback for webhook deletion.
      */
     onWebhookDelete: (webhook: WebhookListItemInterface) => void;
-    /**∏
+    /**
      * Callback for webhook edit.
      */
     onWebhookEdit: (webhook: WebhookListItemInterface) => void;
@@ -86,6 +91,7 @@ export interface WebhookListPropsInterface extends IdentifiableComponentInterfac
 const WebhookList: FunctionComponent<WebhookListPropsInterface> = ({
     isLoading,
     list,
+    isWebSubHubAdapterMode,
     onWebhookDelete,
     onWebhookEdit,
     onEmptyListPlaceholderActionClick,
@@ -175,18 +181,17 @@ const WebhookList: FunctionComponent<WebhookListPropsInterface> = ({
                 id: "status",
                 key: "status",
                 render: (webhook: WebhookListItemInterface): ReactNode => {
-                    const isActive: boolean = webhook.status === WebhookStatus.ACTIVE;
-                    const labelColor: SemanticCOLORS = isActive ? "green" : "grey";
+                    const isActive: boolean =
+                        webhook.status === WebhookStatus.ACTIVE || webhook.status === WebhookStatus.PARTIALLY_ACTIVE;
                     const labelText: string = isActive
                         ? t("webhooks:common.status.active")
                         : t("webhooks:common.status.inactive");
 
                     return (
                         <Label
-                            color={ labelColor }
                             size="mini"
-                            className="compact-label"
-                            style={ { minWidth: "60px", textAlign: "center" } }
+                            color={ isActive ? undefined : "grey" }
+                            className={ `compact-label ${isActive ? "webhook-status-label active" : ""}` }
                         >
                             { labelText }
                         </Label>
@@ -224,9 +229,23 @@ const WebhookList: FunctionComponent<WebhookListPropsInterface> = ({
             renderer: "semantic-icon"
         });
 
+        const isDeleteEnabled = (webhook: WebhookListItemInterface): boolean => {
+            if (!isWebSubHubAdapterMode) {
+
+                return true;
+            }
+
+            return webhook?.status === WebhookStatus.INACTIVE || webhook?.status === WebhookStatus.PARTIALLY_INACTIVE;
+        };
+
         if (hasWebhookDeletePermissions) {
             actions.push({
                 "data-componentid": `${_componentId}-item-delete-button`,
+                hidden: (item: Record<string, any>): boolean => {
+                    const webhook: WebhookListItemInterface = item as WebhookListItemInterface;
+
+                    return !isDeleteEnabled(webhook);
+                },
                 icon: () => "trash alternate",
                 onClick: (e: React.SyntheticEvent<Element, Event>, item: Record<string, any>): void => {
                     const webhook: WebhookListItemInterface = item as WebhookListItemInterface;
@@ -267,7 +286,7 @@ const WebhookList: FunctionComponent<WebhookListPropsInterface> = ({
             );
         }
 
-        if (list?.totalResults === 0) {
+        if (list?.totalResults === 0 && !isLoading) {
             return (
                 <EmptyPlaceholder
                     action={

@@ -1,5 +1,78 @@
 # @wso2is/admin.branding.v1
 
+## 2.32.0
+
+### Minor Changes
+
+- [#8588](https://github.com/wso2/identity-apps/pull/8588) [`8294cbfd28e252ebb145a153d0e74106515a28b8`](https://github.com/wso2/identity-apps/commit/8294cbfd28e252ebb145a153d0e74106515a28b8) Thanks [@brionmario](https://github.com/brionmario)! - Extension model for i18n in Console & My Account
+
+### Patch Changes
+
+- Updated dependencies [[`8294cbfd28e252ebb145a153d0e74106515a28b8`](https://github.com/wso2/identity-apps/commit/8294cbfd28e252ebb145a153d0e74106515a28b8)]:
+  - @wso2is/admin.core.v1@2.47.0
+  - @wso2is/core@2.11.0
+  - @wso2is/i18n@2.26.0
+
+## 2.31.6
+
+### Patch Changes
+
+- Updated dependencies [[`e4bacc6f7fabba38a995428ea0b0bb785d2f1d35`](https://github.com/wso2/identity-apps/commit/e4bacc6f7fabba38a995428ea0b0bb785d2f1d35)]:
+  - @wso2is/admin.flows.v1@1.0.15
+  - @wso2is/admin.core.v1@2.46.26
+  - @wso2is/admin.server-configurations.v1@2.35.9
+
+## 2.31.5
+
+### Patch Changes
+
+- Updated dependencies [[`32f809bf44aa79cd7c87144466915fc9c6438ca5`](https://github.com/wso2/identity-apps/commit/32f809bf44aa79cd7c87144466915fc9c6438ca5), [`79d24deec910ce3f4628decedd65c2f3bcddddfe`](https://github.com/wso2/identity-apps/commit/79d24deec910ce3f4628decedd65c2f3bcddddfe)]:
+  - @wso2is/i18n@2.25.1
+  - @wso2is/admin.flows.v1@1.0.14
+  - @wso2is/admin.core.v1@2.46.25
+  - @wso2is/admin.server-configurations.v1@2.35.8
+
+## 2.31.4
+
+### Patch Changes
+
+- [#8579](https://github.com/wso2/identity-apps/pull/8579) [`7b50f9a554ba1672a0f5b94f918c3fd03ecac48e`](https://github.com/wso2/identity-apps/commit/7b50f9a554ba1672a0f5b94f918c3fd03ecac48e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Replace dynamic portal configuration with flow configuration API
+
+- Updated dependencies [[`7b50f9a554ba1672a0f5b94f918c3fd03ecac48e`](https://github.com/wso2/identity-apps/commit/7b50f9a554ba1672a0f5b94f918c3fd03ecac48e)]:
+  - @wso2is/admin.server-configurations.v1@2.35.7
+  - @wso2is/admin.core.v1@2.46.24
+
+## 2.31.3
+
+### Patch Changes
+
+- [#8427](https://github.com/wso2/identity-apps/pull/8427) [`fde0f35703d62c93d29001a601b6ed29823437cc`](https://github.com/wso2/identity-apps/commit/fde0f35703d62c93d29001a601b6ed29823437cc) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enhance the styling of the custom layout editor and add the feature status label
+
+- Updated dependencies [[`f047e10bf194d35f2f79c7eda0a63a31ddc57a46`](https://github.com/wso2/identity-apps/commit/f047e10bf194d35f2f79c7eda0a63a31ddc57a46)]:
+  - @wso2is/i18n@2.24.8
+
+## 2.31.2
+
+### Patch Changes
+
+- [#8398](https://github.com/wso2/identity-apps/pull/8398) [`6c44d0680d13bfdeb99f03d412516d5df9291984`](https://github.com/wso2/identity-apps/commit/6c44d0680d13bfdeb99f03d412516d5df9291984) Thanks [@nilasini](https://github.com/nilasini)! - Add recovery portal URL support in branding
+
+- Updated dependencies [[`6c44d0680d13bfdeb99f03d412516d5df9291984`](https://github.com/wso2/identity-apps/commit/6c44d0680d13bfdeb99f03d412516d5df9291984)]:
+  - @wso2is/common.branding.v1@2.28.1
+
+## 2.31.1
+
+### Patch Changes
+
+- [#8364](https://github.com/wso2/identity-apps/pull/8364) [`581fda3c98828df995f28ea828585e2a760e73b0`](https://github.com/wso2/identity-apps/commit/581fda3c98828df995f28ea828585e2a760e73b0) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the feature status to the custom page editor feature
+
+- Updated dependencies [[`581fda3c98828df995f28ea828585e2a760e73b0`](https://github.com/wso2/identity-apps/commit/581fda3c98828df995f28ea828585e2a760e73b0)]:
+  - @wso2is/admin.core.v1@2.46.1
+  - @wso2is/admin.feature-gate.v1@1.7.1
+  - @wso2is/admin.extensions.v1@2.39.1
+  - @wso2is/access-control@3.4.1
+  - @wso2is/i18n@2.24.1
+
 ## 2.31.0
 
 ### Minor Changes

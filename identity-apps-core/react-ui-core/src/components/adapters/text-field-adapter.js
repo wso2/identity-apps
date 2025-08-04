@@ -23,11 +23,12 @@ import useFieldValidation from "../../hooks/use-field-validations";
 import { useTranslations } from "../../hooks/use-translations";
 import { resolveElementText } from "../../utils/i18n-utils";
 import { getInputIconClass } from "../../utils/ui-utils";
+import Hint from "../hint";
 import ValidationError from "../validation-error";
 
 const TextFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHandler }) => {
 
-    const { identifier, required, label, placeholder, validations } = component.config;
+    const { identifier, required, label, placeholder, validations, hint } = component.config;
 
     const { translations } = useTranslations();
     const { fieldErrors, validate } = useFieldValidation(validations, value);
@@ -58,6 +59,9 @@ const TextFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHa
                 name={ identifier }
                 icon={ getInputIconClass(identifier) }
             />
+            {
+                hint && ( <Hint hint={ hint } /> )
+            }
             {
                 <ValidationError
                     name={ identifier }

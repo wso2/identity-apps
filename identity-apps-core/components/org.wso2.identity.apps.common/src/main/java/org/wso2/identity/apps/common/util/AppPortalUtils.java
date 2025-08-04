@@ -137,18 +137,24 @@ public class AppPortalUtils {
             StringUtils.isNotEmpty(IdentityUtil.getProperty(CONSOLE_PORTAL_PATH))) {
             portalPath = IdentityUtil.getProperty(CONSOLE_PORTAL_PATH);
         }
-        String consolePortalPath = portalPath;
+        String consolePortalPathForMyAccount = portalPath;
         if (MYACCOUNT_APP.equals(applicationName) &&
             StringUtils.isNotEmpty(IdentityUtil.getProperty(MYACCOUNT_PORTAL_PATH))) {
             portalPath = IdentityUtil.getProperty(MYACCOUNT_PORTAL_PATH);
-            consolePortalPath = IdentityUtil.getProperty(CONSOLE_PORTAL_PATH);
+            consolePortalPathForMyAccount = IdentityUtil.getProperty(CONSOLE_PORTAL_PATH);
         }
         if (!portalPath.startsWith("/")) {
             portalPath = "/" + portalPath;
-            consolePortalPath = "/" + consolePortalPath;
+            consolePortalPathForMyAccount = "/" + consolePortalPathForMyAccount;
+        }
+        if (consolePortalPathForMyAccount.contains("(\\?fidp=PlatformIDP)?$")) {
+            // This is needed to create impersonation callback URL regex.
+            // Do not use this to create console callback URL.
+            consolePortalPathForMyAccount = consolePortalPathForMyAccount.replace("(\\?fidp=PlatformIDP)?$", "");
         }
         String callbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
-        String consoleCallbackUrl = IdentityUtil.getServerURL(consolePortalPath, true, true);
+        String consoleCallbackUrlForMyAccount = IdentityUtil.getServerURL(consolePortalPathForMyAccount,
+            true, true);
         String appendedConsoleCallBackURLRegex = StringUtils.EMPTY;
         boolean isUserSessionImpersonationEnabled = Boolean.parseBoolean(IdentityUtil
             .getProperty(USER_SESSION_IMPERSONATION));
@@ -159,11 +165,13 @@ public class AppPortalUtils {
 
             // Add console url when impersonation is enabled.
             if (isUserSessionImpersonationEnabled && MYACCOUNT_APP.equals(applicationName)) {
-                consoleCallbackUrl = ApplicationMgtUtil.replaceUrlOriginWithPlaceholders(consoleCallbackUrl);
-                consoleCallbackUrl = ApplicationMgtUtil.resolveOriginUrlFromPlaceholders(consoleCallbackUrl,
-                    CONSOLE_APP);
-                appendedConsoleCallBackURLRegex = "|" + consoleCallbackUrl.replace(
-                    consolePortalPath, portalPath + "/resources/users/init-impersonate.html");
+                consoleCallbackUrlForMyAccount = ApplicationMgtUtil.replaceUrlOriginWithPlaceholders(
+                    consoleCallbackUrlForMyAccount);
+                consoleCallbackUrlForMyAccount = ApplicationMgtUtil.resolveOriginUrlFromPlaceholders(
+                    consoleCallbackUrlForMyAccount, CONSOLE_APP);
+                appendedConsoleCallBackURLRegex = "|" + consoleCallbackUrlForMyAccount.replace(
+                    consolePortalPathForMyAccount,
+                    consolePortalPathForMyAccount + "/resources/users/init-impersonate.html");
             }
         } catch (URLBuilderException e) {
             throw new IdentityOAuthAdminException("Server encountered an error while building callback URL with " +

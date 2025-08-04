@@ -154,6 +154,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
             if (action && actionTypeApiPath === ActionsConstants.PRE_UPDATE_PASSWORD_API_PATH ) {
                 return {
                     ...actionCommonInitialValues,
+                    attributes: (action as PreUpdatePasswordActionResponseInterface)?.attributes,
                     certificate: (action as PreUpdatePasswordActionResponseInterface)?.passwordSharing.certificate
                         || "",
                     passwordSharing: (action as PreUpdatePasswordActionResponseInterface)?.passwordSharing.format
@@ -367,9 +368,9 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                 toggle
                 onChange={ handleToggle }
                 checked={ isActive }
-                readOnly={ !hasActionUpdatePermissions }
+                readOnly={ !hasActionUpdatePermissions || isSubmitting }
                 data-componentId={ `${ _componentId }-${ actionTypeApiPath }-enable-toggle` }
-                disabled={ !hasActionUpdatePermissions }
+                disabled={ !hasActionUpdatePermissions || isSubmitting }
             />
         );
     };

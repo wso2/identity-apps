@@ -30,7 +30,7 @@
         margin-bottom: 24px;
 
         .MuiFormControlLabel-root {
-            align-items: flex-start !important;
+            align-items: flex-start;
             margin: 0;
             width: 100%;
         }
@@ -40,6 +40,7 @@
                 padding-top: 0;
                 margin-top: 0;
                 line-height: 1;
+                width: 100%;
             }
         }
 
@@ -48,24 +49,60 @@
             margin: 0;
             display: flex;
             align-items: flex-start;
+            width: 100%;
 
             .MuiCheckbox-root {
-                padding: 0 !important;
-                margin: 0 !important;
-                margin-right: 8px !important;
+                padding: 0;
+                margin: 0;
+                margin-right: 8px;
+                flex-shrink: 0;
             }
         }
 
         .checkbox-label {
-            flex: 1;
-            margin-top: 0;
-            padding-top: 0;
+            width: 100%;
 
-            .channel-name {
-                line-height: 1.2;
-                margin: 0;
-                padding: 0;
-                font-size: 14px;
+            .channel-name-container {
+                display: flex;
+                align-items: flex-start;
+                gap: 8px;
+                margin-bottom: 4px;
+                width: 100%;
+                min-height: 1.2em;
+
+                .channel-name {
+                    line-height: 1.2;
+                    margin: 0;
+                    padding: 0;
+                    font-size: 14px;
+                    flex: 1;
+                    min-width: 0;
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
+                    hyphens: auto;
+                }
+
+                .channel-status-inline {
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                    font-style: italic;
+                    font-size: 0.875rem;
+                    flex-shrink: 0;
+                    white-space: nowrap;
+
+                    &.success {
+                        color: var(--oxygen-palette-success-main);
+                    }
+
+                    &.warning {
+                        color: var(--oxygen-palette-success-main);
+                    }
+
+                    .status-icon {
+                        padding: 1px;
+                    }
+                }
             }
 
             .channel-description {
@@ -74,14 +111,20 @@
                 line-height: 1.4;
                 margin-top: 4px;
                 word-wrap: break-word;
+                overflow-wrap: break-word;
                 hyphens: auto;
+                width: 100%;
             }
         }
-    }
 
-    .channel-grid {
-        .MuiGrid-container {
-            gap: 24px;
+        .channel-grid {
+            .MuiGrid-container {
+                gap: 24px;
+            }
+
+            .MuiGrid-item {
+                min-width: 0;
+            }
         }
     }
 }

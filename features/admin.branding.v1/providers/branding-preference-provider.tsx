@@ -26,6 +26,7 @@ import {
     BrandingPreferenceAPIResponseInterface,
     BrandingPreferenceTypes,
     BrandingSubFeatures,
+    PredefinedLayouts,
     PreviewScreenType,
     PreviewScreenVariationType
 } from "@wso2is/common.branding.v1/models/branding-preferences";
@@ -61,6 +62,7 @@ import {
     CustomTextPreferenceInterface
 } from "../models/custom-text-preference";
 import BrandingPreferenceMigrationClient from "../utils/branding-preference-migration-client";
+import { BrandingPreferenceUtils } from "../utils/branding-preference-utils";
 import processCustomTextTemplateLiterals from "../utils/process-custom-text-template-literals";
 
 /**
@@ -98,6 +100,8 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
         (state: AppState) => state?.organization?.organization
     );
     const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
+    const customContentMaxFileLimit: number = useSelector(
+        (state: AppState) => state?.config?.ui?.customContent?.maxFileSize);
 
     const [ selectedScreen, setSelectedPreviewScreen ] = useState<PreviewScreenType>(PreviewScreenType.COMMON);
     const [ selectedScreenVariation, setSelectedPreviewScreenVariation ]
@@ -286,12 +290,27 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     ): void => {
         if (!brandingPreference) return;
 
+        if (!BrandingPreferenceUtils.isContentWithinMaxSize(updatedContent?.html, customContentMaxFileLimit)
+            || !BrandingPreferenceUtils.isContentWithinMaxSize(updatedContent?.css, customContentMaxFileLimit)
+            || !BrandingPreferenceUtils.isContentWithinMaxSize(updatedContent?.js, customContentMaxFileLimit)) {
+
+            dispatch(addAlert<AlertInterface>({
+                description: t("branding:customPageEditor.notifications.errorContentSizeLimit.description"),
+                level: AlertLevels.ERROR,
+                message: t("branding:customPageEditor.notifications.errorContentSizeLimit.message")
+            }));
+            callback();
+
+            return;
+        }
+
         const updated: BrandingPreferenceAPIResponseInterface = {
             ...brandingPreference,
             preference: {
                 ...brandingPreference.preference,
                 layout: {
                     ...brandingPreference.preference.layout,
+                    activeLayout: PredefinedLayouts.CUSTOM,
                     content: {
                         ...brandingPreference.preference.layout.content,
                         ...updatedContent
@@ -497,7 +516,31 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 customTextScreenMeta,
                 getLocales: (requestingView: BrandingSubFeatures): SupportedLanguagesMeta => {
                     if (requestingView === BrandingSubFeatures.CUSTOM_TEXT) {
-                        return pick(supportedI18nLanguages, customTextMeta?.locales);
+                        // If all locales are in supportedI18nLanguages, return the picked set
+                        const missingLocales: string[] = (customTextMeta?.locales ?? []).filter(
+                            (locale: string) => !supportedI18nLanguages[locale]
+                        );
+
+                        if (missingLocales.length === 0) {
+                            return pick(supportedI18nLanguages, customTextMeta?.locales);
+                        }
+
+                        // Otherwise, return a derived SupportedLanguagesMeta for all locales
+                        const derived: SupportedLanguagesMeta = {};
+
+                        (customTextMeta?.locales ?? []).forEach((locale: string) => {
+                            if (supportedI18nLanguages[locale]) {
+                                derived[locale] = supportedI18nLanguages[locale];
+                            } else {
+                                derived[locale] = {
+                                    code: locale,
+                                    name: locale,
+                                    namespaces: []
+                                };
+                            }
+                        });
+
+                        return derived;
                     }
 
                     return null;

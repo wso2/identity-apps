@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -171,6 +171,11 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
     const [ deletingOrganization, setDeletingOrganization ] = useState<OrganizationInterface>(undefined);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    const isOrgHandleFeatureEnabled: boolean = isFeatureEnabled(
+        featureConfig.organizations,
+        "organizations.orgHandle"
+    );
 
     /**
      * Redirects to the organizations edit page when the edit button is clicked.
@@ -352,7 +357,17 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                     className="truncate ellipsis"
                                     data-componentid={ `${ componentId }-item-sub-heading` }
                                 >
-                                    Organization Id:<Label size="tiny">{ organization.id }</Label>
+                                    {
+                                        isOrgHandleFeatureEnabled
+                                            ? (
+                                                <>Organization Handle:
+                                                    <Label size="tiny">{ organization.orgHandle }</Label>
+                                                </>
+                                            )
+                                            : (
+                                                <>Organization Id:<Label size="tiny">{ organization.id }</Label></>
+                                            )
+                                    }
                                 </Header.Subheader>
                             </Header.Content>
                         </Header>
@@ -488,7 +503,9 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 <EmptyPlaceholder
                     className={ !isRenderedOnPortal ? "list-placeholder mr-0" : "" }
                     action={
-                        onEmptyListPlaceholderActionClick && (
+                        isFeatureEnabled(featureConfig.organizations,
+                            OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_CREATE"))
+                        && onEmptyListPlaceholderActionClick && (
                             <Show when={ featureConfig?.organizations?.scopes?.create }>
                                 <PrimaryButton
                                     disabled={ parentOrganization?.status === "DISABLED" }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,8 +28,6 @@ export class ProfileUtils {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
-     * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
@@ -37,19 +35,19 @@ export class ProfileUtils {
     /**
      * Builds the Gravatar URL.
      *
-     * @param {string} emailAddress - Gravatar qualified email address.
-     * @param {number} size - Size of the image from 1 up to 2048.
-     * @param {string} defaultImage - Custom default fallback image URL.
-     * @param {GravatarFallbackTypes} fallback - Built in fallback strategy.
-     * @param {boolean} forceDefault - Forcefully use the fallback image.
+     * @param emailAddress - Gravatar qualified email address.
+     * @param size - Size of the image from 1 up to 2048.
+     * @param defaultImage - Custom default fallback image URL.
+     * @param fallback - Built in fallback strategy.
+     * @param forceDefault - Forcefully use the fallback image.
      * @see {@link https://en.gravatar.com/site/implement/images/}
-     * @return {string} Gravatar Image URL.
+     * @returns - Gravatar Image URL.
      */
     public static buildGravatarURL(emailAddress: string,
-                                   size?: number,
-                                   defaultImage?: string,
-                                   fallback: GravatarFallbackTypes = "404",
-                                   forceDefault?: boolean): string {
+        size?: number,
+        defaultImage?: string,
+        fallback: GravatarFallbackTypes = "404",
+        forceDefault?: boolean): string {
 
         const URL: string = UIConstants.GRAVATAR_URL + "/avatar/" + CryptoUtils.MD5Hash(emailAddress);
         const params: string[] = [];
@@ -76,12 +74,12 @@ export class ProfileUtils {
      * The returned iterable will have all the schema attributes in a flat structure so that
      * you can just iterate through them to display them.
      *
-     * @param {ProfileSchemaInterface[]} schemas - Array of Profile schemas
-     * @param {string} parentSchemaName - Name of the parent attribute.
-     * @return {ProfileSchemaInterface[]}
+     * @param schemas - Array of Profile schemas
+     * @param parentSchemaName - Name of the parent attribute.
+     * @returns - Array of Profile schemas.
      */
     public static flattenSchemas(schemas: ProfileSchemaInterface[],
-                                 parentSchemaName?: string): ProfileSchemaInterface[] {
+        parentSchemaName?: string, schemaId?: string): ProfileSchemaInterface[] {
 
         const tempSchemas: ProfileSchemaInterface[] = [];
 
@@ -101,12 +99,17 @@ export class ProfileUtils {
                  * If the schema has sub attributes, then this function will be recursively called.
                  * The returned attributes are pushed into the `tempSchemas` array.
                  */
-                tempSchemas.push(...ProfileUtils.flattenSchemas(schema.subAttributes, schema.name));
+                tempSchemas.push(...ProfileUtils.flattenSchemas(schema.subAttributes, schema.name, schema.schemaId));
             } else {
-                const tempSchema = { ...schema };
+                const tempSchema: ProfileSchemaInterface = { ...schema };
 
                 if (parentSchemaName) {
                     tempSchema.name = parentSchemaName + "." + schema.name;
+
+                    if (schemaId) {
+                        tempSchema.schemaId = schemaId;
+                        tempSchema.schemaUri = schemaId + ":" + parentSchemaName + "." + schema.name;
+                    }
                 }
 
                 tempSchemas.push(tempSchema);
@@ -119,13 +122,14 @@ export class ProfileUtils {
     /**
      * This function checks if the passed schema  is of type `MultiValue`.
      *
-     * @param {ProfileSchemaInterface[]} schemas - Array of schemas
-     * @param {string} schemaName - Name of the parent schema.
+     * @param schemas - Array of schemas
+     * @param schemaName - Name of the parent schema.
      *
-     * @return {boolean} attribute is MultiValue
+     * @returns - whether the attribute is MultiValue.
      */
     public static isMultiValuedSchemaAttribute = (schemas: ProfileSchemaInterface[], schemaName?: string): boolean => {
-        const parentSchema = schemas?.find((schema) => schema?.name === schemaName);
+        const parentSchema: ProfileSchemaInterface = schemas?.find(
+            (schema: ProfileSchemaInterface) => schema?.name === schemaName);
 
         return parentSchema?.multiValued;
     };
@@ -134,9 +138,9 @@ export class ProfileUtils {
      * Type Guard to check if the passed in attribute is of type `String Array`.
      *
      * @param attribute - Profile attribute.
-     * @return {attribute is string[]}
+     * @returns - whether the attribute is of type `String Array`.
      */
-     public static isStringArray = (attribute: string[] | MultiValueAttributeInterface[]): attribute is string[] => {
+    public static isStringArray = (attribute: string[] | MultiValueAttributeInterface[]): attribute is string[] => {
         return attribute?.length !== undefined;
     };
 }

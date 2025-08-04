@@ -317,6 +317,13 @@ export class I18nConstants {
     public static readonly APPROVAL_WORKFLOWS_NAMESPACE: string =
         I18nModuleConstants.APPROVAL_WORKFLOWS_NAMESPACE;
 
+    public static readonly AGENTS_NAMESPACE: string = I18nModuleConstants.AGENTS_NAMESPACE;
+
+    /**
+     * Flows namespace.
+     */
+    public static readonly FLOWS_NAMESPACE: string = I18nModuleConstants.FLOWS_NAMESPACE;
+
     /**
      * Locations of the I18n namespaces.
      */
@@ -376,7 +383,9 @@ export class I18nConstants {
         [ I18nConstants.RULES_NAMESPACE, "portals" ],
         [ I18nConstants.PUSH_PROVIDERS_NAMESPACE, "portals" ],
         [ I18nConstants.EMAIL_PROVIDERS_NAMESPACE, "portals" ],
-        [ I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE, "portals" ]
+        [ I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE, "portals" ],
+        [ I18nConstants.AGENTS_NAMESPACE, "portals" ],
+        [ I18nConstants.FLOWS_NAMESPACE, "portals" ]
     ]);
 
     /**

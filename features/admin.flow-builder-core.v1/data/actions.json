@@ -31,12 +31,12 @@
                 "action": {
                     "type": "EXECUTOR",
                     "executor": {
-                        "name": "PasswordOnboardExecutor"
+                        "name": "EmailOTPExecutor"
                     }
                 },
                 "display": {
-                    "label": "Onboard Password",
-                    "image": "https://www.svgrepo.com/show/526627/password.svg",
+                    "label": "Verify Email OTP Code",
+                    "image": "https://www.svgrepo.com/show/479622/email-18.svg",
                     "defaultVariant": "PRIMARY"
                 }
             },
@@ -44,12 +44,12 @@
                 "action": {
                     "type": "EXECUTOR",
                     "executor": {
-                        "name": "EmailOTPExecutor"
+                        "name": "SMSOTPExecutor"
                     }
                 },
                 "display": {
-                    "label": "Verify OTP Code",
-                    "image": "https://www.svgrepo.com/show/479622/email-18.svg",
+                    "label": "Verify SMS OTP Code",
+                    "image": "https://www.svgrepo.com/show/325390/message-text.svg",
                     "defaultVariant": "PRIMARY"
                 }
             }

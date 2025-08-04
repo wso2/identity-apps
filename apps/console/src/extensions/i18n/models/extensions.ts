@@ -918,6 +918,11 @@ export interface Extensions {
                                 label: string;
                                 placeholder: string;
                             };
+                            recoveryPortalURL: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                            };
                             selfSignUpURL: {
                                 hint: string;
                                 label: string;
@@ -2435,6 +2440,16 @@ export interface Extensions {
     manage: {
         accountLogin: {
             notifications: {
+                revert: {
+                    error: {
+                        description: string;
+                        message: string;
+                    },
+                    success: {
+                        description: string;
+                        message: string;
+                    }
+                };
                 success: {
                     description: string;
                     message: string;
@@ -2523,6 +2538,7 @@ export interface Extensions {
                     makeDefaultOrganization: string;
                     backButton: string;
                     copyOrganizationId: string;
+                    copyOrganizationHandle: string;
                     copied: string;
                     tenantSearch: {
                         placeholder: string;

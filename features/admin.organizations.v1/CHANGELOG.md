@@ -1,5 +1,63 @@
 # @wso2is/admin.organizations.v1
 
+## 2.26.211
+
+### Patch Changes
+
+- [#8363](https://github.com/wso2/identity-apps/pull/8363) [`9d8a7df0c0602b2a58f37522a73d8428f35fdd17`](https://github.com/wso2/identity-apps/commit/9d8a7df0c0602b2a58f37522a73d8428f35fdd17) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Implement role sharing feature for console application
+
+- Updated dependencies [[`80a30c172e3931592b7fc6f4ac4900b25d754816`](https://github.com/wso2/identity-apps/commit/80a30c172e3931592b7fc6f4ac4900b25d754816), [`9d8a7df0c0602b2a58f37522a73d8428f35fdd17`](https://github.com/wso2/identity-apps/commit/9d8a7df0c0602b2a58f37522a73d8428f35fdd17)]:
+  - @wso2is/admin.identity-providers.v1@2.26.207
+  - @wso2is/admin.connections.v1@2.33.99
+  - @wso2is/i18n@2.25.3
+  - @wso2is/admin.applications.v1@2.36.10
+  - @wso2is/admin.roles.v2@2.27.169
+  - @wso2is/core@2.10.1
+  - @wso2is/admin.core.v1@2.46.30
+
+## 2.26.210
+
+### Patch Changes
+
+- [#8506](https://github.com/wso2/identity-apps/pull/8506) [`cf84a990e2bcdb6ac7a47d64fc2271abdc3dec88`](https://github.com/wso2/identity-apps/commit/cf84a990e2bcdb6ac7a47d64fc2271abdc3dec88) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Fix unit test failure and add check for org handle autogeneration
+
+- Updated dependencies [[`24ed4949898ff12edd895c0d36d9098fa36b7e8c`](https://github.com/wso2/identity-apps/commit/24ed4949898ff12edd895c0d36d9098fa36b7e8c)]:
+  - @wso2is/admin.tenants.v1@2.29.16
+  - @wso2is/core@2.9.4
+  - @wso2is/i18n@2.24.13
+
+## 2.26.209
+
+### Patch Changes
+
+- [#8491](https://github.com/wso2/identity-apps/pull/8491) [`5a48b099d9eed3b73d74764b6610a678a49e6b58`](https://github.com/wso2/identity-apps/commit/5a48b099d9eed3b73d74764b6610a678a49e6b58) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Utilise isFeatureEnabled function to enable / disable features during maintainance window
+
+- Updated dependencies [[`5a48b099d9eed3b73d74764b6610a678a49e6b58`](https://github.com/wso2/identity-apps/commit/5a48b099d9eed3b73d74764b6610a678a49e6b58)]:
+  - @wso2is/admin.tenants.v1@2.29.15
+
+## 2.26.208
+
+### Patch Changes
+
+- [#8176](https://github.com/wso2/identity-apps/pull/8176) [`7481e3bcf5856beae32e670f04956157747334f6`](https://github.com/wso2/identity-apps/commit/7481e3bcf5856beae32e670f04956157747334f6) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add organization handle to organization creation, display, and list
+
+- Updated dependencies [[`1038e10f5dd3d2a1bd806b8022f56a008337e489`](https://github.com/wso2/identity-apps/commit/1038e10f5dd3d2a1bd806b8022f56a008337e489), [`7481e3bcf5856beae32e670f04956157747334f6`](https://github.com/wso2/identity-apps/commit/7481e3bcf5856beae32e670f04956157747334f6)]:
+  - @wso2is/admin.users.v1@2.33.6
+  - @wso2is/admin.authentication.v1@2.25.206
+  - @wso2is/admin.tenants.v1@2.29.14
+  - @wso2is/admin.core.v1@2.46.6
+  - @wso2is/theme@2.8.4
+  - @wso2is/i18n@2.24.12
+
+## 2.26.207
+
+### Patch Changes
+
+- [#8468](https://github.com/wso2/identity-apps/pull/8468) [`8813a54e1329989eec28a10b21678bfdb0e6d11d`](https://github.com/wso2/identity-apps/commit/8813a54e1329989eec28a10b21678bfdb0e6d11d) Thanks [@ModithaM](https://github.com/ModithaM)! - Fix UI inconsistency in the Edit Organization view of Sub Orgs
+
+- Updated dependencies [[`31252dcffe38616bb43dd605174e200f130242e0`](https://github.com/wso2/identity-apps/commit/31252dcffe38616bb43dd605174e200f130242e0)]:
+  - @wso2is/admin.applications.v1@2.36.6
+
 ## 2.26.206
 
 ### Patch Changes

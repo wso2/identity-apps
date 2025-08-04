@@ -17,6 +17,10 @@
  */
 export interface ClaimsNS {
     attributeMappings: {
+        agent: {
+            heading: string;
+            description: string
+        };
         axschema: {
             heading: string;
             description: string;
@@ -170,6 +174,10 @@ export interface ClaimsNS {
                     heading: string;
                     description: string;
                 };
+                agent: {
+                    heading: string;
+                    description: string;
+                }
             };
         };
         confirmations: {
@@ -545,6 +553,22 @@ export interface ClaimsNS {
             required: {
                 label: string;
             };
+            inputFormat: {
+                label: string;
+                hint: string;
+                options: {
+                    textInput: string;
+                    dropdown: string;
+                    multiSelectDropdown: string;
+                    radioGroup: string;
+                    checkBoxGroup: string;
+                    checkbox: string;
+                    datePicker: string;
+                    textArea: string;
+                    toggle: string;
+                    numberInput: string;
+                }
+            }
             requiredHint: string;
             requiredWarning: string;
             readOnly: {

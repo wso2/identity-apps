@@ -121,6 +121,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             extensions: "",
             externalClaims: "",
             fidoConfigs: "",
+            flowMeta: "",
             getSecret: "",
             getSecretList: "",
             getSecretType: "",
@@ -154,6 +155,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             resourceTypes: "",
             roles: "",
             rolesV2: "",
+            rolesV3: "",
             rolesWithoutOrgPath: "",
             rootOrganization: "",
             rootUsersOrganization: "",
@@ -213,6 +215,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             asyncOperationStatusPollingInterval: null,
             connectionResourcesUrl: "",
             cookiePolicyUrl: "",
+            customContent: {},
             emailTemplates: {
                 defaultLogoUrl: "",
                 defaultWhiteLogoUrl: ""
@@ -270,6 +273,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                     enabled: false
                 }
             },
+            isAdminDataSeparationNoticeEnabled: undefined,
             isClaimUniquenessValidationEnabled: undefined,
             isClientSecretHashEnabled: undefined,
             isCookieConsentBannerEnabled: undefined,
@@ -303,10 +307,10 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             },
             selfAppIdentifier: "",
             showAppSwitchButton: undefined,
-            showPasswordOfEmailProvider: undefined,
             showSmsOtpPwdRecoveryFeatureStatusChip: undefined,
             showStatusLabelForNewAuthzRuntimeFeatures: undefined,
             systemAppsIdentifiers: [],
+            systemReservedUserStores: [],
             theme: {
                 name: "",
                 path: "",

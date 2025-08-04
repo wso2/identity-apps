@@ -331,6 +331,13 @@ export interface MyAccountNS {
                 tooltip: string;
             };
             organizationLabel: string;
+            dropdown: {
+                footer: {
+                    cookiePolicy: string;
+                    privacyPolicy: string;
+                    termsOfService: string;
+                };
+            };
         },
         linkedAccounts: {
             accountTypes: {
@@ -779,6 +786,12 @@ export interface MyAccountNS {
                             invalidFormat: string;
                         };
                     };
+                    dropdown: {
+                        placeholder: string;
+                    };
+                    radioGroup: {
+                        optionNone: string;
+                    }
                 };
                 emailChangeForm: {
                     inputs: {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -32,6 +32,7 @@ const initialState: OrganizationReducerStateInterface = {
         id: OrganizationManagementConstants.ROOT_ORGANIZATION.id,
         lastModified: new Date().toString(),
         name: OrganizationManagementConstants.ROOT_ORGANIZATION.name,
+        orgHandle: OrganizationManagementConstants.ROOT_ORGANIZATION.orgHandle,
         parent: {
             id: "",
             ref: ""
@@ -41,6 +42,7 @@ const initialState: OrganizationReducerStateInterface = {
     },
     organizationType: OrganizationType.SUPER_ORGANIZATION,
     superAdmin: "",
+    userOrganizationHandle: "",
     userOrganizationId: ""
 };
 
@@ -83,6 +85,11 @@ export const organizationReducer = (
             return {
                 ...state,
                 userOrganizationId: action.payload
+            };
+        case OrganizationActionTypes.SET_USER_ORGANIZATION_HANDLE:
+            return {
+                ...state,
+                userOrganizationHandle: action.payload
             };
         default:
             return {

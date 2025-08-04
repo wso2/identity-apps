@@ -96,6 +96,7 @@ export const approvalWorkflows: approvalWorkflowsNS = {
     forms: {
         configurations: {
             template: {
+                condition: "or",
                 label: "Add Approval Step",
                 placeholder: "Type role/s to search and assign",
                 roles: {

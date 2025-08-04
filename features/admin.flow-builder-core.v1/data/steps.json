@@ -6,11 +6,231 @@
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": "View",
+            "label": "Blank View",
             "image": "https://www.svgrepo.com/show/448632/step.svg",
             "showOnResourcePanel": true
         },
         "config": {}
+    },
+    {
+        "resourceType": "STEP",
+        "category": "INTERFACE",
+        "type": "VIEW",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Username + Password View",
+            "image": "https://www.svgrepo.com/show/489073/password.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {},
+        "data": {
+            "components": [
+                {
+                    "category": "BLOCK",
+                    "type": "FORM",
+                    "config": {},
+                    "id": "{{ID}}",
+                    "components": [
+                        {
+                            "id": "{{ID}}",
+                            "category": "FIELD",
+                            "type": "INPUT",
+                            "variant": "TEXT",
+                            "config": {
+                                "type": "text",
+                                "hint": "",
+                                "label": "Username",
+                                "required": true,
+                                "placeholder": "Enter your username",
+                                "identifier": "http://wso2.org/claims/username"
+                            }
+                        },
+                        {
+                            "id": "{{ID}}",
+                            "category": "FIELD",
+                            "type": "INPUT",
+                            "variant": "PASSWORD",
+                            "config": {
+                                "identifier": "password",
+                                "type": "password",
+                                "hint": "",
+                                "label": "Password",
+                                "required": true,
+                                "placeholder": "Enter your password"
+                            }
+                        },
+                        {
+                            "id": "{{ID}}",
+                            "category": "ACTION",
+                            "type": "BUTTON",
+                            "variant": "PRIMARY",
+                            "config": {
+                                "type": "submit",
+                                "text": "Continue"
+                            },
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "PasswordOnboardExecutor"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "resourceType": "STEP",
+        "category": "INTERFACE",
+        "type": "VIEW",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Email OTP View",
+            "image": "https://www.svgrepo.com/show/387455/email-down.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {},
+        "data": {
+            "components": [
+                {
+                    "id": "{{ID}}",
+                    "category": "DISPLAY",
+                    "type": "TYPOGRAPHY",
+                    "variant": "H3",
+                    "config": {
+                        "text": "Verify OTP"
+                    }
+                },
+                {
+                    "id": "{{ID}}",
+                    "category": "BLOCK",
+                    "type": "FORM",
+                    "config": {},
+                    "components": [
+                        {
+                            "id": "{{ID}}",
+                            "category": "FIELD",
+                            "type": "INPUT",
+                            "variant": "OTP",
+                            "config": {
+                                "type": "text",
+                                "hint": "",
+                                "identifier": "otp",
+                                "label": "Enter the OTP code",
+                                "required": true,
+                                "placeholder": ""
+                            }
+                        },
+                        {
+                            "id": "{{ID}}",
+                            "category": "ACTION",
+                            "type": "BUTTON",
+                            "variant": "PRIMARY",
+                            "config": {
+                                "type": "submit",
+                                "text": "Verify"
+                            },
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "EmailOTPExecutor"
+                                },
+                                "next": ""
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "resourceType": "STEP",
+        "category": "INTERFACE",
+        "type": "VIEW",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "SMS OTP View",
+            "image": "https://www.svgrepo.com/show/455832/mobile-message.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {},
+        "data": {
+            "components": [
+                {
+                    "id": "{{ID}}",
+                    "category": "DISPLAY",
+                    "type": "TYPOGRAPHY",
+                    "variant": "H3",
+                    "config": {
+                        "text": "Verify OTP"
+                    }
+                },
+                {
+                    "id": "{{ID}}",
+                    "category": "BLOCK",
+                    "type": "FORM",
+                    "config": {},
+                    "components": [
+                        {
+                            "id": "{{ID}}",
+                            "category": "FIELD",
+                            "type": "INPUT",
+                            "variant": "OTP",
+                            "config": {
+                                "type": "text",
+                                "hint": "",
+                                "identifier": "otp",
+                                "label": "Enter the OTP code",
+                                "required": true,
+                                "placeholder": ""
+                            }
+                        },
+                        {
+                            "id": "{{ID}}",
+                            "category": "ACTION",
+                            "type": "BUTTON",
+                            "variant": "PRIMARY",
+                            "config": {
+                                "type": "submit",
+                                "text": "Verify"
+                            },
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "SMSOTPExecutor"
+                                },
+                                "next": ""
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "resourceType": "STEP",
+        "category": "WORKFLOW",
+        "type": "EXECUTION",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Passkey View",
+            "image": "https://www.svgrepo.com/show/39582/passkey.svg",
+            "showOnResourcePanel": true
+        },
+        "data": {
+            "action": {
+                "type": "EXECUTOR",
+                "executor": {
+                    "name": "FIDO2Executor"
+                },
+                "next": ""
+            }
+        }
     },
     {
         "resourceType": "STEP",
@@ -28,12 +248,12 @@
     {
         "resourceType": "STEP",
         "category": "WORKFLOW",
-        "type": "REDIRECTION",
+        "type": "EXECUTION",
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": "Redirection",
-            "image": "https://www.svgrepo.com/show/510970/external-link.svg",
+            "label": "Execution",
+            "image": "https://www.svgrepo.com/show/476381/play.svg",
             "showOnResourcePanel": false
         },
         "config": {}

@@ -1,5 +1,216 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.9.11
+
+### Patch Changes
+
+- [#8664](https://github.com/wso2/identity-apps/pull/8664) [`c927fb9e513ddc042cde81251cde106ca0a09c32`](https://github.com/wso2/identity-apps/commit/c927fb9e513ddc042cde81251cde106ca0a09c32) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add component and step metadata to support step views
+
+- Updated dependencies [[`f53aa7eec0893f28795ccb6afb92082be934a44c`](https://github.com/wso2/identity-apps/commit/f53aa7eec0893f28795ccb6afb92082be934a44c)]:
+  - @wso2is/admin.core.v1@2.46.42
+  - @wso2is/core@2.10.2
+
+## 0.9.10
+
+### Patch Changes
+
+- [#8656](https://github.com/wso2/identity-apps/pull/8656) [`6c3e55ec90a4c4ccd69c4e05ab8c1e4406fd3dd1`](https://github.com/wso2/identity-apps/commit/6c3e55ec90a4c4ccd69c4e05ab8c1e4406fd3dd1) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add steps for SMS OTP, Email OTP, Username & Password, and Passkeys
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.46.40
+
+## 0.9.9
+
+### Patch Changes
+
+- [#8650](https://github.com/wso2/identity-apps/pull/8650) [`2b8df70c9f8acfbe2eeeb9a9d0053b107beb232b`](https://github.com/wso2/identity-apps/commit/2b8df70c9f8acfbe2eeeb9a9d0053b107beb232b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the reported bugs in the Runtime Portal during the testing round
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.46.38
+
+## 0.9.8
+
+### Patch Changes
+
+- [#8638](https://github.com/wso2/identity-apps/pull/8638) [`827bdf5a896acc202e411a9e8a6dfaaeaf0439fe`](https://github.com/wso2/identity-apps/commit/827bdf5a896acc202e411a9e8a6dfaaeaf0439fe) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Force release modules
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.46.35
+
+## 0.9.7
+
+### Patch Changes
+
+- [#8620](https://github.com/wso2/identity-apps/pull/8620) [`c9834ab6efad973327ef6cfbbd558f5c88496f32`](https://github.com/wso2/identity-apps/commit/c9834ab6efad973327ef6cfbbd558f5c88496f32) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add static content support for execution steps
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.46.34
+
+## 0.9.6
+
+### Patch Changes
+
+- [#8618](https://github.com/wso2/identity-apps/pull/8618) [`2e0c31a4c3f39f409ed3aa4b630007b81dea5bea`](https://github.com/wso2/identity-apps/commit/2e0c31a4c3f39f409ed3aa4b630007b81dea5bea) Thanks [@KD23243](https://github.com/KD23243)! - Add magic link templates for password recovery
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.46.33
+
+## 0.9.5
+
+### Patch Changes
+
+- Updated dependencies [[`e4bacc6f7fabba38a995428ea0b0bb785d2f1d35`](https://github.com/wso2/identity-apps/commit/e4bacc6f7fabba38a995428ea0b0bb785d2f1d35)]:
+  - @wso2is/admin.flows.v1@1.0.15
+  - @wso2is/admin.core.v1@2.46.26
+
+## 0.9.4
+
+### Patch Changes
+
+- [#8576](https://github.com/wso2/identity-apps/pull/8576) [`32f809bf44aa79cd7c87144466915fc9c6438ca5`](https://github.com/wso2/identity-apps/commit/32f809bf44aa79cd7c87144466915fc9c6438ca5) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for generating the legacy self-registration flow from the Flow Builder
+
+- Updated dependencies [[`79d24deec910ce3f4628decedd65c2f3bcddddfe`](https://github.com/wso2/identity-apps/commit/79d24deec910ce3f4628decedd65c2f3bcddddfe)]:
+  - @wso2is/admin.flows.v1@1.0.14
+  - @wso2is/admin.core.v1@2.46.25
+
+## 0.9.3
+
+### Patch Changes
+
+- [#8573](https://github.com/wso2/identity-apps/pull/8573) [`c95c6d9d0066555b78b0e851f1ca58dca67e0031`](https://github.com/wso2/identity-apps/commit/c95c6d9d0066555b78b0e851f1ca58dca67e0031) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Add social connection widgets
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.46.23
+
+## 0.9.2
+
+### Patch Changes
+
+- [#8563](https://github.com/wso2/identity-apps/pull/8563) [`518889fccc67f829a5e497df54cfc6e238a06097`](https://github.com/wso2/identity-apps/commit/518889fccc67f829a5e497df54cfc6e238a06097) Thanks [@KD23243](https://github.com/KD23243)! - Refactor actions.json
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.46.18
+
+## 0.9.1
+
+### Patch Changes
+
+- [#8560](https://github.com/wso2/identity-apps/pull/8560) [`241192e2ac434969b87b22e22ff794e9b5844451`](https://github.com/wso2/identity-apps/commit/241192e2ac434969b87b22e22ff794e9b5844451) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for generating the basic template using the self-registration connector configurations
+
+- Updated dependencies [[`241192e2ac434969b87b22e22ff794e9b5844451`](https://github.com/wso2/identity-apps/commit/241192e2ac434969b87b22e22ff794e9b5844451)]:
+  - @wso2is/admin.flows.v1@1.0.13
+  - @wso2is/admin.core.v1@2.46.17
+  - @wso2is/core@2.9.5
+
+## 0.9.0
+
+### Minor Changes
+
+- [#8536](https://github.com/wso2/identity-apps/pull/8536) [`b7d5766dd3c195f36ca62b3785943e402a8d4536`](https://github.com/wso2/identity-apps/commit/b7d5766dd3c195f36ca62b3785943e402a8d4536) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add rich text support to the registration flow composer
+
+### Patch Changes
+
+- Updated dependencies [[`b7d5766dd3c195f36ca62b3785943e402a8d4536`](https://github.com/wso2/identity-apps/commit/b7d5766dd3c195f36ca62b3785943e402a8d4536)]:
+  - @wso2is/admin.core.v1@2.46.10
+
+## 0.8.5
+
+### Patch Changes
+
+- [#8523](https://github.com/wso2/identity-apps/pull/8523) [`d6d767eebc955a94dc0a3b878edd410090d493cb`](https://github.com/wso2/identity-apps/commit/d6d767eebc955a94dc0a3b878edd410090d493cb) Thanks [@KD23243](https://github.com/KD23243)! - Add ask password composer
+
+- Updated dependencies [[`9ba2b7eaf1cdb3bcf533d92b915fe686f8ebaa53`](https://github.com/wso2/identity-apps/commit/9ba2b7eaf1cdb3bcf533d92b915fe686f8ebaa53), [`d6d767eebc955a94dc0a3b878edd410090d493cb`](https://github.com/wso2/identity-apps/commit/d6d767eebc955a94dc0a3b878edd410090d493cb)]:
+  - @wso2is/admin.core.v1@2.46.9
+
+## 0.8.4
+
+### Patch Changes
+
+- [#8494](https://github.com/wso2/identity-apps/pull/8494) [`ff7f467277d15c7d9db98f4581e13df80c678ddb`](https://github.com/wso2/identity-apps/commit/ff7f467277d15c7d9db98f4581e13df80c678ddb) Thanks [@KD23243](https://github.com/KD23243)! - Add flow composer for the password recovery flow
+
+- Updated dependencies [[`ff7f467277d15c7d9db98f4581e13df80c678ddb`](https://github.com/wso2/identity-apps/commit/ff7f467277d15c7d9db98f4581e13df80c678ddb), [`cea049e8be75e74950f7ebbba2c2750abe4c0e62`](https://github.com/wso2/identity-apps/commit/cea049e8be75e74950f7ebbba2c2750abe4c0e62)]:
+  - @wso2is/admin.core.v1@2.46.8
+
+## 0.8.3
+
+### Patch Changes
+
+- [#8519](https://github.com/wso2/identity-apps/pull/8519) [`3071c17162606a29a43c98bf8fae4ba526ab0f2f`](https://github.com/wso2/identity-apps/commit/3071c17162606a29a43c98bf8fae4ba526ab0f2f) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add a new property to identify plugin functions
+
+## 0.8.2
+
+### Patch Changes
+
+- [#8492](https://github.com/wso2/identity-apps/pull/8492) [`a91868a9a99658e89c2e2169e766ccae3cd7cd20`](https://github.com/wso2/identity-apps/commit/a91868a9a99658e89c2e2169e766ccae3cd7cd20) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improve confirm password behaviour of the flow builder.
+
+- Updated dependencies [[`24ed4949898ff12edd895c0d36d9098fa36b7e8c`](https://github.com/wso2/identity-apps/commit/24ed4949898ff12edd895c0d36d9098fa36b7e8c)]:
+  - @wso2is/core@2.9.4
+
+## 0.8.1
+
+### Patch Changes
+
+- [#8501](https://github.com/wso2/identity-apps/pull/8501) [`14a8747910ed801671508c60c5769781fa022674`](https://github.com/wso2/identity-apps/commit/14a8747910ed801671508c60c5769781fa022674) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Disable the AI-generation template of registration flow builder
+
+## 0.8.0
+
+### Minor Changes
+
+- [#8416](https://github.com/wso2/identity-apps/pull/8416) [`90a17579bddde8c429932caf4a318d873ff3e7d5`](https://github.com/wso2/identity-apps/commit/90a17579bddde8c429932caf4a318d873ff3e7d5) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce Passkey signup in registration orchestration
+
+### Patch Changes
+
+- Updated dependencies [[`76f192a81a134a773cb0896bb6febefca442324d`](https://github.com/wso2/identity-apps/commit/76f192a81a134a773cb0896bb6febefca442324d)]:
+  - @wso2is/admin.core.v1@2.46.5
+
+## 0.7.6
+
+### Patch Changes
+
+- [#8475](https://github.com/wso2/identity-apps/pull/8475) [`fa8fc079c3e1ccf25384881eb988c233994eb0dd`](https://github.com/wso2/identity-apps/commit/fa8fc079c3e1ccf25384881eb988c233994eb0dd) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Rename the Google Signup Executor to Google Executor
+
+## 0.7.5
+
+### Patch Changes
+
+- [#8453](https://github.com/wso2/identity-apps/pull/8453) [`3a38e2eec2e6aa0257e8157744a7555923e8bfc4`](https://github.com/wso2/identity-apps/commit/3a38e2eec2e6aa0257e8157744a7555923e8bfc4) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for plugin extensions in the flow builder core
+
+## 0.7.4
+
+### Patch Changes
+
+- [#8455](https://github.com/wso2/identity-apps/pull/8455) [`919027258d7cf1a151e7258e2236b842896984f5`](https://github.com/wso2/identity-apps/commit/919027258d7cf1a151e7258e2236b842896984f5) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - add SMS OTP executor to the action button’s resource panel
+
+## 0.7.3
+
+### Patch Changes
+
+- [#8443](https://github.com/wso2/identity-apps/pull/8443) [`c53613c5563ff9755ed247f18a0bbad33cccdf9c`](https://github.com/wso2/identity-apps/commit/c53613c5563ff9755ed247f18a0bbad33cccdf9c) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix drag icon visibility issue in composer elements.
+
+## 0.7.2
+
+### Patch Changes
+
+- [#8428](https://github.com/wso2/identity-apps/pull/8428) [`378ddf06da7ac5924c663a1b599679a1f6fdc6d7`](https://github.com/wso2/identity-apps/commit/378ddf06da7ac5924c663a1b599679a1f6fdc6d7) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for opening the property panel on double-clicking an element
+
+## 0.7.1
+
+### Patch Changes
+
+- [#8414](https://github.com/wso2/identity-apps/pull/8414) [`c53a0c23b5fc777e65040f93d6fec90b1e30efd2`](https://github.com/wso2/identity-apps/commit/c53a0c23b5fc777e65040f93d6fec90b1e30efd2) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for displaying hints in input fields in Composer
+
+## 0.7.0
+
+### Minor Changes
+
+- [#8372](https://github.com/wso2/identity-apps/pull/8372) [`f90bee4c68608e5e989756546535a53bb6980016`](https://github.com/wso2/identity-apps/commit/f90bee4c68608e5e989756546535a53bb6980016) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce reCaptcha option in registration flow
+
+## 0.6.0
+
+### Minor Changes
+
+- [#8369](https://github.com/wso2/identity-apps/pull/8369) [`118a97a70ecdaa237f03a3c38a6ecf8409cf54f5`](https://github.com/wso2/identity-apps/commit/118a97a70ecdaa237f03a3c38a6ecf8409cf54f5) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Bump React DnD kit version
+
 ## 0.5.3
 
 ### Patch Changes

@@ -20,6 +20,7 @@ import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { CommonElementFactoryPropsInterface } from "../../common-element-factory";
+import Hint from "../../hint";
 
 /**
  * Props interface of {@link DefaultInputAdapter}
@@ -39,7 +40,9 @@ export const DefaultInputAdapter: FunctionComponent<DefaultInputAdapterPropsInte
         fullWidth
         className={ resource.config?.className }
         defaultValue={ resource.config?.defaultValue }
-        helperText={ resource.config?.hint }
+        helperText={ (
+            resource.config?.hint && <Hint hint={ resource.config?.hint } />
+        ) }
         inputProps={ {
             maxLength: resource.config?.maxLength,
             minLength: resource.config?.minLength

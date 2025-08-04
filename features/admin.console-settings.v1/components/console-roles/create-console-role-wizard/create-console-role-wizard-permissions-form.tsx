@@ -129,6 +129,10 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
 
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
+    );
+
     /**
      * Initializes the permission tree with any initial values.
      */
@@ -164,6 +168,11 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
             cloneDeep(tenantAPIResourceCollections);
         const filteringAPIResourceCollectionNames: string[] = [];
 
+        if(!userRolesV3FeatureEnabled) {
+            filteringAPIResourceCollectionNames.push(
+                ConsoleRolesOnboardingConstants.ROLE_ASSIGNMENTS_ROLE_ID);
+        }
+
         filteringAPIResourceCollectionNames.push(
             ConsoleRolesOnboardingConstants.ROLE_V1_API_RESOURCES_COLLECTION_NAME);
 
@@ -190,6 +199,11 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
         const clonedOrganizationAPIResourceCollections: APIResourceCollectionResponseInterface =
             cloneDeep(organizationAPIResourceCollections);
         const filteringAPIResourceCollectionNames: string[] = [];
+
+        if(!userRolesV3FeatureEnabled) {
+            filteringAPIResourceCollectionNames.push(
+                ConsoleRolesOnboardingConstants.ORG_ROLE_ASSIGNMENTS_ROLE_ID);
+        }
 
         filteringAPIResourceCollectionNames.push(
             ConsoleRolesOnboardingConstants.ORG_ROLE_V1_API_RESOURCES_COLLECTION_NAME);

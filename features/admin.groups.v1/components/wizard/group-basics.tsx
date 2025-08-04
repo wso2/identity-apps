@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { groupConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { useUserStoreRegEx } from "@wso2is/admin.userstores.v1/api/use-get-user-store-regex";
@@ -28,7 +29,7 @@ import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { searchGroupList } from "../../api/groups";
@@ -69,6 +70,9 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
         userStoresList
     } = useUserStores();
 
+    const systemReservedUserStores: string[] =
+        useSelector((state: AppState) => state?.config?.ui?.systemReservedUserStores);
+
     const [ basicDetails, setBasicDetails ] = useState<any>(null);
 
     const groupName: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
@@ -92,21 +96,23 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
         if (userStoresList && !isUserStoresLoading) {
             if (userStoresList?.length > 0) {
-                userStoresList.forEach((store: UserStoreListItem, index: number) => {
-                    const isEnabled: boolean = store.enabled;
-                    const isReadOnly: boolean = isUserStoreReadOnly(store?.name);
+                userStoresList
+                    ?.filter((userStore: UserStoreListItem) => !systemReservedUserStores?.includes(userStore.name))
+                    .forEach((store: UserStoreListItem, index: number) => {
+                        const isEnabled: boolean = store.enabled;
+                        const isReadOnly: boolean = isUserStoreReadOnly(store?.name);
 
-                    if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName
+                        if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName
                         && isEnabled && !isReadOnly) {
-                        const storeOption: UserStoreDropdownItem = {
-                            key: index,
-                            text: store.name,
-                            value: store.name
-                        };
+                            const storeOption: UserStoreDropdownItem = {
+                                key: index,
+                                text: store.name,
+                                value: store.name
+                            };
 
-                        storeOptions.push(storeOption);
-                    }
-                });
+                            storeOptions.push(storeOption);
+                        }
+                    });
             }
         }
 

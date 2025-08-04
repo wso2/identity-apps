@@ -18,10 +18,12 @@
 
 import { useColorScheme } from "@mui/material";
 import Alert from "@oxygen-ui/react/Alert";
+import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Flag from "@oxygen-ui/react/CountryFlag";
 import OxygenHeader from "@oxygen-ui/react/Header";
 import Image from "@oxygen-ui/react/Image";
+import Link from "@oxygen-ui/react/Link";
 import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemAvatar from "@oxygen-ui/react/ListItemAvatar";
 import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
@@ -35,6 +37,7 @@ import {
     RectangleLineIcon
 } from "@oxygen-ui/react-icons";
 import { useThemeProvider } from "@wso2is/common.branding.v1/hooks/use-theme-provider";
+import { BrandingPreferenceURLInterface } from "@wso2is/common.branding.v1/models";
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -58,6 +61,7 @@ import React, {
     MouseEvent,
     ReactElement,
     useEffect,
+    useMemo,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -145,9 +149,15 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             state.authenticationInformation.profileInfo.isReadOnly
     );
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
+    const showLanguageSwitcher: boolean = useSelector(
+        (state: AppState) => state.config.ui.i18nConfigs.showLanguageSwitcher
+    );
+
     const { mode } = useColorScheme();
 
-    const { theme } = useThemeProvider();
+    const { raw, theme } = useThemeProvider();
+
+    const brandingPreferenceUrls: BrandingPreferenceURLInterface = raw?.preference?.urls;
 
     useEffect(() => {
         const localeCookie: string = CookieStorageUtils.getItem("ui_lang");
@@ -317,6 +327,25 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         (state: AppState) => state.global.supportedI18nLanguages
     );
 
+    const filteredSupportedI18nLanguages: SupportedLanguagesMeta = useMemo(() => {
+        return Object.entries(supportedI18nLanguages)
+            .filter(([
+                _,
+                value
+            ]: [ string, LocaleMeta ]) => (
+                value.showOnLanguageSwitcher === true ||
+                (value.enabled && value.showOnLanguageSwitcher === undefined)
+            ))
+            .reduce((
+                acc: SupportedLanguagesMeta,
+                [ key, value ]: [ string, LocaleMeta ]
+            ) => {
+                acc[key] = value;
+
+                return acc;
+            }, {} as SupportedLanguagesMeta);
+    }, [ supportedI18nLanguages ]);
+
     const handleLanguageSwitching = (e: MouseEvent<HTMLElement>) => {
         setOpenLanguageSwitcher(!openLanguageSwitcher);
         setLanguageSwitcherAnchorEl(e.currentTarget);
@@ -422,61 +451,111 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             onCollapsibleHamburgerClick={ handleSidePanelToggleClick }
             position="fixed"
             rightAlignedElements={ [
-                <>
-                    <Button
-                        color="inherit"
-                        startIcon={ <LanguageIcon /> }
-                        endIcon={ <ChevronDownIcon /> }
-                        key={ I18n.instance?.language }
-                        onClick={ handleLanguageSwitching }
-                        data-componentid="app-header-language-switcher-trigger"
-                    >
-                        {
-                            isMobileViewport
-                                ? <Flag countryCode={ supportedI18nLanguages[I18n.instance?.language]?.flag } />
-                                : supportedI18nLanguages[I18n.instance?.language]?.name
-                        }
-                    </Button>
-                    <Menu
-                        open={ openLanguageSwitcher }
-                        anchorEl={ languageSwitcherAnchorEl }
-                        onClose={ handleLanguageSwitching }
-                    >
-                        { Object.entries(supportedI18nLanguages)?.map(
-                            ([ key, value ]: [ key: string, value: LocaleMeta ]) => {
-                                if (I18n.instance?.language === value.code) {
-                                    return;
-                                }
-
-                                return (
-                                    <MenuItem
-                                        key={ key }
-                                        onClick={ () => {
-                                            handleLanguageSwitch(value.code);
-                                            setOpenLanguageSwitcher(false);
-                                            handleDirection(value.code);
-                                        } }
-                                    >
-                                        <ListItem>
-                                            <ListItemIcon>
-                                                <Flag
-                                                    countryCode={ value.flag }
-                                                />
-                                            </ListItemIcon>
-                                            <ListItemText>
-                                                { value.name }
-                                            </ListItemText>
-                                        </ListItem>
-                                    </MenuItem>
-                                );
+                showLanguageSwitcher && Object.entries(filteredSupportedI18nLanguages)?.length > 1 && (
+                    <>
+                        <Button
+                            color="inherit"
+                            startIcon={ <LanguageIcon /> }
+                            endIcon={ <ChevronDownIcon /> }
+                            key={ I18n.instance?.language }
+                            onClick={ handleLanguageSwitching }
+                            data-componentid="app-header-language-switcher-trigger"
+                        >
+                            {
+                                isMobileViewport
+                                    ? (
+                                        <Flag
+                                            countryCode={
+                                                filteredSupportedI18nLanguages[I18n.instance?.language]?.flag
+                                            }
+                                        />
+                                    ) : supportedI18nLanguages[I18n.instance?.language]?.name
                             }
-                        ) }
-                    </Menu>
-                </>
-            ] }
+                        </Button>
+                        <Menu
+                            open={ openLanguageSwitcher }
+                            anchorEl={ languageSwitcherAnchorEl }
+                            onClose={ handleLanguageSwitching }
+                            className="app-header-language-switcher-menu"
+                        >
+                            { Object.entries(filteredSupportedI18nLanguages)?.map(
+                                ([ key, value ]: [ key: string, value: LocaleMeta ]) => {
+                                    if (I18n.instance?.language === value.code) {
+                                        return;
+                                    }
+
+                                    return (
+                                        <MenuItem
+                                            key={ key }
+                                            onClick={ () => {
+                                                handleLanguageSwitch(value.code);
+                                                setOpenLanguageSwitcher(false);
+                                                handleDirection(value.code);
+                                            } }
+                                            className="app-header-language-switcher-menu-item"
+                                        >
+                                            <ListItem>
+                                                { value.flag && (
+                                                    <ListItemIcon>
+                                                        <Flag countryCode={ value.flag } />
+                                                    </ListItemIcon>
+                                                ) }
+                                                <ListItemText>
+                                                    { value.name }
+                                                </ListItemText>
+                                            </ListItem>
+                                        </MenuItem>
+                                    );
+                                }
+                            ) }
+                        </Menu>
+                    </>
+                )
+            ].filter(Boolean) }
             userDropdownMenu={ {
                 actionIcon: <ArrowRightFromBracketIcon fill={ mode === "dark" ? "white" : "black" } />,
                 actionText: t("common:logout"),
+                footerContent : brandingPreferenceUrls?.privacyPolicyURL ||
+                                brandingPreferenceUrls?.cookiePolicyURL ||
+                                brandingPreferenceUrls?.termsOfUseURL ? ([
+                        <Box key="footer" className="user-dropdown-footer">
+                            { brandingPreferenceUrls?.privacyPolicyURL && (
+                                <Link
+                                    variant="body3"
+                                    href={ raw.preference.urls.privacyPolicyURL }
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    { I18n.instance.t(
+                                        "myAccount:components.header.dropdown.footer.privacyPolicy") as string }
+                                </Link>
+                            ) }
+
+                            { brandingPreferenceUrls?.cookiePolicyURL && (
+                                <Link
+                                    variant="body3"
+                                    href={ raw.preference.urls.cookiePolicyURL }
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    { I18n.instance.t(
+                                        "myAccount:components.header.dropdown.footer.cookiePolicy") as string }
+                                </Link>
+                            ) }
+
+                            { brandingPreferenceUrls?.termsOfUseURL && (
+                                <Link
+                                    variant="body3"
+                                    href={ raw.preference.urls.termsOfUseURL }
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    { I18n.instance.t(
+                                        "myAccount:components.header.dropdown.footer.termsOfService") as string }
+                                </Link>
+                            ) }
+                        </Box>
+                    ]) : undefined,
                 menuItems: [
                     commonConfig?.showOrganizationManagedBy && resolveOrganizationLabel(),
                     resolveConsoleAppSwitchMenuItem(),

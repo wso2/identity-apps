@@ -37,7 +37,9 @@ export interface webhooksNS {
         };
         edit: {
             heading: string;
+            headingWebSubHubMode: string;
             subHeading: string;
+            subHeadingWebSubHubMode: string;
         };
         create: {
             heading: string;
@@ -104,11 +106,13 @@ export interface webhooksNS {
             secret: {
                 info: {
                     message: string;
+                    messageWebSubHubMode: string;
                     title: string;
                 };
                 hint: {
                     common: string;
                     create: string;
+                    createWebSubHubMode: string;
                     update: string;
                 };
                 label: string;
@@ -124,6 +128,12 @@ export interface webhooksNS {
             subHeading: string;
             validations: {
                 empty: string;
+            };
+            status: {
+                subscriptionAccepted: string;
+                subscriptionError: string;
+                unsubscriptionAccepted: string;
+                unsubscriptionError: string;
             };
         };
         buttons: {
@@ -201,5 +211,28 @@ export interface webhooksNS {
                 genericDescription: string;
             };
         };
+        retryWebhookState: {
+            error: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
     };
+    statusBanner: {
+        pendingActivation: {
+            title: string;
+            message: string;
+        };
+        pendingDeactivation: {
+            title: string;
+            message: string;
+        };
+        buttons: {
+            retry: string;
+        };
+    }
 }

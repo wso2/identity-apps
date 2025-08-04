@@ -276,6 +276,9 @@ interface ApplicationsDocumentationLinksInterface {
             default: {
                 learnMore: string;
             }
+            technology: {
+                learnMore: string;
+            }
             ssoIntegration: {
                 learnMore: string;
             }
@@ -307,6 +310,9 @@ interface BrandingDocumentationLinksInterface {
     }
     layout: {
         custom: {
+            editor: {
+                learnMore: string;
+            }
             learnMore: string;
         }
     }

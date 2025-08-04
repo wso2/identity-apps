@@ -31,6 +31,8 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect } from "r
 import ReorderableElement from "./reorderable-element";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import { Element } from "../../../../models/elements";
+import { EventTypes } from "../../../../models/extension";
+import PluginRegistry from "../../../../plugins/plugin-registry";
 import generateResourceId from "../../../../utils/generate-resource-id";
 import Droppable from "../../../dnd/droppable";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
@@ -39,7 +41,27 @@ import "./view.scss";
 /**
  * Props interface of {@link View}
  */
-export type ViewPropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface;
+export interface ViewPropsInterface extends Pick<CommonStepFactoryPropsInterface, "data" | "resource">,
+    IdentifiableComponentInterface {
+    /**
+     * Name of the view.
+     */
+    heading?: string;
+    /**
+     * Droppable allowed resource list.
+     */
+    droppableAllowedTypes?: string[];
+    /**
+     * Flag to enable source handle.
+     */
+    enableSourceHandle?: boolean;
+    /**
+     * Event handler for double click on the action panel.
+     *
+     * @param event - The mouse event.
+     */
+    onActionPanelDoubleClick?: (event: MouseEvent<HTMLDivElement>) => void;
+}
 
 /**
  * Node for representing an empty view as a step in the flow builder.
@@ -48,7 +70,11 @@ export type ViewPropsInterface = CommonStepFactoryPropsInterface & IdentifiableC
  * @returns Step Node component.
  */
 export const View: FunctionComponent<ViewPropsInterface> = ({
+    heading,
+    droppableAllowedTypes,
+    enableSourceHandle,
     data,
+    onActionPanelDoubleClick,
     "data-componentid": componentId = "view"
 }: ViewPropsInterface): ReactElement => {
     const stepId: string = useNodeId();
@@ -69,13 +95,18 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
 
     return (
         <div className="flow-builder-step" data-componentid={ componentId }>
-            <Box display="flex" justifyContent="space-between" className="flow-builder-step-action-panel">
+            <Box
+                display="flex"
+                justifyContent="space-between"
+                className="flow-builder-step-action-panel"
+                onDoubleClick={ onActionPanelDoubleClick }
+            >
                 <Typography
                     variant="body2"
                     data-componentid={ `${componentId}-heading-text` }
                     className="flow-builder-step-id"
                 >
-                    View
+                    { heading || "View" }
                 </Typography>
                 <Tooltip title={ "Remove" }>
                     <IconButton
@@ -98,29 +129,44 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
                                 id={ generateResourceId(`${ VisualFlowConstants.FLOW_BUILDER_VIEW_ID }_${ stepId }`) }
                                 data={ { droppedOn: node, stepId } }
                                 type={ VisualFlowConstants.FLOW_BUILDER_DROPPABLE_VIEW_ID }
-                                accept={ [
-                                    VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID,
-                                    ...VisualFlowConstants.FLOW_BUILDER_VIEW_ALLOWED_RESOURCE_TYPES
-                                ] }
+                                accept={ droppableAllowedTypes
+                                    ? [
+                                        VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID,
+                                        ...droppableAllowedTypes
+                                    ] : [
+                                        VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID,
+                                        ...VisualFlowConstants.FLOW_BUILDER_VIEW_ALLOWED_RESOURCE_TYPES
+                                    ] }
                                 collisionPriority={ CollisionPriority.Low }
                             >
-                                { (node?.data?.components as any)?.map((component: Element, index: number) => (
-                                    <ReorderableElement
-                                        key={ component.id }
-                                        id={ component.id }
-                                        index={ index }
-                                        element={ component }
-                                        className={ classNames("flow-builder-step-content-form-field") }
-                                        type={ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID }
-                                        accept={ [ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID ] }
-                                        group={ stepId }
-                                    />
-                                )) }
+                                { (node?.data?.components as any)?.map((component: Element, index: number) =>
+                                    PluginRegistry.getInstance().executeSync(EventTypes.ON_NODE_ELEMENT_FILTER,
+                                        component) && (
+                                        <ReorderableElement
+                                            key={ component.id }
+                                            id={ component.id }
+                                            index={ index }
+                                            element={ component }
+                                            className={ classNames("flow-builder-step-content-form-field") }
+                                            type={ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID }
+                                            accept={ [ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID ] }
+                                            group={ stepId }
+                                        />
+                                    )) }
                             </Droppable>
                         </FormGroup>
                     </Box>
                 </Paper>
             </Box>
+            {
+                enableSourceHandle && (
+                    <Handle
+                        type="source"
+                        position={ Position.Right }
+                        id={ `${stepId}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}` }
+                    />
+                )
+            }
         </div>
     );
 };

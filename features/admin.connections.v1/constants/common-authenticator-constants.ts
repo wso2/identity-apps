@@ -55,6 +55,7 @@ export class CommonAuthenticatorConstants {
         OIDC: string;
         ORGANIZATION_ENTERPRISE_IDP: string;
         SAML: string;
+        SIGNICAT: string;
         SWE: string;
         TRUSTED_TOKEN_ISSUER: string;
         TWO_FACTOR_CUSTOM_AUTHENTICATOR: string;
@@ -75,6 +76,7 @@ export class CommonAuthenticatorConstants {
             OIDC: "enterprise-oidc-idp",
             ORGANIZATION_ENTERPRISE_IDP: "organization-enterprise-idp",
             SAML: "enterprise-saml-idp",
+            SIGNICAT: "signicat",
             SWE: "swe-idp",
             TRUSTED_TOKEN_ISSUER: "trusted-token-issuer",
             TWO_FACTOR_CUSTOM_AUTHENTICATOR: "two-factor-custom-authenticator"

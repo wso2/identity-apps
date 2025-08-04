@@ -43,7 +43,7 @@ export const CustomPageEditor: FunctionComponent<CustomPageEditorInterface> = ({
     const { t } = useTranslation();
 
     const featureConfig: ExtendedFeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const hasBrandingUpdatePermissions: boolean = useRequiredScopes(featureConfig?.apiResources?.scopes?.update);
+    const hasBrandingUpdatePermissions: boolean = useRequiredScopes(featureConfig?.branding?.scopes?.update);
 
     const {
         setIsCustomLayoutEditorEnabled,
