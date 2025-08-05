@@ -21,4 +21,23 @@
         margin-top: 20px;
         font-weight: normal;
     }
+    .placeholder {
+        border-radius: 8px;
+        margin-bottom: 8px;
+
+        &.label {
+            height: 20px;
+            max-width: 100px;
+        }
+
+        &.text-field {
+            height: 40px;
+        }
+    }
+
+    .placeholder-box {
+        > * {
+            margin-bottom: 8px;
+        }
+    }
  }

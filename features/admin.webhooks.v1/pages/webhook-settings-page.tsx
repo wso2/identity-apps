@@ -42,6 +42,8 @@ import {
 } from "../models/webhook-settings";
 import { useHandleWebhookError } from "../utils/alert-utils";
 import "./webhook-settings-page.scss";
+import Box from "@oxygen-ui/react/Box";
+import Skeleton from "@oxygen-ui/react/Skeleton";
 
 const FORM_ID: string = "webhook-settings";
 
@@ -73,7 +75,6 @@ export const WebhookSettingsForm: FunctionComponent<WebhookSettingsFormPropsInte
     const { t } = useTranslation();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ isLoading, setIsLoading ] = useState<boolean>(false);
 
     /**
      * Get initial webhook metadata.
@@ -86,13 +87,6 @@ export const WebhookSettingsForm: FunctionComponent<WebhookSettingsFormPropsInte
 
     // Alert handlers
     const handleError: ReturnType<typeof useHandleWebhookError> = useHandleWebhookError();
-
-    /**
-     * Sets the internal loading state when the SWR `isLoading` state changes.
-     */
-    useEffect(() => {
-        setIsLoading(isWebhooksMetadataLoading);
-    }, [ isWebhooksMetadataLoading ]);
 
     /**
      * Handles the error scenario of the webhooks metadata fetch.
@@ -117,24 +111,14 @@ export const WebhookSettingsForm: FunctionComponent<WebhookSettingsFormPropsInte
     };
 
     /**
-     * Resolve the error message when the update fails.
-     */
-    const resolveUpdateErrorMessage = (error: AxiosError): string => {
-
-        return (
-            t("webhooks:notifications.updateWebhookSettings.error.description",
-                { description: error.response.data.description })
-        );
-    };
-
-    /**
      * Handles the error scenario of the update.
      */
     const handleUpdateError = (error: AxiosError) => {
         if (error?.response?.data?.detail) {
             dispatch(
                 addAlert({
-                    description: resolveUpdateErrorMessage(error),
+                    description: t("webhooks:notifications.updateWebhookSettings.error.description",
+                        { description: error.response.data.description }),
                     level: AlertLevels.ERROR,
                     message: t(
                         "webhooks:notifications.updateWebhookSettings.error.message"
@@ -183,6 +167,14 @@ export const WebhookSettingsForm: FunctionComponent<WebhookSettingsFormPropsInte
             });
     };
 
+    const renderLoadingPlaceholders = (): ReactElement => (
+        <Box className="placeholder-box">
+            <Skeleton variant="rectangular" height={ 21 } />
+            <Skeleton variant="rectangular" height={ 14 }  />
+            <Skeleton variant="rectangular" height={ 7 } />
+        </Box>
+    );
+
     /**
      * This handles back button navigation.
      */
@@ -192,14 +184,8 @@ export const WebhookSettingsForm: FunctionComponent<WebhookSettingsFormPropsInte
 
     return (
         <div className="webhook-settings-page">
-            { isLoading ?
-                (
-                    <EmphasizedSegment padded="very">
-                        <ContentLoader inline="centered" active />
-                    </EmphasizedSegment>
-                )
-                :
-                (<PageLayout
+            {
+                <PageLayout
                     title={ t("webhooks:pages.settings.heading") }
                     description={ (
                         <>
@@ -217,52 +203,53 @@ export const WebhookSettingsForm: FunctionComponent<WebhookSettingsFormPropsInte
                     data-componentid={ `${componentId}-page-layout` }
                 >
                     <EmphasizedSegment padded="very">
-                        <Form
-                            id={ FORM_ID }
-                            uncontrolledForm={ false }
-                            onSubmit={ (values: WebhookSettingsFormValuesInterface) => {
-                                updateWebhookSettings(values);
-                            } }
-                            initialValues={ {
-                                organizationPolicy: {
-                                    policyName: webhooksMetadata?.organizationPolicy?.policyName ||
+                        { isWebhooksMetadataLoading ? renderLoadingPlaceholders() :
+
+                            (<Form
+                                id={ FORM_ID }
+                                uncontrolledForm={ false }
+                                onSubmit={ (values: WebhookSettingsFormValuesInterface) => {
+                                    updateWebhookSettings(values);
+                                } }
+                                initialValues={ {
+                                    organizationPolicy: {
+                                        policyName: webhooksMetadata?.organizationPolicy?.policyName ||
                                         EventPublishingOrgSharePolicy.NO_SHARING
-                                }
-                            } }
-                            data-componentid={ `${componentId}-form` }
-                        >
-                            <Typography variant="h6" className="heading-container">
-                                { t("webhooks:pages.settings.organizationPolicy.heading") }
-                            </Typography>
-                            {
-                                ORGANIZATION_POLICY_RADIO_OPTIONS.map((option: RadioChild) => (
-                                    <Field.Radio
-                                        key={ option.value }
-                                        ariaLabel={ t(option.label) }
-                                        label={ t(option.label) }
-                                        name="organizationPolicy.policyName"
-                                        type="radio"
-                                        value={ option.value }
-                                        data-componentid={ `${ componentId }-organization-policy-radio-` +
+                                    }
+                                } }
+                                data-componentid={ `${componentId}-form` }
+                            >
+                                <Typography variant="h6" className="heading-container">
+                                    { t("webhooks:pages.settings.organizationPolicy.heading") }
+                                </Typography>
+                                {
+                                    ORGANIZATION_POLICY_RADIO_OPTIONS.map((option: RadioChild) => (
+                                        <Field.Radio
+                                            key={ option.value }
+                                            ariaLabel={ t(option.label) }
+                                            label={ t(option.label) }
+                                            name="organizationPolicy.policyName"
+                                            type="radio"
+                                            value={ option.value }
+                                            data-componentid={ `${ componentId }-organization-policy-radio-` +
                                                     `option-${ option.value }` }
-                                    />
-                                ))
-                            }
-                            <Field.Button
-                                form={ FORM_ID }
-                                size="small"
-                                buttonType="primary_btn"
-                                ariaLabel="Update button"
-                                name="update-button"
-                                data-testid={ `${ componentId }-submit-button` }
-                                disabled={ isSubmitting }
-                                loading={ isSubmitting }
-                                label={ t("common:update") }
-                            />
-                        </Form>
+                                        />
+                                    ))
+                                }
+                                <Field.Button
+                                    form={ FORM_ID }
+                                    size="small"
+                                    buttonType="primary_btn"
+                                    ariaLabel="Update button"
+                                    name="update-button"
+                                    data-testid={ `${ componentId }-submit-button` }
+                                    disabled={ isSubmitting }
+                                    loading={ isSubmitting }
+                                    label={ t("common:update") }
+                                />
+                            </Form>) }
                     </EmphasizedSegment>
                 </PageLayout>
-                )
             }
         </div>
     );

@@ -32,11 +32,21 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpReque
     AsgardeoSPAClient.getInstance()
 );
 
+/**
+ * Update webhook metadata.
+ * @param webhookMetadata - Webhook metadata update request payload.
+ * @returns Promise containing the response.
+ * @throws Throws an IdentityAppsApiException if the request fails.
+ */
 const updateWebhookMetadata = (
     webhookMetadata: WebhookMetadataUpdateRequestInterface
 ): Promise<WebhookMetadataUpdateResponseInterface> => {
     const requestConfig: RequestConfigInterface = {
         data: webhookMetadata,
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
         method: HttpMethods.PATCH,
         url: `${store.getState().config.endpoints.webhooksMetadata}`
     };
