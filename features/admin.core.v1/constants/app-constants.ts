@@ -519,7 +519,9 @@ export class AppConstants {
         "governanceConnectors",
         "branding",
         "consoleSettings",
-        "apiResources"
+        "apiResources",
+        "approvals",
+        "workflows"
     ];
 
     /**

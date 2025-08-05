@@ -56,7 +56,7 @@ const DOBFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
             validation.isValid = false;
             validation.errorMessages.push(
                 t("myAccount:components.profile.forms.dateChangeForm.inputs.date.validations.invalidFormat", {
-                    field: fieldLabel
+                    fieldName: fieldLabel
                 })
             );
 
@@ -66,7 +66,7 @@ const DOBFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
         if (moment().isBefore(value)) {
             validation.isValid = false;
             validation.errorMessages.push(
-                t("myAccount:components.profile.forms.dateChangeForm.inputs.date.validations." + "futureDateError", {
+                t("myAccount:components.profile.forms.dateChangeForm.inputs.date.validations.futureDateError", {
                     field: fieldLabel
                 })
             );

@@ -167,7 +167,7 @@ const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
                                                 requiredErrorMessage={ t(
                                                     "myAccount:components.profile.forms.generic.inputs." +
                                                         "validations.empty",
-                                                    { fieldLabel }
+                                                    { fieldName: fieldLabel }
                                                 ) }
                                                 type="text"
                                                 validation={ validateField }

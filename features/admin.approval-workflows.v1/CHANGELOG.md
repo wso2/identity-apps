@@ -1,5 +1,14 @@
 # @wso2is/admin.approval-workflows.v1
 
+## 1.0.7
+
+### Patch Changes
+
+- [#8681](https://github.com/wso2/identity-apps/pull/8681) [`5ed4fa6bf807211d796d2b3ee3f4a0ad7ab3d2de`](https://github.com/wso2/identity-apps/commit/5ed4fa6bf807211d796d2b3ee3f4a0ad7ab3d2de) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Update workflow API resources and scopes
+
+- Updated dependencies [[`5ed4fa6bf807211d796d2b3ee3f4a0ad7ab3d2de`](https://github.com/wso2/identity-apps/commit/5ed4fa6bf807211d796d2b3ee3f4a0ad7ab3d2de)]:
+  - @wso2is/admin.core.v1@2.47.2
+
 ## 1.0.6
 
 ### Patch Changes

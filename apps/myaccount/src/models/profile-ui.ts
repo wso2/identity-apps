@@ -23,7 +23,7 @@ import { ProfilePatchOperationValue } from "./profile";
 /**
  * Props interface of the profile field form renderer.
  */
-export interface ProfileFieldFormRendererPropsInterface extends IdentifiableComponentInterface {
+export interface ProfileFieldFormRendererPropsInterface<T> extends IdentifiableComponentInterface {
     /**
      * The schema of the attribute.
      */
@@ -34,12 +34,17 @@ export interface ProfileFieldFormRendererPropsInterface extends IdentifiableComp
     flattenedProfileSchema: ProfileSchemaInterface[];
     /**
      * The initial value of the attribute.
+     * Can be a string, number, boolean or array of strings.
      */
-    initialValue: string;
+    initialValue: T;
     /**
      * The label to be displayed.
      */
     fieldLabel: string;
+    /**
+     * The name of the attribute field. If not provided, the schema name will be used.
+     */
+    fieldName?: string;
     /**
      * Whether the field is in edit mode or not.
      */
@@ -62,8 +67,9 @@ export interface ProfileFieldFormRendererPropsInterface extends IdentifiableComp
      * Callback to trigger the profile update.
      *
      * @param data - Patch operation data.
+     * @param clearActiveForm - Whether to clear the active form or not.
      */
-    triggerUpdate: (data: PatchOperationRequest<ProfilePatchOperationValue>) => void;
+    triggerUpdate: (data: PatchOperationRequest<ProfilePatchOperationValue>, clearActiveForm?: boolean) => void;
     /**
      * Mapped user profile data. This is used in the email, mobile number fields.
      * Ex: Retrieve the primary email address.
@@ -87,9 +93,9 @@ export interface ProfileFieldFormRendererPropsInterface extends IdentifiableComp
     isUpdating: boolean;
 }
 
-export interface ProfileFieldFormPropsInterface
+export interface ProfileFieldFormPropsInterface<T>
     extends Omit<
-        ProfileFieldFormRendererPropsInterface,
+        ProfileFieldFormRendererPropsInterface<T>,
         | "triggerUpdate"
         | "profileInfo"
         | "isEmailVerificationEnabled"
@@ -113,7 +119,7 @@ export interface ProfileFieldFormPropsInterface
     handleSubmit: (schemaName: string, value: FormValue) => void;
 }
 
-export interface TextFieldFormPropsInterface extends ProfileFieldFormPropsInterface {
+export interface TextFieldFormPropsInterface extends ProfileFieldFormPropsInterface<string> {
     /**
      * Callback to validate the field. If not provided, the default validation will be used.
      * In the default validation, the value will be validated against the schema regex.
@@ -136,9 +142,11 @@ export interface TextFieldFormPropsInterface extends ProfileFieldFormPropsInterf
     step?: number | "any";
 }
 
-export interface CountryFieldFormPropsInterface extends ProfileFieldFormPropsInterface {}
+export interface CountryFieldFormPropsInterface extends ProfileFieldFormPropsInterface<string> {}
 
-export interface EmailFieldFormPropsInterface extends Omit<ProfileFieldFormPropsInterface, "handleSubmit"> {
+export interface LocaleFieldFormPropsInterface extends ProfileFieldFormPropsInterface<string> {}
+
+export interface EmailFieldFormPropsInterface extends Omit<ProfileFieldFormPropsInterface<string>, "handleSubmit"> {
     /**
      * Mapped user profile data.
      */
@@ -151,11 +159,12 @@ export interface EmailFieldFormPropsInterface extends Omit<ProfileFieldFormProps
      * Callback to trigger the update.
      *
      * @param data - Patch operation data.
+     * @param clearActiveForm - Whether to clear the active form or not.
      */
-    triggerUpdate: (data: PatchOperationRequest<ProfilePatchOperationValue>) => void;
+    triggerUpdate: (data: PatchOperationRequest<ProfilePatchOperationValue>, clearActiveForm?: boolean) => void;
 }
 
-export interface MobileFieldFormPropsInterface extends Omit<ProfileFieldFormPropsInterface, "handleSubmit"> {
+export interface MobileFieldFormPropsInterface extends Omit<ProfileFieldFormPropsInterface<string>, "handleSubmit"> {
     /**
      * Mapped user profile data.
      */
@@ -168,8 +177,9 @@ export interface MobileFieldFormPropsInterface extends Omit<ProfileFieldFormProp
      * Callback to trigger the update.
      *
      * @param data - Patch operation data.
+     * @param clearActiveForm - Whether to clear the active form or not.
      */
-    triggerUpdate: (data: PatchOperationRequest<ProfilePatchOperationValue>) => void;
+    triggerUpdate: (data: PatchOperationRequest<ProfilePatchOperationValue>, clearActiveForm?: boolean) => void;
     /**
      * Flattened profile schema.
      */
@@ -178,16 +188,31 @@ export interface MobileFieldFormPropsInterface extends Omit<ProfileFieldFormProp
 
 export interface CheckBoxFieldFormPropsInterface
     extends Omit<
-        ProfileFieldFormPropsInterface,
-        "isActive" | "isEditable" | "isRequired" | "profileInfo" | "onEditClicked" | "onEditCancelClicked"
+        ProfileFieldFormPropsInterface<boolean>,
+        "isActive" | "isRequired" | "profileInfo" | "onEditClicked" | "onEditCancelClicked"
     > {}
 
-export interface DOBFieldFormPropsInterface extends ProfileFieldFormPropsInterface {}
+export interface SwitchFieldFormPropsInterface
+    extends Omit<
+        ProfileFieldFormPropsInterface<boolean>,
+        "isActive" | "isRequired" | "profileInfo" | "onEditClicked" | "onEditCancelClicked"
+    > {}
 
-export interface DropdownFieldFormPropsInterface extends ProfileFieldFormPropsInterface {}
+export interface DOBFieldFormPropsInterface extends ProfileFieldFormPropsInterface<string> {}
+
+export interface DropdownFieldFormPropsInterface extends ProfileFieldFormPropsInterface<string | string[]> {
+    /**
+     * Whether the multiple selection is enabled or not.
+     */
+    isMultiSelect?: boolean;
+}
+
+export interface CheckboxGroupFieldFormPropsInterface extends ProfileFieldFormPropsInterface<string[]> { }
+
+export interface RadioFieldFormPropsInterface extends ProfileFieldFormPropsInterface<string> {}
 
 export interface MultiValueFieldFormPropsInterface<T extends string | number>
-    extends Omit<ProfileFieldFormPropsInterface, "initialValue"> {
+    extends Omit<ProfileFieldFormPropsInterface<T[]>, "initialValue"> {
     /**
      * Initial value of the field.
      */

@@ -111,7 +111,7 @@ const SelectFieldAdapter: FunctionComponent<SelectFieldAdapterPropsInterface> = 
 
     return (
         <div className="select-field-adapter" data-componentid={ componentId }>
-            <InputLabel required={ required }>{ label }</InputLabel>
+            <InputLabel htmlFor={ `${input.name}-input` } required={ required }>{ label }</InputLabel>
             <FormControl
                 error={ isError }
                 size="small"
@@ -121,12 +121,21 @@ const SelectFieldAdapter: FunctionComponent<SelectFieldAdapterPropsInterface> = 
                 disabled={ readOnly }
                 { ...FormControlProps }
             >
-                <InputLabel shrink={ false } data-componentid={ `${componentId}-placeholder` } disabled>
+                <InputLabel
+                    htmlFor={ `${input.name}-input` }
+                    shrink={ false }
+                    data-componentid={ `${componentId}-placeholder` }
+                    disabled
+                >
                     { isEmpty(input.value) ? placeholder : "" }
                 </InputLabel>
                 <Select
                     { ...input }
                     value={ fieldValue }
+                    inputProps={ {
+                        id: `${input.name}-input`,
+                        name: input.name
+                    } }
                     margin="dense"
                     endAdornment={
                         showClearButton && (
@@ -138,6 +147,7 @@ const SelectFieldAdapter: FunctionComponent<SelectFieldAdapterPropsInterface> = 
                         )
                     }
                     data-componentid={ `${componentId}-input` }
+                    MenuProps={ { "data-componentid": `${componentId}-menu` } as any }
                     { ...(rest as SelectProps) }
                 >
                     { options?.map((option: DropDownItemInterface, index: number) => (

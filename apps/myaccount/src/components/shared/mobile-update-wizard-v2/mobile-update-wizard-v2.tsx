@@ -51,6 +51,7 @@ interface MobileUpdateWizardV2PropsInterface extends IdentifiableComponentInterf
     isOpen: boolean;
     onClose: (isRevalidate?: boolean) => void;
     onCancel: (isRevalidate?: boolean) => void;
+    isMobileRequired: boolean;
     initialStep?: number;
     isMultiValued?: boolean;
 }
@@ -61,6 +62,7 @@ const MobileUpdateWizardV2: FunctionComponent<MobileUpdateWizardV2PropsInterface
         isOpen,
         onClose,
         onCancel,
+        isMobileRequired,
         initialStep = 0,
         isMultiValued = false,
         ["data-componentid"]: testId = "component-id"
@@ -200,7 +202,7 @@ const MobileUpdateWizardV2: FunctionComponent<MobileUpdateWizardV2PropsInterface
             content: (
                 <MobileInputStepContent
                     initialValue={ initialValue }
-                    isRequired={ true }
+                    isRequired={ isMobileRequired }
                     fieldLabel="mobile"
                     onUpdate={ handleMobileNumberUpdate }
                     triggerUpdate={ triggerUpdateMobile }
