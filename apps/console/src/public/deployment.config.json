@@ -499,7 +499,7 @@
                 "featureFlags": [],
                 "scopes": {
                     "feature": [
-                        "console:workflowApprovals"
+                        "console:workflows"
                     ],
                     "read": [
                         "internal_approval_task_view"
@@ -1673,7 +1673,7 @@
                         "internal_workflow_delete"
                     ],
                     "feature": [
-                        "console:workflowApprovals"
+                        "console:workflows"
                     ],
                     "read": [
                         "internal_workflow_association_view",
@@ -1776,6 +1776,7 @@
                 "admin-forced-password-reset",
                 "apiResources",
                 "applications",
+                "approvals",
                 "attributeDialects",
                 "branding",
                 "consoleSettings",
@@ -1794,7 +1795,8 @@
                 "userRoles",
                 "userStores",
                 "username-recovery",
-                "users"
+                "users",
+                "workflows"
             ]
         },
         "selfAppIdentifier": "Console",

@@ -290,6 +290,10 @@ export interface FeatureConfigInterface {
      * Registration flow builder feature.
      */
     registrationFlowBuilder?: FeatureAccessConfigInterface;
+    /**
+     * Workflow feature.
+     */
+    workflows?: FeatureAccessConfigInterface;
 }
 
 /**
