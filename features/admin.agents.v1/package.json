@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.agents.v1",
-    "version": "1.0.22",
+    "version": "1.0.23",
     "description": "Agent configuration UI for WSO2 Identity Server console",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -25,7 +25,7 @@
         "@wso2is/admin.claims.v1": "^2.28.11",
         "@wso2is/admin.connections.v1": "^2.33.99",
         "@wso2is/admin.console-settings.v1": "^2.25.218",
-        "@wso2is/admin.core.v1": "^2.46.43",
+        "@wso2is/admin.core.v1": "^2.47.3",
         "@wso2is/admin.extensions.v1": "^2.40.0",
         "@wso2is/admin.feature-gate.v1": "^1.7.6",
         "@wso2is/admin.identity-providers.v1": "^2.26.207",
