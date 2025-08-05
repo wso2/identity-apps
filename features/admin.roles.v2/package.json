@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.roles.v2",
-    "version": "2.27.177",
+    "version": "2.27.178",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -26,7 +26,7 @@
         "@wso2is/admin.applications.v1": "^2.36.14",
         "@wso2is/admin.authorization.v1": "^2.25.89",
         "@wso2is/admin.connections.v1": "^2.33.99",
-        "@wso2is/admin.core.v1": "^2.46.43",
+        "@wso2is/admin.core.v1": "^2.47.3",
         "@wso2is/admin.extensions.v1": "^2.40.0",
         "@wso2is/admin.groups.v1": "^2.27.123",
         "@wso2is/admin.identity-providers.v1": "^2.26.207",
