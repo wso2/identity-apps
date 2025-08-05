@@ -73,14 +73,13 @@
             .card-content {
                 margin: 10px 0;
                 padding: 16px 0;
-                max-height: 300px;
+                max-height: 335px;
                 overflow-y: auto;
             }
 
             .card-actions {
                 justify-content: flex-end;
                 padding: 8px 0;
-                gap: 8px;
 
                 .oxygen-button {
                     min-width: auto;
@@ -92,6 +91,11 @@
                 flex-direction: column;
                 gap: 16px;
 
+                &.loading {
+                    justify-content: center;
+                    padding: 2rem;
+                }
+
                 .i18n-selection-row {
                     align-items: center;
                     display: flex;
@@ -100,27 +104,12 @@
                     .MuiAutocomplete-root, .oxygen-text-field {
                         flex-grow: 1;
                     }
+                }
 
-                    .add-icon-button {
-                        border: 1px solid var(--oxygen-palette-divider);
-                        border-radius: var(--oxygen-shape-borderRadius);
-                        background-color: var(--oxygen-palette-background-paper);
-
-                        &:hover {
-                            background-color: var(--oxygen-palette-action-hover);
-                            border-color: var(--oxygen-palette-primary-main);
-                        }
-
-                        &:disabled {
-                            background-color: var(--oxygen-palette-action-disabledBackground);
-                            color: var(--oxygen-palette-action-disabled);
-                            border-color: var(--oxygen-palette-divider);
-                        }
-
-                        svg {
-                            font-size: 16px;
-                        }
-                    }
+                .language-text-container {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
                 }
             }
         }

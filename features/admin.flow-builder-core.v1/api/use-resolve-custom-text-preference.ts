@@ -17,17 +17,14 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { CustomTextPreferenceAPIResponseInterface } from "@wso2is/admin.branding.v1/models/custom-text-preference";
 import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import { store } from "@wso2is/admin.core.v1/store";
-import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { BrandingPreferenceTypes, PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig } from "axios";
 import useSWR, { SWRResponse } from "swr";
 import { CustomTextPreferenceResult } from "../models/custom-text-preference";
-import { getCustomScreenName } from "../utils/custom-text-utils";
 
 /**
  * Get an axios instance.
@@ -51,7 +48,7 @@ const fetchCustomTextPreference = async (
             throw new Error(`Failed to resolve custom text preference: ${response.statusText}`);
         }
 
-        return (response as CustomTextPreferenceAPIResponseInterface)?.preference?.text;
+        return response?.data?.preference?.text || {};
     } catch (error) {
         const axiosError: AxiosError = error as AxiosError;
 
@@ -81,7 +78,6 @@ const fetchCustomTextPreference = async (
  * @param locale - Resource Locale.
  * @param type - Resource Type.
  * @param subOrg - Whether it's for a sub-organization.
- * @param flowType - The type of the flow.
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isLoading, mutate.
  */
@@ -91,18 +87,15 @@ const useResolveCustomTextPreferences = (
     locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE,
     type: BrandingPreferenceTypes = BrandingPreferenceTypes.ORG,
     subOrg: boolean = false,
-    flowType: FlowTypes,
     shouldFetch: boolean = true
 ): CustomTextPreferenceResult => {
-    const clonedScreenTypes: string[] = [ ...screenTypes, getCustomScreenName(flowType) ];
-
     const endpointUrl: string = subOrg
         ? `${store.getState().config.endpoints.brandingTextPreferenceSubOrg}/resolve`
         : `${store.getState().config.endpoints.brandingTextPreference}/resolve`;
 
     // Create cache key based on all parameters.
     const cacheKey: string = shouldFetch ?
-        `resolve-multiple-custom-text-preferences-${name}-${JSON.stringify(clonedScreenTypes.sort())}-` +
+        `resolve-multiple-custom-text-preferences-${name}-${JSON.stringify(screenTypes.sort())}-` +
         `${locale}-${type}-${subOrg}`
         : null;
 
@@ -120,7 +113,7 @@ const useResolveCustomTextPreferences = (
             const promises: Promise<{
                 screenType: PreviewScreenType;
                 data: Record<string, string>;
-            }>[] = clonedScreenTypes.map(async (screenType: string) => {
+            }>[] = screenTypes.map(async (screenType: string) => {
                 const requestConfig: AxiosRequestConfig = {
                     headers: {
                         "Accept": "application/json",

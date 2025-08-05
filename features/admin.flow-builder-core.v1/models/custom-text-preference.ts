@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { CustomTextPreferenceScreenMetaInterface } from "@wso2is/admin.branding.v1/models/custom-text-preference";
 import { PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 
@@ -27,6 +28,28 @@ export interface CustomTextPreferenceResult {
      * The data returned by the hook.
      */
     data?: { [ key in PreviewScreenType ]?: Record<string, string> };
+    /**
+     * Error state.
+     */
+    error?: IdentityAppsApiException;
+    /**
+     * Loading state.
+     */
+    isLoading: boolean;
+    /**
+     * Mutate function to revalidate data.
+     */
+    mutate: () => void;
+}
+
+/**
+ * Interface for the screen meta hook result.
+ */
+export interface CustomTextPreferenceScreenMetaResult {
+    /**
+     * The data returned by the hook.
+     */
+    data?: { [ key in PreviewScreenType ]?: CustomTextPreferenceScreenMetaInterface };
     /**
      * Error state.
      */

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { CustomTextPreferenceScreenMetaInterface } from "@wso2is/admin.branding.v1/models/custom-text-preference";
 import { PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { Claim } from "@wso2is/core/models";
 import { Context, Dispatch, FunctionComponent, ReactNode, SetStateAction, createContext } from "react";
@@ -120,27 +121,30 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      */
     setLanguage?: (language: string) => void;
     /**
-     * Adds a new i18n key for the specified screen.
-     *
-     * @param screen - The screen type for the i18n key.
-     * @param i18nKey - The i18n key to add.
-     * @param value - The value for the i18n key.
-     * @returns A promise that resolves when the i18n key is added.
-     */
-    addI18nKey?: (i18nKey: string, value: string) => Promise<void>;
-    /**
      * Updates an existing i18n key for the specified screen.
      *
      * @param screenType - The screen type for the i18n key.
-     * @param i18nKey - The i18n key to update.
-     * @param value - The new value for the i18n key.
-     * @returns A promise that resolves when the i18n key is updated.
+     * @param language - The language for the i18n key.
+     * @param i18nText - The i18n text to update.
+     * @returns Promise indicating the success or failure of the update operation.
      */
-    updateI18nKey?: (screenType: string, i18nKey: string, value: string) => Promise<void>;
+    updateI18nKey?: (screenType: string, language: string, i18nText: Record<string, string>) => Promise<boolean>;
     /**
      * Indicates whether the i18n key related operations are in progress.
      */
     isI18nSubmitting?: boolean;
+    /**
+     * Screen metadata for custom text preferences.
+     */
+    screenMeta?: { [key in PreviewScreenType]?: CustomTextPreferenceScreenMetaInterface };
+    /**
+     * Function to check if a given i18n key is custom for the specified screen type.
+     *
+     * @param screenType - The screen type to check.
+     * @param key - The i18n key to check.
+     * @returns True if the i18n key is custom for the specified screen type, false otherwise.
+     */
+    isCustomI18nKey?: (screenType: PreviewScreenType, key: string) => boolean;
 }
 
 /**
@@ -154,6 +158,7 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         ResourceProperties: () => null,
         i18nText: null,
         i18nTextLoading: false,
+        isCustomI18nKey: () => false,
         isResourcePanelOpen: true,
         isResourcePropertiesPanelOpen: false,
         language: "",

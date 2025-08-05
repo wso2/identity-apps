@@ -86,31 +86,8 @@ export interface flowsNS {
                 };
                 placeholder: string;
                 tooltip: {
-                    addI18nKey: string;
                     configureTranslation: string;
                 };
-            };
-        };
-        errors: {
-            addI18nKey: {
-                description: string;
-                message: string;
-            };
-            fallbackTextPreferenceFetch: {
-                description: string;
-                message: string;
-            };
-            flowMetadataFetch: {
-                description: string;
-                message: string;
-            };
-            textPreferenceFetch: {
-                description: string;
-                message: string;
-            };
-            updateI18nKey: {
-                description: string;
-                message: string;
             };
         };
         executions: {
@@ -124,6 +101,36 @@ export interface flowsNS {
                 microsoft: string;
                 passkeyEnrollment: string;
                 magicLink: string;
+            };
+        };
+        notifications: {
+            fallbackTextPreferenceFetch: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            flowMetadataFetch: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            textPreferenceFetch: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            updateI18nKey: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
             };
         };
     };

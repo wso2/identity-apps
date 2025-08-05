@@ -129,13 +129,17 @@ const TextPropertyField: FunctionComponent<TextPropertyFieldPropsInterface> = ({
                 } }
                 { ...rest }
             />
-            <I18nConfigurationCard
-                open={ isI18nCardOpen }
-                anchorEl={ iconButtonRef.current }
-                propertyKey={ propertyKey }
-                onClose={ handleI18nClose }
-                data-componentid={ `${componentId}-i18n-card` }
-            />
+            {
+                isI18nCardOpen && (
+                    <I18nConfigurationCard
+                        open={ isI18nCardOpen }
+                        anchorEl={ iconButtonRef.current }
+                        propertyKey={ propertyKey }
+                        onClose={ handleI18nClose }
+                        data-componentid={ `${componentId}-i18n-card` }
+                    />
+                )
+            }
         </Box>
     );
 };

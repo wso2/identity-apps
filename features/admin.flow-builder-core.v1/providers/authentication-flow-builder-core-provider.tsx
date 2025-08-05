@@ -44,12 +44,12 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import useGetCustomTextPreferenceFallbacks from "../api/use-get-custom-text-preference-fallbacks";
+import useGetCustomTextPreferenceScreenMeta from "../api/use-get-custom-text-preference-screen-meta";
 import useGetMetadata from "../api/use-metadata";
 import useResolveCustomTextPreferences from "../api/use-resolve-custom-text-preference";
 import AuthenticationFlowBuilderCoreContext from "../context/authentication-flow-builder-core-context";
 import { Resource, ResourceTypes } from "../models/resources";
 import { StepTypes } from "../models/steps";
-import { getCustomScreenName } from "../utils/custom-text-utils";
 
 /**
  * Props interface of {@link AuthenticationFlowBuilderCoreProvider}
@@ -107,12 +107,16 @@ const AuthenticationFlowBuilderCoreProvider = ({
         isLoading: textPreferenceLoading,
         mutate: mutateTextPreference
     } = useResolveCustomTextPreferences(tenantDomain, screenTypes, language,
-        BrandingPreferenceTypes.ORG, isSubOrganization(), flowType, screenTypes?.length > 0);
+        BrandingPreferenceTypes.ORG, isSubOrganization(), screenTypes?.length > 0);
     const {
         data: fallbackTextPreference,
         error: fallbackTextPreferenceFetchError,
         isLoading: fallbackTextPreferenceLoading
     } = useGetCustomTextPreferenceFallbacks(screenTypes, language, screenTypes?.length > 0);
+    const {
+        data: screenMeta,
+        isLoading: screenMetaLoading
+    } = useGetCustomTextPreferenceScreenMeta(screenTypes, screenTypes?.length > 0);
 
     /**
      * Memoized i18n text combining both text preference and fallback.
@@ -131,9 +135,9 @@ const AuthenticationFlowBuilderCoreProvider = ({
     useEffect(() => {
         if (flowMetadataError) {
             dispatch(addAlert({
-                description: t("flows:core.errors.flowMetadataFetch.description"),
+                description: t("flows:core.notifications.flowMetadataFetch.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: t("flows:core.errors.flowMetadataFetch.message")
+                message: t("flows:core.notifications.flowMetadataFetch.genericError.message")
             }));
         }
     }, [ flowMetadataError ]);
@@ -144,9 +148,9 @@ const AuthenticationFlowBuilderCoreProvider = ({
     useEffect(() => {
         if (textPreferenceFetchError) {
             dispatch(addAlert({
-                description: t("flows:core.errors.textPreferenceFetch.description"),
+                description: t("flows:core.notifications.textPreferenceFetch.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: t("flows:core.errors.textPreferenceFetch.message")
+                message: t("flows:core.notifications.textPreferenceFetch.genericError.message")
             }));
         }
     }, [ textPreferenceFetchError ]);
@@ -157,9 +161,9 @@ const AuthenticationFlowBuilderCoreProvider = ({
     useEffect(() => {
         if (fallbackTextPreferenceFetchError) {
             dispatch(addAlert({
-                description: t("flows:core.errors.fallbackTextPreferenceFetch.description"),
+                description: t("flows:core.notifications.fallbackTextPreferenceFetch.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: t("flows:core.errors.fallbackTextPreferenceFetch.message")
+                message: t("flows:core.notifications.fallbackTextPreferenceFetch.genericError.message")
             }));
         }
     }, [ fallbackTextPreferenceFetchError ]);
@@ -195,103 +199,43 @@ const AuthenticationFlowBuilderCoreProvider = ({
     };
 
     /**
-     * Function to add a new i18n key for the flow builder custom screen.
-     */
-    const addI18nKey: (key: string, value: string) => Promise<void> = useCallback(
-        async (key: string, value: string): Promise<void> => {
-            setIsI18nSubmitting(true);
-            const customScreenName: string = getCustomScreenName(flowType);
-
-            try {
-                if (!i18nText[customScreenName]) {
-                    await updateCustomTextPreference(
-                        false,
-                        {
-                            text: {
-                                [ key ]: value
-                            }
-                        },
-                        tenantDomain,
-                        customScreenName,
-                        language,
-                        BrandingPreferenceTypes.ORG
-                    );
-                } else {
-                    await updateCustomTextPreference(
-                        true,
-                        {
-                            text: {
-                                ...i18nText[customScreenName],
-                                [ key ]: value
-                            }
-                        },
-                        tenantDomain,
-                        customScreenName,
-                        language,
-                        BrandingPreferenceTypes.ORG
-                    );
-                }
-
-                mutateTextPreference();
-            } catch (error) {
-                dispatch(addAlert({
-                    description: t("flows:core.errors.addI18nKey.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("flows:core.errors.addI18nKey.message")
-                }));
-            } finally {
-                setIsI18nSubmitting(false);
-            }
-        }, [ i18nText, language, tenantDomain ]);
-
-    /**
      * Function to update an existing i18n key for the flow builder custom screen.
      */
-    const updateI18nKey: (screenType: string, i18nKey: string, value: string) => Promise<void> = useCallback(
-        async (screenType: string, i18nKey: string, value: string): Promise<void> => {
-            setIsI18nSubmitting(true);
+    const updateI18nKey: (screenType: string, language: string,
+        i18nText: Record<string, string>) => Promise<boolean> = useCallback(
+            async (screenType: string, language: string, i18nText: Record<string, string>): Promise<boolean> => {
+                setIsI18nSubmitting(true);
+                const isUpdate: boolean = Object.keys(textPreference[screenType]).length > 0;
 
-            try {
-                if (!i18nText[screenType]) {
+                try {
                     await updateCustomTextPreference(
-                        false,
+                        isUpdate,
                         {
-                            text: {
-                                [ i18nKey ]: value
-                            }
+                            text: i18nText
                         },
                         tenantDomain,
                         screenType,
                         language,
                         BrandingPreferenceTypes.ORG
                     );
-                } else {
-                    await updateCustomTextPreference(
-                        true,
-                        {
-                            text: {
-                                ...i18nText[screenType],
-                                [ i18nKey ]: value
-                            }
-                        },
-                        tenantDomain,
-                        screenType,
-                        language,
-                        BrandingPreferenceTypes.ORG
-                    );
+
+                    mutateTextPreference();
+
+                    return true;
+                } catch (error) {
+                    return false;
+                } finally {
+                    setIsI18nSubmitting(false);
                 }
+            }, [ textPreference, tenantDomain ]);
 
-                mutateTextPreference();
-            } catch (error) {
-                dispatch(addAlert({
-                    description: t("flows:core.errors.updateI18nKey.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("flows:core.errors.updateI18nKey.message")
-                }));
-            } finally {
-                setIsI18nSubmitting(false);
-            }
-        }, [ i18nText, language, tenantDomain ]);
+    /**
+     * Function to check if a given i18n key is custom for the specified screen type.
+     */
+    const isCustomI18nKey: (screenType: PreviewScreenType, key: string) => boolean = useCallback(
+        (screenType: PreviewScreenType, key: string): boolean => {
+            return fallbackTextPreference?.[screenType]?.[key] ? false : true;
+        }, [ fallbackTextPreference ]);
 
     return (
         <ReactFlowProvider>
@@ -299,9 +243,9 @@ const AuthenticationFlowBuilderCoreProvider = ({
                 value={ {
                     ElementFactory,
                     ResourceProperties,
-                    addI18nKey,
                     i18nText,
-                    i18nTextLoading: textPreferenceLoading || fallbackTextPreferenceLoading,
+                    i18nTextLoading: textPreferenceLoading || fallbackTextPreferenceLoading || screenMetaLoading,
+                    isCustomI18nKey,
                     isI18nSubmitting,
                     isResourcePanelOpen,
                     isResourcePropertiesPanelOpen,
@@ -311,6 +255,7 @@ const AuthenticationFlowBuilderCoreProvider = ({
                     metadata: flowMetadata,
                     onResourceDropOnCanvas,
                     resourcePropertiesPanelHeading,
+                    screenMeta,
                     selectedAttributes,
                     setIsOpenResourcePropertiesPanel,
                     setIsResourcePanelOpen,
