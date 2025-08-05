@@ -290,11 +290,11 @@
                 useEffect(() => {
                     if (error && error.code) {
                         const errorDetails = getI18nKeyForError(error.code, flowType);
-                        let portal_url = authPortalURL + "/register.do";
+                        let portal_url = authPortalURL + "/register";
                         if (flowType === "INVITED_USER_REGISTRATION" || flowType === "PASSWORD_RECOVERY") {
-                            portal_url = authPortalURL + "/recovery.do";
+                            portal_url = authPortalURL + "/recovery";
                         }
-                        const errorPageURL = authPortalURL + "/execution_flow_error.do?" + "ERROR_MSG="
+                        const errorPageURL = authPortalURL + "/error?" + "ERROR_MSG="
                             + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID="
                             + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + flowType + "&" + "confirmation="
                             + "<%= Encode.forJavaScript(confirmationCode) %>" + "&" +
