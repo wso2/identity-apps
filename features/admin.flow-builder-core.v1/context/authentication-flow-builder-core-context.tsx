@@ -19,6 +19,7 @@
 import { CustomTextPreferenceScreenMetaInterface } from "@wso2is/admin.branding.v1/models/custom-text-preference";
 import { PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { Claim } from "@wso2is/core/models";
+import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import { Context, Dispatch, FunctionComponent, ReactNode, SetStateAction, createContext } from "react";
 import { Base } from "../models/base";
 import { MetadataInterface } from "../models/metadata";
@@ -145,6 +146,14 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * @returns True if the i18n key is custom for the specified screen type, false otherwise.
      */
     isCustomI18nKey?: (screenType: PreviewScreenType, key: string) => boolean;
+    /**
+     * Supported locales for the custom text preferences.
+     */
+    supportedLocales?: SupportedLanguagesMeta;
+    /**
+     * Indicates whether branding is enabled for the organization.
+     */
+    isBrandingEnabled?: boolean;
 }
 
 /**
@@ -158,6 +167,7 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         ResourceProperties: () => null,
         i18nText: null,
         i18nTextLoading: false,
+        isBrandingEnabled: false,
         isCustomI18nKey: () => false,
         isResourcePanelOpen: true,
         isResourcePropertiesPanelOpen: false,
@@ -174,7 +184,8 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         setLastInteractedResource: () => {},
         setLastInteractedStepId: () => {},
         setResourcePropertiesPanelHeading: () => {},
-        setSelectedAttributes: () => {}
+        setSelectedAttributes: () => {},
+        supportedLocales: {}
     }
 );
 

@@ -74,6 +74,7 @@ export interface flowsNS {
                     configure: string;
                     configureTitle: string;
                     i18nKey: string;
+                    language: string;
                     languageText: string;
                     languageTextPlaceholder: string;
                     screenName: string;
@@ -81,12 +82,12 @@ export interface flowsNS {
                     selectI18nKey: string;
                     selectLanguage: string;
                     selectScreenName: string;
-                    selectScreenTypeFirst: string;
                     title: string;
                 };
                 placeholder: string;
                 tooltip: {
                     configureTranslation: string;
+                    enableBrandingRequired: string;
                 };
             };
         };
@@ -104,6 +105,18 @@ export interface flowsNS {
             };
         };
         notifications: {
+            brandingPreferenceFetch: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            customTextPreferenceMetaFetch: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
             fallbackTextPreferenceFetch: {
                 genericError: {
                     description: string;
@@ -111,6 +124,12 @@ export interface flowsNS {
                 };
             };
             flowMetadataFetch: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            screenMetaFetch: {
                 genericError: {
                     description: string;
                     message: string;

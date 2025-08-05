@@ -75,6 +75,7 @@ export const flows: flowsNS = {
                     configure: "More",
                     configureTitle: "Configure Translation Keys",
                     i18nKey: "Translation key",
+                    language: "Language",
                     languageText: "Language text configuration",
                     languageTextPlaceholder: "Enter text for the selected language",
                     screenName: "Screen name",
@@ -82,12 +83,12 @@ export const flows: flowsNS = {
                     selectLanguage: "Select language",
                     selectOrAddI18nKey: "Select or add a translation key",
                     selectScreenName: "Select a screen name",
-                    selectScreenTypeFirst: "Please select a screen name first",
                     title: "{{propertyKey}} translation"
                 },
                 placeholder: "Enter {{propertyName}}",
                 tooltip: {
-                    configureTranslation: "Configure translation"
+                    configureTranslation: "Configure translation",
+                    enableBrandingRequired: "Enable branding to update translation text. <1>Go to Branding</1>"
                 }
             }
         },
@@ -105,6 +106,18 @@ export const flows: flowsNS = {
             }
         },
         notifications: {
+            brandingPreferenceFetch: {
+                genericError: {
+                    description: "An error occurred while fetching the branding preferences.",
+                    message: "Branding Preference Fetch Error"
+                }
+            },
+            customTextPreferenceMetaFetch: {
+                genericError: {
+                    description: "An error occurred while fetching the custom text preference metadata.",
+                    message: "Custom Text Preference Meta Fetch Error"
+                }
+            },
             fallbackTextPreferenceFetch: {
                 genericError: {
                     description: "An error occurred while fetching the fallback text preferences.",
@@ -115,6 +128,12 @@ export const flows: flowsNS = {
                 genericError: {
                     description: "An error occurred while fetching the flow metadata.",
                     message: "Flow Metadata Fetch Error"
+                }
+            },
+            screenMetaFetch: {
+                genericError: {
+                    description: "An error occurred while fetching the screen metadata.",
+                    message: "Screen Meta Fetch Error"
                 }
             },
             textPreferenceFetch: {

@@ -73,7 +73,7 @@
             .card-content {
                 margin: 10px 0;
                 padding: 16px 0;
-                max-height: 335px;
+                max-height: 365px;
                 overflow-y: auto;
             }
 
@@ -93,23 +93,8 @@
 
                 &.loading {
                     justify-content: center;
-                    padding: 2rem;
-                }
-
-                .i18n-selection-row {
                     align-items: center;
-                    display: flex;
-                    gap: 8px;
-
-                    .MuiAutocomplete-root, .oxygen-text-field {
-                        flex-grow: 1;
-                    }
-                }
-
-                .language-text-container {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 8px;
+                    padding: 2rem;
                 }
             }
         }
@@ -130,5 +115,9 @@
         .delete-icon-button {
             color: var(--oxygen-palette-error-main);
         }
+    }
+
+    .branding-link {
+        cursor: pointer;
     }
 }

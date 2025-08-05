@@ -20,15 +20,19 @@ import Avatar from "@oxygen-ui/react/Avatar";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import updateCustomTextPreference from "@wso2is/admin.branding.v1/api/update-custom-text-preference";
+import useGetCustomTextPreferenceMeta from "@wso2is/admin.branding.v1/api/use-get-custom-text-preference-meta";
 import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import useGetBrandingPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-branding-preference-resolve";
 import { BrandingPreferenceTypes, PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { AlertLevels, Claim } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import { ReactFlowProvider } from "@xyflow/react";
 import merge from "lodash-es/merge";
+import pick from "lodash-es/pick";
 import startCase from "lodash-es/startCase";
 import React, {
     FunctionComponent,
@@ -90,6 +94,9 @@ const AuthenticationFlowBuilderCoreProvider = ({
     const { t } = useTranslation();
     const { isSubOrganization } = useGetCurrentOrganizationType();
     const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
+    const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
+        (state: AppState) => state.global.supportedI18nLanguages
+    );
 
     const [ isResourcePanelOpen, setIsResourcePanelOpen ] = useState<boolean>(true);
     const [ isResourcePropertiesPanelOpen, setIsOpenResourcePropertiesPanel ] = useState<boolean>(false);
@@ -115,8 +122,18 @@ const AuthenticationFlowBuilderCoreProvider = ({
     } = useGetCustomTextPreferenceFallbacks(screenTypes, language, screenTypes?.length > 0);
     const {
         data: screenMeta,
-        isLoading: screenMetaLoading
+        isLoading: screenMetaLoading,
+        error: screenMetaError
     } = useGetCustomTextPreferenceScreenMeta(screenTypes, screenTypes?.length > 0);
+    const {
+        data: customTextPreferenceMeta,
+        isLoading: customTextPreferenceMetaLoading,
+        error: customTextPreferenceMetaError
+    } = useGetCustomTextPreferenceMeta();
+    const {
+        data: brandingPreference,
+        error: brandingPreferenceError
+    } = useGetBrandingPreferenceResolve(tenantDomain);
 
     /**
      * Memoized i18n text combining both text preference and fallback.
@@ -126,8 +143,26 @@ const AuthenticationFlowBuilderCoreProvider = ({
             return {};
         }
 
-        return merge(fallbackTextPreference, textPreference);
+        return merge({}, fallbackTextPreference, textPreference);
     }, [ textPreference, fallbackTextPreference ]);
+
+    /**
+     * Memoized supported locales based on the custom text preference meta.
+     */
+    const supportedLocales: SupportedLanguagesMeta = useMemo(() => {
+        if (!supportedI18nLanguages || !customTextPreferenceMeta) {
+            return {};
+        }
+
+        return pick(supportedI18nLanguages, customTextPreferenceMeta?.locales);
+    }, [ supportedI18nLanguages, customTextPreferenceMeta ]);
+
+    /**
+     * Memoized branding enabled status based on the branding preference.
+     */
+    const isBrandingEnabled: boolean = useMemo(() => {
+        return brandingPreference?.preference?.configs?.isBrandingEnabled ?? false;
+    }, [ brandingPreference ]);
 
     /**
      * Error handling for flow metadata fetch.
@@ -167,6 +202,49 @@ const AuthenticationFlowBuilderCoreProvider = ({
             }));
         }
     }, [ fallbackTextPreferenceFetchError ]);
+
+    /**
+     * Error handling for screen meta fetch.
+     */
+    useEffect(() => {
+        if (screenMetaError) {
+            dispatch(addAlert({
+                description: t("flows:core.notifications.screenMetaFetch.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("flows:core.notifications.screenMetaFetch.genericError.message")
+            }));
+        }
+    }, [ screenMetaError ]);
+
+    /**
+     * Error handling for custom text preference meta fetch.
+     */
+    useEffect(() => {
+        if (customTextPreferenceMetaError) {
+            dispatch(addAlert({
+                description: t("flows:core.notifications.customTextPreferenceMetaFetch.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("flows:core.notifications.customTextPreferenceMetaFetch.genericError.message")
+            }));
+        }
+    }, [ customTextPreferenceMetaError ]);
+
+    /**
+     * Error handling for branding preference fetch.
+     */
+    useEffect(() => {
+        if (brandingPreferenceError?.response?.status === 404) {
+            return;
+        }
+
+        if (brandingPreferenceError) {
+            dispatch(addAlert({
+                description: t("flows:core.notifications.brandingPreferenceFetch.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("flows:core.notifications.brandingPreferenceFetch.genericError.message")
+            }));
+        }
+    }, [ brandingPreferenceError ]);
 
     const onResourceDropOnCanvas = (resource: Resource, stepId: string): void => {
         setLastInteractedResource(resource);
@@ -244,7 +322,11 @@ const AuthenticationFlowBuilderCoreProvider = ({
                     ElementFactory,
                     ResourceProperties,
                     i18nText,
-                    i18nTextLoading: textPreferenceLoading || fallbackTextPreferenceLoading || screenMetaLoading,
+                    i18nTextLoading: textPreferenceLoading ||
+                        fallbackTextPreferenceLoading ||
+                        screenMetaLoading ||
+                        customTextPreferenceMetaLoading,
+                    isBrandingEnabled,
                     isCustomI18nKey,
                     isI18nSubmitting,
                     isResourcePanelOpen,
@@ -264,6 +346,7 @@ const AuthenticationFlowBuilderCoreProvider = ({
                     setLastInteractedStepId,
                     setResourcePropertiesPanelHeading,
                     setSelectedAttributes,
+                    supportedLocales,
                     updateI18nKey
                 } }
             >

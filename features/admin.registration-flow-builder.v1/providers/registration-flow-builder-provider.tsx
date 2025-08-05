@@ -53,7 +53,13 @@ const RegistrationFlowBuilderProvider: FC<RegistrationFlowBuilderProviderProps> 
         ElementFactory={ ElementFactory }
         ResourceProperties={ ResourceProperties }
         flowType={ FlowTypes.REGISTRATION }
-        screenTypes={ [ PreviewScreenType.SIGN_UP ] }
+        screenTypes={ [
+            PreviewScreenType.COMMON,
+            PreviewScreenType.SIGN_UP,
+            PreviewScreenType.EMAIL_LINK_EXPIRY,
+            PreviewScreenType.EMAIL_OTP,
+            PreviewScreenType.SMS_OTP
+        ] }
     >
         <FlowContextWrapper>{ children }</FlowContextWrapper>
     </AuthenticationFlowBuilderCoreProvider>
