@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.27.22
+
+### Patch Changes
+
+- [#8365](https://github.com/wso2/identity-apps/pull/8365) [`6b724df4fc597562bf910b267a8dc2ccc8044a5d`](https://github.com/wso2/identity-apps/commit/6b724df4fc597562bf910b267a8dc2ccc8044a5d) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Support mobile number verification with progressive profiling.
+
 ## 2.27.21
 
 ### Patch Changes
