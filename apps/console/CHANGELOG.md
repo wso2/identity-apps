@@ -1,5 +1,21 @@
 # @wso2is/console
 
+## 2.69.3
+
+### Patch Changes
+
+- [#8681](https://github.com/wso2/identity-apps/pull/8681) [`5ed4fa6bf807211d796d2b3ee3f4a0ad7ab3d2de`](https://github.com/wso2/identity-apps/commit/5ed4fa6bf807211d796d2b3ee3f4a0ad7ab3d2de) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Update workflow API resources and scopes
+
+- Updated dependencies [[`5ed4fa6bf807211d796d2b3ee3f4a0ad7ab3d2de`](https://github.com/wso2/identity-apps/commit/5ed4fa6bf807211d796d2b3ee3f4a0ad7ab3d2de)]:
+  - @wso2is/admin.approval-workflows.v1@1.0.7
+  - @wso2is/admin.core.v1@2.47.2
+
+## 2.69.2
+
+### Patch Changes
+
+- [#8663](https://github.com/wso2/identity-apps/pull/8663) [`9c6f4420e05b809e6b8c5b6bed3cea72d3d11631`](https://github.com/wso2/identity-apps/commit/9c6f4420e05b809e6b8c5b6bed3cea72d3d11631) Thanks [@Malith-19](https://github.com/Malith-19)! - Update the scopes of the workflow approval feature & enable the workflow feature.
+
 ## 2.69.1
 
 ### Patch Changes

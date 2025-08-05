@@ -513,7 +513,7 @@ importers:
         specifier: ^2.36.14
         version: link:../../features/admin.applications.v1
       '@wso2is/admin.approval-workflows.v1':
-        specifier: ^1.0.6
+        specifier: ^1.0.7
         version: link:../../features/admin.approval-workflows.v1
       '@wso2is/admin.ask-password-flow-builder.v1':
         specifier: workspace:^
@@ -543,7 +543,7 @@ importers:
         specifier: ^1.0.0
         version: link:../../features/admin.copilot.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.47.1
+        specifier: ^2.47.2
         version: link:../../features/admin.core.v1
       '@wso2is/admin.email-and-sms.v1':
         specifier: ^2.25.204
@@ -3093,7 +3093,7 @@ importers:
   features/admin.approval-workflows.v1:
     dependencies:
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.9
+        specifier: ^2.47.2
         version: link:../admin.core.v1
       '@wso2is/admin.groups.v1':
         specifier: ^2.27.76
@@ -6453,7 +6453,7 @@ importers:
         specifier: ^2.36.14
         version: link:../admin.applications.v1
       '@wso2is/admin.approval-workflows.v1':
-        specifier: ^1.0.6
+        specifier: ^1.0.7
         version: link:../admin.approval-workflows.v1
       '@wso2is/admin.ask-password-flow-builder.v1':
         specifier: workspace:^
