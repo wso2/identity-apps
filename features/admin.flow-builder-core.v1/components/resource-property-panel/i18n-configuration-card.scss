@@ -16,31 +16,7 @@
  * under the License.
  */
 
-.flow-builder-resource-property-panel-text-field {
-    .oxygen-text-field {
-        .MuiInputBase-adornedEnd {
-            padding-right: var(--oxygen-spacing-1);
-        }
-
-        .icon-button {
-            padding: var(--oxygen-spacing-1);
-            width: 24px;
-            height: 24px;
-            border: 1px solid var(--oxygen-palette-divider);
-            border-radius: var(--oxygen-shape-borderRadius);
-            background-color: var(--oxygen-palette-background-paper);
-
-            &:hover {
-                background-color: var(--oxygen-palette-action-hover);
-                border-color: var(--oxygen-palette-action-selected);
-            }
-
-            svg {
-                font-size: 14px;
-            }
-        }
-    }
-
+.flow-builder-resource-property-panel-i18n-configuration {
     &.card-backdrop {
         position: fixed;
         top: 0;

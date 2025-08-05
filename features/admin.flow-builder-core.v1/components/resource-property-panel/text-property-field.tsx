@@ -27,7 +27,7 @@ import startCase from "lodash-es/startCase";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import I18nConfigurationCard from "./i18n-configuration-card";
-import { Resource } from "../../../models/resources";
+import { Resource } from "../../models/resources";
 import "./text-property-field.scss";
 
 /**

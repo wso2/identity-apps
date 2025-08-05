@@ -23,7 +23,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import startCase from "lodash-es/startCase";
 import React, { ChangeEvent, FunctionComponent, ReactElement } from "react";
 import RichText from "./rich-text/rich-text";
-import TextPropertyField from "./text-property-field/text-property-field";
+import TextPropertyField from "./text-property-field";
 import FlowBuilderElementConstants from "../../constants/flow-builder-element-constants";
 import { ElementTypes } from "../../models/elements";
 import { Resource } from "../../models/resources";

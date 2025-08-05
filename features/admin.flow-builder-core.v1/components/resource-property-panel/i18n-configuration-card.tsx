@@ -54,7 +54,8 @@ import { createPortal } from "react-dom";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import useAuthenticationFlowBuilderCore from "../../../hooks/use-authentication-flow-builder-core-context";
+import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
+import "./i18n-configuration-card.scss";
 
 /**
  * Interface for screen type option.
@@ -368,7 +369,7 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                                 ) }
                                 slotProps={ {
                                     popper: {
-                                        className: "flow-builder-resource-property-panel-text-field"
+                                        className: "flow-builder-resource-property-panel-i18n-configuration"
                                     }
                                 } }
                             />
@@ -454,7 +455,7 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                         ) }
                         slotProps={ {
                             popper: {
-                                className: "flow-builder-resource-property-panel-text-field"
+                                className: "flow-builder-resource-property-panel-i18n-configuration"
                             }
                         } }
                         isOptionEqualToValue={ (option: ScreenTypeOption, value: ScreenTypeOption) =>
@@ -513,7 +514,7 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                         ) }
                         slotProps={ {
                             popper: {
-                                className: "flow-builder-resource-property-panel-text-field"
+                                className: "flow-builder-resource-property-panel-i18n-configuration"
                             }
                         } }
                     />
@@ -547,7 +548,7 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
 
     return createPortal(
         <div
-            className="flow-builder-resource-property-panel-text-field card-backdrop"
+            className="flow-builder-resource-property-panel-i18n-configuration card-backdrop"
             onClick={ onClose }
             data-componentid={ `${componentId}-backdrop` }
         >
@@ -599,7 +600,7 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                             placement="top"
                             slotProps={ {
                                 popper: {
-                                    className: "flow-builder-resource-property-panel-text-field"
+                                    className: "flow-builder-resource-property-panel-i18n-configuration"
                                 }
                             } }
                         >
