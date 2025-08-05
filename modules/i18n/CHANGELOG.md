@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.26.1
+
+### Patch Changes
+
+- [#8572](https://github.com/wso2/identity-apps/pull/8572) [`1cf2a69f382401824625df187fecbcac9a32d28a`](https://github.com/wso2/identity-apps/commit/1cf2a69f382401824625df187fecbcac9a32d28a) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update user profile implementation to honor claim input format
+
 ## 2.26.0
 
 ### Minor Changes
