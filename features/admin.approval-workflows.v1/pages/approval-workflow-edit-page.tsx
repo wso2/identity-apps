@@ -55,7 +55,7 @@ const ApprovalWorkflowEditPage: FunctionComponent<ApprovalWorkflowEditPagePropsI
     const { t } = useTranslation();
 
     const approvalWorkflowId: string = match.params["id"]?.split("#")[0];
-    //Set relevant scopes
+    // Set relevant scopes.
     const approvalWorkflowFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.workflows
     );
