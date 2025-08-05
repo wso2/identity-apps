@@ -305,7 +305,10 @@
             },
             "actions": {
                 "disabledFeatures": [
-                    "actions.types.list.preRegistration"
+                    "actions.types.list.preRegistration",
+                    "actions.types.org.list.preIssueAccessToken",
+                    "actions.types.org.list.preRegistration",
+                    "actions.types.org.list.preUpdateProfile"
                 ],
                 "enabled": true,
                 "featureFlags": [
@@ -1775,6 +1778,7 @@
         "routes": {
             "organizationEnabledRoutes": [
                 "accountSecurity",
+                "actions",
                 "admin-forced-password-reset",
                 "apiResources",
                 "applications",

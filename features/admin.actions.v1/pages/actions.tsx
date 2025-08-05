@@ -33,6 +33,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
 import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
@@ -49,7 +50,8 @@ import React, {
     ReactElement,
     ReactNode,
     useEffect,
-    useMemo
+    useMemo,
+    useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -57,7 +59,12 @@ import { Dispatch } from "redux";
 import { Placeholder } from "semantic-ui-react";
 import useGetActionTypes from "../api/use-get-action-types";
 import { ActionsConstants } from "../constants/actions-constants";
-import { ActionType, ActionTypeCardInterface, ActionTypesCountInterface } from "../models/actions";
+import {
+    ActionType,
+    ActionTypeCardInterface,
+    ActionTypesCountInterface,
+    ActionTypesResponseInterface
+} from "../models/actions";
 import "./actions.scss";
 
 /**
@@ -81,12 +88,56 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
     const dispatch: Dispatch = useDispatch();
+    const [ enabledActionTypes, setEnabledActionTypes ] = useState<string[]>(undefined);
 
+    const { isSubOrganization } = useGetCurrentOrganizationType();
     const {
         data: actionTypesConfigs,
         isLoading: isActionTypesConfigsLoading,
         error: actionTypesConfigsRetrievalError
     } = useGetActionTypes();
+
+    /**
+     * This useEffect is used to filter the action types returned in the API and disabled via feature flags.
+     */
+    useEffect(() => {
+        if (!actionTypesConfigs) return;
+
+        const checkFeatureEnabledStatus = (actionType: string): boolean => {
+
+            if (isSubOrganization()) {
+                switch (actionType) {
+                    case ActionType.PRE_ISSUE_ACCESS_TOKEN:
+                        return isFeatureEnabled(actionsFeatureConfig, "actions.types.org.list.preIssueAccessToken");
+                    case ActionType.PRE_UPDATE_PASSWORD:
+                        return isFeatureEnabled(actionsFeatureConfig, "actions.types.org.list.preUpdatePassword");
+                    case ActionType.PRE_UPDATE_PROFILE:
+                        return isFeatureEnabled(actionsFeatureConfig, "actions.types.org.list.preUpdateProfile");
+                    case ActionType.PRE_REGISTRATION:
+                        return isFeatureEnabled(actionsFeatureConfig, "actions.types.org.list.preRegistration");
+                    default:
+                        return false;
+                }
+            } else {
+                switch (actionType) {
+                    case ActionType.PRE_ISSUE_ACCESS_TOKEN:
+                        return isFeatureEnabled(actionsFeatureConfig, "actions.types.list.preIssueAccessToken");
+                    case ActionType.PRE_UPDATE_PASSWORD:
+                        return isFeatureEnabled(actionsFeatureConfig, "actions.types.list.preUpdatePassword");
+                    case ActionType.PRE_UPDATE_PROFILE:
+                        return isFeatureEnabled(actionsFeatureConfig, "actions.types.list.preUpdateProfile");
+                    case ActionType.PRE_REGISTRATION:
+                        return isFeatureEnabled(actionsFeatureConfig, "actions.types.list.preRegistration");
+                    default:
+                        return false;
+                }
+            }
+        };
+
+        setEnabledActionTypes(
+            actionTypesConfigs?.map((actionType: ActionTypesResponseInterface) => actionType.type)
+                .filter((actionType: string) => checkFeatureEnabledStatus(actionType)));
+    }, [ actionTypesConfigs ]);
 
     const typeCounts: ActionTypesCountInterface = useMemo(() => {
         const actionTypeCounts: ActionTypesCountInterface = {};
@@ -147,22 +198,6 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
             );
         }
     }, [ isActionTypesConfigsLoading, actionTypesConfigsRetrievalError ]);
-
-    const checkFeatureEnabledStatus = (actionType: string): boolean => {
-
-        switch (actionType) {
-            case ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH:
-                return isFeatureEnabled(actionsFeatureConfig, "actions.types.list.preIssueAccessToken");
-            case ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH:
-                return isFeatureEnabled(actionsFeatureConfig, "actions.types.list.preUpdatePassword");
-            case ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH:
-                return isFeatureEnabled(actionsFeatureConfig, "actions.types.list.preUpdateProfile");
-            case ActionsConstants.PRE_REGISTRATION_URL_PATH:
-                return isFeatureEnabled(actionsFeatureConfig, "actions.types.list.preRegistration");
-            default:
-                return false;
-        }
-    };
 
     const resolveActionDescription = (): ReactNode => (
         <>
@@ -235,45 +270,64 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
         );
 
     const actionTypesCardsInfo = (): ActionTypeCardInterface[] => {
-        return [
-            {
-                description: t("actions:types.preIssueAccessToken.description.shortened"),
-                disabled: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
-                    .ACTIONS_TYPES_PRE_ISSUE_ACCESS_TOKEN),
-                featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
-                    .ACTIONS_TYPES_PRE_ISSUE_ACCESS_TOKEN,
-                heading: t("actions:types.preIssueAccessToken.heading"),
-                icon: <KeyFlowIcon size="small" className="icon"/>,
-                identifier: ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH,
-                route: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
-                    .ACTIONS_TYPES_PRE_ISSUE_ACCESS_TOKEN) ? undefined :
-                    AppConstants.getPaths().get("PRE_ISSUE_ACCESS_TOKEN_EDIT")
-            },
-            {
-                description: t("actions:types.preUpdatePassword.description.shortened"),
-                disabled: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
-                    .ACTIONS_TYPES_PRE_UPDATE_PASSWORD),
-                featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_UPDATE_PASSWORD,
-                heading: t("actions:types.preUpdatePassword.heading"),
-                icon: <PadlockAsteriskFlowIcon size="small" className="icon"/>,
-                identifier: ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH,
-                route: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
-                    .ACTIONS_TYPES_PRE_UPDATE_PASSWORD) ? undefined
-                    : AppConstants.getPaths().get("PRE_UPDATE_PASSWORD_EDIT")
-            },
-            {
-                description: t("actions:types.preUpdateProfile.description.shortened"),
-                disabled: isActionTypeDisabled(FeatureFlagConstants
-                    .FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_UPDATE_PROFILE),
-                featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_UPDATE_PROFILE,
-                heading: t("actions:types.preUpdateProfile.heading"),
-                icon: <ProfileFlowIcon size="small" className="icon"/>,
-                identifier: ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH,
-                route: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
-                    .ACTIONS_TYPES_PRE_UPDATE_PROFILE) ? undefined
-                    : AppConstants.getPaths().get("PRE_UPDATE_PROFILE_EDIT")
-            },
-            {
+
+        if (!enabledActionTypes) return;
+        const actionTypeCards: ActionTypeCardInterface[] = [];
+
+        for (const actionType of enabledActionTypes) {
+            switch (actionType) {
+                case ActionType.PRE_ISSUE_ACCESS_TOKEN:
+                    actionTypeCards.push({
+                        description: t("actions:types.preIssueAccessToken.description.shortened"),
+                        disabled: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                            .ACTIONS_TYPES_PRE_ISSUE_ACCESS_TOKEN),
+                        featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                            .ACTIONS_TYPES_PRE_ISSUE_ACCESS_TOKEN,
+                        heading: t("actions:types.preIssueAccessToken.heading"),
+                        icon: <KeyFlowIcon size="small" className="icon"/>,
+                        identifier: ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH,
+                        route: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                            .ACTIONS_TYPES_PRE_ISSUE_ACCESS_TOKEN) ? undefined :
+                            AppConstants.getPaths().get("PRE_ISSUE_ACCESS_TOKEN_EDIT")
+                    });
+
+                    break;
+                case ActionType.PRE_UPDATE_PASSWORD:
+                    actionTypeCards.push({
+                        description: t("actions:types.preUpdatePassword.description.shortened"),
+                        disabled: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                            .ACTIONS_TYPES_PRE_UPDATE_PASSWORD),
+                        featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_UPDATE_PASSWORD,
+                        heading: t("actions:types.preUpdatePassword.heading"),
+                        icon: <PadlockAsteriskFlowIcon size="small" className="icon"/>,
+                        identifier: ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH,
+                        route: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                            .ACTIONS_TYPES_PRE_UPDATE_PASSWORD) ? undefined
+                            : AppConstants.getPaths().get("PRE_UPDATE_PASSWORD_EDIT")
+                    });
+
+                    break;
+                case ActionType.PRE_UPDATE_PROFILE:
+                    actionTypeCards.push({
+                        description: t("actions:types.preUpdateProfile.description.shortened"),
+                        disabled: isActionTypeDisabled(FeatureFlagConstants
+                            .FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_UPDATE_PROFILE),
+                        featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_UPDATE_PROFILE,
+                        heading: t("actions:types.preUpdateProfile.heading"),
+                        icon: <ProfileFlowIcon size="small" className="icon"/>,
+                        identifier: ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH,
+                        route: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                            .ACTIONS_TYPES_PRE_UPDATE_PROFILE) ? undefined
+                            : AppConstants.getPaths().get("PRE_UPDATE_PROFILE_EDIT")
+                    });
+
+                    break;
+            }
+        }
+
+        // Registration action type needs to be visible in a disabled state.
+        if (isFeatureEnabled(actionsFeatureConfig, "actions.types.list.preRegistration")) {
+            actionTypeCards.push({
                 description: t("actions:types.preRegistration.description.shortened"),
                 disabled: isActionTypeDisabled(FeatureFlagConstants
                     .FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_REGISTRATION),
@@ -284,7 +338,10 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
                 route: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
                     .ACTIONS_TYPES_PRE_UPDATE_PASSWORD) ? undefined
                     : AppConstants.getPaths().get("PRE_UPDATE_REGISTRATION_EDIT")
-            } ];
+            });
+        }
+
+        return actionTypeCards;
     };
 
     /**
@@ -342,11 +399,11 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
             contentTopMargin={ true }
             pageHeaderMaxWidth={ false }
         >
-            { isActionTypesConfigsLoading ? renderLoadingPlaceholder() : (
+            { isActionTypesConfigsLoading && !enabledActionTypes ? renderLoadingPlaceholder() : (
                 <div className="action-types-grid-wrapper" data-componentid={ `${ _componentId }-grid` }>
                     <div className="action-types-grid">
-                        { actionTypesCardsInfo().map((cardProps: ActionTypeCardInterface) => {
-                            return checkFeatureEnabledStatus(cardProps.identifier) && (
+                        { actionTypesCardsInfo()?.map((cardProps: ActionTypeCardInterface) => {
+                            return (
                                 <Card
                                     key={ cardProps.identifier }
                                     className={ classNames("action-type", { "disabled": cardProps.disabled }) }
