@@ -20,76 +20,13 @@ import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { store } from "../../admin.core.v1/store";
-import { WorkflowInstanceResponseInterface, WorkflowInstanceListItemInterface, WorkflowInstanceListResponseInterface } from "../models";
+import { WorkflowInstanceListResponseInterface, WorkflowInstanceResponseInterface } from "../models/workflowRequests";
 
 /**
  * Get an axios instance.
  */
 const httpClient = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
-
-/**
- * Fetches workflow instances with pagination and filtering.
- *
- * @param {number} limit - Number of results to return.
- * @param {number} offset - Starting index of the results.
- * @param {string} filter - Filter query string.
- * @return {Promise<WorkflowInstancesResponseInterface>} A promise containing the workflow instances response.
- */
-export const fetchWorkflowInstances = (
-    limit: number,
-    offset: number,
-    filter?: string
-): Promise<WorkflowInstanceListResponseInterface> => {
-    const requestConfig = {
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        params: {
-            limit,
-            offset,
-            ...(filter && { filter })
-        },
-        url: store.getState().config.endpoints.workflowInstances
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse<WorkflowInstanceListResponseInterface>) => {
-            return Promise.resolve(response.data);
-        })
-        .catch((error: AxiosError) => {
-            return Promise.reject(`Failed to retrieve workflow instances - ${error}`);
-        });
-};
-
-/**
- * Fetches a single workflow instance by ID.
- *
- * @param {string} workflowInstanceId - ID of the workflow instance.
- * @return {Promise<WorkflowInstanceResponseInterface>} A promise containing the workflow instance.
- */
-export const fetchWorkflowInstance = (
-    workflowInstanceId: string
-): Promise<WorkflowInstanceResponseInterface> => {
-    const requestConfig = {
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.workflowInstances}/${workflowInstanceId}`
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse<WorkflowInstanceResponseInterface>) => {
-            return Promise.resolve(response.data);
-        })
-        .catch((error: AxiosError) => {
-            return Promise.reject(`Failed to retrieve workflow instance - ${error}`);
-        });
-};
 
 /**
  * Deletes a workflow instance by ID.

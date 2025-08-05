@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Show, useRequiredScopes } from "@wso2is/access-control";
+import { useRequiredScopes } from "@wso2is/access-control";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
@@ -30,16 +30,16 @@ import {
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
+import moment from "moment";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Header, Label, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
-import { 
+import { Header, SemanticICONS } from "semantic-ui-react";
+import { formatDateString } from "../../admin.secrets.v1/utils/secrets.date.utils";
+import {
     WorkflowInstanceListItemInterface,
     WorkflowInstanceStatus
 } from "../models/workflowRequests";
-import { humanizeDateString, formatDateString } from "../../admin.secrets.v1/utils/secrets.date.utils";
-import moment from "moment";
 import "./workflow-requests-list.scss";
 
 /**
@@ -113,11 +113,13 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ showWorkflowRequestDeleteConfirmation, setShowWorkflowRequestDeleteConfirmationModal ] = useState(false);
-    const [ currentDeletedWorkflowRequest, setCurrentDeletedWorkflowRequest ] = useState<WorkflowInstanceListItemInterface>();
+    const [ currentDeletedWorkflowRequest, setCurrentDeletedWorkflowRequest ] = 
+        useState<WorkflowInstanceListItemInterface>();
     const isPrivilegedUser: any = useSelector((state: AppState) => state.auth.isPrivilegedUser);
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
 
-    const hasWorkflowRequestDeletePermissions: boolean = useRequiredScopes(featureConfig?.workflowRequests?.scopes?.delete);
+    const hasWorkflowRequestDeletePermissions: boolean = 
+        useRequiredScopes(featureConfig?.workflowRequests?.scopes?.delete);
     const hasWorkflowRequestViewPermissions: boolean = useRequiredScopes(featureConfig?.workflowRequests?.scopes?.read);
 
     /**
@@ -152,7 +154,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={ t("approvalWorkflows:form.placeholders.emptyListReadOnly.title") }
-                                          subtitle={ [ t("approvalWorkflows:form.placeholders.emptyListReadOnly.subtitles") ] }
+                    subtitle={ [ t("approvalWorkflows:form.placeholders.emptyListReadOnly.subtitles") ] }
                 />
             );
         }
@@ -164,18 +166,17 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
      * Resolves the status color for workflow instance status.
      *
      * @param status - The status of the workflow instance.
-     * @returns The color for the status label.
+     * @returns A string color name based on status.
      */
     const resolveInstanceStatusColor = (
         status: WorkflowInstanceStatus,
-    ): SemanticCOLORS => {
+    ): string => {
         switch (status) {
             case WorkflowInstanceStatus.APPROVED:
                 return "green";
             case WorkflowInstanceStatus.PENDING:
                 return "yellow";
             case WorkflowInstanceStatus.REJECTED:
-                return "red";
             case WorkflowInstanceStatus.FAILED:
                 return "red";
             case WorkflowInstanceStatus.DELETED:
@@ -199,7 +200,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                 setCurrentDeletedWorkflowRequest(workflowRequestItem);
                 setShowWorkflowRequestDeleteConfirmationModal(true);
             },
-                            popupText: (): string => t("approvalWorkflows:pageLayout.list.popups.delete"),
+            popupText: (): string => t("approvalWorkflows:pageLayout.list.popups.delete"),
             renderer: "semantic-icon"
         }
     ];
@@ -253,7 +254,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     </Header>
                 </div>
             ),
-                                    title: t("approvalWorkflows:list.columns.workflowInstanceId")
+            title: t("approvalWorkflows:list.columns.workflowInstanceId")
         },
         {
             allowToggleVisibility: false,
@@ -262,6 +263,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
             key: "status",
             render: (workflowRequest: WorkflowInstanceListItemInterface): ReactNode => {
                 const color = resolveInstanceStatusColor(workflowRequest.status as WorkflowInstanceStatus);
+
                 return (
                     <span className="workflow-requests-list-status-cell">
                         <span className={`status-indicator ${color}`} />
@@ -271,7 +273,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     </span>
                 );
             },
-                                    title: t("approvalWorkflows:list.columns.status")
+            title: t("approvalWorkflows:list.columns.status")
         },
         {
             allowToggleVisibility: false,
@@ -283,7 +285,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     {getFriendlyDate(workflowRequest.createdAt)}
                 </Header>
             ),
-                                    title: t("approvalWorkflows:list.columns.createdAt")
+            title: t("approvalWorkflows:list.columns.createdAt")
         },
         {
             allowToggleVisibility: false,
@@ -295,7 +297,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     {getFriendlyDate(workflowRequest.updatedAt)}
                 </Header>
             ),
-                                    title: t("approvalWorkflows:list.columns.updatedAt")
+            title: t("approvalWorkflows:list.columns.updatedAt")
         },
         {
             allowToggleVisibility: false,
@@ -303,33 +305,21 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
             id: "actions",
             key: "actions",
             textAlign: "right",
-                                    title: t("approvalWorkflows:list.columns.actions")
+            title: t("approvalWorkflows:list.columns.actions")
         }
     ];
 
-    const resolveMeLabel = (initiator: string, mini?: boolean): ReactNode => {
-        if (authenticatedUser && initiator && authenticatedUser.includes(initiator)) {
-            return (
-                <Label size={mini ? "mini" : "small"} className="me-label">
-                    {t("approvalWorkflows:list.meLabel")}
-                </Label>
-            );
-        }
-        return null;
-    };
-
-    // Helper to decide how to display the date
     const getFriendlyDate = (dateString: string): string => {
         if (!dateString) return "-";
         const now = new Date();
         const date = new Date(dateString);
         const diffMs = now.getTime() - date.getTime();
         const diffDays = diffMs / (1000 * 60 * 60 * 24);
-        
+
         if (diffMs < 0) {
             return formatDateString(dateString);
         }
-        
+
         if (diffDays <= 30) {
             return moment(dateString).fromNow();
         } else {
@@ -340,8 +330,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
     // Helper to convert status to proper case
     const formatStatus = (status: string): string => {
         if (!status) return "-";
-        
-        // Use i18n for status labels
+
         switch (status.toUpperCase()) {
             case "PENDING":
                 return t("approvalWorkflows:status.pending");

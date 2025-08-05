@@ -54,5 +54,5 @@ export const generateFilterString = (
         filters.push(`dateCategory+eq+${dateCategory}`);
     }
 
-    return filters.length > 0 ? filters.join('+and+') : "";
+    return filters.length > 0 ? filters.join("+and+") : "";
 };

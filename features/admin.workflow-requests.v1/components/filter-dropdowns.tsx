@@ -17,8 +17,8 @@
  */
 
 import React from "react";
-import { Dropdown, DropdownProps } from "semantic-ui-react";
 import { useTranslation } from "react-i18next";
+import { Dropdown, DropdownProps } from "semantic-ui-react";
 import { WorkflowInstanceOperationType, WorkflowInstanceRequestType, WorkflowInstanceStatus } from "../models/workflowRequests";
 import "./filter-dropdowns.scss";
 
@@ -30,7 +30,8 @@ interface FilterDropdownProps {
     [key: string]: any;
 }
 
-export const WorkflowRequestsStatusDropdown: React.FC<FilterDropdownProps> = ({ value, onChange, style, placeholder, ...rest }) => {
+export const WorkflowRequestsStatusDropdown: React.FC<FilterDropdownProps> =
+({ value, onChange, style, placeholder, ...rest }) => {
     const { t } = useTranslation();
     const statusOptions = [
         { key: WorkflowInstanceStatus.ALL_TASKS, value: WorkflowInstanceStatus.ALL_TASKS, text: t("approvalWorkflows:status.all") },
@@ -40,43 +41,45 @@ export const WorkflowRequestsStatusDropdown: React.FC<FilterDropdownProps> = ({ 
         { key: WorkflowInstanceStatus.FAILED, value: WorkflowInstanceStatus.FAILED, text: t("approvalWorkflows:status.failed") },
         { key: WorkflowInstanceStatus.DELETED, value: WorkflowInstanceStatus.DELETED, text: t("approvalWorkflows:status.deleted") }
     ];
-    
+
     return (
         <Dropdown
             selection
-            options={statusOptions}
-            value={value}
-            onChange={onChange}
-            placeholder={placeholder}
-            text={placeholder}
+            options={ statusOptions }
+            value={ value }
+            onChange={ onChange }
+            placeholder={ placeholder }
+            text={ placeholder }
             className="workflow-requests-filter-dropdown"
-            style={style}
+            style={ style }
         />
     );
 };
 
-export const WorkflowRequestRequestTypeDropdown: React.FC<FilterDropdownProps> = ({ value, onChange, style, placeholder, ...rest }) => {
+export const WorkflowRequestRequestTypeDropdown: React.FC<FilterDropdownProps> = 
+({ value, onChange, style, placeholder, ...rest }) => {
     const { t } = useTranslation(["approvalWorkflows"]);
     const eventTypeOptions = [
         { key: WorkflowInstanceRequestType.ALL_TASKS, value: WorkflowInstanceRequestType.ALL_TASKS, text: t("approvalWorkflows:eventType.all") },
         { key: WorkflowInstanceRequestType.MY_TASKS, value: WorkflowInstanceRequestType.MY_TASKS, text: t("approvalWorkflows:eventType.myTasks") }
     ];
-    
+
     return (
         <Dropdown
             selection
-            options={eventTypeOptions}
-            value={value}
-            onChange={onChange}
-            placeholder={placeholder}
-            text={placeholder}
+            options={ eventTypeOptions }
+            value={ value }
+            onChange={ onChange }
+            placeholder={ placeholder }
+            text={ placeholder }
             className="workflow-requests-filter-dropdown"
-            style={style}
+            style={ style }
         />
     );
 };
 
-export const WorkflowRequestOperationTypeDropdown: React.FC<FilterDropdownProps> = ({ value, onChange, style, placeholder, ...rest }) => {
+export const WorkflowRequestOperationTypeDropdown: React.FC<FilterDropdownProps> = 
+({ value, onChange, style, placeholder, ...rest }) => {
     const { t } = useTranslation(["approvalWorkflows"]);
     const operationTypeOptions = [
         {key: WorkflowInstanceOperationType.ALL, value: WorkflowInstanceOperationType.ALL, text: t("approvalWorkflows:operationType.all")},
@@ -90,17 +93,17 @@ export const WorkflowRequestOperationTypeDropdown: React.FC<FilterDropdownProps>
         {key: WorkflowInstanceOperationType.DELETE_USER_CLAIMS, value: WorkflowInstanceOperationType.DELETE_USER_CLAIMS, text: t("approvalWorkflows:operationType.deleteUserClaims")},
         {key: WorkflowInstanceOperationType.UPDATE_USER_CLAIMS, value: WorkflowInstanceOperationType.UPDATE_USER_CLAIMS, text: t("approvalWorkflows:operationType.updateUserClaims")}
     ];
-    
+
     return (
         <Dropdown
             selection
-            options={operationTypeOptions}
-            value={value}
-            onChange={onChange}
-            placeholder={placeholder}
-            text={placeholder}
+            options={ operationTypeOptions }
+            value={ value }
+            onChange={ onChange }
+            placeholder={ placeholder }
+            text={ placeholder }
             className="workflow-requests-filter-dropdown"
-            style={style}
+            style={ style }
         />
     );
 };
