@@ -223,14 +223,15 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                 return t("approvalWorkflows:operationType.deleteRole");
             case "UPDATE_ROLES_OF_USERS":
                 return t("approvalWorkflows:operationType.updateUserRoles");
-            case "UPDATE_ROLE_NAME":
-                return t("approvalWorkflows:operationType.updateRoleName");
-            case "UPDATE_USERS_OF_ROLES":
-                return t("approvalWorkflows:operationType.updateRoleUsers");
-            case "DELETE_USER_CLAIMS":
-                return t("approvalWorkflows:operationType.deleteUserClaims");
-            case "UPDATE_USER_CLAIMS":
-                return t("approvalWorkflows:operationType.updateUserClaims");
+            // TODO: Enable these operation types when backend support is added
+            // case "UPDATE_ROLE_NAME":
+            //     return t("approvalWorkflows:operationType.updateRoleName");
+            // case "UPDATE_USERS_OF_ROLES":
+            //     return t("approvalWorkflows:operationType.updateRoleUsers");
+            // case "DELETE_USER_CLAIMS":
+            //     return t("approvalWorkflows:operationType.deleteUserClaims");
+            // case "UPDATE_USER_CLAIMS":
+            //     return t("approvalWorkflows:operationType.updateUserClaims");
             default:
                 return eventType;
         }

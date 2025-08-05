@@ -32,10 +32,9 @@ import { deleteWorkflowInstance } from "../api/workflow-requests";
 import ActiveFiltersBar from "../components/active-filters-bar";
 import WorkflowRequestsFilter from "../components/workflow-requests-filter";
 import WorkflowRequestsList from "../components/workflow-requests-list";
-import { 
+import {
     WorkflowInstanceListItemInterface,
     WorkflowInstanceOperationType,
-    WorkflowInstanceRequestType,
     WorkflowInstanceStatus
 } from "../models/workflowRequests";
 import { formatMsToBackend } from "../utils/formatDateTimeToBackend";
@@ -50,7 +49,7 @@ interface FilterTag {
     key: string;
     label: string;
     value: string;
-    type: "requestType" | "status" | "dateCategory" | "createdTimeRange" | "updatedTimeRange" | "operationType";
+    type: "status" | "createdTimeRange" | "updatedTimeRange" | "operationType";
 }
 
 const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
@@ -65,7 +64,6 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
     const dispatch: Dispatch = useDispatch();
 
     const [ workflowRequests, setWorkflowRequests ] = useState<WorkflowInstanceListItemInterface[]>([]);
-    const [ requestType, setRequestType ] = useState<string>("ALL_TASKS");
     const [ status, setStatus ] = useState<string>("ALL_TASKS");
     const [ operationType, setOperationType ] = useState<string>("ALL");
     const [ createdTimeRange, setCreatedTimeRange ] = useState<number | undefined>(-2);
@@ -91,7 +89,7 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
             setWorkflowRequests(workflowInstancesData.instances);
             setTotalResults(workflowInstancesData.totalResults);
         }
-    }, [workflowInstancesData]);
+    }, [ workflowInstancesData ]);
 
     useEffect(() => {
         if (workflowInstancesError) {
@@ -124,24 +122,6 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
         }
     }, [ workflowInstancesError, dispatch, t ]);
 
-    const getDateFilterParams = () => {
-        let dateCategory = "";
-        let beginDate = "";
-        let endDate = "";
-
-        if (createdTimeRange !== undefined && createdTimeRange !== -2) {
-            dateCategory = "CREATED";
-            beginDate = createdFromTime ? formatMsToBackend(createdFromTime, true) : "";
-            endDate = createdToTime ? formatMsToBackend(createdToTime, false) : "";
-        } else if (updatedTimeRange !== undefined && updatedTimeRange !== -2) {
-            dateCategory = "UPDATED";
-            beginDate = updatedFromTime ? formatMsToBackend(updatedFromTime, true) : "";
-            endDate = updatedToTime ? formatMsToBackend(updatedToTime, false) : "";
-        }
-
-        return { dateCategory, beginDate, endDate };
-    };
-
     const INSTANCE_STATUSES: DropdownItemProps[] = [
         { key: WorkflowInstanceStatus.ALL_TASKS, text: t("approvalWorkflows:status.all"), value: "ALL_TASKS" },
         { key: WorkflowInstanceStatus.FAILED, text: t("approvalWorkflows:status.failed"), value: "FAILED" },
@@ -151,13 +131,8 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
         { key: WorkflowInstanceStatus.REJECTED, text: t("approvalWorkflows:status.rejected"), value: "REJECTED" }
     ];
 
-    const REQUEST_TYPES: DropdownItemProps[] = [
-        { key: WorkflowInstanceRequestType.ALL_TASKS, text: t("approvalWorkflows:eventType.all"), value: "ALL_TASKS" },
-        { key: WorkflowInstanceRequestType.MY_TASKS, text: t("approvalWorkflows:eventType.myTasks"), value: "MY_TASKS" }
-    ];
 
-
-    const TIME_RANGE_OPTIONS = [
+    const TIME_RANGE_OPTIONS: { key: number; text: string; value: number }[] = [
         { key: -2, text: t("approvalWorkflows:timeRanges.all"), value: -2 },
         { key: 0.25, text: t("approvalWorkflows:timeRanges.last15Minutes"), value: 0.25 },
         { key: 0.5, text: t("approvalWorkflows:timeRanges.last30Minutes"), value: 0.5 },
@@ -187,27 +162,34 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
                         return t("approvalWorkflows:operationType.createRole");
                     case WorkflowInstanceOperationType.DELETE_ROLE:
                         return t("approvalWorkflows:operationType.deleteRole");
-                    case WorkflowInstanceOperationType.UPDATE_ROLE_NAME:
-                        return t("approvalWorkflows:operationType.updateRoleName");
-                    case WorkflowInstanceOperationType.UPDATE_USERS_OF_ROLES:
-                        return t("approvalWorkflows:operationType.updateRoleUsers");
-                    case WorkflowInstanceOperationType.DELETE_USER_CLAIMS:
-                        return t("approvalWorkflows:operationType.deleteUserClaims");
-                    case WorkflowInstanceOperationType.UPDATE_USER_CLAIMS:
-                        return t("approvalWorkflows:operationType.updateUserClaims");
+                    // TODO: Enable these operation types when backend support is added
+                    // case WorkflowInstanceOperationType.UPDATE_ROLE_NAME:
+                    //     return t("approvalWorkflows:operationType.updateRoleName");
+                    // case WorkflowInstanceOperationType.UPDATE_USERS_OF_ROLES:
+                    //     return t("approvalWorkflows:operationType.updateRoleUsers");
+                    // case WorkflowInstanceOperationType.DELETE_USER_CLAIMS:
+                    //     return t("approvalWorkflows:operationType.deleteUserClaims");
+                    // case WorkflowInstanceOperationType.UPDATE_USER_CLAIMS:
+                    //     return t("approvalWorkflows:operationType.updateUserClaims");
                     default: return value;
                 }
-            case "requestType":
-                return REQUEST_TYPES.find(item => item.value === value)?.text?.toString() || value;
             case "status":
-                return INSTANCE_STATUSES.find(item => item.value === value)?.text?.toString() || value;
-            case "dateCategory":
-                return TIME_RANGE_OPTIONS.find(item => item.value === Number(value))?.text || value;
+                return (
+                    INSTANCE_STATUSES.find(
+                        (item: DropdownItemProps) => item.value === value
+                    )?.text?.toString() || value
+                );
             case "createdTimeRange":
             case "updatedTimeRange": {
-                if (value === "-1") return TIME_RANGE_OPTIONS.find(item => item.value === -1)?.text || value;
+                if (value === "-1") {
+                    return TIME_RANGE_OPTIONS.find(
+                        (item: { key: number; text: string; value: number }) => item.value === -1
+                    )?.text || value;
+                }
 
-                const option = TIME_RANGE_OPTIONS.find(item => item.value === Number(value));
+                const option: { key: number; text: string; value: number } | undefined = TIME_RANGE_OPTIONS.find(
+                    (item: { key: number; text: string; value: number }) => item.value === Number(value)
+                );
 
                 return option ? option.text : value;
             }
@@ -218,15 +200,6 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
 
     const getActiveFilters = (): FilterTag[] => {
         const filters: FilterTag[] = [];
-
-        if (requestType !== "ALL_TASKS") {
-            filters.push({
-                key: "requestType",
-                label: getDisplayLabel("requestType", requestType),
-                type: "requestType",
-                value: requestType
-            });
-        }
 
         if (status !== "ALL_TASKS") {
             filters.push({
@@ -269,10 +242,6 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
 
     const removeFilter = (filterToRemove: FilterTag): void => {
         switch (filterToRemove.type) {
-            case "requestType":
-                setRequestType("ALL_TASKS");
-
-                break;
             case "status":
                 setStatus("ALL_TASKS");
 
@@ -297,7 +266,6 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
     };
 
     const clearAllFilters = (): void => {
-        setRequestType("ALL_TASKS");
         setStatus("ALL_TASKS");
         setOperationType("ALL");
         setCreatedTimeRange(undefined);
@@ -342,14 +310,13 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
 
 
     const searchWorkflowRequests = (): void => {
-        const { dateCategory, beginDate, endDate } = getDateFilterParams();
-        const generatedFilter = generateFilterString(
-            requestType,
+        const generatedFilter: string = generateFilterString(
             status,
             operationType,
-            dateCategory,
-            beginDate,
-            endDate
+            createdFromTime ? formatMsToBackend(createdFromTime, true) : "",
+            createdToTime ? formatMsToBackend(createdToTime, false) : "",
+            updatedFromTime ? formatMsToBackend(updatedFromTime, true) : "",
+            updatedToTime ? formatMsToBackend(updatedToTime, false) : ""
         );
 
         setFilterString(generatedFilter);
@@ -424,10 +391,10 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
 
     useEffect(() => {
         searchWorkflowRequests();
-    }, [ requestType, status, createdTimeRange, createdFromTime, createdToTime, updatedTimeRange, updatedFromTime,
+    }, [ status, createdTimeRange, createdFromTime, createdToTime, updatedTimeRange, updatedFromTime,
         updatedToTime, operationType ]);
 
-    const activeFilters = getActiveFilters();
+    const activeFilters: FilterTag[] = getActiveFilters();
 
     return (
         <PageLayout
@@ -444,8 +411,6 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
                     data-componentid="workflow-requests-active-filters-bar"
                 />
                 <WorkflowRequestsFilter
-                    requestType={ requestType }
-                    setRequestType={ setRequestType }
                     status={ status }
                     setStatus={ setStatus }
                     operationType={ operationType }
@@ -474,11 +439,17 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
                     <WorkflowRequestsList
                         workflowRequestsList={ workflowRequests }
                         isLoading={ isWorkflowInstancesLoading }
-                        handleWorkflowRequestDelete={ (workflowRequest) => {
+                        handleWorkflowRequestDelete={ (workflowRequest: WorkflowInstanceListItemInterface) => {
                             if (workflowRequest) deleteWorkflowRequest(workflowRequest.workflowInstanceId);
                         } }
-                        handleWorkflowRequestView={ (workflowRequest) => history.push(AppConstants.getPaths()
-                            .get("WORKFLOW_REQUESTS") + "/" + workflowRequest.workflowInstanceId) }
+                        handleWorkflowRequestView={
+                            (workflowRequest: WorkflowInstanceListItemInterface) =>
+                                history.push(
+                                    AppConstants.getPaths().get("WORKFLOW_REQUESTS") +
+                                    "/" +
+                                    workflowRequest.workflowInstanceId
+                                )
+                        }
                         onSearchQueryClear={ clearAllFilters }
                         searchQuery={ null }
                         data-componentid="workflow-requests-list"

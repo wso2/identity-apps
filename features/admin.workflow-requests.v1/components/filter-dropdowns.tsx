@@ -87,11 +87,12 @@ export const WorkflowRequestOperationTypeDropdown: React.FC<FilterDropdownProps>
         {key: WorkflowInstanceOperationType.DELETE_USER, value: WorkflowInstanceOperationType.DELETE_USER, text: t("approvalWorkflows:operationType.deleteUser")},
         {key: WorkflowInstanceOperationType.UPDATE_ROLES_OF_USERS, value: WorkflowInstanceOperationType.UPDATE_ROLES_OF_USERS, text: t("approvalWorkflows:operationType.updateUserRoles")},
         {key: WorkflowInstanceOperationType.ADD_ROLE, value: WorkflowInstanceOperationType.ADD_ROLE, text: t("approvalWorkflows:operationType.createRole")},
-        {key: WorkflowInstanceOperationType.DELETE_ROLE, value: WorkflowInstanceOperationType.DELETE_ROLE, text: t("approvalWorkflows:operationType.deleteRole")},
-        {key: WorkflowInstanceOperationType.UPDATE_ROLE_NAME, value: WorkflowInstanceOperationType.UPDATE_ROLE_NAME, text: t("approvalWorkflows:operationType.updateRoleName")},
-        {key: WorkflowInstanceOperationType.UPDATE_USERS_OF_ROLES, value: WorkflowInstanceOperationType.UPDATE_USERS_OF_ROLES, text: t("approvalWorkflows:operationType.updateRoleUsers")},
-        {key: WorkflowInstanceOperationType.DELETE_USER_CLAIMS, value: WorkflowInstanceOperationType.DELETE_USER_CLAIMS, text: t("approvalWorkflows:operationType.deleteUserClaims")},
-        {key: WorkflowInstanceOperationType.UPDATE_USER_CLAIMS, value: WorkflowInstanceOperationType.UPDATE_USER_CLAIMS, text: t("approvalWorkflows:operationType.updateUserClaims")}
+        {key: WorkflowInstanceOperationType.DELETE_ROLE, value: WorkflowInstanceOperationType.DELETE_ROLE, text: t("approvalWorkflows:operationType.deleteRole")}
+        // TODO: Enable these operation types when backend support is added
+        // {key: WorkflowInstanceOperationType.UPDATE_ROLE_NAME, value: WorkflowInstanceOperationType.UPDATE_ROLE_NAME, text: t("approvalWorkflows:operationType.updateRoleName")},
+        // {key: WorkflowInstanceOperationType.UPDATE_USERS_OF_ROLES, value: WorkflowInstanceOperationType.UPDATE_USERS_OF_ROLES, text: t("approvalWorkflows:operationType.updateRoleUsers")},
+        // {key: WorkflowInstanceOperationType.DELETE_USER_CLAIMS, value: WorkflowInstanceOperationType.DELETE_USER_CLAIMS, text: t("approvalWorkflows:operationType.deleteUserClaims")},
+        // {key: WorkflowInstanceOperationType.UPDATE_USER_CLAIMS, value: WorkflowInstanceOperationType.UPDATE_USER_CLAIMS, text: t("approvalWorkflows:operationType.updateUserClaims")}
     ];
 
     return (
