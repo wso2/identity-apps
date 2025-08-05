@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,19 +16,4 @@
  * under the License.
  */
 
-export interface MetaI18NNamespace {
-    code: string;
-    flag: string;
-    name: string;
-    namespaces: string[];
-    paths: {
-        common: string;
-        console: string;
-        myAccount: string;
-        extensions: string;
-    };
-}
-
-export interface MetaI18N {
-    [ key: string ]: MetaI18NNamespace;
-}
+export * from "./models/ui";

@@ -624,7 +624,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      * @param data - The data to be updated.
      * @param resetOnUpdate - Indicates whether the form should be reset after update.
      */
-    const handleProfileUpdate = (data: PatchOperationRequest<ProfilePatchOperationValue>): void => {
+    const handleProfileUpdate = (
+        data: PatchOperationRequest<ProfilePatchOperationValue>,
+        clearActiveForm: boolean = true
+    ): void => {
         setIsProfileUpdating(true);
 
         updateProfileInfo(data as unknown as Record<string, unknown>)
@@ -655,7 +658,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             })
             .finally(() => {
                 setIsProfileUpdating(false);
-                dispatch(setActiveForm(null));
+
+                if (clearActiveForm) {
+                    dispatch(setActiveForm(null));
+                }
             });
     };
 
@@ -882,7 +888,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         />
                     </Container>
                 ) }
-                { !isLoading && hasLocalAccount && (
+                { !isLoading && hasLocalAccount && mappedProfileInfo && (
                     <List
                         divided={ true }
                         verticalAlign="middle"

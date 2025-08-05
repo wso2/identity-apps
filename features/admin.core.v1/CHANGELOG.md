@@ -1,5 +1,45 @@
 # @wso2is/admin.core.v1
 
+## 2.47.3
+
+### Patch Changes
+
+- Updated dependencies [[`225bee5c118034f0c53b3fb6c5e4a8400c2fed9c`](https://github.com/wso2/identity-apps/commit/225bee5c118034f0c53b3fb6c5e4a8400c2fed9c)]:
+  - @wso2is/admin.roles.v2@2.27.178
+  - @wso2is/admin.agents.v1@1.0.23
+
+## 2.47.2
+
+### Patch Changes
+
+- [#8681](https://github.com/wso2/identity-apps/pull/8681) [`5ed4fa6bf807211d796d2b3ee3f4a0ad7ab3d2de`](https://github.com/wso2/identity-apps/commit/5ed4fa6bf807211d796d2b3ee3f4a0ad7ab3d2de) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Update workflow API resources and scopes
+
+- Updated dependencies [[`5ed4fa6bf807211d796d2b3ee3f4a0ad7ab3d2de`](https://github.com/wso2/identity-apps/commit/5ed4fa6bf807211d796d2b3ee3f4a0ad7ab3d2de)]:
+  - @wso2is/admin.approval-workflows.v1@1.0.7
+
+## 2.47.1
+
+### Patch Changes
+
+- [#8206](https://github.com/wso2/identity-apps/pull/8206) [`ba917ba62a07de5898c251fc385558ddb562122a`](https://github.com/wso2/identity-apps/commit/ba917ba62a07de5898c251fc385558ddb562122a) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Switch to the org handle in places where org id is used as tenant domain
+
+- Updated dependencies [[`ba917ba62a07de5898c251fc385558ddb562122a`](https://github.com/wso2/identity-apps/commit/ba917ba62a07de5898c251fc385558ddb562122a), [`1cf2a69f382401824625df187fecbcac9a32d28a`](https://github.com/wso2/identity-apps/commit/1cf2a69f382401824625df187fecbcac9a32d28a)]:
+  - @wso2is/admin.authentication.v1@2.25.207
+  - @wso2is/i18n@2.26.1
+
+## 2.47.0
+
+### Minor Changes
+
+- [#8588](https://github.com/wso2/identity-apps/pull/8588) [`8294cbfd28e252ebb145a153d0e74106515a28b8`](https://github.com/wso2/identity-apps/commit/8294cbfd28e252ebb145a153d0e74106515a28b8) Thanks [@brionmario](https://github.com/brionmario)! - Extension model for i18n in Console & My Account
+
+### Patch Changes
+
+- Updated dependencies [[`8294cbfd28e252ebb145a153d0e74106515a28b8`](https://github.com/wso2/identity-apps/commit/8294cbfd28e252ebb145a153d0e74106515a28b8)]:
+  - @wso2is/admin.branding.v1@2.32.0
+  - @wso2is/core@2.11.0
+  - @wso2is/i18n@2.26.0
+
 ## 2.46.43
 
 ### Patch Changes

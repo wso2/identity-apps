@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,8 +22,8 @@ import { CommonGlobalActionTypes, CommonGlobalActions } from "../actions/types";
 /**
  * Reducer to handle the state of common global app actions.
  *
- * @param {CommonGlobalReducerStateInterface<T, S, U>} initialState - Reducer initial state.
- * @return {CommonGlobalReducerStateInterface<T, S, U>} The new state.
+ * @param initialState - Reducer initial state.
+ * @returns The new state.
  */
 export const commonGlobalReducer = <T, S, U>(initialState: CommonGlobalReducerStateInterface<T, S, U>) => (
     state: CommonGlobalReducerStateInterface<T, S, U> = initialState,
@@ -55,6 +55,11 @@ export const commonGlobalReducer = <T, S, U>(initialState: CommonGlobalReducerSt
             return {
                 ...state,
                 supportedI18nLanguages: action.payload
+            };
+        case CommonGlobalActionTypes.SET_SUPPORTED_LOCALE_EXTENSIONS:
+            return {
+                ...state,
+                supportedLocaleExtensions: action.payload
             };
         default:
             return state;

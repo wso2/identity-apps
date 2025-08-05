@@ -29,6 +29,7 @@ export enum GlobalActionTypes {
     INITIALIZE_ALERT_SYSTEM = "INITIALIZE_ALERT_SYSTEM",
     ADD_ALERT = "ADD_ALERT",
     SET_SUPPORTED_I18N_LANGUAGES = "SET_SUPPORTED_I18N_LANGUAGES",
+    SET_SUPPORTED_LOCALE_EXTENSIONS = "SET_SUPPORTED_LOCALE_EXTENSIONS",
     SET_OPEN_ACTION = "SET_OPEN_ACTION"
 }
 
@@ -87,6 +88,14 @@ export interface SetSupportedI18nLanguagesActionInterface extends GlobalBaseActi
 }
 
 /**
+ * Set supported locale extensions action interface.
+ */
+export interface SetSupportedLocaleExtensionsActionInterface extends GlobalBaseAction {
+    payload: SupportedLanguagesMeta;
+    type: GlobalActionTypes.SET_SUPPORTED_LOCALE_EXTENSIONS;
+}
+
+/**
  * Set open action.
  */
 export interface SetOpenAction extends GlobalBaseAction {
@@ -103,4 +112,5 @@ export type GlobalActions = ShowGlobalLoaderAction
     | InitializeAlertSystemAction
     | AddAlertAction
     | SetSupportedI18nLanguagesActionInterface
+    | SetSupportedLocaleExtensionsActionInterface
     | SetOpenAction;

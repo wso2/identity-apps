@@ -17,18 +17,22 @@
  */
 
 import { ProfileConstants } from "@wso2is/core/constants";
-import { ClaimDataType, PatchOperationRequest } from "@wso2is/core/models";
+import { ClaimInputFormat, PatchOperationRequest } from "@wso2is/core/models";
 import { FormValue } from "@wso2is/forms";
 import isEmpty from "lodash-es/isEmpty";
 import React, { Dispatch, FunctionComponent, ReactElement } from "react";
 import { useDispatch } from "react-redux";
 import CheckboxFieldForm from "./checkbox-field-form";
+import CheckboxGroupFieldForm from "./checkbox-group-field-form";
 import CountryFieldForm from "./country-field-form";
 import DOBFieldForm from "./dob-field-form";
 import DropdownFieldForm from "./dropdown-field-form";
 import EmailFieldForm from "./email-field-form";
+import LocaleFieldForm from "./locale-field-form";
 import MobileFieldForm from "./mobile-field-form";
 import MultiValueFieldForm from "./multi-valued-field-form";
+import RadioFieldForm from "./radio-field-form";
+import SwitchFieldForm from "./switch-field-form";
 import TextFieldForm from "./text-field-form";
 import { CommonConstants } from "../../../constants";
 import { SCIMConfigs as SCIMExtensionConfigs } from "../../../extensions/configs/scim";
@@ -36,7 +40,9 @@ import { ProfilePatchOperationValue } from "../../../models/profile";
 import { ProfileFieldFormRendererPropsInterface } from "../../../models/profile-ui";
 import { setActiveForm } from "../../../store/actions";
 
-const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsInterface> = (
+const ProfileFieldFormRenderer: FunctionComponent<
+    ProfileFieldFormRendererPropsInterface<string | number | boolean | string[]>
+> = (
     {
         fieldSchema,
         flattenedProfileSchema,
@@ -53,11 +59,10 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
         isEmailVerificationEnabled,
         isMobileVerificationEnabled,
         [ "data-componentid" ]: componentId
-    }: ProfileFieldFormRendererPropsInterface
+    }: ProfileFieldFormRendererPropsInterface<string | number | boolean | string[]>
 ): ReactElement => {
 
-    const { type, canonicalValues, multiValued: isMultiValuedSchema, extended: isExtendedSchema } = fieldSchema;
-    let fieldType: ClaimDataType = type?.toLocaleLowerCase() as ClaimDataType;
+    const { multiValued: isMultiValuedSchema, extended: isExtendedSchema } = fieldSchema;
 
     const dispatch: Dispatch<any> = useDispatch();
 
@@ -98,7 +103,7 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
                     [schemaNamesCanonicalTypes[0]]: [ { ...tempPatchValue, type: schemaNamesCanonicalTypes[1] } ]
                 };
             } else {
-                tempPatchValue = { [schemaName]: tempPatchValue ?? value };
+                tempPatchValue = { [schemaName]: tempPatchValue ?? value ?? "" };
             }
         }
 
@@ -126,7 +131,28 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
         return (
             <CountryFieldForm
                 fieldSchema={ fieldSchema }
-                initialValue={ initialValue }
+                initialValue={ initialValue as string }
+                fieldLabel={ fieldLabel }
+                isRequired={ isRequired }
+                isEditable={ isEditable }
+                isActive={ isActive }
+                setIsProfileUpdating={ setIsProfileUpdating }
+                isLoading={ isLoading }
+                isUpdating={ isUpdating }
+                handleSubmit={ handleSubmit }
+                onEditClicked={ onEditClicked }
+                onEditCancelClicked={ onEditCancelClicked }
+                data-componentid={ componentId }
+            />
+        );
+    }
+
+    // Render locale dropdown.
+    if (fieldSchema.name === "locale") {
+        return (
+            <LocaleFieldForm
+                fieldSchema={ fieldSchema }
+                initialValue={ initialValue as string }
                 fieldLabel={ fieldLabel }
                 isRequired={ isRequired }
                 isEditable={ isEditable }
@@ -153,7 +179,7 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
         return (
             <EmailFieldForm
                 fieldSchema={ fieldSchema }
-                initialValue={ initialValue }
+                initialValue={ initialValue as string }
                 profileInfo={ profileInfo }
                 fieldLabel={ fieldLabel }
                 isActive={ isActive }
@@ -182,7 +208,7 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
             <MobileFieldForm
                 fieldSchema={ fieldSchema }
                 flattenedProfileSchema={ flattenedProfileSchema }
-                initialValue={ initialValue }
+                initialValue={ initialValue as string }
                 profileInfo={ profileInfo }
                 fieldLabel={ fieldLabel }
                 isActive={ isActive }
@@ -204,7 +230,7 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
         return (
             <DOBFieldForm
                 fieldSchema={ fieldSchema }
-                initialValue={ initialValue }
+                initialValue={ initialValue as string }
                 fieldLabel={ fieldLabel }
                 isActive={ isActive }
                 isEditable={ isEditable }
@@ -220,21 +246,61 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
         );
     }
 
-    if (canonicalValues?.length > 0) {
-        fieldType = ClaimDataType.OPTIONS;
-    }
+    const inputType: ClaimInputFormat = fieldSchema.inputFormat?.inputType ?? ClaimInputFormat.TEXT_INPUT;
 
     if (isMultiValuedSchema && isExtendedSchema) {
-        switch (fieldType) {
-            case ClaimDataType.INTEGER: {
-                const valueList: number[] = isEmpty(initialValue)
-                    ? []
-                    : initialValue.split(",").map((value: string) => Number(value));
+        // Prepare initial value list from comma separated string.
+        const valueList: string[] = isEmpty(initialValue)
+            ? []
+            : (initialValue as string).split(",");
+
+        switch (inputType) {
+            case ClaimInputFormat.MULTI_SELECT_DROPDOWN:
+                return (
+                    <DropdownFieldForm
+                        fieldSchema={ fieldSchema }
+                        initialValue={ valueList }
+                        fieldLabel={ fieldLabel }
+                        isActive={ isActive }
+                        isEditable={ isEditable }
+                        onEditClicked={ onEditClicked }
+                        onEditCancelClicked={ onEditCancelClicked }
+                        isRequired={ isRequired }
+                        setIsProfileUpdating={ setIsProfileUpdating }
+                        isLoading={ isLoading }
+                        isUpdating={ isUpdating }
+                        data-componentid={ componentId }
+                        handleSubmit={ handleSubmit }
+                        isMultiSelect
+                    />
+                );
+
+            case ClaimInputFormat.CHECKBOX_GROUP:
+                return (
+                    <CheckboxGroupFieldForm
+                        fieldSchema={ fieldSchema }
+                        initialValue={ valueList }
+                        fieldLabel={ fieldLabel }
+                        isActive={ isActive }
+                        isEditable={ isEditable }
+                        onEditClicked={ onEditClicked }
+                        onEditCancelClicked={ onEditCancelClicked }
+                        isRequired={ isRequired }
+                        setIsProfileUpdating={ setIsProfileUpdating }
+                        isLoading={ isLoading }
+                        isUpdating={ isUpdating }
+                        data-componentid={ componentId }
+                        handleSubmit={ handleSubmit }
+                    />
+                );
+
+            case ClaimInputFormat.NUMBER_INPUT: {
+                const _valueList: number[] = valueList.map((value: string) => Number(value));
 
                 return (
                     <MultiValueFieldForm<number>
                         fieldSchema={ fieldSchema }
-                        initialValue={ valueList }
+                        initialValue={ _valueList }
                         fieldLabel={ fieldLabel }
                         isActive={ isActive }
                         isEditable={ isEditable }
@@ -251,9 +317,7 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
                 );
             }
 
-            default: {
-                const valueList: string[] = isEmpty(initialValue) ? [] : initialValue.split(",");
-
+            default:
                 return (
                     <MultiValueFieldForm<string>
                         fieldSchema={ fieldSchema }
@@ -271,17 +335,17 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
                         handleSubmit={ handleSubmit }
                     />
                 );
-            }
         }
     }
 
-    switch (fieldType) {
-        case ClaimDataType.BOOLEAN:
+    switch (inputType) {
+        case ClaimInputFormat.CHECKBOX:
             return (
                 <CheckboxFieldForm
                     fieldSchema={ fieldSchema }
-                    initialValue={ initialValue }
+                    initialValue={ initialValue as boolean }
                     fieldLabel={ fieldLabel }
+                    isEditable={ isEditable }
                     setIsProfileUpdating={ setIsProfileUpdating }
                     isLoading={ isLoading }
                     isUpdating={ isUpdating }
@@ -290,11 +354,64 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
                 />
             );
 
-        case ClaimDataType.INTEGER:
+        case ClaimInputFormat.TOGGLE:
+            return (
+                <SwitchFieldForm
+                    fieldSchema={ fieldSchema }
+                    initialValue={ initialValue as boolean }
+                    fieldLabel={ fieldLabel }
+                    isEditable={ isEditable }
+                    setIsProfileUpdating={ setIsProfileUpdating }
+                    isLoading={ isLoading }
+                    isUpdating={ isUpdating }
+                    data-componentid={ componentId }
+                    handleSubmit={ handleSubmit }
+                />
+            );
+
+        case ClaimInputFormat.DROPDOWN:
+            return (
+                <DropdownFieldForm
+                    fieldSchema={ fieldSchema }
+                    initialValue={ initialValue as string }
+                    fieldLabel={ fieldLabel }
+                    isActive={ isActive }
+                    isEditable={ isEditable }
+                    onEditClicked={ onEditClicked }
+                    onEditCancelClicked={ onEditCancelClicked }
+                    isRequired={ isRequired }
+                    setIsProfileUpdating={ setIsProfileUpdating }
+                    isLoading={ isLoading }
+                    isUpdating={ isUpdating }
+                    data-componentid={ componentId }
+                    handleSubmit={ handleSubmit }
+                />
+            );
+
+        case ClaimInputFormat.RADIO_GROUP:
+            return (
+                <RadioFieldForm
+                    fieldSchema={ fieldSchema }
+                    initialValue={ initialValue as string }
+                    fieldLabel={ fieldLabel }
+                    isActive={ isActive }
+                    isEditable={ isEditable }
+                    onEditClicked={ onEditClicked }
+                    onEditCancelClicked={ onEditCancelClicked }
+                    isRequired={ isRequired }
+                    setIsProfileUpdating={ setIsProfileUpdating }
+                    isLoading={ isLoading }
+                    isUpdating={ isUpdating }
+                    data-componentid={ componentId }
+                    handleSubmit={ handleSubmit }
+                />
+            );
+
+        case ClaimInputFormat.NUMBER_INPUT:
             return (
                 <TextFieldForm
                     fieldSchema={ fieldSchema }
-                    initialValue={ initialValue }
+                    initialValue={ initialValue as string }
                     fieldLabel={ fieldLabel }
                     isActive={ isActive }
                     isEditable={ isEditable }
@@ -307,75 +424,17 @@ const ProfileFieldFormRenderer: FunctionComponent<ProfileFieldFormRendererPropsI
                     data-componentid={ componentId }
                     handleSubmit={ handleSubmit }
                     type="number"
-                />
-            );
-
-        case ClaimDataType.DECIMAL:
-            return (
-                <TextFieldForm
-                    fieldSchema={ fieldSchema }
-                    initialValue={ initialValue }
-                    fieldLabel={ fieldLabel }
-                    isActive={ isActive }
-                    isEditable={ isEditable }
-                    onEditClicked={ onEditClicked }
-                    onEditCancelClicked={ onEditCancelClicked }
-                    isRequired={ isRequired }
-                    setIsProfileUpdating={ setIsProfileUpdating }
-                    isLoading={ isLoading }
-                    isUpdating={ isUpdating }
-                    data-componentid={ componentId }
-                    handleSubmit={ handleSubmit }
-                    type="number"
-                    step="any"
                 />
             );
 
         // As of now text field will be rendered for dates as well.
-        case ClaimDataType.DATE_TIME:
-        case ClaimDataType.STRING:
-            return (
-                <TextFieldForm
-                    fieldSchema={ fieldSchema }
-                    initialValue={ initialValue }
-                    fieldLabel={ fieldLabel }
-                    isActive={ isActive }
-                    isEditable={ isEditable }
-                    onEditClicked={ onEditClicked }
-                    onEditCancelClicked={ onEditCancelClicked }
-                    isRequired={ isRequired }
-                    setIsProfileUpdating={ setIsProfileUpdating }
-                    isLoading={ isLoading }
-                    isUpdating={ isUpdating }
-                    data-componentid={ componentId }
-                    handleSubmit={ handleSubmit }
-                />
-            );
-
-        case ClaimDataType.OPTIONS:
-            return (
-                <DropdownFieldForm
-                    fieldSchema={ fieldSchema }
-                    initialValue={ initialValue }
-                    fieldLabel={ fieldLabel }
-                    isActive={ isActive }
-                    isEditable={ isEditable }
-                    onEditClicked={ onEditClicked }
-                    onEditCancelClicked={ onEditCancelClicked }
-                    isRequired={ isRequired }
-                    setIsProfileUpdating={ setIsProfileUpdating }
-                    isLoading={ isLoading }
-                    isUpdating={ isUpdating }
-                    data-componentid={ componentId }
-                    handleSubmit={ handleSubmit }
-                />
-            );
-
+        case ClaimInputFormat.DATE_PICKER:
+        case ClaimInputFormat.TEXT_INPUT:
         default:
             return (
                 <TextFieldForm
                     fieldSchema={ fieldSchema }
-                    initialValue={ initialValue }
+                    initialValue={ initialValue as string }
                     fieldLabel={ fieldLabel }
                     isActive={ isActive }
                     isEditable={ isEditable }
