@@ -108,19 +108,17 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
         ["data-componentid"]: componentId = "workflow-requests-list"
     } = props;
 
-    const { t } = useTranslation(["approvalWorkflows"]);
+    const { t } = useTranslation([ "approvalWorkflows" ]);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ showWorkflowRequestDeleteConfirmation, setShowWorkflowRequestDeleteConfirmationModal ] = useState(false);
-    const [ currentDeletedWorkflowRequest, setCurrentDeletedWorkflowRequest ] = 
+    const [ currentDeletedWorkflowRequest, setCurrentDeletedWorkflowRequest ] =
         useState<WorkflowInstanceListItemInterface>();
     const isPrivilegedUser: any = useSelector((state: AppState) => state.auth.isPrivilegedUser);
-    const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
 
-    const hasWorkflowRequestDeletePermissions: boolean = 
+    const hasWorkflowRequestDeletePermissions: boolean =
         useRequiredScopes(featureConfig?.workflowRequests?.scopes?.delete);
-    const hasWorkflowRequestViewPermissions: boolean = useRequiredScopes(featureConfig?.workflowRequests?.scopes?.read);
 
     /**
      * Shows list placeholders.
@@ -169,7 +167,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
      * @returns A string color name based on status.
      */
     const resolveInstanceStatusColor = (
-        status: WorkflowInstanceStatus,
+        status: WorkflowInstanceStatus
     ): string => {
         switch (status) {
             case WorkflowInstanceStatus.APPROVED:
@@ -251,7 +249,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
             render: (workflowRequest: WorkflowInstanceListItemInterface): ReactNode => (
                 <div className="workflow-requests-list-event-type-cell">
                     <Header as="h6" className="workflow-requests-list-event-type">
-                        {formatOperationType(workflowRequest.eventType)}
+                        { formatOperationType(workflowRequest.eventType) }
                     </Header>
                 </div>
             ),
@@ -263,13 +261,13 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
             id: "status",
             key: "status",
             render: (workflowRequest: WorkflowInstanceListItemInterface): ReactNode => {
-                const color = resolveInstanceStatusColor(workflowRequest.status as WorkflowInstanceStatus);
+                const color: string = resolveInstanceStatusColor(workflowRequest.status as WorkflowInstanceStatus);
 
                 return (
                     <span className="workflow-requests-list-status-cell">
-                        <span className={`status-indicator ${color}`} />
+                        <span className={ `status-indicator ${color}` } />
                         <Header as="h6" className="workflow-requests-list-status-text">
-                            {formatStatus(workflowRequest.status)}
+                            { formatStatus(workflowRequest.status) }
                         </Header>
                     </span>
                 );
@@ -283,7 +281,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
             key: "createdAt",
             render: (workflowRequest: WorkflowInstanceListItemInterface): ReactNode => (
                 <Header as="h6" className="workflow-requests-list-date-cell">
-                    {getFriendlyDate(workflowRequest.createdAt)}
+                    { getFriendlyDate(workflowRequest.createdAt) }
                 </Header>
             ),
             title: t("approvalWorkflows:list.columns.createdAt")
@@ -295,7 +293,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
             key: "updatedAt",
             render: (workflowRequest: WorkflowInstanceListItemInterface): ReactNode => (
                 <Header as="h6" className="workflow-requests-list-date-cell">
-                    {getFriendlyDate(workflowRequest.updatedAt)}
+                    { getFriendlyDate(workflowRequest.updatedAt) }
                 </Header>
             ),
             title: t("approvalWorkflows:list.columns.updatedAt")
@@ -312,10 +310,10 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
 
     const getFriendlyDate = (dateString: string): string => {
         if (!dateString) return "-";
-        const now = new Date();
-        const date = new Date(dateString);
-        const diffMs = now.getTime() - date.getTime();
-        const diffDays = diffMs / (1000 * 60 * 60 * 24);
+        const now: Date = new Date();
+        const date: Date = new Date(dateString);
+        const diffMs: number = now.getTime() - date.getTime();
+        const diffDays: number = diffMs / (1000 * 60 * 60 * 24);
 
         if (diffMs < 0) {
             return formatDateString(dateString);
@@ -376,8 +374,8 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     open={ showWorkflowRequestDeleteConfirmation }
                     assertionHint={ t("approvalWorkflows:confirmation.hint") }
                     assertionType="checkbox"
-                    primaryAction={t("common:confirm")}
-                    secondaryAction={t("common:cancel")}
+                    primaryAction={ t("common:confirm") }
+                    secondaryAction={ t("common:cancel") }
                     onSecondaryActionClick={ (): void => setShowWorkflowRequestDeleteConfirmationModal(false) }
                     onPrimaryActionClick={ (): void => {
                         handleWorkflowRequestDelete(currentDeletedWorkflowRequest);
