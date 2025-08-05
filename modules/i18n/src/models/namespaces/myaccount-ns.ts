@@ -786,6 +786,12 @@ export interface MyAccountNS {
                             invalidFormat: string;
                         };
                     };
+                    dropdown: {
+                        placeholder: string;
+                    };
+                    radioGroup: {
+                        optionNone: string;
+                    }
                 };
                 emailChangeForm: {
                     inputs: {

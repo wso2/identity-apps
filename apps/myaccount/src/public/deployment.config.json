@@ -99,7 +99,7 @@
                 }
             },
             "personalInfo": {
-                "disabledFeatures": [],
+                "disabledFeatures": [ "profileInfo.profile.legacy" ],
                 "enabled": true,
                 "scopes": {
                     "create": [],

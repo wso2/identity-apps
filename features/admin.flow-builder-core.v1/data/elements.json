@@ -123,7 +123,7 @@
             "hint": "",
             "label": "Date",
             "required": false,
-            "placeholder": "yyyy-mm-dd"
+            "placeholder": "dd-mm-yyyy"
         }
     },
     {

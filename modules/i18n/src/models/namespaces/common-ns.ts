@@ -230,6 +230,8 @@ export interface CommonNS {
     search: string;
     searching: string;
     security: string;
+    selectAll: string;
+    selectNone: string;
     settings: string;
     setup: string;
     show: string;

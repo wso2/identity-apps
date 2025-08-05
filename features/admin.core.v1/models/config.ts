@@ -290,6 +290,10 @@ export interface FeatureConfigInterface {
      * Registration flow builder feature.
      */
     registrationFlowBuilder?: FeatureAccessConfigInterface;
+    /**
+     * Workflow feature.
+     */
+    workflows?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -474,10 +478,6 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Enable old UI of email provider.
      */
     enableOldUIForEmailProvider: boolean;
-    /**
-     * Show password of email provider.
-     */
-    showPasswordOfEmailProvider: boolean;
     /**
      * Enable/Disable custom email template feature
      */

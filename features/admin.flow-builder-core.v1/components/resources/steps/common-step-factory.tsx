@@ -20,7 +20,6 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Node } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
 import Execution from "./execution/execution";
-import Redirection from "./redirection/redirection";
 import Rule from "./rule/rule";
 import View from "./view/view";
 import { Step, StepTypes } from "../../../models/steps";
@@ -56,11 +55,6 @@ export const CommonStepFactory: FunctionComponent<CommonStepFactoryPropsInterfac
 
     if (resource.type === StepTypes.Rule) {
         return <Rule data-componentid={ componentId } resource={ resource } { ...rest } />;
-    }
-
-    if (resource.type === StepTypes.Redirection) {
-        // TODO: `TS2322` appears here if we pass in `resource`. Add it back after fixing.
-        return <Redirection data-componentid={ componentId } resource={ resource } { ...rest } />;
     }
 
     if (resource.type === StepTypes.Execution) {

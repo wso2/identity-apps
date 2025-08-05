@@ -63,6 +63,7 @@ export const flows: flowsNS = {
                         callbackOrApplicationAccessUrl: "Callback or Application Access URL",
                         customUrl: "Custom URL",
                         privacyPolicyUrl: "Privacy Policy URL",
+                        supportEmail: "Contact Support Email",
                         termsOfUseUrl: "Terms of Use URL"
                     },
                     urlTypeLabel: "URL Type"
@@ -74,6 +75,19 @@ export const flows: flowsNS = {
             flowMetadataFetch: {
                 description: "An error occurred while fetching the flow metadata.",
                 message: "Flow Metadata Fetch Error"
+            }
+        },
+        executions: {
+            names: {
+                apple: "Apple",
+                confirmationCode: "Confirmation Code",
+                default: "Execution",
+                facebook: "Facebook",
+                github: "GitHub",
+                google: "Google",
+                magicLink: "Magic Link",
+                microsoft: "Microsoft",
+                passkeyEnrollment: "Enroll Passkey"
             }
         }
     },

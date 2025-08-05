@@ -518,7 +518,9 @@ export class AppConstants {
         "governanceConnectors",
         "branding",
         "consoleSettings",
-        "apiResources"
+        "apiResources",
+        "approvals",
+        "workflows"
     ];
 
     /**
@@ -551,6 +553,11 @@ export class AppConstants {
      * Route id of the console settings page.
      */
     public static readonly CONSOLE_SETTINGS_ROUTE: string = "consoleSettings";
+
+    /**
+     * Route id of the console settings page.
+     */
+    public static readonly AGENTS_ROUTE: string = "agents";
 
     /**
      * Name of the root node

@@ -25,6 +25,7 @@ import useSubscribedAPIResources from "@wso2is/admin.applications.v1/api/use-sub
 import { AuthorizedAPIListItemInterface } from "@wso2is/admin.applications.v1/models/api-authorization";
 import { ApplicationInterface, ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models/application";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
@@ -41,10 +42,10 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Grid, Header, Label, Modal } from "semantic-ui-react";
-import { createRole } from "../../api";
+import { createRole, createRoleUsingV3Api } from "../../api";
 import useGetRolesList from "../../api/use-get-roles-list";
 import { RoleAudienceTypes, RoleConstants } from "../../constants";
 import { ScopeInterface } from "../../models/apiResources";
@@ -101,6 +102,13 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
     const appId: string = path[path.length - 1].split("#")[0];
     const FORM_ID: string = "application-role-creation-form";
     const formRef: MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
+
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
+    );
+
+    const createRoleFunction: (role: CreateRoleInterface) => Promise<AxiosResponse> =
+        userRolesV3FeatureEnabled ? createRoleUsingV3Api : createRole;
 
     const {
         data: subscribedAPIResourcesListData,
@@ -242,7 +250,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
         };
 
         // Create Role API Call.
-        createRole(roleData)
+        createRoleFunction(roleData)
             .then((response: AxiosResponse) => {
                 if (response.status === 201) {
                     dispatch(addAlert({

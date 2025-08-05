@@ -61,6 +61,7 @@ import React, {
     MouseEvent,
     ReactElement,
     useEffect,
+    useMemo,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -148,6 +149,10 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             state.authenticationInformation.profileInfo.isReadOnly
     );
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
+    const showLanguageSwitcher: boolean = useSelector(
+        (state: AppState) => state.config.ui.i18nConfigs.showLanguageSwitcher
+    );
+
     const { mode } = useColorScheme();
 
     const { raw, theme } = useThemeProvider();
@@ -322,6 +327,25 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         (state: AppState) => state.global.supportedI18nLanguages
     );
 
+    const filteredSupportedI18nLanguages: SupportedLanguagesMeta = useMemo(() => {
+        return Object.entries(supportedI18nLanguages)
+            .filter(([
+                _,
+                value
+            ]: [ string, LocaleMeta ]) => (
+                value.showOnLanguageSwitcher === true ||
+                (value.enabled && value.showOnLanguageSwitcher === undefined)
+            ))
+            .reduce((
+                acc: SupportedLanguagesMeta,
+                [ key, value ]: [ string, LocaleMeta ]
+            ) => {
+                acc[key] = value;
+
+                return acc;
+            }, {} as SupportedLanguagesMeta);
+    }, [ supportedI18nLanguages ]);
+
     const handleLanguageSwitching = (e: MouseEvent<HTMLElement>) => {
         setOpenLanguageSwitcher(!openLanguageSwitcher);
         setLanguageSwitcherAnchorEl(e.currentTarget);
@@ -427,58 +451,67 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             onCollapsibleHamburgerClick={ handleSidePanelToggleClick }
             position="fixed"
             rightAlignedElements={ [
-                <>
-                    <Button
-                        color="inherit"
-                        startIcon={ <LanguageIcon /> }
-                        endIcon={ <ChevronDownIcon /> }
-                        key={ I18n.instance?.language }
-                        onClick={ handleLanguageSwitching }
-                        data-componentid="app-header-language-switcher-trigger"
-                    >
-                        {
-                            isMobileViewport
-                                ? <Flag countryCode={ supportedI18nLanguages[I18n.instance?.language]?.flag } />
-                                : supportedI18nLanguages[I18n.instance?.language]?.name
-                        }
-                    </Button>
-                    <Menu
-                        open={ openLanguageSwitcher }
-                        anchorEl={ languageSwitcherAnchorEl }
-                        onClose={ handleLanguageSwitching }
-                    >
-                        { Object.entries(supportedI18nLanguages)?.map(
-                            ([ key, value ]: [ key: string, value: LocaleMeta ]) => {
-                                if (I18n.instance?.language === value.code) {
-                                    return;
-                                }
-
-                                return (
-                                    <MenuItem
-                                        key={ key }
-                                        onClick={ () => {
-                                            handleLanguageSwitch(value.code);
-                                            setOpenLanguageSwitcher(false);
-                                            handleDirection(value.code);
-                                        } }
-                                    >
-                                        <ListItem>
-                                            <ListItemIcon>
-                                                <Flag
-                                                    countryCode={ value.flag }
-                                                />
-                                            </ListItemIcon>
-                                            <ListItemText>
-                                                { value.name }
-                                            </ListItemText>
-                                        </ListItem>
-                                    </MenuItem>
-                                );
+                showLanguageSwitcher && Object.entries(filteredSupportedI18nLanguages)?.length > 1 && (
+                    <>
+                        <Button
+                            color="inherit"
+                            startIcon={ <LanguageIcon /> }
+                            endIcon={ <ChevronDownIcon /> }
+                            key={ I18n.instance?.language }
+                            onClick={ handleLanguageSwitching }
+                            data-componentid="app-header-language-switcher-trigger"
+                        >
+                            {
+                                isMobileViewport
+                                    ? (
+                                        <Flag
+                                            countryCode={
+                                                filteredSupportedI18nLanguages[I18n.instance?.language]?.flag
+                                            }
+                                        />
+                                    ) : supportedI18nLanguages[I18n.instance?.language]?.name
                             }
-                        ) }
-                    </Menu>
-                </>
-            ] }
+                        </Button>
+                        <Menu
+                            open={ openLanguageSwitcher }
+                            anchorEl={ languageSwitcherAnchorEl }
+                            onClose={ handleLanguageSwitching }
+                            className="app-header-language-switcher-menu"
+                        >
+                            { Object.entries(filteredSupportedI18nLanguages)?.map(
+                                ([ key, value ]: [ key: string, value: LocaleMeta ]) => {
+                                    if (I18n.instance?.language === value.code) {
+                                        return;
+                                    }
+
+                                    return (
+                                        <MenuItem
+                                            key={ key }
+                                            onClick={ () => {
+                                                handleLanguageSwitch(value.code);
+                                                setOpenLanguageSwitcher(false);
+                                                handleDirection(value.code);
+                                            } }
+                                            className="app-header-language-switcher-menu-item"
+                                        >
+                                            <ListItem>
+                                                { value.flag && (
+                                                    <ListItemIcon>
+                                                        <Flag countryCode={ value.flag } />
+                                                    </ListItemIcon>
+                                                ) }
+                                                <ListItemText>
+                                                    { value.name }
+                                                </ListItemText>
+                                            </ListItem>
+                                        </MenuItem>
+                                    );
+                                }
+                            ) }
+                        </Menu>
+                    </>
+                )
+            ].filter(Boolean) }
             userDropdownMenu={ {
                 actionIcon: <ArrowRightFromBracketIcon fill={ mode === "dark" ? "white" : "black" } />,
                 actionText: t("common:logout"),

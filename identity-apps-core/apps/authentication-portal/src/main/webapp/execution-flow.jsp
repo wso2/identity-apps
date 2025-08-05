@@ -180,6 +180,7 @@
                 const flowType = "<%= Encode.forJavaScript(flowType) != null ? Encode.forJavaScript(flowType) : null %>";
                 const mlt = "<%= Encode.forJavaScript(mlt) != null ? Encode.forJavaScript(mlt) : null %>";
                 const flowId = "<%= Encode.forJavaScript(flowId) != null ? Encode.forJavaScript(flowId) : null %>";
+                const spId = "<%= !StringUtils.isBlank(spId) && spId != "null" ? Encode.forJavaScript(spId) : "new-application" %>";
 
                 const locale = "en-US";
                 const translations = <%= translationsJson %>;
@@ -233,9 +234,9 @@
 
                 useEffect(() => {
                     if (!postBody && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType == "null") {
-                        setPostBody({ applicationId: "new-application", flowType: "REGISTRATION" });
+                        setPostBody({ applicationId: spId, flowType: "REGISTRATION" });
                     } else if (!postBody && code === "null" && confirmationCode === "null" && mlt === "null" && flowId === "null" && flowType !== "null") {
-                        setPostBody({ applicationId: "new-application", flowType: flowType });
+                        setPostBody({ applicationId: spId, flowType: flowType });
                     }
                 }, []);
 
@@ -289,13 +290,14 @@
                 useEffect(() => {
                     if (error && error.code) {
                         const errorDetails = getI18nKeyForError(error.code, flowType);
-                        const portal_url = authPortalURL + "/register.do";
-                        if (flowType === "INVITE_USER_REGISTRATION" || flowType === "PASSWORD_RECOVERY") {
+                        let portal_url = authPortalURL + "/register.do";
+                        if (flowType === "INVITED_USER_REGISTRATION" || flowType === "PASSWORD_RECOVERY") {
                             portal_url = authPortalURL + "/recovery.do";
                         }
                         const errorPageURL = authPortalURL + "/execution_flow_error.do?" + "ERROR_MSG="
                             + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID="
-                            + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + flowType + "&" +
+                            + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + flowType + "&" + "confirmation="
+                            + "<%= Encode.forJavaScript(confirmationCode) %>" + "&" +
                             "PORTAL_URL=" + portal_url + "&SP=" + "<%= Encode.forJavaScript(sp) %>";
 
                         window.location.href = errorPageURL;
@@ -304,7 +306,7 @@
                     if (flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error) {
                         setFlowError(flowData.data.additionalData.error);
                     }
-                }, [ error, flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error ]);
+                }, [ error, flowType, flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error ]);
 
                 const handleInternalPrompt = (flowData) => {
                     let providedInputs = {};
@@ -331,8 +333,10 @@
                         case "COMPLETE":
                             localStorage.clear();
 
-                            if (flow.data.url !== null) {
-                                window.location.href = flow.data.url;
+                            if (flow.data.redirectURL !== null) {
+                                window.location.href = flow.data.redirectURL;
+
+                                return true;
                             }
 
                             window.location.href = defaultMyAccountUrl;

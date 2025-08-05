@@ -276,7 +276,6 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
     const initialTemplateComponents: Element[] = useMemo(
         () => getBasicTemplateComponents(), [ resources, generateProfileAttributes ]);
-    const blankTemplateComponents: Element[] = useMemo(() => getBlankTemplateComponents(), [ resources ]);
 
     const generateSteps: (steps: Node[]) => Node[] = useCallback((steps: Node[]): Node[] => {
         const START_STEP: Node = {
@@ -820,12 +819,12 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
         // Handle BASIC_FEDERATED template case
         if (template.type === TemplateTypes.BasicFederated) {
-            const googleRedirectionStep: Node | undefined = templateSteps.find(
-                (step: Node) => step.type === "REDIRECTION"
+            const googleExecutionStep: Node | undefined = templateSteps.find(
+                (step: Node) => step.type === StepTypes.Execution
             );
 
-            if (googleRedirectionStep) {
-                return [ templateSteps, templateEdges, googleRedirectionStep as Resource, googleRedirectionStep.id ];
+            if (googleExecutionStep) {
+                return [ templateSteps, templateEdges, googleExecutionStep as Resource, googleExecutionStep.id ];
             }
         }
 
@@ -1023,13 +1022,25 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                     ...step,
                     data: {
                         ...step.data,
-                        components: blankTemplateComponents
+                        components: getBlankTemplateComponents()
                     }
                 };
             }
         }
 
-        return step;
+        const processedStep: Step = generateIdsForResources<Step>(step);
+
+        if (processedStep?.data?.components) {
+            processedStep.data.components = resolveComponentMetadata(
+                resources,
+                processedStep.data.components
+            );
+        }
+
+        return resolveStepMetadata(
+            resources,
+            [ processedStep ]
+        )[0] as Step;
     };
 
     const handleResourceAdd = (resource: Resource): void => {

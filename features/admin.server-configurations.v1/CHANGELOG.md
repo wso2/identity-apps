@@ -1,5 +1,80 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.35.16
+
+### Patch Changes
+
+- Updated dependencies [[`f53aa7eec0893f28795ccb6afb92082be934a44c`](https://github.com/wso2/identity-apps/commit/f53aa7eec0893f28795ccb6afb92082be934a44c), [`c927fb9e513ddc042cde81251cde106ca0a09c32`](https://github.com/wso2/identity-apps/commit/c927fb9e513ddc042cde81251cde106ca0a09c32)]:
+  - @wso2is/admin.core.v1@2.46.42
+  - @wso2is/core@2.10.2
+  - @wso2is/admin.flow-builder-core.v1@0.9.11
+  - @wso2is/admin.server-configurations.v1@2.35.16
+
+## 2.35.15
+
+### Patch Changes
+
+- [#8656](https://github.com/wso2/identity-apps/pull/8656) [`6c3e55ec90a4c4ccd69c4e05ab8c1e4406fd3dd1`](https://github.com/wso2/identity-apps/commit/6c3e55ec90a4c4ccd69c4e05ab8c1e4406fd3dd1) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add steps for SMS OTP, Email OTP, Username & Password, and Passkeys
+
+- Updated dependencies [[`6c3e55ec90a4c4ccd69c4e05ab8c1e4406fd3dd1`](https://github.com/wso2/identity-apps/commit/6c3e55ec90a4c4ccd69c4e05ab8c1e4406fd3dd1)]:
+  - @wso2is/admin.flow-builder-core.v1@0.9.10
+  - @wso2is/admin.server-configurations.v1@2.35.15
+  - @wso2is/admin.core.v1@2.46.40
+
+## 2.35.14
+
+### Patch Changes
+
+- Updated dependencies [[`2b8df70c9f8acfbe2eeeb9a9d0053b107beb232b`](https://github.com/wso2/identity-apps/commit/2b8df70c9f8acfbe2eeeb9a9d0053b107beb232b)]:
+  - @wso2is/admin.flow-builder-core.v1@0.9.9
+  - @wso2is/admin.core.v1@2.46.38
+  - @wso2is/admin.server-configurations.v1@2.35.14
+
+## 2.35.13
+
+### Patch Changes
+
+- Updated dependencies [[`827bdf5a896acc202e411a9e8a6dfaaeaf0439fe`](https://github.com/wso2/identity-apps/commit/827bdf5a896acc202e411a9e8a6dfaaeaf0439fe)]:
+  - @wso2is/admin.flow-builder-core.v1@0.9.8
+  - @wso2is/i18n@2.25.6
+  - @wso2is/admin.core.v1@2.46.35
+  - @wso2is/admin.server-configurations.v1@2.35.13
+
+## 2.35.12
+
+### Patch Changes
+
+- Updated dependencies [[`c9834ab6efad973327ef6cfbbd558f5c88496f32`](https://github.com/wso2/identity-apps/commit/c9834ab6efad973327ef6cfbbd558f5c88496f32)]:
+  - @wso2is/admin.flow-builder-core.v1@0.9.7
+  - @wso2is/i18n@2.25.5
+  - @wso2is/admin.core.v1@2.46.34
+  - @wso2is/admin.server-configurations.v1@2.35.12
+
+## 2.35.11
+
+### Patch Changes
+
+- Updated dependencies [[`2e0c31a4c3f39f409ed3aa4b630007b81dea5bea`](https://github.com/wso2/identity-apps/commit/2e0c31a4c3f39f409ed3aa4b630007b81dea5bea)]:
+  - @wso2is/admin.flow-builder-core.v1@0.9.6
+  - @wso2is/i18n@2.25.4
+  - @wso2is/admin.core.v1@2.46.33
+  - @wso2is/admin.server-configurations.v1@2.35.11
+
+## 2.35.10
+
+### Patch Changes
+
+- [#8524](https://github.com/wso2/identity-apps/pull/8524) [`80a30c172e3931592b7fc6f4ac4900b25d754816`](https://github.com/wso2/identity-apps/commit/80a30c172e3931592b7fc6f4ac4900b25d754816) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Provide capability to configure and revert login & registration configurations in sub-organizations.
+
+- Updated dependencies [[`80a30c172e3931592b7fc6f4ac4900b25d754816`](https://github.com/wso2/identity-apps/commit/80a30c172e3931592b7fc6f4ac4900b25d754816), [`9d8a7df0c0602b2a58f37522a73d8428f35fdd17`](https://github.com/wso2/identity-apps/commit/9d8a7df0c0602b2a58f37522a73d8428f35fdd17)]:
+  - @wso2is/admin.server-configurations.v1@2.35.10
+  - @wso2is/admin.identity-providers.v1@2.26.207
+  - @wso2is/admin.validation.v1@2.27.145
+  - @wso2is/i18n@2.25.3
+  - @wso2is/admin.organizations.v1@2.26.211
+  - @wso2is/core@2.10.1
+  - @wso2is/admin.core.v1@2.46.30
+
 ## 2.35.9
 
 ### Patch Changes

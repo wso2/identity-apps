@@ -22,7 +22,7 @@ import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form/src";
 import { Button } from "@wso2is/react-components";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "semantic-ui-react";
 import { addAgent } from "../../api/agents";
@@ -41,6 +41,7 @@ export default function AddAgentWizard({
     const dispatch: any = useDispatch();
 
     const authenticatedUserInfo: AuthenticatedUserInfo = useSelector((state: AppState) => state?.auth);
+    const [ isNewAgentFormSubmitting, setIsNewAgentFormSubmitting ] = useState<boolean>(false);
 
     return (
         <Modal
@@ -62,6 +63,8 @@ export default function AddAgentWizard({
                             return;
                         }
 
+                        setIsNewAgentFormSubmitting(true);
+
                         const addAgentPayload: AgentScimSchema = {
                             "urn:scim:wso2:agent:schema": {
                                 Description: values?.description,
@@ -82,6 +85,8 @@ export default function AddAgentWizard({
                                         message: "Something went wrong"
                                     })
                                 );
+                            }).finally(() => {
+                                setIsNewAgentFormSubmitting(false);
                             });
                     } }
                     render={ ({ handleSubmit }: FormRenderProps) => {
@@ -125,6 +130,8 @@ export default function AddAgentWizard({
                 <Button
                     primary={ true }
                     type="submit"
+                    disabled={ isNewAgentFormSubmitting }
+                    loading={ isNewAgentFormSubmitting }
                     onClick={ () => {
                         document
                             .getElementById("addAgentForm")

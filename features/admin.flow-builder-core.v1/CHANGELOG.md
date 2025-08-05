@@ -1,5 +1,60 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.9.11
+
+### Patch Changes
+
+- [#8664](https://github.com/wso2/identity-apps/pull/8664) [`c927fb9e513ddc042cde81251cde106ca0a09c32`](https://github.com/wso2/identity-apps/commit/c927fb9e513ddc042cde81251cde106ca0a09c32) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add component and step metadata to support step views
+
+- Updated dependencies [[`f53aa7eec0893f28795ccb6afb92082be934a44c`](https://github.com/wso2/identity-apps/commit/f53aa7eec0893f28795ccb6afb92082be934a44c)]:
+  - @wso2is/admin.core.v1@2.46.42
+  - @wso2is/core@2.10.2
+
+## 0.9.10
+
+### Patch Changes
+
+- [#8656](https://github.com/wso2/identity-apps/pull/8656) [`6c3e55ec90a4c4ccd69c4e05ab8c1e4406fd3dd1`](https://github.com/wso2/identity-apps/commit/6c3e55ec90a4c4ccd69c4e05ab8c1e4406fd3dd1) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add steps for SMS OTP, Email OTP, Username & Password, and Passkeys
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.46.40
+
+## 0.9.9
+
+### Patch Changes
+
+- [#8650](https://github.com/wso2/identity-apps/pull/8650) [`2b8df70c9f8acfbe2eeeb9a9d0053b107beb232b`](https://github.com/wso2/identity-apps/commit/2b8df70c9f8acfbe2eeeb9a9d0053b107beb232b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the reported bugs in the Runtime Portal during the testing round
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.46.38
+
+## 0.9.8
+
+### Patch Changes
+
+- [#8638](https://github.com/wso2/identity-apps/pull/8638) [`827bdf5a896acc202e411a9e8a6dfaaeaf0439fe`](https://github.com/wso2/identity-apps/commit/827bdf5a896acc202e411a9e8a6dfaaeaf0439fe) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Force release modules
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.46.35
+
+## 0.9.7
+
+### Patch Changes
+
+- [#8620](https://github.com/wso2/identity-apps/pull/8620) [`c9834ab6efad973327ef6cfbbd558f5c88496f32`](https://github.com/wso2/identity-apps/commit/c9834ab6efad973327ef6cfbbd558f5c88496f32) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add static content support for execution steps
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.46.34
+
+## 0.9.6
+
+### Patch Changes
+
+- [#8618](https://github.com/wso2/identity-apps/pull/8618) [`2e0c31a4c3f39f409ed3aa4b630007b81dea5bea`](https://github.com/wso2/identity-apps/commit/2e0c31a4c3f39f409ed3aa4b630007b81dea5bea) Thanks [@KD23243](https://github.com/KD23243)! - Add magic link templates for password recovery
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.46.33
+
 ## 0.9.5
 
 ### Patch Changes

@@ -42,8 +42,9 @@ import VisualFlowConstants from "../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import useComponentDelete from "../../hooks/use-component-delete";
 import useConfirmPasswordField from "../../hooks/use-confirm-password-field";
-import useDeleteRedirectionResource from "../../hooks/use-delete-redirection-resource";
+import useDeleteExecutionResource from "../../hooks/use-delete-execution-resource";
 import useGenerateStepElement from "../../hooks/use-generate-step-element";
+import useStaticContentField from "../../hooks/use-static-content-field";
 import { Element } from "../../models/elements";
 import { EventTypes } from "../../models/extension";
 import { Resource, ResourceTypes } from "../../models/resources";
@@ -105,10 +106,13 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
 }: DecoratedVisualFlowPropsInterface): ReactElement => {
 
     // Event handlers for ON_NODE_DELETE event.
-    useDeleteRedirectionResource();
+    useDeleteExecutionResource();
 
     // Event handlers for ON_PROPERTY_PANEL_OPEN event.
     useConfirmPasswordField();
+
+    // Event handlers for static content in execution steps.
+    useStaticContentField();
 
     const { screenToFlowPosition, updateNodeData } = useReactFlow();
     const { generateStepElement } = useGenerateStepElement();
@@ -128,7 +132,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     }, [ aiGeneratedFlow ]);
 
     const addCanvasNode = (event: any, sourceData: any, _targetData: any): void => {
-        const { dragged: sourceResource } = sourceData;
+        const sourceResource: any = cloneDeep(sourceData.dragged);
         const { clientX, clientY } = event?.nativeEvent;
 
         const position: XYPosition = screenToFlowPosition({

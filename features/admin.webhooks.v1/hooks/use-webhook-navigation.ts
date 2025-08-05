@@ -22,20 +22,44 @@ import { WebhookListItemInterface } from "../models/webhooks";
 export interface UseWebhookNavigationInterface {
     navigateToWebhookCreation: () => void;
     navigateToWebhookEdit: (webhookId: WebhookListItemInterface) => void;
+    navigateToWebhookEditById: (webhookId: string) => void;
+    navigateToWebhooksList: () => void;
 }
 
 const useWebhookNavigation = (): UseWebhookNavigationInterface => {
     const navigateToWebhookCreation = (): void => {
-        history.push(AppConstants.getPaths().get("WEBHOOK_EDIT").replace(":id", "new"));
+        history.push(
+            AppConstants.getPaths()
+                .get("WEBHOOK_EDIT")
+                .replace(":id", "new")
+        );
     };
 
     const navigateToWebhookEdit = (webhook: WebhookListItemInterface): void => {
-        history.push(AppConstants.getPaths().get("WEBHOOK_EDIT").replace(":id", webhook.id));
+        history.push(
+            AppConstants.getPaths()
+                .get("WEBHOOK_EDIT")
+                .replace(":id", webhook.id)
+        );
+    };
+
+    const navigateToWebhookEditById = (webhookId: string): void => {
+        history.push(
+            AppConstants.getPaths()
+                .get("WEBHOOK_EDIT")
+                .replace(":id", webhookId)
+        );
+    };
+
+    const navigateToWebhooksList = (): void => {
+        history.push(AppConstants.getPaths().get("WEBHOOKS"));
     };
 
     return {
         navigateToWebhookCreation,
-        navigateToWebhookEdit
+        navigateToWebhookEdit,
+        navigateToWebhookEditById,
+        navigateToWebhooksList
     };
 };
 
