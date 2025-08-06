@@ -25,9 +25,7 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { RadioChild } from "@wso2is/forms";
-import {
-    EmphasizedSegment,
-    PageLayout } from "@wso2is/react-components";
+import { EmphasizedSegment, PageLayout } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -67,7 +65,7 @@ const ORGANIZATION_POLICY_RADIO_OPTIONS: RadioChild[] = [
  * @returns Functional Component.
  */
 export const WebhookSettingsForm: FunctionComponent<WebhookSettingsFormPropsInterface> = ({
-    ["data-componentid"]: componentId
+    ["data-componentid"]: componentId = "webhook-settings-page"
 }: WebhookSettingsFormPropsInterface): ReactElement => {
 
     const dispatch: Dispatch = useDispatch();
@@ -252,13 +250,6 @@ export const WebhookSettingsForm: FunctionComponent<WebhookSettingsFormPropsInte
             }
         </div>
     );
-};
-
-/**
- * Default props for the component.
- */
-WebhookSettingsForm.defaultProps = {
-    "data-componentid": "webhook-settings-page"
 };
 
 export default WebhookSettingsForm;

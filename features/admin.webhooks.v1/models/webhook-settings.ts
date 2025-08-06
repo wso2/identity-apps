@@ -75,4 +75,3 @@ export interface WebhookMetadataUpdateResponseInterface {
      */
     organizationPolicy: EventPublishingOrgSharePolicy;
 }
-

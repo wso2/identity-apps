@@ -48,7 +48,7 @@ const updateWebhookMetadata = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: `${store.getState().config.endpoints.webhooksMetadata}`
+        url: store.getState().config.endpoints.webhooksMetadata
     };
 
     return httpClient(requestConfig)
