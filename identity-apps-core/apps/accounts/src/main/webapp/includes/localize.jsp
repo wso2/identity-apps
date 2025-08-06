@@ -33,7 +33,7 @@
     Locale userLocale = browserLocale;
     String uiLocaleFromURL = request.getParameter("ui_locales");
     String localeFromCookie = null;
-    String BUNDLE = "org.wso2.carbon.identity.application.authentication.endpoint.i18n.Resources";
+    String BUNDLE = "org.wso2.carbon.identity.application.accounts.endpoint.i18n.Resources";
 
     // List of screen names for retrieving text branding customizations.
     List<String> screenNames = new ArrayList<>();
