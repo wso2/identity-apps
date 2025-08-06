@@ -147,17 +147,17 @@
             {
                 "description": "This email OTP is sent to the user to set their password",
                 "displayName": "Invite user to set password via Email OTP",
-                "id": "YXNrUGFzc3dvcmRFbWFpbE90cA"
+                "id": "QXNrUGFzc3dvcmRFbWFpbE9UUA"
             },
             {
                 "description": "This email is resent to the user to set their password via Email OTP",
-                "displayName": "Invite user to set password via Email OTP Resend",
-                "id": "YXNrUGFzc3dvcmRSZXNlbmRFbWFpbE90cA"
+                "displayName": "Resend invite user to set password via Email OTP",
+                "id": "QXNrUGFzc3dvcmRSZXNlbmRFbWFpbE9UUA"
             },
             {
                 "description": "This email is sent to confirm the user email address via Email OTP",
                 "displayName": "Confirm Email Address via Email OTP",
-                "id": "ZW1haWxDb25maXJtV2l0aE90cA"
+                "id": "RW1haWxDb25maXJtV2l0aE9UUA"
             }
         ],
         "outboundProvisioningConnectors": [],
@@ -206,6 +206,21 @@
                 "description": "This SMS is sent to provide a one-time password when admin resends a password reset request",
                 "displayName": "Admin Resend Forced Password Reset",
                 "id": "cmVzZW5kQWRtaW5Gb3JjZWRQYXNzd29yZFJlc2V0"
+            },
+            {
+                "description": "This SMS is sent to send the OTP for setting a password.",
+                "displayName": "Send Password Set",
+                "id": "YXNrUGFzc3dvcmRTbXNPdHA"
+            },
+            {
+                "description": "This SMS is sent to resend the OTP for setting a password.",
+                "displayName": "Resend Password Set",
+                "id": "YXNrUGFzc3dvcmRSZXNlbmRTbXNPdHA"
+            },
+            {
+                "description": "This SMS is sent to notify the user that their account is now unlocked.",
+                "displayName": "Password Set Success",
+                "id": "YXNrUGFzc3dvcmRTZXRTdWNjZXNz"
             }
         ]
     },

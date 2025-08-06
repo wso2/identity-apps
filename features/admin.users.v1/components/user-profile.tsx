@@ -1106,7 +1106,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
 
         if (accountLockedReason) {
-            // For ask password related locks, provide specific messages based on recovery scenario
+            // For ask password related locks, provide specific messages based on recovery scenario.
             if (accountLockedReason === AccountLockedReason.PENDING_ASK_PASSWORD) {
                 const recoveryScenario: string | null = resolveRecoveryScenario();
 

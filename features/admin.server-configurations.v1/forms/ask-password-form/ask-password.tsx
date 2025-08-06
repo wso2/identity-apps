@@ -19,9 +19,8 @@
 import Chip from "@oxygen-ui/react/Chip";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
-
 import { CommonUtils } from "@wso2is/core/utils";
-import { Field, Form } from "@wso2is/form";
+import { Field, FinalForm } from "@wso2is/form";
 import { RadioChild } from "@wso2is/forms";
 import { Heading, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -41,9 +40,9 @@ import {
     VerificationOption
 } from "../../models/ask-password";
 
-import "./ask-password-form.scss";
-
 import { ConnectorPropertyInterface } from "../../models/governance-connectors";
+
+import "./ask-password-form.scss";
 
 const FORM_ID: string = "governance-connectors-ask-password-form";
 
@@ -297,7 +296,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
 
     return (
         <div className="connector-form ask-password-form">
-            <Form
+            <FinalForm
                 id={ FORM_ID }
                 initialValues={ initialConnectorValues }
                 onSubmit={ (values: Record<string, any>) => onSubmit(getUpdatedConfigurations(values)) }
@@ -527,7 +526,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     label={ t("common:update") }
                     hidden={ !isConnectorEnabled || readOnly }
                 />
-            </Form>
+            </FinalForm>
         </div>
     );
 
@@ -536,6 +535,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
 /**
  * Default props for the component.
  */
-AskPasswordForm.defaultProps = {
+export const defaultAskPasswordFormProps: { "data-componentid": string } = {
     "data-componentid": "ask-password-edit-form"
 };
+
