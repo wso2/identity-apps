@@ -4,7 +4,6 @@
 "@wso2is/i18n": minor
 "@wso2is/admin.actions.v1": patch
 "@wso2is/admin.core.v1": patch
-"@wso2is/features": patch
 ---
 
 Onboard Webhook Settings UI
