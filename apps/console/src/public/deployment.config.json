@@ -209,13 +209,13 @@
             },
             {
                 "description": "This SMS is sent to send the OTP for setting a password.",
-                "displayName": "Send Password Set",
-                "id": "YXNrUGFzc3dvcmRTbXNPdHA"
+                "displayName": "Send Password Setup OTP",
+                "id": "YXNrUGFzc3dvcmRTTVNPVFA"
             },
             {
                 "description": "This SMS is sent to resend the OTP for setting a password.",
-                "displayName": "Resend Password Set",
-                "id": "YXNrUGFzc3dvcmRSZXNlbmRTbXNPdHA"
+                "displayName": "Resend Password Setup OTP",
+                "id": "YXNrUGFzc3dvcmRSZXNlbmRTTVNPVFA"
             },
             {
                 "description": "This SMS is sent to notify the user that their account is now unlocked.",
