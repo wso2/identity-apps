@@ -663,7 +663,7 @@ importers:
         specifier: ^0.0.0
         version: link:../../features/common.workflow-approvals.v1
       '@wso2is/core':
-        specifier: ^2.10.0
+        specifier: ^2.11.0
         version: link:../../modules/core
       '@wso2is/dynamic-forms':
         specifier: ^2.4.41
