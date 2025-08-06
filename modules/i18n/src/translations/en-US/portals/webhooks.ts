@@ -236,10 +236,10 @@ export const webhooks: webhooksNS = {
             backButton: "Go back to Webhooks",
             heading: "Webhook Settings",
             organizationPolicy: {
-                heading: "Select which organizations' events should be sent via webhooks.",
+                heading: "Select which organizations should publish events to webhooks.",
                 radioOptions: {
-                    currentOrgAndImmediateChild: "Publish events from this organization and its immediate child organizations.",
-                    currentOrgOnly: "Publish events from this organization only."
+                    currentOrgAndImmediateChild: "This organization and its immediate child organizations.",
+                    currentOrgOnly: "This organization only."
                 }
             },
             subHeading: "Settings related to webhook configurations."
