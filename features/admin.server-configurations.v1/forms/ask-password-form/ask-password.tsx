@@ -20,7 +20,7 @@ import Chip from "@oxygen-ui/react/Chip";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { CommonUtils } from "@wso2is/core/utils";
-import { Field, FinalForm } from "@wso2is/form";
+import { Field, Form } from "@wso2is/form";
 import { RadioChild } from "@wso2is/forms";
 import { Heading, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -296,7 +296,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
 
     return (
         <div className="connector-form ask-password-form">
-            <FinalForm
+            <Form
                 id={ FORM_ID }
                 initialValues={ initialConnectorValues }
                 onSubmit={ (values: Record<string, any>) => onSubmit(getUpdatedConfigurations(values)) }
@@ -526,7 +526,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     label={ t("common:update") }
                     hidden={ !isConnectorEnabled || readOnly }
                 />
-            </FinalForm>
+            </Form>
         </div>
     );
 
