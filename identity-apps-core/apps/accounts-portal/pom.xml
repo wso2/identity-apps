@@ -26,7 +26,7 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>accounts</artifactId>
+    <artifactId>accounts-portal</artifactId>
     <packaging>war</packaging>
         <name>WSO2 Identity Server Apps - Accounts</name>
     <description>Identity Application Accounts Endpoint</description>

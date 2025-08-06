@@ -20,7 +20,12 @@ const path = require("path");
 const fs = require("fs-extra");
 
 const themeFiles = path.join(__dirname, "..", "modules", "theme", "dist", "lib");
-const apps = [ "authentication-portal", "recovery-portal", "x509-certificate-authentication-portal" ];
+const apps = [
+    "accounts-portal",
+    "authentication-portal",
+    "recovery-portal",
+    "x509-certificate-authentication-portal"
+];
 
 const ReactComponentsJSFile = "react-ui-core.min.js";
 const appReactComponentsJSFilePath = path.join(__dirname, "apps", `${apps[0]}`, "src", "main", "webapp", "js");

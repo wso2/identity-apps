@@ -47,7 +47,7 @@
         <module>components/org.wso2.identity.apps.taglibs.layout.controller</module>
         <module>components/login-portal-layouts</module>
         <module>components/org.wso2.identity.apps.common</module>
-        <module>apps/accounts</module>
+        <module>apps/accounts-portal</module>
         <module>apps/authentication-portal</module>
         <module>apps/recovery-portal</module>
         <module>apps/x509-certificate-authentication-portal</module>
@@ -208,7 +208,7 @@
 
             <dependency>
                 <groupId>org.wso2.identity.apps</groupId>
-                <artifactId>accounts</artifactId>
+                <artifactId>accounts-portal</artifactId>
                 <version>${project.version}</version>
                 <type>war</type>
             </dependency>
