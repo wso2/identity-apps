@@ -1,0 +1,173 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+// Import theme variables
+@import "../styles/copilot-variables";
+
+.copilot-welcome {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    
+    .copilot-welcome-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        
+        .copilot-welcome-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            text-align: center;
+            
+            .copilot-avatar-container {
+                margin-bottom: $copilot-spacing-xxl;
+            }
+
+            .copilot-welcome-title {
+                font-weight: $copilot-font-weight-semibold;
+                font-size: $copilot-font-size-xl;
+                color: $copilot-text-color-primary;
+                margin-bottom: $copilot-spacing-lg;
+            }
+
+            .copilot-welcome-description {
+                color: $copilot-text-color-secondary;
+                font-size: $copilot-font-size-md;
+                line-height: $copilot-line-height-normal;
+                margin-bottom: $copilot-spacing-xxl * 1.33;
+                max-width: 400px;
+            }
+        }
+        
+        .copilot-suggestions {
+            padding: $copilot-spacing-xxl $copilot-spacing-xxl $copilot-spacing-xxl;
+            background-color: $copilot-background-color-muted;
+
+            .copilot-suggestions-title {
+                color: $copilot-text-color-secondary;
+                font-size: $copilot-font-size-xs + 1px;
+                font-weight: $copilot-font-weight-semibold;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-bottom: $copilot-spacing-lg;
+                display: block;
+            }
+            
+            .copilot-suggestions-list {
+                display: flex;
+                flex-direction: column;
+                gap: $copilot-spacing-sm;
+                
+                .copilot-suggestion-button {
+                    justify-content: flex-start;
+                    text-align: left;
+                    text-transform: none;
+                    padding: 12px 16px;
+                    border-radius: 8px;
+                    background-color: $copilot-background-color;
+                    border: 1px solid $copilot-border-color;
+                    color: $copilot-text-color-primary;
+                    font-size: 14px;
+                    font-weight: 400;
+                    
+                    &:hover {
+                        background-color: $copilot-background-color-hover;
+                        border-color: $copilot-border-color-light;
+                    }
+                }
+            }
+        }
+    }
+    
+    .copilot-input-container {
+        border-top: 1px solid $copilot-border-color;
+        padding: 16px;
+        background-color: $copilot-background-color;
+        
+        .copilot-input-wrapper {
+            position: relative;
+            
+            .copilot-input-field {
+                .MuiOutlinedInput-root {
+                    border-radius: 24px;
+                    background-color: $copilot-background-color-hover;
+                    border: 1px solid $copilot-border-color;
+                    padding-right: 48px;
+
+                    &:hover {
+                        border-color: $copilot-border-color-light;
+                    }
+
+                    &.Mui-focused {
+                        border-color: $copilot-primary-color;
+                        background-color: $copilot-background-color;
+                    }
+                    
+                    .MuiOutlinedInput-notchedOutline {
+                        border: none;
+                    }
+                    
+                    .MuiInputBase-input {
+                        padding: 12px 16px;
+                        font-size: 14px;
+                        line-height: 1.4;
+                        
+                        &::placeholder {
+                            color: $copilot-text-color-muted;
+                            opacity: 1;
+                        }
+                    }
+                }
+            }
+            
+            .copilot-send-button {
+                position: absolute;
+                right: 8px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 32px;
+                height: 32px;
+                background-color: $copilot-primary-color;
+                color: $copilot-text-color-inverse;
+
+                &:hover {
+                    background-color: $copilot-primary-color-dark;
+                }
+
+                &:disabled {
+                    background-color: $copilot-border-color-light;
+                    color: $copilot-text-color-muted;
+                }
+            }
+        }
+        
+        .copilot-disclaimer {
+            color: $copilot-text-color-secondary;
+            font-size: 12px;
+            text-align: center !important;
+            margin-top: 12px;
+            line-height: 1.4;
+            display: block !important;
+            width: 100% !important;
+        }
+    }
+}

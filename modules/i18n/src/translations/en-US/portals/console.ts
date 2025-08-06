@@ -344,6 +344,29 @@ export const console: ConsoleNS = {
                 }
             }
         },
+        copilot: {
+            title: "Copilot",
+            show: "Show Copilot",
+            hide: "Hide Copilot",
+            close: "Close",
+            clearChat: "Clear Chat",
+            tabs: {
+                chat: "Chat",
+                help: "Help"
+            },
+            chat: {
+                empty: "Hi, Welcome to Copilot! How can I assist you?",
+                placeholder: "Enter your message here...",
+                thinking: "Thinking...",
+                error: "Sorry, I encountered an error. Please try again."
+            },
+            help: {
+                content: "I can help you with various tasks in WSO2 Identity Server. Try asking me about:\n\n• User management\n• Application configuration\n• Identity providers\n• Authentication flows\n• Troubleshooting\n\nJust type your question in the chat!"
+            },
+            documentation: {
+                content: "Access comprehensive documentation and guides for WSO2 Identity Server."
+            }
+        },
         sidePanel: {
             privacy: "Privacy",
             loginAndRegistration: {

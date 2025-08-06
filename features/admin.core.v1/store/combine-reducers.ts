@@ -44,6 +44,7 @@ import { commonRequestLoadersInitialState } from "./reducers/loaders";
 import { organizationReducer } from "./reducers/organization";
 import { commonProfileReducerInitialState } from "./reducers/profile";
 import { routeReducer } from "./reducers/routes";
+import { copilotReducer } from "../../admin.copilot.v1/store/reducers";
 import {
     DeploymentConfigInterface,
     FeatureConfigInterface,
@@ -68,6 +69,7 @@ export const reducers: Reducer = combineReducers({
         I18nModuleOptionsInterface,
         UIConfigInterface
         >(commonConfigReducerInitialState),
+    copilot: copilotReducer,
     form: formReducer,
     global: commonGlobalReducer<AlertInterface, System, SupportedLanguagesMeta>(commonGlobalReducerInitialState),
     identityProvider: identityProviderReducer,

@@ -22,6 +22,7 @@ import Navbar, { NavbarItems } from "@oxygen-ui/react/Navbar";
 import Snackbar from "@oxygen-ui/react/Snackbar";
 import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
+import { CopilotPanel } from "@wso2is/admin.copilot.v1/components";
 import Header from "@wso2is/admin.core.v1/components/header";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
@@ -474,6 +475,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                         <Switch>{ resolveRoutes() as ReactNode[] }</Switch>
                     </Suspense>
                 </ErrorBoundary>
+                <CopilotPanel data-componentid="dashboard-copilot-panel" />
             </AppShell>
         </>
     );
