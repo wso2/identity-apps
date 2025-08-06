@@ -493,6 +493,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                     return modifiedHeadersList.every((header: string) =>
                         ActionsConstants.API_HEADER_REGEX.test(header));
                 } }
+                hint={ t("actions:fields.allowedHeaders.hint") }
                 placeholder={ t("actions:fields.allowedHeaders.placeholder") }
                 validationErrorMsg={  t("actions:fields.allowedHeaders.validations.invalid") }
                 showPredictions={ false }
@@ -538,6 +539,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                     return modifiedParamsList.every((param: string) =>
                         !ActionsConstants.REQUEST_PARAMETER_REGEX.test(param));
                 } }
+                hint={ t("actions:fields.allowedParameters.hint") }
                 placeholder={ t("actions:fields.allowedParameters.placeholder") }
                 validationErrorMsg={  t("actions:fields.allowedParameters.validations.invalid") }
                 showError={ false }
@@ -551,7 +553,6 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
 
     const renderAllowedHeadersAndParamsSection = (): ReactElement => (
         <>
-            <Divider className="divider-container"/>
             <FinalFormField
                 key="allowedHeaders"
                 name="allowedHeaders"
@@ -569,13 +570,10 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                 minLength={ 0 }
                 disabled={ isReadOnly }
             />
-            <Hint className="endpoint-hint" compact>
-                { t("actions:fields.allowedHeaders.hint") }
-            </Hint>
             <FinalFormField
                 key="allowedParameters"
                 name="allowedParameters"
-                className="text-field-container"
+                className="text-field-container-allowed-parameters"
                 width={ 16 }
                 FormControlProps={ {
                     margin: "dense"
@@ -589,9 +587,6 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                 minLength={ 0 }
                 disabled={ isReadOnly }
             />
-            <Hint className="endpoint-hint" compact>
-                { t("actions:fields.allowedParameters.hint") }
-            </Hint>
         </>
     );
 
@@ -634,6 +629,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                     </Alert>
                 ) }
             </div>
+            <Divider className="divider-container" />
             { showHeadersAndParams && renderAllowedHeadersAndParamsSection() }
             <Divider className="divider-container" />
             <Typography variant="h6" className="heading-container">
