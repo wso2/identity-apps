@@ -201,7 +201,7 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
             <>
                 {
                     showWebhookSettings && (
-                        <Show when={ webhooksFeatureConfig?.scopes?.create }>
+                        <Show when={ webhooksFeatureConfig?.scopes?.update }>
                             {
                                 (
                                     <Popup
