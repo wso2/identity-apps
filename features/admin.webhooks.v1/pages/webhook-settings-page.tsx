@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
+import Skeleton from "@oxygen-ui/react/Skeleton";
 import Typography from "@oxygen-ui/react/Typography";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -24,7 +26,6 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { RadioChild } from "@wso2is/forms";
 import {
-    ContentLoader,
     EmphasizedSegment,
     PageLayout } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -42,8 +43,6 @@ import {
 } from "../models/webhook-settings";
 import { useHandleWebhookError } from "../utils/alert-utils";
 import "./webhook-settings-page.scss";
-import Box from "@oxygen-ui/react/Box";
-import Skeleton from "@oxygen-ui/react/Skeleton";
 
 const FORM_ID: string = "webhook-settings";
 
