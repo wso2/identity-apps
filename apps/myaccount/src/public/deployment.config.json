@@ -70,10 +70,12 @@
                 "enabled": false,
                 "featureFlags": [],
                 "scopes": {
-                    "create": [],
-                    "delete": [],
-                    "read": [],
-                    "update": []
+                    "read": [
+                        "internal_approval_task_view"
+                    ],
+                    "update": [
+                        "internal_approval_task_update"
+                    ]
                 }
             },
             "operations": {

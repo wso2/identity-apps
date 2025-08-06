@@ -3,7 +3,7 @@
 "@wso2is/myaccount": minor
 "@wso2is/console": minor
 "@wso2is/features": minor
-"@wso2is/common.workflow-approvals.v1": patch
+"@wso2is/common.workflow-approvals.v1": major
 "@wso2is/i18n": patch
 ---
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,7 +35,9 @@ import { ApprovalStatus, ApprovalTaskListItemInterface } from "../models";
  * Props for the Approvals page.
  */
 interface ApprovalsPageInterface extends IdentifiableComponentInterface {
-
+    /**
+     * The URL to fetch the approvals from.
+     */
     approvalsUrl: string;
 }
 
