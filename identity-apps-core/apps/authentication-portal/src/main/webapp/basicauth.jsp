@@ -55,6 +55,8 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.CommonDataRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.CommonDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.user.core.util.UserCoreUtil" %>
 <%@ page import="java.io.UnsupportedEncodingException" %>
@@ -242,8 +244,20 @@
     private static final String ACCOUNT_RECOVERY_ENDPOINT_RECOVER = "/recoveraccountrouter.do";
     private static final String ACCOUNT_RECOVERY_ENDPOINT_REGISTER = "/register.do";
     private static final String AUTHENTICATION_ENDPOINT_LOGIN = "/authenticationendpoint/login.do";
+    private static final String PASSWORD_RECOVERY_FLOW_ENDPOINT = "/api/server/v1/flow/config?flowType=PASSWORD_RECOVERY";
+    private static final String SELF_SIGNUP_FLOW_ENDPOINT = "/api/server/v1/flow/config?flowType=REGISTRATION";
+    private static final String IS_ENABLED_PROPERTY = "isEnabled";
     private static final String CONSOLE = "Console";
     private Log log = LogFactory.getLog(this.getClass());
+%>
+
+<%
+    String serviceProviderAppId = request.getParameter("spId");
+    String serviceProviderAppName = request.getParameter("sp");
+    String DYNAMIC_SELF_SIGNUP_URL = "register.do?flowType=REGISTRATION" + "&spId=" + serviceProviderAppId 
+            + "&sp=" + serviceProviderAppName;
+    String DYNAMIC_PASSWORD_RECOVERY_URL = "recovery.do?flowType=PASSWORD_RECOVERY" + "&spId=" + serviceProviderAppId 
+            + "&sp=" + serviceProviderAppName;
 %>
 
 <%
@@ -606,6 +620,8 @@
         String accountRegistrationEndpointURL = "";
         String urlEncodedURL = "";
         String urlParameters = "";
+        Boolean isDynamicPortalPWEnabled = false;
+        Boolean isDynamicPortalSREnabled = false;
 
         if (StringUtils.isNotBlank(recoveryEPAvailable)) {
             isRecoveryEPAvailable = Boolean.valueOf(recoveryEPAvailable);
@@ -677,11 +693,23 @@
             String srprmstr = URLDecoder.decode(((String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING)), UTF_8);
             String srURLWithoutEncoding = srURI + "?" + srprmstr;
             srURLEncodedURL= URLEncoder.encode(srURLWithoutEncoding, UTF_8);
+
+            try {
+                CommonDataRetrievalClient commonDataRetrievalClient = new CommonDataRetrievalClient();
+                isDynamicPortalPWEnabled = commonDataRetrievalClient.checkBooleanProperty(
+                        PASSWORD_RECOVERY_FLOW_ENDPOINT, tenantDomain,
+                        IS_ENABLED_PROPERTY, false, true);
+                isDynamicPortalSREnabled = commonDataRetrievalClient.checkBooleanProperty(
+                        SELF_SIGNUP_FLOW_ENDPOINT, tenantDomain,
+                        IS_ENABLED_PROPERTY, false, true);
+            } catch (CommonDataRetrievalClientException e) {
+                // Ignored and fallback to default recovery portal.
+            }
         }
     %>
 
     <div class="buttons mt-2">
-        <% if (isRecoveryEPAvailable && (isUsernameRecoveryEnabledInTenant || isPasswordRecoveryEnabledInTenant)) { %>
+        <% if (isRecoveryEPAvailable && (isUsernameRecoveryEnabledInTenant || isPasswordRecoveryEnabledInTenant || isDynamicPortalPWEnabled)) { %>
         <div class="field external-link-container text-small">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
             <% if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType) && isUsernameRecoveryEnabledInTenant) { %>
@@ -692,17 +720,25 @@
             >
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username")%>
             </a>
-            <% }
-              if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType) && isUsernameRecoveryEnabledInTenant && isPasswordRecoveryEnabledInTenant) { %>
+        <% } %>
+
+        <% if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType) 
+               && isUsernameRecoveryEnabledInTenant 
+               && (isPasswordRecoveryEnabledInTenant || isDynamicPortalPWEnabled)) { %>
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password.or")%>
-            <% }
-              if (isPasswordRecoveryEnabledInTenant && isPasswordRecoveryEnabledInTenantPreferences) { %>
+        <% } %>
+
+        <% if ((isPasswordRecoveryEnabledInTenant && isPasswordRecoveryEnabledInTenantPreferences) || isDynamicPortalPWEnabled) { %>
             <a
                 id="passwordRecoverLink"
                 <% if(StringUtils.isNotBlank(passwordRecoveryOverrideURL)) { %>
                 href="<%=StringEscapeUtils.escapeHtml4(passwordRecoveryOverrideURL)%>"
                 <% } else { %>
+                <% if (isDynamicPortalPWEnabled) { %>
+                href="<%=DYNAMIC_PASSWORD_RECOVERY_URL%>"
+                <% } else { %>
                 href="<%=StringEscapeUtils.escapeHtml4(getRecoverAccountUrlWithUsername(identityMgtEndpointContext, urlEncodedURL, false, urlParameters, usernameIdentifier))%>"
+                <% } %>
                 <% } %>
                 data-testid="login-page-password-recovery-button"
                 <% if (StringUtils.equals("true", promptAccountLinking)) { %>
@@ -749,7 +785,11 @@
         </div>
     </div>
 
-    <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType) && isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences) { %>
+    <% if (isSelfSignUpEPAvailable 
+       && !isIdentifierFirstLogin(inputType) 
+       && !isLoginHintAvailable(inputType) 
+       && ( (isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences) 
+            || (isDynamicPortalSREnabled && !isIdentifierFirstLogin(inputType) && !CONSOLE.equals(sp)) ) ) { %>
         <div class="mt-4 mb-4">
             <div class="mt-3 external-link-container text-small">
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "dont.have.an.account")%>
@@ -757,7 +797,12 @@
                     <% if(StringUtils.isNotBlank(selfSignUpOverrideURL)) { %>
                     href="<%=i18nLink(userLocale, selfSignUpOverrideURL)%>"
                     <% } else { %>
-                    href="<%=StringEscapeUtils.escapeHtml4(getRegistrationPortalUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, urlParameters))%>"
+                        <% if (isDynamicPortalSREnabled) { %>
+                            href="<%= DYNAMIC_SELF_SIGNUP_URL %>"
+                        <% } else { %>
+                            href="<%= StringEscapeUtils.escapeHtml4(
+                                    getRegistrationPortalUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, urlParameters)) %>"
+                        <% } %>
                     <% } %>
                     target="_self"
                     class="clickable-link"

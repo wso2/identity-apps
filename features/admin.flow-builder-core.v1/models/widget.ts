@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { Payload } from "./api";
 import { Base } from "./base";
 
 export type Widget = Base<WidgetExtendedConfig>;
@@ -41,6 +40,11 @@ export enum WidgetCategories {
 export enum WidgetTypes {
     IdentifierPassword = "IDENTIFIER_PASSWORD",
     EmailOTP = "EMAIL_OTP",
+    SMSOTP = "SMS_OTP",
     GoogleFederation = "GOOGLE_FEDERATION",
-    SMSOTP = "SMS_OTP"
+    AppleFederation = "APPLE_FEDERATION",
+    FacebookFederation = "FACEBOOK_FEDERATION",
+    MicrosoftFederation = "MICROSOFT_FEDERATION",
+    GithubFederation = "GITHUB_FEDERATION",
+    PasskeyEnrollment = "PASSKEY_ENROLLMENT",
 }

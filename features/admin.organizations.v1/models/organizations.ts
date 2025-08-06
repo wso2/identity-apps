@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { RoleSharingInterface } from "@wso2is/admin.applications.v1/models/application";
 import { ScimOperationsInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { RolesInterface } from "@wso2is/core/models";
 
@@ -23,7 +24,15 @@ export interface OrganizationInterface {
     name: string;
     orgHandle?: string;
     ref: string;
-    status: "ACTIVE" | "DISABLED"
+    status: "ACTIVE" | "DISABLED",
+    hasChildren?: boolean;
+    parentId?: string;
+    roles?: OrganizationRoleInterface[];
+    sharingMode?: {
+        roleSharing: {
+            mode: string;
+        }
+    }
 }
 
 export interface OrganizationLinkInterface {
@@ -32,8 +41,15 @@ export interface OrganizationLinkInterface {
 }
 
 export interface OrganizationListInterface {
-    links: OrganizationLinkInterface[];
+    links?: OrganizationLinkInterface[];
     organizations: OrganizationInterface[];
+    sharingMode?: {
+        policy: string;
+        roleSharing: {
+            mode: string;
+            roles: RoleSharingInterface[]
+        }
+    }
 }
 
 export interface AddOrganizationInterface {
@@ -145,4 +161,8 @@ export interface GetOrganizationsParamsInterface {
     before?: string;
     recursive?: boolean;
     isRoot?: boolean;
+}
+
+export interface SelectedOrganizationRoleInterface extends OrganizationRoleInterface {
+    selected: boolean;
 }

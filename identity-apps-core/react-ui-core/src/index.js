@@ -30,6 +30,7 @@ export * from "./hooks/use-field-validations";
 export * from "./hooks/use-translations";
 
 export { I18nProvider } from "./providers/i18n-provider";
+export { GlobalContextProvider } from "./providers/global-context-provider";
 
 export * from "./utils/i18n-utils";
 export * from "./utils/ui-utils";

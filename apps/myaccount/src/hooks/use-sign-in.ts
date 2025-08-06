@@ -43,7 +43,7 @@ import { AppConstants } from "../constants/app-constants";
 import { CommonConstants } from "../constants/common-constants";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models/app-config";
 import { getProfileInformation, resolveIdpURLSAfterTenantResolves } from "../store/actions/authenticate";
-import { setOrganizationType, setUserOrganizationId } from "../store/actions/organization";
+import { setOrganizationType, setUserOrganizationHandle, setUserOrganizationId } from "../store/actions/organization";
 
 const AUTHORIZATION_ENDPOINT: string = "authorization_endpoint";
 const TOKEN_ENDPOINT: string = "token_endpoint";
@@ -119,6 +119,7 @@ const useSignIn = (): UseSignInInterface => {
             AuthenticateUtils.deriveTenantDomainFromSubject(response.sub)
         );
         const userOrganizationId: string = idToken.user_org;
+        const userOrganizationHandle: string = idToken.org_handle;
         const isFirstLevelOrg: boolean = !userOrganizationId;
 
         const __experimental__platformIdP: {
@@ -162,6 +163,7 @@ const useSignIn = (): UseSignInInterface => {
         dispatch(setOrganizationType(orgType));
         window["AppUtils"].updateOrganizationType(orgType);
         dispatch(setUserOrganizationId(userOrganizationId));
+        dispatch(setUserOrganizationHandle(userOrganizationHandle));
 
         // Update the app base name with the newly resolved tenant.
         window["AppUtils"].updateTenantQualifiedBaseName(tenantDomain);

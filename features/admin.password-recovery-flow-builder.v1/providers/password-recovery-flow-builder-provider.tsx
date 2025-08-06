@@ -18,6 +18,7 @@
 
 import AuthenticationFlowBuilderCoreProvider
     from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useReactFlow } from "@xyflow/react";
@@ -26,6 +27,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import configurePasswordRecoveryFlow from "../api/configure-password-recovery-flow";
 import updateNewPasswordRecoveryPortalFeatureStatus from "../api/update-new-password-recovery-portal-feature-status";
+import useGetSupportedProfileAttributes from "../api/use-get-supported-profile-attributes";
 import useNewPasswordRecoveryPortalFeatureStatus from "../api/use-new-password-recovery-portal-feature-status";
 import ResourceProperties from "../components/resource-property-panel/resource-properties";
 import ElementFactory from "../components/resources/elements/element-factory";
@@ -48,7 +50,11 @@ export type PasswordRecoveryFlowBuilderProviderProps = PropsWithChildren<unknown
 const PasswordRecoveryFlowBuilderProvider: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
     children
 }: PropsWithChildren<PasswordRecoveryFlowBuilderProviderProps>): ReactElement => (
-    <AuthenticationFlowBuilderCoreProvider ElementFactory={ ElementFactory } ResourceProperties={ ResourceProperties }>
+    <AuthenticationFlowBuilderCoreProvider
+        ElementFactory={ ElementFactory }
+        ResourceProperties={ ResourceProperties }
+        flowType={ FlowTypes.PASSWORD_RECOVERY }
+    >
         <FlowContextWrapper>{ children }</FlowContextWrapper>
     </AuthenticationFlowBuilderCoreProvider>
 );
@@ -65,6 +71,7 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
     const dispatch: Dispatch = useDispatch();
 
     const { toObject } = useReactFlow();
+    const { data: supportedAttributes } = useGetSupportedProfileAttributes();
     const {
         data: isNewPasswordRecoveryPortalEnabled,
         mutate: mutateNewPasswordRecoveryPortalEnabledRequest
@@ -73,7 +80,7 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Attribute[] }>({});
     const [ isPublishing, setIsPublishing ] = useState<boolean>(false);
 
-    const handlePublish = async (): Promise<void> => {
+    const handlePublish = async (): Promise<boolean> => {
         setIsPublishing(true);
 
         const flow: any = toObject();
@@ -108,6 +115,8 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
                     message: "Flow Updated Successfully"
                 })
             );
+
+            return true;
         } catch (error) {
             dispatch(
                 addAlert({
@@ -116,6 +125,8 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
                     message: "Flow Update Failure"
                 })
             );
+
+            return false;
         } finally {
             setIsPublishing(false);
         }
@@ -128,7 +139,8 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
                 isPublishing,
                 onPublish: handlePublish,
                 selectedAttributes,
-                setSelectedAttributes
+                setSelectedAttributes,
+                supportedAttributes
             } }
         >
             { children }

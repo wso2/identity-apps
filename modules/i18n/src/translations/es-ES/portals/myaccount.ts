@@ -503,6 +503,13 @@ export const myAccount: MyAccountNS = {
                 },
                 "tooltip": "Aplicaciones"
             },
+            "dropdown": {
+                "footer": {
+                    "cookiePolicy": "Cookies",
+                    "privacyPolicy": "Privacidad",
+                    "termsOfService": "Términos"
+                }
+            },
             "organizationLabel": "Esta cuenta es administrada por"
         },
         "linkedAccounts": {
@@ -1192,6 +1199,9 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 "generic": {
+                    "dropdown": {
+                        "placeholder": "Seleccione su {{fieldName}}"
+                    },
                     "inputs": {
                         "placeholder": "Ingrese su {{fieldName}}",
                         "readonly": {
@@ -1202,6 +1212,9 @@ export const myAccount: MyAccountNS = {
                             "empty": "{{fieldName}} es un campo obligatorio",
                             "invalidFormat": "El formato del {{fieldName}} ingresado es incorrecto"
                         }
+                    },
+                    "radioGroup": {
+                        "optionNone": "Ninguna"
                     }
                 },
                 "mobileChangeForm": {

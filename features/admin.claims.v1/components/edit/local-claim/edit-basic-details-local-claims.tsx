@@ -186,6 +186,14 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     const { UIConfig } = useUIConfig();
 
+    const isAgentAttribute: boolean = useMemo(() => {
+        const agentAttributeProperty: Property = claim?.properties?.find(
+            (property: Property) => property.key === "isAgentClaim"
+        );
+
+        return agentAttributeProperty?.value === "true";
+    }, [ claim ]);
+
     const sharedProfileValueResolvingMethodOptions: DropDownItemInterface[] = [
         {
             text: t("claims:local.forms." +
@@ -505,7 +513,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     // Temporary fix to check system claims and make them readonly
     const isReadOnly: boolean = useMemo(() => {
-        if (hideSpecialClaims) {
+        if (hideSpecialClaims || isAgentAttribute) {
             return true;
         } else {
             return !hasAttributeUpdatePermissions;
@@ -1372,7 +1380,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     {
                         claim && UIConfig?.isClaimUniquenessValidationEnabled
                             && !hideSpecialClaims
-                            && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI) && (
+                            && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
+                            && !isAgentAttribute && (
                             <Field.Dropdown
                                 ariaLabel="uniqueness-scope-dropdown"
                                 name={ ClaimManagementConstants.UNIQUENESS_SCOPE_PROPERTY_NAME }
@@ -1400,7 +1409,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     }
                     { !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI) && mappingChecked
                         ? (
-                            !hideSpecialClaims && !hasMapping &&
+                            !hideSpecialClaims && !hasMapping && !isAgentAttribute &&
                             (<Grid.Row columns={ 1 } >
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                                     <Message
@@ -1576,7 +1585,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     {
                         // Hides on groups claim
                         !isDistinctAttributeProfilesDisabled && claim && !hideSpecialClaims && mappingChecked
-                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI && (
+                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI &&
+                            !isAgentAttribute && (
                             <>
                                 <Divider />
                                 <Heading as="h4">

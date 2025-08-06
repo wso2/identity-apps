@@ -51,12 +51,16 @@ export type useRoutesInterface = {
     ) => void;
 };
 
+interface UseRoutesParams {
+    isAgentManagementEnabledForOrg: boolean
+}
+
 /**
  * Hook that provides access to the Organizations context.
  *
  * @returns An object containing the current Organizations context.
  */
-const useRoutes = (): useRoutesInterface => {
+const useRoutes = (params: UseRoutesParams): useRoutesInterface => {
     const dispatch: Dispatch = useDispatch();
     const { isOrganizationManagementEnabled } = useGlobalVariables();
     const { isSuperOrganization } = useGetCurrentOrganizationType();
@@ -119,6 +123,10 @@ const useRoutes = (): useRoutesInterface => {
 
             if (!isGroupAndRoleSeparationEnabled) {
                 additionalRoutes.push(AppConstants.CONSOLE_SETTINGS_ROUTE);
+            }
+
+            if(!params.isAgentManagementEnabledForOrg) {
+                additionalRoutes.push(AppConstants.AGENTS_ROUTE);
             }
 
             return [ ...additionalRoutes ];

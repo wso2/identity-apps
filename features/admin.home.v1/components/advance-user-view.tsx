@@ -532,7 +532,7 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
 
             <br />
 
-            { showFeatureAnnouncementBanner && (
+            { showFeatureAnnouncementBanner && !isSubOrganization() && (
                 <Show featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
                     <Show
                         when={ loginAndRegistrationFeatureConfig?.scopes?.update }

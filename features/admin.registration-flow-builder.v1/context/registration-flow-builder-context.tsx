@@ -24,17 +24,13 @@ import { Attribute } from "../models/attributes";
  */
 export interface RegistrationFlowBuilderContextProps {
     /**
-     * Flag denoting whether the registration flow builder is enabled or not.
-     */
-    isNewRegistrationPortalEnabled: boolean;
-    /**
      * Is the registration flow publishing.
      */
     isPublishing: boolean;
     /**
      * Callback to publish the flow.
      */
-    onPublish: () => void;
+    onPublish: () => Promise<boolean>;
     /**
      * The set of attributes that are selected for the flow that are maintained per node.
      */
@@ -45,6 +41,10 @@ export interface RegistrationFlowBuilderContextProps {
      * Sets the selected attributes for the flow.
      */
     setSelectedAttributes: Dispatch<SetStateAction<{ [key: string]: Attribute[] }>>;
+    /**
+     * Supported attributes for the registration flow.
+     */
+    supportedAttributes: Attribute[];
 }
 
 /**
@@ -54,11 +54,11 @@ const RegistrationFlowBuilderContext: Context<
     RegistrationFlowBuilderContextProps
 > = createContext<null | RegistrationFlowBuilderContextProps>(
     {
-        isNewRegistrationPortalEnabled: false,
         isPublishing: false,
-        onPublish: () => {},
+        onPublish: () => Promise.resolve(false),
         selectedAttributes: {},
-        setSelectedAttributes: () => {}
+        setSelectedAttributes: () => {},
+        supportedAttributes: null
     }
 );
 

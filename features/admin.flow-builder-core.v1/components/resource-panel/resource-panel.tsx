@@ -28,6 +28,7 @@ import { ChevronDownIcon } from "@oxygen-ui/react-icons";
 import AICard from "@wso2is/common.ai.v1/components/ai-card";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
+import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, HTMLAttributes, ReactElement, SVGProps } from "react";
 import { useSelector } from "react-redux";
 import ResourcePanelDraggable from "./resource-panel-draggable";
@@ -281,7 +282,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                                 { steps.map((step: Step, index: number) => (
                                     <ResourcePanelDraggable
                                         id={ `${step.resourceType}-${step.type}-${index}` }
-                                        key={ step.type }
+                                        key={ `${step.type}-${kebabCase(step.display.label)}` }
                                         resource={ step }
                                     />
                                 )) }

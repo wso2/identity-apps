@@ -525,6 +525,13 @@ export const myAccount: MyAccountNS = {
                 },
                 tooltip: "Apps"
             },
+            dropdown: {
+                footer: {
+                    cookiePolicy: "Cookies",
+                    privacyPolicy: "Confidentialité",
+                    termsOfService: "Conditions"
+                }
+            },
             organizationLabel: "Ce compte est géré par"
         },
         linkedAccounts: {
@@ -1255,6 +1262,9 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 generic: {
+                    dropdown: {
+                        placeholder: "Sélectionnez votre {{FieldName}}"
+                    },
                     inputs: {
                         placeholder: "Entrez votre {{fieldName}}",
                         readonly: {
@@ -1265,6 +1275,9 @@ export const myAccount: MyAccountNS = {
                             empty: "L'attribut {{fieldName}} est obligatoire",
                             invalidFormat: "Le format du {{fieldName}} saisi est incorrect"
                         }
+                    },
+                    radioGroup: {
+                        optionNone: "Aucune"
                     }
                 },
                 mobileChangeForm: {

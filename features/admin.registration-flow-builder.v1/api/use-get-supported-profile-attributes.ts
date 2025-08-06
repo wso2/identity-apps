@@ -23,7 +23,10 @@ import useRequest, {
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
+import useAuthenticationFlowBuilderCore from
+    "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import { HttpMethods } from "@wso2is/core/models";
+import { useMemo } from "react";
 import { Attribute } from "../models/attributes";
 
 /**
@@ -34,42 +37,70 @@ import { Attribute } from "../models/attributes";
  * For more details, refer to the documentation:
  * {@link https://is.docs.wso2.com/en/latest/apis/tenant-management-rest-api/#tag/Tenants/operation/retrieveTenants}
  *
- * @param params - Additional parameters for pagination, sorting, and filtering.
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
 const useGetSupportedProfileAttributes = <Data = Attribute[], Error = RequestErrorInterface>(
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        params: {
-            "exclude-hidden-claims": true
-        },
-        url: store.getState().config.endpoints.localClaims
-    };
+    const { metadata } = useAuthenticationFlowBuilderCore();
+
+    const requestConfig: RequestConfigInterface = useMemo(() => {
+        if (!metadata?.attributeProfile) {
+            return null;
+        }
+
+        return {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            method: HttpMethods.GET,
+            params: {
+                "exclude-hidden-claims": true,
+                "exclude-identity-claims": true,
+                filter: null,
+                limit: null,
+                offset: null,
+                profile: metadata?.attributeProfile,
+                sort: null
+            },
+            url: store.getState().config.endpoints.localClaims
+        };
+    }, [ metadata?.attributeProfile ]);
 
     const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
         shouldFetch ? requestConfig : null
     );
 
-    const filterSupportedAttributes = (data: Attribute[]) => {
-        return data?.filter((attribute: any) => {
-            // TODO: This is a temporary fix since `username` claim `supportedByDefault` is set to `false`.
-            if (attribute.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI) {
-                return true;
-            }
+    /**
+     * Transform the claims to ensure the username claim is always included.
+     */
+    const supportedAttributes: Attribute[] = useMemo(() => {
+        const claims: Attribute[] = data as Attribute[];
 
-            return attribute.supportedByDefault;
-        });
-    };
+        if (!claims) {
+            return [];
+        }
+
+        const usernameExists: boolean = claims.some(
+            ((attribute: Attribute) => attribute.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI));
+
+        if (usernameExists) {
+            return claims;
+        }
+
+        return [
+            {
+                claimURI: ClaimManagementConstants.USER_NAME_CLAIM_URI,
+                displayName: "Username"
+            },
+            ...claims
+        ] as Attribute[];
+    }, [ data ]);
 
     return {
-        data: filterSupportedAttributes(data as Attribute[]) as Data,
+        data: supportedAttributes as Data,
         error,
         isLoading,
         isValidating,

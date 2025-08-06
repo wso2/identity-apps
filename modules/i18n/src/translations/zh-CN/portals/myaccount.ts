@@ -503,6 +503,13 @@ export const myAccount: MyAccountNS = {
                 },
                 "tooltip": "应用"
             },
+            "dropdown": {
+                "footer": {
+                    "cookiePolicy": "Cookie政策",
+                    "privacyPolicy": "隐私政策",
+                    "termsOfService": "服务条款"
+                }
+            },
             "organizationLabel": "此帐户由"
         },
         "linkedAccounts": {
@@ -1191,6 +1198,9 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 "generic": {
+                    "dropdown": {
+                        "placeholder": "選擇您的 {{fieldName}}"
+                    },
                     "inputs": {
                         "placeholder": "输入您的{{fieldName}}",
                         "readonly": {
@@ -1201,6 +1211,9 @@ export const myAccount: MyAccountNS = {
                             "empty": "{{fieldName}}是必需的字段",
                             "invalidFormat": "输入的{{fieldName}}的格式不正确"
                         }
+                    },
+                    "radioGroup": {
+                        "optionNone": "没有任何"
                     }
                 },
                 "mobileChangeForm": {

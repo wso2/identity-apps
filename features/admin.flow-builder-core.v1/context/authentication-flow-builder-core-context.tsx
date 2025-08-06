@@ -19,6 +19,7 @@
 import { Claim } from "@wso2is/core/models";
 import { Context, Dispatch, FunctionComponent, ReactNode, SetStateAction, createContext } from "react";
 import { Base } from "../models/base";
+import { MetadataInterface } from "../models/metadata";
 import { Resource } from "../models/resources";
 
 /**
@@ -95,6 +96,10 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * Sets the selected attributes for the flow.
      */
     setSelectedAttributes: Dispatch<SetStateAction<{ [key: string]: Claim[] }>>;
+    /**
+     * Metadata for the current flow builder.
+     */
+    metadata?: MetadataInterface;
 }
 
 /**
@@ -110,6 +115,7 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         isResourcePropertiesPanelOpen: false,
         lastInteractedResource: null,
         lastInteractedStepId: "",
+        metadata: null,
         onResourceDropOnCanvas: () => {},
         resourcePropertiesPanelHeading: null,
         selectedAttributes: {},

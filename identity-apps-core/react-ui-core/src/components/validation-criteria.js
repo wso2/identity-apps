@@ -104,8 +104,7 @@ export const getRuleLabel = (rule) => {
                 return `Must contain at least ${minLen} special character(s).`;
             }
 
-            return "Must contain special character(s).";
-
+            break;
         case "ConfirmPasswordValidator":
             if (confirmPassword) {
                 return "Must match with the password.";

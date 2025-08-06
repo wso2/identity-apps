@@ -25,7 +25,7 @@ import {
 import { InputVariants } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "react";
-import useGetSupportedProfileAttributes from "../../../api/use-get-supported-profile-attributes";
+import useRegistrationFlowBuilder from "../../../hooks/use-registration-flow-builder";
 import { Attribute } from "../../../models/attributes";
 
 /**
@@ -45,7 +45,7 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
     resource,
     onChange
 }: FieldExtendedPropertiesPropsInterface): ReactElement => {
-    const { data: attributes } = useGetSupportedProfileAttributes();
+    const { supportedAttributes: attributes } = useRegistrationFlowBuilder();
 
     const selectedValue: Attribute = useMemo(() => {
         return attributes?.find((attribute: Attribute) => attribute?.claimURI === resource.config.identifier);

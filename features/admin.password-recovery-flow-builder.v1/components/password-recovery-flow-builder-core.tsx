@@ -31,7 +31,6 @@ import { StaticStepTypes, Step, StepTypes } from "@wso2is/admin.flow-builder-cor
 import { Template, TemplateTypes } from "@wso2is/admin.flow-builder-core.v1/models/templates";
 import { Widget } from "@wso2is/admin.flow-builder-core.v1/models/widget";
 import generateIdsForResources from "@wso2is/admin.flow-builder-core.v1/utils/generate-ids-for-templates";
-import generateResourceId from "@wso2is/admin.flow-builder-core.v1/utils/generate-resource-id";
 import resolveComponentMetadata from "@wso2is/admin.flow-builder-core.v1/utils/resolve-component-metadata";
 import resolveStepMetadata from "@wso2is/admin.flow-builder-core.v1/utils/resolve-step-metadata";
 import updateTemplatePlaceholderReferences
@@ -72,6 +71,7 @@ import {
 } from "../constants/password-recovery-flow-ai-constants";
 import PasswordRecoveryFlowExecutorConstants from "../constants/password-recovery-flow-executor-constants";
 import useAIGeneratedPasswordRecoveryFlow from "../hooks/use-ai-generated-password-recovery-flow";
+import useDefaultFlow from "../hooks/use-default-flow";
 import useGeneratePasswordRecoveryFlow, {
     UseGeneratePasswordRecoveryFlowFunction
 } from "../hooks/use-generate-password-recovery-flow";
@@ -129,9 +129,9 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
     const { data: resources } = useGetPasswordRecoveryFlowBuilderResources();
 
     const { steps, templates } = resources;
+    const defaultTemplate: Template = useDefaultFlow(templates);
 
     const INITIAL_FLOW_START_STEP_ID: string = StaticStepTypes.Start.toLowerCase();
-    const INITIAL_FLOW_VIEW_STEP_ID: string = generateResourceId(StepTypes.View.toLowerCase());
     const INITIAL_FLOW_USER_ONBOARD_STEP_ID: string = StaticStepTypes.End;
     const SAMPLE_PROMPTS: string[] = [
         "Ask the user to supply an email address and choose a strong password to begin the sign-up.",
@@ -254,24 +254,6 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
         );
     };
 
-    const getBasicTemplateComponents = (): Element[] => {
-        const basicTemplate: Template = cloneDeep(
-            templates.find((template: Template) => template.type === TemplateTypes.Basic)
-        );
-
-        if (basicTemplate?.config?.data?.steps?.length > 0) {
-            basicTemplate.config.data.steps[0].id = INITIAL_FLOW_START_STEP_ID;
-        }
-
-        return resolveComponentMetadata(
-            resources,
-            generateIdsForResources<Template>(basicTemplate)?.config?.data?.steps[0]?.data?.components
-        );
-    };
-
-    const initialTemplateComponents: any = useMemo(() => getBasicTemplateComponents(), [ resources ]);
-    const blankTemplateComponents: any = useMemo(() => getBlankTemplateComponents(), [ resources ]);
-
     const generateSteps = (steps: Node[]): Node[] => {
         const START_STEP: Node = {
             data: {
@@ -281,6 +263,14 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
             id: INITIAL_FLOW_START_STEP_ID,
             position: { x: -300, y: 330 },
             type: StaticStepTypes.Start
+        };
+
+        const END_STEP: Node = {
+            data: { displayOnly: true },
+            deletable: false,
+            id: INITIAL_FLOW_USER_ONBOARD_STEP_ID,
+            position: { x: steps[steps.length - 1].position.x + 600, y: steps[steps.length - 1].position.y + 200 },
+            type: StaticStepTypes.End
         };
 
         return resolveStepMetadata(resources, generateIdsForResources<Node[]>([
@@ -298,7 +288,8 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
                     position: step.position,
                     type: step.type
                 };
-            })
+            }),
+            END_STEP
         ]) as Step[]) as Node[];
     };
 
@@ -526,25 +517,16 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
     };
 
     const initialNodes: Node[] = useMemo<Node[]>(() => {
-        return generateSteps([
-            {
-                data: {
-                    components: initialTemplateComponents
-                },
-                deletable: true,
-                id: INITIAL_FLOW_VIEW_STEP_ID,
-                position: { x: 0, y: 330 },
-                type: StepTypes.View
-            },
-            {
-                data: {},
-                deletable: false,
-                id: INITIAL_FLOW_USER_ONBOARD_STEP_ID,
-                position: { x: 500, y: 408 },
-                type: StaticStepTypes.End
-            }
-        ]);
-    }, [ initialTemplateComponents, generateSteps ]);
+        const template: Template = cloneDeep(defaultTemplate);
+
+        const steps: Step[] = template?.config?.data?.steps || [];
+
+        const nodes: Node[] = generateSteps(steps);
+
+        const replacers: any = template?.config?.data?.__generationMeta__?.replacers || [];
+
+        return updateTemplatePlaceholderReferences(nodes, replacers)[0] as Node[];
+    }, [ generateSteps, defaultTemplate ]);
 
     const [ nodes, setNodes, onNodesChange ] = useNodesState([]);
     const [ edges, setEdges, onEdgesChange ] = useEdgesState([]);
@@ -787,12 +769,12 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
 
         // Handle BASIC_FEDERATED template case
         if (template.type === TemplateTypes.BasicFederated) {
-            const googleRedirectionStep: any = templateSteps.find(
-                (step: Node) => step.type === "REDIRECTION"
+            const googleExecutionStep: any = templateSteps.find(
+                (step: Node) => step.type === StepTypes.Execution
             );
 
-            if (googleRedirectionStep) {
-                return [ templateSteps, templateEdges, googleRedirectionStep as Resource, googleRedirectionStep.id ];
+            if (googleExecutionStep) {
+                return [ templateSteps, templateEdges, googleExecutionStep as Resource, googleExecutionStep.id ];
             }
         }
 
@@ -992,13 +974,25 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
                     ...step,
                     data: {
                         ...step.data,
-                        components: blankTemplateComponents
+                        components: getBlankTemplateComponents()
                     }
                 };
             }
         }
 
-        return step;
+        const processedStep: Step = generateIdsForResources<Step>(step);
+
+        if (processedStep?.data?.components) {
+            processedStep.data.components = resolveComponentMetadata(
+                resources,
+                processedStep.data.components
+            );
+        }
+
+        return resolveStepMetadata(
+            resources,
+            [ processedStep ]
+        )[0] as Step;
     };
 
     const handleResourceAdd = (resource: Resource): void => {

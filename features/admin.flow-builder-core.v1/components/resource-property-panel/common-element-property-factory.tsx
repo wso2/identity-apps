@@ -72,7 +72,13 @@ const CommonElementPropertyFactory: FunctionComponent<CommonElementPropertyFacto
 }: CommonElementPropertyFactoryPropsInterface): ReactElement | null => {
     if (propertyKey === "text") {
         if (resource.type === ElementTypes.RichText) {
-            return <RichText ToolbarProps={ { history: false, strikeThrough: false } } { ...rest } />;
+            return (
+                <RichText
+                    onChange={ (html: string) => onChange(`config.${propertyKey}`, html, resource) }
+                    resource={ resource }
+                    { ...rest }
+                />
+            );
         }
     }
 

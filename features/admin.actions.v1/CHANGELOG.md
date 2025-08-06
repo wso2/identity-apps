@@ -1,5 +1,11 @@
 # @wso2is/admin.actions.v1
 
+## 1.13.4
+
+### Patch Changes
+
+- [#8624](https://github.com/wso2/identity-apps/pull/8624) [`f40251fff4f28ec0e7dece04288841b7f9d9e673`](https://github.com/wso2/identity-apps/commit/f40251fff4f28ec0e7dece04288841b7f9d9e673) Thanks [@malithie](https://github.com/malithie)! - Fix active toggle while state change happens.
+
 ## 1.13.3
 
 ### Patch Changes

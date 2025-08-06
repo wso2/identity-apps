@@ -17,6 +17,7 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
+import { useGetAgents } from "@wso2is/admin.agents.v1/hooks/use-get-agents";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
@@ -64,7 +65,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Dropdown, DropdownProps, Header, Icon, PaginationProps, SemanticICONS } from "semantic-ui-react";
 import { AddRoleUserModal } from "./add-role-user-modal";
-import { updateRoleDetails } from "../../api";
+import { updateRoleDetails, updateUsersForRole } from "../../api";
 import { CreateRoleMemberInterface, PatchRoleDataInterface, RoleEditSectionsInterface } from "../../models/roles";
 import "./edit-role.scss";
 
@@ -88,13 +89,23 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
+    const {
+        data: agentList
+    } = useGetAgents(
+        UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+        0,
+        null,
+        null,
+        isForNonHumanUser
+    );
+
     const baseI18nKey: string = isForNonHumanUser ? "roles:edit.agents." : "roles:edit.users.";
 
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
 
     const systemReservedUserStores: string[] = useSelector((state: AppState) =>
-        state.config.ui.systemReservedUserStores);
+        state.config.ui?.systemReservedUserStores);
 
     const consoleSettingsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consoleSettings
@@ -116,6 +127,13 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const [ paginatedUsers, setPaginatedUsers ] = useState<UserBasicInterface[]>([]);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ showAddNewUserModal, setShowAddNewUserModal ] = useState<boolean>(false);
+
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
+    );
+
+    const updateUsersOfRoleFunction: (roleId: string, roleData: PatchRoleDataInterface) => Promise<any> =
+        userRolesV3FeatureEnabled ? updateUsersForRole : updateRoleDetails;
 
     const shouldShowUserstoreDropdown: boolean =
     selectedUserStoreDomainName !== "AGENT" &&
@@ -148,7 +166,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         if (userStoresList && !isUserStoresLoading && !isForNonHumanUser) {
             if (userStoresList?.length > 0) {
                 userStoresList
-                    ?.filter((userStore: UserStoreListItem) => !systemReservedUserStores.includes(userStore.name))
+                    ?.filter((userStore: UserStoreListItem) => !systemReservedUserStores?.includes(userStore.name))
                     ?.forEach((store: UserStoreListItem, index: number) => {
                         const isEnabled: boolean = store.enabled;
 
@@ -269,7 +287,15 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             };
         });
 
-        const roleData: PatchRoleDataInterface = {
+        const roleData: PatchRoleDataInterface = userRolesV3FeatureEnabled ? {
+            Operations: [
+                {
+                    op: "add",
+                    value: addedUsers
+                }
+            ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        } : {
             Operations: [
                 {
                     op: "add",
@@ -282,7 +308,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         };
 
         setIsSubmitting(true);
-        updateRoleDetails(role.id, roleData)
+        updateUsersOfRoleFunction(role.id, roleData)
             .then((response: AxiosResponse) => {
                 if (response?.status === 200) {
                     dispatch(
@@ -337,7 +363,13 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
      * @param user - user to be unassigned.
      */
     const unassignUserFromRole = (user: UserBasicInterface): void => {
-        const roleData: PatchRoleDataInterface = {
+        const roleData: PatchRoleDataInterface = userRolesV3FeatureEnabled ? {
+            Operations: [ {
+                "op": "remove",
+                "path": `value eq ${ user.id }`
+            } ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        } : {
             Operations: [ {
                 "op": "remove",
                 "path": `users[value eq ${ user.id }]`
@@ -346,7 +378,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         };
 
         setIsSubmitting(true);
-        updateRoleDetails(role.id, roleData)
+        updateUsersOfRoleFunction(role.id, roleData)
             .then((response: AxiosResponse) => {
                 if (response?.status === 200) {
                     dispatch(
@@ -484,6 +516,23 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     };
 
     /**
+     * Retrieves the agent display name if available.
+     *
+     * Note: This is a hack to display the agent's display name
+     * in the role assign wizard. Ideally, the role details API
+     * response should include the agent's display name.
+     *
+     * @param user - The user object.
+     * @returns The display name of the agent if available, otherwise undefined.
+     */
+    const getAgentDisplayName = (user: UserBasicInterface): string => {
+        const matchingAgent: UserBasicInterface =
+            agentList?.Resources?.find((agent: UserBasicInterface) => agent.userName === user.userName);
+
+        return matchingAgent?.["urn:scim:wso2:agent:schema"]?.DisplayName;
+    };
+
+    /**
      * Resolves data table columns.
      *
      * @returns the data table columns.
@@ -496,7 +545,9 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                 id: "name",
                 key: "name",
                 render: (user: UserBasicInterface): ReactNode => {
-                    const header: string = getUserNameWithoutDomain(user?.userName);
+                    const header: ReactNode = isForNonHumanUser
+                        ? getAgentDisplayName(user) ?? getUserNameWithoutDomain(user?.userName)
+                        : getUserNameWithoutDomain(user?.userName);
 
                     return (
                         <Header
@@ -507,7 +558,10 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                         >
                             <UserAvatar
                                 data-componentid={ `${ componentId }-list-item-image` }
-                                name={ UserManagementUtils.resolveAvatarUsername(user) }
+                                name={ isForNonHumanUser
+                                    ? getAgentDisplayName(user) ?? "Agent"
+                                    : UserManagementUtils.resolveAvatarUsername(user)
+                                }
                                 size="mini"
                                 image={ user.profileUrl }
                                 spaced="right"
@@ -516,6 +570,14 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                             <Header.Content>
                                 <div>
                                     { header as ReactNode }
+                                    { isForNonHumanUser && (
+                                        <Header.Subheader
+                                            data-testid={ `${ componentId }-item-sub-heading` }
+                                        >
+                                            { getAgentDisplayName(user) &&
+                                                getUserNameWithoutDomain(user?.userName) }
+                                        </Header.Subheader>
+                                    ) }
                                 </div>
                             </Header.Content>
                         </Header>
@@ -578,7 +640,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         <EmphasizedSegment padded="very" className="list-role-users-section">
             <Box display="flex" justifyContent="space-between" alignItems="center">
                 <div>
-                    <Heading as="h4">
+                    <Heading as="h4" data-componentid={ componentId + "-heading" }>
                         { t(baseI18nKey + "heading") }
                     </Heading>
                     <Heading subHeading ellipsis as="h6">

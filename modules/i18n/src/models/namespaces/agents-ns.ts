@@ -21,38 +21,70 @@ export interface AgentsNS {
     pageTitle: string;
     description: string;
     new: {
+        action: {
+            title: string;
+        },
         fields: {
             name: {
                 label: string;
-            },
+            };
             description: {
                 label: string;
                 placeholder: string;
-            }
-        }
+            };
+        };
+        alerts: {
+            success: {
+                message: string;
+                description: string;
+            };
+        };
+        title: string;
+    };
+    list: {
+        featureUnavailable: {
+            subtitle: {
+                0: string;
+                1: {
+                    onprem: string;
+                    saas: string;
+                };
+
+            };
+            title: string;
+        };
     };
     edit: {
         credentials: {
             title: string;
-        },
+            regenerate: {
+                alerts: {
+                    error: {
+                        description: string;
+                        message: string;
+                    };
+                };
+            };
+            subtitle: string;
+        };
         general: {
             title: string;
             fields: {
                 name: {
                     label: string;
-                },
+                };
                 description: {
                     label: string;
                     placeholder: string;
-                },
+                };
                 languageModal: {
                     label: string;
-                }
-            }
-        },
+                };
+            };
+        };
         roles: {
             title: string;
             subtitle: string;
-        }
+        };
     };
 }

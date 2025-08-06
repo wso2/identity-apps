@@ -391,6 +391,11 @@ export class I18nModuleConstants {
     public static readonly EMAIL_PROVIDERS_NAMESPACE: string = "emailProviders";
 
     /**
+     * Flows namespace.
+     */
+    public static readonly FLOWS_NAMESPACE: string = "flows";
+
+    /**
      * Constant representing the text direction handling attribute.
      */
     public static readonly TEXT_DIRECTION_ATTRIBUTE: string = "dir";
