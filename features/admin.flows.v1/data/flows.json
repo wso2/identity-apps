@@ -12,7 +12,7 @@
         {
             "id": "password-recovery",
             "heading": "Password Recovery",
-            "description": "Configure personalized recovery steps for users who forget their password or are locked out.",
+            "description": "Configure secure multi-step recovery flows for users who forget their password or are locked out.",
             "featureStatusKey": "flows.types.list.passwordRecovery",
             "path": "PASSWORD_RECOVERY_FLOW_BUILDER",
             "type": "PASSWORD_RECOVERY",
