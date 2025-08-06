@@ -35,7 +35,10 @@ const transpiledReactComponentsJSFilePath = path.join(__dirname, "dist");
 async function deleteExistingThemesFolder() {
     for (const app of apps) {
         const themePath = path.join(__dirname, "apps", app, "src", "main", "webapp", "libs", "themes");
+
+        // eslint-disable-next-line no-console
         if (fs.existsSync(themePath)) {
+            // eslint-disable-next-line no-console
             console.log(`Deleting existing themes folder in ${app} app...`);
             await fs.remove(themePath);
         }
@@ -45,6 +48,7 @@ async function deleteExistingThemesFolder() {
 // Copy the theme files to each app.
 async function copyThemeFiles() {
     for (const app of apps) {
+        // eslint-disable-next-line no-console
         console.log(`Copying theme files to ${app} app...`);
         await fs.copy(themeFiles, path.join(__dirname, "apps", app, "src", "main", "webapp", "libs"));
     }
@@ -53,6 +57,7 @@ async function copyThemeFiles() {
 // Check for the react-ui-core module and delete it if exists.
 async function deleteExistingAppReactComponentsJSFile() {
     if (fs.existsSync(path.join(appReactComponentsJSFilePath, ReactComponentsJSFile))) {
+        // eslint-disable-next-line no-console
         console.log(`Deleting existing react-ui-core module in ${apps[0]} app...`);
         await fs.remove(path.join(appReactComponentsJSFilePath, ReactComponentsJSFile));
     }
@@ -60,6 +65,7 @@ async function deleteExistingAppReactComponentsJSFile() {
 
 // Copy the react-ui-core.js file to authentication portal.
 async function copyAppReactComponentsJSFile() {
+    // eslint-disable-next-line no-console
     console.log(`Copying react-ui-core file to ${apps[0]} app...`);
     await fs.copyFile(
         path.join(transpiledReactComponentsJSFilePath, ReactComponentsJSFile),
@@ -74,6 +80,7 @@ async function main() {
         await deleteExistingAppReactComponentsJSFile();
         await copyAppReactComponentsJSFile();
     } catch (error) {
+        // eslint-disable-next-line no-console
         console.error(error);
         throw error;
     }
