@@ -85,6 +85,16 @@ export interface I18nConfigurationCardPropsInterface extends IdentifiableCompone
      * Callback fired when the card should be closed.
      */
     onClose: () => void;
+    /**
+     * Current selected i18n key.
+     */
+    i18nKey: string;
+    /**
+     * Callback fired when the i18n key is changed.
+     *
+     * @param i18nKey - The new i18n key.
+     */
+    onChange: (i18nKey: string) => void;
 }
 
 /**
@@ -98,7 +108,9 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
     open,
     anchorEl,
     propertyKey,
-    onClose
+    onClose,
+    onChange,
+    i18nKey: selectedI18nKey
 }: I18nConfigurationCardPropsInterface): ReactElement | null => {
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
@@ -119,7 +131,6 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
     const [ position, setPosition ] = useState<{ top: number; left: number }>({ left: 0, top: 0 });
     const [ selectedScreenType, setSelectedScreenType ] = useState<ScreenTypeOption>(null);
     const [ isCustomizeView, setIsCustomizeView ] = useState<boolean>(false);
-    const [ selectedI18nKey, setSelectedI18nKey ] = useState<string>(null);
     const [ i18nKeyInputValue, setI18nKeyInputValue ] = useState<string>("");
     const [ languageTexts, setLanguageTexts ] = useState<{
         [key in PreviewScreenType]?: Record<string, Record<string, string>>}>({});
@@ -349,7 +360,7 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                                     _event: SyntheticEvent,
                                     newValue: string
                                 ) => {
-                                    setSelectedI18nKey(newValue);
+                                    onChange(newValue);
                                 } }
                                 renderInput={ (params: any) => (
                                     <TextField

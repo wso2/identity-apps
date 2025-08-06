@@ -96,7 +96,7 @@ const TextPropertyField: FunctionComponent<TextPropertyFieldPropsInterface> = ({
             <TextField
                 fullWidth
                 label={ startCase(propertyKey) }
-                defaultValue={ propertyValue }
+                value={ propertyValue }
                 onChange={ (e: ChangeEvent<HTMLInputElement>) =>
                     onChange(`config.${propertyKey}`, e.target.value, resource)
                 }
@@ -137,6 +137,8 @@ const TextPropertyField: FunctionComponent<TextPropertyFieldPropsInterface> = ({
                         propertyKey={ propertyKey }
                         onClose={ handleI18nClose }
                         data-componentid={ `${componentId}-i18n-card` }
+                        i18nKey={ /^{{(.*)}}$/.test(propertyValue) ? propertyValue.slice(2, -2) : "" }
+                        onChange={ (i18nKey: string) => onChange(`config.${propertyKey}`, `{{${i18nKey}}}`, resource) }
                     />
                 )
             }
