@@ -105,7 +105,7 @@
         "@wso2is/admin.wsfed-configuration.v1": "^2.25.205",
         "@wso2is/common.ui.v1": "^0.2.0",
         "@wso2is/common.workflow-approvals.v1": "^0.0.0",
-        "@wso2is/core": "^2.10.0",
+        "@wso2is/core": "^2.11.0",
         "@wso2is/dynamic-forms": "^2.4.41",
         "@wso2is/form": "^2.9.0",
         "@wso2is/forms": "^2.3.22",
