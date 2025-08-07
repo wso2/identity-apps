@@ -441,7 +441,6 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
                     name={ fieldName }
                     readOnly={ isReadOnly || isUpdating }
                     disabled={ isReadOnly || isUpdating }
-                    required={ isRequired }
                     data-componentid={ fieldComponentId }
                 />
             );
@@ -456,7 +455,6 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
                     name={ fieldName }
                     readOnly={ isReadOnly || isUpdating }
                     disabled={ isReadOnly || isUpdating }
-                    required={ isRequired }
                     data-componentid={ fieldComponentId }
                 />
             );
