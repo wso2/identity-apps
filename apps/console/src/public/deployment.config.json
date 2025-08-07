@@ -1640,6 +1640,7 @@
             },
             "webhooks": {
                 "disabledFeatures": [
+                    "webhooks.settings"
                 ],
                 "enabled": true,
                 "featureFlags": [],

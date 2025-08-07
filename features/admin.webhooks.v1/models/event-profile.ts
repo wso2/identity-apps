@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { EventPublishingOrgSharePolicy } from "./shared-access";
+
 /**
  * Interface for individual event metadata.
  */
@@ -143,6 +145,16 @@ export interface AdapterMetadataInterface {
 }
 
 /**
+ * Interface for organization policy metadata.
+ */
+export interface OrganizationPolicyMetadataInterface {
+    /**
+     * Name of the organization policy.
+     */
+    policyName: EventPublishingOrgSharePolicy;
+}
+
+/**
  * Interface for webhooks metadata API response.
  */
 export interface WebhooksMetadataApiResponseInterface {
@@ -154,4 +166,8 @@ export interface WebhooksMetadataApiResponseInterface {
      * Active adapter information.
      */
     adapter: AdapterMetadataInterface;
+    /**
+     * Organizion share policy for event publishing.
+     */
+    organizationPolicy: OrganizationPolicyMetadataInterface;
 }
