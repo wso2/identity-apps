@@ -46,6 +46,7 @@
         "@wso2is/common.branding.v1": "^2.27.3",
         "@wso2is/common.ui.profile.v1": "^0.1.0",
         "@wso2is/common.ui.v1": "^0.2.0",
+        "@wso2is/common.workflow-approvals.v1": "^0.0.0",
         "@wso2is/core": "^2.11.0",
         "@wso2is/forms": "^2.3.23",
         "@wso2is/i18n": "^2.26.1",

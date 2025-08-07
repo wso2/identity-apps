@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,4 +16,17 @@
  * under the License.
  */
 
-export * from "./approvals";
+import { store } from "@wso2is/admin.core.v1/store";
+import ApprovalsPage from "@wso2is/common.workflow-approvals.v1/pages/approvals";
+import React, { FunctionComponent } from "react";
+
+const ConsoleApprovalsPage: FunctionComponent = () => {
+
+    return (
+        <ApprovalsPage
+            approvalsUrl={ store.getState().config.endpoints.approvals }
+        />
+    );
+};
+
+export default ConsoleApprovalsPage;

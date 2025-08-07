@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,7 +19,7 @@
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
@@ -34,7 +34,12 @@ import { ApprovalStatus, ApprovalTaskListItemInterface } from "../models";
 /**
  * Props for the Approvals page.
  */
-type ApprovalsPageInterface = TestableComponentInterface;
+interface ApprovalsPageInterface extends IdentifiableComponentInterface {
+    /**
+     * The URL to fetch the approvals from.
+     */
+    approvalsUrl: string;
+}
 
 /**
  * Workflow approvals page.
@@ -48,7 +53,8 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
 ): ReactElement => {
 
     const {
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId = "approvals",
+        approvalsUrl
     } = props;
 
     const { t } = useTranslation();
@@ -68,22 +74,22 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
     const APPROVAL_OPTIONS: DropdownItemProps[] = [
         {
             key: 1,
-            text: "All",
+            text: t("common:all"),
             value: ApprovalStatus.ALL
         },
         {
             key: 2,
-            text: "Reserved",
+            text: t("common:reserved"),
             value: ApprovalStatus.RESERVED
         },
         {
             key: 3,
-            text: "Ready",
+            text: t("common:ready"),
             value: ApprovalStatus.READY
         },
         {
             key: 4,
-            text: "Completed",
+            text: t("common:completed"),
             value: ApprovalStatus.COMPLETED
         }
     ];
@@ -117,7 +123,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
     const getApprovals = (shallowUpdate: boolean = false): void => {
         setApprovalListRequestLoading(true);
 
-        fetchPendingApprovals(null, null, filterStatus)
+        fetchPendingApprovals(null, null, filterStatus, approvalsUrl)
             .then((response: ApprovalTaskListItemInterface[]) => {
                 if (!shallowUpdate) {
                     setApprovals(response);
@@ -151,23 +157,23 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                 if (error.response && error.response.data && error.response.detail) {
                     dispatch(addAlert({
                         description: t(
-                            "console:manage.features.approvals.notifications.fetchPendingApprovals.error.description",
+                            "common:approvalsPage.notifications.fetchPendingApprovals.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.approvals.notifications.fetchPendingApprovals.error.message"
+                            "common:approvalsPage.notifications.fetchPendingApprovals.error.message"
                         )
                     }));
                 }
 
                 dispatch(addAlert({
                     description: t(
-                        "console:manage.features.approvals.notifications.fetchPendingApprovals.genericError.description"
+                        "common:approvalsPage.notifications.fetchPendingApprovals.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.approvals.notifications.fetchPendingApprovals.genericError.message"
+                        "common:approvalsPage.notifications.fetchPendingApprovals.genericError.message"
                     )
                 }));
             })
@@ -260,7 +266,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
         status: ApprovalStatus.CLAIM | ApprovalStatus.RELEASE | ApprovalStatus.APPROVE | ApprovalStatus.REJECT
     ): void => {
 
-        updatePendingApprovalStatus(id, status)
+        updatePendingApprovalStatus(id, status, approvalsUrl)
             .then(() => {
                 getApprovals(false);
             })
@@ -268,12 +274,12 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                 if (error.response && error.response.data && error.response.detail) {
                     dispatch(addAlert({
                         description: t(
-                            "console:manage.features.approvals.notifications.updatePendingApprovals.error.description",
+                            "common:approvalsPage.notifications.updatePendingApprovals.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.approvals.notifications.updatePendingApprovals.error.message"
+                            "common:approvalsPage.notifications.updatePendingApprovals.error.message"
                         )
                     }));
 
@@ -282,12 +288,11 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
 
                 dispatch(addAlert({
                     description: t(
-                        "console:manage.features.approvals.notifications." +
-                        "updatePendingApprovals.genericError.description"
+                        "common:approvalsPage.notifications.updatePendingApprovals.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.approvals.notifications.updatePendingApprovals.genericError.message"
+                        "common:approvalsPage.notifications.updatePendingApprovals.genericError.message"
                     )
                 }));
             });
@@ -319,10 +324,10 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
 
     return (
         <PageLayout
-            title={ t("pages:approvalsPage.title") }
-            pageTitle={ t("pages:approvalsPage.title") }
-            description={ t("pages:approvalsPage.subTitle") }
-            data-testid={ `${ testId }-page-layout` }
+            title={ t("common:approvalsPage.title") }
+            pageTitle={ t("common:approvalsPage.title") }
+            description={ t("common:approvalsPage.subTitle") }
+            data-componentid={ `${ componentId }-page-layout` }
         >
             <ListLayout
                 currentListSize={ listItemLimit }
@@ -334,10 +339,10 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                 totalPages={ Math.ceil(approvals.length / listItemLimit) }
                 totalListSize={ approvals.length }
                 isLoading={ isApprovalListRequestLoading }
-                data-testid={ `${ testId }-list-layout` }
+                data-componentid={ `${ componentId }-list-layout` }
                 rightActionPanel={
                     (<Dropdown
-                        data-testid={ `${ testId }-status-filter-dropdown` }
+                        data-componentid={ `${ componentId }-status-filter-dropdown` }
                         selection
                         options={ APPROVAL_OPTIONS }
                         onChange={ handleFilterStatusChange }
@@ -348,11 +353,11 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                     (<div className="advanced-search-wrapper aligned-left fill-default">
                         <Input
                             className="advanced-search with-add-on"
-                            data-testid={ `${ testId }-list-search-input` }
+                            data-componentid={ `${ componentId }-list-search-input` }
                             icon="search"
                             iconPosition="left"
                             onChange={ searchApprovalList }
-                            placeholder="Search by workflow name"
+                            placeholder={ t("common:approvalsPage.placeholders.searchApprovals") }
                             floated="right"
                             size="small"
                         />
@@ -360,6 +365,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                 }
             >
                 <ApprovalsList
+                    approvalsUrl={ approvalsUrl }
                     filterStatus={ filterStatus }
                     onChangeStatusFilter={ (status: string) => setFilterStatus(status) }
                     searchResult={ searchResult }
@@ -368,18 +374,11 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                     featureConfig={ featureConfig }
                     list={ paginate(tempApprovals, listItemLimit, offset) }
                     resolveApprovalTagColor={ resolveApprovalTagColor }
-                    data-testid={ `${ testId }-list` }
+                    data-componentid={ `${ componentId }-list` }
                 />
             </ListLayout>
         </PageLayout>
     );
-};
-
-/**
- * Default props for the component.
- */
-ApprovalsPage.defaultProps = {
-    "data-testid": "approvals"
 };
 
 /**
