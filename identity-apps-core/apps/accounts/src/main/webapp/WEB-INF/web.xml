@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><!--
-  ~ Copyright (c) 2014-2025, WSO2 LLC. (http://www.wso2.org).
+  ~ Copyright (c) 2025, WSO2 LLC. (http://www.wso2.org).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -99,9 +99,53 @@
         <url-pattern>/error</url-pattern>
     </servlet-mapping>
 
+    <!-- custom error pages -->
     <error-page>
-        <exception-type>java.lang.Throwable</exception-type>
-        <location>/generic-exception-response.jsp</location>
+        <error-code>400</error-code>
+        <location>/errors/error_400.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>401</error-code>
+        <location>/errors/error_401.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/errors/error_403.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/errors/error_404.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>405</error-code>
+        <location>/errors/error_405.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>408</error-code>
+        <location>/errors/error_408.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>410</error-code>
+        <location>/errors/error_410.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/errors/error_500.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>502</error-code>
+        <location>/errors/error_502.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>503</error-code>
+        <location>/errors/error_503.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>504</error-code>
+        <location>/errors/error_504.jsp</location>
+    </error-page>
+    <error-page>
+        <location>/errors/error.jsp</location>
     </error-page>
 
     <session-config>

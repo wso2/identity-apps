@@ -1,12 +1,12 @@
 <%--
-  ~ Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~ http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing,
   ~ software distributed under the License is distributed on an
@@ -104,11 +104,8 @@
             <% } %>
 
             <%
-                List<String> langSwitcherEnabledServlets = Arrays.asList("/oauth2_login.do", "/oauth2_error.do",
-                    "/confirmregistration.do", "/confirmrecovery.do", "/claims.do", "/oauth2_consent.do",
-                    "/fido2-auth.jsp", "/fido2-identifierfirst.jsp", "/fido2-enroll.jsp", "/fido2-passkey-status.jsp",
-                    "/fido2-error.jsp", "/email_otp.do", "/org_name.do", "/org_handle.do", "/org_discovery.do", "/retry.do", "/totp_enroll.do",
-                    "/backup_code.do", "/device.do", "/error.do");
+                List<String> langSwitcherEnabledServlets = Arrays.asList("/register", "/recovery",
+                    "/error");
                 if (langSwitcherEnabledServlets.contains(request.getServletPath())) {
                     File languageSwitcherFile = new File(getServletContext().getRealPath("extensions/language-switcher.jsp"));
                     if (languageSwitcherFile.exists()) {
