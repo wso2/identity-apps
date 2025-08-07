@@ -97,22 +97,6 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
     const { t } = useTranslation();
     const { isMobileViewport } = useMediaContext();
 
-    const getClaimDisplayName = (claim: string): string => {
-        const equalIndex: number = claim.indexOf("=");
-
-        if (equalIndex === -1) {
-            return claim.trim();
-        }
-
-        const claimUri: string = claim.substring(0, equalIndex).trim();
-        const displayName: string = claimUri.split("/").pop();
-
-        return displayName || claim;
-    };
-
-
-
-
     /**
      * Removes unnecessary commas at the end of property values and splits
      * up the claim values.
@@ -128,18 +112,24 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
      */
     const populateProperties = (key: string, value: string): string | JSX.Element => {
         if (key === "Claims") {
+            return;
+        }
+        if (key === "ClaimsUI") {
+            // Remove the curly braces at the start and end of the value.
             value = value.replace(/^\{|\}$/g, "").trim();
             const claims: string[] = value.split(",");
 
             return (
                 <>
                     { claims.map((claim: string, index: number) => {
-                        const claimValue: string = claim.split("=")[1]?.trim();
+                        const claimParts: string[] = claim.split("=");
+                        const claimDisplayName: string = claimParts[0]?.trim();
+                        const claimValue: string = claimParts[1]?.trim();
 
                         return (
                             <Table.Row key={ `${key}-${index}` }>
                                 <Table.Cell className="key-cell">
-                                    { getClaimDisplayName(claim) }
+                                    { claimDisplayName }
                                 </Table.Cell>
                                 <Table.Cell collapsing className="values-cell">
                                     <Popup
