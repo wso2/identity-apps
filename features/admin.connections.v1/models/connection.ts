@@ -222,6 +222,15 @@ export enum SupportedJITProvisioningSchemes {
 }
 
 /**
+ * Supported attribute synchronization methods for JIT provisioning.
+ */
+export enum SupportedAttributeSyncMethods {
+    OVERRIDE_ALL = "OVERRIDE_ALL",
+    NONE = "NONE",
+    PRESERVE_LOCAL = "PRESERVE_LOCAL"
+}
+
+/**
  * Captures the properties of a JIT provisioning configuration.
  */
 export interface JITProvisioningResponseInterface {

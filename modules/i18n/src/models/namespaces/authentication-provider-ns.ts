@@ -945,6 +945,24 @@ export interface AuthenticationProviderNS {
                     };
                 };
             };
+            attributeSyncMethod: {
+                hint: string;
+                label: string;
+                options: {
+                    overrideAll: {
+                        label: string;
+                        description: string;
+                    };
+                    none: {
+                        label: string;
+                        description: string;
+                    };
+                    preserveLocal: {
+                        label: string;
+                        description: string;
+                    };
+                };
+            };
             associateLocalUser: {
                 hint: string;
                 label: string;

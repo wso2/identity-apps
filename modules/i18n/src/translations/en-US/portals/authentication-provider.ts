@@ -986,6 +986,28 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     }
                 }
             },
+            attributeSyncMethod: {
+                hint: "Select the method used for syncing attributes between a JIT-provisioned " +
+                    "user account and a local user account.",
+                label: "Attribute Synchronization Method",
+                options: {
+                    overrideAll: {
+                        label: "Override All",
+                        description: "All attributes of the local user account will be overridden by " +
+                            "the attributes received from the external identity provider."
+                    },
+                    none: {
+                        label: "None",
+                        description: "None of the attributes received from the identity provider will " +
+                            "be synced with the local user account."
+                    },
+                    preserveLocal: {
+                        label: "Preserve Local",
+                        description: "Only the attributes received from the identity provider will be " +
+                            "updated while other attributes of the local user account are preserved."
+                    }
+                }
+            },
             associateLocalUser: {
                 hint: "When enabled, users that are provisioned with this identity " +
                     "provider will be linked to existing local users. If account lookup " +

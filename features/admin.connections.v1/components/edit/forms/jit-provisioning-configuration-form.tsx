@@ -28,7 +28,7 @@ import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import { AlertLevels, Claim, TestableComponentInterface, UniquenessScope } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, FormValue, Forms } from "@wso2is/forms";
+import { Field, FormValue, Forms, RadioChild } from "@wso2is/forms";
 import { Code, DocumentationLink, Hint, Link, Message, Text, useDocumentation } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
@@ -40,6 +40,7 @@ import {
     ConnectionInterface,
     JITProvisioningAccountLookupAttributeMappingInterface,
     JITProvisioningResponseInterface,
+    SupportedAttributeSyncMethods,
     SupportedJITProvisioningSchemes
 } from "../../../models/connection";
 import "./jit-provisioning-configuration-form.scss";
@@ -299,6 +300,32 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         value: SupportedJITProvisioningSchemes.PROVISION_SILENTLY
     } ];
 
+    const supportedAttributeSyncMethods: RadioChild[] = [ {
+        hint: {
+            content: t("authenticationProvider:" +
+            "forms.jitProvisioning.attributeSyncMethod.options.overrideAll.description")
+        },
+        label: t("authenticationProvider:" +
+            "forms.jitProvisioning.attributeSyncMethod.options.overrideAll.label"),
+        value: SupportedAttributeSyncMethods.OVERRIDE_ALL
+    }, {
+        hint: {
+            content: t("authenticationProvider:" +
+            "forms.jitProvisioning.attributeSyncMethod.options.none.description")
+        },
+        label: t("authenticationProvider:" +
+            "forms.jitProvisioning.attributeSyncMethod.options.none.label"),
+        value: SupportedAttributeSyncMethods.NONE
+    }, {
+        hint: {
+            content: t("authenticationProvider:" +
+            "forms.jitProvisioning.attributeSyncMethod.options.preserveLocal.description")
+        },
+        label: t("authenticationProvider:" +
+            "forms.jitProvisioning.attributeSyncMethod.options.preserveLocal.label"),
+        value: SupportedAttributeSyncMethods.PRESERVE_LOCAL
+    } ];
+
     const ProxyModeConflictMessage: ReactElement = (
         <div
             style={ { animationDuration: "350ms" } }
@@ -448,6 +475,33 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                         )
                         : <Fragment />
                 }
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
+                        <Fragment>
+                            <Field
+                                required={ false }
+                                requiredErrorMessage=""
+                                label={ t("authenticationProvider:" +
+                                    "forms.jitProvisioning.attributeSyncMethod.label") }
+                                name={ JITProvisioningConstants.ATTRIBUTE_SYNC_METHOD }
+                                default={
+                                    initialValues?.attributeSyncMethod
+                                        ? initialValues?.attributeSyncMethod
+                                        : SupportedAttributeSyncMethods.PRESERVE_LOCAL
+                                }
+                                type="radio"
+                                children={ supportedAttributeSyncMethods }
+                                disabled={ !isJITProvisioningEnabled }
+                                data-testid={ `${ testId }-attribute-sync-method` }
+                                readOnly={ isReadOnly }
+                            />
+                            <Hint>
+                                { t("authenticationProvider:" +
+                                    "forms.jitProvisioning.attributeSyncMethod.hint") }
+                            </Hint>
+                        </Fragment>
+                    </Grid.Column>
+                </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
                         <Field
