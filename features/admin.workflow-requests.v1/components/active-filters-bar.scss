@@ -1,0 +1,171 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+$primary-color: #24292f;
+$secondary-color: #656d76;
+$border-color: #e1e8f0;
+$background-color: #ffffff;
+$light-background: #f8f9fb;
+$shadow-light: rgba(0, 0, 0, 0.05);
+$border-radius: 8px;
+$border-radius-small: 6px;
+$border-radius-tiny: 3px;
+$spacing-xs: 4px;
+$spacing-sm: 6px;
+$spacing-md: 8px;
+$spacing-lg: 12px;
+$spacing-xxxl: 24px;
+$font-size-normal: 12px;
+
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+}
+
+@mixin transition($properties...) {
+    transition: $properties;
+}
+
+@mixin box-shadow($shadow) {
+    box-shadow: $shadow;
+}
+
+@mixin border-radius($radius) {
+    border-radius: $radius;
+}
+
+.workflow-requests-active-filters-bar {
+    background: $light-background;
+    padding: $spacing-md;
+    border: 1px solid $border-color;
+    margin-bottom: $spacing-xxxl;
+    @include border-radius($border-radius);
+    box-shadow: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $spacing-sm;
+    position: relative;
+
+    .filters-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: $spacing-sm;
+        align-items: center;
+        flex: 1;
+    }
+
+    .filter-tag {
+        font-size: $font-size-normal;
+        padding: $spacing-sm 10px;
+        background: $background-color;
+        border: 1px solid #d0d7de;
+        @include border-radius($border-radius-small);
+        color: $primary-color;
+        font-weight: 500;
+        @include flex-center;
+        gap: $spacing-sm;
+        height: auto;
+        min-height: 28px;
+        box-sizing: border-box;
+        @include box-shadow(0 1px 3px $shadow-light);
+        @include transition(background-color 0.2s, border-color 0.2s);
+
+        .filter-type {
+            color: $secondary-color;
+            font-weight: 500;
+        }
+
+        .filter-value {
+            color: $primary-color;
+            font-weight: 600;
+        }
+    }
+
+    .filter-remove-button {
+        cursor: pointer;
+        @include flex-center;
+        background: transparent;
+        border: none;
+        width: 18px;
+        height: 18px;
+        justify-content: center;
+        @include border-radius($border-radius-tiny);
+        @include transition(background-color 0.2s, color 0.2s);
+        margin-left: $spacing-xs;
+
+        &:hover {
+            background-color: #f6f8fa;
+        }
+
+        .icon {
+            margin: 0;
+            font-size: $font-size-normal;
+            color: $secondary-color;
+        }
+    }
+
+    .no-filters-text {
+        color: $secondary-color;
+        font-size: $font-size-normal;
+        font-style: italic;
+        padding: $spacing-sm 0;
+    }
+
+    .clear-all-button {
+        background: transparent;
+        border: none;
+        @include border-radius($border-radius-small);
+        box-shadow: none;
+        color: $primary-color;
+        cursor: pointer;
+        font-size: $font-size-normal;
+        font-weight: 500;
+        margin-left: $spacing-md;
+        padding: $spacing-md $spacing-lg;
+        @include transition(background-color 0.2s);
+        @include flex-center;
+        gap: $spacing-sm;
+
+        &:hover {
+            background-color: #f6f8fa;
+        }
+
+        .icon {
+            margin: 0;
+            font-size: $font-size-normal;
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .workflow-requests-active-filters-bar {
+        flex-direction: column;
+        align-items: stretch;
+
+        .filters-container {
+            justify-content: center;
+        }
+
+        .clear-all-button {
+            align-self: center;
+            margin-left: 0;
+            margin-top: $spacing-md;
+        }
+    }
+}

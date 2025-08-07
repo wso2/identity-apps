@@ -8232,6 +8232,67 @@ export interface ConsoleNS {
                     darkMode: string;
                 };
             };
+            workflowRequests: {
+                dangerZone: {
+                    delete: {
+                        actionTitle: string;
+                        header: string;
+                        subheader: string;
+                    };
+                };
+                notifications: {
+                    deleteWorkflowRequest: {
+                        genericError: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    fetchWorkflowRequestDetails: {
+                        genericError: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    fetchWorkflowRequests: {
+                        genericError: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    searchWorkflowRequests: {
+                        genericError: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                };
+                details: {
+                    header: string;
+                    fields: {
+                        id: string;
+                        eventType: string;
+                        requestInitiator: string;
+                        status: string;
+                        createdAt: string;
+                        updatedAt: string;
+                        requestParams: string;
+                    };
+                    loading: string;
+                    error: {
+                        header: string;
+                        content: string;
+                    };
+                    backButton: string;
+                };
+            };
         };
         notifications: {
             endSession: {

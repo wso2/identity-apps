@@ -27,6 +27,7 @@ import {
     WorkflowAssociationsResourceEndpointsInterface,
     WorkflowsResourceEndpointsInterface
 } from "@wso2is/admin.approval-workflows.v1/models/endpoints";
+import { WorkflowRequestsResourceEndpointsInterface } from "../../admin.workflow-requests.v1/configs/endpoints";
 import { BrandingPreferenceResourceEndpointsInterface } from "@wso2is/admin.branding.v1/models/endpoints";
 import { CertificatesResourceEndpointsInterface } from "@wso2is/admin.certificates.v1";
 import { ClaimResourceEndpointsInterface } from "@wso2is/admin.claims.v1/models/endpoints";
@@ -291,10 +292,13 @@ export interface FeatureConfigInterface {
      */
     registrationFlowBuilder?: FeatureAccessConfigInterface;
     /**
+     * Workflow requests feature.
+     */
+    workflowRequests?: FeatureAccessConfigInterface;
+    /**
      * Workflow feature.
      */
     workflows?: FeatureAccessConfigInterface;
-}
 
 /**
  * Portal Deployment config interface inheriting the common configs from core module.
@@ -683,6 +687,7 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     PolicyAdministrationEndpointsInterface,
     WorkflowsResourceEndpointsInterface,
     WorkflowAssociationsResourceEndpointsInterface,
+    WorkflowRequestsResourceEndpointsInterface,
     RulesEndpointsInterface,
     RemoteLoggingResourceEndpointsInterface,
     FlowBuilderCoreResourceEndpointsInterface {
