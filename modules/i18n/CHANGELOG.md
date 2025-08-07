@@ -1,5 +1,23 @@
 # @wso2is/i18n
 
+## 2.27.0
+
+### Minor Changes
+
+- [#8683](https://github.com/wso2/identity-apps/pull/8683) [`832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3`](https://github.com/wso2/identity-apps/commit/832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Onboard Webhook Settings UI
+
+## 2.26.2
+
+### Patch Changes
+
+- [#8592](https://github.com/wso2/identity-apps/pull/8592) [`3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523`](https://github.com/wso2/identity-apps/commit/3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523) Thanks [@Malith-19](https://github.com/Malith-19)! - Move the Approvals to common component.
+
+## 2.26.1
+
+### Patch Changes
+
+- [#8572](https://github.com/wso2/identity-apps/pull/8572) [`1cf2a69f382401824625df187fecbcac9a32d28a`](https://github.com/wso2/identity-apps/commit/1cf2a69f382401824625df187fecbcac9a32d28a) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update user profile implementation to honor claim input format
+
 ## 2.26.0
 
 ### Minor Changes

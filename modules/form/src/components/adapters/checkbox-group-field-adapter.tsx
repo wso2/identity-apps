@@ -90,7 +90,6 @@ const CheckboxGroupFieldAdapter: FunctionComponent<CheckboxGroupFieldAdapterProp
             error={ isError }
             size="small"
             variant="standard"
-            component="fieldset"
             fullWidth={ fullWidth }
             { ...formControlProps }
             { ...rest }

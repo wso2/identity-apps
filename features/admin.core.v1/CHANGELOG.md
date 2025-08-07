@@ -1,5 +1,66 @@
 # @wso2is/admin.core.v1
 
+## 2.48.1
+
+### Patch Changes
+
+- [#8683](https://github.com/wso2/identity-apps/pull/8683) [`832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3`](https://github.com/wso2/identity-apps/commit/832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Onboard Webhook Settings UI
+
+- Updated dependencies [[`30711dad243b41973f7b45a2d22749d3af34abda`](https://github.com/wso2/identity-apps/commit/30711dad243b41973f7b45a2d22749d3af34abda), [`832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3`](https://github.com/wso2/identity-apps/commit/832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3)]:
+  - @wso2is/admin.actions.v1@1.13.5
+  - @wso2is/admin.webhooks.v1@1.1.0
+  - @wso2is/i18n@2.27.0
+
+## 2.48.0
+
+### Minor Changes
+
+- [#8592](https://github.com/wso2/identity-apps/pull/8592) [`3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523`](https://github.com/wso2/identity-apps/commit/3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523) Thanks [@Malith-19](https://github.com/Malith-19)! - Move the Approvals to common component.
+
+### Patch Changes
+
+- Updated dependencies [[`3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523`](https://github.com/wso2/identity-apps/commit/3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523), [`64f8425138bf065e883f60fb9be275c435ba5f0d`](https://github.com/wso2/identity-apps/commit/64f8425138bf065e883f60fb9be275c435ba5f0d), [`6a5567d97fd49b6e1c1869f4509b631b41d6d9c6`](https://github.com/wso2/identity-apps/commit/6a5567d97fd49b6e1c1869f4509b631b41d6d9c6)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.0
+  - @wso2is/i18n@2.26.2
+  - @wso2is/admin.users.v1@2.34.5
+  - @wso2is/admin.flows.v1@1.0.16
+  - @wso2is/admin.agents.v1@1.0.24
+  - @wso2is/admin.ask-password-flow-builder.v1@1.0.14
+  - @wso2is/admin.branding.v1@2.32.1
+  - @wso2is/admin.email-management.v1@2.25.211
+  - @wso2is/admin.flow-builder-core.v1@0.9.12
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.0.14
+  - @wso2is/admin.registration-flow-builder.v1@0.9.17
+  - @wso2is/admin.server-configurations.v1@2.35.17
+  - @wso2is/admin.roles.v2@2.27.179
+
+## 2.47.3
+
+### Patch Changes
+
+- Updated dependencies [[`225bee5c118034f0c53b3fb6c5e4a8400c2fed9c`](https://github.com/wso2/identity-apps/commit/225bee5c118034f0c53b3fb6c5e4a8400c2fed9c)]:
+  - @wso2is/admin.roles.v2@2.27.178
+  - @wso2is/admin.agents.v1@1.0.23
+
+## 2.47.2
+
+### Patch Changes
+
+- [#8681](https://github.com/wso2/identity-apps/pull/8681) [`5ed4fa6bf807211d796d2b3ee3f4a0ad7ab3d2de`](https://github.com/wso2/identity-apps/commit/5ed4fa6bf807211d796d2b3ee3f4a0ad7ab3d2de) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Update workflow API resources and scopes
+
+- Updated dependencies [[`5ed4fa6bf807211d796d2b3ee3f4a0ad7ab3d2de`](https://github.com/wso2/identity-apps/commit/5ed4fa6bf807211d796d2b3ee3f4a0ad7ab3d2de)]:
+  - @wso2is/admin.approval-workflows.v1@1.0.7
+
+## 2.47.1
+
+### Patch Changes
+
+- [#8206](https://github.com/wso2/identity-apps/pull/8206) [`ba917ba62a07de5898c251fc385558ddb562122a`](https://github.com/wso2/identity-apps/commit/ba917ba62a07de5898c251fc385558ddb562122a) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Switch to the org handle in places where org id is used as tenant domain
+
+- Updated dependencies [[`ba917ba62a07de5898c251fc385558ddb562122a`](https://github.com/wso2/identity-apps/commit/ba917ba62a07de5898c251fc385558ddb562122a), [`1cf2a69f382401824625df187fecbcac9a32d28a`](https://github.com/wso2/identity-apps/commit/1cf2a69f382401824625df187fecbcac9a32d28a)]:
+  - @wso2is/admin.authentication.v1@2.25.207
+  - @wso2is/i18n@2.26.1
+
 ## 2.47.0
 
 ### Minor Changes

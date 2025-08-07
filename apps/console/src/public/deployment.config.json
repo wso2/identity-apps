@@ -305,31 +305,12 @@
             },
             "actions": {
                 "disabledFeatures": [
-                    "actions.types.list.preRegistration"
+                    "actions.types.list.preRegistration",
+                    "actions.types.org.list.preIssueAccessToken",
+                    "actions.types.org.list.preRegistration"
                 ],
                 "enabled": true,
-                "featureFlags": [
-                    {
-                        "feature": "actions",
-                        "flag": ""
-                    },
-                    {
-                        "feature": "actions.types.list.preIssueAccessToken",
-                        "flag": ""
-                    },
-                    {
-                        "feature": "actions.types.list.preUpdatePassword",
-                        "flag": ""
-                    },
-                    {
-                        "feature": "actions.types.list.preUpdateProfile",
-                        "flag": ""
-                    },
-                    {
-                        "feature": "actions.types.list.preRegistration",
-                        "flag": ""
-                    }
-                ],
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_action_mgt_create"
@@ -495,23 +476,17 @@
             },
             "approvals": {
                 "disabledFeatures": [],
-                "enabled": false,
+                "enabled": true,
                 "featureFlags": [],
                 "scopes": {
-                    "create": [
-                        "internal_humantask_view"
-                    ],
-                    "delete": [
-                        "internal_humantask_view"
-                    ],
                     "feature": [
-                        "console:workflowApprovals"
+                        "console:workflows"
                     ],
                     "read": [
-                        "internal_humantask_view"
+                        "internal_approval_task_view"
                     ],
                     "update": [
-                        "internal_humantask_view"
+                        "internal_approval_task_update"
                     ]
                 }
             },
@@ -1646,6 +1621,7 @@
             },
             "webhooks": {
                 "disabledFeatures": [
+                    "webhooks.settings"
                 ],
                 "enabled": true,
                 "featureFlags": [],
@@ -1667,23 +1643,27 @@
             },
              "workflows": {
                 "disabledFeatures": [],
-                "enabled": false,
+                "enabled": true,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
-                        "internal_humantask_view"
+                        "internal_workflow_association_create",
+                        "internal_workflow_create"
                     ],
                     "delete": [
-                        "internal_humantask_view"
+                        "internal_workflow_association_delete",
+                        "internal_workflow_delete"
                     ],
                     "feature": [
-                        "console:workflowApprovals"
+                        "console:workflows"
                     ],
                     "read": [
-                        "internal_humantask_view"
+                        "internal_workflow_association_view",
+                        "internal_workflow_view"
                     ],
                     "update": [
-                        "internal_humantask_view"
+                        "internal_workflow_association_update",
+                        "internal_workflow_update"
                     ]
                 }
             },
@@ -1775,9 +1755,11 @@
         "routes": {
             "organizationEnabledRoutes": [
                 "accountSecurity",
+                "actions",
                 "admin-forced-password-reset",
                 "apiResources",
                 "applications",
+                "approvals",
                 "attributeDialects",
                 "branding",
                 "consoleSettings",
@@ -1796,7 +1778,8 @@
                 "userRoles",
                 "userStores",
                 "username-recovery",
-                "users"
+                "users",
+                "workflows"
             ]
         },
         "selfAppIdentifier": "Console",

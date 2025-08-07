@@ -82,6 +82,7 @@ export class Config {
     public static getServiceResourceEndpoints(): ServiceResourceEndpointsInterface {
         return {
             applications: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/applications`,
+            approvals: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/approval-tasks`,
             associations: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/associations`,
             authorize: `${this.getDeploymentConfig()?.serverHost}/oauth2/authorize`,
             backupCode: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/backup-codes`,

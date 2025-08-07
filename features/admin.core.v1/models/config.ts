@@ -295,7 +295,10 @@ export interface FeatureConfigInterface {
      * Workflow requests feature.
      */
     workflowRequests?: FeatureAccessConfigInterface;
-}
+    /**
+     * Workflow feature.
+     */
+    workflows?: FeatureAccessConfigInterface;
 
 /**
  * Portal Deployment config interface inheriting the common configs from core module.

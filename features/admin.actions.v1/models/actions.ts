@@ -481,6 +481,10 @@ export interface PreUpdateProfileActionConfigFormPropertyInterface extends Actio
  */
 export interface ActionTypeCardInterface {
     /**
+     * Type of the Action.
+     */
+    type: ActionType,
+    /**
      * Description of the Action type.
      */
     description: string,
