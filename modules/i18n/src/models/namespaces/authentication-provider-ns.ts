@@ -914,6 +914,41 @@ export interface AuthenticationProviderNS {
             };
         };
         jitProvisioning: {
+            accountLookupAttributeMappings: {
+                heading: string;
+                hint: string;
+                infoNotification: string;
+                noneOption: {
+                    label: string;
+                    description: string;
+                };
+                primary: {
+                    heading: string;
+                    federatedAttribute: {
+                        label: string;
+                        placeholder: string;
+                    };
+                    localAttribute: {
+                        label: string;
+                        placeholder: string;
+                    };
+                };
+                secondary: {
+                    heading: string;
+                    federatedAttribute: {
+                        label: string;
+                        placeholder: string;
+                    };
+                    localAttribute: {
+                        label: string;
+                        placeholder: string;
+                    };
+                };
+            };
+            associateLocalUser: {
+                hint: string;
+                label: string;
+            };
             enableJITProvisioning: {
                 hint: string;
                 label: string;
@@ -934,7 +969,7 @@ export interface AuthenticationProviderNS {
                     3: string;
                 };
             };
-            associateLocalUser: {
+            skipJITForLookupFailure: {
                 hint: string;
                 label: string;
             };
@@ -1914,6 +1949,16 @@ export interface AuthenticationProviderNS {
             error: {
                 description: string;
                 message: string;
+            };
+        };
+        getLocalClaims: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
             };
         };
     };
