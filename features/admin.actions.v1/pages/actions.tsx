@@ -50,8 +50,7 @@ import React, {
     ReactElement,
     ReactNode,
     useEffect,
-    useMemo,
-    useState
+    useMemo
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -88,7 +87,6 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
     const dispatch: Dispatch = useDispatch();
-    const [ enabledActionTypes, setEnabledActionTypes ] = useState<string[]>(undefined);
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
     const {
@@ -97,47 +95,98 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
         error: actionTypesConfigsRetrievalError
     } = useGetActionTypes();
 
+    const isActionTypeDisabled = (actionType: string): boolean =>
+        actionsFeatureConfig["featureFlags"]?.some(
+            (featureFlag: FeatureFlagsInterface) => featureFlag.feature === actionType
+            && featureFlag.flag === ActionsConstants.ACTION_COMING_SOON_LABEL
+        );
+
+    const actionTypesCardsInfo = (): ActionTypeCardInterface[] => {
+        return [
+            {
+                description: t("actions:types.preIssueAccessToken.description.shortened"),
+                disabled: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                    .ACTIONS_TYPES_PRE_ISSUE_ACCESS_TOKEN),
+                featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                    .ACTIONS_TYPES_PRE_ISSUE_ACCESS_TOKEN,
+                heading: t("actions:types.preIssueAccessToken.heading"),
+                icon: <KeyFlowIcon size="small" className="icon"/>,
+                identifier: ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH,
+                route: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                    .ACTIONS_TYPES_PRE_ISSUE_ACCESS_TOKEN) ? undefined :
+                    AppConstants.getPaths().get("PRE_ISSUE_ACCESS_TOKEN_EDIT"),
+                type: ActionType.PRE_ISSUE_ACCESS_TOKEN
+            },
+            {
+                description: t("actions:types.preUpdatePassword.description.shortened"),
+                disabled: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                    .ACTIONS_TYPES_PRE_UPDATE_PASSWORD),
+                featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_UPDATE_PASSWORD,
+                heading: t("actions:types.preUpdatePassword.heading"),
+                icon: <PadlockAsteriskFlowIcon size="small" className="icon"/>,
+                identifier: ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH,
+                route: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                    .ACTIONS_TYPES_PRE_UPDATE_PASSWORD) ? undefined
+                    : AppConstants.getPaths().get("PRE_UPDATE_PASSWORD_EDIT"),
+                type: ActionType.PRE_UPDATE_PASSWORD
+            },
+            {
+                description: t("actions:types.preUpdateProfile.description.shortened"),
+                disabled: isActionTypeDisabled(FeatureFlagConstants
+                    .FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_UPDATE_PROFILE),
+                featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_UPDATE_PROFILE,
+                heading: t("actions:types.preUpdateProfile.heading"),
+                icon: <ProfileFlowIcon size="small" className="icon"/>,
+                identifier: ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH,
+                route: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                    .ACTIONS_TYPES_PRE_UPDATE_PROFILE) ? undefined
+                    : AppConstants.getPaths().get("PRE_UPDATE_PROFILE_EDIT"),
+                type: ActionType.PRE_UPDATE_PROFILE
+            },
+            {
+                description: t("actions:types.preRegistration.description.shortened"),
+                disabled: isActionTypeDisabled(FeatureFlagConstants
+                    .FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_REGISTRATION),
+                featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_REGISTRATION,
+                heading: t("actions:types.preRegistration.heading"),
+                icon: <UserFlowIcon size="small" className="icon"/>,
+                identifier: ActionsConstants.PRE_REGISTRATION_URL_PATH,
+                route: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                    .ACTIONS_TYPES_PRE_UPDATE_PASSWORD) ? undefined
+                    : AppConstants.getPaths().get("PRE_UPDATE_REGISTRATION_EDIT"),
+                type: ActionType.PRE_REGISTRATION
+            }
+        ];
+    };
+
     /**
-     * This useEffect is used to filter the action types returned in the API and disabled via feature flags.
+     * This useMemo is used to filter the action types returned in the API and disabled via feature flags.
      */
-    useEffect(() => {
+    const enabledActionTypeCards: ActionTypeCardInterface[] = useMemo((): ActionTypeCardInterface[] => {
         if (!actionTypesConfigs) return;
 
-        const checkFeatureEnabledStatus = (actionType: string): boolean => {
-
-            if (isSubOrganization()) {
-                switch (actionType) {
-                    case ActionType.PRE_ISSUE_ACCESS_TOKEN:
-                        return isFeatureEnabled(actionsFeatureConfig, "actions.types.org.list.preIssueAccessToken");
-                    case ActionType.PRE_UPDATE_PASSWORD:
-                        return isFeatureEnabled(actionsFeatureConfig, "actions.types.org.list.preUpdatePassword");
-                    case ActionType.PRE_UPDATE_PROFILE:
-                        return isFeatureEnabled(actionsFeatureConfig, "actions.types.org.list.preUpdateProfile");
-                    case ActionType.PRE_REGISTRATION:
-                        return isFeatureEnabled(actionsFeatureConfig, "actions.types.org.list.preRegistration");
-                    default:
-                        return false;
-                }
-            } else {
-                switch (actionType) {
-                    case ActionType.PRE_ISSUE_ACCESS_TOKEN:
-                        return isFeatureEnabled(actionsFeatureConfig, "actions.types.list.preIssueAccessToken");
-                    case ActionType.PRE_UPDATE_PASSWORD:
-                        return isFeatureEnabled(actionsFeatureConfig, "actions.types.list.preUpdatePassword");
-                    case ActionType.PRE_UPDATE_PROFILE:
-                        return isFeatureEnabled(actionsFeatureConfig, "actions.types.list.preUpdateProfile");
-                    case ActionType.PRE_REGISTRATION:
-                        return isFeatureEnabled(actionsFeatureConfig, "actions.types.list.preRegistration");
-                    default:
-                        return false;
-                }
-            }
+        const actionTypeToFeatureKeyMap: Record<string, string> = {
+            [ActionType.PRE_ISSUE_ACCESS_TOKEN]: "preIssueAccessToken",
+            [ActionType.PRE_UPDATE_PASSWORD]: "preUpdatePassword",
+            [ActionType.PRE_UPDATE_PROFILE]: "preUpdateProfile",
+            [ActionType.PRE_REGISTRATION]: "preRegistration"
         };
 
-        setEnabledActionTypes(
-            actionTypesConfigs?.map((actionType: ActionTypesResponseInterface) => actionType.type)
-                .filter((actionType: string) => checkFeatureEnabledStatus(actionType)));
-    }, [ actionTypesConfigs ]);
+        const checkFeatureEnabledStatus = (actionType: string): boolean => {
+            const featureKey: string = actionTypeToFeatureKeyMap[actionType];
+
+            if (!featureKey) return false;
+            const prefix: string = isSubOrganization() ? "actions.types.org.list" : "actions.types.list";
+
+            return isFeatureEnabled(actionsFeatureConfig, `${prefix}.${featureKey}`);
+        };
+
+        const enabledTypes: string[] = actionTypesConfigs
+            .map((actionType: ActionTypesResponseInterface) => actionType.type)
+            .filter(checkFeatureEnabledStatus);
+
+        return actionTypesCardsInfo().filter((card: ActionTypeCardInterface) => enabledTypes.includes(card.type));
+    }, [ actionTypesConfigs, actionsFeatureConfig, isSubOrganization ]);
 
     const typeCounts: ActionTypesCountInterface = useMemo(() => {
         const actionTypeCounts: ActionTypesCountInterface = {};
@@ -263,87 +312,6 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
         }
     };
 
-    const isActionTypeDisabled = (actionType: string): boolean =>
-        actionsFeatureConfig["featureFlags"]?.some(
-            (featureFlag: FeatureFlagsInterface) => featureFlag.feature === actionType
-            && featureFlag.flag === ActionsConstants.ACTION_COMING_SOON_LABEL
-        );
-
-    const actionTypesCardsInfo = (): ActionTypeCardInterface[] => {
-
-        if (!enabledActionTypes) return;
-        const actionTypeCards: ActionTypeCardInterface[] = [];
-
-        for (const actionType of enabledActionTypes) {
-            switch (actionType) {
-                case ActionType.PRE_ISSUE_ACCESS_TOKEN:
-                    actionTypeCards.push({
-                        description: t("actions:types.preIssueAccessToken.description.shortened"),
-                        disabled: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
-                            .ACTIONS_TYPES_PRE_ISSUE_ACCESS_TOKEN),
-                        featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
-                            .ACTIONS_TYPES_PRE_ISSUE_ACCESS_TOKEN,
-                        heading: t("actions:types.preIssueAccessToken.heading"),
-                        icon: <KeyFlowIcon size="small" className="icon"/>,
-                        identifier: ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH,
-                        route: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
-                            .ACTIONS_TYPES_PRE_ISSUE_ACCESS_TOKEN) ? undefined :
-                            AppConstants.getPaths().get("PRE_ISSUE_ACCESS_TOKEN_EDIT")
-                    });
-
-                    break;
-                case ActionType.PRE_UPDATE_PASSWORD:
-                    actionTypeCards.push({
-                        description: t("actions:types.preUpdatePassword.description.shortened"),
-                        disabled: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
-                            .ACTIONS_TYPES_PRE_UPDATE_PASSWORD),
-                        featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_UPDATE_PASSWORD,
-                        heading: t("actions:types.preUpdatePassword.heading"),
-                        icon: <PadlockAsteriskFlowIcon size="small" className="icon"/>,
-                        identifier: ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH,
-                        route: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
-                            .ACTIONS_TYPES_PRE_UPDATE_PASSWORD) ? undefined
-                            : AppConstants.getPaths().get("PRE_UPDATE_PASSWORD_EDIT")
-                    });
-
-                    break;
-                case ActionType.PRE_UPDATE_PROFILE:
-                    actionTypeCards.push({
-                        description: t("actions:types.preUpdateProfile.description.shortened"),
-                        disabled: isActionTypeDisabled(FeatureFlagConstants
-                            .FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_UPDATE_PROFILE),
-                        featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_UPDATE_PROFILE,
-                        heading: t("actions:types.preUpdateProfile.heading"),
-                        icon: <ProfileFlowIcon size="small" className="icon"/>,
-                        identifier: ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH,
-                        route: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
-                            .ACTIONS_TYPES_PRE_UPDATE_PROFILE) ? undefined
-                            : AppConstants.getPaths().get("PRE_UPDATE_PROFILE_EDIT")
-                    });
-
-                    break;
-            }
-        }
-
-        // Registration action type needs to be visible in a disabled state.
-        if (isFeatureEnabled(actionsFeatureConfig, "actions.types.list.preRegistration")) {
-            actionTypeCards.push({
-                description: t("actions:types.preRegistration.description.shortened"),
-                disabled: isActionTypeDisabled(FeatureFlagConstants
-                    .FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_REGISTRATION),
-                featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.ACTIONS_TYPES_PRE_REGISTRATION,
-                heading: t("actions:types.preRegistration.heading"),
-                icon: <UserFlowIcon size="small" className="icon"/>,
-                identifier: ActionsConstants.PRE_REGISTRATION_URL_PATH,
-                route: isActionTypeDisabled(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
-                    .ACTIONS_TYPES_PRE_UPDATE_PASSWORD) ? undefined
-                    : AppConstants.getPaths().get("PRE_UPDATE_REGISTRATION_EDIT")
-            });
-        }
-
-        return actionTypeCards;
-    };
-
     /**
      * This function returns loading placeholders.
      */
@@ -399,10 +367,10 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
             contentTopMargin={ true }
             pageHeaderMaxWidth={ false }
         >
-            { isActionTypesConfigsLoading && !enabledActionTypes ? renderLoadingPlaceholder() : (
+            { isActionTypesConfigsLoading ? renderLoadingPlaceholder() : (
                 <div className="action-types-grid-wrapper" data-componentid={ `${ _componentId }-grid` }>
                     <div className="action-types-grid">
-                        { actionTypesCardsInfo()?.map((cardProps: ActionTypeCardInterface) => {
+                        { enabledActionTypeCards?.map((cardProps: ActionTypeCardInterface) => {
                             return (
                                 <Card
                                     key={ cardProps.identifier }

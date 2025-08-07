@@ -307,8 +307,7 @@
                 "disabledFeatures": [
                     "actions.types.list.preRegistration",
                     "actions.types.org.list.preIssueAccessToken",
-                    "actions.types.org.list.preRegistration",
-                    "actions.types.org.list.preUpdateProfile"
+                    "actions.types.org.list.preRegistration"
                 ],
                 "enabled": true,
                 "featureFlags": [
