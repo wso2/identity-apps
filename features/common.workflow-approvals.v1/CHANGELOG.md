@@ -1,5 +1,15 @@
 # @wso2is/common.workflow-approvals.v1
 
+## 1.0.1
+
+### Patch Changes
+
+- [#8698](https://github.com/wso2/identity-apps/pull/8698) [`2b00f0f5769dc6df1323d5efdce5dddf73a58655`](https://github.com/wso2/identity-apps/commit/2b00f0f5769dc6df1323d5efdce5dddf73a58655) Thanks [@Malith-19](https://github.com/Malith-19)! - Read the claims from the claimsUI property.
+
+- Updated dependencies [[`1edda77d2e69f308e9c0f4c0930a7957efd5f2ee`](https://github.com/wso2/identity-apps/commit/1edda77d2e69f308e9c0f4c0930a7957efd5f2ee)]:
+  - @wso2is/i18n@2.27.1
+  - @wso2is/admin.core.v1@2.48.2
+
 ## 1.0.0
 
 ### Major Changes
