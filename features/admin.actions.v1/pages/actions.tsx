@@ -98,7 +98,7 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
         const prefix: string = isSubOrganization() ? "actions.types.org.list" : "actions.types.list";
         const featureKey: string = `${prefix}.${actionType}`;
 
-        // Feature flag is COMING_SOON label is considered as a disabled action type.
+        // Feature flag with COMING_SOON label is considered as a disabled action type.
         return actionsFeatureConfig?.featureFlags?.some((featureFlag: FeatureFlagsInterface) =>
             featureFlag.feature === featureKey && featureFlag.flag === ActionsConstants.ACTION_COMING_SOON_LABEL
         );
