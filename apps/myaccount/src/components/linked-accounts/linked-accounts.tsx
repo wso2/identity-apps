@@ -68,8 +68,8 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
 
     const linkedAccounts: LinkedAccountInterface[] = useSelector((state: AppState) => state.profile.linkedAccounts);
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
-    const userOrganizationHandle: string
-        = useSelector((state: AppState) => state?.organization?.userOrganizationHandle);
+    const userOrganizationHandle: string = useSelector((state: AppState) =>
+        state?.organization?.userOrganizationHandle);
 
     /**
      * Set the linked accounts.
