@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.27.0
+
+### Minor Changes
+
+- [#8683](https://github.com/wso2/identity-apps/pull/8683) [`832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3`](https://github.com/wso2/identity-apps/commit/832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Onboard Webhook Settings UI
+
 ## 2.26.2
 
 ### Patch Changes
