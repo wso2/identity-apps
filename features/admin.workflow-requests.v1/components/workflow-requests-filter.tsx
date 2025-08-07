@@ -74,7 +74,7 @@ const WorkflowRequestsFilter: React.FC<WorkflowRequestsFilterProps> = ({
                                 setStatus(data.value as string);
                             } }
                             data-componentid="workflow-requests-status-dropdown"
-                            placeholder={ t("approvalWorkflows:filters.status")}
+                            placeholder={ t("approvalWorkflows:filters.status") }
                         />
                     </div>
                 </div>

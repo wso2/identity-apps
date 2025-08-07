@@ -73,7 +73,7 @@ const ActiveFiltersBar: React.FC<ActiveFiltersBarProps> = (
                     <span className="no-filters-text">
                         { t("approvalWorkflows:activeFiltersBar.noActiveFilters") }
                     </span>
-                )}
+                ) }
             </div>
 
             { filters && filters.length > 0 && (
@@ -86,7 +86,7 @@ const ActiveFiltersBar: React.FC<ActiveFiltersBarProps> = (
                     <Icon name="close" size="small" className="icon" />
                     { t("approvalWorkflows:activeFiltersBar.clearAll") }
                 </Button>
-            )}
+            ) }
         </div>
     );
 };
