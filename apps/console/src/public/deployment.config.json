@@ -310,28 +310,7 @@
                     "actions.types.org.list.preRegistration"
                 ],
                 "enabled": true,
-                "featureFlags": [
-                    {
-                        "feature": "actions",
-                        "flag": ""
-                    },
-                    {
-                        "feature": "actions.types.list.preIssueAccessToken",
-                        "flag": ""
-                    },
-                    {
-                        "feature": "actions.types.list.preUpdatePassword",
-                        "flag": ""
-                    },
-                    {
-                        "feature": "actions.types.list.preUpdateProfile",
-                        "flag": ""
-                    },
-                    {
-                        "feature": "actions.types.list.preRegistration",
-                        "flag": ""
-                    }
-                ],
+                "featureFlags": [],
                 "scopes": {
                     "create": [
                         "internal_action_mgt_create"
