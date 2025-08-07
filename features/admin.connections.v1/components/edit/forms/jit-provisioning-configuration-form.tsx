@@ -535,183 +535,202 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
-                <Grid.Row>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                        <Header as="h5">
-                            { t("authenticationProvider:" +
-                                "forms.jitProvisioning.accountLookupAttributeMappings.heading") }
-                        </Header>
-                        <Hint>
-                            { t("authenticationProvider:" +
-                                "forms.jitProvisioning.accountLookupAttributeMappings.hint") }
-                        </Hint>
-                        {
-                            isJITProvisioningEnabled && isAssociateLocalUserEnabled
-                                ? (
-                                    <Message
-                                        type="info"
-                                        content={ (
-                                            <Trans
-                                                i18nKey={ "authenticationProvider:forms.jitProvisioning." +
-                                                    "accountLookupAttributeMappings.infoNotification" }
-                                            >
-                                                The local attribute dropdown displays attributes that have uniqueness
-                                                constraints enabled. To configure additional attributes for lookup,
-                                                configure uniqueness settings in the <Link
-                                                    onClick={ handleLocalAttributeSectionNavigation }
-                                                    external={ false }
-                                                >
-                                                    local attributes
-                                                </Link> section.
-                                            </Trans>
-                                        ) }
-                                        size="small"
+                {
+                    isJITProvisioningEnabled && isAssociateLocalUserEnabled && (
+                        <>
+                            <Grid.Row>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Header as="h5">
+                                        { t("authenticationProvider:" +
+                                            "forms.jitProvisioning.accountLookupAttributeMappings.heading") }
+                                    </Header>
+                                    <Hint>
+                                        { t("authenticationProvider:" +
+                                            "forms.jitProvisioning.accountLookupAttributeMappings.hint") }
+                                    </Hint>
+                                    {
+                                        isJITProvisioningEnabled && isAssociateLocalUserEnabled
+                                            ? (
+                                                <Message
+                                                    type="info"
+                                                    content={ (
+                                                        <Trans
+                                                            i18nKey={ "authenticationProvider:forms.jitProvisioning." +
+                                                                "accountLookupAttributeMappings.infoNotification" }
+                                                        >
+                                                            The local attribute dropdown displays attributes
+                                                            that have uniqueness constraints enabled. To configure
+                                                            additional attributes for lookup, configure uniqueness
+                                                            settings in the <Link
+                                                                onClick={ handleLocalAttributeSectionNavigation }
+                                                                external={ false }
+                                                            >
+                                                                local attributes
+                                                            </Link> section.
+                                                        </Trans>
+                                                    ) }
+                                                    size="small"
+                                                />
+                                            )
+                                            : null
+                                    }
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Segment padded>
+                                        <Header as="h6">
+                                            { t("authenticationProvider:" +
+                                                "forms.jitProvisioning.accountLookupAttributeMappings." +
+                                                "primary.heading") }
+                                        </Header>
+                                        <Grid>
+                                            <Grid.Row columns={ 2 }>
+                                                <Grid.Column>
+                                                    <Field
+                                                        name={ JITProvisioningConstants.PRIMARY_FEDERATED_ATTRIBUTE }
+                                                        label={ t("authenticationProvider:" +
+                                                            "forms.jitProvisioning.accountLookupAttributeMappings." +
+                                                            "primary.federatedAttribute.label") }
+                                                        required={ false }
+                                                        type="text"
+                                                        placeholder={ t("authenticationProvider:" +
+                                                            "forms.jitProvisioning.accountLookupAttributeMappings." +
+                                                            "primary.federatedAttribute.placeholder") }
+                                                        value={
+                                                            initialValues?.accountLookupAttributeMappings?.[0]
+                                                                ?.federatedAttribute || ""
+                                                        }
+                                                        data-componentid={ `${ testId }-primary-federated-attribute` }
+                                                        readOnly={ isReadOnly }
+                                                        disabled={
+                                                            !isJITProvisioningEnabled
+                                                            || !isAssociateLocalUserEnabled
+                                                        }
+                                                    />
+                                                </Grid.Column>
+                                                <Grid.Column>
+                                                    <Field
+                                                        name={ JITProvisioningConstants.PRIMARY_LOCAL_ATTRIBUTE }
+                                                        label={ t("authenticationProvider:" +
+                                                            "forms.jitProvisioning.accountLookupAttributeMappings." +
+                                                            "primary.localAttribute.label") }
+                                                        required={ false }
+                                                        type="dropdown"
+                                                        placeholder={ t("authenticationProvider:" +
+                                                            "forms.jitProvisioning.accountLookupAttributeMappings." +
+                                                            "primary.localAttribute.placeholder") }
+                                                        value={
+                                                            initialValues?.accountLookupAttributeMappings?.[0]
+                                                                ?.localAttribute || ""
+                                                        }
+                                                        children={ localClaimsOptions }
+                                                        loading={ isLocalClaimsLoading }
+                                                        data-componentid={ `${ testId }-primary-local-attribute` }
+                                                        readOnly={ isReadOnly }
+                                                        disabled={
+                                                            !isJITProvisioningEnabled ||
+                                                            !isAssociateLocalUserEnabled
+                                                        }
+                                                    />
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        </Grid>
+                                    </Segment>
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Segment padded>
+                                        <Header as="h6">
+                                            { t("authenticationProvider:" +
+                                                "forms.jitProvisioning.accountLookupAttributeMappings." +
+                                                "secondary.heading") }
+                                        </Header>
+                                        <Grid>
+                                            <Grid.Row columns={ 2 }>
+                                                <Grid.Column>
+                                                    <Field
+                                                        name={ JITProvisioningConstants.SECONDARY_FEDERATED_ATTRIBUTE }
+                                                        label={ t("authenticationProvider:" +
+                                                            "forms.jitProvisioning.accountLookupAttributeMappings." +
+                                                            "secondary.federatedAttribute.label") }
+                                                        required={ false }
+                                                        type="text"
+                                                        placeholder={ t("authenticationProvider:" +
+                                                            "forms.jitProvisioning.accountLookupAttributeMappings." +
+                                                            "secondary.federatedAttribute.placeholder") }
+                                                        value={
+                                                            initialValues?.accountLookupAttributeMappings?.[1]
+                                                                ?.federatedAttribute || ""
+                                                        }
+                                                        data-componentid={ `${ testId }-secondary-federated-attribute` }
+                                                        readOnly={ isReadOnly }
+                                                        disabled={
+                                                            !isJITProvisioningEnabled
+                                                            || !isAssociateLocalUserEnabled
+                                                        }
+                                                    />
+                                                </Grid.Column>
+                                                <Grid.Column>
+                                                    <Field
+                                                        name={ JITProvisioningConstants.SECONDARY_LOCAL_ATTRIBUTE }
+                                                        label={ t("authenticationProvider:" +
+                                                            "forms.jitProvisioning.accountLookupAttributeMappings." +
+                                                            "secondary.localAttribute.label") }
+                                                        required={ false }
+                                                        type="dropdown"
+                                                        placeholder={ t("authenticationProvider:" +
+                                                            "forms.jitProvisioning.accountLookupAttributeMappings." +
+                                                            "secondary.localAttribute.placeholder") }
+                                                        value={
+                                                            initialValues?.accountLookupAttributeMappings?.[1]
+                                                                ?.localAttribute || ""
+                                                        }
+                                                        children={ localClaimsOptions }
+                                                        loading={ isLocalClaimsLoading }
+                                                        data-componentid={ `${ testId }-secondary-local-attribute` }
+                                                        readOnly={ isReadOnly }
+                                                        disabled={
+                                                            !isJITProvisioningEnabled ||
+                                                            !isAssociateLocalUserEnabled
+                                                        }
+                                                    />
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        </Grid>
+                                    </Segment>
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
+                                    <Field
+                                        name={ JITProvisioningConstants.SKIP_JIT_FOR_LOOKUP_FAILURE }
+                                        required={ false }
+                                        value={
+                                            initialValues?.isSkipJITForLookupFailure
+                                                ? [ JITProvisioningConstants.SKIP_JIT_FOR_LOOKUP_FAILURE ]
+                                                : []
+                                        }
+                                        type="checkbox"
+                                        children={ [ {
+                                            label: t("authenticationProvider:" +
+                                                "forms.jitProvisioning.skipJITForLookupFailure.label"),
+                                            value: JITProvisioningConstants.SKIP_JIT_FOR_LOOKUP_FAILURE
+                                        } ] }
+                                        data-componentid={ `${ testId }-skip-jit-for-lookup-failure` }
+                                        readOnly={ isReadOnly }
+                                        disabled={ !isJITProvisioningEnabled || !isAssociateLocalUserEnabled }
                                     />
-                                )
-                                : null
-                        }
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                        <Segment padded>
-                            <Header as="h6">
-                                { t("authenticationProvider:" +
-                                    "forms.jitProvisioning.accountLookupAttributeMappings." +
-                                    "primary.heading") }
-                            </Header>
-                            <Grid>
-                                <Grid.Row columns={ 2 }>
-                                    <Grid.Column>
-                                        <Field
-                                            name={ JITProvisioningConstants.PRIMARY_FEDERATED_ATTRIBUTE }
-                                            label={ t("authenticationProvider:" +
-                                                "forms.jitProvisioning.accountLookupAttributeMappings." +
-                                                "primary.federatedAttribute.label") }
-                                            required={ false }
-                                            type="text"
-                                            placeholder={ t("authenticationProvider:" +
-                                                "forms.jitProvisioning.accountLookupAttributeMappings." +
-                                                "primary.federatedAttribute.placeholder") }
-                                            value={
-                                                initialValues?.accountLookupAttributeMappings?.[0]
-                                                    ?.federatedAttribute || ""
-                                            }
-                                            data-componentid={ `${ testId }-primary-federated-attribute` }
-                                            readOnly={ isReadOnly }
-                                            disabled={ !isJITProvisioningEnabled || !isAssociateLocalUserEnabled }
-                                        />
-                                    </Grid.Column>
-                                    <Grid.Column>
-                                        <Field
-                                            name={ JITProvisioningConstants.PRIMARY_LOCAL_ATTRIBUTE }
-                                            label={ t("authenticationProvider:" +
-                                                "forms.jitProvisioning.accountLookupAttributeMappings." +
-                                                "primary.localAttribute.label") }
-                                            required={ false }
-                                            type="dropdown"
-                                            placeholder={ t("authenticationProvider:" +
-                                                "forms.jitProvisioning.accountLookupAttributeMappings." +
-                                                "primary.localAttribute.placeholder") }
-                                            value={
-                                                initialValues?.accountLookupAttributeMappings?.[0]
-                                                    ?.localAttribute || ""
-                                            }
-                                            children={ localClaimsOptions }
-                                            loading={ isLocalClaimsLoading }
-                                            data-componentid={ `${ testId }-primary-local-attribute` }
-                                            readOnly={ isReadOnly }
-                                            disabled={ !isJITProvisioningEnabled || !isAssociateLocalUserEnabled }
-                                        />
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </Segment>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                        <Segment padded>
-                            <Header as="h6">
-                                { t("authenticationProvider:" +
-                                    "forms.jitProvisioning.accountLookupAttributeMappings." +
-                                    "secondary.heading") }
-                            </Header>
-                            <Grid>
-                                <Grid.Row columns={ 2 }>
-                                    <Grid.Column>
-                                        <Field
-                                            name={ JITProvisioningConstants.SECONDARY_FEDERATED_ATTRIBUTE }
-                                            label={ t("authenticationProvider:" +
-                                                "forms.jitProvisioning.accountLookupAttributeMappings." +
-                                                "secondary.federatedAttribute.label") }
-                                            required={ false }
-                                            type="text"
-                                            placeholder={ t("authenticationProvider:" +
-                                                "forms.jitProvisioning.accountLookupAttributeMappings." +
-                                                "secondary.federatedAttribute.placeholder") }
-                                            value={
-                                                initialValues?.accountLookupAttributeMappings?.[1]
-                                                    ?.federatedAttribute || ""
-                                            }
-                                            data-componentid={ `${ testId }-secondary-federated-attribute` }
-                                            readOnly={ isReadOnly }
-                                            disabled={ !isJITProvisioningEnabled || !isAssociateLocalUserEnabled }
-                                        />
-                                    </Grid.Column>
-                                    <Grid.Column>
-                                        <Field
-                                            name={ JITProvisioningConstants.SECONDARY_LOCAL_ATTRIBUTE }
-                                            label={ t("authenticationProvider:" +
-                                                "forms.jitProvisioning.accountLookupAttributeMappings." +
-                                                "secondary.localAttribute.label") }
-                                            required={ false }
-                                            type="dropdown"
-                                            placeholder={ t("authenticationProvider:" +
-                                                "forms.jitProvisioning.accountLookupAttributeMappings." +
-                                                "secondary.localAttribute.placeholder") }
-                                            value={
-                                                initialValues?.accountLookupAttributeMappings?.[1]
-                                                    ?.localAttribute || ""
-                                            }
-                                            children={ localClaimsOptions }
-                                            loading={ isLocalClaimsLoading }
-                                            data-componentid={ `${ testId }-secondary-local-attribute` }
-                                            readOnly={ isReadOnly }
-                                            disabled={ !isJITProvisioningEnabled || !isAssociateLocalUserEnabled }
-                                        />
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </Segment>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
-                        <Field
-                            name={ JITProvisioningConstants.SKIP_JIT_FOR_LOOKUP_FAILURE }
-                            required={ false }
-                            value={
-                                initialValues?.isSkipJITForLookupFailure
-                                    ? [ JITProvisioningConstants.SKIP_JIT_FOR_LOOKUP_FAILURE ]
-                                    : []
-                            }
-                            type="checkbox"
-                            children={ [ {
-                                label: t("authenticationProvider:" +
-                                    "forms.jitProvisioning.skipJITForLookupFailure.label"),
-                                value: JITProvisioningConstants.SKIP_JIT_FOR_LOOKUP_FAILURE
-                            } ] }
-                            data-componentid={ `${ testId }-skip-jit-for-lookup-failure` }
-                            readOnly={ isReadOnly }
-                            disabled={ !isJITProvisioningEnabled || !isAssociateLocalUserEnabled }
-                        />
-                        <Hint>
-                            { t("authenticationProvider:" +
-                                "forms.jitProvisioning.skipJITForLookupFailure.hint") }
-                        </Hint>
-                    </Grid.Column>
-                </Grid.Row>
+                                    <Hint>
+                                        { t("authenticationProvider:" +
+                                            "forms.jitProvisioning.skipJITForLookupFailure.hint") }
+                                    </Hint>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </>
+                    )
+                }
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
                         <Show when={ featureConfig?.identityProviders?.scopes?.update }>
