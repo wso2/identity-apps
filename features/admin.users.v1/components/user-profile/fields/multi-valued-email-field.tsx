@@ -256,7 +256,13 @@ const MultiValuedEmailField: FunctionComponent<MultiValuedEmailFieldPropsInterfa
 
         const existingEmailAddresses: string[] = emailAddressesFieldValue ?? [];
 
-        form.change(emailAddressesFieldName, [ ...existingEmailAddresses, newEmailAddress ]);
+        form.batch(() => {
+            // If the email addresses list is empty, set the new email address as primary.
+            if (existingEmailAddresses.length === 0) {
+                form.change(emailsFieldName, newEmailAddress);
+            }
+            form.change(emailAddressesFieldName, [ ...existingEmailAddresses, newEmailAddress ]);
+        });
         addFieldRef.current.value = "";
     };
 
