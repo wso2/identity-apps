@@ -952,7 +952,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
         },
         jitProvisioning: {
             accountLookupAttributeMappings: {
-                heading: "Account Lookup Attribute Mappings",
+                heading: "Account lookup attribute mappings",
                 hint: "Configure how to look up existing local user accounts when associating " +
                     "with federated users. The primary mapping will be used first, and if no " +
                     "match is found, the secondary mapping will be tried.",
@@ -965,23 +965,23 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 },
                 primary: {
                     federatedAttribute: {
-                        label: "Federated Attribute",
+                        label: "Federated attribute",
                         placeholder: "Enter federated attribute name"
                     },
-                    heading: "Primary Attribute Mapping",
+                    heading: "Primary attribute mapping",
                     localAttribute: {
-                        label: "Local Attribute",
+                        label: "Local attribute",
                         placeholder: "Select local attribute"
                     }
                 },
                 secondary: {
                     federatedAttribute: {
-                        label: "Federated Attribute",
+                        label: "Federated attribute",
                         placeholder: "Enter federated attribute name"
                     },
-                    heading: "Secondary Attribute Mapping (Optional)",
+                    heading: "Secondary attribute mapping (Optional)",
                     localAttribute: {
-                        label: "Local Attribute",
+                        label: "Local attribute",
                         placeholder: "Select local attribute"
                     }
                 }
@@ -989,10 +989,10 @@ export const authenticationProvider:AuthenticationProviderNS = {
             attributeSyncMethod: {
                 hint: "Select the method used for syncing attributes between a JIT-provisioned " +
                     "user account and a local user account.",
-                label: "Attribute Synchronization Method",
+                label: "Attribute synchronization method",
                 options: {
                     overrideAll: {
-                        label: "Override All",
+                        label: "Override all",
                         description: "All attributes of the local user account will be overridden by " +
                             "the attributes received from the external identity provider."
                     },
@@ -1002,7 +1002,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
                             "be synced with the local user account."
                     },
                     preserveLocal: {
-                        label: "Preserve Local",
+                        label: "Preserve local",
                         description: "Only the attributes received from the identity provider will be " +
                             "updated while other attributes of the local user account are preserved."
                     }
