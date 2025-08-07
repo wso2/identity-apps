@@ -19,20 +19,21 @@
 /**
  * Utility function to format date and time for backend requests.
  * Converts milliseconds to a specific string format.
- * @param {string} ms - The time in milliseconds as a string.
- * @param {boolean} isStart - Indicates if the time is a start time.
- * @returns {string} - Formatted date and time string for backend.
+ *
+ * @param ms - The time in milliseconds as a string.
+ * @param _isStart - Indicates if the time is a start time (unused).
+ * @returns Formatted date and time string for backend.
  */
-export const formatMsToBackend = (ms: string, isStart: boolean): string => {
+export const formatMsToBackend = (ms: string, _isStart: boolean): string => {
     if (!ms) return "";
-    const date = new Date(Number(ms));
-    const yyyy = date.getFullYear();
-    const MM = String(date.getMonth() + 1).padStart(2, '0');
-    const dd = String(date.getDate()).padStart(2, '0');
-    const HH = String(date.getHours()).padStart(2, '0');
-    const mm = String(date.getMinutes()).padStart(2, '0');
-    const ss = String(date.getSeconds()).padStart(2, '0');
-    const SSS = String(date.getMilliseconds()).padStart(3, '0');
+    const date: Date = new Date(Number(ms));
+    const yyyy: number = date.getFullYear();
+    const MM: string = String(date.getMonth() + 1).padStart(2, "0");
+    const dd: string = String(date.getDate()).padStart(2, "0");
+    const HH: string = String(date.getHours()).padStart(2, "0");
+    const mm: string = String(date.getMinutes()).padStart(2, "0");
+    const ss: string = String(date.getSeconds()).padStart(2, "0");
+    const SSS: string = String(date.getMilliseconds()).padStart(3, "0");
 
-    return `${yyyy}-${MM}-${dd}:${HH}:${mm}:${ss}.${SSS}`;
+    return `${yyyy}-${MM}-${dd} ${HH}:${mm}:${ss}.${SSS}`;
 };

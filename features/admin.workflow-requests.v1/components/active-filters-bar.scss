@@ -53,7 +53,7 @@ $font-size-normal: 12px;
     background: $light-background;
     padding: $spacing-md;
     border: 1px solid $border-color;
-    margin-bottom: $spacing-xxxl;
+    margin-bottom: $spacing-md;
     @include border-radius($border-radius);
     box-shadow: none;
     display: flex;

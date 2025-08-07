@@ -19,7 +19,11 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Dropdown, DropdownProps } from "semantic-ui-react";
-import { WorkflowInstanceOperationType, WorkflowInstanceRequestType, WorkflowInstanceStatus } from "../models/workflowRequests";
+import {
+    WorkflowInstanceOperationType,
+    WorkflowInstanceRequestType,
+    WorkflowInstanceStatus
+} from "../models/workflowRequests";
 import "./filter-dropdowns.scss";
 
 interface FilterDropdownProps {
@@ -31,15 +35,39 @@ interface FilterDropdownProps {
 }
 
 export const WorkflowRequestsStatusDropdown: React.FC<FilterDropdownProps> =
-({ value, onChange, style, placeholder, ...rest }) => {
+({ value, onChange, style, placeholder, ..._rest }: FilterDropdownProps) => {
     const { t } = useTranslation();
-    const statusOptions = [
-        { key: WorkflowInstanceStatus.ALL_TASKS, value: WorkflowInstanceStatus.ALL_TASKS, text: t("approvalWorkflows:status.all") },
-        { key: WorkflowInstanceStatus.PENDING, value: WorkflowInstanceStatus.PENDING, text: t("approvalWorkflows:status.pending") },
-        { key: WorkflowInstanceStatus.APPROVED, value: WorkflowInstanceStatus.APPROVED, text: t("approvalWorkflows:status.approved") },
-        { key: WorkflowInstanceStatus.REJECTED, value: WorkflowInstanceStatus.REJECTED, text: t("approvalWorkflows:status.rejected") },
-        { key: WorkflowInstanceStatus.FAILED, value: WorkflowInstanceStatus.FAILED, text: t("approvalWorkflows:status.failed") },
-        { key: WorkflowInstanceStatus.DELETED, value: WorkflowInstanceStatus.DELETED, text: t("approvalWorkflows:status.deleted") }
+    const statusOptions: Array<{ key: WorkflowInstanceStatus; text: string; value: WorkflowInstanceStatus }> = [
+        {
+            key: WorkflowInstanceStatus.ALL_TASKS,
+            text: t("approvalWorkflows:status.all"),
+            value: WorkflowInstanceStatus.ALL_TASKS
+        },
+        {
+            key: WorkflowInstanceStatus.PENDING,
+            text: t("approvalWorkflows:status.pending"),
+            value: WorkflowInstanceStatus.PENDING
+        },
+        {
+            key: WorkflowInstanceStatus.APPROVED,
+            text: t("approvalWorkflows:status.approved"),
+            value: WorkflowInstanceStatus.APPROVED
+        },
+        {
+            key: WorkflowInstanceStatus.REJECTED,
+            text: t("approvalWorkflows:status.rejected"),
+            value: WorkflowInstanceStatus.REJECTED
+        },
+        {
+            key: WorkflowInstanceStatus.FAILED,
+            text: t("approvalWorkflows:status.failed"),
+            value: WorkflowInstanceStatus.FAILED
+        },
+        {
+            key: WorkflowInstanceStatus.DELETED,
+            text: t("approvalWorkflows:status.deleted"),
+            value: WorkflowInstanceStatus.DELETED
+        }
     ];
 
     return (
@@ -56,12 +84,24 @@ export const WorkflowRequestsStatusDropdown: React.FC<FilterDropdownProps> =
     );
 };
 
-export const WorkflowRequestRequestTypeDropdown: React.FC<FilterDropdownProps> = 
-({ value, onChange, style, placeholder, ...rest }) => {
-    const { t } = useTranslation(["approvalWorkflows"]);
-    const eventTypeOptions = [
-        { key: WorkflowInstanceRequestType.ALL_TASKS, value: WorkflowInstanceRequestType.ALL_TASKS, text: t("approvalWorkflows:eventType.all") },
-        { key: WorkflowInstanceRequestType.MY_TASKS, value: WorkflowInstanceRequestType.MY_TASKS, text: t("approvalWorkflows:eventType.myTasks") }
+export const WorkflowRequestRequestTypeDropdown: React.FC<FilterDropdownProps> =
+({ value, onChange, style, placeholder, ..._rest }: FilterDropdownProps) => {
+    const { t } = useTranslation([ "approvalWorkflows" ]);
+    const eventTypeOptions: Array<{
+        key: WorkflowInstanceRequestType;
+        text: string;
+        value: WorkflowInstanceRequestType;
+    }> = [
+        {
+            key: WorkflowInstanceRequestType.ALL_TASKS,
+            text: t("approvalWorkflows:eventType.all"),
+            value: WorkflowInstanceRequestType.ALL_TASKS
+        },
+        {
+            key: WorkflowInstanceRequestType.MY_TASKS,
+            text: t("approvalWorkflows:eventType.myTasks"),
+            value: WorkflowInstanceRequestType.MY_TASKS
+        }
     ];
 
     return (
@@ -78,20 +118,44 @@ export const WorkflowRequestRequestTypeDropdown: React.FC<FilterDropdownProps> =
     );
 };
 
-export const WorkflowRequestOperationTypeDropdown: React.FC<FilterDropdownProps> = 
-({ value, onChange, style, placeholder, ...rest }) => {
-    const { t } = useTranslation(["approvalWorkflows"]);
-    const operationTypeOptions = [
-        {key: WorkflowInstanceOperationType.ALL, value: WorkflowInstanceOperationType.ALL, text: t("approvalWorkflows:operationType.all")},
-        {key: WorkflowInstanceOperationType.ADD_USER, value: WorkflowInstanceOperationType.ADD_USER, text: t("approvalWorkflows:operationType.createUser")},
-        {key: WorkflowInstanceOperationType.DELETE_USER, value: WorkflowInstanceOperationType.DELETE_USER, text: t("approvalWorkflows:operationType.deleteUser")},
-        {key: WorkflowInstanceOperationType.UPDATE_ROLES_OF_USERS, value: WorkflowInstanceOperationType.UPDATE_ROLES_OF_USERS, text: t("approvalWorkflows:operationType.updateUserRoles")},
-        {key: WorkflowInstanceOperationType.ADD_ROLE, value: WorkflowInstanceOperationType.ADD_ROLE, text: t("approvalWorkflows:operationType.createRole")},
-        {key: WorkflowInstanceOperationType.DELETE_ROLE, value: WorkflowInstanceOperationType.DELETE_ROLE, text: t("approvalWorkflows:operationType.deleteRole")},
-        {key: WorkflowInstanceOperationType.UPDATE_ROLE_NAME, value: WorkflowInstanceOperationType.UPDATE_ROLE_NAME, text: t("approvalWorkflows:operationType.updateRoleName")},
-        {key: WorkflowInstanceOperationType.UPDATE_USERS_OF_ROLES, value: WorkflowInstanceOperationType.UPDATE_USERS_OF_ROLES, text: t("approvalWorkflows:operationType.updateRoleUsers")},
-        {key: WorkflowInstanceOperationType.DELETE_USER_CLAIMS, value: WorkflowInstanceOperationType.DELETE_USER_CLAIMS, text: t("approvalWorkflows:operationType.deleteUserClaims")},
-        {key: WorkflowInstanceOperationType.UPDATE_USER_CLAIMS, value: WorkflowInstanceOperationType.UPDATE_USER_CLAIMS, text: t("approvalWorkflows:operationType.updateUserClaims")}
+export const WorkflowRequestOperationTypeDropdown: React.FC<FilterDropdownProps> =
+({ value, onChange, style, placeholder, ..._rest }: FilterDropdownProps) => {
+    const { t } = useTranslation([ "approvalWorkflows" ]);
+    const operationTypeOptions: Array<{
+        key: WorkflowInstanceOperationType;
+        text: string;
+        value: WorkflowInstanceOperationType;
+    }> = [
+        {
+            key: WorkflowInstanceOperationType.ALL,
+            text: t("approvalWorkflows:operationType.all"),
+            value: WorkflowInstanceOperationType.ALL
+        },
+        {
+            key: WorkflowInstanceOperationType.ADD_USER,
+            text: t("approvalWorkflows:operationType.createUser"),
+            value: WorkflowInstanceOperationType.ADD_USER
+        },
+        {
+            key: WorkflowInstanceOperationType.DELETE_USER,
+            text: t("approvalWorkflows:operationType.deleteUser"),
+            value: WorkflowInstanceOperationType.DELETE_USER
+        },
+        {
+            key: WorkflowInstanceOperationType.UPDATE_ROLES_OF_USERS,
+            text: t("approvalWorkflows:operationType.updateUserRoles"),
+            value: WorkflowInstanceOperationType.UPDATE_ROLES_OF_USERS
+        },
+        {
+            key: WorkflowInstanceOperationType.ADD_ROLE,
+            text: t("approvalWorkflows:operationType.createRole"),
+            value: WorkflowInstanceOperationType.ADD_ROLE
+        },
+        {
+            key: WorkflowInstanceOperationType.DELETE_ROLE,
+            text: t("approvalWorkflows:operationType.deleteRole"),
+            value: WorkflowInstanceOperationType.DELETE_ROLE
+        }
     ];
 
     return (

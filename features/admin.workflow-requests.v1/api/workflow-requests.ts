@@ -18,24 +18,27 @@
 
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosError } from "axios";
 import { store } from "../../admin.core.v1/store";
-import { WorkflowInstanceListResponseInterface, WorkflowInstanceResponseInterface } from "../models/workflowRequests";
 
 /**
  * Get an axios instance.
  */
-const httpClient = AsgardeoSPAClient.getInstance()
+const httpClient: (config: any) => Promise<any> = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Deletes a workflow instance by ID.
  *
- * @param {string} workflowInstanceId - ID of the workflow instance to delete.
- * @return {Promise<void>} A promise that resolves if the deletion is successful.
+ * @param workflowInstanceId - ID of the workflow instance to delete.
+ * @returns A promise that resolves if the deletion is successful.
  */
 export const deleteWorkflowInstance = (workflowInstanceId: string): Promise<void> => {
-    const requestConfig = {
+    const requestConfig: {
+        headers: { "Content-Type": string };
+        method: HttpMethods;
+        url: string;
+    } = {
         headers: {
             "Content-Type": "application/json"
         },

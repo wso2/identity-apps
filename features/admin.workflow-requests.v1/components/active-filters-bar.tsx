@@ -43,8 +43,8 @@ const ActiveFiltersBar: React.FC<ActiveFiltersBarProps> = (
     return (
         <div className="workflow-requests-active-filters-bar modern-active-filters-bar">
             <div className="filters-container">
-                {filters && filters.length > 0 ? (
-                    filters.map(( filter ) => (
+                { filters && filters.length > 0 ? (
+                    filters.map(( filter: FilterTag ) => (
                         <div
                             key={ filter.key }
                             data-componentid={ `active-filters-bar-filter-${filter.key}` }
@@ -92,4 +92,3 @@ const ActiveFiltersBar: React.FC<ActiveFiltersBarProps> = (
 };
 
 export default ActiveFiltersBar;
-
