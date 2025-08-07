@@ -1599,7 +1599,7 @@ importers:
         specifier: ^1.6.2
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.26.205
+        specifier: workspace:^
         version: link:../admin.organizations.v1
       '@wso2is/admin.rules.v1':
         specifier: ^0.6.0
