@@ -1,5 +1,28 @@
 # @wso2is/admin.core.v1
 
+## 2.48.0
+
+### Minor Changes
+
+- [#8592](https://github.com/wso2/identity-apps/pull/8592) [`3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523`](https://github.com/wso2/identity-apps/commit/3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523) Thanks [@Malith-19](https://github.com/Malith-19)! - Move the Approvals to common component.
+
+### Patch Changes
+
+- Updated dependencies [[`3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523`](https://github.com/wso2/identity-apps/commit/3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523), [`64f8425138bf065e883f60fb9be275c435ba5f0d`](https://github.com/wso2/identity-apps/commit/64f8425138bf065e883f60fb9be275c435ba5f0d), [`6a5567d97fd49b6e1c1869f4509b631b41d6d9c6`](https://github.com/wso2/identity-apps/commit/6a5567d97fd49b6e1c1869f4509b631b41d6d9c6)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.0
+  - @wso2is/i18n@2.26.2
+  - @wso2is/admin.users.v1@2.34.5
+  - @wso2is/admin.flows.v1@1.0.16
+  - @wso2is/admin.agents.v1@1.0.24
+  - @wso2is/admin.ask-password-flow-builder.v1@1.0.14
+  - @wso2is/admin.branding.v1@2.32.1
+  - @wso2is/admin.email-management.v1@2.25.211
+  - @wso2is/admin.flow-builder-core.v1@0.9.12
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.0.14
+  - @wso2is/admin.registration-flow-builder.v1@0.9.17
+  - @wso2is/admin.server-configurations.v1@2.35.17
+  - @wso2is/admin.roles.v2@2.27.179
+
 ## 2.47.3
 
 ### Patch Changes
