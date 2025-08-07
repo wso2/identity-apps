@@ -379,6 +379,7 @@ export interface approvalWorkflowsNS {
     };
     timeRanges: {
         all: string;
+        last1Hour: string;
         last6Hours: string;
         last12Hours: string;
         last24Hours: string;

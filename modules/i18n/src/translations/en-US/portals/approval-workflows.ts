@@ -390,6 +390,7 @@ export const approvalWorkflows: approvalWorkflowsNS = {
     },
     timeRanges: {
         all: "All",
+        last1Hour: "Last 1 hour",
         last6Hours: "Last 6 hours",
         last12Hours: "Last 12 hours",
         last24Hours: "Last 24 hours",
