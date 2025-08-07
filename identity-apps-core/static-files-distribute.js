@@ -21,7 +21,7 @@ const fs = require("fs-extra");
 
 const themeFiles = path.join(__dirname, "..", "modules", "theme", "dist", "lib");
 const apps = [
-    "accounts-portal",
+    "accounts",
     "authentication-portal",
     "recovery-portal",
     "x509-certificate-authentication-portal"

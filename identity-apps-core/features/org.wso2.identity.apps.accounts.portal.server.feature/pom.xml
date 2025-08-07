@@ -37,7 +37,7 @@
     <dependencies>
         <dependency>
             <groupId>org.wso2.identity.apps</groupId>
-            <artifactId>accounts-portal</artifactId>
+            <artifactId>accounts</artifactId>
             <type>war</type>
         </dependency>
     </dependencies>
@@ -59,7 +59,7 @@
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>org.wso2.identity.apps</groupId>
-                                    <artifactId>accounts-portal</artifactId>
+                                    <artifactId>accounts</artifactId>
                                     <type>war</type>
                                     <overWrite>true</overWrite>
                                     <outputDirectory>${basedir}/src/main/resources/</outputDirectory>
