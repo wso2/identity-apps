@@ -513,7 +513,7 @@ importers:
         specifier: ^2.36.14
         version: link:../../features/admin.applications.v1
       '@wso2is/admin.approval-workflows.v1':
-        specifier: ^1.0.6
+        specifier: ^1.0.7
         version: link:../../features/admin.approval-workflows.v1
       '@wso2is/admin.ask-password-flow-builder.v1':
         specifier: workspace:^
@@ -525,7 +525,7 @@ importers:
         specifier: ^2.25.89
         version: link:../../features/admin.authorization.v1
       '@wso2is/admin.branding.v1':
-        specifier: ^2.32.0
+        specifier: ^2.32.1
         version: link:../../features/admin.branding.v1
       '@wso2is/admin.certificates.v1':
         specifier: ^2.25.204
@@ -540,13 +540,13 @@ importers:
         specifier: ^2.25.218
         version: link:../../features/admin.console-settings.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.47.1
+        specifier: ^2.48.0
         version: link:../../features/admin.core.v1
       '@wso2is/admin.email-and-sms.v1':
         specifier: ^2.25.204
         version: link:../../features/admin.email-and-sms.v1
       '@wso2is/admin.email-management.v1':
-        specifier: ^2.25.210
+        specifier: ^2.25.211
         version: link:../../features/admin.email-management.v1
       '@wso2is/admin.email-providers.v1':
         specifier: ^2.27.3
@@ -558,13 +558,13 @@ importers:
         specifier: ^1.7.6
         version: link:../../features/admin.feature-gate.v1
       '@wso2is/admin.flows.v1':
-        specifier: ^1.0.15
+        specifier: ^1.0.16
         version: link:../../features/admin.flows.v1
       '@wso2is/admin.groups.v1':
         specifier: ^2.27.123
         version: link:../../features/admin.groups.v1
       '@wso2is/admin.home.v1':
-        specifier: ^1.7.21
+        specifier: ^1.7.22
         version: link:../../features/admin.home.v1
       '@wso2is/admin.identity-verification-providers.v1':
         specifier: ^2.27.204
@@ -609,7 +609,7 @@ importers:
         specifier: ^2.25.205
         version: link:../../features/admin.roles.v1
       '@wso2is/admin.roles.v2':
-        specifier: ^2.27.177
+        specifier: ^2.27.179
         version: link:../../features/admin.roles.v2
       '@wso2is/admin.saml2-configuration.v1':
         specifier: ^2.25.206
@@ -618,7 +618,7 @@ importers:
         specifier: ^2.25.204
         version: link:../../features/admin.secrets.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.16
+        specifier: ^2.35.17
         version: link:../../features/admin.server-configurations.v1
       '@wso2is/admin.session-management.v1':
         specifier: ^2.25.205
@@ -642,7 +642,7 @@ importers:
         specifier: ^1.5.205
         version: link:../../features/admin.username-validation.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.34.4
+        specifier: ^2.34.5
         version: link:../../features/admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.37
@@ -653,15 +653,15 @@ importers:
       '@wso2is/admin.webhooks.v1':
         specifier: ^1.0.5
         version: link:../../features/admin.webhooks.v1
-      '@wso2is/admin.workflow-approvals.v1':
-        specifier: ^2.26.7
-        version: link:../../features/admin.workflow-approvals.v1
       '@wso2is/admin.wsfed-configuration.v1':
         specifier: ^2.25.205
         version: link:../../features/admin.wsfed-configuration.v1
       '@wso2is/common.ui.v1':
         specifier: ^0.2.0
         version: link:../../features/common.ui.v1
+      '@wso2is/common.workflow-approvals.v1':
+        specifier: ^1.0.0
+        version: link:../../features/common.workflow-approvals.v1
       '@wso2is/core':
         specifier: ^2.11.0
         version: link:../../modules/core
@@ -675,7 +675,7 @@ importers:
         specifier: ^2.3.22
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.26.1
+        specifier: ^2.26.2
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.20
@@ -984,6 +984,9 @@ importers:
       '@wso2is/common.ui.v1':
         specifier: ^0.2.0
         version: link:../../features/common.ui.v1
+      '@wso2is/common.workflow-approvals.v1':
+        specifier: ^1.0.0
+        version: link:../../features/common.workflow-approvals.v1
       '@wso2is/core':
         specifier: ^2.11.0
         version: link:../../modules/core
@@ -991,7 +994,7 @@ importers:
         specifier: ^2.3.23
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.26.1
+        specifier: ^2.26.2
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.17
@@ -1247,7 +1250,7 @@ importers:
         specifier: ^2.3.22
         version: link:../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.26.0
+        specifier: ^2.26.2
         version: link:../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.16
@@ -2033,7 +2036,7 @@ importers:
         specifier: ^2.25.88
         version: link:../admin.authorization.v1
       '@wso2is/admin.branding.v1':
-        specifier: ^2.28.60
+        specifier: ^2.32.1
         version: link:../admin.branding.v1
       '@wso2is/admin.claims.v1':
         specifier: ^2.28.11
@@ -2045,7 +2048,7 @@ importers:
         specifier: ^2.25.218
         version: link:../admin.console-settings.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.43
+        specifier: ^2.48.0
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.40.0
@@ -2081,7 +2084,7 @@ importers:
         specifier: ^2.25.203
         version: link:../admin.secrets.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.16
+        specifier: ^2.35.17
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.template-core.v1':
         specifier: ^1.5.157
@@ -2108,7 +2111,7 @@ importers:
         specifier: ^2.3.22
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.25.4
+        specifier: ^2.26.2
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.12
@@ -2871,7 +2874,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@mui/x-tree-view':
         specifier: ^8.5.2
-        version: 8.9.0(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/material@5.13.0)(@mui/system@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
+        version: 8.9.2(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/material@5.13.0)(@mui/system@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
         version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -3093,7 +3096,7 @@ importers:
   features/admin.approval-workflows.v1:
     dependencies:
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.9
+        specifier: ^2.47.2
         version: link:../admin.core.v1
       '@wso2is/admin.groups.v1':
         specifier: ^2.27.76
@@ -3217,7 +3220,7 @@ importers:
         specifier: ^2.27.125
         version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.42
+        specifier: ^2.48.0
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.7.2
@@ -3232,7 +3235,7 @@ importers:
         specifier: ^0.6.0
         version: link:../admin.rules.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.16
+        specifier: ^2.35.17
         version: link:../admin.server-configurations.v1
       '@wso2is/common.ai.v1':
         specifier: ^2.27.3
@@ -4320,7 +4323,7 @@ importers:
         specifier: ^2.27.100
         version: link:../admin.branding.ai.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.47.0
+        specifier: ^2.48.0
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.39.1
@@ -4335,7 +4338,7 @@ importers:
         specifier: ^2.26.205
         version: link:../admin.organizations.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.9
+        specifier: ^2.35.17
         version: link:../admin.server-configurations.v1
       '@wso2is/common.branding.v1':
         specifier: ^2.28.1
@@ -4353,7 +4356,7 @@ importers:
         specifier: ^2.3.22
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.26.0
+        specifier: ^2.26.2
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.16
@@ -5903,7 +5906,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@mui/x-tree-view':
         specifier: ^8.5.2
-        version: 8.9.0(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/material@5.13.0)(@mui/system@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
+        version: 8.9.2(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/material@5.13.0)(@mui/system@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
         version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -6338,7 +6341,7 @@ importers:
         specifier: ^2.36.14
         version: link:../admin.applications.v1
       '@wso2is/admin.approval-workflows.v1':
-        specifier: ^1.0.6
+        specifier: ^1.0.7
         version: link:../admin.approval-workflows.v1
       '@wso2is/admin.ask-password-flow-builder.v1':
         specifier: workspace:^
@@ -6350,7 +6353,7 @@ importers:
         specifier: ^2.25.89
         version: link:../admin.authorization.v1
       '@wso2is/admin.branding.v1':
-        specifier: ^2.32.0
+        specifier: ^2.32.1
         version: link:../admin.branding.v1
       '@wso2is/admin.certificates.v1':
         specifier: ^2.25.204
@@ -6368,7 +6371,7 @@ importers:
         specifier: ^2.25.204
         version: link:../admin.email-and-sms.v1
       '@wso2is/admin.email-management.v1':
-        specifier: ^2.25.210
+        specifier: ^2.25.211
         version: link:../admin.email-management.v1
       '@wso2is/admin.email-providers.v1':
         specifier: ^2.27.3
@@ -6428,7 +6431,7 @@ importers:
         specifier: ^1.0.92
         version: link:../admin.push-providers.v1
       '@wso2is/admin.registration-flow-builder.v1':
-        specifier: ^0.9.16
+        specifier: ^0.9.17
         version: link:../admin.registration-flow-builder.v1
       '@wso2is/admin.remote-repository-configuration.v1':
         specifier: ^2.25.204
@@ -6437,7 +6440,7 @@ importers:
         specifier: ^2.25.205
         version: link:../admin.roles.v1
       '@wso2is/admin.roles.v2':
-        specifier: ^2.27.177
+        specifier: ^2.27.179
         version: link:../admin.roles.v2
       '@wso2is/admin.rules.v1':
         specifier: ^0.6.0
@@ -6449,7 +6452,7 @@ importers:
         specifier: ^2.25.204
         version: link:../admin.secrets.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.16
+        specifier: ^2.35.17
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.session-management.v1':
         specifier: ^2.25.205
@@ -6470,7 +6473,7 @@ importers:
         specifier: ^2.29.14
         version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.34.4
+        specifier: ^2.34.5
         version: link:../admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.37
@@ -6481,12 +6484,12 @@ importers:
       '@wso2is/admin.webhooks.v1':
         specifier: ^1.0.4
         version: link:../admin.webhooks.v1
-      '@wso2is/admin.workflow-approvals.v1':
-        specifier: ^2.26.7
-        version: link:../admin.workflow-approvals.v1
       '@wso2is/admin.wsfed-configuration.v1':
         specifier: ^2.25.205
         version: link:../admin.wsfed-configuration.v1
+      '@wso2is/common.workflow-approvals.v1':
+        specifier: ^1.0.0
+        version: link:../common.workflow-approvals.v1
       '@wso2is/core':
         specifier: ^2.11.0
         version: link:../../modules/core
@@ -6494,7 +6497,7 @@ importers:
         specifier: ^2.3.22
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.26.1
+        specifier: ^2.26.2
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.16
@@ -7201,16 +7204,16 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.branding.v1':
-        specifier: ^2.31.6
+        specifier: ^2.32.1
         version: link:../admin.branding.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.26
+        specifier: ^2.48.0
         version: link:../admin.core.v1
       '@wso2is/admin.flows.v1':
         specifier: workspace:^
         version: link:../admin.flows.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.9
+        specifier: ^2.35.17
         version: link:../admin.server-configurations.v1
       '@wso2is/common.branding.v1':
         specifier: ^2.27.1
@@ -7228,7 +7231,7 @@ importers:
         specifier: ^2.3.22
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.25.1
+        specifier: ^2.26.2
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.16
@@ -8919,7 +8922,7 @@ importers:
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.42
+        specifier: ^2.48.0
         version: link:../admin.core.v1
       '@wso2is/admin.flows.v1':
         specifier: workspace:^
@@ -9046,16 +9049,16 @@ importers:
         specifier: ^2.4.3
         version: 2.4.3(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.26
+        specifier: ^2.48.0
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: workspace:^
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.registration-flow-builder.v1':
-        specifier: ^0.9.10
+        specifier: ^0.9.17
         version: link:../admin.registration-flow-builder.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.9
+        specifier: ^2.35.17
         version: link:../admin.server-configurations.v1
       '@wso2is/react-components':
         specifier: ^2.9.16
@@ -9567,7 +9570,7 @@ importers:
         specifier: ^2.36.12
         version: link:../admin.applications.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.43
+        specifier: ^2.48.0
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.39.7
@@ -9594,7 +9597,7 @@ importers:
         specifier: ^2.9.3
         version: link:../../modules/core
       '@wso2is/i18n':
-        specifier: ^2.25.2
+        specifier: ^2.26.2
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.16
@@ -13163,7 +13166,7 @@ importers:
         specifier: ^2.27.125
         version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.42
+        specifier: ^2.48.0
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.7.2
@@ -13178,7 +13181,7 @@ importers:
         specifier: ^0.6.0
         version: link:../admin.rules.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.16
+        specifier: ^2.35.17
         version: link:../admin.server-configurations.v1
       '@wso2is/common.ai.v1':
         specifier: ^2.27.3
@@ -14551,13 +14554,13 @@ importers:
         specifier: ^2.27.125
         version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.42
+        specifier: ^2.48.0
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.7.5
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.flow-builder-core.v1':
-        specifier: ^0.9.11
+        specifier: ^0.9.12
         version: link:../admin.flow-builder-core.v1
       '@wso2is/admin.flows.v1':
         specifier: workspace:^
@@ -15650,7 +15653,7 @@ importers:
         specifier: ^2.33.99
         version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.43
+        specifier: ^2.48.0
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.40.0
@@ -15668,10 +15671,10 @@ importers:
         specifier: ^1.7.161
         version: link:../admin.remote-userstores.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.16
+        specifier: ^2.35.17
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.34.4
+        specifier: ^2.34.5
         version: link:../admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.37
@@ -15689,7 +15692,7 @@ importers:
         specifier: ^2.3.22
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.25.4
+        specifier: ^2.26.2
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.16
@@ -16914,7 +16917,7 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.42
+        specifier: ^2.48.0
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.39.4
@@ -16935,10 +16938,10 @@ importers:
         specifier: ^2.26.211
         version: link:../admin.organizations.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.16
+        specifier: ^2.35.17
         version: 'link:'
       '@wso2is/admin.users.v1':
-        specifier: ^2.32.5
+        specifier: ^2.34.5
         version: link:../admin.users.v1
       '@wso2is/admin.validation.v1':
         specifier: ^2.27.145
@@ -16959,7 +16962,7 @@ importers:
         specifier: ^2.3.22
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.25.6
+        specifier: ^2.26.2
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.16
@@ -17179,7 +17182,7 @@ importers:
         specifier: ^6.5.0
         version: 6.5.0(eslint@8.46.0)(typescript@4.9.5)
       '@wso2is/admin.registration-flow-builder.v1':
-        specifier: ^0.9.16
+        specifier: ^0.9.17
         version: link:../admin.registration-flow-builder.v1
       connect-history-api-fallback:
         specifier: ^2.0.0
@@ -19229,7 +19232,7 @@ importers:
         specifier: ^2.28.11
         version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.43
+        specifier: ^2.48.0
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.40.0
@@ -19247,16 +19250,16 @@ importers:
         specifier: ^2.26.208
         version: link:../admin.organizations.v1
       '@wso2is/admin.roles.v2':
-        specifier: ^2.27.177
+        specifier: ^2.27.179
         version: link:../admin.roles.v2
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.1
+        specifier: ^2.35.17
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.tenants.v1':
         specifier: ^2.29.14
         version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.34.4
+        specifier: ^2.34.5
         version: 'link:'
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.37
@@ -19277,7 +19280,7 @@ importers:
         specifier: ^2.3.23
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.25.0
+        specifier: ^2.26.2
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.19
@@ -20616,382 +20619,6 @@ importers:
         specifier: ^4.6.4
         version: 4.9.5
 
-  features/admin.workflow-approvals.v1:
-    dependencies:
-      '@asgardeo/auth-react':
-        specifier: ^5.1.2
-        version: 5.2.3(@babel/runtime-corejs3@7.26.7)(react-dom@18.3.1)(react@18.3.1)
-      '@emotion/react':
-        specifier: ^11.11.0
-        version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
-      '@emotion/styled':
-        specifier: ^11.11.0
-        version: 11.14.0(@emotion/react@11.14.0)(@types/react@18.0.18)(react@18.3.1)
-      '@microsoft/applicationinsights-core-js':
-        specifier: ^3.0.0
-        version: 3.3.5(tslib@2.8.1)
-      '@microsoft/applicationinsights-react-js':
-        specifier: ^3.4.2
-        version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.8.1)
-      '@microsoft/applicationinsights-web':
-        specifier: ^3.0.0
-        version: 3.3.5(tslib@2.8.1)
-      '@monaco-editor/react':
-        specifier: ^4.5.1
-        version: 4.6.0(monaco-editor@0.52.2)(react-dom@18.3.1)(react@18.3.1)
-      '@mui/icons-material':
-        specifier: ^5.11.16
-        version: 5.16.14(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
-      '@mui/lab':
-        specifier: 5.0.0-alpha.129
-        version: 5.0.0-alpha.129(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      '@mui/material':
-        specifier: 5.13.0
-        version: 5.13.0(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      '@mui/system':
-        specifier: ^5.12.3
-        version: 5.16.14(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.0.18)(react@18.3.1)
-      '@mui/utils':
-        specifier: ^5.12.3
-        version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
-      '@oxygen-ui/react':
-        specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
-      '@oxygen-ui/react-icons':
-        specifier: ^2.4.6
-        version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
-      '@wso2is/access-control':
-        specifier: ^3.3.20
-        version: link:../../modules/access-control
-      '@wso2is/admin.core.v1':
-        specifier: ^2.46.9
-        version: link:../admin.core.v1
-      '@wso2is/core':
-        specifier: ^2.7.0
-        version: link:../../modules/core
-      '@wso2is/dynamic-forms':
-        specifier: ^2.4.41
-        version: link:../../modules/dynamic-forms
-      '@wso2is/form':
-        specifier: ^2.7.1
-        version: link:../../modules/form
-      '@wso2is/forms':
-        specifier: ^2.3.22
-        version: link:../../modules/forms
-      '@wso2is/i18n':
-        specifier: ^2.24.10
-        version: link:../../modules/i18n
-      '@wso2is/react-components':
-        specifier: ^2.9.16
-        version: link:../../modules/react-components
-      '@wso2is/theme':
-        specifier: ^2.8.2
-        version: link:../../modules/theme
-      '@wso2is/validation':
-        specifier: ^2.4.1
-        version: link:../../modules/validation
-      axios:
-        specifier: ^0.19.2
-        version: 0.19.2
-      codemirror:
-        specifier: ^5.52.0
-        version: 5.65.18
-      country-language:
-        specifier: ^0.1.7
-        version: 0.1.7
-      deep-equal:
-        specifier: ^2.2.2
-        version: 2.2.3
-      file-saver:
-        specifier: ^2.0.5
-        version: 2.0.5
-      framer-motion:
-        specifier: ^11.1.9
-        version: 11.18.2(react-dom@18.3.1)(react@18.3.1)
-      history:
-        specifier: ^4.9.0
-        version: 4.10.1
-      html-react-parser:
-        specifier: ^2.0.0
-        version: 2.0.0(react@18.3.1)
-      i18next:
-        specifier: ^21.9.1
-        version: 21.10.0
-      i18next-browser-languagedetector:
-        specifier: ^6.1.5
-        version: 6.1.8
-      i18next-xhr-backend:
-        specifier: ^3.2.2
-        version: 3.2.2
-      js-beautify:
-        specifier: ^1.13.0
-        version: 1.15.1
-      lodash-es:
-        specifier: ^4.17.21
-        version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
-      mustache:
-        specifier: ^4.2.0
-        version: 4.2.0
-      node-forge:
-        specifier: ^0.10.0
-        version: 0.10.0
-      rc-tree:
-        specifier: ^4.0.0-beta.2
-        version: 4.2.2(react-dom@18.3.1)(react@18.3.1)
-      react:
-        specifier: ^18.2.0
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.2.0
-        version: 18.3.1(react@18.3.1)
-      react-draggable:
-        specifier: ^4.2.0
-        version: 4.4.6(react-dom@18.3.1)(react@18.3.1)
-      react-helmet:
-        specifier: ^5.2.1
-        version: 5.2.1(react@18.3.1)
-      react-i18next:
-        specifier: ^11.18.5
-        version: 11.18.6(i18next@21.10.0)(react-dom@18.3.1)(react@18.3.1)
-      react-joyride:
-        specifier: ^2.3.0
-        version: 2.9.3(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      react-notification-system:
-        specifier: ^0.4.0
-        version: 0.4.0(react-dom@18.3.1)(react@18.3.1)
-      react-redux:
-        specifier: ^7.2.9
-        version: 7.2.9(react-dom@18.3.1)(react@18.3.1)
-      react-router-dom:
-        specifier: ^4.3.1
-        version: 4.3.1(react@18.3.1)
-      recharts:
-        specifier: ^2.6.2
-        version: 2.15.1(react-dom@18.3.1)(react@18.3.1)
-      reduce-reducers:
-        specifier: ^1.0.4
-        version: 1.0.4
-      redux:
-        specifier: ^4.0.4
-        version: 4.2.1
-      redux-form:
-        specifier: ^8.3.7
-        version: 8.3.10(react-redux@7.2.9)(react@18.3.1)(redux@4.2.1)
-      redux-mock-store:
-        specifier: ^1.5.4
-        version: 1.5.5(redux@4.2.1)
-      redux-thunk:
-        specifier: ^2.3.0
-        version: 2.4.2(redux@4.2.1)
-      regenerator-runtime:
-        specifier: ^0.13.9
-        version: 0.13.11
-      semantic-ui-react:
-        specifier: ^2.1.3
-        version: 2.1.5(react-dom@18.3.1)(react@18.3.1)
-      slashes:
-        specifier: ^2.0.2
-        version: 2.0.2
-      styled-components:
-        specifier: ^4.4.1
-        version: 4.4.1(@babel/core@7.26.7)(react-dom@18.3.1)(react@18.3.1)
-      swr:
-        specifier: ^2.0.0
-        version: 2.3.2(react@18.3.1)
-      uuid:
-        specifier: ^8.3.0
-        version: 8.3.2
-    devDependencies:
-      '@pmmmwh/react-refresh-webpack-plugin':
-        specifier: ^0.4.3
-        version: 0.4.3(react-refresh@0.9.0)(webpack-dev-server@3.11.3)(webpack@5.84.1)
-      '@rollup/plugin-commonjs':
-        specifier: ^25.0.7
-        version: 25.0.8(rollup@4.34.4)
-      '@rollup/plugin-dynamic-import-vars':
-        specifier: ^2.1.2
-        version: 2.1.5(rollup@4.34.4)
-      '@rollup/plugin-image':
-        specifier: ^3.0.3
-        version: 3.0.3(rollup@4.34.4)
-      '@rollup/plugin-json':
-        specifier: ^6.1.0
-        version: 6.1.0(rollup@4.34.4)
-      '@rollup/plugin-node-resolve':
-        specifier: ^15.2.3
-        version: 15.3.1(rollup@4.34.4)
-      '@rollup/plugin-typescript':
-        specifier: ^11.1.6
-        version: 11.1.6(rollup@4.34.4)(tslib@2.8.1)(typescript@4.9.5)
-      '@svgr/rollup':
-        specifier: ^6.2.1
-        version: 6.5.1
-      '@svgr/webpack':
-        specifier: 4.3.2
-        version: 4.3.2
-      '@testing-library/dom':
-        specifier: ^7.24.3
-        version: 7.31.2
-      '@testing-library/jest-dom':
-        specifier: ^5.11.9
-        version: 5.17.0
-      '@testing-library/user-event':
-        specifier: ^12.7.3
-        version: 12.8.3(@testing-library/dom@7.31.2)
-      '@types/file-saver':
-        specifier: ^2.0.1
-        version: 2.0.7
-      '@types/history':
-        specifier: ^4.7.3
-        version: 4.7.11
-      '@types/jest':
-        specifier: ^26.0.14
-        version: 26.0.24
-      '@types/lodash-es':
-        specifier: ^4.17.4
-        version: 4.17.12
-      '@types/node':
-        specifier: ^13.9.2
-        version: 13.13.52
-      '@types/node-forge':
-        specifier: ^0.9.3
-        version: 0.9.10
-      '@types/react':
-        specifier: 18.0.18
-        version: 18.0.18
-      '@types/react-dom':
-        specifier: ^18.0.6
-        version: 18.3.5(@types/react@18.0.18)
-      '@types/react-notification-system':
-        specifier: 0.2.39
-        version: 0.2.39
-      '@types/react-redux':
-        specifier: ^7.1.25
-        version: 7.1.34
-      '@types/react-router':
-        specifier: ^5.1.18
-        version: 5.1.20
-      '@types/react-router-dom':
-        specifier: ^5.1.3
-        version: 5.3.3
-      '@types/reactour':
-        specifier: ^1.18.1
-        version: 1.18.5
-      '@types/redux-mock-store':
-        specifier: ^1.0.2
-        version: 1.5.0
-      '@types/testing-library__jest-dom':
-        specifier: ^5.14.3
-        version: 5.14.9
-      '@types/uuid':
-        specifier: ^9.0.1
-        version: 9.0.8
-      '@types/webpack-env':
-        specifier: ^1.16.0
-        version: 1.18.8
-      '@typescript-eslint/eslint-plugin':
-        specifier: ^6.5.0
-        version: 6.5.0(@typescript-eslint/parser@6.5.0)(eslint@8.46.0)(typescript@4.9.5)
-      '@typescript-eslint/parser':
-        specifier: ^6.5.0
-        version: 6.5.0(eslint@8.46.0)(typescript@4.9.5)
-      connect-history-api-fallback:
-        specifier: ^2.0.0
-        version: 2.0.0
-      copy-webpack-plugin:
-        specifier: ^12.0.2
-        version: 12.0.2(webpack@5.84.1)
-      css-loader:
-        specifier: ^1.0.0
-        version: 1.0.1(webpack@5.84.1)
-      eslint:
-        specifier: 8.46.0
-        version: 8.46.0
-      eslint-plugin-import:
-        specifier: ^2.20.2
-        version: 2.31.0(@typescript-eslint/parser@6.5.0)(eslint@8.46.0)
-      eslint-plugin-jest-dom:
-        specifier: ^4.0.1
-        version: 4.0.3(eslint@8.46.0)
-      eslint-plugin-react:
-        specifier: 7.30.0
-        version: 7.30.0(eslint@8.46.0)
-      eslint-plugin-react-hooks:
-        specifier: ^4.0.0
-        version: 4.6.2(eslint@8.46.0)
-      eslint-plugin-testing-library:
-        specifier: ^5.0.5
-        version: 5.11.1(eslint@8.46.0)(typescript@4.9.5)
-      eslint-webpack-plugin:
-        specifier: ^2.5.3
-        version: 2.7.0(eslint@8.46.0)(webpack@5.84.1)
-      fork-ts-checker-webpack-plugin:
-        specifier: ^6.1.0
-        version: 6.5.3(eslint@8.46.0)(typescript@4.9.5)(webpack@5.84.1)
-      jest:
-        specifier: ^26.4.2
-        version: 26.6.3
-      jest-environment-jsdom:
-        specifier: ^26.3.0
-        version: 26.6.2
-      jest-environment-jsdom-global:
-        specifier: ^2.0.4
-        version: 2.0.4(jest-environment-jsdom@26.6.2)
-      json-minimizer-webpack-plugin:
-        specifier: ^4.0.0
-        version: 4.0.0(webpack@5.84.1)
-      msw:
-        specifier: ^0.36.8
-        version: 0.36.8
-      process:
-        specifier: ^0.11.10
-        version: 0.11.10
-      react-refresh:
-        specifier: ^0.9.0
-        version: 0.9.0
-      redux-devtools-extension:
-        specifier: ^2.13.8
-        version: 2.13.9(redux@4.2.1)
-      rimraf:
-        specifier: ^3.0.2
-        version: 3.0.2
-      rollup:
-        specifier: ^4.17.2
-        version: 4.34.4
-      rollup-plugin-dts:
-        specifier: ^6.1.1
-        version: 6.1.1(rollup@4.34.4)(typescript@4.9.5)
-      rollup-plugin-generate-package-json:
-        specifier: ^3.2.0
-        version: 3.2.0(rollup@4.34.4)
-      rollup-plugin-polyfill-node:
-        specifier: ^0.13.0
-        version: 0.13.0(rollup@4.34.4)
-      rollup-plugin-scss:
-        specifier: ^4.0.0
-        version: 4.0.1
-      rollup-plugin-styles:
-        specifier: ^4.0.0
-        version: 4.0.0(rollup@4.34.4)
-      rollup-plugin-svg:
-        specifier: ^2.0.0
-        version: 2.0.0
-      style-loader:
-        specifier: ^0.23.1
-        version: 0.23.1
-      thread-loader:
-        specifier: ^2.1.3
-        version: 2.1.3(webpack@5.84.1)
-      ts-jest:
-        specifier: ^26.4.0
-        version: 26.5.6(jest@26.6.3)(typescript@4.9.5)
-      typescript:
-        specifier: ^4.6.4
-        version: 4.9.5
-
   features/admin.wsfed-configuration.v1:
     dependencies:
       '@asgardeo/auth-react':
@@ -22049,6 +21676,382 @@ importers:
       rollup-plugin-svg:
         specifier: ^2.0.0
         version: 2.0.0
+      ts-jest:
+        specifier: ^26.4.0
+        version: 26.5.6(jest@26.6.3)(typescript@4.9.5)
+      typescript:
+        specifier: ^4.6.4
+        version: 4.9.5
+
+  features/common.workflow-approvals.v1:
+    dependencies:
+      '@asgardeo/auth-react':
+        specifier: ^5.1.2
+        version: 5.2.3(@babel/runtime-corejs3@7.26.7)(react-dom@18.3.1)(react@18.3.1)
+      '@emotion/react':
+        specifier: ^11.11.0
+        version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
+      '@emotion/styled':
+        specifier: ^11.11.0
+        version: 11.14.0(@emotion/react@11.14.0)(@types/react@18.0.18)(react@18.3.1)
+      '@microsoft/applicationinsights-core-js':
+        specifier: ^3.0.0
+        version: 3.3.5(tslib@2.8.1)
+      '@microsoft/applicationinsights-react-js':
+        specifier: ^3.4.2
+        version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.8.1)
+      '@microsoft/applicationinsights-web':
+        specifier: ^3.0.0
+        version: 3.3.5(tslib@2.8.1)
+      '@monaco-editor/react':
+        specifier: ^4.5.1
+        version: 4.6.0(monaco-editor@0.52.2)(react-dom@18.3.1)(react@18.3.1)
+      '@mui/icons-material':
+        specifier: ^5.11.16
+        version: 5.16.14(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+      '@mui/lab':
+        specifier: 5.0.0-alpha.129
+        version: 5.0.0-alpha.129(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
+      '@mui/material':
+        specifier: 5.13.0
+        version: 5.13.0(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
+      '@mui/system':
+        specifier: ^5.12.3
+        version: 5.16.14(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.0.18)(react@18.3.1)
+      '@mui/utils':
+        specifier: ^5.12.3
+        version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
+      '@oxygen-ui/react':
+        specifier: ^2.4.6
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+      '@oxygen-ui/react-icons':
+        specifier: ^2.4.6
+        version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+      '@wso2is/access-control':
+        specifier: ^3.3.20
+        version: link:../../modules/access-control
+      '@wso2is/admin.core.v1':
+        specifier: ^2.48.0
+        version: link:../admin.core.v1
+      '@wso2is/core':
+        specifier: ^2.7.0
+        version: link:../../modules/core
+      '@wso2is/dynamic-forms':
+        specifier: ^2.4.41
+        version: link:../../modules/dynamic-forms
+      '@wso2is/form':
+        specifier: ^2.7.1
+        version: link:../../modules/form
+      '@wso2is/forms':
+        specifier: ^2.3.22
+        version: link:../../modules/forms
+      '@wso2is/i18n':
+        specifier: ^2.26.2
+        version: link:../../modules/i18n
+      '@wso2is/react-components':
+        specifier: ^2.9.16
+        version: link:../../modules/react-components
+      '@wso2is/theme':
+        specifier: ^2.8.2
+        version: link:../../modules/theme
+      '@wso2is/validation':
+        specifier: ^2.4.1
+        version: link:../../modules/validation
+      axios:
+        specifier: ^0.19.2
+        version: 0.19.2
+      codemirror:
+        specifier: ^5.52.0
+        version: 5.65.18
+      country-language:
+        specifier: ^0.1.7
+        version: 0.1.7
+      deep-equal:
+        specifier: ^2.2.2
+        version: 2.2.3
+      file-saver:
+        specifier: ^2.0.5
+        version: 2.0.5
+      framer-motion:
+        specifier: ^11.1.9
+        version: 11.18.2(react-dom@18.3.1)(react@18.3.1)
+      history:
+        specifier: ^4.9.0
+        version: 4.10.1
+      html-react-parser:
+        specifier: ^2.0.0
+        version: 2.0.0(react@18.3.1)
+      i18next:
+        specifier: ^21.9.1
+        version: 21.10.0
+      i18next-browser-languagedetector:
+        specifier: ^6.1.5
+        version: 6.1.8
+      i18next-xhr-backend:
+        specifier: ^3.2.2
+        version: 3.2.2
+      js-beautify:
+        specifier: ^1.13.0
+        version: 1.15.1
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
+      moment:
+        specifier: ^2.24.0
+        version: 2.30.1
+      mustache:
+        specifier: ^4.2.0
+        version: 4.2.0
+      node-forge:
+        specifier: ^0.10.0
+        version: 0.10.0
+      rc-tree:
+        specifier: ^4.0.0-beta.2
+        version: 4.2.2(react-dom@18.3.1)(react@18.3.1)
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.3.1(react@18.3.1)
+      react-draggable:
+        specifier: ^4.2.0
+        version: 4.4.6(react-dom@18.3.1)(react@18.3.1)
+      react-helmet:
+        specifier: ^5.2.1
+        version: 5.2.1(react@18.3.1)
+      react-i18next:
+        specifier: ^11.18.5
+        version: 11.18.6(i18next@21.10.0)(react-dom@18.3.1)(react@18.3.1)
+      react-joyride:
+        specifier: ^2.3.0
+        version: 2.9.3(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
+      react-notification-system:
+        specifier: ^0.4.0
+        version: 0.4.0(react-dom@18.3.1)(react@18.3.1)
+      react-redux:
+        specifier: ^7.2.9
+        version: 7.2.9(react-dom@18.3.1)(react@18.3.1)
+      react-router-dom:
+        specifier: ^4.3.1
+        version: 4.3.1(react@18.3.1)
+      recharts:
+        specifier: ^2.6.2
+        version: 2.15.1(react-dom@18.3.1)(react@18.3.1)
+      reduce-reducers:
+        specifier: ^1.0.4
+        version: 1.0.4
+      redux:
+        specifier: ^4.0.4
+        version: 4.2.1
+      redux-form:
+        specifier: ^8.3.7
+        version: 8.3.10(react-redux@7.2.9)(react@18.3.1)(redux@4.2.1)
+      redux-mock-store:
+        specifier: ^1.5.4
+        version: 1.5.5(redux@4.2.1)
+      redux-thunk:
+        specifier: ^2.3.0
+        version: 2.4.2(redux@4.2.1)
+      regenerator-runtime:
+        specifier: ^0.13.9
+        version: 0.13.11
+      semantic-ui-react:
+        specifier: ^2.1.3
+        version: 2.1.5(react-dom@18.3.1)(react@18.3.1)
+      slashes:
+        specifier: ^2.0.2
+        version: 2.0.2
+      styled-components:
+        specifier: ^4.4.1
+        version: 4.4.1(@babel/core@7.26.7)(react-dom@18.3.1)(react@18.3.1)
+      swr:
+        specifier: ^2.0.0
+        version: 2.3.2(react@18.3.1)
+      uuid:
+        specifier: ^8.3.0
+        version: 8.3.2
+    devDependencies:
+      '@pmmmwh/react-refresh-webpack-plugin':
+        specifier: ^0.4.3
+        version: 0.4.3(react-refresh@0.9.0)(webpack-dev-server@3.11.3)(webpack@5.84.1)
+      '@rollup/plugin-commonjs':
+        specifier: ^25.0.7
+        version: 25.0.8(rollup@4.34.4)
+      '@rollup/plugin-dynamic-import-vars':
+        specifier: ^2.1.2
+        version: 2.1.5(rollup@4.34.4)
+      '@rollup/plugin-image':
+        specifier: ^3.0.3
+        version: 3.0.3(rollup@4.34.4)
+      '@rollup/plugin-json':
+        specifier: ^6.1.0
+        version: 6.1.0(rollup@4.34.4)
+      '@rollup/plugin-node-resolve':
+        specifier: ^15.2.3
+        version: 15.3.1(rollup@4.34.4)
+      '@rollup/plugin-typescript':
+        specifier: ^11.1.6
+        version: 11.1.6(rollup@4.34.4)(tslib@2.8.1)(typescript@4.9.5)
+      '@svgr/rollup':
+        specifier: ^6.2.1
+        version: 6.5.1
+      '@svgr/webpack':
+        specifier: 4.3.2
+        version: 4.3.2
+      '@testing-library/dom':
+        specifier: ^7.24.3
+        version: 7.31.2
+      '@testing-library/jest-dom':
+        specifier: ^5.11.9
+        version: 5.17.0
+      '@testing-library/user-event':
+        specifier: ^12.7.3
+        version: 12.8.3(@testing-library/dom@7.31.2)
+      '@types/file-saver':
+        specifier: ^2.0.1
+        version: 2.0.7
+      '@types/history':
+        specifier: ^4.7.3
+        version: 4.7.11
+      '@types/jest':
+        specifier: ^26.0.14
+        version: 26.0.24
+      '@types/lodash-es':
+        specifier: ^4.17.4
+        version: 4.17.12
+      '@types/node':
+        specifier: ^13.9.2
+        version: 13.13.52
+      '@types/node-forge':
+        specifier: ^0.9.3
+        version: 0.9.10
+      '@types/react':
+        specifier: 18.0.18
+        version: 18.0.18
+      '@types/react-dom':
+        specifier: ^18.0.6
+        version: 18.3.5(@types/react@18.0.18)
+      '@types/react-notification-system':
+        specifier: 0.2.39
+        version: 0.2.39
+      '@types/react-redux':
+        specifier: ^7.1.25
+        version: 7.1.34
+      '@types/react-router':
+        specifier: ^5.1.18
+        version: 5.1.20
+      '@types/react-router-dom':
+        specifier: ^5.1.3
+        version: 5.3.3
+      '@types/reactour':
+        specifier: ^1.18.1
+        version: 1.18.5
+      '@types/redux-mock-store':
+        specifier: ^1.0.2
+        version: 1.5.0
+      '@types/testing-library__jest-dom':
+        specifier: ^5.14.3
+        version: 5.14.9
+      '@types/uuid':
+        specifier: ^9.0.1
+        version: 9.0.8
+      '@types/webpack-env':
+        specifier: ^1.16.0
+        version: 1.18.8
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^6.5.0
+        version: 6.5.0(@typescript-eslint/parser@6.5.0)(eslint@8.46.0)(typescript@4.9.5)
+      '@typescript-eslint/parser':
+        specifier: ^6.5.0
+        version: 6.5.0(eslint@8.46.0)(typescript@4.9.5)
+      connect-history-api-fallback:
+        specifier: ^2.0.0
+        version: 2.0.0
+      copy-webpack-plugin:
+        specifier: ^12.0.2
+        version: 12.0.2(webpack@5.84.1)
+      css-loader:
+        specifier: ^1.0.0
+        version: 1.0.1(webpack@5.84.1)
+      eslint:
+        specifier: 8.46.0
+        version: 8.46.0
+      eslint-plugin-import:
+        specifier: ^2.20.2
+        version: 2.31.0(@typescript-eslint/parser@6.5.0)(eslint@8.46.0)
+      eslint-plugin-jest-dom:
+        specifier: ^4.0.1
+        version: 4.0.3(eslint@8.46.0)
+      eslint-plugin-react:
+        specifier: 7.30.0
+        version: 7.30.0(eslint@8.46.0)
+      eslint-plugin-react-hooks:
+        specifier: ^4.0.0
+        version: 4.6.2(eslint@8.46.0)
+      eslint-plugin-testing-library:
+        specifier: ^5.0.5
+        version: 5.11.1(eslint@8.46.0)(typescript@4.9.5)
+      eslint-webpack-plugin:
+        specifier: ^2.5.3
+        version: 2.7.0(eslint@8.46.0)(webpack@5.84.1)
+      fork-ts-checker-webpack-plugin:
+        specifier: ^6.1.0
+        version: 6.5.3(eslint@8.46.0)(typescript@4.9.5)(webpack@5.84.1)
+      jest:
+        specifier: ^26.4.2
+        version: 26.6.3
+      jest-environment-jsdom:
+        specifier: ^26.3.0
+        version: 26.6.2
+      jest-environment-jsdom-global:
+        specifier: ^2.0.4
+        version: 2.0.4(jest-environment-jsdom@26.6.2)
+      json-minimizer-webpack-plugin:
+        specifier: ^4.0.0
+        version: 4.0.0(webpack@5.84.1)
+      msw:
+        specifier: ^0.36.8
+        version: 0.36.8
+      process:
+        specifier: ^0.11.10
+        version: 0.11.10
+      react-refresh:
+        specifier: ^0.9.0
+        version: 0.9.0
+      redux-devtools-extension:
+        specifier: ^2.13.8
+        version: 2.13.9(redux@4.2.1)
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      rollup:
+        specifier: ^4.17.2
+        version: 4.34.4
+      rollup-plugin-dts:
+        specifier: ^6.1.1
+        version: 6.1.1(rollup@4.34.4)(typescript@4.9.5)
+      rollup-plugin-generate-package-json:
+        specifier: ^3.2.0
+        version: 3.2.0(rollup@4.34.4)
+      rollup-plugin-polyfill-node:
+        specifier: ^0.13.0
+        version: 0.13.0(rollup@4.34.4)
+      rollup-plugin-scss:
+        specifier: ^4.0.0
+        version: 4.0.1
+      rollup-plugin-styles:
+        specifier: ^4.0.0
+        version: 4.0.0(rollup@4.34.4)
+      rollup-plugin-svg:
+        specifier: ^2.0.0
+        version: 2.0.0
+      style-loader:
+        specifier: ^0.23.1
+        version: 0.23.1
+      thread-loader:
+        specifier: ^2.1.3
+        version: 2.1.3(webpack@5.84.1)
       ts-jest:
         specifier: ^26.4.0
         version: 26.5.6(jest@26.6.3)(typescript@4.9.5)
@@ -24495,8 +24498,8 @@ packages:
     dependencies:
       regenerator-runtime: 0.14.1
 
-  /@babel/runtime@7.27.6:
-    resolution: {integrity: sha512-vbavdySgbTTrmFE+EsiqUTzlOr5bzlnJtUv9PynGCAKvfQqjIXbvFdumPM/GxMDfyuGMJaJAU6TO4zc1Jf1i8Q==}
+  /@babel/runtime@7.28.2:
+    resolution: {integrity: sha512-KHp2IflsnGywDjBWDkR9iEqiWSpc8GIi0lgTT3mOElT0PP1tG26P4tmFI2YvAdzgq9RGyoHZQEIEdZy6Ec5xCA==}
     engines: {node: '>=6.9.0'}
     dev: false
 
@@ -27035,9 +27038,9 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.27.6
+      '@babel/runtime': 7.28.2
       '@emotion/is-prop-valid': 1.3.1
-      '@mui/types': 7.4.4(@types/react@18.0.18)
+      '@mui/types': 7.4.5(@types/react@18.0.18)
       '@mui/utils': 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@popperjs/core': 2.11.8
       '@types/react': 18.0.18
@@ -27108,7 +27111,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.27.6
+      '@babel/runtime': 7.26.7
       '@floating-ui/react-dom': 2.1.2(react-dom@18.3.1)(react@18.3.1)
       '@mui/types': 7.2.24(@types/react@18.0.18)
       '@mui/utils': 6.4.9(@types/react@18.0.18)(react@18.3.1)
@@ -27159,13 +27162,13 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.27.6
+      '@babel/runtime': 7.28.2
       '@emotion/react': 11.14.0(@types/react@18.0.18)(react@18.3.1)
       '@emotion/styled': 11.14.0(@emotion/react@11.14.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/base': 5.0.0-alpha.108(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       '@mui/material': 5.13.0(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       '@mui/system': 5.16.14(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.0.18)(react@18.3.1)
-      '@mui/types': 7.4.4(@types/react@18.0.18)
+      '@mui/types': 7.4.5(@types/react@18.0.18)
       '@mui/utils': 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@types/react': 18.0.18
       clsx: 1.2.1
@@ -27336,15 +27339,15 @@ packages:
       '@types/react': 18.0.18
     dev: false
 
-  /@mui/types@7.4.4(@types/react@18.0.18):
-    resolution: {integrity: sha512-p63yhbX52MO/ajXC7hDHJA5yjzJekvWD3q4YDLl1rSg+OXLczMYPvTuSuviPRCgRX8+E42RXz1D/dz9SxPSlWg==}
+  /@mui/types@7.4.5(@types/react@18.0.18):
+    resolution: {integrity: sha512-ZPwlAOE3e8C0piCKbaabwrqZbW4QvWz0uapVPWya7fYj6PeDkl5sSJmomT7wjOcZGPB48G/a6Ubidqreptxz4g==}
     peerDependencies:
       '@types/react': 18.0.18
     peerDependenciesMeta:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.27.6
+      '@babel/runtime': 7.28.2
       '@types/react': 18.0.18
     dev: false
 
@@ -27378,7 +27381,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.27.6
+      '@babel/runtime': 7.26.7
       '@mui/types': 7.2.24(@types/react@18.0.18)
       '@types/prop-types': 15.7.14
       '@types/react': 18.0.18
@@ -27388,8 +27391,8 @@ packages:
       react-is: 19.0.0
     dev: false
 
-  /@mui/utils@7.2.0(@types/react@18.0.18)(react@18.3.1):
-    resolution: {integrity: sha512-O0i1GQL6MDzhKdy9iAu5Yr0Sz1wZjROH1o3aoztuivdCXqEeQYnEjTDiRLGuFxI9zrUbTHBwobMyQH5sNtyacw==}
+  /@mui/utils@7.3.0(@types/react@18.0.18)(react@18.3.1):
+    resolution: {integrity: sha512-YdL6ebwFV7PIOidIsees3HxkZ8hZjj+/atKLuI1ENwvJJ1puiEoLEmuDU72qSbKu911/GeFa7pc7Cn/ZmAj6yQ==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       '@types/react': 18.0.18
@@ -27398,14 +27401,14 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.27.6
-      '@mui/types': 7.4.4(@types/react@18.0.18)
+      '@babel/runtime': 7.28.2
+      '@mui/types': 7.4.5(@types/react@18.0.18)
       '@types/prop-types': 15.7.15
       '@types/react': 18.0.18
       clsx: 2.1.1
       prop-types: 15.8.1
       react: 18.3.1
-      react-is: 19.1.0
+      react-is: 19.1.1
     dev: false
 
   /@mui/x-data-grid@6.20.4(@mui/material@5.13.0)(@mui/system@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1):
@@ -27467,7 +27470,7 @@ packages:
       moment-jalaali:
         optional: true
     dependencies:
-      '@babel/runtime': 7.27.6
+      '@babel/runtime': 7.26.7
       '@emotion/react': 11.14.0(@types/react@18.0.18)(react@18.3.1)
       '@emotion/styled': 11.14.0(@emotion/react@11.14.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/base': 5.0.0-beta.70(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -27485,24 +27488,25 @@ packages:
       - '@types/react'
     dev: false
 
-  /@mui/x-internals@8.8.0(@mui/system@5.16.14)(@types/react@18.0.18)(react@18.3.1):
-    resolution: {integrity: sha512-qTRK5oINkAjZ7sIHpSnESLNq1xtQUmmfmGscYUSEP0uHoYh6pKkNWH9+7yzggRHuTv+4011VBwN9s+efrk+xZg==}
+  /@mui/x-internals@8.9.2(@mui/system@5.16.14)(@types/react@18.0.18)(react@18.3.1):
+    resolution: {integrity: sha512-qQl0sacWirbvQUdJOrUecsBQkI+vxI3/E1K/Wst6n/rb8ajelsGLMFLQ1PBig73xBT2vADmdcf3XerfH7TKPqQ==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       '@mui/system': ^5.15.14 || ^6.0.0 || ^7.0.0
       react: ^17.0.0 || ^18.0.0 || ^19.0.0
     dependencies:
-      '@babel/runtime': 7.27.6
+      '@babel/runtime': 7.28.2
       '@mui/system': 5.16.14(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.0.18)(react@18.3.1)
-      '@mui/utils': 7.2.0(@types/react@18.0.18)(react@18.3.1)
+      '@mui/utils': 7.3.0(@types/react@18.0.18)(react@18.3.1)
       react: 18.3.1
       reselect: 5.1.1
+      use-sync-external-store: 1.5.0(react@18.3.1)
     transitivePeerDependencies:
       - '@types/react'
     dev: false
 
-  /@mui/x-tree-view@8.9.0(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/material@5.13.0)(@mui/system@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-RFZtedZnGyAJjp/ldHIbSti+q63ZFKsBzB6mS7bgRfjelEEZLn0fBoHn2RwT1XBsmVSds9wGu+VejrXfhcVntQ==}
+  /@mui/x-tree-view@8.9.2(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/material@5.13.0)(@mui/system@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-ExRRhLTwLodeUSUHV7VAkwKfIZmR1jJjv/iTvek3JA0ssyfGyzBVg6bjZtkny8QDRq+TGuvXmHhYTzc08BeZVg==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       '@emotion/react': ^11.9.0
@@ -27517,13 +27521,13 @@ packages:
       '@emotion/styled':
         optional: true
     dependencies:
-      '@babel/runtime': 7.27.6
+      '@babel/runtime': 7.28.2
       '@emotion/react': 11.14.0(@types/react@18.0.18)(react@18.3.1)
       '@emotion/styled': 11.14.0(@emotion/react@11.14.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/material': 5.13.0(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       '@mui/system': 5.16.14(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.0.18)(react@18.3.1)
-      '@mui/utils': 7.2.0(@types/react@18.0.18)(react@18.3.1)
-      '@mui/x-internals': 8.8.0(@mui/system@5.16.14)(@types/react@18.0.18)(react@18.3.1)
+      '@mui/utils': 7.3.0(@types/react@18.0.18)(react@18.3.1)
+      '@mui/x-internals': 8.9.2(@mui/system@5.16.14)(@types/react@18.0.18)(react@18.3.1)
       '@types/react-transition-group': 4.4.12(@types/react@18.0.18)
       clsx: 2.1.1
       prop-types: 15.8.1
@@ -47703,8 +47707,8 @@ packages:
     resolution: {integrity: sha512-H91OHcwjZsbq3ClIDHMzBShc1rotbfACdWENsmEf0IFvZ3FgGPtdHMcsv45bQ1hAbgdfiA8SnxTKfDS+x/8m2g==}
     dev: false
 
-  /react-is@19.1.0:
-    resolution: {integrity: sha512-Oe56aUPnkHyyDxxkvqtd7KkdQP5uIUfHxd5XTb3wE9d/kRnZLmKbDB0GWk919tdQ+mxxPtG6EAs6RMT6i1qtHg==}
+  /react-is@19.1.1:
+    resolution: {integrity: sha512-tr41fA15Vn8p4X9ntI+yCyeGSf1TlYaY5vlTZfQmeLBrFo3psOPX6HhTDnFNL9uj3EhP0KAQ80cugCl4b4BERA==}
     dev: false
 
   /react-joyride@2.9.3(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1):

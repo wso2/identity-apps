@@ -63,6 +63,7 @@ export interface FeatureConfigInterface {
  */
 export interface ServiceResourceEndpointsInterface {
     applications: string;
+    approvals: string;
     associations: string;
     authorize: string;
     backupCode: string;
