@@ -350,8 +350,8 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                     hoverable={ false }
                                     icon={ OrganizationIcon }
                                 />
-                                { organization.id === OrganizationManagementConstants.SUPER_ORGANIZATION_ID
-                                && (< Header.Content >
+                                { organization?.id === OrganizationManagementConstants.SUPER_ORGANIZATION_ID
+                                && (<Header.Content>
                                     <Icon
                                         className="organization-active-icon active"
                                         size="small"
@@ -364,13 +364,13 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                         trigger={
                                             (<Icon
                                                 data-componentid={ `${ componentId }-org-status-icon` }
-                                                className={ getClassNamesForStatusIcon(organization.status) }
+                                                className={ getClassNamesForStatusIcon(organization?.status) }
                                                 size="small"
                                                 name="circle"
                                             />)
                                         }
                                         content={
-                                            organization.status === "ACTIVE"
+                                            organization?.status === "ACTIVE"
                                                 ? t("common:active")
                                                 : t("common:disabled")
                                         }
@@ -378,7 +378,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                     />
                                 </Header.Content>
                                 <Header.Content>
-                                    { organization.name }
+                                    { organization?.name }
                                     <Header.Subheader
                                         className="truncate ellipsis"
                                         data-componentid={ `${ componentId }-item-sub-heading` }
@@ -387,17 +387,17 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                             isOrgHandleFeatureEnabled
                                                 ? (
                                                     <>Organization Handle:
-                                                        <Label size="tiny">{ organization.orgHandle }</Label>
+                                                        <Label size="tiny">{ organization?.orgHandle }</Label>
                                                     </>
                                                 )
                                                 : (
-                                                    <>Organization Id:<Label size="tiny">{ organization.id }</Label></>
+                                                    <>Organization Id:<Label size="tiny">{ organization?.id }</Label></>
                                                 )
                                         }
                                     </Header.Subheader>
                                 </Header.Content>
                             </Header>
-                            { ( organization.id === selectedOrgId ) && (
+                            { ( organization?.id === selectedOrgId ) && (
                                 <Breadcrumbs
                                     className="organization-path-breadcrumb"
                                     aria-label="Organization hierarchy navigation"
@@ -422,7 +422,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                     )) }
                                     <Typography color="text.primary">
                                         <BuildingAltIcon size={ 14 } className="organization-path-breadcrumb-icon" />
-                                        { organization.name }
+                                        { organization?.name }
                                     </Typography>
                                 </Breadcrumbs>
                             ) }
@@ -471,7 +471,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                     const isActive: boolean = organization.status === "ACTIVE";
 
                     authorizedList?.organizations?.map((org: OrganizationInterface) => {
-                        if (org.id === organization.id) {
+                        if (org.id === organization?.id) {
                             isAuthorized = true;
                         }
                     });
@@ -503,7 +503,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                         : "pencil alternate";
                 },
                 onClick: (e: SyntheticEvent, organization: OrganizationInterface): void =>
-                    handleOrganizationEdit(organization.id),
+                    handleOrganizationEdit(organization?.id),
                 popupText: (_organization: OrganizationInterface ): string => {
                     return !hasOrganizationUpdatePermissions
                         ? t("common:view")

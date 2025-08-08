@@ -467,7 +467,6 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                                 ".filterRecursiveToggle.label") }
                                             name={ AdvanceSearchConstants.FILTER_RECURSIVE_FIELD_IDENTIFIER }
                                             type="toggle"
-                                            data-testid={ `${ testId }-filter-recursive` }
                                             data-componentid={ `${ testId }-filter-recursive` }
                                         />
                                     </Form.Group>
