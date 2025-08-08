@@ -17323,7 +17323,7 @@ importers:
         specifier: ^2.46.30
         version: link:../admin.core.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.26.211
+        specifier: workspace:^
         version: link:../admin.organizations.v1
       '@wso2is/core':
         specifier: ^2.10.1
