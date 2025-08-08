@@ -183,6 +183,12 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
             .map((actionType: ActionTypesResponseInterface) => actionType.type)
             .filter(checkFeatureEnabledStatus);
 
+        // If the organization is not a sub-organization, include pre-registration action type if enabled
+        // even it is not returned in the API.
+        if (!isSubOrganization() && isFeatureEnabled(actionsFeatureConfig, "actions.types.list.preRegistration")) {
+            enabledTypes.push(ActionType.PRE_REGISTRATION);
+        }
+
         return actionTypesCardsInfo.filter((card: ActionTypeCardInterface) => enabledTypes.includes(card.type));
     }, [ actionTypesConfigs, actionsFeatureConfig, isSubOrganization ]);
 
