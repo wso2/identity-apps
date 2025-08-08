@@ -64,6 +64,7 @@ import { CommonUtils, ProfileUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import { Button, Hint, Link, PasswordValidation, Popup } from "@wso2is/react-components";
+import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     MutableRefObject,
@@ -1696,10 +1697,8 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                             type="text"
                             value={ profileInfo.get("mobile") || initialValues?.mobile }
                             validation={ (value: string, validation: Validation) => {
-                                // Basic mobile number validation
-                                const mobileRegex: RegExp = /^[+]?[\d\s\-()]+$/;
-
-                                if (!mobileRegex.test(value)) {
+                                // Use FormValidation.mobileNumber for consistent validation
+                                if (!FormValidation.mobileNumber(value)) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
                                         t("user:forms.addUserForm.inputs.mobile.validations.invalid",

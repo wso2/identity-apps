@@ -1245,19 +1245,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 disabled={ isSubmitting }
                 data-testid={ `${ testId }-resend-link` }
             >
-                { resolveResendButtonText(recoveryScenario) }
+                { t("user:resendCode.resend") }
             </LinkButton>
         );
-    };
-
-    /**
-     * Resolves the appropriate button text based on the recovery scenario.
-     *
-     * @param recoveryScenario - The recovery scenario to resolve the button text for.
-     * @returns The resolved button text.
-     */
-    const resolveResendButtonText = (_recoveryScenario: string): string => {
-        return t("user:resendCode.resend");
     };
 
     /**
