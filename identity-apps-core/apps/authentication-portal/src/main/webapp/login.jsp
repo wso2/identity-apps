@@ -598,7 +598,7 @@
                                     iconId++;
                                     if (!idpEntry.getKey().equals(Constants.RESIDENT_IDP_RESERVED_NAME)) {
                                         String idpName = idpEntry.getKey();
-                                        String idpDisplayName = idpName;
+                                        String idpDisplayName = "Default IDP Name";
                                         boolean isHubIdp = false;
                                         boolean isGoogleIdp = false;
                                         boolean isGitHubIdp = false;
@@ -671,6 +671,8 @@
                                         try {
                                             IdentityProviderDataRetrievalClient identityProviderDataRetrievalClient = new IdentityProviderDataRetrievalClient();
                                             imageURL = identityProviderDataRetrievalClient.getIdPImage(tenantDomain, idpName);
+                                            // TODO: Improve the identityProviderDataRetrievalClient to return both image URL and idp name.
+                                            idpDisplayName = idpName;
                                         } catch (IdentityProviderDataRetrievalClientException e) {
                                             // Exception is ignored and the default `imageURL` value will be used as a fallback.
                                         }
@@ -1057,8 +1059,9 @@
                             </div>
                             <br>
                             <%
-                                        }
+                                }
                                 for (String localAuthenticator : localAuthenticatorNames) {
+                                    String authenticatorDisplayName = "DEFAULT LOCAL AUTHENTICATOR NAME";
                                     if (registeredLocalAuthenticators.contains(localAuthenticator)) {
                                         continue;
                                     }
@@ -1066,7 +1069,7 @@
                                     if (localAuthenticator.startsWith(CUSTOM_LOCAL_AUTHENTICATOR_PREFIX)) {
 
                                         String customLocalAuthenticatorImageURL = "libs/themes/default/assets/images/authenticators/custom-authenticator.svg";
-                                        String customLocalAuthenticatorDisplayName = localAuthenticator;
+                                        String customLocalAuthenticatorDisplayName = "DEFAULT CUSTOM AUTHENTICATOR NAME";
                                         Map<String, String> authenticatorConfigMap = new HashMap<>();
                                         try {
                                             AuthenticatorDataRetrievalClient authenticatorDataRetrievalClient = new AuthenticatorDataRetrievalClient();
@@ -1109,7 +1112,17 @@
                             <br>
                             <br>
                             <%
-                                            continue;
+                                            continue;   
+                                        } 
+                                    } else {
+                                        try {
+                                            AuthenticatorDataRetrievalClient authenticatorDataRetrievalClient = new AuthenticatorDataRetrievalClient();
+                                            Map<String, String> authenticatorConfigMap = authenticatorDataRetrievalClient.getAuthenticatorConfig(tenantDomain, localAuthenticator);
+                                            if (StringUtils.isNotBlank(authenticatorConfigMap.get("displayName"))) {
+                                                authenticatorDisplayName = authenticatorConfigMap.get("displayName");
+                                            }
+                                        } catch (AuthenticatorDataRetrievalClientException e) {
+                                            // Exception is ignored and the default values will be used as a fallback.
                                         }
                                     }
                             %>
@@ -1131,11 +1144,11 @@
                                                 role="presentation">
                                             <span>
                                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
-                                                <%=localAuthenticator%>
+                                                <%=authenticatorDisplayName%>
                                             </span>
                                             </button>
                                     </div>
-                            </div>
+                                </div>
                             <br>
                             <%
                                 }
