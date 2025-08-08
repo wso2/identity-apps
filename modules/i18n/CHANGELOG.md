@@ -1,5 +1,29 @@
 # @wso2is/i18n
 
+## 2.27.2
+
+### Patch Changes
+
+- [#8701](https://github.com/wso2/identity-apps/pull/8701) [`9c8391409de565720c00ce3dd39058d0bf9e9c67`](https://github.com/wso2/identity-apps/commit/9c8391409de565720c00ce3dd39058d0bf9e9c67) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Improve workflow instance UI
+
+## 2.27.1
+
+### Patch Changes
+
+- [#8569](https://github.com/wso2/identity-apps/pull/8569) [`1edda77d2e69f308e9c0f4c0930a7957efd5f2ee`](https://github.com/wso2/identity-apps/commit/1edda77d2e69f308e9c0f4c0930a7957efd5f2ee) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Invite user to set password configurations for SMS & Email OTP
+
+## 2.27.0
+
+### Minor Changes
+
+- [#8683](https://github.com/wso2/identity-apps/pull/8683) [`832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3`](https://github.com/wso2/identity-apps/commit/832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Onboard Webhook Settings UI
+
+## 2.26.2
+
+### Patch Changes
+
+- [#8592](https://github.com/wso2/identity-apps/pull/8592) [`3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523`](https://github.com/wso2/identity-apps/commit/3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523) Thanks [@Malith-19](https://github.com/Malith-19)! - Move the Approvals to common component.
+
 ## 2.26.1
 
 ### Patch Changes

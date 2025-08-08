@@ -49,6 +49,9 @@ export const console: ConsoleNS = {
                         validations: {
                             empty: "Filter value is a required field."
                         }
+                    },
+                    filterRecursiveToggle: {
+                        label: "Search in nested levels"
                     }
                 }
             },
@@ -6815,8 +6818,10 @@ export const console: ConsoleNS = {
                                 "alphanumeric username feature.",
                             emailInvalid: "To invite users to set the password, please enter a valid email address.",
                             emailVerificationDisabled: "To invite users to set the password, enable email invitations for user password setup from <1>Login & Registration settings</1>.",
+                            mobileNumberAlreadyExists: "Mobile number is required for SMS OTP, please enable mobile number attribute from <1>Attributes</1>.",
                             inviteOffline: "Invite offline",
-                            inviteViaEmail: "Invite via email"
+                            inviteViaEmail: "Invite via email",
+                            inviteViaSMS: "Invite via SMS"
                         },
                         buttons: {
                             next: "Next",
@@ -8491,6 +8496,68 @@ export const console: ConsoleNS = {
                     title: "SQL Query Types",
                     update: "Update"
                 }
+            },
+            workflowRequests: {
+                dangerZone: {
+                    delete: {
+                        actionTitle: "Delete Workflow Request",
+                        header: "Delete Workflow Request",
+                        subheader: "Once you delete a workflow request, there is no going back. "
+                            + "Please be certain."
+                    }
+                },
+                notifications: {
+                    deleteWorkflowRequest: {
+                        genericError: {
+                            description: "There was an error while deleting the workflow request.",
+                            message: "Something went wrong!"
+                        },
+                        success: {
+                            description: "The workflow request has been deleted successfully!",
+                            message: "Workflow request deleted successfully!"
+                        }
+                    },
+                    fetchWorkflowRequests: {
+                        genericError: {
+                            description: "An error occurred while fetching workflow requests.",
+                            message: "Something went wrong!"
+                        }
+                    },
+                    fetchWorkflowRequestDetails: {
+                        genericError: {
+                            description: "An error occurred while fetching workflow request details.",
+                            message: "Something went wrong!"
+                        },
+                        success: {
+                            description: "Successfully retrieved workflow request details.",
+                            message: "Retrieval successful!"
+                        }
+                    },
+                    searchWorkflowRequests: {
+                        genericError: {
+                            description: "An error occurred while searching workflow requests.",
+                            message: "Something went wrong!"
+                        }
+                    }
+                },
+                details: {
+                    header: "Workflow Request Details",
+                    fields: {
+                        id: "ID",
+                        eventType: "Event Type",
+                        requestInitiator: "Request Initiator",
+                        status: "Status",
+                        createdAt: "Created At",
+                        updatedAt: "Updated At",
+                        requestParams: "Request Params"
+                    },
+                    loading: "Loading...",
+                    error: {
+                        header: "Error",
+                        content: "Failed to load workflow Request details."
+                    },
+                    backButton: "Back"
+                },
             }
         },
         notifications: {

@@ -1,5 +1,84 @@
 # @wso2is/console
 
+## 2.71.3
+
+### Patch Changes
+
+- [#8703](https://github.com/wso2/identity-apps/pull/8703) [`985f80c59b1ea1a08c7049643e48792c5862d815`](https://github.com/wso2/identity-apps/commit/985f80c59b1ea1a08c7049643e48792c5862d815) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add preRegistration action type card when it is not disabled from UI
+
+- Updated dependencies [[`985f80c59b1ea1a08c7049643e48792c5862d815`](https://github.com/wso2/identity-apps/commit/985f80c59b1ea1a08c7049643e48792c5862d815)]:
+  - @wso2is/admin.actions.v1@1.13.6
+
+## 2.71.2
+
+### Patch Changes
+
+- [#8701](https://github.com/wso2/identity-apps/pull/8701) [`9c8391409de565720c00ce3dd39058d0bf9e9c67`](https://github.com/wso2/identity-apps/commit/9c8391409de565720c00ce3dd39058d0bf9e9c67) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Improve workflow instance UI
+
+- Updated dependencies [[`9c8391409de565720c00ce3dd39058d0bf9e9c67`](https://github.com/wso2/identity-apps/commit/9c8391409de565720c00ce3dd39058d0bf9e9c67)]:
+  - @wso2is/admin.workflow-requests.v1@1.0.0
+  - @wso2is/admin.core.v1@2.48.3
+  - @wso2is/i18n@2.27.2
+
+## 2.71.1
+
+### Patch Changes
+
+- [#8569](https://github.com/wso2/identity-apps/pull/8569) [`1edda77d2e69f308e9c0f4c0930a7957efd5f2ee`](https://github.com/wso2/identity-apps/commit/1edda77d2e69f308e9c0f4c0930a7957efd5f2ee) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Invite user to set password configurations for SMS & Email OTP
+
+- Updated dependencies [[`1edda77d2e69f308e9c0f4c0930a7957efd5f2ee`](https://github.com/wso2/identity-apps/commit/1edda77d2e69f308e9c0f4c0930a7957efd5f2ee), [`2b00f0f5769dc6df1323d5efdce5dddf73a58655`](https://github.com/wso2/identity-apps/commit/2b00f0f5769dc6df1323d5efdce5dddf73a58655)]:
+  - @wso2is/admin.server-configurations.v1@2.35.18
+  - @wso2is/admin.extensions.v1@2.40.1
+  - @wso2is/admin.users.v1@2.34.6
+  - @wso2is/i18n@2.27.1
+  - @wso2is/common.workflow-approvals.v1@1.0.1
+  - @wso2is/admin.agents.v1@1.0.25
+  - @wso2is/admin.core.v1@2.48.2
+  - @wso2is/admin.roles.v2@2.27.180
+
+## 2.71.0
+
+### Minor Changes
+
+- [#8683](https://github.com/wso2/identity-apps/pull/8683) [`832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3`](https://github.com/wso2/identity-apps/commit/832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Onboard Webhook Settings UI
+
+### Patch Changes
+
+- [#8687](https://github.com/wso2/identity-apps/pull/8687) [`30711dad243b41973f7b45a2d22749d3af34abda`](https://github.com/wso2/identity-apps/commit/30711dad243b41973f7b45a2d22749d3af34abda) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Enable action types depending on the actiontypes API response and feature disabled status
+
+- Updated dependencies [[`30711dad243b41973f7b45a2d22749d3af34abda`](https://github.com/wso2/identity-apps/commit/30711dad243b41973f7b45a2d22749d3af34abda), [`832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3`](https://github.com/wso2/identity-apps/commit/832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3)]:
+  - @wso2is/admin.actions.v1@1.13.5
+  - @wso2is/admin.webhooks.v1@1.1.0
+  - @wso2is/i18n@2.27.0
+  - @wso2is/admin.core.v1@2.48.1
+
+## 2.70.0
+
+### Minor Changes
+
+- [#8592](https://github.com/wso2/identity-apps/pull/8592) [`3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523`](https://github.com/wso2/identity-apps/commit/3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523) Thanks [@Malith-19](https://github.com/Malith-19)! - Move the Approvals to common component.
+
+### Patch Changes
+
+- [#8474](https://github.com/wso2/identity-apps/pull/8474) [`64f8425138bf065e883f60fb9be275c435ba5f0d`](https://github.com/wso2/identity-apps/commit/64f8425138bf065e883f60fb9be275c435ba5f0d) Thanks [@ModithaM](https://github.com/ModithaM)! - Fix Bug in the password reset new password matching.
+
+* [#8694](https://github.com/wso2/identity-apps/pull/8694) [`6a5567d97fd49b6e1c1869f4509b631b41d6d9c6`](https://github.com/wso2/identity-apps/commit/6a5567d97fd49b6e1c1869f4509b631b41d6d9c6) Thanks [@KD23243](https://github.com/KD23243)! - Update flow card descriptions
+
+* Updated dependencies [[`3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523`](https://github.com/wso2/identity-apps/commit/3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523), [`64f8425138bf065e883f60fb9be275c435ba5f0d`](https://github.com/wso2/identity-apps/commit/64f8425138bf065e883f60fb9be275c435ba5f0d), [`6a5567d97fd49b6e1c1869f4509b631b41d6d9c6`](https://github.com/wso2/identity-apps/commit/6a5567d97fd49b6e1c1869f4509b631b41d6d9c6)]:
+  - @wso2is/admin.core.v1@2.48.0
+  - @wso2is/common.workflow-approvals.v1@1.0.0
+  - @wso2is/i18n@2.26.2
+  - @wso2is/admin.users.v1@2.34.5
+  - @wso2is/admin.flows.v1@1.0.16
+  - @wso2is/admin.agents.v1@1.0.24
+  - @wso2is/admin.ask-password-flow-builder.v1@1.0.14
+  - @wso2is/admin.branding.v1@2.32.1
+  - @wso2is/admin.email-management.v1@2.25.211
+  - @wso2is/admin.home.v1@1.7.22
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.0.14
+  - @wso2is/admin.server-configurations.v1@2.35.17
+  - @wso2is/admin.roles.v2@2.27.179
+
 ## 2.69.4
 
 ### Patch Changes

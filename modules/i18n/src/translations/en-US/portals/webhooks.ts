@@ -184,6 +184,17 @@ export const webhooks: webhooksNS = {
                 message: "Webhook updated"
             }
         },
+        updateWebhookSettings: {
+            error: {
+                description: "{{description}}",
+                genericDescription: "Something went wrong while updating the webhook settings.",
+                message: "Failed to update webhook settings."
+            },
+            success: {
+                description: "Webhook settings have been successfully updated.",
+                message: "Webhook settings updated"
+            }
+        },
         updateWebhookStatus: {
             error: {
                 description: "{{description}}",
@@ -208,7 +219,8 @@ export const webhooks: webhooksNS = {
         },
         list: {
             buttons: {
-                add: "Add Webhook"
+                add: "Add Webhook",
+                settings: "Webhook Settings"
             },
             columns: {
                 status: "Status",
@@ -219,6 +231,18 @@ export const webhooks: webhooksNS = {
             },
             heading: "Webhooks",
             subHeading: "Create and manage webhooks to notify external services when certain events happen."
+        },
+        settings: {
+            backButton: "Go back to Webhooks",
+            heading: "Webhook Settings",
+            organizationPolicy: {
+                heading: "Select which organizations should publish events to webhooks.",
+                radioOptions: {
+                    currentOrgAndImmediateChild: "This organization and its immediate child organizations.",
+                    currentOrgOnly: "This organization only."
+                }
+            },
+            subHeading: "Settings related to webhook configurations."
         }
     },
     sidePanel: {

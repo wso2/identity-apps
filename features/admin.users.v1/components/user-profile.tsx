@@ -1135,6 +1135,21 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
 
         if (accountLockedReason) {
+            // For ask password related locks, provide specific messages based on recovery scenario.
+            if (accountLockedReason === AccountLockedReason.PENDING_ASK_PASSWORD) {
+                const recoveryScenario: string | null = resolveRecoveryScenario();
+
+                switch (recoveryScenario) {
+                    case RecoveryScenario.ASK_PASSWORD_VIA_SMS_OTP:
+                        return t("user:profile.accountState.pendingAskPasswordSMSOTP");
+                    case RecoveryScenario.ASK_PASSWORD_VIA_EMAIL_OTP:
+                        return t("user:profile.accountState.pendingAskPasswordEmailOTP");
+                    case RecoveryScenario.ASK_PASSWORD:
+                    default:
+                        return ACCOUNT_LOCK_REASON_MAP[accountLockedReason] ?? ACCOUNT_LOCK_REASON_MAP["DEFAULT"];
+                }
+            }
+
             return ACCOUNT_LOCK_REASON_MAP[accountLockedReason] ?? ACCOUNT_LOCK_REASON_MAP["DEFAULT"];
         }
 
@@ -1181,12 +1196,28 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 }
             }
             if (accountLockedReason === AccountLockedReason.PENDING_ASK_PASSWORD) {
+                if (isAskPasswordEmailOTPEnabled()) {
+
+                    return RecoveryScenario.ASK_PASSWORD_VIA_EMAIL_OTP;
+                }
+                if (isAskPasswordSMSOTPEnabled()) {
+
+                    return RecoveryScenario.ASK_PASSWORD_VIA_SMS_OTP;
+                }
+
                 return RecoveryScenario.ASK_PASSWORD;
             }
         }
         // For non-locked accounts, use the account state to determine the scenario.
         if (!accountLocked && accountState) {
             if (accountState === AccountState.PENDING_AP) {
+                if (isAskPasswordEmailOTPEnabled()) {
+                    return RecoveryScenario.ASK_PASSWORD_VIA_EMAIL_OTP;
+                }
+                if (isAskPasswordSMSOTPEnabled()) {
+                    return RecoveryScenario.ASK_PASSWORD_VIA_SMS_OTP;
+                }
+
                 return RecoveryScenario.ASK_PASSWORD;
             }
         }
@@ -1217,6 +1248,25 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 { t("user:resendCode.resend") }
             </LinkButton>
         );
+    };
+
+    /**
+     * Resolves the appropriate alert message for pending ask password state based on the recovery scenario.
+     *
+     * @returns The resolved alert message.
+     */
+    const resolvePendingAskPasswordMessage = (): string => {
+        const recoveryScenario: string | null = resolveRecoveryScenario();
+
+        switch (recoveryScenario) {
+            case RecoveryScenario.ASK_PASSWORD_VIA_SMS_OTP:
+                return t("user:profile.accountState.pendingAskPasswordSMSOTP");
+            case RecoveryScenario.ASK_PASSWORD_VIA_EMAIL_OTP:
+                return t("user:profile.accountState.pendingAskPasswordEmailOTP");
+            case RecoveryScenario.ASK_PASSWORD:
+            default:
+                return t("user:profile.accountState.pendingAskPassword");
+        }
     };
 
     /**
@@ -1293,6 +1343,34 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     /**
+     * Checks if ask password via Email OTP is enabled.
+     *
+     * @returns true if enabled, false otherwise
+     */
+    const isAskPasswordEmailOTPEnabled = (): boolean => {
+        const property: ConnectorPropertyInterface | undefined = connectorProperties?.find(
+            (property: ConnectorPropertyInterface) =>
+                property.name === ServerConfigurationsConstants.ASK_PASSWORD_EMAIL_OTP
+        );
+
+        return property?.value === "true";
+    };
+
+    /**
+     * Checks if ask password via SMS OTP is enabled.
+     *
+     * @returns true if enabled, false otherwise
+     */
+    const isAskPasswordSMSOTPEnabled = (): boolean => {
+        const property: ConnectorPropertyInterface | undefined = connectorProperties?.find(
+            (property: ConnectorPropertyInterface) =>
+                property.name === ServerConfigurationsConstants.ASK_PASSWORD_SMS_OTP
+        );
+
+        return property?.value === "true";
+    };
+
+    /**
      * Checks if admin forced password reset via SMS OTP is enabled.
      *
      * @returns true if enabled, false otherwise
@@ -1320,7 +1398,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 {
                     (!accountLocked && isPendingAskPasswordState) && (
                         <Alert severity="warning" className="user-profile-alert">
-                            { t("user:profile.accountState.pendingAskPassword") }
+                            { resolvePendingAskPasswordMessage() }
                             <ResendLink />
                         </Alert>
                     )

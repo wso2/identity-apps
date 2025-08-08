@@ -1,5 +1,23 @@
 # @wso2is/admin.actions.v1
 
+## 1.13.6
+
+### Patch Changes
+
+- [#8703](https://github.com/wso2/identity-apps/pull/8703) [`985f80c59b1ea1a08c7049643e48792c5862d815`](https://github.com/wso2/identity-apps/commit/985f80c59b1ea1a08c7049643e48792c5862d815) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add preRegistration action type card when it is not disabled from UI
+
+## 1.13.5
+
+### Patch Changes
+
+- [#8687](https://github.com/wso2/identity-apps/pull/8687) [`30711dad243b41973f7b45a2d22749d3af34abda`](https://github.com/wso2/identity-apps/commit/30711dad243b41973f7b45a2d22749d3af34abda) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Enable action types depending on the actiontypes API response and feature disabled status
+
+* [#8683](https://github.com/wso2/identity-apps/pull/8683) [`832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3`](https://github.com/wso2/identity-apps/commit/832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Onboard Webhook Settings UI
+
+* Updated dependencies [[`832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3`](https://github.com/wso2/identity-apps/commit/832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3)]:
+  - @wso2is/i18n@2.27.0
+  - @wso2is/admin.core.v1@2.48.1
+
 ## 1.13.4
 
 ### Patch Changes

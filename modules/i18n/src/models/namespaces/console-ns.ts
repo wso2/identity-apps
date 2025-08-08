@@ -45,6 +45,9 @@ export interface ConsoleNS {
                             empty: string;
                         };
                     };
+                    filterRecursiveToggle: {
+                        label: string;
+                    };
                 };
             };
             hints: {
@@ -6825,10 +6828,12 @@ export interface ConsoleNS {
                         subTitle: string;
                         askPassword: {
                             emailVerificationDisabled: string;
+                            mobileNumberAlreadyExists: string;
                             emailInvalid: string;
                             alphanumericUsernameEnabled: string;
                             inviteViaEmail: string;
                             inviteOffline: string;
+                            inviteViaSMS: string;
                         };
                         steps: {
                             basicDetails: string;
@@ -8228,6 +8233,67 @@ export interface ConsoleNS {
                     read: string;
                     delete: string;
                     darkMode: string;
+                };
+            };
+            workflowRequests: {
+                dangerZone: {
+                    delete: {
+                        actionTitle: string;
+                        header: string;
+                        subheader: string;
+                    };
+                };
+                notifications: {
+                    deleteWorkflowRequest: {
+                        genericError: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    fetchWorkflowRequestDetails: {
+                        genericError: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    fetchWorkflowRequests: {
+                        genericError: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    searchWorkflowRequests: {
+                        genericError: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                };
+                details: {
+                    header: string;
+                    fields: {
+                        id: string;
+                        eventType: string;
+                        requestInitiator: string;
+                        status: string;
+                        createdAt: string;
+                        updatedAt: string;
+                        requestParams: string;
+                    };
+                    loading: string;
+                    error: {
+                        header: string;
+                        content: string;
+                    };
+                    backButton: string;
                 };
             };
         };
