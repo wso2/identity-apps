@@ -62,7 +62,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
         readOnly,
         isConnectorEnabled,
         isSubmitting,
-        ["data-componentid"]: testId = "ask-password-edit-form"
+        ["data-componentid"]: componentId = "ask-password-edit-form"
     } = props;
 
     const { t } = useTranslation();
@@ -321,7 +321,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                             listen={ () => setAskPasswordOption(option.value) }
                             disabled={ !isInviteUserToSetPasswordEnabled }
                             readOnly={ readOnly }
-                            data-componentid={ `${ testId }-ask-password-option-${ option.value }` }
+                            data-componentid={ `${ componentId }-ask-password-option-${ option.value }` }
                         />
                     ))
                 }
@@ -353,7 +353,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     width={ 10 }
                     labelPosition="right"
                     disabled={ !isInviteUserToSetPasswordEnabled }
-                    data-componentid={ `${ testId }-link-expiry-time` }
+                    data-componentid={ `${ componentId }-link-expiry-time` }
                 >
                     <input/>
                     <label className="ui label">mins</label>
@@ -373,7 +373,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     readOnly={ readOnly }
                     width={ 10 }
                     disabled={ !isInviteUserToSetPasswordEnabled }
-                    data-componentid={ `${ testId }-account-activation-email` }
+                    data-componentid={ `${ componentId }-account-activation-email` }
                 />
                 <Hint>
                     { t("extensions:manage.serverConfigurations.userOnboarding." +
@@ -389,7 +389,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     readOnly={ readOnly }
                     width={ 10 }
                     disabled={ !isInviteUserToSetPasswordEnabled }
-                    data-componentid={ `${ testId }-account-lock-on-creation` }
+                    data-componentid={ `${ componentId }-account-lock-on-creation` }
                 />
                 <Hint>
                     { t("extensions:manage.serverConfigurations.userOnboarding." +
@@ -419,7 +419,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                         || (isUpperCaseEnabled && !isLowerCaseEnabled && !isNumericEnabled)
                         || askPasswordOption === VerificationOption.EMAIL_LINK }
                     listen={ (value: boolean) => setIsUpperCaseEnabled(value) }
-                    data-componentid={ `${ testId }-sms-otp-uppercase` }
+                    data-componentid={ `${ componentId }-sms-otp-uppercase` }
                 />
                 <Hint>
                     { t("extensions:manage.serverConfigurations.userOnboarding." +
@@ -439,7 +439,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                         || (!isUpperCaseEnabled && isLowerCaseEnabled && !isNumericEnabled)
                         || askPasswordOption === VerificationOption.EMAIL_LINK }
                     listen={ (value: boolean) => setIsLowerCaseEnabled(value) }
-                    data-componentid={ `${ testId }-sms-otp-lowercase` }
+                    data-componentid={ `${ componentId }-sms-otp-lowercase` }
                 />
                 <Hint>
                     { t("extensions:manage.serverConfigurations.userOnboarding." +
@@ -459,7 +459,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                         || (!isUpperCaseEnabled && !isLowerCaseEnabled && isNumericEnabled)
                         || askPasswordOption === VerificationOption.EMAIL_LINK }
                     listen={ (value: boolean) => setIsNumericEnabled(value) }
-                    data-componentid={ `${ testId }-sms-otp-numeric` }
+                    data-componentid={ `${ componentId }-sms-otp-numeric` }
                 />
                 <Hint>
                     { t("extensions:manage.serverConfigurations.userOnboarding." +
@@ -495,7 +495,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     labelPosition="right"
                     disabled={ !isInviteUserToSetPasswordEnabled
                         || askPasswordOption === VerificationOption.EMAIL_LINK }
-                    data-componentid={ `${ testId }-otp-length` }
+                    data-componentid={ `${ componentId }-otp-length` }
                 >
                     <input/>
                     <label className="ui label">characters</label>
@@ -511,7 +511,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     buttonType="primary_btn"
                     ariaLabel="Ask password update button"
                     name="update-button"
-                    data-componentid={ `${ testId }-submit-button` }
+                    data-componentid={ `${ componentId }-submit-button` }
                     disabled={ isSubmitting }
                     loading={ isSubmitting }
                     label={ t("common:update") }
