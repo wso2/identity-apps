@@ -320,7 +320,7 @@ public class AppPortalUtils {
      * @param tenantId     tenant id.
      * @throws IdentityApplicationManagementException      IdentityApplicationManagementException.
      * @throws IdentityOAuthAdminException                 IdentityOAuthAdminException.
-     * @throws org.wso2.carbon.user.api.UserStoreException UserStoreException.
+     * @throws UserStoreException UserStoreException.
      */
     public static void initiatePortals(String tenantDomain, int tenantId)
         throws IdentityApplicationManagementException, IdentityOAuthAdminException,
@@ -341,7 +341,6 @@ public class AppPortalUtils {
      * @param tenantInfoBean tenant info bean.
      * @throws IdentityApplicationManagementException      IdentityApplicationManagementException.
      * @throws IdentityOAuthAdminException                 IdentityOAuthAdminException.
-     * @throws org.wso2.carbon.user.api.UserStoreException UserStoreException.
      */
     public static void initiatePortals(TenantInfoBean tenantInfoBean)
         throws IdentityApplicationManagementException, IdentityOAuthAdminException {

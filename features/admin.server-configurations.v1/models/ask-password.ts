@@ -123,23 +123,19 @@ export interface AskPasswordFormUpdatableConfigsInterface {
      */
     "EmailVerification.LockOnCreation": boolean;
     /**
-     * Whether account activation email is enabled.
+     * Whether account activation email is enabled for ask password.
      */
     "EmailVerification.AskPassword.AccountActivation": boolean;
     /**
-     * Email verification expiry time.
+     * Ask password invitation code expiry time.
      */
     "EmailVerification.AskPassword.ExpiryTime": string;
     /**
-     * Sms OTP expiry time.
-     */
-    // "EmailVerification.AskPassword.SMSOTP.ExpiryTime": string;
-    /**
-     * Whether email OTP is enabled.
+     * Whether email OTP is enabled for ask password.
      */
     "EmailVerification.AskPassword.EmailOTP": boolean;
     /**
-     * Whether SMS OTP is enabled.
+     * Whether SMS OTP is enabled for ask password.
      */
     "EmailVerification.AskPassword.SMSOTP": boolean;
     /**

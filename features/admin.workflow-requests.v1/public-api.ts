@@ -17,4 +17,4 @@
  */
 
 export { default as WorkflowRequestsPage } from "./pages/workflow-requests";
-export { default as WorkflowRequestDetails } from "./pages/workflow-request-details";
+export { default as WorkflowRequestDetailsPage } from "./pages/workflow-request-details";

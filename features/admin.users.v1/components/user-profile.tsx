@@ -1245,29 +1245,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 disabled={ isSubmitting }
                 data-testid={ `${ testId }-resend-link` }
             >
-                { resolveResendButtonText(recoveryScenario) }
+                { t("user:resendCode.resend") }
             </LinkButton>
         );
-    };
-
-    /**
-     * Resolves the appropriate button text based on the recovery scenario.
-     *
-     * @param recoveryScenario - The recovery scenario to resolve the button text for.
-     * @returns The resolved button text.
-     */
-    const resolveResendButtonText = (recoveryScenario: string): string => {
-        switch (recoveryScenario) {
-            case RecoveryScenario.ASK_PASSWORD_VIA_SMS_OTP:
-            case RecoveryScenario.ADMIN_FORCED_PASSOWRD_RESET_VIA_SMS_OTP:
-            case RecoveryScenario.ASK_PASSWORD_VIA_EMAIL_OTP:
-            case RecoveryScenario.ADMIN_FORCED_PASSWORD_RESET_VIA_OTP:
-                return t("user:resendCode.resend");
-            case RecoveryScenario.ASK_PASSWORD:
-            case RecoveryScenario.ADMIN_FORCED_PASSWORD_RESET_VIA_EMAIL_LINK:
-            default:
-                return t("user:resendCode.resend");
-        }
     };
 
     /**
