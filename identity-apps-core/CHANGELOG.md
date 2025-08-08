@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.27.24
+
+### Patch Changes
+
+- [#8700](https://github.com/wso2/identity-apps/pull/8700) [`275a734dac603cf62b0127a4af8dcba177ac047d`](https://github.com/wso2/identity-apps/commit/275a734dac603cf62b0127a4af8dcba177ac047d) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Remove isUserSessionImpersonationEnabled config.
+
 ## 2.27.23
 
 ### Patch Changes
