@@ -638,35 +638,6 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     const isAlphanumericUsernameEnabled = (): boolean => usernameConfig?.enableValidator === "true";
 
     /**
-     * Check whether mobile field is available for user creation.
-     *
-     * @returns isMobileFieldAvailable - whether mobile field is available.
-     */
-    const isMobileFieldAvailable = (): boolean => {
-        if (!isAttributeProfileForUserCreationEnabled || !profileSchema) {
-            return false;
-        }
-
-        const mobileNumbersSchema: ProfileSchemaInterface = profileSchema?.find(
-            (schema: ProfileSchemaInterface) => schema.name === MOBILE_NUMBERS_ATTRIBUTE);
-        const mobileSchema: ProfileSchemaInterface = profileSchema?.find(
-            (schema: ProfileSchemaInterface) => schema.name === MOBILE_ATTRIBUTE);
-
-        // Check if multiple mobile numbers field is available
-        if (isMultipleEmailAndMobileNumberEnabled && mobileNumbersSchema &&
-            isFieldDisplayableInUserCreationWizard(mobileNumbersSchema, isDistinctAttributeProfilesDisabled)) {
-            return true;
-        }
-
-        // Check if single mobile field is available
-        if (isFieldDisplayableInUserCreationWizard(mobileSchema, isDistinctAttributeProfilesDisabled)) {
-            return true;
-        }
-
-        return false;
-    };
-
-    /**
      * Callback function to validate password.
      *
      * @param valid - validation status.
@@ -758,6 +729,19 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                 ? values.get("email")?.toString()
                 : values.get("username")?.toString()
         };
+
+        // Add mobile field for SMS OTP verification
+        if (askPasswordVerificationOption === VerificationOption.SMS_OTP &&
+            askPasswordOption === AskPasswordOptionTypes.EMAIL &&
+            values.get("mobile")) {
+            formValues = {
+                ...formValues,
+                phoneNumbers: [ {
+                    type: "mobile",
+                    value: values.get("mobile")?.toString()
+                } ]
+            } as BasicUserDetailsInterface & { phoneNumbers: Array<{ type: string; value: string }> };
+        }
 
         // Include dynamic form values based on attribute profiles.
         if (isAttributeProfileForUserCreationEnabled) {
@@ -1050,30 +1034,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
             );
         }
 
-        if (askPasswordVerificationOption === VerificationOption.SMS_OTP && !isMobileFieldAvailable()) {
-            const mobileClaimId: string = fetchedAttributes?.find(
-                (attribute: Claim) =>
-                    attribute?.[ClaimManagementConstants.CLAIM_URI_ATTRIBUTE_KEY] ===
-                    ClaimManagementConstants.MOBILE_CLAIM_URI
-            )?.id || "";
 
-            return (
-                <Trans
-                    i18nKey="user:modals.addUserWizard.askPassword.mobileNumberAlreadyExists"
-                >
-                    Please enable mobile as required field <Link
-                        onClick={ () => {
-                            const editClaimPath: string = AppConstants.getPaths()
-                                .get("LOCAL_CLAIMS_EDIT")
-                                .replace(":id", mobileClaimId);
-
-                            history.push(editClaimPath);
-                        } }
-                        external={ false }
-                    >Mobile Attribute Settings</Link>.
-                </Trans>
-            );
-        }
 
         if (!isEmailFilled || !isValidEmail) {
             return t(
@@ -1094,10 +1055,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                 >
                     {
                         (!emailVerificationEnabled ||
-                         (!isEmailRequired && !isValidEmail
-                            && askPasswordVerificationOption !== VerificationOption.SMS_OTP) ||
-                         (askPasswordVerificationOption === VerificationOption.SMS_OTP &&
-                          !isMobileFieldAvailable())) ? (
+                         (!isEmailRequired && !isValidEmail)) ? (
                                 <Popup
                                     basic
                                     inverted
@@ -1713,6 +1671,43 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                     ? mobileSchema.maxLength
                                     : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
                             }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+            );
+        }
+
+        // If SMS OTP is enabled and ask password option is EMAIL, show mandatory mobile field
+        if (askPasswordVerificationOption === VerificationOption.SMS_OTP &&
+            askPasswordOption === AskPasswordOptionTypes.EMAIL) {
+
+            return (
+                <Grid.Row>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                        <Field
+                            data-componentid="user-mgt-add-user-form-mobile-input"
+                            name="mobile"
+                            label={ t("user:forms.addUserForm.inputs.mobile.label", { defaultValue: "Mobile Number" }) }
+                            required={ true }
+                            requiredErrorMessage={ t("user:forms.addUserForm.inputs.mobile.validations.empty",
+                                { defaultValue: "Mobile number is required for SMS verification" }) }
+                            placeholder={ t("user:forms.addUserForm.inputs.mobile.placeholder",
+                                { defaultValue: "Enter mobile number" }) }
+                            type="text"
+                            value={ profileInfo.get("mobile") || initialValues?.mobile }
+                            validation={ (value: string, validation: Validation) => {
+                                // Basic mobile number validation
+                                const mobileRegex: RegExp = /^[+]?[\d\s\-()]+$/;
+
+                                if (!mobileRegex.test(value)) {
+                                    validation.isValid = false;
+                                    validation.errorMessages.push(
+                                        t("user:forms.addUserForm.inputs.mobile.validations.invalid",
+                                            { defaultValue: "Please enter a valid mobile number" })
+                                    );
+                                }
+                            } }
+                            maxLength={ 15 }
                         />
                     </Grid.Column>
                 </Grid.Row>

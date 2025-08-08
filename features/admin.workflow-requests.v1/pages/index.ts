@@ -16,17 +16,5 @@
  * under the License.
  */
 
-.connector-form.ask-password-form {
-
-    .header {
-        margin-bottom: 20px;
-        margin-top: 10px;
-    }
-    .sub-header {
-        margin-bottom: 10px;
-        margin-top: 10px;
-    }
-    .radio {
-        margin-bottom: 7px;
-    }
-}
+export { default as WorkflowRequestsPage } from "./workflow-requests";
+export { default as WorkflowRequestDetailsPage } from "./workflow-request-details";

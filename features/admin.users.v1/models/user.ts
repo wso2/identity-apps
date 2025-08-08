@@ -135,6 +135,7 @@ export interface BasicUserDetailsInterface {
     newPassword?: string;
     confirmPassword?: string;
     passwordOption?: string;
+    mobile?: string;
 }
 
 /**

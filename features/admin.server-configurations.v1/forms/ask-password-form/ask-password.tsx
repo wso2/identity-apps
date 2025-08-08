@@ -62,7 +62,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
         readOnly,
         isConnectorEnabled,
         isSubmitting,
-        ["data-componentid"]: testId
+        ["data-componentid"]: testId = "ask-password-edit-form"
     } = props;
 
     const { t } = useTranslation();
@@ -73,11 +73,11 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
     const [ isUpperCaseEnabled, setIsUpperCaseEnabled ] = useState<boolean>(false);
     const [ isLowerCaseEnabled, setIsLowerCaseEnabled ] = useState<boolean>(false);
     const [ isNumericEnabled, setIsNumericEnabled ] = useState<boolean>(false);
+    const [ askPasswordOption, setAskPasswordOption ] = useState<string>(VerificationOption.EMAIL_LINK);
 
     const showSmsOtpAskPasswordFeatureStatusChip: boolean =
             useSelector((state: AppState) => state?.config?.ui?.showSmsOtpAskPasswordFeatureStatusChip);
 
-    const [ askPasswordOption, setAskPasswordOption ] = useState<string>(VerificationOption.EMAIL_LINK);
     const EMAIL_ASK_PASSWORD_RADIO_OPTIONS: RadioChild[] = [
         {
             label: "extensions:manage.serverConfigurations.userOnboarding." +
@@ -353,7 +353,6 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     width={ 10 }
                     labelPosition="right"
                     disabled={ !isInviteUserToSetPasswordEnabled }
-                    data-testid={ `${ testId }-link-expiry-time` }
                     data-componentid={ `${ testId }-link-expiry-time` }
                 >
                     <input/>
@@ -362,9 +361,8 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                 <Hint>
                     { t("extensions:manage.serverConfigurations.userOnboarding." +
                             "inviteUserToSetPassword.form.fields.expiryTime.hint") as ReactNode }
-                    <br />
+                    <br/>
                 </Hint>
-
                 <br/>
                 <Field.Checkbox
                     ariaLabel="enableAccountActivationEmail"
@@ -375,7 +373,6 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     readOnly={ readOnly }
                     width={ 10 }
                     disabled={ !isInviteUserToSetPasswordEnabled }
-                    data-testid={ `${ testId }-account-activation-email` }
                     data-componentid={ `${ testId }-account-activation-email` }
                 />
                 <Hint>
@@ -392,12 +389,11 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     readOnly={ readOnly }
                     width={ 10 }
                     disabled={ !isInviteUserToSetPasswordEnabled }
-                    data-testid={ `${ testId }-account-lock-on-creation` }
                     data-componentid={ `${ testId }-account-lock-on-creation` }
                 />
                 <Hint>
                     { t("extensions:manage.serverConfigurations.userOnboarding." +
-                            "inviteUserToSetPassword.form.fields.enableAccountLockOnCreation.hint") as ReactNode }
+                            "inviteUserToSetPassword.form.fields.enableAccountLockOnCreation.hint") }
                 </Hint>
                 <Divider/>
                 <Heading as="h4">
@@ -423,7 +419,6 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                         || (isUpperCaseEnabled && !isLowerCaseEnabled && !isNumericEnabled)
                         || askPasswordOption === VerificationOption.EMAIL_LINK }
                     listen={ (value: boolean) => setIsUpperCaseEnabled(value) }
-                    data-testid={ `${ testId }-sms-otp-uppercase` }
                     data-componentid={ `${ testId }-sms-otp-uppercase` }
                 />
                 <Hint>
@@ -444,7 +439,6 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                         || (!isUpperCaseEnabled && isLowerCaseEnabled && !isNumericEnabled)
                         || askPasswordOption === VerificationOption.EMAIL_LINK }
                     listen={ (value: boolean) => setIsLowerCaseEnabled(value) }
-                    data-testid={ `${ testId }-sms-otp-lowercase` }
                     data-componentid={ `${ testId }-sms-otp-lowercase` }
                 />
                 <Hint>
@@ -465,7 +459,6 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                         || (!isUpperCaseEnabled && !isLowerCaseEnabled && isNumericEnabled)
                         || askPasswordOption === VerificationOption.EMAIL_LINK }
                     listen={ (value: boolean) => setIsNumericEnabled(value) }
-                    data-testid={ `${ testId }-sms-otp-numeric` }
                     data-componentid={ `${ testId }-sms-otp-numeric` }
                 />
                 <Hint>
@@ -502,7 +495,6 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     labelPosition="right"
                     disabled={ !isInviteUserToSetPasswordEnabled
                         || askPasswordOption === VerificationOption.EMAIL_LINK }
-                    data-testid={ `${ testId }-otp-length` }
                     data-componentid={ `${ testId }-otp-length` }
                 >
                     <input/>
@@ -519,7 +511,6 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     buttonType="primary_btn"
                     ariaLabel="Ask password update button"
                     name="update-button"
-                    data-testid={ `${ testId }-submit-button` }
                     data-componentid={ `${ testId }-submit-button` }
                     disabled={ isSubmitting }
                     loading={ isSubmitting }
@@ -531,11 +522,3 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
     );
 
 };
-
-/**
- * Default props for the component.
- */
-export const defaultAskPasswordFormProps: { "data-componentid": string } = {
-    "data-componentid": "ask-password-edit-form"
-};
-
