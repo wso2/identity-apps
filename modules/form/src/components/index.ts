@@ -56,9 +56,14 @@ export * from "./wizardPage";
 // Export react-final-form components with a different name.
 export { Form as FinalForm } from "react-final-form";
 export { Field as FinalFormField } from "react-final-form";
-export { FormRenderProps } from "react-final-form";
 export { FormSpy } from "react-final-form";
-export { FormProps } from "react-final-form";
+
+// Import types from react-final-form
+import type { FormProps as ReactFinalFormProps, FormRenderProps as ReactFinalFormRenderProps } from "react-final-form";
+
+// Re-export types
+export type FormProps = ReactFinalFormProps;
+export type FormRenderProps = ReactFinalFormRenderProps;
 
 export * from "final-form";
 export * as ReactFinalForm from "react-final-form";

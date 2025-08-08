@@ -31,8 +31,8 @@ import "./workflow-request-details.scss";
 
 const WorkflowRequestDetailsPage: React.FC = () => {
     const { t } = useTranslation();
-    const [ showDeleteModal, setShowDeleteModal ] = useState(false);
-    const dispatch = useDispatch();
+    const [ showDeleteModal, setShowDeleteModal ] = useState<boolean>(false);
+    const dispatch: any = useDispatch();
 
     const path: string[] = history.location.pathname.split("/");
     const id: string = path[path.length - 1];
@@ -40,20 +40,19 @@ const WorkflowRequestDetailsPage: React.FC = () => {
     const {
         data: workflowRequest,
         isLoading: loading,
-        error: workflowInstanceError,
-        mutate: mutateWorkflowInstance
+        error: workflowInstanceError
     } = useGetWorkflowInstance(id, !!id);
 
     useEffect(() => {
         if (workflowInstanceError) {
             // Error handling is done by the hook
         }
-    }, [workflowInstanceError]);
+    }, [ workflowInstanceError ]);
 
     const formatHumanReadableDate = (dateString: string): string => {
         if (!dateString) return "-";
 
-        const date = new Date(dateString);
+        const date: Date = new Date(dateString);
 
         if (isNaN(date.getTime())) return dateString;
 
@@ -79,15 +78,15 @@ const WorkflowRequestDetailsPage: React.FC = () => {
             return JSON.parse(raw);
         } catch {
             const result: any = {};
-            const str = raw.toString();
-            const content = str.replace(/^\{|\}$/g, '');
+            const str: string = raw.toString();
+            const content: string = str.replace(/^\{|\}$/g, "");
 
-            let braceDepth = 0;
-            let current = '';
+            let braceDepth: number = 0;
+            let current: string = "";
             const parts: string[] = [];
 
-            for (let i = 0; i < content.length; i++) {
-                const char = content[i];
+            for (let i: number = 0; i < content.length; i++) {
+                const char: string = content[i];
 
                 if (char === "{" || char === "[") {
                     braceDepth++;
@@ -105,25 +104,25 @@ const WorkflowRequestDetailsPage: React.FC = () => {
                 parts.push(current.trim());
             }
 
-            parts.forEach(part => {
+            parts.forEach((part: string) => {
 
-                const colonIndex = part.indexOf(" : ");
+                const colonIndex: number = part.indexOf(" : ");
 
                 if (colonIndex > 0) {
-                    const key = part.substring(0, colonIndex).trim();
-                    const value = part.substring(colonIndex + 3).trim();
+                    const key: string = part.substring(0, colonIndex).trim();
+                    const value: string = part.substring(colonIndex + 3).trim();
 
                     if (value.startsWith("{") && value.endsWith("}")) {
-                        const nestedContent = value.substring(1, value.length - 1);
-                        const nestedPairs = nestedContent.split(", ");
+                        const nestedContent: string = value.substring(1, value.length - 1);
+                        const nestedPairs: string[] = nestedContent.split(", ");
                         const nestedObj: any = {};
 
-                        nestedPairs.forEach(pair => {
-                            const equalIndex = pair.indexOf("=");
+                        nestedPairs.forEach((pair: string) => {
+                            const equalIndex: number = pair.indexOf("=");
 
                             if (equalIndex > 0) {
-                                const nestedKey = pair.substring(0, equalIndex).trim();
-                                const nestedValue = pair.substring(equalIndex + 1).trim();
+                                const nestedKey: string = pair.substring(0, equalIndex).trim();
+                                const nestedValue: string = pair.substring(equalIndex + 1).trim();
 
                                 nestedObj[nestedKey] = nestedValue;
                             }
@@ -149,7 +148,7 @@ const WorkflowRequestDetailsPage: React.FC = () => {
 
         const result: { key: string; value: string }[] = [];
 
-        const excludeFields = [
+        const excludeFields: string[] = [
             "REQUEST ID", "requestId", "request_id",
             "self", "Self",
             "arbitries", "Arbitries",
@@ -160,17 +159,17 @@ const WorkflowRequestDetailsPage: React.FC = () => {
         ];
 
         const flattenObject = (obj: any, prefix: string = ""): void => {
-            for (const [key, value] of Object.entries(obj)) {
-                const newKey = prefix ? `${prefix}.${key}` : key;
+            for (const [ key, value ] of Object.entries(obj)) {
+                const newKey: string = prefix ? `${prefix}.${key}` : key;
 
-                if (excludeFields.some(field => newKey.toLowerCase().includes(field.toLowerCase()))) {
+                if (excludeFields.some((field: string) => newKey.toLowerCase().includes(field.toLowerCase()))) {
                     continue;
                 }
 
                 if (value && typeof value === "object" && !Array.isArray(value)) {
                     flattenObject(value, newKey);
                 } else {
-                    let cleanKey = newKey;
+                    let cleanKey: string = newKey;
 
                     // Remove Claims.http://wso2.org/claims/ prefix (handle both @Claims and Claims formats)
                     cleanKey = cleanKey.replace(/@?Claims\.http:\/\/wso2\.org\/claims\//g, "");
@@ -178,7 +177,7 @@ const WorkflowRequestDetailsPage: React.FC = () => {
                     // Convert camelCase or snake_case to Title Case
                     cleanKey = cleanKey
                         .replace(/([A-Z])/g, " $1") // Add space before capital letters
-                        .replace(/^./, str => str.toUpperCase()) // Capitalize first letter
+                        .replace(/^./, (str: string) => str.toUpperCase()) // Capitalize first letter
                         .replace(/\s+/g, " ") // Replace multiple spaces with single space
                         .trim();
 
@@ -190,11 +189,11 @@ const WorkflowRequestDetailsPage: React.FC = () => {
                     if (cleanKey === "Given Name") cleanKey = "Given Name";
                     if (cleanKey === "Last Name") cleanKey = "Last Name";
 
-                    const displayValue = value === null ? "null" : 
-                                      value === "" ? "(empty)" : 
-                                      Array.isArray(value) ? `[${value.length} items]` : 
-                                      String(value);
-                    
+                    const displayValue: string = value === null ? "null" :
+                        value === "" ? "(empty)" :
+                            Array.isArray(value) ? `[${value.length} items]` :
+                                String(value);
+
                     result.push({ key: cleanKey, value: displayValue });
                 }
             }
@@ -212,7 +211,7 @@ const WorkflowRequestDetailsPage: React.FC = () => {
     const renderDetailsTable = () => {
         if (!workflowRequest) return null;
 
-        let params = workflowRequest.requestParams;
+        let params: any = workflowRequest.requestParams;
 
         if (!params && (workflowRequest as any).requestParameters) {
             params = parseRequestParameters((workflowRequest as any).requestParameters);
@@ -251,17 +250,17 @@ const WorkflowRequestDetailsPage: React.FC = () => {
                             { params && Object.keys(params).length > 0 ? (
                                 <Table celled compact size="small">
                                     <Table.Body>
-                                        { formatRequestParams(params).map((item, index) => (
+                                        { formatRequestParams(params).map((item: any, index: number) => (
                                             <Table.Row key={ index }>
                                                 <Table.Cell className="param-key">{ item.key }</Table.Cell>
                                                 <Table.Cell className="param-value">{ item.value }</Table.Cell>
                                             </Table.Row>
-                                        ))}
+                                        )) }
                                     </Table.Body>
                                 </Table>
                             ) : (
                                 <span>-</span>
-                            )}
+                            ) }
                         </Table.Cell>
                     </Table.Row>
                 </Table.Body>
@@ -275,17 +274,23 @@ const WorkflowRequestDetailsPage: React.FC = () => {
         try {
             await deleteWorkflowInstance(workflowRequest.workflowInstanceId);
             dispatch(addAlert({
-                description: t("console:manage.features.workflowRequests.notifications.deleteWorkflowRequest.success.description"),
+                description: t("console:manage.features.workflowRequests.notifications."
+                    + "deleteWorkflowRequest.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("console:manage.features.workflowRequests.notifications.deleteWorkflowRequest.success.message")
+                message: t("console:manage.features.workflowRequests.notifications."
+                    + "deleteWorkflowRequest.success.message")
             }));
             setShowDeleteModal(false);
             history.push(AppConstants.getPaths().get("WORKFLOW_REQUESTS"));
         } catch (err: any) {
             dispatch(addAlert({
-                description: t("console:manage.features.workflowRequests.notifications.deleteWorkflowRequest.error.description", { description: err?.response?.data?.detail || "" }),
+                description: t("console:manage.features.workflowRequests.notifications."
+                    + "deleteWorkflowRequest.error.description", {
+                    description: err?.response?.data?.detail || ""
+                }),
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.workflowRequests.notifications.deleteWorkflowRequest.error.message")
+                message: t("console:manage.features.workflowRequests.notifications."
+                    + "deleteWorkflowRequest.error.message")
             }));
         }
     };
@@ -302,7 +307,13 @@ const WorkflowRequestDetailsPage: React.FC = () => {
             titleTextAlign="left"
             bottomMargin={ false }
         >
-            { workflowInstanceError && <Message negative header={ t("approvalWorkflows:details.error.header") } content={ t("approvalWorkflows:details.error.content") } /> }
+            { workflowInstanceError && (
+                <Message
+                    negative
+                    header={ t("approvalWorkflows:details.error.header") }
+                    content={ t("approvalWorkflows:details.error.content") }
+                />
+            ) }
             { workflowRequest && renderDetailsTable() }
             { workflowRequest && (
                 <DangerZoneGroup sectionHeader={ t("approvalWorkflows:details.dangerZone.header") }>
@@ -314,18 +325,18 @@ const WorkflowRequestDetailsPage: React.FC = () => {
                         data-testid="workflow-requests-details-danger-zone-delete"
                     />
                 </DangerZoneGroup>
-            )}
+            ) }
             <Modal
                 open={ showDeleteModal }
                 size="small"
-                onClose={() => setShowDeleteModal(false)}
+                onClose={ () => setShowDeleteModal(false) }
             >
                 <Modal.Header>{ t("approvalWorkflows:details.dangerZone.delete.header") }</Modal.Header>
                 <Modal.Content>
                     <p>{ t("approvalWorkflows:details.dangerZone.delete.confirm") }</p>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button onClick={() => setShowDeleteModal(false)}>{ t("common:cancel") }</Button>
+                    <Button onClick={ () => setShowDeleteModal(false) }>{ t("common:cancel") }</Button>
                     <Button negative loading={ loading } onClick={ handleDelete }>{ t("common:delete") }</Button>
                 </Modal.Actions>
             </Modal>

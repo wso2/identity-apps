@@ -1338,13 +1338,17 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             category: "extensions:manage.sidePanel.categories.workflows",
-            component: lazy(() => import("@wso2is/admin.workflow-requests.v1/pages/workflow-requests")),
+            component: lazy(() =>
+                import("@wso2is/admin.workflow-requests.v1").then((module: any) => ({
+                    default: module.WorkflowRequestsPage
+                }))
+            ),
             exact: true,
             icon: {
                 icon: <LogsDocumentIcon fill="black" className="icon" />
             },
             id: "workflowRequests",
-            name: "Requests",
+            name: "pages:workflowRequestsPage.title",
             order: 9,
             path: AppConstants.getPaths().get("WORKFLOW_REQUESTS"),
             protected: true,
@@ -1352,10 +1356,14 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             category: "extensions:manage.sidePanel.categories.workflows",
-            component: lazy(() => import("@wso2is/admin.workflow-requests.v1/pages/workflow-request-details")),
+            component: lazy(() =>
+                import("@wso2is/admin.workflow-requests.v1").then((module: any) => ({
+                    default: module.WorkflowRequestDetails
+                }))
+            ),
             exact: true,
             id: "workflowRequestDetails",
-            name: "Workflow Request Details",
+            name: "console:manage.features.workflowRequests.details.header",
             path: `${AppConstants.getPaths().get("WORKFLOW_REQUESTS")}/:id`,
             protected: true,
             showOnSidePanel: false

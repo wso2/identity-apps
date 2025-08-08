@@ -43,8 +43,8 @@ const ActiveFiltersBar: React.FC<ActiveFiltersBarProps> = (
     return (
         <div className="workflow-requests-active-filters-bar modern-active-filters-bar">
             <div className="filters-container">
-                {filters && filters.length > 0 ? (
-                    filters.map(( filter ) => (
+                { filters && filters.length > 0 ? (
+                    filters.map(( filter: FilterTag ) => (
                         <div
                             key={ filter.key }
                             data-componentid={ `active-filters-bar-filter-${filter.key}` }
@@ -62,7 +62,9 @@ const ActiveFiltersBar: React.FC<ActiveFiltersBarProps> = (
                                 aria-label={ t("approvalWorkflows:activeFiltersBar.removeFilter",
                                     { filter: filter.label }) }
                                 onClick={ () => onRemove(filter) }
-                                onKeyPress={ e => { if (e.key === "Enter" || e.key === " ") onRemove(filter); } }
+                                onKeyPress={ (e: React.KeyboardEvent) => {
+                                    if (e.key === "Enter" || e.key === " ") onRemove(filter);
+                                } }
                                 className="filter-remove-button"
                             >
                                 <Icon name="close" size="small" className="icon" />
@@ -73,7 +75,7 @@ const ActiveFiltersBar: React.FC<ActiveFiltersBarProps> = (
                     <span className="no-filters-text">
                         { t("approvalWorkflows:activeFiltersBar.noActiveFilters") }
                     </span>
-                )}
+                ) }
             </div>
 
             { filters && filters.length > 0 && (
@@ -86,10 +88,9 @@ const ActiveFiltersBar: React.FC<ActiveFiltersBarProps> = (
                     <Icon name="close" size="small" className="icon" />
                     { t("approvalWorkflows:activeFiltersBar.clearAll") }
                 </Button>
-            )}
+            ) }
         </div>
     );
 };
 
 export default ActiveFiltersBar;
-
