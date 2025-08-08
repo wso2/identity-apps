@@ -398,10 +398,10 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
 
     return (
         <PageLayout
-            title={t("pages:workflowRequestsPage.title")}
-            pageTitle={t("pages:workflowRequestsPage.title")}
-            description={t("pages:workflowRequestsPage.subTitle")}
-            data-testid={`${testId}-page-layout`}
+            title={ t("pages:workflowRequestsPage.title") }
+            pageTitle={ t("pages:workflowRequestsPage.title") }
+            description={ t("pages:workflowRequestsPage.subTitle") }
+            data-testid={ `${testId}-page-layout` }
         >
             <div className="workflow-requests-page-content">
                 <ActiveFiltersBar

@@ -62,7 +62,9 @@ const ActiveFiltersBar: React.FC<ActiveFiltersBarProps> = (
                                 aria-label={ t("approvalWorkflows:activeFiltersBar.removeFilter",
                                     { filter: filter.label }) }
                                 onClick={ () => onRemove(filter) }
-                                onKeyPress={ e => { if (e.key === "Enter" || e.key === " ") onRemove(filter); } }
+                                onKeyPress={ (e: React.KeyboardEvent) => {
+                                    if (e.key === "Enter" || e.key === " ") onRemove(filter);
+                                } }
                                 className="filter-remove-button"
                             >
                                 <Icon name="close" size="small" className="icon" />

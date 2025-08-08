@@ -27,7 +27,6 @@ import {
     WorkflowAssociationsResourceEndpointsInterface,
     WorkflowsResourceEndpointsInterface
 } from "@wso2is/admin.approval-workflows.v1/models/endpoints";
-import { WorkflowRequestsResourceEndpointsInterface } from "../../admin.workflow-requests.v1/configs/endpoints";
 import { BrandingPreferenceResourceEndpointsInterface } from "@wso2is/admin.branding.v1/models/endpoints";
 import { CertificatesResourceEndpointsInterface } from "@wso2is/admin.certificates.v1";
 import { ClaimResourceEndpointsInterface } from "@wso2is/admin.claims.v1/models/endpoints";
@@ -55,6 +54,7 @@ import {
     FeatureAccessConfigInterface
 } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
+import { WorkflowRequestsResourceEndpointsInterface } from "../../admin.workflow-requests.v1/configs/endpoints";
 
 export type ConfigInterface = CommonConfigInterface<
     DeploymentConfigInterface,
@@ -299,6 +299,7 @@ export interface FeatureConfigInterface {
      * Workflow feature.
      */
     workflows?: FeatureAccessConfigInterface;
+}
 
 /**
  * Portal Deployment config interface inheriting the common configs from core module.
