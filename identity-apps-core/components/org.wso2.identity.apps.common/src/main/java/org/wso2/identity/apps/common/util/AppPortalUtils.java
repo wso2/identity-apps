@@ -156,15 +156,13 @@ public class AppPortalUtils {
         String consoleCallbackUrlForMyAccount = IdentityUtil.getServerURL(consolePortalPathForMyAccount,
             true, true);
         String appendedConsoleCallBackURLRegex = StringUtils.EMPTY;
-        boolean isUserSessionImpersonationEnabled = Boolean.parseBoolean(IdentityUtil
-            .getProperty(USER_SESSION_IMPERSONATION));
         try {
             // Update the callback URL properly if origin is configured for the portal app.
             callbackUrl = ApplicationMgtUtil.replaceUrlOriginWithPlaceholders(callbackUrl);
             callbackUrl = ApplicationMgtUtil.resolveOriginUrlFromPlaceholders(callbackUrl, applicationName);
 
             // Add console url when impersonation is enabled.
-            if (isUserSessionImpersonationEnabled && MYACCOUNT_APP.equals(applicationName)) {
+            if (MYACCOUNT_APP.equals(applicationName)) {
                 consoleCallbackUrlForMyAccount = ApplicationMgtUtil.replaceUrlOriginWithPlaceholders(
                     consoleCallbackUrlForMyAccount);
                 consoleCallbackUrlForMyAccount = ApplicationMgtUtil.resolveOriginUrlFromPlaceholders(
@@ -191,7 +189,7 @@ public class AppPortalUtils {
         }
         oAuthConsumerAppDTO.setCallbackUrl(callbackUrl);
         // Enable subject token response type for my account.
-        if (isUserSessionImpersonationEnabled && MYACCOUNT_APP.equals(applicationName)) {
+        if (MYACCOUNT_APP.equals(applicationName)) {
             oAuthConsumerAppDTO.setSubjectTokenEnabled(true);
             oAuthConsumerAppDTO.setSubjectTokenExpiryTime(
                 OAuthConstants.OIDCConfigProperties.SUBJECT_TOKEN_EXPIRY_TIME_VALUE);
@@ -365,9 +363,7 @@ public class AppPortalUtils {
                         GRANT_TYPE_ORGANIZATION_SWITCH);
                 }
                 // Enable token-exchange grant type for my account.
-                boolean isUserSessionImpersonationEnabled = Boolean.parseBoolean(IdentityUtil
-                        .getProperty(USER_SESSION_IMPERSONATION));
-                if (isUserSessionImpersonationEnabled && MYACCOUNT_APP.equals(appPortal.getName())) {
+                if (MYACCOUNT_APP.equals(appPortal.getName())) {
                     grantTypes = Arrays.asList(AUTHORIZATION_CODE, REFRESH_TOKEN, GRANT_TYPE_ACCOUNT_SWITCH,
                     GRANT_TYPE_TOKEN_EXCHANGE);
                 }
