@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.71.3
+
+### Patch Changes
+
+- [#8703](https://github.com/wso2/identity-apps/pull/8703) [`985f80c59b1ea1a08c7049643e48792c5862d815`](https://github.com/wso2/identity-apps/commit/985f80c59b1ea1a08c7049643e48792c5862d815) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add preRegistration action type card when it is not disabled from UI
+
+- Updated dependencies [[`985f80c59b1ea1a08c7049643e48792c5862d815`](https://github.com/wso2/identity-apps/commit/985f80c59b1ea1a08c7049643e48792c5862d815)]:
+  - @wso2is/admin.actions.v1@1.13.6
+
 ## 2.71.2
 
 ### Patch Changes

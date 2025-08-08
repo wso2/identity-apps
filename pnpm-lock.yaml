@@ -489,7 +489,7 @@ importers:
         specifier: ^3.4.1
         version: link:../../modules/access-control
       '@wso2is/admin.actions.v1':
-        specifier: ^1.13.5
+        specifier: ^1.13.6
         version: link:../../features/admin.actions.v1
       '@wso2is/admin.administrators.v1':
         specifier: ^2.29.205
