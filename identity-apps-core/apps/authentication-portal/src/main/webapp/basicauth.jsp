@@ -240,6 +240,7 @@
     private static final String JAVAX_SERVLET_FORWARD_QUERY_STRING = "javax.servlet.forward.query_string";
     private static final String UTF_8 = "UTF-8";
     private static final String TENANT_DOMAIN = "tenant-domain";
+    private static final String ACCOUNTS_ENDPOINT = "/accounts";
     private static final String ACCOUNT_RECOVERY_ENDPOINT = "/accountrecoveryendpoint";
     private static final String ACCOUNT_RECOVERY_ENDPOINT_RECOVER = "/recoveraccountrouter.do";
     private static final String ACCOUNT_RECOVERY_ENDPOINT_REGISTER = "/register.do";
@@ -254,9 +255,9 @@
 <%
     String serviceProviderAppId = request.getParameter("spId");
     String serviceProviderAppName = request.getParameter("sp");
-    String DYNAMIC_SELF_SIGNUP_URL = "register.do?flowType=REGISTRATION" + "&spId=" + serviceProviderAppId 
+    String DYNAMIC_SELF_SIGNUP_URL = "/register?flowType=REGISTRATION" + "&spId=" + serviceProviderAppId 
             + "&sp=" + serviceProviderAppName;
-    String DYNAMIC_PASSWORD_RECOVERY_URL = "recovery.do?flowType=PASSWORD_RECOVERY" + "&spId=" + serviceProviderAppId 
+    String DYNAMIC_PASSWORD_RECOVERY_URL = "/recovery?flowType=PASSWORD_RECOVERY" + "&spId=" + serviceProviderAppId
             + "&sp=" + serviceProviderAppName;
 %>
 
@@ -735,7 +736,7 @@
                 href="<%=StringEscapeUtils.escapeHtml4(passwordRecoveryOverrideURL)%>"
                 <% } else { %>
                 <% if (isDynamicPortalPWEnabled) { %>
-                href="<%=DYNAMIC_PASSWORD_RECOVERY_URL%>"
+                href="<%= ACCOUNTS_ENDPOINT + DYNAMIC_PASSWORD_RECOVERY_URL %>"
                 <% } else { %>
                 href="<%=StringEscapeUtils.escapeHtml4(getRecoverAccountUrlWithUsername(identityMgtEndpointContext, urlEncodedURL, false, urlParameters, usernameIdentifier))%>"
                 <% } %>
@@ -798,7 +799,7 @@
                     href="<%=i18nLink(userLocale, selfSignUpOverrideURL)%>"
                     <% } else { %>
                         <% if (isDynamicPortalSREnabled) { %>
-                            href="<%= DYNAMIC_SELF_SIGNUP_URL %>"
+                            href="<%= ACCOUNTS_ENDPOINT + DYNAMIC_SELF_SIGNUP_URL %>"
                         <% } else { %>
                             href="<%= StringEscapeUtils.escapeHtml4(
                                     getRegistrationPortalUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, urlParameters)) %>"
