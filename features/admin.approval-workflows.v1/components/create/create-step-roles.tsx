@@ -239,27 +239,7 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
                                 />
                             ) }
                             onChange={ (event: SyntheticEvent, roles: RolesInterface[]) => {
-                                setSelectedRoles((prevRoles: RolesInterface[]) => {
-                                    const updatedRoles: RolesInterface[] = [ ...prevRoles ];
-
-                                    roles.forEach((role: RolesInterface) => {
-                                        if (!updatedRoles.some((r: RolesInterface) => (r.id === role.id))) {
-                                            updatedRoles.push(role);
-                                        }
-                                    });
-                                    prevRoles.forEach((role: RolesInterface) => {
-                                        if (!roles.some((r: RolesInterface) => (r.id === role.id))) {
-                                            const indexToRemove: number =
-                                            updatedRoles.findIndex((r: RolesInterface) => (r.id === role.id));
-
-                                            if (indexToRemove !== -1) {
-                                                updatedRoles.splice(indexToRemove, 1);
-                                            }
-                                        }
-                                    });
-
-                                    return updatedRoles;
-                                });
+                                setSelectedRoles(roles);
                             } }
                             filterOptions={ (roles: RolesInterface[]) => roles }
                             onInputChange={ (_event: SyntheticEvent, searchTerm: string) => {
