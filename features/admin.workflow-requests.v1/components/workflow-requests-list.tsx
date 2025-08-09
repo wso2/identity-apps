@@ -360,7 +360,9 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                 placeholders={ showPlaceholders() }
                 data={ workflowRequestsList }
                 onRowClick={ (e: SyntheticEvent, workflowRequestItem: WorkflowInstanceListItemInterface): void => {
-                    handleWorkflowRequestView(workflowRequestItem);
+                    if (handleWorkflowRequestView) {
+                        handleWorkflowRequestView(workflowRequestItem);
+                    }
                 } }
                 transparent={ !isLoading && (showPlaceholders() !== null) }
                 showHeader={ true }

@@ -25,6 +25,16 @@
     }
 }
 
+.custom-portal-overlay {
+    background: rgba(0, 0, 0, 0.4);
+    height: 100vh;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    z-index: 99;
+}
+
 .custom-portal-wrapper {
     float: left;
     position: absolute !important;
