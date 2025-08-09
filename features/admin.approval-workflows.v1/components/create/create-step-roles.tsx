@@ -69,6 +69,7 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
     const [ isRoleSearchLoading, setRoleSearchLoading ] = useState<boolean>(false);
     const [ selectedRoles, setSelectedRoles ] = useState<RolesInterface[]>([]);
     const [ validationError, setValidationError ] = useState<boolean>(false);
+    const [ hasInitialized, setHasInitialized ] = useState<boolean>(false);
 
     const filterQuery: string = (() => {
         if (roleSearchValue) {
@@ -171,18 +172,23 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
 
     /**
      * Pre-selects roles based on initial form values once roles are loaded.
+     * Only runs on first initialization to prevent resetting manual selections.
      */
     useEffect(() => {
-        if (!initialValues || !allRoles.length) return;
+        if (!initialValues || !allRoles.length || hasInitialized) return;
 
         const stepRoles: string[] = initialValues?.roles;
 
-        const matchedRoles: RolesInterface[] = allRoles.filter((role: RolesInterface) =>
-            stepRoles.includes(role.id)
-        );
+        if (stepRoles && stepRoles.length > 0) {
+            const matchedRoles: RolesInterface[] = allRoles.filter((role: RolesInterface) =>
+                stepRoles.includes(role.id)
+            );
 
-        setSelectedRoles(matchedRoles);
-    }, [ initialValues, allRoles ]);
+            setSelectedRoles(matchedRoles);
+        }
+        
+        setHasInitialized(true);
+    }, [ initialValues, allRoles, hasInitialized ]);
 
     return (
         <>

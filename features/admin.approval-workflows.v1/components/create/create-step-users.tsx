@@ -91,6 +91,7 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
     );
     const [ selectedUsersFromUserStore, setSelectedUsersFromUserStore ] = useState<UserBasicInterface[]>([]);
     const [ validationError, setValidationError ] = useState<boolean>(false);
+    const [ hasInitialized, setHasInitialized ] = useState<boolean>(false);
 
     const { data: userStores, isLoading: isUserStoresLoading } = useGetUserStores(null);
 
@@ -182,18 +183,23 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
 
     /**
      * Pre-selects users based on initial form values once user data is available.
+     * Only runs on first initialization to prevent resetting manual selections.
      */
     useEffect(() => {
-        if (!initialValues || !userResponse?.Resources.length) return;
+        if (!initialValues || !userResponse?.Resources.length || hasInitialized) return;
 
         const stepUsers: string[] = initialValues?.users;
 
-        const matchedUsers: UserBasicInterface[] = userResponse.Resources.filter((user: UserBasicInterface) =>
-            stepUsers.includes(user.id)
-        );
+        if (stepUsers && stepUsers.length > 0) {
+            const matchedUsers: UserBasicInterface[] = userResponse.Resources.filter((user: UserBasicInterface) =>
+                stepUsers.includes(user.id)
+            );
 
-        setSelectedUsersFromUserStore(matchedUsers);
-    }, [ initialValues, userResponse ]);
+            setSelectedUsersFromUserStore(matchedUsers);
+        }
+        
+        setHasInitialized(true);
+    }, [ initialValues, userResponse, hasInitialized ]);
 
     /**
      * Set available to select users.
