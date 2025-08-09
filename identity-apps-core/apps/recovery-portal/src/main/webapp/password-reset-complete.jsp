@@ -115,9 +115,9 @@
             applicationName = MY_ACCOUNT_APP_NAME;
         }
     } else {
-            if (StringUtils.isNotBlank(spId)) {
+        if (StringUtils.isNotBlank(spId) && !StringUtils.equalsIgnoreCase(spId, "null")) {
             try {
-                if (spId.equals(MY_ACCOUNT_APP_ID) || isUserPortalUrl(callback, tenantDomain, application)) {
+                if (spId.equals(MY_ACCOUNT_APP_ID)) {
                     applicationName = MY_ACCOUNT_APP_NAME;
                 } else {
                     applicationName = applicationDataRetrieval.getApplicationName(tenantDomain,spId);
@@ -125,6 +125,8 @@
             } catch (Exception e) {
                 // Ignored and fallback to my account page url.
             }
+        } else if (isUserPortalUrl(callback, tenantDomain, application)) {
+            applicationName = MY_ACCOUNT_APP_NAME;
         }
     }
 
