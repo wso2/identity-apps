@@ -778,6 +778,7 @@ export interface ApplicationsNS {
                 };
             };
             sharedAccess: {
+                title: string;
                 doNotShareApplication: string;
                 shareAllApplication: string;
                 shareSelectedApplication: string;
@@ -792,7 +793,15 @@ export interface ApplicationsNS {
                     failed: string;
                     partiallyCompleted: string;
                 };
+                shareTypeSwitchModal: {
+                    header: string;
+                    message: string;
+                    description: string;
+                    preserveStateLabel: string;
+                    resetToDefaultLabel: string;
+                };
                 orgNotSelectedForRoleSharing: string;
+                individualRoleSharingLabel: string;
                 noRolesAvailableForOrg: string;
                 noSharedOrgs: string;
                 rolesSharedPartially: string;
