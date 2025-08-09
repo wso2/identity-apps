@@ -88,7 +88,8 @@ interface OrgSelectiveShareWithSelectiveRolesEditProps extends IdentifiableCompo
     setRemovedRoles: ReactDispatch<SetStateAction<Record<string, RoleSharingInterface[]>>>;
     shareAllRoles: boolean;
     shareType: ShareType;
-    selectedRoles: RolesInterface[];
+    newlyAddedCommonRoles?: RolesInterface[];
+    newlyRemovedCommonRoles?: RolesInterface[];
 }
 
 interface TreeViewBaseItemWithRoles extends TreeViewBaseItem {
@@ -114,7 +115,8 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
         setRemovedRoles,
         shareAllRoles,
         shareType,
-        selectedRoles
+        newlyAddedCommonRoles = [],
+        newlyRemovedCommonRoles = []
     } = props;
 
     const organizationId: string = useSelector((state: AppState) => state?.organization?.organization?.id);
@@ -344,6 +346,10 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
             const selectedOrg: OrganizationInterface = selectedApplicationOrganization.organizations[0];
 
             console.log("Selected Organization: ", selectedOrg); // eslint-disable-line
+            console.log("newlyAddedCommonRoles: ", newlyAddedCommonRoles); // eslint-disable-line
+            console.log("newlyRemovedCommonRoles: ", newlyRemovedCommonRoles); // eslint-disable-line
+
+
 
 
             const orgRoleSelections: SelectedOrganizationRoleInterface[] = roleSelections[selectedOrg.id] || [];
@@ -374,49 +380,52 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                     // Mark the roles in the orgRoleSelections as selected.
                     updatedRolesWithApiResponse = orgRoleSelections?.map(
                         (role: SelectedOrganizationRoleInterface) => {
-                            // Check if the roles exists in the selectedRoles
-                            const isRoleInSelectedRoles: boolean = selectedRoles?.some(
-                                (selectedRole: RolesInterface) => selectedRole.displayName === role.displayName);
-                            // Check if the roles exists in the selectedOrg of the API response.
+                            let isSelected: boolean = false;
+
                             const isRoleInSelectedOrg: boolean = selectedOrg?.roles?.some(
                                 (selectedRole: OrganizationRoleInterface) =>
                                     selectedRole.displayName === role.displayName);
+                            // Check if the roles exists in the newlyAddedCommonRoles
+                            const isRoleInNewlyAddedCommonRoles: boolean = newlyAddedCommonRoles?.some(
+                                (selectedRole: RolesInterface) => selectedRole.displayName === role.displayName);
+                            // Check if the roles exists in the newlyRemovedCommonRoles
+                            const isRoleInNewlyRemovedCommonRoles: boolean = newlyRemovedCommonRoles?.some(
+                                (selectedRole: RolesInterface) => selectedRole.displayName === role.displayName);
 
+                            // Check if the roles exists in the selectedOrg or newlyAddedCommonRoles.
                             // If it does, mark it as selected.
-                            if (isRoleInSelectedOrg || isRoleInSelectedRoles) {
-                                return({
-                                    ...role,
-                                    selected: true
-                                });
-                            } else {
-                                // If it does not, mark it as unselected.
-                                return({
-                                    ...role,
-                                    selected: false
-                                });
+                            if (isRoleInSelectedOrg || isRoleInNewlyAddedCommonRoles) {
+                                isSelected = true;
                             }
+
+                            // If the role exists in the newlyRemovedCommonRoles, mark it as unselected.
+                            if (isRoleInNewlyRemovedCommonRoles) {
+                                isSelected = false;
+                            }
+
+                            return({
+                                ...role,
+                                selected: isSelected
+                            });
                         }
                     );
                 } else if (shareType === ShareType.SHARE_SELECTED) {
                     // If the share type is SHARE_SELECTED, we only consider the roles in the selectedOrg.
                     updatedRolesWithApiResponse = orgRoleSelections?.map(
                         (role: SelectedOrganizationRoleInterface) => {
+                            let isSelected: boolean = false;
+
                             // Check if the roles exists in the selectedOrg
                             // If it does, mark it as selected.
                             if (selectedOrg?.roles?.some((selectedRole: OrganizationRoleInterface) =>
                                 selectedRole.displayName === role.displayName)) {
-
-                                return({
-                                    ...role,
-                                    selected: true
-                                });
-                            } else {
-                                // If it does not, mark it as unselected.
-                                return({
-                                    ...role,
-                                    selected: false
-                                });
+                                isSelected = true;
                             }
+
+                            return({
+                                ...role,
+                                selected: isSelected
+                            });
                         }
                     );
                 }
@@ -471,8 +480,8 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                     // Mark the roles in the orgRoleSelections as selected.
                     updatedRolesWithApiResponse = unselectedRoles?.map(
                         (role: SelectedOrganizationRoleInterface) => {
-                            // Check if the roles exists in the selectedRoles
-                            const isRoleInSelectedRoles: boolean = selectedRoles?.some(
+                            // Check if the roles exists in the newlyAddedCommonRoles
+                            const isRoleInSelectedRoles: boolean = newlyAddedCommonRoles?.some(
                                 (selectedRole: RolesInterface) => selectedRole.displayName === role.displayName);
 
                             // If it does, mark it as selected.

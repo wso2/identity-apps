@@ -84,6 +84,7 @@ import {
     UnshareApplicationWithAllOrganizationsDataInterface,
     UnshareOrganizationsDataInterface
 } from "../../models/application";
+import differenceBy from "lodash-es/differenceBy";
 
 export interface ApplicationShareFormPropsInterface
     extends IdentifiableComponentInterface {
@@ -309,7 +310,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
     /**
      * Resets the states of the component to their initial values.
      */
-    const resetStates = (): void => {
+    const resetStates = (shouldMutate: boolean = true): void => {
         setSelectedRoles([]);
         setInitialSelectedRoles([]);
         setSelectedOrgIds([]);
@@ -318,7 +319,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
         setRemovedRoles({});
         setAddedOrgIds([]);
         setRemovedOrgIds([]);
-        mutateApplicationShareDataFetchRequest();
+        shouldMutate && mutateApplicationShareDataFetchRequest();
     };
 
     const handleApplicationSharing = (): void => {
@@ -370,7 +371,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 level: AlertLevels.SUCCESS,
                 message: t("applications:edit.sections.sharedAccess.notifications.unshare.success.message")
             }));
-            resetStates();
+            resetStates(false);
 
             return true;
         } catch (error) {
@@ -1171,7 +1172,18 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                                 setRemovedRoles={ setRemovedRoles }
                                                                 shareAllRoles={ false }
                                                                 shareType={ shareType }
-                                                                selectedRoles={ selectedRoles }
+                                                                // Check the diff between
+                                                                // initialSelectedRoles and selectedRoles
+                                                                newlyAddedCommonRoles={ differenceBy(
+                                                                    selectedRoles,
+                                                                    initialSelectedRoles,
+                                                                    "displayName"
+                                                                ) }
+                                                                newlyRemovedCommonRoles={ differenceBy(
+                                                                    initialSelectedRoles,
+                                                                    selectedRoles,
+                                                                    "displayName"
+                                                                ) }
                                                             />
                                                         </>
                                                     )
@@ -1235,7 +1247,6 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                     shareAllRoles={
                                                         roleShareTypeSelected === RoleShareType.SHARE_WITH_ALL }
                                                     shareType={ shareType }
-                                                    selectedRoles={ [] }
                                                 />
                                             </Grid>
                                         </motion.div>
