@@ -72,13 +72,13 @@ const RenderChip: FunctionComponent<RenderChipInterface> = (
     // Build comprehensive audience display for popover
     const audienceDisplay: string = (() => {
         if (!audience) return "";
-        
+
         let display: string = audience;
-        
+
         if (audience?.toUpperCase() === RoleAudienceTypes.APPLICATION && option?.audience?.display) {
             display += ` | ${option.audience.display}`;
         }
-        
+
         return display;
     })();
 

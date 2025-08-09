@@ -188,7 +188,7 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
         }
 
         setHasInitialized(true);
-    }, [ initialValues, allRoles, hasInitialized ]);
+    }, [ initialValues, allRoles ]);
 
     return (
         <>

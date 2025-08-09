@@ -199,7 +199,7 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
         }
 
         setHasInitialized(true);
-    }, [ initialValues, userResponse, hasInitialized ]);
+    }, [ initialValues, userResponse ]);
 
     /**
      * Set available to select users.
