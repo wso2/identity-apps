@@ -254,25 +254,25 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
             { users && availableUserStores && !isReadOnly && (
                 <Grid
                     container
-                    spacing={ 1 }
-                    alignItems="center"
+                    spacing={ 2 }
+                    alignItems="flex-start"
                     className="full-width"
                     data-componentid={ `${componentId}-userstore-users-grid` }
                 >
                     { !activeUserStore && (
-                        <>
-                            <Grid
-                                md={ 2 }
-                                data-componentid={ `${componentId}-field-userstore-label` }
-                            >
-                                <label>{ t("approvalWorkflows:forms.configurations.template.users.label") }</label>
-                            </Grid>
-                        </>
+                        <Grid
+                            xs={ 12 }
+                            sm={ 2 }
+                            md={ 2 }
+                            data-componentid={ `${componentId}-field-userstore-label` }
+                        >
+                            <label>{ t("approvalWorkflows:forms.configurations.template.users.label") }</label>
+                        </Grid>
                     ) }
                     <Grid
                         xs={ 12 }
-                        sm={ 8 }
-                        md={ 10 }
+                        sm={ 10 }
+                        md={ activeUserStore ? 12 : 10 }
                         data-componentid={ `${componentId}-field-user-autocomplete` }
                     >
                         <Autocomplete

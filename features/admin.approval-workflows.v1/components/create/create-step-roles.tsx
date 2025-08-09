@@ -189,25 +189,25 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
             { roles && !isReadOnly && (
                 <Grid
                     container
-                    spacing={ 1 }
-                    alignItems="center"
+                    spacing={ 2 }
+                    alignItems="flex-start"
                     className="full-width"
                     data-componentid={ `${testId}-role-grid` }
                 >
                     { !activeRoleType && (
-                        <>
-                            <Grid
-                                md={ 2 }
-                                data-componentid={ `${testId}-field-role-type-label` }
-                            >
-                                <label>{ t("approvalWorkflows:forms.configurations.template.roles.label") }</label>
-                            </Grid>
-                        </>
+                        <Grid
+                            xs={ 12 }
+                            sm={ 2 }
+                            md={ 2 }
+                            data-componentid={ `${testId}-field-role-type-label` }
+                        >
+                            <label>{ t("approvalWorkflows:forms.configurations.template.roles.label") }</label>
+                        </Grid>
                     ) }
                     <Grid
                         xs={ 12 }
-                        sm={ 8 }
-                        md={ 10 }
+                        sm={ 10 }
+                        md={ activeRoleType ? 12 : 10 }
                         data-componentid={ `${testId}-field-role-autocomplete-container` }
                     >
                         <Autocomplete
@@ -219,6 +219,11 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
                             value={ selectedRoles }
                             disabled={ isReadOnly }
                             getOptionLabel={ (role: RolesInterface) => role.displayName }
+                            slotProps={ {
+                                popper: {
+                                    placement: "bottom-start"
+                                }
+                            } }
                             renderInput={ (params: AutocompleteRenderInputParams) => (
                                 <TextField
                                     { ...params }
@@ -264,7 +269,7 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
                                         { ...getTagProps({ index }) }
                                         key={ index }
                                         primaryText={ option.displayName }
-                                        audience={ option.audience.type }
+                                        audience={ option.audience?.type }
                                         option={ option }
                                         activeOption={ activeOption }
                                         setActiveOption={ setActiveOption }
@@ -281,7 +286,8 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
                                 <AutoCompleteRenderOption
                                     selected={ selected }
                                     displayName={ option.displayName }
-                                    audience={ option.audience.type }
+                                    audience={ option.audience?.type }
+                                    audienceDisplay={ option.audience?.display }
                                     renderOptionProps={ props }
                                     data-componentid={ `${testId}-option-role-${option.id}` }
                                 />
