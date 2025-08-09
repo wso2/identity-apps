@@ -306,6 +306,21 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
         setShowConfirmationModal(true);
     };
 
+    /**
+     * Resets the states of the component to their initial values.
+     */
+    const resetStates = (): void => {
+        setSelectedRoles([]);
+        setInitialSelectedRoles([]);
+        setSelectedOrgIds([]);
+        setRoleSelections({});
+        setAddedRoles({});
+        setRemovedRoles({});
+        setAddedOrgIds([]);
+        setRemovedOrgIds([]);
+        mutateApplicationShareDataFetchRequest();
+    };
+
     const handleApplicationSharing = (): void => {
         if (isApplicationShareOperationStatusEnabled) {
             handleAsyncSharingNotification(shareType);
@@ -355,6 +370,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 level: AlertLevels.SUCCESS,
                 message: t("applications:edit.sections.sharedAccess.notifications.unshare.success.message")
             }));
+            resetStates();
 
             return true;
         } catch (error) {
@@ -386,7 +402,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
 
         try {
             await shareApplicationWithAllOrganizations(data);
-            mutateApplicationShareDataFetchRequest();
+            resetStates();
 
             dispatch(addAlert({
                 description: t("applications:edit.sections.sharedAccess.notifications.share.success.description"),
@@ -564,12 +580,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                         message: t("applications:edit.sections.sharedAccess.notifications.share.success.message")
                     }));
 
-                    // We can reset the added and removed roles and orgs after a successful operation
-                    setAddedRoles({});
-                    setRemovedRoles({});
-                    setAddedOrgIds([]);
-                    setRemovedOrgIds([]);
-                    mutateApplicationShareDataFetchRequest();
+                    resetStates();
                 })
                 .catch((error: Error) => {
                     dispatch(addAlert({
@@ -593,13 +604,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 message: t("applications:edit.sections.sharedAccess.notifications.share.success.message")
             }));
 
-            // We can reset the added and removed roles and orgs after a successful operation
-            setAddedRoles({});
-            setRemovedRoles({});
-            setAddedOrgIds([]);
-            setRemovedOrgIds([]);
-            mutateApplicationShareDataFetchRequest();
-            onApplicationSharingCompleted();
+            resetStates();
         }
     };
 
@@ -672,10 +677,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 message: t("applications:edit.sections.sharedAccess.notifications.share.success.message")
             }));
 
-            // Reset added and removed orgs after successful operation
-            setAddedOrgIds([]);
-            setRemovedOrgIds([]);
-            mutateApplicationShareDataFetchRequest();
+            resetStates();
         }
 
         // Fire the application sharing completed callback
@@ -714,7 +716,6 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
 
         shareApplicationWithAllOrganizations(data)
             .then(() => {
-                mutateApplicationShareDataFetchRequest();
                 shareIndividualRolesWithSelectedOrgs();
             })
             .catch((error: Error) => {
@@ -799,10 +800,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                         message: t("applications:edit.sections.sharedAccess.notifications.share.success.message")
                     }));
 
-                    // We can reset the added and removed roles and orgs after a successful operation
-                    setAddedRoles({});
-                    setRemovedRoles({});
-                    mutateApplicationShareDataFetchRequest();
+                    resetStates();
                 })
                 .catch((error: Error) => {
                     dispatch(addAlert({
@@ -826,10 +824,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 message: t("applications:edit.sections.sharedAccess.notifications.share.success.message")
             }));
 
-            // We can reset the added and removed roles and orgs after a successful operation
-            setAddedRoles({});
-            setRemovedRoles({});
-            mutateApplicationShareDataFetchRequest();
+            resetStates();
             onApplicationSharingCompleted();
         }
     };
@@ -1009,11 +1004,13 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                 value={ ShareTypeSwitchApproach.WITHOUT_UNSHARE }
                                 label={ (
                                     <Typography variant="body1">
+                                        <b>Preserve current state:</b>
                                         <Trans
                                             i18nKey= { "applications:edit.sections.sharedAccess." +
-                                                "shareTypeSwitchModal.preserveStateLabel" }>
-                                            <b>Preserve current state:</b> Keep all existing shared organizations,
-                                            roles and configurations of the application.
+                                                "shareTypeSwitchModal.preserveStateLabel" }
+                                        >
+                                            <b>Preserve current state:</b> Keep all existing shared
+                                            organizations, roles and configurations of the application.
                                         </Trans>
                                     </Typography>
                                 ) }
@@ -1026,6 +1023,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                 value={ ShareTypeSwitchApproach.WITH_UNSHARE }
                                 label={ (
                                     <Typography variant="body1">
+                                        <b>Reset to default:</b>
                                         <Trans
                                             i18nKey= { "applications:edit.sections.sharedAccess." +
                                                 "shareTypeSwitchModal.resetToDefaultLabel" }>
@@ -1173,6 +1171,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                                 setRemovedRoles={ setRemovedRoles }
                                                                 shareAllRoles={ false }
                                                                 shareType={ shareType }
+                                                                selectedRoles={ selectedRoles }
                                                             />
                                                         </>
                                                     )
@@ -1236,6 +1235,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                     shareAllRoles={
                                                         roleShareTypeSelected === RoleShareType.SHARE_WITH_ALL }
                                                     shareType={ shareType }
+                                                    selectedRoles={ [] }
                                                 />
                                             </Grid>
                                         </motion.div>
