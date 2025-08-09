@@ -110,7 +110,7 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
 
             dispatch(
                 addAlert({
-                    description: "Invite user registration flow updated successfully.",
+                    description: "Invited user registration flow updated successfully.",
                     level: AlertLevels.SUCCESS,
                     message: "Flow Updated Successfully"
                 })
@@ -120,7 +120,7 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
         } catch (error) {
             dispatch(
                 addAlert({
-                    description: "Failed to update the invite user registration flow.",
+                    description: "Failed to update the invited user registration flow.",
                     level: AlertLevels.ERROR,
                     message: "Flow Update Failure"
                 })

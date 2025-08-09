@@ -19,7 +19,7 @@ import { flowsNS } from "../../../models";
 
 export const flows: flowsNS = {
     askPassword: {
-        breadcrumb: "Edit Invite User Registration Flow",
+        breadcrumb: "Edit Invited User Registration Flow",
         notifications: {
             disableFlow: {
                 genericError: {
