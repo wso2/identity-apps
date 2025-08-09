@@ -18,9 +18,7 @@
 
 import { TreeViewBaseItem } from "@mui/x-tree-view/models";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
-import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
-import Button from "@oxygen-ui/react/Button";
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import Grid from "@oxygen-ui/react/Grid";
 import LinearProgress from "@oxygen-ui/react/LinearProgress";
@@ -40,7 +38,6 @@ import {
 } from "@wso2is/admin.organizations.v1/models/organizations";
 import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AnimatedAvatar } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     ChangeEvent,
@@ -54,7 +51,6 @@ import { useTranslation } from "react-i18next";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Icon } from "semantic-ui-react";
 import { ConsoleRolesOnboardingConstants } from "../../constants/console-roles-onboarding-constants";
 import useConsoleRoles from "../../hooks/use-console-roles";
 import useConsoleSettings from "../../hooks/use-console-settings";
@@ -63,8 +59,6 @@ import "./console-roles-selective-share.scss";
 interface ConsoleRolesSelectiveShareProps extends IdentifiableComponentInterface {
     setAddedRoles: ReactDispatch<SetStateAction<Record<string, SelectedOrganizationRoleInterface[]>>>;
     setRemovedRoles: ReactDispatch<SetStateAction<Record<string, SelectedOrganizationRoleInterface[]>>>;
-    readOnly: boolean;
-    setReadOnly: ReactDispatch<SetStateAction<boolean>>;
 }
 
 interface TreeViewBaseItemWithRoles extends TreeViewBaseItem {
@@ -76,9 +70,7 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
     const {
         [ "data-componentid" ]: componentId = "console-roles-selective-share-modal",
         setAddedRoles,
-        setRemovedRoles,
-        readOnly,
-        setReadOnly
+        setRemovedRoles
     } = props;
 
     const organizationId: string = useSelector((state: AppState) => state?.organization?.organization?.id);
@@ -101,7 +93,6 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
 
     const {
         data: originalTopLevelOrganizationTree,
-        mutate: mutateOriginalTopLevelOrganizationTree,
         error:  originalTopLevelOrganizationTreeFetchRequestError
     } = useGetApplicationShare(
         consoleId,
@@ -445,42 +436,6 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
 
     return (
         <>
-            <Alert
-                severity="info"
-            >
-                Sharing roles will take some time to effect.
-            </Alert>
-            <Grid
-                marginTop={ 1 }
-                justifySelf="flex-end"
-            >
-
-                <Button
-                    data-componentid={ `${ componentId }-refresh-button` }
-                    variant="text"
-                    size="small"
-                    onClick={ () => mutateOriginalTopLevelOrganizationTree() }
-                    startIcon={ <Icon size="small" name="refresh" /> }
-                >
-                    Refresh
-                </Button>
-                <Button
-                    data-componentid={ `${ componentId }-edit-button` }
-                    variant="text"
-                    size="small"
-                    onClick={ () => setReadOnly(!readOnly) }
-                    startIcon= {
-                        readOnly
-                            ? <Icon size="small" name="edit" />
-                            : <Icon size="small" name="eye"  />
-                    }
-                >
-                    { readOnly
-                        ? t("applications:edit.sections.sharedAccess.manageRoleSharing")
-                        : t("applications:edit.sections.sharedAccess.viewRoleSharing")
-                    }
-                </Button>
-            </Grid>
             <Grid
                 container
                 xs={ 12 }
@@ -534,62 +489,50 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
                     >
                         { !isEmpty(roleSelections[selectedOrgId]) &&
                             roleSelections[selectedOrgId]
-                                .filter((role: SelectedOrganizationRoleInterface) =>
-                                    readOnly ? role.selected : true)
                                 .map((role: SelectedOrganizationRoleInterface, index: number) => (
                                     <Box
                                         key={ `role-${index}` }
                                         className="role-item"
                                         data-componentid={ `${ componentId }-role-${ role.displayName }` }
                                     >
-                                        { readOnly
-                                            ? (
-                                                <AnimatedAvatar
-                                                    name={ role.displayName }
-                                                    size="mini"
-                                                    data-componentid={ `${ componentId }-item-avatar` }
-                                                />
-                                            )
-                                            : (
-                                                <Checkbox
-                                                    className="role-checkbox"
-                                                    data-componentid={
-                                                        `${ componentId }-role-${ role.displayName }-checkbox` }
-                                                    checked={ role.displayName ===
-                                                        ConsoleRolesOnboardingConstants.ADMINISTRATOR
-                                                        ? true
-                                                        : role.selected }
-                                                    onChange={ (
-                                                        _e: ChangeEvent<HTMLInputElement>,
-                                                        checked: boolean
-                                                    ) => {
-                                                        const updatedRoles: SelectedOrganizationRoleInterface[] =
-                                                        roleSelections[selectedOrgId].map(
-                                                            (r: SelectedOrganizationRoleInterface) =>
-                                                                r.displayName === role.displayName
-                                                                    ? { ...r, selected: !r.selected }
-                                                                    : r
-                                                        );
+                                        <Checkbox
+                                            className="role-checkbox"
+                                            data-componentid={
+                                                `${ componentId }-role-${ role.displayName }-checkbox` }
+                                            checked={ role.displayName ===
+                                                ConsoleRolesOnboardingConstants.ADMINISTRATOR
+                                                ? true
+                                                : role.selected }
+                                            onChange={ (
+                                                _e: ChangeEvent<HTMLInputElement>,
+                                                checked: boolean
+                                            ) => {
+                                                const updatedRoles: SelectedOrganizationRoleInterface[] =
+                                                roleSelections[selectedOrgId].map(
+                                                    (r: SelectedOrganizationRoleInterface) =>
+                                                        r.displayName === role.displayName
+                                                            ? { ...r, selected: !r.selected }
+                                                            : r
+                                                );
 
-                                                        setRoleSelections((prev:
-                                                            Record<string, SelectedOrganizationRoleInterface[]>) => ({
-                                                            ...prev,
-                                                            [selectedOrgId]: updatedRoles
-                                                        }));
+                                                setRoleSelections((prev:
+                                                    Record<string, SelectedOrganizationRoleInterface[]>) => ({
+                                                    ...prev,
+                                                    [selectedOrgId]: updatedRoles
+                                                }));
 
-                                                        if (checked) {
-                                                            cascadeRoleAdditionToChildren(selectedOrgId, role);
-                                                            resolveRoleAddition(selectedOrgId, role);
-                                                        } else {
-                                                            cascadeRoleRemovalToChildren(selectedOrgId, role);
-                                                            resolveRoleRemoval(selectedOrgId, role);
-                                                        }
-                                                    } }
-                                                    disabled={
-                                                        role.displayName ===
-                                                            ConsoleRolesOnboardingConstants.ADMINISTRATOR }
-                                                />
-                                            ) }
+                                                if (checked) {
+                                                    cascadeRoleAdditionToChildren(selectedOrgId, role);
+                                                    resolveRoleAddition(selectedOrgId, role);
+                                                } else {
+                                                    cascadeRoleRemovalToChildren(selectedOrgId, role);
+                                                    resolveRoleRemoval(selectedOrgId, role);
+                                                }
+                                            } }
+                                            disabled={
+                                                role.displayName ===
+                                                    ConsoleRolesOnboardingConstants.ADMINISTRATOR }
+                                        />
                                         <Typography
                                             variant="body1"
                                             className="role-label"

@@ -51,6 +51,7 @@ import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useStat
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import ConsoleRolesSelectiveShare from "./console-roles-selective-share";
 import ConsoleRolesShareWithAll from "./console-roles-share-with-all";
 import { ConsoleRolesOnboardingConstants } from "../../constants/console-roles-onboarding-constants";
 import useConsoleRoles from "../../hooks/use-console-roles";
@@ -387,6 +388,8 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
             shareAllRolesWithAllOrgs();
         } else if (sharedAccessMode === RoleSharedAccessModes.SHARE_WITH_ALL_ORGS) {
             shareSelectedRolesWithAllOrgs();
+        } else if (sharedAccessMode === RoleSharedAccessModes.SHARE_WITH_SELECTED_ORGS_AND_ROLES) {
+            shareSelectedRolesWithSelectedOrgs();
         }
     };
 
@@ -439,6 +442,34 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                                                 setSelectedRoles={ setSelectedRoles }
                                                 administratorRole={ administratorRole?.Resources[0] }
                                             />
+                                        </motion.div>
+                                    )
+                                }
+                            </AnimatePresence>
+                            <FormControlLabel
+                                value={ RoleSharedAccessModes.SHARE_WITH_SELECTED_ORGS_AND_ROLES }
+                                label={ t("consoleSettings:sharedAccess.modes.shareWithSelected") }
+                                control={ <Radio /> }
+                                disabled={ isReadOnly }
+                                data-componentid={ `${componentId}-share-with-selected-orgs-and-roles-radio-btn` }
+                            />
+                            <AnimatePresence mode="wait">
+                                {
+                                    sharedAccessMode === RoleSharedAccessModes.SHARE_WITH_SELECTED_ORGS_AND_ROLES
+                                    && (
+                                        <motion.div
+                                            key="selected-orgs-block"
+                                            initial={ { height: 0, opacity: 0 } }
+                                            animate={ { height: "auto", opacity: 1 } }
+                                            exit={ { height: 0, opacity: 0 } }
+                                            transition={ { duration: 0.3 } }
+                                        >
+                                            <Grid xs={ 14 }>
+                                                <ConsoleRolesSelectiveShare
+                                                    setAddedRoles={ setAddedRoles }
+                                                    setRemovedRoles={ setRemovedRoles }
+                                                />
+                                            </Grid>
                                         </motion.div>
                                     )
                                 }
