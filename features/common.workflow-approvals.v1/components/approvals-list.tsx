@@ -317,10 +317,12 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
 
     };
 
-    function formatApprovalName(name: string): string {
-        const [ , action ] = name.split(" for ");
+    function formatApprovalName(taskType?: string): string {
+        if (!taskType || typeof taskType !== "string") {
+            return "approval request";
+        }
 
-        switch (action) {
+        switch (taskType) {
             case "ADD_USER":
                 return "user creation request";
             case "DELETE_USER":
@@ -333,7 +335,6 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                 return "approval request";
         }
     }
-
 
     /**
      * Resolves data table columns.
@@ -368,7 +369,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                                 { "Approval Required" + ":" }
                                 <Label circular>
                                 You have a new{ " " }
-                                    <strong>{ formatApprovalName(approval.name) }</strong>{ " " }
+                                    <strong>{ formatApprovalName(approval?.taskType) }</strong>{ " " }
                                 awaiting your approval.
                                 </Label>
 

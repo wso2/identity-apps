@@ -146,21 +146,13 @@ export interface ApprovalTaskListItemInterface {
      */
     id: string;
     /**
-     * Unique name for the Approval Task
-     */
-    name: string;
-    /**
-     * Display value for Approval Operation
-     */
-    presentationSubject: string;
-    /**
-     * Display value for Approval Task
-     */
-    presentationName: string;
-    /**
      * Type of the Approval Task
      */
     taskType: string;
+    /**
+     * Request ID of the Approval Task
+     */
+    requestId: string;
     /**
      * Status of the Approval Task
      */
@@ -168,7 +160,7 @@ export interface ApprovalTaskListItemInterface {
     /**
      * Priority of the Approval task
      */
-    priority: number;
+    priority: string;
     /**
      * Created time of the Approval task
      */
