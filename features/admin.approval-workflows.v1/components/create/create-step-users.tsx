@@ -91,6 +91,7 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
     );
     const [ selectedUsersFromUserStore, setSelectedUsersFromUserStore ] = useState<UserBasicInterface[]>([]);
     const [ validationError, setValidationError ] = useState<boolean>(false);
+    const [ hasInitialized, setHasInitialized ] = useState<boolean>(false);
 
     const { data: userStores, isLoading: isUserStoresLoading } = useGetUserStores(null);
 
@@ -182,17 +183,22 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
 
     /**
      * Pre-selects users based on initial form values once user data is available.
+     * Only runs on first initialization to prevent resetting manual selections.
      */
     useEffect(() => {
-        if (!initialValues || !userResponse?.Resources.length) return;
+        if (!initialValues || !userResponse?.Resources.length || hasInitialized) return;
 
         const stepUsers: string[] = initialValues?.users;
 
-        const matchedUsers: UserBasicInterface[] = userResponse.Resources.filter((user: UserBasicInterface) =>
-            stepUsers.includes(user.id)
-        );
+        if (stepUsers?.length > 0) {
+            const matchedUsers: UserBasicInterface[] = userResponse.Resources.filter((user: UserBasicInterface) =>
+                stepUsers.includes(user.id)
+            );
 
-        setSelectedUsersFromUserStore(matchedUsers);
+            setSelectedUsersFromUserStore(matchedUsers);
+        }
+
+        setHasInitialized(true);
     }, [ initialValues, userResponse ]);
 
     /**
@@ -254,25 +260,25 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
             { users && availableUserStores && !isReadOnly && (
                 <Grid
                     container
-                    spacing={ 1 }
-                    alignItems="center"
+                    spacing={ 2 }
+                    alignItems="flex-start"
                     className="full-width"
                     data-componentid={ `${componentId}-userstore-users-grid` }
                 >
                     { !activeUserStore && (
-                        <>
-                            <Grid
-                                md={ 2 }
-                                data-componentid={ `${componentId}-field-userstore-label` }
-                            >
-                                <label>{ t("approvalWorkflows:forms.configurations.template.users.label") }</label>
-                            </Grid>
-                        </>
+                        <Grid
+                            xs={ 12 }
+                            sm={ 2 }
+                            md={ 2 }
+                            data-componentid={ `${componentId}-field-userstore-label` }
+                        >
+                            <label>{ t("approvalWorkflows:forms.configurations.template.users.label") }</label>
+                        </Grid>
                     ) }
                     <Grid
                         xs={ 12 }
-                        sm={ 8 }
-                        md={ 10 }
+                        sm={ 10 }
+                        md={ activeUserStore ? 12 : 10 }
                         data-componentid={ `${componentId}-field-user-autocomplete` }
                     >
                         <Autocomplete

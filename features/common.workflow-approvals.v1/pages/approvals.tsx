@@ -309,7 +309,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
         if (changeValue.length > 0) {
             const searchResult: ApprovalTaskListItemInterface[] = approvals
                 .filter((item: ApprovalTaskListItemInterface) =>
-                    item.name.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1
+                    item.taskType?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1
                 );
 
             setTempApprovals(searchResult);

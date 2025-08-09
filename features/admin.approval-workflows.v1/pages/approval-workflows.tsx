@@ -210,7 +210,7 @@ const ApprovalWorkflows: FunctionComponent<WorkflowsPageInterface> = (props: Wor
             action={
                 !isWorkflowsListRequestLoading &&
                 approvalWorkflows?.length > 0 && (
-                    <Show when={ featureConfig?.groups?.scopes?.create }>
+                    <Show when={ featureConfig?.workflows?.scopes?.create }>
                         <PrimaryButton
                             data-componentid={ `${componentId}-add-button` }
                             onClick={ () => history.push(AppConstants.getPaths().get("APPROVAL_WORKFLOW_CREATE")) }

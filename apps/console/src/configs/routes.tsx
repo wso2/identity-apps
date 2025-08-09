@@ -1347,7 +1347,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             icon: {
                 icon: <LogsDocumentIcon fill="black" className="icon" />
             },
-            id: "workflowRequests",
+            id: "workflowInstances",
             name: "pages:workflowRequestsPage.title",
             order: 9,
             path: AppConstants.getPaths().get("WORKFLOW_REQUESTS"),
@@ -1358,7 +1358,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             category: "extensions:manage.sidePanel.categories.workflows",
             component: lazy(() =>
                 import("@wso2is/admin.workflow-requests.v1").then((module: any) => ({
-                    default: module.WorkflowRequestDetails
+                    default: module.WorkflowRequestDetailsPage
                 }))
             ),
             exact: true,
