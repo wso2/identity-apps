@@ -598,6 +598,8 @@ export const applications: ApplicationsNS = {
                 tabName: "Provisioning"
             },
             sharedAccess: {
+                title: "Sharing Policy",
+                individualRoleSharingLabel: "Individually select roles to be shared with organizations",
                 doNotShareApplication: "Do not share the application with any organization.",
                 shareAllApplication: "Share the application with all organizations.",
                 shareSelectedApplication: "Share the application with selected organizations.",
@@ -613,12 +615,19 @@ export const applications: ApplicationsNS = {
                 rolesSharedPartially: "Roles are selectively shared with this organization.",
                 shareRoleSubsetWithSelectedOrgs: "Share a subset of roles with selected organizations",
                 shareRoleSubsetWithAllOrgs: "Share a subset of roles with all organizations",
-                subTitle: "Select the following options to share the application with the organizations.",
+                subTitle: "Select how the application and roles will be shared with organizations.",
                 shareAllRoles: "Share All Roles",
                 shareSelectedRoles: "Share Selected Roles",
                 doNotShareRoles: "Do Not Share Roles",
                 tabName: "Shared Access",
                 selectAnOrganizationToViewRoles: "Select an organization to view the shared roles.",
+                shareTypeSwitchModal: {
+                    header: "Switch sharing mode to selective sharing?",
+                    message: "This action is irreversible and change your application sharing settings.",
+                    description: "You're about to switch to selective sharing. Please select one of the 2 options to proceed.",
+                    preserveStateLabel: "<1>Preserve current state:</1> Keep all existing shared organizations, roles and configurations of the application.",
+                    resetToDefaultLabel: "<1>Reset to default:</1> Clear all sharing settings and start with a clean slate."
+                },
                 sharedAccessStatusOptions: {
                     all: "All",
                     success: "Success",

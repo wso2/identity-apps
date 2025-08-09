@@ -18,12 +18,14 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import Button from "@oxygen-ui/react/Button";
+import Checkbox from "@oxygen-ui/react/Checkbox";
 import FormControl from "@oxygen-ui/react/FormControl";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Grid from "@oxygen-ui/react/Grid";
 import Radio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import Switch from "@oxygen-ui/react/Switch";
+import Typography from "@oxygen-ui/react/Typography";
 import { ApplicationSharingPolicy, RoleSharingModes } from "@wso2is/admin.console-settings.v1/models/shared-access";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { OperationStatus } from "@wso2is/admin.core.v1/models/common";
@@ -31,6 +33,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     SelectedOrganizationRoleInterface
 } from "@wso2is/admin.organizations.v1/models";
+import { RolesV2Interface } from "@wso2is/admin.roles.v2/models/roles";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -55,11 +58,10 @@ import React, {
     useMemo,
     useState
 } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
-import OrgSelectiveShareWithAllRoles from "./org-selective-share-with-all-roles";
 import OrgSelectiveShareWithSelectiveRolesEdit from "./org-selective-share-with-selective-roles-edit";
 import RolesShareWithAll from "./roles-share-with-all";
 import {
@@ -82,9 +84,6 @@ import {
     UnshareApplicationWithAllOrganizationsDataInterface,
     UnshareOrganizationsDataInterface
 } from "../../models/application";
-import Checkbox from "@oxygen-ui/react/Checkbox";
-import Typography from "@oxygen-ui/react/Typography";
-import { RolesV2Interface } from "@wso2is/admin.roles.v2/models/roles";
 
 export interface ApplicationShareFormPropsInterface
     extends IdentifiableComponentInterface {
@@ -211,6 +210,12 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
         // Otherwise, application is shared with all organizations
         const orgSharingPolicy: string = applicationShareData.sharingMode?.policy;
 
+        // If the application is shared with all existing organizations only, set the share type to SHARE_SELECTED.
+        if (orgSharingPolicy === ApplicationSharingPolicy.ALL_EXISTING_ORGS_ONLY) {
+            setShareType(ShareType.SHARE_SELECTED);
+        }
+
+        // If the application is shared with all existing and future organizations, set the share type to SHARE_ALL.
         if (orgSharingPolicy === ApplicationSharingPolicy.ALL_EXISTING_AND_FUTURE_ORGS) {
             setShareType(ShareType.SHARE_ALL);
 
@@ -985,13 +990,13 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                     closeOnDimmerClick={ false }
                 >
                     <ConfirmationModal.Header>
-                        Switch sharing mode to selective sharing?
+                        { t("applications:edit.sections.sharedAccess.shareTypeSwitchModal.header") }
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message attached negative>
-                        This action is irreversible and change your application sharing settings.
+                        { t("applications:edit.sections.sharedAccess.shareTypeSwitchModal.message") }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>
-                        You’re about to switch to selective sharing. Please select one of the 2 options to proceed.
+                        { t("applications:edit.sections.sharedAccess.shareTypeSwitchModal.description") }
                         <RadioGroup
                             value={ shareTypeSwitchApproach }
                             onChange={ (event: ChangeEvent<HTMLInputElement>) => {
@@ -1004,7 +1009,12 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                 value={ ShareTypeSwitchApproach.WITHOUT_UNSHARE }
                                 label={ (
                                     <Typography variant="body1">
-                                        <b>Preserve current state:</b> Keep all existing shared organizations, roles and configurations of the application.
+                                        <Trans
+                                            i18nKey= { "applications:edit.sections.sharedAccess." +
+                                                "shareTypeSwitchModal.preserveStateLabel" }>
+                                            <b>Preserve current state:</b> Keep all existing shared organizations,
+                                            roles and configurations of the application.
+                                        </Trans>
                                     </Typography>
                                 ) }
                                 control={ <Radio /> }
@@ -1016,7 +1026,12 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                 value={ ShareTypeSwitchApproach.WITH_UNSHARE }
                                 label={ (
                                     <Typography variant="body1">
-                                        <b>Reset to default:</b> Clear all sharing settings and start with a clean slate.
+                                        <Trans
+                                            i18nKey= { "applications:edit.sections.sharedAccess." +
+                                                "shareTypeSwitchModal.resetToDefaultLabel" }>
+                                            <b>Reset to default:</b> Clear all sharing settings and
+                                             start with a clean slate.
+                                        </Trans>
                                     </Typography>
                                 ) }
                                 control={ <Radio /> }
@@ -1041,11 +1056,10 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
             <Grid container>
                 <Grid xl={ 8 } xs={ 12 }>
                     <Heading as="h4">
-                        Sharing Policy
+                        { t("applications:edit.sections.sharedAccess.title") }
                     </Heading>
                     <Heading ellipsis as="h6">
-                        {/* { t("applications:edit.sections.sharedAccess.subTitle") } */}
-                        Select how the application and roles will be shared with organizations.
+                        { t("applications:edit.sections.sharedAccess.subTitle") }
                     </Heading>
                     <FormControl fullWidth>
                         <RadioGroup
@@ -1140,7 +1154,8 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                                 marginBottom={ 1 }
                                                                 marginTop={ 2 }
                                                             >
-                                                                Individually select roles to be shared with organizations
+                                                                { t("applications:edit.sections.sharedAccess." +
+                                                                    "individualRoleSharingLabel") }
                                                             </Typography>
                                                             <OrgSelectiveShareWithSelectiveRolesEdit
                                                                 application={ application }

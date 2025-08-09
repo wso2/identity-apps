@@ -27,7 +27,6 @@ import Autocomplete, {
 import Box from "@oxygen-ui/react/Box";
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import Chip from "@oxygen-ui/react/Chip";
-import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Grid from "@oxygen-ui/react/Grid";
 import LinearProgress from "@oxygen-ui/react/LinearProgress";
@@ -139,7 +138,6 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
     // Fetch all the organizations that the application is shared with.
     const {
         data: totalApplicationOrganizations,
-        isLoading: isTotalApplicationOrganizationsFetchRequestLoading,
         error:  totalApplicationOrganizationsFetchRequestError
     } = useGetApplicationShare(
         application?.id,
@@ -153,7 +151,6 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
     // This will fetch the roles that are available for the application to share with the organizations.
     const {
         data: originalApplicationRoles,
-        isLoading: isApplicationRolesFetchRequestLoading,
         error: applicationRolesFetchRequestError
     } = useGetApplicationRolesByAudience(
         applicationAudience,
@@ -209,9 +206,6 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
         true,
         `id eq '${ selectedOrgId }'`
     );
-
-    const isLoading: boolean = isTotalApplicationOrganizationsFetchRequestLoading ||
-            isApplicationRolesFetchRequestLoading;
 
     // Used to tick shared orgs from the total organization tree
     useEffect(() => {
