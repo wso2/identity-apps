@@ -1,5 +1,15 @@
 # @wso2is/admin.session-management.v1
 
+## 2.25.206
+
+### Patch Changes
+
+- [#8692](https://github.com/wso2/identity-apps/pull/8692) [`ad3ab7a5ee9ebcdba6db9ac38214c15cf03d0b6e`](https://github.com/wso2/identity-apps/commit/ad3ab7a5ee9ebcdba6db9ac38214c15cf03d0b6e) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Restrict session config updates from sub-organizations.
+
+- Updated dependencies [[`d4b01de50e296f0dffdc9c4aacf2fcb74c402b09`](https://github.com/wso2/identity-apps/commit/d4b01de50e296f0dffdc9c4aacf2fcb74c402b09)]:
+  - @wso2is/admin.organizations.v1@2.27.1
+  - @wso2is/i18n@2.28.1
+
 ## 2.25.205
 
 ### Patch Changes
