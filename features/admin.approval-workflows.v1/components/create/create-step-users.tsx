@@ -190,7 +190,7 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
 
         const stepUsers: string[] = initialValues?.users;
 
-        if (stepUsers && stepUsers.length > 0) {
+        if (stepUsers?.length > 0) {
             const matchedUsers: UserBasicInterface[] = userResponse.Resources.filter((user: UserBasicInterface) =>
                 stepUsers.includes(user.id)
             );

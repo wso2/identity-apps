@@ -56,7 +56,7 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
         onRolesChange,
         initialValues,
         showValidationError,
-        ["data-componentid"]: testId
+        ["data-componentid"]: componentId
         = "workflow-model-approval-step-roles"
     } = props;
 
@@ -198,14 +198,14 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
                     spacing={ 2 }
                     alignItems="flex-start"
                     className="full-width"
-                    data-componentid={ `${testId}-role-grid` }
+                    data-componentid={ `${componentId}-role-grid` }
                 >
                     { !activeRoleType && (
                         <Grid
                             xs={ 12 }
                             sm={ 2 }
                             md={ 2 }
-                            data-componentid={ `${testId}-field-role-type-label` }
+                            data-componentid={ `${componentId}-field-role-type-label` }
                         >
                             <label>{ t("approvalWorkflows:forms.configurations.template.roles.label") }</label>
                         </Grid>
@@ -214,10 +214,10 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
                         xs={ 12 }
                         sm={ 10 }
                         md={ activeRoleType ? 12 : 10 }
-                        data-componentid={ `${testId}-field-role-autocomplete-container` }
+                        data-componentid={ `${componentId}-field-role-autocomplete-container` }
                     >
                         <Autocomplete
-                            data-componentid={ `${testId}-field-role-autocomplete` }
+                            data-componentid={ `${componentId}-field-role-autocomplete` }
                             multiple
                             disableCloseOnSelect
                             loading={ isRolesListLoading || isRoleSearchLoading }
@@ -235,7 +235,7 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
                                     { ...params }
                                     placeholder={ "Type role/s to search and assign" }
                                     error={ validationError }
-                                    data-componentid={ `${testId}-field-role-search` }
+                                    data-componentid={ `${componentId}-field-role-search` }
                                 />
                             ) }
                             onChange={ (event: SyntheticEvent, roles: RolesInterface[]) => {
@@ -275,12 +275,12 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
                                         { ...getTagProps({ index }) }
                                         key={ index }
                                         primaryText={ option.displayName }
-                                        audience={ option.audience?.type }
+                                        audience={ option.audience?.type ?? undefined }
                                         option={ option }
                                         activeOption={ activeOption }
                                         setActiveOption={ setActiveOption }
                                         variant="filled"
-                                        data-componentid={ `${testId}-chip-selected-role-${option.id}` }
+                                        data-componentid={ `${componentId}-chip-selected-role-${option.id}` }
                                     />
                                 ))
                             }
@@ -292,10 +292,10 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
                                 <AutoCompleteRenderOption
                                     selected={ selected }
                                     displayName={ option.displayName }
-                                    audience={ option.audience?.type }
-                                    audienceDisplay={ option.audience?.display }
+                                    audience={ option.audience?.type ?? undefined }
+                                    audienceDisplay={ option.audience?.display ?? undefined }
                                     renderOptionProps={ props }
-                                    data-componentid={ `${testId}-option-role-${option.id}` }
+                                    data-componentid={ `${componentId}-option-role-${option.id}` }
                                 />
                             ) }
                         />
