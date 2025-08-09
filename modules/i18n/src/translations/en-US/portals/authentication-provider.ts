@@ -951,10 +951,68 @@ export const authenticationProvider:AuthenticationProviderNS = {
             }
         },
         jitProvisioning: {
+            accountLookupAttributeMappings: {
+                heading: "Account lookup attribute mappings",
+                hint: "Configure how to look up existing local user accounts when associating " +
+                    "with federated users. The primary mapping will be used first, and if no " +
+                    "match is found, the secondary mapping will be tried.",
+                infoNotification: "The local attribute dropdown displays attributes that have uniqueness " +
+                    "constraints enabled. To configure additional attributes for lookup, configure uniqueness " +
+                    "settings in the <1>local attributes</1> section.",
+                noneOption: {
+                    label: "None",
+                    description: "Reset local attribute mapping"
+                },
+                primary: {
+                    federatedAttribute: {
+                        label: "Federated attribute",
+                        placeholder: "Enter federated attribute name"
+                    },
+                    heading: "Primary attribute mapping",
+                    localAttribute: {
+                        label: "Local attribute",
+                        placeholder: "Select local attribute"
+                    }
+                },
+                secondary: {
+                    federatedAttribute: {
+                        label: "Federated attribute",
+                        placeholder: "Enter federated attribute name"
+                    },
+                    heading: "Secondary attribute mapping (Optional)",
+                    localAttribute: {
+                        label: "Local attribute",
+                        placeholder: "Select local attribute"
+                    }
+                }
+            },
+            attributeSyncMethod: {
+                hint: "Select the method used for syncing attributes between a JIT-provisioned " +
+                    "user account and a local user account.",
+                label: "Attribute synchronization method",
+                options: {
+                    overrideAll: {
+                        label: "Override all",
+                        description: "All attributes of the local user account will be overridden by " +
+                            "the attributes received from the external identity provider."
+                    },
+                    none: {
+                        label: "None",
+                        description: "None of the attributes received from the identity provider will " +
+                            "be synced with the local user account."
+                    },
+                    preserveLocal: {
+                        label: "Preserve local",
+                        description: "Only the attributes received from the identity provider will be " +
+                            "updated while other attributes of the local user account are preserved."
+                    }
+                }
+            },
             associateLocalUser: {
                 hint: "When enabled, users that are provisioned with this identity " +
-                    "provider will be linked to the local users who are already registered " +
-                    "with the same email address.",
+                    "provider will be linked to existing local users. If account lookup " +
+                    "attribute mappings are not configured, the email address will be " +
+                    "used by default for matching users.",
                 label: "Associate provisioned users with existing local users"
             },
             enableJITProvisioning: {
@@ -978,6 +1036,12 @@ export const authenticationProvider:AuthenticationProviderNS = {
             provisioningUserStoreDomain: {
                 hint: "Select user store domain name to provision users.",
                 label: "User store domain to always provision users"
+            },
+            skipJITForLookupFailure: {
+                hint: "When enabled, if no local account is found using the attribute mappings, " +
+                    "the user will be able to login without JIT provisioning. When disabled, " +
+                    "login will fail with a provisioning error.",
+                label: "Skip JIT provisioning if account lookup fails"
             }
         },
         outboundConnectorAccordion: {
@@ -1123,6 +1187,16 @@ export const authenticationProvider:AuthenticationProviderNS = {
             error: {
                 description: "You have reached the maximum number of connections allowed.",
                 message: "Failed to create the connection"
+            }
+        },
+        getLocalClaims: {
+            error: {
+                description: "{{ description }}",
+                message: "Failed to retrieve local claims"
+            },
+            genericError: {
+                description: "An error occurred while retrieving local claims for account lookup attribute mappings.",
+                message: "Failed to retrieve local claims"
             }
         },
         changeCertType: {

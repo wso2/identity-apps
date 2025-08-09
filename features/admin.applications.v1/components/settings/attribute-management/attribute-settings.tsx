@@ -1345,6 +1345,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                                 : undefined
                                         }
                                         data-testid={ `${ componentId }-advanced-attribute-settings-form` }
+                                        appVersion={ appVersion }
                                     />
                                 </Grid.Column>
                             </Grid.Row>
