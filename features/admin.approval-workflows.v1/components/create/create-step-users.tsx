@@ -197,7 +197,7 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
 
             setSelectedUsersFromUserStore(matchedUsers);
         }
-        
+
         setHasInitialized(true);
     }, [ initialValues, userResponse, hasInitialized ]);
 
