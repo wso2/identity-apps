@@ -179,7 +179,7 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
 
         const stepRoles: string[] = initialValues?.roles;
 
-        if (stepRoles && stepRoles.length > 0) {
+        if (stepRoles?.length > 0) {
             const matchedRoles: RolesInterface[] = allRoles.filter((role: RolesInterface) =>
                 stepRoles.includes(role.id)
             );
