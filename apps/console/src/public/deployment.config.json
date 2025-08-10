@@ -1852,7 +1852,8 @@
                 "userStores",
                 "username-recovery",
                 "users",
-                "workflowInstances"
+                "workflowInstances",
+                "workflowRequestDetails"
             ]
         },
         "selfAppIdentifier": "Console",
