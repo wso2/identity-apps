@@ -31,7 +31,7 @@
 <script src="libs/jquery_3.6.0/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
     const isParamPrioritized = <%= isLocalizationParamPrioritized %>;
-    const userLocaleFromLocalize = "<%= Encode.forJavaScript(userLocale) %>";
+    const userLocaleFromLocalize = "<%= Encode.forJavaScript(userLocale.toString()) %>";
 
     $(document).ready(function(){
         const languageDropdown = $("#language-selector-dropdown");
