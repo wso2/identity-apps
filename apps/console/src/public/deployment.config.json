@@ -1831,6 +1831,7 @@
                 "admin-forced-password-reset",
                 "apiResources",
                 "applications",
+                "approvalWorkflows",
                 "approvals",
                 "attributeDialects",
                 "branding",
@@ -1851,7 +1852,7 @@
                 "userStores",
                 "username-recovery",
                 "users",
-                "workflows"
+                "workflowInstances"
             ]
         },
         "selfAppIdentifier": "Console",
