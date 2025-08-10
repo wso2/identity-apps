@@ -27,6 +27,7 @@ import { useDispatch } from "react-redux";
 import { Button, Message, Modal, Table } from "semantic-ui-react";
 import { useGetWorkflowInstance } from "../api/use-get-workflow-instance";
 import { deleteWorkflowInstance } from "../api/workflow-requests";
+import { WorkflowInstanceStatus } from "../models/workflowRequests";
 import "./workflow-request-details.scss";
 
 const WorkflowRequestDetailsPage: React.FC = () => {
@@ -315,7 +316,7 @@ const WorkflowRequestDetailsPage: React.FC = () => {
                 />
             ) }
             { workflowRequest && renderDetailsTable() }
-            { workflowRequest && (
+            { workflowRequest && workflowRequest.status !== WorkflowInstanceStatus.DELETED && (
                 <DangerZoneGroup sectionHeader={ t("approvalWorkflows:details.dangerZone.header") }>
                     <DangerZone
                         actionTitle={ t("approvalWorkflows:details.dangerZone.delete.actionTitle") }
