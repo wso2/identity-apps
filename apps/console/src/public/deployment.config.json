@@ -535,7 +535,9 @@
                 "enabled": true,
                 "featureFlags": [],
                 "scopes": {
-                    "feature": ["console:users"],
+                    "feature": [
+                        "console:users"
+                    ],
                     "read": [
                         "internal_approval_task_view"
                     ],

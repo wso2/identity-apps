@@ -207,7 +207,6 @@ const TimeRangeDropdown: React.FC<TimeRangeDropdownProps> = ({
                                             </div>
                                         </Form.Field>
                                     </Form.Group>
-
                                     <Form.Group>
                                         <Form.Field width={ 8 }>
                                             <Button

@@ -65,7 +65,8 @@ interface ApprovalTaskComponentPropsInterface extends IdentifiableComponentInter
      * @param status - Status of the approval.
      */
     resolveApprovalTagColor?: (
-        status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.BLOCKED
+        status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.BLOCKED |
+            ApprovalStatus.APPROVED | ApprovalStatus.REJECTED
     ) => SemanticCOLORS;
     /**
      * Specifies if the form is submitting
@@ -303,7 +304,18 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                 circular
                                 size="mini"
                                 className="micro spaced-right"
-                                color={ resolveApprovalTagColor(approval?.taskStatus) }
+                                color={
+                                    resolveApprovalTagColor &&
+                                    (
+                                        approval?.taskStatus === ApprovalStatus.READY ||
+                                        approval?.taskStatus === ApprovalStatus.RESERVED ||
+                                        approval?.taskStatus === ApprovalStatus.APPROVED ||
+                                        approval?.taskStatus === ApprovalStatus.REJECTED ||
+                                        approval?.taskStatus === ApprovalStatus.BLOCKED
+                                    )
+                                        ? resolveApprovalTagColor(approval?.taskStatus)
+                                        : undefined
+                                }
                             />
 
                             { t("common:approvalsPage.modals.subHeader") }
@@ -446,7 +458,8 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                 { t("common:cancel") }
                             </LinkButton>
                             {
-                                approval?.taskStatus !== ApprovalStatus.COMPLETED
+                                approval?.taskStatus !== ApprovalStatus.APPROVED &&
+                                approval?.taskStatus !== ApprovalStatus.REJECTED
                                     ? (
                                         <>{ approvalActions(approval) }</>
                                     )
