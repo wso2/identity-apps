@@ -99,7 +99,6 @@ import static org.wso2.identity.apps.common.util.AppPortalConstants.MYACCOUNT_AP
 import static org.wso2.identity.apps.common.util.AppPortalConstants.MYACCOUNT_PORTAL_PATH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.PROFILE_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.USERNAME_CLAIM_URI;
-import static org.wso2.identity.apps.common.util.AppPortalConstants.USER_SESSION_IMPERSONATION;
 
 /**
  * App portal utils.
@@ -301,8 +300,7 @@ public class AppPortalUtils {
         if (!CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME && CONSOLE_APP.equals(appName)) {
             shareApplication(tenantDomain, tenantId, appId, appName, appOwner);
         }
-        if (Boolean.parseBoolean(IdentityUtil.getProperty(USER_SESSION_IMPERSONATION)) &&
-                MYACCOUNT_APP.equals(appName)) {
+        if (MYACCOUNT_APP.equals(appName)) {
             addAPIResourceToApplication(appId, tenantDomain, IMPERSONATION_API_RESOURCE,
                 APIResourceManagementConstants.APIResourceTypes.TENANT);
             addAPIResourceToApplication(appId, tenantDomain, IMPERSONATION_ORG_API_RESOURCE,
