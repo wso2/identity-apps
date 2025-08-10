@@ -26,6 +26,7 @@ import {
     GearIcon,
     LightbulbOnIcon,
     LinearNodesIcon,
+    LogsDocumentIcon,
     NodesIcon,
     ProgressFlowIcon,
     UserCircleDotIcon,
@@ -1276,20 +1277,20 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             category: "extensions:manage.sidePanel.categories.userManagement",
-            component: lazy(() => import("@wso2is/admin.workflow-approvals.v1/pages/approvals")),
+            component: lazy(() => import("../pages/approvals")),
             exact: true,
             icon: {
                 icon: <DocumentCheckIcon fill="black" className="icon" />
             },
             id: "approvals",
-            name: "console:manage.features.sidePanel.approvals",
+            name: "common:approvals",
             order: 26,
             path: AppConstants.getPaths().get("APPROVALS"),
             protected: true,
             showOnSidePanel: true
         },
         {
-            category: "extensions:manage.sidePanel.categories.approvalWorkflows",
+            category: "extensions:manage.sidePanel.categories.workflows",
             children: [
                 {
                     component: lazy(() =>
@@ -1328,12 +1329,44 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             icon: {
                 icon: <DocumentCheckIcon fill="black" className="icon" />
             },
-            id: "workflows",
+            id: "approvalWorkflows",
             name: "console:manage.features.sidePanel.approvalWorkflows",
             order: 8,
             path: AppConstants.getPaths().get("APPROVAL_WORKFLOWS"),
             protected: true,
             showOnSidePanel: true
+        },
+        {
+            category: "extensions:manage.sidePanel.categories.workflows",
+            component: lazy(() =>
+                import("@wso2is/admin.workflow-requests.v1").then((module: any) => ({
+                    default: module.WorkflowRequestsPage
+                }))
+            ),
+            exact: true,
+            icon: {
+                icon: <LogsDocumentIcon fill="black" className="icon" />
+            },
+            id: "workflowRequests",
+            name: "pages:workflowRequestsPage.title",
+            order: 9,
+            path: AppConstants.getPaths().get("WORKFLOW_REQUESTS"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            category: "extensions:manage.sidePanel.categories.workflows",
+            component: lazy(() =>
+                import("@wso2is/admin.workflow-requests.v1").then((module: any) => ({
+                    default: module.WorkflowRequestDetails
+                }))
+            ),
+            exact: true,
+            id: "workflowRequestDetails",
+            name: "console:manage.features.workflowRequests.details.header",
+            path: `${AppConstants.getPaths().get("WORKFLOW_REQUESTS")}/:id`,
+            protected: true,
+            showOnSidePanel: false
         },
         {
             category: "console:manage.features.sidePanel.categories.legacy",
@@ -1561,6 +1594,18 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     id: "webhookEdit",
                     name: "Webhook Edit",
                     path: AppConstants.getPaths().get("WEBHOOK_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.webhooks.v1/pages/webhook-settings-page")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "webhookSettings",
+                    name: "Webhook Settings",
+                    path: AppConstants.getPaths().get("WEBHOOK_SETTINGS"),
                     protected: true,
                     showOnSidePanel: false
                 }

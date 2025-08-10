@@ -1,5 +1,48 @@
 # @wso2is/i18n
 
+## 2.28.1
+
+### Patch Changes
+
+- [#8712](https://github.com/wso2/identity-apps/pull/8712) [`e50f90cf4e4904c4d257e4b9b04623097934f9fa`](https://github.com/wso2/identity-apps/commit/e50f90cf4e4904c4d257e4b9b04623097934f9fa) Thanks [@KD23243](https://github.com/KD23243)! - Update terminology from "Invite User" to "Invited User" in flow orchestration
+
+* [#8708](https://github.com/wso2/identity-apps/pull/8708) [`d4b01de50e296f0dffdc9c4aacf2fcb74c402b09`](https://github.com/wso2/identity-apps/commit/d4b01de50e296f0dffdc9c4aacf2fcb74c402b09) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Remove organization handle empty validation and update tool tip
+
+## 2.28.0
+
+### Minor Changes
+
+- [#8643](https://github.com/wso2/identity-apps/pull/8643) [`0f788a7918a005c1f404a69cfc14d463a72ad55e`](https://github.com/wso2/identity-apps/commit/0f788a7918a005c1f404a69cfc14d463a72ad55e) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Add recursive organization search capability
+
+### Patch Changes
+
+- Updated dependencies [[`0f788a7918a005c1f404a69cfc14d463a72ad55e`](https://github.com/wso2/identity-apps/commit/0f788a7918a005c1f404a69cfc14d463a72ad55e)]:
+  - @wso2is/core@2.12.0
+
+## 2.27.2
+
+### Patch Changes
+
+- [#8701](https://github.com/wso2/identity-apps/pull/8701) [`9c8391409de565720c00ce3dd39058d0bf9e9c67`](https://github.com/wso2/identity-apps/commit/9c8391409de565720c00ce3dd39058d0bf9e9c67) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Improve workflow instance UI
+
+## 2.27.1
+
+### Patch Changes
+
+- [#8569](https://github.com/wso2/identity-apps/pull/8569) [`1edda77d2e69f308e9c0f4c0930a7957efd5f2ee`](https://github.com/wso2/identity-apps/commit/1edda77d2e69f308e9c0f4c0930a7957efd5f2ee) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Invite user to set password configurations for SMS & Email OTP
+
+## 2.27.0
+
+### Minor Changes
+
+- [#8683](https://github.com/wso2/identity-apps/pull/8683) [`832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3`](https://github.com/wso2/identity-apps/commit/832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Onboard Webhook Settings UI
+
+## 2.26.2
+
+### Patch Changes
+
+- [#8592](https://github.com/wso2/identity-apps/pull/8592) [`3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523`](https://github.com/wso2/identity-apps/commit/3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523) Thanks [@Malith-19](https://github.com/Malith-19)! - Move the Approvals to common component.
+
 ## 2.26.1
 
 ### Patch Changes

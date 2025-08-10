@@ -54,6 +54,7 @@ import {
     FeatureAccessConfigInterface
 } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
+import { WorkflowRequestsResourceEndpointsInterface } from "../../admin.workflow-requests.v1/configs/endpoints";
 
 export type ConfigInterface = CommonConfigInterface<
     DeploymentConfigInterface,
@@ -290,6 +291,10 @@ export interface FeatureConfigInterface {
      * Registration flow builder feature.
      */
     registrationFlowBuilder?: FeatureAccessConfigInterface;
+    /**
+     * Workflow requests feature.
+     */
+    workflowRequests?: FeatureAccessConfigInterface;
     /**
      * Workflow feature.
      */
@@ -683,6 +688,7 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     PolicyAdministrationEndpointsInterface,
     WorkflowsResourceEndpointsInterface,
     WorkflowAssociationsResourceEndpointsInterface,
+    WorkflowRequestsResourceEndpointsInterface,
     RulesEndpointsInterface,
     RemoteLoggingResourceEndpointsInterface,
     FlowBuilderCoreResourceEndpointsInterface {

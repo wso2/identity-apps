@@ -1,5 +1,47 @@
 # @wso2is/admin.users.v1
 
+## 2.34.7
+
+### Patch Changes
+
+- [#8705](https://github.com/wso2/identity-apps/pull/8705) [`6774168491d7efb7f3efd111ea4f4432f0cb8161`](https://github.com/wso2/identity-apps/commit/6774168491d7efb7f3efd111ea4f4432f0cb8161) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Address comments for Ask password email and SMS OTP support
+
+- Updated dependencies [[`6774168491d7efb7f3efd111ea4f4432f0cb8161`](https://github.com/wso2/identity-apps/commit/6774168491d7efb7f3efd111ea4f4432f0cb8161), [`0f788a7918a005c1f404a69cfc14d463a72ad55e`](https://github.com/wso2/identity-apps/commit/0f788a7918a005c1f404a69cfc14d463a72ad55e)]:
+  - @wso2is/admin.server-configurations.v1@2.35.19
+  - @wso2is/admin.users.v1@2.34.7
+  - @wso2is/admin.organizations.v1@2.27.0
+  - @wso2is/admin.core.v1@2.49.0
+  - @wso2is/core@2.12.0
+  - @wso2is/i18n@2.28.0
+  - @wso2is/admin.roles.v2@2.27.181
+
+## 2.34.6
+
+### Patch Changes
+
+- [#8569](https://github.com/wso2/identity-apps/pull/8569) [`1edda77d2e69f308e9c0f4c0930a7957efd5f2ee`](https://github.com/wso2/identity-apps/commit/1edda77d2e69f308e9c0f4c0930a7957efd5f2ee) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Invite user to set password configurations for SMS & Email OTP
+
+- Updated dependencies [[`1edda77d2e69f308e9c0f4c0930a7957efd5f2ee`](https://github.com/wso2/identity-apps/commit/1edda77d2e69f308e9c0f4c0930a7957efd5f2ee)]:
+  - @wso2is/admin.server-configurations.v1@2.35.18
+  - @wso2is/admin.extensions.v1@2.40.1
+  - @wso2is/admin.users.v1@2.34.6
+  - @wso2is/i18n@2.27.1
+  - @wso2is/admin.core.v1@2.48.2
+  - @wso2is/admin.roles.v2@2.27.180
+
+## 2.34.5
+
+### Patch Changes
+
+- [#8474](https://github.com/wso2/identity-apps/pull/8474) [`64f8425138bf065e883f60fb9be275c435ba5f0d`](https://github.com/wso2/identity-apps/commit/64f8425138bf065e883f60fb9be275c435ba5f0d) Thanks [@ModithaM](https://github.com/ModithaM)! - Fix Bug in the password reset new password matching.
+
+- Updated dependencies [[`3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523`](https://github.com/wso2/identity-apps/commit/3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523), [`64f8425138bf065e883f60fb9be275c435ba5f0d`](https://github.com/wso2/identity-apps/commit/64f8425138bf065e883f60fb9be275c435ba5f0d)]:
+  - @wso2is/admin.core.v1@2.48.0
+  - @wso2is/i18n@2.26.2
+  - @wso2is/admin.users.v1@2.34.5
+  - @wso2is/admin.server-configurations.v1@2.35.17
+  - @wso2is/admin.roles.v2@2.27.179
+
 ## 2.34.4
 
 ### Patch Changes

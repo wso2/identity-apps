@@ -16,20 +16,32 @@
  * under the License.
  */
 
+import { GearIcon } from "@oxygen-ui/react-icons";
 import { FeatureAccessConfigInterface, Show, useRequiredScopes } from "@wso2is/access-control";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { DocumentationLink, ListLayout, PageLayout, PrimaryButton, useDocumentation } from "@wso2is/react-components";
+import {
+    DocumentationLink,
+    ListLayout,
+    PageLayout,
+    Popup,
+    PrimaryButton,
+    useDocumentation
+} from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Icon } from "semantic-ui-react";
+import { Button, Icon } from "semantic-ui-react";
 import deleteWebhook from "../api/delete-webhook";
 import useGetWebhooks from "../api/use-get-webhooks";
 import useGetWebhooksMetadata from "../api/use-get-webhooks-metadata";
 import WebhookList from "../components/webhook-list";
+import { WebhooksConstants } from "../constants/webhooks-constants";
 import usePagination from "../hooks/use-pagination";
 import useWebhookNavigation from "../hooks/use-webhook-navigation";
 import useWebhookSearch from "../hooks/use-webhook-search";
@@ -42,6 +54,7 @@ type WebhooksPageInterface = IdentifiableComponentInterface;
 const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
     ["data-componentid"]: _componentId = "webhook-list-page"
 }: WebhooksPageInterface): ReactElement => {
+
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
@@ -101,6 +114,10 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
         isDeletingWebhook ||
         isWebhooksMetadataLoading ||
         (!webhookListResponse && !webhookListFetchRequestError);
+
+    // Temporarily disable webhook settings.
+    const showWebhookSettings: boolean = isFeatureEnabled(
+        webhooksFeatureConfig, WebhooksConstants.FEATURE_DICTIONARY.get("WEBHOOK_SETTINGS"));
 
     useEffect(() => {
         resetToFirstPage();
@@ -175,18 +192,48 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
         [ paginatedWebhooks, filteredWebhooks.length ]
     );
 
-    const renderAddButton = (): ReactElement | null =>
+    const handleSettingsButton = () => {
+        history.push(AppConstants.getPaths().get("WEBHOOK_SETTINGS"));
+    };
+
+    const renderWebhookControls = (): ReactElement | null =>
         enhancedWebhookList?.totalResults > 0 ? (
-            <Show when={ webhooksFeatureConfig?.scopes?.create }>
-                <PrimaryButton
-                    onClick={ handleWebhookCreate }
-                    disabled={ !hasWebhookCreatePermissions }
-                    data-componentid={ `${_componentId}-list-layout-add-button` }
-                >
-                    <Icon name="add" />
-                    { t("webhooks:pages.list.buttons.add") }
-                </PrimaryButton>
-            </Show>
+            <>
+                {
+                    showWebhookSettings && (
+                        <Show when={ webhooksFeatureConfig?.scopes?.update }>
+                            {
+                                (
+                                    <Popup
+                                        trigger={ (
+                                            < Button
+                                                data-componentid={ "webhook-settings-button" }
+                                                icon={ GearIcon }
+                                                onClick={ handleSettingsButton }
+                                            />
+                                        ) }
+                                        content={ t("webhooks:pages.list.buttons.settings") }
+                                        position="top center"
+                                        size="mini"
+                                        hideOnScroll
+                                        inverted
+                                    />
+                                )
+                            }
+                        </Show>
+                    )
+                }
+                <Show when={ webhooksFeatureConfig?.scopes?.create }>
+                    <PrimaryButton
+                        onClick={ handleWebhookCreate }
+                        disabled={ !hasWebhookCreatePermissions }
+                        data-componentid={ `${_componentId}-list-layout-add-button` }
+                    >
+                        <Icon name="add" />
+                        { t("webhooks:pages.list.buttons.add") }
+                    </PrimaryButton>
+                </Show>
+            </>
         ) : null;
 
     /**
@@ -222,7 +269,7 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
     return (
         <PageLayout
             pageTitle="Webhooks"
-            action={ renderAddButton() }
+            action={ renderWebhookControls() }
             title={ t("webhooks:pages.list.heading") }
             description={
                 (<p>

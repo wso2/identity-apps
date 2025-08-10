@@ -273,6 +273,7 @@ export class ServerConfigurationsConstants {
     public static readonly ORGANIZATION_SELF_SERVICE: string = "organization-self-service";
     public static readonly SELF_SIGNUP: string = "self-sign-up";
     public static readonly SSO_LOGIN_RECAPTCHA: string = "sso.login.recaptcha";
+    public static readonly EMAIL_VERIFICATION: string = "user-email-verification";
 
     /**
 	 * Login policies - account locking API Keyword constants.
@@ -444,6 +445,15 @@ export class ServerConfigurationsConstants {
     public static readonly ORGANIZATION_SELF_SERVICE_ENABLE: string = "Organization.SelfService.Enable";
     public static readonly ASK_PASSWORD_CONNECTOR_ID: string = "dXNlci1lbWFpbC12ZXJpZmljYXRpb24";
     public static readonly ASK_PASSWORD_ENABLE: string = "EmailVerification.Enable";
+    public static readonly ASK_PASSWORD_EMAIL_OTP: string = "EmailVerification.AskPassword.EmailOTP";
+    public static readonly ASK_PASSWORD_SMS_OTP: string = "EmailVerification.AskPassword.SMSOTP";
+    public static readonly ASK_PASSWORD_OTP_EXPIRY_TIME: string = "EmailVerification.AskPassword.ExpiryTime";
+    public static readonly ASK_PASSWORD_ACCOUNT_ACTIVATION: string = "EmailVerification.AskPassword.AccountActivation";
+    public static readonly ASK_PASSWORD_LOCK_ON_CREATION: string = "EmailVerification.LockOnCreation";
+    public static readonly ASK_PASSWORD_OTP_USE_UPPERCASE: string = "EmailVerification.OTP.UseUppercaseCharactersInOTP";
+    public static readonly ASK_PASSWORD_OTP_USE_LOWERCASE: string = "EmailVerification.OTP.UseLowercaseCharactersInOTP";
+    public static readonly ASK_PASSWORD_OTP_USE_NUMERIC: string = "EmailVerification.OTP.UseNumbersInOTP";
+    public static readonly ASK_PASSWORD_OTP_LENGTH: string = "EmailVerification.OTP.OTPLength";
 
     /**
      * Account Management Catergory Constants.

@@ -25,6 +25,7 @@ import nxReactWebpackConfig from "@nx/react/plugins/webpack.js";
 import CompressionPlugin from "compression-webpack-plugin";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
+import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import JsonMinimizerPlugin from "json-minimizer-webpack-plugin";
 import webpack, {
@@ -154,13 +155,21 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 : "none"
     } as WebpackOptionsNormalized["infrastructureLogging"];
 
-    // Disable the TS Check in the Dev server if disabled from the `.env`.
-    if (!isProduction && isTSCheckPluginDisabled) {
-        const forkTsCheckerPluginIndex: number = config.plugins.findIndex((plugin: WebpackPluginInstance) => {
-            return plugin.constructor.name === "ForkTsCheckerWebpackPlugin";
-        });
+    const forkTsCheckerPluginIndex: number = config.plugins.findIndex((plugin: WebpackPluginInstance) => {
+        return plugin.constructor.name === "ForkTsCheckerWebpackPlugin";
+    });
 
-        if (forkTsCheckerPluginIndex !== -1) {
+    if (forkTsCheckerPluginIndex !== -1) {
+        if (config.plugins) {
+            config.plugins[forkTsCheckerPluginIndex] = new ForkTsCheckerWebpackPlugin({
+                typescript: {
+                    memoryLimit: 8192
+                }
+            });
+        }
+
+        // Disable the TS Check in the Dev server if disabled from the `.env`.
+        if (!isProduction && isTSCheckPluginDisabled) {
             config.plugins.splice(forkTsCheckerPluginIndex, 1);
         }
     }
