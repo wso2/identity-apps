@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -55,6 +55,7 @@ const useGetOrganizationDiscoveryConfig = <
 
     let isOrganizationDiscoveryEnabled: boolean = false;
     let isEmailDomainBasedSelfRegistrationEnabled: boolean = false;
+    let defaultParam: string;
 
     if ((data as OrganizationDiscoveryConfigInterface)?.properties) {
         (data as OrganizationDiscoveryConfigInterface).properties?.forEach(
@@ -67,6 +68,10 @@ const useGetOrganizationDiscoveryConfig = <
                 if (property.key === OrganizationDiscoveryConfigConstants.EMAIL_DOMAIN_DISCOVERY_SELF_REG_PROPERTY_KEY
                     && property.value === "true") {
                     isEmailDomainBasedSelfRegistrationEnabled = true;
+                }
+
+                if (property.key === OrganizationDiscoveryConfigConstants.DEFAULT_DISCOVERY_PARAM) {
+                    defaultParam = property.value;
                 }
             }
         );
@@ -91,6 +96,7 @@ const useGetOrganizationDiscoveryConfig = <
 
     return {
         data: {
+            defaultParam,
             isEmailDomainBasedSelfRegistrationEnabled,
             isOrganizationDiscoveryEnabled,
             ...data
