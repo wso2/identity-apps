@@ -136,7 +136,6 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
     }, [ selfRegistrationConnectorDetetails ]);
 
     const handleEmailDomainBasedSelfRegistration = (value: boolean): void => {
-
         const updateData: OrganizationDiscoveryConfigInterface = {
             properties: []
         };
