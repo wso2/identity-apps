@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -119,7 +119,11 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
     } = useGetGovernanceConnectorById(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
         ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID);
 
-    const { isOrganizationDiscoveryEnabled, isEmailDomainBasedSelfRegistrationEnabled } = organizationDiscoveryConfig;
+    const {
+        isOrganizationDiscoveryEnabled,
+        isEmailDomainBasedSelfRegistrationEnabled,
+        defaultParam
+    } = organizationDiscoveryConfig;
     const [ isSelfRegEnabled, setIsSelfRegEnabled ] = useState<boolean>(false);
 
     useEffect(() => {
@@ -145,6 +149,13 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
             key: OrganizationDiscoveryConfigConstants.EMAIL_DOMAIN_DISCOVERY_SELF_REG_PROPERTY_KEY,
             value: value.toString()
         });
+
+        if (defaultParam != null) {
+            updateData.properties.push({
+                key: OrganizationDiscoveryConfigConstants.DEFAULT_DISCOVERY_PARAM,
+                value: defaultParam
+            });
+        }
 
         updateOrganizationDiscoveryConfig(updateData)
             .then(() => {
@@ -268,6 +279,12 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
             updateData.properties.push({
                 key: OrganizationDiscoveryConfigConstants.EMAIL_DOMAIN_DISCOVERY_SELF_REG_PROPERTY_KEY,
                 value: "false"
+            });
+        }
+        if (defaultParam != null) {
+            updateData.properties.push({
+                key: OrganizationDiscoveryConfigConstants.DEFAULT_DISCOVERY_PARAM,
+                value: defaultParam
             });
         }
 
