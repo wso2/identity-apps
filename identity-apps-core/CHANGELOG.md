@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.27.25
+
+### Patch Changes
+
+- [#8716](https://github.com/wso2/identity-apps/pull/8716) [`1a3ea0d130bef1e1204722c56097503671ea7f4e`](https://github.com/wso2/identity-apps/commit/1a3ea0d130bef1e1204722c56097503671ea7f4e) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Remove impersonation config usages
+
+* [#8712](https://github.com/wso2/identity-apps/pull/8712) [`e50f90cf4e4904c4d257e4b9b04623097934f9fa`](https://github.com/wso2/identity-apps/commit/e50f90cf4e4904c4d257e4b9b04623097934f9fa) Thanks [@KD23243](https://github.com/KD23243)! - Update terminology from "Invite User" to "Invited User" in flow orchestration
+
 ## 2.27.24
 
 ### Patch Changes
