@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.72.3
+
+### Patch Changes
+
+- [#8709](https://github.com/wso2/identity-apps/pull/8709) [`dda87f32ccc576670afb8ad197b1d9d239f1207d`](https://github.com/wso2/identity-apps/commit/dda87f32ccc576670afb8ad197b1d9d239f1207d) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Improve approval workflow UI and provide rbac support for workflow instance and approval workflow configuration
+
+- Updated dependencies [[`6381e3a66609459f91927d1625350bf221aaba4d`](https://github.com/wso2/identity-apps/commit/6381e3a66609459f91927d1625350bf221aaba4d), [`3bd7ab28cdcc2a312da7de834793fec190706641`](https://github.com/wso2/identity-apps/commit/3bd7ab28cdcc2a312da7de834793fec190706641), [`dda87f32ccc576670afb8ad197b1d9d239f1207d`](https://github.com/wso2/identity-apps/commit/dda87f32ccc576670afb8ad197b1d9d239f1207d), [`2aea1d23348890d936a35dc3ed7b57c6383c594b`](https://github.com/wso2/identity-apps/commit/2aea1d23348890d936a35dc3ed7b57c6383c594b)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.2
+  - @wso2is/i18n@2.28.2
+  - @wso2is/admin.approval-workflows.v1@1.0.8
+  - @wso2is/admin.core.v1@2.49.3
+  - @wso2is/admin.workflow-requests.v1@1.0.2
+
 ## 2.72.2
 
 ### Patch Changes
