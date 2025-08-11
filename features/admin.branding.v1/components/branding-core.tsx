@@ -257,7 +257,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                 (brandingMode === BrandingModes.APPLICATION &&
                     originalBrandingPreference?.name !== selectedApplication) ||
                 (brandingMode === BrandingModes.ORGANIZATION &&
-                    originalBrandingPreference?.name !== currentOrganization?.id)
+                    originalBrandingPreference?.name !== currentOrganization?.orgHandle)
             ) {
                 // This means the sub-org or app has no branding preference configured.
                 // It gets the branding preference from the parent org.
