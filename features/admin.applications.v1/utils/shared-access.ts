@@ -54,7 +54,8 @@ export const computeInitialRoleSelections = (
 export const computeChildRoleSelections = (
     parentId: string,
     children: OrganizationInterface[],
-    roleSelections: Record<string, SelectedOrganizationRoleInterface[]>
+    roleSelections: Record<string, SelectedOrganizationRoleInterface[]>,
+    defaultRoles: string[] = []
 ): Record<string, SelectedOrganizationRoleInterface[]> => {
     const parentRoles: SelectedOrganizationRoleInterface[] = roleSelections[parentId];
 
@@ -76,7 +77,7 @@ export const computeChildRoleSelections = (
                 },
                 displayName: role.displayName,
                 id: role.displayName,
-                selected: childOrg.roles?.some(
+                selected: defaultRoles.includes(role.displayName) || childOrg.roles?.some(
                     (orgRole: OrganizationRoleInterface) => orgRole.displayName === role.displayName
                 ) || false
             }));
@@ -96,7 +97,11 @@ export const computeChildRoleSelections = (
                     },
                     displayName: role.displayName,
                     id: role.displayName,
-                    selected: existingRole ? existingRole.selected : false
+                    selected: defaultRoles.includes(role.displayName)
+                        ? true
+                        : existingRole
+                            ? existingRole.selected
+                            : false
                 };
             });
         }

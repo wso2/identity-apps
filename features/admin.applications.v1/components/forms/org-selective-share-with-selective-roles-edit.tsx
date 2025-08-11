@@ -1050,9 +1050,9 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
 
         return (
             <>
-                <Typography variant="h5">sharingSettings
+                <Typography variant="h5">
                     {
-                        `${ t("applications:edit.sections.sharedAccess.toManageOrganizationSelectLeftPanel") } ${
+                        `${ t("applications:edit.sections.sharedAccess.sharingSettings") } ${
                             flatOrganizationMap[selectedOrgId]?.name }`
                     }
                 </Typography>
