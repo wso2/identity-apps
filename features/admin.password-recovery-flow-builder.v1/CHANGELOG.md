@@ -1,5 +1,14 @@
 # @wso2is/admin.password-recovery-flow-builder.v1
 
+## 1.0.16
+
+### Patch Changes
+
+- [#8715](https://github.com/wso2/identity-apps/pull/8715) [`06b54421cb6bcd307fc0b6ef48067f20c12caf15`](https://github.com/wso2/identity-apps/commit/06b54421cb6bcd307fc0b6ef48067f20c12caf15) Thanks [@KD23243](https://github.com/KD23243)! - Update password recovery templates to use rich text formatting
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.2
+
 ## 1.0.15
 
 ### Patch Changes

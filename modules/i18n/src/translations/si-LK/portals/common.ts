@@ -119,6 +119,7 @@ export const common: CommonNS = {
     },
 
     approve: "අනුමත කරන්න",
+    approved: "අනුමත කරන ලදි",
     apps: "ඇප්ස්",
     assignee: "පැවරුම්කරු",
     assignees: "පැවරුම්කරුවන්",
@@ -238,7 +239,8 @@ export const common: CommonNS = {
     ready: "සූදානම්",
     regenerate: "නැවත උත්පාදනය කරන්න",
     register: "ලියාපදිංචි වන්න",
-    reject: "ප්\u200Dරතික්ෂේප කරන්න",
+    reject: "ප්‍රතික්ෂේප කරන්න",
+    rejected: "ප්‍රතික්ෂේප කරන ලදි",
     release: "මුදා හැරීම",
     remove: "ඉවත් කරන්න",
     removeAll: "සියල්ල ඉවත් කරන්න",

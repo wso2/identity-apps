@@ -1,5 +1,19 @@
 # @wso2is/identity-apps-core
 
+## 3.0.1
+
+### Patch Changes
+
+- [#8722](https://github.com/wso2/identity-apps/pull/8722) [`72e77e702f9c4353535e3f79fe455f97599281d7`](https://github.com/wso2/identity-apps/commit/72e77e702f9c4353535e3f79fe455f97599281d7) Thanks [@janakamarasena](https://github.com/janakamarasena)! - Add authType param in fido2 idf
+
+* [#8594](https://github.com/wso2/identity-apps/pull/8594) [`10b25006bfb752134c889a15178451b777ffdefc`](https://github.com/wso2/identity-apps/commit/10b25006bfb752134c889a15178451b777ffdefc) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Fix redirection to MyAccount app always after the password reset
+
+## 3.0.0
+
+### Major Changes
+
+- [#8689](https://github.com/wso2/identity-apps/pull/8689) [`8955f512852660d2c9539265ee926e72dba093f6`](https://github.com/wso2/identity-apps/commit/8955f512852660d2c9539265ee926e72dba093f6) Thanks [@KD23243](https://github.com/KD23243)! - Introduce the new accounts web application
+
 ## 2.27.25
 
 ### Patch Changes

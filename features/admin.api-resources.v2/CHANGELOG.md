@@ -1,5 +1,14 @@
 # @wso2is/admin.api-resources.v2
 
+## 2.26.3
+
+### Patch Changes
+
+- [#8720](https://github.com/wso2/identity-apps/pull/8720) [`cb83a585c585f2ec1d5fe8ba438c78b96592cbdf`](https://github.com/wso2/identity-apps/commit/cb83a585c585f2ec1d5fe8ba438c78b96592cbdf) Thanks [@brionmario](https://github.com/brionmario)! - Add custom API resource type to APIResourcesConstants and update resource edit path
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.2
+
 ## 2.26.2
 
 ### Patch Changes

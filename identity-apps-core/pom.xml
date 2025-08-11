@@ -24,7 +24,7 @@
     <groupId>org.wso2.identity.apps</groupId>
     <artifactId>identity-apps-core</artifactId>
     <packaging>pom</packaging>
-    <version>2.27.26-SNAPSHOT</version>
+    <version>3.0.2-SNAPSHOT</version>
     <name>WSO2 Identity Server Apps - Parent</name>
     <description>WSO2 Identity Server Web Apps</description>
 
@@ -47,10 +47,12 @@
         <module>components/org.wso2.identity.apps.taglibs.layout.controller</module>
         <module>components/login-portal-layouts</module>
         <module>components/org.wso2.identity.apps.common</module>
+        <module>apps/accounts</module>
         <module>apps/authentication-portal</module>
         <module>apps/recovery-portal</module>
         <module>apps/x509-certificate-authentication-portal</module>
         <module>features/org.wso2.identity.apps.common.server.feature</module>
+        <module>features/org.wso2.identity.apps.accounts.portal.server.feature</module>
         <module>features/org.wso2.identity.apps.authentication.portal.server.feature</module>
         <module>features/org.wso2.identity.apps.recovery.portal.server.feature</module>
         <module>features/org.wso2.identity.apps.x509certificate.portal.server.feature</module>
@@ -204,6 +206,12 @@
                 <version>${identity.organization.management.application.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.wso2.identity.apps</groupId>
+                <artifactId>accounts</artifactId>
+                <version>${project.version}</version>
+                <type>war</type>
+            </dependency>
             <dependency>
                 <groupId>org.wso2.identity.apps</groupId>
                 <artifactId>myaccount</artifactId>

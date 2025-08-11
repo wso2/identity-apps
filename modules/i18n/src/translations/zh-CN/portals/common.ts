@@ -118,6 +118,7 @@ export const common: CommonNS = {
         "title": "批准"
     },
     "approve": "批准",
+    "approved": "已批准",
     "apps": "应用",
     "assignee": "受让人",
     "assignees": "受让人",
@@ -238,6 +239,7 @@ export const common: CommonNS = {
     "regenerate": "再生",
     "register": "登记",
     "reject": "拒绝",
+    "rejected": "已拒绝",
     "release": "发布",
     "remove": "消除",
     "removeAll": "移除所有",

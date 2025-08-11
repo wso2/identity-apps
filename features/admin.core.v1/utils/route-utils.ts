@@ -405,7 +405,7 @@ export class RouteUtils {
             },
             {
                 category: workflows,
-                id: "workflowRequests",
+                id: "workflowInstances",
                 order: 9,
                 parent: workflows,
                 selected: history.location.pathname.includes("/workflow-requests")
