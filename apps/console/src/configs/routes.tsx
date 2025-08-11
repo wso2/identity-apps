@@ -1362,7 +1362,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 }))
             ),
             exact: true,
-            id: "workflowRequestDetails",
+            id: "workflowInstanceDetails",
             name: "console:manage.features.workflowRequests.details.header",
             path: `${AppConstants.getPaths().get("WORKFLOW_REQUESTS")}/:id`,
             protected: true,
