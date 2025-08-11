@@ -1,5 +1,14 @@
 # @wso2is/admin.branding.v1
 
+## 2.32.3
+
+### Patch Changes
+
+- [#8719](https://github.com/wso2/identity-apps/pull/8719) [`cacc02a0ef41c88cc5d244f8c396a21559b093a1`](https://github.com/wso2/identity-apps/commit/cacc02a0ef41c88cc5d244f8c396a21559b093a1) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Fix branding already configured check for organization with a handle
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.2
+
 ## 2.32.2
 
 ### Patch Changes

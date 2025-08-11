@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.branding.v1",
-    "version": "2.32.2",
+    "version": "2.32.3",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -22,7 +22,7 @@
         "@oxygen-ui/react-icons": "^2.4.6",
         "@wso2is/access-control": "^3.4.1",
         "@wso2is/admin.branding.ai.v1": "^2.27.100",
-        "@wso2is/admin.core.v1": "^2.49.1",
+        "@wso2is/admin.core.v1": "^2.49.2",
         "@wso2is/admin.extensions.v1": "^2.39.1",
         "@wso2is/admin.feature-gate.v1": "^1.7.1",
         "@wso2is/admin.flows.v1": "workspace:^",
