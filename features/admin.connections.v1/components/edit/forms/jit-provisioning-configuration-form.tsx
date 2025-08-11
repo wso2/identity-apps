@@ -483,33 +483,37 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                         )
                         : <Fragment />
                 }
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
-                        <Fragment>
-                            <Field
-                                required={ false }
-                                requiredErrorMessage=""
-                                label={ t("authenticationProvider:" +
-                                    "forms.jitProvisioning.attributeSyncMethod.label") }
-                                name={ JITProvisioningConstants.ATTRIBUTE_SYNC_METHOD }
-                                default={
-                                    initialValues?.attributeSyncMethod
-                                        ? initialValues?.attributeSyncMethod
-                                        : SupportedAttributeSyncMethods.PRESERVE_LOCAL
-                                }
-                                type="radio"
-                                children={ supportedAttributeSyncMethods }
-                                disabled={ !isJITProvisioningEnabled }
-                                data-testid={ `${ testId }-attribute-sync-method` }
-                                readOnly={ isReadOnly }
-                            />
-                            <Hint>
-                                { t("authenticationProvider:" +
-                                    "forms.jitProvisioning.attributeSyncMethod.hint") }
-                            </Hint>
-                        </Fragment>
-                    </Grid.Column>
-                </Grid.Row>
+                {
+                    identityProviderConfig?.jitProvisioningSettings?.attributeSyncMethodField?.show && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
+                                <Fragment>
+                                    <Field
+                                        required={ false }
+                                        requiredErrorMessage=""
+                                        label={ t("authenticationProvider:" +
+                                            "forms.jitProvisioning.attributeSyncMethod.label") }
+                                        name={ JITProvisioningConstants.ATTRIBUTE_SYNC_METHOD }
+                                        default={
+                                            initialValues?.attributeSyncMethod
+                                                ? initialValues?.attributeSyncMethod
+                                                : SupportedAttributeSyncMethods.PRESERVE_LOCAL
+                                        }
+                                        type="radio"
+                                        children={ supportedAttributeSyncMethods }
+                                        disabled={ !isJITProvisioningEnabled }
+                                        data-testid={ `${ testId }-attribute-sync-method` }
+                                        readOnly={ isReadOnly }
+                                    />
+                                    <Hint>
+                                        { t("authenticationProvider:" +
+                                            "forms.jitProvisioning.attributeSyncMethod.hint") }
+                                    </Hint>
+                                </Fragment>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
                         <Field
@@ -544,6 +548,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                     </Grid.Column>
                 </Grid.Row>
                 {
+                    identityProviderConfig?.jitProvisioningSettings?.accountLinkingAttributesSection?.show &&
                     isJITProvisioningEnabled && isAssociateLocalUserEnabled && (
                         <>
                             <Grid.Row>
@@ -729,32 +734,36 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                     </Segment>
                                 </Grid.Column>
                             </Grid.Row>
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
-                                    <Field
-                                        name={ JITProvisioningConstants.SKIP_JIT_FOR_NO_RULE_MATCH }
-                                        required={ false }
-                                        value={
-                                            initialValues?.skipJITForLookupFailure
-                                                ? [ JITProvisioningConstants.SKIP_JIT_FOR_NO_RULE_MATCH ]
-                                                : []
-                                        }
-                                        type="checkbox"
-                                        children={ [ {
-                                            label: t("authenticationProvider:" +
-                                                "forms.jitProvisioning.skipJITForNoRuleMatch.label"),
-                                            value: JITProvisioningConstants.SKIP_JIT_FOR_NO_RULE_MATCH
-                                        } ] }
-                                        data-componentid={ `${ testId }-skip-jit-for-no-rule-match` }
-                                        readOnly={ isReadOnly }
-                                        disabled={ !isJITProvisioningEnabled || !isAssociateLocalUserEnabled }
-                                    />
-                                    <Hint>
-                                        { t("authenticationProvider:" +
-                                            "forms.jitProvisioning.skipJITForNoRuleMatch.hint") }
-                                    </Hint>
-                                </Grid.Column>
-                            </Grid.Row>
+                            {
+                                identityProviderConfig?.jitProvisioningSettings?.skipJITForNoRuleMatchField?.show && (
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
+                                            <Field
+                                                name={ JITProvisioningConstants.SKIP_JIT_FOR_NO_RULE_MATCH }
+                                                required={ false }
+                                                value={
+                                                    initialValues?.skipJITForLookupFailure
+                                                        ? [ JITProvisioningConstants.SKIP_JIT_FOR_NO_RULE_MATCH ]
+                                                        : []
+                                                }
+                                                type="checkbox"
+                                                children={ [ {
+                                                    label: t("authenticationProvider:" +
+                                                        "forms.jitProvisioning.skipJITForNoRuleMatch.label"),
+                                                    value: JITProvisioningConstants.SKIP_JIT_FOR_NO_RULE_MATCH
+                                                } ] }
+                                                data-componentid={ `${ testId }-skip-jit-for-no-rule-match` }
+                                                readOnly={ isReadOnly }
+                                                disabled={ !isJITProvisioningEnabled || !isAssociateLocalUserEnabled }
+                                            />
+                                            <Hint>
+                                                { t("authenticationProvider:" +
+                                                    "forms.jitProvisioning.skipJITForNoRuleMatch.hint") }
+                                            </Hint>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                )
+                            }
                         </>
                     )
                 }
