@@ -57,7 +57,7 @@
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%-- Include registration portal URL resolver --%>
-<jsp:directive.include file="util/registration-portal-url-resolver.jsp"/>
+<jsp:directive.include file="util/dynamic-portal-url-resolver.jsp"/>
 
 <%!
     private static final String JAVAX_SERVLET_FORWARD_REQUEST_URI = "javax.servlet.forward.request_uri";
