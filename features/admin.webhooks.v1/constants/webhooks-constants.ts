@@ -53,5 +53,7 @@ export class WebhooksConstants {
      * @defaultValue
      */
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
-        .set("WEBHOOK_SETTINGS", "webhooks.settings");
+        .set("WEBHOOK_SETTINGS", "webhooks.settings")
+        .set("SESSION_EVENT_HANDLER", "webhook.events.session")
+        .set("TOKEN_EVENT_HANDLER", "webhook.events.token");
 }
