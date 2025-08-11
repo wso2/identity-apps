@@ -57,11 +57,11 @@ interface WorkflowRequestsListProps
      */
     defaultListItemLimit?: number;
     /**
-     * Optional callback to handle viewing workflow request details.
+     * Callback to handle viewing workflow request details.
      *
      * @param workflowRequest - The workflow request item to view details for.
      */
-    handleWorkflowRequestView?: (workflowRequest: WorkflowInstanceListItemInterface) => void;
+    handleWorkflowRequestView: (workflowRequest: WorkflowInstanceListItemInterface) => void;
     /**
      * Optional callback to be triggered when the search query is cleared.
      */
@@ -310,9 +310,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                 placeholders={ showPlaceholders() }
                 data={ workflowRequestsList }
                 onRowClick={ (e: SyntheticEvent, workflowRequestItem: WorkflowInstanceListItemInterface): void => {
-                    if (handleWorkflowRequestView) {
-                        handleWorkflowRequestView(workflowRequestItem);
-                    }
+                    handleWorkflowRequestView(workflowRequestItem);
                 } }
                 transparent={ !isLoading && (showPlaceholders() !== null) }
                 showHeader={ true }

@@ -194,7 +194,7 @@ const WorkflowRequestDetailsPage: React.FC = () => {
                     const displayValue: string = value === null ? "null" :
                         value === "" ? "(empty)" :
                             Array.isArray(value)
-                                ? (value.length === 0 ? "" : `[${value.length} items]`)
+                                ? (value.length === 0 ? "" : String(value))
                                 : String(value);
 
                     result.push({ key: cleanKey, value: displayValue });
