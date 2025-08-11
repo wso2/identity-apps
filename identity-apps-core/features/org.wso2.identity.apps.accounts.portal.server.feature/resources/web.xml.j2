@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
-  ~ Copyright (c) 2014-2025, WSO2 LLC. (http://www.wso2.org).
+  ~ Copyright (c) 2025, WSO2 LLC. (http://www.wso2.org).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -51,6 +52,35 @@
     {% endif %}
     <!-- *************** End of Layout Store URL Configuration ********************** -->
 
+    <!-- *************** Custom Error Page Configurations ********************** -->
+    {% set all_error_pages = [] %}
+    {% for error_page in accounts.error_pages %}
+    <error-page>
+        {% if error_page['exception-type'] is defined %}
+            <exception-type>{{ error_page['exception-type'] }}</exception-type>
+            <location>{{ error_page.location }}</location>
+        {% elif error_page.code is defined %}
+            <error-code>{{ error_page.code }}</error-code>
+            <location>{{ error_page.location }}</location>
+        {% else %}
+            <location>{{ error_page.location }}</location>
+        {% endif %}
+    </error-page>
+    {% endfor %}
+    <!-- *************** End of Custom Error Page Configurations ********************** -->
+
+    {# --- Now add defaults, only if not already handled --- #}
+    {% set handled_codes = [] %}
+    {% for error_page in accounts.error_pages %}
+        {% if error_page.code is defined %}
+            {% set _ = handled_codes.append(error_page.code) %}
+        {% elif error_page['exception-type'] is defined %}
+            {% set _ = handled_codes.append(error_page['exception-type']) %}
+        {% else %}
+            {% set _ = handled_codes.append('default') %}
+        {% endif %}
+    {% endfor %}
+
     {% set default_error_pages = [
         {"exception-type": "java.lang.Throwable", "location": "/error.jsp"},
         {"code": 400, "location": "/errors/error_400.jsp"},
@@ -67,6 +97,33 @@
         {"location": "/errors/error.jsp"}
     ] %}
 
+    <!-- *************** Default Error Page Configurations ********************** -->
+    {% for error_page in default_error_pages %}
+        {% if error_page.code is defined %}
+            {% set code_name = error_page.code %}
+        {% elif error_page['exception-type'] is defined %}
+            {% set code_name = error_page['exception-type'] %}
+        {% else %}
+            {% set code_name = 'default' %}
+        {% endif %}
+
+        {% if code_name not in handled_codes %}
+    <error-page>
+        {% if error_page['exception-type'] is defined %}
+            <exception-type>{{ error_page['exception-type'] }}</exception-type>
+            <location>{{ error_page.location }}</location>
+        {% elif error_page.code is defined %}
+            <error-code>{{ error_page.code }}</error-code>
+            <location>{{ error_page.location }}</location>
+        {% else %}
+            <location>{{ error_page.location }}</location>
+        {% endif %}
+    </error-page>
+        {% endif %}
+    {% endfor %}
+    <!-- *************** End of Default Error Page Configurations ********************** -->
+
+    <!-- *************** Http Header Security Filter ********************** -->
     <filter>
         <filter-name>HttpHeaderSecurityFilter</filter-name>
         <filter-class>org.apache.catalina.filters.HttpHeaderSecurityFilter</filter-class>
@@ -80,7 +137,9 @@
         <filter-name>HttpHeaderSecurityFilter</filter-name>
         <url-pattern>{{ http_header_filter.url_pattern | default('*') }}</url-pattern>
     </filter-mapping>
+    <!-- *************** End of Http Header Security Filter ********************** -->
 
+    <!-- *************** Cache Prevention Filter ********************** -->
     <filter>
         <filter-name>ContentTypeBasedCachePreventionFilter</filter-name>
         <filter-class>
@@ -106,52 +165,69 @@
         <filter-name>ContentTypeBasedCachePreventionFilter</filter-name>
         <url-pattern>{{ cache_filter.url_pattern | default('*') }}</url-pattern>
     </filter-mapping>
+    <!-- *************** End of Cache Prevention Filter ********************** -->
 
+    <!-- *************** Listener Configurations ********************** -->
     <listener>
         <listener-class>
             org.wso2.carbon.identity.mgt.endpoint.util.listener.IdentityManagementEndpointContextListener
         </listener-class>
     </listener>
+    <!-- *************** End of Listener Configurations ********************** -->
 
+    <!-- *************** Servlet Configurations (dynamic, with overrides) ********************** -->
+    {% set keys = [] %}
+    {% set values = [] %}
+    {% for servlet_item in accounts.servlet %}
+        {% set _ = keys.append(servlet_item['name']) %}
+        {% set _ = values.append(servlet_item) %}
+    {% endfor %}
+    {% set default_servlets = [
+        {"name": "register", "jsp": "/execution-flow.jsp", "url": "/register"},
+        {"name": "recovery", "jsp": "/execution-flow.jsp", "url": "/recovery"},
+        {"name": "error", "jsp": "/errors/execution_flow_error.jsp", "url": "/error"}
+    ] %}
+    {% for servlet_item in default_servlets %}
+        {% set key_name = servlet_item['name'] %}
+        {% set custom_servlet = servlet_item %}
+        {% if key_name in keys %}
+            {% set index = keys.index(key_name) %}
+            {% set custom_servlet = values[index] %}
+        {% endif %}
     <servlet>
-        <servlet-name>register</servlet-name>
-        <jsp-file>/execution-flow.jsp</jsp-file>
+        <servlet-name>{{ custom_servlet['name'] }}</servlet-name>
+        <jsp-file>{{ custom_servlet['jsp'] }}</jsp-file>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>register</servlet-name>
-        <url-pattern>/register</url-pattern>
+        <servlet-name>{{ custom_servlet['name'] }}</servlet-name>
+        <url-pattern>{{ custom_servlet['url'] }}</url-pattern>
     </servlet-mapping>
 
+    {% endfor %}
+    {% set default_keys = default_servlets | map(attribute='name') | list %}
+    {% for servlet_item in accounts.servlet %}
+      {% if servlet_item['name'] not in default_keys %}
     <servlet>
-        <servlet-name>recovery</servlet-name>
-        <jsp-file>/execution-flow.jsp</jsp-file>
+        <servlet-name>{{ servlet_item['name'] }}</servlet-name>
+        <jsp-file>{{ servlet_item['jsp'] }}</jsp-file>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>recovery</servlet-name>
-        <url-pattern>/recovery</url-pattern>
+        <servlet-name>{{ servlet_item['name'] }}</servlet-name>
+        <url-pattern>{{ servlet_item['url'] }}</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>error</servlet-name>
-        <jsp-file>/errors/execution_flow_error.jsp</jsp-file>
-    </servlet>
+      {% endif %}
+    {% endfor %}
+    <!-- *************** End of Servlet Configurations ********************** -->
 
-    <servlet-mapping>
-        <servlet-name>error</servlet-name>
-        <url-pattern>/error</url-pattern>
-    </servlet-mapping>
-
-    <error-page>
-        <exception-type>java.lang.Throwable</exception-type>
-        <location>{{ error_page.location | default('/generic-exception-response.jsp') }}</location>
-    </error-page>
-
+    <!-- *************** Session Configurations ********************** -->
     <session-config>
         <cookie-config>
             <secure>{{ session.secure | default('true') }}</secure>
         </cookie-config>
     </session-config>
+    <!-- *************** End of Session Configurations ********************** -->
 
 </web-app>
