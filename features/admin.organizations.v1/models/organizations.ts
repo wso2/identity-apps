@@ -68,7 +68,14 @@ export interface OrganizationAttributesInterface {
     value: string;
 }
 
+export interface OrganizationAncestorPathSegmentInterface {
+    depth: number;
+    id: string;
+    name: string;
+}
+
 export interface OrganizationResponseInterface {
+    ancestorPath?: OrganizationAncestorPathSegmentInterface[];
     id: string;
     name: string;
     orgHandle?: string;

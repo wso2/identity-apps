@@ -311,10 +311,9 @@
                                         {
                                             "id": "{{ID}}",
                                             "category": "DISPLAY",
-                                            "type": "TYPOGRAPHY",
-                                            "variant": "BODY1",
+                                            "type": "RICH_TEXT",
                                             "config": {
-                                                "text": "We've got you covered. Enter your username to begin resetting your password."
+                                                "text": "<h5 class=\"rich-text-heading-h5 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">We've got you covered. Enter your username to begin resetting your password.</span></h5>"
                                             }
                                         },
                                         {
@@ -544,10 +543,9 @@
                                         {
                                             "id": "{{ID}}",
                                             "category": "DISPLAY",
-                                            "type": "TYPOGRAPHY",
-                                            "variant": "BODY1",
+                                            "type": "RICH_TEXT",
                                             "config": {
-                                                "text": "We've got you covered. Enter your username to begin resetting your password."
+                                                "text": "<h5 class=\"rich-text-heading-h5 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">We've got you covered. Enter your username to begin resetting your password.</span></h5>"
                                             }
                                         },
                                         {
@@ -765,10 +763,9 @@
                                         {
                                             "id": "{{ID}}",
                                             "category": "DISPLAY",
-                                            "type": "TYPOGRAPHY",
-                                            "variant": "BODY1",
+                                            "type": "RICH_TEXT",
                                             "config": {
-                                                "text": "We've got you covered. Enter your username to begin resetting your password."
+                                                "text": "<h5 class=\"rich-text-heading-h5 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">We've got you covered. Enter your username to begin resetting your password.</span></h5>"
                                             }
                                         },
                                         {

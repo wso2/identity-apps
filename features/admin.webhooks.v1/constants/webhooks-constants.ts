@@ -43,6 +43,15 @@ export class WebhooksConstants {
         FETCH_WEBHOOK_INVALID_STATUS_CODE: "Failed to fetch webhook. Unexpected response status.",
         RETRY_WEBHOOK_INVALID_STATUS_CODE: "Failed to resend requests. Unexpected response status.",
         UPDATE_WEBHOOK_INVALID_STATUS_CODE: "Failed to update webhook. Unexpected response status.",
+        UPDATE_WEBHOOK_METADATA_INVALID_STATUS_CODE: "Failed to update webhook metadata. Unexpected response status.",
         UPDATE_WEBHOOK_STATUS_INVALID_STATUS_CODE: "Failed to update webhook status. Unexpected response status."
     };
+
+    /**
+     * Set of keys used to enable/disable features.
+     * @typeParam FEATURE_DICTIONARY - `Map<string, string>`
+     * @defaultValue
+     */
+    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
+        .set("WEBHOOK_SETTINGS", "webhooks.settings");
 }

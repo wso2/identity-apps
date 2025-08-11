@@ -181,7 +181,7 @@ const AskPasswordFlowBuilderPageHeader: FunctionComponent<AskPasswordFlowBuilder
                     >
                         Flows
                     </Link>
-                    <Typography sx={ { color: "text.primary" } }>Edit Invite User Registration Flow</Typography>
+                    <Typography sx={ { color: "text.primary" } }>Edit Invited User Registration Flow</Typography>
                 </Breadcrumbs>
             </Box>
             <Box

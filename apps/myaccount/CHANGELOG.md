@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.23.1
+
+### Patch Changes
+
+- [#8675](https://github.com/wso2/identity-apps/pull/8675) [`2760e99ffe26961fbe9640906203dea947660257`](https://github.com/wso2/identity-apps/commit/2760e99ffe26961fbe9640906203dea947660257) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Append organization handle instead of organizationId to userId for linked accounts
+
+- Updated dependencies [[`832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3`](https://github.com/wso2/identity-apps/commit/832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3)]:
+  - @wso2is/i18n@2.27.0
+
 ## 2.23.0
 
 ### Minor Changes

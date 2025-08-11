@@ -18,6 +18,8 @@
 
 $organization-active-icon-active-color: #349256;
 $organization-active-icon-inactive-color: #eb4f63;
+$organization-path-breadcrumb-icon-gap: 0.5rem;
+$organization-path-breadcrumb-start-gap: 0.3rem;
 
 .organization-active-icon {
     margin-right: 0.5rem !important;
@@ -29,5 +31,29 @@ $organization-active-icon-inactive-color: #eb4f63;
 
     &.inactive {
         color: $organization-active-icon-inactive-color
+    }
+}
+
+[dir="rtl"] .organization-active-icon {
+    margin-right: 0 !important;
+    margin-left: 0.5rem !important;
+}
+
+.organization-path-breadcrumb {
+    margin-left: $organization-path-breadcrumb-start-gap;
+    padding-bottom: 0.3rem;
+
+    .organization-path-breadcrumb-icon {
+        margin-right: $organization-path-breadcrumb-icon-gap;
+    }
+}
+
+[dir="rtl"] .organization-path-breadcrumb {
+    margin-left: 0;
+    margin-right: $organization-path-breadcrumb-start-gap;
+
+    .organization-path-breadcrumb-icon {
+        margin-right: 0;
+        margin-left: $organization-path-breadcrumb-icon-gap;
     }
 }
