@@ -65,6 +65,7 @@ export const actions: actionsNS = {
             hint: "Request headers in the relevant flow to be shared with the external service.",
             label: "Allowed Headers",
             placeholder: "Header Name",
+            tooltip: "Add header",
             validations: {
                 invalid: "Please enter a valid header name."
             }
@@ -73,6 +74,7 @@ export const actions: actionsNS = {
             hint: "Request parameters in the relevant flow to be shared with the external service.",
             label: "Allowed Parameters",
             placeholder: "Parameter Name",
+            tooltip: "Add parameter",
             validations: {
                 invalid: "Please enter a valid parameter name."
             }

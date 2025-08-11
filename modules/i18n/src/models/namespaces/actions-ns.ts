@@ -149,6 +149,7 @@ export interface actionsNS {
             hint: string;
             label: string;
             placeholder: string;
+            tooltip: string;
             validations: {
                 invalid: string;
             };
@@ -157,6 +158,7 @@ export interface actionsNS {
             hint: string;
             label: string;
             placeholder: string;
+            tooltip: string;
             validations: {
                 invalid: string;
             };

@@ -28,8 +28,10 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalFormField, FormSpy, TextFieldAdapter, __DEPRECATED__SelectFieldAdapter } from "@wso2is/form/src";
 import { Hint, URLInput } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { FieldRenderProps } from "react-final-form";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon } from "semantic-ui-react";
+import MultiValuedTextFieldAdapter from "./adapter/multi-valued-text-field-adapter";
 import { ActionsConstants } from "../constants/actions-constants";
 import {
     AuthenticationType,
@@ -37,6 +39,7 @@ import {
     EndpointConfigFormPropertyInterface
 } from "../models/actions";
 import "./action-endpoint-config-form.scss";
+
 
 interface ActionEndpointConfigFormInterface extends IdentifiableComponentInterface {
     /**
@@ -459,7 +462,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
             : renderAuthenticationUpdateWidget();
     };
 
-    const allowedHeadersSection = (props: any) => {
+    const allowedHeadersSection = (props: FieldRenderProps<string, HTMLElement, string>) => {
         const { input } = props;
         const headersCSV: string = Array.isArray(input.value) ? input.value.join(",") : "";
 
@@ -505,7 +508,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
         );
     };
 
-    const allowedParametersSection = (props: any) => {
+    const allowedParametersSection = (props: FieldRenderProps<string, HTMLElement, string>) => {
         const { input } = props;
         const parametersCSV: string = Array.isArray(input.value) ? input.value.join(",") : "";
 
@@ -552,7 +555,8 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
     };
 
     const renderAllowedHeadersAndParamsSection = (): ReactElement => (
-        <>
+        <div className="field">
+            <Divider className="divider-container" />
             <FinalFormField
                 key="allowedHeaders"
                 name="allowedHeaders"
@@ -563,12 +567,18 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                 } }
                 ariaLabel="allowedHeaders"
                 required={ false }
-                data-componentid={ `${_componentId}-action-allowedHeaders` }
+                data-componentid={ `${_componentId}-action-allowed-headers` }
                 type="text"
-                component={ allowedHeadersSection }
+                component={ MultiValuedTextFieldAdapter }
                 maxLength={ 100 }
                 minLength={ 0 }
                 disabled={ isReadOnly }
+                label={ t("actions:fields.allowedHeaders.label") }
+                placeholder={ t("actions:fields.allowedHeaders.placeholder") }
+                hint={ t("actions:fields.allowedHeaders.hint") }
+                validationRegex={ ActionsConstants.API_HEADER_REGEX }
+                validationErrorMsg={ t("actions:fields.allowedHeaders.validations.invalid") }
+                tooltip={ t("actions:fields.allowedHeaders.tooltip") }
             />
             <FinalFormField
                 key="allowedParameters"
@@ -580,14 +590,20 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                 } }
                 ariaLabel="allowedParameters"
                 required={ false }
-                data-componentid={ `${_componentId}-action-allowedHeaders` }
+                data-componentid={ `${_componentId}-action-allowed-parameters` }
                 type="text"
-                component={ allowedParametersSection }
+                component={ MultiValuedTextFieldAdapter }
                 maxLength={ 100 }
                 minLength={ 0 }
                 disabled={ isReadOnly }
+                label={ t("actions:fields.allowedParameters.label") }
+                placeholder={ t("actions:fields.allowedParameters.placeholder") }
+                hint={ t("actions:fields.allowedParameters.hint") }
+                validationRegex={ ActionsConstants.REQUEST_PARAMETER_REGEX }
+                validationErrorMsg={ t("actions:fields.allowedParameters.validations.invalid") }
+                tooltip={ t("actions:fields.allowedParameters.tooltip") }
             />
-        </>
+        </div>
     );
 
     return (
@@ -629,7 +645,6 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                     </Alert>
                 ) }
             </div>
-            <Divider className="divider-container" />
             { showHeadersAndParams && renderAllowedHeadersAndParamsSection() }
             <Divider className="divider-container" />
             <Typography variant="h6" className="heading-container">

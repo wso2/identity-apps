@@ -114,7 +114,7 @@ export interface PreUpdateProfileActionInterface extends ActionInterface {
 /**
  *  Endpoint configuration.
  */
-interface EndpointInterface {
+export interface EndpointInterface {
     /**
      * External endpoint.
      */
@@ -291,7 +291,13 @@ export interface EndpointResponseInterface {
      * External endpoint.
      */
     uri: string;
+    /**
+     * Headers that needs to be shared with the endpoint.
+     */
     allowedHeaders?: string[];
+    /**
+     * Parameters that needs to be shared with the endpoint.
+     */
     allowedParameters?: string[];
     /**
      * Authentication configurations of the Action.
