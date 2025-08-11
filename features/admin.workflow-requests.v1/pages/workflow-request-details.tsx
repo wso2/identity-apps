@@ -27,6 +27,7 @@ import { useDispatch } from "react-redux";
 import { Button, Message, Modal, Table } from "semantic-ui-react";
 import { useGetWorkflowInstance } from "../api/use-get-workflow-instance";
 import { deleteWorkflowInstance } from "../api/workflow-requests";
+import { WorkflowInstanceStatus } from "../models/workflowRequests";
 import "./workflow-request-details.scss";
 
 const WorkflowRequestDetailsPage: React.FC = () => {
@@ -155,7 +156,8 @@ const WorkflowRequestDetailsPage: React.FC = () => {
             "arbitrary", "Arbitrary",
             "meta", "Meta",
             "links", "Links",
-            "schemas", "Schemas"
+            "schemas", "Schemas",
+            "Tenant Domain"
         ];
 
         const flattenObject = (obj: any, prefix: string = ""): void => {
@@ -191,8 +193,9 @@ const WorkflowRequestDetailsPage: React.FC = () => {
 
                     const displayValue: string = value === null ? "null" :
                         value === "" ? "(empty)" :
-                            Array.isArray(value) ? `[${value.length} items]` :
-                                String(value);
+                            Array.isArray(value)
+                                ? (value.length === 0 ? "" : String(value))
+                                : String(value);
 
                     result.push({ key: cleanKey, value: displayValue });
                 }
@@ -315,7 +318,7 @@ const WorkflowRequestDetailsPage: React.FC = () => {
                 />
             ) }
             { workflowRequest && renderDetailsTable() }
-            { workflowRequest && (
+            { workflowRequest && workflowRequest.status !== WorkflowInstanceStatus.DELETED && (
                 <DangerZoneGroup sectionHeader={ t("approvalWorkflows:details.dangerZone.header") }>
                     <DangerZone
                         actionTitle={ t("approvalWorkflows:details.dangerZone.delete.actionTitle") }

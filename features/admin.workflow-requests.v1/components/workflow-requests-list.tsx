@@ -16,14 +16,11 @@
  * under the License.
  */
 
-import { useRequiredScopes } from "@wso2is/access-control";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface, LoadableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import {
-    ConfirmationModal,
     DataTable,
     EmptyPlaceholder,
     LinkButton,
@@ -31,10 +28,9 @@ import {
     TableColumnInterface
 } from "@wso2is/react-components";
 import moment from "moment";
-import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
+import React, { ReactElement, ReactNode, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { Header, SemanticICONS } from "semantic-ui-react";
+import { Header } from "semantic-ui-react";
 import {
     WorkflowInstanceListItemInterface,
     WorkflowInstanceStatus
@@ -61,17 +57,11 @@ interface WorkflowRequestsListProps
      */
     defaultListItemLimit?: number;
     /**
-     * Optional callback to handle the deletion of a workflow request item.
-     *
-     * @param workflowRequest - The workflow request item to be deleted.
-     */
-    handleWorkflowRequestDelete?: (workflowRequest: WorkflowInstanceListItemInterface) => void;
-    /**
-     * Optional callback to handle viewing workflow request details.
+     * Callback to handle viewing workflow request details.
      *
      * @param workflowRequest - The workflow request item to view details for.
      */
-    handleWorkflowRequestView?: (workflowRequest: WorkflowInstanceListItemInterface) => void;
+    handleWorkflowRequestView: (workflowRequest: WorkflowInstanceListItemInterface) => void;
     /**
      * Optional callback to be triggered when the search query is cleared.
      */
@@ -101,23 +91,12 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
         isLoading,
         workflowRequestsList,
         onSearchQueryClear,
-        handleWorkflowRequestDelete,
         handleWorkflowRequestView,
         searchQuery,
         ["data-componentid"]: componentId = "workflow-requests-list"
     } = props;
 
     const { t } = useTranslation([ "approvalWorkflows" ]);
-
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-
-    const [ showWorkflowRequestDeleteConfirmation, setShowWorkflowRequestDeleteConfirmationModal ] = useState(false);
-    const [ currentDeletedWorkflowRequest, setCurrentDeletedWorkflowRequest ] =
-        useState<WorkflowInstanceListItemInterface>();
-    const isPrivilegedUser: any = useSelector((state: AppState) => state.auth.isPrivilegedUser);
-
-    const hasWorkflowRequestDeletePermissions: boolean =
-        useRequiredScopes(featureConfig?.workflowRequests?.scopes?.delete);
 
     /**
      * Shows list placeholders.
@@ -188,19 +167,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
      *
      * @returns Table actions.
      */
-    const resolveTableActions = (): TableActionsInterface[] => [
-        {
-            "data-componentid": `${componentId}-list-item-delete-button`,
-            hidden: (): boolean => !hasWorkflowRequestDeletePermissions || isPrivilegedUser,
-            icon: (): SemanticICONS => "trash alternate",
-            onClick: (e: SyntheticEvent, workflowRequestItem: WorkflowInstanceListItemInterface): void => {
-                setCurrentDeletedWorkflowRequest(workflowRequestItem);
-                setShowWorkflowRequestDeleteConfirmationModal(true);
-            },
-            popupText: (): string => t("approvalWorkflows:pageLayout.list.popups.delete"),
-            renderer: "semantic-icon"
-        }
-    ];
+    const resolveTableActions = (): TableActionsInterface[] => [];
 
     /**
      * Formats the operation type to display user-friendly names.
@@ -220,15 +187,6 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                 return t("approvalWorkflows:operationType.deleteRole");
             case "UPDATE_ROLES_OF_USERS":
                 return t("approvalWorkflows:operationType.updateUserRoles");
-            // TODO: Enable these operation types when backend support is added
-            // case "UPDATE_ROLE_NAME":
-            //     return t("approvalWorkflows:operationType.updateRoleName");
-            // case "UPDATE_USERS_OF_ROLES":
-            //     return t("approvalWorkflows:operationType.updateRoleUsers");
-            // case "DELETE_USER_CLAIMS":
-            //     return t("approvalWorkflows:operationType.deleteUserClaims");
-            // case "UPDATE_USER_CLAIMS":
-            //     return t("approvalWorkflows:operationType.updateUserClaims");
             default:
                 return eventType;
         }
@@ -296,14 +254,6 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                 </Header>
             ),
             title: t("approvalWorkflows:list.columns.updatedAt")
-        },
-        {
-            allowToggleVisibility: false,
-            dataIndex: "action",
-            id: "actions",
-            key: "actions",
-            textAlign: "right",
-            title: t("approvalWorkflows:list.columns.actions")
         }
     ];
 
@@ -365,38 +315,6 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                 transparent={ !isLoading && (showPlaceholders() !== null) }
                 showHeader={ true }
             />
-            { showWorkflowRequestDeleteConfirmation && (
-                <ConfirmationModal
-                    data-componentid={ `${componentId}-delete-confirmation-modal` }
-                    onClose={ (): void => setShowWorkflowRequestDeleteConfirmationModal(false) }
-                    type="negative"
-                    open={ showWorkflowRequestDeleteConfirmation }
-                    assertionHint={ t("approvalWorkflows:confirmation.hint") }
-                    assertionType="checkbox"
-                    primaryAction={ t("common:confirm") }
-                    secondaryAction={ t("common:cancel") }
-                    onSecondaryActionClick={ (): void => setShowWorkflowRequestDeleteConfirmationModal(false) }
-                    onPrimaryActionClick={ (): void => {
-                        handleWorkflowRequestDelete(currentDeletedWorkflowRequest);
-                        setShowWorkflowRequestDeleteConfirmationModal(false);
-                    } }
-                    closeOnDimmerClick={ false }
-                >
-                    <ConfirmationModal.Header data-componentid={ `${componentId}-delete-confirmation-modal-header` }>
-                        { t("approvalWorkflows:confirmation.header") }
-                    </ConfirmationModal.Header>
-                    <ConfirmationModal.Message
-                        attached
-                        negative
-                        data-componentid={ `${componentId}-delete-confirmation-modal-message` }
-                    >
-                        { t("approvalWorkflows:confirmation.message") }
-                    </ConfirmationModal.Message>
-                    <ConfirmationModal.Content data-componentid={ `${componentId}-delete-confirmation-modal-content` }>
-                        { t("approvalWorkflows:confirmation.content") }
-                    </ConfirmationModal.Content>
-                </ConfirmationModal>
-            ) }
         </>
     );
 };

@@ -118,6 +118,7 @@ export const common: CommonNS = {
         title: "Approbations"
     },
     approve: "Approuver",
+    approved: "Approuvé",
     apps: "Applications",
     assignee: "Cessionnaire",
     assignees: "Contrôleurs",
@@ -239,6 +240,7 @@ export const common: CommonNS = {
     regenerate: "Régénérer",
     register: "Inscrire",
     reject: "Rejeter",
+    rejected: "Rejeté",
     release: "Version",
     remove: "Retirer",
     removeAll: "Tout retirer",
