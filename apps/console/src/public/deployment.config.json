@@ -336,10 +336,10 @@
             "actions": {
                 "disabledFeatures": [
                     "actions.types.list.preRegistration",
-                    "actions.types.org.list.preIssueAccessToken",
-                    "actions.types.org.list.preRegistration",
                     "actions.types.list.preUpdatePassword.headersAndParameters",
-                    "actions.types.list.preUpdateProfile.headersAndParameters"
+                    "actions.types.list.preUpdateProfile.headersAndParameters",
+                    "actions.types.org.list.preIssueAccessToken",
+                    "actions.types.org.list.preRegistration"
                 ],
                 "enabled": true,
                 "featureFlags": [],

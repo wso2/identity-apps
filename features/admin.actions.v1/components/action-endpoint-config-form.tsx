@@ -31,7 +31,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { FieldRenderProps } from "react-final-form";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon } from "semantic-ui-react";
-import MultiValuedTextFieldAdapter from "./adapter/multi-valued-text-field-adapter";
 import { ActionsConstants } from "../constants/actions-constants";
 import {
     AuthenticationType,
@@ -501,7 +500,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                 validationErrorMsg={  t("actions:fields.allowedHeaders.validations.invalid") }
                 showPredictions={ false }
                 readOnly={ isReadOnly }
-                addURLTooltip={ t("common:addURL") }
+                addURLTooltip={ t("actions:fields.allowedHeaders.tooltip") }
                 duplicateURLErrorMessage={ t("common:duplicateURLError") }
                 skipInternalValidation
             />
@@ -548,7 +547,8 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                 showError={ false }
                 showPredictions={ false }
                 readOnly={ isReadOnly }
-                duplicateURLErrorMessage={ t("") }
+                addURLTooltip={ t("actions:fields.allowedParameters.tooltip") }
+                duplicateURLErrorMessage={ t("common:duplicateURLError") }
                 skipInternalValidation
             />
         );
@@ -569,21 +569,14 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                 required={ false }
                 data-componentid={ `${_componentId}-action-allowed-headers` }
                 type="text"
-                component={ MultiValuedTextFieldAdapter }
+                component={ allowedHeadersSection }
                 maxLength={ 100 }
                 minLength={ 0 }
-                disabled={ isReadOnly }
-                label={ t("actions:fields.allowedHeaders.label") }
-                placeholder={ t("actions:fields.allowedHeaders.placeholder") }
-                hint={ t("actions:fields.allowedHeaders.hint") }
-                validationRegex={ ActionsConstants.API_HEADER_REGEX }
-                validationErrorMsg={ t("actions:fields.allowedHeaders.validations.invalid") }
-                tooltip={ t("actions:fields.allowedHeaders.tooltip") }
             />
             <FinalFormField
                 key="allowedParameters"
                 name="allowedParameters"
-                className="text-field-container-allowed-parameters"
+                className="allowed-headers-and-params"
                 width={ 16 }
                 FormControlProps={ {
                     margin: "dense"
@@ -592,16 +585,9 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                 required={ false }
                 data-componentid={ `${_componentId}-action-allowed-parameters` }
                 type="text"
-                component={ MultiValuedTextFieldAdapter }
+                component={ allowedParametersSection }
                 maxLength={ 100 }
                 minLength={ 0 }
-                disabled={ isReadOnly }
-                label={ t("actions:fields.allowedParameters.label") }
-                placeholder={ t("actions:fields.allowedParameters.placeholder") }
-                hint={ t("actions:fields.allowedParameters.hint") }
-                validationRegex={ ActionsConstants.REQUEST_PARAMETER_REGEX }
-                validationErrorMsg={ t("actions:fields.allowedParameters.validations.invalid") }
-                tooltip={ t("actions:fields.allowedParameters.tooltip") }
             />
         </div>
     );
@@ -611,7 +597,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
             <div className="form-field-wrapper">
                 <FinalFormField
                     key="uri"
-                    className="text-field-container"
+                    className="allowed-headers-and-params"
                     width={ 16 }
                     FormControlProps={ {
                         margin: "dense"

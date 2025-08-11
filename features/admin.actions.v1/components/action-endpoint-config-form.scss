@@ -76,26 +76,14 @@
 .ui.grid .row.urlComponentTagRow {
     display: inline-block !important;
     width: auto           !important;
-    margin: 0.3rem 0.5rem 0 0 !important;
+    margin: 0rem 0.5rem 0 0 !important;
+    color: aqua !important;
+    background-color: aqua !important;
 }
 
 .ui.grid .row.urlComponentLabelRow {
-    color: var(--oxygen-palette-text-secondary);
-    font-family: Gilmer, sans-serif;
-    font-weight: 400;
-    font-size: 1rem;
-    line-height: 1.4375em;
-    letter-spacing: normal;
     padding: 0;
     margin-top: 22px;
     margin-bottom: 8px;
-    position: relative;
-    display: block;
-    transform-origin: top left;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-    -webkit-transition: color 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms, -webkit-transform 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms, max-width 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;
-    transition: color 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms, transform 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms, max-width 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;
 }
+
