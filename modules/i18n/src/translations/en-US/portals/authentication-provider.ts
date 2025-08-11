@@ -951,35 +951,35 @@ export const authenticationProvider:AuthenticationProviderNS = {
             }
         },
         jitProvisioning: {
-            accountLookupAttributeMappings: {
-                heading: "Account lookup attribute mappings",
-                hint: "Configure how to look up existing local user accounts when associating " +
-                    "with federated users. The primary mapping will be used first, and if no " +
-                    "match is found, the secondary mapping will be tried.",
+            accountLinkingAttributes: {
+                heading: "Account Linking Rules",
+                hint: "Configure how to identify existing local user accounts when linking " +
+                    "with federated users. The first match rule will be used initially, and if no " +
+                    "match is found, the fallback match rule will be tried.",
                 infoNotification: "The local attribute dropdown displays attributes that have uniqueness " +
-                    "constraints enabled. To configure additional attributes for lookup, configure uniqueness " +
+                    "constraints enabled. To configure additional attributes for linking, configure uniqueness " +
                     "settings in the <1>local attributes</1> section.",
                 noneOption: {
                     label: "None",
                     description: "Reset local attribute mapping"
                 },
-                primary: {
+                firstMatchRule: {
                     federatedAttribute: {
                         label: "Federated attribute",
                         placeholder: "Enter federated attribute name"
                     },
-                    heading: "Primary attribute mapping",
+                    heading: "First match rule",
                     localAttribute: {
                         label: "Local attribute",
                         placeholder: "Select local attribute"
                     }
                 },
-                secondary: {
+                fallbackMatchRule: {
                     federatedAttribute: {
                         label: "Federated attribute",
                         placeholder: "Enter federated attribute name"
                     },
-                    heading: "Secondary attribute mapping (Optional)",
+                    heading: "Fallback match rule (Optional)",
                     localAttribute: {
                         label: "Local attribute",
                         placeholder: "Select local attribute"
@@ -1010,8 +1010,8 @@ export const authenticationProvider:AuthenticationProviderNS = {
             },
             associateLocalUser: {
                 hint: "When enabled, users that are provisioned with this identity " +
-                    "provider will be linked to existing local users. If account lookup " +
-                    "attribute mappings are not configured, the email address will be " +
+                    "provider will be linked to existing local users. If account linking " +
+                    "attributes are not configured, the email address will be " +
                     "used by default for matching users.",
                 label: "Associate provisioned users with existing local users"
             },
@@ -1037,11 +1037,11 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 hint: "Select user store domain name to provision users.",
                 label: "User store domain to always provision users"
             },
-            skipJITForLookupFailure: {
-                hint: "When enabled, if no local account is found using the attribute mappings, " +
+            skipJITForNoRuleMatch: {
+                hint: "When enabled, if no local account is found using the attribute matching rules, " +
                     "the user will be able to login without JIT provisioning. When disabled, " +
-                    "login will fail with a provisioning error.",
-                label: "Skip JIT provisioning if account lookup fails"
+                    "login will happen with JIT provisioning.",
+                label: "Skip JIT provisioning when no rule matches"
             }
         },
         outboundConnectorAccordion: {

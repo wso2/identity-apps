@@ -1906,8 +1906,8 @@ export const applications: ApplicationsNS = {
                                 linkedLocalAccountAttributeHandling: {
                                     instruction: "When you enable the use of linked local account attributes " +
                                         "instead of federated attributes and mandate that a linked local account " +
-                                        "must exist, this configuration previously applied only to <1>token " +
-                                        "exchange</1> flows. With this update, the same restriction now also " +
+                                        "must exist, this configuration previously applied only to the <1>token " +
+                                        "exchange</1> flow. With this update, the same restriction now also " +
                                         "applies to <3>login</3> scenarios."
                                 }
                             }

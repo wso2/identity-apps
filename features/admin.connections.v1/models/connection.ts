@@ -240,19 +240,19 @@ export interface JITProvisioningResponseInterface {
     associateLocalUser?: boolean;
     attributeSyncMethod?: string;
     /**
-     * Account lookup attribute mappings.
+     * Account linking attribute mappings.
      */
-    accountLookupAttributeMappings?: JITProvisioningAccountLookupAttributeMappingInterface[];
+    accountLinkingAttributeMappings?: JITProvisioningAccountLinkingAttributeMappingInterface[];
     /**
-     * Skip JIT provisioning for lookup failure.
+     * Skip JIT provisioning when no rule matches.
      */
-    isSkipJITForLookupFailure?: boolean;
+    isSkipJITForNoRuleMatch?: boolean;
 }
 
 /**
- * Captures the properties of a JIT provisioning account lookup attribute mapping.
+ * Captures the properties of a JIT provisioning account linking attribute mapping.
  */
-export interface JITProvisioningAccountLookupAttributeMappingInterface {
+export interface JITProvisioningAccountLinkingAttributeMappingInterface {
     /**
      * URI of the local attribute.
      */

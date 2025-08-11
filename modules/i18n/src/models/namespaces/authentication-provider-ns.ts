@@ -914,7 +914,7 @@ export interface AuthenticationProviderNS {
             };
         };
         jitProvisioning: {
-            accountLookupAttributeMappings: {
+            accountLinkingAttributes: {
                 heading: string;
                 hint: string;
                 infoNotification: string;
@@ -922,7 +922,7 @@ export interface AuthenticationProviderNS {
                     label: string;
                     description: string;
                 };
-                primary: {
+                firstMatchRule: {
                     heading: string;
                     federatedAttribute: {
                         label: string;
@@ -933,7 +933,7 @@ export interface AuthenticationProviderNS {
                         placeholder: string;
                     };
                 };
-                secondary: {
+                fallbackMatchRule: {
                     heading: string;
                     federatedAttribute: {
                         label: string;
@@ -987,7 +987,7 @@ export interface AuthenticationProviderNS {
                     3: string;
                 };
             };
-            skipJITForLookupFailure: {
+            skipJITForNoRuleMatch: {
                 hint: string;
                 label: string;
             };
