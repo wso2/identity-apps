@@ -114,7 +114,7 @@ export interface PreUpdateProfileActionInterface extends ActionInterface {
 /**
  *  Endpoint configuration.
  */
-export interface EndpointInterface {
+interface EndpointInterface {
     /**
      * External endpoint.
      */
