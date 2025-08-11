@@ -1011,7 +1011,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
             associateLocalUser: {
                 hint: "When enabled, users that are provisioned with this identity " +
                     "provider will be linked to existing local users. If account linking " +
-                    "attributes are not configured, the email address will be " +
+                    "rules are not configured, the email address will be " +
                     "used by default for matching users.",
                 label: "Associate provisioned users with existing local users"
             },
