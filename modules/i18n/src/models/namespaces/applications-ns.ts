@@ -779,12 +779,17 @@ export interface ApplicationsNS {
             };
             sharedAccess: {
                 title: string;
+                sharedRoles: string;
+                sharingSettings: string;
                 doNotShareApplication: string;
                 shareAllApplication: string;
                 shareSelectedApplication: string;
                 allRolesAndOrgsSharingMessage: string;
                 allRolesAndOrgsNotSharingMessage: string;
+                selectAnOrganizationToMangage: string;
+                allRolesSharingMessage: string;
                 doNotShareRolesWithAllOrgs: string;
+                toManageOrganizationSelectLeftPanel: string;
                 subTitle: string;
                 tabName: string;
                 sharedAccessStatusOptions: {
@@ -797,8 +802,10 @@ export interface ApplicationsNS {
                     header: string;
                     message: string;
                     description: string;
-                    preserveStateLabel: string;
-                    resetToDefaultLabel: string;
+                    preserveStateLabel1: string;
+                    resetToDefaultLabel1: string;
+                    preserveStateLabel2: string;
+                    resetToDefaultLabel2: string;
                 };
                 orgNotSelectedForRoleSharing: string;
                 individualRoleSharingLabel: string;

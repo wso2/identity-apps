@@ -32,6 +32,7 @@ import Grid from "@oxygen-ui/react/Grid";
 import LinearProgress from "@oxygen-ui/react/LinearProgress";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
+import { ApplicationSharingPolicy, RoleSharingModes } from "@wso2is/admin.console-settings.v1/models/shared-access";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
@@ -138,6 +139,8 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
     const [ expandedOrgId, setExpandedOrgId ] = useState<string>();
     const [ selectedOrgId, setSelectedOrgId ] = useState<string>();
     const [ expandedItems, setExpandedItems ] = useState<string[]>([]);
+    const [ selectedOrganizationSharingPolicy, setSelectedOrganizationSharingPolicy ]
+        = useState<ApplicationSharingPolicy>();
 
     const [ flatOrganizationMap, setFlatOrganizationMap ] = useState<Record<string, OrganizationInterface>>({});
 
@@ -211,7 +214,12 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
         !isEmpty(application?.id) &&
         !isEmpty(selectedOrgId),
         true,
-        `id eq '${ selectedOrgId }'`
+        `id eq '${ selectedOrgId }'`,
+        null,
+        1,
+        null,
+        null,
+        "sharingMode"
     );
 
     // Used to tick shared orgs from the total organization tree
@@ -350,6 +358,16 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
         if (selectedApplicationOrganization?.organizations?.length > 0) {
             const selectedOrg: OrganizationInterface = selectedApplicationOrganization.organizations[0];
             const orgRoleSelections: SelectedOrganizationRoleInterface[] = roleSelections[selectedOrg.id] || [];
+            const selectedOrgSharingPolicy: ApplicationSharingPolicy = selectedOrg?.sharingMode?.policy;
+            const selectedOrgRoleSharingMode: RoleSharingModes = selectedOrg?.sharingMode?.roleSharing?.mode;
+
+            if (selectedOrgSharingPolicy) {
+                setSelectedOrganizationSharingPolicy(selectedOrgSharingPolicy);
+            } else {
+                // If the selected organization does not have a sharing policy,
+                // default it to SELECTED_ORG_ONLY.
+                setSelectedOrganizationSharingPolicy(ApplicationSharingPolicy.SELECTED_ORG_ONLY);
+            }
 
             // If the selected organization has roles, update the role selections.
             if (selectedOrg?.roles?.length > 0) {
@@ -358,7 +376,7 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                     const initializedRoles: SelectedOrganizationRoleInterface[] = selectedOrg.roles.map(
                         (role: OrganizationRoleInterface) => ({
                             ...role,
-                            selected: true
+                            selected: selectedOrgRoleSharingMode !== RoleSharingModes.ALL
                         })
                     );
 
@@ -389,9 +407,13 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                             const isRoleInNewlyRemovedCommonRoles: boolean = newlyRemovedCommonRoles?.some(
                                 (selectedRole: RolesInterface) => selectedRole.displayName === role.displayName);
 
-                            // Check if the roles exists in the selectedOrg or newlyAddedCommonRoles.
-                            // If it does, mark it as selected.
-                            if (isRoleInSelectedOrg || isRoleInNewlyAddedCommonRoles) {
+                            // Only consider the response from the API if the share type is NOT SHARE_ALL.
+                            if (selectedOrgRoleSharingMode !== RoleSharingModes.ALL && isRoleInSelectedOrg) {
+                                isSelected = true;
+                            }
+
+                            // Check if the roles exists in newlyAddedCommonRoles, mark it as selected.
+                            if (isRoleInNewlyAddedCommonRoles) {
                                 isSelected = true;
                             }
 
@@ -1010,29 +1032,32 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                     severity="info"
                     data-componentid={ `${ componentId }-org-not-selected-alert` }
                 >
-                    Select an organization to manage
+                    { t("applications:edit.sections.sharedAccess.selectAnOrganizationToMangage") }
                 </Alert>
             );
         }
 
-        if (!selectedItems.includes(selectedOrgId)) {
+        if (shareType === ShareType.SHARE_SELECTED && !selectedItems.includes(selectedOrgId)) {
             return (
                 <Alert
                     severity="info"
                     data-componentid={ `${ componentId }-org-not-selected-alert` }
                 >
-                    To manage the organization, please select it from the left panel.
+                    { t("applications:edit.sections.sharedAccess.toManageOrganizationSelectLeftPanel") }
                 </Alert>
             );
         }
 
         return (
             <>
-                <Typography variant="h5">
-                    Sharing settings for { flatOrganizationMap[selectedOrgId]?.name }
+                <Typography variant="h5">sharingSettings
+                    {
+                        `${ t("applications:edit.sections.sharedAccess.toManageOrganizationSelectLeftPanel") } ${
+                            flatOrganizationMap[selectedOrgId]?.name }`
+                    }
                 </Typography>
                 <Typography variant="body1">
-                    Shared Roles
+                    { t("applications:edit.sections.sharedAccess.sharedRoles") }
                 </Typography>
                 {
                     shareAllRoles ? (
@@ -1040,7 +1065,7 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                             severity="info"
                             data-componentid={ `${ componentId }-no-roles-alert` }
                         >
-                            All roles of the application will be shared with the organization.
+                            { t("applications:edit.sections.sharedAccess.allRolesSharingMessage") }
                         </Alert>
                     ) : isEmpty(roleSelections[selectedOrgId]) ? (
                         <Alert
@@ -1108,7 +1133,11 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                             control={ <Checkbox defaultChecked /> }
                             label="Share application and roles with future child organizations"
                             data-componentid={ `${ componentId }-share-with-future-child-checkbox` }
-                            checked={ shouldShareWithFutureChildOrgsMap[selectedOrgId] ?? false }
+                            checked={ shouldShareWithFutureChildOrgsMap[selectedOrgId] ??
+                                selectedOrganizationSharingPolicy ===
+                                ApplicationSharingPolicy.SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN ??
+                                false
+                            }
                             onChange={ (_event: ChangeEvent<HTMLInputElement>, checked: boolean) => {
                                 updateChildSharingPolicy(checked);
                             } }
@@ -1148,7 +1177,10 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                                         className="roles-selective-share-tree-view"
                                         items={ organizationTree }
                                         expandedItems={ expandedItems }
-                                        expansionTrigger="iconContainer"
+                                        expansionTrigger={ shareType === ShareType.SHARE_ALL
+                                            ? "content"
+                                            : "iconContainer"
+                                        }
                                         onItemExpansionToggle={ (
                                             _e: SyntheticEvent,
                                             itemId: string,
@@ -1173,9 +1205,9 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                                             setSelectedOrgId(itemId);
                                         } }
                                         selectedItems={ selectedItems }
-                                        checkboxSelection={ true }
+                                        checkboxSelection={ shareType !== ShareType.SHARE_ALL }
                                         disableSelection={ shareType === ShareType.SHARE_ALL }
-                                        multiSelect={ true }
+                                        multiSelect={ shareType !== ShareType.SHARE_ALL }
                                         selectionPropagation={ {
                                             descendants: false,
                                             parents: false

@@ -321,6 +321,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
         setRemovedRoles({});
         setAddedOrgIds([]);
         setRemovedOrgIds([]);
+        setShouldShareWithFutureChildOrgsMap({});
         shouldMutate && mutateApplicationShareDataFetchRequest();
     };
 
@@ -803,7 +804,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
 
     const shareSelectedRolesWithAllOrgs = (): void => {
         // This should only happen when the selectedRoles have changed from the initial state.
-        if (JSON.stringify(selectedRoles) === JSON.stringify(initialSelectedRoles)) {
+        if (!isEmpty(selectedRoles) && JSON.stringify(selectedRoles) === JSON.stringify(initialSelectedRoles)) {
             // If the selected roles are the same as the initial roles, we can skip the sharing process.
             // But we have to perform the role patch operation.
             shareIndividualRolesWithSelectedOrgs();
@@ -1121,14 +1122,10 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                 value={ ShareTypeSwitchApproach.WITHOUT_UNSHARE }
                                 label={ (
                                     <Typography variant="body1">
-                                        <b>Preserve current state:</b>
-                                        <Trans
-                                            i18nKey= { "applications:edit.sections.sharedAccess." +
-                                                "shareTypeSwitchModal.preserveStateLabel" }
-                                        >
-                                            <b>Preserve current state:</b> Keep all existing shared
-                                            organizations, roles and configurations of the application.
-                                        </Trans>
+                                        <b>{ t("applications:edit.sections.sharedAccess." +
+                                                "shareTypeSwitchModal.preserveStateLabel1") }: </b>
+                                        { t("applications:edit.sections.sharedAccess." +
+                                                "shareTypeSwitchModal.preserveStateLabel2") }
                                     </Typography>
                                 ) }
                                 control={ <Radio /> }
@@ -1144,8 +1141,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                         <Trans
                                             i18nKey= { "applications:edit.sections.sharedAccess." +
                                                 "shareTypeSwitchModal.resetToDefaultLabel" }>
-                                            <b>Reset to default:</b> Clear all sharing settings and
-                                             start with a clean slate.
+                                            Clear all sharing settings and start with a clean slate.
                                         </Trans>
                                     </Typography>
                                 ) }
