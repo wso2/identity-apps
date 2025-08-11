@@ -467,8 +467,9 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
 
         return (
             <URLInput
-                isAllowEnabled={ false }
-                labelEnabled={ false }
+                labelName={ t("actions:fields.allowedHeaders.label") }
+                required={ false }
+                readOnly={ isReadOnly }
                 urlState={ headersCSV }
                 setURLState={ (value: string) => {
                     const modifiedHeadersList: string[] = value
@@ -483,8 +484,6 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                         input.onChange(modifiedHeadersList);
                     }
                 } }
-                labelName={ t("actions:fields.allowedHeaders.label") }
-                required={ false }
                 value={ headersCSV }
                 validation={ (value: string) => {
                     const modifiedHeadersList: string[] = value
@@ -495,13 +494,12 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                     return modifiedHeadersList.every((header: string) =>
                         ActionsConstants.API_HEADER_REGEX.test(header));
                 } }
+                validationErrorMsg={  t("actions:fields.allowedHeaders.validations.invalid") }
                 hint={ t("actions:fields.allowedHeaders.hint") }
                 placeholder={ t("actions:fields.allowedHeaders.placeholder") }
-                validationErrorMsg={  t("actions:fields.allowedHeaders.validations.invalid") }
-                showPredictions={ false }
-                readOnly={ isReadOnly }
                 addURLTooltip={ t("actions:fields.allowedHeaders.tooltip") }
                 duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                showPredictions={ false }
                 skipInternalValidation
             />
         );
@@ -513,8 +511,9 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
 
         return (
             <URLInput
-                isAllowEnabled={ false }
-                labelEnabled={ false }
+                labelName={ t("actions:fields.allowedParameters.label") }
+                required={ false }
+                readOnly={ isReadOnly }
                 urlState={ parametersCSV }
                 setURLState={ (modifiedParamsCSV: string) => {
                     const modifiedParamsList: string[] = modifiedParamsCSV
@@ -529,8 +528,6 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                         input.onChange(modifiedParamsList);
                     }
                 } }
-                labelName={ t("actions:fields.allowedParameters.label") }
-                required={ false }
                 value={ parametersCSV }
                 validation={ (value: string) => {
                     const modifiedParamsList: string[] = value
@@ -541,21 +538,19 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                     return modifiedParamsList.every((param: string) =>
                         !ActionsConstants.REQUEST_PARAMETER_REGEX.test(param));
                 } }
+                validationErrorMsg={ t("actions:fields.allowedParameters.validations.invalid") }
                 hint={ t("actions:fields.allowedParameters.hint") }
                 placeholder={ t("actions:fields.allowedParameters.placeholder") }
-                validationErrorMsg={  t("actions:fields.allowedParameters.validations.invalid") }
-                showError={ false }
-                showPredictions={ false }
-                readOnly={ isReadOnly }
                 addURLTooltip={ t("actions:fields.allowedParameters.tooltip") }
                 duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                showPredictions={ false }
                 skipInternalValidation
             />
         );
     };
 
     const renderAllowedHeadersAndParamsSection = (): ReactElement => (
-        <div className="field">
+        <>
             <Divider className="divider-container" />
             <FinalFormField
                 key="allowedHeaders"
@@ -589,7 +584,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                 maxLength={ 100 }
                 minLength={ 0 }
             />
-        </div>
+        </>
     );
 
     return (
