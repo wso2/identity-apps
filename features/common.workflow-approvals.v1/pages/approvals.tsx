@@ -232,7 +232,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
      */
     const resolveApprovalTagColor = (
         status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.BLOCKED |
-        ApprovalStatus.APPROVED | ApprovalStatus.REJECTED | ApprovalStatus.ALL
+        ApprovalStatus.APPROVED | ApprovalStatus.REJECTED
     ): SemanticCOLORS => {
         switch (status) {
             case ApprovalStatus.READY:
@@ -243,8 +243,6 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                 return "green";
             case ApprovalStatus.REJECTED:
                 return "red";
-            case ApprovalStatus.ALL:
-                return "blue";
             case ApprovalStatus.BLOCKED:
                 return "red";
             default:
