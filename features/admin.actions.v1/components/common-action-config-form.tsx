@@ -39,7 +39,7 @@ interface CommonActionConfigFormInterface extends IdentifiableComponentInterface
      */
     isReadOnly: boolean;
     /**
-     * Specifies whether the headers and parameters section should be show/hide.
+     * Specifies whether the headers and parameters section should be shown/hidden.
      */
     showHeadersAndParams?: boolean;
     /**

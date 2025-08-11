@@ -901,7 +901,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                     )
                 }
                 { hint && (
-                    <Grid.Row className={ "urlComponentHint" }>
+                    <Grid.Row className="urlComponentHint">
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
                             <Hint>
                                 { hint }

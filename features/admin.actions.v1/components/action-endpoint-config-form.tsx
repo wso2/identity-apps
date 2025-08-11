@@ -39,7 +39,6 @@ import {
 } from "../models/actions";
 import "./action-endpoint-config-form.scss";
 
-
 interface ActionEndpointConfigFormInterface extends IdentifiableComponentInterface {
     /**
      * Action's initial values.
@@ -50,7 +49,7 @@ interface ActionEndpointConfigFormInterface extends IdentifiableComponentInterfa
      */
     isCreateFormState: boolean;
     /**
-     * Specifies whether the headers and parameters section should be show/hide.
+     * Specifies whether the headers and parameters section should be shown/hidden.
      */
     showHeadersAndParams?: boolean;
     /**
