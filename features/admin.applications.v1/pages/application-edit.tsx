@@ -840,8 +840,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                             >
                                                 When you enable the use of linked local account attributes
                                                 instead of federated attributes and mandate that a linked local account
-                                                must exist, this configuration previously applied only to
-                                                <Code withBackground>token exchange</Code> flows. With this update,
+                                                must exist, this configuration previously applied only to the
+                                                <Code withBackground>token exchange</Code> flow. With this update,
                                                 the same restriction now also applies to
                                                 <Code withBackground>login</Code> scenarios.
                                             </Trans>
