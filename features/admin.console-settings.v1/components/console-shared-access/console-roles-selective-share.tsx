@@ -66,17 +66,19 @@ import { ConsoleRolesOnboardingConstants } from "../../constants/console-roles-o
 import useConsoleRoles from "../../hooks/use-console-roles";
 import useConsoleSettings from "../../hooks/use-console-settings";
 import "./console-roles-selective-share.scss";
+import { RoleSharingModes } from "../../models/shared-access";
 
 interface ConsoleRolesSelectiveShareProps extends IdentifiableComponentInterface {
     setAddedRoles: ReactDispatch<SetStateAction<Record<string, SelectedOrganizationRoleInterface[]>>>;
     setRemovedRoles: ReactDispatch<SetStateAction<Record<string, SelectedOrganizationRoleInterface[]>>>;
-    readOnly: boolean;
+    shareType: RoleSharingModes;
     roleSelections: Record<string, SelectedOrganizationRoleInterface[]>;
     setRoleSelections: ReactDispatch<SetStateAction<Record<string, SelectedOrganizationRoleInterface[]>>>;
     addedRoles: Record<string, SelectedOrganizationRoleInterface[]>;
     removedRoles: Record<string, SelectedOrganizationRoleInterface[]>;
     newlyAddedCommonRoles?: RolesInterface[];
     newlyRemovedCommonRoles?: RolesInterface[];
+    clearAdvancedRoleSharing?: boolean;
 }
 
 interface TreeViewBaseItemWithRoles extends TreeViewBaseItem {
@@ -93,9 +95,10 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
         setRemovedRoles,
         roleSelections,
         setRoleSelections,
-        readOnly,
+        shareType,
         newlyAddedCommonRoles = [],
-        newlyRemovedCommonRoles = []
+        newlyRemovedCommonRoles = [],
+        clearAdvancedRoleSharing = false
     } = props;
 
     const organizationId: string = useSelector((state: AppState) => state?.organization?.organization?.id);
@@ -147,7 +150,7 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
         error:  selectedOrganizationFetchRequestError
     } = useGetApplicationShare(
         consoleId,
-        !isEmpty(selectedOrgId),
+        !isEmpty(selectedOrgId) && !clearAdvancedRoleSharing,
         true,
         `id eq '${ selectedOrgId }'`
     );
@@ -235,7 +238,6 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
         }
     }, [ originalOrganizationTree ]);
 
-
     useEffect(() => {
         if (
             originalTopLevelOrganizationTree?.organizations?.length > 0 &&
@@ -244,7 +246,9 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
             const computedRoleSelections: Record<string, SelectedOrganizationRoleInterface[]> =
                 computeInitialRoleSelections(
                     originalTopLevelOrganizationTree.organizations,
-                    consoleRoles.Resources
+                    consoleRoles.Resources,
+                    [ ConsoleRolesOnboardingConstants.ADMINISTRATOR ],
+                    clearAdvancedRoleSharing
                 );
 
             // Update the role selections with the top-level organization roles
@@ -253,7 +257,7 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
                 ...computedRoleSelections
             }));
         }
-    }, [ originalTopLevelOrganizationTree, consoleRoles ]);
+    }, [ originalTopLevelOrganizationTree, consoleRoles, clearAdvancedRoleSharing ]);
 
     useEffect(() => {
         if (selectedOrganization?.organizations?.length > 0) {
@@ -277,9 +281,7 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
                     const initializedRoles: SelectedOrganizationRoleInterface[] = selectedOrg.roles.map(
                         (role: OrganizationRoleInterface) => ({
                             ...role,
-                            selected: role.displayName === ConsoleRolesOnboardingConstants.ADMINISTRATOR
-                                ? true
-                                : readOnly
+                            selected: !clearAdvancedRoleSharing
                         })
                     );
 
@@ -308,12 +310,13 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
                         const isRoleInNewlyRemovedCommonRoles: boolean = newlyRemovedCommonRoles?.some(
                             (selectedRole: RolesInterface) => selectedRole.displayName === role.displayName);
 
+                        // If the role is the administrator role, mark it as selected.
                         if (role.displayName === ConsoleRolesOnboardingConstants.ADMINISTRATOR) {
                             isSelected = true;
                         }
 
-                        // Only consider the response from the API in the readonly mode.
-                        if (readOnly && isRoleInSelectedOrg) {
+                        if (!clearAdvancedRoleSharing && isRoleInSelectedOrg) {
+                            // If the role exists in the selected organization, mark it as selected.
                             isSelected = true;
                         }
 
@@ -433,7 +436,11 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
                 }));
             }
         }
-    }, [ selectedOrganization, readOnly ]);
+    }, [ selectedOrganization ]);
+
+    useEffect(() => {
+        setSelectedOrgId(null);
+    }, [ shareType ]);
 
     useEffect(() => {
         if (originalOrganizationTreeFetchRequestError ||
@@ -755,9 +762,8 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
                             fullWidth
                             multiple
                             disableClearable
-                            readOnly={ readOnly }
                             data-componentid={ `${componentId}-autocomplete` }
-                            placeholder={ !readOnly &&
+                            placeholder={
                                 t("applications:edit.sections.sharedAccess.modes.shareWithSelectedPlaceholder") }
                             options={ roleSelections[selectedOrgId] ?? [] }
                             value={ roleSelections[selectedOrgId].filter(
@@ -785,9 +791,7 @@ const ConsoleRolesSelectiveShare = (props: ConsoleRolesSelectiveShareProps) => {
                                 <TextField
                                     { ...params }
                                     size="medium"
-                                    disabled={ readOnly }
                                     placeholder={
-                                        !readOnly &&
                                         t("applications:edit.sections.sharedAccess.searchAvailableRolesPlaceholder") }
                                     data-componentid={ `${componentId}-role-search-input` }
                                 />

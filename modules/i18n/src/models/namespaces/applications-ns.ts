@@ -807,6 +807,12 @@ export interface ApplicationsNS {
                     preserveStateLabel2: string;
                     resetToDefaultLabel2: string;
                 };
+                showShareAllWarningModal: {
+                    header: string;
+                    message: string;
+                    description: string;
+                    assertionHint: string;
+                };
                 orgNotSelectedForRoleSharing: string;
                 individualRoleSharingLabel: string;
                 noRolesAvailableForOrg: string;

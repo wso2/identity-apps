@@ -148,6 +148,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
     const { isOrganizationManagementEnabled } = useGlobalVariables();
     const [ showConfirmationModal, setShowConfirmationModal ] = useState<boolean>(false);
     const [ showShareTypeSwitchModal, setShowShareTypeSwitchModal ] = useState<boolean>(false);
+    const [ showShareAllWarningModal, setShowShareAllWarningModal ] = useState<boolean>(false);
     const [ shareTypeSwitchApproach, setShareTypeSwitchApproach ] = useState<ShareTypeSwitchApproach>();
     const [ selectedRoles, setSelectedRoles ] = useState<RolesInterface[]>([]);
     const [ initialSelectedRoles, setInitialSelectedRoles ] = useState<RolesInterface[]>([]);
@@ -336,7 +337,15 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
         } else if (shareType === ShareType.SHARE_ALL) {
             if (roleShareTypeAll === RoleShareType.SHARE_SELECTED) {
                 // Share selected roles with all organizations
-                shareSelectedRolesWithAllOrgs();
+                // If the selected roles have changed from the initial state,
+                // This is a SHARE ALL operation and we need to show a warning modal
+                if (JSON.stringify(selectedRoles) !== JSON.stringify(initialSelectedRoles)) {
+                    setShowShareAllWarningModal(true);
+                } else {
+                    // If the selected roles are the same as the initial roles
+                    // this means its a patch operation and we can skip the warning modal
+                    shareSelectedRolesWithAllOrgs();
+                }
             }
 
             if (roleShareTypeAll === RoleShareType.SHARE_WITH_ALL) {
@@ -1137,7 +1146,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                 value={ ShareTypeSwitchApproach.WITH_UNSHARE }
                                 label={ (
                                     <Typography variant="body1">
-                                        <b>Reset to default:</b>
+                                        <b>Reset to default: </b>
                                         <Trans
                                             i18nKey= { "applications:edit.sections.sharedAccess." +
                                                 "shareTypeSwitchModal.resetToDefaultLabel" }>
@@ -1150,6 +1159,47 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                 data-componentid={ `${ componentId }-share-type-switch-with-unshare` }
                             />
                         </RadioGroup>
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
+            </>
+        );
+    };
+
+    /**
+     * Renders a warning modal to convey user that they are doing a SHARE ALL operation
+     */
+    const renderShareAllWarningModal = (): ReactElement | null => {
+        return (
+            <>
+                <ConfirmationModal
+                    data-componentid={ `${componentId}-share-all-warning-modal` }
+                    onClose={ (): void => {
+                        setShowShareAllWarningModal(false);
+                    } }
+                    type="warning"
+                    open={ showShareAllWarningModal }
+                    primaryAction={ t("common:confirm") }
+                    secondaryAction={ t("common:cancel") }
+                    onPrimaryActionClick={ (): void => {
+                        shareSelectedRolesWithAllOrgs();
+                        setShowShareAllWarningModal(false);
+                    } }
+                    onSecondaryActionClick={ (): void => {
+                        setShowShareAllWarningModal(false);
+                    } }
+                    assertionHint={
+                        t("applications:edit.sections.sharedAccess.showShareAllWarningModal.assertionHint") }
+                    assertionType="checkbox"
+                    closeOnDimmerClick={ false }
+                >
+                    <ConfirmationModal.Header>
+                        { t("applications:edit.sections.sharedAccess.showShareAllWarningModal.header") }
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message attached warning>
+                        { t("applications:edit.sections.sharedAccess.showShareAllWarningModal.message") }
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content>
+                        { t("applications:edit.sections.sharedAccess.showShareAllWarningModal.description") }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             </>
@@ -1389,6 +1439,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
             </Grid>
             { renderConfirmationModal() }
             { renderShareTypeSwitchModal() }
+            { renderShareAllWarningModal() }
         </>
     );
 };

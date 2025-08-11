@@ -635,6 +635,12 @@ export const applications: ApplicationsNS = {
                     resetToDefaultLabel1: "Reset to default",
                     resetToDefaultLabel2: "Clear all sharing settings and start with a clean slate."
                 },
+                showShareAllWarningModal: {
+                    header: "Are you sure?",
+                    message: "This action is irreversible and will change roles in all organizations.",
+                    description: "This action may share new roles or unshare the existing roles to the shared organizations of the application.",
+                    assertionHint: "Please confirm your action."
+                },
                 sharedAccessStatusOptions: {
                     all: "All",
                     success: "Success",

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import Button from "@oxygen-ui/react/Button";
 import FormControl from "@oxygen-ui/react/FormControl";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
@@ -53,13 +54,12 @@ import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useStat
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Divider } from "semantic-ui-react";
 import ConsoleRolesSelectiveShare from "./console-roles-selective-share";
 import ConsoleRolesShareWithAll from "./console-roles-share-with-all";
 import { ConsoleRolesOnboardingConstants } from "../../constants/console-roles-onboarding-constants";
 import useConsoleRoles from "../../hooks/use-console-roles";
 import useConsoleSettings from "../../hooks/use-console-settings";
-import { ApplicationSharingPolicy, RoleSharedAccessModes, RoleSharingModes } from "../../models/shared-access";
+import { ApplicationSharingPolicy, RoleSharingModes } from "../../models/shared-access";
 
 /**
  * Props interface of {@link ConsoleSharedAccess}
@@ -118,14 +118,14 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
         "sharingMode"
     );
 
-    const [ sharedAccessMode, setSharedAccessMode ] = useState<RoleSharedAccessModes>(
-        RoleSharedAccessModes.SHARE_ALL_ROLES_WITH_ALL_ORGS);
+    const [ sharedAccessMode, setSharedAccessMode ] = useState<RoleSharingModes>(
+        RoleSharingModes.ALL);
     const [ initialSelectedRoles, setInitialSelectedRoles ] = useState<RolesInterface[]>([]);
     const [ selectedRoles, setSelectedRoles ] = useState<RolesInterface[]>([]);
     const [ addedRoles, setAddedRoles ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
     const [ removedRoles, setRemovedRoles ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
-    const [ readOnly, setReadOnly ] = useState<boolean>(true);
     const [ roleSelections, setRoleSelections ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
+    const [ clearAdvancedRoleSharing, setClearAdvancedRoleSharing ] = useState<boolean>(false);
 
     /**
      * If the Administrator role is fetched, set it as the selected role.
@@ -139,19 +139,19 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
 
     useEffect(() => {
         if (!originalOrganizationTree?.sharingMode) {
-            setSharedAccessMode(RoleSharedAccessModes.SHARE_WITH_SELECTED_ORGS_AND_ROLES);
+            setSharedAccessMode(RoleSharingModes.SELECTED);
 
             return;
         }
 
         if (originalOrganizationTree?.sharingMode?.roleSharing?.mode ===
                 RoleSharingModes.ALL) {
-            setSharedAccessMode(RoleSharedAccessModes.SHARE_ALL_ROLES_WITH_ALL_ORGS);
+            setSharedAccessMode(RoleSharingModes.ALL);
         }
 
         if (originalOrganizationTree?.sharingMode?.roleSharing?.mode ===
                 RoleSharingModes.SELECTED) {
-            setSharedAccessMode(RoleSharedAccessModes.SHARE_WITH_ALL_ORGS);
+            setSharedAccessMode(RoleSharingModes.SELECTED);
 
             const initialRoles: RolesInterface[] =
                 originalOrganizationTree?.sharingMode?.roleSharing?.roles?.map(
@@ -227,9 +227,9 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
         setAddedRoles({});
         setRemovedRoles({});
         setRoleSelections({});
-        setReadOnly(true);
-        setInitialSelectedRoles([]);
-        setSelectedRoles([]);
+        setSelectedRoles([ administratorRole?.Resources[0] ]);
+        setInitialSelectedRoles([ administratorRole?.Resources[0] ]);
+        setClearAdvancedRoleSharing(false);
     };
 
     const shareAllRolesWithAllOrgs = (): void => {
@@ -285,17 +285,8 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
 
         shareApplicationWithAllOrganizations(data)
             .then(() => {
-                if (!readOnly) {
-                    // Advanced role sharing is enabled, so we need to share the roles
-                    shareSelectedRolesWithSelectedOrgs();
-                } else {
-                    dispatch(addAlert({
-                        description: t("consoleSettings:sharedAccess.notifications." +
-                            "shareRoles.success.description"),
-                        level: AlertLevels.SUCCESS,
-                        message: t("consoleSettings:sharedAccess.notifications.shareRoles.success.message")
-                    }));
-                }
+                // Share individual roles with selected organizations. if any
+                shareSelectedRolesWithSelectedOrgs();
             })
             .catch((error: Error) => {
                 dispatch(addAlert({
@@ -403,9 +394,9 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
     };
 
     const submitSharedRoles = () : void => {
-        if (sharedAccessMode === RoleSharedAccessModes.SHARE_ALL_ROLES_WITH_ALL_ORGS) {
+        if (sharedAccessMode === RoleSharingModes.ALL) {
             shareAllRolesWithAllOrgs();
-        } else if (sharedAccessMode === RoleSharedAccessModes.SHARE_WITH_ALL_ORGS) {
+        } else if (sharedAccessMode === RoleSharingModes.SELECTED) {
             shareSelectedRolesWithAllOrgs();
         }
     };
@@ -476,25 +467,36 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                         <RadioGroup
                             value={ sharedAccessMode }
                             onChange={ (event: ChangeEvent<HTMLInputElement>) => {
-                                const value: RoleSharedAccessModes = event.target.value as RoleSharedAccessModes;
+                                const value: RoleSharingModes = event.target.value as RoleSharingModes;
 
                                 setSharedAccessMode(value);
 
-                                if (value === RoleSharedAccessModes.SHARE_ALL_ROLES_WITH_ALL_ORGS) {
-                                    setReadOnly(true);
+                                // Clear advanced role sharing states when switching modes from ALL to SELECTED
+                                if (value === RoleSharingModes.SELECTED) {
+                                    setClearAdvancedRoleSharing(true);
+                                    setAddedRoles({});
+                                    setRemovedRoles({});
+                                    setRoleSelections({});
+                                    setSelectedRoles([ administratorRole?.Resources[0] ]);
+                                    setInitialSelectedRoles([ administratorRole?.Resources[0] ]);
+                                }
+
+                                // Do not clear advanced role sharing states when switching modes from SELECTED to ALL
+                                if (value === RoleSharingModes.ALL) {
+                                    resetStates();
                                 }
                             } }
                             data-componentid={ `${componentId}-radio-group` }
                         >
                             <FormControlLabel
-                                value={ RoleSharedAccessModes.SHARE_ALL_ROLES_WITH_ALL_ORGS }
+                                value={ RoleSharingModes.ALL }
                                 label={ t("consoleSettings:sharedAccess.modes.shareAllRolesWithAllOrgs") }
                                 control={ <Radio /> }
                                 disabled={ isReadOnly }
                                 data-componentid={ `${componentId}-share-all-roles-with-all-orgs-radio-btn` }
                             />
                             <FormControlLabel
-                                value={ RoleSharedAccessModes.SHARE_WITH_ALL_ORGS }
+                                value={ RoleSharingModes.SELECTED }
                                 label={ t("consoleSettings:sharedAccess.modes.shareWithAll") }
                                 control={ <Radio /> }
                                 disabled={ isReadOnly }
@@ -502,7 +504,7 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                             />
                             <AnimatePresence mode="wait">
                                 {
-                                    sharedAccessMode === RoleSharedAccessModes.SHARE_WITH_ALL_ORGS
+                                    sharedAccessMode === RoleSharingModes.SELECTED
                                     && (
                                         <motion.div
                                             key="selected-orgs-block"
@@ -522,24 +524,12 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                                     )
                                 }
                             </AnimatePresence>
-                            {
-                                sharedAccessMode === RoleSharedAccessModes.SHARE_WITH_ALL_ORGS ? (
-                                    <Grid
-                                        xs={ 8 }
-                                    >
-                                        <Button
-                                            variant="text"
-                                            onClick={ () => setReadOnly(!readOnly) }
-                                        >
-                                            {
-                                                readOnly
-                                                    ? t("applications:edit.sections.sharedAccess.manageRoleSharing")
-                                                    : t("applications:edit.sections.sharedAccess.viewRoleSharing")
-                                            }
-                                        </Button>
-                                    </Grid>
-                                ) : <Divider hidden/>
-                            }
+                            <Alert
+                                severity="info"
+                                className="mt-1 mb-2"
+                            >
+                                { t("consoleSettings:sharedAccess.sharingRolesTakeTimeMessage") }
+                            </Alert>
                             <ConsoleRolesSelectiveShare
                                 addedRoles={ addedRoles }
                                 setAddedRoles={ setAddedRoles }
@@ -547,7 +537,8 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                                 setRemovedRoles={ setRemovedRoles }
                                 roleSelections={ roleSelections }
                                 setRoleSelections={ setRoleSelections }
-                                readOnly={ readOnly }
+                                shareType={ sharedAccessMode }
+                                clearAdvancedRoleSharing={ clearAdvancedRoleSharing }
                                 // Check the diff between
                                 // initialSelectedRoles and selectedRoles
                                 newlyAddedCommonRoles={ differenceBy(
