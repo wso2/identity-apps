@@ -275,12 +275,12 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
             isEnabled: values.get(
                 JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY
             ).includes(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY) ?? initialValues?.isEnabled,
-            // isSkipJITForNoRuleMatch: values.get(JITProvisioningConstants.SKIP_JIT_FOR_NO_RULE_MATCH)
-            //     ?.includes(JITProvisioningConstants.SKIP_JIT_FOR_NO_RULE_MATCH)
-            //     ?? initialValues?.isSkipJITForNoRuleMatch,
             scheme: values.get(
                 JITProvisioningConstants.PROVISIONING_SCHEME_TYPE_KEY
             ) ?? initialValues?.scheme,
+            skipJITForLookupFailure: values.get(JITProvisioningConstants.SKIP_JIT_FOR_NO_RULE_MATCH)
+                ?.includes(JITProvisioningConstants.SKIP_JIT_FOR_NO_RULE_MATCH)
+                ?? initialValues?.skipJITForLookupFailure,
             userstore: values.get(
                 JITProvisioningConstants.PROVISIONING_USER_STORE_DOMAIN_KEY
             ) ?? initialValues.userstore
@@ -735,7 +735,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                         name={ JITProvisioningConstants.SKIP_JIT_FOR_NO_RULE_MATCH }
                                         required={ false }
                                         value={
-                                            initialValues?.isSkipJITForNoRuleMatch
+                                            initialValues?.skipJITForLookupFailure
                                                 ? [ JITProvisioningConstants.SKIP_JIT_FOR_NO_RULE_MATCH ]
                                                 : []
                                         }

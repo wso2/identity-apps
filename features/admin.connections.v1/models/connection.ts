@@ -246,7 +246,7 @@ export interface JITProvisioningResponseInterface {
     /**
      * Skip JIT provisioning when no rule matches.
      */
-    isSkipJITForNoRuleMatch?: boolean;
+    skipJITForLookupFailure?: boolean;
 }
 
 /**
