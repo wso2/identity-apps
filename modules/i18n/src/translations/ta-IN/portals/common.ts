@@ -119,6 +119,7 @@ export const common: CommonNS = {
     },
 
     approve: "அனுமதி",
+    approved: "அனுமதிக்கப்பட்டது",
     apps: "செயலிகள்",
     assignee: "ஒதுக்கப்பட்டவர்",
     assignees: "அளிக்கப்பட்டவர்கள்",
@@ -239,7 +240,8 @@ export const common: CommonNS = {
     ready: "தயார்",
     regenerate: "மீளுருவாக்கம்",
     register: "பதிவு செய்",
-    reject: " ிராகரி",
+    reject: "மறுக்கவும்",
+    rejected: "மறுக்கப்பட்டது",
     release: "விடுவி",
     remove: "நீக்கு",
     removeAll: "அனைத்து நீக்க",

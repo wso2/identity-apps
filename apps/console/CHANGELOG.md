@@ -1,5 +1,43 @@
 # @wso2is/console
 
+## 2.72.4
+
+### Patch Changes
+
+- [#8724](https://github.com/wso2/identity-apps/pull/8724) [`9a2ecffbc2d6e85713073357d3e05b4162c269a9`](https://github.com/wso2/identity-apps/commit/9a2ecffbc2d6e85713073357d3e05b4162c269a9) Thanks [@Sachin-Mamoru](https://github.com/Sachin-Mamoru)! - Disable session and token event configs in ui
+
+- Updated dependencies [[`9a2ecffbc2d6e85713073357d3e05b4162c269a9`](https://github.com/wso2/identity-apps/commit/9a2ecffbc2d6e85713073357d3e05b4162c269a9)]:
+  - @wso2is/admin.webhooks.v1@1.1.1
+
+## 2.72.3
+
+### Patch Changes
+
+- [#8709](https://github.com/wso2/identity-apps/pull/8709) [`dda87f32ccc576670afb8ad197b1d9d239f1207d`](https://github.com/wso2/identity-apps/commit/dda87f32ccc576670afb8ad197b1d9d239f1207d) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Improve approval workflow UI and provide rbac support for workflow instance and approval workflow configuration
+
+- Updated dependencies [[`6381e3a66609459f91927d1625350bf221aaba4d`](https://github.com/wso2/identity-apps/commit/6381e3a66609459f91927d1625350bf221aaba4d), [`3bd7ab28cdcc2a312da7de834793fec190706641`](https://github.com/wso2/identity-apps/commit/3bd7ab28cdcc2a312da7de834793fec190706641), [`dda87f32ccc576670afb8ad197b1d9d239f1207d`](https://github.com/wso2/identity-apps/commit/dda87f32ccc576670afb8ad197b1d9d239f1207d), [`2aea1d23348890d936a35dc3ed7b57c6383c594b`](https://github.com/wso2/identity-apps/commit/2aea1d23348890d936a35dc3ed7b57c6383c594b)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.2
+  - @wso2is/i18n@2.28.2
+  - @wso2is/admin.approval-workflows.v1@1.0.8
+  - @wso2is/admin.core.v1@2.49.3
+  - @wso2is/admin.workflow-requests.v1@1.0.2
+
+## 2.72.2
+
+### Patch Changes
+
+- [#8719](https://github.com/wso2/identity-apps/pull/8719) [`cacc02a0ef41c88cc5d244f8c396a21559b093a1`](https://github.com/wso2/identity-apps/commit/cacc02a0ef41c88cc5d244f8c396a21559b093a1) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Fix branding already configured check for organization with a handle
+
+* [#8720](https://github.com/wso2/identity-apps/pull/8720) [`cb83a585c585f2ec1d5fe8ba438c78b96592cbdf`](https://github.com/wso2/identity-apps/commit/cb83a585c585f2ec1d5fe8ba438c78b96592cbdf) Thanks [@brionmario](https://github.com/brionmario)! - Add custom API resource type to APIResourcesConstants and update resource edit path
+
+- [#8715](https://github.com/wso2/identity-apps/pull/8715) [`06b54421cb6bcd307fc0b6ef48067f20c12caf15`](https://github.com/wso2/identity-apps/commit/06b54421cb6bcd307fc0b6ef48067f20c12caf15) Thanks [@KD23243](https://github.com/KD23243)! - Update password recovery templates to use rich text formatting
+
+- Updated dependencies [[`cacc02a0ef41c88cc5d244f8c396a21559b093a1`](https://github.com/wso2/identity-apps/commit/cacc02a0ef41c88cc5d244f8c396a21559b093a1), [`cb83a585c585f2ec1d5fe8ba438c78b96592cbdf`](https://github.com/wso2/identity-apps/commit/cb83a585c585f2ec1d5fe8ba438c78b96592cbdf), [`06b54421cb6bcd307fc0b6ef48067f20c12caf15`](https://github.com/wso2/identity-apps/commit/06b54421cb6bcd307fc0b6ef48067f20c12caf15)]:
+  - @wso2is/admin.branding.v1@2.32.3
+  - @wso2is/admin.api-resources.v2@2.26.3
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.0.16
+  - @wso2is/admin.core.v1@2.49.2
+
 ## 2.72.1
 
 ### Patch Changes

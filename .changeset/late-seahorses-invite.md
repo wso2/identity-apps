@@ -3,4 +3,4 @@
 "@wso2is/console": patch
 ---
 
-Update password recovery templates to use rich text formatting
+Refactor supported profile attribute retrieval

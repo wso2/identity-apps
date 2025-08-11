@@ -63,7 +63,8 @@ interface ApprovalsListPropsInterface extends SBACInterface<FeatureConfigInterfa
      * @param status - Approval status to resolve the tag color for.
      */
     resolveApprovalTagColor?: (
-        status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.BLOCKED
+        status: ApprovalStatus.READY | ApprovalStatus.RESERVED |
+            ApprovalStatus.BLOCKED | ApprovalStatus.APPROVED | ApprovalStatus.REJECTED
     ) => SemanticCOLORS;
     /**
      * Handles updating the status of the task.
@@ -292,7 +293,8 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
             {
                 "data-testid": `${ componentId }-item-claim-button`,
                 hidden: (approval: ApprovalTaskListItemInterface): boolean =>
-                    approval?.approvalStatus === ApprovalStatus.COMPLETED ||
+                    approval?.approvalStatus === ApprovalStatus.APPROVED ||
+                    approval?.approvalStatus === ApprovalStatus.REJECTED ||
                     approval?.approvalStatus === ApprovalStatus.RESERVED ||
                     approval?.approvalStatus === ApprovalStatus.BLOCKED,
                 icon: (): SemanticICONS => "hand pointer outline",
@@ -304,7 +306,8 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
             {
                 "data-testid": `${ componentId }-item-release-button`,
                 hidden: (approval: ApprovalTaskListItemInterface): boolean =>
-                    approval?.approvalStatus === ApprovalStatus.COMPLETED||
+                    approval?.approvalStatus === ApprovalStatus.APPROVED ||
+                    approval?.approvalStatus === ApprovalStatus.REJECTED ||
                     approval?.approvalStatus === ApprovalStatus.READY ||
                     approval?.approvalStatus === ApprovalStatus.BLOCKED,
                 icon: (): SemanticICONS => "paper plane",
@@ -317,10 +320,12 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
 
     };
 
-    function formatApprovalName(name: string): string {
-        const [ , action ] = name.split(" for ");
+    function formatApprovalName(taskType?: string): string {
+        if (!taskType || typeof taskType !== "string") {
+            return "approval request";
+        }
 
-        switch (action) {
+        switch (taskType) {
             case "ADD_USER":
                 return "user creation request";
             case "DELETE_USER":
@@ -334,6 +339,41 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
         }
     }
 
+    function getHeaderText(status?: string): string {
+        switch (status) {
+            case ApprovalStatus.APPROVED:
+                return "Request Approved:";
+            case ApprovalStatus.REJECTED:
+                return "Request Rejected:";
+            default:
+                return "Approval Required:";
+        }
+    }
+
+    function getMessageContent(approval: ApprovalTaskListItemInterface): ReactNode {
+        const taskName: string = formatApprovalName(approval?.taskType);
+
+        switch (approval?.approvalStatus) {
+            case ApprovalStatus.APPROVED:
+                return (
+                    <>
+                        The <strong>{ taskName }</strong> has been approved and completed successfully.
+                    </>
+                );
+            case ApprovalStatus.REJECTED:
+                return (
+                    <>
+                        The <strong>{ taskName }</strong> has been rejected.
+                    </>
+                );
+            default:
+                return (
+                    <>
+                        You have a new <strong>{ taskName }</strong> awaiting your approval.
+                    </>
+                );
+        }
+    }
 
     /**
      * Resolves data table columns.
@@ -365,11 +405,9 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                                 hoverable={ false }
                                 icon={ getTableIcons().header.default } />
                             <Header.Content>
-                                { "Approval Required" + ":" }
+                                { getHeaderText(approval?.approvalStatus) }
                                 <Label circular>
-                                You have a new{ " " }
-                                    <strong>{ formatApprovalName(approval.name) }</strong>{ " " }
-                                awaiting your approval.
+                                    { getMessageContent(approval) }
                                 </Label>
 
                                 <Header.Subheader data-componentid={ `${componentId}-item-sub-heading` }>
