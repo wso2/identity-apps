@@ -49,6 +49,7 @@ import {
     Hint
 } from "@wso2is/react-components";
 import { AnimatePresence, motion } from "framer-motion";
+import differenceBy from "lodash-es/differenceBy";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     ChangeEvent,
@@ -84,7 +85,6 @@ import {
     UnshareApplicationWithAllOrganizationsDataInterface,
     UnshareOrganizationsDataInterface
 } from "../../models/application";
-import differenceBy from "lodash-es/differenceBy";
 
 export interface ApplicationShareFormPropsInterface
     extends IdentifiableComponentInterface {
@@ -153,6 +153,8 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
     const [ initialSelectedRoles, setInitialSelectedRoles ] = useState<RolesInterface[]>([]);
     const [ selectedOrgIds, setSelectedOrgIds ] = useState<string[]>([]);
     const [ roleSelections, setRoleSelections ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
+    const [ shouldShareWithFutureChildOrgsMap, setShouldShareWithFutureChildOrgsMap ]
+        = useState<Record<string, boolean>>({});
     const [ addedRoles, setAddedRoles ] = useState<Record<string, RoleSharingInterface[]>>({});
     const [ removedRoles, setRemovedRoles ] = useState<Record<string, RoleSharingInterface[]>>({});
     const [ addedOrgIds, setAddedOrgIds ] = useState<string[]>([]);
@@ -430,6 +432,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
     const shareSelectedRolesWithSelectedOrgs = async (): Promise<void> => {
         const tempAddedRoles: Record<string, RoleSharingInterface[]> = { ...addedRoles };
         const tempRemovedRoles: Record<string, RoleSharingInterface[]> = { ...removedRoles };
+        const tempShareWithFutureChildOrgsMap: Record<string, boolean> = { ...shouldShareWithFutureChildOrgsMap };
         const sharedPromises: Promise<any>[] = [];
         let orgSharingSuccess: boolean = true;
 
@@ -440,7 +443,9 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 organizations: addedOrgIds.map((orgId: string) => {
                     return {
                         orgId: orgId,
-                        policy: ApplicationSharingPolicy.SELECTED_ORG_ONLY,
+                        policy: tempShareWithFutureChildOrgsMap[orgId]
+                            ? ApplicationSharingPolicy.SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN
+                            : ApplicationSharingPolicy.SELECTED_ORG_ONLY,
                         roleSharing: {
                             mode: tempAddedRoles[orgId] && tempAddedRoles[orgId].length > 0
                                 ? RoleSharingModes.SELECTED
@@ -457,9 +462,11 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 shareApplicationWithSelectedOrganizationsAndRoles(data)
                     .then(() => {
                         // Upon sucessful sharing, Remove the roles of the added orgs from tempAddedRoles
-                        // as they are already added along with the org sharing and no need of patch operation
+                        // and tempShareWithFutureChildOrgsMap
+                        // as they are already processed along with the org sharing
                         addedOrgIds.forEach((orgId: string) => {
                             delete tempAddedRoles[orgId];
+                            delete tempShareWithFutureChildOrgsMap[orgId];
                         });
                     })
                     .catch((error: Error) => {
@@ -487,9 +494,11 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 unshareApplicationWithSelectedOrganizations(data)
                     .then(() => {
                         // Upon sucessful unsharing, Remove the orgs from tempRemovedRoles
+                        // and tempShareWithFutureChildOrgsMap
                         // as they are already removed along with the org unsharing and no need of patch operation
                         removedOrgIds.forEach((orgId: string) => {
-                            delete tempAddedRoles[orgId];
+                            delete tempRemovedRoles[orgId];
+                            delete tempShareWithFutureChildOrgsMap[orgId];
                         });
                     })
                     .catch((error: Error) => {
@@ -502,6 +511,57 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                             level: AlertLevels.ERROR,
                             message: t("applications:edit.sections.sharedAccess.notifications.unshare." +
                                 "error.message")
+                        }));
+                    })
+            );
+        }
+
+        // If there are any entries remaining in tempShareWithFutureChildOrgsMap, that means the user has only changed
+        // the sharing policy of the existing organizations without adding or removing any organizations.
+        // In that case, we need to update the sharing policy of those organizations.
+        if (Object.keys(tempShareWithFutureChildOrgsMap).length > 0) {
+
+            const data: ShareApplicationWithSelectedOrganizationsAndRolesDataInterface = {
+                applicationId: application.id,
+                organizations: Object.keys(tempShareWithFutureChildOrgsMap).map((orgId: string) => {
+                    // Get the selected roles for the organization
+                    const selectedRoles: RoleSharingInterface[] = roleSelections[orgId]?.filter(
+                        (role: SelectedOrganizationRoleInterface) => role.selected).map(
+                        (mappedRole: SelectedOrganizationRoleInterface) => ({
+                            audience: {
+                                display: mappedRole.audience.display,
+                                type: mappedRole.audience.type
+                            },
+                            displayName: mappedRole.displayName
+                        })
+                    ) || [];
+
+                    return {
+                        orgId: orgId,
+                        policy: tempShareWithFutureChildOrgsMap[orgId]
+                            ? ApplicationSharingPolicy.SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN
+                            : ApplicationSharingPolicy.SELECTED_ORG_ONLY,
+                        roleSharing: {
+                            mode: selectedRoles.length > 0
+                                ? RoleSharingModes.SELECTED
+                                : RoleSharingModes.NONE,
+                            roles: selectedRoles
+                        }
+                    };
+                })
+            };
+
+            sharedPromises.push(
+                shareApplicationWithSelectedOrganizationsAndRoles(data)
+                    .catch((error: Error) => {
+                        orgSharingSuccess = false;
+
+                        dispatch(addAlert({
+                            description: t("applications:edit.sections.sharedAccess.notifications.share." +
+                                "error.description",
+                            { error: error.message }),
+                            level: AlertLevels.ERROR,
+                            message: t("applications:edit.sections.sharedAccess.notifications.share.error.message")
                         }));
                     })
             );
@@ -611,6 +671,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
 
     const shareAllorNoRolesWithSelectedOrgs = async (shareAllRoles: boolean): Promise<void> => {
         const sharedPromises: Promise<any>[] = [];
+        const tempShareWithFutureChildOrgsMap: Record<string, boolean> = { ...shouldShareWithFutureChildOrgsMap };
         let orgSharingSuccess: boolean = true;
 
         if (addedOrgIds.length > 0) {
@@ -619,7 +680,83 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 organizations: addedOrgIds.map((orgId: string) => {
                     return {
                         orgId: orgId,
-                        policy: ApplicationSharingPolicy.SELECTED_ORG_ONLY,
+                        policy: tempShareWithFutureChildOrgsMap[orgId]
+                            ? ApplicationSharingPolicy.SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN
+                            : ApplicationSharingPolicy.SELECTED_ORG_ONLY,
+                        roleSharing: {
+                            mode: shareAllRoles
+                                ? RoleSharingModes.ALL
+                                : RoleSharingModes.NONE,
+                            roles: []
+                        }
+                    };
+                })
+            };
+
+            sharedPromises.push(
+                shareApplicationWithSelectedOrganizationsAndRoles(data)
+                    .then(() => {
+                        // Upon sucessful sharing, Remove the orgs from tempShareWithFutureChildOrgsMap
+                        // as they are already processed along with the org sharing
+                        addedOrgIds.forEach((orgId: string) => {
+                            delete tempShareWithFutureChildOrgsMap[orgId];
+                        });
+                    })
+                    .catch((error: Error) => {
+                        orgSharingSuccess = false;
+
+                        dispatch(addAlert({
+                            description: t("applications:edit.sections.sharedAccess.notifications.share." +
+                                "error.description",
+                            { error: error.message }),
+                            level: AlertLevels.ERROR,
+                            message: t("applications:edit.sections.sharedAccess.notifications.share.error.message")
+                        }));
+                    })
+            );
+        }
+
+        // Call unshare API for removed organizations
+        if (removedOrgIds.length > 0) {
+            const data: UnshareOrganizationsDataInterface = {
+                applicationId: application.id,
+                orgIds: removedOrgIds
+            };
+
+            unshareApplicationWithSelectedOrganizations(data)
+                .then(() => {
+                    // Upon sucessful unsharing, Remove the orgs from tempShareWithFutureChildOrgsMap
+                    // as they are already removed along with the org unsharing and no need of patch operation
+                    removedOrgIds.forEach((orgId: string) => {
+                        delete tempShareWithFutureChildOrgsMap[orgId];
+                    });
+                })
+                .catch((error: Error) => {
+                    orgSharingSuccess = false;
+
+                    dispatch(addAlert({
+                        description: t("applications:edit.sections.sharedAccess.notifications.unshare." +
+                            "error.description",
+                        { error: error.message }),
+                        level: AlertLevels.ERROR,
+                        message: t("applications:edit.sections.sharedAccess.notifications.unshare.error.message")
+                    }));
+                });
+        }
+
+        // If there are any entries remaining in tempShareWithFutureChildOrgsMap, that means the user has only changed
+        // the sharing policy of the existing organizations without adding or removing any organizations.
+        // In that case, we need to update the sharing policy of those organizations.
+        if (Object.keys(tempShareWithFutureChildOrgsMap).length > 0) {
+
+            const data: ShareApplicationWithSelectedOrganizationsAndRolesDataInterface = {
+                applicationId: application.id,
+                organizations: Object.keys(tempShareWithFutureChildOrgsMap).map((orgId: string) => {
+                    return {
+                        orgId: orgId,
+                        policy: tempShareWithFutureChildOrgsMap[orgId]
+                            ? ApplicationSharingPolicy.SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN
+                            : ApplicationSharingPolicy.SELECTED_ORG_ONLY,
                         roleSharing: {
                             mode: shareAllRoles
                                 ? RoleSharingModes.ALL
@@ -644,27 +781,6 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                         }));
                     })
             );
-        }
-
-        // Call unshare API for removed organizations
-        if (removedOrgIds.length > 0) {
-            const data: UnshareOrganizationsDataInterface = {
-                applicationId: application.id,
-                orgIds: removedOrgIds
-            };
-
-            unshareApplicationWithSelectedOrganizations(data)
-                .catch((error: Error) => {
-                    orgSharingSuccess = false;
-
-                    dispatch(addAlert({
-                        description: t("applications:edit.sections.sharedAccess.notifications.unshare." +
-                            "error.description",
-                        { error: error.message }),
-                        level: AlertLevels.ERROR,
-                        message: t("applications:edit.sections.sharedAccess.notifications.unshare.error.message")
-                    }));
-                });
         }
 
         // Wait for sharing/unsharing to complete
@@ -1247,6 +1363,11 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                     shareAllRoles={
                                                         roleShareTypeSelected === RoleShareType.SHARE_WITH_ALL }
                                                     shareType={ shareType }
+                                                    shouldShareWithFutureChildOrgsMap={
+                                                        shouldShareWithFutureChildOrgsMap }
+                                                    setShouldShareWithFutureChildOrgsMap={
+                                                        setShouldShareWithFutureChildOrgsMap
+                                                    }
                                                 />
                                             </Grid>
                                         </motion.div>

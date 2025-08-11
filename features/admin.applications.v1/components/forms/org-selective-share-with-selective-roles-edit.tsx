@@ -49,6 +49,7 @@ import { addAlert } from "@wso2is/core/store";
 import { AnimatePresence } from "framer-motion";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
+    ChangeEvent,
     Dispatch as ReactDispatch,
     ReactNode,
     SetStateAction,
@@ -90,6 +91,8 @@ interface OrgSelectiveShareWithSelectiveRolesEditProps extends IdentifiableCompo
     shareType: ShareType;
     newlyAddedCommonRoles?: RolesInterface[];
     newlyRemovedCommonRoles?: RolesInterface[];
+    shouldShareWithFutureChildOrgsMap?: Record<string, boolean>;
+    setShouldShareWithFutureChildOrgsMap?: ReactDispatch<SetStateAction<Record<string, boolean>>>;
 }
 
 interface TreeViewBaseItemWithRoles extends TreeViewBaseItem {
@@ -116,7 +119,9 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
         shareAllRoles,
         shareType,
         newlyAddedCommonRoles = [],
-        newlyRemovedCommonRoles = []
+        newlyRemovedCommonRoles = [],
+        shouldShareWithFutureChildOrgsMap = {},
+        setShouldShareWithFutureChildOrgsMap
     } = props;
 
     const organizationId: string = useSelector((state: AppState) => state?.organization?.organization?.id);
@@ -344,14 +349,6 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
     useEffect(() => {
         if (selectedApplicationOrganization?.organizations?.length > 0) {
             const selectedOrg: OrganizationInterface = selectedApplicationOrganization.organizations[0];
-
-            console.log("Selected Organization: ", selectedOrg); // eslint-disable-line
-            console.log("newlyAddedCommonRoles: ", newlyAddedCommonRoles); // eslint-disable-line
-            console.log("newlyRemovedCommonRoles: ", newlyRemovedCommonRoles); // eslint-disable-line
-
-
-
-
             const orgRoleSelections: SelectedOrganizationRoleInterface[] = roleSelections[selectedOrg.id] || [];
 
             // If the selected organization has roles, update the role selections.
@@ -917,6 +914,16 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
         }
     };
 
+    const updateChildSharingPolicy = (
+        shareWithChildren: boolean
+    ): void => {
+        // Update the sharing policy of the organization in the shouldShareWithFutureChildOrgsMap
+        setShouldShareWithFutureChildOrgsMap((prev: Record<string, boolean>) => ({
+            ...prev,
+            [selectedOrgId]: shareWithChildren
+        }));
+    };
+
     const handleRolesOnChange = (
         value: SelectedOrganizationRoleInterface[],
         reason: AutocompleteChangeReason,
@@ -1094,64 +1101,6 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                             ) }
                         />
                     )
-                    // ) : roleSelections[selectedOrgId]
-                    //     .map((role: SelectedOrganizationRoleInterface, index: number) => (
-                    //         <Box
-                    //             key={ `role-${index}` }
-                    //             className="role-item"
-                    //             data-componentid={ `${ componentId }-role-${ role.displayName }` }
-                    //         >
-                    //             <Checkbox
-                    //                 className="role-checkbox"
-                    //                 data-componentid={ `${ componentId }-role-${ role.displayName }-checkbox` }
-                    //                 checked={ role.selected }
-                    //                 onChange={ (
-                    //                     _e: ChangeEvent<HTMLInputElement>,
-                    //                     checked: boolean
-                    //                 ) => {
-                    //                     // Used for selecting roles UI
-                    //                     const updatedRoles:
-                    //                     SelectedOrganizationRoleInterface[] =
-                    //                     roleSelections[selectedOrgId].map(
-                    //                         (r: SelectedOrganizationRoleInterface) =>
-                    //                             r.displayName === role.displayName
-                    //                                 ? { ...r, selected: !r.selected }
-                    //                                 : r
-                    //                     );
-
-                    //                     setRoleSelections((prev:
-                    //                         Record<string,
-                    //                         SelectedOrganizationRoleInterface[]>) => ({
-                    //                         ...prev,
-                    //                         [selectedOrgId]: updatedRoles
-                    //                     }));
-
-                    //                     const transformedRole: RoleSharingInterface = {
-                    //                         audience: {
-                    //                             display: role?.audience?.display,
-                    //                             type: role?.audience?.type
-                    //                         },
-                    //                         displayName: role.displayName
-                    //                     };
-
-                    //                     if (checked) {
-                    //                         cascadeRoleAdditionToChildren(selectedOrgId, role);
-                    //                         resolveRoleAddition(selectedOrgId, transformedRole);
-                    //                     } else {
-                    //                         cascadeRoleRemovalToChildren(selectedOrgId, role);
-                    //                         resolveRoleRemoval(selectedOrgId, transformedRole);
-                    //                     }
-                    //                 } }
-                    //             />
-                    //             <Typography
-                    //                 variant="body1"
-                    //                 className="role-label"
-                    //                 data-componentid={ `${ componentId }-role-${ role.displayName }-label` }
-                    //             >
-                    //                 { role.displayName }
-                    //             </Typography>
-                    //         </Box>
-                    //     ))
                 }
                 {
                     shareType === ShareType.SHARE_SELECTED && (
@@ -1159,9 +1108,10 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                             control={ <Checkbox defaultChecked /> }
                             label="Share application and roles with future child organizations"
                             data-componentid={ `${ componentId }-share-with-future-child-checkbox` }
-                            // onChange={ (_event: ChangeEvent<HTMLInputElement>, checked: boolean) => {
-                            //     setShareAllRoles(checked);
-                            // } }
+                            checked={ shouldShareWithFutureChildOrgsMap[selectedOrgId] ?? false }
+                            onChange={ (_event: ChangeEvent<HTMLInputElement>, checked: boolean) => {
+                                updateChildSharingPolicy(checked);
+                            } }
                         />
                     )
                 }
