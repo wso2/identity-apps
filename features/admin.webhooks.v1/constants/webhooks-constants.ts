@@ -27,6 +27,9 @@ export class WebhooksConstants {
     public static readonly ACTIVE_STATUS: string = "ACTIVE";
     public static readonly INACTIVE_STATUS: string = "INACTIVE";
 
+    public static readonly WEBHOOKS_SESSION_EVENT_SCHEMA: string = "https://schemas.identity.wso2.org/events/session";
+    public static readonly WEBHOOKS_TOKEN_EVENT_SCHEMA: string = "https://schemas.identity.wso2.org/events/token";
+
     public static readonly DEFAULT_EVENT_PROFILE: WebhookEventProfileInterface = {
         name: "WSO2",
         uri: "https://schemas.identity.wso2.org"

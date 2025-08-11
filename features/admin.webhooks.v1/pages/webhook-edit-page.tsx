@@ -56,8 +56,8 @@ import updateWebhook from "../api/update-webhook";
 import useGetDefaultEventProfile from "../api/use-get-default-event-profile";
 import useGetWebhookById from "../api/use-get-webhook-by-id";
 import useGetWebhooksMetadata from "../api/use-get-webhooks-metadata";
-import { WebhooksConstants } from "../constants/webhooks-constants";
 import WebhookConfigForm from "../components/webhook-config-form";
+import { WebhooksConstants } from "../constants/webhooks-constants";
 import useWebhookNavigation from "../hooks/use-webhook-navigation";
 import { WebhookChannelConfigInterface } from "../models/event-profile";
 import {
@@ -149,30 +149,23 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
     const isLoading: boolean = isWebhookLoading || isEventProfileLoading || isWebhooksMetadataLoading;
 
     const channelConfigs: WebhookChannelConfigInterface[] = useMemo(() => {
-    if (!eventProfile) {
-        return [];
-    }
+        if (!eventProfile) {
+            return [];
+        }
 
-    return mapEventProfileApiToUI(eventProfile)
-        .map((config: any) => ({
-            channelUri: config.channelUri,
-            description: config.description ?? "",
-            key: config.key,
-            name: config.name ?? ""
-        }))
-        .filter((config: WebhookChannelConfigInterface) => {
-            // Filter out session events if feature is disabled
-            if (config.channelUri === "https://schemas.identity.wso2.org/events/session" && !showWebhookSessionEventHandler) {
-                return false;
-            }
-            
-            // Filter out token events if feature is disabled
-            if (config.channelUri === "https://schemas.identity.wso2.org/events/token" && !showWebhookTokenEventHandler) {
-                return false;
-            }
-            
-            return true;
-        });
+        const featureFlags: Record<string, boolean> = {
+            [WebhooksConstants.WEBHOOKS_SESSION_EVENT_SCHEMA]: showWebhookSessionEventHandler,
+            [WebhooksConstants.WEBHOOKS_TOKEN_EVENT_SCHEMA]: showWebhookTokenEventHandler
+        };
+
+        return mapEventProfileApiToUI(eventProfile)
+            .map((config: WebhookChannelConfigInterface): WebhookChannelConfigInterface => ({
+                channelUri: config.channelUri,
+                description: config.description ?? "",
+                key: config.key,
+                name: config.name ?? ""
+            }))
+            .filter((config: WebhookChannelConfigInterface) => featureFlags[config.channelUri] !== false);
     }, [ eventProfile, showWebhookSessionEventHandler, showWebhookTokenEventHandler ]);
 
 
