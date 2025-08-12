@@ -242,7 +242,7 @@ export interface JITProvisioningResponseInterface {
     /**
      * Account linking attribute mappings.
      */
-    accountLinkingAttributeMappings?: JITProvisioningAccountLinkingAttributeMappingInterface[];
+    accountLookupAttributeMappings?: JITProvisioningAccountLinkingAttributeMappingInterface[];
     /**
      * Skip JIT provisioning when no rule matches.
      */
