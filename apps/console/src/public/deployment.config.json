@@ -1648,7 +1648,10 @@
                 }
             },
             "users": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "users.add.legacy",
+                    "users.profile.legacy"
+                ],
                 "enabled": true,
                 "featureFlags": [],
                 "scopes": {
