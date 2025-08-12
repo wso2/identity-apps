@@ -260,7 +260,11 @@
     String DYNAMIC_PASSWORD_RECOVERY_URL = "/recovery?flowType=PASSWORD_RECOVERY" + "&spId=" + serviceProviderAppId
             + "&sp=" + serviceProviderAppName;
     String rawSdk = request.getParameter("sessionDataKey");
-    String sdkSafe = org.owasp.encoder.Encode.forJavaScript(rawSdk != null ? rawSdk : "");
+    String sdkSafe = "";
+    if (rawSdk != null && rawSdk.matches("^[a-zA-Z0-9\\-_\\.]+$")) {
+        sdkSafe = org.owasp.encoder.Encode.forJavaScript(rawSdk);
+    }
+%>
 %>
 
 <%

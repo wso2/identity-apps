@@ -334,7 +334,7 @@
                         case "COMPLETE":
 
                             const sessionDataKey = localStorage.getItem("sessionDataKey");
-                            const userAssertion = flow.data.additionalData.userAssertion;
+                            const userAssertion = flow.data.additionalData?.userAssertion;
                             if (sessionDataKey && userAssertion) {
                                 setUserAssertion(userAssertion);
                                 return true;
@@ -418,8 +418,8 @@
                                 action: baseUrl + "/commonauth",
                                 style: { display: 'none' }
                             },
-                            createElement("input", { type: "hidden", name: "sessionDataKey", value: localStorage.getItem("sessionDataKey") }),
-                            createElement("input", { type: "hidden", name: "userAssertion", value: data.userAssertion })
+                            createElement("input", { type: "hidden", name: "sessionDataKey", value: encodeURIComponent(localStorage.getItem("sessionDataKey") || "") }),
+                            createElement("input", { type: "hidden", name: "userAssertion", value: encodeURIComponent(data.userAssertion || "") })
                         )
                     );
                 }
