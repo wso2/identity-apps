@@ -1,5 +1,30 @@
 # @wso2is/identity-apps-core
 
+## 3.1.1
+
+### Patch Changes
+
+- [#8740](https://github.com/wso2/identity-apps/pull/8740) [`6170e8dbca56f01e72a4356243c796230d6ae6d5`](https://github.com/wso2/identity-apps/commit/6170e8dbca56f01e72a4356243c796230d6ae6d5) Thanks [@ThaminduR](https://github.com/ThaminduR)! - remove unnecessary tag
+
+## 3.1.0
+
+### Minor Changes
+
+- [#8736](https://github.com/wso2/identity-apps/pull/8736) [`e2d53eaf3a8c4d6bda03af358535864ce5c198d6`](https://github.com/wso2/identity-apps/commit/e2d53eaf3a8c4d6bda03af358535864ce5c198d6) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add i18n support for flow builder
+
+### Patch Changes
+
+- [#8732](https://github.com/wso2/identity-apps/pull/8732) [`6bbf769be9ee028324be7d04419557fa4124fce5`](https://github.com/wso2/identity-apps/commit/6bbf769be9ee028324be7d04419557fa4124fce5) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Handle auto login
+
+## 3.0.2
+
+### Patch Changes
+
+- [#8433](https://github.com/wso2/identity-apps/pull/8433) [`5067ce35da7a89d7997116fa452e81619dae6f42`](https://github.com/wso2/identity-apps/commit/5067ce35da7a89d7997116fa452e81619dae6f42) Thanks [@savindi7](https://github.com/savindi7)! - Fix precedence order of the language setting param.
+
+- Updated dependencies [[`edccbba95dd635e0a6f016e2e99f037594cc4196`](https://github.com/wso2/identity-apps/commit/edccbba95dd635e0a6f016e2e99f037594cc4196)]:
+  - @wso2is/theme@2.8.5
+
 ## 3.0.1
 
 ### Patch Changes

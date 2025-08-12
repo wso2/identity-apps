@@ -80,7 +80,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon, Menu, Message, Radio } from "semantic-ui-react";
-import { getUsersList } from "../../../api/users";
+import { getUsersList } from "../../../../api/users";
 import {
     AskPasswordOptionTypes,
     AttributeDataType,
@@ -88,13 +88,13 @@ import {
     LocaleJoiningSymbol,
     PasswordOptionTypes,
     UserManagementConstants
-} from "../../../constants";
+} from "../../../../constants";
 import {
     BasicUserDetailsInterface,
     SchemaAttributeValueInterface,
     SubValueInterface,
     UserListInterface
-} from "../../../models/user";
+} from "../../../../models/user";
 import {
     constructPatchOpValueForMultiValuedAttribute,
     generatePassword,
@@ -103,13 +103,13 @@ import {
     getUsernameConfiguration,
     isFieldDisplayableInUserCreationWizard,
     normalizeLocaleFormat
-} from "../../../utils";
+} from "../../../../utils";
 import "./add-user-basic.scss";
 
 /**
  * Proptypes for the add user component.
  */
-export interface AddUserProps extends IdentifiableComponentInterface {
+interface AddUserBasicProps extends IdentifiableComponentInterface {
     initialValues: any;
     triggerSubmit: boolean;
     emailVerificationEnabled: boolean;
@@ -127,7 +127,7 @@ export interface AddUserProps extends IdentifiableComponentInterface {
     isBasicDetailsLoading?: boolean;
     setBasicDetailsLoading?: (toggle: boolean) => void;
     selectedUserStoreId: string;
-    connectorProperties?: ConnectorPropertyInterface[];
+    connectorProperties: ConnectorPropertyInterface[];
 }
 
 /**
@@ -135,8 +135,8 @@ export interface AddUserProps extends IdentifiableComponentInterface {
  *
  * @returns ReactElement
  */
-export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
-    props: AddUserProps): ReactElement => {
+export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = (
+    props: AddUserBasicProps): ReactElement => {
 
     const {
         initialValues,

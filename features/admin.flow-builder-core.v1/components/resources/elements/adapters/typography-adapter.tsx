@@ -19,7 +19,8 @@
 import Typography, { TypographyProps } from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Element, TypographyVariants } from "../../../../models/elements";
+import PlaceholderComponent from "./placeholder-component";
+import { TypographyVariants } from "../../../../models/elements";
 import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 
 /**
@@ -54,7 +55,7 @@ const TypographyAdapter: FunctionComponent<TypographyAdapterPropsInterface> = ({
 
     return (
         <Typography variant={ resource?.variant.toLowerCase() } style={ resource?.config?.styles } { ...config }>
-            { resource?.config?.text }
+            <PlaceholderComponent value={ resource?.config?.text } />
         </Typography>
     );
 };

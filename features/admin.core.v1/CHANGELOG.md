@@ -1,5 +1,60 @@
 # @wso2is/admin.core.v1
 
+## 2.49.8
+
+### Patch Changes
+
+- Updated dependencies [[`d8d6d19fff7fb901eb1ee6c219e6ed04068cc05a`](https://github.com/wso2/identity-apps/commit/d8d6d19fff7fb901eb1ee6c219e6ed04068cc05a), [`e2d53eaf3a8c4d6bda03af358535864ce5c198d6`](https://github.com/wso2/identity-apps/commit/e2d53eaf3a8c4d6bda03af358535864ce5c198d6)]:
+  - @wso2is/admin.connections.v1@2.34.1
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.0
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.0
+  - @wso2is/admin.registration-flow-builder.v1@0.10.0
+  - @wso2is/admin.flow-builder-core.v1@0.10.0
+  - @wso2is/i18n@2.29.1
+  - @wso2is/admin.flows.v1@1.0.18
+  - @wso2is/admin.server-configurations.v1@2.35.21
+  - @wso2is/admin.branding.v1@2.32.4
+  - @wso2is/admin.email-management.v1@2.25.213
+
+## 2.49.7
+
+### Patch Changes
+
+- Updated dependencies [[`1643c8e6b1f79225ffa150c40e80d7c85f9372d3`](https://github.com/wso2/identity-apps/commit/1643c8e6b1f79225ffa150c40e80d7c85f9372d3), [`edccbba95dd635e0a6f016e2e99f037594cc4196`](https://github.com/wso2/identity-apps/commit/edccbba95dd635e0a6f016e2e99f037594cc4196)]:
+  - @wso2is/admin.claims.v1@2.29.0
+  - @wso2is/i18n@2.29.0
+  - @wso2is/admin.users.v1@2.35.0
+  - @wso2is/admin.agents.v1@1.0.29
+  - @wso2is/admin.roles.v2@2.27.184
+
+## 2.49.6
+
+### Patch Changes
+
+- Updated dependencies [[`ab46bb12e16988d1910e0659a4d22cb4337f6a5b`](https://github.com/wso2/identity-apps/commit/ab46bb12e16988d1910e0659a4d22cb4337f6a5b)]:
+  - @wso2is/admin.applications.v1@2.37.0
+  - @wso2is/admin.connections.v1@2.34.0
+  - @wso2is/admin.extensions.v1@2.40.2
+  - @wso2is/forms@2.3.24
+  - @wso2is/i18n@2.28.5
+  - @wso2is/admin.agents.v1@1.0.28
+  - @wso2is/admin.roles.v2@2.27.183
+
+## 2.49.5
+
+### Patch Changes
+
+- Updated dependencies [[`0becd0f454afeb3c62af477d1083a1934b217d04`](https://github.com/wso2/identity-apps/commit/0becd0f454afeb3c62af477d1083a1934b217d04), [`d158ca25eca58255f7c834191ddddd9051fb509a`](https://github.com/wso2/identity-apps/commit/d158ca25eca58255f7c834191ddddd9051fb509a)]:
+  - @wso2is/admin.console-settings.v1@2.25.219
+  - @wso2is/admin.organizations.v1@2.27.2
+  - @wso2is/admin.applications.v1@2.36.15
+  - @wso2is/i18n@2.28.4
+  - @wso2is/admin.users.v1@2.34.8
+  - @wso2is/admin.actions.v1@1.14.1
+  - @wso2is/admin.session-management.v1@2.25.207
+  - @wso2is/admin.agents.v1@1.0.27
+  - @wso2is/admin.roles.v2@2.27.182
+
 ## 2.49.4
 
 ### Patch Changes

@@ -23,6 +23,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { CommonElementFactoryPropsInterface } from "../../common-element-factory";
 import Hint from "../../hint";
+import PlaceholderComponent from "../placeholder-component";
 
 /**
  * Props interface of {@link CheckboxAdapter}
@@ -43,7 +44,7 @@ export const CheckboxAdapter: FunctionComponent<CheckboxAdapterPropsInterface> =
             control={ <Checkbox defaultChecked /> }
             className={ resource.config?.className }
             defaultValue={ resource.config?.defaultValue }
-            label={ resource.config?.label }
+            label={ <PlaceholderComponent value={ resource.config?.label } /> }
             placeholder={ resource.config?.placeholder || "" }
             required={ resource.config?.required }
             style={ resource.config?.styles }
