@@ -50,11 +50,11 @@ const PlaceholderComponent: FunctionComponent<PropsWithChildren<PlaceholderCompo
 
     if (isI18nPattern) {
         return (
-            <div className="flow-builder-display-field-i18n-placeholder">
+            <span className="flow-builder-display-field-i18n-placeholder">
                 <span className="flow-builder-display-field-i18n-placeholder-key">
                     { value }
                 </span>
-            </div>
+            </span>
         );
     }
 
