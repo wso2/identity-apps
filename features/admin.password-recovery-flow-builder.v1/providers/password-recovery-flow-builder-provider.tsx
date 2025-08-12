@@ -16,18 +16,21 @@
  * under the License.
  */
 
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
+import useAuthenticationFlowBuilderCore
+    from "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import AuthenticationFlowBuilderCoreProvider
     from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useReactFlow } from "@xyflow/react";
-import React, { FC, PropsWithChildren, ReactElement, useState } from "react";
+import React, { FC, PropsWithChildren, ReactElement, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { PreviewScreenType } from "../../common.branding.v1/models";
 import configurePasswordRecoveryFlow from "../api/configure-password-recovery-flow";
 import updateNewPasswordRecoveryPortalFeatureStatus from "../api/update-new-password-recovery-portal-feature-status";
-import useGetSupportedProfileAttributes from "../api/use-get-supported-profile-attributes";
 import useNewPasswordRecoveryPortalFeatureStatus from "../api/use-new-password-recovery-portal-feature-status";
 import ResourceProperties from "../components/resource-property-panel/resource-properties";
 import ElementFactory from "../components/resources/elements/element-factory";
@@ -54,6 +57,9 @@ const PasswordRecoveryFlowBuilderProvider: FC<PasswordRecoveryFlowBuilderProvide
         ElementFactory={ ElementFactory }
         ResourceProperties={ ResourceProperties }
         flowType={ FlowTypes.PASSWORD_RECOVERY }
+        screenTypes={ [
+            PreviewScreenType.COMMON
+        ] }
     >
         <FlowContextWrapper>{ children }</FlowContextWrapper>
     </AuthenticationFlowBuilderCoreProvider>
@@ -71,7 +77,7 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
     const dispatch: Dispatch = useDispatch();
 
     const { toObject } = useReactFlow();
-    const { data: supportedAttributes } = useGetSupportedProfileAttributes();
+    const { metadata } = useAuthenticationFlowBuilderCore();
     const {
         data: isNewPasswordRecoveryPortalEnabled,
         mutate: mutateNewPasswordRecoveryPortalEnabledRequest
@@ -79,6 +85,29 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
 
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Attribute[] }>({});
     const [ isPublishing, setIsPublishing ] = useState<boolean>(false);
+
+    /**
+     * Transform the attribute metadata to ensure the username claim is always included.
+     */
+    const supportedAttributes: Attribute[] = useMemo(() => {
+        const claims: any = (metadata?.attributeMetadata ?? []).map((attr: any) => ({
+            claimURI: attr.claimURI,
+            displayName: attr.name
+        }));
+
+        if (claims.some((a: any) => a.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI)) {
+            return claims as Attribute[];
+        }
+
+        return [
+            {
+                claimURI: ClaimManagementConstants.USER_NAME_CLAIM_URI,
+                displayName: "Username"
+            },
+            ...claims
+        ] as Attribute[];
+    }, [ metadata?.attributeMetadata ]);
+
 
     const handlePublish = async (): Promise<boolean> => {
         setIsPublishing(true);

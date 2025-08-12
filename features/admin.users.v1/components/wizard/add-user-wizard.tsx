@@ -26,6 +26,10 @@ import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores
 import { updateGroupDetails, useGroupList } from "@wso2is/admin.groups.v1/api/groups";
 import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1";
+import { useGetGovernanceConnectorById } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
@@ -53,13 +57,15 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { AddUserUpdated } from "./steps/add-user-basic";
+import { AddUserBasic } from "./steps/add-user-basic/add-user-basic";
 import { AddUserGroups } from "./steps/add-user-groups";
+import { LegacyAddUser } from "./steps/legacy-add-user-basic";
 import { AddUserWizardSummary } from "./user-wizard-summary";
 import { addUser } from "../../api";
 import { getUserWizardStepIcons } from "../../configs";
 import {
     PasswordOptionTypes,
+    UserFeatureDictionaryKeys,
     UserManagementConstants,
     WizardStepsFormTypes
 } from "../../constants";
@@ -152,6 +158,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ submitStep, setSubmitStep ] = useState<WizardStepsFormTypes>(undefined);
     const [ selectedGroupsList, setSelectedGroupList ] = useState<GroupsInterface[]>([]);
 
+    const isLegacyUserAddWizardEnabled: boolean = isFeatureEnabled(
+        userFeatureConfig,
+        UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.UserLegacyAddUser)
+    );
+
     const isAttributeProfileForUserCreationEnabled: boolean = isFeatureEnabled(
         userFeatureConfig,
         UserManagementConstants.ATTRIBUTE_PROFILES_FOR_USER_CREATION_FEATURE_FLAG
@@ -162,6 +173,13 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const {
         data: validationData
     } = useValidationConfigData();
+
+    const {
+        data: askPasswordConnectorDetails
+    } = useGetGovernanceConnectorById(
+        ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+        ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID
+    );
 
     const {
         data: originalGroupList,
@@ -738,9 +756,43 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      * @returns Basic details wizard step.
      */
     const getUserBasicWizardStep = (): WizardStepInterface => {
+        // Improved user basic details form has been introduced with claim input format support
+        // and react-final-form.
+        if (isLegacyUserAddWizardEnabled) {
+            return {
+                content: (
+                    <LegacyAddUser
+                        triggerSubmit={ submitGeneralSettings }
+                        initialValues={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] }
+                        emailVerificationEnabled={ emailVerificationEnabled }
+                        onSubmit={ (values: AddUserWizardStateInterface) =>
+                            handleWizardFormSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
+                        requestedPasswordOption={ wizardState &&
+                        wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.passwordOption }
+                        isUserstoreRequired={ false }
+                        passwordOption={ passwordOption }
+                        setPasswordOption={ setPasswordOption }
+                        setUserSummaryEnabled={ setUserSummaryEnabled }
+                        setAskPasswordFromUser={ setAskPasswordFromUser }
+                        setOfflineUser={ setOfflineUser }
+                        selectedUserStore={ selectedUserStore }
+                        setSelectedUserStore = { setSelectedUserStore }
+                        isBasicDetailsLoading={ isBasicDetailsLoading }
+                        setBasicDetailsLoading={ setBasicDetailsLoading }
+                        validationConfig ={ validationData }
+                        selectedUserStoreId={ resolveSelectedUserstoreId() }
+                        connectorProperties={ askPasswordConnectorDetails?.properties }
+                    />
+                ),
+                icon: getUserWizardStepIcons().general,
+                name: WizardStepsFormTypes.BASIC_DETAILS,
+                title: t("user:modals.addUserWizard.steps.basicDetails")
+            };
+        }
+
         return {
             content: (
-                <AddUserUpdated
+                <AddUserBasic
                     triggerSubmit={ submitGeneralSettings }
                     initialValues={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] }
                     emailVerificationEnabled={ emailVerificationEnabled }
@@ -760,6 +812,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     setBasicDetailsLoading={ setBasicDetailsLoading }
                     validationConfig ={ validationData }
                     selectedUserStoreId={ resolveSelectedUserstoreId() }
+                    connectorProperties={ askPasswordConnectorDetails?.properties }
                 />
             ),
             icon: getUserWizardStepIcons().general,

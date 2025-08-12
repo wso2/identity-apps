@@ -31,4 +31,9 @@ export class AdvanceSearchConstants {
      * Filter value field identifier.
      */
     public static readonly FILTER_VALUES_FIELD_IDENTIFIER: string = "filterValues";
+
+    /**
+     * Filter recursive field identifier.
+     */
+    public static readonly FILTER_RECURSIVE_FIELD_IDENTIFIER: string = "filterRecursive";
 }

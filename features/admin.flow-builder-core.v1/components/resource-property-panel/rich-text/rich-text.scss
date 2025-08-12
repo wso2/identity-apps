@@ -29,7 +29,7 @@
             position: relative;
             tab-size: 1;
             outline: 0;
-            padding: 10px 10px;
+            padding: 27px 10px;
             caret-color: #444;
             overflow-y: auto;
         }
@@ -39,7 +39,7 @@
             overflow: hidden;
             position: absolute;
             text-overflow: ellipsis;
-            top: 17.5px;
+            top: 34.5px;
             left: 10px;
             font-size: 15px;
             user-select: none;
@@ -81,6 +81,22 @@
 
         .rich-text-paragraph {
             margin: 0.5em 0;
+        }
+    }
+
+    .OxygenRichText-i18n-placeholder {
+        min-height: 150px;
+        max-height: 300px;
+        padding: 27px 10px;
+        font-size: 13px;
+        overflow-y: auto;
+
+        .OxygenRichText-i18n-placeholder-key {
+            background-color: rgb(from var(--oxygen-palette-primary-main) r g b / 0.1);
+            color: var(--oxygen-palette-primary-main);
+            font-family: monospace;
+            padding: 2px;
+            display: inline-block;
         }
     }
 }

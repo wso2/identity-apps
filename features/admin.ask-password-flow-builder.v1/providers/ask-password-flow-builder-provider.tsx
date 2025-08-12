@@ -25,6 +25,7 @@ import React, { FC, PropsWithChildren, ReactElement, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { FlowTypes } from "../../admin.flows.v1/models/flows";
+import { PreviewScreenType } from "../../common.branding.v1/models";
 import configureAskPasswordFlow from "../api/configure-ask-password-flow";
 import updateNewAskPasswordPortalFeatureStatus from "../api/update-new-ask-password-portal-feature-status";
 import useGetSupportedProfileAttributes from "../api/use-get-supported-profile-attributes";
@@ -54,6 +55,9 @@ const AskPasswordFlowBuilderProvider: FC<AskPasswordFlowBuilderProviderProps> = 
         ElementFactory={ ElementFactory }
         ResourceProperties={ ResourceProperties }
         flowType={ FlowTypes.INVITED_USER_REGISTRATION }
+        screenTypes={ [
+            PreviewScreenType.COMMON
+        ] }
     >
         <FlowContextWrapper>{ children }</FlowContextWrapper>
     </AuthenticationFlowBuilderCoreProvider>
@@ -110,7 +114,7 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
 
             dispatch(
                 addAlert({
-                    description: "Invite user registration flow updated successfully.",
+                    description: "Invited user registration flow updated successfully.",
                     level: AlertLevels.SUCCESS,
                     message: "Flow Updated Successfully"
                 })
@@ -120,7 +124,7 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
         } catch (error) {
             dispatch(
                 addAlert({
-                    description: "Failed to update the invite user registration flow.",
+                    description: "Failed to update the invited user registration flow.",
                     level: AlertLevels.ERROR,
                     message: "Flow Update Failure"
                 })

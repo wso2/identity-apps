@@ -182,6 +182,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             validationServiceMgtSubOrg: "",
             wellKnown: "",
             workflowAssociations: "",
+            workflowInstances: "",
             workflows: ""
         },
         features: {

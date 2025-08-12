@@ -6,7 +6,7 @@
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~ http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing,
   ~ software distributed under the License is distributed on an
@@ -61,9 +61,6 @@
 %>
 
 <%
-    String local = "en-US";
-    String jsonFilePath = application.getRealPath("/i18n/translations/" + local + ".json");
-    String translationsJson = "{}";
     String state = request.getParameter("state");
     String code = request.getParameter("code");
     String spId = request.getParameter("spId");
@@ -72,11 +69,23 @@
     String mlt = request.getParameter("mlt");
     String flowId = request.getParameter("flowId");
 
-    try {
-        byte[] jsonData = Files.readAllBytes(Paths.get(jsonFilePath));
-        translationsJson = new String(jsonData, "UTF-8");
-    } catch (IOException e) {
-        e.printStackTrace();
+    final String REGISTRATION = "REGISTRATION";
+    final String INVITED_USER_REGISTRATION = "INVITED_USER_REGISTRATION";
+    final String PASSWORD_RECOVERY = "PASSWORD_RECOVERY";
+%>
+
+<%
+    switch (flowType) {
+        case REGISTRATION:
+            screenNames.add("sign-up");
+            screenNames.add("email-link-expiry");
+            screenNames.add("email-otp");
+            screenNames.add("sms-otp");
+            break;
+        case INVITED_USER_REGISTRATION:
+            break;
+        case PASSWORD_RECOVERY:
+            break;
     }
 %>
 
@@ -182,9 +191,6 @@
                 const flowId = "<%= Encode.forJavaScript(flowId) != null ? Encode.forJavaScript(flowId) : null %>";
                 const spId = "<%= !StringUtils.isBlank(spId) && spId != "null" ? Encode.forJavaScript(spId) : "new-application" %>";
 
-                const locale = "en-US";
-                const translations = <%= translationsJson %>;
-
                 const [ flowData, setFlowData ] = useState(null);
                 const [ components, setComponents ] = useState([]);
                 const [ loading, setLoading ] = useState(true);
@@ -192,6 +198,7 @@
                 const [ postBody, setPostBody ] = useState(undefined);
                 const [ flowError, setFlowError ] = useState(undefined);
                 const [confirmationEffectDone, setConfirmationEffectDone] = useState(false);
+                const [userAssertion, setUserAssertion] = useState(null);
 
                 useEffect(() => {
                     const savedFlowId = localStorage.getItem("flowId");
@@ -290,11 +297,11 @@
                 useEffect(() => {
                     if (error && error.code) {
                         const errorDetails = getI18nKeyForError(error.code, flowType);
-                        let portal_url = authPortalURL + "/register.do";
+                        let portal_url = authPortalURL + "/register";
                         if (flowType === "INVITED_USER_REGISTRATION" || flowType === "PASSWORD_RECOVERY") {
-                            portal_url = authPortalURL + "/recovery.do";
+                            portal_url = authPortalURL + "/recovery";
                         }
-                        const errorPageURL = authPortalURL + "/execution_flow_error.do?" + "ERROR_MSG="
+                        const errorPageURL = authPortalURL + "/error?" + "ERROR_MSG="
                             + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID="
                             + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + flowType + "&" + "confirmation="
                             + "<%= Encode.forJavaScript(confirmationCode) %>" + "&" +
@@ -331,6 +338,14 @@
                             return false;
 
                         case "COMPLETE":
+
+                            const sessionDataKey = localStorage.getItem("sessionDataKey");
+                            const userAssertion = flow.data.additionalData?.userAssertion;
+                            if (sessionDataKey && userAssertion) {
+                                setUserAssertion(userAssertion);
+                                return true;
+                            }
+
                             localStorage.clear();
 
                             if (flow.data.redirectURL !== null) {
@@ -387,6 +402,41 @@
                     );
                 }
 
+                const AutoLoginForm = (data) => {
+                    const formRef = React.useRef();
+                    const handleSubmit = () => {
+                        formRef.current.submit();
+                    };
+
+                    useEffect(() => {
+                        if (userAssertion) {
+                            handleSubmit();
+                            setUserAssertion(null);
+                        }
+                    }, [userAssertion]);
+
+                    return (
+                        createElement(
+                            "form",
+                            {
+                                ref: formRef,
+                                method: "POST",
+                                action: baseUrl + "/commonauth",
+                                style: { display: 'none' }
+                            },
+                            createElement("input", { type: "hidden", name: "sessionDataKey", value: encodeURIComponent(localStorage.getItem("sessionDataKey") || "") }),
+                            createElement("input", { type: "hidden", name: "userAssertion", value: encodeURIComponent(data.userAssertion || "") })
+                        )
+                    );
+                }
+
+                if (userAssertion) {
+                    return createElement(
+                        AutoLoginForm,
+                        { userAssertion: userAssertion }
+                    );
+                }
+
                 if (loading || (!components || components.length === 0)) {
                     return createElement(
                         "div",
@@ -426,7 +476,7 @@
                     { globalData: <%= reactGlobalContextJson %> },
                     createElement(
                         I18nProvider,
-                        { locale: "en-US", translationsObject: <%= translationsJson %> },
+                        { locale: "<%= Encode.forJavaScript(lang) %>", translationsObject: <%= i18nJsonString %> },
                         createElement(Content)
                     )
                 ),

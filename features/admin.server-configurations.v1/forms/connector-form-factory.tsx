@@ -26,7 +26,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { AdminForcedPasswordResetForm } from "./admin-forced-password-reset-form/admin-forced-password-reset-form";
 import { AnalyticsConfigurationForm } from "./analytics-form";
-import { AskPasswordForm } from "./ask-password";
+import { AskPasswordForm } from "./ask-password-form/ask-password";
 import { LoginAttemptSecurityConfigurationFrom } from "./login-attempt-security-form";
 import { MultiAttributeLoginForm } from "./multi-attribute-login";
 import { PasswordRecoveryConfigurationForm } from "./password-recovery-form/password-recovery-form";

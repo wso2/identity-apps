@@ -440,7 +440,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
                             onAPIResourceDelete={ onAPIResourceDelete }
                             onSearchQueryClear={ handleSearchQueryClear }
                             searchQuery={ searchQuery }
-                            categoryId="custom"
+                            categoryId={ APIResourceType.CUSTOM }
                             onEmptyListPlaceholderActionClicked={ () => setShowWizard(true) }
                         />)
 

@@ -18,6 +18,7 @@
 
 import {
     DatabaseDocumentIcon,
+    KeyFlowIcon,
     PaletteIcon,
     SquareUserIcon
 } from "@oxygen-ui/react-icons";
@@ -274,6 +275,13 @@ export class RouteUtils {
             order: 2
         };
 
+        const workflows: Omit<RouteInterface, "showOnSidePanel"> = {
+            icon: KeyFlowIcon,
+            id: "workflows",
+            name: "Workflows",
+            order: 3
+        };
+
         const resourceServers: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: ResourceServersIcon,
             id: "resourceServers",
@@ -300,11 +308,6 @@ export class RouteUtils {
         const manage: NavCategory = {
             id: "manage",
             order: 2
-        };
-
-        const workflows: NavCategory = {
-            id: "workflows",
-            order: 3
         };
 
         const organizations: NavCategory = {
@@ -395,8 +398,17 @@ export class RouteUtils {
             },
             {
                 category: workflows,
-                id: "workflows",
+                id: "approvalWorkflows",
+                order: 8,
+                parent: workflows,
                 selected: history.location.pathname.includes("/workflows")
+            },
+            {
+                category: workflows,
+                id: "workflowInstances",
+                order: 9,
+                parent: workflows,
+                selected: history.location.pathname.includes("/workflow-requests")
             },
             {
                 category: manage,

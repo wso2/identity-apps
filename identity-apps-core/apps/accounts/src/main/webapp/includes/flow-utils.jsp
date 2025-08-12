@@ -6,7 +6,7 @@
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~ http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing,
   ~ software distributed under the License is distributed on an
@@ -19,6 +19,7 @@
 <%@ page import="com.google.gson.Gson" %>
 <%@ page import="com.google.gson.JsonObject" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClient" %>
+<%@ page import="java.util.Enumeration" %>
 
 <%!
 /**
@@ -77,5 +78,22 @@ public static String toJson(JsonObject jsonObject) {
     addValue(reactGlobalContext, "application.accessUrl", accessUrl);
     addValue(reactGlobalContext, "application.callbackOrAccessUrl", backToUrl);
 
+    // Generate i18n JSON object for React consumption.
+    JsonObject i18nJson = new JsonObject();
+
+    Enumeration<String> keys = resourceBundle.getKeys();
+    while (keys.hasMoreElements()) {
+        String key = keys.nextElement();
+        String value = i18n(resourceBundle, customText, key);
+        i18nJson.addProperty(key, value);
+    }
+
+    for (String key : customText.keySet()) {
+        if (!i18nJson.has(key)) {
+            i18nJson.addProperty(key, (String) customText.get(key));
+        }
+    }
+
+    String i18nJsonString = toJson(i18nJson);
     String reactGlobalContextJson = toJson(reactGlobalContext);
 %>

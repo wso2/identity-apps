@@ -111,6 +111,10 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableCo
      */
     predefinedDefaultSearchStrategy?: string;
     /**
+     * Enable recursive search option checkbox
+     */
+    recursiveSearch?: boolean;
+    /**
      * Custom CSS styles for main text input box.
      */
     style?: CSSProperties | undefined;
@@ -122,6 +126,10 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableCo
      * Reset button text.
      */
     resetButtonLabel?: string;
+    /**
+     * Reset recursive search state.
+     */
+    resetRecursiveSearchState?: () => void;
     /**
      * Show reset button flag.
      */
@@ -178,6 +186,8 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
         getQuery,
         placeholder,
         predefinedDefaultSearchStrategy,
+        recursiveSearch,
+        resetRecursiveSearchState,
         resetButtonLabel,
         showResetButton,
         style,
@@ -192,6 +202,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
     const [ isFormSubmitted, setIsFormSubmitted ] = useState<boolean>(false);
     const [ isFiltersReset, setIsFiltersReset ] = useState<boolean>(false);
     const [ externalSearchQuery, setExternalSearchQuery ] = useState<string>("");
+
     const sessionTimedOut: boolean = React.useContext(SessionTimedOutContext);
     const formRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
@@ -254,6 +265,10 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
      */
     const handleExternalSearchQueryClear = (): void => {
         setExternalSearchQuery("");
+
+        if (resetRecursiveSearchState) {
+            resetRecursiveSearchState();
+        }
     };
 
     /**
@@ -444,6 +459,20 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                 />
                             </Form.Group>
                             <Divider hidden/>
+                            { recursiveSearch && (
+                                <>
+                                    <Form.Group>
+                                        <Field
+                                            label={ t("console:common.advancedSearch.form.inputs" +
+                                                ".filterRecursiveToggle.label") }
+                                            name={ AdvanceSearchConstants.FILTER_RECURSIVE_FIELD_IDENTIFIER }
+                                            type="toggle"
+                                            data-componentid={ `${ testId }-filter-recursive` }
+                                        />
+                                    </Form.Group>
+                                    <Divider hidden/>
+                                </>
+                            ) }
                             <Form.Group inline>
                                 <PrimaryButton
                                     size="small"

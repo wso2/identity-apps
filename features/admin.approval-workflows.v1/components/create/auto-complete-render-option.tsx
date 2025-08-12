@@ -20,6 +20,7 @@ import Checkbox from "@oxygen-ui/react/Checkbox";
 import Chip from "@oxygen-ui/react/Chip";
 import Grid from "@oxygen-ui/react/Grid";
 import ListItemText from "@oxygen-ui/react/ListItemText";
+import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, {
     FunctionComponent,
@@ -45,6 +46,10 @@ interface AutoCompleteRenderOption extends IdentifiableComponentInterface {
      */
     audience?: string;
     /**
+     * The audience display (e.g., application name for application audience roles).
+     */
+    audienceDisplay?: string;
+    /**
      * The ternary title of the option. (This will display in the middle of the option)
      */
     ternaryTitle?: string;
@@ -69,6 +74,7 @@ const AutoCompleteRenderOption: FunctionComponent<AutoCompleteRenderOption> = (
         ternaryTitle,
         ternarySubTitle,
         audience,
+        audienceDisplay,
         renderOptionProps
     } = props;
 
@@ -100,7 +106,11 @@ const AutoCompleteRenderOption: FunctionComponent<AutoCompleteRenderOption> = (
                     {
                         audience ? (
                             <Chip
-                                label={ audience }
+                                label={
+                                    audience?.toUpperCase() === RoleAudienceTypes.APPLICATION && audienceDisplay
+                                        ? `${audience} | ${audienceDisplay}`
+                                        : audience
+                                }
                             />
                         ) : null
                     }

@@ -148,6 +148,7 @@
                         <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute
                             (request.getParameter("sessionDataKey"))%>'/>
                         <input type="hidden" name="scenario" id="scenario" value="INIT_FIDO_AUTH"/>
+                        <input type="hidden" name="authType" id="authType" value="idf">
                     </div>
                     <div class="mt-4">
                         <div class="buttons">

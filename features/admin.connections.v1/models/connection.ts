@@ -222,6 +222,15 @@ export enum SupportedJITProvisioningSchemes {
 }
 
 /**
+ * Supported attribute synchronization methods for JIT provisioning.
+ */
+export enum SupportedAttributeSyncMethods {
+    OVERRIDE_ALL = "OVERRIDE_ALL",
+    NONE = "NONE",
+    PRESERVE_LOCAL = "PRESERVE_LOCAL"
+}
+
+/**
  * Captures the properties of a JIT provisioning configuration.
  */
 export interface JITProvisioningResponseInterface {
@@ -230,6 +239,28 @@ export interface JITProvisioningResponseInterface {
     userstore?: string;
     associateLocalUser?: boolean;
     attributeSyncMethod?: string;
+    /**
+     * Account linking attribute mappings.
+     */
+    accountLookupAttributeMappings?: JITProvisioningAccountLinkingAttributeMappingInterface[];
+    /**
+     * Skip JIT provisioning when no rule matches.
+     */
+    skipJITForLookupFailure?: boolean;
+}
+
+/**
+ * Captures the properties of a JIT provisioning account linking attribute mapping.
+ */
+export interface JITProvisioningAccountLinkingAttributeMappingInterface {
+    /**
+     * URI of the local attribute.
+     */
+    localAttribute: string;
+    /**
+     * URI of the federated attribute.
+     */
+    federatedAttribute: string;
 }
 
 /**
@@ -290,7 +321,21 @@ export interface CustomAuthConnectionInterface extends ConnectionInterface {
  * Captures the properties of a external endpoint associated with the authenticator.
  */
 export interface ExternalEndpoint {
+    /**
+     * The external endpoint URI.
+     */
     uri?: string;
+    /**
+     * Allowed request headers to be shared with the endpoint.
+     */
+    allowedHeaders?: string[];
+    /**
+     * Allowed request parameters to be shared with the endpoint.
+     */
+    allowedParameters?: string[];
+    /**
+     * Authentication configurations of the endpoint.
+     */
     authentication?: ExternalEndpointAuthentication
 }
 

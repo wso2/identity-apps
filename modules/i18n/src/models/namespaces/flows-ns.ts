@@ -68,12 +68,27 @@ export interface flowsNS {
                     urlTypeLabel: string;
                 };
                 placeholder: string;
-            }
-        };
-        errors: {
-            flowMetadataFetch: {
-                description: string;
-                message: string;
+            };
+            textPropertyField: {
+                i18nCard: {
+                    configure: string;
+                    configureTitle: string;
+                    i18nKey: string;
+                    language: string;
+                    languageText: string;
+                    languageTextPlaceholder: string;
+                    screenName: string;
+                    selectOrAddI18nKey: string;
+                    selectI18nKey: string;
+                    selectLanguage: string;
+                    selectScreenName: string;
+                    title: string;
+                };
+                placeholder: string;
+                tooltip: {
+                    configureTranslation: string;
+                    enableBrandingRequired: string;
+                };
             };
         };
         executions: {
@@ -87,6 +102,54 @@ export interface flowsNS {
                 microsoft: string;
                 passkeyEnrollment: string;
                 magicLink: string;
+            };
+        };
+        notifications: {
+            brandingPreferenceFetch: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            customTextPreferenceMetaFetch: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            fallbackTextPreferenceFetch: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            flowMetadataFetch: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            screenMetaFetch: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            textPreferenceFetch: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            updateI18nKey: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
             };
         };
     };

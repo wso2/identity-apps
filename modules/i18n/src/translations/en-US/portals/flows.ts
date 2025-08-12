@@ -19,7 +19,7 @@ import { flowsNS } from "../../../models";
 
 export const flows: flowsNS = {
     askPassword: {
-        breadcrumb: "Edit Invite User Registration Flow",
+        breadcrumb: "Edit Invited User Registration Flow",
         notifications: {
             disableFlow: {
                 genericError: {
@@ -69,12 +69,27 @@ export const flows: flowsNS = {
                     urlTypeLabel: "URL Type"
                 },
                 placeholder: "Enter rich text content here..."
-            }
-        },
-        errors: {
-            flowMetadataFetch: {
-                description: "An error occurred while fetching the flow metadata.",
-                message: "Flow Metadata Fetch Error"
+            },
+            textPropertyField: {
+                i18nCard: {
+                    configure: "More",
+                    configureTitle: "Configure Translation Keys",
+                    i18nKey: "Translation key",
+                    language: "Language",
+                    languageText: "Language text configuration",
+                    languageTextPlaceholder: "Enter text for the selected language",
+                    screenName: "Screen name",
+                    selectI18nKey: "Select a translation key",
+                    selectLanguage: "Select language",
+                    selectOrAddI18nKey: "Select or add a translation key",
+                    selectScreenName: "Select a screen name",
+                    title: "{{propertyKey}} translation"
+                },
+                placeholder: "Enter {{propertyName}}",
+                tooltip: {
+                    configureTranslation: "Configure translation",
+                    enableBrandingRequired: "Enable branding to update translation text. <1>Go to Branding</1>"
+                }
             }
         },
         executions: {
@@ -88,6 +103,54 @@ export const flows: flowsNS = {
                 magicLink: "Magic Link",
                 microsoft: "Microsoft",
                 passkeyEnrollment: "Enroll Passkey"
+            }
+        },
+        notifications: {
+            brandingPreferenceFetch: {
+                genericError: {
+                    description: "An error occurred while fetching the branding preferences.",
+                    message: "Branding Preference Fetch Error"
+                }
+            },
+            customTextPreferenceMetaFetch: {
+                genericError: {
+                    description: "An error occurred while fetching the custom text preference metadata.",
+                    message: "Custom Text Preference Meta Fetch Error"
+                }
+            },
+            fallbackTextPreferenceFetch: {
+                genericError: {
+                    description: "An error occurred while fetching the fallback text preferences.",
+                    message: "Fallback Text Preference Fetch Error"
+                }
+            },
+            flowMetadataFetch: {
+                genericError: {
+                    description: "An error occurred while fetching the flow metadata.",
+                    message: "Flow Metadata Fetch Error"
+                }
+            },
+            screenMetaFetch: {
+                genericError: {
+                    description: "An error occurred while fetching the screen metadata.",
+                    message: "Screen Meta Fetch Error"
+                }
+            },
+            textPreferenceFetch: {
+                genericError: {
+                    description: "An error occurred while fetching the custom text preferences.",
+                    message: "Text Preference Fetch Error"
+                }
+            },
+            updateI18nKey: {
+                genericError: {
+                    description: "An error occurred while updating the custom text in the flow.",
+                    message: "Update Custom Text Error"
+                },
+                success: {
+                    description: "Successfully updated the custom text in the flow.",
+                    message: "Update Custom Text Success"
+                }
             }
         }
     },

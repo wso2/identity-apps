@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AutocompleteChangeDetails, AutocompleteChangeReason, Typography } from "@mui/material";
 import Autocomplete, {
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
@@ -35,6 +36,7 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import debounce from "lodash-es/debounce";
+import isEmpty from "lodash-es/isEmpty";
 import React, {
     ChangeEvent,
     FunctionComponent,
@@ -58,6 +60,7 @@ interface RolesShareWithAllPropsInterface extends IdentifiableComponentInterface
     application: ApplicationInterface;
     selectedRoles: RolesInterface[];
     setSelectedRoles: (roles: RolesInterface[]) => void;
+    onRoleChange: (role: RolesV2Interface, isSelected: boolean) => void;
 }
 
 /**
@@ -72,7 +75,8 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
         ["data-componentid"]: componentId = "console-roles-share-with-all",
         application,
         selectedRoles,
-        setSelectedRoles
+        setSelectedRoles,
+        onRoleChange
     } = props;
 
     const applicationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
@@ -135,22 +139,45 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
         []
     );
 
-    const handleRolesOnChange = (value: RolesV2Interface[]): void => {
+    const handleRolesOnChange = (
+        value: RolesV2Interface[],
+        reason: AutocompleteChangeReason,
+        details: AutocompleteChangeDetails<RolesV2Interface>
+    ): void => {
         setSelectedRoles(value);
+        const role: RolesV2Interface = details.option;
+
+        if (isEmpty(role)) {
+            return;
+        }
+
+        if (reason === "selectOption") {
+            onRoleChange(role, true);
+        } else if (reason === "removeOption") {
+            onRoleChange(role, false);
+        }
     };
 
     return (
         <>
+            <Typography variant="body1" marginBottom={ 1 }>
+                Common set of roles shared with all organizations
+            </Typography>
             <Autocomplete
                 fullWidth
                 multiple
+                disableClearable
                 data-componentid={ `${componentId}-autocomplete` }
                 loading={ isApplicationRolesFetchRequestLoading || isSearching }
                 placeholder={ t("applications:edit.sections.sharedAccess.modes.shareWithSelectedPlaceholder") }
                 options={ applicationRolesList ?? [] }
                 value={ selectedRoles }
-                onChange={ (_event: SyntheticEvent, value: RolesV2Interface[]) => {
-                    handleRolesOnChange(value);
+                onChange={ (
+                    _event: SyntheticEvent,
+                    value: RolesV2Interface[],
+                    reason: AutocompleteChangeReason,
+                    details: AutocompleteChangeDetails<RolesV2Interface>) => {
+                    handleRolesOnChange(value, reason, details);
                 } }
                 disabled={ isReadOnly }
                 noOptionsText={ t("common:noResultsFound") }

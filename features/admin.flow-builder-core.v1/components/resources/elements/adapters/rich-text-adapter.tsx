@@ -20,6 +20,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import DOMPurify from "dompurify";
 import parse from "html-react-parser";
 import React, { FunctionComponent, ReactElement } from "react";
+import PlaceholderComponent from "./placeholder-component";
 import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 import "./rich-text-adapter.scss";
 
@@ -54,7 +55,9 @@ const RichTextAdapter: FunctionComponent<RichTextAdapterPropsInterface> = ({
 
     return (
         <div className="rich-text-content">
-            { parse(sanitizedHtml) }
+            <PlaceholderComponent value={ resource?.config?.text }>
+                { parse(sanitizedHtml) }
+            </PlaceholderComponent>
         </div>
     );
 };

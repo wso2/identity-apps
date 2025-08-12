@@ -20,7 +20,7 @@ import { $generateHtmlFromNodes, $generateNodesFromDOM } from "@lexical/html";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { $getRoot, $insertNodes, EditorState, LexicalNode, RootNode } from "lexical";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
-import { ReactElement, useEffect, useState } from "react";
+import { MutableRefObject, ReactElement, useEffect, useRef } from "react";
 import { Resource } from "../../../../models/resources";
 
 /**
@@ -35,6 +35,10 @@ interface HTMLPluginProps {
      * The resource associated with the rich text editor.
      */
     resource: Resource;
+    /**
+     * Whether the editor is disabled.
+     */
+    disabled?: boolean;
 }
 
 const PRE_WRAP_STYLE_WITH_CLASS: string = "\" style=\"white-space: pre-wrap;\"";
@@ -51,18 +55,12 @@ const ADDITIONAL_CLASSES: string = `class="${CLASS_NAME_PLACEHOLDER}"`;
 /**
  * Convert nodes tree to HTML string.
  */
-const HTMLPlugin = ({ onChange, resource }: HTMLPluginProps): ReactElement => {
+const HTMLPlugin = ({ onChange, resource, disabled }: HTMLPluginProps): ReactElement => {
     const [ editor ] = useLexicalComposerContext();
-    const [ initialized, setInitialized ] = useState(false);
+    const internalUpdate: MutableRefObject<boolean> = useRef(false);
 
     useEffect(() => {
-        if (initialized || !editor || !resource) {
-            return;
-        }
-
-        if (!resource?.config?.text) {
-            setInitialized(true);
-
+        if (!editor || !resource?.config?.text) {
             return;
         }
 
@@ -78,7 +76,7 @@ const HTMLPlugin = ({ onChange, resource }: HTMLPluginProps): ReactElement => {
 
             $insertNodes(nodes); // insert new nodes into the editor.
 
-            setInitialized(true);
+            internalUpdate.current = true;
         });
     }, [ editor, resource ]);
 
@@ -91,9 +89,24 @@ const HTMLPlugin = ({ onChange, resource }: HTMLPluginProps): ReactElement => {
         }
 
         return editor.registerUpdateListener(({ editorState }: { editorState: EditorState }) => {
-            processEditorUpdate(editorState);
+            if (!internalUpdate.current) {
+                processEditorUpdate(editorState);
+            }
         });
     }, [ editor, onChange ]);
+
+    /**
+     * Handle the editor's disabled state.
+     */
+    useEffect(() => {
+        if (disabled) {
+            editor.setEditable(false);
+        } else {
+            if (!editor._editable) {
+                editor.setEditable(true);
+            }
+        }
+    }, [ disabled ]);
 
     /**
      * Process the editor state to generate HTML and call the onChange handler.

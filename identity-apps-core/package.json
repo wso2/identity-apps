@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/identity-apps-core",
-    "version": "2.27.23",
+    "version": "3.1.1",
     "private": true,
     "description": "WSO2 Identity Server Authentication Portal",
     "author": "WSO2",
@@ -14,7 +14,7 @@
         "transpile-react-jsx-components": "pnpm webpack --config webpack.config.js"
     },
     "dependencies": {
-        "@wso2is/theme": "^2.8.2",
+        "@wso2is/theme": "^2.8.5",
         "dompurify": "^3.0.9",
         "html-react-parser": "^2.0.0",
         "react": "^18.2.0",

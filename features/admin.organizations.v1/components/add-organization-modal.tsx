@@ -200,9 +200,9 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
 
         // 1. Empty check.
         if (!orgHandle || orgHandle === OrganizationManagementConstants.ORG_HANDLE_PLACEHOLDER) {
-            setOrgHandleError(t("organizations:forms.addOrganization.orgHandle.validation.empty"));
+            setOrgHandleError("");
 
-            return true;
+            return false;
         }
 
         // 2. First character must be an alphabet.
