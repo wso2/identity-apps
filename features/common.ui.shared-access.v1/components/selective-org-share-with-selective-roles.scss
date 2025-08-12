@@ -1,0 +1,84 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.roles-selective-share-container {
+    margin-top: 1rem;
+    border: none;
+}
+
+.roles-selective-share-left-panel {
+    height: 300px;
+    overflow: auto;
+    background-color: var(--oxygen-palette-grey-100);
+    border-radius: var(--oxygen-shape-borderRadius) 0 0 var(--oxygen-shape-borderRadius);
+}
+
+.roles-selective-share-right-panel {
+    height: 300px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    background-color: var(--oxygen-palette-grey-50);
+    border-radius: 0 var(--oxygen-shape-borderRadius) var(--oxygen-shape-borderRadius) 0;
+}
+
+.roles-selective-share-all-roles {
+    height: 300px;
+    overflow: auto;
+    background-color: var(--oxygen-palette-grey-100);
+    border-radius: var(--oxygen-shape-borderRadius);
+}
+
+.role-list-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 12px;
+    height: 280px;
+    align-content: flex-start;
+}
+
+.role-item {
+    display: flex;
+    align-items: center;
+    width: 150px;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.role-item:last-child {
+    max-width: unset;
+}
+
+.role-label {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    min-width: 0;
+    flex-grow: 1;
+}
+
+.role-checkbox {
+    margin-right: 10px;
+    padding: 2px;
+}
+
+// .ui.image.animated-avatar.gradient {
+//     width: 25px;
+//     height: 25px;
+//     margin-right: 10px;
+// }
