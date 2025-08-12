@@ -61,9 +61,6 @@
 %>
 
 <%
-    String local = "en-US";
-    String jsonFilePath = application.getRealPath("/i18n/translations/" + local + ".json");
-    String translationsJson = "{}";
     String state = request.getParameter("state");
     String code = request.getParameter("code");
     String spId = request.getParameter("spId");
@@ -72,11 +69,23 @@
     String mlt = request.getParameter("mlt");
     String flowId = request.getParameter("flowId");
 
-    try {
-        byte[] jsonData = Files.readAllBytes(Paths.get(jsonFilePath));
-        translationsJson = new String(jsonData, "UTF-8");
-    } catch (IOException e) {
-        e.printStackTrace();
+    final String REGISTRATION = "REGISTRATION";
+    final String INVITED_USER_REGISTRATION = "INVITED_USER_REGISTRATION";
+    final String PASSWORD_RECOVERY = "PASSWORD_RECOVERY";
+%>
+
+<%
+    switch (flowType) {
+        case REGISTRATION:
+            screenNames.add("sign-up");
+            screenNames.add("email-link-expiry");
+            screenNames.add("email-otp");
+            screenNames.add("sms-otp");
+            break;
+        case INVITED_USER_REGISTRATION:
+            break;
+        case PASSWORD_RECOVERY:
+            break;
     }
 %>
 
@@ -181,9 +190,6 @@
                 const mlt = "<%= Encode.forJavaScript(mlt) != null ? Encode.forJavaScript(mlt) : null %>";
                 const flowId = "<%= Encode.forJavaScript(flowId) != null ? Encode.forJavaScript(flowId) : null %>";
                 const spId = "<%= !StringUtils.isBlank(spId) && spId != "null" ? Encode.forJavaScript(spId) : "new-application" %>";
-
-                const locale = "en-US";
-                const translations = <%= translationsJson %>;
 
                 const [ flowData, setFlowData ] = useState(null);
                 const [ components, setComponents ] = useState([]);
@@ -470,7 +476,7 @@
                     { globalData: <%= reactGlobalContextJson %> },
                     createElement(
                         I18nProvider,
-                        { locale: "en-US", translationsObject: <%= translationsJson %> },
+                        { locale: "<%= Encode.forJavaScript(lang) %>", translationsObject: <%= i18nJsonString %> },
                         createElement(Content)
                     )
                 ),

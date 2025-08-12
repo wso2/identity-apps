@@ -8924,17 +8924,26 @@ importers:
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+      '@wso2is/admin.branding.v1':
+        specifier: workspace:^
+        version: link:../admin.branding.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.1
+        specifier: workspace:^
         version: link:../admin.core.v1
       '@wso2is/admin.flows.v1':
         specifier: workspace:^
         version: link:../admin.flows.v1
+      '@wso2is/admin.organizations.v1':
+        specifier: workspace:^
+        version: link:../admin.organizations.v1
       '@wso2is/common.ai.v1':
         specifier: ^2.27.3
         version: link:../common.ai.v1
+      '@wso2is/common.branding.v1':
+        specifier: workspace:^
+        version: link:../common.branding.v1
       '@wso2is/core':
-        specifier: ^2.10.2
+        specifier: ^2.9.5
         version: link:../../modules/core
       '@xyflow/react':
         specifier: ^12.3.2
@@ -14580,6 +14589,9 @@ importers:
       '@wso2is/common.ai.v1':
         specifier: ^2.27.3
         version: link:../common.ai.v1
+      '@wso2is/common.branding.v1':
+        specifier: workspace:^
+        version: link:../common.branding.v1
       '@wso2is/core':
         specifier: ^2.10.2
         version: link:../../modules/core

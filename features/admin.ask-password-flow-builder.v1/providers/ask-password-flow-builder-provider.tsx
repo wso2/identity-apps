@@ -25,6 +25,7 @@ import React, { FC, PropsWithChildren, ReactElement, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { FlowTypes } from "../../admin.flows.v1/models/flows";
+import { PreviewScreenType } from "../../common.branding.v1/models";
 import configureAskPasswordFlow from "../api/configure-ask-password-flow";
 import updateNewAskPasswordPortalFeatureStatus from "../api/update-new-ask-password-portal-feature-status";
 import useGetSupportedProfileAttributes from "../api/use-get-supported-profile-attributes";
@@ -54,6 +55,9 @@ const AskPasswordFlowBuilderProvider: FC<AskPasswordFlowBuilderProviderProps> = 
         ElementFactory={ ElementFactory }
         ResourceProperties={ ResourceProperties }
         flowType={ FlowTypes.INVITED_USER_REGISTRATION }
+        screenTypes={ [
+            PreviewScreenType.COMMON
+        ] }
     >
         <FlowContextWrapper>{ children }</FlowContextWrapper>
     </AuthenticationFlowBuilderCoreProvider>

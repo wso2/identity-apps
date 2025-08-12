@@ -20,6 +20,7 @@ import Button, { ButtonProps } from "@oxygen-ui/react/Button";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Handle, Position } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
+import PlaceholderComponent from "./placeholder-component";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import { ButtonVariants } from "../../../../models/elements";
 import { CommonElementFactoryPropsInterface } from "../common-element-factory";
@@ -84,7 +85,7 @@ const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
                 }
                 { ...config }
             >
-                { resource?.config?.text }
+                <PlaceholderComponent value={ resource?.config?.text } />
             </Button>
             <Handle
                 id={ `${resource?.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}` }
