@@ -648,6 +648,7 @@ export interface ClaimsNS {
                     local: string;
                     dialect: string;
                     external: string;
+                    externalReadOnly: string;
                 };
                 subtitle: string;
                 action: {
