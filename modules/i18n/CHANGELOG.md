@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.29.1
+
+### Patch Changes
+
+- [#8736](https://github.com/wso2/identity-apps/pull/8736) [`e2d53eaf3a8c4d6bda03af358535864ce5c198d6`](https://github.com/wso2/identity-apps/commit/e2d53eaf3a8c4d6bda03af358535864ce5c198d6) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add i18n support for flow builder
+
 ## 2.29.0
 
 ### Minor Changes
