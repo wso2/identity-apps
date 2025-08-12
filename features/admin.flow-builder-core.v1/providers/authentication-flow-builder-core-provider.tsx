@@ -31,6 +31,7 @@ import { AlertLevels, Claim } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import { ReactFlowProvider } from "@xyflow/react";
+import { AxiosRequestConfig } from "axios";
 import merge from "lodash-es/merge";
 import pick from "lodash-es/pick";
 import startCase from "lodash-es/startCase";
@@ -220,6 +221,18 @@ const AuthenticationFlowBuilderCoreProvider = ({
      * Error handling for custom text preference meta fetch.
      */
     useEffect(() => {
+        if (customTextPreferenceMetaError?.response?.status === 404) {
+            // Check if the 404 error is specifically from the extensions i18n meta endpoint.
+            const errorConfig: AxiosRequestConfig = customTextPreferenceMetaError?.config;
+            const isExtensionsMetaRequest: boolean = errorConfig?.url &&
+                errorConfig.url.includes("extensions/branding/i18n/meta.json");
+
+            if (isExtensionsMetaRequest) {
+                // Silently ignore 404 errors from extensions meta endpoint as it's optional.
+                return;
+            }
+        }
+
         if (customTextPreferenceMetaError) {
             dispatch(addAlert({
                 description: t("flows:core.notifications.customTextPreferenceMetaFetch.genericError.description"),
