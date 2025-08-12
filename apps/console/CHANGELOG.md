@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.77.1
+
+### Patch Changes
+
+- [#8745](https://github.com/wso2/identity-apps/pull/8745) [`4bf5e4e4ffd0cb942efd86f8f5c9faf8cd8fd071`](https://github.com/wso2/identity-apps/commit/4bf5e4e4ffd0cb942efd86f8f5c9faf8cd8fd071) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Silence the 404 error for the i18n meta JSON extension request
+
+- Updated dependencies []:
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.3
+  - @wso2is/admin.core.v1@2.49.11
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.3
+  - @wso2is/admin.server-configurations.v1@2.35.24
+
 ## 2.77.0
 
 ### Minor Changes
