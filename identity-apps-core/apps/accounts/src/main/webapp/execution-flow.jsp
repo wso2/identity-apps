@@ -192,6 +192,7 @@
                 const [ postBody, setPostBody ] = useState(undefined);
                 const [ flowError, setFlowError ] = useState(undefined);
                 const [confirmationEffectDone, setConfirmationEffectDone] = useState(false);
+                const [userAssertion, setUserAssertion] = useState(null);
 
                 useEffect(() => {
                     const savedFlowId = localStorage.getItem("flowId");
@@ -331,6 +332,14 @@
                             return false;
 
                         case "COMPLETE":
+
+                            const sessionDataKey = localStorage.getItem("sessionDataKey");
+                            const userAssertion = flow.data.additionalData?.userAssertion;
+                            if (sessionDataKey && userAssertion) {
+                                setUserAssertion(userAssertion);
+                                return true;
+                            }
+
                             localStorage.clear();
 
                             if (flow.data.redirectURL !== null) {
@@ -384,6 +393,41 @@
                                 passkeyError: flowError
                             }
                         )
+                    );
+                }
+
+                const AutoLoginForm = (data) => {
+                    const formRef = React.useRef();
+                    const handleSubmit = () => {
+                        formRef.current.submit();
+                    };
+
+                    useEffect(() => {
+                        if (userAssertion) {
+                            handleSubmit();
+                            setUserAssertion(null);
+                        }
+                    }, [userAssertion]);
+
+                    return (
+                        createElement(
+                            "form",
+                            {
+                                ref: formRef,
+                                method: "POST",
+                                action: baseUrl + "/commonauth",
+                                style: { display: 'none' }
+                            },
+                            createElement("input", { type: "hidden", name: "sessionDataKey", value: encodeURIComponent(localStorage.getItem("sessionDataKey") || "") }),
+                            createElement("input", { type: "hidden", name: "userAssertion", value: encodeURIComponent(data.userAssertion || "") })
+                        )
+                    );
+                }
+
+                if (userAssertion) {
+                    return createElement(
+                        AutoLoginForm,
+                        { userAssertion: userAssertion }
                     );
                 }
 
