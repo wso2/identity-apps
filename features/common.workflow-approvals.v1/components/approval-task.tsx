@@ -275,17 +275,21 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                     )
                     : null
             }
-            <Button
-                negative
-                className="mb-1x"
-                fluid={ isMobileViewport }
-                onClick={ () => {
-                    updateApprovalStatus(editingApproval.id, ApprovalStatus.REJECT);
-                    onCloseApprovalTaskModal();
-                } }
-            >
-                { t("common:reject") }
-            </Button>
+            {
+                editingApproval?.taskStatus != ApprovalStatus.BLOCKED && (
+                    <Button
+                        negative
+                        className="mb-1x"
+                        fluid={ isMobileViewport }
+                        onClick={ () => {
+                            updateApprovalStatus(editingApproval.id, ApprovalStatus.REJECT);
+                            onCloseApprovalTaskModal();
+                        } }
+                    >
+                        { t("common:reject") }
+                    </Button>
+                )
+            }
         </>
     );
 
