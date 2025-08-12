@@ -1,5 +1,14 @@
 # @wso2is/identity-apps-core
 
+## 3.0.2
+
+### Patch Changes
+
+- [#8433](https://github.com/wso2/identity-apps/pull/8433) [`5067ce35da7a89d7997116fa452e81619dae6f42`](https://github.com/wso2/identity-apps/commit/5067ce35da7a89d7997116fa452e81619dae6f42) Thanks [@savindi7](https://github.com/savindi7)! - Fix precedence order of the language setting param.
+
+- Updated dependencies [[`edccbba95dd635e0a6f016e2e99f037594cc4196`](https://github.com/wso2/identity-apps/commit/edccbba95dd635e0a6f016e2e99f037594cc4196)]:
+  - @wso2is/theme@2.8.5
+
 ## 3.0.1
 
 ### Patch Changes

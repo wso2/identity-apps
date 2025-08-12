@@ -1,5 +1,21 @@
 # @wso2is/admin.users.v1
 
+## 2.35.0
+
+### Minor Changes
+
+- [#8684](https://github.com/wso2/identity-apps/pull/8684) [`edccbba95dd635e0a6f016e2e99f037594cc4196`](https://github.com/wso2/identity-apps/commit/edccbba95dd635e0a6f016e2e99f037594cc4196) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Introduce improved Add user wizard component
+
+### Patch Changes
+
+- Updated dependencies [[`1643c8e6b1f79225ffa150c40e80d7c85f9372d3`](https://github.com/wso2/identity-apps/commit/1643c8e6b1f79225ffa150c40e80d7c85f9372d3), [`edccbba95dd635e0a6f016e2e99f037594cc4196`](https://github.com/wso2/identity-apps/commit/edccbba95dd635e0a6f016e2e99f037594cc4196), [`edccbba95dd635e0a6f016e2e99f037594cc4196`](https://github.com/wso2/identity-apps/commit/edccbba95dd635e0a6f016e2e99f037594cc4196)]:
+  - @wso2is/admin.claims.v1@2.29.0
+  - @wso2is/i18n@2.29.0
+  - @wso2is/admin.users.v1@2.35.0
+  - @wso2is/theme@2.8.5
+  - @wso2is/admin.core.v1@2.49.7
+  - @wso2is/admin.roles.v2@2.27.184
+
 ## 2.34.8
 
 ### Patch Changes

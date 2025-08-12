@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.29.0
+
+### Minor Changes
+
+- [#8729](https://github.com/wso2/identity-apps/pull/8729) [`1643c8e6b1f79225ffa150c40e80d7c85f9372d3`](https://github.com/wso2/identity-apps/commit/1643c8e6b1f79225ffa150c40e80d7c85f9372d3) Thanks [@AmshikaH](https://github.com/AmshikaH)! - Support claim inheritance in the console
+
 ## 2.28.5
 
 ### Patch Changes
