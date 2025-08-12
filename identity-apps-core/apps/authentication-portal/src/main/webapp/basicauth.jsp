@@ -265,7 +265,6 @@
         sdkSafe = org.owasp.encoder.Encode.forJavaScript(rawSdk);
     }
 %>
-%>
 
 <%
     Boolean isAdminBannerAllowedInSP = CONSOLE.equals(Encode.forJava(request.getParameter("sp")));
