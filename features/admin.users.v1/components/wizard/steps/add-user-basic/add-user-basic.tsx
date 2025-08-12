@@ -80,7 +80,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon, Menu, Message, Radio } from "semantic-ui-react";
-import { getUsersList } from "../../../api/users";
+import { getUsersList } from "../../../../api/users";
 import {
     AskPasswordOptionTypes,
     AttributeDataType,
@@ -88,13 +88,13 @@ import {
     LocaleJoiningSymbol,
     PasswordOptionTypes,
     UserManagementConstants
-} from "../../../constants";
+} from "../../../../constants";
 import {
     BasicUserDetailsInterface,
     SchemaAttributeValueInterface,
     SubValueInterface,
     UserListInterface
-} from "../../../models/user";
+} from "../../../../models/user";
 import {
     constructPatchOpValueForMultiValuedAttribute,
     generatePassword,
@@ -103,8 +103,8 @@ import {
     getUsernameConfiguration,
     isFieldDisplayableInUserCreationWizard,
     normalizeLocaleFormat
-} from "../../../utils";
-import "../add-user-basic.scss";
+} from "../../../../utils";
+import "./add-user-basic.scss";
 
 /**
  * Proptypes for the add user component.
