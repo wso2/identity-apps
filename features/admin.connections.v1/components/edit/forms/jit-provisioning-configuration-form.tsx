@@ -242,12 +242,10 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
             JITProvisioningConstants.FIRST_MATCH_RULE_LOCAL_ATTRIBUTE
         );
 
-        if (firstMatchRuleFederatedAttr && firstMatchRuleLocalAttr) {
-            accountLookupAttributeMappings.push({
-                federatedAttribute: firstMatchRuleFederatedAttr,
-                localAttribute: firstMatchRuleLocalAttr
-            });
-        }
+        accountLookupAttributeMappings.push({
+            federatedAttribute: firstMatchRuleFederatedAttr,
+            localAttribute: firstMatchRuleLocalAttr
+        });
 
         const fallbackMatchRuleFederatedAttr: string = values.get(
             JITProvisioningConstants.FALLBACK_MATCH_RULE_FEDERATED_ATTRIBUTE
@@ -256,12 +254,10 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
             JITProvisioningConstants.FALLBACK_MATCH_RULE_LOCAL_ATTRIBUTE
         );
 
-        if (fallbackMatchRuleFederatedAttr && fallbackMatchRuleLocalAttr) {
-            accountLookupAttributeMappings.push({
-                federatedAttribute: fallbackMatchRuleFederatedAttr,
-                localAttribute: fallbackMatchRuleLocalAttr
-            });
-        }
+        accountLookupAttributeMappings.push({
+            federatedAttribute: fallbackMatchRuleFederatedAttr,
+            localAttribute: fallbackMatchRuleLocalAttr
+        });
 
         return {
             accountLookupAttributeMappings: accountLookupAttributeMappings.length > 0
