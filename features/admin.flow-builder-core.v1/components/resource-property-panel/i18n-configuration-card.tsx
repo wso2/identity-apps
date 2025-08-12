@@ -66,6 +66,24 @@ interface ScreenTypeOption {
 }
 
 /**
+ * Props interface for the language text field component.
+ */
+export interface LanguageTextFieldProps {
+    /**
+     * The value of the input field.
+     */
+    value: string;
+    /**
+     * Callback fired when the input value changes.
+     */
+    onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+    /**
+     * Whether the input field is disabled.
+     */
+    disabled?: boolean;
+}
+
+/**
  * Props interface of {@link I18nConfigurationCard}
  */
 export interface I18nConfigurationCardPropsInterface extends IdentifiableComponentInterface {
@@ -95,6 +113,10 @@ export interface I18nConfigurationCardPropsInterface extends IdentifiableCompone
      * @param i18nKey - The new i18n key.
      */
     onChange: (i18nKey: string) => void;
+    /**
+     * Optional custom language text field component.
+     */
+    languageTextField?: FunctionComponent<LanguageTextFieldProps>;
 }
 
 /**
@@ -110,7 +132,8 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
     propertyKey,
     onClose,
     onChange,
-    i18nKey: selectedI18nKey
+    i18nKey: selectedI18nKey,
+    languageTextField: LanguageTextField
 }: I18nConfigurationCardPropsInterface): ReactElement | null => {
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
@@ -535,19 +558,28 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                     <Typography variant="subtitle2" gutterBottom>
                         { t("flows:core.elements.textPropertyField.i18nCard.languageText") }
                     </Typography>
-                    <TextField
-                        fullWidth
-                        size="small"
-                        placeholder={
-                            t("flows:core.elements.textPropertyField.i18nCard.languageTextPlaceholder")
-                        }
-                        value={ languageTexts?.[selectedScreenType?.id]?.[selectedLanguage]?.[i18nKeyInputValue]
-                            ?? i18nText?.[selectedScreenType?.id]?.[i18nKeyInputValue] ?? "" }
-                        onChange={ handleLanguageTextChange }
-                        disabled={ !selectedScreenType || !i18nKeyInputValue }
-                        multiline
-                        rows={ 3 }
-                    />
+                    { LanguageTextField ? (
+                        <LanguageTextField
+                            value={ languageTexts?.[selectedScreenType?.id]?.[selectedLanguage]?.[i18nKeyInputValue]
+                                ?? i18nText?.[selectedScreenType?.id]?.[i18nKeyInputValue] ?? "" }
+                            onChange={ handleLanguageTextChange }
+                            disabled={ !selectedScreenType || !i18nKeyInputValue }
+                        />
+                    ) : (
+                        <TextField
+                            fullWidth
+                            size="small"
+                            placeholder={
+                                t("flows:core.elements.textPropertyField.i18nCard.languageTextPlaceholder")
+                            }
+                            value={ languageTexts?.[selectedScreenType?.id]?.[selectedLanguage]?.[i18nKeyInputValue]
+                                ?? i18nText?.[selectedScreenType?.id]?.[i18nKeyInputValue] ?? "" }
+                            onChange={ handleLanguageTextChange }
+                            disabled={ !selectedScreenType || !i18nKeyInputValue }
+                            multiline
+                            rows={ 3 }
+                        />
+                    ) }
                 </div>
             </div>
         );
