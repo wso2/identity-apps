@@ -30,6 +30,7 @@ import { updateApplicationDetails } from "@wso2is/admin.applications.v1/api/appl
 import { useGetApplication } from "@wso2is/admin.applications.v1/api/use-get-application";
 import { ApplicationInterface } from "@wso2is/admin.applications.v1/models/application";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { RequestErrorInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -43,7 +44,7 @@ import {
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
-import { AxiosError } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import React, {
     FunctionComponent,
     HTMLAttributes,
@@ -141,8 +142,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
 
     // Use the SWR hook for V3 API or fallback to direct API call for legacy
     const {
-        data: rolesV3Data,
-        error: rolesV3Error,
         isLoading: isRolesV3Loading,
         mutate: mutateRolesV3
     } = useGetApplicationRolesByAudienceV3(
@@ -194,11 +193,11 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     const getApplicationRoles = (shouldUpdateSelectedRolesList?: boolean): void => {
         if (userRolesV3FeatureEnabled) {
             // For V3 API, trigger fresh data fetch via SWR mutate
-            mutateRolesV3().then((updatedData) => {
-                if (updatedData?.data?.Resources) {
+            mutateRolesV3().then((response: AxiosResponse<RolesV2ResponseInterface>) => {
+                if (response?.data?.Resources) {
                     const rolesArray: BasicRoleInterface[] = [];
 
-                    updatedData.data?.Resources?.forEach((role: RolesV2Interface) => {
+                    response.data?.Resources?.forEach((role: RolesV2Interface) => {
                         rolesArray.push({
                             id: role?.id,
                             name: role?.displayName
@@ -211,7 +210,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                         setSelectedRoles(rolesArray);
                     }
                 }
-            }).catch((error) => {
+            }).catch((error: AxiosError<RequestErrorInterface>) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ??
