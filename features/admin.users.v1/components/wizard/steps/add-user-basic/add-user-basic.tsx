@@ -854,10 +854,6 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
             const primaryEmailSchema: ProfileSchemaInterface = !isEmpty(profileSchema) && profileSchema.find(
                 (schema: ProfileSchemaInterface) => schema.name === EMAIL_ATTRIBUTE);
 
-                console.log(initialValues);
-                console.log(profileInfo);
-
-
             return (
                 <MultiValuedEmailField
                     schema={ emailAddressesSchema }
@@ -1303,8 +1299,6 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
             ? values["email"]?.toString()
             : values["username"]?.toString();
         delete decodedFormValues["username"];
-
-        // console.log("decodedFormValues", decodedFormValues);
 
         onSubmit(decodedFormValues);
     };
