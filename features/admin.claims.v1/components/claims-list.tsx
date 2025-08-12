@@ -651,7 +651,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                             : isDialect(list)
                                 ? t("claims:list.placeholders.emptyList.title.dialect")
                                 : isSubOrganization()
-                                    ? t("claims:list.placeholders.emptyList.title.externalReadOnly",
+                                    ? t("claims:list.placeholders.emptyList.title.readOnlyDialect",
                                         { type: resolveType(attributeType, true) }
                                     )
                                     : t(

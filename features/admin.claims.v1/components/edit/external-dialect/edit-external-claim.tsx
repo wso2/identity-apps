@@ -313,7 +313,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                     <Grid.Column width={ 8 }>
                         <Field
                             type="dropdown"
-                            disabled = { isSubOrganization() }
+                            disabled={ isSubOrganization() }
                             name="localClaim"
                             label={ t("claims:external.forms.localAttribute.label") }
                             required={ true }
