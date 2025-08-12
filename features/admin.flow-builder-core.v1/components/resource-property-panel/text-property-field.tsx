@@ -24,7 +24,7 @@ import Tooltip from "@oxygen-ui/react/Tooltip";
 import { PlusIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import startCase from "lodash-es/startCase";
-import React, { ChangeEvent, FunctionComponent, ReactElement, useRef, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import I18nConfigurationCard from "./i18n-configuration-card";
 import { Resource } from "../../models/resources";
@@ -78,6 +78,17 @@ const TextPropertyField: FunctionComponent<TextPropertyFieldPropsInterface> = ({
     const iconButtonRef: React.RefObject<HTMLButtonElement> = useRef<HTMLButtonElement>(null);
 
     /**
+     * Check if the property value matches the i18n pattern.
+     */
+    const isI18nPattern: boolean = useMemo(() => {
+        if (!propertyValue) return false;
+
+        const i18nPattern: RegExp = /^\{\{[^}]+\}\}$/;
+
+        return i18nPattern.test(propertyValue.trim());
+    }, [ propertyValue ]);
+
+    /**
      * Handles the toggle of the i18n configuration card.
      */
     const handleI18nToggle = () => {
@@ -96,12 +107,16 @@ const TextPropertyField: FunctionComponent<TextPropertyFieldPropsInterface> = ({
             <TextField
                 fullWidth
                 label={ startCase(propertyKey) }
-                value={ propertyValue }
+                value={ isI18nPattern ? "" : propertyValue }
                 onChange={ (e: ChangeEvent<HTMLInputElement>) =>
                     onChange(`config.${propertyKey}`, e.target.value, resource)
                 }
-                placeholder={ t("flows:core.elements.textPropertyField.placeholder",
-                    { propertyName: startCase(propertyKey) }) }
+                placeholder={
+                    isI18nPattern
+                        ? ""
+                        : t("flows:core.elements.textPropertyField.placeholder",
+                            { propertyName: startCase(propertyKey) })
+                }
                 data-componentid={ `${componentId}-${propertyKey}` }
                 InputProps={ {
                     endAdornment: (
@@ -130,6 +145,15 @@ const TextPropertyField: FunctionComponent<TextPropertyFieldPropsInterface> = ({
                 { ...rest }
             />
             {
+                isI18nPattern && (
+                    <div className="text-property-field-i18n-placeholder">
+                        <div className="text-property-field-i18n-placeholder-key">
+                            { propertyValue }
+                        </div>
+                    </div>
+                )
+            }
+            {
                 isI18nCardOpen && (
                     <I18nConfigurationCard
                         open={ isI18nCardOpen }
@@ -137,8 +161,9 @@ const TextPropertyField: FunctionComponent<TextPropertyFieldPropsInterface> = ({
                         propertyKey={ propertyKey }
                         onClose={ handleI18nClose }
                         data-componentid={ `${componentId}-i18n-card` }
-                        i18nKey={ /^{{(.*)}}$/.test(propertyValue) ? propertyValue.slice(2, -2) : "" }
-                        onChange={ (i18nKey: string) => onChange(`config.${propertyKey}`, `{{${i18nKey}}}`, resource) }
+                        i18nKey={ isI18nPattern ? propertyValue.slice(2, -2) : "" }
+                        onChange={ (i18nKey: string) => onChange(
+                            `config.${propertyKey}`, i18nKey ? `{{${i18nKey}}}` : "", resource) }
                     />
                 )
             }

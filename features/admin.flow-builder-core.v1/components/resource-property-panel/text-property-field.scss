@@ -17,6 +17,29 @@
  */
 
 .flow-builder-resource-property-panel-text-field {
+    position: relative;
+
+    .text-property-field-i18n-placeholder {
+        position: absolute;
+        z-index: 1;
+        font-size: 13px;
+        top: 27px;
+        left: 14px;
+        background-color: var(--oxygen-palette-background-paper);
+
+        .text-property-field-i18n-placeholder-key {
+            background-color: rgb(from var(--oxygen-palette-primary-main) r g b / 0.1);
+            color: var(--oxygen-palette-primary-main);
+            font-family: monospace;
+            padding: 2px;
+            display: inline-block;
+            max-width: 260px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+
     .oxygen-text-field {
         .MuiInputBase-adornedEnd {
             padding-right: var(--oxygen-spacing-1);
