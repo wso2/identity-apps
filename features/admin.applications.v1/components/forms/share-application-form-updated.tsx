@@ -59,7 +59,7 @@ import React, {
     useMemo,
     useState
 } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
@@ -1146,10 +1146,12 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                 value={ ShareTypeSwitchApproach.WITH_UNSHARE }
                                 label={ (
                                     <Typography variant="body1">
-                                        <b>{ t("applications:edit.sections.sharedAccess." +
-                                                "shareTypeSwitchModal.resetToDefaultLabel1") }: </b>
-                                        { t("applications:edit.sections.sharedAccess." +
-                                                "shareTypeSwitchModal.resetToDefaultLabel2") }
+                                        <b>Reset to default: </b>
+                                        <Trans
+                                            i18nKey= { "applications:edit.sections.sharedAccess." +
+                                                "shareTypeSwitchModal.resetToDefaultLabel" }>
+                                            Clear all sharing settings and start with a clean slate.
+                                        </Trans>
                                     </Typography>
                                 ) }
                                 control={ <Radio /> }
