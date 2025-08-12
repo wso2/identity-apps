@@ -233,7 +233,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
      * @returns
      */
     const updateConfiguration = (values: any): any => {
-        const accountLinkingAttributeMappings: JITProvisioningAccountLinkingAttributeMappingInterface[] = [];
+        const accountLookupAttributeMappings: JITProvisioningAccountLinkingAttributeMappingInterface[] = [];
 
         const firstMatchRuleFederatedAttr: string = values.get(
             JITProvisioningConstants.FIRST_MATCH_RULE_FEDERATED_ATTRIBUTE
@@ -243,7 +243,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         );
 
         if (firstMatchRuleFederatedAttr && firstMatchRuleLocalAttr) {
-            accountLinkingAttributeMappings.push({
+            accountLookupAttributeMappings.push({
                 federatedAttribute: firstMatchRuleFederatedAttr,
                 localAttribute: firstMatchRuleLocalAttr
             });
@@ -257,16 +257,16 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         );
 
         if (fallbackMatchRuleFederatedAttr && fallbackMatchRuleLocalAttr) {
-            accountLinkingAttributeMappings.push({
+            accountLookupAttributeMappings.push({
                 federatedAttribute: fallbackMatchRuleFederatedAttr,
                 localAttribute: fallbackMatchRuleLocalAttr
             });
         }
 
         return {
-            accountLinkingAttributeMappings: accountLinkingAttributeMappings.length > 0
-                ? accountLinkingAttributeMappings
-                : initialValues?.accountLinkingAttributeMappings || [],
+            accountLookupAttributeMappings: accountLookupAttributeMappings.length > 0
+                ? accountLookupAttributeMappings
+                : initialValues?.accountLookupAttributeMappings || [],
             associateLocalUser: values.get(JITProvisioningConstants.ASSOCIATE_LOCAL_USER)
                 ?.includes(JITProvisioningConstants.ASSOCIATE_LOCAL_USER) ?? initialValues?.associateLocalUser,
             attributeSyncMethod: values?.get(
@@ -614,7 +614,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                                             "forms.jitProvisioning.accountLinkingAttributes." +
                                                             "firstMatchRule.federatedAttribute.placeholder") }
                                                         value={
-                                                            initialValues?.accountLinkingAttributeMappings?.[0]
+                                                            initialValues?.accountLookupAttributeMappings?.[0]
                                                                 ?.federatedAttribute || ""
                                                         }
                                                         data-componentid={
@@ -641,7 +641,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                                             "forms.jitProvisioning.accountLinkingAttributes." +
                                                             "firstMatchRule.localAttribute.placeholder") }
                                                         value={
-                                                            initialValues?.accountLinkingAttributeMappings?.[0]
+                                                            initialValues?.accountLookupAttributeMappings?.[0]
                                                                 ?.localAttribute || ""
                                                         }
                                                         children={ localClaimsOptions }
@@ -686,7 +686,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                                             "forms.jitProvisioning.accountLinkingAttributes." +
                                                             "fallbackMatchRule.federatedAttribute.placeholder") }
                                                         value={
-                                                            initialValues?.accountLinkingAttributeMappings?.[1]
+                                                            initialValues?.accountLookupAttributeMappings?.[1]
                                                                 ?.federatedAttribute || ""
                                                         }
                                                         data-componentid={
@@ -714,7 +714,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                                             "forms.jitProvisioning.accountLinkingAttributes." +
                                                             "fallbackMatchRule.localAttribute.placeholder") }
                                                         value={
-                                                            initialValues?.accountLinkingAttributeMappings?.[1]
+                                                            initialValues?.accountLookupAttributeMappings?.[1]
                                                                 ?.localAttribute || ""
                                                         }
                                                         children={ localClaimsOptions }
