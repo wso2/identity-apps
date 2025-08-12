@@ -24,6 +24,12 @@
          version="3.0" metadata-complete="true">
     <absolute-ordering />
 
+    {% if localization.prioritize_param is defined %}
+    <context-param>
+        <param-name>isLocalizationParamPrioritized</param-name>
+        <param-value>{{ localization.prioritize_param }}</param-value>
+    </context-param>
+    {% endif %}
     <!-- *************** Layout Store URL Configuration ********************** -->
     {% if webappscommon.layout_store_url is defined %}
     <context-param>
