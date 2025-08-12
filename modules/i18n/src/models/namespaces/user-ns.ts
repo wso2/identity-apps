@@ -130,6 +130,12 @@ export interface userNS {
                         empty: string;
                     };
                 };
+                generic: {
+                    placeholder: string;
+                    validations: {
+                        empty: string;
+                    };
+                };
                 lastName: {
                     label: string;
                     placeholder: string;

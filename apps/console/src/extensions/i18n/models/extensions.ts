@@ -2776,6 +2776,7 @@ export interface Extensions {
                     inputLabel: {
                         alphanumericUsername: string;
                         alphanumericUsernamePlaceholder: string;
+                        email: string;
                         emailUsername: string;
                     }
                     inviteUserTooltip: {

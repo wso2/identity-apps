@@ -154,6 +154,12 @@ export const user: userNS = {
                         empty: "First name is a required field"
                     }
                 },
+                generic: {
+                    placeholder: "Enter the {{label}}",
+                    validations: {
+                        empty: "{{label}} is a required field"
+                    }
+                },
                 lastName: {
                     label: "Last Name",
                     placeholder: "Enter the last name",

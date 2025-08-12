@@ -41,7 +41,7 @@ interface ProfileFormFieldProps<T> extends IdentifiableComponentInterface {
     /**
      * Whether the field is read-only.
      */
-    isReadOnly: boolean;
+    isReadOnly?: boolean;
     /**
      * Whether the field is required.
      */
