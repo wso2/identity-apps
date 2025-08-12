@@ -28,7 +28,7 @@
 
         .card {
             position: absolute;
-            width: 350px;
+            width: 370px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
             border: 1px solid var(--oxygen-palette-divider);
             border-radius: var(--oxygen-shape-borderRadius);
@@ -49,8 +49,12 @@
             .card-content {
                 margin: 10px 0;
                 padding: 16px 0;
-                max-height: 365px;
+                max-height: 550px;
                 overflow-y: auto;
+
+                &.scrolled {
+                    padding-right: 8px;
+                }
             }
 
             .card-actions {

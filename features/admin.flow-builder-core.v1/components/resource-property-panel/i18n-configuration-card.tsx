@@ -37,6 +37,7 @@ import { PreviewScreenType } from "@wso2is/common.branding.v1/models";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { LocaleMeta } from "@wso2is/i18n";
+import classNames from "classnames";
 import cloneDeep from "lodash-es/cloneDeep";
 import lowerCase from "lodash-es/lowerCase";
 import upperFirst from "lodash-es/upperFirst";
@@ -116,7 +117,7 @@ export interface I18nConfigurationCardPropsInterface extends IdentifiableCompone
     /**
      * Optional custom language text field component.
      */
-    languageTextField?: FunctionComponent<LanguageTextFieldProps>;
+    LanguageTextField?: FunctionComponent<LanguageTextFieldProps>;
 }
 
 /**
@@ -133,7 +134,7 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
     onClose,
     onChange,
     i18nKey: selectedI18nKey,
-    languageTextField: LanguageTextField
+    LanguageTextField: LanguageTextField
 }: I18nConfigurationCardPropsInterface): ReactElement | null => {
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
@@ -151,6 +152,7 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
     } = useAuthenticationFlowBuilderCore();
 
     const cardRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+    const cardContentRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
     const [ position, setPosition ] = useState<{ top: number; left: number }>({ left: 0, top: 0 });
     const [ selectedScreenType, setSelectedScreenType ] = useState<ScreenTypeOption>(null);
     const [ isCustomizeView, setIsCustomizeView ] = useState<boolean>(false);
@@ -158,6 +160,7 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
     const [ languageTexts, setLanguageTexts ] = useState<{
         [key in PreviewScreenType]?: Record<string, Record<string, string>>}>({});
     const [ deletedI18nKeys, setDeletedI18nKeys ] = useState<{ [key in PreviewScreenType]?: string[] }>({});
+    const [ isScrolled, setIsScrolled ] = useState<boolean>(false);
 
     /**
      * Effect to update the position of the card based on the anchor element.
@@ -202,6 +205,32 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
             window.removeEventListener("resize", handleResize);
         };
     }, [ open, anchorEl, isCustomizeView ]);
+
+    /**
+     * Effect to monitor card content height and set scrolled state.
+     */
+    useEffect(() => {
+        const checkScrollState = () => {
+            if (cardContentRef.current) {
+                const { scrollHeight, clientHeight } = cardContentRef.current;
+
+                setIsScrolled(scrollHeight > clientHeight);
+            }
+        };
+
+        if (open && cardContentRef.current) {
+            checkScrollState();
+
+            // Create a ResizeObserver to monitor content size changes.
+            const resizeObserver: ResizeObserver = new ResizeObserver(checkScrollState);
+
+            resizeObserver.observe(cardContentRef.current);
+
+            return () => {
+                resizeObserver.disconnect();
+            };
+        }
+    }, [ open, isCustomizeView ]);
 
     /**
      * Build the list of all available screen types.
@@ -337,16 +366,18 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
      * @param event - The change event from the language text input.
      */
     const handleLanguageTextChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setLanguageTexts((prevTexts: { [key in PreviewScreenType]: Record<string, Record<string, string>> }) => ({
-            ...prevTexts,
-            [selectedScreenType.id]: {
-                ...prevTexts?.[selectedScreenType.id],
-                [selectedLanguage]: {
-                    ...prevTexts?.[selectedScreenType.id]?.[selectedLanguage],
-                    [i18nKeyInputValue]: event.target.value
+        if (selectedScreenType && i18nKeyInputValue && selectedLanguage) {
+            setLanguageTexts((prevTexts: { [key in PreviewScreenType]: Record<string, Record<string, string>> }) => ({
+                ...prevTexts,
+                [selectedScreenType.id]: {
+                    ...prevTexts?.[selectedScreenType.id],
+                    [selectedLanguage]: {
+                        ...prevTexts?.[selectedScreenType.id]?.[selectedLanguage],
+                        [i18nKeyInputValue]: event.target.value
+                    }
                 }
-            }
-        }));
+            }));
+        }
     };
 
     /**
@@ -623,7 +654,10 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                     ) }
                     className="card-header"
                 />
-                <CardContent className="card-content">
+                <CardContent
+                    ref={ cardContentRef }
+                    className={ classNames("card-content", { "scrolled": isScrolled }) }
+                >
                     { renderCardContent() }
                 </CardContent>
                 <CardActions className="card-actions">

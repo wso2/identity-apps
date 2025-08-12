@@ -112,7 +112,8 @@ const RichText: FunctionComponent<RichTextProps> = ({
     ToolbarProps,
     className,
     onChange,
-    resource
+    resource,
+    disabled
 }: RichTextProps): ReactElement => {
     const { t } = useTranslation();
 
@@ -130,7 +131,7 @@ const RichText: FunctionComponent<RichTextProps> = ({
     return (
         <LexicalComposer initialConfig={ editorConfig }>
             <div className={ classNames("OxygenRichText-root", className) } data-componentid={ componentId }>
-                <ToolbarPlugin { ...ToolbarProps } disabled={ isI18nPattern } />
+                <ToolbarPlugin { ...ToolbarProps } disabled={ isI18nPattern || disabled } />
                 <Paper className="OxygenRichText-editor-root" variant="outlined">
                     { isI18nPattern ? (
                         <div className="OxygenRichText-i18n-placeholder">
@@ -158,7 +159,7 @@ const RichText: FunctionComponent<RichTextProps> = ({
                             <AutoFocusPlugin />
                             <LinkPlugin />
                             <CustomLinkPlugin />
-                            <HTMLPlugin resource={ resource } onChange={ onChange } />
+                            <HTMLPlugin resource={ resource } onChange={ onChange } disabled={ disabled } />
                         </>
                     ) }
                 </Paper>

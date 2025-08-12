@@ -21,12 +21,20 @@ import IconButton from "@oxygen-ui/react/IconButton";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import { PlusIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, MutableRefObject, ReactElement, useRef, useState } from "react";
+import React, {
+    ChangeEvent,
+    FunctionComponent,
+    MutableRefObject,
+    ReactElement,
+    useMemo,
+    useRef,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { ToolbarPluginProps } from "./helper-plugins/toolbar-plugin";
 import RichText from "./rich-text";
 import { Resource } from "../../../models/resources";
-import I18nConfigurationCard from "../i18n-configuration-card";
+import I18nConfigurationCard, { LanguageTextFieldProps } from "../i18n-configuration-card";
 import "./rich-text-with-translation.scss";
 
 /**
@@ -52,6 +60,44 @@ export interface RichTextWithTranslationProps extends IdentifiableComponentInter
      */
     resource: Resource;
 }
+
+const TranslationRichText: FunctionComponent<LanguageTextFieldProps> = ({
+    onChange,
+    value,
+    disabled
+}: LanguageTextFieldProps): ReactElement => {
+    /**
+     * Resource object to hold the rich text editor content.
+     */
+    const resource: Resource = useMemo(() => {
+        return {
+            config: {
+                text: value || ""
+            }
+        } as Resource;
+    }, [ value ]);
+
+    /**
+     * Handles changes in the rich text editor.
+     *
+     * @param value - The new value of the rich text editor.
+     */
+    const handleRichTextChange = (value: string) => {
+        onChange({
+            target: {
+                value
+            }
+        } as ChangeEvent<HTMLInputElement>);
+    };
+
+    return (
+        <RichText
+            onChange={ handleRichTextChange }
+            resource={ resource }
+            disabled={ disabled }
+        />
+    );
+};
 
 /**
  * Rich text editor component with translation support.
@@ -102,6 +148,7 @@ const RichTextWithTranslation: FunctionComponent<RichTextWithTranslationProps> =
                                 : null
                         }
                         onChange={ (i18nKey: string) => onChange(i18nKey ? `{{${i18nKey}}}` : "") }
+                        LanguageTextField={ TranslationRichText }
                     />
                 )
             }
