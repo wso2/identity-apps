@@ -28,6 +28,7 @@ import Autocomplete, {
 import Box from "@oxygen-ui/react/Box";
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import Chip from "@oxygen-ui/react/Chip";
+import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Grid from "@oxygen-ui/react/Grid";
 import LinearProgress from "@oxygen-ui/react/LinearProgress";
@@ -74,7 +75,6 @@ import {
     getChildrenOfOrganization,
     updateTreeWithChildren
 } from "../../utils/shared-access";
-import CircularProgress from "@oxygen-ui/react/CircularProgress";
 
 interface OrgSelectiveShareWithSelectiveRolesEditProps extends IdentifiableComponentInterface {
     application: ApplicationInterface;
