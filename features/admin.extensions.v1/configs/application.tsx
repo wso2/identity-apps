@@ -192,7 +192,11 @@ export const applicationConfig: ApplicationConfig = {
                 return allowedTemplates.includes(templateId);
             },
             isMandateLinkedLocalAccountEnabled: (templateId: string): boolean => {
-                const allowedTemplates: string[] = [];
+                const allowedTemplates: string[] = [
+                    ApplicationManagementConstants.MOBILE,
+                    ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC,
+                    ApplicationManagementConstants.TRADITIONAL_WEB_APPLICATION_OIDC
+                ];
 
                 return allowedTemplates.includes(templateId);
             },

@@ -982,6 +982,7 @@ export interface ApplicationsNS {
                         mandateLocalAccount: {
                             hint: string;
                             label: string;
+                            unifiedHint: string;
                         };
                     };
                 };
@@ -1628,6 +1629,11 @@ export interface ApplicationsNS {
                             },
                             version200: {
                                 addAllRequestedClaimsInJWTAccessToken: {
+                                    instruction: string;
+                                }
+                            },
+                            version300: {
+                                linkedLocalAccountAttributeHandling: {
                                     instruction: string;
                                 }
                             }

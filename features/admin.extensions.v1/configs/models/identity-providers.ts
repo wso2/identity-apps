@@ -57,17 +57,26 @@ export interface IdentityProviderConfig {
         ) => ReactElement | null;
     };
     jitProvisioningSettings: {
-        menuItemName: string;
+        accountLinkingAttributesSection: {
+            show: boolean;
+        };
+        attributeSyncMethodField: {
+            show: boolean;
+        };
         enableAssociateLocalUserField: {
             show: boolean;
         },
         enableJitProvisioningField: {
             show: boolean;
         };
-        userstoreDomainField: {
+        menuItemName: string;
+        provisioningSchemeField: {
             show: boolean;
         };
-        provisioningSchemeField: {
+        skipJITForNoRuleMatchField: {
+            show: boolean;
+        };
+        userstoreDomainField: {
             show: boolean;
         };
     };
