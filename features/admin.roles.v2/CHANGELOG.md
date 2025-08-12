@@ -1,5 +1,17 @@
 # @wso2is/admin.roles.v2
 
+## 2.27.185
+
+### Patch Changes
+
+- [#8739](https://github.com/wso2/identity-apps/pull/8739) [`d8ed4a76981f4ec9815c9b9001ec5bf42edf7ec9`](https://github.com/wso2/identity-apps/commit/d8ed4a76981f4ec9815c9b9001ec5bf42edf7ec9) Thanks [@thiva-k](https://github.com/thiva-k)! - Fix swr handling of application roles in application section
+
+- Updated dependencies [[`16d9641a33d0b04d76d751a81c50ce3ed0dddb18`](https://github.com/wso2/identity-apps/commit/16d9641a33d0b04d76d751a81c50ce3ed0dddb18)]:
+  - @wso2is/i18n@2.30.0
+  - @wso2is/admin.agents.v1@1.0.30
+  - @wso2is/admin.core.v1@2.49.9
+  - @wso2is/admin.server-configurations.v1@2.35.22
+
 ## 2.27.184
 
 ### Patch Changes
