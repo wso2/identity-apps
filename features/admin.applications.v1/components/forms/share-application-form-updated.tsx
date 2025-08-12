@@ -572,6 +572,9 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
             );
         }
 
+        // Wait for sharing/unsharing to complete
+        await Promise.all(sharedPromises);
+
         // If there are any entries remaining in tempShareWithFutureChildOrgsMap, that means the user has only changed
         // the sharing policy of the existing organizations without adding or removing any organizations.
         // In that case, we need to update the sharing policy of those organizations.
@@ -607,24 +610,20 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 })
             };
 
-            sharedPromises.push(
-                shareApplicationWithSelectedOrganizationsAndRoles(data)
-                    .catch((error: Error) => {
-                        orgSharingSuccess = false;
+            try {
+                await shareApplicationWithSelectedOrganizationsAndRoles(data);
+            } catch (error) {
+                orgSharingSuccess = false;
 
-                        dispatch(addAlert({
-                            description: t("applications:edit.sections.sharedAccess.notifications.share." +
-                                "error.description",
-                            { error: error.message }),
-                            level: AlertLevels.ERROR,
-                            message: t("applications:edit.sections.sharedAccess.notifications.share.error.message")
-                        }));
-                    })
-            );
+                dispatch(addAlert({
+                    description: t("applications:edit.sections.sharedAccess.notifications.share." +
+                        "error.description",
+                    { error: error.message }),
+                    level: AlertLevels.ERROR,
+                    message: t("applications:edit.sections.sharedAccess.notifications.share.error.message")
+                }));
+            }
         }
-
-        // Wait for sharing/unsharing to complete
-        await Promise.all(sharedPromises);
 
         // If the org sharing was not successful, do not proceed with role patch operations
         if (!orgSharingSuccess) {
@@ -800,6 +799,9 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 });
         }
 
+        // Wait for sharing/unsharing to complete
+        await Promise.all(sharedPromises);
+
         // If there are any entries remaining in tempShareWithFutureChildOrgsMap, that means the user has only changed
         // the sharing policy of the existing organizations without adding or removing any organizations.
         // In that case, we need to update the sharing policy of those organizations.
@@ -823,24 +825,20 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 })
             };
 
-            sharedPromises.push(
-                shareApplicationWithSelectedOrganizationsAndRoles(data)
-                    .catch((error: Error) => {
-                        orgSharingSuccess = false;
+            try {
+                await shareApplicationWithSelectedOrganizationsAndRoles(data);
+            } catch (error) {
+                orgSharingSuccess = false;
 
-                        dispatch(addAlert({
-                            description: t("applications:edit.sections.sharedAccess.notifications.share." +
-                                "error.description",
-                            { error: error.message }),
-                            level: AlertLevels.ERROR,
-                            message: t("applications:edit.sections.sharedAccess.notifications.share.error.message")
-                        }));
-                    })
-            );
+                dispatch(addAlert({
+                    description: t("applications:edit.sections.sharedAccess.notifications.share." +
+                        "error.description",
+                    { error: error.message }),
+                    level: AlertLevels.ERROR,
+                    message: t("applications:edit.sections.sharedAccess.notifications.share.error.message")
+                }));
+            }
         }
-
-        // Wait for sharing/unsharing to complete
-        await Promise.all(sharedPromises);
 
         // If org sharing was successful, show success notification
         if (orgSharingSuccess) {
@@ -1355,10 +1353,17 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                                 setSelectedRoles={ setSelectedRoles }
                                                                 onRoleChange={ updateRoleSelectionForAllOrganizations }
                                                             />
+                                                            <Alert
+                                                                severity="info"
+                                                                className="mt-2 mb-2"
+                                                            >
+                                                                { t("consoleSettings:sharedAccess." +
+                                                                    "sharingRolesTakeTimeMessage") }
+                                                            </Alert>
                                                             <Typography
                                                                 variant="body1"
                                                                 marginBottom={ 1 }
-                                                                marginTop={ 2 }
+                                                                marginTop={ 1 }
                                                             >
                                                                 { t("applications:edit.sections.sharedAccess." +
                                                                     "individualRoleSharingLabel") }
