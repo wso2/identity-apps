@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.1
+
+### Patch Changes
+
+- [#8741](https://github.com/wso2/identity-apps/pull/8741) [`91477087e15cdf9b22d519e6151fb8d8a6c65156`](https://github.com/wso2/identity-apps/commit/91477087e15cdf9b22d519e6151fb8d8a6c65156) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update Add User Wizard to honor claim input type
+
 ## 2.30.0
 
 ### Minor Changes
