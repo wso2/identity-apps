@@ -33,6 +33,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Icon, Input } from "semantic-ui-react";
+import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { useOIDCScopesList } from "../api";
 import { OIDCScopeCreateWizard, OIDCScopeList } from "../components";
 import { OIDCScopesListInterface } from "../models";
@@ -85,6 +86,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     const [ sortOrder, setSortOrder ] = useState<"ASC" | "DESC">("ASC");
     const [ sortByStrategy, setSortByStrategy ] = useState<DropdownItemProps>(SORT_BY[ 0 ]);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const {
         data: scopeList,
@@ -178,7 +180,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
         <PageLayout
             pageTitle="Scopes"
             action={
-                !isScopeListFetchRequestLoading &&
+                !isScopeListFetchRequestLoading && !isSubOrganization() &&
                 (
                     <Show
                         when={ featureConfig?.applications?.scopes?.create }
