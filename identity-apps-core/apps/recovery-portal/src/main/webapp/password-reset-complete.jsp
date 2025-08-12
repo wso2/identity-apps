@@ -92,14 +92,13 @@
     String type = Encode.forJava(request.getParameter("type"));
     String orgId = request.getParameter("orgid");
     String username = null;
-    String tenantAwareUsername = null;
     String applicationName = null;
     boolean useRecoveryV2API = Boolean.parseBoolean((String)request.getAttribute("useRecoveryV2API"));
     String tenantDomainFromQuery = request.getParameter("tenantDomainFromQuery");
     if (StringUtils.isNotBlank(tenantDomainFromQuery)) {
         tenantDomain = tenantDomainFromQuery;
     }
-
+    String cookieDomain = application.getInitParameter(AUTO_LOGIN_COOKIE_DOMAIN);
     PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
     ApplicationDataRetrievalClient applicationDataRetrieval = new ApplicationDataRetrievalClient();
     Boolean isAutoLoginEnable = preferenceRetrievalClient.checkAutoLoginAfterPasswordRecoveryEnabled(tenantDomain);
@@ -172,6 +171,13 @@
             resetRequest.setFlowConfirmationCode(flowConfirmationCode);
             resetRequest.setPassword(request.getParameter("reset-password"));
             ResetResponse resetResponse = recoveryApiV2.resetUserPassword(resetRequest, tenantDomain, requestHeaders);
+            if (StringUtils.isBlank(username)) {
+                username = (String) request.getParameter("username");
+            }
+            if (isAutoLoginEnable && StringUtils.isNotBlank(username) && StringUtils.isNotBlank(tenantDomain)) {
+                handleAutoLogin(request, response, username, userStoreDomain, tenantDomain, 
+                    AUTO_LOGIN_FLOW_TYPE, AUTO_LOGIN_COOKIE_NAME, cookieDomain);
+            }
         } catch (ApiException e) {
             if (!StringUtils.isBlank(username)) {
                 request.setAttribute("username", username);
@@ -214,28 +220,8 @@
             userStoreDomain = user.getRealm();
 
             if (isAutoLoginEnable) {
-                if (StringUtils.isNotBlank(userStoreDomain)) {
-                    tenantAwareUsername = userStoreDomain + "/" + username + "@" + tenantDomain;
-                }
-
-                String cookieDomain = application.getInitParameter(AUTO_LOGIN_COOKIE_DOMAIN);
-                JSONObject contentValueInJson = new JSONObject();
-                contentValueInJson.put("username", tenantAwareUsername);
-                contentValueInJson.put("createdTime", System.currentTimeMillis());
-                contentValueInJson.put("flowType", AUTO_LOGIN_FLOW_TYPE);
-                if (StringUtils.isNotBlank(cookieDomain)) {
-                    contentValueInJson.put("domain", cookieDomain);
-                }
-                String content = contentValueInJson.toString();
-
-                JSONObject cookieValueInJson = new JSONObject();
-                cookieValueInJson.put("content", content);
-                String signature = Base64.getEncoder().encodeToString(IdentityUtil.signWithTenantKey(content, tenantDomain));
-                cookieValueInJson.put("signature", signature);
-                String cookieValue = Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes());
-
-                IdentityManagementEndpointUtil.setCookie(request, response, AUTO_LOGIN_COOKIE_NAME, cookieValue,
-                    300, SameSiteCookie.NONE, "/", cookieDomain);
+                handleAutoLogin(request, response, username, userStoreDomain, tenantDomain, 
+                    AUTO_LOGIN_FLOW_TYPE, AUTO_LOGIN_COOKIE_NAME, cookieDomain);
             }
         } catch (ApiException e) {
 
@@ -296,6 +282,36 @@
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL),
                 tenantDomain);
         return StringUtils.equals(callback, userPortalUrl);
+    }
+
+    private void handleAutoLogin(HttpServletRequest request, HttpServletResponse response,
+                                String username, String userStoreDomain, String tenantDomain,
+                                String autoLoginFlowType, String autoLoginCookieName, 
+                                String cookieDomain) throws Exception {
+        
+        String tenantAwareUsername;
+        if (StringUtils.isNotBlank(userStoreDomain)) {
+            tenantAwareUsername = userStoreDomain + "/" + username + "@" + tenantDomain;
+        } else {
+            tenantAwareUsername = username + "@" + tenantDomain;
+        }
+        JSONObject contentValueInJson = new JSONObject();
+        contentValueInJson.put("username", tenantAwareUsername);
+        contentValueInJson.put("createdTime", System.currentTimeMillis());
+        contentValueInJson.put("flowType", autoLoginFlowType);
+        if (StringUtils.isNotBlank(cookieDomain)) {
+            contentValueInJson.put("domain", cookieDomain);
+        }
+        String content = contentValueInJson.toString();
+
+        JSONObject cookieValueInJson = new JSONObject();
+        cookieValueInJson.put("content", content);
+        String signature = Base64.getEncoder().encodeToString(IdentityUtil.signWithTenantKey(content, tenantDomain));
+        cookieValueInJson.put("signature", signature);
+        String cookieValue = Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes());
+
+        IdentityManagementEndpointUtil.setCookie(request, response, autoLoginCookieName, cookieValue, 
+            300, SameSiteCookie.NONE, "/", cookieDomain);
     }
 %>
 
