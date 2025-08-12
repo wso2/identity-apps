@@ -18,7 +18,7 @@
 
 import FormControl from "@oxygen-ui/react/FormControl";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
-import FormLabel from "@oxygen-ui/react/FormLabel";
+import InputLabel from "@oxygen-ui/react/InputLabel";
 import MuiRadio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import useGetAllLocalClaims from "@wso2is/admin.claims.v1/api/use-get-all-local-claims";
@@ -1426,11 +1426,15 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                             { !hiddenFields.includes(HiddenFieldNames.PASSWORD) && (
                                 <Grid.Row>
                                     <Grid.Column mobile={ 16 } computer={ 10 }>
+                                        <InputLabel
+                                            id="pw-options-radio-buttons-group-label"
+                                            htmlFor="pw-options-radio-buttons-group"
+                                        >
+                                            { t("user:forms.addUserForm.buttons.radioButton.label") }
+                                        </InputLabel>
                                         <FormControl>
-                                            <FormLabel id="pw-options-radio-buttons-group-label">
-                                                { t("user:forms.addUserForm.buttons.radioButton.label") }
-                                            </FormLabel>
                                             <RadioGroup
+                                                id="pw-options-radio-buttons-group"
                                                 aria-labelledby="pw-options-radio-buttons-group-label"
                                                 name="handlePasswordGroup"
                                                 defaultValue={ passwordOption }
