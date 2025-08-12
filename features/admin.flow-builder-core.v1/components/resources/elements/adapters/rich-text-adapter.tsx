@@ -19,7 +19,8 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import DOMPurify from "dompurify";
 import parse from "html-react-parser";
-import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
+import PlaceholderComponent from "./placeholder-component";
 import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 import "./rich-text-adapter.scss";
 
@@ -48,32 +49,15 @@ export type RichTextAdapterPropsInterface = IdentifiableComponentInterface & Com
 const RichTextAdapter: FunctionComponent<RichTextAdapterPropsInterface> = ({
     resource
 }: RichTextAdapterPropsInterface): ReactElement => {
-    /**
-     * Check if the resource.config.text matches the i18n pattern.
-     */
-    const isI18nPattern: boolean = useMemo(() => {
-        if (!resource?.config?.text) return false;
-
-        const i18nPattern: RegExp = /^\{\{[^}]+\}\}$/;
-
-        return i18nPattern.test(resource.config.text.trim());
-    }, [ resource?.config?.text ]);
-
     const sanitizedHtml: string = DOMPurify.sanitize(resource?.config?.text || "", {
         ADD_ATTR: [ "target" ]
     });
 
     return (
         <div className="rich-text-content">
-            { isI18nPattern ? (
-                <div className="rich-text-i18n-placeholder">
-                    <span className="rich-text-i18n-placeholder-key">
-                        { resource.config.text }
-                    </span>
-                </div>
-            ) : (
-                parse(sanitizedHtml)
-            ) }
+            <PlaceholderComponent value={ resource?.config?.text }>
+                { parse(sanitizedHtml) }
+            </PlaceholderComponent>
         </div>
     );
 };

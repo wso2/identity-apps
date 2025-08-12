@@ -24,6 +24,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { CommonElementFactoryPropsInterface } from "../../common-element-factory";
 import Hint from "../../hint";
+import PlaceholderComponent from "../placeholder-component";
 
 /**
  * Props interface of {@link OTPInputAdapter}
@@ -42,7 +43,9 @@ export const OTPInputAdapter: FunctionComponent<OTPInputAdapterPropsInterface> =
     return (
         <div className={ resource.config?.className }>
             <InputLabel htmlFor="otp-input-adapter" required={ resource.config?.required } disableAnimation>
-                { resource.config?.label }
+                {
+                    <PlaceholderComponent value={ resource.config?.label } />
+                }
             </InputLabel>
             <Box display="flex" flexDirection="row" gap={ 1 }>
                 { [ ...Array(6) ].map((_: number, index: number) => (
