@@ -172,7 +172,7 @@
             resetRequest.setPassword(request.getParameter("reset-password"));
             ResetResponse resetResponse = recoveryApiV2.resetUserPassword(resetRequest, tenantDomain, requestHeaders);
             if (StringUtils.isBlank(username)) {
-                username = (String) request.getParameter("username");
+                username = Encode.forJava(request.getParameter("username"));
             }
             if (isAutoLoginEnable && StringUtils.isNotBlank(username) && StringUtils.isNotBlank(tenantDomain)) {
                 handleAutoLogin(request, response, username, userStoreDomain, tenantDomain, 
@@ -284,10 +284,12 @@
         return StringUtils.equals(callback, userPortalUrl);
     }
 
-    private void handleAutoLogin(HttpServletRequest request, HttpServletResponse response,
-                                String username, String userStoreDomain, String tenantDomain,
-                                String autoLoginFlowType, String autoLoginCookieName, 
-                                String cookieDomain) throws Exception {
+    private void handleAutoLogin(
+        HttpServletRequest request, HttpServletResponse response,
+        String username, String userStoreDomain, String tenantDomain,
+        String autoLoginFlowType, String autoLoginCookieName, 
+        String cookieDomain
+    ) throws Exception {
         
         String tenantAwareUsername;
         if (StringUtils.isNotBlank(userStoreDomain)) {
