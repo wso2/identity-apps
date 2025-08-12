@@ -104,7 +104,7 @@ import {
     isFieldDisplayableInUserCreationWizard,
     normalizeLocaleFormat
 } from "../../../utils";
-import "../add-user-basic.scss";
+import "./add-user-basic/add-user-basic.scss";
 
 /**
  * Proptypes for the add user component.
