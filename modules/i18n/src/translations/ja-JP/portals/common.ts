@@ -118,6 +118,7 @@ export const common: CommonNS = {
         "title": "承認"
     },
     "approve": "承認する",
+    "approved": "承認済み",
     "apps": "アプリ",
     "assignee": "譲受人",
     "assignees": "譲受人",
@@ -238,6 +239,7 @@ export const common: CommonNS = {
     "regenerate": "再生",
     "register": "登録する",
     "reject": "拒否する",
+    "rejected": "拒否されました",
     "release": "リリース",
     "remove": "取り除く",
     "removeAll": "すべて削除する",

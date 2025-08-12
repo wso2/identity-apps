@@ -290,7 +290,21 @@ export interface CustomAuthConnectionInterface extends ConnectionInterface {
  * Captures the properties of a external endpoint associated with the authenticator.
  */
 export interface ExternalEndpoint {
+    /**
+     * The external endpoint URI.
+     */
     uri?: string;
+    /**
+     * Allowed request headers to be shared with the endpoint.
+     */
+    allowedHeaders?: string[];
+    /**
+     * Allowed request parameters to be shared with the endpoint.
+     */
+    allowedParameters?: string[];
+    /**
+     * Authentication configurations of the endpoint.
+     */
     authentication?: ExternalEndpointAuthentication
 }
 

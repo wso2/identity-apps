@@ -1,5 +1,15 @@
 # @wso2is/admin.workflow-requests.v1
 
+## 1.0.2
+
+### Patch Changes
+
+- [#8709](https://github.com/wso2/identity-apps/pull/8709) [`2aea1d23348890d936a35dc3ed7b57c6383c594b`](https://github.com/wso2/identity-apps/commit/2aea1d23348890d936a35dc3ed7b57c6383c594b) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix workflow request view issue
+
+- Updated dependencies [[`3bd7ab28cdcc2a312da7de834793fec190706641`](https://github.com/wso2/identity-apps/commit/3bd7ab28cdcc2a312da7de834793fec190706641), [`dda87f32ccc576670afb8ad197b1d9d239f1207d`](https://github.com/wso2/identity-apps/commit/dda87f32ccc576670afb8ad197b1d9d239f1207d)]:
+  - @wso2is/i18n@2.28.2
+  - @wso2is/admin.core.v1@2.49.3
+
 ## 1.0.1
 
 ### Patch Changes

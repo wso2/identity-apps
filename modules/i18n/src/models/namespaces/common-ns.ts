@@ -32,6 +32,8 @@ export interface CommonNS {
     applications: string;
     approvalStatus: string;
     approve: string;
+    approved: string;
+    rejected: string;
     approvals: string;
     approvalsPage: {
         list: {
