@@ -127,7 +127,7 @@ interface LegacyAddUserProps extends IdentifiableComponentInterface {
     isBasicDetailsLoading?: boolean;
     setBasicDetailsLoading?: (toggle: boolean) => void;
     selectedUserStoreId: string;
-    connectorProperties?: ConnectorPropertyInterface[];
+    connectorProperties: ConnectorPropertyInterface[];
 }
 
 /**

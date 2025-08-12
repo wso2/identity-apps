@@ -109,7 +109,7 @@ import "./add-user-basic.scss";
 /**
  * Proptypes for the add user component.
  */
-interface LegacyAddUserProps extends IdentifiableComponentInterface {
+interface AddUserBasicProps extends IdentifiableComponentInterface {
     initialValues: any;
     triggerSubmit: boolean;
     emailVerificationEnabled: boolean;
@@ -127,7 +127,7 @@ interface LegacyAddUserProps extends IdentifiableComponentInterface {
     isBasicDetailsLoading?: boolean;
     setBasicDetailsLoading?: (toggle: boolean) => void;
     selectedUserStoreId: string;
-    connectorProperties?: ConnectorPropertyInterface[];
+    connectorProperties: ConnectorPropertyInterface[];
 }
 
 /**
@@ -135,8 +135,8 @@ interface LegacyAddUserProps extends IdentifiableComponentInterface {
  *
  * @returns ReactElement
  */
-export const LegacyAddUser: React.FunctionComponent<LegacyAddUserProps> = (
-    props: LegacyAddUserProps): ReactElement => {
+export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = (
+    props: AddUserBasicProps): ReactElement => {
 
     const {
         initialValues,
