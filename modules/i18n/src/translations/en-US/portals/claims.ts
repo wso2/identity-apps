@@ -386,7 +386,8 @@ export const claims: ClaimsNS = {
                 title: {
                     dialect: "Add an Attribute Mapping",
                     external: "Add an {{type}} Attribute",
-                    local: "Add an Attribute"
+                    local: "Add an Attribute",
+                    readOnlyDialect: "No {{type}} Attributes Added"
                 }
             },
             emptySearch: {
