@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.1.1
+
+### Patch Changes
+
+- [#8740](https://github.com/wso2/identity-apps/pull/8740) [`6170e8dbca56f01e72a4356243c796230d6ae6d5`](https://github.com/wso2/identity-apps/commit/6170e8dbca56f01e72a4356243c796230d6ae6d5) Thanks [@ThaminduR](https://github.com/ThaminduR)! - remove unnecessary tag
+
 ## 3.1.0
 
 ### Minor Changes
