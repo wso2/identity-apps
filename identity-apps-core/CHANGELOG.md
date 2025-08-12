@@ -1,5 +1,15 @@
 # @wso2is/identity-apps-core
 
+## 3.1.0
+
+### Minor Changes
+
+- [#8736](https://github.com/wso2/identity-apps/pull/8736) [`e2d53eaf3a8c4d6bda03af358535864ce5c198d6`](https://github.com/wso2/identity-apps/commit/e2d53eaf3a8c4d6bda03af358535864ce5c198d6) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add i18n support for flow builder
+
+### Patch Changes
+
+- [#8732](https://github.com/wso2/identity-apps/pull/8732) [`6bbf769be9ee028324be7d04419557fa4124fce5`](https://github.com/wso2/identity-apps/commit/6bbf769be9ee028324be7d04419557fa4124fce5) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Handle auto login
+
 ## 3.0.2
 
 ### Patch Changes
