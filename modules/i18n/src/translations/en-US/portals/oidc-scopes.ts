@@ -250,6 +250,8 @@ export const oidcScopes: oidcScopesNS = {
             title: "No results found"
         }
     },
+    updateScope: "Update Scope",
+    viewScope: "View Scope",
     wizards: {
         addScopeWizard: {
             buttons: {
