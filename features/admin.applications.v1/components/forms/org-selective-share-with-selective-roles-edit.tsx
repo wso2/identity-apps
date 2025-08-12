@@ -16,11 +16,12 @@
  * under the License.
  */
 
-import { AutocompleteChangeDetails, AutocompleteChangeReason } from "@mui/material";
 import { TreeViewBaseItem } from "@mui/x-tree-view/models";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import Alert from "@oxygen-ui/react/Alert";
 import Autocomplete, {
+    AutocompleteChangeDetails,
+    AutocompleteChangeReason,
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
 } from "@oxygen-ui/react/Autocomplete";
@@ -73,6 +74,7 @@ import {
     getChildrenOfOrganization,
     updateTreeWithChildren
 } from "../../utils/shared-access";
+import CircularProgress from "@oxygen-ui/react/CircularProgress";
 
 interface OrgSelectiveShareWithSelectiveRolesEditProps extends IdentifiableComponentInterface {
     application: ApplicationInterface;
@@ -149,6 +151,7 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
     // Fetch all the organizations that the application is shared with.
     const {
         data: totalApplicationOrganizations,
+        isLoading: isTotalApplicationOrganizationsFetchRequestLoading,
         error:  totalApplicationOrganizationsFetchRequestError
     } = useGetApplicationShare(
         application?.id,
@@ -162,6 +165,7 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
     // This will fetch the roles that are available for the application to share with the organizations.
     const {
         data: originalApplicationRoles,
+        isLoading: isApplicationRolesFetchRequestLoading,
         error: applicationRolesFetchRequestError
     } = useGetApplicationRolesByAudience(
         applicationAudience,
@@ -221,6 +225,9 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
         null,
         "sharingMode"
     );
+
+    const isLoading: boolean = isTotalApplicationOrganizationsFetchRequestLoading ||
+            isApplicationRolesFetchRequestLoading;
 
     // Used to tick shared orgs from the total organization tree
     useEffect(() => {
@@ -1155,104 +1162,114 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
             className="roles-selective-share-container"
         >
             {
-                organizationTree.length > 0
-                    ? (
-                        <>
-                            <Grid
-                                xs={ 12 }
-                                md={ 4 }
-                                padding={ 1 }
-                                className="roles-selective-share-left-panel"
-                                id="scrollableOrgContainer"
-                            >
-                                <InfiniteScroll
-                                    dataLength={ organizationTree.length }
-                                    next={ loadMoreOrganizations }
-                                    hasMore={ isNextPageAvailable }
-                                    loader={ (<LinearProgress/>) }
-                                    scrollableTarget="scrollableOrgContainer"
-                                >
-                                    <RichTreeView
-                                        data-componentid={ `${ componentId }-tree-view` }
-                                        className="roles-selective-share-tree-view"
-                                        items={ organizationTree }
-                                        expandedItems={ expandedItems }
-                                        expansionTrigger={ shareType === ShareType.SHARE_ALL
-                                            ? "content"
-                                            : "iconContainer"
-                                        }
-                                        onItemExpansionToggle={ (
-                                            _e: SyntheticEvent,
-                                            itemId: string,
-                                            expanded: boolean
-                                        ) => {
-                                            if (expanded) {
-                                                setExpandedOrgId(itemId);
-                                                setExpandedItems((prev: string[]) => [ ...prev, itemId ]);
-                                            } else {
-                                                setExpandedItems((prev: string[]) =>
-                                                    prev.filter((id: string) => id !== itemId));
-                                                collapseChildNodes(itemId);
-                                            }
-                                        } }
-                                        onItemSelectionToggle={ (
-                                            _e: SyntheticEvent,
-                                            itemId: string,
-                                            isSelected: boolean
-                                        ) =>
-                                            resolveSelectedItems(itemId, isSelected) }
-                                        onItemClick={ (_e: SyntheticEvent, itemId: string) => {
-                                            setSelectedOrgId(itemId);
-                                        } }
-                                        selectedItems={ selectedItems }
-                                        checkboxSelection={ shareType !== ShareType.SHARE_ALL }
-                                        disableSelection={ shareType === ShareType.SHARE_ALL }
-                                        multiSelect={ shareType !== ShareType.SHARE_ALL }
-                                        selectionPropagation={ {
-                                            descendants: false,
-                                            parents: false
-                                        } }
-                                    />
-                                </InfiniteScroll>
-                            </Grid>
-                            <AnimatePresence mode="wait">
-                                <Grid
-                                    xs={ 12 }
-                                    md={ 8 }
-                                    paddingX={ 2 }
-                                    paddingY={ 1 }
-                                    className="roles-selective-share-right-panel"
-                                >
-                                    <Box
-                                        className="role-list-container"
-                                    >
-                                        { resolveRoleSelectionPane() }
-                                    </Box>
-
-                                </Grid>
-                            </AnimatePresence>
-                        </>
-                    ) : (
+                isLoading ? (
+                    <Grid
+                        container
+                        xs={ 12 }
+                        padding={ 1 }
+                        className="roles-selective-share-left-panel"
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <CircularProgress size={ 30 } />
+                    </Grid>
+                ) : organizationTree.length > 0 ? (
+                    <>
                         <Grid
                             xs={ 12 }
+                            md={ 4 }
                             padding={ 1 }
-                            className="roles-selective-share-all-roles"
+                            className="roles-selective-share-left-panel"
                             id="scrollableOrgContainer"
                         >
-                            <Box
-                                data-componentid={ `${ componentId }-no-orgs` }
-                                display="flex"
-                                flexDirection="column"
-                                justifyContent="center"
-                                alignItems="center"
-                                height="100%"
+                            <InfiniteScroll
+                                dataLength={ organizationTree.length }
+                                next={ loadMoreOrganizations }
+                                hasMore={ isNextPageAvailable }
+                                loader={ (<LinearProgress/>) }
+                                scrollableTarget="scrollableOrgContainer"
                             >
-                                <Typography variant="body1">
-                                    { t("organizations:placeholders.emptyList.subtitles.0") }
-                                </Typography>
-                            </Box>
+                                <RichTreeView
+                                    data-componentid={ `${ componentId }-tree-view` }
+                                    className="roles-selective-share-tree-view"
+                                    items={ organizationTree }
+                                    expandedItems={ expandedItems }
+                                    expansionTrigger={ shareType === ShareType.SHARE_ALL
+                                        ? "content"
+                                        : "iconContainer"
+                                    }
+                                    onItemExpansionToggle={ (
+                                        _e: SyntheticEvent,
+                                        itemId: string,
+                                        expanded: boolean
+                                    ) => {
+                                        if (expanded) {
+                                            setExpandedOrgId(itemId);
+                                            setExpandedItems((prev: string[]) => [ ...prev, itemId ]);
+                                        } else {
+                                            setExpandedItems((prev: string[]) =>
+                                                prev.filter((id: string) => id !== itemId));
+                                            collapseChildNodes(itemId);
+                                        }
+                                    } }
+                                    onItemSelectionToggle={ (
+                                        _e: SyntheticEvent,
+                                        itemId: string,
+                                        isSelected: boolean
+                                    ) =>
+                                        resolveSelectedItems(itemId, isSelected) }
+                                    onItemClick={ (_e: SyntheticEvent, itemId: string) => {
+                                        setSelectedOrgId(itemId);
+                                    } }
+                                    selectedItems={ selectedItems }
+                                    checkboxSelection={ shareType !== ShareType.SHARE_ALL }
+                                    disableSelection={ shareType === ShareType.SHARE_ALL }
+                                    multiSelect={ shareType !== ShareType.SHARE_ALL }
+                                    selectionPropagation={ {
+                                        descendants: false,
+                                        parents: false
+                                    } }
+                                />
+                            </InfiniteScroll>
                         </Grid>
-                    )
+                        <AnimatePresence mode="wait">
+                            <Grid
+                                xs={ 12 }
+                                md={ 8 }
+                                paddingX={ 2 }
+                                paddingY={ 1 }
+                                className="roles-selective-share-right-panel"
+                            >
+                                <Box
+                                    className="role-list-container"
+                                >
+                                    { resolveRoleSelectionPane() }
+                                </Box>
+
+                            </Grid>
+                        </AnimatePresence>
+                    </>
+                ) : (
+                    <Grid
+                        xs={ 12 }
+                        padding={ 1 }
+                        className="roles-selective-share-all-roles"
+                        id="scrollableOrgContainer"
+                    >
+                        <Box
+                            data-componentid={ `${ componentId }-no-orgs` }
+                            display="flex"
+                            flexDirection="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            height="100%"
+                        >
+                            <Typography variant="body1">
+                                { t("organizations:placeholders.emptyList.subtitles.0") }
+                            </Typography>
+                        </Box>
+                    </Grid>
+                )
             }
         </Grid>
     );
