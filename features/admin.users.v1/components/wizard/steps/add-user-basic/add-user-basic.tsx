@@ -16,33 +16,19 @@
  * under the License.
  */
 
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableRow from "@mui/material/TableRow";
-import Chip from "@oxygen-ui/react/Chip";
-import OxygenGrid from "@oxygen-ui/react/Grid";
-import IconButton from "@oxygen-ui/react/IconButton";
-import Paper from "@oxygen-ui/react/Paper";
+import FormControl from "@oxygen-ui/react/FormControl";
+import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
+import FormLabel from "@oxygen-ui/react/FormLabel";
+import MuiRadio from "@oxygen-ui/react/Radio";
+import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import useGetAllLocalClaims from "@wso2is/admin.claims.v1/api/use-get-all-local-claims";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
-import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
-import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
 import { userConfig } from "@wso2is/admin.extensions.v1/configs/user";
-import { OperationValueInterface } from "@wso2is/admin.roles.v2/models/roles";
-import {
-    ServerConfigurationsConstants
-} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
-import {
-    VerificationOption
-} from "@wso2is/admin.server-configurations.v1/models/ask-password";
 import { ConnectorPropertyInterface } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { useGetUserStore } from "@wso2is/admin.userstores.v1/api/use-get-user-store";
 import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants";
@@ -60,50 +46,57 @@ import {
     ProfileSchemaInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { CommonUtils, ProfileUtils } from "@wso2is/core/utils";
-import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { SupportedLanguagesMeta } from "@wso2is/i18n";
-import { Button, Hint, Link, PasswordValidation, Popup } from "@wso2is/react-components";
-import { FormValidation } from "@wso2is/validation";
+import { ProfileUtils } from "@wso2is/core/utils";
+import {
+    AnyObject,
+    FinalForm,
+    FinalFormField,
+    FormRenderProps,
+    SelectFieldAdapter,
+    TextFieldAdapter
+} from "@wso2is/form";
+import { FormSpy } from "@wso2is/form/src";
+import { FormValue } from "@wso2is/forms";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     MutableRefObject,
     ReactElement,
     ReactNode,
-    useCallback,
     useEffect,
     useMemo,
     useRef,
     useState
 } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { FormSpyRenderProps } from "react-final-form";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon, Menu, Message, Radio } from "semantic-ui-react";
+import { DropdownItemProps, Grid } from "semantic-ui-react";
+import AskPasswordOption from "./ask-password-option";
+import CreatePasswordOption from "./create-password-option";
+import DynamicFieldRenderer from "./dynamic-field-renderer";
+import MultiValuedEmailField from "./multi-valued-email-field";
+import MultiValuedMobileField from "./multi-valued-mobile-field";
 import { getUsersList } from "../../../../api/users";
 import {
     AskPasswordOptionTypes,
     AttributeDataType,
     HiddenFieldNames,
-    LocaleJoiningSymbol,
     PasswordOptionTypes,
     UserManagementConstants
 } from "../../../../constants";
 import {
     BasicUserDetailsInterface,
-    SchemaAttributeValueInterface,
     SubValueInterface,
     UserListInterface
 } from "../../../../models/user";
 import {
-    constructPatchOpValueForMultiValuedAttribute,
-    generatePassword,
     getConfiguration,
     getDisplayOrder,
     getUsernameConfiguration,
-    isFieldDisplayableInUserCreationWizard,
-    normalizeLocaleFormat
+    isFieldDisplayableInUserCreationWizard
 } from "../../../../utils";
+
 import "./add-user-basic.scss";
 
 /**
@@ -123,7 +116,7 @@ interface AddUserBasicProps extends IdentifiableComponentInterface {
     setAskPasswordFromUser?: (toggle: boolean) => void;
     setOfflineUser?: (toggle: boolean) => void;
     selectedUserStore?: string;
-    setSelectedUserStore?: (selectedUserStore: string) => void;
+    setSelectedUserStore: (selectedUserStore: string) => void;
     isBasicDetailsLoading?: boolean;
     setBasicDetailsLoading?: (toggle: boolean) => void;
     selectedUserStoreId: string;
@@ -135,30 +128,26 @@ interface AddUserBasicProps extends IdentifiableComponentInterface {
  *
  * @returns ReactElement
  */
-export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = (
-    props: AddUserBasicProps): ReactElement => {
-
-    const {
-        initialValues,
-        triggerSubmit,
-        emailVerificationEnabled,
-        onSubmit,
-        isUserstoreRequired,
-        passwordOption,
-        setUserSummaryEnabled,
-        setAskPasswordFromUser,
-        selectedUserStore,
-        setPasswordOption,
-        setSelectedUserStore,
-        setOfflineUser,
-        isBasicDetailsLoading,
-        setBasicDetailsLoading,
-        validationConfig,
-        selectedUserStoreId,
-        connectorProperties,
-        [ "data-componentid" ]: componentId = "add-user-basic"
-    } = props;
-
+export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
+    initialValues,
+    triggerSubmit,
+    emailVerificationEnabled,
+    onSubmit,
+    isUserstoreRequired,
+    passwordOption,
+    setUserSummaryEnabled,
+    setAskPasswordFromUser,
+    selectedUserStore,
+    setPasswordOption,
+    setSelectedUserStore,
+    setOfflineUser,
+    setBasicDetailsLoading,
+    validationConfig,
+    selectedUserStoreId,
+    isBasicDetailsLoading,
+    connectorProperties,
+    [ "data-componentid" ]: componentId = "add-user-basic"
+}: AddUserBasicProps): ReactElement => {
     const { t } = useTranslation();
 
     const { UIConfig } = useUIConfig();
@@ -169,21 +158,14 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = (
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector(
         (state: AppState) => state.profile.profileSchemas);
-    const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
-        (state: AppState) => state.global.supportedI18nLanguages);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
     const systemReservedUserStores: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.systemReservedUserStores);
 
     const [ askPasswordOption, setAskPasswordOption ] = useState<string>(userConfig.defautlAskPasswordOption);
-    const [ askPasswordVerificationOption, setAskPasswordVerificationOption ] =
-        useState<VerificationOption>(VerificationOption.EMAIL_LINK);
-    const [ password, setPassword ] = useState<string>(initialValues?.newPassword ?? "");
     const [ passwordConfig, setPasswordConfig ] = useState<ValidationFormInterface>(undefined);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
-    const [ isValidPassword, setIsValidPassword ] = useState<boolean>(true);
-    const [ randomPassword, setRandomPassword ] = useState<string>(undefined);
     const [ userStore, setUserStore ] = useState<string>(selectedUserStoreId);
     const [ isValidEmail, setIsValidEmail ] = useState<boolean>(false);
     const [ isEmailFilled, setIsEmailFilled ] = useState<boolean>(false);
@@ -192,26 +174,18 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = (
     const [ isLastNameRequired, setLastNameRequired ] = useState<boolean>(true);
     const [ isEmailRequired, setEmailRequired ] = useState<boolean>(false);
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchemaInterface[]>();
-    const [ multiValuedInputFieldValue, setMultiValuedInputFieldValue ] = useState<Record<string, string>>({});
     const [ multiValuedAttributeValues, setMultiValuedAttributeValues ] =
         useState<Record<string, string[]>>({});
     const [ primaryValues, setPrimaryValues ] = useState<Record<string, string>>({});
-    const [ isMultiValuedItemInvalid, setIsMultiValuedItemInvalid ] =  useState<Record<string, boolean>>({});
     const [ simpleMultiValuedExtendedProfileSchema, setSimpleMultiValuedExtendedProfileSchema ]
         = useState<ProfileSchemaInterface[]>();
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
 
-    const formBottomRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
-    const emailRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
+    const triggerSubmitRef: MutableRefObject<boolean> = useRef<boolean>(triggerSubmit);
 
-    /**
-     * This will add role attribute to countries search input to prevent autofill suggestions.
-     */
-    const onCountryRefChange: any = useCallback((node: any) => {
-        if (node !== null) {
-            node.children[0].children[1].children[0].role = "presentation";
-        }
-    }, []);
+    let formSubmit: (
+        event?: Partial<Pick<React.SyntheticEvent, "preventDefault" | "stopPropagation">>
+    ) => Promise<AnyObject | undefined> | undefined;
 
     const isDistinctAttributeProfilesDisabled: boolean = featureConfig?.attributeDialects?.disabledFeatures?.includes(
         ClaimManagementConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG
@@ -264,15 +238,19 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = (
             minLength: usernameConfig?.minLength
         });
 
-    const eventPublisher: EventPublisher = EventPublisher.getInstance();
-
-    // Hook to get the userstore details of the selected userstore.
+    /**
+     * Fetch the details of the selected user store.
+     * The user store details will be used to derive validation regex for the username/password.
+     */
     const {
-        data: originalUserStore
-    } = useGetUserStore(
-        userStore
-    );
+        data: originalUserStore,
+        isLoading: isUserStoreLoading,
+        isValidating: isUserStoreValidating
+    } = useGetUserStore(userStore);
 
+    /**
+     * Fetch all the local claims.
+     */
     const {
         data: fetchedAttributes,
         error: attributesRequestError,
@@ -299,8 +277,6 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = (
             ));
         }
     }, [ attributesRequestError ]);
-
-    const countryList: DropdownItemProps[] = useMemo(() => CommonUtils.getCountryList(), []);
 
     const userStoreUsernameRegEx: string = useMemo(() => {
         if (originalUserStore) {
@@ -366,32 +342,13 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = (
         resolveNamefieldAttributes();
     }, []);
 
-    /**
-     * Process connector properties to determine ask password verification option.
-     */
     useEffect(() => {
-        if (!connectorProperties) {
-            return;
+        if (!triggerSubmitRef.current && triggerSubmit) {
+            formSubmit();
         }
 
-        const emailOTPConnector: ConnectorPropertyInterface = connectorProperties.find(
-            (property: ConnectorPropertyInterface) =>
-                property.name === ServerConfigurationsConstants.ASK_PASSWORD_EMAIL_OTP
-        );
-
-        const smsOTPConnector: ConnectorPropertyInterface = connectorProperties.find(
-            (property: ConnectorPropertyInterface) =>
-                property.name === ServerConfigurationsConstants.ASK_PASSWORD_SMS_OTP
-        );
-
-        if (smsOTPConnector?.value === "true") {
-            setAskPasswordVerificationOption(VerificationOption.SMS_OTP);
-        } else if (emailOTPConnector?.value === "true") {
-            setAskPasswordVerificationOption(VerificationOption.EMAIL_OTP);
-        } else {
-            setAskPasswordVerificationOption(VerificationOption.EMAIL_LINK);
-        }
-    }, [ connectorProperties ]);
+        triggerSubmitRef.current = triggerSubmit;
+    }, [ triggerSubmit ]);
 
     /**
      *
@@ -582,71 +539,11 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = (
     };
 
     /**
-     * Get the message icon based on the verification option.
-     *
-     * @returns The icon name for the message.
-     */
-    const getMessageIcon = (): string => {
-        switch (askPasswordVerificationOption) {
-            case VerificationOption.EMAIL_OTP:
-            case VerificationOption.EMAIL_LINK:
-                return "mail";
-            case VerificationOption.SMS_OTP:
-                return "mobile";
-            default:
-                return "mail";
-        }
-    };
-
-    /**
-     * Get the message content based on the verification option.
-     *
-     * @returns The translated message content.
-     */
-    const getMessageContent = (): string => {
-        switch (askPasswordVerificationOption) {
-            case VerificationOption.EMAIL_OTP:
-                return t("extensions:manage.features.user.addUser.inviteUserTooltip.emailOTPInviteTooltip");
-            case VerificationOption.SMS_OTP:
-                return t("extensions:manage.features.user.addUser.inviteUserTooltip.smsOTPInviteTooltip");
-            case VerificationOption.EMAIL_LINK:
-            default:
-                return t("extensions:manage.features.user.addUser.inviteUserTooltip.emailLinkInviteTooltip");
-        }
-    };
-
-    /**
-     * Get the menu item text based on the verification option.
-     *
-     * @returns The translated menu item text.
-     */
-    const getMenuItemText = (): string => {
-        switch (askPasswordVerificationOption) {
-            case VerificationOption.SMS_OTP:
-                return t("user:modals.addUserWizard.askPassword.inviteViaSMS");
-            case VerificationOption.EMAIL_OTP:
-            case VerificationOption.EMAIL_LINK:
-            default:
-                return t("user:modals.addUserWizard.askPassword.inviteViaEmail");
-        }
-    };
-
-    /**
      * Check whether the alphanumeric usernames are enabled.
      *
      * @returns isAlphanumericUsernameEnabled - validation status.
      */
     const isAlphanumericUsernameEnabled = (): boolean => usernameConfig?.enableValidator === "true";
-
-    /**
-     * Callback function to validate password.
-     *
-     * @param valid - validation status.
-     * @param validationStatus - detailed validation status.
-     */
-    const onPasswordValidate = (valid: boolean): void => {
-        setIsValidPassword(valid);
-    };
 
     const askPasswordOptionData: any = {
         "data-testid": "user-mgt-add-user-form-ask-password-option-radio-button",
@@ -658,17 +555,6 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = (
         "data-testid": "user-mgt-add-user-form-create-password-option-radio-button",
         label: t("user:forms.addUserForm.buttons.radioButton.options.createPassword"),
         value: PasswordOptionTypes.CREATE_PASSWORD
-    };
-
-    /**
-     * The following function handles the change of the password.
-     *
-     * @param values - Map of form values.
-     */
-    const handlePasswordChange = (values: Map<string, FormValue>): void => {
-        const password: string = values.get("newPassword").toString();
-
-        setPassword(password);
     };
 
     /**
@@ -684,643 +570,72 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = (
         }
     };
 
-    /**
-     * Handles updating the primary email and mobile values when multiple emails and mobile numbers are enabled.
-     *
-     * @param values - The Map of form values.
-     */
-    const handlePrimaryEmailAndMobile = (values: Map<string, string | string[]>): void => {
-        const tempPrimaryMobile: string = primaryValues[MOBILE_ATTRIBUTE];
-        const mobileNumbersInputFieldValue: string = multiValuedInputFieldValue[MOBILE_NUMBERS_ATTRIBUTE];
-
-        if (tempPrimaryMobile !== undefined && tempPrimaryMobile !== null) {
-            values.set(MOBILE_ATTRIBUTE, tempPrimaryMobile);
-        }
-
-        if (isEmpty(tempPrimaryMobile) && !isEmpty(mobileNumbersInputFieldValue)) {
-            values.set(MOBILE_ATTRIBUTE, mobileNumbersInputFieldValue);
-        }
-
-        const tempPrimaryEmail: string = primaryValues[EMAIL_ATTRIBUTE] ?? "";
-        const emailsInputFieldValue: string = multiValuedInputFieldValue[EMAIL_ADDRESSES_ATTRIBUTE];
-
-        if (tempPrimaryEmail !== undefined && tempPrimaryEmail !== null) {
-            values.set(EMAIL_ATTRIBUTE, tempPrimaryEmail);
-        }
-        if (isEmpty(tempPrimaryEmail) && !isEmpty(emailsInputFieldValue)) {
-            values.set(EMAIL_ATTRIBUTE, emailsInputFieldValue);
-        }
-    };
-
-    const getFormValues = (values: Map<string, FormValue>): BasicUserDetailsInterface => {
-        eventPublisher.publish("manage-users-customer-password-option", {
-            type: passwordOption
-        });
-
-        let formValues: BasicUserDetailsInterface = {
-            domain: selectedUserStore,
-            email: values.get("email")?.toString(),
-            firstName: values.get("firstName")?.toString(),
-            lastName: values.get("lastName")?.toString(),
-            newPassword: values.get("newPassword") && values.get("newPassword") !== undefined
-                ? values.get("newPassword").toString()
-                : "",
-            passwordOption: passwordOption,
-            userName: UIConfig?.enableEmailDomain
-                ? values.get("email")?.toString()
-                : values.get("username")?.toString()
-        };
-
-        // Add mobile field for SMS OTP verification
-        if (askPasswordVerificationOption === VerificationOption.SMS_OTP &&
-            askPasswordOption === AskPasswordOptionTypes.EMAIL &&
-            values.get("mobile")) {
-            formValues = {
-                ...formValues,
-                phoneNumbers: [ {
-                    type: "mobile",
-                    value: values.get("mobile")?.toString()
-                } ]
-            } as BasicUserDetailsInterface & { phoneNumbers: Array<{ type: string; value: string }> };
-        }
-
-        // Include dynamic form values based on attribute profiles.
-        if (isAttributeProfileForUserCreationEnabled) {
-            formValues = {
-                ...formValues,
-                ...getDynamicFormValues(values)
-            };
-        }
-
-        return formValues;
-    };
-
-    /**
-     * Handles the form submission with dynamic form values based on attribute profiles.
-     *
-     * @param values - Map of form values.
-     */
-    const getDynamicFormValues = (values: Map<string, FormValue>): Record<string, unknown> => {
-        const groupedOpValue: Record<string, unknown> = {};
-
-        if (isMultipleEmailAndMobileNumberEnabled) {
-            handlePrimaryEmailAndMobile(values);
-        }
-
-        profileSchema.forEach((schema: ProfileSchemaInterface) => {
-            // const sharedProfileValueResolvingMethod: string = schema?.sharedProfileValueResolvingMethod;
-
-            let opValue: OperationValueInterface = {};
-
-            const schemaNames: string[] = schema.name.split(".");
-
-            if (schema.name !== "roles.default") {
-                if (values.get(schema.name) !== undefined && values.get(schema.name).toString() !== undefined) {
-
-                    if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0]) ||
-                        schemaNames[0] === "phoneNumbers") {
-
-                        const attributeValues: (string | string[] | SchemaAttributeValueInterface)[] = [];
-                        const attValues: Map<string, string | string []> = new Map();
-
-                        if (schemaNames.length === 1 || schemaNames.length === 2) {
-                            if (schema.extended) {
-                                opValue = {
-                                    [schema.schemaId]: constructPatchOpValueForMultiValuedAttribute(
-                                        schema.name,
-                                        multiValuedAttributeValues[schema.name],
-                                        multiValuedInputFieldValue[schema.name]
-                                    )
-                                };
-                            } else {
-                                // Handle emails and phoneNumbers and their sub attributes.
-                                // Extract the sub attributes from the form values.
-                                for (const value of values.keys()) {
-                                    const subAttribute: string[] = value.split(".");
-
-                                    if (subAttribute[0] === schemaNames[0]) {
-                                        attValues.set(value, values.get(value));
-                                    }
-                                }
-
-                                for (const [ key, value ] of attValues) {
-                                    const attribute: string[] = key.split(".");
-
-                                    if (value && value !== "") {
-                                        if (attribute.length === 1) {
-                                            attributeValues.push(value);
-                                        } else {
-                                            attributeValues.push({
-                                                type: attribute[1],
-                                                value: value
-                                            });
-                                        }
-                                    }
-                                }
-                                opValue = {
-                                    [schemaNames[0]]: attributeValues
-                                };
-                            }
-                        }
-                    } else {
-                        if (schemaNames.length === 1) {
-                            if (schema.extended) {
-                                const schemaId: string = schema?.schemaId
-                                    ? schema.schemaId
-                                    : userConfig.userProfileSchema;
-
-                                if (schema.name === "externalId") {
-                                    opValue = {
-                                        [schemaNames[0]]: values.get(schemaNames[0])
-                                    };
-                                } else {
-                                    opValue = {
-                                        [schemaId]: {
-                                            [schemaNames[0]]: schema.type.toUpperCase() === "BOOLEAN"
-                                                ? !!values.get(schema.name)?.includes(schema.name)
-                                                : values.get(schemaNames[0])
-                                        }
-                                    };
-                                }
-                            } else {
-                                opValue = schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
-                                    .get("EMAILS")
-                                    ? { emails: [ values.get(schema.name) ] }
-                                    : schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
-                                        .get("LOCALE")
-                                        ? { [schemaNames[0]]: normalizeLocaleFormat(
-                                            values.get(schemaNames[0]) as string,
-                                            LocaleJoiningSymbol.UNDERSCORE,
-                                            false,
-                                            supportedI18nLanguages
-                                        ) }
-                                        : { [schemaNames[0]]: values.get(schemaNames[0]) };
-                            }
-                        } else {
-                            if (schema.extended && schema.multiValued) {
-                                opValue = {
-                                    [schema.schemaId]: {
-                                        [schemaNames[0]]: constructPatchOpValueForMultiValuedAttribute(
-                                            schemaNames[1],
-                                            multiValuedAttributeValues[schema.name],
-                                            multiValuedInputFieldValue[schema.name]
-                                        )
-                                    }
-                                };
-                            } else if (schema.extended) {
-                                const schemaId: string = schema?.schemaId ?? userConfig.userProfileSchema;
-
-                                opValue = {
-                                    [schemaId]: {
-                                        [schemaNames[0]]: {
-                                            [schemaNames[1]]: schema.type.toUpperCase() === "BOOLEAN"
-                                                ? !!values.get(schema.name)?.includes(schema.name)
-                                                : values.get(schema.name)
-                                        }
-                                    }
-                                };
-                            } else if (schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
-                                .get("NAME")) {
-
-                                if (!isEmpty(values.get(schema.name))) {
-                                    opValue = {
-                                        name: { [schemaNames[1]]: values.get(schema.name) }
-                                    };
-                                }
-                            } else {
-                                if (schemaNames[0].includes("addresses")) {
-                                    if (schemaNames[0].split("#").length > 1) {
-                                        // Ex: addresses#home
-                                        const addressSchema: string = schemaNames[0]?.split("#")[0];
-                                        const addressType: string = schemaNames[0]?.split("#")[1];
-
-                                        opValue = {
-                                            [addressSchema]: [
-                                                {
-                                                    type: addressType,
-                                                    [schemaNames[1]]: values.get(schema.name)
-                                                }
-                                            ]
-                                        };
-                                    } else {
-                                        opValue = {
-                                            [schemaNames[0]]: [
-                                                {
-                                                    formatted: values.get(schema.name),
-                                                    type: schemaNames[1]
-                                                }
-                                            ]
-                                        };
-                                    }
-                                } else if (schemaNames[0] !== "emails" && schemaNames[0] !== "phoneNumbers") {
-                                    opValue = {
-                                        [schemaNames[0]]: [
-                                            {
-                                                type: schemaNames[1],
-                                                value: schema.type.toUpperCase() === "BOOLEAN"
-                                                    ? !!values.get(schema.name)?.includes(schema.name)
-                                                    : values.get(schema.name)
-                                            }
-                                        ]
-                                    };
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (isEmpty(opValue)) {
-                return;
-            }
-
-            const isPlainObject = (value: unknown): value is Record<string, any> => {
-                return typeof value === "object" && value !== null && !Array.isArray(value);
-            };
-
-            for (const key in opValue) {
-                if (!groupedOpValue[key]) {
-                    groupedOpValue[key] = opValue[key];
-                } else {
-                    // Merge logic
-                    const existing: Record<string, any> = groupedOpValue[key];
-                    const incoming: unknown = opValue[key];
-
-                    if (Array.isArray(existing) && Array.isArray(incoming)) {
-                        groupedOpValue[key] = [ ...existing, ...incoming ];
-                    } else if (isPlainObject(existing) && isPlainObject(incoming)) {
-                        groupedOpValue[key] = {
-                            ...existing,
-                            ...incoming
-                        };
-                    } else {
-                        // If the existing value is not an array or object, we can just overwrite it.
-                        groupedOpValue[key] = incoming;
-                    }
-                }
-            }
-        });
-
-        return groupedOpValue;
-    };
-
-    /**
-     * Scrolls to the first field that throws an error.
-     *
-     * @param field - field The name of the field.
-     */
-    const scrollToInValidField = (field: string): void => {
-        const options: ScrollIntoViewOptions = {
-            behavior: "smooth",
-            block: "center"
-        };
-
-        switch (field) {
-            case "email":
-                emailRef.current.scrollIntoView(options);
-
-                break;
-            case "formBottom":
-                formBottomRef.current.scrollIntoView(options);
-
-                break;
-        }
-    };
-
-    /**
-     * Verify whether the provided password is valid.
-     *
-     * @param password - The password to validate.
-     */
-    const isNewPasswordValid = async (password: string) => {
-        if (passwordConfig) {
-            return isValidPassword;
-        }
-
-        return SharedUserStoreUtils.validateInputAgainstRegEx(password, passwordRegex);
-    };
-
-    /**
-     * Validate password and display an error message when the password is invalid.
-     *
-     * @param value - The value of the password field.
-     * @param validation - The validation object.
-     */
-    const validateNewPassword = async (value: string, validation: Validation) => {
-        if (!await isNewPasswordValid(value)) {
-            validation.isValid = false;
-            validation.errorMessages.push(passwordConfig ?
-                t(
-                    "extensions:manage.features.user.addUser.validation.error.passwordValidation"
-                ) : t(
-                    "extensions:manage.features.user.addUser.validation.password"
-                ));
-        }
-        scrollToInValidField("formBottom");
-    };
-
-    const resolveAskPasswordOptionPopupContent = (): ReactElement => {
-        if (!emailVerificationEnabled) {
-            return (
-                <Trans
-                    i18nKey="user:modals.addUserWizard.askPassword.emailVerificationDisabled"
-                >
-                    To invite users to set the password, enable email invitations for user password setup from <Link
-                        onClick={ () => history.push(AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
-                            .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
-                            .replace(":connectorId", ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID)) }
-                        external={ false }
-                    >Login & Registration settings</Link>.
-                </Trans>
-            );
-        }
-
-
-
-        if (!isEmailFilled || !isValidEmail) {
-            return t(
-                "user:modals.addUserWizard.askPassword.emailInvalid"
-            );
-        }
-
-        return null;
-    };
-
-    const renderAskPasswordOption = (): ReactElement => {
-        return (
-            <div className="mt-4 mb-4 ml-4">
-                <Menu
-                    compact={ true }
-                    size="small"
-                    className="mb-4"
-                >
-                    {
-                        (!emailVerificationEnabled ||
-                         (!isEmailRequired && !isValidEmail)) ? (
-                                <Popup
-                                    basic
-                                    inverted
-                                    position="top center"
-                                    content={ resolveAskPasswordOptionPopupContent() }
-                                    hoverable
-                                    trigger={
-                                        (
-                                            <Menu.Item
-                                                name={ getMenuItemText() }
-                                                disabled
-                                            />
-                                        )
-                                    }
-                                />
-                            ) : (
-                                <Menu.Item
-                                    name={ getMenuItemText() }
-                                    active={ askPasswordOption === AskPasswordOptionTypes.EMAIL }
-                                    onClick={ () => setAskPasswordOption(AskPasswordOptionTypes.EMAIL) }
-                                />
-                            )
-                    }
-                    <Menu.Item
-                        name={ t("user:modals.addUserWizard" +
-                            ".askPassword.inviteOffline") }
-                        active={ askPasswordOption === AskPasswordOptionTypes.OFFLINE }
-                        onClick={ () => setAskPasswordOption(AskPasswordOptionTypes.OFFLINE) }
-                    />
-                </Menu>
-                {
-                    resolveAskPasswordOption()
-                }
-            </div>
-        );
-    };
-
-    const resolveAskPasswordOption = (): ReactElement => {
-        if (askPasswordOption === AskPasswordOptionTypes.EMAIL) {
-            return (
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        <Message
-                            icon={ getMessageIcon() }
-                            content={ getMessageContent() }
-                            size="small"
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-            );
-        }
-
-        if (askPasswordOption === AskPasswordOptionTypes.OFFLINE) {
-            return (
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        <Message
-                            icon="copy"
-                            content={ t(
-                                "extensions:manage.features.user.addUser.inviteUserOfflineTooltip"
-                            ) }
-                            size="small"
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-            );
-        }
-
-        return null;
-    };
-
-    const renderCreatePasswordOption = (): ReactElement => {
-        return (
-            <>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        <div className={ "generate-password" }>
-                            <Field
-                                data-testid="user-mgt-add-user-form-newPassword-input"
-                                className="addon-field-wrapper full-width"
-                                hidePassword={ t("common:hidePassword") }
-                                label={ t(
-                                    "user:forms.addUserForm.inputs.newPassword.label"
-                                ) }
-                                name="newPassword"
-                                placeholder={ t(
-                                    "user:forms.addUserForm.inputs." +
-                                    "newPassword.placeholder"
-                                ) }
-                                required={ true }
-                                requiredErrorMessage={ t(
-                                    "user:forms.addUserForm." +
-                                    "inputs.newPassword.validations.empty"
-                                ) }
-                                showPassword={ t("common:showPassword") }
-                                type="password"
-                                value={ randomPassword ? randomPassword : initialValues?.newPassword }
-                                validation={ validateNewPassword }
-                                tabIndex={ 5 }
-                                enableReinitialize={ true }
-                                listen={ handlePasswordChange }
-                                maxWidth={ 60 }
-                            />
-                            { passwordConfig && (
-                                <Button
-                                    basic
-                                    primary
-                                    size="tiny"
-                                    data-testid="user-mgt-password-generate-button"
-                                    type="button"
-                                    className="info add-user-step-button"
-                                    onClick={ () => {
-                                        const randomPass: string = generatePassword(Number(passwordConfig.minLength),
-                                            Number(passwordConfig.minLowerCaseCharacters) > 0,
-                                            Number(passwordConfig.minUpperCaseCharacters) > 0,
-                                            Number(passwordConfig.minNumbers) > 0,
-                                            Number(passwordConfig.minSpecialCharacters) > 0,
-                                            Number(passwordConfig.minLowerCaseCharacters),
-                                            Number(passwordConfig.minUpperCaseCharacters),
-                                            Number(passwordConfig.minNumbers),
-                                            Number(passwordConfig.minSpecialCharacters),
-                                            Number(passwordConfig.minUniqueCharacters));
-
-                                        setRandomPassword(randomPass);
-                                        setPassword(randomPass);
-                                    } }
-                                >
-                                    Generate
-                                </Button>
-                            ) }
-                        </div>
-                        { passwordConfig && (
-                            <PasswordValidation
-                                password={ password }
-                                minLength={ Number(passwordConfig.minLength) }
-                                maxLength={ Number(passwordConfig.maxLength) }
-                                minNumbers={ Number(passwordConfig.minNumbers) }
-                                minUpperCase={ Number(passwordConfig.minUpperCaseCharacters) }
-                                minLowerCase={ Number(passwordConfig.minLowerCaseCharacters) }
-                                minSpecialChr={ Number(passwordConfig.minSpecialCharacters) }
-                                minUniqueChr={ Number(passwordConfig.minUniqueCharacters) }
-                                maxConsecutiveChr={ Number(passwordConfig.maxConsecutiveCharacters) }
-                                onPasswordValidate={ onPasswordValidate }
-                                translations={ {
-                                    case: (Number(passwordConfig?.minUpperCaseCharacters) > 0 &&
-                                        Number(passwordConfig?.minLowerCaseCharacters) > 0) ?
-                                        t("extensions:manage.features.user.addUser.validation.passwordCase", {
-                                            minLowerCase: passwordConfig.minLowerCaseCharacters,
-                                            minUpperCase: passwordConfig.minUpperCaseCharacters
-                                        }) : (
-                                            Number(passwordConfig?.minUpperCaseCharacters) > 0 ?
-                                                t("extensions:manage.features.user.addUser.validation.upperCase", {
-                                                    minUpperCase: passwordConfig.minUpperCaseCharacters
-                                                }) : t("extensions:manage.features.user.addUser.validation" +
-                                                    ".lowerCase", {
-                                                    minLowerCase: passwordConfig.minLowerCaseCharacters
-                                                })
-                                        ),
-                                    consecutiveChr:
-                                        t("extensions:manage.features.user.addUser.validation.consecutiveCharacters", {
-                                            repeatedChr: passwordConfig.maxConsecutiveCharacters
-                                        }),
-                                    length: t("extensions:manage.features.user.addUser.validation.passwordLength", {
-                                        max: passwordConfig.maxLength, min: passwordConfig.minLength
-                                    }),
-                                    numbers:
-                                        t("extensions:manage.features.user.addUser.validation.passwordNumeric", {
-                                            min: passwordConfig.minNumbers
-                                        }),
-                                    specialChr:
-                                        t("extensions:manage.features.user.addUser.validation.specialCharacter", {
-                                            specialChr: passwordConfig.minSpecialCharacters
-                                        }),
-                                    uniqueChr:
-                                        t("extensions:manage.features.user.addUser.validation.uniqueCharacters", {
-                                            uniqueChr: passwordConfig.minUniqueCharacters
-                                        })
-                                } }
-                            />
-                        ) }
-                    </Grid.Column>
-                </Grid.Row>
-                <div ref={ formBottomRef } />
-            </>
-        );
-    };
-
     const resolveUsernamePasswordFields = (): ReactElement => {
         // Email as username enabled.
         if (UIConfig?.enableEmailDomain) {
+            const validate = async (value: string): Promise<string> => {
+                setBasicDetailsLoading(true);
+
+                if (isEmpty(value)) {
+                    setBasicDetailsLoading(false);
+
+                    return t("user:forms.addUserForm.inputs.email.validations.empty");
+                }
+
+                // Check username validity against userstore regex.
+                if (!SharedUserStoreUtils.validateInputAgainstRegEx(value, userStoreUsernameRegEx) ||
+                        !SharedUserStoreUtils.validateInputAgainstRegEx(value, emailClaimRegex)) {
+                    setBasicDetailsLoading(false);
+
+                    return USERNAME_REGEX_VIOLATION_ERROR_MESSAGE;
+                }
+
+                try {
+                    // Check for the existence of users in the userstore by the username.
+                    // Some characters disallowed by username
+                    // -regex cause failure in below request.
+                    // Therefore, existence of duplicates is
+                    // -checked only post regex validation success.
+                    const usersList: UserListInterface
+                        = await getUsersList(null, null, "userName eq " + value, null, selectedUserStore);
+
+                    if (usersList?.totalResults > 0) {
+                        setBasicDetailsLoading(false);
+
+                        return USER_ALREADY_EXIST_ERROR_MESSAGE;
+                    }
+
+                    setBasicDetailsLoading(false);
+                } catch (error) {
+                    // Some non ascii characters are not accepted by DBs
+                    // with certain charsets.
+                    // Hence, the API sends a `500` status code.
+                    // see below issue for more context.
+                    // https://github.com/wso2/product-is/issues/10190#issuecomment-719760318
+                    if (error?.response?.status === 500) {
+                        setBasicDetailsLoading(false);
+
+                        return USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE;
+                    }
+                }
+
+                return undefined;
+            };
+
             return (
                 <Grid.Row>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        <div ref={ emailRef } />
-                        <Field
-                            loading={ isBasicDetailsLoading && isAttributesRequestLoading }
-                            data-testid="user-mgt-add-user-form-email-input"
-                            label={ t("extensions:manage.features.user.addUser.inputLabel" +
-                                ".emailUsername") }
+                    <Grid.Column mobile={ 16 } computer={ 10 }>
+                        <FinalFormField
+                            component={ TextFieldAdapter }
+                            initialValue={ initialValues?.email }
                             name="email"
-                            placeholder={ t(
-                                "user:forms.addUserForm.inputs." +
-                            "email.placeholder"
-                            ) }
-                            required={ true }
-                            requiredErrorMessage={ t(
-                                "user:forms.addUserForm.inputs.email." +
-                                    "validations.empty"
-                            ) }
-                            validation={ async (value: string, validation: Validation) => {
-                                setBasicDetailsLoading(true);
-
-                                // Check username validity against userstore regex.
-                                if (value && (
-                                    !SharedUserStoreUtils.validateInputAgainstRegEx(
-                                        value, userStoreUsernameRegEx) ||
-                                        !SharedUserStoreUtils.validateInputAgainstRegEx(value, emailClaimRegex))) {
-                                    validation.isValid = false;
-                                    validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
-                                    scrollToInValidField("email");
-                                    setBasicDetailsLoading(false);
-                                }
-
-                                try {
-                                    // Check for the existence of users in the userstore by the username.
-                                    // Some characters disallowed by username
-                                    // -regex cause failure in below request.
-                                    // Therefore, existence of duplicates is
-                                    // -checked only post regex validation success.
-                                    if (value && validation.isValid === true) {
-                                        const usersList: UserListInterface
-                                        = await getUsersList(null, null,
-                                            "userName eq " + value, null,
-                                            selectedUserStore);
-
-                                        if (usersList?.totalResults > 0) {
-                                            validation.isValid = false;
-                                            validation.errorMessages.push(USER_ALREADY_EXIST_ERROR_MESSAGE);
-                                            scrollToInValidField("email");
-                                        }
-
-                                        setBasicDetailsLoading(false);
-                                    }
-                                } catch (error) {
-                                    // Some non ascii characters are not accepted by DBs
-                                    // with certain charsets.
-                                    // Hence, the API sends a `500` status code.
-                                    // see below issue for more context.
-                                    // https://github.com/wso2/product-is/issues/
-                                    // 10190#issuecomment-719760318
-                                    if (error?.response?.status === 500) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push(
-                                            USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE);
-                                        scrollToInValidField("email");
-                                    }
-
-                                    setBasicDetailsLoading(false);
-                                }
-                            } }
-                            type="email"
-                            value={ initialValues && initialValues.email }
-                            tabIndex={ 1 }
+                            label={ t("extensions:manage.features.user.addUser.inputLabel.emailUsername") }
+                            placeholder={ t("user:forms.addUserForm.inputs.email.placeholder") }
+                            validate={ validate }
                             maxLength={ 60 }
+                            data-testid="user-mgt-add-user-form-email-input"
+                            data-componentid="user-mgt-add-user-form-email-input"
+                            required
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -1329,222 +644,199 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = (
 
         if (!hiddenFields.includes(HiddenFieldNames.USERNAME)
             && !isAlphanumericUsernameEnabled()) {
+            const validate = async (value: string): Promise<string> => {
+                setBasicDetailsLoading(true);
+
+                if (isEmpty(value)) {
+                    setBasicDetailsLoading(false);
+
+                    return t("user:forms.addUserForm.inputs.email.validations.empty");
+                }
+
+                // Check username validity against userstore regex.
+                if (!SharedUserStoreUtils.validateInputAgainstRegEx(value, userStoreUsernameRegEx) ||
+                        !SharedUserStoreUtils.validateInputAgainstRegEx(value, emailClaimRegex)) {
+                    setBasicDetailsLoading(false);
+
+                    return USERNAME_REGEX_VIOLATION_ERROR_MESSAGE;
+                }
+
+                try {
+                    // Check for the existence of users in the userstore by the username.
+                    // Some characters disallowed by username
+                    // -regex cause failure in below request.
+                    // Therefore, existence of duplicates is
+                    // -checked only post regex validation success.
+                    const usersList: UserListInterface
+                        = await getUsersList(null, null, "userName eq " + value, null, selectedUserStore);
+
+                    if (usersList?.totalResults > 0) {
+                        setBasicDetailsLoading(false);
+
+                        return USER_ALREADY_EXIST_ERROR_MESSAGE;
+                    }
+
+                    setBasicDetailsLoading(false);
+                } catch (error) {
+                    // Some non ascii characters are not accepted by DBs
+                    // with certain charsets.
+                    // Hence, the API sends a `500` status code.
+                    // see below issue for more context.
+                    // https://github.com/wso2/product-is/issues/10190#issuecomment-719760318
+                    if (error?.response?.status === 500) {
+                        setBasicDetailsLoading(false);
+
+                        return USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE;
+                    }
+
+                    setBasicDetailsLoading(false);
+                }
+
+                return undefined;
+            };
+
             return (
                 <Grid.Row>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        <div ref={ emailRef } />
-                        <Field
-                            loading={ isBasicDetailsLoading }
-                            data-testid="user-mgt-add-user-form-email-input"
-                            label={ t("extensions:manage.features.user.addUser.inputLabel" +
-                                ".emailUsername") }
+                    <Grid.Column mobile={ 16 } computer={ 10 }>
+                        <FinalFormField
+                            component={ TextFieldAdapter }
+                            initialValue={ initialValues?.email }
                             name="email"
-                            placeholder={ t(
-                                "user:forms.addUserForm.inputs." +
-                            "email.placeholder"
-                            ) }
-                            required={ true }
-                            requiredErrorMessage={ t(
-                                "user:forms.addUserForm.inputs.email." +
-                                    "validations.empty"
-                            ) }
-                            validation={ async (value: string, validation: Validation) => {
-                                setBasicDetailsLoading(true);
-
-                                // Check username validity against userstore regex.
-                                if (value && (
-                                    !SharedUserStoreUtils.validateInputAgainstRegEx(
-                                        value, userStoreUsernameRegEx) ||
-                                        !SharedUserStoreUtils.validateInputAgainstRegEx(value, emailClaimRegex))) {
-                                    validation.isValid = false;
-                                    validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
-                                    scrollToInValidField("email");
-                                    setBasicDetailsLoading(false);
-                                }
-
-                                try {
-                                    // Check for the existence of users in the userstore by the username.
-                                    // Some characters disallowed by username
-                                    // -regex cause failure in below request.
-                                    // Therefore, existence of duplicates is
-                                    // -checked only post regex validation success.
-                                    if (value && validation.isValid === true) {
-                                        const usersList: UserListInterface
-                                        = await getUsersList(null, null,
-                                            "userName eq " + value, null,
-                                            selectedUserStore);
-
-                                        if (usersList?.totalResults > 0) {
-                                            validation.isValid = false;
-                                            validation.errorMessages.push(USER_ALREADY_EXIST_ERROR_MESSAGE);
-                                            scrollToInValidField("email");
-                                        }
-
-                                        setBasicDetailsLoading(false);
-                                    }
-                                } catch (error) {
-                                    // Some non ascii characters are not accepted by DBs
-                                    // with certain charsets.
-                                    // Hence, the API sends a `500` status code.
-                                    // see below issue for more context.
-                                    // https://github.com/wso2/product-is/issues/
-                                    // 10190#issuecomment-719760318
-                                    if (error?.response?.status === 500) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push(
-                                            USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE);
-                                        scrollToInValidField("email");
-                                    }
-
-                                    setBasicDetailsLoading(false);
-                                }
-                            } }
-                            type="email"
-                            value={ initialValues && initialValues.email }
-                            tabIndex={ 1 }
+                            label={ t("extensions:manage.features.user.addUser.inputLabel.emailUsername") }
+                            placeholder={ t("user:forms.addUserForm.inputs.email.placeholder") }
+                            validate={ validate }
                             maxLength={ 60 }
+                            data-testid="user-mgt-add-user-form-email-input"
+                            data-componentid="user-mgt-add-user-form-email-input"
+                            required
                         />
                     </Grid.Column>
                 </Grid.Row>
             );
         }
 
-        const resolveUsernameFieldHint = () => {
-            if (
-                !userConfig?.userNameValidation?.validateViaAPI &&
-                userStoreUsernameRegEx === userConfig?.userNameValidation?.defaultRegex
-            ) {
-                return t("user:forms.addUserForm.inputs.username.hint.defaultRegex");
-            }
+        let usernameFieldHint: string = undefined;
 
-            if (usernameConfig?.isAlphanumericOnly) {
-                return t("extensions:manage.features.user.addUser.validation.usernameHint", {
-                    maxLength: usernameConfig?.maxLength,
-                    minLength: usernameConfig?.minLength
-                });
-            }
+        if (!userConfig?.userNameValidation?.validateViaAPI &&
+            userStoreUsernameRegEx === userConfig?.userNameValidation?.defaultRegex) {
+            usernameFieldHint = t("user:forms.addUserForm.inputs.username.hint.defaultRegex");
 
-            return t("extensions:manage.features.user.addUser.validation.usernameSpecialCharHint", {
+        } else if (usernameConfig?.isAlphanumericOnly) {
+            usernameFieldHint = t("extensions:manage.features.user.addUser.validation.usernameHint", {
                 maxLength: usernameConfig?.maxLength,
                 minLength: usernameConfig?.minLength
             });
+
+        } else {
+            usernameFieldHint = t("extensions:manage.features.user.addUser.validation.usernameSpecialCharHint", {
+                maxLength: usernameConfig?.maxLength,
+                minLength: usernameConfig?.minLength
+            });
+        }
+
+        const validate = async (value: string): Promise<string> => {
+            let errorMessage: string = undefined;
+
+            if (isEmpty(value)) {
+                errorMessage = t("extensions:manage.features.user.addUser.validation.usernameEmpty");
+
+            } else if (userConfig?.userNameValidation?.validateViaAPI) {
+                let regExpInvalidUsername: RegExp = new RegExp(
+                    UserManagementConstants.USERNAME_VALIDATION_REGEX);
+
+                // Check if special characters enabled for username.
+                if (!usernameConfig?.isAlphanumericOnly) {
+                    regExpInvalidUsername = new RegExp(
+                        UserManagementConstants.USERNAME_VALIDATION_REGEX_WITH_SPECIAL_CHARS);
+                }
+
+                // Check username length validations.
+                if (value.length < Number(usernameConfig.minLength)
+                    || value.length > Number(usernameConfig.maxLength)) {
+                    errorMessage = USERNAME_HAS_INVALID_LENGTH_ERROR_MESSAGE;
+
+                // Check username validity against userstore regex.
+                } else if (!regExpInvalidUsername.test(value)) {
+                    if (usernameConfig?.isAlphanumericOnly) {
+                        errorMessage = USERNAME_HAS_INVALID_SYMBOLS_ERROR_MESSAGE;
+                    } else {
+                        errorMessage = USERNAME_HAS_INVALID_SPECIAL_SYMBOLS_ERROR_MESSAGE;
+                    }
+                }
+            } else if (!isEmpty(userStoreUsernameRegEx)) {
+                // Check username validity against userstore regex.
+                const _userStoreUsernameRegEx: RegExp = new RegExp(userStoreUsernameRegEx);
+
+                if (!_userStoreUsernameRegEx.test(value)) {
+
+                    if (userStoreUsernameRegEx === userConfig?.userNameValidation?.defaultRegex) {
+                        errorMessage = t("user:forms.addUserForm.inputs.username.validations.defaultRegex");
+                    } else {
+                        errorMessage = t("user:forms.addUserForm.inputs.username.validations.customRegex", {
+                            regex: userStoreUsernameRegEx
+                        });
+                    }
+                }
+            }
+
+            if (isEmpty(errorMessage)) {
+                try {
+                    setBasicDetailsLoading(true);
+                    // Check for the existence of users in the userstore by the username.
+                    // Some characters disallowed by username
+                    // -regex cause failure in below request.
+                    // Therefore, existence of duplicates is
+                    // -checked only post regex validation success.
+                    const usersList: UserListInterface
+                        = await getUsersList(null, null, "userName eq " + value, null, selectedUserStore);
+
+                    if (usersList?.totalResults > 0) {
+                        errorMessage = USER_ALREADY_EXIST_ERROR_MESSAGE;
+                    }
+                } catch (error) {
+                    // Some non ascii characters are not accepted by DBs
+                    // with certain charsets.
+                    // Hence, the API sends a `500` status code.
+                    // see below issue for more context.
+                    // https://github.com/wso2/product-is/issues/
+                    // 10190#issuecomment-719760318
+                    if (error?.response?.status === 500) {
+                        errorMessage = USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE;
+                    }
+                }
+            }
+            setBasicDetailsLoading(false);
+
+            return errorMessage;
         };
 
         return (
-            <Grid.Row>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                    <div ref={ emailRef } />
-                    <Field
-                        loading={ isBasicDetailsLoading }
-                        data-testid="user-mgt-add-user-form-username-input"
-                        label={ t("extensions:manage.features.user.addUser.inputLabel" +
-                            ".alphanumericUsername") }
-                        name="username"
-                        placeholder={ t("extensions:manage.features.user.addUser.inputLabel" +
-                            ".alphanumericUsernamePlaceholder") }
-                        required={ true }
-                        requiredErrorMessage={ t("extensions:manage.features.user.addUser.validation" +
-                            ".usernameEmpty") }
-                        validation={ async (value: string, validation: Validation) => {
-                            if (userConfig?.userNameValidation?.validateViaAPI) {
-                                let regExpInvalidUsername: RegExp = new RegExp(
-                                    UserManagementConstants.USERNAME_VALIDATION_REGEX);
+            <>
+                <Grid.Row>
+                    <Grid.Column mobile={ 16 } computer={ 10 }>
+                        <FinalFormField
+                            component={ TextFieldAdapter }
+                            label={ t("extensions:manage.features.user.addUser.inputLabel.alphanumericUsername") }
+                            name="username"
+                            initialValue={ initialValues?.userName }
+                            placeholder={ t("extensions:manage.features.user.addUser.inputLabel" +
+                                ".alphanumericUsernamePlaceholder") }
+                            validate={ validate }
+                            maxLength={ 60 }
+                            helperText={ usernameFieldHint }
+                            data-testid="user-mgt-add-user-form-username-input"
+                            data-componentid="user-mgt-add-user-form-username-input"
+                            required
+                        />
+                    </Grid.Column>
+                </Grid.Row>
 
-                                // Check if special characters enabled for username.
-                                if (!usernameConfig?.isAlphanumericOnly) {
-                                    regExpInvalidUsername = new RegExp(
-                                        UserManagementConstants.USERNAME_VALIDATION_REGEX_WITH_SPECIAL_CHARS);
-                                }
-
-                                // Check username length validations.
-                                if (value.length < Number(usernameConfig.minLength)
-                                    || value.length > Number(usernameConfig.maxLength)) {
-                                    validation.isValid = false;
-                                    validation.errorMessages.push(
-                                        USERNAME_HAS_INVALID_LENGTH_ERROR_MESSAGE);
-                                    scrollToInValidField("email");
-                                // Check username validity against userstore regex.
-                                } else if (!regExpInvalidUsername.test(value)) {
-                                    validation.isValid = false;
-                                    if (usernameConfig?.isAlphanumericOnly) {
-                                        validation.errorMessages.push(
-                                            USERNAME_HAS_INVALID_SYMBOLS_ERROR_MESSAGE);
-                                    } else {
-                                        validation.errorMessages.push(
-                                            USERNAME_HAS_INVALID_SPECIAL_SYMBOLS_ERROR_MESSAGE);
-                                    }
-                                    scrollToInValidField("email");
-                                }
-                            } else if (!isEmpty(userStoreUsernameRegEx)) {
-                                // Check username validity against userstore regex.
-                                const _userStoreUsernameRegEx: RegExp = new RegExp(userStoreUsernameRegEx);
-
-                                if (!_userStoreUsernameRegEx.test(value)) {
-                                    validation.isValid = false;
-
-                                    if (userStoreUsernameRegEx === userConfig?.userNameValidation?.defaultRegex) {
-                                        validation.errorMessages
-                                            .push(t("user:forms.addUserForm.inputs.username.validations.defaultRegex"));
-                                    } else {
-                                        validation.errorMessages
-                                            .push(t("user:forms.addUserForm.inputs.username.validations.customRegex", {
-                                                regex: userStoreUsernameRegEx
-                                            }));
-                                    }
-                                    scrollToInValidField("email");
-                                }
-                            }
-
-                            try {
-                                setBasicDetailsLoading(true);
-                                // Check for the existence of users in the userstore by the username.
-                                // Some characters disallowed by username
-                                // -regex cause failure in below request.
-                                // Therefore, existence of duplicates is
-                                // -checked only post regex validation success.
-                                if (value && validation.isValid === true) {
-                                    const usersList: UserListInterface
-                                    = await getUsersList(null, null,
-                                        "userName eq " + value, null,
-                                        selectedUserStore);
-
-                                    if (usersList?.totalResults > 0) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push(USER_ALREADY_EXIST_ERROR_MESSAGE);
-                                        scrollToInValidField("email");
-                                    }
-                                }
-
-                                setBasicDetailsLoading(false);
-                            } catch (error) {
-                                // Some non ascii characters are not accepted by DBs
-                                // with certain charsets.
-                                // Hence, the API sends a `500` status code.
-                                // see below issue for more context.
-                                // https://github.com/wso2/product-is/issues/
-                                // 10190#issuecomment-719760318
-                                if (error?.response?.status === 500) {
-                                    validation.isValid = false;
-                                    validation.errorMessages.push(
-                                        USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE);
-                                    scrollToInValidField("email");
-                                }
-
-                                setBasicDetailsLoading(false);
-                            }
-                        } }
-                        type="text"
-                        value={ initialValues && initialValues.userName }
-                        tabIndex={ 1 }
-                        maxLength={ 60 }
-                    />
-                    { (userConfig?.userNameValidation?.validateViaAPI ||
-                        userStoreUsernameRegEx === userConfig?.userNameValidation?.defaultRegex) && (
-                        <Hint>{ resolveUsernameFieldHint() }</Hint>
-                    ) }
-                    { resolveEmailField() }
-                </Grid.Column>
-            </Grid.Row>
+                <Grid.Row>
+                    <Grid.Column mobile={ 16 } computer={ 10 }>
+                        { resolveEmailField() }
+                    </Grid.Column>
+                </Grid.Row>
+            </>
         );
     };
 
@@ -1559,80 +851,91 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = (
             emailAddressesSchema &&
             isFieldDisplayableInUserCreationWizard(emailAddressesSchema, isDistinctAttributeProfilesDisabled)) {
 
-            const fieldName: string = t("user:profile.fields." +
-                emailAddressesSchema.name.replace(".", "_"), { defaultValue: emailAddressesSchema.displayName }
-            );
+            const primaryEmailSchema: ProfileSchemaInterface = !isEmpty(profileSchema) && profileSchema.find(
+                (schema: ProfileSchemaInterface) => schema.name === EMAIL_ATTRIBUTE);
 
-            return resolveMultiValuedAttributesFormField(
-                emailAddressesSchema,
-                fieldName,
-                getDisplayOrder(emailAddressesSchema),
-                emailFieldComponentId
+                console.log(initialValues);
+                console.log(profileInfo);
+
+
+            return (
+                <MultiValuedEmailField
+                    schema={ emailAddressesSchema }
+                    primaryEmailSchema={ primaryEmailSchema }
+                    primaryEmailAddress={ profileInfo?.get(EMAIL_ATTRIBUTE) }
+                    fieldLabel={ t("user:profile.fields." +
+                        emailAddressesSchema.name.replace(".", "_"), { defaultValue: emailAddressesSchema.displayName }
+                    ) }
+                    emailAddressesList={ profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [] }
+                    maxValueLimit={ ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED }
+                    data-componentid={ emailFieldComponentId }
+                    data-testid={ emailFieldComponentId }
+                />
             );
         }
 
-        return (
-            <Field
-                data-testid={ emailFieldComponentId }
-                data-componentid={ emailFieldComponentId }
-                loading={ isAttributesRequestLoading }
-                label={ "Email" }
-                name="email"
-                placeholder={ t(
-                    "user:forms.addUserForm.inputs." +
-                    "email.placeholder"
-                ) }
-                required={ isEmailRequired }
-                requiredErrorMessage={ t(
-                    "user:forms.addUserForm.inputs.email." +
-                    "validations.empty"
-                ) }
-                validation={ async (value: string, validation: Validation) => {
-                    setBasicDetailsLoading(true);
+        const validate = (value: string): string => {
+            setBasicDetailsLoading(true);
 
-                    if (value && !SharedUserStoreUtils.validateInputAgainstRegEx(value, emailClaimRegex)) {
-                        validation.isValid = false;
-                        validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
-                        scrollToInValidField("email");
-                        setIsValidEmail(false);
-                    } else {
-                        setIsValidEmail(true);
-                    }
-                    setBasicDetailsLoading(false);
-                } }
-                type="email"
-                value={ initialValues && initialValues.email }
-                tabIndex={ 1 }
+            let errorMessage: string = undefined;
+
+            if (isEmailRequired && isEmpty(value)) {
+                errorMessage = t("user:forms.addUserForm.inputs.email.validations.empty");
+
+            } else if (!SharedUserStoreUtils.validateInputAgainstRegEx(value, emailClaimRegex)) {
+                errorMessage = USERNAME_REGEX_VIOLATION_ERROR_MESSAGE;
+            }
+
+            setIsValidEmail(isEmpty(errorMessage));
+            setBasicDetailsLoading(false);
+
+            return errorMessage;
+        };
+
+        return (
+            <FinalFormField
+                component={ TextFieldAdapter }
+                label={ t("extensions:manage.features.user.addUser.inputLabel.email") }
+                name="email"
+                initialValue={ initialValues?.email }
+                placeholder={ t("user:forms.addUserForm.inputs.email.placeholder") }
+                required={ isEmailRequired }
+                validate={ validate }
                 maxLength={ 60 }
                 listen={ handleEmailEmpty }
+                data-testid={ emailFieldComponentId }
+                data-componentid={ emailFieldComponentId }
             />
         );
     };
 
     const resolveMobileField = (): ReactNode => {
-        // Return multiple mobile input field if the mobile numbers is displayed.
+        // Multiple mobile numbers schema.
         const mobileNumbersSchema: ProfileSchemaInterface = profileSchema?.find(
             (schema: ProfileSchemaInterface) => schema.name === MOBILE_NUMBERS_ATTRIBUTE);
-
+        // Single mobile number schema.
         const mobileSchema: ProfileSchemaInterface = profileSchema?.find(
             (schema: ProfileSchemaInterface) => schema.name === MOBILE_ATTRIBUTE);
 
+        // Return multiple mobile input field if multiple mobile numbers are displayed.
         if (isMultipleEmailAndMobileNumberEnabled && mobileNumbersSchema &&
             isFieldDisplayableInUserCreationWizard(mobileNumbersSchema, isDistinctAttributeProfilesDisabled)) {
-            const fieldName: string = t("user:profile.fields." +
-                mobileNumbersSchema.name.replace(".", "_"), { defaultValue: mobileNumbersSchema.displayName }
-            );
 
             return (
-                <Grid.Row columns={ 1 } key={ getDisplayOrder(mobileNumbersSchema) }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        {
-                            resolveMultiValuedAttributesFormField(
-                                mobileNumbersSchema,
-                                fieldName,
-                                getDisplayOrder(mobileNumbersSchema)
-                            )
-                        }
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } computer={ 10 }>
+                        <MultiValuedMobileField
+                            schema={ mobileNumbersSchema }
+                            primarySchema={ mobileSchema }
+                            fieldLabel={ t("user:profile.fields." +
+                                mobileNumbersSchema.name.replace(".", "_"), {
+                                defaultValue: mobileNumbersSchema.displayName }
+                            ) }
+                            maxValueLimit={ ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED }
+                            isUpdating={ isBasicDetailsLoading }
+                            data-componentid={ `${ componentId }-${ mobileNumbersSchema.name }-input` }
+                            data-testid={ `${ componentId }-${ mobileNumbersSchema.name }-input` }
+                        />
                     </Grid.Column>
                 </Grid.Row>
             );
@@ -1647,24 +950,20 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = (
 
             return (
                 <Grid.Row>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        <Field
-                            data-componentid={ resolvedComponentId }
+                    <Grid.Column mobile={ 16 } computer={ 10 }>
+                        <FinalFormField
+                            component={ TextFieldAdapter }
                             name={ mobileSchema.name }
                             label={ fieldName }
-                            required={ true }
-                            requiredErrorMessage={ fieldName + " is required" }
-                            placeholder={ "Enter your " + fieldName }
-                            type="text"
-                            value={ profileInfo.get(mobileSchema?.name) }
-                            key={ getDisplayOrder(mobileSchema) }
-                            validation={ (value: string, validation: Validation) => {
+                            placeholder={ t("user:forms.addUserForm.inputs.generic.placeholder", { label: fieldName }) }
+                            initialValue={ profileInfo.get(mobileSchema?.name) }
+                            validate={ (value: string) => {
+                                if (isEmpty(value)) {
+                                    return t("user:forms.addUserForm.inputs.generic.validations.empty", {
+                                        label: fieldName });
+                                }
                                 if (!RegExp(mobileSchema.regEx).test(value)) {
-                                    validation.isValid = false;
-                                    validation.errorMessages
-                                        .push(t("users:forms.validation.formatError", {
-                                            field: fieldName
-                                        }));
+                                    return t("users:forms.validation.formatError", { field: fieldName });
                                 }
                             } }
                             maxLength={
@@ -1672,41 +971,8 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = (
                                     ? mobileSchema.maxLength
                                     : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
                             }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-            );
-        }
-
-        // If SMS OTP is enabled and ask password option is EMAIL, show mandatory mobile field
-        if (askPasswordVerificationOption === VerificationOption.SMS_OTP &&
-            askPasswordOption === AskPasswordOptionTypes.EMAIL) {
-
-            return (
-                <Grid.Row>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        <Field
-                            data-componentid="user-mgt-add-user-form-mobile-input"
-                            name="mobile"
-                            label={ t("user:forms.addUserForm.inputs.mobile.label", { defaultValue: "Mobile Number" }) }
-                            required={ true }
-                            requiredErrorMessage={ t("user:forms.addUserForm.inputs.mobile.validations.empty",
-                                { defaultValue: "Mobile number is required for SMS verification" }) }
-                            placeholder={ t("user:forms.addUserForm.inputs.mobile.placeholder",
-                                { defaultValue: "Enter mobile number" }) }
-                            type="text"
-                            value={ profileInfo.get("mobile") || initialValues?.mobile }
-                            validation={ (value: string, validation: Validation) => {
-                                // Use FormValidation.mobileNumber for consistent validation
-                                if (!FormValidation.mobileNumber(value)) {
-                                    validation.isValid = false;
-                                    validation.errorMessages.push(
-                                        t("user:forms.addUserForm.inputs.mobile.validations.invalid",
-                                            { defaultValue: "Please enter a valid mobile number" })
-                                    );
-                                }
-                            } }
-                            maxLength={ 15 }
+                            data-componentid={ resolvedComponentId }
+                            required
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -1717,7 +983,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = (
         return null;
     };
 
-    const resolveDynamicForm = (schema: ProfileSchemaInterface, index: number): ReactElement => {
+    const resolveDynamicField = (schema: ProfileSchemaInterface, index: number): ReactElement => {
         // Email and mobile fields are separately handled, therefore they don't need to be rendered here.
         const fieldsToHide: string[] = [
             EMAIL_ATTRIBUTE,
@@ -1734,265 +1000,16 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = (
 
         return (
             <Grid.Row columns={ 1 } key={ index }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                    { resolveDynamicFormField(schema, index) }
+                <Grid.Column mobile={ 16 } computer={ 10 }>
+                    <DynamicFieldRenderer
+                        schema={ schema }
+                        initialValues={ profileInfo ?? new Map<string, string>() }
+                        isUpdating={ false }
+                        data-componentid={ `${componentId}-profile-form` }
+                    />
                 </Grid.Column>
             </Grid.Row>
         );
-    };
-
-    const resolveDynamicFormField = (schema: ProfileSchemaInterface, key: number): ReactElement => {
-        const resolvedComponentId: string = `${ componentId }-${ schema.name }-input`;
-        const fieldName: string = t("user:profile.fields." +
-            schema.name.replace(".", "_"), { defaultValue: schema.displayName }
-        );
-
-        if (schema?.extended && schema?.multiValued) {
-            return resolveMultiValuedAttributesFormField(schema, fieldName, key);
-        };
-
-        if (schema.type.toUpperCase() === "BOOLEAN") {
-            return (
-                <Field
-                    data-componentid={ resolvedComponentId }
-                    name={ schema.name }
-                    required={ true }
-                    requiredErrorMessage={ fieldName + " " + "is required" }
-                    type="checkbox"
-                    value={ profileInfo.get(schema.name) ? [ schema.name ] : [] }
-                    children={ [
-                        {
-                            label: fieldName,
-                            value: schema.name
-                        }
-                    ] }
-                    key={ key }
-                />
-            );
-        } else if (schema.name === "country") {
-            return (
-                <Field
-                    ref={ onCountryRefChange }
-                    data-componentid={ resolvedComponentId }
-                    name={ schema.name }
-                    label={ fieldName }
-                    required={ true }
-                    requiredErrorMessage={ fieldName + " " + "is required" }
-                    placeholder={ "Select your" + " " + fieldName }
-                    type="dropdown"
-                    value={ profileInfo.get(schema.name) }
-                    children={ [ {
-                        "data-componentid": `${ componentId }-country-dropdown-empty` as string,
-                        key: "empty-country" as string,
-                        text: "Select your country" as string,
-                        value: "" as string
-                    } ].concat(
-                        countryList
-                            ? countryList.map((list: DropdownItemProps) => {
-                                return {
-                                    "data-componentid": `${ componentId }-country-dropdown-` +  list.value as string,
-                                    flag: list.flag,
-                                    key: list.key as string,
-                                    text: list.text as string,
-                                    value: list.value as string
-                                };
-                            })
-                            : []
-                    ) }
-                    key={ key }
-                    clearable={ false }
-                    search
-                    selection
-                    fluid
-                />
-            );
-        } else if (schema?.name === "locale") {
-            return (
-                <Field
-                    data-componentid={ resolvedComponentId }
-                    name={ schema?.name }
-                    label={ fieldName }
-                    required={ true }
-                    requiredErrorMessage={
-                        t("user:profile.forms.generic.inputs.validations.empty", { fieldName })
-                    }
-                    placeholder={
-                        t("user:profile.forms.generic.inputs.dropdownPlaceholder",
-                            { fieldName })
-                    }
-                    type="dropdown"
-                    value={ normalizeLocaleFormat(
-                        profileInfo.get(schema?.name),
-                        LocaleJoiningSymbol.HYPHEN,
-                        true, supportedI18nLanguages
-                    ) }
-                    children={ [ {
-                        "data-componentid": `${ componentId }-locale-dropdown-empty` as string,
-                        key: "empty-locale" as string,
-                        text: t("user:profile.forms.generic.inputs.dropdownPlaceholder",
-                            { fieldName }) as string,
-                        value: "" as string
-                    } ].concat(
-                        supportedI18nLanguages
-                            ? Object.keys(supportedI18nLanguages).map((key: string) => {
-                                return {
-                                    "data-componentid": `${ componentId }-locale-dropdown-`
-                                        +  supportedI18nLanguages[key].code as string,
-                                    flag: supportedI18nLanguages[key].flag ?? UserManagementConstants.GLOBE,
-                                    key: supportedI18nLanguages[key].code as string,
-                                    text: supportedI18nLanguages[key].name === UserManagementConstants.GLOBE
-                                        ? supportedI18nLanguages[key].code
-                                        : `${supportedI18nLanguages[key].name as string},
-                                            ${supportedI18nLanguages[key].code as string}`,
-                                    value: supportedI18nLanguages[key].code as string
-                                };
-                            })
-                            : []
-                    ) }
-                    key={ key }
-                    clearable={ false }
-                    search
-                    selection
-                    fluid
-                />
-            );
-        } else if (schema?.name === "dateOfBirth") {
-            return (
-                <Field
-                    data-componentid={ resolvedComponentId }
-                    name={ schema.name }
-                    label={ fieldName }
-                    required={ true }
-                    requiredErrorMessage={ fieldName + " is required" }
-                    placeholder="YYYY-MM-DD"
-                    type="text"
-                    value={ profileInfo.get(schema.name) }
-                    key={ key }
-                    validation={ (value: string, validation: Validation) => {
-                        if (!RegExp(schema.regEx).test(value)) {
-                            validation.isValid = false;
-                            validation.errorMessages
-                                .push(t("users:forms.validation.dateFormatError", {
-                                    field: fieldName
-                                }));
-                        }
-                    } }
-                    maxLength={ schema.maxLength
-                        ? schema.maxLength
-                        : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
-                    }
-                />
-            );
-        } else {
-            return (
-                <Field
-                    data-componentid={ resolvedComponentId }
-                    name={ schema.name }
-                    label={ schema.name === "profileUrl" ? "Profile Image URL" : fieldName }
-                    required={ true }
-                    requiredErrorMessage={ fieldName + " is required" }
-                    placeholder={ "Enter your " + fieldName }
-                    type="text"
-                    value={ profileInfo.get(schema.name) }
-                    key={ key }
-                    validation={ (value: string, validation: Validation) => {
-                        if (!RegExp(schema.regEx).test(value)) {
-                            validation.isValid = false;
-                            validation.errorMessages
-                                .push(t("users:forms.validation.formatError", {
-                                    field: fieldName
-                                }));
-                        }
-                    } }
-                    maxLength={
-                        fieldName.toLowerCase().includes("uri") || fieldName.toLowerCase().includes("url")
-                            ? ProfileConstants.URI_CLAIM_VALUE_MAX_LENGTH
-                            : (
-                                schema.maxLength
-                                    ? schema.maxLength
-                                    : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
-                            )
-                    }
-                />
-            );
-        }
-    };
-
-    /**
-     * Handle the add multi-valued attribute item.
-     *
-     * @param schema - Schema of the attribute
-     * @param attributeValue - Value of the attribute
-     */
-    const handleAddMultiValuedItem = (schema: ProfileSchemaInterface, attributeValue: string) => {
-
-        if (isEmpty(attributeValue)) return;
-
-        setMultiValuedAttributeValues((prevValues: Record<string, string[]>) => ({
-            ...prevValues,
-            [schema.name]: [ ...(prevValues[schema.name] || []), attributeValue ]
-        }));
-
-        const updatePrimaryValue = (primaryKey: string) => {
-            if (isEmpty(primaryValues[primaryKey])) {
-                setPrimaryValues((prevPrimaryValues: Record<string, string>) => ({
-                    ...prevPrimaryValues,
-                    [primaryKey]: attributeValue
-                }));
-            }
-        };
-
-        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-            updatePrimaryValue(EMAIL_ATTRIBUTE);
-        } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
-            updatePrimaryValue(MOBILE_ATTRIBUTE);
-        }
-    };
-
-    /**
-     * Delete a multi-valued item.
-     *
-     * @param schema - schema of the attribute
-     * @param attributeValue - value of the attribute
-     */
-    const handleMultiValuedItemDelete = (schema: ProfileSchemaInterface, attributeValue: string) => {
-
-        const filteredValues: string[] =
-            multiValuedAttributeValues[schema?.name]?.filter((value: string) => value !== attributeValue) || [];
-
-        setMultiValuedAttributeValues((prevValues: Record<string, string[]>) => ({
-            ...prevValues,
-            [schema.name]: filteredValues
-        }));
-
-        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-            if (primaryValues[EMAIL_ATTRIBUTE] === attributeValue) {
-                setPrimaryValues((prevPrimaryValues: Record<string, string>) => ({
-                    ...prevPrimaryValues,
-                    [EMAIL_ATTRIBUTE]: ""
-                }));
-            }
-        } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
-            if (primaryValues[MOBILE_ATTRIBUTE] === attributeValue) {
-                setPrimaryValues((prevPrimaryValues: Record<string, string>) => ({
-                    ...prevPrimaryValues,
-                    [MOBILE_ATTRIBUTE]: ""
-                }));
-            }
-        }
-    };
-
-    /**
-     * Assign primary email address or mobile number the multi-valued attribute.
-     *
-     * @param schemaName - Name of the primary attribute schema.
-     * @param attributeValue - Value of the attribute
-     */
-    const handleMakePrimary = (schemaName: string, attributeValue: string) => {
-        setPrimaryValues((prevPrimaryValues: Record<string, string>) => ({
-            ...prevPrimaryValues,
-            [schemaName]: attributeValue
-        }));
     };
 
     /**
@@ -2219,437 +1236,273 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = (
         setPrimaryValues(tempPrimaryValues);
     };
 
-    const resolveMultiValuedAttributesFormField = (
-        schema: ProfileSchemaInterface,
-        fieldName: string,
-        key: number,
-        customComponentId?: string
-    ): ReactElement => {
-        let primaryAttributeValue: string = "";
-        let primaryAttributeSchema: ProfileSchemaInterface;
-        let maxAllowedLimit: number = 0;
+    const handleFormSubmit = (values: Record<string, unknown>): void => {
+        const decodedFormValues: Record<string, unknown> = {};
 
-        const resolvedComponentId: string =  customComponentId ?? `${ componentId }-${ schema.name }-input`;
-        const resolvedLabel: string = schema.name === "profileUrl" ? "Profile Image URL" : fieldName;
+        for (const key in values) {
+            const decodedKey: string = key.replace(/__DOT__/g, ".");
 
-        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-            primaryAttributeValue = primaryValues[EMAIL_ATTRIBUTE];
-            primaryAttributeSchema = profileSchema.find((schema: ProfileSchemaInterface) =>
-                schema.name === EMAIL_ATTRIBUTE);
-            maxAllowedLimit = ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED;
-        } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
-            primaryAttributeValue = primaryValues[MOBILE_ATTRIBUTE];
-            primaryAttributeSchema = profileSchema.find((schema: ProfileSchemaInterface) =>
-                schema.name === MOBILE_ATTRIBUTE);
-            maxAllowedLimit = ProfileConstants.MAX_MOBILE_NUMBERS_ALLOWED;
-        } else {
-            primaryAttributeSchema = profileSchema.find(
-                (schemaAttribute: ProfileSchemaInterface) => schemaAttribute.name === schema.name);
-            maxAllowedLimit = ProfileConstants.MAX_MULTI_VALUES_ALLOWED;
+            decodedFormValues[decodedKey] = values[key];
         }
 
-        const showMakePrimaryButton = (value: string): boolean => {
-            if (isEmpty(primaryAttributeValue)) {
-                return false;
-            }
+        for (const key in decodedFormValues) {
+            if (key === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")) {
+                const values: Record<string, string> = decodedFormValues[key] as Record<string, string>;
+                const convertedValues: (string | Record<string, string>)[] = [];
 
-            return value !== primaryAttributeValue;
-        };
-
-        const showPrimaryPopup = (value: string): boolean => {
-            if (isEmpty(primaryAttributeValue)) {
-                return false;
-            }
-
-            return value === primaryAttributeValue;
-        };
-
-        return (
-            <div key={ key }>
-                <div className="multi-attribute-label required field" >
-                    <label>
-                        { resolvedLabel }
-                    </label>
-                </div>
-                <Field
-                    className="multi-attribute-field"
-                    action={ {
-                        icon: "plus",
-                        onClick: (event: React.MouseEvent) => {
-                            event.preventDefault();
-                            const value: string = multiValuedInputFieldValue[schema.name];
-
-                            if (isMultiValuedItemInvalid[schema.name] || isEmpty(value)
-                                || multiValuedAttributeValues[schema.name]?.includes(value)
-                            ) return;
-                            handleAddMultiValuedItem(schema, value);
-                            setMultiValuedInputFieldValue({
-                                ...multiValuedInputFieldValue,
-                                [schema.name]: ""
-                            });
-                        }
-                    } }
-                    disabled={ multiValuedAttributeValues[schema?.name]?.length >= maxAllowedLimit }
-                    data-componentid={ resolvedComponentId }
-                    name={ schema.name }
-                    placeholder={ "Enter your" + " " + fieldName }
-                    type="text"
-                    value={ multiValuedInputFieldValue[schema.name] }
-                    required={ isEmpty(multiValuedAttributeValues[schema?.name]) }
-                    requiredErrorMessage={ t("user:profile.forms.generic.inputs.validations.empty", { fieldName }) }
-                    validation={ (value: string, validation: Validation) => {
-                        if (isEmpty(value) && isEmpty(multiValuedAttributeValues[schema?.name])) {
-                            setIsMultiValuedItemInvalid({
-                                ...isMultiValuedItemInvalid,
-                                [schema.name]: true
-                            });
-                            validation.isValid = false;
-                            validation.errorMessages
-                                .push(t("user:profile.forms.generic.inputs.validations.empty", { fieldName }));
-                        }
-
-                        if (!RegExp(primaryAttributeSchema?.regEx).test(value)) {
-                            setIsMultiValuedItemInvalid({
-                                ...isMultiValuedItemInvalid,
-                                [schema.name]: true
-                            });
-                            validation.isValid = false;
-                            validation.errorMessages
-                                .push(t("users:forms.validation.formatError", {
-                                    field: fieldName
-                                }));
-                        } else {
-                            setIsMultiValuedItemInvalid({
-                                ...isMultiValuedItemInvalid,
-                                [schema.name]: false
-                            });
-                        }
-                    } }
-                    displayErrorOn="blur"
-                    listen={ (values: ProfileInfoInterface) => {
-                        setMultiValuedInputFieldValue({
-                            ...multiValuedInputFieldValue,
-                            [schema.name]: values.get(schema.name)
+                for (const emailType in values) {
+                    if (emailType === "primary") {
+                        convertedValues.push(values[emailType]);
+                    } else {
+                        convertedValues.push({
+                            type: emailType,
+                            value: values[emailType]
                         });
-                    } }
-                    maxLength={
-                        fieldName.toLowerCase().includes("uri") || fieldName.toLowerCase().includes("url")
-                            ? ProfileConstants.URI_CLAIM_VALUE_MAX_LENGTH
-                            : (
-                                schema.maxLength
-                                    ? schema.maxLength
-                                    : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
-                            )
                     }
-                    controlled
-                />
-                <div hidden={ multiValuedAttributeValues[schema?.name]?.length === 0 }>
-                    <TableContainer
-                        component={ Paper }
-                        elevation={ 0 }
-                        data-componentid={ `${ componentId }-${ schema.name }-accordion` }
-                    >
-                        <Table
-                            className="multi-value-table"
-                            size="small"
-                            aria-label="multi-attribute value table"
-                        >
-                            <TableBody>
-                                { multiValuedAttributeValues[schema?.name]?.map(
-                                    (value: string, index: number) => (
-                                        <TableRow key={ index } className="multi-value-table-data-row">
-                                            <TableCell align="left" padding="none">
-                                                <OxygenGrid
-                                                    container
-                                                    flexDirection="row"
-                                                    justifyContent="flex-start"
-                                                    spacing={ 1 }
-                                                >
-                                                    <OxygenGrid>
-                                                        <label
-                                                            data-componentid={
-                                                                `${ componentId }-${ schema.name }` +
-                                                                        `-value-${index}`
-                                                            }
-                                                            className="truncate"
-                                                        >
-                                                            { value }
-                                                        </label>
-                                                    </OxygenGrid>
-                                                    <OxygenGrid>
-                                                        {
-                                                            showPrimaryPopup(value)
-                                                                    && (
-                                                                        <div
-                                                                            data-componentid={
-                                                                                `${ componentId }-${ schema.name }` +
-                                                                                `-primary-icon-${ index }`
-                                                                            }
-                                                                        >
-                                                                            <Chip
-                                                                                label={ t("common:primary") }
-                                                                                size="medium"
-                                                                            />
-                                                                        </div>
-                                                                    )
-                                                        }
-                                                    </OxygenGrid>
-                                                </OxygenGrid>
-                                            </TableCell>
-                                            <TableCell align="right">
-                                                <OxygenGrid
-                                                    container
-                                                    flexDirection="row"
-                                                    justifyContent="flex-end"
-                                                    wrap="nowrap"
-                                                >
-                                                    <OxygenGrid>
-                                                        { showMakePrimaryButton(value) && (
-                                                            <IconButton
-                                                                size="small"
-                                                                onClick={ () =>
-                                                                    handleMakePrimary(
-                                                                        primaryAttributeSchema?.name,
-                                                                        value
-                                                                    )
-                                                                }
-                                                                data-componentid={
-                                                                    `${ componentId }-${ schema.name }` +
-                                                                    `-make-primary-button-${ index }`
-                                                                }
-                                                            >
-                                                                <Popup
-                                                                    trigger={ (
-                                                                        <Icon name="star" />
-                                                                    ) }
-                                                                    header={ t("common:makePrimary") }
-                                                                    size="tiny"
-                                                                    inverted
-                                                                />
-                                                            </IconButton>
-                                                        ) }
-                                                    </OxygenGrid>
-                                                    <OxygenGrid>
-                                                        <IconButton
-                                                            size="small"
-                                                            onClick={ () => {
-                                                                handleMultiValuedItemDelete(schema, value);
-                                                            } }
-                                                            data-componentid={
-                                                                `${ componentId }-${schema.name}-delete-button-${index}`
-                                                            }
-                                                        >
-                                                            <Popup
-                                                                trigger={ (
-                                                                    <Icon name="trash alternate" />
-                                                                ) }
-                                                                header={ t("common:delete") }
-                                                                size="tiny"
-                                                                inverted
-                                                            />
-                                                        </IconButton>
-                                                    </OxygenGrid>
-                                                </OxygenGrid>
-                                            </TableCell>
-                                        </TableRow>
-                                    )
-                                ) }
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </div>
-            </div>
-        );
+                }
+
+                decodedFormValues[key] = convertedValues;
+            } else if (key === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")) {
+                const values: Record<string, string> = decodedFormValues[key] as Record<string, string>;
+                const convertedValues: Record<string, string>[] = [];
+
+                for (const phoneType in values) {
+                    convertedValues.push({
+                        type: phoneType,
+                        value: values[phoneType]
+                    });
+                }
+
+                decodedFormValues[key] = convertedValues;
+            } else if (key === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ADDRESSES")) {
+                const values: Record<string, string> = decodedFormValues[key] as Record<string, string>;
+                const convertedValues: Record<string, string>[] = [];
+
+                for (const addressType in values) {
+                    convertedValues.push({
+                        formatted: values[addressType],
+                        type: addressType
+                    });
+                }
+
+                decodedFormValues[key] = convertedValues;
+            } else {
+                decodedFormValues[key] = values[key];
+            }
+        }
+
+        decodedFormValues.domain = readWriteUserStoresList.find(
+            (store: DropdownItemProps) => store.value === values.userstore
+        )?.text;
+        // User Store will be submitted as `domain`.
+        delete decodedFormValues.userstore;
+        // Delete the value of hidden field, which is used to keep track of password validity.
+        delete decodedFormValues.newPasswordValidity;
+
+        decodedFormValues["userName"] = UIConfig?.enableEmailDomain
+            ? values["email"]?.toString()
+            : values["username"]?.toString();
+        delete decodedFormValues["username"];
+
+        // console.log("decodedFormValues", decodedFormValues);
+
+        onSubmit(decodedFormValues);
     };
 
     return (
-        <Forms
+        <FinalForm
+            onSubmit={ handleFormSubmit }
             data-testid="user-mgt-add-user-form"
-            onSubmit={ async (values: Map<string, FormValue>) => {
-                if (passwordOption === PasswordOptionTypes.CREATE_PASSWORD) {
-                    // Check whether the new password is valid
-                    if (await isNewPasswordValid(values.get("newPassword")
-                        ? values.get("newPassword").toString()
-                        : "")) {
-                        onSubmit(getFormValues(values));
-                    }
-                }
-                else {
-                    onSubmit(getFormValues(values));
-                }
-            } }
-            submitState={ triggerSubmit }
-        >
-            <Grid>
-                {
-                    !hiddenFields.includes(HiddenFieldNames.USERSTORE) &&
-                    (
-                        <Grid.Row>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <div ref={ emailRef }/>
-                                <Form.Field required={ isUserstoreRequired }>
-                                    <label>
-                                        { t("user:forms.addUserForm.inputs."+
-                                        "domain.placeholder") }
-                                    </label>
-                                    <Dropdown
-                                        fluid
-                                        selection
-                                        labeled
-                                        options={ readWriteUserStoresList }
-                                        data-testid="user-mgt-add-user-form-userstore-dropdown"
-                                        name="userstore"
-                                        disabled={ false }
-                                        value={ userStore }
-                                        onChange={
-                                            (e: React.ChangeEvent<HTMLInputElement>, data: DropdownProps) => {
-                                                setUserStore(data.value.toString());
-                                                setSelectedUserStore(readWriteUserStoresList?.find(
+            data-componentid="user-mgt-add-user-form"
+            render={ ({ handleSubmit, form }: FormRenderProps) => {
+                // To trigger form submission externally.
+                formSubmit = handleSubmit;
+
+                return (
+                    <form onSubmit={ handleSubmit }>
+                        <Grid>
+                            { !hiddenFields.includes(HiddenFieldNames.USERSTORE) && (
+                                <Grid.Row>
+                                    <Grid.Column mobile={ 16 } computer={ 10 }>
+                                        <FinalFormField
+                                            component={ SelectFieldAdapter }
+                                            label={ t("user:forms.addUserForm.inputs.domain.placeholder") }
+                                            name="userstore"
+                                            initialValue={ selectedUserStoreId as string | string[] }
+                                            options={ readWriteUserStoresList?.map(
+                                                ({ text, value }: DropdownItemProps) => {
+                                                    return {
+                                                        text,
+                                                        value
+                                                    };
+                                                }) }
+                                            required={ isUserstoreRequired }
+                                            data-testid="user-mgt-add-user-form-userstore-dropdown"
+                                            data-componentid="user-mgt-add-user-form-userstore-dropdown"
+                                        />
+                                        <FormSpy
+                                            subscription={ { values: true } }
+                                            onChange={ ({ values }: FormSpyRenderProps) => {
+                                                setUserStore(values?.userstore?.toString());
+
+                                                const selectedUserStoreName: string = readWriteUserStoresList?.find(
                                                     (userStore: DropdownItemProps) =>
-                                                        userStore.value === data.value)?.text?.toString());
-                                            }
-                                        }
-                                        tabIndex={ 1 }
-                                        maxLength={ 60 }
-                                    />
-                                </Form.Field>
-                            </Grid.Column>
-                        </Grid.Row>
-                    )
-                }
-                {
-                    resolveUsernamePasswordFields()
-                }
-                {
-                    !hiddenFields.includes(HiddenFieldNames.FIRSTNAME) && (
-                        <Grid.Row>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <Field
-                                    data-testid="user-mgt-add-user-form-firstName-input"
-                                    label={ t(
-                                        "user:forms.addUserForm.inputs.firstName.label"
-                                    ) }
-                                    name="firstName"
-                                    placeholder={ t(
-                                        "user:forms.addUserForm.inputs." +
-                                        "firstName.placeholder"
-                                    ) }
-                                    required={ isFirstNameRequired }
-                                    requiredErrorMessage={ t(
-                                        "user:forms.addUserForm." +
-                                        "inputs.firstName.validations.empty"
-                                    ) }
-                                    type="text"
-                                    value={ initialValues && initialValues.firstName }
-                                    tabIndex={ 2 }
-                                    maxLength={ 30 }
-                                    validation={ async (value: string, validation: Validation) => {
-                                        if (value.includes("/")) {
-                                            validation.isValid = false;
-                                            validation.errorMessages.push("First Name cannot contain" +
-                                                " the forward slash (/) character.");
-                                        }
-                                    } }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                    )
-                }
-                {
-                    !hiddenFields.includes(HiddenFieldNames.LASTNAME) && (
-                        <Grid.Row>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <Field
-                                    data-testid="user-mgt-add-user-form-lastName-input"
-                                    label={ t(
-                                        "user:forms.addUserForm.inputs.lastName.label"
-                                    ) }
-                                    name="lastName"
-                                    placeholder={ t(
-                                        "user:forms.addUserForm.inputs." +
-                                        "lastName.placeholder"
-                                    ) }
-                                    required={ isLastNameRequired }
-                                    requiredErrorMessage={ t(
-                                        "user:forms.addUserForm." +
-                                        "inputs.lastName.validations.empty"
-                                    ) }
-                                    type="text"
-                                    value={ initialValues && initialValues.lastName }
-                                    tabIndex={ 3 }
-                                    maxLength={ 30 }
-                                    validation={ async (value: string, validation: Validation) => {
-                                        if (value.includes("/")) {
-                                            validation.isValid = false;
-                                            validation.errorMessages.push("Last Name cannot contain" +
-                                                " the forward slash (/) character.");
-                                        }
-                                    } }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                    )
-                }
-                {
-                    isAttributeProfileForUserCreationEnabled && profileSchema && resolveMobileField()
-                }
-                {
-                    isAttributeProfileForUserCreationEnabled && profileSchema &&
-                    profileSchema.map((schema: ProfileSchemaInterface, index: number) =>
-                        resolveDynamicForm(schema, index)
-                    )
-                }
-                {
-                    !hiddenFields.includes(HiddenFieldNames.PASSWORD)
-                        ? (
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                    <Form.Field
-                                    >
-                                        <label className="mb-3">
-                                            { t("user:forms.addUserForm" +
-                                                ".buttons.radioButton.label") }
-                                        </label>
-                                        <Radio
-                                            label={ askPasswordOptionData.label }
-                                            data-testId={ askPasswordOptionData["data-testid"] }
-                                            name="handlePasswordGroup"
-                                            value={ askPasswordOptionData.value }
-                                            checked={ passwordOption === askPasswordOptionData.value }
-                                            onChange={
-                                                (e: React.ChangeEvent<HTMLInputElement>, item: any) =>
-                                                    setPasswordOption(item?.value)
-                                            }
+                                                        userStore.value === values?.userstore)?.text?.toString() || "";
+
+                                                setSelectedUserStore(selectedUserStoreName);
+                                            } }
                                         />
-                                    </Form.Field>
-                                    {
-                                        passwordOption === askPasswordOptionData.value
-                                            ? renderAskPasswordOption()
-                                            : null
-                                    }
-                                    <Form.Field>
-                                        <Radio
-                                            label={ createPasswordOptionData.label }
-                                            data-testId={ createPasswordOptionData["data-testid"] }
-                                            name="handlePasswordGroup"
-                                            value={ createPasswordOptionData.value }
-                                            checked={ passwordOption === createPasswordOptionData.value }
-                                            onChange={
-                                                (e: React.ChangeEvent<HTMLInputElement>, item: any) =>
-                                                    setPasswordOption(item?.value)
-                                            }
+                                    </Grid.Column>
+                                </Grid.Row>
+                            ) }
+
+                            { resolveUsernamePasswordFields() }
+
+                            { !hiddenFields.includes(HiddenFieldNames.FIRSTNAME) && (
+                                <Grid.Row>
+                                    <Grid.Column mobile={ 16 } computer={ 10 }>
+                                        <FinalFormField
+                                            component={ TextFieldAdapter }
+                                            label={ t("user:forms.addUserForm.inputs.firstName.label") }
+                                            name="firstName"
+                                            initialValue={ initialValues?.firstName }
+                                            placeholder={ t(
+                                                "user:forms.addUserForm.inputs." +
+                                                "firstName.placeholder"
+                                            ) }
+                                            required={ isFirstNameRequired }
+                                            maxLength={ 30 }
+                                            validate={ (value: string) => {
+                                                if (isFirstNameRequired && isEmpty(value)) {
+                                                    return t("user:forms.addUserForm.inputs.firstName." +
+                                                        "validations.empty");
+                                                }
+
+                                                if (value.includes("/")) {
+                                                    return "First Name cannot contain the forward slash (/) character.";
+                                                }
+                                            } }
+                                            data-testid="user-mgt-add-user-form-firstName-input"
+                                            data-componentid="user-mgt-add-user-form-firstName-input"
                                         />
-                                    </Form.Field>
-                                    {
-                                        passwordOption === createPasswordOptionData.value
-                                            ? renderCreatePasswordOption()
-                                            : null
-                                    }
-                                </Grid.Column>
-                            </Grid.Row>
-                        ) : null
-                }
-            </Grid>
-        </Forms>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            ) }
+
+                            { !hiddenFields.includes(HiddenFieldNames.LASTNAME) && (
+                                <Grid.Row>
+                                    <Grid.Column mobile={ 16 } computer={ 10 }>
+                                        <FinalFormField
+                                            component={ TextFieldAdapter }
+                                            label={ t("user:forms.addUserForm.inputs.lastName.label") }
+                                            name="lastName"
+                                            initialValue={ initialValues?.lastName }
+                                            placeholder={ t("user:forms.addUserForm.inputs." +
+                                                "lastName.placeholder") }
+                                            required={ isLastNameRequired }
+                                            maxLength={ 30 }
+                                            validate={ (value: string) => {
+                                                if (isLastNameRequired && isEmpty(value)) {
+                                                    return t(
+                                                        "user:forms.addUserForm.inputs.lastName.validations.empty");
+                                                }
+
+                                                if (value.includes("/")) {
+                                                    return "Last Name cannot contain the forward slash (/) character.";
+                                                }
+                                            } }
+                                            data-testid="user-mgt-add-user-form-lastName-input"
+                                            data-componentid="user-mgt-add-user-form-lastName-input"
+                                        />
+                                    </Grid.Column>
+                                </Grid.Row>
+                            ) }
+
+                            {
+                                isAttributeProfileForUserCreationEnabled && profileSchema && resolveMobileField()
+                            }
+
+                            {
+                                isAttributeProfileForUserCreationEnabled && profileSchema &&
+                                profileSchema.map((schema: ProfileSchemaInterface, index: number) =>
+                                    resolveDynamicField(schema, index)
+                                )
+                            }
+
+                            { !hiddenFields.includes(HiddenFieldNames.PASSWORD) && (
+                                <Grid.Row>
+                                    <Grid.Column mobile={ 16 } computer={ 10 }>
+                                        <FormControl>
+                                            <FormLabel id="pw-options-radio-buttons-group-label">
+                                                { t("user:forms.addUserForm.buttons.radioButton.label") }
+                                            </FormLabel>
+                                            <RadioGroup
+                                                aria-labelledby="pw-options-radio-buttons-group-label"
+                                                name="handlePasswordGroup"
+                                                defaultValue={ passwordOption }
+                                                onChange={ (event: React.ChangeEvent, value: string) => {
+                                                    setPasswordOption(value as PasswordOptionTypes);
+                                                    // Update the hidden field tracking the password option.
+                                                    form.change("passwordOption", value);
+                                                } }
+                                            >
+                                                <FormControlLabel
+                                                    label={ askPasswordOptionData.label }
+                                                    value={ askPasswordOptionData.value }
+                                                    control={ <MuiRadio /> }
+                                                />
+
+                                                { passwordOption === askPasswordOptionData.value && (
+                                                    <AskPasswordOption
+                                                        profileSchema={ profileSchema }
+                                                        isInviteUserToSetPasswordEnabled={ emailVerificationEnabled }
+                                                        isEmailFilled={ isEmailFilled }
+                                                        isEmailRequired={ isEmailRequired }
+                                                        isValidEmail={ isValidEmail }
+                                                        selectedAskPasswordOption={
+                                                            askPasswordOption as AskPasswordOptionTypes }
+                                                        onAskPasswordOptionChange={ (value: AskPasswordOptionTypes) => {
+                                                            setAskPasswordOption(value);
+                                                        } }
+                                                        connectorProperties={ connectorProperties }
+                                                        localClaims={ fetchedAttributes }
+                                                        isAttributeProfileForUserCreationEnabled={
+                                                            isAttributeProfileForUserCreationEnabled }
+                                                        isMultipleEmailAndMobileNumberEnabled={
+                                                            isMultipleEmailAndMobileNumberEnabled }
+                                                        isDistinctAttributeProfilesDisabled={
+                                                            isDistinctAttributeProfilesDisabled }
+                                                    />
+                                                ) }
+
+                                                <FormControlLabel
+                                                    label={ createPasswordOptionData.label }
+                                                    value={ createPasswordOptionData.value }
+                                                    control={ <MuiRadio /> }
+                                                />
+                                            </RadioGroup>
+                                        </FormControl>
+
+                                        <FinalFormField
+                                            component="input"
+                                            type="hidden"
+                                            name="passwordOption"
+                                            initialValue={ passwordOption }
+                                        />
+
+                                        { passwordOption === createPasswordOptionData.value && (
+                                            <CreatePasswordOption
+                                                passwordConfig={ passwordConfig }
+                                                passwordRegex={ passwordRegex }
+                                            />
+                                        ) }
+                                    </Grid.Column>
+                                </Grid.Row>
+                            ) }
+                        </Grid>
+                    </form>
+                );
+            } }
+        />
     );
 };
