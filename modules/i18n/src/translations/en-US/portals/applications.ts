@@ -598,9 +598,14 @@ export const applications: ApplicationsNS = {
                 tabName: "Provisioning"
             },
             sharedAccess: {
+                title: "Sharing Policy",
+                sharedRoles: "Shared Roles",
+                sharingSettings: "Sharing settings for",
+                individualRoleSharingLabel: "Individually select roles to be shared with organizations",
                 doNotShareApplication: "Do not share the application with any organization.",
                 shareAllApplication: "Share the application with all organizations.",
                 shareSelectedApplication: "Share the application with selected organizations.",
+                allRolesSharingMessage: "All roles of the application will be shared with the organization.",
                 allRolesAndOrgsSharingMessage: "All roles of the application will be shared with all the organizations.",
                 allRolesAndOrgsNotSharingMessage: "No roles will be shared with any organization.",
                 doNotShareRolesWithAllOrgs: "Do not share roles with all organizations.",
@@ -613,12 +618,29 @@ export const applications: ApplicationsNS = {
                 rolesSharedPartially: "Roles are selectively shared with this organization.",
                 shareRoleSubsetWithSelectedOrgs: "Share a subset of roles with selected organizations",
                 shareRoleSubsetWithAllOrgs: "Share a subset of roles with all organizations",
-                subTitle: "Select the following options to share the application with the organizations.",
+                subTitle: "Select how the application and roles will be shared with organizations.",
                 shareAllRoles: "Share All Roles",
                 shareSelectedRoles: "Share Selected Roles",
                 doNotShareRoles: "Do Not Share Roles",
                 tabName: "Shared Access",
                 selectAnOrganizationToViewRoles: "Select an organization to view the shared roles.",
+                selectAnOrganizationToMangage: "Select an organization to manage",
+                toManageOrganizationSelectLeftPanel: "To manage the organization, please select it from the left panel.",
+                shareTypeSwitchModal: {
+                    header: "Switch sharing mode to selective sharing?",
+                    message: "This action is irreversible and change your application sharing settings.",
+                    description: "You're about to switch to selective sharing. Please select one of the 2 options to proceed.",
+                    preserveStateLabel1: "Preserve current state",
+                    preserveStateLabel2: "Keep all existing shared organizations, roles and configurations of the application.",
+                    resetToDefaultLabel1: "Reset to default",
+                    resetToDefaultLabel2: "Clear all sharing settings and start with a clean slate."
+                },
+                showShareAllWarningModal: {
+                    header: "Are you sure?",
+                    message: "This action is irreversible and will change roles in all organizations.",
+                    description: "This action may share new roles or unshare the existing roles to the shared organizations of the application.",
+                    assertionHint: "Please confirm your action."
+                },
                 sharedAccessStatusOptions: {
                     all: "All",
                     success: "Success",

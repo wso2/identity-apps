@@ -19,7 +19,6 @@
 .approval-steps-container {
     overflow-x: auto; 
     overflow-y: hidden; 
-    white-space: nowrap; 
     padding: 1rem;
     background-color: #fdfdfb; 
     background-image: radial-gradient(#dcdcdc 0.5px, transparent 0.3px);
@@ -28,6 +27,7 @@
     border-radius: 8px;
     margin-bottom: 20px;
     margin-top: 20px;
+    width: 100%;
   }
   
 .approval-steps-stepsWrapper {
@@ -35,13 +35,13 @@
     flex-direction: row;
     gap: 1rem;
     padding: 2rem;
+    width: 100%;
 }
 
 .approval-step {
-    flex-shrink: 0; 
-    min-width: 200px; 
-    max-width: 300px;
-    flex-grow: 0; 
+    flex: 1;
+    min-width: 400px; 
+    max-width: calc(50% - 0.5rem);
 }
 
 

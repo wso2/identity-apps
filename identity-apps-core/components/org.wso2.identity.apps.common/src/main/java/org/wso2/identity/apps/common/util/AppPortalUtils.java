@@ -99,7 +99,6 @@ import static org.wso2.identity.apps.common.util.AppPortalConstants.MYACCOUNT_AP
 import static org.wso2.identity.apps.common.util.AppPortalConstants.MYACCOUNT_PORTAL_PATH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.PROFILE_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.USERNAME_CLAIM_URI;
-import static org.wso2.identity.apps.common.util.AppPortalConstants.USER_SESSION_IMPERSONATION;
 
 /**
  * App portal utils.
@@ -156,15 +155,13 @@ public class AppPortalUtils {
         String consoleCallbackUrlForMyAccount = IdentityUtil.getServerURL(consolePortalPathForMyAccount,
             true, true);
         String appendedConsoleCallBackURLRegex = StringUtils.EMPTY;
-        boolean isUserSessionImpersonationEnabled = Boolean.parseBoolean(IdentityUtil
-            .getProperty(USER_SESSION_IMPERSONATION));
         try {
             // Update the callback URL properly if origin is configured for the portal app.
             callbackUrl = ApplicationMgtUtil.replaceUrlOriginWithPlaceholders(callbackUrl);
             callbackUrl = ApplicationMgtUtil.resolveOriginUrlFromPlaceholders(callbackUrl, applicationName);
 
             // Add console url when impersonation is enabled.
-            if (isUserSessionImpersonationEnabled && MYACCOUNT_APP.equals(applicationName)) {
+            if (MYACCOUNT_APP.equals(applicationName)) {
                 consoleCallbackUrlForMyAccount = ApplicationMgtUtil.replaceUrlOriginWithPlaceholders(
                     consoleCallbackUrlForMyAccount);
                 consoleCallbackUrlForMyAccount = ApplicationMgtUtil.resolveOriginUrlFromPlaceholders(
@@ -191,7 +188,7 @@ public class AppPortalUtils {
         }
         oAuthConsumerAppDTO.setCallbackUrl(callbackUrl);
         // Enable subject token response type for my account.
-        if (isUserSessionImpersonationEnabled && MYACCOUNT_APP.equals(applicationName)) {
+        if (MYACCOUNT_APP.equals(applicationName)) {
             oAuthConsumerAppDTO.setSubjectTokenEnabled(true);
             oAuthConsumerAppDTO.setSubjectTokenExpiryTime(
                 OAuthConstants.OIDCConfigProperties.SUBJECT_TOKEN_EXPIRY_TIME_VALUE);
@@ -303,8 +300,7 @@ public class AppPortalUtils {
         if (!CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME && CONSOLE_APP.equals(appName)) {
             shareApplication(tenantDomain, tenantId, appId, appName, appOwner);
         }
-        if (Boolean.parseBoolean(IdentityUtil.getProperty(USER_SESSION_IMPERSONATION)) &&
-                MYACCOUNT_APP.equals(appName)) {
+        if (MYACCOUNT_APP.equals(appName)) {
             addAPIResourceToApplication(appId, tenantDomain, IMPERSONATION_API_RESOURCE,
                 APIResourceManagementConstants.APIResourceTypes.TENANT);
             addAPIResourceToApplication(appId, tenantDomain, IMPERSONATION_ORG_API_RESOURCE,
@@ -320,7 +316,7 @@ public class AppPortalUtils {
      * @param tenantId     tenant id.
      * @throws IdentityApplicationManagementException      IdentityApplicationManagementException.
      * @throws IdentityOAuthAdminException                 IdentityOAuthAdminException.
-     * @throws org.wso2.carbon.user.api.UserStoreException UserStoreException.
+     * @throws UserStoreException UserStoreException.
      */
     public static void initiatePortals(String tenantDomain, int tenantId)
         throws IdentityApplicationManagementException, IdentityOAuthAdminException,
@@ -341,7 +337,6 @@ public class AppPortalUtils {
      * @param tenantInfoBean tenant info bean.
      * @throws IdentityApplicationManagementException      IdentityApplicationManagementException.
      * @throws IdentityOAuthAdminException                 IdentityOAuthAdminException.
-     * @throws org.wso2.carbon.user.api.UserStoreException UserStoreException.
      */
     public static void initiatePortals(TenantInfoBean tenantInfoBean)
         throws IdentityApplicationManagementException, IdentityOAuthAdminException {
@@ -366,9 +361,7 @@ public class AppPortalUtils {
                         GRANT_TYPE_ORGANIZATION_SWITCH);
                 }
                 // Enable token-exchange grant type for my account.
-                boolean isUserSessionImpersonationEnabled = Boolean.parseBoolean(IdentityUtil
-                        .getProperty(USER_SESSION_IMPERSONATION));
-                if (isUserSessionImpersonationEnabled && MYACCOUNT_APP.equals(appPortal.getName())) {
+                if (MYACCOUNT_APP.equals(appPortal.getName())) {
                     grantTypes = Arrays.asList(AUTHORIZATION_CODE, REFRESH_TOKEN, GRANT_TYPE_ACCOUNT_SWITCH,
                     GRANT_TYPE_TOKEN_EXCHANGE);
                 }

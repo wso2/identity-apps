@@ -1,5 +1,54 @@
 # @wso2is/myaccount
 
+## 2.23.1
+
+### Patch Changes
+
+- [#8675](https://github.com/wso2/identity-apps/pull/8675) [`2760e99ffe26961fbe9640906203dea947660257`](https://github.com/wso2/identity-apps/commit/2760e99ffe26961fbe9640906203dea947660257) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Append organization handle instead of organizationId to userId for linked accounts
+
+- Updated dependencies [[`832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3`](https://github.com/wso2/identity-apps/commit/832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3)]:
+  - @wso2is/i18n@2.27.0
+
+## 2.23.0
+
+### Minor Changes
+
+- [#8592](https://github.com/wso2/identity-apps/pull/8592) [`3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523`](https://github.com/wso2/identity-apps/commit/3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523) Thanks [@Malith-19](https://github.com/Malith-19)! - Move the Approvals to common component.
+
+### Patch Changes
+
+- Updated dependencies [[`3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523`](https://github.com/wso2/identity-apps/commit/3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.0
+  - @wso2is/i18n@2.26.2
+
+## 2.22.0
+
+### Minor Changes
+
+- [#8572](https://github.com/wso2/identity-apps/pull/8572) [`564da925830812508013488549b897bc5098572a`](https://github.com/wso2/identity-apps/commit/564da925830812508013488549b897bc5098572a) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update user profile implementation to honor claim input format
+
+### Patch Changes
+
+- [#8206](https://github.com/wso2/identity-apps/pull/8206) [`ba917ba62a07de5898c251fc385558ddb562122a`](https://github.com/wso2/identity-apps/commit/ba917ba62a07de5898c251fc385558ddb562122a) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Switch to the org handle in places where org id is used as tenant domain
+
+* [#8680](https://github.com/wso2/identity-apps/pull/8680) [`3fde77aefb33fb28010b2f7d7bd631633fd05ec4`](https://github.com/wso2/identity-apps/commit/3fde77aefb33fb28010b2f7d7bd631633fd05ec4) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in single value mobile number update flow
+
+* Updated dependencies [[`1cf2a69f382401824625df187fecbcac9a32d28a`](https://github.com/wso2/identity-apps/commit/1cf2a69f382401824625df187fecbcac9a32d28a), [`1cf2a69f382401824625df187fecbcac9a32d28a`](https://github.com/wso2/identity-apps/commit/1cf2a69f382401824625df187fecbcac9a32d28a)]:
+  - @wso2is/common.ui.profile.v1@0.1.0
+  - @wso2is/i18n@2.26.1
+
+## 2.21.0
+
+### Minor Changes
+
+- [#8588](https://github.com/wso2/identity-apps/pull/8588) [`8294cbfd28e252ebb145a153d0e74106515a28b8`](https://github.com/wso2/identity-apps/commit/8294cbfd28e252ebb145a153d0e74106515a28b8) Thanks [@brionmario](https://github.com/brionmario)! - Extension model for i18n in Console & My Account
+
+### Patch Changes
+
+- Updated dependencies [[`8294cbfd28e252ebb145a153d0e74106515a28b8`](https://github.com/wso2/identity-apps/commit/8294cbfd28e252ebb145a153d0e74106515a28b8)]:
+  - @wso2is/core@2.11.0
+  - @wso2is/i18n@2.26.0
+
 ## 2.20.6
 
 ### Patch Changes

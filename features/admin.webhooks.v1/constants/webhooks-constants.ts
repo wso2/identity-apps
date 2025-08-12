@@ -27,6 +27,9 @@ export class WebhooksConstants {
     public static readonly ACTIVE_STATUS: string = "ACTIVE";
     public static readonly INACTIVE_STATUS: string = "INACTIVE";
 
+    public static readonly WEBHOOKS_SESSION_EVENT_SCHEMA: string = "https://schemas.identity.wso2.org/events/session";
+    public static readonly WEBHOOKS_TOKEN_EVENT_SCHEMA: string = "https://schemas.identity.wso2.org/events/token";
+
     public static readonly DEFAULT_EVENT_PROFILE: WebhookEventProfileInterface = {
         name: "WSO2",
         uri: "https://schemas.identity.wso2.org"
@@ -43,6 +46,17 @@ export class WebhooksConstants {
         FETCH_WEBHOOK_INVALID_STATUS_CODE: "Failed to fetch webhook. Unexpected response status.",
         RETRY_WEBHOOK_INVALID_STATUS_CODE: "Failed to resend requests. Unexpected response status.",
         UPDATE_WEBHOOK_INVALID_STATUS_CODE: "Failed to update webhook. Unexpected response status.",
+        UPDATE_WEBHOOK_METADATA_INVALID_STATUS_CODE: "Failed to update webhook metadata. Unexpected response status.",
         UPDATE_WEBHOOK_STATUS_INVALID_STATUS_CODE: "Failed to update webhook status. Unexpected response status."
     };
+
+    /**
+     * Set of keys used to enable/disable features.
+     * @typeParam FEATURE_DICTIONARY - `Map<string, string>`
+     * @defaultValue
+     */
+    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
+        .set("WEBHOOK_SETTINGS", "webhooks.settings")
+        .set("SESSION_EVENT_HANDLER", "webhook.events.session")
+        .set("TOKEN_EVENT_HANDLER", "webhook.events.token");
 }

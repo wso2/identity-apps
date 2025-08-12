@@ -671,29 +671,27 @@
                     ]{{ "," if not loop.last }}
                     {% endfor %}
                     {% else %}
-                        "create": [],
                         "read": [],
                         "update": [],
-                        "delete": []
                     {% endif %}
                 }
             },
             {% endif %}
-            {% if console.workflows is defined %}
-            "workflows": {
+            {% if console.approvalWorkflows is defined %}
+            "approvalWorkflows": {
                 "disabledFeatures": [
-                    {% if console.workflows.disabled_features is defined %}
-                    {% for feature in console.workflows.disabled_features %}
+                    {% if console.approvalWorkflows.disabled_features is defined %}
+                    {% for feature in console.approvalWorkflows.disabled_features %}
                     "{{ feature }}"{{ "," if not loop.last }}
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {% if console.workflows.enabled is defined %} {{ console.workflows.enabled }},
+                "enabled": {% if console.approvalWorkflows.enabled is defined %} {{ console.approvalWorkflows.enabled }},
                 {% else %} true,
                 {% endif %}
                 "scopes": {
-                    {% if console.workflows.scopes is defined %}
-                    {% for operation, scopes in console.workflows.scopes.items() %}
+                    {% if console.approvalWorkflows.scopes is defined %}
+                    {% for operation, scopes in console.approvalWorkflows.scopes.items() %}
                     "{{ operation }}": [
                         {% for scope in scopes %}
                             "{{ scope }}"{{ "," if not loop.last }}
@@ -706,6 +704,34 @@
                         "feature": [],
                         "update": [],
                         "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
+            {% if console.workflowInstances is defined %}
+            "workflowInstances": {
+                "disabledFeatures": [
+                    {% if console.workflowInstances.disabled_features is defined %}
+                    {% for feature in console.workflowInstances.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.workflowInstances.enabled is defined %} {{ console.workflowInstances.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.workflowInstances.scopes is defined %}
+                    {% for operation, scopes in console.workflowInstances.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "read": [],
+                        "update": [],
                     {% endif %}
                 }
             },

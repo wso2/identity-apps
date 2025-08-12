@@ -24,7 +24,7 @@
     <groupId>org.wso2.identity.apps</groupId>
     <artifactId>identity-apps-core</artifactId>
     <packaging>pom</packaging>
-    <version>2.27.21-SNAPSHOT</version>
+    <version>3.0.2-SNAPSHOT</version>
     <name>WSO2 Identity Server Apps - Parent</name>
     <description>WSO2 Identity Server Web Apps</description>
 
@@ -47,10 +47,12 @@
         <module>components/org.wso2.identity.apps.taglibs.layout.controller</module>
         <module>components/login-portal-layouts</module>
         <module>components/org.wso2.identity.apps.common</module>
+        <module>apps/accounts</module>
         <module>apps/authentication-portal</module>
         <module>apps/recovery-portal</module>
         <module>apps/x509-certificate-authentication-portal</module>
         <module>features/org.wso2.identity.apps.common.server.feature</module>
+        <module>features/org.wso2.identity.apps.accounts.portal.server.feature</module>
         <module>features/org.wso2.identity.apps.authentication.portal.server.feature</module>
         <module>features/org.wso2.identity.apps.recovery.portal.server.feature</module>
         <module>features/org.wso2.identity.apps.x509certificate.portal.server.feature</module>
@@ -204,6 +206,12 @@
                 <version>${identity.organization.management.application.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.wso2.identity.apps</groupId>
+                <artifactId>accounts</artifactId>
+                <version>${project.version}</version>
+                <type>war</type>
+            </dependency>
             <dependency>
                 <groupId>org.wso2.identity.apps</groupId>
                 <artifactId>myaccount</artifactId>
@@ -704,6 +712,32 @@
                         <version>4.8.6</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <configuration>
+                            <configLocation>
+                                https://raw.githubusercontent.com/wso2/code-quality-tools/v1.3/checkstyle/checkstyle.xml
+                            </configLocation>
+                            <suppressionsLocation>
+                                https://raw.githubusercontent.com/wso2/code-quality-tools/v1.3/checkstyle/suppressions.xml
+                            </suppressionsLocation>
+                            <encoding>UTF-8</encoding>
+                            <consoleOutput>true</consoleOutput>
+                            <failsOnError>true</failsOnError>
+                            <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                        </configuration>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

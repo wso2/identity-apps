@@ -84,10 +84,10 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
 
     //Set relevant scopes
     const approvalWorkflowFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.userStores
+        (state: AppState) => state?.config?.ui?.features?.workflows
     );
     const hasApprovalWorkflowCreatePermission: boolean = useRequiredScopes(
-        approvalWorkflowFeatureConfig?.scopes?.update
+        approvalWorkflowFeatureConfig?.scopes?.create
     );
 
     const [ approvalWorkflowFormData, setApprovalWorkflowFormData ] = useState<ApprovalWorkflowFormDataInterface>(null);

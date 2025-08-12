@@ -60,7 +60,6 @@ export interface RadioGroupFieldAdapterPropsInterface extends FieldRenderProps<s
 const RadioGroupFieldAdapter: FunctionComponent<RadioGroupFieldAdapterPropsInterface> = (
     {
         input,
-        name,
         meta,
         label,
         formControlProps = {},
@@ -87,9 +86,9 @@ const RadioGroupFieldAdapter: FunctionComponent<RadioGroupFieldAdapterPropsInter
             { ...formControlProps }
             { ...rest }
         >
-            <FormLabel id={ `${ name }-radio-buttons-group` } { ...formLabelProps }>{ label }</FormLabel>
+            <FormLabel id={ `${ input.name }-radio-buttons-group-label` } { ...formLabelProps }>{ label }</FormLabel>
             <RadioGroup
-                aria-labelledby={ `${ name }-radio-buttons-group` }
+                aria-labelledby={ `${ input.name }-radio-buttons-group-label` }
                 { ...input }
             >
                 { options.map((option: RadioGroupOptionProps, index: number) => {

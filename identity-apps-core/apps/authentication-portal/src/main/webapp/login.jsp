@@ -57,7 +57,7 @@
 <jsp:directive.include file="includes/init-url.jsp"/>
 
 <%-- Include registration portal URL resolver --%>
-<jsp:directive.include file="util/registration-portal-url-resolver.jsp"/>
+<jsp:directive.include file="util/dynamic-portal-url-resolver.jsp"/>
 
 <%
     // Add the login screen to the list to retrieve text branding customizations.

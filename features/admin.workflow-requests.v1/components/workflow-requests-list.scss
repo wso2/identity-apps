@@ -1,0 +1,124 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+$primary-color: #24292f;
+$secondary-color: #656d76;
+$spacing-sm: 6px;
+$spacing-md: 8px;
+$font-size-large: 14px;
+
+$status-yellow: #fbbf24;
+$status-green: #22c55e;
+$status-red: #ef4444;
+$status-grey: #a0aec0;
+
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+}
+
+.workflow-requests-table {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100%;
+
+    td {
+        vertical-align: middle;
+    }
+}
+
+.workflow-requests-list {
+    &-event-type {
+        margin-bottom: 0;
+
+        + .sub.header {
+            font-weight: 400;
+            margin-left: 0;
+            color: $secondary-color;
+            font-size: 0.875em;
+        }
+    }
+
+    &-status-cell {
+        @include flex-center;
+        gap: $spacing-md;
+
+        .status-indicator {
+            width: 0.85em;
+            height: 0.85em;
+            border-radius: 50%;
+            display: block;
+            margin: 0;
+
+            &.yellow {
+                background-color: $status-yellow;
+            }
+
+            &.green {
+                background-color: $status-green;
+            }
+
+            &.red {
+                background-color: $status-red;
+            }
+
+            &.grey {
+                background-color: $status-grey;
+            }
+        }
+
+        .status-text {
+            margin-top: 0;
+            font-weight: 400;
+            text-transform: none;
+            line-height: normal;
+            font-size: 1em;
+            display: block;
+            align-items: center;
+        }
+    }
+
+    &-date-cell {
+        margin: 0;
+        font-weight: 400;
+    }
+
+    .me-label {
+        margin-left: $spacing-sm;
+        background: #f3f4f6;
+        color: #4b5563;
+        font-weight: 500;
+    }
+
+    &-event-type,
+    &-status-text,
+    &-date-cell,
+    &-event-type-cell,
+    &-status-cell {
+        font-size: $font-size-large;
+        font-weight: 400;
+        line-height: 1.4;
+    }
+
+    &-status-text,
+    &-event-type,
+    &-date-cell {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+}

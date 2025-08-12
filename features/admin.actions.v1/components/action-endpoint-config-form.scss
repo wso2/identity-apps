@@ -59,8 +59,31 @@
         margin-bottom: 20px;
         font-weight: normal;
     }
+
+    .row.urlComponentTagRow {
+        display: inline-block !important;
+        width: auto           !important;
+        margin: 0rem 0.5rem 0 0 !important;
+        margin-bottom: 8px !important;
+    }
+
+    .row.urlComponentLabelRow {
+        padding: 0;
+        margin-top: 20px;
+        margin-bottom: 8px !important;
+        color: var(--oxygen-palette-text-secondary);
+    }
 }
 
 .alert-nutral {
     background-color: var(--oxygen-palette-grey-100);
 }
+
+.endpoint-uri-alert {
+    margin-top: 10px;
+}
+
+.endpoint-hint {
+    margin-top: 8px !important;
+}
+

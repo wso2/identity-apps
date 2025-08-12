@@ -69,8 +69,15 @@ import { getUserstoreResourceEndpoints } from "@wso2is/admin.userstores.v1/confi
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { getValidationServiceEndpoints } from "@wso2is/admin.validation.v1/configs";
 import { getWebhooksResourceEndpoints } from "@wso2is/admin.webhooks.v1/configs/endpoints";
-import { getApprovalsResourceEndpoints } from "@wso2is/admin.workflow-approvals.v1";
-import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
+import { getApprovalsResourceEndpoints } from "@wso2is/common.workflow-approvals.v1";
+import {
+    I18nModuleConstants,
+    I18nModuleInitOptions,
+    I18nModuleOptionsInterface,
+    SupportedLanguagesMeta,
+    generateBackendPaths
+} from "@wso2is/i18n";
+import { getWorkflowRequestsResourceEndpoints } from "../../admin.workflow-requests.v1/types/workflow-requests";
 import { AppConstants } from "../constants/app-constants";
 import { I18nConstants } from "../constants/i18n-constants";
 import { UIConstants } from "../constants/ui-constants";
@@ -201,7 +208,7 @@ export class Config {
      * @param metaFile - Meta File.
      * @returns I18n init options.
      */
-    public static generateModuleInitOptions(metaFile: MetaI18N): I18nModuleInitOptions {
+    public static generateModuleInitOptions(metaFile: SupportedLanguagesMeta): I18nModuleInitOptions {
         return {
             backend: {
                 loadPath: (language: string[], namespace: string[]) => generateBackendPaths(
@@ -212,6 +219,7 @@ export class Config {
                         langAutoDetectEnabled: I18nConstants.LANG_AUTO_DETECT_ENABLED,
                         namespaceDirectories: I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
                         overrideOptions: I18nConstants.INIT_OPTIONS_OVERRIDE,
+                        resourceExtensionsPath: "/extensions/i18n",
                         resourcePath: "/resources/i18n",
                         xhrBackendPluginEnabled: I18nConstants.XHR_BACKEND_PLUGIN_ENABLED
                     },
@@ -289,13 +297,14 @@ export class Config {
      * @param metaFile - Meta file.
      * @returns i18n config object.
      */
-    public static getI18nConfig(metaFile?: MetaI18N): I18nModuleOptionsInterface {
+    public static getI18nConfig(metaFile?: SupportedLanguagesMeta): I18nModuleOptionsInterface {
         return {
             initOptions: this.generateModuleInitOptions(metaFile),
             langAutoDetectEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.i18nConfigs?.langAutoDetectEnabled
                 ?? I18nConstants.LANG_AUTO_DETECT_ENABLED,
             namespaceDirectories: I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
             overrideOptions: I18nConstants.INIT_OPTIONS_OVERRIDE,
+            resourceExtensionsPath: "/extensions/i18n",
             resourcePath: "/resources/i18n",
             xhrBackendPluginEnabled: I18nConstants.XHR_BACKEND_PLUGIN_ENABLED
         };
@@ -343,6 +352,7 @@ export class Config {
             ...getRemoteLoggingEndpoints(this.resolveServerHost()),
             ...getWorkflowsResourceEndpoints(this.resolveServerHost()),
             ...getWorkflowAssociationsResourceEndpoints(this.resolveServerHost()),
+            ...getWorkflowRequestsResourceEndpoints(this.resolveServerHost()),
             ...getRegistrationFlowBuilderResourceEndpoints(this.resolveServerHost()),
             ...getPasswordRecoveryFlowBuilderResourceEndpoints(this.resolveServerHost()),
             ...getAskPasswordFlowBuilderResourceEndpoints(this.resolveServerHost()),
@@ -357,6 +367,17 @@ export class Config {
             saml2Meta: `${ this.resolveServerHost(false, true) }/identity/metadata/saml2`,
             wellKnown: `${ this.resolveServerHost(false, true) }/oauth2/token/.well-known/openid-configuration`
         };
+    }
+
+    /**
+     * Get a list of languages that can be translated in the UI.
+     * @remarks Currently, the Console only supports English.
+     * Tracker: https://github.com/wso2/product-is/issues/24778
+     *
+     * @returns List of translatable UI languages.
+     */
+    public static getAppSupportedLocales(): string[] {
+        return [ I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE ];
     }
 
     /**

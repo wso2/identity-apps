@@ -16,28 +16,34 @@
  * under the License.
  */
 
-import { Field, FormValue, Forms } from "@wso2is/forms";
-import isEmpty from "lodash-es/isEmpty";
+import {
+    CheckboxFieldAdapter,
+    FinalForm,
+    FinalFormField,
+    FormRenderProps,
+    FormSpy,
+    FormState
+} from "@wso2is/form";
+import { FormValue } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Grid, List } from "semantic-ui-react";
 import { CheckBoxFieldFormPropsInterface } from "../../../models/profile-ui";
-import { EditSection } from "../../shared/edit-section";
 
 const CheckboxFieldForm: FunctionComponent<CheckBoxFieldFormPropsInterface> = ({
     fieldSchema: schema,
     initialValue,
     fieldLabel,
+    isEditable,
     setIsProfileUpdating,
     handleSubmit,
     isUpdating,
     ["data-componentid"]: componentId
 }: CheckBoxFieldFormPropsInterface): ReactElement => {
 
-    const onFormSubmit = (values: Map<string, FormValue>): void => {
+    const onFormSubmit = (values: Record<string, boolean>): void => {
         setIsProfileUpdating(true);
 
-        const selectedCheckBoxValues: string[] = (values?.get(schema.name) ?? []) as string[];
-        const isChecked: boolean = !isEmpty(selectedCheckBoxValues) && selectedCheckBoxValues.includes(schema.name);
+        const isChecked: boolean = values[schema.name] ?? false;
 
         handleSubmit(schema.name, isChecked as unknown as FormValue);
     };
@@ -51,76 +57,39 @@ const CheckboxFieldForm: FunctionComponent<CheckBoxFieldFormPropsInterface> = ({
                 <Grid.Column mobile={ 8 } computer={ 10 }>
                     <List.Content>
                         <List.Description className="with-max-length">
-                            <Forms
+                            <FinalForm
                                 onSubmit={ onFormSubmit }
-                                onChange={ (_: boolean, values: Map<string, FormValue>) => onFormSubmit(values) }
-                            >
-                                <Grid verticalAlign="middle" textAlign="left">
-                                    <Grid.Row columns={ 2 } className="p-0">
-                                        <Grid.Column width={ 10 }>
-                                            <Field
-                                                label=""
+                                render={ ({ handleSubmit }: FormRenderProps) => {
+                                    return (
+                                        <form onSubmit={ handleSubmit }>
+                                            <FinalFormField
+                                                component={ CheckboxFieldAdapter }
+                                                initialValue={ initialValue ?? false }
                                                 name={ schema.name }
+                                                readOnly={ !isEditable || isUpdating }
+                                                disabled={ !isEditable || isUpdating }
                                                 data-testid= {
                                                     `${componentId}-${schema.name.replace(".", "-")}-checkbox-field` }
                                                 data-componentid= {
                                                     `${componentId}-${schema.name.replace(".", "-")}-checkbox-field` }
-                                                type="checkbox"
-                                                value={ String(initialValue) === "true" ? [ schema.name ] : [] }
-                                                children={ [
-                                                    {
-                                                        label: "",
-                                                        value: schema.name
-                                                    }
-                                                ] }
-                                                disabled={ isUpdating }
                                             />
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </Grid>
-                            </Forms>
+                                            <FormSpy
+                                                subscription={ { dirty: true, values: true } }
+                                                onChange={ ({ values, dirty }: FormState<Record<string, boolean>>) => {
+                                                    if (dirty) {
+                                                        handleSubmit(values);
+                                                    }
+                                                } }
+                                            />
+                                        </form>
+                                    );
+                                } }
+                            />
                         </List.Description>
                     </List.Content>
                 </Grid.Column>
             </Grid.Row>
         </Grid>
-    );
-
-    return (
-        <EditSection data-testid={ "profile-schema-editing-section" }>
-            <Grid>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column width={ 4 }>{ fieldLabel }</Grid.Column>
-                    <Grid.Column width={ 12 }>
-                        <Forms onSubmit={ onFormSubmit }>
-                            <Grid verticalAlign="middle" textAlign="right">
-                                <Grid.Row columns={ 2 } className="p-0">
-                                    <Grid.Column width={ 10 }>
-                                        <Field
-                                            autoFocus={ true }
-                                            label=""
-                                            name={ schema.name }
-                                            data-testid= {
-                                                `${componentId}-${schema.name.replace(".", "-")}-checkbox-field` }
-                                            data-componentid= {
-                                                `${componentId}-${schema.name.replace(".", "-")}-checkbox-field` }
-                                            type="checkbox"
-                                            value={ String(initialValue) === "true" ? [ schema.name ] : [] }
-                                            children={ [
-                                                {
-                                                    label: "",
-                                                    value: schema.name
-                                                }
-                                            ] }
-                                        />
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </Forms>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        </EditSection>
     );
 };
 

@@ -78,6 +78,8 @@ const serverConfigurationConfig: ServerConfigurationConfig = {
             ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_ENABLE,
         [ServerConfigurationsConstants.SELF_SIGNUP]:
             ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE,
+        [ServerConfigurationsConstants.EMAIL_VERIFICATION]:
+            ServerConfigurationsConstants.EMAIL_VERIFICATION_ENABLED,
         [ServerConfigurationsConstants.SSO_LOGIN_RECAPTCHA]:
             ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE
     },

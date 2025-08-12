@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,7 +35,90 @@ export const common: CommonNS = {
     applicationName: "Application name",
     applications: "Applications",
     approvalStatus: "Approval Status",
+    approvals: "Approvals",
+    approvalsPage: {
+        list: {
+            columns: {
+                actions: "Actions",
+                name: "Name"
+            }
+        },
+        modals: {
+            description: "You can approve or reject the task from here.",
+            header: "Approval Task",
+            subHeader: "Review the details of the approval task."
+        },
+        notifications: {
+            fetchApprovalDetails: {
+                error: {
+                    description: "{{description}}",
+                    message: "Error fetching approval details"
+                },
+                genericError: {
+                    description: "Couldn't retrieve the approval details.",
+                    message: "Something went wrong"
+                }
+            },
+            fetchPendingApprovals: {
+                error: {
+                    description: "{{description}}",
+                    message: "Error fetching pending approvals"
+                },
+                genericError: {
+                    description: "Couldn't retrieve the pending approvals.",
+                    message: "Something went wrong"
+                }
+            },
+            updatePendingApprovals: {
+                error: {
+                    description: "{{description}}",
+                    message: "Error updating the approval"
+                },
+                genericError: {
+                    description: "Couldn't update the pending approval.",
+                    message: "Something went wrong"
+                },
+                success: {
+                    description: "Successfully updated the approval.",
+                    message: "Update successful"
+                }
+            }
+        },
+        placeholders: {
+            emptyApprovalFilter: {
+                action: "View all",
+                subtitles: {
+                    0: "There are currently no approvals in {{status}} state.",
+                    1: "Please check if you have any tasks in {{status}} state to",
+                    2: "view them here."
+                },
+                title: "No results found"
+            },
+            emptyApprovalList: {
+                action: "",
+                subtitles: {
+                    0: "There are currently no approvals to review.",
+                    1: "Please check if you have added a workflow to control the operations in the system.",
+                    2: ""
+                },
+                title: "No Approvals"
+            },
+            emptySearchResults: {
+                action: "View all",
+                subtitles: {
+                    0: "We couldn't find the workflow you searched for.",
+                    1: "Please check if you have a workflow with that name in",
+                    2: "the system."
+                },
+                title: "No Approvals"
+            },
+            searchApprovals: "Search by workflow name"
+        },
+        subTitle: "Review operational tasks that requires your approval",
+        title: "Approvals"
+    },
     approve: "Approve",
+    approved: "Approved",
     apps: "Apps",
     assignee: "Assignee",
     assignees: "Assignees",
@@ -156,6 +239,7 @@ export const common: CommonNS = {
     regenerate: "Regenerate",
     register: "Register",
     reject: "Reject",
+    rejected: "Rejected",
     release: "Release",
     remove: "Remove",
     removeAll: "Remove all",

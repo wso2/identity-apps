@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,7 +35,91 @@ export const common: CommonNS = {
     applicationName: "செயலியின் பெயர்",
     applications: "செயலிகள்",
     approvalStatus: "அனுமதி நிலை",
+    approvals: "அனுமதிகள்",
+    approvalsPage: {
+        list: {
+            columns: {
+                actions: "செயல்கள்",
+                name: "பெயர்"
+            }
+        },
+        modals: {
+            description: "உங்கள் அங்கீகாரத்தைத் தேவைப்படும் செயல்பாட்டு பணிகளைப் பரிசீலிக்கவும்",
+            header: "அனுமதிகள்",
+            subHeader: "உங்கள் அங்கீகாரத்தைத் தேவைப்படும் செயல்பாட்டு பணிகளைப் பரிசீலிக்கவும்"
+        },
+        notifications: {
+            fetchApprovalDetails: {
+                error: {
+                    description: "{{description}}",
+                    message: "அனுமதி விவரங்களைப் பெறுவதில் பிழை"
+                },
+                genericError: {
+                    description: "அனுமதி விவரங்களைப் பெற முடியவில்லை.",
+                    message: "ஏதோ தவறு நடந்துவிட்டது"
+                }
+            },
+            fetchPendingApprovals: {
+                error: {
+                    description: "{{description}}",
+                    message: "பொறுத்து அனுமதிகளைப் பெறுவதில் பிழை"
+                },
+                genericError: {
+                    description: "பொறுத்து அனுமதிகளைப் பெற முடியவில்லை.",
+                    message: "ஏதோ தவறு நடந்துவிட்டது"
+                }
+            },
+            updatePendingApprovals: {
+                error: {
+                    description: "{{description}}",
+                    message: "அனுமதியைப் புதுப்பிப்பதில் பிழை"
+                },
+                genericError: {
+                    description: "பொறுத்து அனுமதியைப் புதுப்பிக்க முடியவில்லை.",
+                    message: "ஏதோ தவறு நடந்துவிட்டது"
+                },
+                success: {
+                    description: "அனுமதியை வெற்றிகரமாக புதுப்பிக்கப்பட்டது.",
+                    message: "புதுப்பிப்பு வெற்றிகரமாக"
+                }
+            }
+        },
+        placeholders: {
+            emptyApprovalFilter: {
+                action: "அனைத்தையும் காண்க",
+                subtitles: {
+                    0: "தற்காலிகமாக {{status}} நிலைமையில் எந்த அனுமதிகளும் இல்லை.",
+                    1: "தயவுசெய்து {{status}} நிலைமையில் உங்களிடம் எந்த பணிகளும் உள்ளதா என்பதை சரிபார்க்கவும்",
+                    2: "அவற்றைப் இங்கே காண்க."
+                },
+                title: "முடிவுகள் எதுவும் கிடைக்கவில்லை"
+            },
+            emptyApprovalList: {
+                action: "",
+                subtitles: {
+                    0: "தற்காலிகமாக மதிப்பீடு செய்ய எந்த அனுமதிகளும் இல்லை.",
+                    1: "தயவுசெய்து அமைப்பில் செயல்பாடுகளை கட்டுப்படுத்த ஒரு வேலைப்பதிவு சேர்த்துள்ளீர்களா என்பதை சரிபார்க்கவும்.",
+                    2: ""
+                },
+                title: "அனுமதிகள் இல்லை"
+            },
+            emptySearchResults: {
+                action: "அனைத்தையும் காண்க",
+                subtitles: {
+                    0: "நீங்கள் தேடிய வேலைப்பதிவு கிடைக்கவில்லை.",
+                    1: "தயவுசெய்து அந்த பெயருடன் உங்களிடம் ஒரு வேலைப்பதிவு உள்ளதா என்பதை சரிபார்க்கவும்",
+                    2: "அமைப்பில்."
+                },
+                title: "அனுமதிகள் இல்லை"
+            },
+            searchApprovals: "வேலைப்பதிவு பெயரால் தேடு"
+        },
+        subTitle: "உங்கள் அங்கீகாரத்தைத் தேவைப்படும் செயல்பாட்டு பணிகளைப் பரிசீலிக்கவும்",
+        title: "அனுமதிகள்"
+    },
+
     approve: "அனுமதி",
+    approved: "அனுமதிக்கப்பட்டது",
     apps: "செயலிகள்",
     assignee: "ஒதுக்கப்பட்டவர்",
     assignees: "அளிக்கப்பட்டவர்கள்",
@@ -156,7 +240,8 @@ export const common: CommonNS = {
     ready: "தயார்",
     regenerate: "மீளுருவாக்கம்",
     register: "பதிவு செய்",
-    reject: " ிராகரி",
+    reject: "மறுக்கவும்",
+    rejected: "மறுக்கப்பட்டது",
     release: "விடுவி",
     remove: "நீக்கு",
     removeAll: "அனைத்து நீக்க",

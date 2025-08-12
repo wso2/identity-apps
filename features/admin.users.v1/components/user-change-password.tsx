@@ -381,14 +381,33 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
     };
 
     /**
+     * Check whether the new password and confirm password match.
+     *
+     * @param newPassword - New password entered by the user.
+     * @param confirmPassword - Confirm password entered by the user.
+     * @returns boolean | undefined
+     */
+    const checkPasswordsMatch = (
+        newPassword: string | undefined,
+        confirmPassword: string | undefined
+    ): boolean | undefined => {
+        if (!newPassword || !confirmPassword) return undefined;
+
+        return newPassword === confirmPassword;
+    };
+
+    /**
      * The following function handles the change of the password.
      *
      * @param values - values of form field
      */
     const handlePasswordChange = (values: Map<string, FormValue>): void => {
-        const password: string = values?.get("newPassword")?.toString();
+        const newPassword: string = values?.get("newPassword")?.toString() || "";
+        const confirmPassword: string | undefined = values?.get("confirmPassword")?.toString();
 
-        setPassword(password);
+        setPassword(newPassword);
+
+        setIsConfirmPasswordMatch(checkPasswordsMatch(newPassword, confirmPassword));
     };
 
     /**
@@ -529,20 +548,16 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                             type="password"
                             value=""
                             listen={ (values: Map<string, FormValue>): void => {
-                                if (values?.get("newPassword") === values?.get("confirmPassword")
-                                    && values?.get("confirmPassword") !== "") {
-                                    setIsConfirmPasswordMatch(true);
+                                const newPassword: string | undefined = values?.get("newPassword")?.toString();
+                                const confirmPassword: string | undefined = values?.get("confirmPassword")?.toString();
 
-                                    return;
-                                }
-
-                                if (isConfirmPasswordMatch !== undefined) {
-                                    setIsConfirmPasswordMatch(undefined);
-                                }
+                                setIsConfirmPasswordMatch(checkPasswordsMatch(newPassword, confirmPassword));
                             } }
                             validation={
                                 (value: string, validation: Validation, formValues: Map<string, FormValue>) => {
-                                    if (formValues?.get("newPassword") !== value) {
+                                    const newPassword: string | undefined = formValues?.get("newPassword")?.toString();
+
+                                    if (!checkPasswordsMatch(newPassword, value)) {
                                         validation.isValid = false;
                                         setIsConfirmPasswordMatch(false);
                                         validation?.errorMessages?.push(

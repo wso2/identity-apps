@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,7 +35,90 @@ export const common: CommonNS = {
     "applicationName": "アプリケーション名",
     "applications": "アプリケーション",
     "approvalStatus": "承認状況",
+    "approvals": "承認",
+    "approvalsPage": {
+        "list": {
+            "columns": {
+                "actions": "アクション",
+                "name": "名前"
+            }
+        },
+        "modals": {
+            "description": "あなたの承認を必要とする運用タスクを確認します",
+            "header": "承認",
+            "subHeader": "あなたの承認を必要とする運用タスクを確認します"
+        },
+        "notifications": {
+            "fetchApprovalDetails": {
+                "error": {
+                    "description": "{{description}}",
+                    "message": "承認の詳細を取得中にエラーが発生しました"
+                },
+                "genericError": {
+                    "description": "承認の詳細を取得できませんでした。",
+                    "message": "何かがうまくいかなかった"
+                }
+            },
+            "fetchPendingApprovals": {
+                "error": {
+                    "description": "{{description}}",
+                    "message": "承認の取得中にエラーが発生しました"
+                },
+                "genericError": {
+                    "description": "保留中の承認を取得できませんでした。",
+                    "message": "何かがうまくいかなかった"
+                }
+            },
+            "updatePendingApprovals": {
+                "error": {
+                    "description": "{{description}}",
+                    "message": "承認の更新中にエラーが発生しました"
+                },
+                "genericError": {
+                    "description": "保留中の承認を更新できませんでした。",
+                    "message": "何かがうまくいかなかった"
+                },
+                "success": {
+                    "description": "承認が正常に更新されました。",
+                    "message": "更新に成功しました"
+                }
+            }
+        },
+        "placeholders": {
+            "emptyApprovalFilter": {
+                "action": "すべて表示",
+                "subtitles": {
+                    0: "現在、{{status}} 状態の承認はありません。",
+                    1: "タスクが {{status}} 状態にあるかどうかを確認してください。",
+                    2: "ここで表示できます。"
+                },
+                "title": "結果が見つかりません"
+            },
+            "emptyApprovalList": {
+                "action": "",
+                "subtitles": {
+                    0: "現在、承認をレビューするものはありません。",
+                    1: "システム内の操作を制御するためにワークフローを追加したかどうかを確認してください。",
+                    2: ""
+                },
+                "title": "承認なし"
+            },
+            "emptySearchResults": {
+                "action": "すべて表示",
+                "subtitles": {
+                    0: "検索したワークフローが見つかりませんでした。",
+                    1: "その名前のワークフローがあるかどうかを確認してください。",
+                    2: "システム内で。"
+                },
+                "title": "承認なし"
+            },
+            "searchApprovals": "ワークフロー名で検索"
+        },
+        "subTitle": "承認を必要とする運用タスクを確認します",
+        "title": "承認"
+    },
     "approve": "承認する",
+    "approved": "承認済み",
     "apps": "アプリ",
     "assignee": "譲受人",
     "assignees": "譲受人",
@@ -156,6 +239,7 @@ export const common: CommonNS = {
     "regenerate": "再生",
     "register": "登録する",
     "reject": "拒否する",
+    "rejected": "拒否されました",
     "release": "リリース",
     "remove": "取り除く",
     "removeAll": "すべて削除する",

@@ -65,6 +65,19 @@
                     "update": []
                 }
             },
+            "approvals": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [],
+                "scopes": {
+                    "read": [
+                        "internal_approval_task_view"
+                    ],
+                    "update": [
+                        "internal_approval_task_update"
+                    ]
+                }
+            },
             "operations": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -88,7 +101,7 @@
                 }
             },
             "personalInfo": {
-                "disabledFeatures": [],
+                "disabledFeatures": [ "profileInfo.profile.legacy" ],
                 "enabled": true,
                 "scopes": {
                     "create": [],

@@ -145,6 +145,24 @@ export interface actionsNS {
                 notHttps: string;
             };
         };
+        allowedHeaders: {
+            hint: string;
+            label: string;
+            placeholder: string;
+            tooltip: string;
+            validations: {
+                invalid: string;
+            };
+        };
+        allowedParameters: {
+            hint: string;
+            label: string;
+            placeholder: string;
+            tooltip: string;
+            validations: {
+                invalid: string;
+            };
+        };
         name: {
             hint: string;
             label: string;

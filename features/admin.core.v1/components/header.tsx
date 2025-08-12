@@ -19,16 +19,25 @@
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
+import Flag from "@oxygen-ui/react/CountryFlag";
 import Divider from "@oxygen-ui/react/Divider";
 import OxygenHeader, { HeaderProps } from "@oxygen-ui/react/Header";
 import Image from "@oxygen-ui/react/Image";
 import Link from "@oxygen-ui/react/Link";
+import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Menu from "@oxygen-ui/react/Menu";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Typography from "@oxygen-ui/react/Typography";
-import { DiamondIcon, DiscordIcon, StackOverflowIcon, TalkingHeadsetIcon } from "@oxygen-ui/react-icons";
+import {
+    ChevronDownIcon,
+    DiamondIcon,
+    DiscordIcon,
+    LanguageIcon,
+    StackOverflowIcon,
+    TalkingHeadsetIcon
+} from "@oxygen-ui/react-icons";
 import { FeatureStatus, Show, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import { useMyAccountApplicationData } from "@wso2is/admin.applications.v1/api/application";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
@@ -42,9 +51,10 @@ import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { FeatureAccessConfigInterface } from "@wso2is/core/src/models";
-import { StringUtils } from "@wso2is/core/utils";
-import { I18n } from "@wso2is/i18n";
-import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
+import { CookieStorageUtils, StringUtils, URLUtils } from "@wso2is/core/utils";
+import { I18n, I18nModuleConstants, LanguageChangeException, LocaleMeta, SupportedLanguagesMeta } from "@wso2is/i18n";
+import moment from "moment";
+import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import FeaturePreviewModal from "./modals/feature-preview-modal";
@@ -103,6 +113,12 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         useSelector((state: AppState) => state.config.ui.features.gettingStarted);
     const scopes: string = useSelector((state: AppState) => state.auth.allowedScopes);
     const userOrganizationID: string = useSelector((state: AppState) => state?.organization?.userOrganizationId);
+    const showLanguageSwitcher: boolean = useSelector(
+        (state: AppState) => state.config.ui.i18nConfigs.showLanguageSwitcher
+    );
+    const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
+        (state: AppState) => state.global.supportedI18nLanguages
+    );
     const loginAndRegistrationFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state?.config?.ui?.features?.loginAndRegistration);
     const isCentralDeploymentEnabled: boolean = useSelector((state: AppState) => {
@@ -140,8 +156,34 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
 
     const [ billingPortalURL, setBillingPortalURL ] = useState<string>(undefined);
     const [ upgradeButtonURL, setUpgradeButtonURL ] = useState<string>(undefined);
+    const [ openLanguageSwitcher, setOpenLanguageSwitcher ] = useState<boolean>(
+        false
+    );
+    const [ languageSwitcherAnchorEl, setLanguageSwitcherAnchorEl ] = useState<
+        HTMLElement
+    >(null);
+
     const { isOrganizationManagementEnabled } = useGlobalVariables();
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    const filteredSupportedI18nLanguages: SupportedLanguagesMeta = useMemo(() => {
+        return Object.entries(supportedI18nLanguages)
+            .filter(([
+                _,
+                value
+            ]: [ string, LocaleMeta ]) => (
+                value.showOnLanguageSwitcher === true ||
+                (value.enabled && value.showOnLanguageSwitcher === undefined)
+            ))
+            .reduce((
+                acc: SupportedLanguagesMeta,
+                [ key, value ]: [ string, LocaleMeta ]
+            ) => {
+                acc[key] = value;
+
+                return acc;
+            }, {} as SupportedLanguagesMeta);
+    }, [ supportedI18nLanguages ]);
 
     const {
         data: myAccountApplicationData,
@@ -193,7 +235,89 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         return "";
     };
 
+    /**
+     * Handles language switch action.
+
+     * @param language - Selected language.
+     */
+    const handleLanguageSwitch = (language: string): void => {
+        moment.locale(language ?? "en");
+        I18n.instance.changeLanguage(language).catch((error: string | Record<string, unknown>) => {
+            throw new LanguageChangeException(language, error);
+        });
+
+        const cookieSupportedLanguage: string = language.replace("-", "_");
+
+        CookieStorageUtils.setCookie(
+            I18nModuleConstants.PREFERENCE_STORAGE_KEY,
+            cookieSupportedLanguage,
+            { days: 30 },
+            URLUtils.getDomain(window.location.href),
+            { secure: true }
+        );
+    };
+
+    /**
+     * Handles the language switch trigger click event.
+     *
+     * @param e - Click event.
+     */
+    const handleLanguageSwitchTriggerClick = (e: MouseEvent<HTMLElement>): void => {
+        setOpenLanguageSwitcher(!openLanguageSwitcher);
+        setLanguageSwitcherAnchorEl(e.currentTarget);
+    };
+
     const generateHeaderButtons = (): ReactElement[] => [
+        showLanguageSwitcher && Object.entries(filteredSupportedI18nLanguages)?.length > 1 && (
+            <>
+                <Button
+                    color="inherit"
+                    startIcon={ <LanguageIcon /> }
+                    endIcon={ <ChevronDownIcon /> }
+                    key={ I18n.instance?.language }
+                    onClick={ handleLanguageSwitchTriggerClick }
+                    data-componentid="app-header-language-switcher-trigger"
+                >
+                    { filteredSupportedI18nLanguages[ I18n.instance?.language ]?.name }
+                </Button>
+                <Menu
+                    open={ openLanguageSwitcher }
+                    anchorEl={ languageSwitcherAnchorEl }
+                    onClose={ handleLanguageSwitchTriggerClick }
+                    className="app-header-language-switcher-menu"
+                >
+                    { Object.entries(filteredSupportedI18nLanguages)?.map(
+                        ([ key, value ]: [ key: string, value: LocaleMeta ]) => {
+                            if (I18n.instance?.language === value.code) {
+                                return;
+                            }
+
+                            return (
+                                <MenuItem
+                                    key={ key }
+                                    onClick={ () => {
+                                        handleLanguageSwitch(value.code);
+                                        setOpenLanguageSwitcher(false);
+                                    } }
+                                    className="app-header-language-switcher-menu-item"
+                                >
+                                    <ListItem>
+                                        { value.flag && (
+                                            <ListItemIcon>
+                                                <Flag countryCode={ value.flag } />
+                                            </ListItemIcon>
+                                        ) }
+                                        <ListItemText>
+                                            { value.name }
+                                        </ListItemText>
+                                    </ListItem>
+                                </MenuItem>
+                            );
+                        }
+                    ) }
+                </Menu>
+            </>
+        ),
         window["AppUtils"].getConfig().docSiteUrl && (
             <Button
                 color="inherit"
@@ -227,48 +351,48 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                     onClose={ onCloseHelpMenu }
                 >
                     { window["AppUtils"].getConfig().extensions.getHelp.helpCenterURL && (
-                        <>
-                            <MenuItem
-                                className="get-help-dropdown-item contact-support-dropdown-item"
-                                onClick={ () => {
-                                    window.open(
-                                        window["AppUtils"].getConfig().extensions.getHelp.helpCenterURL,
-                                        "_blank",
-                                        "noopener noreferrer"
-                                    );
-                                } }
-                            >
-                                <>
-                                    <ListItemIcon className="contact-support-icon get-help-icon">
-                                        <TalkingHeadsetIcon />
-                                    </ListItemIcon>
-                                    <ListItemText
-                                        primary={
-                                            (
-                                                <span className="contact-support-title">
-                                                    { t("console:common.help.helpCenterLink.title") }
-                                                    <Chip
-                                                        icon={ <DiamondIcon /> }
-                                                        label={ t(FeatureStatusLabel.PREMIUM) }
-                                                        className="oxygen-menu-item-chip oxygen-chip-premium"
-                                                    />
-                                                </span>
-                                            )
-                                        }
-                                        secondary={
-                                            (
-                                                <Typography className="contact-support-subtitle" variant="inherit">
-                                                    { t("console:common.help.helpCenterLink.subtitle",
-                                                        { productName }) }
-                                                </Typography>
-                                            )
-                                        }
-                                    />
-                                </>
-                            </MenuItem>
-                            <Divider className="get-help-dropdown-divider" />
-                        </>
+                        <MenuItem
+                            className="get-help-dropdown-item contact-support-dropdown-item"
+                            onClick={ () => {
+                                window.open(
+                                    window["AppUtils"].getConfig().extensions.getHelp.helpCenterURL,
+                                    "_blank",
+                                    "noopener noreferrer"
+                                );
+                            } }
+                        >
+                            <>
+                                <ListItemIcon className="contact-support-icon get-help-icon">
+                                    <TalkingHeadsetIcon />
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary={
+                                        (
+                                            <span className="contact-support-title">
+                                                { t("console:common.help.helpCenterLink.title") }
+                                                <Chip
+                                                    icon={ <DiamondIcon /> }
+                                                    label={ t(FeatureStatusLabel.PREMIUM) }
+                                                    className="oxygen-menu-item-chip oxygen-chip-premium"
+                                                />
+                                            </span>
+                                        )
+                                    }
+                                    secondary={
+                                        (
+                                            <Typography className="contact-support-subtitle" variant="inherit">
+                                                { t("console:common.help.helpCenterLink.subtitle",
+                                                    { productName }) }
+                                            </Typography>
+                                        )
+                                    }
+                                />
+                            </>
+                        </MenuItem>
                     ) }
+                    { window["AppUtils"].getConfig().extensions.getHelp.helpCenterURL &&
+                        <Divider className="get-help-dropdown-divider" />
+                    }
                     { window["AppUtils"].getConfig().extensions.getHelp.communityLinks.discord && (
                         <MenuItem
                             className="get-help-dropdown-item"
@@ -426,7 +550,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                         <Box key="footer" className="user-dropdown-footer">
                                             { store.getState()?.config?.ui?.privacyPolicyUrl && (
                                                 <Link
-                                                    variant="body3"
+                                                    variant="body2"
                                                     href={ store.getState()?.config?.ui?.privacyPolicyUrl ?? "" }
                                                     target="_blank"
                                                     rel="noreferrer"
@@ -436,7 +560,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                             ) }
                                             { store.getState()?.config?.ui?.cookiePolicyUrl && (
                                                 <Link
-                                                    variant="body3"
+                                                    variant="body2"
                                                     href={ store.getState()?.config?.ui?.cookiePolicyUrl ?? "" }
                                                     target="_blank"
                                                     rel="noreferrer"
@@ -446,7 +570,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                             ) }
                                             { store.getState()?.config?.ui?.termsOfUseUrl && (
                                                 <Link
-                                                    variant="body3"
+                                                    variant="body2"
                                                     href={ store.getState()?.config?.ui?.termsOfUseUrl ?? "" }
                                                     target="_blank"
                                                     rel="noreferrer"
@@ -459,7 +583,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                     </>) : undefined }
                                 { productVersion && (
                                     <Box className="user-dropdown-version">
-                                        <Typography variant="body3">
+                                        <Typography variant="body2">
                                             { `${productName} ${productVersion}` }
                                         </Typography>
                                     </Box>

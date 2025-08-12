@@ -1,5 +1,51 @@
 # @wso2is/identity-apps-core
 
+## 3.0.1
+
+### Patch Changes
+
+- [#8722](https://github.com/wso2/identity-apps/pull/8722) [`72e77e702f9c4353535e3f79fe455f97599281d7`](https://github.com/wso2/identity-apps/commit/72e77e702f9c4353535e3f79fe455f97599281d7) Thanks [@janakamarasena](https://github.com/janakamarasena)! - Add authType param in fido2 idf
+
+* [#8594](https://github.com/wso2/identity-apps/pull/8594) [`10b25006bfb752134c889a15178451b777ffdefc`](https://github.com/wso2/identity-apps/commit/10b25006bfb752134c889a15178451b777ffdefc) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Fix redirection to MyAccount app always after the password reset
+
+## 3.0.0
+
+### Major Changes
+
+- [#8689](https://github.com/wso2/identity-apps/pull/8689) [`8955f512852660d2c9539265ee926e72dba093f6`](https://github.com/wso2/identity-apps/commit/8955f512852660d2c9539265ee926e72dba093f6) Thanks [@KD23243](https://github.com/KD23243)! - Introduce the new accounts web application
+
+## 2.27.25
+
+### Patch Changes
+
+- [#8716](https://github.com/wso2/identity-apps/pull/8716) [`1a3ea0d130bef1e1204722c56097503671ea7f4e`](https://github.com/wso2/identity-apps/commit/1a3ea0d130bef1e1204722c56097503671ea7f4e) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Remove impersonation config usages
+
+* [#8712](https://github.com/wso2/identity-apps/pull/8712) [`e50f90cf4e4904c4d257e4b9b04623097934f9fa`](https://github.com/wso2/identity-apps/commit/e50f90cf4e4904c4d257e4b9b04623097934f9fa) Thanks [@KD23243](https://github.com/KD23243)! - Update terminology from "Invite User" to "Invited User" in flow orchestration
+
+## 2.27.24
+
+### Patch Changes
+
+- [#8700](https://github.com/wso2/identity-apps/pull/8700) [`275a734dac603cf62b0127a4af8dcba177ac047d`](https://github.com/wso2/identity-apps/commit/275a734dac603cf62b0127a4af8dcba177ac047d) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Remove isUserSessionImpersonationEnabled config.
+
+## 2.27.23
+
+### Patch Changes
+
+- [#8617](https://github.com/wso2/identity-apps/pull/8617) [`43d0be3252461d98c529b4932adb7ff2167e39dd`](https://github.com/wso2/identity-apps/commit/43d0be3252461d98c529b4932adb7ff2167e39dd) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Fix code formatting isses
+
+## 2.27.22
+
+### Patch Changes
+
+- [#8365](https://github.com/wso2/identity-apps/pull/8365) [`6b724df4fc597562bf910b267a8dc2ccc8044a5d`](https://github.com/wso2/identity-apps/commit/6b724df4fc597562bf910b267a8dc2ccc8044a5d) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Support mobile number verification with progressive profiling.
+
+## 2.27.21
+
+### Patch Changes
+
+- [#8596](https://github.com/wso2/identity-apps/pull/8596) [`25bf594bf3ac72f7e6d7b3ce8fbec29a83f9243b`](https://github.com/wso2/identity-apps/commit/25bf594bf3ac72f7e6d7b3ce8fbec29a83f9243b) Thanks [@BimsaraBodaragama](https://github.com/BimsaraBodaragama)! - Username Field Not Hidden in Password Recovery When Email-as-Username Is Enabled
+
 ## 2.27.20
 
 ### Patch Changes

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,7 +35,90 @@ export const common: CommonNS = {
     applicationName: "Nome da Aplicação",
     applications: "Formulários",
     approvalStatus: "Status de aprovação",
+    approvals: "Aprovações",
+    approvalsPage: {
+        list: {
+            columns: {
+                actions: "Ações",
+                name: "Nome"
+            }
+        },
+        modals: {
+            description: "Revise as tarefas operacionais que requerem sua aprovação",
+            header: "Aprovações",
+            subHeader: "Revise as tarefas operacionais que requerem sua aprovação"
+        },
+        notifications: {
+            fetchApprovalDetails: {
+                error: {
+                    description: "{{description}}",
+                    message: "Erro ao buscar detalhes de aprovação"
+                },
+                genericError: {
+                    description: "Não foi possível recuperar os detalhes de aprovação.",
+                    message: "Algo deu errado"
+                }
+            },
+            fetchPendingApprovals: {
+                error: {
+                    description: "{{description}}",
+                    message: "Erro ao buscar aprovações pendentes"
+                },
+                genericError: {
+                    description: "Não foi possível recuperar as aprovações pendentes.",
+                    message: "Algo deu errado"
+                }
+            },
+            updatePendingApprovals: {
+                error: {
+                    description: "{{description}}",
+                    message: "Erro ao atualizar a aprovação"
+                },
+                genericError: {
+                    description: "Não foi possível atualizar a aprovação pendente.",
+                    message: "Algo deu errado"
+                },
+                success: {
+                    description: "Aprovação atualizada com sucesso.",
+                    message: "Atualização bem-sucedida"
+                }
+            }
+        },
+        placeholders: {
+            emptyApprovalFilter: {
+                action: "Ver todos",
+                subtitles: {
+                    0: "Atualmente não há aprovações no estado {{status}}.",
+                    1: "Verifique se você tem alguma tarefa no estado {{status}} para",
+                    2: "visualizá-las aqui."
+                },
+                title: "Nenhum resultado encontrado"
+            },
+            emptyApprovalList: {
+                action: "",
+                subtitles: {
+                    0: "Atualmente não há aprovações para revisar.",
+                    1: "Verifique se você adicionou um fluxo de trabalho para controlar as operações no sistema.",
+                    2: ""
+                },
+                title: "Nenhuma Aprovação"
+            },
+            emptySearchResults: {
+                action: "Ver todos",
+                subtitles: {
+                    0: "Não conseguimos encontrar o fluxo de trabalho que você pesquisou.",
+                    1: "Verifique se você tem um fluxo de trabalho com esse nome em",
+                    2: "o sistema."
+                },
+                title: "Nenhuma Aprovação"
+            },
+            searchApprovals: "Pesquisar por nome de fluxo de trabalho"
+        },
+        subTitle: "Revise as tarefas operacionais que requerem sua aprovação",
+        title: "Aprovações"
+    },
     approve: "Approve",
+    approved: "Aprovado",
     apps: "Formulários",
     assignee: "Cessionário",
     assignees: "Cessionárias",
@@ -155,7 +238,8 @@ export const common: CommonNS = {
     ready: "Pronta",
     regenerate: "Regenerado",
     register: "Registro",
-    reject: "Aprovar",
+    reject: "Rejeitar",
+    rejected: "Rejeitado",
     release: "Liberação",
     remove: "Retirar",
     removeAll: "Remover tudo",

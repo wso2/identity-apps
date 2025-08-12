@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,7 +35,90 @@ export const common: CommonNS = {
     "applicationName": "应用名称",
     "applications": "申请",
     "approvalStatus": "批准状态",
+    "approvals": "批准",
+    "approvalsPage": {
+        "list": {
+            "columns": {
+                "actions": "操作",
+                "name": "名称"
+            }
+        },
+        "modals": {
+            "description": "查看需要您批准的操作任务",
+            "header": "批准",
+            "subHeader": "查看需要您批准的操作任务"
+        },
+        "notifications": {
+            "fetchApprovalDetails": {
+                "error": {
+                    "description": "{{description}}",
+                    "message": "获取批准详细信息时出错"
+                },
+                "genericError": {
+                    "description": "无法检索批准详细信息。",
+                    "message": "出现了问题"
+                }
+            },
+            "fetchPendingApprovals": {
+                "error": {
+                    "description": "{{description}}",
+                    "message": "获取待处理批准时出错"
+                },
+                "genericError": {
+                    "description": "无法检索待处理批准。",
+                    "message": "出现了问题"
+                }
+            },
+            "updatePendingApprovals": {
+                "error": {
+                    "description": "{{description}}",
+                    "message": "更新批准时出错"
+                },
+                "genericError": {
+                    "description": "无法更新待处理批准。",
+                    "message": "出现了问题"
+                },
+                "success": {
+                    "description": "成功更新批准。",
+                    "message": "更新成功"
+                }
+            }
+        },
+        "placeholders": {
+            "emptyApprovalFilter": {
+                "action": "查看全部",
+                "subtitles": {
+                    0: "当前没有处于 {{status}} 状态的批准。",
+                    1: "请检查您是否有任何处于 {{status}} 状态的任务",
+                    2: "在这里查看它们。"
+                },
+                "title": "未找到结果"
+            },
+            "emptyApprovalList": {
+                "action": "",
+                "subtitles": {
+                    0: "当前没有待审核的批准。",
+                    1: "请检查您是否已添加工作流以控制系统中的操作。",
+                    2: ""
+                },
+                "title": "没有批准"
+            },
+            "emptySearchResults": {
+                "action": "查看全部",
+                "subtitles": {
+                    0: "我们找不到您搜索的工作流。",
+                    1: "请检查您是否在",
+                    2: "系统中有该名称的工作流。"
+                },
+                "title": "没有批准"
+            },
+            "searchApprovals": "按工作流名称搜索"
+        },
+        "subTitle": "查看需要您批准的操作任务",
+        "title": "批准"
+    },
     "approve": "批准",
+    "approved": "已批准",
     "apps": "应用",
     "assignee": "受让人",
     "assignees": "受让人",
@@ -156,6 +239,7 @@ export const common: CommonNS = {
     "regenerate": "再生",
     "register": "登记",
     "reject": "拒绝",
+    "rejected": "已拒绝",
     "release": "发布",
     "remove": "消除",
     "removeAll": "移除所有",
