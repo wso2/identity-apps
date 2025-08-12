@@ -33,7 +33,11 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     SelectedOrganizationRoleInterface
 } from "@wso2is/admin.organizations.v1/models";
+import useGetApplicationRolesByAudience from "@wso2is/admin.roles.v2/api/use-get-application-roles-by-audience";
+import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants";
 import { RolesV2Interface } from "@wso2is/admin.roles.v2/models/roles";
+import SelectiveOrgShareWithSelectiveRoles from
+    "@wso2is/common.ui.shared-access.v1/components/selective-org-share-with-selective-roles";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -63,7 +67,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
-import OrgSelectiveShareWithSelectiveRolesEdit from "./org-selective-share-with-selective-roles-edit";
 import RolesShareWithAll from "./roles-share-with-all";
 import {
     editApplicationRolesOfExistingOrganizations,
@@ -141,6 +144,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
     const isApplicationShareOperationStatusEnabled: boolean = isFeatureEnabled(
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_SHARED_ACCESS_STATUS"));
+    const applicationAudience: string = application?.associatedRoles?.allowedAudience ?? RoleAudienceTypes.ORGANIZATION;
 
     const [ shareType, setShareType ] = useState<ShareType>(ShareType.UNSHARE);
     const [ roleShareTypeAll, setRoleShareTypeAll ] = useState<RoleShareType>(RoleShareType.SHARE_WITH_ALL);
@@ -160,6 +164,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
     const [ removedRoles, setRemovedRoles ] = useState<Record<string, RoleSharingInterface[]>>({});
     const [ addedOrgIds, setAddedOrgIds ] = useState<string[]>([]);
     const [ removedOrgIds, setRemovedOrgIds ] = useState<string[]>([]);
+    const [ clearAdvancedRoleSharing, setClearAdvancedRoleSharing ] = useState<boolean>(false);
 
     // This is used to determine if the application is shared with all organizations or not.
     // and this will change the radio button option based on the result.
@@ -181,6 +186,23 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
         "sharingMode"
     );
 
+    // Fetch the application roles by audience.
+    // This will fetch the roles that are available for the application to share with the organizations.
+    const {
+        data: originalApplicationRoles,
+        isLoading: isApplicationRolesFetchRequestLoading,
+        error: applicationRolesFetchRequestError
+    } = useGetApplicationRolesByAudience(
+        applicationAudience,
+        application?.id,
+        null,
+        null,
+        null,
+        null,
+        "users,groups,permissions,associatedApplications",
+        !isEmpty(application?.id)
+    );
+
     /**
      * Check if the organization list is loading.
      */
@@ -190,11 +212,20 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
         }
 
         return isApplicationShareDataFetchRequestLoading ||
+            isApplicationRolesFetchRequestLoading ||
             isApplicationShareDataFetchRequestValidating;
     }, [
         isApplicationShareDataFetchRequestLoading,
-        isApplicationShareDataFetchRequestValidating
+        isApplicationShareDataFetchRequestValidating,
+        isApplicationRolesFetchRequestLoading
     ]);
+
+    // applications roles available in the application to be shared with the organizations.
+    const applicationRolesList: RolesV2Interface[] = useMemo(() => {
+        if (originalApplicationRoles?.Resources?.length > 0) {
+            return originalApplicationRoles.Resources;
+        }
+    }, [ originalApplicationRoles ]);
 
     useEffect(() => {
         // If there is no application share data, it means the application is not shared with any organization.
@@ -297,6 +328,20 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
     }, [ applicationShareDataFetchRequestError ]);
 
     useEffect(() => {
+        if (applicationRolesFetchRequestError) {
+            dispatch(
+                addAlert({
+                    description: t("applications:edit.sections.sharedAccess.notifications" +
+                        ".fetchApplicationRoles.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("applications:edit.sections.sharedAccess.notifications" +
+                        ".fetchApplicationRoles.genericError.message")
+                })
+            );
+        }
+    }, [ applicationRolesFetchRequestError ]);
+
+    useEffect(() => {
         if (triggerApplicationShare) {
             handleApplicationSharing();
         }
@@ -323,6 +368,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
         setAddedOrgIds([]);
         setRemovedOrgIds([]);
         setShouldShareWithFutureChildOrgsMap({});
+        setClearAdvancedRoleSharing(false);
         shouldMutate && mutateApplicationShareDataFetchRequest();
     };
 
@@ -1281,6 +1327,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                         onChange={ (_event: ChangeEvent, checked: boolean) => {
                                                             if (checked) {
                                                                 setRoleShareTypeAll(RoleShareType.SHARE_SELECTED);
+                                                                setClearAdvancedRoleSharing(true);
                                                             } else {
                                                                 setRoleShareTypeAll(RoleShareType.SHARE_WITH_ALL);
                                                             }
@@ -1316,8 +1363,9 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                                 { t("applications:edit.sections.sharedAccess." +
                                                                     "individualRoleSharingLabel") }
                                                             </Typography>
-                                                            <OrgSelectiveShareWithSelectiveRolesEdit
-                                                                application={ application }
+                                                            <SelectiveOrgShareWithSelectiveRoles
+                                                                applicationId={ application?.id }
+                                                                applicationRolesList={ applicationRolesList }
                                                                 selectedItems={ selectedOrgIds }
                                                                 setSelectedItems={ setSelectedOrgIds }
                                                                 addedOrgs={ addedOrgIds }
@@ -1331,7 +1379,6 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                                 removedRoles={ removedRoles }
                                                                 setRemovedRoles={ setRemovedRoles }
                                                                 shareAllRoles={ false }
-                                                                shareType={ shareType }
                                                                 // Check the diff between
                                                                 // initialSelectedRoles and selectedRoles
                                                                 newlyAddedCommonRoles={ differenceBy(
@@ -1344,6 +1391,8 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                                     selectedRoles,
                                                                     "displayName"
                                                                 ) }
+                                                                clearAdvancedRoleSharing={ clearAdvancedRoleSharing }
+                                                                disableOrgSelection={ true }
                                                             />
                                                         </>
                                                     )
@@ -1373,7 +1422,12 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                         >
                                             <Grid xs={ 12 }>
                                                 <FormControlLabel
-                                                    control={ <Checkbox defaultChecked /> }
+                                                    control={ (
+                                                        <Checkbox
+                                                            checked={
+                                                                roleShareTypeSelected === RoleShareType.SHARE_WITH_ALL }
+                                                        />
+                                                    ) }
                                                     label="Share all roles with selected organizations"
                                                     data-componentid={
                                                         `${ componentId }-share-all-roles-with-selected-orgs-checkbox` }
@@ -1390,8 +1444,9 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                     } }
                                                     disabled={ readOnly }
                                                 />
-                                                <OrgSelectiveShareWithSelectiveRolesEdit
-                                                    application={ application }
+                                                <SelectiveOrgShareWithSelectiveRoles
+                                                    applicationId={ application?.id }
+                                                    applicationRolesList={ applicationRolesList }
                                                     selectedItems={ selectedOrgIds }
                                                     setSelectedItems={ setSelectedOrgIds }
                                                     addedOrgs={ addedOrgIds }
@@ -1406,12 +1461,12 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                     setRemovedRoles={ setRemovedRoles }
                                                     shareAllRoles={
                                                         roleShareTypeSelected === RoleShareType.SHARE_WITH_ALL }
-                                                    shareType={ shareType }
                                                     shouldShareWithFutureChildOrgsMap={
                                                         shouldShareWithFutureChildOrgsMap }
                                                     setShouldShareWithFutureChildOrgsMap={
                                                         setShouldShareWithFutureChildOrgsMap
                                                     }
+                                                    disableOrgSelection={ false }
                                                 />
                                             </Grid>
                                         </motion.div>
