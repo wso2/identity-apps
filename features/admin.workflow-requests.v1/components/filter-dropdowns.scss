@@ -19,7 +19,35 @@
 .workflow-requests-filter-dropdown {
     width: 100%;
 
-    .ui.dropdown {
+    // If this class is applied on the Dropdown root or a wrapper
+    .ui.dropdown,
+    &.ui.dropdown {
         width: 100%;
     }
-} 
+}
+
+// Quick (predefined) filters: expand horizontally and keep items simple
+// Ensure the trigger and the dropdown menu share the same width
+.workflow-requests-filter-bar .ui.dropdown.predefined-filters-dropdown {
+    width: fit-content !important;   // Hug the content width
+    min-width: 240px !important;     // Even more compact min width
+    max-width: 300px !important;     // Even more compact max width
+}
+
+.workflow-requests-filter-bar .ui.dropdown.predefined-filters-dropdown .menu {
+    max-height: 450px !important;
+    overflow-y: auto !important;
+    width: 100% !important;          // Match trigger width
+    min-width: 100% !important;
+    max-width: 100% !important;
+    z-index: 9999 !important;
+}
+
+.workflow-requests-filter-bar .ui.dropdown.predefined-filters-dropdown .menu .item {
+    // Plain single-line items, no bold and no sub-descriptions
+    white-space: nowrap !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
+    min-height: auto !important;
+    padding: 10px 14px !important;
+}

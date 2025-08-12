@@ -66,16 +66,19 @@ $font-size-large: 14px;
         }
 
         .menu {
-            max-width: 100%;
-            width: 100%;
+            width: 100% !important;
+            min-width: 100% !important;
+            max-width: 100% !important;
             font-size: $font-size-large !important;
+            z-index: 9999 !important;
 
             .item {
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                max-width: 100%;
+                overflow: visible !important;
+                text-overflow: unset !important;
+                white-space: normal !important;
                 font-size: $font-size-large !important;
+                padding: 10px 14px !important;
+                line-height: 1.4 !important;
             }
         }
 
@@ -93,11 +96,11 @@ $font-size-large: 14px;
         &,
         .text,
         .menu .item {
-            min-height: 28px !important;
-            line-height: 1.1 !important;
+            min-height: 38px !important;
+            line-height: 1.4 !important;
             margin-bottom: 0 !important;
-            padding-top: $spacing-xs !important;
-            padding-bottom: $spacing-xs !important;
+            padding-top: $spacing-md !important;
+            padding-bottom: $spacing-md !important;
         }
     }
 
@@ -127,6 +130,23 @@ $font-size-large: 14px;
             width: 100%;
             margin: 0 !important;
             padding: 0 !important;
+        }
+
+        &.predefined-filters-field {
+            // Control the width from the field so trigger and menu can match
+            max-width: 300px;
+
+            .ui.dropdown.predefined-filters-dropdown {
+                width: 100% !important;
+                min-width: 240px !important;
+                max-width: 300px !important;
+            }
+
+            .ui.dropdown.predefined-filters-dropdown .menu {
+                width: 100% !important;
+                min-width: 100% !important;
+                max-width: 100% !important;
+            }
         }
     }
 

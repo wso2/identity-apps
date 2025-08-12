@@ -32,6 +32,7 @@ import ActiveFiltersBar from "../components/active-filters-bar";
 import WorkflowRequestsFilter from "../components/workflow-requests-filter";
 import WorkflowRequestsList from "../components/workflow-requests-list";
 import {
+    PredefinedFilter,
     WorkflowInstanceListItemInterface,
     WorkflowInstanceOperationType,
     WorkflowInstanceStatus
@@ -65,6 +66,7 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
     const [ workflowRequests, setWorkflowRequests ] = useState<WorkflowInstanceListItemInterface[]>([]);
     const [ status, setStatus ] = useState<string>("ALL_TASKS");
     const [ operationType, setOperationType ] = useState<string>("ALL");
+    const [ predefinedFilter, setPredefinedFilter ] = useState<string>("");
     const [ createdTimeRange, setCreatedTimeRange ] = useState<number | undefined>(-2);
     const [ createdFromTime, setCreatedFromTime ] = useState<string>("");
     const [ createdToTime, setCreatedToTime ] = useState<string>("");
@@ -139,6 +141,7 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
         { key: 12, text: t("approvalWorkflows:timeRanges.last12Hours"), value: 12 },
         { key: 24, text: t("approvalWorkflows:timeRanges.last24Hours"), value: 24 },
         { key: 48, text: t("approvalWorkflows:timeRanges.last2Days"), value: 48 },
+        { key: 72, text: t("approvalWorkflows:timeRanges.last3Days"), value: 72 },
         { key: 168, text: t("approvalWorkflows:timeRanges.last7Days"), value: 168 },
         { key: 720, text: t("approvalWorkflows:timeRanges.last30Days"), value: 720 },
         { key: -1, text: t("approvalWorkflows:timeRanges.customRange"), value: -1 }
@@ -266,6 +269,7 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
     const clearAllFilters = (): void => {
         setStatus("ALL_TASKS");
         setOperationType("ALL");
+        setPredefinedFilter("");
         setCreatedTimeRange(undefined);
         setUpdatedTimeRange(undefined);
         setCreatedFromTime("");
@@ -305,7 +309,33 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
         searchWorkflowRequests();
     };
 
+    const handlePredefinedFilterApply = (filter: PredefinedFilter): void => {
+        // Reset all filters first
+        setStatus("ALL_TASKS");
+        setOperationType("ALL");
+        setCreatedTimeRange(undefined);
+        setUpdatedTimeRange(undefined);
+        setCreatedFromTime("");
+        setCreatedToTime("");
+        setUpdatedFromTime("");
+        setUpdatedToTime("");
 
+        // Apply the predefined filter settings
+        if (filter.status) {
+            setStatus(filter.status);
+        }
+        if (filter.operationType) {
+            setOperationType(filter.operationType);
+        }
+        if (filter.timeRange) {
+            setCreatedTimeRange(filter.timeRange);
+        }
+
+        // Trigger search after filter is applied
+        setTimeout(() => {
+            searchWorkflowRequests();
+        }, 100);
+    };
 
     const searchWorkflowRequests = (): void => {
         const generatedFilter: string = generateFilterString(
@@ -370,6 +400,9 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
                     setStatus={ setStatus }
                     operationType={ operationType }
                     setOperationType={ setOperationType }
+                    predefinedFilter={ predefinedFilter }
+                    setPredefinedFilter={ setPredefinedFilter }
+                    onPredefinedFilterApply={ handlePredefinedFilterApply }
                     createdTimeRange={ createdTimeRange }
                     handleCreatedTimeRangeChange={ handleCreatedTimeRangeChange }
                     handleCreatedCustomDateChange={ handleCreatedCustomDateChange }
