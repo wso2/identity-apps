@@ -16,6 +16,7 @@
  * under the License.
  */
 import { RoleSharingInterface } from "@wso2is/admin.applications.v1/models/application";
+import { ApplicationSharingPolicy, RoleSharingModes } from "@wso2is/admin.console-settings.v1/models/shared-access";
 import { ScimOperationsInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { RolesInterface } from "@wso2is/core/models";
 
@@ -29,8 +30,9 @@ export interface OrganizationInterface {
     parentId?: string;
     roles?: OrganizationRoleInterface[];
     sharingMode?: {
+        policy?: ApplicationSharingPolicy;
         roleSharing: {
-            mode: string;
+            mode: RoleSharingModes;
         }
     }
 }

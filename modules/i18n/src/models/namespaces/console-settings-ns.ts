@@ -62,6 +62,7 @@ export interface ConsoleSettingsNS {
         description: string;
         selectRolesForOrganization: string;
         searchAvailableRolesPlaceholder: string;
+        sharingRolesTakeTimeMessage: string;
         organizations: string;
         availableRoles: string;
         tabLabel: string;

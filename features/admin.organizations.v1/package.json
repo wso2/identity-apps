@@ -25,6 +25,7 @@
         "@wso2is/admin.authentication.v1": "^2.25.206",
         "@wso2is/admin.authorization.v1": "^2.25.89",
         "@wso2is/admin.connections.v1": "^2.33.99",
+        "@wso2is/admin.console-settings.v1": "^2.25.218",
         "@wso2is/admin.core.v1": "^2.49.1",
         "@wso2is/admin.extensions.v1": "^2.38.2",
         "@wso2is/admin.groups.v1": "^2.27.119",
