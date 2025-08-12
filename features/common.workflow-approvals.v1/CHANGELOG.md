@@ -1,5 +1,15 @@
 # @wso2is/common.workflow-approvals.v1
 
+## 1.0.3
+
+### Patch Changes
+
+- [#8751](https://github.com/wso2/identity-apps/pull/8751) [`23d4e4e26f96a327b80527bdab0ce983b6eee24d`](https://github.com/wso2/identity-apps/commit/23d4e4e26f96a327b80527bdab0ce983b6eee24d) Thanks [@Malith-19](https://github.com/Malith-19)! - Remove the priority information in approval details.
+  Remove the reject button in the blocked state of the approval details.
+  Skip displaying the empty values in the approval details.
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.12
+
 ## 1.0.2
 
 ### Patch Changes

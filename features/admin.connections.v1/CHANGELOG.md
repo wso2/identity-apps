@@ -1,5 +1,16 @@
 # @wso2is/admin.connections.v1
 
+## 2.34.2
+
+### Patch Changes
+
+- [#8748](https://github.com/wso2/identity-apps/pull/8748) [`3596bc361f84b7d4353c67b748db9e030d4d8322`](https://github.com/wso2/identity-apps/commit/3596bc361f84b7d4353c67b748db9e030d4d8322) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue where account linking attributes are being reset
+
+- Updated dependencies [[`3596bc361f84b7d4353c67b748db9e030d4d8322`](https://github.com/wso2/identity-apps/commit/3596bc361f84b7d4353c67b748db9e030d4d8322)]:
+  - @wso2is/admin.connections.v1@2.34.2
+  - @wso2is/admin.core.v1@2.49.12
+  - @wso2is/admin.roles.v2@2.27.187
+
 ## 2.34.1
 
 ### Patch Changes
