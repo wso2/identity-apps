@@ -67,6 +67,13 @@ const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
             return getUserNameWithoutDomain(initialValue);
         }
 
+        /**
+         * Type check to avoid rendering issues.
+         */
+        if (typeof initialValue === "object") {
+            return "";
+        }
+
         return initialValue;
     };
 
