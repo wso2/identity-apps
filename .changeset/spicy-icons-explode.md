@@ -4,4 +4,4 @@
 "@wso2is/i18n": patch
 ---
 
-Handle the workflow enagagement scenario when adminstrator assignments for the existing user.
+Handle the workflow engagement scenario when administrator assignments for the existing user.
