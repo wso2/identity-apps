@@ -3939,6 +3939,10 @@ export const extensions: Extensions = {
                                 description: "An error occurred while adding the administrator.",
                                 message: "Error Adding Administrator"
                             },
+                            pendingApproval: {
+                                description: "The administrator role update is accepted and is pending approval.",
+                                message: "Administrator Role Pending Approval"
+                            },
                             success: {
                                 description: "Successfully added administrator.",
                                 message: "Administrator Added"
