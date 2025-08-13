@@ -89,6 +89,7 @@ module.exports = [
             "./admin.wsfed-configuration.v1/public-api.ts",
             "./admin.approval-workflows.v1/public-api.ts",
             "./common.ui.profile.v1/public-api.ts",
+            "./common.ui.shared-access.v1/public-api.ts",
             "./common.workflow-approvals.v1/public-api.ts"
         ],
         onwarn,
@@ -168,6 +169,7 @@ module.exports = [
                         "./admin.validation.v1": "./admin.validation.v1/public-api.js",
                         "./admin.wsfed-configuration.v1": "./admin.wsfed-configuration.v1/public-api.js",
                         "./common.ui.profile.v1": "./common.ui.profile.v1/public-api.ts",
+                        "./common.ui.shared-access.v1": "./common.ui.shared-access.v1/public-api.js",
                         "./common.workflow-approvals.v1": "./common.workflow-approvals.v1/public-api.js"
                     },
                     main: "./index.js",

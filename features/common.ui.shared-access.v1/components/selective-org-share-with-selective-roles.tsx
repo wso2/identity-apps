@@ -34,7 +34,17 @@ import Grid from "@oxygen-ui/react/Grid";
 import LinearProgress from "@oxygen-ui/react/LinearProgress";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
-import { ApplicationSharingPolicy, RoleSharingModes } from "@wso2is/admin.console-settings.v1/models/shared-access";
+import useGetApplicationShare from "@wso2is/admin.applications.v1/api/use-get-application-share";
+import { RoleSharingInterface } from "@wso2is/admin.applications.v1/models/application";
+import {
+    computeChildRoleSelections,
+    computeInitialRoleSelections,
+    getChildrenOfOrganization,
+    updateTreeWithChildren
+} from "@wso2is/admin.applications.v1/utils/shared-access";
+import { ConsoleRolesOnboardingConstants }
+    from "@wso2is/admin.console-settings.v1/constants/console-roles-onboarding-constants";
+import { ApplicationSharingPolicy } from "@wso2is/admin.console-settings.v1/models/shared-access";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
@@ -44,8 +54,6 @@ import {
     OrganizationRoleInterface,
     SelectedOrganizationRoleInterface
 } from "@wso2is/admin.organizations.v1/models/organizations";
-import useGetApplicationRolesByAudience from "@wso2is/admin.roles.v2/api/use-get-application-roles-by-audience";
-import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants";
 import { RolesV2Interface } from "@wso2is/admin.roles.v2/models/roles";
 import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -58,32 +66,17 @@ import React, {
     SetStateAction,
     SyntheticEvent,
     useEffect,
-    useMemo,
     useState } from "react";
 import { useTranslation } from "react-i18next";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import "./roles-selective-share.scss";
+import "./selective-org-share-with-selective-roles.scss";
 import { DropdownProps } from "semantic-ui-react";
-import useGetApplicationShare from "../../api/use-get-application-share";
-import { ShareType } from "../../constants/application-roles";
-import { ApplicationInterface, RoleSharingInterface } from "../../models/application";
-import {
-    computeChildRoleSelections,
-    computeInitialRoleSelections,
-    getChildrenOfOrganization,
-    updateTreeWithChildren
-} from "../../utils/shared-access";
 
-interface OrgSelectiveShareWithSelectiveRolesEditProps extends IdentifiableComponentInterface {
-    application: ApplicationInterface;
-    selectedItems: string[];
-    setSelectedItems: ReactDispatch<SetStateAction<string[]>>;
-    addedOrgs: string[];
-    setAddedOrgs: ReactDispatch<SetStateAction<string[]>>;
-    removedOrgs: string[];
-    setRemovedOrgs: ReactDispatch<SetStateAction<string[]>>;
+interface SelectiveOrgShareWithSelectiveRolesProps extends IdentifiableComponentInterface {
+    applicationId: string;
+    applicationRolesList: RolesV2Interface[];
     roleSelections: Record<string, SelectedOrganizationRoleInterface[]>;
     setRoleSelections: ReactDispatch<SetStateAction<Record<string, SelectedOrganizationRoleInterface[]>>>;
     addedRoles: Record<string, RoleSharingInterface[]>;
@@ -91,11 +84,19 @@ interface OrgSelectiveShareWithSelectiveRolesEditProps extends IdentifiableCompo
     removedRoles: Record<string, RoleSharingInterface[]>;
     setRemovedRoles: ReactDispatch<SetStateAction<Record<string, RoleSharingInterface[]>>>;
     shareAllRoles: boolean;
-    shareType: ShareType;
+    selectedItems?: string[];
+    setSelectedItems?: ReactDispatch<SetStateAction<string[]>>;
+    addedOrgs?: string[];
+    setAddedOrgs?: ReactDispatch<SetStateAction<string[]>>;
+    removedOrgs?: string[];
+    setRemovedOrgs?: ReactDispatch<SetStateAction<string[]>>;
     newlyAddedCommonRoles?: RolesInterface[];
     newlyRemovedCommonRoles?: RolesInterface[];
     shouldShareWithFutureChildOrgsMap?: Record<string, boolean>;
     setShouldShareWithFutureChildOrgsMap?: ReactDispatch<SetStateAction<Record<string, boolean>>>;
+    clearAdvancedRoleSharing?: boolean;
+    disableOrgSelection?: boolean;
+    enableAdminRole?: boolean;
 }
 
 interface TreeViewBaseItemWithRoles extends TreeViewBaseItem {
@@ -103,16 +104,11 @@ interface TreeViewBaseItemWithRoles extends TreeViewBaseItem {
     parentId?: string;
 }
 
-const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSelectiveRolesEditProps) => {
+const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelectiveRolesProps) => {
     const {
         [ "data-componentid" ]: componentId = "org-selective-share-with-selective-roles-edit",
-        application,
-        addedOrgs,
-        setAddedOrgs,
-        removedOrgs,
-        setRemovedOrgs,
-        selectedItems,
-        setSelectedItems,
+        applicationId,
+        applicationRolesList,
         roleSelections,
         setRoleSelections,
         addedRoles,
@@ -120,11 +116,19 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
         removedRoles,
         setRemovedRoles,
         shareAllRoles,
-        shareType,
+        selectedItems = [],
+        setSelectedItems = () => undefined,
+        addedOrgs = [],
+        setAddedOrgs = () => undefined,
+        removedOrgs = [],
+        setRemovedOrgs = () => undefined,
         newlyAddedCommonRoles = [],
         newlyRemovedCommonRoles = [],
         shouldShareWithFutureChildOrgsMap = {},
-        setShouldShareWithFutureChildOrgsMap
+        setShouldShareWithFutureChildOrgsMap = () => undefined,
+        clearAdvancedRoleSharing = false,
+        disableOrgSelection = false,
+        enableAdminRole = false
     } = props;
 
     const organizationId: string = useSelector((state: AppState) => state?.organization?.organization?.id);
@@ -143,10 +147,7 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
     const [ expandedItems, setExpandedItems ] = useState<string[]>([]);
     const [ selectedOrganizationSharingPolicy, setSelectedOrganizationSharingPolicy ]
         = useState<ApplicationSharingPolicy>();
-
     const [ flatOrganizationMap, setFlatOrganizationMap ] = useState<Record<string, OrganizationInterface>>({});
-
-    const applicationAudience: string = application?.associatedRoles?.allowedAudience ?? RoleAudienceTypes.ORGANIZATION;
 
     // Fetch all the organizations that the application is shared with.
     const {
@@ -154,29 +155,17 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
         isLoading: isTotalApplicationOrganizationsFetchRequestLoading,
         error:  totalApplicationOrganizationsFetchRequestError
     } = useGetApplicationShare(
-        application?.id,
-        !isEmpty(application?.id),
+        applicationId,
+        !isEmpty(applicationId),
         true,
         null,
         "roles"
     );
 
-    // Fetch the application roles by audience.
-    // This will fetch the roles that are available for the application to share with the organizations.
-    const {
-        data: originalApplicationRoles,
-        isLoading: isApplicationRolesFetchRequestLoading,
-        error: applicationRolesFetchRequestError
-    } = useGetApplicationRolesByAudience(
-        applicationAudience,
-        application?.id,
-        null,
-        null,
-        null,
-        null,
-        "users,groups,permissions,associatedApplications",
-        !isEmpty(application?.id)
-    );
+    // useEffect(() => {
+    //     console.log("roleSelections: ", roleSelections);
+    // }, [ roleSelections ]);
+
 
     // Fetch the top-level organization of the current organization.
     const {
@@ -214,8 +203,8 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
         data: selectedApplicationOrganization,
         error:  selectedApplicationOrganizationFetchRequestError
     } = useGetApplicationShare(
-        application?.id,
-        !isEmpty(application?.id) &&
+        applicationId,
+        !isEmpty(applicationId) &&
         !isEmpty(selectedOrgId),
         true,
         `id eq '${ selectedOrgId }'`,
@@ -226,8 +215,7 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
         "sharingMode"
     );
 
-    const isLoading: boolean = isTotalApplicationOrganizationsFetchRequestLoading ||
-            isApplicationRolesFetchRequestLoading;
+    const isLoading: boolean = isTotalApplicationOrganizationsFetchRequestLoading;
 
     // Used to tick shared orgs from the total organization tree
     useEffect(() => {
@@ -241,13 +229,6 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
             setSelectedItems([]);
         }
     }, [ totalApplicationOrganizations ]);
-
-    // applications roles available in the application to be shared with the organizations.
-    const applicationRolesList: RolesV2Interface[] = useMemo(() => {
-        if (originalApplicationRoles?.Resources?.length > 0) {
-            return originalApplicationRoles.Resources;
-        }
-    }, [ originalApplicationRoles ]);
 
     // Build the first level organization tree from the top-level organizations.
     useEffect(() => {
@@ -325,7 +306,8 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
             const childRoleMap: Record<string, SelectedOrganizationRoleInterface[]> = computeChildRoleSelections(
                 expandedOrgId,
                 originalOrganizations.organizations,
-                roleSelections
+                roleSelections,
+                enableAdminRole ? [ ConsoleRolesOnboardingConstants.ADMINISTRATOR ] : []
             );
 
             setRoleSelections((prev: Record<string, SelectedOrganizationRoleInterface[]>) => ({
@@ -343,7 +325,9 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
             const computedRoleSelections: Record<string, SelectedOrganizationRoleInterface[]> =
                 computeInitialRoleSelections(
                     originalTopLevelOrganizations.organizations,
-                    applicationRolesList
+                    applicationRolesList,
+                    enableAdminRole ? [ ConsoleRolesOnboardingConstants.ADMINISTRATOR ] : [],
+                    clearAdvancedRoleSharing
                 );
 
             // Update the roleSelection if the added roleSelections are not already present.
@@ -359,92 +343,49 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                 return updated;
             });
         }
-    }, [ originalTopLevelOrganizations, applicationRolesList ]);
+    }, [ originalTopLevelOrganizations, applicationRolesList, clearAdvancedRoleSharing ]);
 
     useEffect(() => {
+        if (isEmpty(selectedOrgId)) {
+            return;
+        }
+
+        let updatedRoleSelections: SelectedOrganizationRoleInterface[] = roleSelections[selectedOrgId] || [];
+        let selectedOrgRoles: OrganizationRoleInterface[] = [];
+
         if (selectedApplicationOrganization?.organizations?.length > 0) {
             const selectedOrg: OrganizationInterface = selectedApplicationOrganization.organizations[0];
-            const orgRoleSelections: SelectedOrganizationRoleInterface[] = roleSelections[selectedOrg.id] || [];
             const selectedOrgSharingPolicy: ApplicationSharingPolicy = selectedOrg?.sharingMode?.policy;
-            const selectedOrgRoleSharingMode: RoleSharingModes = selectedOrg?.sharingMode?.roleSharing?.mode;
 
-            if (selectedOrgSharingPolicy) {
-                setSelectedOrganizationSharingPolicy(selectedOrgSharingPolicy);
-            } else {
-                // If the selected organization does not have a sharing policy,
-                // default it to SELECTED_ORG_ONLY.
-                setSelectedOrganizationSharingPolicy(ApplicationSharingPolicy.SELECTED_ORG_ONLY);
-            }
+            selectedOrgRoles = selectedOrg?.roles || [];
+
+            // If the selected organization does not have a sharing policy,
+            // default it to SELECTED_ORG_ONLY.
+            setSelectedOrganizationSharingPolicy(selectedOrgSharingPolicy ??
+                ApplicationSharingPolicy.SELECTED_ORG_ONLY);
 
             // If the selected organization has roles, update the role selections.
-            if (selectedOrg?.roles?.length > 0) {
-                if (isEmpty(orgRoleSelections)) {
+            if (selectedOrgRoles.length > 0) {
+                if (isEmpty(updatedRoleSelections)) {
                     // If there are no roles selected for the organization, initialize them.
-                    const initializedRoles: SelectedOrganizationRoleInterface[] = selectedOrg.roles.map(
+                    // It should select only when clearAdvancedRoleSharing is false.
+                    updatedRoleSelections = selectedOrgRoles.map(
                         (role: OrganizationRoleInterface) => ({
                             ...role,
-                            selected: selectedOrgRoleSharingMode !== RoleSharingModes.ALL
+                            selected: !clearAdvancedRoleSharing
                         })
                     );
-
-                    setRoleSelections((prev: Record<string, SelectedOrganizationRoleInterface[]>) => ({
-                        ...prev,
-                        [ selectedOrg.id ]: initializedRoles
-                    }));
-
-                    return;
-                }
-
-                let updatedRolesWithApiResponse: SelectedOrganizationRoleInterface[] = [];
-
-                if (shareType === ShareType.SHARE_ALL) {
-                    // If the share type is SHARE_ALL, we have to consider the common set of roles as well.
-                    // Mark the roles in the orgRoleSelections as selected.
-                    updatedRolesWithApiResponse = orgRoleSelections?.map(
+                } else {
+                    updatedRoleSelections = updatedRoleSelections?.map(
                         (role: SelectedOrganizationRoleInterface) => {
                             let isSelected: boolean = false;
 
-                            const isRoleInSelectedOrg: boolean = selectedOrg?.roles?.some(
+                            const isRoleInSelectedOrg: boolean = selectedOrgRoles?.some(
                                 (selectedRole: OrganizationRoleInterface) =>
                                     selectedRole.displayName === role.displayName);
-                            // Check if the roles exists in the newlyAddedCommonRoles
-                            const isRoleInNewlyAddedCommonRoles: boolean = newlyAddedCommonRoles?.some(
-                                (selectedRole: RolesInterface) => selectedRole.displayName === role.displayName);
-                            // Check if the roles exists in the newlyRemovedCommonRoles
-                            const isRoleInNewlyRemovedCommonRoles: boolean = newlyRemovedCommonRoles?.some(
-                                (selectedRole: RolesInterface) => selectedRole.displayName === role.displayName);
 
-                            // Only consider the response from the API if the share type is NOT SHARE_ALL.
-                            if (selectedOrgRoleSharingMode !== RoleSharingModes.ALL && isRoleInSelectedOrg) {
-                                isSelected = true;
-                            }
-
-                            // Check if the roles exists in newlyAddedCommonRoles, mark it as selected.
-                            if (isRoleInNewlyAddedCommonRoles) {
-                                isSelected = true;
-                            }
-
-                            // If the role exists in the newlyRemovedCommonRoles, mark it as unselected.
-                            if (isRoleInNewlyRemovedCommonRoles) {
-                                isSelected = false;
-                            }
-
-                            return({
-                                ...role,
-                                selected: isSelected
-                            });
-                        }
-                    );
-                } else if (shareType === ShareType.SHARE_SELECTED) {
-                    // If the share type is SHARE_SELECTED, we only consider the roles in the selectedOrg.
-                    updatedRolesWithApiResponse = orgRoleSelections?.map(
-                        (role: SelectedOrganizationRoleInterface) => {
-                            let isSelected: boolean = false;
-
-                            // Check if the roles exists in the selectedOrg
-                            // If it does, mark it as selected.
-                            if (selectedOrg?.roles?.some((selectedRole: OrganizationRoleInterface) =>
-                                selectedRole.displayName === role.displayName)) {
+                            if (!clearAdvancedRoleSharing && isRoleInSelectedOrg) {
+                                // If the role exists in the selected organization, mark it as selected.
                                 isSelected = true;
                             }
 
@@ -455,113 +396,76 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                         }
                     );
                 }
-
-                // Processing for addedRoles and removedRoles which resulted from user interaction
-                const updatedRoles: SelectedOrganizationRoleInterface[] = updatedRolesWithApiResponse?.map(
-                    (role: SelectedOrganizationRoleInterface) => {
-                        // If the role exists in the addedRoles, mark it as selected.
-                        if (addedRoles[selectedOrg.id]?.some(
-                            (addedRole: RoleSharingInterface) =>
-                                addedRole.displayName === role.displayName)) {
-                            return({
-                                ...role,
-                                selected: true
-                            });
-                        }
-
-                        // If the role exists in the removedRoles, mark it as unselected.
-                        if (removedRoles[selectedOrg.id]?.some(
-                            (removedRole: RoleSharingInterface) =>
-                                removedRole.displayName === role.displayName)) {
-                            return({
-                                ...role,
-                                selected: false
-                            });
-                        }
-
-                        // If the role does not exist in the addedRoles or removedRoles,
-                        // keep the existing selection state.
-                        return role;
-                    }
-                );
-
-                // Update the role selections with the updated roles.
-                setRoleSelections((prev: Record<string, SelectedOrganizationRoleInterface[]>) => ({
-                    ...prev,
-                    [ selectedOrg.id ]: updatedRoles
-                }));
-            } else if (selectedOrg?.roles?.length === 0) {
-                // If the selected organization has an empty roles array, set all the roles to unselected.
-                const unselectedRoles: SelectedOrganizationRoleInterface[] = orgRoleSelections?.map(
-                    (role: SelectedOrganizationRoleInterface) => ({
-                        ...role,
-                        selected: false
-                    })
-                );
-
-                let updatedRolesWithApiResponse: SelectedOrganizationRoleInterface[] = [];
-
-                if (shareType === ShareType.SHARE_ALL) {
-                    // If the share type is SHARE_ALL, we have to consider the common set of roles as well.
-                    // Mark the roles in the orgRoleSelections as selected.
-                    updatedRolesWithApiResponse = unselectedRoles?.map(
-                        (role: SelectedOrganizationRoleInterface) => {
-                            // Check if the roles exists in the newlyAddedCommonRoles
-                            const isRoleInSelectedRoles: boolean = newlyAddedCommonRoles?.some(
-                                (selectedRole: RolesInterface) => selectedRole.displayName === role.displayName);
-
-                            // If it does, mark it as selected.
-                            if (isRoleInSelectedRoles) {
-                                return({
-                                    ...role,
-                                    selected: true
-                                });
-                            }
-
-                            // If it does not, keep the existing selection state.
-                            return role;
-                        }
-                    );
-                } else if (shareType === ShareType.SHARE_SELECTED) {
-                    // If the share type is SHARE_SELECTED, we just keep the unselected state.
-                    updatedRolesWithApiResponse = unselectedRoles;
-                }
-
-                // Processing for addedRoles and removedRoles which resulted from user interaction
-                const updatedRoles: SelectedOrganizationRoleInterface[] = updatedRolesWithApiResponse?.map(
-                    (role: SelectedOrganizationRoleInterface) => {
-                        // If the role exists in the addedRoles, mark it as selected.
-                        if (addedRoles[selectedOrg.id]?.some(
-                            (addedRole: RoleSharingInterface) =>
-                                addedRole.displayName === role.displayName)) {
-                            return({
-                                ...role,
-                                selected: true
-                            });
-                        }
-
-                        // If the role exists in the removedRoles, mark it as unselected.
-                        if (removedRoles[selectedOrg.id]?.some(
-                            (removedRole: RoleSharingInterface) =>
-                                removedRole.displayName === role.displayName)) {
-                            return({
-                                ...role,
-                                selected: false
-                            });
-                        }
-
-                        // If the role does not exist in the addedRoles or removedRoles,
-                        // keep the existing selection state.
-                        return role;
-                    }
-                );
-
-                setRoleSelections((prev: Record<string, SelectedOrganizationRoleInterface[]>) => ({
-                    ...prev,
-                    [ selectedOrg.id ]: updatedRoles
-                }));
             }
         }
+
+        // Updating role selections changed from user interactions in the UI
+        updatedRoleSelections = updatedRoleSelections.map((
+            role: SelectedOrganizationRoleInterface
+        ) => {
+            let isSelected: boolean = clearAdvancedRoleSharing
+                ? false
+                : selectedOrgRoles?.some((selectedRole: OrganizationRoleInterface) =>
+                    selectedRole.displayName === role.displayName);
+
+            const isRoleInNewlyAddedCommonRoles: boolean = newlyAddedCommonRoles?.some(
+                (selectedRole: RolesInterface) => selectedRole.displayName === role.displayName);
+            const isRoleInNewlyRemovedCommonRoles: boolean = newlyRemovedCommonRoles?.some(
+                (selectedRole: RolesInterface) => selectedRole.displayName === role.displayName);
+            const isRoleInAddedRoles: boolean = addedRoles[selectedOrgId]?.some(
+                (addedRole: RoleSharingInterface) => addedRole.displayName === role.displayName);
+            const isRoleInRemovedRoles: boolean = removedRoles[selectedOrgId]?.some(
+                (removedRole: RoleSharingInterface) => removedRole.displayName === role.displayName);
+
+            if (isRoleInNewlyAddedCommonRoles) {
+                // If the role exists in the newly added common roles, mark it as selected.
+                isSelected = true;
+            }
+
+            if (isRoleInNewlyRemovedCommonRoles) {
+                // If the role exists in the newly removed common roles, mark it as unselected.
+                isSelected = false;
+            }
+
+            if (isRoleInAddedRoles) {
+                // If the role exists in the added roles, mark it as selected.
+                isSelected = true;
+            }
+
+            if (isRoleInRemovedRoles) {
+                // If the role exists in the removed roles, mark it as unselected.
+                isSelected = false;
+            }
+
+            // If the role is the administrator role, mark it as selected.
+            if (enableAdminRole && role.displayName === ConsoleRolesOnboardingConstants.ADMINISTRATOR) {
+                isSelected = true;
+            }
+
+            return({
+                ...role,
+                selected: isSelected
+            });
+        });
+
+        // If admin role is enabled, ensure that the administrator role is always selected and is in the first position.
+        if (enableAdminRole) {
+            const adminRoleIndex: number = updatedRoleSelections.findIndex(
+                (role: SelectedOrganizationRoleInterface) =>
+                    role.displayName === ConsoleRolesOnboardingConstants.ADMINISTRATOR
+            );
+
+            if (adminRoleIndex > 0) {
+                // move existing admin role to the front (in-place)
+                updatedRoleSelections.unshift( updatedRoleSelections.splice(adminRoleIndex, 1)[0]);
+            }
+        }
+
+        // Update the role selections with the updated roles.
+        setRoleSelections((prev: Record<string, SelectedOrganizationRoleInterface[]>) => ({
+            ...prev,
+            [ selectedOrgId ]: updatedRoleSelections
+        }));
     }, [ selectedApplicationOrganization ]);
 
     useEffect(() => {
@@ -596,20 +500,6 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
             );
         }
     }, [ organizationsFetchRequestError, topLevelOrganizationsFetchRequestError ]);
-
-    useEffect(() => {
-        if (applicationRolesFetchRequestError) {
-            dispatch(
-                addAlert({
-                    description: t("applications:edit.sections.sharedAccess.notifications" +
-                        ".fetchApplicationRoles.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("applications:edit.sections.sharedAccess.notifications" +
-                        ".fetchApplicationRoles.genericError.message")
-                })
-            );
-        }
-    }, [ applicationRolesFetchRequestError ]);
 
     const buildChildTree = (data: OrganizationInterface[]): TreeViewBaseItemWithRoles[] => {
         const nodeMap: Record<string, TreeViewBaseItemWithRoles> = {};
@@ -954,7 +844,7 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
     };
 
     const handleRolesOnChange = (
-        value: SelectedOrganizationRoleInterface[],
+        _value: SelectedOrganizationRoleInterface[],
         reason: AutocompleteChangeReason,
         details: AutocompleteChangeDetails<SelectedOrganizationRoleInterface>
     ): void => {
@@ -977,6 +867,7 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                     return role;
                 }
             );
+
 
             setRoleSelections((prev: Record<string, SelectedOrganizationRoleInterface[]>) => ({
                 ...prev,
@@ -1001,6 +892,11 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
 
             // If there is no removed role, return
             if (isEmpty(removedRole)) {
+                return;
+            }
+
+            if (enableAdminRole && removedRole.displayName === ConsoleRolesOnboardingConstants.ADMINISTRATOR) {
+                // If the removed role is the administrator role, do not allow removal of the admin role
                 return;
             }
 
@@ -1044,7 +940,7 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
             );
         }
 
-        if (shareType === ShareType.SHARE_SELECTED && !selectedItems.includes(selectedOrgId)) {
+        if (!disableOrgSelection && !selectedItems.includes(selectedOrgId)) {
             return (
                 <Alert
                     severity="info"
@@ -1109,6 +1005,10 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                                 value: RolesV2Interface) =>
                                 option?.displayName === value.displayName
                             }
+                            getOptionDisabled={ (option: RolesInterface) => {
+                                return enableAdminRole &&
+                                    option.displayName === ConsoleRolesOnboardingConstants.ADMINISTRATOR;
+                            } }
                             renderInput={ (params: AutocompleteRenderInputParams) => (
                                 <TextField
                                     { ...params }
@@ -1127,6 +1027,8 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                                         { ...getTagProps({ index }) }
                                         key={ index }
                                         label={ option.displayName }
+                                        disabled={ enableAdminRole && option.displayName ===
+                                            ConsoleRolesOnboardingConstants.ADMINISTRATOR }
                                     />
                                 );
                             }
@@ -1135,7 +1037,7 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                     )
                 }
                 {
-                    shareType === ShareType.SHARE_SELECTED && (
+                    !disableOrgSelection && (
                         <FormControlLabel
                             control={ <Checkbox defaultChecked /> }
                             label="Share application and roles with future child organizations"
@@ -1194,7 +1096,7 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                                     className="roles-selective-share-tree-view"
                                     items={ organizationTree }
                                     expandedItems={ expandedItems }
-                                    expansionTrigger={ shareType === ShareType.SHARE_ALL
+                                    expansionTrigger={ disableOrgSelection
                                         ? "content"
                                         : "iconContainer"
                                     }
@@ -1221,10 +1123,10 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
                                     onItemClick={ (_e: SyntheticEvent, itemId: string) => {
                                         setSelectedOrgId(itemId);
                                     } }
-                                    selectedItems={ selectedItems }
-                                    checkboxSelection={ shareType !== ShareType.SHARE_ALL }
-                                    disableSelection={ shareType === ShareType.SHARE_ALL }
-                                    multiSelect={ shareType !== ShareType.SHARE_ALL }
+                                    selectedItems={ disableOrgSelection ? [] : selectedItems }
+                                    checkboxSelection={ !disableOrgSelection }
+                                    disableSelection={ disableOrgSelection }
+                                    multiSelect={ !disableOrgSelection }
                                     selectionPropagation={ {
                                         descendants: false,
                                         parents: false
@@ -1275,4 +1177,4 @@ const OrgSelectiveShareWithSelectiveRolesEdit = (props: OrgSelectiveShareWithSel
     );
 };
 
-export default OrgSelectiveShareWithSelectiveRolesEdit;
+export default SelectiveOrgShareWithSelectiveRoles;
