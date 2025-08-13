@@ -1,5 +1,14 @@
 # @wso2is/admin.ask-password-flow-builder.v1
 
+## 1.1.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.13
+  - @wso2is/admin.flow-builder-core.v1@0.10.5
+  - @wso2is/admin.server-configurations.v1@2.35.26
+
 ## 1.1.4
 
 ### Patch Changes
