@@ -1176,7 +1176,8 @@ export const applications: ApplicationsNS = {
                         },
                         mandateLocalAccount: {
                             label: "Require linked local account",
-                            hint: "Authentication will fail if no linked local account is found during token exchange."
+                            hint: "Authentication will fail if no linked local account is found during token exchange.",
+                            unifiedHint: "Authentication will fail if no linked local account is found during login and token exchange."
                         }
                     }
                 },
@@ -1921,6 +1922,15 @@ export const applications: ApplicationsNS = {
                                 addAllRequestedClaimsInJWTAccessToken: {
                                     instruction: "Irrespective of the <1>scopes</1> requested, all the <3>Requested Attributes</3> will "
                                         + "be included in the JWT Access Token."
+                                }
+                            },
+                            version300: {
+                                linkedLocalAccountAttributeHandling: {
+                                    instruction: "When you enable the use of linked local account attributes " +
+                                        "instead of federated attributes and mandate that a linked local account " +
+                                        "must exist, this configuration previously applied only to the <1>token " +
+                                        "exchange</1> flow. With this update, the same restriction now also " +
+                                        "applies to <3>login</3> scenarios."
                                 }
                             }
                         }

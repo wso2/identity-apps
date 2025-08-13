@@ -1,5 +1,47 @@
 # @wso2is/i18n
 
+## 2.30.1
+
+### Patch Changes
+
+- [#8741](https://github.com/wso2/identity-apps/pull/8741) [`91477087e15cdf9b22d519e6151fb8d8a6c65156`](https://github.com/wso2/identity-apps/commit/91477087e15cdf9b22d519e6151fb8d8a6c65156) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update Add User Wizard to honor claim input type
+
+## 2.30.0
+
+### Minor Changes
+
+- [#8742](https://github.com/wso2/identity-apps/pull/8742) [`16d9641a33d0b04d76d751a81c50ce3ed0dddb18`](https://github.com/wso2/identity-apps/commit/16d9641a33d0b04d76d751a81c50ce3ed0dddb18) Thanks [@AmshikaH](https://github.com/AmshikaH)! - Support OIDC scope inheritance in the console
+
+## 2.29.1
+
+### Patch Changes
+
+- [#8736](https://github.com/wso2/identity-apps/pull/8736) [`e2d53eaf3a8c4d6bda03af358535864ce5c198d6`](https://github.com/wso2/identity-apps/commit/e2d53eaf3a8c4d6bda03af358535864ce5c198d6) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add i18n support for flow builder
+
+## 2.29.0
+
+### Minor Changes
+
+- [#8729](https://github.com/wso2/identity-apps/pull/8729) [`1643c8e6b1f79225ffa150c40e80d7c85f9372d3`](https://github.com/wso2/identity-apps/commit/1643c8e6b1f79225ffa150c40e80d7c85f9372d3) Thanks [@AmshikaH](https://github.com/AmshikaH)! - Support claim inheritance in the console
+
+## 2.28.5
+
+### Patch Changes
+
+- [#8696](https://github.com/wso2/identity-apps/pull/8696) [`ab46bb12e16988d1910e0659a4d22cb4337f6a5b`](https://github.com/wso2/identity-apps/commit/ab46bb12e16988d1910e0659a4d22cb4337f6a5b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Support for account linking based on a matching a user attribute
+
+## 2.28.4
+
+### Patch Changes
+
+- [#8711](https://github.com/wso2/identity-apps/pull/8711) [`0becd0f454afeb3c62af477d1083a1934b217d04`](https://github.com/wso2/identity-apps/commit/0becd0f454afeb3c62af477d1083a1934b217d04) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Improve UX in application role sharing feature
+
+## 2.28.3
+
+### Patch Changes
+
+- [#8415](https://github.com/wso2/identity-apps/pull/8415) [`0235fc45576bbb5c944e34b85ef9ef00df8beb92`](https://github.com/wso2/identity-apps/commit/0235fc45576bbb5c944e34b85ef9ef00df8beb92) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Refactor Pre Issue Access Token Action with support for allowedHeaders and allowedParameters
+
 ## 2.28.2
 
 ### Patch Changes

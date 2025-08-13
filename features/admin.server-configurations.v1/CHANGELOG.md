@@ -1,5 +1,56 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.35.25
+
+### Patch Changes
+
+- Updated dependencies [[`db4dd1e47d03c3bb5cacee50ed593f1aa25ce498`](https://github.com/wso2/identity-apps/commit/db4dd1e47d03c3bb5cacee50ed593f1aa25ce498)]:
+  - @wso2is/admin.users.v1@2.36.1
+  - @wso2is/admin.core.v1@2.49.12
+  - @wso2is/admin.flow-builder-core.v1@0.10.4
+  - @wso2is/admin.server-configurations.v1@2.35.25
+
+## 2.35.24
+
+### Patch Changes
+
+- Updated dependencies [[`4bf5e4e4ffd0cb942efd86f8f5c9faf8cd8fd071`](https://github.com/wso2/identity-apps/commit/4bf5e4e4ffd0cb942efd86f8f5c9faf8cd8fd071)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.3
+  - @wso2is/admin.core.v1@2.49.11
+  - @wso2is/admin.server-configurations.v1@2.35.24
+
+## 2.35.23
+
+### Patch Changes
+
+- Updated dependencies [[`91477087e15cdf9b22d519e6151fb8d8a6c65156`](https://github.com/wso2/identity-apps/commit/91477087e15cdf9b22d519e6151fb8d8a6c65156), [`91477087e15cdf9b22d519e6151fb8d8a6c65156`](https://github.com/wso2/identity-apps/commit/91477087e15cdf9b22d519e6151fb8d8a6c65156)]:
+  - @wso2is/admin.users.v1@2.36.0
+  - @wso2is/i18n@2.30.1
+  - @wso2is/admin.core.v1@2.49.10
+  - @wso2is/admin.flow-builder-core.v1@0.10.2
+  - @wso2is/admin.server-configurations.v1@2.35.23
+
+## 2.35.22
+
+### Patch Changes
+
+- Updated dependencies [[`16d9641a33d0b04d76d751a81c50ce3ed0dddb18`](https://github.com/wso2/identity-apps/commit/16d9641a33d0b04d76d751a81c50ce3ed0dddb18)]:
+  - @wso2is/i18n@2.30.0
+  - @wso2is/admin.core.v1@2.49.9
+  - @wso2is/admin.flow-builder-core.v1@0.10.1
+  - @wso2is/admin.server-configurations.v1@2.35.22
+
+## 2.35.21
+
+### Patch Changes
+
+- Updated dependencies [[`e2d53eaf3a8c4d6bda03af358535864ce5c198d6`](https://github.com/wso2/identity-apps/commit/e2d53eaf3a8c4d6bda03af358535864ce5c198d6)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.0
+  - @wso2is/i18n@2.29.1
+  - @wso2is/admin.core.v1@2.49.8
+  - @wso2is/admin.flows.v1@1.0.18
+  - @wso2is/admin.server-configurations.v1@2.35.21
+
 ## 2.35.20
 
 ### Patch Changes

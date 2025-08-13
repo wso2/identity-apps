@@ -2820,6 +2820,7 @@ export const extensions: Extensions = {
                     inputLabel: {
                         alphanumericUsername: "Username",
                         alphanumericUsernamePlaceholder: "Enter the username",
+                        email: "Email",
                         emailUsername: "Username (Email)"
                     },
                     inviteUserTooltip: {

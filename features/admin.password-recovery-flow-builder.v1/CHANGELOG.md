@@ -1,5 +1,64 @@
 # @wso2is/admin.password-recovery-flow-builder.v1
 
+## 1.1.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.12
+  - @wso2is/admin.flow-builder-core.v1@0.10.4
+  - @wso2is/admin.server-configurations.v1@2.35.25
+
+## 1.1.3
+
+### Patch Changes
+
+- Updated dependencies [[`4bf5e4e4ffd0cb942efd86f8f5c9faf8cd8fd071`](https://github.com/wso2/identity-apps/commit/4bf5e4e4ffd0cb942efd86f8f5c9faf8cd8fd071)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.3
+  - @wso2is/admin.core.v1@2.49.11
+  - @wso2is/admin.server-configurations.v1@2.35.24
+
+## 1.1.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.10
+  - @wso2is/admin.flow-builder-core.v1@0.10.2
+  - @wso2is/admin.server-configurations.v1@2.35.23
+
+## 1.1.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.9
+  - @wso2is/admin.flow-builder-core.v1@0.10.1
+  - @wso2is/admin.server-configurations.v1@2.35.22
+
+## 1.1.0
+
+### Minor Changes
+
+- [#8736](https://github.com/wso2/identity-apps/pull/8736) [`e2d53eaf3a8c4d6bda03af358535864ce5c198d6`](https://github.com/wso2/identity-apps/commit/e2d53eaf3a8c4d6bda03af358535864ce5c198d6) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add i18n support for flow builder
+
+### Patch Changes
+
+- Updated dependencies [[`e2d53eaf3a8c4d6bda03af358535864ce5c198d6`](https://github.com/wso2/identity-apps/commit/e2d53eaf3a8c4d6bda03af358535864ce5c198d6)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.0
+  - @wso2is/admin.core.v1@2.49.8
+  - @wso2is/admin.flows.v1@1.0.18
+  - @wso2is/admin.server-configurations.v1@2.35.21
+
+## 1.0.17
+
+### Patch Changes
+
+- [#8725](https://github.com/wso2/identity-apps/pull/8725) [`fe3e9ae1b401986ecb27b428c8252bf235f3d81f`](https://github.com/wso2/identity-apps/commit/fe3e9ae1b401986ecb27b428c8252bf235f3d81f) Thanks [@KD23243](https://github.com/KD23243)! - Refactor supported profile attribute retrieval
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.4
+
 ## 1.0.16
 
 ### Patch Changes

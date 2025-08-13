@@ -1,5 +1,48 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.10.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.12
+
+## 0.10.3
+
+### Patch Changes
+
+- [#8745](https://github.com/wso2/identity-apps/pull/8745) [`4bf5e4e4ffd0cb942efd86f8f5c9faf8cd8fd071`](https://github.com/wso2/identity-apps/commit/4bf5e4e4ffd0cb942efd86f8f5c9faf8cd8fd071) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Silence the 404 error for the i18n meta JSON extension request
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.11
+
+## 0.10.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.10
+
+## 0.10.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.9
+
+## 0.10.0
+
+### Minor Changes
+
+- [#8736](https://github.com/wso2/identity-apps/pull/8736) [`e2d53eaf3a8c4d6bda03af358535864ce5c198d6`](https://github.com/wso2/identity-apps/commit/e2d53eaf3a8c4d6bda03af358535864ce5c198d6) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add i18n support for flow builder
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.8
+  - @wso2is/admin.flows.v1@1.0.18
+  - @wso2is/admin.branding.v1@2.32.4
+
 ## 0.9.13
 
 ### Patch Changes

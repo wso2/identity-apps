@@ -108,6 +108,8 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
     useEffect(() => {
         if (isCustomLocalAuthenticator) {
             setInitialValues({
+                allowedHeaders: (connector as CustomAuthConnectionInterface)?.endpoint?.allowedHeaders,
+                allowedParameters: (connector as CustomAuthConnectionInterface)?.endpoint?.allowedParameters,
                 authenticationType: (connector as CustomAuthConnectionInterface)?.endpoint?.authentication?.type,
                 endpointUri: (connector as CustomAuthConnectionInterface)?.endpoint?.uri
             });
@@ -133,6 +135,8 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
         getFederatedAuthenticatorDetails(connector?.id, customFederatedAuthenticatorId)
             .then((data: FederatedAuthenticatorListItemInterface) => {
                 const endpointAuth: EndpointConfigFormPropertyInterface = {
+                    allowedHeaders: data?.endpoint?.allowedHeaders,
+                    allowedParameters: data?.endpoint?.allowedParameters,
                     authenticationType: data?.endpoint?.authentication?.type,
                     endpointUri: data?.endpoint?.uri
                 };
@@ -177,6 +181,8 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
             description: connector.description,
             displayName: resolveDisplayName(),
             endpoint: {
+                allowedHeaders: values?.allowedHeaders,
+                allowedParameters: values?.allowedParameters,
                 authentication: {
                     properties: authProperties,
                     type: values.authenticationType as EndpointAuthenticationType
@@ -220,6 +226,8 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
         const updatingValues: FederatedAuthenticatorInterface = {
             authenticatorId: federatedAuthenticatorId,
             endpoint: {
+                allowedHeaders: values?.allowedHeaders,
+                allowedParameters: values?.allowedParameters,
                 authentication: {
                     properties: authProperties,
                     type: values.authenticationType as EndpointAuthenticationType
@@ -311,6 +319,7 @@ export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorS
                                     setEndpointAuthenticationType(authenticationType);
                                     setIsEndpointAuthenticationUpdated(isAuthenticationUpdated);
                                 } }
+                                showHeadersAndParams={ true }
                             />
                             { !isLoading && !isReadOnly && (
                                 <Button

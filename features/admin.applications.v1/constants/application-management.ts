@@ -46,7 +46,8 @@ export class ApplicationManagementConstants {
      */
     public static readonly APP_VERSION_1: string = "v1.0.0";
     public static readonly APP_VERSION_2: string = "v2.0.0";
-    public static readonly LATEST_VERSION: string = ApplicationManagementConstants.APP_VERSION_2;
+    public static readonly APP_VERSION_3: string = "v3.0.0";
+    public static readonly LATEST_VERSION: string = ApplicationManagementConstants.APP_VERSION_3;
 
     /**
      * Private constructor to avoid object instantiation from outside

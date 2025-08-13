@@ -1,5 +1,20 @@
 # @wso2is/admin.claims.v1
 
+## 2.29.0
+
+### Minor Changes
+
+- [#8729](https://github.com/wso2/identity-apps/pull/8729) [`1643c8e6b1f79225ffa150c40e80d7c85f9372d3`](https://github.com/wso2/identity-apps/commit/1643c8e6b1f79225ffa150c40e80d7c85f9372d3) Thanks [@AmshikaH](https://github.com/AmshikaH)! - Support claim inheritance in the console
+
+### Patch Changes
+
+- Updated dependencies [[`1643c8e6b1f79225ffa150c40e80d7c85f9372d3`](https://github.com/wso2/identity-apps/commit/1643c8e6b1f79225ffa150c40e80d7c85f9372d3), [`edccbba95dd635e0a6f016e2e99f037594cc4196`](https://github.com/wso2/identity-apps/commit/edccbba95dd635e0a6f016e2e99f037594cc4196), [`edccbba95dd635e0a6f016e2e99f037594cc4196`](https://github.com/wso2/identity-apps/commit/edccbba95dd635e0a6f016e2e99f037594cc4196)]:
+  - @wso2is/admin.claims.v1@2.29.0
+  - @wso2is/i18n@2.29.0
+  - @wso2is/admin.users.v1@2.35.0
+  - @wso2is/theme@2.8.5
+  - @wso2is/admin.core.v1@2.49.7
+
 ## 2.28.11
 
 ### Patch Changes

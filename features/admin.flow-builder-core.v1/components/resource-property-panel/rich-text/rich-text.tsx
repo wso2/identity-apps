@@ -29,7 +29,7 @@ import Paper from "@oxygen-ui/react/Paper";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import { EditorThemeClasses, ParagraphNode, TextNode } from "lexical";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import HTMLPlugin from "./helper-plugins/html-plugin";
 import CustomLinkPlugin from "./helper-plugins/link-plugin";
@@ -98,6 +98,10 @@ export interface RichTextProps extends IdentifiableComponentInterface {
      * The resource associated with the rich text editor.
      */
     resource: Resource;
+    /**
+     * Whether the rich text editor is disabled. If true, the editor will not be editable.
+     */
+    disabled?: boolean;
 }
 
 /**
@@ -108,34 +112,56 @@ const RichText: FunctionComponent<RichTextProps> = ({
     ToolbarProps,
     className,
     onChange,
-    resource
+    resource,
+    disabled
 }: RichTextProps): ReactElement => {
     const { t } = useTranslation();
+
+    /**
+     * Check if the resource.config.text matches the i18n pattern.
+     */
+    const isI18nPattern: boolean = useMemo(() => {
+        if (!resource?.config?.text) return false;
+
+        const i18nPattern: RegExp = /^\{\{[^}]+\}\}$/;
+
+        return i18nPattern.test(resource.config.text.trim());
+    }, [ resource?.config?.text ]);
 
     return (
         <LexicalComposer initialConfig={ editorConfig }>
             <div className={ classNames("OxygenRichText-root", className) } data-componentid={ componentId }>
-                <ToolbarPlugin { ...ToolbarProps } />
+                <ToolbarPlugin { ...ToolbarProps } disabled={ isI18nPattern || disabled } />
                 <Paper className="OxygenRichText-editor-root" variant="outlined">
-                    <RichTextPlugin
-                        contentEditable={
-                            (<ContentEditable
-                                className="OxygenRichText-editor-input"
-                                aria-placeholder="Enter some rich text..."
-                                placeholder={ (
-                                    <div className="OxygenRichText-editor-input-placeholder">
-                                        { t("flows:core.elements.richText.placeholder") }
-                                    </div>
-                                ) }
-                            />)
-                        }
-                        ErrorBoundary={ LexicalErrorBoundary }
-                    />
-                    <HistoryPlugin />
-                    <AutoFocusPlugin />
-                    <LinkPlugin />
-                    <CustomLinkPlugin />
-                    <HTMLPlugin resource={ resource } onChange={ onChange } />
+                    { isI18nPattern ? (
+                        <div className="OxygenRichText-i18n-placeholder">
+                            <div className="OxygenRichText-i18n-placeholder-key">
+                                { resource.config.text }
+                            </div>
+                        </div>
+                    ) : (
+                        <>
+                            <RichTextPlugin
+                                contentEditable={
+                                    (<ContentEditable
+                                        className="OxygenRichText-editor-input"
+                                        aria-placeholder="Enter some rich text..."
+                                        placeholder={ (
+                                            <div className="OxygenRichText-editor-input-placeholder">
+                                                { t("flows:core.elements.richText.placeholder") }
+                                            </div>
+                                        ) }
+                                    />)
+                                }
+                                ErrorBoundary={ LexicalErrorBoundary }
+                            />
+                            <HistoryPlugin />
+                            <AutoFocusPlugin />
+                            <LinkPlugin />
+                            <CustomLinkPlugin />
+                            <HTMLPlugin resource={ resource } onChange={ onChange } disabled={ disabled } />
+                        </>
+                    ) }
                 </Paper>
             </div>
         </LexicalComposer>

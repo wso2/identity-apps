@@ -127,6 +127,9 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
     // TODO: Temporary flag to show/hide the rule component.
     const showRuleComponent: boolean = isFeatureEnabled(
         actionsFeatureConfig, ActionsConstants.FEATURE_DICTIONARY.get("PRE_UPDATE_PASSWORD_RULE"));
+    // TODO: Temporary flag to show/hide the allowedHeaders and allowedParameters section.
+    const showHeadersAndParams: boolean = isFeatureEnabled(
+        actionsFeatureConfig, ActionsConstants.FEATURE_DICTIONARY.get("PRE_UPDATE_PASSWORD_HEADERS_AND_PARAMS"));
 
     /**
      * The following useEffect is used to set the current Action Authentication Type.
@@ -316,7 +319,9 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
                     onAuthenticationTypeChange={ (updatedValue: AuthenticationType, change: boolean) => {
                         setAuthenticationType(updatedValue);
                         setIsAuthenticationUpdateFormState(change);
-                    } } />
+                    } }
+                    showHeadersAndParams={ showHeadersAndParams }
+                />
                 <Divider className="divider-container" />
                 <Typography variant="h6" className="password-sharing-label">
                     { t("actions:fields.passwordSharing.label") }

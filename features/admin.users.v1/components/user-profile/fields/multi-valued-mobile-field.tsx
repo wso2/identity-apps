@@ -236,7 +236,14 @@ const MultiValuedMobileField: FunctionComponent<MultiValuedMobileFieldPropsInter
             return;
         }
 
-        form.change(mobileNumbersFieldName, [ ...(mobileNumbersFieldValue ?? []), newMobileNumber ]);
+        form.batch(() => {
+            // If the mobile numbers list is empty, set the new mobile number as primary.
+            if ((mobileNumbersFieldValue ?? []).length === 0) {
+                form.change(mobileFieldName, newMobileNumber);
+            }
+
+            form.change(mobileNumbersFieldName, [ ...(mobileNumbersFieldValue ?? []), newMobileNumber ]);
+        });
         addFieldRef.current.value = "";
     };
 

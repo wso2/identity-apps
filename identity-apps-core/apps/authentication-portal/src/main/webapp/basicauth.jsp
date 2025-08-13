@@ -259,6 +259,11 @@
             + "&sp=" + serviceProviderAppName;
     String DYNAMIC_PASSWORD_RECOVERY_URL = "/recovery?flowType=PASSWORD_RECOVERY" + "&spId=" + serviceProviderAppId
             + "&sp=" + serviceProviderAppName;
+    String rawSdk = request.getParameter("sessionDataKey");
+    String sdkSafe = "";
+    if (rawSdk != null && rawSdk.matches("^[a-zA-Z0-9\\-_\\.]+$")) {
+        sdkSafe = org.owasp.encoder.Encode.forJavaScript(rawSdk);
+    }
 %>
 
 <%
@@ -745,6 +750,9 @@
                 <% if (StringUtils.equals("true", promptAccountLinking)) { %>
                     target="_blank" rel="noopener noreferrer"
                 <% } %>
+                <% if (isDynamicPortalPWEnabled) { %>
+                    onclick="handleDynamicPortalRedirection()"
+                <% } %>
             >
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%>
             </a>
@@ -811,6 +819,9 @@
                     id="registerLink"
                     data-testid="login-page-create-account-button"
                     style="cursor: pointer;"
+                    <% if (isDynamicPortalSREnabled) { %>
+                        onclick="handleDynamicPortalRedirection()"
+                    <% } %>
                 >
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "register")%>
                 </a>
@@ -920,6 +931,10 @@
             "app": insightsAppIdentifier,
             "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
         });
+    }
+
+    function handleDynamicPortalRedirection() {
+        localStorage.setItem("sessionDataKey", "<%= sdkSafe %>");
     }
 
     // Removing the recaptcha UI from the keyboard tab order
