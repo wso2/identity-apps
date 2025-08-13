@@ -49,6 +49,7 @@ jobs:
 
           # Cherry-pick each commit
           echo "Cherry-picking commits..."
+          CONFLICTS=false
           for commit in $COMMITS; do
             if git show --no-patch --format=%p "$commit" | grep -q " "; then
               echo "Skipping merge commit: $commit"
@@ -56,29 +57,53 @@ jobs:
             fi
             echo "Cherry-picking: $commit"
             if ! git cherry-pick "$commit"; then
-              echo "::error::Cherry-pick failed for $commit. Manual intervention required."
-              exit 1
+              echo "::warning::Cherry-pick conflict detected for $commit"
+              git cherry-pick --abort
+              CONFLICTS=true
+              break
             fi
           done
 
+          if [ "$CONFLICTS" = true ]; then
+            # If there were conflicts, create branch from target and push without cherry-picking
+            git checkout -B "$SYNC_BRANCH" "origin/${{ env.TARGET_BRANCH }}"
+            echo "⚠️ Cherry-pick failed due to conflicts. Creating PR for manual resolution."
+          fi
+
           # Push sync branch
           git push origin "$SYNC_BRANCH"
+
+          # Prepare PR body with conflict status
+          PR_BODY="🤖 **Auto-sync from ${{ github.event.pull_request.base.ref }}**
+          This PR automatically syncs the changes from #${{ github.event.pull_request.number }} to the \`${{ env.TARGET_BRANCH }}\` branch.
+
+          **Original PR:** ${{ github.event.pull_request.html_url }}
+          **Author:** @${{ github.event.pull_request.user.login }}
+          **Workflow:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+          if [ "$CONFLICTS" = true ]; then
+            PR_BODY="$PR_BODY
+
+          ⚠️ **Merge Conflicts Detected**
+          This PR requires manual resolution of merge conflicts.
+          Please resolve the conflicts and update this PR accordingly."
+          fi
+
+          PR_BODY="$PR_BODY
+
+          ---
+
+          ${{ github.event.pull_request.body }}"
 
           # Create PR
           gh pr create \
             --base "${{ env.TARGET_BRANCH }}" \
             --head "$SYNC_BRANCH" \
-            --title "[Sync][\`${{ env.TARGET_BRANCH }}\` <- \`${{ github.event.pull_request.base.ref }}\`][#${{ github.event.pull_request.number }}]: ${{ github.event.pull_request.title }}" \
-            --body "🤖 **Auto-sync from ${{ github.event.pull_request.base.ref }}**
-          This PR automatically syncs the changes from #${{ github.event.pull_request.number }} to the \`${{ env.TARGET_BRANCH }}\` branch.
-
-          **Original PR:** ${{ github.event.pull_request.html_url }}
-          **Author:** @${{ github.event.pull_request.user.login }}
-          **Workflow:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-
-          ---
-
-          ${{ github.event.pull_request.body }}" \
+            --title "[Sync][<${{ github.event.pull_request.base.ref }}> -> <${{ env.TARGET_BRANCH }}>][#${{ github.event.pull_request.number }}]: ${{ github.event.pull_request.title }}" \
+            --body "$PR_BODY" \
             --reviewer "${{ github.event.pull_request.user.login }}"
+
+          # Delete the sync branch after PR creation since it's no longer needed
+          git push origin --delete "$SYNC_BRANCH"
         env:
           GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
