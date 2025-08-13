@@ -844,7 +844,7 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
     };
 
     const handleRolesOnChange = (
-        value: SelectedOrganizationRoleInterface[],
+        _value: SelectedOrganizationRoleInterface[],
         reason: AutocompleteChangeReason,
         details: AutocompleteChangeDetails<SelectedOrganizationRoleInterface>
     ): void => {
