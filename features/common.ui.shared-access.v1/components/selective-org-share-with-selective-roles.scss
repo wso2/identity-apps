@@ -19,66 +19,35 @@
 .roles-selective-share-container {
     margin-top: 1rem;
     border: none;
-}
 
-.roles-selective-share-left-panel {
-    height: 300px;
-    overflow: auto;
-    background-color: var(--oxygen-palette-grey-100);
-    border-radius: var(--oxygen-shape-borderRadius) 0 0 var(--oxygen-shape-borderRadius);
-}
+    .roles-selective-share-left-panel {
+        height: 300px;
+        overflow: auto;
+        background-color: var(--oxygen-palette-grey-100);
+        border-radius: var(--oxygen-shape-borderRadius) 0 0 var(--oxygen-shape-borderRadius);
+    }
 
-.roles-selective-share-right-panel {
-    height: 300px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    background-color: var(--oxygen-palette-grey-50);
-    border-radius: 0 var(--oxygen-shape-borderRadius) var(--oxygen-shape-borderRadius) 0;
-}
+    .roles-selective-share-right-panel {
+        height: 300px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        background-color: var(--oxygen-palette-grey-50);
+        border-radius: 0 var(--oxygen-shape-borderRadius) var(--oxygen-shape-borderRadius) 0;
+    }
 
-.roles-selective-share-all-roles {
-    height: 300px;
-    overflow: auto;
-    background-color: var(--oxygen-palette-grey-100);
-    border-radius: var(--oxygen-shape-borderRadius);
-}
+    .roles-selective-share-all-roles {
+        height: 300px;
+        overflow: auto;
+        background-color: var(--oxygen-palette-grey-100);
+        border-radius: var(--oxygen-shape-borderRadius);
+    }
 
-.role-list-container {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    gap: 12px;
-    height: 280px;
-    align-content: flex-start;
+    .role-list-container {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        gap: 12px;
+        height: 280px;
+        align-content: flex-start;
+    }
 }
-
-.role-item {
-    display: flex;
-    align-items: center;
-    width: 150px;
-    min-width: 0;
-    box-sizing: border-box;
-}
-
-.role-item:last-child {
-    max-width: unset;
-}
-
-.role-label {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    min-width: 0;
-    flex-grow: 1;
-}
-
-.role-checkbox {
-    margin-right: 10px;
-    padding: 2px;
-}
-
-// .ui.image.animated-avatar.gradient {
-//     width: 25px;
-//     height: 25px;
-//     margin-right: 10px;
-// }

@@ -35,7 +35,7 @@
         "@wso2is/admin.server-configurations.v1": "^2.35.16",
         "@wso2is/admin.users.v1": "^2.34.3",
         "@wso2is/admin.userstores.v1": "^2.27.33",
-        "@wso2is/common.ui.shared-access.v1": "^0.1.0",
+        "@wso2is/common.ui.shared-access.v1": "workspace:^",
         "@wso2is/core": "^2.10.2",
         "@wso2is/dynamic-forms": "^2.4.41",
         "@wso2is/form": "^2.7.1",
