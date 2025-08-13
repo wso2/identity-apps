@@ -638,7 +638,7 @@ export const applications: ApplicationsNS = {
                 showShareAllWarningModal: {
                     header: "Are you sure?",
                     message: "This action is irreversible and will change roles in all organizations.",
-                    description: "This action may share new roles or unshare the existing roles to the shared organizations of the application.",
+                    description: "This action may share new roles or unshare the existing roles from all the organizations.",
                     assertionHint: "Please confirm your action."
                 },
                 sharedAccessStatusOptions: {

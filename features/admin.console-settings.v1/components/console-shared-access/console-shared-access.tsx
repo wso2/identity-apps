@@ -40,6 +40,8 @@ import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { SelectedOrganizationRoleInterface } from "@wso2is/admin.organizations.v1/models";
 import { RolesV2Interface } from "@wso2is/admin.roles.v2/models/roles";
+import SelectiveOrgShareWithSelectiveRoles
+    from "@wso2is/common.ui.shared-access.v1/components/selective-org-share-with-selective-roles";
 import { AlertLevels,
     FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
@@ -54,7 +56,6 @@ import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useStat
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import ConsoleRolesSelectiveShare from "./console-roles-selective-share";
 import ConsoleRolesShareWithAll from "./console-roles-share-with-all";
 import { ConsoleRolesOnboardingConstants } from "../../constants/console-roles-onboarding-constants";
 import useConsoleRoles from "../../hooks/use-console-roles";
@@ -92,13 +93,18 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
 
     const {
         consoleRoles: administratorRole,
-        consoleRolesFetchRequestError
+        consoleAdminRoleFetchRequestError
     } = useConsoleRoles(
         true,
         UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
         null,
         `displayName eq ${ ConsoleRolesOnboardingConstants.ADMINISTRATOR }`
     );
+
+    const {
+        consoleRoles,
+        consoleRolesFetchRequestError
+    } = useConsoleRoles(true, 100, null, null);
 
     const {
         data: originalOrganizationTree,
@@ -122,8 +128,8 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
         RoleSharingModes.ALL);
     const [ initialSelectedRoles, setInitialSelectedRoles ] = useState<RolesInterface[]>([]);
     const [ selectedRoles, setSelectedRoles ] = useState<RolesInterface[]>([]);
-    const [ addedRoles, setAddedRoles ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
-    const [ removedRoles, setRemovedRoles ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
+    const [ addedRoles, setAddedRoles ] = useState<Record<string, RoleSharingInterface[]>>({});
+    const [ removedRoles, setRemovedRoles ] = useState<Record<string, RoleSharingInterface[]>>({});
     const [ roleSelections, setRoleSelections ] = useState<Record<string, SelectedOrganizationRoleInterface[]>>({});
     const [ clearAdvancedRoleSharing, setClearAdvancedRoleSharing ] = useState<boolean>(false);
 
@@ -198,7 +204,7 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
      * If the Administrator role is not fetched, show an error.
      */
     useEffect(() => {
-        if (consoleRolesFetchRequestError) {
+        if (consoleRolesFetchRequestError || consoleAdminRoleFetchRequestError) {
             dispatch(addAlert({
                 description: t("consoleSettings:sharedAccess.notifications.fetchRoles.error.description",
                     { error: consoleRolesFetchRequestError.message }),
@@ -206,7 +212,7 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                 message: t("consoleSettings:sharedAccess.notifications.fetchRoles.error.message")
             }));
         }
-    }, [ consoleRolesFetchRequestError ]);
+    }, [ consoleRolesFetchRequestError, consoleAdminRoleFetchRequestError ]);
 
     /**
      * If the organization tree is not fetched, show an error.
@@ -229,6 +235,7 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
         setRoleSelections({});
         setSelectedRoles([ administratorRole?.Resources[0] ]);
         setInitialSelectedRoles([ administratorRole?.Resources[0] ]);
+        mutateOriginalOrganizationTree();
         setClearAdvancedRoleSharing(false);
     };
 
@@ -304,9 +311,9 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
 
     const shareSelectedRolesWithSelectedOrgs = (): void => {
         const addOperations: ShareOrganizationsAndRolesPatchOperationInterface[] = Object.entries(addedRoles)
-            .map(([ orgId, roles ]: [string, SelectedOrganizationRoleInterface[]]) => {
+            .map(([ orgId, roles ]: [string, RoleSharingInterface[]]) => {
                 const roleData: RoleSharingInterface[] = roles.map(
-                    (role: SelectedOrganizationRoleInterface) => ({
+                    (role: RoleSharingInterface) => ({
                         audience: {
                             display: role.audience.display,
                             type: role.audience.type
@@ -327,9 +334,9 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
             }).filter((item: any) => item !== null);
 
         const removeOperations: ShareOrganizationsAndRolesPatchOperationInterface[] = Object.entries(removedRoles)
-            .map(([ orgId, roles ]: [string, SelectedOrganizationRoleInterface[]]) => {
+            .map(([ orgId, roles ]: [string, RoleSharingInterface[]]) => {
                 const roleData: RoleSharingInterface[] = roles.map(
-                    (role: SelectedOrganizationRoleInterface) => ({
+                    (role: RoleSharingInterface) => ({
                         audience: {
                             display: role.audience.display,
                             type: role.audience.type
@@ -427,22 +434,22 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
 
         if (isSelected) {
             // If the role is selected, we have to remove it from the removedRoles for all organizations
-            const updatedRemovedRoles: Record<string, SelectedOrganizationRoleInterface[]> = { ...removedRoles };
+            const updatedRemovedRoles: Record<string, RoleSharingInterface[]> = { ...removedRoles };
 
             Object.keys(updatedRemovedRoles).forEach((orgId: string) => {
                 updatedRemovedRoles[orgId] = updatedRemovedRoles[orgId].filter(
-                    (role: SelectedOrganizationRoleInterface) => role.displayName !== updatedRole.displayName
+                    (role: RoleSharingInterface) => role.displayName !== updatedRole.displayName
                 );
             });
 
             setRemovedRoles(updatedRemovedRoles);
         } else {
             // If the role is unselected, we have to remove it from the addedRoles for all organizations
-            const updatedAddedRoles: Record<string, SelectedOrganizationRoleInterface[]> = { ...addedRoles };
+            const updatedAddedRoles: Record<string, RoleSharingInterface[]> = { ...addedRoles };
 
             Object.keys(updatedAddedRoles).forEach((orgId: string) => {
                 updatedAddedRoles[orgId] = updatedAddedRoles[orgId].filter(
-                    (role: SelectedOrganizationRoleInterface) => role.displayName !== updatedRole.displayName
+                    (role: RoleSharingInterface) => role.displayName !== updatedRole.displayName
                 );
             });
 
@@ -457,9 +464,7 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
     return (
         <EmphasizedSegment padded="very">
             <Grid container>
-                <Grid
-                    xs={ 8 }
-                >
+                <Grid xl={ 8 } xs={ 12 }>
                     <Text className="mb-2" subHeading>
                         { t("consoleSettings:sharedAccess.description") }
                     </Text>
@@ -530,15 +535,19 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                             >
                                 { t("consoleSettings:sharedAccess.sharingRolesTakeTimeMessage") }
                             </Alert>
-                            <ConsoleRolesSelectiveShare
+                            <SelectiveOrgShareWithSelectiveRoles
+                                applicationId={ consoleId }
+                                applicationRolesList={ consoleRoles?.Resources }
                                 addedRoles={ addedRoles }
                                 setAddedRoles={ setAddedRoles }
                                 removedRoles={ removedRoles }
                                 setRemovedRoles={ setRemovedRoles }
                                 roleSelections={ roleSelections }
                                 setRoleSelections={ setRoleSelections }
-                                shareType={ sharedAccessMode }
+                                disableOrgSelection={ true }
                                 clearAdvancedRoleSharing={ clearAdvancedRoleSharing }
+                                shareAllRoles={ false }
+                                enableAdminRole={ true }
                                 // Check the diff between
                                 // initialSelectedRoles and selectedRoles
                                 newlyAddedCommonRoles={ differenceBy(
