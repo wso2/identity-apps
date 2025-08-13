@@ -484,7 +484,6 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                                     setRoleSelections({});
                                     setSelectedRoles([ administratorRole?.Resources[0] ]);
                                     setInitialSelectedRoles([ administratorRole?.Resources[0] ]);
-                                    mutateOriginalOrganizationTree();
                                 }
 
                                 // Do not clear advanced role sharing states when switching modes from SELECTED to ALL
