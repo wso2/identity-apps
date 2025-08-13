@@ -1,5 +1,15 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.10.6
+
+### Patch Changes
+
+- [#8770](https://github.com/wso2/identity-apps/pull/8770) [`d4114cf60516154173cf3de2b73e82d36a63d7f3`](https://github.com/wso2/identity-apps/commit/d4114cf60516154173cf3de2b73e82d36a63d7f3) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the Google registration failure and composer property field typing lag issue.
+
+- Updated dependencies [[`b679e7000c50875be56b6f95f79a125a8ed27a8a`](https://github.com/wso2/identity-apps/commit/b679e7000c50875be56b6f95f79a125a8ed27a8a)]:
+  - @wso2is/admin.organizations.v1@2.27.3
+  - @wso2is/admin.core.v1@2.49.14
+
 ## 0.10.5
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @wso2is/i18n
 
+## 2.30.3
+
+### Patch Changes
+
+- [#8757](https://github.com/wso2/identity-apps/pull/8757) [`b679e7000c50875be56b6f95f79a125a8ed27a8a`](https://github.com/wso2/identity-apps/commit/b679e7000c50875be56b6f95f79a125a8ed27a8a) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Update organization handle tooltip to mention the immutability after organization creation
+
+* [#8760](https://github.com/wso2/identity-apps/pull/8760) [`b91d5098d3d2eec02065069c8115ccac4b5cd29d`](https://github.com/wso2/identity-apps/commit/b91d5098d3d2eec02065069c8115ccac4b5cd29d) Thanks [@Malith-19](https://github.com/Malith-19)! - Handle the workflow engagement scenario when administrator assignments for the existing user.
+
 ## 2.30.2
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.1.2
+
+### Patch Changes
+
+- [#8770](https://github.com/wso2/identity-apps/pull/8770) [`d4114cf60516154173cf3de2b73e82d36a63d7f3`](https://github.com/wso2/identity-apps/commit/d4114cf60516154173cf3de2b73e82d36a63d7f3) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the Google registration failure and composer property field typing lag issue.
+
 ## 3.1.1
 
 ### Patch Changes
