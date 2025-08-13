@@ -328,6 +328,10 @@ export const users: usersNS = {
                 description: "Couldn't revoke the admin privileges.",
                 message: "Something went wrong"
             },
+            pendingApproval: {
+                description: "The admin privileges revoke is accepted and pending approval.",
+                message: "Admin privileges revoke pending approval"
+            },
             success: {
                 description: "Successfully revoked the admin privileges.",
                 message: "Privileges revoked successfully"

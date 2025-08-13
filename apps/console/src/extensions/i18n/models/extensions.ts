@@ -3285,6 +3285,7 @@ export interface Extensions {
                         updateRole: {
                             error: NotificationItem;
                             genericError: NotificationItem;
+                            pendingApproval: NotificationItem;
                             success: NotificationItem;
                         };
                     }
