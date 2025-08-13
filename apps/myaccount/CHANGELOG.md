@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.23.2
+
+### Patch Changes
+
+- [#8754](https://github.com/wso2/identity-apps/pull/8754) [`54edb88a66524a1547b3522a8fa0b6277bd9b3c7`](https://github.com/wso2/identity-apps/commit/54edb88a66524a1547b3522a8fa0b6277bd9b3c7) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix rendering issue in My Account user profile
+
 ## 2.23.1
 
 ### Patch Changes
