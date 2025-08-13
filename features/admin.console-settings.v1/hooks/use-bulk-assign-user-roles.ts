@@ -128,7 +128,7 @@ const useBulkAssignAdministratorRoles = (): UseBulkAssignAdministratorRolesInter
 
         try {
             // Wait for all role update promises to resolve or reject.
-            const responses:AxiosResponse[] = await Promise.all(updateRolePromises);
+            const responses: AxiosResponse[] = await Promise.all(updateRolePromises);
 
             onAdministratorRoleAssignSuccess(responses);
         } catch (error) {
