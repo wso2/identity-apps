@@ -541,8 +541,22 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                                     <Hint
                                                         inline
                                                         popup
-                                                        data-testid={ `${testId}-org-handle-info-icon` }>
+                                                        data-testid={ `${testId}-org-handle-info-icon` }
+                                                    >
                                                         { t("organizations:forms.addOrganization.orgHandle.tooltip")
+                                                            .split("\n").map((line: string, index: number) => {
+                                                                const tooltipLines: string[] = t("organizations:forms" +
+                                                                    ".addOrganization.orgHandle.tooltip").split("\n");
+
+                                                                return (
+                                                                    <React.Fragment key={ index }>
+                                                                        <div>
+                                                                            { line }
+                                                                        </div>
+                                                                        { index < tooltipLines.length - 1 && <br /> }
+                                                                    </React.Fragment>
+                                                                );
+                                                            })
                                                         }
                                                     </Hint>
                                                 </span>)
