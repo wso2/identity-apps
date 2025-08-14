@@ -91,6 +91,8 @@ const HTMLPlugin = ({ onChange, resource, disabled }: HTMLPluginProps): ReactEle
         return editor.registerUpdateListener(({ editorState }: { editorState: EditorState }) => {
             if (!internalUpdate.current) {
                 processEditorUpdate(editorState);
+            } else {
+                internalUpdate.current = false;
             }
         });
     }, [ editor, onChange ]);
