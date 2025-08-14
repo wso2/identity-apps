@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 3.1.3
+
+### Patch Changes
+
+- [#8772](https://github.com/wso2/identity-apps/pull/8772) [`20931760c9e80f8719d05f37bb9f636c6e67c3c4`](https://github.com/wso2/identity-apps/commit/20931760c9e80f8719d05f37bb9f636c6e67c3c4) Thanks [@shanggeeth](https://github.com/shanggeeth)! - Add i18n translations for no.associated.local.user.found error constant
+
+* [#8768](https://github.com/wso2/identity-apps/pull/8768) [`afeff9c6e100d7053f732bf251e5bae6de42e62d`](https://github.com/wso2/identity-apps/commit/afeff9c6e100d7053f732bf251e5bae6de42e62d) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Update totp failure error message
+
 ## 3.1.2
 
 ### Patch Changes
