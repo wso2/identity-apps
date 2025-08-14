@@ -8,6 +8,9 @@ on:
 
 env:
   TARGET_BRANCH: next
+  GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
+  BOT_USERNAME: ${{ secrets.RELEASE_BOT_USER_NAME }}
+  BOT_EMAIL: ${{ secrets.RELEASE_BOT_EMAIL }}
 
 jobs:
   sync:
@@ -21,12 +24,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.RELEASE_BOT_TOKEN }}
+          token: ${{ env.GH_TOKEN }}
 
       - name: Configure Git
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name ${{ env.BOT_USERNAME }}
+          git config user.email ${{ env.BOT_EMAIL }}
       - name: Create sync branch and cherry-pick commits
         run: |
           SYNC_BRANCH="sync-to-${{ env.TARGET_BRANCH }}-${{ github.run_id }}"
@@ -106,4 +109,4 @@ jobs:
           # Delete the sync branch after PR creation since it's no longer needed
           git push origin --delete "$SYNC_BRANCH"
         env:
-          GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
+          GH_TOKEN: ${{ env.GH_TOKEN }}
