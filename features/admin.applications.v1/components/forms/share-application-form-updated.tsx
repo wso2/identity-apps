@@ -1068,6 +1068,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
             const unshareSuccess: boolean = await unshareWithAllOrganizations();
 
             if (unshareSuccess) {
+                setShowShareTypeSwitchModal(false);
                 setShareType(ShareType.SHARE_SELECTED);
                 setRoleShareTypeSelected(RoleShareType.SHARE_SELECTED);
             }
@@ -1079,6 +1080,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 ApplicationSharingPolicy.ALL_EXISTING_ORGS_ONLY);
 
             if (shareSuccess) {
+                setShowShareTypeSwitchModal(false);
                 setShareType(ShareType.SHARE_SELECTED);
                 setRoleShareTypeSelected(RoleShareType.SHARE_SELECTED);
             }
@@ -1147,7 +1149,6 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                         }
 
                         switchShareTypeFromAllToSelected();
-                        setShowShareTypeSwitchModal(false);
                     } }
                     onSecondaryActionClick={ (): void => {
                         setShowShareTypeSwitchModal(false);
