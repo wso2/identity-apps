@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.24.1
+
+### Patch Changes
+
+- [#8792](https://github.com/wso2/identity-apps/pull/8792) [`a6785f1627ef4e4d35f3dc052df53486fc579162`](https://github.com/wso2/identity-apps/commit/a6785f1627ef4e4d35f3dc052df53486fc579162) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issue in multi-value email/mobile fields
+
 ## 2.24.0
 
 ### Minor Changes
