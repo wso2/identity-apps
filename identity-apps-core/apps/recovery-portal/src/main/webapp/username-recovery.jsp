@@ -390,7 +390,6 @@
 
         $(document).ready(function () {
             $("#recoverDetailsForm").submit(function (e) {
-
                 <%
                     if (reCaptchaEnabled) {
                 %>
@@ -402,7 +401,6 @@
                 <%
                     }
                 %>
-                
                 // Prevent clicking multiple times, and notify the user something
                 // is happening in the background.
                 const submitButton = $("#recoverySubmit");
