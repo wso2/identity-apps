@@ -22,7 +22,7 @@ name: 🚀 Release
 
 on:
     push:
-        branches: [ master ]
+        branches: [ master, next ]
         paths-ignore:
             - "LICENSE"
     workflow_dispatch:
@@ -30,8 +30,8 @@ on:
 env:
     GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
     SHOULD_GENERATE_CHANGESET: 'true'
-    BRANCH: master
-    IS_HOTFIX: 'false'
+    BRANCH: ${{ github.ref_name }}
+    IS_HOTFIX: ${{ github.ref_name == 'master' }}
     BOT_USERNAME: ${{ secrets.RELEASE_BOT_USER_NAME }}
     BOT_EMAIL: ${{ secrets.RELEASE_BOT_EMAIL }}
 
@@ -167,10 +167,10 @@ jobs:
               id: changesets
               uses: changesets/action@v1.4.9
               with:
-                  title: "[Release] [GitHub Action] Update package versions"
+                  title: "[Release] [GitHub Action] [${{ github.ref_name }}] Update package versions"
                   publish: pnpm run publish:packages
                   version: pnpm run version:packages
-                  commit: "[WSO2 Release] [GitHub Action] [Release] [skip ci] update package versions"
+                  commit: "[WSO2 Release] [GitHub Action] [Release] [${{ github.ref_name }}] [skip ci] update package versions"
               env:
                   GITHUB_TOKEN: ${{ env.GH_TOKEN }}
 
