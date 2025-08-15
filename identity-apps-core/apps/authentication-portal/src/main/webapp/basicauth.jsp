@@ -768,11 +768,11 @@
         </div>
     </div>
 
-      <% if (isSelfSignUpEPAvailable
-         && !isIdentifierFirstLogin(inputType)
-         && !isLoginHintAvailable(inputType)
-         && ( (isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences)
-              || (isDynamicPortalSREnabled() && !isIdentifierFirstLogin(inputType) && !CONSOLE.equals(sp)) ) ) { %>
+    <% if (isSelfSignUpEPAvailable
+        && !isIdentifierFirstLogin(inputType)
+        && !isLoginHintAvailable(inputType)
+        && ( (isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences)
+            || (isDynamicPortalSREnabled() && !isIdentifierFirstLogin(inputType) && !CONSOLE.equals(sp)) ) ) { %>
         <div class="mt-4 mb-4">
             <div class="mt-3 external-link-container text-small">
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "dont.have.an.account")%>
