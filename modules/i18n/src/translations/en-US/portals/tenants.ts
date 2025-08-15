@@ -71,8 +71,8 @@ export const tenants: TenantsNS = {
                 },
                 domain: {
                     helperText: "Enter a unique organization handle (domain) for your organization. Valid characters include lowercase letters, numbers, '.', '-', and '_'.",
-                    label: "Domain (Organization Handle)",
-                    placeholder: "Enter a domain name (organization handle)",
+                    label: "Organization Handle (Domain)",
+                    placeholder: "Enter organization handle (domain)",
                     validations: {
                         domainInvalidCharPattern: "The organization handle (domain) contains one or more illegal characters.",
                         domainInvalidPattern: "The organization handle (domain) doesn't match the valid pattern.",
@@ -117,7 +117,7 @@ export const tenants: TenantsNS = {
                     }
                 },
                 organizationName: {
-                    helperText: "Enter a unique name for your organization. Valid characters include letters (a–z, A–Z), numbers, spaces, periods (.), hyphens (-), and underscores (_). Keep this field blank to use the domain name (organization handle) as the organization name.",
+                    helperText: "Enter a unique name for your organization. Valid characters include letters (a–z, A–Z), numbers, spaces, periods (.), hyphens (-), and underscores (_). <bold>Keep this field blank to use the organization handle (domain) as the organization name.</bold>",
                     label: "Organization Name",
                     placeholder: "Enter organization name",
                     validations: {

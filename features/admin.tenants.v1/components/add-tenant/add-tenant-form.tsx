@@ -43,7 +43,7 @@ import { FormValidation } from "@wso2is/validation";
 import { FormState } from "final-form";
 import memoize from "lodash-es/memoize";
 import React, { FunctionComponent, ReactElement, useCallback, useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import getTenantDomainAvailability from "../../api/get-tenant-domain-availability";
 import TenantConstants from "../../constants/tenant-constants";
@@ -365,24 +365,12 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                             type="text"
                             helperText={ (
                                 <Hint>
-                                    { (() => {
-                                        const helperText: string
-                                            = t("tenants:common.form.fields.organizationName.helperText");
-                                        const sentences: string[] = helperText.split(/(?<=\.)\s+/);
-
-                                        if (sentences.length < 2) {
-                                            return <Typography variant="inherit">{ helperText }</Typography>;
-                                        }
-                                        const allButLast: string = sentences.slice(0, -1).join(" ");
-                                        const last: string = sentences[sentences.length - 1];
-
-                                        return (
-                                            <Typography variant="inherit">
-                                                { allButLast + " " }
-                                                <span style={ { fontWeight: "bold" } }>{ last }</span>
-                                            </Typography>
-                                        );
-                                    })() }
+                                    <Typography variant="inherit">
+                                        <Trans
+                                            i18nKey="tenants:common.form.fields.organizationName.helperText"
+                                            components={ { bold: <span style={ { fontWeight: "bold" } } /> } }
+                                        />
+                                    </Typography>
                                 </Hint>
                             ) }
                             label={ t("tenants:common.form.fields.organizationName.label") }
