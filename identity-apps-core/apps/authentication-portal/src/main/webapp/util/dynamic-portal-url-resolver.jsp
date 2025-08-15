@@ -19,26 +19,57 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.CommonDataRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.CommonDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
+<%@ page import="org.wso2.carbon.identity.core.URLBuilderException" %>
 <%@ page import="javax.servlet.http.HttpServletRequest" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.STATUS" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.STATUS_MSG" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.CONFIGURATION_ERROR" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ERROR_WHILE_BUILDING_THE_ACCOUNT_RECOVERY_ENDPOINT_URL" %>
 
 <%!
-    private static boolean dynamicPortalEnabled;
+    private static boolean dynamicPortalPWEnabled;
+    private static boolean dynamicPortalSREnabled;
     private static String dynamicRegistrationPortalURL;
-    private static final String REGISTRATION_FLOW_ENDPOINT = "/api/server/v1/flow/config?flowType=REGISTRATION";
-    private static final String REGISTRATION_ENABLED_PROPERTY = "isEnabled";
+    private static String dynamicPasswordRecoveryPortalURL;
+    private static final String PASSWORD_RECOVERY_FLOW_ENDPOINT = "/api/server/v1/flow/config?flowType=PASSWORD_RECOVERY";
+    private static final String SELF_SIGNUP_FLOW_ENDPOINT = "/api/server/v1/flow/config?flowType=REGISTRATION";
+    private static final String IS_ENABLED_PROPERTY = "isEnabled";
+    private static final String ACCOUNTS_ENDPOINT = "/accounts";
 
     /**
      * Initialize them from a scriptlet (or via a setter).
      */
-    public static void setDynamicPortalValues(boolean portalEnabled, String regURL) {
-        dynamicPortalEnabled = portalEnabled;
-        dynamicRegistrationPortalURL = regURL;
+    public static void setDynamicPortalValues(boolean pwEnabled, boolean srEnabled, String accountsEndpoint) {
+        dynamicPortalPWEnabled = pwEnabled;
+        dynamicPortalSREnabled = srEnabled;
+        if (srEnabled) {
+            dynamicRegistrationPortalURL = accountsEndpoint + "/register?flowType=REGISTRATION";
+        }
+        if (pwEnabled) {
+            dynamicPasswordRecoveryPortalURL = accountsEndpoint + "/recovery?flowType=PASSWORD_RECOVERY";
+        }
+    }
+
+    public static boolean isDynamicPortalPWEnabled() {
+        return dynamicPortalPWEnabled;
+    }
+
+    public static boolean isDynamicPortalSREnabled() {
+        return dynamicPortalSREnabled;
+    }
+
+    public static String getDynamicPasswordRecoveryUrl(String spId) {
+        if (dynamicPasswordRecoveryPortalURL == null) {
+            return "";
+        }
+        if (StringUtils.isNotBlank(spId)) {
+            return dynamicPasswordRecoveryPortalURL + "&spId=" + Encode.forUriComponent(spId);
+        }
+        return dynamicPasswordRecoveryPortalURL;
     }
 
     /**
@@ -52,8 +83,8 @@
     public static String getRegistrationPortalUrl(String accountRegistrationEndpointURL, String urlEncodedURL,
             String urlParameters) {
     
-        if (dynamicPortalEnabled) {
-            return dynamicRegistrationPortalURL + "?" + urlParameters;
+        if (dynamicPortalSREnabled && StringUtils.isNotBlank(dynamicRegistrationPortalURL)) {
+            return dynamicRegistrationPortalURL + "&" + urlParameters;
         }
 
         String registrationEndpointUrl = accountRegistrationEndpointURL + "?" + urlParameters;
@@ -77,8 +108,12 @@
 
         String baseURL = passwordRecoveryOverrideURL;
 
-        if (dynamicPortalEnabled && StringUtils.isNotBlank(recoveryPortalOverrideURL)) {
-            baseURL = recoveryPortalOverrideURL;
+        if (dynamicPortalPWEnabled) {
+            if (StringUtils.isNotBlank(recoveryPortalOverrideURL)) {
+                baseURL = recoveryPortalOverrideURL;
+            } else if (StringUtils.isNotBlank(dynamicPasswordRecoveryPortalURL)) {
+                baseURL = dynamicPasswordRecoveryPortalURL;
+            }
         }
 
         if (StringUtils.isNotBlank(baseURL) && StringUtils.isNotBlank(localeString)) {
@@ -90,14 +125,13 @@
 %>
 
 <%
-    String identityMgtEndpoint = "";
-    Boolean isDynamicPortalEnabled = false;
-    String dynamicUserRegisterationPortalURL = "";
-    String authenticationEndpoint = "/authenticationendpoint";
+    String accountsEndpoint = "";
+    Boolean isDynamicPWEnabled = false;
+    Boolean isDynamicSREnabled = false;
 
-    if (StringUtils.isBlank(identityMgtEndpoint)) {
+    if (StringUtils.isBlank(accountsEndpoint)) {
         try {
-            identityMgtEndpoint = ServiceURLBuilder.create().addPath(authenticationEndpoint).build()
+            accountsEndpoint = ServiceURLBuilder.create().addPath(ACCOUNTS_ENDPOINT).build()
                     .getAbsolutePublicURL();
         } catch (URLBuilderException e) {
             request.setAttribute(STATUS, AuthenticationEndpointUtil.i18n(resourceBundle, CONFIGURATION_ERROR));
@@ -110,20 +144,13 @@
 
     try {
         CommonDataRetrievalClient commonDataRetrievalClient = new CommonDataRetrievalClient();
-        isDynamicPortalEnabled = commonDataRetrievalClient.checkBooleanProperty(REGISTRATION_FLOW_ENDPOINT, tenantDomain, REGISTRATION_ENABLED_PROPERTY, false, true);
+        isDynamicPWEnabled = commonDataRetrievalClient.checkBooleanProperty(
+                PASSWORD_RECOVERY_FLOW_ENDPOINT, tenantDomain, IS_ENABLED_PROPERTY, false, true);
+        isDynamicSREnabled = commonDataRetrievalClient.checkBooleanProperty(
+                SELF_SIGNUP_FLOW_ENDPOINT, tenantDomain, IS_ENABLED_PROPERTY, false, true);
     } catch (CommonDataRetrievalClientException e) {
-        request.setAttribute("error", true);
-        request.setAttribute("errorMsg", AuthenticationEndpointUtil
-                .i18n(resourceBundle, "something.went.wrong.contact.admin"));
-        IdentityManagementEndpointUtil.addErrorInformation(request, e);
-        request.getRequestDispatcher("error.jsp").forward(request, response);
-
-        return;
+        // Ignored and fallback to default recovery portal.
     }
 
-    if (isDynamicPortalEnabled) {
-        dynamicUserRegisterationPortalURL = identityMgtEndpoint + ACCOUNT_RECOVERY_ENDPOINT_REGISTER;
-    }
-
-    setDynamicPortalValues(isDynamicPortalEnabled, dynamicUserRegisterationPortalURL);
+    setDynamicPortalValues(isDynamicPWEnabled, isDynamicSREnabled, accountsEndpoint);
 %>
