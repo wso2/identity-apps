@@ -18,7 +18,6 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import Button from "@oxygen-ui/react/Button";
-import Checkbox from "@oxygen-ui/react/Checkbox";
 import FormControl from "@oxygen-ui/react/FormControl";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Grid from "@oxygen-ui/react/Grid";
