@@ -54,14 +54,6 @@
         }
     }
 
-    public static boolean isDynamicPortalPWEnabled() {
-        return dynamicPortalPWEnabled;
-    }
-
-    public static boolean isDynamicPortalSREnabled() {
-        return dynamicPortalSREnabled;
-    }
-
     public static String getDynamicPasswordRecoveryUrl(String spId) {
         if (dynamicPasswordRecoveryPortalURL == null) {
             return "";

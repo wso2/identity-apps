@@ -691,7 +691,7 @@
     %>
 
     <div class="buttons mt-2">
-        <% if (isRecoveryEPAvailable && (isUsernameRecoveryEnabledInTenant || isPasswordRecoveryEnabledInTenant || isDynamicPortalPWEnabled())) { %>
+        <% if (isRecoveryEPAvailable && (isUsernameRecoveryEnabledInTenant || isPasswordRecoveryEnabledInTenant || dynamicPortalPWEnabled)) { %>
         <div class="field external-link-container text-small">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
             <% if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType) && isUsernameRecoveryEnabledInTenant) { %>
@@ -706,16 +706,16 @@
 
         <% if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType)
                && isUsernameRecoveryEnabledInTenant
-               && (isPasswordRecoveryEnabledInTenant || isDynamicPortalPWEnabled())) { %>
+               && (isPasswordRecoveryEnabledInTenant || dynamicPortalPWEnabled)) { %>
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password.or")%>
         <% } %>
 
-        <% if ((isPasswordRecoveryEnabledInTenant && isPasswordRecoveryEnabledInTenantPreferences) || isDynamicPortalPWEnabled()) { %>
+        <% if ((isPasswordRecoveryEnabledInTenant && isPasswordRecoveryEnabledInTenantPreferences) || dynamicPortalPWEnabled) { %>
             <a
                 id="passwordRecoverLink"
                   <% if(StringUtils.isNotBlank(passwordRecoveryOverrideURL)) { %>
                   href="<%=StringEscapeUtils.escapeHtml4(passwordRecoveryOverrideURL)%>"
-                  <% } else if(isDynamicPortalPWEnabled()) { %>
+                  <% } else if(dynamicPortalPWEnabled) { %>
                   href="<%= StringEscapeUtils.escapeHtml4(getDynamicPasswordRecoveryUrl(serviceProviderAppId)) %>"
                   <% } else { %>
                   href="<%=StringEscapeUtils.escapeHtml4(getRecoverAccountUrlWithUsername(identityMgtEndpointContext, urlEncodedURL, false, urlParameters, usernameIdentifier))%>"
@@ -724,7 +724,7 @@
                 <% if (StringUtils.equals("true", promptAccountLinking)) { %>
                     target="_blank" rel="noopener noreferrer"
                 <% } %>
-                  <% if (isDynamicPortalPWEnabled()) { %>
+                  <% if (dynamicPortalPWEnabled) { %>
                       onclick="handleDynamicPortalRedirection()"
                   <% } %>
             >
@@ -772,7 +772,7 @@
         && !isIdentifierFirstLogin(inputType)
         && !isLoginHintAvailable(inputType)
         && ( (isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences)
-            || (isDynamicPortalSREnabled() && !isIdentifierFirstLogin(inputType) && !CONSOLE.equals(sp)) ) ) { %>
+            || (dynamicPortalSREnabled && !isIdentifierFirstLogin(inputType) && !CONSOLE.equals(sp)) ) ) { %>
         <div class="mt-4 mb-4">
             <div class="mt-3 external-link-container text-small">
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "dont.have.an.account")%>
@@ -789,7 +789,7 @@
                     id="registerLink"
                     data-testid="login-page-create-account-button"
                     style="cursor: pointer;"
-                    <% if (isDynamicPortalSREnabled()) { %>
+                    <% if (dynamicPortalSREnabled) { %>
                         onclick="handleDynamicPortalRedirection()"
                     <% } %>
                 >
