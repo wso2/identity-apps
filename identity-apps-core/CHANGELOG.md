@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.1.5
+
+### Patch Changes
+
+- [#8788](https://github.com/wso2/identity-apps/pull/8788) [`d6d7c537b84034800bb9a05c805077f01ba893e2`](https://github.com/wso2/identity-apps/commit/d6d7c537b84034800bb9a05c805077f01ba893e2) Thanks [@KD23243](https://github.com/KD23243)! - Refactor dynamic portal URL handling
+
 ## 3.1.4
 
 ### Patch Changes
