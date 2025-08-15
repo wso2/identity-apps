@@ -1,5 +1,17 @@
 # @wso2is/admin.users.v1
 
+## 2.36.2
+
+### Patch Changes
+
+- [#8792](https://github.com/wso2/identity-apps/pull/8792) [`ae1105472dce8a64e709363cf13c365a9deab2c9`](https://github.com/wso2/identity-apps/commit/ae1105472dce8a64e709363cf13c365a9deab2c9) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add null safety in user creation wizard
+
+- Updated dependencies [[`ae1105472dce8a64e709363cf13c365a9deab2c9`](https://github.com/wso2/identity-apps/commit/ae1105472dce8a64e709363cf13c365a9deab2c9)]:
+  - @wso2is/admin.users.v1@2.36.2
+  - @wso2is/admin.core.v1@2.49.14
+  - @wso2is/admin.roles.v2@2.27.189
+  - @wso2is/admin.server-configurations.v1@2.35.27
+
 ## 2.36.1
 
 ### Patch Changes

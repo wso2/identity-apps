@@ -1,5 +1,20 @@
 # @wso2is/console
 
+## 2.78.1
+
+### Patch Changes
+
+- [#8792](https://github.com/wso2/identity-apps/pull/8792) [`ae1105472dce8a64e709363cf13c365a9deab2c9`](https://github.com/wso2/identity-apps/commit/ae1105472dce8a64e709363cf13c365a9deab2c9) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add null safety in user creation wizard
+
+- Updated dependencies [[`ae1105472dce8a64e709363cf13c365a9deab2c9`](https://github.com/wso2/identity-apps/commit/ae1105472dce8a64e709363cf13c365a9deab2c9)]:
+  - @wso2is/admin.users.v1@2.36.2
+  - @wso2is/admin.agents.v1@1.0.34
+  - @wso2is/admin.core.v1@2.49.14
+  - @wso2is/admin.roles.v2@2.27.189
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.6
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.6
+  - @wso2is/admin.server-configurations.v1@2.35.27
+
 ## 2.78.0
 
 ### Minor Changes
