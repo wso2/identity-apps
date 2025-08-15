@@ -19,7 +19,6 @@
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from "@lexical/html";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { $getRoot, $insertNodes, EditorState, LexicalNode, RootNode } from "lexical";
-import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import { MutableRefObject, ReactElement, useEffect, useRef } from "react";
 import { Resource } from "../../../../models/resources";
 
