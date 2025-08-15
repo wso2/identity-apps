@@ -30,8 +30,8 @@ on:
 env:
     GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
     SHOULD_GENERATE_CHANGESET: 'true'
-    BRANCH: master
-    IS_HOTFIX: 'false'
+    BRANCH: ${{ github.ref_name }}
+    IS_HOTFIX: ${{ github.ref_name == 'master' }}
     BOT_USERNAME: ${{ secrets.RELEASE_BOT_USER_NAME }}
     BOT_EMAIL: ${{ secrets.RELEASE_BOT_EMAIL }}
 
@@ -103,11 +103,6 @@ jobs:
               id: install-dependencies
               run: pnpm install
 
-            - name: 🔄 Enter Changeset Pre-release Mode (next branch only)
-              id: changeset-pre-release
-              if: github.ref_name == 'next'
-              run: pnpm changeset pre enter next
-
             - name: 📝 Create settings.xml with Nexus credentials in ~/.m2
               run: |
                   echo '<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
@@ -172,10 +167,10 @@ jobs:
               id: changesets
               uses: changesets/action@v1.4.9
               with:
-                  title: "[Release] [GitHub Action] Update package versions"
+                  title: "[Release] [GitHub Action] [${{ github.ref_name }}] Update package versions"
                   publish: pnpm run publish:packages
                   version: pnpm run version:packages
-                  commit: "[WSO2 Release] [GitHub Action] [Release] [skip ci] update package versions"
+                  commit: "[WSO2 Release] [GitHub Action] [Release] [${{ github.ref_name }}] [skip ci] update package versions"
               env:
                   GITHUB_TOKEN: ${{ env.GH_TOKEN }}
 
@@ -184,10 +179,4 @@ jobs:
               working-directory: .github/workflows
               run: |
                   PACKAGES="${{ toJson(steps.changesets.outputs.publishedPackages) }}"
-                  # Detect pre-release for 'next' branch
-                  if [ "${GITHUB_REF##*/}" = "next" ]; then
-                    PRE_RELEASE="next"
-                  else
-                    PRE_RELEASE=""
-                  fi
-                  bash ./scripts/release.sh "$PACKAGES" ${{ github.run_number }} ${{ env.IS_HOTFIX }} "$PRE_RELEASE"
+                  bash ./scripts/release.sh "$PACKAGES" ${{ github.run_number }} ${{ env.IS_HOTFIX }}
