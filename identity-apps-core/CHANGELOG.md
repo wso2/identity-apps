@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.2.0
+
+### Minor Changes
+
+- [#8779](https://github.com/wso2/identity-apps/pull/8779) [`c302e02ed5752647fb8516e1e854b29a57107753`](https://github.com/wso2/identity-apps/commit/c302e02ed5752647fb8516e1e854b29a57107753) Thanks [@brionmario](https://github.com/brionmario)! - 🚀 Start the `next` branch release train
+
 ## 3.1.1
 
 ### Patch Changes
