@@ -1068,10 +1068,11 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
             const unshareSuccess: boolean = await unshareWithAllOrganizations();
 
             if (unshareSuccess) {
-                setShowShareTypeSwitchModal(false);
                 setShareType(ShareType.SHARE_SELECTED);
                 setRoleShareTypeSelected(RoleShareType.SHARE_SELECTED);
             }
+
+            setShowShareTypeSwitchModal(false);
         } else if (shareTypeSwitchApproach === ShareTypeSwitchApproach.WITHOUT_UNSHARE) {
             // Switch to selective sharing without unsharing the application with all organizations
             // But we have to change the policy of the to selected org only from all existing and future orgs policy
@@ -1080,10 +1081,11 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 ApplicationSharingPolicy.ALL_EXISTING_ORGS_ONLY);
 
             if (shareSuccess) {
-                setShowShareTypeSwitchModal(false);
                 setShareType(ShareType.SHARE_SELECTED);
                 setRoleShareTypeSelected(RoleShareType.SHARE_SELECTED);
             }
+
+            setShowShareTypeSwitchModal(false);
         }
     };
 
