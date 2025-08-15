@@ -53,14 +53,29 @@ const CLASS_NAME_PLACEHOLDER: string = "{{className}}";
 const ADDITIONAL_CLASSES: string = `class="${CLASS_NAME_PLACEHOLDER}"`;
 
 /**
+ * This enum represents the different types of updates that can occur in the editor.
+ */
+enum UPDATE_TYPES {
+    INTERNAL = "internal",
+    EXTERNAL = "external",
+    NONE = "none"
+}
+
+/**
  * Convert nodes tree to HTML string.
  */
 const HTMLPlugin = ({ onChange, resource, disabled }: HTMLPluginProps): ReactElement => {
     const [ editor ] = useLexicalComposerContext();
-    const internalUpdate: MutableRefObject<boolean> = useRef(false);
+    const updateType: MutableRefObject<UPDATE_TYPES> = useRef<UPDATE_TYPES>(UPDATE_TYPES.NONE);
 
     useEffect(() => {
-        if (!editor || !resource?.config?.text) {
+        if (!editor || !resource) {
+            return;
+        }
+
+        if (updateType.current === UPDATE_TYPES.INTERNAL) {
+            updateType.current = UPDATE_TYPES.NONE;
+
             return;
         }
 
@@ -68,6 +83,8 @@ const HTMLPlugin = ({ onChange, resource, disabled }: HTMLPluginProps): ReactEle
         const dom: Document = parser.parseFromString(postProcessHTML(resource.config.text), "text/html");
 
         editor.update(() => {
+            updateType.current = UPDATE_TYPES.EXTERNAL;
+
             const root: RootNode = $getRoot();
 
             root.clear(); // clear existing content if needed.
@@ -75,8 +92,6 @@ const HTMLPlugin = ({ onChange, resource, disabled }: HTMLPluginProps): ReactEle
             const nodes: Array<LexicalNode> = $generateNodesFromDOM(editor, dom);
 
             $insertNodes(nodes); // insert new nodes into the editor.
-
-            internalUpdate.current = true;
         });
     }, [ editor, resource ]);
 
@@ -89,11 +104,7 @@ const HTMLPlugin = ({ onChange, resource, disabled }: HTMLPluginProps): ReactEle
         }
 
         return editor.registerUpdateListener(({ editorState }: { editorState: EditorState }) => {
-            if (!internalUpdate.current) {
-                processEditorUpdate(editorState);
-            } else {
-                internalUpdate.current = false;
-            }
+            processEditorUpdate(editorState);
         });
     }, [ editor, onChange ]);
 
@@ -113,16 +124,23 @@ const HTMLPlugin = ({ onChange, resource, disabled }: HTMLPluginProps): ReactEle
     /**
      * Process the editor state to generate HTML and call the onChange handler.
      */
-    const processEditorUpdate: DebouncedFunc<(editorState: EditorState) => void> = debounce(
-        (editorState: EditorState) => {
-            editorState.read(() => {
-                const htmlString: string = $generateHtmlFromNodes(editor);
+    const processEditorUpdate: (editorState: EditorState) => void = (editorState: EditorState) => {
+        if (updateType.current === UPDATE_TYPES.EXTERNAL) {
+            updateType.current = UPDATE_TYPES.NONE;
 
-                const processedHTML: string = preProcessHTML(htmlString);
+            return;
+        }
 
-                onChange(processedHTML);
-            });
-        }, 500);
+        editorState.read(() => {
+            updateType.current = UPDATE_TYPES.INTERNAL;
+
+            const htmlString: string = $generateHtmlFromNodes(editor);
+
+            const processedHTML: string = preProcessHTML(htmlString);
+
+            onChange(processedHTML);
+        });
+    };
 
     /**
      * Pre-process the HTML string to add additional classes and styles.
