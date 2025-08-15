@@ -29,9 +29,9 @@ on:
 
 env:
     GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
-    SHOULD_GENERATE_CHANGESET: 'true'
-    BRANCH: ${{ github.ref_name }}
-    IS_HOTFIX: ${{ github.ref_name == 'master' }}
+    SHOULD_GENERATE_CHANGESET: 'false'
+    BRANCH: hotfix-@wso2is/identity-apps-core@3.2.0
+    IS_HOTFIX: 'true'
     BOT_USERNAME: ${{ secrets.RELEASE_BOT_USER_NAME }}
     BOT_EMAIL: ${{ secrets.RELEASE_BOT_EMAIL }}
 
@@ -178,5 +178,5 @@ jobs:
               id: perform-release
               working-directory: .github/workflows
               run: |
-                  PACKAGES="${{ toJson(steps.changesets.outputs.publishedPackages) }}"
+                  PACKAGES=""[{\"name\":\"@wso2is/identity-apps-core\",\"version\":\"3.2.0\"}]""
                   bash ./scripts/release.sh "$PACKAGES" ${{ github.run_number }} ${{ env.IS_HOTFIX }}
