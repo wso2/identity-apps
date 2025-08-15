@@ -67,8 +67,9 @@ export type EditTenantFormProps = IdentifiableComponentInterface & {
     onSubmit?: () => void;
 };
 
-export type EditTenantFormValues = Omit<Pick<Tenant, "domain" | "id">, "name"> & { organizationName: string }
-    & Omit<TenantOwner, "additionalDetails">;
+export type EditTenantFormValues = Omit<Pick<Tenant, "domain" | "id">, "name" | "domain">
+    & { organizationHandle: string; organizationName: string }
+    & Omit<TenantOwner, "additionalDetails" | "id">;
 
 export type EditTenantFormErrors = Partial<EditTenantFormValues>;
 
@@ -112,7 +113,7 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
      */
     const handleSubmit = (values: EditTenantFormValues): void => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { domain, id, organizationName, username, ...rest } = values;
+        const { organizationHandle, id, organizationName, username, ...rest } = values;
 
         updateTenantOwner(tenant?.id, { id: tenant?.owners[0]?.id, ...rest } as TenantOwner)
             .then(() => {
@@ -291,11 +292,11 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
     return (
         <FinalForm
             initialValues={ {
-                domain: tenant?.domain,
                 email: tenant?.owners[0]?.email,
                 firstname: tenant?.owners[0]?.firstname,
                 id: tenant?.id,
                 lastname: tenant?.owners[0]?.lastname,
+                organizationHandle: tenant?.domain,
                 organizationName: tenant?.name,
                 password: "",
                 username: tenant?.owners[0]?.username
@@ -337,7 +338,7 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
                             width={ 16 }
                             className="text-field-container"
                             ariaLabel="organizationName"
-                            required={ true }
+                            required={ false }
                             data-componentid={ `${componentId}-organization-name` }
                             name="organizationName"
                             type="text"
@@ -365,28 +366,14 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
                             } }
                         />
                         <FinalFormField
-                            key="domain"
+                            key="organizationHandle"
                             width={ 16 }
                             className="text-field-container"
-                            ariaLabel="domain"
+                            ariaLabel="organizationHandle"
                             required={ true }
-                            data-componentid={ `${componentId}-domain` }
-                            name="domain"
+                            data-componentid={ `${componentId}-organizationHandle` }
+                            name="organizationHandle"
                             type="text"
-                            helperText={
-                                (<Hint>
-                                    <Typography variant="inherit">
-                                        <Trans i18nKey="tenants:common.form.fields.domain.helperText">
-                                            Enter a unique domain name for your organization. The domain name should be
-                                            in the format of
-                                            <Typography component="span" variant="inherit" fontWeight="bold">
-                                                example.com
-                                            </Typography>
-                                            .
-                                        </Trans>
-                                    </Typography>
-                                </Hint>)
-                            }
                             label={ t("tenants:common.form.fields.domain.label") }
                             placeholder={ t("tenants:common.form.fields.domain.placeholder") }
                             component={ TextFieldAdapter }
