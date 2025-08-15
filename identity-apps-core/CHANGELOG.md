@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.1.4
+
+### Patch Changes
+
+- [#8786](https://github.com/wso2/identity-apps/pull/8786) [`7b3155d7c10c37eb4bd8efef0176aaea35451f09`](https://github.com/wso2/identity-apps/commit/7b3155d7c10c37eb4bd8efef0176aaea35451f09) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the rich text editor synchronization issue
+
 ## 3.1.3
 
 ### Patch Changes

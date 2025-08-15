@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.77.6
+
+### Patch Changes
+
+- [#8786](https://github.com/wso2/identity-apps/pull/8786) [`7b3155d7c10c37eb4bd8efef0176aaea35451f09`](https://github.com/wso2/identity-apps/commit/7b3155d7c10c37eb4bd8efef0176aaea35451f09) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the rich text editor synchronization issue
+
+- Updated dependencies []:
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.8
+  - @wso2is/admin.core.v1@2.49.16
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.8
+  - @wso2is/admin.server-configurations.v1@2.35.29
+
 ## 2.77.5
 
 ### Patch Changes
