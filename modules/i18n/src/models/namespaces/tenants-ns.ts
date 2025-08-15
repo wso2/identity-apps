@@ -138,7 +138,6 @@ export interface TenantsNS {
                     placeholder: string;
                     validations: {
                         invalidCharPattern: string;
-                        required: string;
                     };
                 };
                 username: {
