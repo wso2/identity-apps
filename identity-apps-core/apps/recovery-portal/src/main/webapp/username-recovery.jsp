@@ -402,28 +402,7 @@
                 <%
                     }
                 %>
-
-                // Append 'sp' and 'spId' to the action URL if present in the hidden fields
-                var form = $(this);
-                var action = form.attr("action");
-                var params = [];
-                var spValue = $("input[name='sp']").val();
-                var spIdValue = $("input[name='spId']").val();
-
-                if (spValue && action.indexOf("sp=") === -1) {
-                    params.push("sp=" + encodeURIComponent(spValue));
-                }
-                if (spIdValue && action.indexOf("spId=") === -1) {
-                    params.push("spId=" + encodeURIComponent(spIdValue));
-                }
-                if (params.length > 0) {
-                    if (action.indexOf("?") === -1) {
-                        action += "?" + params.join("&");
-                    } else {
-                        action += "&" + params.join("&");
-                    }
-                    form.attr("action", action);
-                }
+                
                 // Prevent clicking multiple times, and notify the user something
                 // is happening in the background.
                 const submitButton = $("#recoverySubmit");
