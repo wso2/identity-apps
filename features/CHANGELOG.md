@@ -1,5 +1,14 @@
 # @wso2is/features
 
+## 2.27.1
+
+### Patch Changes
+
+- [#8764](https://github.com/wso2/identity-apps/pull/8764) [`701c783d66479a551ecd54acbebd1bdabe77c548`](https://github.com/wso2/identity-apps/commit/701c783d66479a551ecd54acbebd1bdabe77c548) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Refactor role sharing component use a common component
+
+- Updated dependencies [[`b679e7000c50875be56b6f95f79a125a8ed27a8a`](https://github.com/wso2/identity-apps/commit/b679e7000c50875be56b6f95f79a125a8ed27a8a), [`701c783d66479a551ecd54acbebd1bdabe77c548`](https://github.com/wso2/identity-apps/commit/701c783d66479a551ecd54acbebd1bdabe77c548)]:
+  - @wso2is/i18n@2.30.2
+
 ## 2.27.0
 
 ### Minor Changes

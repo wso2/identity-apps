@@ -1,5 +1,19 @@
 # @wso2is/myaccount
 
+## 2.24.0
+
+### Minor Changes
+
+- [#8779](https://github.com/wso2/identity-apps/pull/8779) [`c302e02ed5752647fb8516e1e854b29a57107753`](https://github.com/wso2/identity-apps/commit/c302e02ed5752647fb8516e1e854b29a57107753) Thanks [@brionmario](https://github.com/brionmario)! - 🚀 Start the `next` branch release train
+
+### Patch Changes
+
+- [#8767](https://github.com/wso2/identity-apps/pull/8767) [`07d78da4d0baeede96f95de3da58cccf967e133f`](https://github.com/wso2/identity-apps/commit/07d78da4d0baeede96f95de3da58cccf967e133f) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix rendering issue in My Account user profile
+
+- Updated dependencies [[`b679e7000c50875be56b6f95f79a125a8ed27a8a`](https://github.com/wso2/identity-apps/commit/b679e7000c50875be56b6f95f79a125a8ed27a8a), [`701c783d66479a551ecd54acbebd1bdabe77c548`](https://github.com/wso2/identity-apps/commit/701c783d66479a551ecd54acbebd1bdabe77c548)]:
+  - @wso2is/admin.organizations.v1@2.27.3
+  - @wso2is/i18n@2.30.2
+
 ## 2.23.1
 
 ### Patch Changes
