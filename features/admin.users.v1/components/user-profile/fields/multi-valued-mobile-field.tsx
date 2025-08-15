@@ -87,7 +87,7 @@ interface MultiValuedMobileFieldPropsInterface extends IdentifiableComponentInte
  */
 const MultiValuedMobileField: FunctionComponent<MultiValuedMobileFieldPropsInterface> = ({
     schema,
-    primarySchema: primarySchema,
+    primarySchema,
     primaryMobileNumber,
     mobileNumbersList,
     verifiedMobileNumbers,
