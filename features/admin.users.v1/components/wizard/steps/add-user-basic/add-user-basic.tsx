@@ -1328,7 +1328,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                                         "validations.empty");
                                                 }
 
-                                                if (value.includes("/")) {
+                                                if (value?.includes("/")) {
                                                     return "First Name cannot contain the forward slash (/) character.";
                                                 }
                                             } }
@@ -1357,7 +1357,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                                         "user:forms.addUserForm.inputs.lastName.validations.empty");
                                                 }
 
-                                                if (value.includes("/")) {
+                                                if (value?.includes("/")) {
                                                     return "Last Name cannot contain the forward slash (/) character.";
                                                 }
                                             } }
