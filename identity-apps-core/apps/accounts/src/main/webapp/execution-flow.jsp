@@ -75,18 +75,14 @@
 %>
 
 <%
-    switch (flowType) {
-        case REGISTRATION:
-            screenNames.add("sign-up");
-            screenNames.add("email-link-expiry");
-            screenNames.add("email-otp");
-            screenNames.add("sms-otp");
-            break;
-        case INVITED_USER_REGISTRATION:
-            break;
-        case PASSWORD_RECOVERY:
-            break;
-    }
+    // Only the i18n text related to these screens will be loaded from the text branding API.
+    screenNames.add("sign-up");
+    screenNames.add("email-link-expiry");
+    screenNames.add("email-otp");
+    screenNames.add("sms-otp");
+    screenNames.add("password-recovery");
+    screenNames.add("password-reset");
+    screenNames.add("password-reset-success");
 %>
 
 <!DOCTYPE html>
