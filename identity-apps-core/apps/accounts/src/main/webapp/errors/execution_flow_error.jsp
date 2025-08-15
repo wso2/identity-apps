@@ -46,10 +46,10 @@
 
 <%
 
-    final String USER_REGISTRATION = "USER_REGISTRATION";
+    final String REGISTRATION = "REGISTRATION";
     final String INVITED_USER_REGISTRATION = "INVITED_USER_REGISTRATION";
     final String PASSWORD_RECOVERY = "PASSWORD_RECOVERY";
-    
+
     String errorMessage = request.getParameter("ERROR_MSG");
     String errorDescription = request.getParameter("ERROR_DESC");
     String spId = request.getParameter("SP_ID");
@@ -65,7 +65,7 @@
             Encode.forUriComponent(sp),
             flowType,
             confirmationCode);
-    
+
 
     if (StringUtils.isNotEmpty(errorMessage) || StringUtils.isNotEmpty(errorDescription)) {
         if (StringUtils.isNotEmpty(errorMessage)) {
@@ -79,7 +79,7 @@
     if (StringUtils.isEmpty(errorMessage)) {
         if (flowType != null) {
             switch (flowType) {
-                case USER_REGISTRATION:
+                case REGISTRATION:
                     errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "sign.up.error.unexpected.message");
                     break;
                 case INVITED_USER_REGISTRATION:
@@ -100,7 +100,7 @@
     if (StringUtils.isEmpty(errorDescription)) {
         if (flowType != null) {
             switch (flowType) {
-                case USER_REGISTRATION:
+                case REGISTRATION:
                     errorDescription = AuthenticationEndpointUtil.i18n(resourceBundle, "sign.up.error.unexpected.description");
                     break;
                 case INVITED_USER_REGISTRATION:

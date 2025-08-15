@@ -112,7 +112,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
      * @returns A cleaned up string.
      */
     const populateProperties = (key: string, value: string): string | JSX.Element => {
-        if (key === "Claims") {
+        if (key === "Claims" || value === "[]" || value === "") {
             return;
         }
         if (key === "ClaimsUI") {
@@ -151,8 +151,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
             );
         }
 
-        if (key === "Roles" || key == "Permissions" || key === "Groups" || key === "Users" ||
-            key === "Users to be Added" || key === "Users to be Deleted") {
+        if (key === "Roles" || key == "Permissions" || key === "Groups" || key === "Users") {
             value = value.replace(/^\[|\]$/g, "").trim();
 
             try {
@@ -259,33 +258,35 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
             {
                 editingApproval?.taskStatus != ApprovalStatus.BLOCKED
                     ? (
-                        <Button
-                            primary
-                            className="mb-1x"
-                            fluid={ isMobileViewport }
-                            onClick={ () => {
-                                updateApprovalStatus(editingApproval.id, ApprovalStatus.APPROVE);
-                                onCloseApprovalTaskModal();
-                            } }
-                            loading={ isSubmitting }
-                            disabled={ isSubmitting }
-                        >
-                            { t("common:approve") }
-                        </Button>
+                        <>
+                            <Button
+                                primary
+                                className="mb-1x"
+                                fluid={ isMobileViewport }
+                                onClick={ () => {
+                                    updateApprovalStatus(editingApproval.id, ApprovalStatus.APPROVE);
+                                    onCloseApprovalTaskModal();
+                                } }
+                                loading={ isSubmitting }
+                                disabled={ isSubmitting }
+                            >
+                                { t("common:approve") }
+                            </Button>
+                            <Button
+                                negative
+                                className="mb-1x"
+                                fluid={ isMobileViewport }
+                                onClick={ () => {
+                                    updateApprovalStatus(editingApproval.id, ApprovalStatus.REJECT);
+                                    onCloseApprovalTaskModal();
+                                } }
+                            >
+                                { t("common:reject") }
+                            </Button>
+                        </>
                     )
                     : null
             }
-            <Button
-                negative
-                className="mb-1x"
-                fluid={ isMobileViewport }
-                onClick={ () => {
-                    updateApprovalStatus(editingApproval.id, ApprovalStatus.REJECT);
-                    onCloseApprovalTaskModal();
-                } }
-            >
-                { t("common:reject") }
-            </Button>
         </>
     );
 
@@ -360,24 +361,6 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                                     ? approval?.description
                                                     : t("common:approvalsPage.modals.description")
                                             }
-                                        </List.Description>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </List.Content>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Column>
-                        <List.Content>
-                            <Grid padded>
-                                <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 3 }>
-                                        { t("common:priority") }
-                                    </Grid.Column>
-                                    <Grid.Column width={ 12 }>
-                                        <List.Description>
-                                            { approval?.priority }
                                         </List.Description>
                                     </Grid.Column>
                                 </Grid.Row>

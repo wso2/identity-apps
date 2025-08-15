@@ -28,6 +28,7 @@ import { useReactFlow } from "@xyflow/react";
 import React, { FC, PropsWithChildren, ReactElement, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { PreviewScreenType } from "../../common.branding.v1/models";
 import configurePasswordRecoveryFlow from "../api/configure-password-recovery-flow";
 import updateNewPasswordRecoveryPortalFeatureStatus from "../api/update-new-password-recovery-portal-feature-status";
 import useNewPasswordRecoveryPortalFeatureStatus from "../api/use-new-password-recovery-portal-feature-status";
@@ -56,6 +57,9 @@ const PasswordRecoveryFlowBuilderProvider: FC<PasswordRecoveryFlowBuilderProvide
         ElementFactory={ ElementFactory }
         ResourceProperties={ ResourceProperties }
         flowType={ FlowTypes.PASSWORD_RECOVERY }
+        screenTypes={ [
+            PreviewScreenType.COMMON
+        ] }
     >
         <FlowContextWrapper>{ children }</FlowContextWrapper>
     </AuthenticationFlowBuilderCoreProvider>

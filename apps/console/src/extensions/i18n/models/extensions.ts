@@ -2776,6 +2776,7 @@ export interface Extensions {
                     inputLabel: {
                         alphanumericUsername: string;
                         alphanumericUsernamePlaceholder: string;
+                        email: string;
                         emailUsername: string;
                     }
                     inviteUserTooltip: {
@@ -3284,6 +3285,7 @@ export interface Extensions {
                         updateRole: {
                             error: NotificationItem;
                             genericError: NotificationItem;
+                            pendingApproval: NotificationItem;
                             success: NotificationItem;
                         };
                     }

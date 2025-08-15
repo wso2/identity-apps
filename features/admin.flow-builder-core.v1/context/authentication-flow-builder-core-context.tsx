@@ -16,7 +16,10 @@
  * under the License.
  */
 
+import { CustomTextPreferenceScreenMetaInterface } from "@wso2is/admin.branding.v1/models/custom-text-preference";
+import { PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { Claim } from "@wso2is/core/models";
+import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import { Context, Dispatch, FunctionComponent, ReactNode, SetStateAction, createContext } from "react";
 import { Base } from "../models/base";
 import { MetadataInterface } from "../models/metadata";
@@ -100,6 +103,57 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * Metadata for the current flow builder.
      */
     metadata?: MetadataInterface;
+    /**
+     * Configured i18n text from the branding or default fallback.
+     */
+    i18nText?: { [key in PreviewScreenType]?: Record<string, string> };
+    /**
+     * Indicates whether the i18n text is still loading.
+     */
+    i18nTextLoading?: boolean;
+    /**
+     * The language of the i18n text.
+     */
+    language?: string;
+    /**
+     * Sets the language for the i18n text.
+     *
+     * @param language - The language to set.
+     */
+    setLanguage?: (language: string) => void;
+    /**
+     * Updates an existing i18n key for the specified screen.
+     *
+     * @param screenType - The screen type for the i18n key.
+     * @param language - The language for the i18n key.
+     * @param i18nText - The i18n text to update.
+     * @returns Promise indicating the success or failure of the update operation.
+     */
+    updateI18nKey?: (screenType: string, language: string, i18nText: Record<string, string>) => Promise<boolean>;
+    /**
+     * Indicates whether the i18n key related operations are in progress.
+     */
+    isI18nSubmitting?: boolean;
+    /**
+     * Screen metadata for custom text preferences.
+     */
+    screenMeta?: { [key in PreviewScreenType]?: CustomTextPreferenceScreenMetaInterface };
+    /**
+     * Function to check if a given i18n key is custom for the specified screen type.
+     *
+     * @param screenType - The screen type to check.
+     * @param key - The i18n key to check.
+     * @returns True if the i18n key is custom for the specified screen type, false otherwise.
+     */
+    isCustomI18nKey?: (screenType: PreviewScreenType, key: string) => boolean;
+    /**
+     * Supported locales for the custom text preferences.
+     */
+    supportedLocales?: SupportedLanguagesMeta;
+    /**
+     * Indicates whether branding is enabled for the organization.
+     */
+    isBrandingEnabled?: boolean;
 }
 
 /**
@@ -111,8 +165,13 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
     {
         ElementFactory: () => null,
         ResourceProperties: () => null,
+        i18nText: null,
+        i18nTextLoading: false,
+        isBrandingEnabled: false,
+        isCustomI18nKey: () => false,
         isResourcePanelOpen: true,
         isResourcePropertiesPanelOpen: false,
+        language: "",
         lastInteractedResource: null,
         lastInteractedStepId: "",
         metadata: null,
@@ -121,10 +180,12 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         selectedAttributes: {},
         setIsOpenResourcePropertiesPanel: () => {},
         setIsResourcePanelOpen: () => {},
+        setLanguage: () => {},
         setLastInteractedResource: () => {},
         setLastInteractedStepId: () => {},
         setResourcePropertiesPanelHeading: () => {},
-        setSelectedAttributes: () => {}
+        setSelectedAttributes: () => {},
+        supportedLocales: {}
     }
 );
 

@@ -21,6 +21,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { CommonElementFactoryPropsInterface } from "../../common-element-factory";
 import Hint from "../../hint";
+import PlaceholderComponent from "../placeholder-component";
 
 /**
  * Props interface of {@link DefaultInputAdapter}
@@ -47,7 +48,7 @@ export const DefaultInputAdapter: FunctionComponent<DefaultInputAdapterPropsInte
             maxLength: resource.config?.maxLength,
             minLength: resource.config?.minLength
         } }
-        label={ resource.config?.label }
+        label={ <PlaceholderComponent value={ resource.config?.label } /> }
         multiline={ resource.config?.multiline }
         placeholder={ resource.config?.placeholder || "" }
         required={ resource.config?.required }

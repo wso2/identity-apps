@@ -19,6 +19,7 @@
 import AuthenticationFlowBuilderCoreProvider
     from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
+import { PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useReactFlow } from "@xyflow/react";
@@ -52,6 +53,13 @@ const RegistrationFlowBuilderProvider: FC<RegistrationFlowBuilderProviderProps> 
         ElementFactory={ ElementFactory }
         ResourceProperties={ ResourceProperties }
         flowType={ FlowTypes.REGISTRATION }
+        screenTypes={ [
+            PreviewScreenType.COMMON,
+            PreviewScreenType.SIGN_UP,
+            PreviewScreenType.EMAIL_LINK_EXPIRY,
+            PreviewScreenType.EMAIL_OTP,
+            PreviewScreenType.SMS_OTP
+        ] }
     >
         <FlowContextWrapper>{ children }</FlowContextWrapper>
     </AuthenticationFlowBuilderCoreProvider>

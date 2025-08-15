@@ -102,7 +102,7 @@
             errorMessage = Encode.forHtmlAttribute(request.getParameter(Constants.AUTH_FAILURE_MSG));
              if (errorMessage.equalsIgnoreCase("authentication.fail.message") ||
                      errorMessage.equalsIgnoreCase("login.fail.message")) {
-                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.invalid.expired.used.code.retry");
             }
         }
     }

@@ -22,7 +22,8 @@ import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import startCase from "lodash-es/startCase";
 import React, { ChangeEvent, FunctionComponent, ReactElement } from "react";
-import RichText from "./rich-text/rich-text";
+import RichTextWithTranslation from "./rich-text/rich-text-with-translation";
+import TextPropertyField from "./text-property-field";
 import FlowBuilderElementConstants from "../../constants/flow-builder-element-constants";
 import { ElementTypes } from "../../models/elements";
 import { Resource } from "../../models/resources";
@@ -73,7 +74,7 @@ const CommonElementPropertyFactory: FunctionComponent<CommonElementPropertyFacto
     if (propertyKey === "text") {
         if (resource.type === ElementTypes.RichText) {
             return (
-                <RichText
+                <RichTextWithTranslation
                     onChange={ (html: string) => onChange(`config.${propertyKey}`, html, resource) }
                     resource={ resource }
                     { ...rest }
@@ -98,14 +99,11 @@ const CommonElementPropertyFactory: FunctionComponent<CommonElementPropertyFacto
 
     if (typeof propertyValue === "string") {
         return (
-            <TextField
-                fullWidth
-                label={ startCase(propertyKey) }
-                defaultValue={ propertyValue }
-                onChange={ (e: ChangeEvent<HTMLInputElement>) =>
-                    onChange(`config.${propertyKey}`, e.target.value, resource)
-                }
-                placeholder={ `Enter ${startCase(propertyKey)}` }
+            <TextPropertyField
+                resource={ resource }
+                propertyKey={ propertyKey }
+                propertyValue={ propertyValue }
+                onChange={ onChange }
                 data-componentid={ `${componentId}-${propertyKey}` }
                 { ...rest }
             />

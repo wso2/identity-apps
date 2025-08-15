@@ -2003,6 +2003,23 @@ svg.illustration {
     filter: none;
 }
 
+/**
+ * The following style was added to overcome the issue
+ * with rendering the MUI dropdown menu and tooltip
+ * on a Semantic UI modal when the modal dimmer is set to blurring.
+ *
+ * This is a known issue: https://github.com/Semantic-Org/Semantic-UI-React/issues/1803
+ */
+
+.blurring.dimmed.dimmable > :not(.dimmer).MuiPopover-root {
+    z-index: 2000 !important;
+    filter: none;
+}
+
+.blurring.dimmed.dimmable > :not(.dimmer).MuiTooltip-popper {
+    filter: none;
+}
+
 /*****************************************
              Stats Widgets
 *****************************************/

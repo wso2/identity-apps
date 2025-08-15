@@ -2820,6 +2820,7 @@ export const extensions: Extensions = {
                     inputLabel: {
                         alphanumericUsername: "Username",
                         alphanumericUsernamePlaceholder: "Enter the username",
+                        email: "Email",
                         emailUsername: "Username (Email)"
                     },
                     inviteUserTooltip: {
@@ -3937,6 +3938,10 @@ export const extensions: Extensions = {
                             genericError: {
                                 description: "An error occurred while adding the administrator.",
                                 message: "Error Adding Administrator"
+                            },
+                            pendingApproval: {
+                                description: "The administrator role update is accepted and is pending approval.",
+                                message: "Administrator Role Pending Approval"
                             },
                             success: {
                                 description: "Successfully added administrator.",

@@ -19,8 +19,7 @@
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from "@lexical/html";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { $getRoot, $insertNodes, EditorState, LexicalNode, RootNode } from "lexical";
-import debounce, { DebouncedFunc } from "lodash-es/debounce";
-import { ReactElement, useEffect, useState } from "react";
+import { MutableRefObject, ReactElement, useEffect, useRef } from "react";
 import { Resource } from "../../../../models/resources";
 
 /**
@@ -35,6 +34,10 @@ interface HTMLPluginProps {
      * The resource associated with the rich text editor.
      */
     resource: Resource;
+    /**
+     * Whether the editor is disabled.
+     */
+    disabled?: boolean;
 }
 
 const PRE_WRAP_STYLE_WITH_CLASS: string = "\" style=\"white-space: pre-wrap;\"";
@@ -49,19 +52,28 @@ const CLASS_NAME_PLACEHOLDER: string = "{{className}}";
 const ADDITIONAL_CLASSES: string = `class="${CLASS_NAME_PLACEHOLDER}"`;
 
 /**
+ * This enum represents the different types of updates that can occur in the editor.
+ */
+enum UPDATE_TYPES {
+    INTERNAL = "internal",
+    EXTERNAL = "external",
+    NONE = "none"
+}
+
+/**
  * Convert nodes tree to HTML string.
  */
-const HTMLPlugin = ({ onChange, resource }: HTMLPluginProps): ReactElement => {
+const HTMLPlugin = ({ onChange, resource, disabled }: HTMLPluginProps): ReactElement => {
     const [ editor ] = useLexicalComposerContext();
-    const [ initialized, setInitialized ] = useState(false);
+    const updateType: MutableRefObject<UPDATE_TYPES> = useRef<UPDATE_TYPES>(UPDATE_TYPES.NONE);
 
     useEffect(() => {
-        if (initialized || !editor || !resource) {
+        if (!editor || !resource) {
             return;
         }
 
-        if (!resource?.config?.text) {
-            setInitialized(true);
+        if (updateType.current === UPDATE_TYPES.INTERNAL) {
+            updateType.current = UPDATE_TYPES.NONE;
 
             return;
         }
@@ -70,6 +82,8 @@ const HTMLPlugin = ({ onChange, resource }: HTMLPluginProps): ReactElement => {
         const dom: Document = parser.parseFromString(postProcessHTML(resource.config.text), "text/html");
 
         editor.update(() => {
+            updateType.current = UPDATE_TYPES.EXTERNAL;
+
             const root: RootNode = $getRoot();
 
             root.clear(); // clear existing content if needed.
@@ -77,8 +91,6 @@ const HTMLPlugin = ({ onChange, resource }: HTMLPluginProps): ReactElement => {
             const nodes: Array<LexicalNode> = $generateNodesFromDOM(editor, dom);
 
             $insertNodes(nodes); // insert new nodes into the editor.
-
-            setInitialized(true);
         });
     }, [ editor, resource ]);
 
@@ -96,18 +108,38 @@ const HTMLPlugin = ({ onChange, resource }: HTMLPluginProps): ReactElement => {
     }, [ editor, onChange ]);
 
     /**
+     * Handle the editor's disabled state.
+     */
+    useEffect(() => {
+        if (disabled) {
+            editor.setEditable(false);
+        } else {
+            if (!editor._editable) {
+                editor.setEditable(true);
+            }
+        }
+    }, [ disabled ]);
+
+    /**
      * Process the editor state to generate HTML and call the onChange handler.
      */
-    const processEditorUpdate: DebouncedFunc<(editorState: EditorState) => void> = debounce(
-        (editorState: EditorState) => {
-            editorState.read(() => {
-                const htmlString: string = $generateHtmlFromNodes(editor);
+    const processEditorUpdate: (editorState: EditorState) => void = (editorState: EditorState) => {
+        if (updateType.current === UPDATE_TYPES.EXTERNAL) {
+            updateType.current = UPDATE_TYPES.NONE;
 
-                const processedHTML: string = preProcessHTML(htmlString);
+            return;
+        }
 
-                onChange(processedHTML);
-            });
-        }, 500);
+        editorState.read(() => {
+            updateType.current = UPDATE_TYPES.INTERNAL;
+
+            const htmlString: string = $generateHtmlFromNodes(editor);
+
+            const processedHTML: string = preProcessHTML(htmlString);
+
+            onChange(processedHTML);
+        });
+    };
 
     /**
      * Pre-process the HTML string to add additional classes and styles.

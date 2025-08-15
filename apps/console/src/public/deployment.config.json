@@ -520,7 +520,7 @@
                         "internal_workflow_delete"
                     ],
                     "feature": [
-                        "console:workflows"
+                        "console:approvalWorkflows"
                     ],
                     "read": [
                         "internal_workflow_association_view",
@@ -1648,7 +1648,10 @@
                 }
             },
             "users": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "users.add.legacy",
+                    "users.profile.legacy"
+                ],
                 "enabled": true,
                 "featureFlags": [],
                 "scopes": {
@@ -1712,32 +1715,6 @@
                     ],
                     "read": [
                         "internal_workflow_instance_view"
-                    ]
-                }
-            },
-            "workflows": {
-                "disabledFeatures": [],
-                "enabled": true,
-                "featureFlags": [],
-                "scopes": {
-                    "create": [
-                        "internal_workflow_association_create",
-                        "internal_workflow_create"
-                    ],
-                    "delete": [
-                        "internal_workflow_association_delete",
-                        "internal_workflow_delete"
-                    ],
-                    "feature": [
-                        "console:workflows"
-                    ],
-                    "read": [
-                        "internal_workflow_association_view",
-                        "internal_workflow_view"
-                    ],
-                    "update": [
-                        "internal_workflow_association_update",
-                        "internal_workflow_update"
                     ]
                 }
             },
@@ -1844,6 +1821,7 @@
                 "groups",
                 "identityProviders",
                 "loginAndRegistration",
+                "oidcScopes",
                 "organizations",
                 "password-recovery",
                 "roles",

@@ -61,9 +61,6 @@
 %>
 
 <%
-    String local = "en-US";
-    String jsonFilePath = application.getRealPath("/i18n/translations/" + local + ".json");
-    String translationsJson = "{}";
     String state = request.getParameter("state");
     String code = request.getParameter("code");
     String spId = request.getParameter("spId");
@@ -72,12 +69,20 @@
     String mlt = request.getParameter("mlt");
     String flowId = request.getParameter("flowId");
 
-    try {
-        byte[] jsonData = Files.readAllBytes(Paths.get(jsonFilePath));
-        translationsJson = new String(jsonData, "UTF-8");
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
+    final String REGISTRATION = "REGISTRATION";
+    final String INVITED_USER_REGISTRATION = "INVITED_USER_REGISTRATION";
+    final String PASSWORD_RECOVERY = "PASSWORD_RECOVERY";
+%>
+
+<%
+    // Only the i18n text related to these screens will be loaded from the text branding API.
+    screenNames.add("sign-up");
+    screenNames.add("email-link-expiry");
+    screenNames.add("email-otp");
+    screenNames.add("sms-otp");
+    screenNames.add ("password-recovery");
+    screenNames.add("password-reset");
+    screenNames.add("password-reset-success");
 %>
 
 <!DOCTYPE html>
@@ -182,9 +187,6 @@
                 const flowId = "<%= Encode.forJavaScript(flowId) != null ? Encode.forJavaScript(flowId) : null %>";
                 const spId = "<%= !StringUtils.isBlank(spId) && spId != "null" ? Encode.forJavaScript(spId) : "new-application" %>";
 
-                const locale = "en-US";
-                const translations = <%= translationsJson %>;
-
                 const [ flowData, setFlowData ] = useState(null);
                 const [ components, setComponents ] = useState([]);
                 const [ loading, setLoading ] = useState(true);
@@ -192,6 +194,7 @@
                 const [ postBody, setPostBody ] = useState(undefined);
                 const [ flowError, setFlowError ] = useState(undefined);
                 const [confirmationEffectDone, setConfirmationEffectDone] = useState(false);
+                const [userAssertion, setUserAssertion] = useState(null);
 
                 useEffect(() => {
                     const savedFlowId = localStorage.getItem("flowId");
@@ -331,6 +334,14 @@
                             return false;
 
                         case "COMPLETE":
+
+                            const sessionDataKey = localStorage.getItem("sessionDataKey");
+                            const userAssertion = flow.data.additionalData?.userAssertion;
+                            if (sessionDataKey && userAssertion) {
+                                setUserAssertion(userAssertion);
+                                return true;
+                            }
+
                             localStorage.clear();
 
                             if (flow.data.redirectURL !== null) {
@@ -387,6 +398,41 @@
                     );
                 }
 
+                const AutoLoginForm = (data) => {
+                    const formRef = React.useRef();
+                    const handleSubmit = () => {
+                        formRef.current.submit();
+                    };
+
+                    useEffect(() => {
+                        if (userAssertion) {
+                            handleSubmit();
+                            setUserAssertion(null);
+                        }
+                    }, [userAssertion]);
+
+                    return (
+                        createElement(
+                            "form",
+                            {
+                                ref: formRef,
+                                method: "POST",
+                                action: baseUrl + "/commonauth",
+                                style: { display: 'none' }
+                            },
+                            createElement("input", { type: "hidden", name: "sessionDataKey", value: encodeURIComponent(localStorage.getItem("sessionDataKey") || "") }),
+                            createElement("input", { type: "hidden", name: "userAssertion", value: encodeURIComponent(data.userAssertion || "") })
+                        )
+                    );
+                }
+
+                if (userAssertion) {
+                    return createElement(
+                        AutoLoginForm,
+                        { userAssertion: userAssertion }
+                    );
+                }
+
                 if (loading || (!components || components.length === 0)) {
                     return createElement(
                         "div",
@@ -426,7 +472,7 @@
                     { globalData: <%= reactGlobalContextJson %> },
                     createElement(
                         I18nProvider,
-                        { locale: "en-US", translationsObject: <%= translationsJson %> },
+                        { locale: "<%= Encode.forJavaScript(lang) %>", translationsObject: <%= i18nJsonString %> },
                         createElement(Content)
                     )
                 ),
