@@ -92,26 +92,28 @@ const CreatePasswordOption: FunctionComponent<CreatePasswordOptionPropsInterface
         <Grid.Row columns={ 2 } data-componentid={ componentId }>
             <Grid.Column mobile={ 16 } computer={ 10 }>
                 <div className={ "generate-password" }>
-                    <FinalFormField
-                        component={ TextFieldAdapter }
-                        type="password"
-                        className="addon-field-wrapper full-width"
-                        name={ newPasswordFieldName }
-                        label={ t("user:forms.addUserForm.inputs.newPassword.label") }
-                        placeholder={ t("user:forms.addUserForm.inputs.newPassword.placeholder") }
-                        required={ true }
-                        validate={ validateNewPassword }
-                        validateFields={ [ newPasswordValidityFieldName ] }
-                        data-testid="user-mgt-add-user-form-newPassword-input"
-                        data-componentid="user-mgt-add-user-form-newPassword-input"
-                    />
-                    { /* This hidden field maintains the validity of the new password which is calculated
-                        by the `PasswordValidation` component. */ }
-                    <FinalFormField
-                        component="input"
-                        type="hidden"
-                        name={ newPasswordValidityFieldName }
-                    />
+                    <div>
+                        <FinalFormField
+                            component={ TextFieldAdapter }
+                            type="password"
+                            className="addon-field-wrapper full-width"
+                            name={ newPasswordFieldName }
+                            label={ t("user:forms.addUserForm.inputs.newPassword.label") }
+                            placeholder={ t("user:forms.addUserForm.inputs.newPassword.placeholder") }
+                            required={ true }
+                            validate={ validateNewPassword }
+                            validateFields={ [ newPasswordValidityFieldName ] }
+                            data-testid="user-mgt-add-user-form-newPassword-input"
+                            data-componentid="user-mgt-add-user-form-newPassword-input"
+                        />
+                        { /* This hidden field maintains the validity of the new password which is calculated
+                            by the `PasswordValidation` component. */ }
+                        <FinalFormField
+                            component="input"
+                            type="hidden"
+                            name={ newPasswordValidityFieldName }
+                        />
+                    </div>
                     { passwordConfig && (
                         <Button
                             basic

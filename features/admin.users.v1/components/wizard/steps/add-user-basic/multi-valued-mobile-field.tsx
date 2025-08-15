@@ -67,6 +67,8 @@ interface SortedMobileNumber {
 interface MultiValuedMobileFieldPropsInterface extends IdentifiableComponentInterface {
     schema: ProfileSchemaInterface;
     primarySchema: ProfileSchemaInterface;
+    primaryMobileNumber: string;
+    mobileNumbersList: string[];
     isUpdating: boolean;
     fieldLabel: string;
     maxValueLimit: number;
@@ -77,7 +79,9 @@ interface MultiValuedMobileFieldPropsInterface extends IdentifiableComponentInte
  */
 const MultiValuedMobileField: FunctionComponent<MultiValuedMobileFieldPropsInterface> = ({
     schema,
-    primarySchema: primarySchema,
+    primarySchema,
+    primaryMobileNumber,
+    mobileNumbersList,
     isUpdating,
     fieldLabel,
     maxValueLimit,
@@ -113,8 +117,8 @@ const MultiValuedMobileField: FunctionComponent<MultiValuedMobileFieldPropsInter
 
     useEffect(() => {
         form.batch(() => {
-            form.change(mobileNumbersFieldName, []);
-            form.change(mobileFieldName, "");
+            form.change(mobileNumbersFieldName, mobileNumbersList);
+            form.change(mobileFieldName, primaryMobileNumber);
 
             form.initialize(form.getState().values);
         });

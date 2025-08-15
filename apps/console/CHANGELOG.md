@@ -1,5 +1,35 @@
 # @wso2is/console
 
+## 2.77.6
+
+### Patch Changes
+
+- [#8786](https://github.com/wso2/identity-apps/pull/8786) [`7b3155d7c10c37eb4bd8efef0176aaea35451f09`](https://github.com/wso2/identity-apps/commit/7b3155d7c10c37eb4bd8efef0176aaea35451f09) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the rich text editor synchronization issue
+
+- Updated dependencies []:
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.8
+  - @wso2is/admin.core.v1@2.49.16
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.8
+  - @wso2is/admin.server-configurations.v1@2.35.29
+
+## 2.77.5
+
+### Patch Changes
+
+- [#8782](https://github.com/wso2/identity-apps/pull/8782) [`ad47e073c8106102cb3d0ac9c3b0278d379468ea`](https://github.com/wso2/identity-apps/commit/ad47e073c8106102cb3d0ac9c3b0278d379468ea) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix UI issues in the user creation wizard
+
+* [#8775](https://github.com/wso2/identity-apps/pull/8775) [`8785aceb721446a10d7de12bb3d1e815f87981b2`](https://github.com/wso2/identity-apps/commit/8785aceb721446a10d7de12bb3d1e815f87981b2) Thanks [@brionmario](https://github.com/brionmario)! - Fix `/api-resources/*` mutations issues
+
+* Updated dependencies [[`ad47e073c8106102cb3d0ac9c3b0278d379468ea`](https://github.com/wso2/identity-apps/commit/ad47e073c8106102cb3d0ac9c3b0278d379468ea), [`8785aceb721446a10d7de12bb3d1e815f87981b2`](https://github.com/wso2/identity-apps/commit/8785aceb721446a10d7de12bb3d1e815f87981b2)]:
+  - @wso2is/admin.users.v1@2.36.2
+  - @wso2is/admin.api-resources.v2@2.26.4
+  - @wso2is/admin.agents.v1@1.0.34
+  - @wso2is/admin.core.v1@2.49.15
+  - @wso2is/admin.roles.v2@2.27.189
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.7
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.7
+  - @wso2is/admin.server-configurations.v1@2.35.28
+
 ## 2.77.4
 
 ### Patch Changes
