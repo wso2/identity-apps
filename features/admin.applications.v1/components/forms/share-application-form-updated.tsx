@@ -148,7 +148,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
 
     const [ shareType, setShareType ] = useState<ShareType>(ShareType.UNSHARE);
     const [ roleShareTypeAll, setRoleShareTypeAll ] = useState<RoleShareType>(RoleShareType.SHARE_WITH_ALL);
-    const [ roleShareTypeSelected, setRoleShareTypeSelected ] = useState<RoleShareType>(RoleShareType.SHARE_WITH_ALL);
+    const [ roleShareTypeSelected, setRoleShareTypeSelected ] = useState<RoleShareType>(RoleShareType.SHARE_SELECTED);
     const { isOrganizationManagementEnabled } = useGlobalVariables();
     const [ showConfirmationModal, setShowConfirmationModal ] = useState<boolean>(false);
     const [ showShareTypeSwitchModal, setShowShareTypeSwitchModal ] = useState<boolean>(false);
@@ -1070,7 +1070,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
 
             if (unshareSuccess) {
                 setShareType(ShareType.SHARE_SELECTED);
-                setRoleShareTypeSelected(RoleShareType.SHARE_WITH_ALL);
+                setRoleShareTypeSelected(RoleShareType.SHARE_SELECTED);
             }
         } else if (shareTypeSwitchApproach === ShareTypeSwitchApproach.WITHOUT_UNSHARE) {
             // Switch to selective sharing without unsharing the application with all organizations
@@ -1081,7 +1081,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
 
             if (shareSuccess) {
                 setShareType(ShareType.SHARE_SELECTED);
-                setRoleShareTypeSelected(RoleShareType.SHARE_WITH_ALL);
+                setRoleShareTypeSelected(RoleShareType.SHARE_SELECTED);
             }
         }
     };
@@ -1426,29 +1426,28 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                             className="ml-5"
                                         >
                                             <Grid xs={ 12 }>
-                                                <FormControlLabel
-                                                    control={ (
-                                                        <Checkbox
-                                                            checked={
-                                                                roleShareTypeSelected === RoleShareType.SHARE_WITH_ALL }
-                                                        />
-                                                    ) }
-                                                    label="Share all roles with selected organizations"
+                                                <Button
+                                                    variant="text"
+                                                    size="small"
                                                     data-componentid={
-                                                        `${ componentId }-share-all-roles-with-selected-orgs-checkbox` }
-                                                    value={ roleShareTypeSelected === RoleShareType.SHARE_WITH_ALL }
-                                                    onChange={ (
-                                                        _event: ChangeEvent<HTMLInputElement>,
-                                                        checked: boolean
-                                                    ) => {
-                                                        if (checked) {
-                                                            setRoleShareTypeSelected(RoleShareType.SHARE_WITH_ALL);
-                                                        } else {
+                                                        `${ componentId }-share-all-roles-with-selected-orgs-btn` }
+                                                    onClick={ () => {
+                                                        if (roleShareTypeSelected === RoleShareType.SHARE_WITH_ALL) {
                                                             setRoleShareTypeSelected(RoleShareType.SHARE_SELECTED);
+                                                        } else if (roleShareTypeSelected ===
+                                                            RoleShareType.SHARE_SELECTED) {
+                                                            setRoleShareTypeSelected(RoleShareType.SHARE_WITH_ALL);
                                                         }
                                                     } }
                                                     disabled={ readOnly }
-                                                />
+                                                >
+                                                    {
+                                                        roleShareTypeSelected === RoleShareType.SHARE_WITH_ALL
+                                                            ? t("applications:edit.sections.sharedAccess." +
+                                                                "shareSelectedRoles")
+                                                            : t("applications:edit.sections.sharedAccess.shareAllRoles")
+                                                    }
+                                                </Button>
                                                 <SelectiveOrgShareWithSelectiveRoles
                                                     applicationId={ application?.id }
                                                     applicationRolesList={ applicationRolesList }
