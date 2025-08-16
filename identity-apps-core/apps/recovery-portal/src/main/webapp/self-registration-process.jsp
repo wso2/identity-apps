@@ -330,6 +330,16 @@
             }
         }
 
+        // After existing claim population loop
+        String profileIdValue = request.getParameter("http://wso2.org/claims/profileId");
+        if (StringUtils.isNotBlank(profileIdValue)) {
+            Claim profileIdClaim = new Claim();
+            profileIdClaim.setUri("http://wso2.org/claims/profileId");
+            profileIdClaim.setValue(profileIdValue);
+            userClaimList.add(profileIdClaim);
+        }
+
+
         SelfRegistrationUser selfRegistrationUser = new SelfRegistrationUser();
         selfRegistrationUser.setUsername(username);
         selfRegistrationUser.setTenantDomain(user.getTenantDomain());
