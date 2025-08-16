@@ -1,5 +1,16 @@
 # @wso2is/admin.applications.v1
 
+## 2.37.2
+
+### Patch Changes
+
+- [#8790](https://github.com/wso2/identity-apps/pull/8790) [`8e1533f3f3256f7c2f6a357f81a234bd822d9cc5`](https://github.com/wso2/identity-apps/commit/8e1533f3f3256f7c2f6a357f81a234bd822d9cc5) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Change share all operation from checkbox to button
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.18
+  - @wso2is/admin.roles.v2@2.27.191
+  - @wso2is/admin.server-configurations.v1@2.35.31
+
 ## 2.37.1
 
 ### Patch Changes
