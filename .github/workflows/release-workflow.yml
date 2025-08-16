@@ -29,9 +29,9 @@ on:
 
 env:
     GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
-    SHOULD_GENERATE_CHANGESET: 'true'
-    BRANCH: master
-    IS_HOTFIX: 'false'
+    SHOULD_GENERATE_CHANGESET: 'false'
+    BRANCH: hotfix-@wso2is/console@2.77.4
+    IS_HOTFIX: 'true'
     BOT_USERNAME: ${{ secrets.RELEASE_BOT_USER_NAME }}
     BOT_EMAIL: ${{ secrets.RELEASE_BOT_EMAIL }}
 
@@ -183,7 +183,7 @@ jobs:
               id: perform-release
               working-directory: .github/workflows
               run: |
-                  PACKAGES="${{ toJson(steps.changesets.outputs.publishedPackages) }}"
+                  PACKAGES=""[{\"name\":\"@wso2is/console\",\"version\":\"2.77.4\"}]""
                   # Detect pre-release for 'next' branch
                   if [ "${GITHUB_REF##*/}" = "next" ]; then
                     PRE_RELEASE="next"
