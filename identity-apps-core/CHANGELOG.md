@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.1.6
+
+### Patch Changes
+
+- [#8802](https://github.com/wso2/identity-apps/pull/8802) [`5c600756c157b3ed80bdbdce440eaeff576a4037`](https://github.com/wso2/identity-apps/commit/5c600756c157b3ed80bdbdce440eaeff576a4037) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the nexus release issue
+
 ## 3.1.5
 
 ### Patch Changes
