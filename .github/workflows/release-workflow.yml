@@ -31,7 +31,7 @@ env:
     GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
     SHOULD_GENERATE_CHANGESET: 'true'
     BRANCH: ${{ github.ref_name }}
-    IS_HOTFIX: ${{ github.ref_name == 'master' }}
+    IS_HOTFIX: 'false'
     BOT_USERNAME: ${{ secrets.RELEASE_BOT_USER_NAME }}
     BOT_EMAIL: ${{ secrets.RELEASE_BOT_EMAIL }}
 
