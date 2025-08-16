@@ -50,6 +50,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Grid, Icon, Message, Ref } from "semantic-ui-react";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
+import PasswordRecoveryFlowBuilderBanner
+    from "../../admin.password-recovery-flow-builder.v1/components/password-recovery-flow-builder-banner";
 import {
     getConnectorDetails,
     revertGovernanceConnectorProperties,
@@ -95,6 +97,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
         (state: AppState) => state?.config?.ui?.features?.applications);
     const registrationFlowBuilderFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.registrationFlowBuilder);
+    const passwordRecoveryFlowBuilderFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.passwordRecoveryFlowBuilder);
 
     const [ isConnectorRequestLoading, setConnectorRequestLoading ] = useState<boolean>(false);
     const [ connector, setConnector ] = useState<GovernanceConnectorInterface>(undefined);
@@ -109,6 +113,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
         = useRequiredScopes(applicationFeatureConfig?.governanceConnectors?.scopes?.update);
     const hasRegistrationFlowBuilderViewPermissions: boolean
         = useRequiredScopes(registrationFlowBuilderFeatureConfig?.scopes?.read);
+    const hasPasswordRecoveryFlowBuilderViewPermissions: boolean
+        = useRequiredScopes(passwordRecoveryFlowBuilderFeatureConfig?.scopes?.read);
     const path: string[] = history.location.pathname.split("/");
     const type: string = path[ path.length - 3 ];
 
@@ -796,6 +802,16 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             }
 
             return <RegistrationFlowBuilderBanner />;
+        }
+
+        if (connector.id === ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID) {
+
+            // if (isSubOrganization() || !passwordRecoveryFlowBuilderFeatureConfig?.enabled ||
+            //         !hasPasswordRecoveryFlowBuilderViewPermissions) {
+            //     return null;
+            // }
+
+            return <PasswordRecoveryFlowBuilderBanner />;
         }
 
         return null;
