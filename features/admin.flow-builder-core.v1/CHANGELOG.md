@@ -1,5 +1,14 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.10.7
+
+### Patch Changes
+
+- [#8797](https://github.com/wso2/identity-apps/pull/8797) [`ca2b08f438092e5a6379850e002848e9958e0cf3`](https://github.com/wso2/identity-apps/commit/ca2b08f438092e5a6379850e002848e9958e0cf3) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the rich text editor synchronization issue
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.15
+
 ## 0.10.6
 
 ### Patch Changes
