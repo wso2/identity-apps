@@ -132,11 +132,13 @@ export class ConnectionUIConstants {
         ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: number;
         ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE: number;
         ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: number;
+        AMR_VALUE_REGEX: RegExp;
     } = {
             ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: 10000,
             ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: 100,
             ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH: 1,
             ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE: 0,
+            AMR_VALUE_REGEX: new RegExp("^[a-zA-Z0-9-_]+$"),
             EXPIRY_TIME_MAX_LENGTH: 4,
             EXPIRY_TIME_MAX_VALUE: 1440,
             EXPIRY_TIME_MIN_LENGTH: 1,
@@ -249,6 +251,8 @@ export class ConnectionUIConstants {
         MULTI_FACTOR_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR: string;
         MULTI_FACTOR_AUTHENTICATOR_UPDATE_ERROR: string;
         MULTI_FACTOR_AUTHENTICATOR_UPDATE_INVALID_STATUS_CODE_ERROR: string;
+        SYSTEM_DEFINED_LOCAL_AUTHENTICATOR_FETCH_ERROR: string;
+        SYSTEM_DEFINED_LOCAL_AUTHENTICATOR_INVALID_STATUS_CODE_ERROR: string;
     } = {
             AUTHENTICATORS_FETCH_ERROR: "An error occurred while fetching the authenticators.",
             AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR:
@@ -281,7 +285,11 @@ export class ConnectionUIConstants {
             "Received an invalid status code while fetching the multi-factor authenticator.",
             MULTI_FACTOR_AUTHENTICATOR_UPDATE_ERROR: "An error occurred while fetching the multi-factor authenticator.",
             MULTI_FACTOR_AUTHENTICATOR_UPDATE_INVALID_STATUS_CODE_ERROR:
-            "Received an invalid status code while updating the multi-factor authenticator."
+            "Received an invalid status code while updating the multi-factor authenticator.",
+            SYSTEM_DEFINED_LOCAL_AUTHENTICATOR_FETCH_ERROR: 
+            "An error occured while fetching system defiend local authenticator.",
+            SYSTEM_DEFINED_LOCAL_AUTHENTICATOR_INVALID_STATUS_CODE_ERROR:
+            "Received an invalid status code while fetching system local authenticator."
         };
     /* eslint-enable max-len */
 
