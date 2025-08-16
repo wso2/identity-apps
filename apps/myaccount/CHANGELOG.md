@@ -1,5 +1,13 @@
 # @wso2is/myaccount
 
+## 2.23.4
+
+### Patch Changes
+
+- [#8808](https://github.com/wso2/identity-apps/pull/8808) [`000789ba3448965fcbc11edff269ed2148f13a3c`](https://github.com/wso2/identity-apps/commit/000789ba3448965fcbc11edff269ed2148f13a3c) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the nexus release issue
+
+* [#8804](https://github.com/wso2/identity-apps/pull/8804) [`420dba817530ced6f3c850b999b352c71c864977`](https://github.com/wso2/identity-apps/commit/420dba817530ced6f3c850b999b352c71c864977) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the nexus release issue
+
 ## 2.23.3
 
 ### Patch Changes
