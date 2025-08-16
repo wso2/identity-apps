@@ -99,7 +99,7 @@ const RichTextAdapter = ({ component }) => {
         return DOMPurify.sanitize(resolvedHtml, {
             ADD_ATTR: [ "target" ]
         });
-    }, [ config.text, contextData ]);
+    }, [ config.text, contextData, translations ]);
 
     return (
         <div className="rich-text-content">
