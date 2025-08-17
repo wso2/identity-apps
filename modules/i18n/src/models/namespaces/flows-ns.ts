@@ -77,11 +77,9 @@ export interface flowsNS {
                     language: string;
                     languageText: string;
                     languageTextPlaceholder: string;
-                    screenName: string;
                     selectOrAddI18nKey: string;
                     selectI18nKey: string;
                     selectLanguage: string;
-                    selectScreenName: string;
                     title: string;
                 };
                 placeholder: string;

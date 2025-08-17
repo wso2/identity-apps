@@ -46,6 +46,10 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      */
     resourcePropertiesPanelHeading: ReactNode;
     /**
+     * The primary i18n screen for the flow.
+     */
+    primaryI18nScreen: PreviewScreenType;
+    /**
      * Indicates whether the element panel is open.
      */
     isResourcePanelOpen: boolean;
@@ -176,6 +180,7 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         lastInteractedStepId: "",
         metadata: null,
         onResourceDropOnCanvas: () => {},
+        primaryI18nScreen: PreviewScreenType.COMMON,
         resourcePropertiesPanelHeading: null,
         selectedAttributes: {},
         setIsOpenResourcePropertiesPanel: () => {},

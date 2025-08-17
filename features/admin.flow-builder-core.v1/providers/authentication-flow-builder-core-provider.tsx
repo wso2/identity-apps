@@ -74,6 +74,7 @@ export interface AuthenticationFlowBuilderProviderProps {
     flowType: FlowTypes;
     /**
      * Screen types for the i18n text.
+     * First provided screen type will be used as the primary screen type.
      */
     screenTypes: PreviewScreenType[];
 }
@@ -164,6 +165,13 @@ const AuthenticationFlowBuilderCoreProvider = ({
     const isBrandingEnabled: boolean = useMemo(() => {
         return brandingPreference?.preference?.configs?.isBrandingEnabled ?? false;
     }, [ brandingPreference ]);
+
+    /**
+     * Memoized primary i18n screen based on the screen types.
+     */
+    const primaryI18nScreen: PreviewScreenType = useMemo(() => {
+        return screenTypes?.[0] || PreviewScreenType.COMMON;
+    }, [ screenTypes ]);
 
     /**
      * Error handling for flow metadata fetch.
@@ -349,6 +357,7 @@ const AuthenticationFlowBuilderCoreProvider = ({
                     lastInteractedStepId,
                     metadata: flowMetadata,
                     onResourceDropOnCanvas,
+                    primaryI18nScreen,
                     resourcePropertiesPanelHeading,
                     screenMeta,
                     selectedAttributes,
