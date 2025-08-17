@@ -965,7 +965,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     icon: {
                         icon: getSidePanelIcons().childIcon
                     },
-                    id: "registrationFlowBuilder",
+                    id: "flows",
                     path: AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER"),
                     protected: true,
                     showOnSidePanel: false
