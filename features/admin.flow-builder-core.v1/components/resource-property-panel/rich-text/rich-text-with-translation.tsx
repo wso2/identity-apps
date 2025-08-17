@@ -95,6 +95,7 @@ const TranslationRichText: FunctionComponent<LanguageTextFieldProps> = ({
             onChange={ handleRichTextChange }
             resource={ resource }
             disabled={ disabled }
+            className="without-translation-icon"
         />
     );
 };
