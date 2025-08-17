@@ -78,11 +78,9 @@ export const flows: flowsNS = {
                     language: "Language",
                     languageText: "Language text configuration",
                     languageTextPlaceholder: "Enter text for the selected language",
-                    screenName: "Screen name",
                     selectI18nKey: "Select a translation key",
                     selectLanguage: "Select language",
                     selectOrAddI18nKey: "Select or add a translation key",
-                    selectScreenName: "Select a screen name",
                     title: "{{propertyKey}} translation"
                 },
                 placeholder: "Enter {{propertyName}}",

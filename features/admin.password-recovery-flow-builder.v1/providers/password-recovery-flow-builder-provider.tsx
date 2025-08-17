@@ -58,7 +58,13 @@ const PasswordRecoveryFlowBuilderProvider: FC<PasswordRecoveryFlowBuilderProvide
         ResourceProperties={ ResourceProperties }
         flowType={ FlowTypes.PASSWORD_RECOVERY }
         screenTypes={ [
-            PreviewScreenType.COMMON
+            PreviewScreenType.PASSWORD_RECOVERY,
+            PreviewScreenType.COMMON,
+            PreviewScreenType.PASSWORD_RESET,
+            PreviewScreenType.PASSWORD_RESET_SUCCESS,
+            PreviewScreenType.EMAIL_OTP,
+            PreviewScreenType.SMS_OTP,
+            PreviewScreenType.EMAIL_LINK_EXPIRY
         ] }
     >
         <FlowContextWrapper>{ children }</FlowContextWrapper>

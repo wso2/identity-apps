@@ -59,11 +59,12 @@ import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flo
 import "./i18n-configuration-card.scss";
 
 /**
- * Interface for screen type option.
+ * Interface for i18n key option.
  */
-interface ScreenTypeOption {
-    id: string;
+interface I18nKeyOption {
+    key: string;
     label: string;
+    screen: string;
 }
 
 /**
@@ -148,18 +149,18 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
         isI18nSubmitting,
         language: selectedLanguage,
         setLanguage: setSelectedLanguage,
-        supportedLocales
+        supportedLocales,
+        primaryI18nScreen
     } = useAuthenticationFlowBuilderCore();
 
     const cardRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
     const cardContentRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
     const [ position, setPosition ] = useState<{ top: number; left: number }>({ left: 0, top: 0 });
-    const [ selectedScreenType, setSelectedScreenType ] = useState<ScreenTypeOption>(null);
     const [ isCustomizeView, setIsCustomizeView ] = useState<boolean>(false);
-    const [ i18nKeyInputValue, setI18nKeyInputValue ] = useState<string>("");
+    const [ i18nKeyInputValue, setI18nKeyInputValue ] = useState<I18nKeyOption>(null);
     const [ languageTexts, setLanguageTexts ] = useState<{
         [key in PreviewScreenType]?: Record<string, Record<string, string>>}>({});
-    const [ deletedI18nKeys, setDeletedI18nKeys ] = useState<{ [key in PreviewScreenType]?: string[] }>({});
+    const [ deletedI18nKeys, setDeletedI18nKeys ] = useState<string[]>([]);
     const [ isScrolled, setIsScrolled ] = useState<boolean>(false);
 
     /**
@@ -233,23 +234,9 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
     }, [ open, isCustomizeView ]);
 
     /**
-     * Build the list of all available screen types.
+     * Get the list of available i18n keys.
      */
-    const screenTypes: ScreenTypeOption[] = useMemo(() => {
-        if (!i18nText || !screenMeta) {
-            return [];
-        }
-
-        return Object.keys(i18nText).map((key: string) => ({
-            id: key,
-            label: screenMeta[ key ]?.label ?? upperFirst(lowerCase(key))
-        }));
-    }, [ i18nText, screenMeta ]);
-
-    /**
-     * Build the list of all available i18n keys.
-     */
-    const i18nKeys: string[] = useMemo(() => {
+    const availableI18nKeys: string[] = useMemo(() => {
         if (!i18nText) {
             return [];
         }
@@ -261,56 +248,63 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
         });
 
         return keys;
-    },  [ i18nText ]);
+    }, [ i18nText ]);
 
     /**
-     * Get available i18n keys for the selected screen type.
+     * Build the list of all available i18n keys with screen information.
      */
-    const availableI18nKeys: string[] = useMemo(() => {
-        if (!selectedScreenType || !i18nText || !i18nText[selectedScreenType.id]) {
+    const i18nKeys: I18nKeyOption[] = useMemo(() => {
+        if (!i18nText) {
             return [];
         }
 
-        const keys: string[] = [];
+        const keys: I18nKeyOption[] = [];
 
-        Object.keys(i18nText[selectedScreenType.id]).forEach((key: string) => {
-            if (!deletedI18nKeys?.[selectedScreenType.id]?.includes(key)) {
-                keys.push(key);
-            }
+        Object.keys(i18nText).forEach((screen: PreviewScreenType) => {
+            const screenTexts: Record<string, string> = i18nText[screen];
+
+            keys.push(...Object.keys(screenTexts).map((key: string) => {
+                if (deletedI18nKeys?.includes(key)) {
+                    return null;
+                }
+
+                return {
+                    key,
+                    label: key,
+                    screen
+                };
+            }));
         });
 
-        return keys;
-    }, [ selectedScreenType, i18nText, deletedI18nKeys ]);
+        return keys.filter((key: I18nKeyOption) => key !== null);
+    },  [ i18nText, deletedI18nKeys ]);
 
     /**
      * Handles deleting an i18n key.
      */
     const handleDeleteI18nKey = (keyId: string): void => {
-        setDeletedI18nKeys((prevKeys: { [key in PreviewScreenType]?: string[] }) => ({
-            ...prevKeys,
-            [selectedScreenType.id]: [ ...(prevKeys?.[selectedScreenType.id] || []), keyId ]
-        }));
+        setDeletedI18nKeys((prevKeys: string[]) => [ ...prevKeys, keyId ]);
         setLanguageTexts((prevTexts: { [key in PreviewScreenType]: Record<string, Record<string, string>> }) => {
-            if (prevTexts?.[selectedScreenType.id]?.[selectedLanguage]?.[keyId]) {
+            if (prevTexts?.[primaryI18nScreen]?.[selectedLanguage]?.[keyId]) {
                 const updatedTexts: { [key in PreviewScreenType]: Record<string, Record<string, string>> } =
                     cloneDeep(prevTexts);
 
-                delete updatedTexts[selectedScreenType.id][selectedLanguage][keyId];
+                delete updatedTexts[primaryI18nScreen][selectedLanguage][keyId];
 
                 return updatedTexts;
             }
 
-            const originalTexts: Record<string, string> = i18nText[selectedScreenType.id];
+            const originalTexts: Record<string, string> = i18nText[primaryI18nScreen];
 
             delete originalTexts[keyId];
 
             return {
                 ...prevTexts,
-                [selectedScreenType.id]: {
-                    ...prevTexts?.[selectedScreenType.id],
+                [primaryI18nScreen]: {
+                    ...prevTexts?.[primaryI18nScreen],
                     [selectedLanguage]: {
                         ...originalTexts,
-                        ...prevTexts?.[selectedScreenType.id]?.[selectedLanguage]
+                        ...prevTexts?.[primaryI18nScreen]?.[selectedLanguage]
                     }
                 }
             };
@@ -324,15 +318,6 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
         const updateCalls: Promise<boolean>[] = [];
         const clonedLanguageTexts: { [key in PreviewScreenType]?: Record<string, Record<string, string>> } =
             cloneDeep(languageTexts);
-
-        // Delete keys that are marked for deletion.
-        Object.keys(deletedI18nKeys).forEach((screen: PreviewScreenType) => {
-            if (deletedI18nKeys[screen]?.length > 0) {
-                deletedI18nKeys[screen].forEach((key: string) => {
-                    delete clonedLanguageTexts[screen][selectedLanguage][key];
-                });
-            }
-        });
 
         Object.keys(clonedLanguageTexts).forEach((screen: PreviewScreenType) => {
             Object.keys(clonedLanguageTexts[screen]).forEach((locale: string) => {
@@ -366,14 +351,14 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
      * @param event - The change event from the language text input.
      */
     const handleLanguageTextChange = (event: ChangeEvent<HTMLInputElement>) => {
-        if (selectedScreenType && i18nKeyInputValue && selectedLanguage) {
+        if (i18nKeyInputValue && selectedLanguage) {
             setLanguageTexts((prevTexts: { [key in PreviewScreenType]: Record<string, Record<string, string>> }) => ({
                 ...prevTexts,
-                [selectedScreenType.id]: {
-                    ...prevTexts?.[selectedScreenType.id],
+                [i18nKeyInputValue.screen]: {
+                    ...prevTexts?.[i18nKeyInputValue.screen],
                     [selectedLanguage]: {
-                        ...prevTexts?.[selectedScreenType.id]?.[selectedLanguage],
-                        [i18nKeyInputValue]: event.target.value
+                        ...prevTexts?.[i18nKeyInputValue.screen]?.[selectedLanguage],
+                        [i18nKeyInputValue.key]: event.target.value
                     }
                 }
             }));
@@ -408,7 +393,7 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                         </Typography>
                         <div className="i18n-selection-row">
                             <Autocomplete
-                                options={ i18nKeys }
+                                options={ availableI18nKeys }
                                 value={ selectedI18nKey }
                                 onChange={ (
                                     _event: SyntheticEvent,
@@ -489,54 +474,12 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
 
                 <div>
                     <Typography variant="subtitle2" gutterBottom>
-                        { t("flows:core.elements.textPropertyField.i18nCard.screenName") }
-                    </Typography>
-                    <Autocomplete
-                        options={ screenTypes }
-                        getOptionLabel={ (option: ScreenTypeOption) => option.label }
-                        value={ selectedScreenType }
-                        onChange={ (
-                            _event: React.SyntheticEvent,
-                            newValue: ScreenTypeOption
-                        ): void => {
-                            setSelectedScreenType(newValue);
-                            setI18nKeyInputValue("");
-                        } }
-                        renderInput={ (params: any) => (
-                            <TextField
-                                { ...params }
-                                placeholder={
-                                    t("flows:core.elements.textPropertyField.i18nCard.selectScreenName")
-                                }
-                                size="small"
-                            />
-                        ) }
-                        renderOption={ (props: any, option: ScreenTypeOption) => (
-                            <li { ...props } className="option-item">
-                                <Tooltip title={ option.label } placement="top">
-                                    <span className="option-text">{ option.label }</span>
-                                </Tooltip>
-                            </li>
-                        ) }
-                        slotProps={ {
-                            popper: {
-                                className: "flow-builder-resource-property-panel-i18n-configuration"
-                            }
-                        } }
-                        isOptionEqualToValue={ (option: ScreenTypeOption, value: ScreenTypeOption) =>
-                            option.id === value.id }
-                        disabled={ !selectedLanguage }
-                    />
-                </div>
-
-                <div>
-                    <Typography variant="subtitle2" gutterBottom>
                         { t("flows:core.elements.textPropertyField.i18nCard.i18nKey") }
                     </Typography>
                     <Autocomplete
                         freeSolo
-                        options={ availableI18nKeys }
-                        inputValue={ i18nKeyInputValue }
+                        options={ i18nKeys }
+                        inputValue={ i18nKeyInputValue?.key || "" }
                         onInputChange={ (_event: SyntheticEvent, newInputValue: string) => {
                             const value: string = newInputValue.trim();
 
@@ -544,9 +487,13 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                                 return;
                             }
 
-                            setI18nKeyInputValue(newInputValue.trim());
+                            setI18nKeyInputValue({
+                                key: value,
+                                label: value,
+                                screen: primaryI18nScreen
+                            });
                         } }
-                        disabled={ !selectedScreenType }
+                        disabled={ !selectedLanguage }
                         renderInput={ (params: any) => (
                             <TextField
                                 { ...params }
@@ -555,18 +502,19 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                                 size="small"
                             />
                         ) }
-                        renderOption={ (props: any, option: string) => (
+                        renderOption={ (props: any, option: I18nKeyOption) => (
                             <li { ...props } className="option-item">
-                                <Tooltip title={ option } placement="top">
-                                    <span className="option-text">{ option }</span>
+                                <Tooltip title={ option.label } placement="top">
+                                    <span className="option-text">{ option.label }</span>
                                 </Tooltip>
                                 {
-                                    isCustomI18nKey(selectedScreenType?.id as PreviewScreenType, option) && (
+                                    option.key === primaryI18nScreen &&
+                                    isCustomI18nKey(primaryI18nScreen, option.key) && (
                                         <IconButton
                                             size="small"
                                             onClick={ (e: React.MouseEvent) => {
                                                 e.stopPropagation();
-                                                handleDeleteI18nKey(option);
+                                                handleDeleteI18nKey(option.key);
                                             } }
                                             aria-label={ t("common:delete") }
                                             className="delete-icon-button"
@@ -591,10 +539,11 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                     </Typography>
                     { LanguageTextField ? (
                         <LanguageTextField
-                            value={ languageTexts?.[selectedScreenType?.id]?.[selectedLanguage]?.[i18nKeyInputValue]
-                                ?? i18nText?.[selectedScreenType?.id]?.[i18nKeyInputValue] ?? "" }
+                            value={ languageTexts?.[i18nKeyInputValue?.screen]?.[selectedLanguage]
+                                ?.[i18nKeyInputValue?.key] ?? i18nText?.[i18nKeyInputValue?.screen]
+                                ?.[i18nKeyInputValue?.key] ?? "" }
                             onChange={ handleLanguageTextChange }
-                            disabled={ !selectedScreenType || !i18nKeyInputValue }
+                            disabled={ !selectedLanguage || !i18nKeyInputValue }
                         />
                     ) : (
                         <TextField
@@ -603,10 +552,11 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                             placeholder={
                                 t("flows:core.elements.textPropertyField.i18nCard.languageTextPlaceholder")
                             }
-                            value={ languageTexts?.[selectedScreenType?.id]?.[selectedLanguage]?.[i18nKeyInputValue]
-                                ?? i18nText?.[selectedScreenType?.id]?.[i18nKeyInputValue] ?? "" }
+                            value={ languageTexts?.[i18nKeyInputValue?.screen]?.[selectedLanguage]
+                                ?.[i18nKeyInputValue?.key] ?? i18nText?.[i18nKeyInputValue?.screen]
+                                ?.[i18nKeyInputValue?.key] ?? "" }
                             onChange={ handleLanguageTextChange }
-                            disabled={ !selectedScreenType || !i18nKeyInputValue }
+                            disabled={ !selectedLanguage || !i18nKeyInputValue }
                             multiline
                             rows={ 3 }
                         />
@@ -615,6 +565,8 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
             </div>
         );
     };
+
+    console.log(primaryI18nScreen);
 
     if (!open) {
         return null;
@@ -701,8 +653,7 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                                 size="small"
                                 onClick={ (): void => {
                                     setIsCustomizeView(false);
-                                    setSelectedScreenType(null);
-                                    setI18nKeyInputValue("");
+                                    setI18nKeyInputValue(null);
                                     setLanguageTexts({});
                                 } }
                                 variant="outlined"
