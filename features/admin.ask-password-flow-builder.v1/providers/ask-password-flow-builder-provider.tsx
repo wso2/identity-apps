@@ -56,7 +56,11 @@ const AskPasswordFlowBuilderProvider: FC<AskPasswordFlowBuilderProviderProps> = 
         ResourceProperties={ ResourceProperties }
         flowType={ FlowTypes.INVITED_USER_REGISTRATION }
         screenTypes={ [
-            PreviewScreenType.COMMON
+            PreviewScreenType.SIGN_UP,
+            PreviewScreenType.COMMON,
+            PreviewScreenType.EMAIL_LINK_EXPIRY,
+            PreviewScreenType.SMS_OTP,
+            PreviewScreenType.EMAIL_OTP
         ] }
     >
         <FlowContextWrapper>{ children }</FlowContextWrapper>

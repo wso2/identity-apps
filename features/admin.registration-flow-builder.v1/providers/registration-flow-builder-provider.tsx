@@ -54,8 +54,8 @@ const RegistrationFlowBuilderProvider: FC<RegistrationFlowBuilderProviderProps> 
         ResourceProperties={ ResourceProperties }
         flowType={ FlowTypes.REGISTRATION }
         screenTypes={ [
-            PreviewScreenType.COMMON,
             PreviewScreenType.SIGN_UP,
+            PreviewScreenType.COMMON,
             PreviewScreenType.EMAIL_LINK_EXPIRY,
             PreviewScreenType.EMAIL_OTP,
             PreviewScreenType.SMS_OTP
