@@ -1,5 +1,14 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.10.8
+
+### Patch Changes
+
+- [#8817](https://github.com/wso2/identity-apps/pull/8817) [`045a0cb57b0816879206072b724571240f904773`](https://github.com/wso2/identity-apps/commit/045a0cb57b0816879206072b724571240f904773) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enhance the i18n configuration editor UX
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.16
+
 ## 0.10.7
 
 ### Patch Changes

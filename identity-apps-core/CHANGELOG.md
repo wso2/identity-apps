@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.2.3
+
+### Patch Changes
+
+- [#8817](https://github.com/wso2/identity-apps/pull/8817) [`045a0cb57b0816879206072b724571240f904773`](https://github.com/wso2/identity-apps/commit/045a0cb57b0816879206072b724571240f904773) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enhance the i18n configuration editor UX
+
 ## 3.2.2
 
 ### Patch Changes
