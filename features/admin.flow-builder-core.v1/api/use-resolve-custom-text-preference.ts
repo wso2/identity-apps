@@ -23,6 +23,8 @@ import { BrandingPreferenceTypes, PreviewScreenType } from "@wso2is/common.brand
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig } from "axios";
+import cloneDeep from "lodash-es/cloneDeep";
+import { useMemo } from "react";
 import useSWR, { SWRResponse } from "swr";
 import { CustomTextPreferenceResult } from "../models/custom-text-preference";
 
@@ -94,10 +96,14 @@ const useResolveCustomTextPreferences = (
         : `${store.getState().config.endpoints.brandingTextPreference}/resolve`;
 
     // Create cache key based on all parameters.
-    const cacheKey: string = shouldFetch ?
-        `resolve-multiple-custom-text-preferences-${name}-${JSON.stringify(screenTypes.sort())}-` +
-        `${locale}-${type}-${subOrg}`
-        : null;
+    const cacheKey: string = useMemo(() => {
+        const sortedScreenTypes: PreviewScreenType[] = cloneDeep(screenTypes).sort();
+
+        return shouldFetch
+            ? `resolve-multiple-custom-text-preferences-${name}-${JSON.stringify(sortedScreenTypes)}-` +
+              `${locale}-${type}-${subOrg}`
+            : null;
+    }, [ name, screenTypes, locale, type, subOrg, shouldFetch ]);
 
     const {
         data,

@@ -20,6 +20,8 @@ import { CustomTextPreferenceScreenMetaInterface } from "@wso2is/admin.branding.
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import cloneDeep from "lodash-es/cloneDeep";
+import { useMemo } from "react";
 import useSWR, { SWRResponse } from "swr";
 import { CustomTextPreferenceScreenMetaResult } from "../models/custom-text-preference";
 
@@ -79,9 +81,14 @@ const useGetCustomTextPreferenceScreenMeta = (
     screens: PreviewScreenType[],
     shouldFetch: boolean = true
 ): CustomTextPreferenceScreenMetaResult => {
-    const cacheKey: string = shouldFetch
-        ? `custom-text-preference-multiple-screen-meta-${JSON.stringify(screens.sort())}`
-        : null;
+    // Create cache key based on all parameters.
+    const cacheKey: string = useMemo(() => {
+        const sortedScreens: PreviewScreenType[] = cloneDeep(screens).sort();
+
+        return shouldFetch
+            ? `custom-text-preference-multiple-screen-meta-${JSON.stringify(sortedScreens)}`
+            : null;
+    }, [ screens, shouldFetch ]);
 
     const {
         data,

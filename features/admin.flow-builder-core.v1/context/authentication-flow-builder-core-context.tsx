@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { CustomTextPreferenceScreenMetaInterface } from "@wso2is/admin.branding.v1/models/custom-text-preference";
 import { PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { Claim } from "@wso2is/core/models";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
@@ -138,10 +137,6 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * Indicates whether the i18n key related operations are in progress.
      */
     isI18nSubmitting?: boolean;
-    /**
-     * Screen metadata for custom text preferences.
-     */
-    screenMeta?: { [key in PreviewScreenType]?: CustomTextPreferenceScreenMetaInterface };
     /**
      * Function to check if a given i18n key is custom for the specified screen type.
      *
