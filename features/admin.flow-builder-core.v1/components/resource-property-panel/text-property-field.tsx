@@ -21,7 +21,7 @@ import IconButton from "@oxygen-ui/react/IconButton";
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import TextField from "@oxygen-ui/react/TextField";
 import Tooltip from "@oxygen-ui/react/Tooltip";
-import { PlusIcon } from "@oxygen-ui/react-icons";
+import { LanguageIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import startCase from "lodash-es/startCase";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo, useRef, useState } from "react";
@@ -136,7 +136,7 @@ const TextPropertyField: FunctionComponent<TextPropertyFieldPropsInterface> = ({
                                     aria-pressed={ isI18nCardOpen }
                                     className="flow-builder-resource-property-panel-i18n icon-button"
                                 >
-                                    <PlusIcon />
+                                    <LanguageIcon size={ 13 } />
                                 </IconButton>
                             </Tooltip>
                         </InputAdornment>
