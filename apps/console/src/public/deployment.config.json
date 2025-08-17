@@ -817,7 +817,7 @@
                 "scopes": {
                     "create": [],
                     "delete": [],
-                    "feature": [],
+                    "feature": ["console:flows"],
                     "read": [],
                     "update": []
                 }
@@ -1816,6 +1816,7 @@
                 "branding",
                 "consoleSettings",
                 "emailTemplates",
+                "flows",
                 "gettingStarted",
                 "governanceConnectors",
                 "groups",
