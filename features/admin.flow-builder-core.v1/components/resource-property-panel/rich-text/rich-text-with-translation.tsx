@@ -19,7 +19,7 @@
 import Box from "@oxygen-ui/react/Box";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Tooltip from "@oxygen-ui/react/Tooltip";
-import { PlusIcon } from "@oxygen-ui/react-icons";
+import { LanguageIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, {
     ChangeEvent,
@@ -131,7 +131,7 @@ const RichTextWithTranslation: FunctionComponent<RichTextWithTranslationProps> =
                     size="small"
                     className="rich-text-translation-icon-button"
                 >
-                    <PlusIcon />
+                    <LanguageIcon size={ 13 } />
                 </IconButton>
             </Tooltip>
             {
