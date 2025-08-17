@@ -25,7 +25,7 @@ import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import useGetBrandingPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-branding-preference-resolve";
+import useGetBrandingPreference from "@wso2is/common.branding.v1/api/use-get-branding-preference";
 import { BrandingPreferenceTypes, PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { AlertLevels, Claim } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -49,7 +49,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import useGetCustomTextPreferenceFallbacks from "../api/use-get-custom-text-preference-fallbacks";
-import useGetCustomTextPreferenceScreenMeta from "../api/use-get-custom-text-preference-screen-meta";
 import useGetMetadata from "../api/use-metadata";
 import useResolveCustomTextPreferences from "../api/use-resolve-custom-text-preference";
 import AuthenticationFlowBuilderCoreContext from "../context/authentication-flow-builder-core-context";
@@ -123,11 +122,6 @@ const AuthenticationFlowBuilderCoreProvider = ({
         isLoading: fallbackTextPreferenceLoading
     } = useGetCustomTextPreferenceFallbacks(screenTypes, language, screenTypes?.length > 0);
     const {
-        data: screenMeta,
-        isLoading: screenMetaLoading,
-        error: screenMetaError
-    } = useGetCustomTextPreferenceScreenMeta(screenTypes, screenTypes?.length > 0);
-    const {
         data: customTextPreferenceMeta,
         isLoading: customTextPreferenceMetaLoading,
         error: customTextPreferenceMetaError
@@ -135,7 +129,7 @@ const AuthenticationFlowBuilderCoreProvider = ({
     const {
         data: brandingPreference,
         error: brandingPreferenceError
-    } = useGetBrandingPreferenceResolve(tenantDomain);
+    } = useGetBrandingPreference(tenantDomain);
 
     /**
      * Memoized i18n text combining both text preference and fallback.
@@ -211,19 +205,6 @@ const AuthenticationFlowBuilderCoreProvider = ({
             }));
         }
     }, [ fallbackTextPreferenceFetchError ]);
-
-    /**
-     * Error handling for screen meta fetch.
-     */
-    useEffect(() => {
-        if (screenMetaError) {
-            dispatch(addAlert({
-                description: t("flows:core.notifications.screenMetaFetch.genericError.description"),
-                level: AlertLevels.ERROR,
-                message: t("flows:core.notifications.screenMetaFetch.genericError.message")
-            }));
-        }
-    }, [ screenMetaError ]);
 
     /**
      * Error handling for custom text preference meta fetch.
@@ -345,7 +326,6 @@ const AuthenticationFlowBuilderCoreProvider = ({
                     i18nText,
                     i18nTextLoading: textPreferenceLoading ||
                         fallbackTextPreferenceLoading ||
-                        screenMetaLoading ||
                         customTextPreferenceMetaLoading,
                     isBrandingEnabled,
                     isCustomI18nKey,
@@ -359,7 +339,6 @@ const AuthenticationFlowBuilderCoreProvider = ({
                     onResourceDropOnCanvas,
                     primaryI18nScreen,
                     resourcePropertiesPanelHeading,
-                    screenMeta,
                     selectedAttributes,
                     setIsOpenResourcePropertiesPanel,
                     setIsResourcePanelOpen,

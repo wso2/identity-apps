@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FormHelperText } from "@mui/material";
 import Autocomplete from "@oxygen-ui/react/Autocomplete";
 import Button from "@oxygen-ui/react/Button";
 import Card from "@oxygen-ui/react/Card";
@@ -24,13 +25,14 @@ import CardContent from "@oxygen-ui/react/CardContent";
 import CardHeader from "@oxygen-ui/react/CardHeader";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import IconButton from "@oxygen-ui/react/IconButton";
+import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import Link from "@oxygen-ui/react/Link";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
-import { GearIcon, TrashIcon, XMarkIcon } from "@oxygen-ui/react-icons";
+import { PenToSquareIcon, PlusIcon, TrashIcon, XMarkIcon } from "@oxygen-ui/react-icons";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { PreviewScreenType } from "@wso2is/common.branding.v1/models";
@@ -44,7 +46,9 @@ import upperFirst from "lodash-es/upperFirst";
 import React, {
     ChangeEvent,
     FunctionComponent,
+    MutableRefObject,
     ReactElement,
+    RefObject,
     SyntheticEvent,
     useEffect,
     useMemo,
@@ -143,7 +147,6 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
         i18nText,
         i18nTextLoading,
         isBrandingEnabled,
-        screenMeta,
         isCustomI18nKey,
         updateI18nKey,
         isI18nSubmitting,
@@ -153,8 +156,9 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
         primaryI18nScreen
     } = useAuthenticationFlowBuilderCore();
 
-    const cardRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
-    const cardContentRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+    const cardRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+    const cardContentRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+    const isI18nCreationMode: MutableRefObject<boolean> = useRef<boolean>(false);
     const [ position, setPosition ] = useState<{ top: number; left: number }>({ left: 0, top: 0 });
     const [ isCustomizeView, setIsCustomizeView ] = useState<boolean>(false);
     const [ i18nKeyInputValue, setI18nKeyInputValue ] = useState<I18nKeyOption>(null);
@@ -162,6 +166,17 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
         [key in PreviewScreenType]?: Record<string, Record<string, string>>}>({});
     const [ deletedI18nKeys, setDeletedI18nKeys ] = useState<string[]>([]);
     const [ isScrolled, setIsScrolled ] = useState<boolean>(false);
+
+    /**
+     * Build prefix for new i18n keys.
+     */
+    const newI18nKeyPrefix: string = useMemo(() => {
+        if (!primaryI18nScreen) {
+            return "";
+        }
+
+        return `${primaryI18nScreen.toString().replaceAll("-", ".")}.`;
+    }, [ primaryI18nScreen ]);
 
     /**
      * Effect to update the position of the card based on the anchor element.
@@ -476,61 +491,100 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                     <Typography variant="subtitle2" gutterBottom>
                         { t("flows:core.elements.textPropertyField.i18nCard.i18nKey") }
                     </Typography>
-                    <Autocomplete
-                        freeSolo
-                        options={ i18nKeys }
-                        inputValue={ i18nKeyInputValue?.key || "" }
-                        onInputChange={ (_event: SyntheticEvent, newInputValue: string) => {
-                            const value: string = newInputValue.trim();
+                    {
+                        isI18nCreationMode.current ? (
+                            <>
+                                <TextField
+                                    fullWidth
+                                    size="small"
+                                    placeholder={
+                                        t("flows:core.elements.textPropertyField.i18nCard.i18nKeyInputPlaceholder")
+                                    }
+                                    value={ i18nKeyInputValue?.key || "" }
+                                    onChange={ (event: ChangeEvent<HTMLInputElement>) => {
+                                        const value: string = event.target.value.trim();
 
-                            if (!/^[a-z.]*$/.test(value)) {
-                                return;
-                            }
+                                        if (!/^[a-z.]*$/.test(value)) {
+                                            return;
+                                        }
 
-                            setI18nKeyInputValue({
-                                key: value,
-                                label: value,
-                                screen: primaryI18nScreen
-                            });
-                        } }
-                        disabled={ !selectedLanguage }
-                        renderInput={ (params: any) => (
-                            <TextField
-                                { ...params }
-                                placeholder={ t("flows:core.elements.textPropertyField.i18nCard." +
-                                                "selectOrAddI18nKey") }
-                                size="small"
+                                        setI18nKeyInputValue({
+                                            key: value,
+                                            label: value,
+                                            screen: primaryI18nScreen
+                                        });
+                                    } }
+                                    disabled={ !selectedLanguage }
+                                    InputProps={ {
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                { newI18nKeyPrefix }
+                                            </InputAdornment>
+                                        )
+                                    } }
+                                />
+                                <FormHelperText>
+                                    {
+                                        t("flows:core.elements.textPropertyField.i18nCard.i18nKeyInputHint", {
+                                            newI18nKeyPrefix,
+                                            primaryI18nScreen
+                                        })
+                                    }
+                                </FormHelperText>
+                            </>
+                        ) : (
+                            <Autocomplete
+                                options={ i18nKeys }
+                                disabled={ !selectedLanguage }
+                                onChange={ (_event: SyntheticEvent, newValue: I18nKeyOption) => {
+                                    if (newValue) {
+                                        setI18nKeyInputValue({
+                                            key: newValue.key,
+                                            label: newValue.label,
+                                            screen: newValue.screen
+                                        });
+                                    }
+                                } }
+                                value={ i18nKeyInputValue }
+                                renderInput={ (params: any) => (
+                                    <TextField
+                                        { ...params }
+                                        placeholder={ t("flows:core.elements.textPropertyField.i18nCard." +
+                                                        "selectI18nKey") }
+                                        size="small"
+                                    />
+                                ) }
+                                renderOption={ (props: any, option: I18nKeyOption) => (
+                                    <li { ...props } className="option-item">
+                                        <Tooltip title={ option.label } placement="top">
+                                            <span className="option-text">{ option.label }</span>
+                                        </Tooltip>
+                                        {
+                                            option.screen === primaryI18nScreen &&
+                                            isCustomI18nKey(primaryI18nScreen, option.key) && (
+                                                <IconButton
+                                                    size="small"
+                                                    onClick={ (e: React.MouseEvent) => {
+                                                        e.stopPropagation();
+                                                        handleDeleteI18nKey(option.key);
+                                                    } }
+                                                    aria-label={ t("common:delete") }
+                                                    className="delete-icon-button"
+                                                >
+                                                    <TrashIcon />
+                                                </IconButton>
+                                            )
+                                        }
+                                    </li>
+                                ) }
+                                slotProps={ {
+                                    popper: {
+                                        className: "flow-builder-resource-property-panel-i18n-configuration"
+                                    }
+                                } }
                             />
-                        ) }
-                        renderOption={ (props: any, option: I18nKeyOption) => (
-                            <li { ...props } className="option-item">
-                                <Tooltip title={ option.label } placement="top">
-                                    <span className="option-text">{ option.label }</span>
-                                </Tooltip>
-                                {
-                                    option.key === primaryI18nScreen &&
-                                    isCustomI18nKey(primaryI18nScreen, option.key) && (
-                                        <IconButton
-                                            size="small"
-                                            onClick={ (e: React.MouseEvent) => {
-                                                e.stopPropagation();
-                                                handleDeleteI18nKey(option.key);
-                                            } }
-                                            aria-label={ t("common:delete") }
-                                            className="delete-icon-button"
-                                        >
-                                            <TrashIcon />
-                                        </IconButton>
-                                    )
-                                }
-                            </li>
-                        ) }
-                        slotProps={ {
-                            popper: {
-                                className: "flow-builder-resource-property-panel-i18n-configuration"
-                            }
-                        } }
-                    />
+                        )
+                    }
                 </div>
 
                 <div>
@@ -566,8 +620,6 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
         );
     };
 
-    console.log(primaryI18nScreen);
-
     if (!open) {
         return null;
     }
@@ -590,7 +642,11 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
             >
                 <CardHeader
                     title={ isCustomizeView
-                        ? t("flows:core.elements.textPropertyField.i18nCard.configureTitle")
+                        ? (
+                            isI18nCreationMode.current
+                                ? t("flows:core.elements.textPropertyField.i18nCard.createTitle")
+                                : t("flows:core.elements.textPropertyField.i18nCard.updateTitle")
+                        )
                         : t("flows:core.elements.textPropertyField.i18nCard.title", {
                             propertyKey: upperFirst(lowerCase(propertyKey))
                         })
@@ -614,39 +670,79 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                 </CardContent>
                 <CardActions className="card-actions">
                     { !isCustomizeView ? (
-                        <Tooltip
-                            title={ !isBrandingEnabled ? (
-                                <Trans
-                                    i18nKey={ "flows:core.elements.textPropertyField.i18nCard.tooltip" +
-                                        ".enableBrandingRequired" }
-                                >
-                                    Enable <Link
-                                        onClick={ handleNavigateToBranding }
-                                        className="branding-link"
-                                    >branding</Link> to update translation text.
-                                </Trans>
-                            ) : "" }
-                            placement="top"
-                            slotProps={ {
-                                popper: {
-                                    className: "flow-builder-resource-property-panel-i18n-configuration"
-                                }
-                            } }
-                        >
-                            <span>
-                                <Button
-                                    variant="text"
-                                    size="small"
-                                    onClick={ (): void => {
-                                        setIsCustomizeView(true);
-                                    } }
-                                    startIcon={ <GearIcon /> }
-                                    disabled={ !isBrandingEnabled }
-                                >
-                                    { t("flows:core.elements.textPropertyField.i18nCard.configure") }
-                                </Button>
-                            </span>
-                        </Tooltip>
+                        <>
+                            <Tooltip
+                                title={ !isBrandingEnabled ? (
+                                    <Trans
+                                        i18nKey={ "flows:core.elements.textPropertyField.i18nCard.tooltip" +
+                                            ".enableBrandingRequired" }
+                                    >
+                                        Enable <Link
+                                            onClick={ handleNavigateToBranding }
+                                            className="branding-link"
+                                        >branding</Link> to update translation text.
+                                    </Trans>
+                                ) : t("flows:core.elements.textPropertyField.i18nCard.tooltip" +
+                                    ".editExistingTranslation") }
+                                placement="top"
+                                slotProps={ {
+                                    popper: {
+                                        className: "flow-builder-resource-property-panel-i18n-configuration"
+                                    }
+                                } }
+                            >
+                                <span>
+                                    <Button
+                                        variant="contained"
+                                        size="small"
+                                        onClick={ (): void => {
+                                            isI18nCreationMode.current = false;
+                                            setIsCustomizeView(true);
+                                        } }
+                                        startIcon={ <PenToSquareIcon /> }
+                                        disabled={ !isBrandingEnabled }
+                                        color="secondary"
+                                    >
+                                        { t("common:edit") }
+                                    </Button>
+                                </span>
+                            </Tooltip>
+                            <Tooltip
+                                title={ !isBrandingEnabled ? (
+                                    <Trans
+                                        i18nKey={ "flows:core.elements.textPropertyField.i18nCard.tooltip" +
+                                            ".enableBrandingRequired" }
+                                    >
+                                        Enable <Link
+                                            onClick={ handleNavigateToBranding }
+                                            className="branding-link"
+                                        >branding</Link> to update translation text.
+                                    </Trans>
+                                ) : t("flows:core.elements.textPropertyField.i18nCard.tooltip" +
+                                    ".addNewTranslation") }
+                                placement="top"
+                                slotProps={ {
+                                    popper: {
+                                        className: "flow-builder-resource-property-panel-i18n-configuration"
+                                    }
+                                } }
+                            >
+                                <span>
+                                    <Button
+                                        variant="contained"
+                                        size="small"
+                                        onClick={ (): void => {
+                                            isI18nCreationMode.current = true;
+                                            setIsCustomizeView(true);
+                                        } }
+                                        startIcon={ <PlusIcon /> }
+                                        disabled={ !isBrandingEnabled }
+                                    >
+                                        { t("common:new") }
+                                    </Button>
+                                </span>
+                            </Tooltip>
+                        </>
                     ) : (
                         <>
                             <Button
@@ -668,7 +764,7 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                                 disabled={ Object.keys(languageTexts).length === 0 || isI18nSubmitting }
                                 loading={ isI18nSubmitting }
                             >
-                                { t("common:save") }
+                                { isI18nCreationMode.current ? t("common:create") : t("common:update") }
                             </Button>
                         </>
                     ) }
