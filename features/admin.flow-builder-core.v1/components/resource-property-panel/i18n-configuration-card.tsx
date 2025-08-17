@@ -351,6 +351,15 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                 message: t("flows:core.notifications.updateI18nKey.success.message")
             }));
             setLanguageTexts({});
+            setIsCustomizeView(false);
+            if (i18nKeyInputValue?.key) {
+                onChange(i18nKeyInputValue.key);
+            }
+            if (deletedI18nKeys?.includes(selectedI18nKey)) {
+                onChange(null);
+            }
+            setDeletedI18nKeys([]);
+            setI18nKeyInputValue(null);
         } else {
             dispatch(addAlert({
                 description: t("flows:core.notifications.updateI18nKey.genericError.description"),
@@ -372,12 +381,23 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                 [i18nKeyInputValue.screen]: {
                     ...prevTexts?.[i18nKeyInputValue.screen],
                     [selectedLanguage]: {
+                        ...i18nText?.[i18nKeyInputValue.screen],
                         ...prevTexts?.[i18nKeyInputValue.screen]?.[selectedLanguage],
                         [i18nKeyInputValue.key]: event.target.value
                     }
                 }
             }));
         }
+    };
+
+    /**
+     * Finds the i18n screen associated with a given i18n key.
+     *
+     * @param i18nKey - The i18n key to find the screen for.
+     * @returns The screen associated with the i18n key, or an empty string if not found.
+     */
+    const findI18nScreen = (i18nKey: string): string => {
+        return i18nKeys?.find((key: I18nKeyOption) => key.key === i18nKey)?.screen || "";
     };
 
     /**
@@ -409,7 +429,7 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                         <div className="i18n-selection-row">
                             <Autocomplete
                                 options={ availableI18nKeys }
-                                value={ selectedI18nKey }
+                                value={ selectedI18nKey == "" ? null : selectedI18nKey }
                                 onChange={ (
                                     _event: SyntheticEvent,
                                     newValue: string
@@ -500,7 +520,7 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                                     placeholder={
                                         t("flows:core.elements.textPropertyField.i18nCard.i18nKeyInputPlaceholder")
                                     }
-                                    value={ i18nKeyInputValue?.key || "" }
+                                    value={ i18nKeyInputValue?.key?.slice(newI18nKeyPrefix.length) || "" }
                                     onChange={ (event: ChangeEvent<HTMLInputElement>) => {
                                         const value: string = event.target.value.trim();
 
@@ -509,8 +529,8 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                                         }
 
                                         setI18nKeyInputValue({
-                                            key: value,
-                                            label: value,
+                                            key: newI18nKeyPrefix + value,
+                                            label: newI18nKeyPrefix + value,
                                             screen: primaryI18nScreen
                                         });
                                     } }
@@ -543,6 +563,8 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                                             label: newValue.label,
                                             screen: newValue.screen
                                         });
+                                    } else {
+                                        setI18nKeyInputValue(null);
                                     }
                                 } }
                                 value={ i18nKeyInputValue }
@@ -582,6 +604,8 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                                         className: "flow-builder-resource-property-panel-i18n-configuration"
                                     }
                                 } }
+                                isOptionEqualToValue={
+                                    (option: I18nKeyOption, value: I18nKeyOption) => option.key === value.key }
                             />
                         )
                     }
@@ -697,6 +721,15 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                                         size="small"
                                         onClick={ (): void => {
                                             isI18nCreationMode.current = false;
+                                            if (selectedI18nKey) {
+                                                setI18nKeyInputValue({
+                                                    key: selectedI18nKey,
+                                                    label: selectedI18nKey,
+                                                    screen: findI18nScreen(selectedI18nKey)
+                                                });
+                                            } else {
+                                                setI18nKeyInputValue(null);
+                                            }
                                             setIsCustomizeView(true);
                                         } }
                                         startIcon={ <PenToSquareIcon /> }

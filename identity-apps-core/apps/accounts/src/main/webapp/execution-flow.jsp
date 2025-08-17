@@ -28,6 +28,17 @@
 <%@include file="includes/localize.jsp" %>
 <%@include file="includes/init-url.jsp" %>
 
+<%
+    // Only the i18n text related to these screens will be loaded from the text branding API.
+    screenNames.add("sign-up");
+    screenNames.add("email-link-expiry");
+    screenNames.add("email-otp");
+    screenNames.add("sms-otp");
+    screenNames.add ("password-recovery");
+    screenNames.add("password-reset");
+    screenNames.add("password-reset-success");
+%>
+
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
@@ -72,17 +83,6 @@
     final String REGISTRATION = "REGISTRATION";
     final String INVITED_USER_REGISTRATION = "INVITED_USER_REGISTRATION";
     final String PASSWORD_RECOVERY = "PASSWORD_RECOVERY";
-%>
-
-<%
-    // Only the i18n text related to these screens will be loaded from the text branding API.
-    screenNames.add("sign-up");
-    screenNames.add("email-link-expiry");
-    screenNames.add("email-otp");
-    screenNames.add("sms-otp");
-    screenNames.add ("password-recovery");
-    screenNames.add("password-reset");
-    screenNames.add("password-reset-success");
 %>
 
 <!DOCTYPE html>

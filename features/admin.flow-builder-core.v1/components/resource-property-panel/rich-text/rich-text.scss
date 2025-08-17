@@ -84,6 +84,18 @@
         }
     }
 
+    &.without-translation-icon {
+        .OxygenRichText-editor-root {
+            .OxygenRichText-editor-input {
+                padding: 10px 10px;
+            }
+
+            .OxygenRichText-editor-input-placeholder {
+                top: 16px;
+            }
+        }
+    }
+
     .OxygenRichText-i18n-placeholder {
         min-height: 150px;
         max-height: 300px;

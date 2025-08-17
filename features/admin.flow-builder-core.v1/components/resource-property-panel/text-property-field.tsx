@@ -107,7 +107,8 @@ const TextPropertyField: FunctionComponent<TextPropertyFieldPropsInterface> = ({
             <TextField
                 fullWidth
                 label={ startCase(propertyKey) }
-                defaultValue={ isI18nPattern ? "" : propertyValue }
+                defaultValue={ propertyValue }
+                value={ isI18nPattern ? "" : undefined }
                 onChange={ (e: ChangeEvent<HTMLInputElement>) =>
                     onChange(`config.${propertyKey}`, e.target.value, resource)
                 }
