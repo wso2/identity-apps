@@ -29,7 +29,7 @@
     background-color: transparent;
     border: none;
     width: 250px !important;
-    z-index: 999;
+    z-index: 1000;
 }
 
 .language-selector-dropdown.active {

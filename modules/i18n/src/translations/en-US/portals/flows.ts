@@ -73,22 +73,26 @@ export const flows: flowsNS = {
             textPropertyField: {
                 i18nCard: {
                     configure: "More",
-                    configureTitle: "Configure Translation Keys",
+                    createTitle: "Create Translations",
                     i18nKey: "Translation key",
+                    i18nKeyInputHint: "Translation key will be prefixed with '{{newI18nKeyPrefix}}' and added to the {{primaryI18nScreen}} screen",
+                    i18nKeyInputPlaceholder: "Enter a new translation key",
                     language: "Language",
-                    languageText: "Language text configuration",
+                    languageText: "Translation",
                     languageTextPlaceholder: "Enter text for the selected language",
-                    screenName: "Screen name",
                     selectI18nKey: "Select a translation key",
                     selectLanguage: "Select language",
-                    selectOrAddI18nKey: "Select or add a translation key",
-                    selectScreenName: "Select a screen name",
-                    title: "{{propertyKey}} translation"
+                    title: "{{propertyKey}} translation",
+                    tooltip: {
+                        addNewTranslation: "Add a new translation",
+                        editExistingTranslation: "Update an existing translation"
+                    },
+                    updateTitle: "Update Translations"
                 },
                 placeholder: "Enter {{propertyName}}",
                 tooltip: {
                     configureTranslation: "Configure translation",
-                    enableBrandingRequired: "Enable branding to update translation text. <1>Go to Branding</1>"
+                    enableBrandingRequired: "Enable branding to update translations. <1>Go to Branding</1>"
                 }
             }
         },
@@ -128,12 +132,6 @@ export const flows: flowsNS = {
                 genericError: {
                     description: "An error occurred while fetching the flow metadata.",
                     message: "Flow Metadata Fetch Error"
-                }
-            },
-            screenMetaFetch: {
-                genericError: {
-                    description: "An error occurred while fetching the screen metadata.",
-                    message: "Screen Meta Fetch Error"
                 }
             },
             textPreferenceFetch: {
