@@ -124,6 +124,8 @@ interface AddUserBasicProps extends IdentifiableComponentInterface {
     selectedUserStoreId: string;
     connectorProperties: ConnectorPropertyInterface[];
     hasWorkflowAssociations?: boolean;
+    askPasswordOption: string;
+    setAskPasswordOption: (option: string) => void;
 }
 
 /**
@@ -150,6 +152,8 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
     isBasicDetailsLoading,
     connectorProperties,
     hasWorkflowAssociations = false,
+    askPasswordOption,
+    setAskPasswordOption,
     [ "data-componentid" ]: componentId = "add-user-basic"
 }: AddUserBasicProps): ReactElement => {
     const { t } = useTranslation();
@@ -166,8 +170,6 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
     const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
     const systemReservedUserStores: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.systemReservedUserStores);
-
-    const [ askPasswordOption, setAskPasswordOption ] = useState<string>(userConfig.defautlAskPasswordOption);
     const [ passwordConfig, setPasswordConfig ] = useState<ValidationFormInterface>(undefined);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
     const [ userStore, setUserStore ] = useState<string>(selectedUserStoreId);
@@ -651,10 +653,18 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
      * This will set the ask password option as OFFLINE if email verification is not enabled or email is not required.
      */
     useEffect(() => {
-        if (!emailVerificationEnabled || !isEmailRequired) {
-            setAskPasswordOption(AskPasswordOptionTypes.OFFLINE);
+        if (!hasWorkflowAssociations) {
+            if (userConfig.defautlAskPasswordOption === AskPasswordOptionTypes.OFFLINE
+                || !emailVerificationEnabled || !isEmailRequired) {
+                setAskPasswordOption(AskPasswordOptionTypes.OFFLINE);
+            }
+        } else if (emailVerificationEnabled && isEmailRequired) {
+            setAskPasswordOption(AskPasswordOptionTypes.EMAIL);
         } else {
-            setAskPasswordOption(userConfig.defautlAskPasswordOption);
+            setAskPasswordOption(userConfig?.defautlAskPasswordOption !== AskPasswordOptionTypes.OFFLINE
+                ? userConfig?.defautlAskPasswordOption
+                : null
+            );
         }
     }, [ isEmailRequired ]);
 
