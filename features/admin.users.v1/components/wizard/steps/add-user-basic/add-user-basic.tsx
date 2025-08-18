@@ -1119,7 +1119,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                             name={ mobileSchema.name }
                             label={ fieldName }
                             placeholder={ t("user:forms.addUserForm.inputs.generic.placeholder", { label: fieldName }) }
-                            initialValue={ profileInfo.get(mobileSchema?.name) }
+                            initialValue={ profileInfo?.get(mobileSchema?.name) }
                             validate={ (value: string) => {
                                 if (isEmpty(value)) {
                                     return t("user:forms.addUserForm.inputs.generic.validations.empty", {
@@ -1134,6 +1134,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                     ? mobileSchema.maxLength
                                     : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
                             }
+                            validateFields={ [] }
                             data-componentid={ resolvedComponentId }
                             required
                         />
@@ -1332,6 +1333,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                                     return "First Name cannot contain the forward slash (/) character.";
                                                 }
                                             } }
+                                            validateFields={ [] }
                                             data-testid="user-mgt-add-user-form-firstName-input"
                                             data-componentid="user-mgt-add-user-form-firstName-input"
                                         />
@@ -1361,6 +1363,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                                     return "Last Name cannot contain the forward slash (/) character.";
                                                 }
                                             } }
+                                            validateFields={ [] }
                                             data-testid="user-mgt-add-user-form-lastName-input"
                                             data-componentid="user-mgt-add-user-form-lastName-input"
                                         />
@@ -1385,6 +1388,9 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                         <InputLabel
                                             id="pw-options-radio-buttons-group-label"
                                             htmlFor="pw-options-radio-buttons-group"
+                                            data-componentid={
+                                                "user-mgt-add-user-form-pw-options-radio-buttons-group-label"
+                                            }
                                         >
                                             { t("user:forms.addUserForm.buttons.radioButton.label") }
                                         </InputLabel>
@@ -1404,6 +1410,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                                     label={ askPasswordOptionData.label }
                                                     value={ askPasswordOptionData.value }
                                                     control={ <MuiRadio /> }
+                                                    data-testid={ askPasswordOptionData["data-testid"] }
                                                 />
 
                                                 { passwordOption === askPasswordOptionData.value && (
@@ -1433,6 +1440,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                                     label={ createPasswordOptionData.label }
                                                     value={ createPasswordOptionData.value }
                                                     control={ <MuiRadio /> }
+                                                    data-testid={ createPasswordOptionData["data-testid"] }
                                                 />
                                             </RadioGroup>
                                         </FormControl>
@@ -1442,12 +1450,14 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                             type="hidden"
                                             name="passwordOption"
                                             initialValue={ passwordOption }
+                                            validateFields={ [] }
                                         />
 
                                         { passwordOption === createPasswordOptionData.value && (
                                             <CreatePasswordOption
                                                 passwordConfig={ passwordConfig }
                                                 passwordRegex={ passwordRegex }
+                                                data-componentid="user-mgt-add-user-form-create-password-option"
                                             />
                                         ) }
                                     </Grid.Column>
