@@ -522,7 +522,8 @@ export class AppConstants {
         "consoleSettings",
         "apiResources",
         "approvals",
-        "workflows"
+        "workflows",
+        "flows"
     ];
 
     /**
