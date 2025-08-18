@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 3.1.10
+
+### Patch Changes
+
+- [#8822](https://github.com/wso2/identity-apps/pull/8822) [`0aa79bebadade668ba2c774348e36ea5153b12cd`](https://github.com/wso2/identity-apps/commit/0aa79bebadade668ba2c774348e36ea5153b12cd) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Add tldts lib to accounts webapp
+
+* [#8830](https://github.com/wso2/identity-apps/pull/8830) [`01e4ef56a17ed1e7d562a3a02af93e8a2c8cc7ac`](https://github.com/wso2/identity-apps/commit/01e4ef56a17ed1e7d562a3a02af93e8a2c8cc7ac) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue where the reCAPTCHA widget was not rendering in flows
+
 ## 3.1.9
 
 ### Patch Changes
