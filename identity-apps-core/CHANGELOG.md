@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.2.4
+
+### Patch Changes
+
+- [#8831](https://github.com/wso2/identity-apps/pull/8831) [`5cc28e43546f220dc2ce8e6f208f2af4aaa195c9`](https://github.com/wso2/identity-apps/commit/5cc28e43546f220dc2ce8e6f208f2af4aaa195c9) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue where the reCAPTCHA widget was not rendering in flows
+
 ## 3.2.3
 
 ### Patch Changes
