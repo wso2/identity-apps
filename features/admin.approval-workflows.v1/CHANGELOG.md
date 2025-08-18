@@ -1,5 +1,16 @@
 # @wso2is/admin.approval-workflows.v1
 
+## 1.0.9
+
+### Patch Changes
+
+- [#8820](https://github.com/wso2/identity-apps/pull/8820) [`da8bbbec473b49de9353b44420f33265e7061df6`](https://github.com/wso2/identity-apps/commit/da8bbbec473b49de9353b44420f33265e7061df6) Thanks [@Malith-19](https://github.com/Malith-19)! - Change the workflows icon and modify the check icon in the workflow step.
+
+- Updated dependencies [[`9b7331bb91d14db49ed732d6b73d1867856abd27`](https://github.com/wso2/identity-apps/commit/9b7331bb91d14db49ed732d6b73d1867856abd27), [`bca8a75d72251f1a779fcf8881dc44e18c6286ca`](https://github.com/wso2/identity-apps/commit/bca8a75d72251f1a779fcf8881dc44e18c6286ca), [`da8bbbec473b49de9353b44420f33265e7061df6`](https://github.com/wso2/identity-apps/commit/da8bbbec473b49de9353b44420f33265e7061df6), [`a25397ebd2b019b935fc58a5fb2c8b40d5e93937`](https://github.com/wso2/identity-apps/commit/a25397ebd2b019b935fc58a5fb2c8b40d5e93937)]:
+  - @wso2is/admin.core.v1@2.49.17
+  - @wso2is/i18n@2.30.4
+  - @wso2is/admin.roles.v2@2.27.190
+
 ## 1.0.8
 
 ### Patch Changes
