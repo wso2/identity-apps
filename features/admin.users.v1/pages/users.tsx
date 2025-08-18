@@ -32,6 +32,8 @@ import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { userConfig } from "@wso2is/admin.extensions.v1/configs";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import  useGetFlowConfig from "@wso2is/admin.flows.v1/api/use-get-flow-config";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {
     ConnectorPropertyInterface,
@@ -159,6 +161,10 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     );
     const hasGuestUserCreatePermissions: boolean = useRequiredScopes(
         featureConfig?.guestUser?.scopes?.create
+    );
+
+    const { data: invitedUserRegistrationConfigs } = useGetFlowConfig(
+        FlowTypes.INVITED_USER_REGISTRATION
     );
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
@@ -615,7 +621,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                     (property: ConnectorPropertyInterface) =>
                         property.name === ServerConfigurationsConstants.EMAIL_VERIFICATION_ENABLED);
 
-                setEmailVerificationEnabled(emailVerification.value === "true");
+                setEmailVerificationEnabled(emailVerification.value === "true" ||
+                    invitedUserRegistrationConfigs?.isEnabled);
             }).catch((error: AxiosError) => {
                 handleAlerts({
                     description: error?.response?.data?.description ?? t(
