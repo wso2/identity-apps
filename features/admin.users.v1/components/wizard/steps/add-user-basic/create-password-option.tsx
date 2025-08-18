@@ -89,7 +89,10 @@ const CreatePasswordOption: FunctionComponent<CreatePasswordOptionPropsInterface
     };
 
     return (
-        <Grid.Row columns={ 2 } data-componentid={ componentId }>
+        <Grid.Row
+            columns={ 2 }
+            data-componentid={ componentId }
+        >
             <Grid.Column mobile={ 16 } computer={ 10 }>
                 <div className={ "generate-password" }>
                     <div>
@@ -111,6 +114,7 @@ const CreatePasswordOption: FunctionComponent<CreatePasswordOptionPropsInterface
                         <FinalFormField
                             component="input"
                             type="hidden"
+                            validateFields={ [ newPasswordFieldName ] }
                             name={ newPasswordValidityFieldName }
                         />
                     </div>

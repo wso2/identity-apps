@@ -50,6 +50,12 @@ interface ProfileFormFieldProps<T> extends IdentifiableComponentInterface {
      * Validator for the field.
      */
     validator?: (value: string) => string | undefined;
+    /**
+     * List of field names to be revalidated when the current field is changed.
+     * If not provided, all fields will be revalidated.
+     * If an empty array is provided, no fields will be revalidated.
+     */
+    validateFields?: string[];
 }
 
 /**

@@ -48,6 +48,7 @@ const CountryField: FunctionComponent<CountryFieldPropsInterface> = ({
     isReadOnly,
     isRequired,
     validator,
+    validateFields,
     ["data-componentid"]: componentId = "country-field"
 }: CountryFieldPropsInterface): ReactElement => {
     const { t } = useTranslation();
@@ -83,6 +84,7 @@ const CountryField: FunctionComponent<CountryFieldPropsInterface> = ({
             name={ fieldName }
             label={ fieldLabel }
             validate={ validator ?? validateField }
+            validateFields={ validateFields }
             placeholder={ t("user:profile.forms.generic.inputs.dropdownPlaceholder", { fieldName: fieldLabel }) }
             options={ countryList?.map(({ key, flag, text: countryName, value }: CountryListItemInterface) => {
                 return {
