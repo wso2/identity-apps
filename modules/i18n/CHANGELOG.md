@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.5
+
+### Patch Changes
+
+- [#8784](https://github.com/wso2/identity-apps/pull/8784) [`bca8a75d72251f1a779fcf8881dc44e18c6286ca`](https://github.com/wso2/identity-apps/commit/bca8a75d72251f1a779fcf8881dc44e18c6286ca) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Update domain field label to Organization Handle and remove mandatory mark from Organization Name
+
 ## 2.30.4
 
 ### Patch Changes

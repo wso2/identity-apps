@@ -636,7 +636,7 @@ importers:
         specifier: ^1.5.158
         version: link:../../features/admin.template-core.v1
       '@wso2is/admin.tenants.v1':
-        specifier: ^2.29.16
+        specifier: ^2.29.17
         version: link:../../features/admin.tenants.v1
       '@wso2is/admin.username-validation.v1':
         specifier: ^1.5.205
@@ -678,7 +678,7 @@ importers:
         specifier: ^2.3.24
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.30.4
+        specifier: ^2.30.5
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.21
@@ -18759,7 +18759,7 @@ importers:
         specifier: ^2.3.22
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.24.13
+        specifier: ^2.30.5
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.16
