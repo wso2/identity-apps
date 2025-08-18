@@ -16,8 +16,10 @@
  * under the License.
  */
 
+
 import Box from "@oxygen-ui/react/Box";
-import { CircleCheckFilledIcon, PlusIcon } from "@oxygen-ui/react-icons";
+import Fab from "@oxygen-ui/react/Fab";
+import { CheckIcon, PlusIcon } from "@oxygen-ui/react-icons";
 import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
 import { IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { Hint } from "@wso2is/react-components";
@@ -285,9 +287,14 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                                                             <PlusIcon />
                                                         </div>
                                                     </div>
-                                                    <div>
-                                                        <CircleCheckFilledIcon className="icon-configured" />
-                                                    </div>
+                                                    <Fab
+                                                        aria-label="done"
+                                                        className="done"
+                                                        variant="circular"
+                                                        data-componentid={ `${componentId}-done-node` }
+                                                    >
+                                                        <CheckIcon/>
+                                                    </Fab>
                                                 </div>
                                             </>
                                         ) : (
