@@ -17,6 +17,7 @@
  */
 
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
+import { useGetWorkflowAssociations } from "@wso2is/admin.approval-workflows.v1/api/use-get-workflow-associations";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { userConfig } from "@wso2is/admin.extensions.v1";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
@@ -157,6 +158,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ newUserId, setNewUserId ] = useState<string>("");
     const [ submitStep, setSubmitStep ] = useState<WizardStepsFormTypes>(undefined);
     const [ selectedGroupsList, setSelectedGroupList ] = useState<GroupsInterface[]>([]);
+    const [ hasWorkflowAssociations, setHasWorkflowAssociations ] = useState<boolean>(false);
 
     const isLegacyUserAddWizardEnabled: boolean = isFeatureEnabled(
         userFeatureConfig,
@@ -182,6 +184,12 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     );
 
     const {
+        data: workflowAssociationDetails,
+        isLoading: isWorkflowAssociationDetailsRequestLoading,
+        error: workflowAssociationDetailsRequestError
+    } = useGetWorkflowAssociations(null, null, "operation eq ADD_USER");
+
+    const {
         data: originalGroupList,
         error: groupListFetchRequestError
     } = useGroupList(
@@ -189,7 +197,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         null,
         null,
         selectedUserStore,
-        excludedAttributes
+        excludedAttributes,
+        !hasWorkflowAssociations
     );
 
     const fixedGroupList: GroupsInterface[] = useMemo(() => {
@@ -219,6 +228,14 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             }
         });
     }, [ defaultUserTypeSelection ]);
+
+    /**
+     * Check for workflow associations.
+     */
+    useEffect(() => {
+        if (isWorkflowAssociationDetailsRequestLoading || workflowAssociationDetailsRequestError) return;
+        if (workflowAssociationDetails?.totalResults > 0) setHasWorkflowAssociations(true);
+    }, [ workflowAssociationDetails ]);
 
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
@@ -255,6 +272,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             return;
         }
 
+        if (isWorkflowAssociationDetailsRequestLoading) {
+            return;
+        }
+
         const wizardStepArray: WizardStepInterface[] = [];
 
         // The user is created in the organization.
@@ -277,7 +298,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         setIsStepsUpdated(true);
     }, [
         fixedGroupList,
-        isUserSummaryEnabled
+        isUserSummaryEnabled,
+        isWorkflowAssociationDetailsRequestLoading
     ]);
 
     /**
@@ -308,6 +330,23 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             message: t("console:manage.features.groups.notifications.fetchGroups.genericError.message")
         }));
     }, [ groupListFetchRequestError ]);
+
+    /**
+     * Show an alert if fetching workflow association details fails.
+     */
+    useEffect(() => {
+        if (workflowAssociationDetailsRequestError) {
+            dispatch(
+                addAlert({
+                    description: t(
+                        "approvalWorkflows:notifications.fetchWorkflowAssociations.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t("approvalWorkflows:notifications.fetchWorkflowAssociations.genericError.message")
+                })
+            );
+        }
+    }, [ workflowAssociationDetailsRequestError ]);
 
     const resolveSelectedUserstoreId = (): string => {
         let selectedUserstoreId: string = userstoresConfig.primaryUserstoreId;
@@ -813,6 +852,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     validationConfig ={ validationData }
                     selectedUserStoreId={ resolveSelectedUserstoreId() }
                     connectorProperties={ askPasswordConnectorDetails?.properties }
+                    hasWorkflowAssociations={ hasWorkflowAssociations }
                 />
             ),
             icon: getUserWizardStepIcons().general,
@@ -860,6 +900,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     }
                     password={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.newPassword }
                     isPasswordBased={ askPasswordFromUser }
+                    hasWorkflowAssociations={ hasWorkflowAssociations }
                 />
             ),
             icon: getUserWizardStepIcons().summary,

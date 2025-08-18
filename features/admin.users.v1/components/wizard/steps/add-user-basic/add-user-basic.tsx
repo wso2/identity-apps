@@ -123,6 +123,7 @@ interface AddUserBasicProps extends IdentifiableComponentInterface {
     setBasicDetailsLoading?: (toggle: boolean) => void;
     selectedUserStoreId: string;
     connectorProperties: ConnectorPropertyInterface[];
+    hasWorkflowAssociations?: boolean;
 }
 
 /**
@@ -148,6 +149,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
     selectedUserStoreId,
     isBasicDetailsLoading,
     connectorProperties,
+    hasWorkflowAssociations = false,
     [ "data-componentid" ]: componentId = "add-user-basic"
 }: AddUserBasicProps): ReactElement => {
     const { t } = useTranslation();
@@ -1433,6 +1435,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                                             isMultipleEmailAndMobileNumberEnabled }
                                                         isDistinctAttributeProfilesDisabled={
                                                             isDistinctAttributeProfilesDisabled }
+                                                        hasWorkflowAssociations = { hasWorkflowAssociations }
                                                     />
                                                 ) }
 
