@@ -32,7 +32,7 @@ export function loadRecaptchaApi(captchaScriptURL, captchaScriptId, recaptchaObj
     return new Promise((resolve, reject) => {
         const existing = document.getElementById(captchaScriptId);
 
-        if (existing) {
+        const resolveCaptchaObject = () => {
             if (window.grecaptcha) {
                 if (window.grecaptcha.enterprise && window.grecaptcha.enterprise.ready) {
                     return window.grecaptcha.enterprise.ready(() => resolve(window.grecaptcha.enterprise));
@@ -58,6 +58,10 @@ export function loadRecaptchaApi(captchaScriptURL, captchaScriptId, recaptchaObj
             waitForRecaptcha();
 
             return;
+        };
+
+        if (existing) {
+            return resolveCaptchaObject();
         }
 
         const script = document.createElement("script");
@@ -76,11 +80,7 @@ export function loadRecaptchaApi(captchaScriptURL, captchaScriptId, recaptchaObj
                 return reject(new Error("reCAPTCHA API loaded, but grecaptcha is not available"));
             }
 
-            if (window.grecaptcha.enterprise) {
-                resolve(window.grecaptcha.enterprise);
-            } else {
-                resolve(window.grecaptcha);
-            }
+            return resolveCaptchaObject();
         };
 
         document.head.appendChild(script);
