@@ -150,6 +150,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ isStepsUpdated, setIsStepsUpdated ] = useState<boolean>(false);
     const [ askPasswordFromUser, setAskPasswordFromUser ] = useState<boolean>(true);
     const [ passwordOption, setPasswordOption ] = useState<PasswordOptionTypes>(userConfig.defaultPasswordOption);
+    const [ askPasswordOption, setAskPasswordOption ] = useState<string>(userConfig.defautlAskPasswordOption);
     const [ isOfflineUser, setOfflineUser ] = useState<boolean>(false);
     const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>([]);
     const [ selectedUserStore, setSelectedUserStore ] =
@@ -853,6 +854,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     selectedUserStoreId={ resolveSelectedUserstoreId() }
                     connectorProperties={ askPasswordConnectorDetails?.properties }
                     hasWorkflowAssociations={ hasWorkflowAssociations }
+                    askPasswordOption={ askPasswordOption }
+                    setAskPasswordOption={ setAskPasswordOption }
                 />
             ),
             icon: getUserWizardStepIcons().general,
@@ -949,6 +952,17 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         );
     };
 
+    const isValidPasswordOptionProvided = (): boolean => {
+        if (passwordOption === null) {
+            return false;
+        }
+        if (passwordOption === PasswordOptionTypes.ASK_PASSWORD && askPasswordOption === null) {
+            return false;
+        }
+
+        return true;
+    };
+
     const handleModalAction = (): ReactElement => {
         return (
             <Modal.Actions>
@@ -994,7 +1008,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                     floated="right"
                                     onClick={ navigateToNext }
                                     loading={ isSubmitting }
-                                    disabled={ isSubmitting }
+                                    disabled={ isSubmitting || !isValidPasswordOptionProvided() }
                                 >
                                     { resolveWizardPrimaryButtonText() }
                                 </PrimaryButton>
