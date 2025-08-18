@@ -236,7 +236,8 @@ export const user: userNS = {
                 inviteOffline: "Invite offline",
                 inviteViaEmail: "Invite via email",
                 inviteViaSMS: "Invite via SMS",
-                mobileNumberAlreadyExists: "Mobile number is required for SMS OTP, please enable mobile number attribute from <1>Attributes</1>."
+                mobileNumberAlreadyExists: "Mobile number is required for SMS OTP, please enable mobile number attribute from <1>Attributes</1>.",
+                offlineInviteUnavailableWithWorkflow: "Inviting users offline is disabled because workflow approval is required for user creation."
             },
             buttons: {
                 next: "Next",

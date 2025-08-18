@@ -2840,6 +2840,7 @@ export interface Extensions {
                             accountHasBeenCreated: string;
                         };
                         passwordWarningMessage: string;
+                        passwordWarningMessageWithWorkFlow: string;
                         password: string;
                         username: string;
                     }
