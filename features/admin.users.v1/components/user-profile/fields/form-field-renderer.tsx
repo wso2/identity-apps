@@ -453,7 +453,7 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
             return (
                 <FinalFormField
                     component={ SwitchFieldAdapter }
-                    initialValue={ 
+                    initialValue={
                         typeof initialValue === "string"
                             ? initialValue.toLowerCase() === "true"
                             : !!initialValue
