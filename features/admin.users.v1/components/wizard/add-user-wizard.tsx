@@ -159,7 +159,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ newUserId, setNewUserId ] = useState<string>("");
     const [ submitStep, setSubmitStep ] = useState<WizardStepsFormTypes>(undefined);
     const [ selectedGroupsList, setSelectedGroupList ] = useState<GroupsInterface[]>([]);
-    const [ hasWorkflowAssociations, setHasWorkflowAssociations ] = useState<boolean>(false);
 
     const isLegacyUserAddWizardEnabled: boolean = isFeatureEnabled(
         userFeatureConfig,
@@ -189,6 +188,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         isLoading: isWorkflowAssociationDetailsRequestLoading,
         error: workflowAssociationDetailsRequestError
     } = useGetWorkflowAssociations(null, null, "operation eq ADD_USER");
+
+    const hasWorkflowAssociations: boolean = !isWorkflowAssociationDetailsRequestLoading &&
+        !workflowAssociationDetailsRequestError && ((workflowAssociationDetails?.totalResults ?? 0) > 0);
 
     const {
         data: originalGroupList,
@@ -229,14 +231,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             }
         });
     }, [ defaultUserTypeSelection ]);
-
-    /**
-     * Check for workflow associations.
-     */
-    useEffect(() => {
-        if (isWorkflowAssociationDetailsRequestLoading || workflowAssociationDetailsRequestError) return;
-        if (workflowAssociationDetails?.totalResults > 0) setHasWorkflowAssociations(true);
-    }, [ workflowAssociationDetails ]);
 
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
