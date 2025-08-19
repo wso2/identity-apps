@@ -435,7 +435,11 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
             return (
                 <FinalFormField
                     component={ CheckboxFieldAdapter }
-                    initialValue={ initialValue ?? false }
+                    initialValue={
+                        typeof initialValue === "string"
+                            ? initialValue.toLowerCase() === "true"
+                            : !!initialValue
+                    }
                     ariaLabel={ fieldLabel }
                     label={ fieldLabel }
                     name={ fieldName }
@@ -449,7 +453,11 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
             return (
                 <FinalFormField
                     component={ SwitchFieldAdapter }
-                    initialValue={ initialValue ?? false }
+                    initialValue={ 
+                        typeof initialValue === "string"
+                            ? initialValue.toLowerCase() === "true"
+                            : !!initialValue
+                    }
                     ariaLabel={ fieldLabel }
                     label={ fieldLabel }
                     name={ fieldName }
