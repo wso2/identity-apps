@@ -283,7 +283,10 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                                                         <div className="arrow-line">
                                                             <StraightArrow length={ 100 } />
                                                         </div>
-                                                        <div className="plus-icon" onClick={ addNewStep }>
+                                                        <div
+                                                            className="plus-icon"
+                                                            onClick={ addNewStep }
+                                                            data-componentid={ `${componentId}-add-step-button` }>
                                                             <PlusIcon />
                                                         </div>
                                                     </div>
