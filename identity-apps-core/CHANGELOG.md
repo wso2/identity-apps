@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.2.5
+
+### Patch Changes
+
+- [#8835](https://github.com/wso2/identity-apps/pull/8835) [`b4a2dc7d7232befe0f8ec89481bb356cbe1f5e3a`](https://github.com/wso2/identity-apps/commit/b4a2dc7d7232befe0f8ec89481bb356cbe1f5e3a) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Add tldts lib to accounts webapp
+
 ## 3.2.4
 
 ### Patch Changes
