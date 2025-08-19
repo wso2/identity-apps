@@ -1,5 +1,17 @@
 # @wso2is/admin.users.v1
 
+## 2.36.4
+
+### Patch Changes
+
+- [#8839](https://github.com/wso2/identity-apps/pull/8839) [`ce9801463c203bd8c2869c5ebc4f23dcfc3a6bf2`](https://github.com/wso2/identity-apps/commit/ce9801463c203bd8c2869c5ebc4f23dcfc3a6bf2) Thanks [@Malith-19](https://github.com/Malith-19)! - Remove the default/primary user store domain value for the user list fetch in the workflow approval users list.
+
+- Updated dependencies [[`ce9801463c203bd8c2869c5ebc4f23dcfc3a6bf2`](https://github.com/wso2/identity-apps/commit/ce9801463c203bd8c2869c5ebc4f23dcfc3a6bf2)]:
+  - @wso2is/admin.users.v1@2.36.4
+  - @wso2is/admin.core.v1@2.49.19
+  - @wso2is/admin.roles.v2@2.27.192
+  - @wso2is/admin.server-configurations.v1@2.35.32
+
 ## 2.36.3
 
 ### Patch Changes
