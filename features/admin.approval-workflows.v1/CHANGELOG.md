@@ -1,5 +1,11 @@
 # @wso2is/admin.approval-workflows.v1
 
+## 1.0.11
+
+### Patch Changes
+
+- [#8846](https://github.com/wso2/identity-apps/pull/8846) [`3ea5e7533eebed91dd875e099359efe8243bffc5`](https://github.com/wso2/identity-apps/commit/3ea5e7533eebed91dd875e099359efe8243bffc5) Thanks [@Malith-19](https://github.com/Malith-19)! - Add the component-id for the workflow step add button.
+
 ## 1.0.10
 
 ### Patch Changes
