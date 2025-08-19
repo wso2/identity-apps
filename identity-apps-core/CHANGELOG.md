@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.1.11
+
+### Patch Changes
+
+- [#8840](https://github.com/wso2/identity-apps/pull/8840) [`11fff29bbf250d2f469d5ee4dcda2448706babc0`](https://github.com/wso2/identity-apps/commit/11fff29bbf250d2f469d5ee4dcda2448706babc0) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Start tenant flow when the impersonator role creation
+
 ## 3.1.10
 
 ### Patch Changes
