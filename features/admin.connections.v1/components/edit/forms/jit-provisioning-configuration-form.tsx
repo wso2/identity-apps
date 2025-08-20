@@ -472,8 +472,8 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                     readOnly={ isReadOnly }
                                 />
                                 <Hint>
-                                    { t("authenticationProvider:" +
-                                        "forms.jitProvisioning.enableJITProvisioning.hint") }
+                                    When enabled, users who log in with this identity provider will be
+                                    provisioned to your organization.
                                 </Hint>
                                 { !isJITProvisioningEnabled
                                     ? ProxyModeConflictMessage
