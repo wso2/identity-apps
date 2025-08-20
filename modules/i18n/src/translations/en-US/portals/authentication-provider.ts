@@ -952,7 +952,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
         },
         jitProvisioning: {
             accountLinkingAttributes: {
-                heading: "Local Account Linking",
+                heading: "Local account linking",
                 infoNotification: "The local attribute dropdown displays attributes that have uniqueness " +
                     "constraints enabled. To configure additional attributes for linking, configure uniqueness " +
                     "settings in the <1>local attributes</1> section.",
@@ -967,7 +967,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
                         placeholder: "Enter federated attribute name"
                     },
                     localAttribute: {
-                        label: "Local attribute",
+                        label: "Local attribute ",
                         placeholder: "Select local attribute"
                     }
                 },
@@ -996,7 +996,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 }
             },
             associateLocalUser: {
-                hint: "When enabled, users logging in with this identity provider are linked to existing local users. If no linking rules are set, the email address is used by default.",
+                hint: "When enabled, users log in with this identity provider are linked to existing local users. If no linking rules are set, the email address is used by default.",
                 label: "Enable local account linking"
             },
             enableJITProvisioning: {
