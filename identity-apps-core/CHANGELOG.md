@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.2.7
+
+### Patch Changes
+
+- [#8853](https://github.com/wso2/identity-apps/pull/8853) [`02fd308f1a443d7e0fa09245092eb221031c1269`](https://github.com/wso2/identity-apps/commit/02fd308f1a443d7e0fa09245092eb221031c1269) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Fix app branding not getting applied to Username recovery channel selection page
+
 ## 3.2.6
 
 ### Patch Changes
