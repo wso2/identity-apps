@@ -2872,6 +2872,7 @@ export const extensions: Extensions = {
                         password: "Password",
                         passwordWarningMessage: "Make sure to copy the password or the invitation before" +
                             " you proceed. You won't see them again!",
+                        passwordWarningMessageWithWorkFlow: "Make sure to copy the password or the invitation before you proceed. You won't see them again! Share this invitation only after the user creation workflow has been approved. The user will not be able to access the account beforehand.",
                         username: "Username"
                     },
                     validation: {

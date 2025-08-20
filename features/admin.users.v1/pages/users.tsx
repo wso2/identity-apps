@@ -1102,7 +1102,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 ) : renderUsersList()
             }
             {
-                showWizard && (
+                showWizard && !connectorConfigLoading && (
                     <AddUserWizard
                         data-componentid={ "user-mgt-add-user-wizard-modal" }
                         data-testid={ "user-mgt-add-user-wizard-modal" }
