@@ -129,8 +129,13 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
 
     const [ isJITProvisioningEnabled, setIsJITProvisioningEnabled ] = useState<boolean>(false);
     const [ isAssociateLocalUserEnabled, setIsAssociateLocalUserEnabled ] = useState<boolean>(false);
-    const [ fallbackLinkingRuleEnabled, setFallbackLinkingRuleEnabled ] = useState<boolean>(false);
-    const [ firstMatchRuleStatus, setFirstMatchRuleStatus ] = useState<boolean>(false);
+    const [ fallbackLinkingRuleEnabled, setFallbackLinkingRuleEnabled ] = useState<boolean>(
+        !!initialValues?.accountLookupAttributeMappings?.[1]);
+    const [ firstMatchRuleStatus, setFirstMatchRuleStatus ] = useState<boolean>(
+        !!initialValues?.accountLookupAttributeMappings?.[0]);
+    const [ firstMappedLocalAttribute, setFirstMappedLocalAttribute ] = useState<string | undefined>(
+        initialValues?.accountLookupAttributeMappings?.[0]?.localAttribute || ""
+    );
 
     const userStoreOptions: DropdownItemProps[] = useMemo(() => {
         const storeOptions: DropdownItemProps[] = [
@@ -212,6 +217,15 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         return options.concat(claimOptions);
     }, [ localClaims ]);
 
+    /**
+     * Filter out the first mapped local attribute.
+     */
+    const filteredLocalClaimsOptions: DropdownItemProps[] = useMemo(() => {
+        return localClaimsOptions.filter((option: DropdownItemProps) => {
+            return option.value !== firstMappedLocalAttribute;
+        });
+    }, [ localClaimsOptions, firstMappedLocalAttribute ]);
+
     useEffect(() => {
         mutateUserStoreList();
     }, []);
@@ -278,7 +292,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         }
 
         return {
-            accountLookupAttributeMappings: accountLookupAttributeMappings.length > 0
+            accountLookupAttributeMappings: accountLookupAttributeMappings
                 ? accountLookupAttributeMappings
                 : initialValues?.accountLookupAttributeMappings || [],
             associateLocalUser: values.get(JITProvisioningConstants.ASSOCIATE_LOCAL_USER)
@@ -425,6 +439,10 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         const firstMatchRuleLocalAttr: string = values.get(
             JITProvisioningConstants.FIRST_MATCH_RULE_LOCAL_ATTRIBUTE
         );
+
+        if (firstMatchRuleLocalAttr) {
+            setFirstMappedLocalAttribute(firstMatchRuleLocalAttr);
+        }
 
         if (firstMatchRuleFederatedAttr && firstMatchRuleLocalAttr) {
             if (!firstMatchRuleStatus) {
@@ -878,7 +896,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                                                                     ?.[1]
                                                                                     ?.localAttribute || ""
                                                                             }
-                                                                            children={ localClaimsOptions }
+                                                                            children={ filteredLocalClaimsOptions }
                                                                             loading={ isLocalClaimsLoading }
                                                                             data-componentid={
                                                                                 testId +
