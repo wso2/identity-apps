@@ -1,5 +1,18 @@
 # @wso2is/admin.users.v1
 
+## 2.36.5
+
+### Patch Changes
+
+- [#8827](https://github.com/wso2/identity-apps/pull/8827) [`33706651e183ad45a528afb8ec88cfa421dbf59c`](https://github.com/wso2/identity-apps/commit/33706651e183ad45a528afb8ec88cfa421dbf59c) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix workflow related issues in user creation.
+
+- Updated dependencies [[`33706651e183ad45a528afb8ec88cfa421dbf59c`](https://github.com/wso2/identity-apps/commit/33706651e183ad45a528afb8ec88cfa421dbf59c), [`a23a40032a016a310f8f22691029c83f364d5891`](https://github.com/wso2/identity-apps/commit/a23a40032a016a310f8f22691029c83f364d5891)]:
+  - @wso2is/admin.users.v1@2.36.5
+  - @wso2is/i18n@2.30.6
+  - @wso2is/admin.core.v1@2.49.22
+  - @wso2is/admin.roles.v2@2.27.193
+  - @wso2is/admin.server-configurations.v1@2.35.35
+
 ## 2.36.4
 
 ### Patch Changes
