@@ -1026,8 +1026,8 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     "the user will be able to login without JIT provisioning. When disabled, " +
                     "login will happen with JIT provisioning.",
                 label: "Skip user provisioning when no local account is found",
-                infoMessage: "By default, if no local account is found, a new one is created. " +
-                    "You can disable this with the above setting."
+                infoMessage: "If a matching local account is not found, a new account will be created by default. " +
+                    "This configuration allows you to override this behavior."
             }
         },
         outboundConnectorAccordion: {
