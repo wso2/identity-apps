@@ -226,6 +226,7 @@ export interface userNS {
                 inviteViaEmail: string;
                 inviteOffline: string;
                 inviteViaSMS: string;
+                offlineInviteUnavailableWithWorkflow: string;
             };
             steps: {
                 basicDetails: string;
