@@ -29,6 +29,7 @@ import { ApplicationSharingPolicy, RoleSharingModes } from "@wso2is/admin.consol
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { OperationStatus } from "@wso2is/admin.core.v1/models/common";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
 import {
     SelectedOrganizationRoleInterface
 } from "@wso2is/admin.organizations.v1/models";
@@ -152,7 +153,8 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
     const [ showConfirmationModal, setShowConfirmationModal ] = useState<boolean>(false);
     const [ showShareTypeSwitchModal, setShowShareTypeSwitchModal ] = useState<boolean>(false);
     const [ showShareAllWarningModal, setShowShareAllWarningModal ] = useState<boolean>(false);
-    const [ shareTypeSwitchApproach, setShareTypeSwitchApproach ] = useState<ShareTypeSwitchApproach>();
+    const [ shareTypeSwitchApproach, setShareTypeSwitchApproach ] = useState<ShareTypeSwitchApproach>(
+        ShareTypeSwitchApproach.WITHOUT_UNSHARE);
     const [ selectedRoles, setSelectedRoles ] = useState<RolesInterface[]>([]);
     const [ initialSelectedRoles, setInitialSelectedRoles ] = useState<RolesInterface[]>([]);
     const [ selectedOrgIds, setSelectedOrgIds ] = useState<string[]>([]);
@@ -201,6 +203,29 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
         "users,groups,permissions,associatedApplications",
         !isEmpty(application?.id)
     );
+
+    // Fetch the organization of the current organization.
+    const {
+        data: originalOrganizations,
+        error: organizationsFetchRequestError
+    } = useGetOrganizations(
+        isOrganizationManagementEnabled,
+        null,
+        1,
+        null,
+        null,
+        false,
+        false
+    );
+
+    // Check if there are organizations available to share the application with.
+    const isOrganizationsAvailable: boolean = useMemo(() => {
+        if (!isOrganizationManagementEnabled || isEmpty(originalOrganizations)) {
+            return false;
+        }
+
+        return originalOrganizations?.organizations?.length > 0;
+    }, [ originalOrganizations, isOrganizationManagementEnabled ]);
 
     /**
      * Check if the organization list is loading.
@@ -339,6 +364,20 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
             );
         }
     }, [ applicationRolesFetchRequestError ]);
+
+    useEffect(() => {
+        if (organizationsFetchRequestError) {
+            dispatch(
+                addAlert({
+                    description: t("applications:edit.sections.sharedAccess.notifications" +
+                        ".fetchOrganizations.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("applications:edit.sections.sharedAccess.notifications" +
+                        ".fetchOrganizations.genericError.message")
+                })
+            );
+        }
+    }, [ organizationsFetchRequestError ]);
 
     useEffect(() => {
         if (triggerApplicationShare) {
@@ -1355,17 +1394,10 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                                 setSelectedRoles={ setSelectedRoles }
                                                                 onRoleChange={ updateRoleSelectionForAllOrganizations }
                                                             />
-                                                            <Alert
-                                                                severity="info"
-                                                                className="mt-2 mb-2"
-                                                            >
-                                                                { t("consoleSettings:sharedAccess." +
-                                                                    "sharingRolesTakeTimeMessage") }
-                                                            </Alert>
                                                             <Typography
                                                                 variant="body1"
+                                                                marginTop={ 2 }
                                                                 marginBottom={ 1 }
-                                                                marginTop={ 1 }
                                                             >
                                                                 { t("applications:edit.sections.sharedAccess." +
                                                                     "individualRoleSharingLabel") }
@@ -1410,9 +1442,21 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                             </AnimatePresence>
                             <FormControlLabel
                                 value={ ShareType.SHARE_SELECTED }
-                                label={ t("applications:edit.sections.sharedAccess.shareSelectedApplication") }
+                                label={
+                                    isOrganizationsAvailable
+                                        ? t("applications:edit.sections.sharedAccess.shareSelectedApplication")
+                                        : (
+                                            <>
+                                                { t("applications:edit.sections.sharedAccess." +
+                                                    "shareSelectedApplication") }
+                                                <Hint inline popup>
+                                                    { t("organizations:placeholders.emptyList.subtitles.0") }
+                                                </Hint>
+                                            </>
+                                        )
+                                }
                                 control={ <Radio /> }
-                                disabled={ readOnly }
+                                disabled={ readOnly || !isOrganizationsAvailable }
                                 data-componentid={ `${ componentId }-share-with-selected-orgs-checkbox` }
                             />
                             <AnimatePresence mode="wait">

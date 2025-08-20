@@ -162,11 +162,6 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
         "roles"
     );
 
-    // useEffect(() => {
-    //     console.log("roleSelections: ", roleSelections);
-    // }, [ roleSelections ]);
-
-
     // Fetch the top-level organization of the current organization.
     const {
         data: originalTopLevelOrganizations,
@@ -931,28 +926,32 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
     const resolveRoleSelectionPane = (): ReactNode => {
         if (isEmpty(selectedOrgId)) {
             return (
-                <Alert
-                    severity="info"
-                    data-componentid={ `${ componentId }-org-not-selected-alert` }
-                >
-                    { t("applications:edit.sections.sharedAccess.selectAnOrganizationToMangage") }
-                </Alert>
+                <Box className="role-list-container center">
+                    <Alert
+                        severity="info"
+                        data-componentid={ `${ componentId }-org-not-selected-alert` }
+                    >
+                        { t("applications:edit.sections.sharedAccess.selectAnOrganizationToMangage") }
+                    </Alert>
+                </Box>
             );
         }
 
         if (!disableOrgSelection && !selectedItems.includes(selectedOrgId)) {
             return (
-                <Alert
-                    severity="info"
-                    data-componentid={ `${ componentId }-org-not-selected-alert` }
-                >
-                    { t("applications:edit.sections.sharedAccess.toManageOrganizationSelectLeftPanel") }
-                </Alert>
+                <Box className="role-list-container center">
+                    <Alert
+                        severity="info"
+                        data-componentid={ `${ componentId }-org-not-selected-alert` }
+                    >
+                        { t("applications:edit.sections.sharedAccess.toManageOrganizationSelectLeftPanel") }
+                    </Alert>
+                </Box>
             );
         }
 
         return (
-            <>
+            <Box className="role-list-container">
                 <Typography variant="h5">
                     {
                         `${ t("applications:edit.sections.sharedAccess.sharingSettings") } ${
@@ -1053,7 +1052,7 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                         />
                     )
                 }
-            </>
+            </Box>
         );
     };
 
@@ -1142,12 +1141,7 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                                 paddingY={ 1 }
                                 className="roles-selective-share-right-panel"
                             >
-                                <Box
-                                    className="role-list-container"
-                                >
-                                    { resolveRoleSelectionPane() }
-                                </Box>
-
+                                { resolveRoleSelectionPane() }
                             </Grid>
                         </AnimatePresence>
                     </>

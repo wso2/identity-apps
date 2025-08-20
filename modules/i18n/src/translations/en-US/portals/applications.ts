@@ -633,7 +633,7 @@ export const applications: ApplicationsNS = {
                     preserveStateLabel1: "Preserve current state",
                     preserveStateLabel2: "Keep all existing shared organizations, roles and configurations of the application.",
                     resetToDefaultLabel1: "Reset to default",
-                    resetToDefaultLabel2: "Clear all sharing settings and start with a clean slate."
+                    resetToDefaultLabel2: "Clear all sharing settings and start with a clean state."
                 },
                 showShareAllWarningModal: {
                     header: "Are you sure?",
