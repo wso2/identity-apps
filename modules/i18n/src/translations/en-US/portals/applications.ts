@@ -1172,7 +1172,7 @@ export const applications: ApplicationsNS = {
                     fields: {
                         validateLocalAccount: {
                             label: "Use linked local account attributes",
-                            hint: "If a linked local account exists, its attributes will be used. If no linked account is found,attributes of the federated user account will be used instead."
+                            hint: "If a linked local account exists, its attributes will be used. If no linked account is found, attributes of the federated user account will be used instead."
                         },
                         mandateLocalAccount: {
                             label: "Require linked local account",

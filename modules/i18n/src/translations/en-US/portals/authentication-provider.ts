@@ -952,39 +952,26 @@ export const authenticationProvider:AuthenticationProviderNS = {
         },
         jitProvisioning: {
             accountLinkingAttributes: {
-                heading: "Account Linking Rules",
-                hint: "Configure how to identify existing local user accounts when linking " +
-                    "with federated users. The first match rule will be used initially, and if no " +
-                    "match is found, the fallback match rule will be tried.",
+                heading: "Local account linking",
                 infoNotification: "The local attribute dropdown displays attributes that have uniqueness " +
                     "constraints enabled. To configure additional attributes for linking, configure uniqueness " +
                     "settings in the <1>local attributes</1> section.",
+                linkAccountIf: "Link account if",
                 noneOption: {
                     label: "None",
                     description: "Reset local attribute mapping"
                 },
-                firstMatchRule: {
+                matchRule: {
                     federatedAttribute: {
                         label: "Federated attribute",
                         placeholder: "Enter federated attribute name"
                     },
-                    heading: "First match rule",
                     localAttribute: {
-                        label: "Local attribute",
+                        label: "Local attribute ",
                         placeholder: "Select local attribute"
                     }
                 },
-                fallbackMatchRule: {
-                    federatedAttribute: {
-                        label: "Federated attribute",
-                        placeholder: "Enter federated attribute name"
-                    },
-                    heading: "Fallback match rule (Optional)",
-                    localAttribute: {
-                        label: "Local attribute",
-                        placeholder: "Select local attribute"
-                    }
-                }
+                equals: "equals"
             },
             attributeSyncMethod: {
                 hint: "Select the method used for syncing attributes between a JIT-provisioned " +
@@ -1009,11 +996,8 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 }
             },
             associateLocalUser: {
-                hint: "When enabled, users that are provisioned with this identity " +
-                    "provider will be linked to existing local users. If account linking " +
-                    "rules are not configured, the email address will be " +
-                    "used by default for matching users.",
-                label: "Associate provisioned users with existing local users"
+                hint: "When enabled, users log in with this identity provider are linked to existing local users. If no linking rules are set, the email address is used by default.",
+                label: "Enable local account linking"
             },
             enableJITProvisioning: {
                 disabledMessageContent: "You cannot disable the Just-in-Time User" +
@@ -1041,7 +1025,9 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 hint: "When enabled, if no local account is found using the attribute matching rules, " +
                     "the user will be able to login without JIT provisioning. When disabled, " +
                     "login will happen with JIT provisioning.",
-                label: "Skip JIT provisioning when no rule matches"
+                label: "Skip user provisioning when no local account is found",
+                infoMessage: "If a matching local account is not found, a new account will be created by default. " +
+                    "This configuration allows you to override this behavior."
             }
         },
         outboundConnectorAccordion: {
