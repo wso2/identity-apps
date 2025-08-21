@@ -97,6 +97,44 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
 
     const { t } = useTranslation();
     const { isMobileViewport } = useMediaContext();
+    const userPropertyKeys: string[] = [ "Users to be Added", "Users to be Deleted" ];
+
+    /**
+     * Filters and returns valid username values from a comma-separated string.
+     *
+     * @param value - Comma-separated string of usernames.
+     * @returns Array of valid usernames.
+     */
+    const filterValidUsernamePropertyValues = (value: string): string[] => {
+        return value.split(",")
+            .map((username: string) => username.trim())
+            .filter((username: string) => {
+                return username &&
+                       username !== "null" &&
+                       username !== "undefined" &&
+                       username !== "[]" &&
+                       username !== "";
+            });
+    };
+
+    /**
+     * Checks if the approval task user related properties have valid users.
+     */
+    const hasValidUsers: boolean = React.useMemo(() => {
+        if (!approval?.properties) return true;
+
+        const userProperties: { key: string, value: string }[] = approval.properties.filter(
+            (prop: { key: string, value: string }) => userPropertyKeys.includes(prop?.key)
+        );
+
+        if (userProperties.length === 0) return true;
+
+        return userProperties.some((prop: { key: string, value: string }) => {
+            const validUsernames: string[] = filterValidUsernamePropertyValues(prop.value);
+
+            return validUsernames.length > 0;
+        });
+    }, [ approval?.properties ]);
 
     /**
      * Removes unnecessary commas at the end of property values and splits
@@ -177,6 +215,17 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                 // Let it pass through and use the default behavior.
                 // Add debug logs here one a logger is added.
                 // Tracked here https://github.com/wso2/product-is/issues/11650.
+            }
+        }
+
+        // Check if usernames are valid.
+        if (userPropertyKeys.includes(key)) {
+            const validUsernames: string[] = filterValidUsernamePropertyValues(value);
+
+            if (validUsernames.length > 0) {
+                value = validUsernames.join(", ");
+            } else {
+                value = t("common:approvalsPage.propertyMessages.noValidUsers") ;
             }
         }
 
@@ -268,7 +317,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                     onCloseApprovalTaskModal();
                                 } }
                                 loading={ isSubmitting }
-                                disabled={ isSubmitting }
+                                disabled={ isSubmitting || !hasValidUsers }
                             >
                                 { t("common:approve") }
                             </Button>
