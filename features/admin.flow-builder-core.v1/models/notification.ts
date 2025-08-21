@@ -26,16 +26,24 @@ export enum NotificationType {
 }
 
 class Notification {
+    private id: string;
     private readonly message: string;
     private readonly type: NotificationType;
     private resource: Resource;
     private PanelNotification: ReactElement;
-    private ResourceNotification: ReactElement | string;
-    private ResourceFieldNotifications: Map<string, ReactElement | string>;
+    private resourceFieldNotifications: Map<string, string>;
 
     constructor(message: string, type: NotificationType) {
         this.message = message;
         this.type = type;
+    }
+
+    setId(id: string): void {
+        this.id = id;
+    }
+
+    getId(): string {
+        return this.id;
     }
 
     getMessage(): string {
@@ -46,6 +54,14 @@ class Notification {
         return this.type;
     }
 
+    setResource(resource: Resource): void {
+        this.resource = resource;
+    }
+
+    getResource(): Resource {
+        return this.resource;
+    }
+
     setPanelNotification(notificationEl: ReactElement): void {
         this.PanelNotification = notificationEl;
     }
@@ -54,20 +70,12 @@ class Notification {
         return this.PanelNotification;
     }
 
-    setResourceNotification(notificationEl: ReactElement | string): void {
-        this.ResourceNotification = notificationEl;
+    addResourceFieldNotification(field: string, msg: string): void {
+        this.resourceFieldNotifications.set(field, msg);
     }
 
-    getResourceNotification(): ReactElement | string {
-        return this.ResourceNotification;
-    }
-
-    addResourceFieldNotification(field: string, notificationEl: ReactElement | string): void {
-        this.ResourceFieldNotifications.set(field, notificationEl);
-    }
-
-    getResourceFieldNotifications(): Map<string, ReactElement | string> {
-        return this.ResourceFieldNotifications;
+    getResourceFieldNotification(field: string): string {
+        return this.resourceFieldNotifications.get(field) || "";
     }
 }
 

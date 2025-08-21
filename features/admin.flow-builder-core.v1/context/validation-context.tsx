@@ -41,15 +41,29 @@ export interface ValidationContextProps {
     /**
      * Removes a notification from the list of notifications.
      *
-     * @param notification - The notification to remove.
+     * @param notificationId - The ID of the notification to remove.
      * @returns The updated list of notifications.
      */
-    removeNotification?: (notification: Notification) => void;
+    removeNotification?: (notificationId: string) => void;
+    /**
+     * The currently selected notification.
+     */
+    selectedNotification?: Notification;
+    /**
+     * Sets the currently selected notification.
+     *
+     * @param notification - The notification to select.
+     */
+    setSelectedNotification?: (notification: Notification) => void;
 }
 
+/**
+ * Validation context for managing flow validation state and notifications.
+ */
 export const ValidationContext: Context<ValidationContextProps> = createContext<ValidationContextProps>({
     addNotification: null,
     isValid: true,
     notifications: [],
-    removeNotification: null
+    removeNotification: null,
+    selectedNotification: null
 });
