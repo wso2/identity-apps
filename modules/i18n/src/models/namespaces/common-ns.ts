@@ -276,6 +276,7 @@ export interface CommonNS {
     user: string;
     verify: string;
     view: string;
+    viewDetails: string;
     weakPassword: string;
     good: string;
     strong: string;
