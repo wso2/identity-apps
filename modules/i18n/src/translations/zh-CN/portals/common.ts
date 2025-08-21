@@ -285,6 +285,7 @@ export const common: CommonNS = {
     "verified": "已验证",
     "verify": "核实",
     "view": "看法",
+    "viewDetails": "查看详情",
     "weak": "虚弱的",
     "weakPassword": "密码强度至少应该很好。"
 };

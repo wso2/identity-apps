@@ -43,7 +43,7 @@ export const useGetOrganizationsMetaAttributes =
         limit?: number,
         after?: string,
         before?: string,
-        recursive: boolean = false,
+        recursive: boolean = true,
         isRoot: boolean = false
     ): RequestResultInterface<Data, Error> => {
         const requestConfig: RequestConfigInterface = {
