@@ -124,8 +124,17 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                 continue;
             }
 
-            const filteredConnectors: Array<any> = category.connectors.
-                filter((connector: any) => !serverConfigurationConfig.connectorsToHide.includes(connector.id));
+            const filteredConnectors: Array<any> = category.connectors.filter((connector: any) => {
+                if (serverConfigurationConfig.connectorsToHide.includes(connector.id)) {
+                    return false;
+                }
+
+                if (isSubOrganization() && connector.id === ServerConfigurationsConstants.SIFT_CONNECTOR_ID) {
+                    return false;
+                }
+
+                return true;
+            });
 
             refinedConnectorCategories.push({ ...category, connectors: filteredConnectors });
         }
