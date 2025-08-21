@@ -25,6 +25,7 @@ import {
     ConnectionClaimInterface,
     ConnectionCommonClaimMappingInterface 
 } from "../../../../models/connection";
+import "./attribute-list-item.scss";
 
 interface AttributeListItemPropInterface extends TestableComponentInterface {
     attribute: ConnectionClaimInterface;
@@ -72,7 +73,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
             </Table.Cell>
             {
                 <>
-                    <Table.Cell error={ isEmpty(mapping) }>
+                    <Table.Cell error={ isEmpty(mapping) } className="TableCell" >
                         <Input
                             placeholder={ placeholder }
                             value={ isEmpty(mapping) ? "" : mapping }
@@ -80,12 +81,15 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                             required
                             data-testid={ `${ testId }-input` }
                             readOnly={ isReadOnly }
+                            fluid
                         />
                         { isEmpty(mapping) &&
                         (
                             <Label
                                 basic color="red"
-                                pointing="left">
+                                pointing="above"
+                                className="error-label"
+                            >
                                 { t("authenticationProvider:forms.attributeSettings." +
                                     "attributeListItem.validation.empty") }
                             </Label>

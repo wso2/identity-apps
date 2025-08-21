@@ -156,7 +156,7 @@ export const MultiAttributeLoginForm: FunctionComponent<MultiAttributeLoginFormP
                 placeholder={ "Enter allowed attribute list" }
                 labelPosition="top"
                 minLength={ 3 }
-                maxLength={ 100 }
+                maxLength={ 1000 }
                 readOnly={ readOnly }
                 initialValue={ initialFormValues?.[ "account.multiattributelogin.handler.allowedattributes" ] }
                 data-componentid={ `${ componentId }-allowed-attribute-list` }

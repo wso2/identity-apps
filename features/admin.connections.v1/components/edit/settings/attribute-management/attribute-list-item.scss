@@ -1,0 +1,14 @@
+.table-cell {
+    
+    display: flex;
+    flex-direction: column;
+
+    Input {
+        width: 100%;
+    }
+}
+
+.error-label {
+
+    width: fit-content;
+}
