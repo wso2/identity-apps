@@ -932,11 +932,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
         if (dataType === ClaimDataType.DATE_TIME) {
             return [
-                ...textInputOption,
-                {
-                    text: t("claims:local.forms.inputFormat.options.datePicker"),
-                    value: ClaimInputFormat.DATE_PICKER
-                }
+                ...textInputOption
             ];
         }
 
