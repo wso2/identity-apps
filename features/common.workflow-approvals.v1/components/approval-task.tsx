@@ -97,7 +97,10 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
 
     const { t } = useTranslation();
     const { isMobileViewport } = useMediaContext();
-    const userPropertyKeys: string[] = [ "Users to be Added", "Users to be Deleted" ];
+
+    const USERS_TO_BE_ADDED_PROPERTY: string = "Users to be Added";
+    const USERS_TO_BE_DELETED_PROPERTY: string = "Users to be Deleted";
+    const roleUserAssignmentPropertyKeys: string[] = [ USERS_TO_BE_ADDED_PROPERTY, USERS_TO_BE_DELETED_PROPERTY ];
 
     /**
      * Filters and returns valid username values from a comma-separated string.
@@ -124,7 +127,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
         if (!approval?.properties) return true;
 
         const userProperties: { key: string, value: string }[] = approval.properties.filter(
-            (prop: { key: string, value: string }) => userPropertyKeys.includes(prop?.key)
+            (prop: { key: string, value: string }) => roleUserAssignmentPropertyKeys.includes(prop?.key)
         );
 
         if (userProperties.length === 0) return true;
@@ -219,13 +222,17 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
         }
 
         // Check if usernames are valid.
-        if (userPropertyKeys.includes(key)) {
+        if (roleUserAssignmentPropertyKeys.includes(key)) {
             const validUsernames: string[] = filterValidUsernamePropertyValues(value);
 
             if (validUsernames.length > 0) {
                 value = validUsernames.join(", ");
             } else {
-                value = t("common:approvalsPage.propertyMessages.noValidUsers") ;
+                if (key === USERS_TO_BE_ADDED_PROPERTY) {
+                    value = t("common:approvalsPage.propertyMessages.assignedUsersDeleted");
+                } else if (key === USERS_TO_BE_DELETED_PROPERTY) {
+                    value = t("common:approvalsPage.propertyMessages.unassignedUsersDeleted");
+                }
             }
         }
 

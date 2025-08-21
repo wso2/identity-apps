@@ -115,7 +115,8 @@ export const common: CommonNS = {
             searchApprovals: "வேலைப்பதிவு பெயரால் தேடு"
         },
         propertyMessages: {
-            noValidUsers: "ஒதுக்கப்பட்ட பயனர்/கள் நீக்கப்பட்டுள்ளன."
+            assignedUsersDeleted: "ஒதுக்கப்பட்ட பயனர்/கள் நீக்கப்பட்டுள்ளன.",
+            unassignedUsersDeleted: "ஒதுக்கப்படாத பயனர்/கள் நீக்கப்பட்டுள்ளன."
         },
         subTitle: "உங்கள் அங்கீகாரத்தைத் தேவைப்படும் செயல்பாட்டு பணிகளைப் பரிசீலிக்கவும்",
         title: "அனுமதிகள்"

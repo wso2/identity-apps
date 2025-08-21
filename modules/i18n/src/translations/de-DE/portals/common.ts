@@ -115,7 +115,8 @@ export const common: CommonNS = {
             "searchApprovals": "Nach Workflow-Namen suchen"
         },
         "propertyMessages": {
-            "noValidUsers": "Die zugewiesenen Benutzer wurden gelöscht."
+            "assignedUsersDeleted": "Die zugewiesenen Benutzer wurden gelöscht.",
+            "unassignedUsersDeleted": "Die nicht zugewiesenen Benutzer wurden gelöscht."
         },
         "subTitle": "Überprüfen Sie die betrieblichen Aufgaben, die Ihre Genehmigung erfordern",
         "title": "Genehmigungen"
