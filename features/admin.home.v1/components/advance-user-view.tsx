@@ -590,8 +590,7 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                                 </Show>
                             </Grid.Row>
                             {
-                                !featureConfig?.flows?.disabledFeatures.includes("flows.homePage.tile") &&
-                                    !isSubOrganization() && (
+                                !featureConfig?.flows?.disabledFeatures.includes("flows.homePage.tile") && (
                                     <Show when={ featureConfig?.flows?.scopes?.read }>
                                         { renderFlowsCard() }
                                     </Show>
