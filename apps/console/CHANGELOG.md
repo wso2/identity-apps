@@ -1,5 +1,24 @@
 # @wso2is/console
 
+## 2.78.8
+
+### Patch Changes
+
+- [#8854](https://github.com/wso2/identity-apps/pull/8854) [`2949da402d28355b1b9eadd56c812ed06e03b028`](https://github.com/wso2/identity-apps/commit/2949da402d28355b1b9eadd56c812ed06e03b028) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix workflow related issues in user creation.
+
+* [#8861](https://github.com/wso2/identity-apps/pull/8861) [`8aeeadc47933a0bfd63eafa2bde41754b7678f3f`](https://github.com/wso2/identity-apps/commit/8aeeadc47933a0bfd63eafa2bde41754b7678f3f) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improve the UX of account linking configurations
+
+* Updated dependencies [[`2949da402d28355b1b9eadd56c812ed06e03b028`](https://github.com/wso2/identity-apps/commit/2949da402d28355b1b9eadd56c812ed06e03b028), [`8aeeadc47933a0bfd63eafa2bde41754b7678f3f`](https://github.com/wso2/identity-apps/commit/8aeeadc47933a0bfd63eafa2bde41754b7678f3f)]:
+  - @wso2is/admin.users.v1@2.36.5
+  - @wso2is/i18n@2.30.5
+  - @wso2is/admin.connections.v1@2.34.3
+  - @wso2is/admin.agents.v1@1.0.38
+  - @wso2is/admin.core.v1@2.49.20
+  - @wso2is/admin.roles.v2@2.27.193
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.12
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.12
+  - @wso2is/admin.server-configurations.v1@2.35.33
+
 ## 2.78.7
 
 ### Patch Changes
