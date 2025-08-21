@@ -506,7 +506,6 @@ export const claims: ClaimsNS = {
                 options: {
                     checkBoxGroup: "Checkbox Group",
                     checkbox: "Checkbox",
-                    datePicker: "Date Picker",
                     dropdown: "Dropdown",
                     multiSelectDropdown: "Multi-Select Dropdown",
                     numberInput: "Number Input",

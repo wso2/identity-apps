@@ -563,7 +563,6 @@ export interface ClaimsNS {
                     radioGroup: string;
                     checkBoxGroup: string;
                     checkbox: string;
-                    datePicker: string;
                     textArea: string;
                     toggle: string;
                     numberInput: string;
