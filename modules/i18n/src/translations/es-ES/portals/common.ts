@@ -114,6 +114,9 @@ export const common: CommonNS = {
             },
             searchApprovals: "Buscar por nombre de flujo de trabajo"
         },
+        propertyMessages: {
+            noValidUsers: "Los usuarios asignados han sido eliminados."
+        },
         subTitle: "Revise las tareas operativas que requieren su aprobación",
         title: "Aprobaciones"
     },

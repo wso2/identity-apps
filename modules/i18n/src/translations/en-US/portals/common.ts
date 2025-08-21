@@ -114,6 +114,9 @@ export const common: CommonNS = {
             },
             searchApprovals: "Search by workflow name"
         },
+        propertyMessages: {
+            noValidUsers: "The assigned user/s have been deleted."
+        },
         subTitle: "Review operational tasks that requires your approval",
         title: "Approvals"
     },

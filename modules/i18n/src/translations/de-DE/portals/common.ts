@@ -115,7 +115,10 @@ export const common: CommonNS = {
             "searchApprovals": "Nach Workflow-Namen suchen"
         },
         "subTitle": "Überprüfen Sie die betrieblichen Aufgaben, die Ihre Genehmigung erfordern",
-        "title": "Genehmigungen"
+        "title": "Genehmigungen",
+        "propertyMessages": {
+            "noValidUsers": "";
+        }
     },
     "approve": "Genehmigen",
     "approved": "Genehmigt",
