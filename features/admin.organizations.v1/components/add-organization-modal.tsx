@@ -110,6 +110,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     );
 
     const submitOrganization = async (values: OrganizationAddFormProps): Promise<Record<string, string> | void> => {
+
         if (orgHandleError) {
             return;
         }
@@ -249,6 +250,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
      * Close the wizard.
      */
     const handleWizardClose = (): void => {
+
         closeWizard();
     };
 
@@ -256,6 +258,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
      * Close the limit reached modal.
      */
     const handleLimitReachedModalClose = (): void => {
+
         setOpenLimitReachedModal(false);
         setOrgLevelReachedError(false);
         handleWizardClose();
@@ -354,6 +357,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
      * @returns Organization handle alphabet validation.
      */
     const renderOrgHandleAlphabetValidationIcon = (): ReactElement => {
+
         if (!orgHandle || orgHandle === OrganizationManagementConstants.ORG_HANDLE_PLACEHOLDER) {
             return <Icon name="circle" color="grey" />;
         }
@@ -373,6 +377,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
      * @returns Organization handle length validation.
      */
     const renderOrgHandleLengthValidationIcon = (): ReactElement => {
+
         if (!orgHandle || orgHandle === OrganizationManagementConstants.ORG_HANDLE_PLACEHOLDER) {
             return <Icon name="circle" color="grey" />;
         }
@@ -395,6 +400,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
      * @returns Organization handle numerical validation.
      */
     const renderOrgHandleAlphanumericValidationIcon = (): ReactElement => {
+
         if (!orgHandle || orgHandle === OrganizationManagementConstants.ORG_HANDLE_PLACEHOLDER) {
             return <Icon name="circle" color="grey" />;
         }
@@ -418,18 +424,22 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
      * @returns Organization handle unique validation.
      */
     const renderOrgHandleUniqueValidationIcon = (): ReactElement => {
+
         if (!orgHandle || orgHandle === OrganizationManagementConstants.ORG_HANDLE_PLACEHOLDER) {
             return <Icon name="circle" color="grey" />;
         }
 
-
-        if (orgHandle && !isCheckingOrgHandleValidity && !isOrgHandleDuplicate) {
+        if (isCheckingOrgHandleValidity) {
+            return <Icon name="circle" color="grey" />;
+        }
+        if (isOrgHandleFieldFocused) {
+            return <Icon name="circle" color="grey" />;
+        }
+        if (orgHandle && !isOrgHandleDuplicate) {
             return <Icon name="check circle" color="green" />;
         }
 
-        return isOrgHandleFieldFocused
-            ? <Icon name="circle" color="grey" />
-            : <Icon name="remove circle" color="red" />;
+        return <Icon name="remove circle" color="red" />;
     };
 
     /**
@@ -438,7 +448,10 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
      * @param orgHandle - The organization handle to validate.
      */
     const checkOrgHandleValidity: any = debounce(async (orgHandle: string) => {
+
         if (!orgHandle) {
+            setCheckingOrgHandleValidity(false);
+
             return;
         }
         setCheckingOrgHandleValidity(true);
@@ -602,10 +615,18 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                             value={ orgHandle || undefined }
                                             onChange={ (e: React.ChangeEvent<HTMLInputElement>) => {
                                                 setOrgHandle(e.target.value);
-                                                checkOrgHandleValidity(e.target.value);
                                                 setOrgHandleError("");
+                                                setIsOrgHandleDuplicate(false);
+                                                if (e.target.value) {
+                                                    setCheckingOrgHandleValidity(true);
+                                                }
                                             } }
-                                            onBlur={ () => setIsOrgHandleFieldFocused(false) }
+                                            onBlur={ () => {
+                                                setIsOrgHandleFieldFocused(false);
+                                                if (orgHandle) {
+                                                    checkOrgHandleValidity(orgHandle);
+                                                }
+                                            } }
                                             onFocus={ () => setIsOrgHandleFieldFocused(true) }
                                             required={ true }
                                         />
