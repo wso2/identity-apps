@@ -333,6 +333,14 @@ export const console: ConsoleNS = {
                     "Allow your users to securely self-manage their profiles.",
                     heading: "Manage users and groups"
                 },
+                customizeFlows: {
+                    actions: {
+                        setup: "Set up user flows"
+                    },
+                    description:
+                        "Visually design and customize user flows with our no-code flow composer",
+                    heading: "Customize user flows"
+                },
                 asgardeoTryIt: {
                     errorMessages: {
                         appCreateGeneric: {
@@ -8557,7 +8565,7 @@ export const console: ConsoleNS = {
                         content: "Failed to load workflow Request details."
                     },
                     backButton: "Back"
-                },
+                }
             }
         },
         notifications: {
