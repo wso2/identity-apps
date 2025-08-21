@@ -114,7 +114,10 @@ export interface CommonNS {
             header: string;
             subHeader: string;
             description: string;
-        }
+        };
+        propertyMessages: {
+            noValidUsers: string;
+        };
     }
     apps: string;
     assignee: string;

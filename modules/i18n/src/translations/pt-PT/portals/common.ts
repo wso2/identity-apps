@@ -114,6 +114,9 @@ export const common: CommonNS = {
             },
             searchApprovals: "Pesquisar por nome de fluxo de trabalho"
         },
+        propertyMessages: {
+            noValidUsers: "Os usuários atribuídos foram excluídos."
+        },
         subTitle: "Revise as tarefas operacionais que requerem sua aprovação",
         title: "Aprovações"
     },

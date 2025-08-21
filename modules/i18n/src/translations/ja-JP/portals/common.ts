@@ -114,6 +114,9 @@ export const common: CommonNS = {
             },
             "searchApprovals": "ワークフロー名で検索"
         },
+        propertyMessages: {
+            noValidUsers: "割り当てられたユーザー/sは削除されています。"
+        },
         "subTitle": "承認を必要とする運用タスクを確認します",
         "title": "承認"
     },
