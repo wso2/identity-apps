@@ -115,7 +115,8 @@ export const common: CommonNS = {
             searchApprovals: "කාර්ය ප්‍රවාහ නාමයෙන් සොයන්න"
         },
         propertyMessages: {
-            noValidUsers: "පවරා ඇති පරිශීලකයන් මකා දමා ඇත."
+            assignedUsersDeleted: "පවරා ඇති පරිශීලකයන් මකා දමා ඇත.",
+            unassignedUsersDeleted: "පවරා නොමැති පරිශීලකයන් මකා දමා ඇත."
         },
         subTitle: "අනුමැතිය අවශ්‍ය මෙහෙයුම් කාර්යයන් සමාලෝචනය කරන්න",
         title: "අනුමත කිරීම්"

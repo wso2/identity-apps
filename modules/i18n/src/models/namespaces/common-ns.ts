@@ -116,7 +116,8 @@ export interface CommonNS {
             description: string;
         };
         propertyMessages: {
-            noValidUsers: string;
+            assignedUsersDeleted: string;
+            unassignedUsersDeleted: string;
         };
     }
     apps: string;
