@@ -1,0 +1,309 @@
+[
+  {
+    "resourceType": "STEP",
+    "category": "INTERFACE",
+    "type": "VIEW",
+    "version": "0.1.0",
+    "deprecated": false,
+    "display": {
+      "label": "Blank View",
+      "image": "https://www.svgrepo.com/show/448632/step.svg",
+      "showOnResourcePanel": true
+    },
+    "config": {}
+  },
+  {
+    "resourceType": "STEP",
+    "category": "INTERFACE",
+    "type": "VIEW",
+    "version": "0.1.0",
+    "deprecated": false,
+    "display": {
+      "label": "User Resolve View",
+      "image": "https://www.svgrepo.com/show/532362/user.svg",
+      "showOnResourcePanel": true
+    },
+    "config": {},
+    "data": {
+      "components": [
+        {
+          "id": "typography_vojx",
+          "category": "DISPLAY",
+          "type": "TYPOGRAPHY",
+          "variant": "H3",
+          "config": {
+            "text": "Forgot Password?"
+          }
+        },
+        {
+          "id": "form_m0o6",
+          "category": "BLOCK",
+          "type": "FORM",
+          "config": {},
+          "components": [
+            {
+              "id": "rich_text_76gk",
+              "category": "DISPLAY",
+              "type": "RICH_TEXT",
+              "config": {
+                "text": "<h5 class=\"rich-text-heading-h5 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">We've got you covered. Enter your username to begin resetting your password.</span></h5>"
+              }
+            },
+            {
+              "id": "input_ayvb",
+              "category": "FIELD",
+              "type": "INPUT",
+              "variant": "TEXT",
+              "config": {
+                "type": "text",
+                "hint": "",
+                "label": "Username",
+                "required": true,
+                "placeholder": "Enter your username",
+                "identifier": "http://wso2.org/claims/username"
+              }
+            },
+            {
+              "id": "button_5qkp",
+              "category": "ACTION",
+              "type": "BUTTON",
+              "variant": "PRIMARY",
+              "config": {
+                "type": "submit",
+                "text": "Send Reset Link"
+              },
+              "action": {
+                "type": "EXECUTOR",
+                "executor": {
+                  "name": "UserResolveExecutor"
+                },
+                "next": "End"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "resourceType": "STEP",
+    "category": "INTERFACE",
+    "type": "VIEW",
+    "version": "0.1.0",
+    "deprecated": false,
+    "display": {
+      "label": "Reset Password View",
+      "image": "https://www.svgrepo.com/show/489073/password.svg",
+      "showOnResourcePanel": true
+    },
+    "config": {},
+    "data": {
+      "components": [
+        {
+          "id": "typography_1kmr",
+          "category": "DISPLAY",
+          "type": "TYPOGRAPHY",
+          "variant": "H3",
+          "config": {
+            "text": "Reset Password"
+          }
+        },
+        {
+          "id": "form_w394",
+          "category": "BLOCK",
+          "type": "FORM",
+          "config": {},
+          "components": [
+            {
+              "id": "input_7ywk",
+              "category": "FIELD",
+              "type": "INPUT",
+              "variant": "PASSWORD",
+              "config": {
+                "identifier": "password",
+                "type": "password",
+                "hint": "",
+                "label": "Password",
+                "required": false,
+                "placeholder": "Enter your password"
+              }
+            },
+            {
+              "id": "button_y89y",
+              "category": "ACTION",
+              "type": "BUTTON",
+              "variant": "PRIMARY",
+              "config": {
+                "type": "submit",
+                "text": "Continue"
+              },
+              "action": {
+                "type": "EXECUTOR",
+                "executor": {
+                  "name": "PasswordProvisioningExecutor"
+                },
+                "next": "End"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "resourceType": "STEP",
+    "category": "INTERFACE",
+    "type": "VIEW",
+    "version": "0.1.0",
+    "deprecated": false,
+    "display": {
+      "label": "Email OTP View",
+      "image": "https://www.svgrepo.com/show/387455/email-down.svg",
+      "showOnResourcePanel": true
+    },
+    "config": {},
+    "data": {
+      "components": [
+        {
+          "id": "{{ID}}",
+          "category": "DISPLAY",
+          "type": "TYPOGRAPHY",
+          "variant": "H3",
+          "config": {
+            "text": "Verify OTP"
+          }
+        },
+        {
+          "id": "{{ID}}",
+          "category": "BLOCK",
+          "type": "FORM",
+          "config": {},
+          "components": [
+            {
+              "id": "{{ID}}",
+              "category": "FIELD",
+              "type": "INPUT",
+              "variant": "OTP",
+              "config": {
+                "type": "text",
+                "hint": "",
+                "identifier": "otp",
+                "label": "Enter the code sent to your email",
+                "required": true,
+                "placeholder": ""
+              }
+            },
+            {
+              "id": "{{ID}}",
+              "category": "ACTION",
+              "type": "BUTTON",
+              "variant": "PRIMARY",
+              "config": {
+                "type": "submit",
+                "text": "Verify"
+              },
+              "action": {
+                "type": "EXECUTOR",
+                "executor": {
+                  "name": "EmailOTPExecutor"
+                },
+                "next": ""
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "resourceType": "STEP",
+    "category": "INTERFACE",
+    "type": "VIEW",
+    "version": "0.1.0",
+    "deprecated": false,
+    "display": {
+      "label": "SMS OTP View",
+      "image": "https://www.svgrepo.com/show/455832/mobile-message.svg",
+      "showOnResourcePanel": true
+    },
+    "config": {},
+    "data": {
+      "components": [
+        {
+          "id": "{{ID}}",
+          "category": "DISPLAY",
+          "type": "TYPOGRAPHY",
+          "variant": "H3",
+          "config": {
+            "text": "Verify OTP"
+          }
+        },
+        {
+          "id": "{{ID}}",
+          "category": "BLOCK",
+          "type": "FORM",
+          "config": {},
+          "components": [
+            {
+              "id": "{{ID}}",
+              "category": "FIELD",
+              "type": "INPUT",
+              "variant": "OTP",
+              "config": {
+                "type": "text",
+                "hint": "",
+                "identifier": "otp",
+                "label": "Enter the code sent to your mobile",
+                "required": true,
+                "placeholder": ""
+              }
+            },
+            {
+              "id": "{{ID}}",
+              "category": "ACTION",
+              "type": "BUTTON",
+              "variant": "PRIMARY",
+              "config": {
+                "type": "submit",
+                "text": "Verify"
+              },
+              "action": {
+                "type": "EXECUTOR",
+                "executor": {
+                  "name": "SMSOTPExecutor"
+                },
+                "next": ""
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "resourceType": "STEP",
+    "category": "DECISION",
+    "type": "RULE",
+    "version": "0.1.0",
+    "deprecated": false,
+    "display": {
+      "label": "Rule",
+      "image": "https://www.svgrepo.com/show/413199/decide.svg",
+      "showOnResourcePanel": false
+    },
+    "config": {}
+  },
+  {
+    "resourceType": "STEP",
+    "category": "WORKFLOW",
+    "type": "EXECUTION",
+    "version": "0.1.0",
+    "deprecated": false,
+    "display": {
+      "label": "Execution",
+      "image": "https://www.svgrepo.com/show/476381/play.svg",
+      "showOnResourcePanel": false
+    },
+    "config": {}
+  }
+]
