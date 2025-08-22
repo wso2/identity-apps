@@ -256,6 +256,11 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
             }
         }
 
+        // Change "REQUEST ID" to "Workflow Request ID".
+        if (key === "REQUEST ID") {
+            key = "Workflow Request ID";
+        }
+
         // Handle other properties that don't need special formatting.
         return (
             <Table.Row key={ key }>
