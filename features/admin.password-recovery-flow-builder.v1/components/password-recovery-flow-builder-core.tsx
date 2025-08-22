@@ -265,7 +265,6 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
             type: StaticStepTypes.Start
         };
 
-        // Default position for END_STEP if no steps exist
         const defaultEndPosition: { x: number; y: number } = { x: 300, y: 330 };
         const endPosition: { x: number; y: number } = steps.length > 0
             ? { x: steps[steps.length - 1].position.x + 600, y: steps[steps.length - 1].position.y + 200 }
