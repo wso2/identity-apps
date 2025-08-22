@@ -1,5 +1,16 @@
 # @wso2is/admin.connections.v1
 
+## 2.34.4
+
+### Patch Changes
+
+- [#8874](https://github.com/wso2/identity-apps/pull/8874) [`88dc5584f12d30f6ef073ad20c21a6684f7150c9`](https://github.com/wso2/identity-apps/commit/88dc5584f12d30f6ef073ad20c21a6684f7150c9) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - UI fixes for invite flow builder, multi attribute login and connections
+
+- Updated dependencies [[`1eab05a0ef55c85d355e4ce5ad3e2beda0fc439b`](https://github.com/wso2/identity-apps/commit/1eab05a0ef55c85d355e4ce5ad3e2beda0fc439b), [`88dc5584f12d30f6ef073ad20c21a6684f7150c9`](https://github.com/wso2/identity-apps/commit/88dc5584f12d30f6ef073ad20c21a6684f7150c9)]:
+  - @wso2is/i18n@2.30.9
+  - @wso2is/admin.connections.v1@2.34.4
+  - @wso2is/admin.core.v1@2.49.25
+
 ## 2.34.3
 
 ### Patch Changes
