@@ -916,25 +916,14 @@ export interface AuthenticationProviderNS {
         jitProvisioning: {
             accountLinkingAttributes: {
                 heading: string;
-                hint: string;
                 infoNotification: string;
+                linkAccountIf: string;
+                equals: string;
                 noneOption: {
                     label: string;
                     description: string;
                 };
-                firstMatchRule: {
-                    heading: string;
-                    federatedAttribute: {
-                        label: string;
-                        placeholder: string;
-                    };
-                    localAttribute: {
-                        label: string;
-                        placeholder: string;
-                    };
-                };
-                fallbackMatchRule: {
-                    heading: string;
+                matchRule: {
                     federatedAttribute: {
                         label: string;
                         placeholder: string;
@@ -990,6 +979,7 @@ export interface AuthenticationProviderNS {
             skipJITForNoRuleMatch: {
                 hint: string;
                 label: string;
+                infoMessage: string;
             };
         };
         roleMapping: {

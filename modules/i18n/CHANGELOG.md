@@ -1,5 +1,21 @@
 # @wso2is/i18n
 
+## 2.30.7
+
+### Patch Changes
+
+- [#8868](https://github.com/wso2/identity-apps/pull/8868) [`f50873a66b47737ba9dc6defb0fc2755af30076b`](https://github.com/wso2/identity-apps/commit/f50873a66b47737ba9dc6defb0fc2755af30076b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the flow card to the sub-organization home page
+
+* [#8879](https://github.com/wso2/identity-apps/pull/8879) [`32b0012ca4b7c1e8cd4fbc4b7ef384d506ebc201`](https://github.com/wso2/identity-apps/commit/32b0012ca4b7c1e8cd4fbc4b7ef384d506ebc201) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Handle ask password OTP failure error code seperately and other bug fixes
+
+## 2.30.6
+
+### Patch Changes
+
+- [#8827](https://github.com/wso2/identity-apps/pull/8827) [`33706651e183ad45a528afb8ec88cfa421dbf59c`](https://github.com/wso2/identity-apps/commit/33706651e183ad45a528afb8ec88cfa421dbf59c) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix workflow related issues in user creation.
+
+* [#8857](https://github.com/wso2/identity-apps/pull/8857) [`a23a40032a016a310f8f22691029c83f364d5891`](https://github.com/wso2/identity-apps/commit/a23a40032a016a310f8f22691029c83f364d5891) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improve the UX of account linking configurations
+
 ## 2.30.5
 
 ### Patch Changes
