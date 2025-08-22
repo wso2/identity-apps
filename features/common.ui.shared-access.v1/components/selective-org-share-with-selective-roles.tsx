@@ -16,8 +16,10 @@
  * under the License.
  */
 
+import { Theme, alpha, styled } from "@mui/material/styles";
 import { TreeViewBaseItem } from "@mui/x-tree-view/models";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
+import { TreeItem, treeItemClasses } from "@mui/x-tree-view/TreeItem";
 import Alert from "@oxygen-ui/react/Alert";
 import Autocomplete, {
     AutocompleteChangeDetails,
@@ -29,6 +31,7 @@ import Box from "@oxygen-ui/react/Box";
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import Chip from "@oxygen-ui/react/Chip";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
+import Code from "@oxygen-ui/react/Code";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Grid from "@oxygen-ui/react/Grid";
 import LinearProgress from "@oxygen-ui/react/LinearProgress";
@@ -45,6 +48,7 @@ import {
 import { ConsoleRolesOnboardingConstants }
     from "@wso2is/admin.console-settings.v1/constants/console-roles-onboarding-constants";
 import { ApplicationSharingPolicy } from "@wso2is/admin.console-settings.v1/models/shared-access";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
@@ -57,6 +61,7 @@ import {
 import { RolesV2Interface } from "@wso2is/admin.roles.v2/models/roles";
 import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { EmptyPlaceholder } from "@wso2is/react-components";
 import { AnimatePresence } from "framer-motion";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -73,6 +78,55 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import "./selective-org-share-with-selective-roles.scss";
 import { DropdownProps } from "semantic-ui-react";
+
+const CustomTreeItem: typeof TreeItem = styled(TreeItem)(({ theme }: { theme: Theme }) => ({
+    color: theme.palette.grey[200],
+    [`& .${treeItemClasses.content}`]: {
+        "&.Mui-focused": {
+            backgroundColor: alpha(theme.palette.primary.main, 0.2)
+        },
+        "&.Mui-selected .Mui-focused": {
+            backgroundColor: alpha(theme.palette.primary.main, 0.2)
+        },
+        "&.Mui-selected:hover": {
+            backgroundColor: alpha(theme.palette.primary.main, 0.2)
+        },
+        "&[data-selected]": {
+            backgroundColor: "transparent"
+        },
+        "&[data-selected][data-focused]": {
+            backgroundColor: alpha(theme.palette.primary.main, 0.2)
+        },
+        borderRadius: theme.spacing(0.5),
+        margin: theme.spacing(0.2, 0),
+        padding: theme.spacing(0.5, 1),
+        position: "relative"
+    },
+    [`& .${treeItemClasses.iconContainer}`]: {
+        backgroundColor: theme.palette.primary.dark,
+        borderRadius: "50%",
+        padding: theme.spacing(0, 1.2),
+        ...theme.applyStyles("light", {
+            backgroundColor: alpha(theme.palette.primary.main, 0.25)
+        }),
+        ...theme.applyStyles("dark", {
+            color: theme.palette.primary.contrastText
+        })
+    },
+    [`& .${treeItemClasses.groupTransition}`]: {
+        borderLeft: `1px dashed ${alpha(theme.palette.text.primary, 0.4)}`,
+        marginLeft: 16,
+        paddingLeft: 18,
+        position: "relative"
+    },
+    // Hide horizontal connector for items that have expand icons (have children)
+    [`&:has(.${treeItemClasses.iconContainer}) .${treeItemClasses.content}::before`]: {
+        display: "none"
+    },
+    ...theme.applyStyles("light", {
+        color: theme.palette.grey[800]
+    })
+}));
 
 interface SelectiveOrgShareWithSelectiveRolesProps extends IdentifiableComponentInterface {
     applicationId: string;
@@ -148,6 +202,7 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
     const [ selectedOrganizationSharingPolicy, setSelectedOrganizationSharingPolicy ]
         = useState<ApplicationSharingPolicy>();
     const [ flatOrganizationMap, setFlatOrganizationMap ] = useState<Record<string, OrganizationInterface>>({});
+    const [ hideLeftPanel, setHideLeftPanel ] = useState<boolean>(false);
 
     // Fetch all the organizations that the application is shared with.
     const {
@@ -161,11 +216,6 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
         null,
         "roles"
     );
-
-    // useEffect(() => {
-    //     console.log("roleSelections: ", roleSelections);
-    // }, [ roleSelections ]);
-
 
     // Fetch the top-level organization of the current organization.
     const {
@@ -289,6 +339,19 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                 };
             });
             setFlatOrganizationMap(initialFlatMap);
+            setSelectedOrgId(originalTopLevelOrganizations.organizations[0].id);
+
+            // Hide the organization selection panel if there is only one top-level organization
+            // and it does not have any children.
+            if (originalTopLevelOrganizations.organizations.length === 1 &&
+                !originalTopLevelOrganizations.organizations[0].hasChildren) {
+                setHideLeftPanel(true);
+            } else {
+                setHideLeftPanel(false);
+            }
+        } else {
+            setSelectedOrgId(undefined);
+            setOrganizationTree([]);
         }
     }, [ originalTopLevelOrganizations ]);
 
@@ -929,35 +992,29 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
     };
 
     const resolveRoleSelectionPane = (): ReactNode => {
-        if (isEmpty(selectedOrgId)) {
+        if (!hideLeftPanel && isEmpty(selectedOrgId)) {
             return (
-                <Alert
-                    severity="info"
-                    data-componentid={ `${ componentId }-org-not-selected-alert` }
-                >
+                <Box className="role-list-container center">
                     { t("applications:edit.sections.sharedAccess.selectAnOrganizationToMangage") }
-                </Alert>
+                </Box>
             );
         }
 
-        if (!disableOrgSelection && !selectedItems.includes(selectedOrgId)) {
+        if (!hideLeftPanel && !disableOrgSelection && !selectedItems.includes(selectedOrgId)) {
             return (
-                <Alert
-                    severity="info"
-                    data-componentid={ `${ componentId }-org-not-selected-alert` }
-                >
+                <Box className="role-list-container center">
                     { t("applications:edit.sections.sharedAccess.toManageOrganizationSelectLeftPanel") }
-                </Alert>
+                </Box>
             );
         }
 
         return (
-            <>
+            <Box className="role-list-container">
                 <Typography variant="h5">
                     {
-                        `${ t("applications:edit.sections.sharedAccess.sharingSettings") } ${
-                            flatOrganizationMap[selectedOrgId]?.name }`
+                        `${ t("applications:edit.sections.sharedAccess.sharingSettings") }`
                     }
+                    <Code sx={ { marginLeft: "5px" } }>{ flatOrganizationMap[selectedOrgId]?.name }</Code>
                 </Typography>
                 <Typography variant="body1">
                     { t("applications:edit.sections.sharedAccess.sharedRoles") }
@@ -984,6 +1041,7 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                             multiple
                             disableClearable
                             data-componentid={ `${componentId}-autocomplete` }
+                            size="small"
                             placeholder={
                                 t("applications:edit.sections.sharedAccess.modes.shareWithSelectedPlaceholder") }
                             options={ roleSelections[selectedOrgId] ?? [] }
@@ -1012,7 +1070,8 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                             renderInput={ (params: AutocompleteRenderInputParams) => (
                                 <TextField
                                     { ...params }
-                                    size="medium"
+                                    size="small"
+                                    className="role-select-autocomplete"
                                     placeholder={
                                         t("applications:edit.sections.sharedAccess.searchAvailableRolesPlaceholder") }
                                     data-componentid={ `${componentId}-role-search-input` }
@@ -1053,7 +1112,7 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                         />
                     )
                 }
-            </>
+            </Box>
         );
     };
 
@@ -1077,77 +1136,81 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                     </Grid>
                 ) : organizationTree.length > 0 ? (
                     <>
-                        <Grid
-                            xs={ 12 }
-                            md={ 4 }
-                            padding={ 1 }
-                            className="roles-selective-share-left-panel"
-                            id="scrollableOrgContainer"
-                        >
-                            <InfiniteScroll
-                                dataLength={ organizationTree.length }
-                                next={ loadMoreOrganizations }
-                                hasMore={ isNextPageAvailable }
-                                loader={ (<LinearProgress/>) }
-                                scrollableTarget="scrollableOrgContainer"
-                            >
-                                <RichTreeView
-                                    data-componentid={ `${ componentId }-tree-view` }
-                                    className="roles-selective-share-tree-view"
-                                    items={ organizationTree }
-                                    expandedItems={ expandedItems }
-                                    expansionTrigger={ disableOrgSelection
-                                        ? "content"
-                                        : "iconContainer"
-                                    }
-                                    onItemExpansionToggle={ (
-                                        _e: SyntheticEvent,
-                                        itemId: string,
-                                        expanded: boolean
-                                    ) => {
-                                        if (expanded) {
-                                            setExpandedOrgId(itemId);
-                                            setExpandedItems((prev: string[]) => [ ...prev, itemId ]);
-                                        } else {
-                                            setExpandedItems((prev: string[]) =>
-                                                prev.filter((id: string) => id !== itemId));
-                                            collapseChildNodes(itemId);
-                                        }
-                                    } }
-                                    onItemSelectionToggle={ (
-                                        _e: SyntheticEvent,
-                                        itemId: string,
-                                        isSelected: boolean
-                                    ) =>
-                                        resolveSelectedItems(itemId, isSelected) }
-                                    onItemClick={ (_e: SyntheticEvent, itemId: string) => {
-                                        setSelectedOrgId(itemId);
-                                    } }
-                                    selectedItems={ disableOrgSelection ? [] : selectedItems }
-                                    checkboxSelection={ !disableOrgSelection }
-                                    disableSelection={ disableOrgSelection }
-                                    multiSelect={ !disableOrgSelection }
-                                    selectionPropagation={ {
-                                        descendants: false,
-                                        parents: false
-                                    } }
-                                />
-                            </InfiniteScroll>
-                        </Grid>
+                        {
+                            !hideLeftPanel && (
+                                <Grid
+                                    xs={ 12 }
+                                    md={ 4 }
+                                    lg={ 3 }
+                                    padding={ 1 }
+                                    className="roles-selective-share-left-panel"
+                                    id="scrollableOrgContainer"
+                                >
+                                    <InfiniteScroll
+                                        dataLength={ organizationTree.length }
+                                        next={ loadMoreOrganizations }
+                                        hasMore={ isNextPageAvailable }
+                                        loader={ (<LinearProgress/>) }
+                                        scrollableTarget="scrollableOrgContainer"
+                                    >
+                                        <RichTreeView
+                                            data-componentid={ `${ componentId }-tree-view` }
+                                            className="roles-selective-share-tree-view"
+                                            items={ organizationTree }
+                                            expandedItems={ expandedItems }
+                                            expansionTrigger={ disableOrgSelection
+                                                ? "content"
+                                                : "iconContainer"
+                                            }
+                                            onItemExpansionToggle={ (
+                                                _e: SyntheticEvent,
+                                                itemId: string,
+                                                expanded: boolean
+                                            ) => {
+                                                if (expanded) {
+                                                    setExpandedOrgId(itemId);
+                                                    setExpandedItems((prev: string[]) => [ ...prev, itemId ]);
+                                                } else {
+                                                    setExpandedItems((prev: string[]) =>
+                                                        prev.filter((id: string) => id !== itemId));
+                                                    collapseChildNodes(itemId);
+                                                }
+                                            } }
+                                            onItemSelectionToggle={ (
+                                                _e: SyntheticEvent,
+                                                itemId: string,
+                                                isSelected: boolean
+                                            ) =>
+                                                resolveSelectedItems(itemId, isSelected) }
+                                            onItemClick={ (_e: SyntheticEvent, itemId: string) => {
+                                                setSelectedOrgId(itemId);
+                                            } }
+                                            selectedItems={ disableOrgSelection ? selectedOrgId : selectedItems }
+                                            checkboxSelection={ !disableOrgSelection }
+                                            disableSelection={ disableOrgSelection }
+                                            multiSelect={ !disableOrgSelection }
+                                            selectionPropagation={ {
+                                                descendants: false,
+                                                parents: false
+                                            } }
+                                            slots={ {
+                                                item: CustomTreeItem
+                                            } }
+                                        />
+                                    </InfiniteScroll>
+                                </Grid>
+                            )
+                        }
                         <AnimatePresence mode="wait">
                             <Grid
                                 xs={ 12 }
-                                md={ 8 }
+                                md={ hideLeftPanel ? 12 : 8 }
+                                lg={ hideLeftPanel ? 12 : 9 }
                                 paddingX={ 2 }
                                 paddingY={ 1 }
                                 className="roles-selective-share-right-panel"
                             >
-                                <Box
-                                    className="role-list-container"
-                                >
-                                    { resolveRoleSelectionPane() }
-                                </Box>
-
+                                { resolveRoleSelectionPane() }
                             </Grid>
                         </AnimatePresence>
                     </>
@@ -1166,9 +1229,13 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                             alignItems="center"
                             height="100%"
                         >
-                            <Typography variant="body1">
-                                { t("organizations:placeholders.emptyList.subtitles.0") }
-                            </Typography>
+                            <EmptyPlaceholder
+                                className="p-0"
+                                data-componentid={ `${componentId}-empty-list-placeholder` }
+                                image={ getEmptyPlaceholderIllustrations().emptyList }
+                                imageSize="mini"
+                                subtitle={ [ t("organizations:placeholders.emptyList.subtitles.0") ] }
+                            />
                         </Box>
                     </Grid>
                 )
