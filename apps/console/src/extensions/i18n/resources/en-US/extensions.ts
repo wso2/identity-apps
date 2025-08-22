@@ -3756,7 +3756,8 @@ export const extensions: Extensions = {
                             expiryTime: {
                                 label: "Invitation link/OTP expiry time",
                                 placeholder: "Enter expiry time in minutes",
-                                hint: "Set the time span that the password setup invitation link / OTP would be valid, in minutes. (For infinite validity period, set -1. Setting 0 will cause immediate expiry of the invitation)",
+                                hint: "Set the time span that the password setup invitation link / OTP would be valid, in minutes.",
+                                hintSub: "(For infinite validity period, set -1. Setting 0 will cause immediate expiry of the invitation)",
                                 validations: {
                                     invalid: "Recovery link/OTP expiry time should be an integer.",
                                     empty: "Recovery link/OTP expiry time cannot be empty.",
