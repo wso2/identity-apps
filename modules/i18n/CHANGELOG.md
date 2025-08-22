@@ -1,5 +1,13 @@
 # @wso2is/i18n
 
+## 2.30.6
+
+### Patch Changes
+
+- [#8881](https://github.com/wso2/identity-apps/pull/8881) [`f74bbdc8f5a9f64802fd09bc3aa8dd90a4c5ce29`](https://github.com/wso2/identity-apps/commit/f74bbdc8f5a9f64802fd09bc3aa8dd90a4c5ce29) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Handle ask password expired OTP error seperatly
+
+* [#8869](https://github.com/wso2/identity-apps/pull/8869) [`b9823e4b2efa2a4ec79bc293e63cfd89d77d98e3`](https://github.com/wso2/identity-apps/commit/b9823e4b2efa2a4ec79bc293e63cfd89d77d98e3) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the flow card to the sub-organization home page
+
 ## 2.30.5
 
 ### Patch Changes
