@@ -55,6 +55,16 @@ export interface ValidationContextProps {
      * @param notification - The notification to select.
      */
     setSelectedNotification?: (notification: Notification) => void;
+    /**
+     * Indicates whether the validation panel is open.
+     */
+    openValidationPanel?: boolean;
+    /**
+     * Sets the visibility of the validation panel.
+     *
+     * @param open - Whether the validation panel should be open.
+     */
+    setOpenValidationPanel?: (open: boolean) => void;
 }
 
 /**
@@ -64,6 +74,8 @@ export const ValidationContext: Context<ValidationContextProps> = createContext<
     addNotification: null,
     isValid: true,
     notifications: [],
+    openValidationPanel: false,
     removeNotification: null,
-    selectedNotification: null
+    selectedNotification: null,
+    setOpenValidationPanel: null
 });
