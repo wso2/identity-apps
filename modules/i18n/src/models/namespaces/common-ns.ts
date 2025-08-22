@@ -117,8 +117,9 @@ export interface CommonNS {
         };
         propertyMessages: {
             assignedUsersDeleted: string;
-            unassignedUsersDeleted: string;
             roleDeleted: string;
+            selfRegistration: string;
+            unassignedUsersDeleted: string;
         };
     }
     apps: string;

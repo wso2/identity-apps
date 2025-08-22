@@ -117,6 +117,7 @@ export const common: CommonNS = {
         propertyMessages: {
             assignedUsersDeleted: "The assigned user(s) have been deleted.",
             roleDeleted: "The role has been deleted.",
+            selfRegistration: "Self Registration",
             unassignedUsersDeleted: "The unassigned user(s) have been deleted."
         },
         subTitle: "Review operational tasks that requires your approval",
