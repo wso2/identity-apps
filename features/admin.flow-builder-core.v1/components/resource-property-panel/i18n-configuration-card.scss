@@ -34,10 +34,11 @@
             border-radius: var(--oxygen-shape-borderRadius);
             background-color: var(--oxygen-palette-background-paper);
             z-index: 1301;
+            padding: 0;
 
             .card-header {
                 border-bottom: 1px solid var(--oxygen-palette-divider);
-                padding: 16px 0;
+                padding: 16px;
 
                 .MuiCardHeader-title {
                     font-size: 1rem;
@@ -48,7 +49,7 @@
 
             .card-content {
                 margin: 10px 0;
-                padding: 16px 0;
+                padding: 16px 24px;
                 max-height: 550px;
                 overflow-y: auto;
 
@@ -59,10 +60,16 @@
 
             .card-actions {
                 justify-content: flex-end;
-                padding: 8px 0;
+                padding: 24px;
+                padding-top: 0;
 
                 .oxygen-button {
                     min-width: auto;
+
+                    &.MuiButton-containedPrimary.Mui-disabled {
+                        opacity: 0.5;
+                        color: var(--oxygen-palette-primary-contrastText);
+                    }
                 }
             }
 
