@@ -483,7 +483,9 @@ export const RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP: Record<string, strin
     [RecoveryScenario.ADMIN_FORCED_PASSWORD_RESET_VIA_EMAIL_LINK]: [ RecoveryOptionTypes.LINK ],
     [RecoveryScenario.ADMIN_FORCED_PASSWORD_RESET_VIA_OTP]: [ RecoveryOptionTypes.CODE ],
     [RecoveryScenario.ADMIN_FORCED_PASSOWRD_RESET_VIA_SMS_OTP]: [ RecoveryOptionTypes.CODE ],
-    [RecoveryScenario.ASK_PASSWORD]: [ RecoveryOptionTypes.LINK ]
+    [RecoveryScenario.ASK_PASSWORD]: [ RecoveryOptionTypes.LINK ],
+    [RecoveryScenario.ASK_PASSWORD_VIA_EMAIL_OTP]: [ RecoveryOptionTypes.CODE ],
+    [RecoveryScenario.ASK_PASSWORD_VIA_SMS_OTP]: [ RecoveryOptionTypes.CODE ]
 };
 
 /**

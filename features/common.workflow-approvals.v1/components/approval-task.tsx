@@ -34,6 +34,7 @@ import {
     Table
 } from "semantic-ui-react";
 import { ApprovalStatus, ApprovalTaskDetails } from "../models";
+import "./approval-task.scss";
 
 /**
  * Prop-types for the approvals edit page component.
@@ -98,6 +99,60 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
     const { t } = useTranslation();
     const { isMobileViewport } = useMediaContext();
 
+    const USERS_TO_BE_ADDED_PROPERTY: string = "Users to be Added";
+    const USERS_TO_BE_DELETED_PROPERTY: string = "Users to be Deleted";
+    const ROLE_NAME_PROPERTY: string = "Role Name";
+    const SELF_ARBITRARY_ATTRIBUTE_PROPERTY_PREFIX: string = "self_arbitrary_attr_";
+    const roleUserAssignmentPropertyKeys: string[] = [ USERS_TO_BE_ADDED_PROPERTY, USERS_TO_BE_DELETED_PROPERTY ];
+
+    /**
+     * Filters and returns valid username values from a comma-separated string.
+     *
+     * @param value - Comma-separated string of usernames.
+     * @returns Array of valid usernames.
+     */
+    const filterValidUsernamePropertyValues = (value: string): string[] => {
+        return value.split(",")
+            .map((username: string) => username.trim())
+            .filter((username: string) => {
+                return username &&
+                       username !== "null" &&
+                       username !== "undefined" &&
+                       username !== "[]" &&
+                       username !== "";
+            });
+    };
+
+    /**
+     * Checks if the approval task user related properties have valid users.
+     */
+    const hasValidUsers: boolean = React.useMemo(() => {
+        if (!approval?.properties) return true;
+
+        const userProperties: { key: string, value: string }[] = approval.properties.filter(
+            (prop: { key: string, value: string }) => roleUserAssignmentPropertyKeys.includes(prop?.key)
+        );
+
+        if (userProperties.length === 0) return true;
+
+        return userProperties.some((prop: { key: string, value: string }) => {
+            const validUsernames: string[] = filterValidUsernamePropertyValues(prop.value);
+
+            return validUsernames.length > 0;
+        });
+    }, [ approval?.properties ]);
+
+    /**
+     * Checks if any resource (like role) has been deleted.
+     */
+    const isResourceDeleted: boolean = React.useMemo(() => {
+        if (!approval?.properties) return false;
+
+        return approval.properties.some((prop: { key: string, value: string }) => {
+            return prop.key === ROLE_NAME_PROPERTY && prop.value === "";
+        });
+    }, [ approval?.properties ]);
+
     /**
      * Removes unnecessary commas at the end of property values and splits
      * up the claim values.
@@ -112,9 +167,15 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
      * @returns A cleaned up string.
      */
     const populateProperties = (key: string, value: string): string | JSX.Element => {
-        if (key === "Claims" || value === "[]" || value === "") {
+        if (key === ROLE_NAME_PROPERTY && value === "") {
+            value = t("common:approvalsPage.propertyMessages.roleDeleted");
+        }
+
+        if (key === "Claims" || value === "[]" || value === ""
+            || key.startsWith(SELF_ARBITRARY_ATTRIBUTE_PROPERTY_PREFIX)) {
             return;
         }
+
         if (key === "ClaimsUI") {
             // Remove the curly braces at the start and end of the value.
             value = value.replace(/^\{|\}$/g, "").trim();
@@ -180,14 +241,34 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
             }
         }
 
+        // Check if usernames are valid.
+        if (roleUserAssignmentPropertyKeys.includes(key)) {
+            const validUsernames: string[] = filterValidUsernamePropertyValues(value);
+
+            if (validUsernames.length > 0) {
+                value = validUsernames.join(", ");
+            } else {
+                if (key === USERS_TO_BE_ADDED_PROPERTY) {
+                    value = t("common:approvalsPage.propertyMessages.assignedUsersDeleted");
+                } else if (key === USERS_TO_BE_DELETED_PROPERTY) {
+                    value = t("common:approvalsPage.propertyMessages.unassignedUsersDeleted");
+                }
+            }
+        }
+
         // Handle other properties that don't need special formatting.
         return (
             <Table.Row key={ key }>
                 <Table.Cell className="key-cell">
                     { key }
                 </Table.Cell>
-                <Table.Cell collapsing className="values-cell">
-                    <Text truncate>{ value.endsWith(",") ? value.slice(0, -1) : value }</Text>
+                <Table.Cell
+                    collapsing={ false }
+                    className="values-cell"
+                >
+                    <Text>
+                        { value.endsWith(",") ? value.slice(0, -1) : value }
+                    </Text>
                 </Table.Cell>
             </Table.Row>
         );
@@ -200,20 +281,26 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
      * @returns A table containing the list of properties.
      */
     const propertiesTable = (properties: { key: string, value: string }[]): JSX.Element => (
-        <Table celled compact className="approval-tasks-table" verticalAlign="top">
-            <Table.Body>
-                {
-                    properties.map((property: { key: string, value: string }) => (
-                        property.key && property.value
-                            ? (
-                                populateProperties(property.key, property.value)
-                            )
-                            : null
-                    )
-                    )
-                }
-            </Table.Body>
-        </Table>
+        <div className="approval-task-properties-container">
+            <Table
+                celled
+                compact
+                className="approval-tasks-table approval-task-properties-table"
+                verticalAlign="top"
+            >
+                <Table.Body>
+                    {
+                        properties.map((property: { key: string, value: string }) => (
+                            property.key && (property.key === ROLE_NAME_PROPERTY || property.value)
+                                ? (
+                                    populateProperties(property.key, property.value)
+                                )
+                                : null
+                        ))
+                    }
+                </Table.Body>
+            </Table>
+        </div>
     );
 
     /**
@@ -268,7 +355,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                     onCloseApprovalTaskModal();
                                 } }
                                 loading={ isSubmitting }
-                                disabled={ isSubmitting }
+                                disabled={ isSubmitting || !hasValidUsers || isResourceDeleted }
                             >
                                 { t("common:approve") }
                             </Button>
@@ -378,7 +465,8 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                     </Grid.Column>
                                     <Grid.Column width={ 12 }>
                                         <List.Description>
-                                            { approval?.initiator }
+                                            { approval?.initiator ??
+                                                t("common:approvalsPage.propertyMessages.selfRegistration") }
                                         </List.Description>
                                     </Grid.Column>
                                 </Grid.Row>

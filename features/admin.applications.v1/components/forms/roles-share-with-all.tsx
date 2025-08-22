@@ -35,6 +35,7 @@ import {
     RolesInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { Hint } from "@wso2is/react-components";
 import debounce from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -52,6 +53,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps } from "semantic-ui-react";
 import { ApplicationInterface } from "../../models/application";
+import "./roles-share-with-all.scss";
 
 /**
  * Props interface for the ConsoleRolesShareWithAll component.
@@ -161,12 +163,19 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
     return (
         <>
             <Typography variant="body1" marginBottom={ 1 }>
-                Common set of roles shared with all organizations
+                { t("applications:edit.sections.sharedAccess." +
+                    "commonRoleSharingLabel") }
+                <Hint inline popup>
+                    { t("applications:edit.sections.sharedAccess." +
+                        "commonRoleSharingHint") }
+                </Hint>
             </Typography>
             <Autocomplete
                 fullWidth
                 multiple
                 disableClearable
+                size="small"
+                className="role-select-autocomplete"
                 data-componentid={ `${componentId}-autocomplete` }
                 loading={ isApplicationRolesFetchRequestLoading || isSearching }
                 placeholder={ t("applications:edit.sections.sharedAccess.modes.shareWithSelectedPlaceholder") }
@@ -191,7 +200,7 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
                 renderInput={ (params: AutocompleteRenderInputParams) => (
                     <TextField
                         { ...params }
-                        size="medium"
+                        size="small"
                         placeholder={ t("applications:edit.sections.sharedAccess.searchAvailableRolesPlaceholder") }
                         data-componentid={ `${componentId}-role-search-input` }
                         onChange={ (event: ChangeEvent<HTMLInputElement>) => {

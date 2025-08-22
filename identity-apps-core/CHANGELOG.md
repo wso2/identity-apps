@@ -1,5 +1,23 @@
 # @wso2is/identity-apps-core
 
+## 3.1.15
+
+### Patch Changes
+
+- [#8882](https://github.com/wso2/identity-apps/pull/8882) [`d525ac825b35aaa506e5bd2dddff3964c55b7640`](https://github.com/wso2/identity-apps/commit/d525ac825b35aaa506e5bd2dddff3964c55b7640) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add missing space in Sign in With SSO page
+
+## 3.1.14
+
+### Patch Changes
+
+- [#8744](https://github.com/wso2/identity-apps/pull/8744) [`d48fc2669952c34ac6ff414367d6e5a84a60d881`](https://github.com/wso2/identity-apps/commit/d48fc2669952c34ac6ff414367d6e5a84a60d881) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix Auto login is not working for email otp based password reset flow
+
+* [#8851](https://github.com/wso2/identity-apps/pull/8851) [`8c4d42a6e998c27c0630880a65a63ff571717acf`](https://github.com/wso2/identity-apps/commit/8c4d42a6e998c27c0630880a65a63ff571717acf) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Update email username regex to support consecutive special characters
+
+- [#8879](https://github.com/wso2/identity-apps/pull/8879) [`32b0012ca4b7c1e8cd4fbc4b7ef384d506ebc201`](https://github.com/wso2/identity-apps/commit/32b0012ca4b7c1e8cd4fbc4b7ef384d506ebc201) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Handle ask password OTP failure error code seperately and other bug fixes
+
+* [#8593](https://github.com/wso2/identity-apps/pull/8593) [`cda15fd8cc216994c4a5e74cbe62d5991acceac8`](https://github.com/wso2/identity-apps/commit/cda15fd8cc216994c4a5e74cbe62d5991acceac8) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Fix application branding not applied issues
+
 ## 3.1.13
 
 ### Patch Changes

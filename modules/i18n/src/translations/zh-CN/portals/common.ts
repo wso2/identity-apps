@@ -114,6 +114,12 @@ export const common: CommonNS = {
             },
             "searchApprovals": "按工作流名称搜索"
         },
+        propertyMessages: {
+            assignedUsersDeleted: "分配的用户已被删除。",
+            roleDeleted: "角色已被删除。",
+            selfRegistration: "自助注册",
+            unassignedUsersDeleted: "未分配的用户已被删除。"
+        },
         "subTitle": "查看需要您批准的操作任务",
         "title": "批准"
     },
