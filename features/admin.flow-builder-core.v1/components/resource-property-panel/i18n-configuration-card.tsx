@@ -17,12 +17,14 @@
  */
 
 import { FormHelperText } from "@mui/material";
+import Alert from "@oxygen-ui/react/Alert";
 import Autocomplete from "@oxygen-ui/react/Autocomplete";
 import Button from "@oxygen-ui/react/Button";
 import Card from "@oxygen-ui/react/Card";
 import CardActions from "@oxygen-ui/react/CardActions";
 import CardContent from "@oxygen-ui/react/CardContent";
 import CardHeader from "@oxygen-ui/react/CardHeader";
+import Chip from "@oxygen-ui/react/Chip";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import IconButton from "@oxygen-ui/react/IconButton";
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
@@ -397,7 +399,7 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
      * @returns The screen associated with the i18n key, or an empty string if not found.
      */
     const findI18nScreen = (i18nKey: string): string => {
-        return i18nKeys?.find((key: I18nKeyOption) => key.key === i18nKey)?.screen || "";
+        return i18nKeys?.find((key: I18nKeyOption) => key.key === i18nKey)?.screen || primaryI18nScreen || "";
     };
 
     /**
@@ -447,9 +449,26 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                                 ) }
                                 renderOption={ (props: any, option: string) => (
                                     <li { ...props } className="option-item">
-                                        <Tooltip title={ option } placement="top">
+                                        <Tooltip title={ option } placement="bottom">
                                             <span className="option-text">{ option }</span>
                                         </Tooltip>
+                                        {
+                                            !isCustomI18nKey(option) && (
+                                                <Tooltip
+                                                    title={ t("flows:core.elements.textPropertyField.i18nCard." +
+                                                        "tooltip.commonKeyTooltip") }
+                                                    placement="top"
+                                                >
+                                                    <Chip
+                                                        label={ t("flows:core.elements.textPropertyField.i18nCard." +
+                                                            "chip.commonScreen.label") }
+                                                        size="small"
+                                                        color="info"
+                                                        variant="outlined"
+                                                    />
+                                                </Tooltip>
+                                            )
+                                        }
                                     </li>
                                 ) }
                                 slotProps={ {
@@ -466,6 +485,15 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
 
         return (
             <div className="i18n-config-container">
+                {
+                    !isI18nCreationMode.current &&
+                    i18nKeyInputValue &&
+                    !isCustomI18nKey(i18nKeyInputValue.key) && (
+                        <Alert severity="warning">
+                            { t("flows:core.elements.textPropertyField.i18nCard.commonKeyWarning") }
+                        </Alert>
+                    )
+                }
                 <div>
                     <Typography variant="subtitle2" gutterBottom>
                         { t("flows:core.elements.textPropertyField.i18nCard.language") }
@@ -578,12 +606,12 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                                 ) }
                                 renderOption={ (props: any, option: I18nKeyOption) => (
                                     <li { ...props } className="option-item">
-                                        <Tooltip title={ option.label } placement="top">
+                                        <Tooltip title={ option.label } placement="bottom">
                                             <span className="option-text">{ option.label }</span>
                                         </Tooltip>
                                         {
                                             option.screen === primaryI18nScreen &&
-                                            isCustomI18nKey(primaryI18nScreen, option.key) && (
+                                            isCustomI18nKey(option.key) && (
                                                 <IconButton
                                                     size="small"
                                                     onClick={ (e: React.MouseEvent) => {
@@ -595,6 +623,24 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                                                 >
                                                     <TrashIcon />
                                                 </IconButton>
+                                            )
+                                        }
+                                        {
+                                            ((option.screen === primaryI18nScreen &&
+                                                !isCustomI18nKey(option.key))
+                                                || option.screen !== primaryI18nScreen) && (
+                                                <Tooltip
+                                                    title={ t("flows:core.elements.textPropertyField.i18nCard." +
+                                                        "tooltip.commonKeyTooltip") }
+                                                    placement="top"
+                                                >
+                                                    <Chip
+                                                        label={ t("common:common") }
+                                                        size="small"
+                                                        color="info"
+                                                        variant="outlined"
+                                                    />
+                                                </Tooltip>
                                             )
                                         }
                                     </li>
@@ -695,86 +741,94 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                 <CardActions className="card-actions">
                     { !isCustomizeView ? (
                         <>
-                            <Tooltip
-                                title={ !isBrandingEnabled ? (
-                                    <Trans
-                                        i18nKey={ "flows:core.elements.textPropertyField.i18nCard.tooltip" +
-                                            ".enableBrandingRequired" }
-                                    >
-                                        Enable <Link
-                                            onClick={ handleNavigateToBranding }
-                                            className="branding-link"
-                                        >branding</Link> to update translation text.
-                                    </Trans>
-                                ) : t("flows:core.elements.textPropertyField.i18nCard.tooltip" +
-                                    ".editExistingTranslation") }
-                                placement="top"
-                                slotProps={ {
-                                    popper: {
-                                        className: "flow-builder-resource-property-panel-i18n-configuration"
-                                    }
-                                } }
-                            >
-                                <span>
-                                    <Button
-                                        variant="contained"
-                                        size="small"
-                                        onClick={ (): void => {
-                                            isI18nCreationMode.current = false;
-                                            if (selectedI18nKey) {
-                                                setI18nKeyInputValue({
-                                                    key: selectedI18nKey,
-                                                    label: selectedI18nKey,
-                                                    screen: findI18nScreen(selectedI18nKey)
-                                                });
-                                            } else {
-                                                setI18nKeyInputValue(null);
+                            {
+                                selectedI18nKey && (
+                                    <Tooltip
+                                        title={ !isBrandingEnabled ? (
+                                            <Trans
+                                                i18nKey={ "flows:core.elements.textPropertyField.i18nCard.tooltip" +
+                                                    ".enableBrandingRequired" }
+                                            >
+                                                Enable <Link
+                                                    onClick={ handleNavigateToBranding }
+                                                    className="branding-link"
+                                                >branding</Link> to update translation text.
+                                            </Trans>
+                                        ) : t("flows:core.elements.textPropertyField.i18nCard.tooltip" +
+                                            ".editExistingTranslation") }
+                                        placement="top"
+                                        slotProps={ {
+                                            popper: {
+                                                className: "flow-builder-resource-property-panel-i18n-configuration"
                                             }
-                                            setIsCustomizeView(true);
                                         } }
-                                        startIcon={ <PenToSquareIcon /> }
-                                        disabled={ !isBrandingEnabled }
-                                        color="secondary"
                                     >
-                                        { t("common:edit") }
-                                    </Button>
-                                </span>
-                            </Tooltip>
-                            <Tooltip
-                                title={ !isBrandingEnabled ? (
-                                    <Trans
-                                        i18nKey={ "flows:core.elements.textPropertyField.i18nCard.tooltip" +
-                                            ".enableBrandingRequired" }
-                                    >
-                                        Enable <Link
-                                            onClick={ handleNavigateToBranding }
-                                            className="branding-link"
-                                        >branding</Link> to update translation text.
-                                    </Trans>
-                                ) : t("flows:core.elements.textPropertyField.i18nCard.tooltip" +
-                                    ".addNewTranslation") }
-                                placement="top"
-                                slotProps={ {
-                                    popper: {
-                                        className: "flow-builder-resource-property-panel-i18n-configuration"
-                                    }
-                                } }
-                            >
-                                <span>
-                                    <Button
-                                        variant="contained"
-                                        size="small"
-                                        onClick={ (): void => {
-                                            isI18nCreationMode.current = true;
-                                            setIsCustomizeView(true);
+                                        <span>
+                                            <Button
+                                                variant="contained"
+                                                size="small"
+                                                onClick={ (): void => {
+                                                    isI18nCreationMode.current = false;
+                                                    if (selectedI18nKey) {
+                                                        setI18nKeyInputValue({
+                                                            key: selectedI18nKey,
+                                                            label: selectedI18nKey,
+                                                            screen: findI18nScreen(selectedI18nKey)
+                                                        });
+                                                    } else {
+                                                        setI18nKeyInputValue(null);
+                                                    }
+                                                    setIsCustomizeView(true);
+                                                } }
+                                                startIcon={ <PenToSquareIcon /> }
+                                                disabled={ !isBrandingEnabled }
+                                                color="secondary"
+                                            >
+                                                { t("common:edit") }
+                                            </Button>
+                                        </span>
+                                    </Tooltip>
+                                )
+                            }
+                            {
+                                !selectedI18nKey && (
+                                    <Tooltip
+                                        title={ !isBrandingEnabled ? (
+                                            <Trans
+                                                i18nKey={ "flows:core.elements.textPropertyField.i18nCard.tooltip" +
+                                                    ".enableBrandingRequired" }
+                                            >
+                                                Enable <Link
+                                                    onClick={ handleNavigateToBranding }
+                                                    className="branding-link"
+                                                >branding</Link> to update translation text.
+                                            </Trans>
+                                        ) : t("flows:core.elements.textPropertyField.i18nCard.tooltip" +
+                                            ".addNewTranslation") }
+                                        placement="top"
+                                        slotProps={ {
+                                            popper: {
+                                                className: "flow-builder-resource-property-panel-i18n-configuration"
+                                            }
                                         } }
-                                        startIcon={ <PlusIcon /> }
-                                        disabled={ !isBrandingEnabled }
                                     >
-                                        { t("common:new") }
-                                    </Button>
-                                </span>
-                            </Tooltip>
+                                        <span>
+                                            <Button
+                                                variant="contained"
+                                                size="small"
+                                                onClick={ (): void => {
+                                                    isI18nCreationMode.current = true;
+                                                    setIsCustomizeView(true);
+                                                } }
+                                                startIcon={ <PlusIcon /> }
+                                                disabled={ !isBrandingEnabled }
+                                            >
+                                                { t("common:new") }
+                                            </Button>
+                                        </span>
+                                    </Tooltip>
+                                )
+                            }
                         </>
                     ) : (
                         <>
