@@ -48,6 +48,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import ValidationProvider from "./validation-provider";
 import useGetCustomTextPreferenceFallbacks from "../api/use-get-custom-text-preference-fallbacks";
 import useGetMetadata from "../api/use-metadata";
 import useResolveCustomTextPreferences from "../api/use-resolve-custom-text-preference";
@@ -351,7 +352,9 @@ const AuthenticationFlowBuilderCoreProvider = ({
                     updateI18nKey
                 } }
             >
-                { children }
+                <ValidationProvider>
+                    { children }
+                </ValidationProvider>
             </AuthenticationFlowBuilderCoreContext.Provider>
         </ReactFlowProvider>
     );

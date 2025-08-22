@@ -1,0 +1,237 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+:root {
+    --wso2is-flow-builder-validation-panel-background: var(--oxygen-palette-common-white);
+    --wso2is-flow-builder-validation-panel-width: 350px;
+    --wso2is-validation-error-color: var(--oxygen-palette-error-main, #d32f2f);
+    --wso2is-validation-warning-color: var(--oxygen-palette-warning-main, #ed6c02);
+    --wso2is-validation-info-color: var(--oxygen-palette-info-main, #0288d1);
+}
+
+@mixin open {
+    width: var(--wso2is-flow-builder-validation-panel-width);
+    transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
+    overflow: hidden;
+}
+
+@mixin close {
+    width: 0;
+    transition: width 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
+    overflow: hidden;
+}
+
+.flow-builder-validation-panel {
+    .flow-builder-validation-panel {
+        position: absolute;
+        width: var(--wso2is-flow-builder-validation-panel-width);
+        background: var(--wso2is-flow-builder-validation-panel-background);
+        box-shadow: -3px 0px 20px 0 rgba(0, 0, 0, 0.06);
+        border-right: 1px solid #E8E8E8;
+        border-left: 1px solid #E8E8E8;
+    }
+
+    &:not(.open) {
+        @include close;
+
+        .MuiDrawer-paper {
+            @include close;
+        }
+    }
+
+    &.open {
+        @include open;
+
+        .MuiDrawer-paper {
+            @include open;
+        }
+    }
+}
+
+.flow-builder-validation-panel {
+    .flow-builder-validation-panel {
+
+        .flow-builder-validation-panel-header {
+            padding: var(--oxygen-spacing-2);
+            border-bottom: 1px solid var(--oxygen-palette-divider);
+            background: var(--oxygen-palette-grey-50);
+
+            h2 {
+                margin: 0;
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: var(--oxygen-palette-text-primary);
+            }
+        }
+
+        .flow-builder-validation-panel-content {
+            display: flex;
+            flex-direction: column;
+            height: calc(100% - 64px); // Subtract header height
+
+            .validation-tabs {
+                border-bottom: 1px solid var(--oxygen-palette-divider);
+                min-height: 48px;
+
+                .validation-tab {
+                    min-height: 48px;
+                    text-transform: none;
+                    font-weight: 500;
+
+                    &.error-tab.has-notifications {
+                        color: var(--wso2is-validation-error-color);
+
+                        &.Mui-selected {
+                            color: var(--wso2is-validation-error-color);
+                        }
+                    }
+
+                    &.info-tab.has-notifications {
+                        color: var(--wso2is-validation-info-color);
+
+                        &.Mui-selected {
+                            color: var(--wso2is-validation-info-color);
+                        }
+                    }
+
+                    &.warning-tab.has-notifications {
+                        color: var(--wso2is-validation-warning-color);
+
+                        &.Mui-selected {
+                            color: var(--wso2is-validation-warning-color);
+                        }
+                    }
+
+                    .MuiBox-root {
+                        font-size: 0.875rem;
+
+                        .MuiTypography-root {
+                            font-size: inherit;
+                        }
+                    }
+                }
+
+                .MuiTabs-indicator {
+                    height: 3px;
+                }
+            }
+
+            .validation-tab-panel {
+                flex: 1;
+                padding: 0;
+                overflow-y: auto;
+
+                .validation-notifications-list {
+                    padding: 0;
+
+                    .validation-notification-item {
+                        padding: var(--oxygen-spacing-1) var(--oxygen-spacing-2);
+                        border-bottom: 1px solid var(--oxygen-palette-grey-200);
+
+                        &:hover {
+                            background: var(--oxygen-palette-grey-50);
+                        }
+
+                        &:last-child {
+                            border-bottom: none;
+                        }
+
+                        .MuiListItemText-root {
+                            margin: 0;
+                        }
+
+                        .validation-notification-alert {
+                            margin: 0;
+                            box-shadow: none;
+                            border-radius: var(--oxygen-shape-borderRadius);
+
+                            .MuiAlert-message {
+                                padding: 0;
+                                width: 100%;
+
+                                .MuiTypography-root {
+                                    margin-bottom: var(--oxygen-spacing-0_5);
+
+                                    &:last-child {
+                                        margin-bottom: 0;
+                                    }
+                                }
+
+                                .MuiTypography-caption {
+                                    font-size: 0.75rem;
+                                    opacity: 0.8;
+                                }
+                            }
+
+                            &.MuiAlert-outlinedError {
+                                border-color: var(--wso2is-validation-error-color);
+                                background: rgba(211, 47, 47, 0.04);
+
+                                .MuiAlert-icon {
+                                    color: var(--wso2is-validation-error-color);
+                                }
+                            }
+
+                            &.MuiAlert-outlinedWarning {
+                                border-color: var(--wso2is-validation-warning-color);
+                                background: rgba(237, 108, 2, 0.04);
+
+                                .MuiAlert-icon {
+                                    color: var(--wso2is-validation-warning-color);
+                                }
+                            }
+
+                            &.MuiAlert-outlinedInfo {
+                                border-color: var(--wso2is-validation-info-color);
+                                background: rgba(2, 136, 209, 0.04);
+
+                                .MuiAlert-icon {
+                                    color: var(--wso2is-validation-info-color);
+                                }
+                            }
+
+                            &.MuiAlert-outlinedWarning {
+                                border-color: var(--wso2is-validation-warning-color);
+                                background: rgba(237, 108, 2, 0.04);
+
+                                .MuiAlert-icon {
+                                    color: var(--wso2is-validation-warning-color);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Empty state styling
+.flow-builder-validation-panel .validation-tab-panel .MuiBox-root:not(.validation-notifications-list) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    color: var(--oxygen-palette-text-secondary);
+
+    .MuiTypography-root {
+        text-align: center;
+        font-style: italic;
+    }
+}

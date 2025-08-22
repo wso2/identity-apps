@@ -25,6 +25,7 @@ const ValidationProvider = ({
 }: PropsWithChildren): ReactElement => {
     const [ notifications, setNotifications ] = useState<Map<string, Notification>>(new Map());
     const [ selectedNotification, setSelectedNotification ] = useState<Notification>(null);
+    const [ openValidationPanel, setOpenValidationPanel ] = useState<boolean>(true);
 
     /**
      * Get the list of notifications.
@@ -68,8 +69,10 @@ const ValidationProvider = ({
                 addNotification,
                 isValid,
                 notifications: notificationList,
+                openValidationPanel,
                 removeNotification,
                 selectedNotification,
+                setOpenValidationPanel,
                 setSelectedNotification
             } }
         >
