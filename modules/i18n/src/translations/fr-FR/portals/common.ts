@@ -116,6 +116,7 @@ export const common: CommonNS = {
         },
         propertyMessages: {
             assignedUsersDeleted: "Les utilisateurs assignés ont été supprimés.",
+            roleDeleted: "Le rôle a été supprimé.",
             unassignedUsersDeleted: "Les utilisateurs non assignés ont été supprimés."
         },
         subTitle: "Examinez les tâches opérationnelles nécessitant votre approbation",

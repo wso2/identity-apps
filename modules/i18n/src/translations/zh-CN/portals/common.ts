@@ -116,6 +116,7 @@ export const common: CommonNS = {
         },
         propertyMessages: {
             assignedUsersDeleted: "分配的用户已被删除。",
+            roleDeleted: "角色已被删除。",
             unassignedUsersDeleted: "未分配的用户已被删除。"
         },
         "subTitle": "查看需要您批准的操作任务",

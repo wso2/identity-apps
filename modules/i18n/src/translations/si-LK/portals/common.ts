@@ -116,6 +116,7 @@ export const common: CommonNS = {
         },
         propertyMessages: {
             assignedUsersDeleted: "පවරා ඇති පරිශීලකයන් මකා දමා ඇත.",
+            roleDeleted: "මෙම භූමිකාව මකා දමා ඇත.",
             unassignedUsersDeleted: "පවරා නොමැති පරිශීලකයන් මකා දමා ඇත."
         },
         subTitle: "අනුමැතිය අවශ්‍ය මෙහෙයුම් කාර්යයන් සමාලෝචනය කරන්න",

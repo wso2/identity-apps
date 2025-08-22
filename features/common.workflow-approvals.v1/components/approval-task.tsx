@@ -100,6 +100,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
 
     const USERS_TO_BE_ADDED_PROPERTY: string = "Users to be Added";
     const USERS_TO_BE_DELETED_PROPERTY: string = "Users to be Deleted";
+    const ROLE_NAME_PROPERTY: string = "Role Name";
     const roleUserAssignmentPropertyKeys: string[] = [ USERS_TO_BE_ADDED_PROPERTY, USERS_TO_BE_DELETED_PROPERTY ];
 
     /**
@@ -140,6 +141,17 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
     }, [ approval?.properties ]);
 
     /**
+     * Checks if any resource (like role) has been deleted.
+     */
+    const isResourceDeleted: boolean = React.useMemo(() => {
+        if (!approval?.properties) return false;
+
+        return approval.properties.some((prop: { key: string, value: string }) => {
+            return prop.key === ROLE_NAME_PROPERTY && prop.value === "";
+        });
+    }, [ approval?.properties ]);
+
+    /**
      * Removes unnecessary commas at the end of property values and splits
      * up the claim values.
      *
@@ -153,9 +165,14 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
      * @returns A cleaned up string.
      */
     const populateProperties = (key: string, value: string): string | JSX.Element => {
+        if (key === ROLE_NAME_PROPERTY && value === "") {
+            value = t("common:approvalsPage.propertyMessages.roleDeleted");
+        }
+
         if (key === "Claims" || value === "[]" || value === "") {
             return;
         }
+
         if (key === "ClaimsUI") {
             // Remove the curly braces at the start and end of the value.
             value = value.replace(/^\{|\}$/g, "").trim();
@@ -260,7 +277,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
             <Table.Body>
                 {
                     properties.map((property: { key: string, value: string }) => (
-                        property.key && property.value
+                        property.key && (property.key === ROLE_NAME_PROPERTY || property.value)
                             ? (
                                 populateProperties(property.key, property.value)
                             )
@@ -324,7 +341,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                     onCloseApprovalTaskModal();
                                 } }
                                 loading={ isSubmitting }
-                                disabled={ isSubmitting || !hasValidUsers }
+                                disabled={ isSubmitting || !hasValidUsers || isResourceDeleted }
                             >
                                 { t("common:approve") }
                             </Button>

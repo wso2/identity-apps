@@ -118,6 +118,7 @@ export interface CommonNS {
         propertyMessages: {
             assignedUsersDeleted: string;
             unassignedUsersDeleted: string;
+            roleDeleted: string;
         };
     }
     apps: string;
