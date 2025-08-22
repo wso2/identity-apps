@@ -114,6 +114,12 @@ export const common: CommonNS = {
             },
             "searchApprovals": "ワークフロー名で検索"
         },
+        propertyMessages: {
+            assignedUsersDeleted: "割り当てられたユーザー/sは削除されています。",
+            roleDeleted: "役割が削除されました。",
+            selfRegistration: "自己登録",
+            unassignedUsersDeleted: "割り当てられていないユーザー/sは削除されています。"
+        },
         "subTitle": "承認を必要とする運用タスクを確認します",
         "title": "承認"
     },

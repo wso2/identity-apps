@@ -114,7 +114,13 @@ export interface CommonNS {
             header: string;
             subHeader: string;
             description: string;
-        }
+        };
+        propertyMessages: {
+            assignedUsersDeleted: string;
+            roleDeleted: string;
+            selfRegistration: string;
+            unassignedUsersDeleted: string;
+        };
     }
     apps: string;
     assignee: string;
