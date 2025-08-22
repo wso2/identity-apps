@@ -141,9 +141,10 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * Function to check if a given i18n key is custom.
      *
      * @param key - The i18n key to check.
+     * @param excludePrimaryScreen - Whether to exclude the primary screen from the check.
      * @returns True if the i18n key is custom, false otherwise.
      */
-    isCustomI18nKey?: (key: string) => boolean;
+    isCustomI18nKey?: (key: string, excludePrimaryScreen?: boolean) => boolean;
     /**
      * Supported locales for the custom text preferences.
      */

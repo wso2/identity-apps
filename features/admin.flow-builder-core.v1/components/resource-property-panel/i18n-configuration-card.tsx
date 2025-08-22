@@ -44,7 +44,7 @@ import { LocaleMeta } from "@wso2is/i18n";
 import classNames from "classnames";
 import cloneDeep from "lodash-es/cloneDeep";
 import lowerCase from "lodash-es/lowerCase";
-import upperFirst from "lodash-es/upperFirst";
+import startCase from "lodash-es/startCase";
 import React, {
     ChangeEvent,
     FunctionComponent,
@@ -448,7 +448,7 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                                     />
                                 ) }
                                 renderOption={ (props: any, option: string) => (
-                                    <li { ...props } className="option-item">
+                                    <li { ...props } className={ `option-item ${props.className || ""}` }>
                                         <Tooltip title={ option } placement="bottom">
                                             <span className="option-text">{ option }</span>
                                         </Tooltip>
@@ -494,47 +494,6 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                         </Alert>
                     )
                 }
-                <div>
-                    <Typography variant="subtitle2" gutterBottom>
-                        { t("flows:core.elements.textPropertyField.i18nCard.language") }
-                    </Typography>
-                    <Select
-                        fullWidth
-                        value={ selectedLanguage }
-                        onChange={ (event: SelectChangeEvent<unknown>): void => {
-                            setSelectedLanguage(event.target.value as string);
-                        } }
-                        displayEmpty
-                        size="small"
-                        placeholder={
-                            t("flows:core.elements.textPropertyField.i18nCard.selectLanguage")
-                        }
-                        renderValue={ (value: string) => (
-                            <>
-                                <i
-                                    className={
-                                        `${supportedLocales[value]?.flag} flag`
-                                    }
-                                ></i>
-                                <span>
-                                    { `${supportedLocales[value]?.name}, ` +
-                                        supportedLocales[value]?.code }
-                                </span>
-                            </>
-                        ) }
-                    >
-                        { Object.values(supportedLocales).map((locale: LocaleMeta) => (
-                            <MenuItem
-                                key={ locale.code }
-                                value={ locale.code }
-                            >
-                                <i className={ `${locale.flag} flag` }></i>
-                                <span>{ locale.name }, { locale.code }</span>
-                            </MenuItem>
-                        )) }
-                    </Select>
-                </div>
-
                 <div>
                     <Typography variant="subtitle2" gutterBottom>
                         { t("flows:core.elements.textPropertyField.i18nCard.i18nKey") }
@@ -605,13 +564,13 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                                     />
                                 ) }
                                 renderOption={ (props: any, option: I18nKeyOption) => (
-                                    <li { ...props } className="option-item">
+                                    <li { ...props } className={ `option-item ${props.className || ""}` }>
                                         <Tooltip title={ option.label } placement="bottom">
                                             <span className="option-text">{ option.label }</span>
                                         </Tooltip>
                                         {
                                             option.screen === primaryI18nScreen &&
-                                            isCustomI18nKey(option.key) && (
+                                            isCustomI18nKey(option.key, false) && (
                                                 <IconButton
                                                     size="small"
                                                     onClick={ (e: React.MouseEvent) => {
@@ -655,6 +614,47 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                             />
                         )
                     }
+                </div>
+
+                <div>
+                    <Typography variant="subtitle2" gutterBottom>
+                        { t("flows:core.elements.textPropertyField.i18nCard.language") }
+                    </Typography>
+                    <Select
+                        fullWidth
+                        value={ selectedLanguage }
+                        onChange={ (event: SelectChangeEvent<unknown>): void => {
+                            setSelectedLanguage(event.target.value as string);
+                        } }
+                        displayEmpty
+                        size="small"
+                        placeholder={
+                            t("flows:core.elements.textPropertyField.i18nCard.selectLanguage")
+                        }
+                        renderValue={ (value: string) => (
+                            <>
+                                <i
+                                    className={
+                                        `${supportedLocales[value]?.flag} flag`
+                                    }
+                                ></i>
+                                <span>
+                                    { `${supportedLocales[value]?.name}, ` +
+                                        supportedLocales[value]?.code }
+                                </span>
+                            </>
+                        ) }
+                    >
+                        { Object.values(supportedLocales).map((locale: LocaleMeta) => (
+                            <MenuItem
+                                key={ locale.code }
+                                value={ locale.code }
+                            >
+                                <i className={ `${locale.flag} flag` }></i>
+                                <span>{ locale.name }, { locale.code }</span>
+                            </MenuItem>
+                        )) }
+                    </Select>
                 </div>
 
                 <div>
@@ -718,7 +718,7 @@ const I18nConfigurationCard: FunctionComponent<I18nConfigurationCardPropsInterfa
                                 : t("flows:core.elements.textPropertyField.i18nCard.updateTitle")
                         )
                         : t("flows:core.elements.textPropertyField.i18nCard.title", {
-                            propertyKey: upperFirst(lowerCase(propertyKey))
+                            propertyKey: startCase(lowerCase(propertyKey))
                         })
                     }
                     action={ (

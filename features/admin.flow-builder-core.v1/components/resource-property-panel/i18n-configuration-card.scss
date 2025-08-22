@@ -65,6 +65,11 @@
 
                 .oxygen-button {
                     min-width: auto;
+
+                    &.MuiButton-containedPrimary.Mui-disabled {
+                        opacity: 0.5;
+                        color: var(--oxygen-palette-primary-contrastText);
+                    }
                 }
             }
 
