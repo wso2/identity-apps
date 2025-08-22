@@ -35,6 +35,10 @@
             width: 70% !important;
             word-break: break-word;
             overflow-wrap: anywhere;
+
+            .text-value {
+                margin: 0.5em 0;
+            }
         }
     }
 }
