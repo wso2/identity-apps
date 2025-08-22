@@ -377,7 +377,16 @@
         }
 
         SelfRegisterApi selfRegisterApi = new SelfRegisterApi();
-        String responseContent = selfRegisterApi.mePostCall(selfUserRegistrationRequest, requestHeaders);
+        String responseContent = "";
+        try {
+            responseContent = selfRegisterApi.mePostCall(selfUserRegistrationRequest, requestHeaders);
+        } catch (ApiException e) {
+            if (e.getCode() == 202) {
+                request.setAttribute("pendingApproval", "true");
+            } else {
+                throw e;
+            }
+        }
 
         // Extract userId from response if available
         String userId = "";

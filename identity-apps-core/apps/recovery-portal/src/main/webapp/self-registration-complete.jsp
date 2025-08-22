@@ -78,6 +78,8 @@
     String tenantAwareUsername = Encode.forHtml(MultitenantUtils.getTenantAwareUsername(UserCoreUtil.removeDomainFromName(username)));
     boolean isEmailNotificationEnabled = false;
     String callback = (String) request.getAttribute("callback");
+    boolean isPendingApproval = Boolean.parseBoolean((String) request.getAttribute("pendingApproval"));
+
     String confirm = (String) request.getAttribute("confirm");
     String confirmLiteReg = (String) request.getAttribute("confirmLiteReg");
     String resendUsername = request.getParameter("username");
@@ -307,7 +309,9 @@
                         <p class="portal-tagline-description">
                             <%
                             String url = "";
-                            if (StringUtils.isNotBlank(confirm)) { %>
+                            if (isPendingApproval) { %>
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "pending.account.approval")%>
+                            <% } else if (StringUtils.isNotBlank(confirm)) { %>
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "your.account.with.username")%>
                                 <b><%=Encode.forHtml(resendUsername)%></b>
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "has.been.verified.successfully")%>
