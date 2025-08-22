@@ -90,7 +90,7 @@
         "display": {
             "label": "Continue with Email OTP",
             "description": "Registration experience with Email",
-            "image": "https://www.svgrepo.com/show/368868/otp.svg",
+            "image": "https://www.svgrepo.com/show/387455/email-down.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -205,7 +205,7 @@
         "display": {
             "label": "Continue with SMS OTP",
             "description": "Registration experience with SMS OTP",
-            "image": "https://www.svgrepo.com/show/381137/transaction-password-otp-verification-code-security.svg",
+            "image": "https://www.svgrepo.com/show/455832/mobile-message.svg",
             "showOnResourcePanel": true
         },
         "config": {

@@ -135,7 +135,7 @@
         "variant": "OTP",
         "display": {
             "label": "OTP Input",
-            "image": "https://www.svgrepo.com/show/381137/transaction-password-otp-verification-code-security.svg"
+            "image": "https://www.svgrepo.com/show/455832/mobile-message.svg"
         },
         "config": {
             "type": "text",

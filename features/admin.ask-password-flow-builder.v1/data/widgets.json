@@ -90,7 +90,7 @@
         "display": {
             "label": "Continue with Email OTP",
             "description": "Password recovery experience with Email",
-            "image": "https://www.svgrepo.com/show/368868/otp.svg",
+            "image": "https://www.svgrepo.com/show/387455/email-down.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -199,89 +199,13 @@
     {
         "resourceType": "WIDGET",
         "category": "FLOW",
-        "type": "GOOGLE_FEDERATION",
-        "version": "0.1.0",
-        "deprecated": false,
-        "display": {
-            "label": "Continue with Google",
-            "description": "Registration experience with Google",
-            "image": "https://www.svgrepo.com/show/461597/google.svg",
-            "showOnResourcePanel": true
-        },
-        "config": {
-            "data": {
-                "__generationMeta__": {
-                    "defaultPropertySelectorId": "{{GOOGLE_EXECUTION_STEP_ID}}",
-                    "replacers": [
-                        {
-                            "key": "GOOGLE_EXECUTION_STEP_ID",
-                            "type": "ID"
-                        }
-                    ]
-                },
-                "steps": [
-                    {
-                        "__generationMeta__": {
-                            "strategy": "MERGE_WITH_DROP_POINT"
-                        },
-                        "type": "VIEW",
-                        "data": {
-                            "components": [
-                                {
-                                    "id": "{{ID}}",
-                                    "category": "ACTION",
-                                    "type": "BUTTON",
-                                    "variant": "SOCIAL",
-                                    "config": {
-                                        "type": "button",
-                                        "text": "Continue with Google"
-                                    },
-                                    "action": {
-                                        "type": "NEXT",
-                                        "next": "{{GOOGLE_EXECUTION_STEP_ID}}"
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "id": "{{GOOGLE_EXECUTION_STEP_ID}}",
-                        "type": "EXECUTION",
-                        "size": {
-                            "width": 350,
-                            "height": 291
-                        },
-                        "position": {
-                            "x": 690,
-                            "y": 500
-                        },
-                        "data": {
-                            "action": {
-                                "type": "EXECUTOR",
-                                "executor": {
-                                    "name": "GoogleSignupExecutor",
-                                    "meta": {
-                                        "idpName": "{{IDP_NAME}}"
-                                    }
-                                },
-                                "next": "USER_ONBOARD"
-                            }
-                        }
-                    }
-                ]
-            }
-        }
-    },
-    {
-        "resourceType": "WIDGET",
-        "category": "FLOW",
         "type": "SMS_OTP",
         "version": "0.1.0",
         "deprecated": false,
         "display": {
             "label": "Continue with SMS OTP",
             "description": "Password recovery experience with SMS OTP",
-            "image": "https://www.svgrepo.com/show/381137/transaction-password-otp-verification-code-security.svg",
+            "image": "https://www.svgrepo.com/show/455832/mobile-message.svg",
             "showOnResourcePanel": true
         },
         "config": {

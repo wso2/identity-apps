@@ -20,11 +20,7 @@
 
     &.apple,
     &.github,
-    &.confirmation-code {
-        img {
-            filter: invert(100%);
-        }
-    }
+    &.confirmation-code,
     &.magic-link {
         img {
             filter: invert(100%);
