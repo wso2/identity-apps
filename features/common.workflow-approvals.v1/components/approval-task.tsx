@@ -323,7 +323,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                 onCloseApprovalTaskModal();
                             } }
                         >
-                            { t("common:claim") }
+                            { t("common:assignYourself") }
                         </Button>
                     )
                     : editingApproval?.taskStatus === ApprovalStatus.RESERVED
@@ -337,7 +337,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                     onCloseApprovalTaskModal();
                                 } }
                             >
-                                { t("common:release") }
+                                { t("common:unassign") }
                             </Button>
                         )
                         : null
