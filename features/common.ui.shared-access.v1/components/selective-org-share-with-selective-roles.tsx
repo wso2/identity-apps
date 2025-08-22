@@ -341,7 +341,10 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
             setFlatOrganizationMap(initialFlatMap);
             setSelectedOrgId(originalTopLevelOrganizations.organizations[0].id);
 
-            if (originalTopLevelOrganizations.organizations.length === 1) {
+            // Hide the organization selection panel if there is only one top-level organization
+            // and it does not have any children.
+            if (originalTopLevelOrganizations.organizations.length === 1 &&
+                !originalTopLevelOrganizations.organizations[0].hasChildren) {
                 setHideLeftPanel(true);
             } else {
                 setHideLeftPanel(false);
