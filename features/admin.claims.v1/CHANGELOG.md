@@ -1,5 +1,18 @@
 # @wso2is/admin.claims.v1
 
+## 2.29.1
+
+### Patch Changes
+
+- [#8859](https://github.com/wso2/identity-apps/pull/8859) [`22bb1c8d3316674ef956514f77821d4b72549ca8`](https://github.com/wso2/identity-apps/commit/22bb1c8d3316674ef956514f77821d4b72549ca8) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Fix attribute mapping addition not showing entirely issue.
+
+- Updated dependencies [[`f74bbdc8f5a9f64802fd09bc3aa8dd90a4c5ce29`](https://github.com/wso2/identity-apps/commit/f74bbdc8f5a9f64802fd09bc3aa8dd90a4c5ce29), [`b9823e4b2efa2a4ec79bc293e63cfd89d77d98e3`](https://github.com/wso2/identity-apps/commit/b9823e4b2efa2a4ec79bc293e63cfd89d77d98e3), [`2a9d5e315e31329cc75acedd1d4bbc3831179013`](https://github.com/wso2/identity-apps/commit/2a9d5e315e31329cc75acedd1d4bbc3831179013), [`22bb1c8d3316674ef956514f77821d4b72549ca8`](https://github.com/wso2/identity-apps/commit/22bb1c8d3316674ef956514f77821d4b72549ca8)]:
+  - @wso2is/admin.server-configurations.v1@2.35.34
+  - @wso2is/admin.users.v1@2.36.6
+  - @wso2is/i18n@2.30.6
+  - @wso2is/admin.claims.v1@2.29.1
+  - @wso2is/admin.core.v1@2.49.21
+
 ## 2.29.0
 
 ### Minor Changes

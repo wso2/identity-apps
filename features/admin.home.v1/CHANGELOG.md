@@ -1,5 +1,15 @@
 # @wso2is/admin.home.v1
 
+## 1.7.25
+
+### Patch Changes
+
+- [#8869](https://github.com/wso2/identity-apps/pull/8869) [`b9823e4b2efa2a4ec79bc293e63cfd89d77d98e3`](https://github.com/wso2/identity-apps/commit/b9823e4b2efa2a4ec79bc293e63cfd89d77d98e3) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the flow card to the sub-organization home page
+
+- Updated dependencies [[`f74bbdc8f5a9f64802fd09bc3aa8dd90a4c5ce29`](https://github.com/wso2/identity-apps/commit/f74bbdc8f5a9f64802fd09bc3aa8dd90a4c5ce29), [`b9823e4b2efa2a4ec79bc293e63cfd89d77d98e3`](https://github.com/wso2/identity-apps/commit/b9823e4b2efa2a4ec79bc293e63cfd89d77d98e3)]:
+  - @wso2is/i18n@2.30.6
+  - @wso2is/admin.core.v1@2.49.21
+
 ## 1.7.24
 
 ### Patch Changes

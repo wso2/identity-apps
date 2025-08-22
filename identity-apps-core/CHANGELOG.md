@@ -1,5 +1,15 @@
 # @wso2is/identity-apps-core
 
+## 3.2.8
+
+### Patch Changes
+
+- [#8873](https://github.com/wso2/identity-apps/pull/8873) [`e875def38dfad7da4cd0e3863576e8b8996e1681`](https://github.com/wso2/identity-apps/commit/e875def38dfad7da4cd0e3863576e8b8996e1681) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix Auto login is not working for email otp based password reset flow
+
+* [#8881](https://github.com/wso2/identity-apps/pull/8881) [`f74bbdc8f5a9f64802fd09bc3aa8dd90a4c5ce29`](https://github.com/wso2/identity-apps/commit/f74bbdc8f5a9f64802fd09bc3aa8dd90a4c5ce29) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Handle ask password expired OTP error seperatly
+
+- [#8880](https://github.com/wso2/identity-apps/pull/8880) [`7837e94f649b953c23c98fce5d7ffdec00bea849`](https://github.com/wso2/identity-apps/commit/7837e94f649b953c23c98fce5d7ffdec00bea849) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Update email username regex to support consecutive special characters
+
 ## 3.2.7
 
 ### Patch Changes
