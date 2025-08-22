@@ -1,5 +1,13 @@
 # @wso2is/i18n
 
+## 2.30.7
+
+### Patch Changes
+
+- [#8868](https://github.com/wso2/identity-apps/pull/8868) [`f50873a66b47737ba9dc6defb0fc2755af30076b`](https://github.com/wso2/identity-apps/commit/f50873a66b47737ba9dc6defb0fc2755af30076b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the flow card to the sub-organization home page
+
+* [#8879](https://github.com/wso2/identity-apps/pull/8879) [`32b0012ca4b7c1e8cd4fbc4b7ef384d506ebc201`](https://github.com/wso2/identity-apps/commit/32b0012ca4b7c1e8cd4fbc4b7ef384d506ebc201) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Handle ask password OTP failure error code seperately and other bug fixes
+
 ## 2.30.6
 
 ### Patch Changes

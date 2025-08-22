@@ -1,5 +1,18 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.35.36
+
+### Patch Changes
+
+- [#8879](https://github.com/wso2/identity-apps/pull/8879) [`32b0012ca4b7c1e8cd4fbc4b7ef384d506ebc201`](https://github.com/wso2/identity-apps/commit/32b0012ca4b7c1e8cd4fbc4b7ef384d506ebc201) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Handle ask password OTP failure error code seperately and other bug fixes
+
+- Updated dependencies [[`f50873a66b47737ba9dc6defb0fc2755af30076b`](https://github.com/wso2/identity-apps/commit/f50873a66b47737ba9dc6defb0fc2755af30076b), [`4675a05c096477c15fc2ef512a3d5fdf2859ae30`](https://github.com/wso2/identity-apps/commit/4675a05c096477c15fc2ef512a3d5fdf2859ae30), [`32b0012ca4b7c1e8cd4fbc4b7ef384d506ebc201`](https://github.com/wso2/identity-apps/commit/32b0012ca4b7c1e8cd4fbc4b7ef384d506ebc201)]:
+  - @wso2is/i18n@2.30.7
+  - @wso2is/admin.users.v1@2.36.6
+  - @wso2is/admin.server-configurations.v1@2.35.36
+  - @wso2is/admin.core.v1@2.49.23
+  - @wso2is/admin.flow-builder-core.v1@0.10.15
+
 ## 2.35.35
 
 ### Patch Changes
