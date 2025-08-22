@@ -1,14 +1,19 @@
-.table-cell {
+.attribute-list-item {
+
+    .table-cell {
     
-    display: flex;
-    flex-direction: column;
+        display: flex;
+        flex-direction: column;
 
-    Input {
-        width: 100%;
+        .table-cell-input {
+            width: 100%;
+        }
     }
+
+    .error-label {
+
+        width: fit-content;
+    }
+
 }
 
-.error-label {
-
-    width: fit-content;
-}

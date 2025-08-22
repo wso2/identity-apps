@@ -68,13 +68,13 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     };
 
     return (
-        <Table.Row data-testid={ testId }>
+        <Table.Row data-testid={ testId } className="attribute-list-item">
             <Table.Cell>
                 { attribute?.displayName }
             </Table.Cell>
             {
                 <>
-                    <Table.Cell error={ isEmpty(mapping) } className="TableCell" >
+                    <Table.Cell error={ isEmpty(mapping) } className="table-cell" >
                         <Input
                             placeholder={ placeholder }
                             value={ isEmpty(mapping) ? "" : mapping }
@@ -83,6 +83,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                             data-testid={ `${ testId }-input` }
                             readOnly={ isReadOnly }
                             fluid
+                            className="table-cell-input"
                         />
                         { isEmpty(mapping) &&
                         (
