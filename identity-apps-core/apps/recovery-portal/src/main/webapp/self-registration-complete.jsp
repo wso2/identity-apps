@@ -79,7 +79,6 @@
     boolean isEmailNotificationEnabled = false;
     String callback = (String) request.getAttribute("callback");
     boolean isPendingApproval = Boolean.parseBoolean((String) request.getAttribute("pendingApproval"));
-
     String confirm = (String) request.getAttribute("confirm");
     String confirmLiteReg = (String) request.getAttribute("confirmLiteReg");
     String resendUsername = request.getParameter("username");
