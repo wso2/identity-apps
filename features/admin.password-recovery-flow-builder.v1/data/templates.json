@@ -82,6 +82,10 @@
         "__generationMeta__": {
           "replacers": [
             {
+              "key": "EXECUTION_STEP_ID",
+              "type": "ID"
+            },
+            {
               "key": "RESET_STEP_ID",
               "type": "ID"
             }
@@ -153,7 +157,7 @@
                         "executor": {
                           "name": "UserResolveExecutor"
                         },
-                        "next": "{{ID_EXECUTION}}"
+                        "next": "{{EXECUTION_STEP_ID}}"
                       }
                     }
                   ]
@@ -162,7 +166,7 @@
             }
           },
           {
-            "id": "{{ID_EXECUTION}}",
+            "id": "{{EXECUTION_STEP_ID}}",
             "type": "EXECUTION",
             "size": {
               "width": 350,
