@@ -88,7 +88,7 @@ export const flows: flowsNS = {
                     languageTextPlaceholder: "Enter text for the selected language",
                     selectI18nKey: "Select a translation key",
                     selectLanguage: "Select language",
-                    title: "{{propertyKey}} Translation",
+                    title: "Translations - {{propertyKey}}",
                     tooltip: {
                         addNewTranslation: "Add a new translation",
                         commonKeyTooltip: "This is a shared translation key used across multiple end user facing pages",
