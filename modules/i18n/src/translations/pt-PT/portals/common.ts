@@ -126,6 +126,7 @@ export const common: CommonNS = {
     approve: "Approve",
     approved: "Aprovado",
     apps: "Formulários",
+    assignYourself: "Atribuir a si mesmo",
     assignee: "Cessionário",
     assignees: "Cessionárias",
     asyncOperationErrorMessage: {
@@ -146,7 +147,6 @@ export const common: CommonNS = {
         heading: "Quelque chose s'est mal passé",
         primaryActionText: "Recarregue o aplicativo"
     },
-    claim: "Afirmação",
     clear: "Apagar",
     clientId: "ID do Cliente",
     close: "Fechar",
@@ -246,7 +246,6 @@ export const common: CommonNS = {
     register: "Registro",
     reject: "Rejeitar",
     rejected: "Rejeitado",
-    release: "Liberação",
     remove: "Retirar",
     removeAll: "Remover tudo",
     required: "Isso é obrigatório",
@@ -284,6 +283,7 @@ export const common: CommonNS = {
     terminateSession: "Encerrar sessão",
     tooShort: "Curto demais",
     type: "Tipo",
+    unassign: "Desatribuir",
     unpin: "Solto",
     unpinned: "Solto",
     update: "Atualizar",

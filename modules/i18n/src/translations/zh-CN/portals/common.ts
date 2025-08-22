@@ -126,6 +126,7 @@ export const common: CommonNS = {
     "approve": "批准",
     "approved": "已批准",
     "apps": "应用",
+    "assignYourself": "分配给自己",
     "assignee": "受让人",
     "assignees": "受让人",
     "asyncOperationErrorMessage": {
@@ -146,7 +147,6 @@ export const common: CommonNS = {
         "heading": "出了些问题",
         "primaryActionText": "重新加载应用程序"
     },
-    "claim": "宣称",
     "clear": "清除",
     "clientId": "客户 ID",
     "close": "关闭",
@@ -246,7 +246,6 @@ export const common: CommonNS = {
     "register": "登记",
     "reject": "拒绝",
     "rejected": "已拒绝",
-    "release": "发布",
     "remove": "消除",
     "removeAll": "移除所有",
     "required": "这是必需的。",
@@ -284,6 +283,7 @@ export const common: CommonNS = {
     "terminateSession": "终止会话",
     "tooShort": "过短",
     "type": "类型",
+    "unassign": "取消分配",
     "unpin": "商品",
     "unpinned": "未损坏",
     "update": "更新",
