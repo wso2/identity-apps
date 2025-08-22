@@ -104,6 +104,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
     const ROLE_NAME_PROPERTY: string = "Role Name";
     const SELF_ARBITRARY_ATTRIBUTE_PROPERTY_PREFIX: string = "self_arbitrary_attr_";
     const roleUserAssignmentPropertyKeys: string[] = [ USERS_TO_BE_ADDED_PROPERTY, USERS_TO_BE_DELETED_PROPERTY ];
+    const hiddenProperties: string[] = [ "Created Time", "Last Modified Time", "Location", "Claims" ];
 
     /**
      * Filters and returns valid username values from a comma-separated string.
@@ -171,7 +172,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
             value = t("common:approvalsPage.propertyMessages.roleDeleted");
         }
 
-        if (key === "Claims" || value === "[]" || value === ""
+        if (hiddenProperties.includes(key) || value === "[]" || value === ""
             || key.startsWith(SELF_ARBITRARY_ATTRIBUTE_PROPERTY_PREFIX)) {
             return;
         }
