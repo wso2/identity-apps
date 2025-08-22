@@ -1,5 +1,25 @@
 # @wso2is/console
 
+## 2.77.19
+
+### Patch Changes
+
+- [#8863](https://github.com/wso2/identity-apps/pull/8863) [`13a47749f0f9eb970803c9e8ac40870a8fe1415a`](https://github.com/wso2/identity-apps/commit/13a47749f0f9eb970803c9e8ac40870a8fe1415a) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix UX issues in the role sharing UI
+
+* [#8872](https://github.com/wso2/identity-apps/pull/8872) [`5d3b1a8fcebb3c61a4050be5ed55b8975e11d902`](https://github.com/wso2/identity-apps/commit/5d3b1a8fcebb3c61a4050be5ed55b8975e11d902) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Ensure approval requests with invalid user data are properly validated and handled without throwing errors.
+
+* Updated dependencies [[`13a47749f0f9eb970803c9e8ac40870a8fe1415a`](https://github.com/wso2/identity-apps/commit/13a47749f0f9eb970803c9e8ac40870a8fe1415a), [`5d3b1a8fcebb3c61a4050be5ed55b8975e11d902`](https://github.com/wso2/identity-apps/commit/5d3b1a8fcebb3c61a4050be5ed55b8975e11d902)]:
+  - @wso2is/admin.applications.v1@2.37.3
+  - @wso2is/i18n@2.30.8
+  - @wso2is/common.workflow-approvals.v1@1.0.4
+  - @wso2is/admin.console-settings.v1@2.25.222
+  - @wso2is/admin.agents.v1@1.0.40
+  - @wso2is/admin.core.v1@2.49.24
+  - @wso2is/admin.roles.v2@2.27.195
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.16
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.16
+  - @wso2is/admin.server-configurations.v1@2.35.37
+
 ## 2.77.18
 
 ### Patch Changes

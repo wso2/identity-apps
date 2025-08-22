@@ -1,5 +1,13 @@
 # @wso2is/i18n
 
+## 2.30.8
+
+### Patch Changes
+
+- [#8863](https://github.com/wso2/identity-apps/pull/8863) [`13a47749f0f9eb970803c9e8ac40870a8fe1415a`](https://github.com/wso2/identity-apps/commit/13a47749f0f9eb970803c9e8ac40870a8fe1415a) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix UX issues in the role sharing UI
+
+* [#8872](https://github.com/wso2/identity-apps/pull/8872) [`5d3b1a8fcebb3c61a4050be5ed55b8975e11d902`](https://github.com/wso2/identity-apps/commit/5d3b1a8fcebb3c61a4050be5ed55b8975e11d902) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Ensure approval requests with invalid user data are properly validated and handled without throwing errors.
+
 ## 2.30.7
 
 ### Patch Changes
