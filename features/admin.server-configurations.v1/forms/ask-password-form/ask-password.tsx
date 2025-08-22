@@ -360,10 +360,10 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                 </Field.Input>
                 <Hint>
                     { t("extensions:manage.serverConfigurations.userOnboarding." +
-                            "inviteUserToSetPassword.form.fields.expiryTime.hint") as ReactNode }
+                            "inviteUserToSetPassword.form.fields.expiryTime.hint") }
                     <br/>
                     { t("extensions:manage.serverConfigurations.userOnboarding." +
-                            "inviteUserToSetPassword.form.fields.expiryTime.hintSub") as ReactNode }
+                            "inviteUserToSetPassword.form.fields.expiryTime.hintSub") }
                     <br/>
                 </Hint>
                 <br/>
