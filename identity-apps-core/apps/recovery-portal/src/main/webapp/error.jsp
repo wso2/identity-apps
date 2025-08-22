@@ -138,6 +138,10 @@
                                 .equals(errorCode)) {
                     %>
                         <%=i18n(recoveryResourceBundle, customText, "email.link.expiry.message")%>
+                    <% } else if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_EXPIRED_OTP.getCode()
+                                .equals(errorCode)) {
+                    %>
+                        <%=i18n(recoveryResourceBundle, customText, "otp.expired.message")%>
                     <% } else if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_LOCKED_ACCOUNT.getCode()
                                 .equals(errorCode)) {
                             String[] splitErrorMsg = errorMsg.split("-");
