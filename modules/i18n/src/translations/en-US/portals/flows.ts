@@ -72,6 +72,12 @@ export const flows: flowsNS = {
             },
             textPropertyField: {
                 i18nCard: {
+                    chip: {
+                        commonScreen: {
+                            label: "Common"
+                        }
+                    },
+                    commonKeyWarning: "You are editing a shared translation key that affects multiple pages across the system. Changes will be reflected on all pages that use this key.",
                     configure: "More",
                     createTitle: "Create Translations",
                     i18nKey: "Translation key",
@@ -82,9 +88,10 @@ export const flows: flowsNS = {
                     languageTextPlaceholder: "Enter text for the selected language",
                     selectI18nKey: "Select a translation key",
                     selectLanguage: "Select language",
-                    title: "{{propertyKey}} translation",
+                    title: "{{propertyKey}} Translation",
                     tooltip: {
                         addNewTranslation: "Add a new translation",
+                        commonKeyTooltip: "This is a shared translation key used across multiple end user facing pages",
                         editExistingTranslation: "Update an existing translation"
                     },
                     updateTitle: "Update Translations"

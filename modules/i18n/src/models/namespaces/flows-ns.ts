@@ -71,6 +71,12 @@ export interface flowsNS {
             };
             textPropertyField: {
                 i18nCard: {
+                    chip: {
+                        commonScreen: {
+                            label: string;
+                        };
+                    };
+                    commonKeyWarning: string;
                     configure: string;
                     createTitle: string;
                     i18nKey: string;
@@ -84,6 +90,7 @@ export interface flowsNS {
                     title: string;
                     tooltip: {
                         addNewTranslation: string;
+                        commonKeyTooltip: string;
                         editExistingTranslation: string;
                     };
                     updateTitle: string;
