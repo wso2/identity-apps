@@ -1,5 +1,31 @@
 # @wso2is/console
 
+## 2.77.18
+
+### Patch Changes
+
+- [#8868](https://github.com/wso2/identity-apps/pull/8868) [`f50873a66b47737ba9dc6defb0fc2755af30076b`](https://github.com/wso2/identity-apps/commit/f50873a66b47737ba9dc6defb0fc2755af30076b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the flow card to the sub-organization home page
+
+* [#8858](https://github.com/wso2/identity-apps/pull/8858) [`3ccedd1242a9f8a16a0b86e95c4f118bf0ca1282`](https://github.com/wso2/identity-apps/commit/3ccedd1242a9f8a16a0b86e95c4f118bf0ca1282) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Fix attribute mapping addition not showing entirely issue.
+
+- [#8842](https://github.com/wso2/identity-apps/pull/8842) [`4675a05c096477c15fc2ef512a3d5fdf2859ae30`](https://github.com/wso2/identity-apps/commit/4675a05c096477c15fc2ef512a3d5fdf2859ae30) Thanks [@NutharaNR](https://github.com/NutharaNR)! - A fix to dataType mismatch for totpEnabled and backupCodeEnabled claims.
+
+* [#8878](https://github.com/wso2/identity-apps/pull/8878) [`6f7773c144f4ae9e33ce8690d62a56fb8fbba32b`](https://github.com/wso2/identity-apps/commit/6f7773c144f4ae9e33ce8690d62a56fb8fbba32b) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add agent identity userstore to the list of system reserved user stores
+
+- [#8879](https://github.com/wso2/identity-apps/pull/8879) [`32b0012ca4b7c1e8cd4fbc4b7ef384d506ebc201`](https://github.com/wso2/identity-apps/commit/32b0012ca4b7c1e8cd4fbc4b7ef384d506ebc201) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Handle ask password OTP failure error code seperately and other bug fixes
+
+- Updated dependencies [[`f50873a66b47737ba9dc6defb0fc2755af30076b`](https://github.com/wso2/identity-apps/commit/f50873a66b47737ba9dc6defb0fc2755af30076b), [`3ccedd1242a9f8a16a0b86e95c4f118bf0ca1282`](https://github.com/wso2/identity-apps/commit/3ccedd1242a9f8a16a0b86e95c4f118bf0ca1282), [`4675a05c096477c15fc2ef512a3d5fdf2859ae30`](https://github.com/wso2/identity-apps/commit/4675a05c096477c15fc2ef512a3d5fdf2859ae30), [`32b0012ca4b7c1e8cd4fbc4b7ef384d506ebc201`](https://github.com/wso2/identity-apps/commit/32b0012ca4b7c1e8cd4fbc4b7ef384d506ebc201)]:
+  - @wso2is/admin.home.v1@1.7.25
+  - @wso2is/i18n@2.30.7
+  - @wso2is/admin.claims.v1@2.29.1
+  - @wso2is/admin.users.v1@2.36.6
+  - @wso2is/admin.server-configurations.v1@2.35.36
+  - @wso2is/admin.agents.v1@1.0.39
+  - @wso2is/admin.core.v1@2.49.23
+  - @wso2is/admin.roles.v2@2.27.194
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.15
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.15
+
 ## 2.77.17
 
 ### Patch Changes
