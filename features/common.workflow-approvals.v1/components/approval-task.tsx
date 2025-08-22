@@ -266,7 +266,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                     collapsing={ false }
                     className="values-cell"
                 >
-                    <Text>
+                    <Text className="text-value">
                         { value.endsWith(",") ? value.slice(0, -1) : value }
                     </Text>
                 </Table.Cell>
@@ -285,8 +285,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
             <Table
                 celled
                 compact
-                className="approval-tasks-table approval-task-properties-table"
-                verticalAlign="top"
+                className="approval-task-properties-table"
             >
                 <Table.Body>
                     {
