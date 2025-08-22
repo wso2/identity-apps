@@ -88,6 +88,7 @@ import {
     UnshareApplicationWithAllOrganizationsDataInterface,
     UnshareOrganizationsDataInterface
 } from "../../models/application";
+import "./share-application-form.scss";
 
 export interface ApplicationShareFormPropsInterface
     extends IdentifiableComponentInterface {
@@ -1297,7 +1298,10 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
 
     return (
         <>
-            <Grid container>
+            <Grid
+                container
+                className="share-application-form"
+            >
                 <Grid xl={ 8 } xs={ 12 }>
                     <Heading as="h4">
                         { t("applications:edit.sections.sharedAccess.title") }
@@ -1387,7 +1391,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                                 "allRolesAndOrgsSharingMessage") }
                                                         </Alert>
                                                     ) : (
-                                                        <>
+                                                        <div className="role-share-all-container">
                                                             <RolesShareWithAll
                                                                 application={ application }
                                                                 selectedRoles={ selectedRoles }
@@ -1401,6 +1405,10 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                             >
                                                                 { t("applications:edit.sections.sharedAccess." +
                                                                     "individualRoleSharingLabel") }
+                                                                <Hint inline popup>
+                                                                    { t("applications:edit.sections.sharedAccess." +
+                                                                        "individualRoleSharingHint") }
+                                                                </Hint>
                                                             </Typography>
                                                             <SelectiveOrgShareWithSelectiveRoles
                                                                 applicationId={ application?.id }
@@ -1433,7 +1441,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                                 clearAdvancedRoleSharing={ clearAdvancedRoleSharing }
                                                                 disableOrgSelection={ true }
                                                             />
-                                                        </>
+                                                        </div>
                                                     )
                                             }
                                         </motion.div>

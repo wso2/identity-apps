@@ -17,30 +17,35 @@
  */
 
 .roles-selective-share-container {
-    border: 1px solid var(--oxygen-palette-grey-200);
+    border: 1px solid var(--oxygen-palette-grey-300);
     border-radius: var(--oxygen-shape-borderRadius);
+    padding: 10px;
+
+    .role-select-autocomplete {
+        .MuiFormControl-root {
+            .MuiInputBase-root {
+                min-height: 50px;
+            }
+        }
+    }
 
     .roles-selective-share-left-panel {
         height: 300px;
         overflow: auto;
-        // background-color: var(--oxygen-palette-grey-50);
         border-radius: var(--oxygen-shape-borderRadius) 0 0 var(--oxygen-shape-borderRadius);
-        border-right: 1px solid var(--oxygen-palette-grey-200);
+        border-right: 1px solid var(--oxygen-palette-grey-300);
     }
 
     .roles-selective-share-right-panel {
         height: 300px;
         overflow-x: auto;
         overflow-y: hidden;
-        // background-color: var(--oxygen-palette-grey-50);
         border-radius: 0 var(--oxygen-shape-borderRadius) var(--oxygen-shape-borderRadius) 0;
     }
 
     .roles-selective-share-all-roles {
         height: 300px;
         overflow: auto;
-        border: 1px solid var(--oxygen-palette-grey-300);
-        border-radius: var(--oxygen-shape-borderRadius);
     }
 
     .role-list-container {

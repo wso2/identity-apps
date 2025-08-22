@@ -601,7 +601,12 @@ export const applications: ApplicationsNS = {
                 title: "Sharing Policy",
                 sharedRoles: "Shared Roles",
                 sharingSettings: "Sharing settings for",
-                individualRoleSharingLabel: "Individually select roles to be shared with organizations",
+                individualRoleSharingLabel: "Individually Shared Roles",
+                individualRoleSharingHint: "These roles are shared only with the selected organization. " +
+                    "You can individually add or remove roles from organizations in this mode.",
+                commonRoleSharingLabel: "Commonly Shared Roles",
+                commonRoleSharingHint: "This set of roles will be shared with all existing and future organizations that " +
+                    "the application is shared with.",
                 doNotShareApplication: "Do not share the application with any organization.",
                 shareAllApplication: "Share the application with all organizations.",
                 shareSelectedApplication: "Share the application with selected organizations.",
