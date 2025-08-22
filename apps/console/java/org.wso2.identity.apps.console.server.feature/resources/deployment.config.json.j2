@@ -2270,6 +2270,9 @@
             {% endif %}
         ],
         "systemReservedUserStores": [
+            {% if agent_identity.userstore is defined %}
+                "{{ agent_identity.userstore }}"{{ "," if console.ui.system_reserved_user_stores is defined and console.ui.system_reserved_user_stores|length > 0 }}
+            {% endif %}
             {% if console.ui.system_reserved_user_stores is defined %}
                 {% for value in console.ui.system_reserved_user_stores %}
                 "{{ value }}"{{ "," if not loop.last }}
