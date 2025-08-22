@@ -102,6 +102,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
     const USERS_TO_BE_ADDED_PROPERTY: string = "Users to be Added";
     const USERS_TO_BE_DELETED_PROPERTY: string = "Users to be Deleted";
     const ROLE_NAME_PROPERTY: string = "Role Name";
+    const SELF_ARBITRARY_ATTRIBUTE_PROPERTY_PREFIX: string = "self_arbitrary_attr_";
     const roleUserAssignmentPropertyKeys: string[] = [ USERS_TO_BE_ADDED_PROPERTY, USERS_TO_BE_DELETED_PROPERTY ];
 
     /**
@@ -170,7 +171,8 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
             value = t("common:approvalsPage.propertyMessages.roleDeleted");
         }
 
-        if (key === "Claims" || value === "[]" || value === "") {
+        if (key === "Claims" || value === "[]" || value === ""
+            || key.startsWith(SELF_ARBITRARY_ATTRIBUTE_PROPERTY_PREFIX)) {
             return;
         }
 
