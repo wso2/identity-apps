@@ -117,6 +117,7 @@ export const common: CommonNS = {
         propertyMessages: {
             assignedUsersDeleted: "ஒதுக்கப்பட்ட பயனர்/கள் நீக்கப்பட்டுள்ளன.",
             roleDeleted: "இந்த பங்கு நீக்கப்பட்டுள்ளது.",
+            selfRegistration: "சுய பதிவு",
             unassignedUsersDeleted: "ஒதுக்கப்படாத பயனர்/கள் நீக்கப்பட்டுள்ளன."
         },
         subTitle: "உங்கள் அங்கீகாரத்தைத் தேவைப்படும் செயல்பாட்டு பணிகளைப் பரிசீலிக்கவும்",

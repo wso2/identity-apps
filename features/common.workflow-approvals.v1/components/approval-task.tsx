@@ -296,8 +296,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                     populateProperties(property.key, property.value)
                                 )
                                 : null
-                        )
-                        )
+                        ))
                     }
                 </Table.Body>
             </Table>
@@ -466,7 +465,8 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                     </Grid.Column>
                                     <Grid.Column width={ 12 }>
                                         <List.Description>
-                                            { approval?.initiator }
+                                            { approval?.initiator ??
+                                                t("common:approvalsPage.propertyMessages.selfRegistration") }
                                         </List.Description>
                                     </Grid.Column>
                                 </Grid.Row>
