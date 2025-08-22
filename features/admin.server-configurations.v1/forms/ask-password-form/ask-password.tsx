@@ -362,6 +362,9 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     { t("extensions:manage.serverConfigurations.userOnboarding." +
                             "inviteUserToSetPassword.form.fields.expiryTime.hint") as ReactNode }
                     <br/>
+                    { t("extensions:manage.serverConfigurations.userOnboarding." +
+                            "inviteUserToSetPassword.form.fields.expiryTime.hintSub") as ReactNode }
+                    <br/>
                 </Hint>
                 <br/>
                 <Field.Checkbox
