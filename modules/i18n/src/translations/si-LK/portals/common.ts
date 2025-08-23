@@ -84,6 +84,15 @@ export const common: CommonNS = {
                 }
             }
         },
+        operationTypes: {
+            addRole: "භූමිකාව එක් කරන්න",
+            addUser: "පරිශීලකයෙකු එක් කරන්න",
+            all: "සියලු ක්‍රියාකාරකම්",
+            deleteRole: "භූමිකාව මකන්න",
+            deleteUser: "පරිශීලකයෙකු මකන්න",
+            selfRegisterUser: "ස්වයං ලියාපදිංචි පරිශීලක",
+            updateRolesOfUser: "භූමිකාවේ පරිශීලකයන් යාවත්කාලීන කරන්න"
+        },
         placeholders: {
             emptyApprovalFilter: {
                 action: "සියල්ල බලන්න",
@@ -226,6 +235,7 @@ export const common: CommonNS = {
     noResultsFound: "ප්‍රතිඵල හමු නොවීය",
     okay: "හරි",
     operatingSystem: "මෙහෙයුම් පද්ධතිය",
+    operationType: "ක්‍රියාකාරී වර්ගය",
     operations: "මෙහෙයුම්",
     organizationName: "{{orgName}} සංවිධානය",
     overview: "දළ විශ්ලේෂණය",

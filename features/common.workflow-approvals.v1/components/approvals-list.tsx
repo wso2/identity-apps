@@ -175,6 +175,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                 selectedApprovalTask = {
                     ...selectedApprovalTask,
                     createdTimeInMillis: approval.createdTimeInMillis,
+                    operationType: approval?.taskType,
                     taskStatus: approval?.approvalStatus
                 };
                 setApproval(selectedApprovalTask);

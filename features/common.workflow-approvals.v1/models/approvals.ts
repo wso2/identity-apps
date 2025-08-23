@@ -104,6 +104,10 @@ export interface ApprovalTaskDetails {
      * The time that the operation for approval initiated
      */
     createdTimeInMillis?: string;
+    /**
+     * Type of the Approval task
+     */
+    operationType?: string;
 }
 
 /**

@@ -35,6 +35,7 @@ import {
 } from "semantic-ui-react";
 import { ApprovalStatus, ApprovalTaskDetails } from "../models";
 import "./approval-task.scss";
+import { getOperationTypeTranslationKey } from "../utils/approval-utils";
 
 /**
  * Prop-types for the approvals edit page component.
@@ -104,7 +105,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
     const ROLE_NAME_PROPERTY: string = "Role Name";
     const SELF_ARBITRARY_ATTRIBUTE_PROPERTY_PREFIX: string = "self_arbitrary_attr_";
     const roleUserAssignmentPropertyKeys: string[] = [ USERS_TO_BE_ADDED_PROPERTY, USERS_TO_BE_DELETED_PROPERTY ];
-    const hiddenProperties: string[] = [ "Created Time", "Last Modified Time", "Location", "Claims" ];
+    const hiddenProperties: string[] = [ "Created Time", "Last Modified Time", "Location", "Claims", "Resource Type" ];
 
     /**
      * Filters and returns valid username values from a comma-separated string.
@@ -297,9 +298,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                     {
                         properties.map((property: { key: string, value: string }) => (
                             property.key && (property.key === ROLE_NAME_PROPERTY || property.value)
-                                ? (
-                                    populateProperties(property.key, property.value)
-                                )
+                                ? populateProperties(property.key, property.value)
                                 : null
                         ))
                     }
@@ -382,6 +381,29 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
         </>
     );
 
+    const renderPropertyRow = (key: string, value: string): ReactElement => {
+        return (
+            <Grid.Row>
+                <Grid.Column>
+                    <List.Content>
+                        <Grid padded>
+                            <Grid.Row columns={ 2 }>
+                                <Grid.Column width={ 3 }>
+                                    { key }
+                                </Grid.Column>
+                                <Grid.Column width={ 12 }>
+                                    <List.Description>
+                                        { value }
+                                    </List.Description>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    </List.Content>
+                </Grid.Column>
+            </Grid.Row>
+        );
+    };
+
     return (
         <Modal
             open={ openApprovalTaskModal }
@@ -417,86 +439,30 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                 </Header>
             </Modal.Header>
             <Modal.Content>
-                <Grid.Row>
-                    <Grid.Column>
-                        <List.Content>
-                            <Grid padded>
-                                <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 3 }>
-                                        { t("common:createdOn") }
-                                    </Grid.Column>
-                                    <Grid.Column width={ 12 }>
-                                        <List.Description>
-                                            {
-                                                moment(parseInt(approval?.createdTimeInMillis,
-                                                    10)).format("lll")
-                                            }
-                                        </List.Description>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </List.Content>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Column>
-                        <List.Content>
-                            <Grid padded>
-                                <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 3 }>
-                                        { t("common:description") }
-                                    </Grid.Column>
-                                    <Grid.Column width={ 12 }>
-                                        <List.Description>
-                                            {
-                                                approval?.description
-                                                    ? approval?.description
-                                                    : t("common:approvalsPage.modals.description")
-                                            }
-                                        </List.Description>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </List.Content>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Column>
-                        <List.Content>
-                            <Grid padded>
-                                <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 3 }>
-                                        { t("common:initiator") }
-                                    </Grid.Column>
-                                    <Grid.Column width={ 12 }>
-                                        <List.Description>
-                                            { approval?.initiator ??
-                                                t("common:approvalsPage.propertyMessages.selfRegistration") }
-                                        </List.Description>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </List.Content>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Column>
-                        <List.Content>
-                            <Grid padded>
-                                <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 3 }>
-                                        { t("common:approvalStatus") }
-                                    </Grid.Column>
-                                    <Grid.Column width={ 12 }>
-                                        <List.Description>
-                                            { approval?.approvalStatus }
-                                        </List.Description>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </List.Content>
-                    </Grid.Column>
-                </Grid.Row>
+                {
+                    renderPropertyRow(t("common:createdOn"),
+                        moment(parseInt(approval?.createdTimeInMillis, 10)).format("lll")
+                    )
+                }
+                {
+                    renderPropertyRow(t("common:description"),
+                        approval?.description
+                            ? approval?.description
+                            : t("common:approvalsPage.modals.description")
+                    )
+                }
+                {
+                    renderPropertyRow(t("common:initiator"),
+                        approval?.initiator ?? t("common:approvalsPage.propertyMessages.selfRegistration"))
+                }
+                {
+                    renderPropertyRow(t("common:operationType"),
+                        t(getOperationTypeTranslationKey(approval?.operationType ?? ""))
+                    )
+                }
+                {
+                    renderPropertyRow(t("common:approvalStatus"), approval?.approvalStatus)
+                }
                 {
                     approval?.properties
                         ? (

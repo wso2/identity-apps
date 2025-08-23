@@ -84,6 +84,15 @@ export const common: CommonNS = {
                 }
             }
         },
+        operationTypes: {
+            addRole: "Add Role",
+            addUser: "Add User",
+            all: "All Operations",
+            deleteRole: "Delete Role",
+            deleteUser: "Delete User",
+            selfRegisterUser: "Self Register User",
+            updateRolesOfUser: "Update Role Users"
+        },
         placeholders: {
             emptyApprovalFilter: {
                 action: "View all",
@@ -226,6 +235,7 @@ export const common: CommonNS = {
     noResultsFound: "No results found",
     okay: "Okay",
     operatingSystem: "Operating system",
+    operationType: "Operation Type",
     operations: "Operations",
     organizationName: "{{orgName}} organization",
     overview: "Overview",

@@ -84,6 +84,15 @@ export const common: CommonNS = {
                 }
             }
         },
+        operationTypes: {
+            "addRole": "添加角色",
+            "addUser": "添加用户",
+            "all": "所有操作",
+            "deleteRole": "删除角色",
+            "deleteUser": "删除用户",
+            "selfRegisterUser": "用户自助注册",
+            "updateRolesOfUser": "更新角色用户"
+        },
         "placeholders": {
             "emptyApprovalFilter": {
                 "action": "查看全部",
@@ -226,6 +235,7 @@ export const common: CommonNS = {
     "noResultsFound": "未找到结果",
     "okay": "好的",
     "operatingSystem": "操作系统",
+    "operationType": "操作类型",
     "operations": "操作",
     "organizationName": "{{orgName}} 组织",
     "overview": "概述",
