@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.78.10
+
+### Patch Changes
+
+- [#8887](https://github.com/wso2/identity-apps/pull/8887) [`3a401177e32564dd474b97799b1110c664097453`](https://github.com/wso2/identity-apps/commit/3a401177e32564dd474b97799b1110c664097453) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enhance the UX for i18n configuration in the flow builder
+
+- Updated dependencies [[`3a401177e32564dd474b97799b1110c664097453`](https://github.com/wso2/identity-apps/commit/3a401177e32564dd474b97799b1110c664097453)]:
+  - @wso2is/i18n@2.30.7
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.14
+  - @wso2is/admin.core.v1@2.49.22
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.14
+  - @wso2is/admin.server-configurations.v1@2.35.35
+
 ## 2.78.9
 
 ### Patch Changes
