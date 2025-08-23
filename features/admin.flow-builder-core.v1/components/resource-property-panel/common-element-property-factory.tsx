@@ -16,12 +16,10 @@
  * under the License.
  */
 
-import Checkbox from "@oxygen-ui/react/Checkbox";
-import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import startCase from "lodash-es/startCase";
-import React, { ChangeEvent, FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
+import CheckboxPropertyField from "./checkbox-property-field";
 import RichTextWithTranslation from "./rich-text/rich-text-with-translation";
 import TextPropertyField from "./text-property-field";
 import FlowBuilderElementConstants from "../../constants/flow-builder-element-constants";
@@ -85,12 +83,11 @@ const CommonElementPropertyFactory: FunctionComponent<CommonElementPropertyFacto
 
     if (typeof propertyValue === "boolean") {
         return (
-            <FormControlLabel
-                control={ <Checkbox checked={ propertyValue } /> }
-                label={ startCase(propertyKey) }
-                onChange={ (e: ChangeEvent<HTMLInputElement>) =>
-                    onChange(`config.${propertyKey}`, e.target.checked, resource)
-                }
+            <CheckboxPropertyField
+                resource={ resource }
+                propertyKey={ propertyKey }
+                propertyValue={ propertyValue }
+                onChange={ onChange }
                 data-componentid={ `${componentId}-${propertyKey}` }
                 { ...rest }
             />

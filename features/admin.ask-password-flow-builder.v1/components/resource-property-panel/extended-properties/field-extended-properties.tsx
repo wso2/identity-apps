@@ -17,11 +17,13 @@
  */
 
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
+import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import Stack from "@oxygen-ui/react/Stack";
 import TextField from "@oxygen-ui/react/TextField";
 import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
+import useValidationStatus from "@wso2is/admin.flow-builder-core.v1/hooks/use-validation-status";
 import { InputVariants } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "react";
@@ -46,17 +48,31 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
     onChange
 }: FieldExtendedPropertiesPropsInterface): ReactElement => {
     const { supportedAttributes: attributes } = useAskPasswordFlowBuilder();
+    const { selectedNotification } = useValidationStatus();
 
     const selectedValue: Attribute = useMemo(() => {
         return attributes?.find((attribute: Attribute) => attribute?.claimURI === resource.config.identifier);
     }, [ resource.config.identifier, attributes ]);
+
+    /**
+     * Get the error message for the identifier field.
+     */
+    const errorMessage: string = useMemo(() => {
+        const key: string = `${resource?.id}.identifier`;
+
+        if (selectedNotification?.hasResourceFieldNotification(key)) {
+            return selectedNotification?.getResourceFieldNotification(key);
+        }
+
+        return "";
+    }, [ resource, selectedNotification ]);
 
     if (resource.variant === InputVariants.Password) {
         return null;
     }
 
     return (
-        <Stack gap={ 2 } data-componentid={ componentId }>
+        <Stack data-componentid={ componentId }>
             <Autocomplete
                 disablePortal
                 key={ resource.id }
@@ -64,13 +80,25 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
                 getOptionLabel={ (attribute: Attribute) => attribute?.displayName }
                 sx={ { width: "100%" } }
                 renderInput={ (params: AutocompleteRenderInputParams) => (
-                    <TextField { ...params } label="Attribute" placeholder="Select an attribute" />
+                    <TextField
+                        { ...params }
+                        label="Attribute"
+                        placeholder="Select an attribute"
+                        error={ !!errorMessage }
+                    />
                 ) }
                 value={ selectedValue }
                 onChange={ (_: ChangeEvent<HTMLInputElement>, attribute: Attribute) => {
                     onChange("config.identifier", attribute?.claimURI, resource);
                 } }
             />
+            {
+                errorMessage && (
+                    <FormHelperText error>
+                        { errorMessage }
+                    </FormHelperText>
+                )
+            }
         </Stack>
     );
 };
