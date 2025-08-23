@@ -20,9 +20,9 @@ import Box from "@oxygen-ui/react/Box";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useMemo, useState } from "react";
-import useValidationStatus from "../../../../hooks/use-validation-status";
-import { NotificationType } from "../../../../models/notification";
-import { Resource } from "../../../../models/resources";
+import useValidationStatus from "../../hooks/use-validation-status";
+import { NotificationType } from "../../models/notification";
+import { Resource } from "../../models/resources";
 import "./validation-error-boundary.scss";
 
 /**
@@ -111,12 +111,13 @@ export const ValidationErrorBoundary: FunctionComponent<PropsWithChildren<Valida
                 "validation-error-boundary",
                 {
                     active: active && disableErrorBoundaryOnHover,
-                    [ notificationType ]: hasNotification && notificationType
+                    [ notificationType ]: hasNotification && notificationType,
+                    padded: !disableErrorBoundaryOnHover
                 }
             ) }
             data-componentid={ componentId }
-            onMouseOver={ () => setActive(true) }
-            onMouseOut={ () => setActive(false) }
+            onMouseOver={ () => disableErrorBoundaryOnHover && setActive(true) }
+            onMouseOut={ () => disableErrorBoundaryOnHover && setActive(false) }
         >
             { hasNotification && !(active && disableErrorBoundaryOnHover) && (
                 <ExclamationIcon key={ resource.id } size={ 24 } />

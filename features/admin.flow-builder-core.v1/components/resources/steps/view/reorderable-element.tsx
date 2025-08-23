@@ -23,7 +23,6 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useNodeId } from "@xyflow/react";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, MutableRefObject, ReactElement, SVGProps, useRef } from "react";
-import ValidationErrorBoundary from "./validation-error-boundary";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 import useComponentDelete from "../../../../hooks/use-component-delete";
@@ -32,6 +31,7 @@ import { EventTypes } from "../../../../models/extension";
 import PluginRegistry from "../../../../plugins/plugin-registry";
 import Handle from "../../../dnd/handle";
 import Sortable, { SortableProps } from "../../../dnd/sortable";
+import ValidationErrorBoundary from "../../../validation-panel/validation-error-boundary";
 
 /**
  * Props interface of {@link ReorderableElement}

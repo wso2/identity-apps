@@ -62,4 +62,8 @@
         border-color: var(--oxygen-palette-common-background);
         background-color: var(--oxygen-palette-common-background);
     }
+
+    &.padded {
+        padding: 8px;
+    }
 }
