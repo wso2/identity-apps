@@ -115,6 +115,19 @@ export interface flowsNS {
                 magicLink: string;
             };
         };
+        notificationPanel: {
+            emptyMessages: {
+                errors: string;
+                info: string;
+                warnings: string;
+            };
+            header: string;
+            tabs: {
+                errors: string;
+                info: string;
+                warnings: string;
+            };
+        };
         notifications: {
             brandingPreferenceFetch: {
                 genericError: {

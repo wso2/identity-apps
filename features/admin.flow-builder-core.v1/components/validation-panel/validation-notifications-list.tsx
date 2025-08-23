@@ -18,20 +18,20 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
+import Button from "@oxygen-ui/react/Button";
 import List from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
-import ListItemText from "@oxygen-ui/react/ListItemText";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
-import Notification, { NotificationType } from "../../models/notification";
+import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
+import Notification from "../../models/notification";
 
 /**
  * Props interface of {@link ValidationNotificationsList}
  */
 export interface ValidationNotificationsListPropsInterface
-    extends IdentifiableComponentInterface,
-        HTMLAttributes<HTMLDivElement> {
+    extends IdentifiableComponentInterface {
     /**
      * Array of notifications to display.
      */
@@ -39,31 +39,12 @@ export interface ValidationNotificationsListPropsInterface
     /**
      * Message to display when no notifications are available.
      */
-    emptyMessage?: string;
+    emptyMessage: string;
     /**
      * Callback fired when a notification is clicked.
      */
-    onNotificationClick?: (notification: Notification) => void;
+    onNotificationClick: (notification: Notification) => void;
 }
-
-/**
- * Get the severity level for Material-UI Alert component based on notification type.
- *
- * @param type - Notification type.
- * @returns Alert severity level.
- */
-const getAlertSeverity = (type: NotificationType): "error" | "warning" | "info" | "success" => {
-    switch (type) {
-        case NotificationType.ERROR:
-            return "error";
-        case NotificationType.INFO:
-            return "info";
-        case NotificationType.WARNING:
-            return "warning";
-        default:
-            return "warning";
-    }
-};
 
 /**
  * Component to render a list of validation notifications.
@@ -74,10 +55,11 @@ const getAlertSeverity = (type: NotificationType): "error" | "warning" | "info" 
 const ValidationNotificationsList: FunctionComponent<ValidationNotificationsListPropsInterface> = ({
     "data-componentid": componentId = "validation-notifications-list",
     notifications,
-    emptyMessage = "No notifications available.",
-    onNotificationClick,
-    ...rest
+    emptyMessage,
+    onNotificationClick
 }: ValidationNotificationsListPropsInterface): ReactElement => {
+
+    const { t } = useTranslation();
 
     if (!notifications || notifications.length === 0) {
         return (
@@ -87,9 +69,8 @@ const ValidationNotificationsList: FunctionComponent<ValidationNotificationsList
                 alignItems="center"
                 minHeight="200px"
                 data-componentid={ componentId }
-                { ...rest }
             >
-                <Typography variant="body2" color="textSecondary">
+                <Typography variant="body2" color="textSecondary" fontStyle="italic">
                     { emptyMessage }
                 </Typography>
             </Box>
@@ -97,35 +78,29 @@ const ValidationNotificationsList: FunctionComponent<ValidationNotificationsList
     }
 
     return (
-        <Box data-componentid={ componentId } { ...rest }>
-            <List className="validation-notifications-list">
-                { notifications.map((notification: Notification, index: number) => (
-                    <ListItem
-                        key={ notification.getId() || index }
-                        className="validation-notification-item"
-                        onClick={ () => onNotificationClick?.(notification) }
-                        style={ { cursor: onNotificationClick ? "pointer" : "default" } }
-                    >
-                        <ListItemText
-                            primary={
-                                (
-                                    <Alert
-                                        severity={ getAlertSeverity(notification.getType()) }
-                                        variant="outlined"
-                                        className="validation-notification-alert"
+        <Box data-componentid={ componentId }>
+            <List>
+                { notifications.map((notification: Notification) => (
+                    <ListItem key={ notification.getId() }>
+                        <Alert icon={ false } className="notification-item" severity={ notification.getType() } >
+                            <Typography variant="body2">
+                                { notification.getMessage() }
+                            </Typography>
+                            { (notification.hasResources() || notification.hasPanelNotification()) && (
+                                <Box textAlign="right">
+                                    <Button
+                                        variant="text"
+                                        size="small"
+                                        color={ notification.getType() }
+                                        onClick={ () => onNotificationClick(notification) }
+                                        disableRipple
+                                        className="notification-action-button"
                                     >
-                                        <Typography variant="body2">
-                                            { notification.getMessage() }
-                                        </Typography>
-                                        { notification.getResource() && (
-                                            <Typography variant="caption" display="block" color="textSecondary">
-                                                Resource: { notification.getResource().id }
-                                            </Typography>
-                                        ) }
-                                    </Alert>
-                                )
-                            }
-                        />
+                                        { t("common:show") }
+                                    </Button>
+                                </Box>
+                            ) }
+                        </Alert>
                     </ListItem>
                 )) }
             </List>

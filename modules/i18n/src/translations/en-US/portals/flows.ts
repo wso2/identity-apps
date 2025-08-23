@@ -116,6 +116,19 @@ export const flows: flowsNS = {
                 passkeyEnrollment: "Enroll Passkey"
             }
         },
+        notificationPanel: {
+            emptyMessages: {
+                errors: "No errors found.",
+                info: "No information messages found.",
+                warnings: "No warnings found."
+            },
+            header: "Notifications",
+            tabs: {
+                errors: "Errors",
+                info: "Info",
+                warnings: "Warnings"
+            }
+        },
         notifications: {
             brandingPreferenceFetch: {
                 genericError: {
