@@ -577,7 +577,7 @@ export const claims: ClaimsNS = {
             },
             subAttributes: {
                 label: "The sub-attributes of the attribute",
-                placeholder: "Select subattributes",
+                placeholder: "Select sub-attributes",
                 validationError: "At least one sub-attribute must be provided.",
                 validationErrorMessage: "Sub-attributes are required for the Object data type."
             },
