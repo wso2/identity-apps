@@ -407,8 +407,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                     });
                     userOnboardEdgeCreated = true;
                 }
-            } else if (button.action?.executor?.name === RegistrationFlowExecutorConstants.PASSWORD_ONBOARD_EXECUTOR) {
-                // For PasswordOnboardExecutor buttons without explicit next,
+            } else if (button.action?.executor?.name ===
+                RegistrationFlowExecutorConstants.PASSWORD_PROVISIONING_EXECUTOR) {
+                // For PasswordProvisioningExecutor buttons without explicit next,
                 // create an edge to the user onboard step
                 edges.push({
                     animated: false,
@@ -715,7 +716,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         }
 
         // Check inside `forms`, if there is a form with a password field and there's only one submit button,
-        // Set the `"action": { "type": "EXECUTOR", "executor": { "name": "PasswordOnboardExecutor"}, "next": "" }`
+        // Set the `"action": { "type": "EXECUTOR", "executor": { "name": "PasswordProvisioningExecutor"}, "next": "" }`
         modifiedComponents = modifiedComponents.map((component: Element) => {
             if (component.type === BlockTypes.Form) {
                 // Set all the `PRIMARY` buttons inside the form type to `submit`.
@@ -760,7 +761,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                                     action: {
                                         ...(formComponent?.action ?? {}),
                                         executor: {
-                                            name: RegistrationFlowExecutorConstants.PASSWORD_ONBOARD_EXECUTOR
+                                            name: RegistrationFlowExecutorConstants.PASSWORD_PROVISIONING_EXECUTOR
                                         },
                                         type: "EXECUTOR"
                                     }

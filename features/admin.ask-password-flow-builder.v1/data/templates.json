@@ -16,10 +16,6 @@
                 "__generationMeta__": {
                     "replacers": [
                         {
-                            "key": "CONFIRMATION_STEP_ID",
-                            "type": "ID"
-                        },
-                        {
                             "key": "FORM_STEP_ID",
                             "type": "ID"
                         }
@@ -27,7 +23,7 @@
                 },
                 "steps": [
                     {
-                        "id": "{{CONFIRMATION_STEP_ID}}",
+                        "id": "{{ID}}",
                         "type": "EXECUTION",
                         "size": {
                             "width": 150,
@@ -107,17 +103,13 @@
         "display": {
             "label": "Invited User Registration.",
             "description": "Registration flow where the invited user validates a confirmation code and sets a password",
-            "image": "https://www.svgrepo.com/show/533122/lock.svg",
+            "image": "https://www.svgrepo.com/show/390092/security-protection-password.svg",
             "showOnResourcePanel": true
         },
         "config": {
             "data": {
                 "__generationMeta__": {
                     "replacers": [
-                        {
-                            "key": "CONFIRMATION_STEP_ID",
-                            "type": "ID"
-                        },
                         {
                             "key": "PASSWORD_RESET_STEP_ID",
                             "type": "ID"
@@ -127,7 +119,7 @@
                 "flowType": "INVITED_USER_REGISTRATION",
                 "steps": [
                     {
-                        "id": "{{CONFIRMATION_STEP_ID}}",
+                        "id": "{{ID}}",
                         "type": "EXECUTION",
                         "size": {
                             "width": 150,
@@ -209,6 +201,76 @@
                                     ]
                                 }
                             ]
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "resourceType": "TEMPLATE",
+        "category": "STARTER",
+        "type": "SECURE",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Invited User Registration with Passkey",
+            "description": "Registration flow where the invited user validates a confirmation code and completes Passkey onboarding",
+            "image": "https://www.svgrepo.com/show/340307/fingerprint-recognition.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "replacers": [
+                        {
+                            "key": "FIDO2_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "flowType": "INVITED_USER_REGISTRATION",
+                "steps": [
+                    {
+                        "id": "{{ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 200,
+                            "height": 60
+                        },
+                        "position": {
+                            "x": 150,
+                            "y": 200
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "ConfirmationCodeValidationExecutor"
+                                },
+                                "next": "{{FIDO2_STEP_ID}}"
+                            }
+                        }
+                    },
+                    {
+                        "id": "{{FIDO2_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 200,
+                            "height": 60
+                        },
+                        "position": {
+                            "x": 450,
+                            "y": 200
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "FIDO2Executor"
+                                },
+                                "next": "End"
+                            }
                         }
                     }
                 ]

@@ -252,6 +252,23 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
         );
     };
 
+    /**
+     * Determines if a step is deletable based on its type and executor.
+     * @param step - The step to check.
+     * @returns true if the step is deletable, false otherwise.
+     */
+    const isStepDeletable = (step: Node): boolean => {
+        let isDeletable: boolean = true;
+
+        if (step.type === StepTypes.Execution &&
+            (step.data as any)?.action?.executor?.name ===
+                AskPasswordFlowExecutorConstants.CONFIRMATION_CODE_VALIDATION_EXECUTOR) {
+            isDeletable = false;
+        }
+
+        return isDeletable;
+    };
+
     const generateSteps = (steps: Node[]): Node[] => {
         const START_STEP: Node = {
             data: {
@@ -263,11 +280,16 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
             type: StaticStepTypes.Start
         };
 
+        const defaultEndPosition: { x: number; y: number } = { x: 300, y: 330 };
+        const endPosition: { x: number; y: number } = steps.length > 0
+            ? { x: steps[steps.length - 1].position.x + 600, y: steps[steps.length - 1].position.y + 200 }
+            : defaultEndPosition;
+
         const END_STEP: Node = {
             data: { displayOnly: true },
             deletable: false,
             id: INITIAL_FLOW_USER_ONBOARD_STEP_ID,
-            position: { x: steps[steps.length - 1].position.x + 600, y: steps[steps.length - 1].position.y + 200 },
+            position: endPosition,
             type: StaticStepTypes.End
         };
 
@@ -281,7 +303,7 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
                             components: resolveComponentMetadata(resources, (step.data as any).components)
                         }) ||
                         step.data,
-                    deletable: true,
+                    deletable: isStepDeletable(step),
                     id: step.id,
                     position: step.position,
                     type: step.type
