@@ -82,7 +82,7 @@ const ValidationNotificationsList: FunctionComponent<ValidationNotificationsList
             <List>
                 { notifications.map((notification: Notification) => (
                     <ListItem key={ notification.getId() }>
-                        <Alert icon={ false } className="notification-item" severity={ notification.getType() } >
+                        <Alert className="notification-item" severity={ notification.getType() } >
                             <Typography variant="body2">
                                 { notification.getMessage() }
                             </Typography>
