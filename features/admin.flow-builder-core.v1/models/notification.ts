@@ -26,20 +26,17 @@ export enum NotificationType {
 }
 
 class Notification {
-    private id: string;
+    private readonly id: string;
     private readonly message: string;
     private readonly type: NotificationType;
-    private resource: Resource;
+    private readonly resources: Map<string, Resource>;
     private PanelNotification: ReactElement;
     private resourceFieldNotifications: Map<string, string>;
 
-    constructor(message: string, type: NotificationType) {
+    constructor(id: string, message: string, type: NotificationType) {
+        this.id = id;
         this.message = message;
         this.type = type;
-    }
-
-    setId(id: string): void {
-        this.id = id;
     }
 
     getId(): string {
@@ -54,12 +51,20 @@ class Notification {
         return this.type;
     }
 
-    setResource(resource: Resource): void {
-        this.resource = resource;
+    addResource(resource: Resource): void {
+        this.resources.set(resource.id, resource);
     }
 
-    getResource(): Resource {
-        return this.resource;
+    getResources(): Resource[] {
+        return Array.from(this.resources.values());
+    }
+
+    getResource(id: string): Resource {
+        return this.resources.get(id);
+    }
+
+    hasResources(): boolean {
+        return this.resources ? this.resources.size > 0 : false;
     }
 
     setPanelNotification(notificationEl: ReactElement): void {
@@ -68,6 +73,10 @@ class Notification {
 
     getPanelNotification(): ReactElement {
         return this.PanelNotification;
+    }
+
+    hasPanelNotification(): boolean {
+        return !!this.PanelNotification;
     }
 
     addResourceFieldNotification(field: string, msg: string): void {
