@@ -407,7 +407,8 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                     });
                     userOnboardEdgeCreated = true;
                 }
-            } else if (button.action?.executor?.name === RegistrationFlowExecutorConstants.PASSWORD_ONBOARD_EXECUTOR) {
+            } else if (button.action?.executor?.name ===
+                RegistrationFlowExecutorConstants.PASSWORD_PROVISIONING_EXECUTOR) {
                 // For PasswordProvisioningExecutor buttons without explicit next,
                 // create an edge to the user onboard step
                 edges.push({
@@ -760,7 +761,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
                                     action: {
                                         ...(formComponent?.action ?? {}),
                                         executor: {
-                                            name: RegistrationFlowExecutorConstants.PASSWORD_ONBOARD_EXECUTOR
+                                            name: RegistrationFlowExecutorConstants.PASSWORD_PROVISIONING_EXECUTOR
                                         },
                                         type: "EXECUTOR"
                                     }
