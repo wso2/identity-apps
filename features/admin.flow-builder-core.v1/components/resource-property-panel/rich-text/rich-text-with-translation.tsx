@@ -17,6 +17,7 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
+import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import { LanguageIcon } from "@oxygen-ui/react-icons";
@@ -33,6 +34,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { ToolbarPluginProps } from "./helper-plugins/toolbar-plugin";
 import RichText from "./rich-text";
+import useValidationStatus from "../../../hooks/use-validation-status";
 import { Resource } from "../../../models/resources";
 import I18nConfigurationCard, { LanguageTextFieldProps } from "../i18n-configuration-card";
 import "./rich-text-with-translation.scss";
@@ -113,6 +115,20 @@ const RichTextWithTranslation: FunctionComponent<RichTextWithTranslationProps> =
     const { t } = useTranslation();
     const [ isI18nCardOpen, setIsI18nCardOpen ] = useState<boolean>(false);
     const buttonRef: MutableRefObject<HTMLButtonElement> = useRef(null);
+    const { selectedNotification } = useValidationStatus();
+
+    /**
+     * Get the error message for the rich text field.
+     */
+    const errorMessage: string = useMemo(() => {
+        const key: string = `${resource?.id}.text`;
+
+        if (selectedNotification?.hasResourceFieldNotification(key)) {
+            return selectedNotification?.getResourceFieldNotification(key);
+        }
+
+        return "";
+    }, [ resource, selectedNotification ]);
 
     return (
         <Box className="rich-text-with-translation-container">
@@ -122,7 +138,15 @@ const RichTextWithTranslation: FunctionComponent<RichTextWithTranslationProps> =
                 className={ className }
                 onChange={ onChange }
                 resource={ resource }
+                hasError={ !!errorMessage }
             />
+            {
+                errorMessage && (
+                    <FormHelperText error>
+                        { errorMessage }
+                    </FormHelperText>
+                )
+            }
             <Tooltip
                 title={ t("flows:core.elements.textPropertyField.tooltip.configureTranslation") }
             >

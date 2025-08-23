@@ -102,6 +102,10 @@ export interface RichTextProps extends IdentifiableComponentInterface {
      * Whether the rich text editor is disabled. If true, the editor will not be editable.
      */
     disabled?: boolean;
+    /**
+     * Whether the rich text editor has an error state.
+     */
+    hasError?: boolean;
 }
 
 /**
@@ -113,7 +117,8 @@ const RichText: FunctionComponent<RichTextProps> = ({
     className,
     onChange,
     resource,
-    disabled
+    disabled,
+    hasError = false
 }: RichTextProps): ReactElement => {
     const { t } = useTranslation();
 
@@ -132,7 +137,13 @@ const RichText: FunctionComponent<RichTextProps> = ({
         <LexicalComposer initialConfig={ editorConfig }>
             <div className={ classNames("OxygenRichText-root", className) } data-componentid={ componentId }>
                 <ToolbarPlugin { ...ToolbarProps } disabled={ isI18nPattern || disabled } />
-                <Paper className="OxygenRichText-editor-root" variant="outlined">
+                <Paper
+                    className={ classNames(
+                        "OxygenRichText-editor-root",
+                        { "error": hasError }
+                    ) }
+                    variant="outlined"
+                >
                     { isI18nPattern ? (
                         <div className="OxygenRichText-i18n-placeholder">
                             <div className="OxygenRichText-i18n-placeholder-key">

@@ -90,6 +90,10 @@ class Notification {
     getResourceFieldNotification(field: string): string {
         return this.resourceFieldNotifications.get(field) || "";
     }
+
+    hasResourceFieldNotification(field: string): boolean {
+        return this.resourceFieldNotifications ? this.resourceFieldNotifications.has(field) : false;
+    }
 }
 
 export default Notification;
