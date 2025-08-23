@@ -16,10 +16,6 @@
                 "__generationMeta__": {
                     "replacers": [
                         {
-                            "key": "CONFIRMATION_STEP_ID",
-                            "type": "ID"
-                        },
-                        {
                             "key": "FORM_STEP_ID",
                             "type": "ID"
                         }
@@ -27,7 +23,7 @@
                 },
                 "steps": [
                     {
-                        "id": "{{CONFIRMATION_STEP_ID}}",
+                        "id": "{{ID}}",
                         "type": "EXECUTION",
                         "size": {
                             "width": 150,
