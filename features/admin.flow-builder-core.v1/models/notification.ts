@@ -59,12 +59,16 @@ class Notification {
         return Array.from(this.resources.values());
     }
 
+    hasResources(): boolean {
+        return this.resources ? this.resources.size > 0 : false;
+    }
+
     getResource(id: string): Resource {
         return this.resources.get(id);
     }
 
-    hasResources(): boolean {
-        return this.resources ? this.resources.size > 0 : false;
+    hasResource(id: string): boolean {
+        return this.resources ? this.resources.has(id) : false;
     }
 
     setPanelNotification(notificationEl: ReactElement): void {

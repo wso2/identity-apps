@@ -22,12 +22,14 @@ import { TrashIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useNodeId } from "@xyflow/react";
 import classNames from "classnames";
-import React, { FunctionComponent, MouseEvent, MutableRefObject, ReactElement, SVGProps, useRef } from "react";
+import React, { FunctionComponent, MouseEvent, MutableRefObject, ReactElement, SVGProps, useMemo, useRef } from "react";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 import useComponentDelete from "../../../../hooks/use-component-delete";
+import useValidationStatus from "../../../../hooks/use-validation-status";
 import { Element } from "../../../../models/elements";
 import { EventTypes } from "../../../../models/extension";
+import { NotificationType } from "../../../../models/notification";
 import PluginRegistry from "../../../../plugins/plugin-registry";
 import Handle from "../../../dnd/handle";
 import Sortable, { SortableProps } from "../../../dnd/sortable";
@@ -101,6 +103,20 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
         setLastInteractedStepId,
         setIsOpenResourcePropertiesPanel
     } = useAuthenticationFlowBuilderCore();
+    const {
+        selectedNotification
+    } = useValidationStatus();
+
+    /**
+     * Checks if the element has any notifications.
+     */
+    const hasNotification: boolean = useMemo(() => {
+        if (selectedNotification?.hasResource(element.id)) {
+            return true;
+        }
+
+        return false;
+    }, [ element, selectedNotification ]);
 
     /**
      * Handles the opening of the property panel for the resource.
@@ -140,7 +156,12 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
             <Box
                 display="flex"
                 alignItems="center"
-                className={ classNames("reorderable-component", className) }
+                className={ classNames("reorderable-component", className, {
+                    "error": hasNotification && selectedNotification?.getType() === NotificationType.ERROR,
+                    "info": hasNotification && selectedNotification?.getType() === NotificationType.INFO,
+                    "notification": hasNotification,
+                    "warning": hasNotification && selectedNotification?.getType() === NotificationType.WARNING
+                }) }
                 data-componentid={ `${componentId}-${element.type}` }
                 onDoubleClick={ handlePropertyPanelOpen }
             >

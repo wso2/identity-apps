@@ -149,15 +149,24 @@ const ValidationPanel: FunctionComponent<ValidationPanelPropsInterface> = ({
     } = useValidationStatus();
     const [ activeTab, setActiveTab ] = useState<number>(0);
 
-    const errorNotifications: Notification[] = notifications.filter(
-        (notification: Notification) => notification.getType() === NotificationType.ERROR
-    );
-    const infoNotifications: Notification[] = notifications.filter(
-        (notification: Notification) => notification.getType() === NotificationType.INFO
-    );
-    const warningNotifications: Notification[] = notifications.filter(
-        (notification: Notification) => notification.getType() === NotificationType.WARNING
-    );
+    // const errorNotifications: Notification[] = notifications.filter(
+    //     (notification: Notification) => notification.getType() === NotificationType.ERROR
+    // );
+    const errorNotifications: Notification[] = [
+        new Notification("1", "This is an error notification.", NotificationType.ERROR)
+    ];
+    // const infoNotifications: Notification[] = notifications.filter(
+    //     (notification: Notification) => notification.getType() === NotificationType.INFO
+    // );
+    const infoNotifications: Notification[] = [
+        new Notification("2", "This is an info notification.", NotificationType.INFO)
+    ];
+    // const warningNotifications: Notification[] = notifications.filter(
+    //     (notification: Notification) => notification.getType() === NotificationType.WARNING
+    // );
+    const warningNotifications: Notification[] = [
+        new Notification("3", "This is a warning notification.", NotificationType.WARNING)
+    ];
 
     /**
      * Handle tab change event.
