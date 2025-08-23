@@ -59,7 +59,7 @@
                             "action": {
                                 "type": "EXECUTOR",
                                 "executor": {
-                                    "name": "PasswordOnboardExecutor"
+                                    "name": "PasswordProvisioningExecutor"
                                 }
                             }
                         }
