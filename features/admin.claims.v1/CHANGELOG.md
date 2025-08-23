@@ -1,5 +1,15 @@
 # @wso2is/admin.claims.v1
 
+## 2.29.2
+
+### Patch Changes
+
+- [#8892](https://github.com/wso2/identity-apps/pull/8892) [`af9ea53232a82c7a61c8bc4f2c32ff7c3d65d2e9`](https://github.com/wso2/identity-apps/commit/af9ea53232a82c7a61c8bc4f2c32ff7c3d65d2e9) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Disable the attribute profile configuration view for the complex data type attributes
+
+- Updated dependencies [[`af9ea53232a82c7a61c8bc4f2c32ff7c3d65d2e9`](https://github.com/wso2/identity-apps/commit/af9ea53232a82c7a61c8bc4f2c32ff7c3d65d2e9)]:
+  - @wso2is/admin.claims.v1@2.29.2
+  - @wso2is/i18n@2.30.11
+
 ## 2.29.1
 
 ### Patch Changes
