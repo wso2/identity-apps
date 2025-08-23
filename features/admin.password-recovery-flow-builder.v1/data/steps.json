@@ -14,7 +14,7 @@
         "data": {
             "components": [
                 {
-                    "id": "typography_vojx",
+                    "id": "{{ID}}",
                     "category": "DISPLAY",
                     "type": "TYPOGRAPHY",
                     "variant": "H3",
@@ -23,13 +23,13 @@
                     }
                 },
                 {
-                    "id": "form_m0o6",
+                    "id": "{{ID}}",
                     "category": "BLOCK",
                     "type": "FORM",
                     "config": {},
                     "components": [
                         {
-                            "id": "rich_text_76gk",
+                            "id": "{{ID}}",
                             "category": "DISPLAY",
                             "type": "RICH_TEXT",
                             "config": {
@@ -37,7 +37,7 @@
                             }
                         },
                         {
-                            "id": "input_ayvb",
+                            "id": "{{ID}}",
                             "category": "FIELD",
                             "type": "INPUT",
                             "variant": "TEXT",
@@ -51,7 +51,7 @@
                             }
                         },
                         {
-                            "id": "button_5qkp",
+                            "id": "{{ID}}",
                             "category": "ACTION",
                             "type": "BUTTON",
                             "variant": "PRIMARY",
@@ -87,7 +87,7 @@
         "data": {
             "components": [
                 {
-                    "id": "typography_1kmr",
+                    "id": "{{ID}}",
                     "category": "DISPLAY",
                     "type": "TYPOGRAPHY",
                     "variant": "H3",
@@ -96,13 +96,13 @@
                     }
                 },
                 {
-                    "id": "form_w394",
+                    "id": "{{ID}}",
                     "category": "BLOCK",
                     "type": "FORM",
                     "config": {},
                     "components": [
                         {
-                            "id": "input_7ywk",
+                            "id": "{{ID}}",
                             "category": "FIELD",
                             "type": "INPUT",
                             "variant": "PASSWORD",
@@ -116,7 +116,7 @@
                             }
                         },
                         {
-                            "id": "button_y89y",
+                            "id": "{{ID}}",
                             "category": "ACTION",
                             "type": "BUTTON",
                             "variant": "PRIMARY",
