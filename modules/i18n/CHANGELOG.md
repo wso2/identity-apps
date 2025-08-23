@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.10
+
+### Patch Changes
+
+- [#8888](https://github.com/wso2/identity-apps/pull/8888) [`77a7d7fb95df169b64d1fb0362f371986fe52824`](https://github.com/wso2/identity-apps/commit/77a7d7fb95df169b64d1fb0362f371986fe52824) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Handle workflow approvals during self registration flow
+
 ## 2.30.9
 
 ### Patch Changes
