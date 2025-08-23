@@ -89,7 +89,7 @@
         "deprecated": false,
         "display": {
             "label": "Continue with Email OTP",
-            "description": "Registration experience with Email",
+            "description": "Registration experience with Email OTP",
             "image": "https://www.svgrepo.com/show/387455/email-down.svg",
             "showOnResourcePanel": true
         },
@@ -704,7 +704,7 @@
     "deprecated": false,
     "display": {
         "label": "Continue with Passkey",
-        "description": "Registration experience using Passkeys",
+        "description": "Registration experience with Passkeys",
         "image": "https://www.svgrepo.com/show/340307/fingerprint-recognition.svg",
         "showOnResourcePanel": true
     },
