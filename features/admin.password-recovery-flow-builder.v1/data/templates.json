@@ -74,7 +74,7 @@
         "display": {
             "label": "Password Recovery with Magic Link",
             "description": "Password recovery using Magic Link",
-            "image": "https://www.svgrepo.com/show/395473/magic-wand.svg",
+            "image": "https://www.svgrepo.com/show/532869/link-alt-1.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -234,7 +234,7 @@
                                                 "type": "password",
                                                 "hint": "",
                                                 "label": "Password",
-                                                "required": false,
+                                                "required": true,
                                                 "placeholder": "Enter your password"
                                             }
                                         },
@@ -466,7 +466,7 @@
                                                 "type": "password",
                                                 "hint": "",
                                                 "label": "Password",
-                                                "required": false,
+                                                "required": true,
                                                 "placeholder": "Enter your password"
                                             }
                                         },
@@ -698,7 +698,7 @@
                                                 "type": "password",
                                                 "hint": "",
                                                 "label": "Password",
-                                                "required": false,
+                                                "required": true,
                                                 "placeholder": "Enter your password"
                                             }
                                         },
@@ -737,7 +737,7 @@
         "display": {
             "label": "Password Recovery with SMS or Email OTP",
             "description": "Password recovery using either SMS or Email OTP",
-            "image": "https://www.svgrepo.com/show/387455/email-down.svg",
+            "image": "https://www.svgrepo.com/show/532325/scan.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -1035,6 +1035,7 @@
                                                 "identifier": "password",
                                                 "type": "password",
                                                 "label": "Password",
+                                                "required": true,
                                                 "placeholder": "Enter your password"
                                             }
                                         },
