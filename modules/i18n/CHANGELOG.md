@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.9
+
+### Patch Changes
+
+- [#8899](https://github.com/wso2/identity-apps/pull/8899) [`cf987dbe97b9a088ce55076aa3648d40eac68a24`](https://github.com/wso2/identity-apps/commit/cf987dbe97b9a088ce55076aa3648d40eac68a24) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Disable the attribute profile configuration view for the complex data type attributes
+
 ## 2.30.8
 
 ### Patch Changes

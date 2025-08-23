@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.78.11
+
+### Patch Changes
+
+- [#8899](https://github.com/wso2/identity-apps/pull/8899) [`4a182e9ad58ea66d72a1b33387fb15f3851ed44f`](https://github.com/wso2/identity-apps/commit/4a182e9ad58ea66d72a1b33387fb15f3851ed44f) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Disable attribute profile configuratuon for the object data type attributes
+
+- Updated dependencies [[`cf987dbe97b9a088ce55076aa3648d40eac68a24`](https://github.com/wso2/identity-apps/commit/cf987dbe97b9a088ce55076aa3648d40eac68a24)]:
+  - @wso2is/admin.claims.v1@2.29.2
+  - @wso2is/i18n@2.30.9
+
 ## 2.78.10
 
 ### Patch Changes
