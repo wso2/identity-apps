@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.77.22
+
+### Patch Changes
+
+- [#8877](https://github.com/wso2/identity-apps/pull/8877) [`b5f794ba71bc76d53b5d3af21b1bc8e9bbb7d544`](https://github.com/wso2/identity-apps/commit/b5f794ba71bc76d53b5d3af21b1bc8e9bbb7d544) Thanks [@KD23243](https://github.com/KD23243)! - Improve flow builder
+
+- Updated dependencies [[`b5f794ba71bc76d53b5d3af21b1bc8e9bbb7d544`](https://github.com/wso2/identity-apps/commit/b5f794ba71bc76d53b5d3af21b1bc8e9bbb7d544)]:
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.18
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.18
+  - @wso2is/admin.core.v1@2.49.26
+  - @wso2is/admin.server-configurations.v1@2.35.39
+
 ## 2.77.21
 
 ### Patch Changes

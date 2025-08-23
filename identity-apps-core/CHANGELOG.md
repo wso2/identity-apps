@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.1.17
+
+### Patch Changes
+
+- [#8877](https://github.com/wso2/identity-apps/pull/8877) [`b5f794ba71bc76d53b5d3af21b1bc8e9bbb7d544`](https://github.com/wso2/identity-apps/commit/b5f794ba71bc76d53b5d3af21b1bc8e9bbb7d544) Thanks [@KD23243](https://github.com/KD23243)! - Improve flow builder
+
 ## 3.1.16
 
 ### Patch Changes
