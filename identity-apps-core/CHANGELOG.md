@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.2.9
+
+### Patch Changes
+
+- [#8882](https://github.com/wso2/identity-apps/pull/8882) [`d525ac825b35aaa506e5bd2dddff3964c55b7640`](https://github.com/wso2/identity-apps/commit/d525ac825b35aaa506e5bd2dddff3964c55b7640) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add missing space in Sign in With SSO page
+
 ## 3.2.8
 
 ### Patch Changes
