@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import Box from "@oxygen-ui/react/Box";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useMemo, useState } from "react";
@@ -106,7 +105,7 @@ export const ValidationErrorBoundary: FunctionComponent<PropsWithChildren<Valida
     }
 
     return (
-        <Box
+        <div
             className={ classNames(
                 "validation-error-boundary",
                 {
@@ -122,10 +121,8 @@ export const ValidationErrorBoundary: FunctionComponent<PropsWithChildren<Valida
             { hasNotification && !(active && disableErrorBoundaryOnHover) && (
                 <ExclamationIcon key={ resource.id } size={ 24 } />
             ) }
-            <div className="validation-error-boundary-content">
-                { children }
-            </div>
-        </Box>
+            { children }
+        </div>
     );
 };
 

@@ -31,6 +31,11 @@
         z-index: 10;
     }
 
+    &.padded {
+        border-radius: 10px;
+        border: 3px solid transparent;
+    }
+
     &.error {
         border-color: var(--oxygen-palette-Alert-errorIconColor);
         background-color: var(--oxygen-palette-Alert-errorStandardBg);
@@ -61,9 +66,5 @@
     &.active {
         border-color: var(--oxygen-palette-common-background);
         background-color: var(--oxygen-palette-common-background);
-    }
-
-    &.padded {
-        padding: 8px;
     }
 }
