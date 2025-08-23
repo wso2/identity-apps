@@ -115,10 +115,6 @@
                 "__generationMeta__": {
                     "replacers": [
                         {
-                            "key": "CONFIRMATION_STEP_ID",
-                            "type": "ID"
-                        },
-                        {
                             "key": "PASSWORD_RESET_STEP_ID",
                             "type": "ID"
                         }
@@ -127,7 +123,7 @@
                 "flowType": "INVITED_USER_REGISTRATION",
                 "steps": [
                     {
-                        "id": "{{CONFIRMATION_STEP_ID}}",
+                        "id": "{{ID}}",
                         "type": "EXECUTION",
                         "size": {
                             "width": 150,
@@ -232,10 +228,6 @@
                 "__generationMeta__": {
                     "replacers": [
                         {
-                            "key": "CONFIRMATION_STEP_ID",
-                            "type": "ID"
-                        },
-                        {
                             "key": "FIDO2_STEP_ID",
                             "type": "ID"
                         }
@@ -244,7 +236,7 @@
                 "flowType": "INVITED_USER_REGISTRATION",
                 "steps": [
                     {
-                        "id": "{{CONFIRMATION_STEP_ID}}",
+                        "id": "{{ID}}",
                         "type": "EXECUTION",
                         "size": {
                             "width": 200,
