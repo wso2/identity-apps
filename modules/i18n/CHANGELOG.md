@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.9
+
+### Patch Changes
+
+- [#8885](https://github.com/wso2/identity-apps/pull/8885) [`1eab05a0ef55c85d355e4ce5ad3e2beda0fc439b`](https://github.com/wso2/identity-apps/commit/1eab05a0ef55c85d355e4ce5ad3e2beda0fc439b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enhance the UX for i18n configuration in the flow builder
+
 ## 2.30.8
 
 ### Patch Changes
