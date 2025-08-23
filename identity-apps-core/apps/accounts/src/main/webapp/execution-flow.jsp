@@ -83,6 +83,19 @@
     final String REGISTRATION = "REGISTRATION";
     final String INVITED_USER_REGISTRATION = "INVITED_USER_REGISTRATION";
     final String PASSWORD_RECOVERY = "PASSWORD_RECOVERY";
+
+    if (StringUtils.isBlank(spId) && !StringUtils.isBlank(sp)) {
+        try {
+            if (sp.equals("My Account")) {
+                spId = "My_Account";
+            } else {
+                ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
+                spId = applicationDataRetrievalClient.getApplicationID(tenantDomain, sp);
+            }
+        } catch (Exception e) {
+            // Ignored and send the default value.
+        }
+    }
 %>
 
 <!DOCTYPE html>
@@ -226,6 +239,7 @@
                 useEffect(() => {
                     if (confirmationCode !== "null" && !confirmationEffectDone) {
                         setPostBody({
+                            applicationId: spId,
                             flowType: flowType,
                             inputs: {
                                 confirmationCode: confirmationCode
