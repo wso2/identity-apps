@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 3.1.16
+
+### Patch Changes
+
+- [#8893](https://github.com/wso2/identity-apps/pull/8893) [`1f30c62a7b31e9406edd51b5effe8ec4cad24ebf`](https://github.com/wso2/identity-apps/commit/1f30c62a7b31e9406edd51b5effe8ec4cad24ebf) Thanks [@ashensw](https://github.com/ashensw)! - Honor sp param in invite user to set password flow redirection
+
+* [#8888](https://github.com/wso2/identity-apps/pull/8888) [`77a7d7fb95df169b64d1fb0362f371986fe52824`](https://github.com/wso2/identity-apps/commit/77a7d7fb95df169b64d1fb0362f371986fe52824) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Handle workflow approvals during self registration flow
+
 ## 3.1.15
 
 ### Patch Changes
