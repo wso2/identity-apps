@@ -84,6 +84,15 @@ export const common: CommonNS = {
                 }
             }
         },
+        operationTypes: {
+            "addRole": "ロールを追加",
+            "addUser": "ユーザーを追加",
+            "all": "すべての操作",
+            "deleteRole": "ロールを削除",
+            "deleteUser": "ユーザーを削除",
+            "selfRegisterUser": "ユーザーの自己登録",
+            "updateRolesOfUser": "ロールのユーザーを更新"
+        },
         "placeholders": {
             "emptyApprovalFilter": {
                 "action": "すべて表示",
@@ -226,6 +235,7 @@ export const common: CommonNS = {
     "noResultsFound": "結果が見つかりません",
     "okay": "わかった",
     "operatingSystem": "オペレーティング·システム",
+    "operationType": "操作タイプ",
     "operations": "オペレーション",
     "organizationName": "{{orgName}} 組織",
     "overview": "概要",

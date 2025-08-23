@@ -84,6 +84,15 @@ export const common: CommonNS = {
                 }
             }
         },
+        operationTypes: {
+            addRole: "பாத்திரத்தைச் சேர்க்கவும்",
+            addUser: "பயனரைச் சேர்க்கவும்",
+            all: "அனைத்து செயல்பாடுகள்",
+            deleteRole: "பாத்திரத்தை நீக்கவும்",
+            deleteUser: "பயனரை நீக்கவும்",
+            selfRegisterUser: "சுய பதிவு பயனர்",
+            updateRolesOfUser: "பாத்திரப் பயனர்களை புதுப்பிக்கவும்"
+        },
         placeholders: {
             emptyApprovalFilter: {
                 action: "அனைத்தையும் காண்க",
@@ -227,6 +236,7 @@ export const common: CommonNS = {
     noResultsFound: "முடிவுகள் எதுவும் இல்லை",
     okay: "சரி",
     operatingSystem: "இயங்கு தளம்",
+    operationType: "செயலாக்க வகை",
     operations: "செயற்பாடுகள்",
     organizationName: "{{orgName}} நிறுவனம்",
     overview: "கண்ணோட்டம்",

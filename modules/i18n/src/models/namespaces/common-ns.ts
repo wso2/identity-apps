@@ -79,6 +79,15 @@ export interface CommonNS {
                 };
             };
         };
+        operationTypes: {
+            addRole: string;
+            addUser: string;
+            all: string;
+            deleteRole: string;
+            deleteUser: string;
+            selfRegisterUser: string;
+            updateRolesOfUser: string;
+        }
         placeholders: {
                 emptyApprovalList: {
                     action: string;
@@ -207,6 +216,7 @@ export interface CommonNS {
     organizationName: string;
     operatingSystem: string;
     operations: string;
+    operationType: string;
     overview: string;
     personalInfo: string;
     pin: string;

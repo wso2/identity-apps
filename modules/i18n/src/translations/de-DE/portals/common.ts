@@ -84,6 +84,15 @@ export const common: CommonNS = {
                 }
             }
         },
+        "operationTypes": {
+            "addRole": "Rolle hinzufügen",
+            "addUser": "Benutzer hinzufügen",
+            "all": "Alle Vorgänge",
+            "deleteRole": "Rolle löschen",
+            "deleteUser": "Benutzer löschen",
+            "selfRegisterUser": "Benutzer selbst registrieren",
+            "updateRolesOfUser": "Benutzerrollen aktualisieren"
+        },
         "placeholders": {
             "emptyApprovalFilter": {
                 "action": "Alle anzeigen",
@@ -226,6 +235,7 @@ export const common: CommonNS = {
     "noResultsFound": "Keine Ergebnisse gefunden",
     "okay": "Okay",
     "operatingSystem": "Betriebssystem",
+    "operationType": "Operationstyp",
     "operations": "Betrieb",
     "organizationName": "{{orgName}} Organisation",
     "overview": "Überblick",
