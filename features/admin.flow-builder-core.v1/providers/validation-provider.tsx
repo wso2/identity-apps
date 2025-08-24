@@ -25,7 +25,7 @@ const ValidationProvider = ({
 }: PropsWithChildren): ReactElement => {
     const [ notifications, setNotifications ] = useState<Map<string, Notification>>(new Map());
     const [ selectedNotification, setSelectedNotification ] = useState<Notification>(null);
-    const [ openValidationPanel, setOpenValidationPanel ] = useState<boolean>(true);
+    const [ openValidationPanel, setOpenValidationPanel ] = useState<boolean>(false);
     const [ currentActiveTab, setCurrentActiveTab ] = useState<number>(0);
 
     /**

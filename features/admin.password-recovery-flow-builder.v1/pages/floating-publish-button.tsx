@@ -19,6 +19,7 @@
 import Button from "@oxygen-ui/react/Button";
 import useAuthenticationFlowBuilderCore from
     "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
+import useValidationStatus from "@wso2is/admin.flow-builder-core.v1/hooks/use-validation-status";
 import useGetFlowConfig from "@wso2is/admin.flows.v1/api/use-get-flow-config";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
@@ -39,6 +40,7 @@ import "./floating-publish-button.scss";
 const FloatingPublishButton = (): ReactElement => {
     const { t } = useTranslation();
     const { isResourcePropertiesPanelOpen } = useAuthenticationFlowBuilderCore();
+    const { openValidationPanel } = useValidationStatus();
     const { data: flowConfig, error: flowConfigError } = useGetFlowConfig(FlowTypes.PASSWORD_RECOVERY);
     const dispatch: Dispatch = useDispatch();
     const { isPublishing, onPublish } = usePasswordRecoveryFlowBuilder();
@@ -58,7 +60,9 @@ const FloatingPublishButton = (): ReactElement => {
 
     return (
         <Button
-            className={ classNames("floating-publish-button", { transition: isResourcePropertiesPanelOpen }) }
+            className={ classNames("floating-publish-button", {
+                transition: isResourcePropertiesPanelOpen || openValidationPanel
+            }) }
             variant="contained"
             loading={ isPublishing }
             onClick={ onPublish }
