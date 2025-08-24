@@ -84,6 +84,15 @@ export const common: CommonNS = {
                 }
             }
         },
+        operationTypes: {
+            addRole: "பாத்திரத்தைச் சேர்க்கவும்",
+            addUser: "பயனரைச் சேர்க்கவும்",
+            all: "அனைத்து செயல்பாடுகள்",
+            deleteRole: "பாத்திரத்தை நீக்கவும்",
+            deleteUser: "பயனரை நீக்கவும்",
+            selfRegisterUser: "சுய பதிவு பயனர்",
+            updateRolesOfUser: "பாத்திரப் பயனர்களை புதுப்பிக்கவும்"
+        },
         placeholders: {
             emptyApprovalFilter: {
                 action: "அனைத்தையும் காண்க",
@@ -123,10 +132,10 @@ export const common: CommonNS = {
         subTitle: "உங்கள் அங்கீகாரத்தைத் தேவைப்படும் செயல்பாட்டு பணிகளைப் பரிசீலிக்கவும்",
         title: "அனுமதிகள்"
     },
-
     approve: "அனுமதி",
     approved: "அனுமதிக்கப்பட்டது",
     apps: "செயலிகள்",
+    assignYourself: "உங்களை ஒதுக்கவும்",
     assignee: "ஒதுக்கப்பட்டவர்",
     assignees: "அளிக்கப்பட்டவர்கள்",
     asyncOperationErrorMessage: {
@@ -148,7 +157,6 @@ export const common: CommonNS = {
         heading: "ஏதோ தவறு நடந்துவிட்டது",
         primaryActionText: "பயன்பாட்டை மீண்டும் ஏற்றவும்"
     },
-    claim: "கோர்",
     clear: "அழிக்கவும்",
     clientId: "வாடிக்கையாளர் அடையாளம்",
     close: "நெருக்கமான",
@@ -228,6 +236,7 @@ export const common: CommonNS = {
     noResultsFound: "முடிவுகள் எதுவும் இல்லை",
     okay: "சரி",
     operatingSystem: "இயங்கு தளம்",
+    operationType: "செயலாக்க வகை",
     operations: "செயற்பாடுகள்",
     organizationName: "{{orgName}} நிறுவனம்",
     overview: "கண்ணோட்டம்",
@@ -248,7 +257,6 @@ export const common: CommonNS = {
     register: "பதிவு செய்",
     reject: "மறுக்கவும்",
     rejected: "மறுக்கப்பட்டது",
-    release: "விடுவி",
     remove: "நீக்கு",
     removeAll: "அனைத்து நீக்க",
     required: "இது தேவை",
@@ -286,6 +294,7 @@ export const common: CommonNS = {
     terminateSession: "அமர்வை முடி",
     tooShort: "மிகவும் குறுகிய",
     type: "வகை",
+    unassign: "அகற்று",
     unpin: "அகற்று",
     unpinned: "அகற்றப்பட்டது",
     update: "புதுப்பி",

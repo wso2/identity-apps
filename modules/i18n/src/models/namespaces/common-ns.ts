@@ -79,6 +79,15 @@ export interface CommonNS {
                 };
             };
         };
+        operationTypes: {
+            addRole: string;
+            addUser: string;
+            all: string;
+            deleteRole: string;
+            deleteUser: string;
+            selfRegisterUser: string;
+            updateRolesOfUser: string;
+        }
         placeholders: {
                 emptyApprovalList: {
                     action: string;
@@ -125,6 +134,7 @@ export interface CommonNS {
     apps: string;
     assignee: string;
     assignees: string;
+    assignYourself: string;
     authenticator: string;
     authentication: string;
     authenticator_plural: string;
@@ -139,7 +149,6 @@ export interface CommonNS {
         description: string;
         primaryActionText: string;
     }
-    claim: string;
     clear: string;
     clientId: string;
     close: string;
@@ -207,6 +216,7 @@ export interface CommonNS {
     organizationName: string;
     operatingSystem: string;
     operations: string;
+    operationType: string;
     overview: string;
     personalInfo: string;
     pin: string;
@@ -223,7 +233,6 @@ export interface CommonNS {
     register: string;
     removeAll: string;
     reject: string;
-    release: string;
     remove: string;
     reserved: string;
     resetFilters: string;
@@ -258,6 +267,7 @@ export interface CommonNS {
     terminateAll: string;
     terminateSession: string;
     type: string;
+    unassign: string;
     unpin: string;
     unpinned: string;
     update: string;

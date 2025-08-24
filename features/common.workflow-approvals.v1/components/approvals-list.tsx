@@ -175,6 +175,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                 selectedApprovalTask = {
                     ...selectedApprovalTask,
                     createdTimeInMillis: approval.createdTimeInMillis,
+                    operationType: approval?.taskType,
                     taskStatus: approval?.approvalStatus
                 };
                 setApproval(selectedApprovalTask);
@@ -300,7 +301,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                 icon: (): SemanticICONS => "hand pointer outline",
                 onClick: (e: SyntheticEvent, approval: ApprovalTaskListItemInterface): void =>
                     updateApprovalStatus(approval?.id, ApprovalStatus.CLAIM),
-                popupText: (): string => t("common:claim"),
+                popupText: (): string => t("common:assignYourself"),
                 renderer: "semantic-icon"
             },
             {
@@ -313,7 +314,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                 icon: (): SemanticICONS => "paper plane",
                 onClick: (e: SyntheticEvent, approval: ApprovalTaskListItemInterface): void =>
                     updateApprovalStatus(approval?.id, ApprovalStatus.RELEASE),
-                popupText: (): string => t("common:release"),
+                popupText: (): string => t("common:unassign"),
                 renderer: "semantic-icon"
             }
         ];

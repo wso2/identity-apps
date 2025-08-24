@@ -19,6 +19,7 @@
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { getOperationTypeTranslationKey } from "@wso2is/common.workflow-approvals.v1/utils/approval-utils";
 import { IdentifiableComponentInterface, LoadableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import {
     DataTable,
@@ -170,29 +171,6 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
     const resolveTableActions = (): TableActionsInterface[] => [];
 
     /**
-     * Formats the operation type to display user-friendly names.
-     *
-     * @param eventType - The operation type to format.
-     * @returns User-friendly operation type name.
-     */
-    const formatOperationType = (eventType: string): string => {
-        switch (eventType) {
-            case "ADD_USER":
-                return t("approvalWorkflows:operationType.createUser");
-            case "DELETE_USER":
-                return t("approvalWorkflows:operationType.deleteUser");
-            case "ADD_ROLE":
-                return t("approvalWorkflows:operationType.createRole");
-            case "DELETE_ROLE":
-                return t("approvalWorkflows:operationType.deleteRole");
-            case "UPDATE_ROLES_OF_USERS":
-                return t("approvalWorkflows:operationType.updateUserRoles");
-            default:
-                return eventType;
-        }
-    };
-
-    /**
      * Resolves data table columns.
      *
      * @returns Table columns
@@ -206,7 +184,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
             render: (workflowRequest: WorkflowInstanceListItemInterface): ReactNode => (
                 <div className="workflow-requests-list-event-type-cell">
                     <Header as="h6" className="workflow-requests-list-event-type">
-                        { formatOperationType(workflowRequest.eventType) }
+                        { t(getOperationTypeTranslationKey(workflowRequest.eventType)) }
                     </Header>
                 </div>
             ),

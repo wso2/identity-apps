@@ -84,6 +84,15 @@ export const common: CommonNS = {
                 }
             }
         },
+        operationTypes: {
+            addRole: "භූමිකාව එක් කරන්න",
+            addUser: "පරිශීලකයෙකු එක් කරන්න",
+            all: "සියලු ක්‍රියාකාරකම්",
+            deleteRole: "භූමිකාව මකන්න",
+            deleteUser: "පරිශීලකයෙකු මකන්න",
+            selfRegisterUser: "ස්වයං ලියාපදිංචි පරිශීලක",
+            updateRolesOfUser: "භූමිකාවේ පරිශීලකයන් යාවත්කාලීන කරන්න"
+        },
         placeholders: {
             emptyApprovalFilter: {
                 action: "සියල්ල බලන්න",
@@ -123,10 +132,10 @@ export const common: CommonNS = {
         subTitle: "අනුමැතිය අවශ්‍ය මෙහෙයුම් කාර්යයන් සමාලෝචනය කරන්න",
         title: "අනුමත කිරීම්"
     },
-
     approve: "අනුමත කරන්න",
     approved: "අනුමත කරන ලදි",
     apps: "ඇප්ස්",
+    assignYourself: "ඔබම පවරන්න",
     assignee: "පැවරුම්කරු",
     assignees: "පැවරුම්කරුවන්",
     asyncOperationErrorMessage: {
@@ -147,7 +156,6 @@ export const common: CommonNS = {
         heading: "මොකක්හරි වැරැද්දක් වෙලා",
         primaryActionText: "යෙදුම නැවත පූරණය කරන්න"
     },
-    claim: "හිමිකම",
     clear: "මකන්න",
     clientId: "සේවාලාභී හැඳුනුම්පත",
     close: "වසන්න",
@@ -227,6 +235,7 @@ export const common: CommonNS = {
     noResultsFound: "ප්‍රතිඵල හමු නොවීය",
     okay: "හරි",
     operatingSystem: "මෙහෙයුම් පද්ධතිය",
+    operationType: "ක්‍රියාකාරී වර්ගය",
     operations: "මෙහෙයුම්",
     organizationName: "{{orgName}} සංවිධානය",
     overview: "දළ විශ්ලේෂණය",
@@ -247,7 +256,6 @@ export const common: CommonNS = {
     register: "ලියාපදිංචි වන්න",
     reject: "ප්‍රතික්ෂේප කරන්න",
     rejected: "ප්‍රතික්ෂේප කරන ලදි",
-    release: "මුදා හැරීම",
     remove: "ඉවත් කරන්න",
     removeAll: "සියල්ල ඉවත් කරන්න",
     required: "මෙය අවශ්‍ය වේ",
@@ -285,6 +293,7 @@ export const common: CommonNS = {
     terminateSession: "සැසිය අවසන් කරන්න",
     tooShort: "බොහෝ කෙටි",
     type: "වර්ගය",
+    unassign: "පැවරීම ඉවත් කරන්න",
     unpin: "ඉවත් කරන්න",
     unpinned: "ඉවත් කරන ලදි",
     update: "යාවත්කාලීන කරන්න",
