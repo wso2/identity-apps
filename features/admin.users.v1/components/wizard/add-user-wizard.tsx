@@ -294,7 +294,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     }, [
         fixedGroupList,
         isUserSummaryEnabled,
-        isWorkflowAssociationDetailsRequestLoading
+        isWorkflowAssociationDetailsRequestLoading,
+        wizardState
     ]);
 
     /**
