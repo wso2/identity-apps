@@ -84,6 +84,15 @@ export const common: CommonNS = {
                 }
             }
         },
+        operationTypes: {
+            addRole: "Ajouter un rôle",
+            addUser: "Ajouter un utilisateur",
+            all: "Toutes les opérations",
+            deleteRole: "Supprimer un rôle",
+            deleteUser: "Supprimer un utilisateur",
+            selfRegisterUser: "Auto-enregistrement de l’utilisateur",
+            updateRolesOfUser: "Mettre à jour les utilisateurs du rôle"
+        },
         placeholders: {
             emptyApprovalFilter: {
                 action: "Voir tout",
@@ -126,6 +135,7 @@ export const common: CommonNS = {
     approve: "Approuver",
     approved: "Approuvé",
     apps: "Applications",
+    assignYourself: "Assignez-vous",
     assignee: "Cessionnaire",
     assignees: "Contrôleurs",
     asyncOperationErrorMessage: {
@@ -147,7 +157,6 @@ export const common: CommonNS = {
         heading: "Quelque chose s'est mal passé",
         primaryActionText: "Recharger l'application"
     },
-    claim: "Claim",
     clear: "Effacer",
     clientId: "Identité du client",
     close: "Fermer",
@@ -227,6 +236,7 @@ export const common: CommonNS = {
     noResultsFound: "Aucun résultat trouvé",
     okay: "d'accord",
     operatingSystem: "Système d'exploitation",
+    operationType: "Type d'opération",
     operations: "Opérations",
     organizationName: "{{orgName}} organisation",
     overview: "Vue d'ensemble",
@@ -247,7 +257,6 @@ export const common: CommonNS = {
     register: "Inscrire",
     reject: "Rejeter",
     rejected: "Rejeté",
-    release: "Version",
     remove: "Retirer",
     removeAll: "Tout retirer",
     required: "Ceci est nécessaire",
@@ -285,6 +294,7 @@ export const common: CommonNS = {
     terminateSession: "Terminer la session",
     tooShort: "Trop court",
     type: "Type",
+    unassign: "Désassigner",
     unpin: "Détacher",
     unpinned: "Détaché",
     update: "Mettre à jour",

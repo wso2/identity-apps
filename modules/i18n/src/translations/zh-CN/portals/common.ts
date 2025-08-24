@@ -84,6 +84,15 @@ export const common: CommonNS = {
                 }
             }
         },
+        operationTypes: {
+            "addRole": "添加角色",
+            "addUser": "添加用户",
+            "all": "所有操作",
+            "deleteRole": "删除角色",
+            "deleteUser": "删除用户",
+            "selfRegisterUser": "用户自助注册",
+            "updateRolesOfUser": "更新角色用户"
+        },
         "placeholders": {
             "emptyApprovalFilter": {
                 "action": "查看全部",
@@ -126,6 +135,7 @@ export const common: CommonNS = {
     "approve": "批准",
     "approved": "已批准",
     "apps": "应用",
+    "assignYourself": "分配给自己",
     "assignee": "受让人",
     "assignees": "受让人",
     "asyncOperationErrorMessage": {
@@ -146,7 +156,6 @@ export const common: CommonNS = {
         "heading": "出了些问题",
         "primaryActionText": "重新加载应用程序"
     },
-    "claim": "宣称",
     "clear": "清除",
     "clientId": "客户 ID",
     "close": "关闭",
@@ -226,6 +235,7 @@ export const common: CommonNS = {
     "noResultsFound": "未找到结果",
     "okay": "好的",
     "operatingSystem": "操作系统",
+    "operationType": "操作类型",
     "operations": "操作",
     "organizationName": "{{orgName}} 组织",
     "overview": "概述",
@@ -246,7 +256,6 @@ export const common: CommonNS = {
     "register": "登记",
     "reject": "拒绝",
     "rejected": "已拒绝",
-    "release": "发布",
     "remove": "消除",
     "removeAll": "移除所有",
     "required": "这是必需的。",
@@ -284,6 +293,7 @@ export const common: CommonNS = {
     "terminateSession": "终止会话",
     "tooShort": "过短",
     "type": "类型",
+    "unassign": "取消分配",
     "unpin": "商品",
     "unpinned": "未损坏",
     "update": "更新",
