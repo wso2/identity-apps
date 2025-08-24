@@ -103,7 +103,7 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
         setLastInteractedStepId,
         setIsOpenResourcePropertiesPanel
     } = useAuthenticationFlowBuilderCore();
-    const { setOpenValidationPanel, setSelectedNotification, removeNotificationByResourceId } = useValidationStatus();
+    const { setOpenValidationPanel, setSelectedNotification } = useValidationStatus();
 
     /**
      * Handles the opening of the property panel for the resource.
@@ -129,7 +129,6 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
          */
         await PluginRegistry.getInstance().executeAsync(EventTypes.ON_NODE_ELEMENT_DELETE, stepId, element);
 
-        removeNotificationByResourceId(element.id);
         deleteComponent(stepId, element);
         setIsOpenResourcePropertiesPanel(false);
     };
