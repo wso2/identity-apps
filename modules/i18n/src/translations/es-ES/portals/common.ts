@@ -114,6 +114,12 @@ export const common: CommonNS = {
             },
             searchApprovals: "Buscar por nombre de flujo de trabajo"
         },
+        propertyMessages: {
+            assignedUsersDeleted: "Los usuarios asignados han sido eliminados.",
+            roleDeleted: "La función ha sido eliminada.",
+            selfRegistration: "Auto registro",
+            unassignedUsersDeleted: "Los usuarios no asignados han sido eliminados."
+        },
         subTitle: "Revise las tareas operativas que requieren su aprobación",
         title: "Aprobaciones"
     },
