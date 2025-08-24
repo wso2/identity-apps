@@ -18,10 +18,13 @@
 
 import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import useRequiredFields, { RequiredFieldInterface } from "../../../../../hooks/use-required-fields";
 import { CommonElementFactoryPropsInterface } from "../../common-element-factory";
 import Hint from "../../hint";
 import PlaceholderComponent from "../placeholder-component";
+import Code from "@oxygen-ui/react/Code";
 
 /**
  * Props interface of {@link DefaultInputAdapter}
@@ -36,29 +39,65 @@ export type DefaultInputAdapterPropsInterface = IdentifiableComponentInterface &
  */
 export const DefaultInputAdapter: FunctionComponent<DefaultInputAdapterPropsInterface> = ({
     resource
-}: DefaultInputAdapterPropsInterface): ReactElement => (
-    <TextField
-        fullWidth
-        className={ resource.config?.className }
-        defaultValue={ resource.config?.defaultValue }
-        helperText={ (
-            resource.config?.hint && <Hint hint={ resource.config?.hint } />
-        ) }
-        inputProps={ {
-            maxLength: resource.config?.maxLength,
-            minLength: resource.config?.minLength
-        } }
-        label={ <PlaceholderComponent value={ resource.config?.label } /> }
-        multiline={ resource.config?.multiline }
-        placeholder={ resource.config?.placeholder || "" }
-        required={ resource.config?.required }
-        InputLabelProps={ {
-            required: resource.config?.required
-        } }
-        type={ resource.config?.type }
-        style={ resource.config?.styles }
-        autoComplete={ resource.config?.type === "password" ? "new-password" : "off" }
-    />
-);
+}: DefaultInputAdapterPropsInterface): ReactElement => {
+    const { t } = useTranslation();
+
+    const generalMessage: ReactElement = useMemo(() => {
+        return (
+            <Trans
+                i18nKey="flows:core.validation.fields.input.general",
+                values={ { id: resource.id } }
+            >
+                Required fields are not properly configured for the input field with ID <Code>{resource.id}</Code>.
+            </Trans>
+        )
+    }, [ resource?.id ]);
+
+    const fields: RequiredFieldInterface[] = useMemo(() => {
+        return [
+            {
+                errorMessage: t("flows:core.validation.fields.input.label"),
+                name: "label"
+            },
+            {
+                errorMessage: t("flows:core.validation.fields.input.identifier"),
+                name: "identifier"
+            }
+        ];
+    }, []);
+
+    useRequiredFields(
+        resource,
+        t("flows:core.validation.fields.input.general", {
+            id: resource.id
+        }),
+        fields
+    );
+
+    return (
+        <TextField
+            fullWidth
+            className={ resource.config?.className }
+            defaultValue={ resource.config?.defaultValue }
+            helperText={ (
+                resource.config?.hint && <Hint hint={ resource.config?.hint } />
+            ) }
+            inputProps={ {
+                maxLength: resource.config?.maxLength,
+                minLength: resource.config?.minLength
+            } }
+            label={ <PlaceholderComponent value={ resource.config?.label } /> }
+            multiline={ resource.config?.multiline }
+            placeholder={ resource.config?.placeholder || "" }
+            required={ resource.config?.required }
+            InputLabelProps={ {
+                required: resource.config?.required
+            } }
+            type={ resource.config?.type }
+            style={ resource.config?.styles }
+            autoComplete={ resource.config?.type === "password" ? "new-password" : "off" }
+        />
+    );
+};
 
 export default DefaultInputAdapter;

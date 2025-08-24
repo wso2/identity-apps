@@ -46,7 +46,7 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
     resource
 }: ExecutionPropsInterface): ReactElement => {
     const { setLastInteractedResource, setLastInteractedStepId } = useAuthenticationFlowBuilderCore();
-    const { setOpenValidationPanel } = useValidationStatus();
+    const { setOpenValidationPanel, setSelectedNotification } = useValidationStatus();
     const { t } = useTranslation();
 
     const components: Element[] = data?.components as Element[] || [];
@@ -109,6 +109,7 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
                             onActionPanelDoubleClick={
                                 () => {
                                     setOpenValidationPanel(false);
+                                    setSelectedNotification(null);
                                     setLastInteractedStepId(id);
                                     setLastInteractedResource(fullResource);
                                 }

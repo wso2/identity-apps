@@ -95,7 +95,7 @@ const TextPropertyField: FunctionComponent<TextPropertyFieldPropsInterface> = ({
      * Get the error message for the text property field.
      */
     const errorMessage: string = useMemo(() => {
-        const key: string = `${resource?.id}.${propertyKey}`;
+        const key: string = `${resource?.id}_${propertyKey}`;
 
         if (selectedNotification?.hasResourceFieldNotification(key)) {
             return selectedNotification?.getResourceFieldNotification(key);

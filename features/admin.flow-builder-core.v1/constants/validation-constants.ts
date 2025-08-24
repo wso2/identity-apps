@@ -16,18 +16,13 @@
  * under the License.
  */
 
-.floating-publish-button {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/**
+ * Validation related constants.
+ */
+class ValidationConstants {
+    private constructor() {}
 
-    &.transition {
-        transform: translateX(calc(-1 * var(--wso2is-flow-builder-element-property-panel-width)));
-    }
-
-    &.MuiButton-containedPrimary.Mui-disabled {
-        opacity: 0.5;
-        color: var(--oxygen-palette-primary-contrastText);
-    }
+    public static readonly REQUIRED_FIELD_ERROR_CODE: string = "REQUIRED_FIELD_ERROR";
 }
+
+export default ValidationConstants;

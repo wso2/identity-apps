@@ -27,23 +27,25 @@ export enum NotificationType {
 
 class Notification {
     private readonly id: string;
-    private readonly message: string;
+    private readonly message: string | ReactElement;
     private readonly type: NotificationType;
     private readonly resources: Map<string, Resource>;
     private PanelNotification: ReactElement;
     private resourceFieldNotifications: Map<string, string>;
 
-    constructor(id: string, message: string, type: NotificationType) {
+    constructor(id: string, message: string | ReactElement, type: NotificationType) {
         this.id = id;
         this.message = message;
         this.type = type;
+        this.resources = new Map<string, Resource>();
+        this.resourceFieldNotifications = new Map<string, string>();
     }
 
     getId(): string {
         return this.id;
     }
 
-    getMessage(): string {
+    getMessage(): string | ReactElement {
         return this.message;
     }
 
@@ -93,6 +95,14 @@ class Notification {
 
     hasResourceFieldNotification(field: string): boolean {
         return this.resourceFieldNotifications ? this.resourceFieldNotifications.has(field) : false;
+    }
+
+    removeResourceFieldNotification(field: string): void {
+        this.resourceFieldNotifications.delete(field);
+    }
+
+    getResourceFieldNotifications(): Map<string, string> {
+        return this.resourceFieldNotifications;
     }
 }
 

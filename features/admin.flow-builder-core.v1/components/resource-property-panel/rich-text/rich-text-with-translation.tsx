@@ -121,7 +121,7 @@ const RichTextWithTranslation: FunctionComponent<RichTextWithTranslationProps> =
      * Get the error message for the rich text field.
      */
     const errorMessage: string = useMemo(() => {
-        const key: string = `${resource?.id}.text`;
+        const key: string = `${resource?.id}_text`;
 
         if (selectedNotification?.hasResourceFieldNotification(key)) {
             return selectedNotification?.getResourceFieldNotification(key);

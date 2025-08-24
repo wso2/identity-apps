@@ -40,7 +40,12 @@ export interface ValidationStatusLabelsPropsInterface extends IdentifiableCompon
 const ValidationStatusLabels: FunctionComponent<ValidationStatusLabelsPropsInterface> = ({
     "data-componentid": componentId = "validation-status-labels"
 }: ValidationStatusLabelsPropsInterface): ReactElement => {
-    const { notifications, setCurrentActiveTab, setOpenValidationPanel } = useValidationStatus();
+    const {
+        notifications,
+        setCurrentActiveTab,
+        setOpenValidationPanel,
+        setSelectedNotification
+    } = useValidationStatus();
     const { setIsOpenResourcePropertiesPanel } = useAuthenticationFlowBuilderCore();
     const { t } = useTranslation();
 
@@ -69,6 +74,7 @@ const ValidationStatusLabels: FunctionComponent<ValidationStatusLabelsPropsInter
                         onClick={ () => {
                             setCurrentActiveTab(2);
                             setIsOpenResourcePropertiesPanel(false);
+                            setSelectedNotification(null);
                             setOpenValidationPanel(true);
                         } }
                     >
@@ -85,6 +91,7 @@ const ValidationStatusLabels: FunctionComponent<ValidationStatusLabelsPropsInter
                         onClick={ () => {
                             setCurrentActiveTab(1);
                             setIsOpenResourcePropertiesPanel(false);
+                            setSelectedNotification(null);
                             setOpenValidationPanel(true);
                         } }
                     >
@@ -103,6 +110,7 @@ const ValidationStatusLabels: FunctionComponent<ValidationStatusLabelsPropsInter
                         onClick={ () => {
                             setCurrentActiveTab(0);
                             setIsOpenResourcePropertiesPanel(false);
+                            setSelectedNotification(null);
                             setOpenValidationPanel(true);
                         } }
                     >

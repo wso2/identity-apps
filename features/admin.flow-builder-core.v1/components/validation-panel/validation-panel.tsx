@@ -28,6 +28,7 @@ import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import ValidationNotificationsList from "./validation-notifications-list";
+import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import useValidationStatus from "../../hooks/use-validation-status";
 import Notification, { NotificationType } from "../../models/notification";
 import "./validation-panel.scss";
@@ -149,6 +150,9 @@ const ValidationPanel: FunctionComponent<ValidationPanelPropsInterface> = ({
         currentActiveTab,
         setCurrentActiveTab
     } = useValidationStatus();
+    const {
+        setLastInteractedResource
+    } = useAuthenticationFlowBuilderCore();
 
     const errorNotifications: Notification[] = notifications.filter(
         (notification: Notification) => notification.getType() === NotificationType.ERROR
@@ -184,6 +188,10 @@ const ValidationPanel: FunctionComponent<ValidationPanelPropsInterface> = ({
      */
     const handleNotificationClick = (notification: Notification): void => {
         setSelectedNotification(notification);
+        setOpenValidationPanel(false);
+        if (notification.getResources().length === 1) {
+            setLastInteractedResource(notification.getResources()[0]);
+        }
     };
 
     return (

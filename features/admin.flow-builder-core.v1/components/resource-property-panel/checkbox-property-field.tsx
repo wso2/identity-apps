@@ -71,7 +71,7 @@ const CheckboxPropertyField: FunctionComponent<CheckboxPropertyFieldPropsInterfa
      * Get the error message for the checkbox property field.
      */
     const errorMessage: string = useMemo(() => {
-        const key: string = `${resource?.id}.${propertyKey}`;
+        const key: string = `${resource?.id}_${propertyKey}`;
 
         if (selectedNotification?.hasResourceFieldNotification(key)) {
             return selectedNotification?.getResourceFieldNotification(key);
