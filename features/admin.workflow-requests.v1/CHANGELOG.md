@@ -1,5 +1,15 @@
 # @wso2is/admin.workflow-requests.v1
 
+## 1.0.3
+
+### Patch Changes
+
+- [#8904](https://github.com/wso2/identity-apps/pull/8904) [`cb25f14b943535c548a6e0f859d1dd97e50fd0a2`](https://github.com/wso2/identity-apps/commit/cb25f14b943535c548a6e0f859d1dd97e50fd0a2) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Unify workflow approval operationType usages and UI improvements
+
+- Updated dependencies [[`cb25f14b943535c548a6e0f859d1dd97e50fd0a2`](https://github.com/wso2/identity-apps/commit/cb25f14b943535c548a6e0f859d1dd97e50fd0a2)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.5
+  - @wso2is/i18n@2.30.12
+
 ## 1.0.2
 
 ### Patch Changes
