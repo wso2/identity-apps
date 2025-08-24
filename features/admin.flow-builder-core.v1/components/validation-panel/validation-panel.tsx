@@ -25,7 +25,7 @@ import TabPanel from "@oxygen-ui/react/TabPanel";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import ValidationNotificationsList from "./validation-notifications-list";
 import useValidationStatus from "../../hooks/use-validation-status";
@@ -145,28 +145,20 @@ const ValidationPanel: FunctionComponent<ValidationPanelPropsInterface> = ({
         notifications,
         openValidationPanel: open,
         setOpenValidationPanel,
-        setSelectedNotification
+        setSelectedNotification,
+        currentActiveTab,
+        setCurrentActiveTab
     } = useValidationStatus();
-    const [ activeTab, setActiveTab ] = useState<number>(0);
 
-    // const errorNotifications: Notification[] = notifications.filter(
-    //     (notification: Notification) => notification.getType() === NotificationType.ERROR
-    // );
-    const errorNotifications: Notification[] = [
-        new Notification("1", "This is an error notification.", NotificationType.ERROR)
-    ];
-    // const infoNotifications: Notification[] = notifications.filter(
-    //     (notification: Notification) => notification.getType() === NotificationType.INFO
-    // );
-    const infoNotifications: Notification[] = [
-        new Notification("2", "This is an info notification.", NotificationType.INFO)
-    ];
-    // const warningNotifications: Notification[] = notifications.filter(
-    //     (notification: Notification) => notification.getType() === NotificationType.WARNING
-    // );
-    const warningNotifications: Notification[] = [
-        new Notification("3", "This is a warning notification.", NotificationType.WARNING)
-    ];
+    const errorNotifications: Notification[] = notifications.filter(
+        (notification: Notification) => notification.getType() === NotificationType.ERROR
+    );
+    const infoNotifications: Notification[] = notifications.filter(
+        (notification: Notification) => notification.getType() === NotificationType.INFO
+    );
+    const warningNotifications: Notification[] = notifications.filter(
+        (notification: Notification) => notification.getType() === NotificationType.WARNING
+    );
 
     /**
      * Handle tab change event.
@@ -175,7 +167,7 @@ const ValidationPanel: FunctionComponent<ValidationPanelPropsInterface> = ({
      * @param newValue - New tab value.
      */
     const handleTabChange = (event: React.SyntheticEvent, newValue: number): void => {
-        setActiveTab(newValue);
+        setCurrentActiveTab(newValue);
     };
 
     /**
@@ -223,7 +215,7 @@ const ValidationPanel: FunctionComponent<ValidationPanelPropsInterface> = ({
             </Box>
             <Box className="flow-builder-validation-panel-content">
                 <Tabs
-                    value={ activeTab }
+                    value={ currentActiveTab }
                     onChange={ handleTabChange }
                     className="validation-tabs"
                     variant="fullWidth"
@@ -265,21 +257,21 @@ const ValidationPanel: FunctionComponent<ValidationPanelPropsInterface> = ({
                         }
                     />
                 </Tabs>
-                <TabPanel value={ activeTab } index={ 0 } className="validation-tab-panel">
+                <TabPanel value={ currentActiveTab } index={ 0 } className="validation-tab-panel">
                     <ValidationNotificationsList
                         notifications={ errorNotifications }
                         emptyMessage={ t("flows:core.notificationPanel.emptyMessages.errors") }
                         onNotificationClick={ handleNotificationClick }
                     />
                 </TabPanel>
-                <TabPanel value={ activeTab } index={ 1 } className="validation-tab-panel">
+                <TabPanel value={ currentActiveTab } index={ 1 } className="validation-tab-panel">
                     <ValidationNotificationsList
                         notifications={ warningNotifications }
                         emptyMessage={ t("flows:core.notificationPanel.emptyMessages.warnings") }
                         onNotificationClick={ handleNotificationClick }
                     />
                 </TabPanel>
-                <TabPanel value={ activeTab } index={ 2 } className="validation-tab-panel">
+                <TabPanel value={ currentActiveTab } index={ 2 } className="validation-tab-panel">
                     <ValidationNotificationsList
                         notifications={ infoNotifications }
                         emptyMessage={ t("flows:core.notificationPanel.emptyMessages.info") }

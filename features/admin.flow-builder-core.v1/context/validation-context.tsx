@@ -65,6 +65,16 @@ export interface ValidationContextProps {
      * @param open - Whether the validation panel should be open.
      */
     setOpenValidationPanel?: (open: boolean) => void;
+    /**
+     * The currently active tab index.
+     */
+    currentActiveTab?: number;
+    /**
+     * Sets the currently active tab index.
+     *
+     * @param tab - The index of the tab to set as active.
+     */
+    setCurrentActiveTab?: (tab: number) => void;
 }
 
 /**
@@ -72,10 +82,12 @@ export interface ValidationContextProps {
  */
 export const ValidationContext: Context<ValidationContextProps> = createContext<ValidationContextProps>({
     addNotification: null,
+    currentActiveTab: 0,
     isValid: true,
     notifications: [],
     openValidationPanel: false,
     removeNotification: null,
     selectedNotification: null,
+    setCurrentActiveTab: null,
     setOpenValidationPanel: null
 });

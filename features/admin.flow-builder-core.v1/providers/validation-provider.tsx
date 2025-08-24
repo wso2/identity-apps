@@ -26,6 +26,7 @@ const ValidationProvider = ({
     const [ notifications, setNotifications ] = useState<Map<string, Notification>>(new Map());
     const [ selectedNotification, setSelectedNotification ] = useState<Notification>(null);
     const [ openValidationPanel, setOpenValidationPanel ] = useState<boolean>(true);
+    const [ currentActiveTab, setCurrentActiveTab ] = useState<number>(0);
 
     /**
      * Get the list of notifications.
@@ -67,11 +68,13 @@ const ValidationProvider = ({
         <ValidationContext.Provider
             value={ {
                 addNotification,
+                currentActiveTab,
                 isValid,
                 notifications: notificationList,
                 openValidationPanel,
                 removeNotification,
                 selectedNotification,
+                setCurrentActiveTab,
                 setOpenValidationPanel,
                 setSelectedNotification
             } }
