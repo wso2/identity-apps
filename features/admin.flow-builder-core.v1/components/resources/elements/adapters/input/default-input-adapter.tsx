@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Code from "@oxygen-ui/react/Code";
 import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
@@ -24,7 +25,6 @@ import useRequiredFields, { RequiredFieldInterface } from "../../../../../hooks/
 import { CommonElementFactoryPropsInterface } from "../../common-element-factory";
 import Hint from "../../hint";
 import PlaceholderComponent from "../placeholder-component";
-import Code from "@oxygen-ui/react/Code";
 
 /**
  * Props interface of {@link DefaultInputAdapter}
@@ -45,12 +45,12 @@ export const DefaultInputAdapter: FunctionComponent<DefaultInputAdapterPropsInte
     const generalMessage: ReactElement = useMemo(() => {
         return (
             <Trans
-                i18nKey="flows:core.validation.fields.input.general",
+                i18nKey="flows:core.validation.fields.input.general"
                 values={ { id: resource.id } }
             >
-                Required fields are not properly configured for the input field with ID <Code>{resource.id}</Code>.
+                Required fields are not properly configured for the input field with ID <Code>{ resource.id }</Code>.
             </Trans>
-        )
+        );
     }, [ resource?.id ]);
 
     const fields: RequiredFieldInterface[] = useMemo(() => {
@@ -68,9 +68,7 @@ export const DefaultInputAdapter: FunctionComponent<DefaultInputAdapterPropsInte
 
     useRequiredFields(
         resource,
-        t("flows:core.validation.fields.input.general", {
-            id: resource.id
-        }),
+        generalMessage,
         fields
     );
 
