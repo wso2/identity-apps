@@ -168,6 +168,15 @@ export const flows: flowsNS = {
                 }
             }
         },
+        validation: {
+            fields: {
+                input: {
+                    general: "Required fields are not properly configured for the input field with ID <1>{{id}}</1>.",
+                    identifier: "Input field must be mapped to an attribute for data collection.",
+                    label: "Input field must have a label to be displayed to users."
+                }
+            }
+        },
         validationStatusLabels: {
             error: "Error",
             errors: "Errors",

@@ -167,6 +167,15 @@ export interface flowsNS {
                 };
             };
         };
+        validation: {
+            fields: {
+                input: {
+                    general: string;
+                    identifier: string;
+                    label: string;
+                };
+            };
+        };
         validationStatusLabels: {
             error: string;
             errors: string;

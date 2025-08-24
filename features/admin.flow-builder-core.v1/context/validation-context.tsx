@@ -75,6 +75,12 @@ export interface ValidationContextProps {
      * @param tab - The index of the tab to set as active.
      */
     setCurrentActiveTab?: (tab: number) => void;
+    /**
+     * Gets a notification by its ID.
+     * @param id - The ID of the notification to retrieve.
+     * @returns The notification with the specified ID, or null if not found.
+     */
+    getNotification: (id: string) => Notification;
 }
 
 /**
@@ -83,6 +89,7 @@ export interface ValidationContextProps {
 export const ValidationContext: Context<ValidationContextProps> = createContext<ValidationContextProps>({
     addNotification: null,
     currentActiveTab: 0,
+    getNotification: null,
     isValid: true,
     notifications: [],
     openValidationPanel: false,

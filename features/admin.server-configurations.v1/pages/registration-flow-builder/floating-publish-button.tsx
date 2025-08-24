@@ -40,7 +40,7 @@ import "./floating-publish-button.scss";
 const FloatingPublishButton = (): ReactElement => {
     const { t } = useTranslation();
     const { isResourcePropertiesPanelOpen } = useAuthenticationFlowBuilderCore();
-    const { openValidationPanel } = useValidationStatus();
+    const { openValidationPanel, isValid } = useValidationStatus();
     const { data: flowConfig, error: flowConfigError } = useGetFlowConfig(FlowTypes.REGISTRATION);
     const dispatch: Dispatch = useDispatch();
     const { isPublishing, onPublish } = useRegistrationFlowBuilder();
@@ -66,6 +66,7 @@ const FloatingPublishButton = (): ReactElement => {
             variant="contained"
             loading={ isPublishing }
             onClick={ onPublish }
+            disabled={ !isValid }
         >
             { flowConfig?.isEnabled ? t("common:publish") : t("common:saveDraft") }
         </Button>

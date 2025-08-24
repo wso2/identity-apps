@@ -51,14 +51,14 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
     const { selectedNotification } = useValidationStatus();
 
     const selectedValue: Attribute = useMemo(() => {
-        return attributes?.find((attribute: Attribute) => attribute?.claimURI === resource.config.identifier);
+        return attributes?.find((attribute: Attribute) => attribute?.claimURI === resource.config.identifier) || null;
     }, [ resource.config.identifier, attributes ]);
 
     /**
      * Get the error message for the identifier field.
      */
     const errorMessage: string = useMemo(() => {
-        const key: string = `${resource?.id}.identifier`;
+        const key: string = `${resource?.id}_identifier`;
 
         if (selectedNotification?.hasResourceFieldNotification(key)) {
             return selectedNotification?.getResourceFieldNotification(key);
@@ -89,7 +89,7 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
                 ) }
                 value={ selectedValue }
                 onChange={ (_: ChangeEvent<HTMLInputElement>, attribute: Attribute) => {
-                    onChange("config.identifier", attribute?.claimURI, resource);
+                    onChange("config.identifier", attribute === null ? "" : attribute?.claimURI, resource);
                 } }
             />
             {

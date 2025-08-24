@@ -103,7 +103,7 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
         setLastInteractedStepId,
         setIsOpenResourcePropertiesPanel
     } = useAuthenticationFlowBuilderCore();
-    const { setOpenValidationPanel } = useValidationStatus();
+    const { setOpenValidationPanel, setSelectedNotification } = useValidationStatus();
 
     /**
      * Handles the opening of the property panel for the resource.
@@ -114,6 +114,7 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
 
         event.stopPropagation();
         setOpenValidationPanel(false);
+        setSelectedNotification(null);
         setLastInteractedStepId(stepId);
         setLastInteractedResource(element);
     };
