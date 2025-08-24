@@ -169,10 +169,48 @@ export interface flowsNS {
         };
         validation: {
             fields: {
+                button: {
+                    action: string;
+                    general: string;
+                    text: string;
+                    variant: string;
+                };
+                checkbox: {
+                    general: string;
+                    identifier: string;
+                    label: string;
+                };
+                divider: {
+                    general: string;
+                    variant: string;
+                };
+                image: {
+                    general: string;
+                    src: string;
+                    variant: string;
+                };
                 input: {
                     general: string;
                     identifier: string;
                     label: string;
+                };
+                otpInput: {
+                    general: string;
+                    label: string;
+                };
+                phoneNumberInput: {
+                    general: string;
+                    identifier: string;
+                    label: string;
+                };
+                richText: {
+                    general: string;
+                    text: string;
+                };
+                typography: {
+                    general: string;
+                    text: string;
+                    variant: string;
                 };
             };
         };

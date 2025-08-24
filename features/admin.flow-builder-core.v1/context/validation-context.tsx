@@ -81,6 +81,11 @@ export interface ValidationContextProps {
      * @returns The notification with the specified ID, or null if not found.
      */
     getNotification: (id: string) => Notification;
+    /**
+     * Removes notifications by resource ID.
+     * @param resourceId - The ID of the resource whose notifications to remove.
+     */
+    removeNotificationByResourceId: (resourceId: string) => void;
 }
 
 /**
@@ -94,6 +99,7 @@ export const ValidationContext: Context<ValidationContextProps> = createContext<
     notifications: [],
     openValidationPanel: false,
     removeNotification: null,
+    removeNotificationByResourceId: null,
     selectedNotification: null,
     setCurrentActiveTab: null,
     setOpenValidationPanel: null

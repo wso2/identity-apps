@@ -170,10 +170,48 @@ export const flows: flowsNS = {
         },
         validation: {
             fields: {
+                button: {
+                    action: "Button must have an action type defined for proper functionality.",
+                    general: "Required fields are not properly configured for the button with ID <1>{{id}}</1>.",
+                    text: "Button must have text to be displayed to users.",
+                    variant: "Button must have a variant defined for proper styling."
+                },
+                checkbox: {
+                    general: "Required fields are not properly configured for the checkbox field with ID <1>{{id}}</1>.",
+                    identifier: "Checkbox field must be mapped to an attribute for data collection.",
+                    label: "Checkbox field must have a label to be displayed to users."
+                },
+                divider: {
+                    general: "Required fields are not properly configured for the divider with ID <1>{{id}}</1>.",
+                    variant: "Divider must have a variant defined for proper styling and orientation."
+                },
+                image: {
+                    general: "Required fields are not properly configured for the image with ID <1>{{id}}</1>.",
+                    src: "Image must have a source URL to be displayed to users.",
+                    variant: "Image must have a variant defined for proper styling and layout."
+                },
                 input: {
                     general: "Required fields are not properly configured for the input field with ID <1>{{id}}</1>.",
                     identifier: "Input field must be mapped to an attribute for data collection.",
                     label: "Input field must have a label to be displayed to users."
+                },
+                otpInput: {
+                    general: "Required fields are not properly configured for the OTP input field with ID <1>{{id}}</1>.",
+                    label: "OTP input field must have a label to guide users."
+                },
+                phoneNumberInput: {
+                    general: "Required fields are not properly configured for the phone number field with ID <1>{{id}}</1>.",
+                    identifier: "Phone number field must be mapped to an attribute for data collection.",
+                    label: "Phone number field must have a label to be displayed to users."
+                },
+                richText: {
+                    general: "Required fields are not properly configured for the rich text with ID <1>{{id}}</1>.",
+                    text: "Rich text must have content to be displayed to users."
+                },
+                typography: {
+                    general: "Required fields are not properly configured for the typography with ID <1>{{id}}</1>.",
+                    text: "Typography must have text content to be displayed to users.",
+                    variant: "Typography must have a variant defined for proper text styling."
                 }
             }
         },
