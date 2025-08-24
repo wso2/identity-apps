@@ -1,5 +1,15 @@
 # @wso2is/myaccount
 
+## 2.24.2
+
+### Patch Changes
+
+- [#8901](https://github.com/wso2/identity-apps/pull/8901) [`a02d2b8776914b009cc8ac36c6ceae9d93709e23`](https://github.com/wso2/identity-apps/commit/a02d2b8776914b009cc8ac36c6ceae9d93709e23) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Ensure approval requests with invalid user data are properly validated and handled without throwing errors.
+
+- Updated dependencies [[`a02d2b8776914b009cc8ac36c6ceae9d93709e23`](https://github.com/wso2/identity-apps/commit/a02d2b8776914b009cc8ac36c6ceae9d93709e23)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.4
+  - @wso2is/i18n@2.30.10
+
 ## 2.24.1
 
 ### Patch Changes
