@@ -16,10 +16,13 @@
  * under the License.
  */
 
+import Code from "@oxygen-ui/react/Code";
 import Divider, { DividerProps } from "@oxygen-ui/react/Divider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
-import { DividerVariants, Element } from "../../../../models/elements";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import useRequiredFields, { RequiredFieldInterface } from "../../../../hooks/use-required-fields";
+import { DividerVariants } from "../../../../models/elements";
 import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 
 /**
@@ -36,6 +39,35 @@ export type DividerAdapterPropsInterface = IdentifiableComponentInterface & Comm
 const DividerAdapter: FunctionComponent<DividerAdapterPropsInterface> = ({
     resource
 }: DividerAdapterPropsInterface): ReactElement => {
+    const { t } = useTranslation();
+
+    const generalMessage: ReactElement = useMemo(() => {
+        return (
+            <Trans
+                i18nKey="flows:core.validation.fields.divider.general"
+                values={ { id: resource.id } }
+            >
+                Required fields are not properly configured for the divider with ID{ " " }
+                <Code>{ resource.id }</Code>.
+            </Trans>
+        );
+    }, [ resource?.id ]);
+
+    const fields: RequiredFieldInterface[] = useMemo(() => {
+        return [
+            {
+                errorMessage: t("flows:core.validation.fields.divider.variant"),
+                name: "variant"
+            }
+        ];
+    }, []);
+
+    useRequiredFields(
+        resource,
+        generalMessage,
+        fields
+    );
+
     let config: DividerProps = {};
 
     if (resource?.variant === DividerVariants.Horizontal || resource?.variant === DividerVariants.Vertical) {

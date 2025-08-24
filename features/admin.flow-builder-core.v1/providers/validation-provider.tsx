@@ -80,6 +80,34 @@ const ValidationProvider = ({
     }, []);
 
     /**
+     * Remove notifications by resource ID.
+     */
+    const removeNotificationByResourceId: (resourceId: string) => void = useCallback((resourceId: string): void => {
+        setNotifications((prev: Map<string, Notification>) => {
+            const updated: Map<string, Notification> = new Map(prev);
+            const toDelete: string[] = [];
+
+            for (const id of updated.keys()) {
+                if (id.startsWith(resourceId)) {
+                    toDelete.push(id);
+                }
+            }
+
+            toDelete.forEach((id: string) => updated.delete(id));
+
+            setSelectedNotification((prevSelected: Notification) => {
+                if (prevSelected && toDelete.includes(prevSelected.getId())) {
+                    return null;
+                }
+
+                return prevSelected;
+            });
+
+            return updated;
+        });
+    }, []);
+
+    /**
      * Gets a notification by its ID.
      * @param id - The ID of the notification to retrieve.
      * @returns The notification with the specified ID, or null if not found.
@@ -98,6 +126,7 @@ const ValidationProvider = ({
                 notifications: notificationList,
                 openValidationPanel,
                 removeNotification,
+                removeNotificationByResourceId,
                 selectedNotification,
                 setCurrentActiveTab,
                 setOpenValidationPanel,

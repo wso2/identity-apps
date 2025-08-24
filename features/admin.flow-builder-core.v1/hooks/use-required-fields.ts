@@ -55,7 +55,7 @@ const useRequiredFields = (
         fields.forEach((field: RequiredFieldInterface) => {
             const errorId: string = buildErrorId();
 
-            if (!resource?.config[field.name]) {
+            if (!resource?.config[field.name] && !resource?.[field.name]) {
                 if (!getNotification(errorId)) {
                     const error: Notification = new Notification(errorId, generalMessage, NotificationType.ERROR);
 
