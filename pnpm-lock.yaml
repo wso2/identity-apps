@@ -20699,6 +20699,9 @@ importers:
       '@wso2is/admin.core.v1':
         specifier: ^2.49.3
         version: link:../admin.core.v1
+      '@wso2is/common.workflow-approvals.v1':
+        specifier: workspace:^
+        version: link:../common.workflow-approvals.v1
       '@wso2is/core':
         specifier: ^2.12.0
         version: link:../../modules/core
