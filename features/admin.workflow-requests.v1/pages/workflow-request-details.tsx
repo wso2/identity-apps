@@ -234,7 +234,8 @@ const WorkflowRequestDetailsPage: React.FC = () => {
                     </Table.Row>
                     <Table.Row>
                         <Table.Cell>{ t("approvalWorkflows:details.fields.requestInitiator") }</Table.Cell>
-                        <Table.Cell>{ workflowRequest.requestInitiator || "-" }</Table.Cell>
+                        <Table.Cell>{ workflowRequest.requestInitiator ||
+                            t("common:approvalsPage.propertyMessages.selfRegistration") }</Table.Cell>
                     </Table.Row>
                     <Table.Row>
                         <Table.Cell>{ t("approvalWorkflows:details.fields.status") }</Table.Cell>
