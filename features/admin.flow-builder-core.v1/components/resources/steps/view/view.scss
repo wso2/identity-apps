@@ -135,53 +135,6 @@
                             border-right: 2px dashed var(--oxygen-palette-grey-200);
                         }
                     }
-
-                    &.notification {
-                        &.error {
-                            background-color: var(--oxygen-palette-Alert-errorStandardBg);
-                            border: 2px solid var(--oxygen-palette-Alert-errorIconColor);
-
-                            &:hover, &:focus, &:active {
-                                background-color: var(--oxygen-palette-Alert-errorStandardBg);
-                                border-color: var(--oxygen-palette-Alert-errorIconColor);
-                                border: 2px dashed var(--oxygen-palette-Alert-errorIconColor);
-
-                                > .flow-builder-dnd-actions  {
-                                    background-color: var(--oxygen-palette-Alert-errorFilledBg);
-                                }
-                            }
-                        }
-
-                        &.warning {
-                            background-color: var(--oxygen-palette-Alert-warningStandardBg);
-                            border: 2px solid var(--oxygen-palette-Alert-warningIconColor);
-
-                            &:hover, &:focus, &:active {
-                                background-color: var(--oxygen-palette-Alert-warningStandardBg);
-                                border-color: var(--oxygen-palette-Alert-warningIconColor);
-                                border: 2px dashed var(--oxygen-palette-Alert-warningIconColor);
-
-                                > .flow-builder-dnd-actions  {
-                                    background-color: var(--oxygen-palette-Alert-warningFilledBg);
-                                }
-                            }
-                        }
-
-                        &.info {
-                            background-color: var(--oxygen-palette-Alert-infoStandardBg);
-                            border: 2px solid var(--oxygen-palette-Alert-infoIconColor);
-
-                            &:hover, &:focus, &:active {
-                                background-color: var(--oxygen-palette-Alert-infoStandardBg);
-                                border-color: var(--oxygen-palette-Alert-infoIconColor);
-                                border: 2px dashed var(--oxygen-palette-Alert-infoIconColor);
-
-                                > .flow-builder-dnd-actions  {
-                                    background-color: var(--oxygen-palette-Alert-infoFilledBg);
-                                }
-                            }
-                        }
-                    }
                 }
 
                 .dnd-sortable {
