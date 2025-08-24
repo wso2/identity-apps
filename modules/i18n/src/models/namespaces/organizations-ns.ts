@@ -276,6 +276,9 @@ export interface organizationsNS {
                 placeholder: string;
             };
             orgHandle: {
+                errors: {
+                    generationFailed: string;
+                }
                 label: string;
                 placeholder: string;
                 tooltip: string;

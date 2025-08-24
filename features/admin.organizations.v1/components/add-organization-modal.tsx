@@ -310,25 +310,33 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     }
 
     /**
-     * Try to generate an organization handle by appending three random characters.
+     * Generate an organization handle by appending random characters.
      *
      * @param sanitizedValue - The sanitized organization name to generate the handle.
+     * @param maxAttempts - Maximum number of attempts (default: 10)
+     * @param currentAttempt - Current attempt number (default: 0)
      */
-    function tryWithRandomCharacters(sanitizedValue: string) {
+    function tryWithRandomCharacters(sanitizedValue: string, maxAttempts: number = 10, currentAttempt: number = 0) {
+
+        if (currentAttempt >= maxAttempts) {
+            setOrgHandleError("organizations:forms.addOrganization.orgHandle.errors.generationFailed");
+
+            return;
+        }
 
         const autoGenOrgHandle: string = generateRandomOrgHandle(sanitizedValue);
 
         checkOrgHandleAvailability({ orgHandle: autoGenOrgHandle })
             .then((response: CheckOrgHandleResponseInterface) => {
                 if (!response.available) {
-                    tryWithRandomCharacters(sanitizedValue);
+                    tryWithRandomCharacters(sanitizedValue, maxAttempts, currentAttempt + 1);
                 } else {
                     setOrgHandleError("");
                     setOrgHandle(autoGenOrgHandle);
                 }
             })
             .catch(() => {
-                tryWithRandomCharacters(sanitizedValue);
+                tryWithRandomCharacters(sanitizedValue, maxAttempts, currentAttempt + 1);
             });
     }
 
@@ -425,17 +433,12 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
      */
     const renderOrgHandleUniqueValidationIcon = (): ReactElement => {
 
-        if (!orgHandle || orgHandle === OrganizationManagementConstants.ORG_HANDLE_PLACEHOLDER) {
+        if (!orgHandle || orgHandle === OrganizationManagementConstants.ORG_HANDLE_PLACEHOLDER ||
+            isCheckingOrgHandleValidity || isOrgHandleFieldFocused) {
             return <Icon name="circle" color="grey" />;
         }
 
-        if (isCheckingOrgHandleValidity) {
-            return <Icon name="circle" color="grey" />;
-        }
-        if (isOrgHandleFieldFocused) {
-            return <Icon name="circle" color="grey" />;
-        }
-        if (orgHandle && !isOrgHandleDuplicate) {
+        if (!isOrgHandleDuplicate) {
             return <Icon name="check circle" color="green" />;
         }
 
