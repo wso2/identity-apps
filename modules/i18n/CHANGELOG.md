@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.11
+
+### Patch Changes
+
+- [#8906](https://github.com/wso2/identity-apps/pull/8906) [`d2761e6e3c810878c8579d0aa7a293b888adbd82`](https://github.com/wso2/identity-apps/commit/d2761e6e3c810878c8579d0aa7a293b888adbd82) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Unify workflow approval operationType usages and UI improvements
+
 ## 2.30.10
 
 ### Patch Changes
