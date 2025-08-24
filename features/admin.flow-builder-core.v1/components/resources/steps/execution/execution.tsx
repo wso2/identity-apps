@@ -23,6 +23,7 @@ import { useTranslation } from "react-i18next";
 import ExecutionMinimal from "./execution-minimal";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
+import useValidationStatus from "../../../../hooks/use-validation-status";
 import { ExecutionTypes, Step } from "../../../../models/steps";
 import { ValidationErrorBoundary } from "../../../validation-panel/validation-error-boundary";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
@@ -45,6 +46,7 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
     resource
 }: ExecutionPropsInterface): ReactElement => {
     const { setLastInteractedResource, setLastInteractedStepId } = useAuthenticationFlowBuilderCore();
+    const { setOpenValidationPanel } = useValidationStatus();
     const { t } = useTranslation();
 
     const components: Element[] = data?.components as Element[] || [];
@@ -106,6 +108,7 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
                                 VisualFlowConstants.FLOW_BUILDER_STATIC_CONTENT_ALLOWED_RESOURCE_TYPES }
                             onActionPanelDoubleClick={
                                 () => {
+                                    setOpenValidationPanel(false);
                                     setLastInteractedStepId(id);
                                     setLastInteractedResource(fullResource);
                                 }

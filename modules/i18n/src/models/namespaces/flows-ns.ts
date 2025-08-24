@@ -19,6 +19,10 @@
 export interface flowsNS {
     askPassword: {
         breadcrumb: string;
+        labels: {
+            disableFlow: string;
+            enableFlow: string;
+        };
         notifications: {
             disableFlow: {
                 genericError: {
@@ -163,9 +167,20 @@ export interface flowsNS {
                 };
             };
         };
+        validationStatusLabels: {
+            error: string;
+            errors: string;
+            info: string;
+            warning: string;
+            warnings: string;
+        };
     };
     label?: string;
     passwordRecovery: {
+        labels: {
+            disableFlow: string;
+            enableFlow: string;
+        };
         name: string;
         notifications: {
             disableFlow: {
@@ -202,6 +217,10 @@ export interface flowsNS {
     };
     registrationFlow: {
         breadcrumb: string;
+        labels: {
+            disableFlow: string;
+            enableFlow: string;
+        };
         notifications: {
             disableFlow: {
                 genericError: {

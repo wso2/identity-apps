@@ -26,6 +26,8 @@ import Typography from "@oxygen-ui/react/Typography";
 import { ArrowLeftIcon } from "@oxygen-ui/react-icons";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import ValidationStatusLabels from
+    "@wso2is/admin.flow-builder-core.v1/components/validation-panel/validation-status-labels";
 import updateFlowConfig from "@wso2is/admin.flows.v1/api/update-flow-config";
 import useGetFlowConfig from "@wso2is/admin.flows.v1/api/use-get-flow-config";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
@@ -179,30 +181,41 @@ const AskPasswordFlowBuilderPageHeader: FunctionComponent<AskPasswordFlowBuilder
                         color="inherit"
                         onClick={ () => history.push(AppConstants.getPaths().get("FLOWS")) }
                     >
-                        Flows
+                        { t("flows:label") }
                     </Link>
-                    <Typography sx={ { color: "text.primary" } }>Edit Invited User Registration Flow</Typography>
+                    <Typography>
+                        { t("flows:askPassword.breadcrumb") }
+                    </Typography>
                 </Breadcrumbs>
             </Box>
             <Box
                 display="flex"
-                justifyContent="flex-end"
+                justifyContent="center"
                 alignItems="center"
+                gap={ 2 }
             >
-                <Tooltip
-                    title={
-                        flowConfig?.isEnabled
-                            ? t("flows:askPassword.tooltip.disableFlow")
-                            : t("flows:askPassword.tooltip.enableFlow")
-                    }
-                >
-                    <Switch
-                        checked={ flowConfig?.isEnabled || false }
-                        onChange={ handleToggleFlow }
-                        disabled={ isFlowConfigUpdating }
-                        data-componentid={ `${componentId}-toggle-switch` }
-                    />
-                </Tooltip>
+                <ValidationStatusLabels />
+                <Box display="flex" alignItems="center">
+                    <Typography>
+                        { flowConfig?.isEnabled
+                            ? t("flows:askPassword.labels.disableFlow")
+                            : t("flows:askPassword.labels.enableFlow") }
+                    </Typography>
+                    <Tooltip
+                        title={
+                            flowConfig?.isEnabled
+                                ? t("flows:askPassword.tooltip.disableFlow")
+                                : t("flows:askPassword.tooltip.enableFlow")
+                        }
+                    >
+                        <Switch
+                            checked={ flowConfig?.isEnabled || false }
+                            onChange={ handleToggleFlow }
+                            disabled={ isFlowConfigUpdating }
+                            data-componentid={ `${componentId}-toggle-switch` }
+                        />
+                    </Tooltip>
+                </Box>
             </Box>
         </Box>
     );

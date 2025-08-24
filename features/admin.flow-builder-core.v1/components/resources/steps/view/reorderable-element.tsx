@@ -26,6 +26,7 @@ import React, { FunctionComponent, MouseEvent, MutableRefObject, ReactElement, S
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 import useComponentDelete from "../../../../hooks/use-component-delete";
+import useValidationStatus from "../../../../hooks/use-validation-status";
 import { Element } from "../../../../models/elements";
 import { EventTypes } from "../../../../models/extension";
 import PluginRegistry from "../../../../plugins/plugin-registry";
@@ -102,6 +103,7 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
         setLastInteractedStepId,
         setIsOpenResourcePropertiesPanel
     } = useAuthenticationFlowBuilderCore();
+    const { setOpenValidationPanel } = useValidationStatus();
 
     /**
      * Handles the opening of the property panel for the resource.
@@ -111,6 +113,7 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
     const handlePropertyPanelOpen = (event: MouseEvent): void => {
 
         event.stopPropagation();
+        setOpenValidationPanel(false);
         setLastInteractedStepId(stepId);
         setLastInteractedResource(element);
     };

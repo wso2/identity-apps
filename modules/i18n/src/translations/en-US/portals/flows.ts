@@ -20,6 +20,10 @@ import { flowsNS } from "../../../models";
 export const flows: flowsNS = {
     askPassword: {
         breadcrumb: "Edit Invited User Registration Flow",
+        labels: {
+            disableFlow: "Disable invited user registration",
+            enableFlow: "Enable invited user registration"
+        },
         notifications: {
             disableFlow: {
                 genericError: {
@@ -163,10 +167,21 @@ export const flows: flowsNS = {
                     message: "Update Custom Text Success"
                 }
             }
+        },
+        validationStatusLabels: {
+            error: "Error",
+            errors: "Errors",
+            info: "Info",
+            warning: "Warning",
+            warnings: "Warnings"
         }
     },
     label: "Flows",
     passwordRecovery: {
+        labels: {
+            disableFlow: "Disable password recovery",
+            enableFlow: "Enable password recovery"
+        },
         name: "Password Recovery Flow Builder",
         notifications: {
             disableFlow: {
@@ -203,6 +218,10 @@ export const flows: flowsNS = {
     },
     registrationFlow: {
         breadcrumb: "Edit Registration Flow",
+        labels: {
+            disableFlow: "Disable registration",
+            enableFlow: "Enable registration"
+        },
         notifications: {
             disableFlow: {
                 genericError: {
