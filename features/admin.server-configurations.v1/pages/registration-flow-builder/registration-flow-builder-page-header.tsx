@@ -26,12 +26,6 @@ import Typography from "@oxygen-ui/react/Typography";
 import { ArrowLeftIcon } from "@oxygen-ui/react-icons";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-<<<<<<< HEAD
-=======
-import ValidationStatusLabels from
-    "@wso2is/admin.flow-builder-core.v1/components/validation-panel/validation-status-labels";
-import useValidationStatus from "@wso2is/admin.flow-builder-core.v1/hooks/use-validation-status";
->>>>>>> 38b9c0f9cc (fix the issue of password provisioning executor name)
 import updateFlowConfig from "@wso2is/admin.flows.v1/api/update-flow-config";
 import useGetFlowConfig from "@wso2is/admin.flows.v1/api/use-get-flow-config";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
@@ -70,7 +64,6 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
     ["data-componentid"]: componentId = "registration-flow-builder-page-header"
 }: RegistrationFlowBuilderPageHeaderProps): ReactElement => {
     const { onPublish } = useRegistrationFlowBuilder();
-    const { isValid } = useValidationStatus();
     const {
         data: flowConfig,
         mutate: mutateFlowConfig,
