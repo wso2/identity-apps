@@ -543,6 +543,7 @@
                 $('#subButton').click(function () {
                     <% if (!reCaptchaEnabled) { %>
                         sub();
+                        return false;
                     <% } %>
                 });
             });
