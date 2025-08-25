@@ -90,6 +90,15 @@ const useRequiredFields = (
     }, [ resource, fields, generalMessage, getNotification ]);
 
     /**
+     * Cleanup function to remove notifications on unmount.
+     */
+    useEffect(() => {
+        return () => {
+            removeNotification(buildErrorId());
+        };
+    }, []);
+
+    /**
      * Builds the error ID for a required field.
      * @param fieldName - The name of the field.
      * @returns The error ID.
