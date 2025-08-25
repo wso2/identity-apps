@@ -261,6 +261,13 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                     }));
 
                     onRoleCreated();
+                } else if (response.status === 202) {
+                    dispatch(addAlert({
+                        description: t("roles:notifications.createRolePendingApproval.success" +
+                            ".description"),
+                        level: AlertLevels.WARNING,
+                        message: t("roles:notifications.createRolePendingApproval.success.message")
+                    }));
                 }
             })
             .catch((error: AxiosError) => {
