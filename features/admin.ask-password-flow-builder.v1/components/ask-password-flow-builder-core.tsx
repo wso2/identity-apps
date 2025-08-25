@@ -377,8 +377,8 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
                     userOnboardEdgeCreated = true;
                 }
             } else if (button.action?.executor?.name ===
-                AskPasswordFlowExecutorConstants.PASSWORD_ONBOARD_EXECUTOR) {
-                // For PasswordOnboardExecutor buttons without explicit next,
+                AskPasswordFlowExecutorConstants.PASSWORD_PROVISIONING_EXECUTOR) {
+                // For PasswordProvisioningExecutor buttons without explicit next,
                 // create an edge to the user onboard step
                 edges.push({
                     animated: false,
@@ -665,7 +665,7 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
         }
 
         // Check inside `forms`, if there is a form with a password field and there's only one submit button,
-        // Set the `"action": { "type": "EXECUTOR", "executor": { "name": "PasswordOnboardExecutor"}, "next": "" }`
+        // Set the `"action": { "type": "EXECUTOR", "executor": { "name": "PasswordProvisioningExecutor"}, "next": "" }`
         modifiedComponents = modifiedComponents.map((component: Element) => {
             if (component.type === BlockTypes.Form) {
                 // Set all the `PRIMARY` buttons inside the form type to `submit`.
@@ -710,7 +710,7 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
                                     action: {
                                         ...(formComponent?.action ?? {}),
                                         executor: {
-                                            name: AskPasswordFlowExecutorConstants.PASSWORD_ONBOARD_EXECUTOR
+                                            name: AskPasswordFlowExecutorConstants.PASSWORD_PROVISIONING_EXECUTOR
                                         },
                                         type: "EXECUTOR"
                                     }

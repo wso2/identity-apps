@@ -379,8 +379,8 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
                     userOnboardEdgeCreated = true;
                 }
             } else if (button.action?.executor?.name ===
-                PasswordRecoveryFlowExecutorConstants.PASSWORD_ONBOARD_EXECUTOR) {
-                // For PasswordOnboardExecutor buttons without explicit next,
+                PasswordRecoveryFlowExecutorConstants.PASSWORD_PROVISIONING_EXECUTOR) {
+                // For PasswordProvisioningExecutor buttons without explicit next,
                 // create an edge to the user onboard step
                 edges.push({
                     animated: false,
@@ -665,7 +665,7 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
         }
 
         // Check inside `forms`, if there is a form with a password field and there's only one submit button,
-        // Set the `"action": { "type": "EXECUTOR", "executor": { "name": "PasswordOnboardExecutor"}, "next": "" }`
+        // Set the `"action": { "type": "EXECUTOR", "executor": { "name": "PasswordProvisioningExecutor"}, "next": "" }`
         modifiedComponents = modifiedComponents.map((component: Element) => {
             if (component.type === BlockTypes.Form) {
                 // Set all the `PRIMARY` buttons inside the form type to `submit`.
@@ -710,7 +710,7 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
                                     action: {
                                         ...(formComponent?.action ?? {}),
                                         executor: {
-                                            name: PasswordRecoveryFlowExecutorConstants.PASSWORD_ONBOARD_EXECUTOR
+                                            name: PasswordRecoveryFlowExecutorConstants.PASSWORD_PROVISIONING_EXECUTOR
                                         },
                                         type: "EXECUTOR"
                                     }

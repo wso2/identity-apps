@@ -33,7 +33,7 @@ class RegistrationFlowExecutorConstants {
      */
     private constructor() {}
 
-    public static readonly PASSWORD_ONBOARD_EXECUTOR: string = "PasswordOnboardExecutor";
+    public static readonly PASSWORD_PROVISIONING_EXECUTOR: string = "PasswordProvisioningExecutor";
 
     public static readonly EMAIL_OTP_EXECUTOR: string = "EmailOTPExecutor";
 
