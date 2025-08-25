@@ -63,7 +63,7 @@ jobs:
       - name: Get commits from last PR
         id: commits
         run: |
-          COMMITS=$(gh pr view $LAST_PR --json commits -q '.commits[].oid')
+          COMMITS=$(gh pr view $LAST_PR --json commits -q '.commits[].oid' | tr '\n' ' ')
           if [ -z "$COMMITS" ]; then
             echo "No commits found in PR #$LAST_PR. Exiting."
             exit 0
