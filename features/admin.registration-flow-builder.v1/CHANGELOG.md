@@ -1,5 +1,15 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.10.3
+
+### Patch Changes
+
+- [#8912](https://github.com/wso2/identity-apps/pull/8912) [`22b67690629449b96755d90fdc92760ccc8abb4f`](https://github.com/wso2/identity-apps/commit/22b67690629449b96755d90fdc92760ccc8abb4f) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Introduce a validation layer with basic validations for flow builders
+
+- Updated dependencies [[`22b67690629449b96755d90fdc92760ccc8abb4f`](https://github.com/wso2/identity-apps/commit/22b67690629449b96755d90fdc92760ccc8abb4f)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.20
+  - @wso2is/admin.core.v1@2.49.28
+
 ## 0.10.2
 
 ### Patch Changes
