@@ -301,6 +301,11 @@ export interface ConsoleNS {
             tenants: string;
             policyAdministration: string;
         };
+        userSurveyBanner: {
+            actions: {
+                takeSurvey: string;
+            };
+        };
         validations: {
             inSecureURL: {
                 heading: string;

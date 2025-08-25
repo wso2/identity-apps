@@ -16,7 +16,6 @@
  * under the License.
  */
 
-
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Paper from "@oxygen-ui/react/Paper";
@@ -25,6 +24,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import BackgroundBlob from "./background-blob.png";
 import "./user-survey-banner.scss";
@@ -36,28 +36,21 @@ import "./user-survey-banner.scss";
  * @returns UserSurveyBanner component.
  */
 export const UserSurveyBanner: FunctionComponent<IdentifiableComponentInterface> = ({
-    "data-componentid": componentId = "user-survey-banner",
-    ...rest
+    "data-componentid": componentId = "user-survey-banner"
 }: IdentifiableComponentInterface): ReactElement => {
+
+    const { t } = useTranslation();
 
     const surveyURL: string = useSelector((state: AppState) => state?.config?.ui?.userSurveyBanner?.url);
     const title: string = useSelector((state: AppState) => state?.config?.ui?.userSurveyBanner?.title);
     const description: string = useSelector((state: AppState) => state?.config?.ui?.userSurveyBanner?.description);
 
     return (
-        <div
-            style={ {
-                height: "200px",
-                overflow: "hidden",
-                position: "relative",
-                width: "100%"
-            } }
-        >
+        <div className="user-survey-banner-wrapper">
             <Paper
                 className={ classNames("user-survey-banner") }
                 data-componentid={ componentId }
                 variant="outlined"
-                { ...rest }
             >
                 <Box className="user-survey-banner-content">
                     <Box>
@@ -83,9 +76,7 @@ export const UserSurveyBanner: FunctionComponent<IdentifiableComponentInterface>
                         } }
                     >
                         <Box display="flex" alignItems="center" gap={ 1 }>
-                            <>
-                                Take the Survey
-                            </>
+                            { t("console:common.userSurveyBanner.actions.takeSurvey") }
                         </Box>
                     </Button>
                 </Box>

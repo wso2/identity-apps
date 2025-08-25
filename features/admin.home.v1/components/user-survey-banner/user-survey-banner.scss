@@ -20,6 +20,13 @@
     --wso2is-home-section-padding: var(--oxygen-spacing-3);
 }
 
+.user-survey-banner-wrapper {
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
 .user-survey-banner {
     display: flex;
     width: 100%;

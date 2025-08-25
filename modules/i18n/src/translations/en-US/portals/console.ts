@@ -360,6 +360,11 @@ export const console: ConsoleNS = {
             policyAdministration: "Policy Administration"
         },
         upgrade: "Upgrade",
+        userSurveyBanner: {
+            actions: {
+                takeSurvey: "Take the Survey"
+            }
+        },
         validations: {
             inSecureURL: {
                 description: "The entered URL is a non-TLS URL. Please proceed with caution.",
@@ -8557,7 +8562,7 @@ export const console: ConsoleNS = {
                         content: "Failed to load workflow Request details."
                     },
                     backButton: "Back"
-                },
+                }
             }
         },
         notifications: {
