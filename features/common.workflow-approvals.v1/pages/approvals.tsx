@@ -68,7 +68,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
     const [ isApprovalListRequestLoading, setApprovalListRequestLoading ] = useState<boolean>(false);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ offset, setOffset ] = useState(0);
-    const [ filterStatus, setFilterStatus ] = useState<string>(ApprovalStatus.ALL);
+    const [ filterStatus, setFilterStatus ] = useState<string>(ApprovalStatus.PENDING);
     const [ searchResult, setSearchResult ] = useState<number>(undefined);
 
     const APPROVAL_OPTIONS: DropdownItemProps[] = [
