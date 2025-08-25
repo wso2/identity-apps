@@ -20,6 +20,7 @@ import { IntegrationInstructions, ListAlt, ManageAccounts, Security } from "@mui
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
+import DOMPurify from "dompurify";
 import Paper from "@oxygen-ui/react/Paper";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronRightIcon } from "@oxygen-ui/react-icons";
@@ -56,11 +57,12 @@ import "./new-feature-announcement.scss";
 export interface NewFeatureAnnouncementProps extends IdentifiableComponentInterface {
     id: string;
     title: ReactElement;
-    description: ReactElement;
+    description: ReactElement | string;
     isEnabled: boolean;
     isEnabledStatusLoading: boolean;
     onTryOut: any;
     illustration: any;
+    buttonText: ReactElement;
 }
 
 /**
@@ -78,11 +80,25 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
     isEnabledStatusLoading,
     onTryOut,
     illustration,
+    buttonText,
     ...rest
 }: NewFeatureAnnouncementProps): ReactElement => {
     const { t } = useTranslation();
 
     const { setShowPreviewFeaturesModal, setSelectedPreviewFeatureToShow } = useFeatureGate();
+
+    // Handle both string and ReactElement descriptions
+    const renderDescription = () => {
+        if (typeof description === 'string') {
+            const sanitizedDescription = DOMPurify.sanitize(description, {
+                ALLOWED_TAGS: ['b'], // Allow only bold.
+                ALLOWED_ATTR: [] // No attributes allowed.
+            });
+            return <span dangerouslySetInnerHTML={{ __html: sanitizedDescription }} />;
+        }
+        // If it's a ReactElement, render it directly
+        return description;
+    };
 
     return (
         <Paper
@@ -95,7 +111,7 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
                 <Box>
                     <Typography variant="h3">
                         { title }
-                        { id !== "agents" && (
+                        { id !== "agents" && id !== "user-survey" && (
                             <Chip
                                 label={ t(FeatureStatusLabel.PREVIEW) }
                                 className="oxygen-menu-item-chip oxygen-chip-experimental"
@@ -103,7 +119,7 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
                         ) }
                     </Typography>
                     <Typography variant="body2">
-                        { description }
+                        { renderDescription() }
                     </Typography>
                 </Box>
             </Box>
@@ -129,7 +145,7 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
                         variant="contained"
                         onClick={ () => {
                             setSelectedPreviewFeatureToShow(id);
-                            if (id !== "agents") {
+                            if (id !== "agents" && id !== "user-survey") {
                                 setShowPreviewFeaturesModal(true);
                             } else {
                                 onTryOut();
@@ -138,7 +154,8 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
                         loading={ isEnabledStatusLoading }
                     >
                         <Box display="flex" alignItems="center" gap={ 1 }>
-                            { id !== "agents" ? (<>
+                            { id === "user-survey" ? buttonText : 
+                                id !== "agents" ? (<>
                                 <PreviewFeaturesIcon />
                                 Enable and try out
                             </>) : "Contact Us for Early Access" }
@@ -187,7 +204,22 @@ export const FeatureCarousel = () => {
         return false;
     }, [ isUserStoresListFetchRequestLoading, userStoresList ]);
 
+    const isUserSurveyBannerEnabled: boolean = useSelector((state: AppState) => state?.config?.ui?.userSurveyBanner?.enabled);
+    const userSurveyURL: string = useSelector((state: AppState) => state?.config?.ui?.userSurveyBanner?.url);
+    const userSurveyTitle: string = useSelector((state: AppState) => state?.config?.ui?.userSurveyBanner?.title);
+    const userSurveyDescription: string = useSelector((state: AppState) => state?.config?.ui?.userSurveyBanner?.description);
+    const userSurveyButtonText: string = useSelector((state: AppState) => state?.config?.ui?.userSurveyBanner?.buttonText);
+
     const features: any = useMemo(() => [
+        isUserSurveyBannerEnabled && {
+            buttonText: userSurveyButtonText,
+            description: userSurveyDescription,
+            id: "user-survey",
+            onTryOut: () => {
+                window.open(userSurveyURL, "_blank", "noopener,noreferrer");
+            },
+            title: userSurveyTitle
+        },
         agentFeatureConfig?.enabled && {
             description: "Extend your identity management to autonomous agents and AI systems",
             id: "agents",
@@ -286,6 +318,7 @@ export const FeatureCarousel = () => {
                         isEnabled={ features[currentIndex]?.isEnabled }
                         isEnabledStatusLoading={ features[currentIndex]?.isEnabledStatusLoading }
                         onTryOut={ features[currentIndex]?.onTryOut }
+                        buttonText={ features[currentIndex]?.buttonText }
                     />
                 </motion.div>
             </AnimatePresence>

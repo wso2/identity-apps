@@ -319,6 +319,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 styleSheets: null
             },
             userSurveyBanner: {
+                buttonText: "",
                 description: "",
                 enabled: false,
                 title: "",

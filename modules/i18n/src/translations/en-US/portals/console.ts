@@ -8562,7 +8562,7 @@ export const console: ConsoleNS = {
                         content: "Failed to load workflow Request details."
                     },
                     backButton: "Back"
-                }
+                },
             }
         },
         notifications: {

@@ -615,6 +615,7 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * User survey banner configurations.
      */
     userSurveyBanner: {
+        buttonText: string;
         description: string;
         enabled: boolean;
         title: string;
