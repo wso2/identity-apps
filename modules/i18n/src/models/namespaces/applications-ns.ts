@@ -815,6 +815,9 @@ export interface ApplicationsNS {
                 };
                 orgNotSelectedForRoleSharing: string;
                 individualRoleSharingLabel: string;
+                individualRoleSharingHint: string;
+                commonRoleSharingLabel: string;
+                commonRoleSharingHint: string;
                 noRolesAvailableForOrg: string;
                 noSharedOrgs: string;
                 rolesSharedPartially: string;
