@@ -26,7 +26,7 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Dropdown, DropdownItemProps, DropdownProps, Input, PaginationProps, SemanticCOLORS } from "semantic-ui-react";
+import { Dropdown, DropdownItemProps, DropdownProps, PaginationProps, SemanticCOLORS } from "semantic-ui-react";
 import { fetchPendingApprovals, updatePendingApprovalStatus } from "../api";
 import { ApprovalsList } from "../components";
 import { ApprovalStatus, ApprovalTaskListItemInterface } from "../models";
