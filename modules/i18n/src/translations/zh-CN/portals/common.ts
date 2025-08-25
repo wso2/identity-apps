@@ -233,6 +233,7 @@ export const common: CommonNS = {
     "new": "新的",
     "next": "下一个",
     "noResultsFound": "未找到结果",
+    "none": "没有任何",
     "okay": "好的",
     "operatingSystem": "操作系统",
     "operationType": "操作类型",
