@@ -27,6 +27,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.local.auth.smsotp.authenticator.util.AuthenticatorUtils" %>
+<%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
@@ -86,6 +87,12 @@
         }
     }
 %>
+<%
+    boolean reCaptchaEnabled = false;
+    if (request.getParameter("reCaptcha") != null && Boolean.parseBoolean(request.getParameter("reCaptcha"))) {
+        reCaptchaEnabled = true;
+    }
+%>
 
 <% request.setAttribute("pageName", "sms-otp"); %>
 
@@ -115,6 +122,15 @@
         <script src="js/html5shiv.min.js"></script>
         <script src="js/respond.min.js"></script>
         <![endif]-->
+
+        <%
+            if (reCaptchaEnabled) {
+                String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
+        %>
+            <script src='<%=(reCaptchaAPI)%>'></script>
+        <%
+            }
+        %>
     </head>
 
     <body class="login-portal layout sms-otp-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
@@ -264,16 +280,24 @@
                                         <div>
                                             <input type="button"
                                                 id="subButton"
-                                                onclick="sub(); return false;"
                                                 value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
                                                 class="ui primary fluid large button" />
                                         </div>
                                     <% } else { %>
-                                        <input type="submit"
-                                            name="authenticate"
-                                            id="authenticate"
-                                            value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
-                                            class="ui primary fluid large button"/>
+                                        
+                                        <% if (!reCaptchaEnabled) { %>
+                                            <input type="submit"
+                                                name="authenticate"
+                                                id="authenticate"
+                                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
+                                                class="ui primary fluid large button"/>
+                                        <% } else { %>
+                                            <input type="button"
+                                                name="authenticate"
+                                                id="authenticate"
+                                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
+                                                class="ui primary fluid large button"/>
+                                        <% } %>
                                     <% } %>
 
                                     <button type="button"
@@ -296,6 +320,38 @@
                                         </a>
                                     <% } %>
                                 </div>
+
+                                <%
+                                    if (reCaptchaEnabled && otpLength <= 6) {
+                                        String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                                %>
+                                    <div class="field">
+                                        <div class="g-recaptcha"
+                                            data-sitekey="<%=Encode.forHtmlAttribute(reCaptchaKey)%>"
+                                            data-testid="login-page-g-recaptcha"
+                                            data-bind="subButton"
+                                            data-callback="sub"
+                                            data-theme="light"
+                                            data-tabindex="-1"
+                                        >
+                                        </div>
+                                    </div>
+                                <%
+                                    } else if (reCaptchaEnabled && otpLength > 6) {
+                                        String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                                %>
+                                    <div class="field">
+                                        <div class="g-recaptcha"
+                                            data-sitekey="<%=Encode.forHtmlAttribute(reCaptchaKey)%>"
+                                            data-testid="login-page-g-recaptcha"
+                                            data-bind="authenticate"
+                                            data-callback="submitForm"
+                                            data-theme="light"
+                                            data-tabindex="-1"
+                                        >
+                                        </div>
+                                    </div>
+                                <% } %>
                           </form>
                       </div>
                   </div>
@@ -372,6 +428,27 @@
                     document.getElementById("codeForm").submit();
                 }
 
+            }
+
+            function submitForm() {
+                
+                var insightsTenantIdentifier = "<%=userTenant%>";
+                var code = document.getElementById("OTPCode").value;
+                if (code == "") {
+                    document.getElementById('alertDiv').innerHTML
+                        = '<div id="error-msg" class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.enter.code")%></div>'
+                        +'<div class="ui divider hidden"></div>';
+                } else {
+                    if ($('#codeForm').data("submitted") === true) {
+                        console.log("Prevented a possible double submit event from Submit Form");
+                        console.warn("Prevented a possible double submit event");
+                    } else {
+                        trackEvent("authentication-portal-sms-otp-click-continue", {
+                            "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
+                        });
+                        $('#codeForm').submit();
+                    }
+                }
             }
 
             // Handle paste events
@@ -459,6 +536,14 @@
                 $('#resend').click(function () {
                     document.getElementById("resendCode").value = "true";
                     $('#codeForm').submit();
+                });
+            });
+
+            $(document).ready(function () {
+                $('#subButton').click(function () {
+                    <% if (!reCaptchaEnabled) { %>
+                        sub();
+                    <% } %>
                 });
             });
 
