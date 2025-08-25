@@ -21,6 +21,8 @@
     .warning-button,
     .info-button {
         border-radius: 16px;
+        min-width: 0;
+        width: fit-content;
         padding: 0px 8px;
     }
 }
