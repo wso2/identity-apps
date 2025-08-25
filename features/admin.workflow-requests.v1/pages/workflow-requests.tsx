@@ -29,7 +29,6 @@ import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, PaginationProps } from "semantic-ui-react";
 import { useGetWorkflowInstances } from "../api/use-get-workflow-instances";
 import ActiveFiltersBar from "../components/active-filters-bar";
-import WorkflowRequestsFilter from "../components/workflow-requests-filter";
 import WorkflowRequestsList from "../components/workflow-requests-list";
 import {
     WorkflowInstanceListItemInterface,
@@ -365,20 +364,6 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
                     onClearAll={ clearAllFilters }
                     data-componentid="workflow-requests-active-filters-bar"
                 />
-                <WorkflowRequestsFilter
-                    status={ status }
-                    setStatus={ setStatus }
-                    operationType={ operationType }
-                    setOperationType={ setOperationType }
-                    createdTimeRange={ createdTimeRange }
-                    handleCreatedTimeRangeChange={ handleCreatedTimeRangeChange }
-                    handleCreatedCustomDateChange={ handleCreatedCustomDateChange }
-                    updatedTimeRange={ updatedTimeRange }
-                    handleUpdatedTimeRangeChange={ handleUpdatedTimeRangeChange }
-                    handleUpdatedCustomDateChange={ handleUpdatedCustomDateChange }
-                    searchWorkflowRequests={ searchWorkflowRequests }
-                    loading={ isWorkflowInstancesLoading }
-                />
 
                 <ListLayout
                     currentListSize={ workflowRequests.length }
@@ -404,6 +389,16 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
                         }
                         onSearchQueryClear={ clearAllFilters }
                         searchQuery={ null }
+                        status={ status }
+                        setStatus={ setStatus }
+                        operationType={ operationType }
+                        setOperationType={ setOperationType }
+                        createdTimeRange={ createdTimeRange }
+                        handleCreatedTimeRangeChange={ handleCreatedTimeRangeChange }
+                        handleCreatedCustomDateChange={ handleCreatedCustomDateChange }
+                        updatedTimeRange={ updatedTimeRange }
+                        handleUpdatedTimeRangeChange={ handleUpdatedTimeRangeChange }
+                        handleUpdatedCustomDateChange={ handleUpdatedCustomDateChange }
                         data-componentid="workflow-requests-list"
                     />
                 </ListLayout>

@@ -32,11 +32,13 @@ import moment from "moment";
 import React, { ReactElement, ReactNode, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { Header } from "semantic-ui-react";
+import "./workflow-requests-list.scss";
+import { WorkflowRequestOperationTypeDropdown, WorkflowRequestsStatusDropdown } from "./filter-dropdowns";
+import TimeRangeDropdown from "./time-range-dropdown";
 import {
     WorkflowInstanceListItemInterface,
     WorkflowInstanceStatus
 } from "../models/workflowRequests";
-import "./workflow-requests-list.scss";
 
 /**
  * Props interface for the Workflow Requests List component.
@@ -75,6 +77,19 @@ interface WorkflowRequestsListProps
      * Flag to control whether action buttons should be shown for each list item.
      */
     showListItemActions?: boolean;
+    /**
+     * Filter state and handlers
+     */
+    status?: string;
+    setStatus?: (value: string) => void;
+    operationType?: string;
+    setOperationType?: (value: string) => void;
+    createdTimeRange?: number | undefined;
+    handleCreatedTimeRangeChange?: (range: number) => void;
+    handleCreatedCustomDateChange?: (from: string, to: string) => void;
+    updatedTimeRange?: number | undefined;
+    handleUpdatedTimeRangeChange?: (range: number) => void;
+    handleUpdatedCustomDateChange?: (from: string, to: string) => void;
 }
 
 /**
@@ -94,6 +109,16 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
         onSearchQueryClear,
         handleWorkflowRequestView,
         searchQuery,
+        status,
+        setStatus,
+        operationType,
+        setOperationType,
+        createdTimeRange,
+        handleCreatedTimeRangeChange,
+        handleCreatedCustomDateChange,
+        updatedTimeRange,
+        handleUpdatedTimeRangeChange,
+        handleUpdatedCustomDateChange,
         ["data-componentid"]: componentId = "workflow-requests-list"
     } = props;
 
@@ -188,7 +213,14 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     </Header>
                 </div>
             ),
-            title: t("approvalWorkflows:list.columns.workflowInstanceId")
+            title: <WorkflowRequestOperationTypeDropdown
+                value={ operationType }
+                onChange={ (e: React.SyntheticEvent, data: { value: string }) => {
+                    setOperationType(data.value as string);
+                } }
+                data-componentid="workflow-requests-operation-type-dropdown"
+                placeholder={ t("approvalWorkflows:filters.operationType") }
+            />
         },
         {
             allowToggleVisibility: false,
@@ -207,7 +239,14 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     </span>
                 );
             },
-            title: t("approvalWorkflows:list.columns.status")
+            title: <WorkflowRequestsStatusDropdown
+                value={ status }
+                onChange={ (e: React.SyntheticEvent, data: { value: string }) => {
+                    setStatus(data.value as string);
+                } }
+                data-componentid="workflow-requests-status-dropdown"
+                placeholder={ t("approvalWorkflows:filters.status") }
+            />
         },
         {
             allowToggleVisibility: false,
@@ -219,7 +258,18 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     { getFriendlyDate(workflowRequest.createdAt) }
                 </Header>
             ),
-            title: t("approvalWorkflows:list.columns.createdAt")
+            title: <TimeRangeDropdown
+                label={ t("approvalWorkflows:filters.createdTimeRange") }
+                selectedRange={ createdTimeRange }
+                onRangeChange={ (range: number) => {
+                    handleCreatedTimeRangeChange(range);
+                } }
+                onCustomDateChange={ (from: string, to: string) => {
+                    handleCreatedCustomDateChange(from, to);
+                } }
+                disabled={ updatedTimeRange !== undefined && updatedTimeRange !== -2 }
+                componentId="created-time-range"
+            />
         },
         {
             allowToggleVisibility: false,
@@ -231,7 +281,18 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     { getFriendlyDate(workflowRequest.updatedAt) }
                 </Header>
             ),
-            title: t("approvalWorkflows:list.columns.updatedAt")
+            title: <TimeRangeDropdown
+                label={ t("approvalWorkflows:filters.updatedTimeRange") }
+                selectedRange={ updatedTimeRange }
+                onRangeChange={ (range: number) => {
+                    handleUpdatedTimeRangeChange(range);
+                } }
+                onCustomDateChange={ (from: string, to: string) => {
+                    handleUpdatedCustomDateChange(from, to);
+                } }
+                disabled={ createdTimeRange !== undefined && createdTimeRange !== -2 }
+                componentId="updated-time-range"
+            />
         }
     ];
 
