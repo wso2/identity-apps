@@ -1,5 +1,14 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.10.23
+
+### Patch Changes
+
+- [#8943](https://github.com/wso2/identity-apps/pull/8943) [`05b73972a94081df337b757f4832a3e1dd9c13c4`](https://github.com/wso2/identity-apps/commit/05b73972a94081df337b757f4832a3e1dd9c13c4) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for removing notifications when elements are deleted
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.31
+
 ## 0.10.22
 
 ### Patch Changes

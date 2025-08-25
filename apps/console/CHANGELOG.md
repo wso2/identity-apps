@@ -1,5 +1,22 @@
 # @wso2is/console
 
+## 2.77.28
+
+### Patch Changes
+
+- [#8943](https://github.com/wso2/identity-apps/pull/8943) [`05b73972a94081df337b757f4832a3e1dd9c13c4`](https://github.com/wso2/identity-apps/commit/05b73972a94081df337b757f4832a3e1dd9c13c4) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for removing notifications when elements are deleted
+
+* [#8926](https://github.com/wso2/identity-apps/pull/8926) [`468b301983900cd3e2eb38a5e13777a5062e24c7`](https://github.com/wso2/identity-apps/commit/468b301983900cd3e2eb38a5e13777a5062e24c7) Thanks [@NutharaNR](https://github.com/NutharaNR)! - UI logic to avoid displaying complex type attributes.
+
+* Updated dependencies [[`05b73972a94081df337b757f4832a3e1dd9c13c4`](https://github.com/wso2/identity-apps/commit/05b73972a94081df337b757f4832a3e1dd9c13c4), [`468b301983900cd3e2eb38a5e13777a5062e24c7`](https://github.com/wso2/identity-apps/commit/468b301983900cd3e2eb38a5e13777a5062e24c7)]:
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.23
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.23
+  - @wso2is/admin.users.v1@2.36.9
+  - @wso2is/admin.core.v1@2.49.31
+  - @wso2is/admin.server-configurations.v1@2.35.44
+  - @wso2is/admin.agents.v1@1.0.43
+  - @wso2is/admin.roles.v2@2.27.198
+
 ## 2.77.27
 
 ### Patch Changes
