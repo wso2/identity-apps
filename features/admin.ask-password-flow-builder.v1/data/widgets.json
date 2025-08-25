@@ -310,5 +310,89 @@
                 ]
             }
         }
+    },
+    {
+        "resourceType": "WIDGET",
+        "category": "FLOW",
+        "type": "MAGIC_LINK",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Continue with Magic Link",
+            "description": "Registration experience with Magic Link",
+            "image": "https://www.svgrepo.com/show/532869/link-alt-1.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "defaultPropertySelectorId": "{{MAGIC_LINK_EXECUTION_STEP_ID}}",
+                    "replacers": [
+                        {
+                            "key": "MAGIC_LINK_EXECUTION_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "__generationMeta__": {
+                            "strategy": "MERGE_WITH_DROP_POINT"
+                        },
+                        "type": "VIEW",
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "ACTION",
+                                    "type": "BUTTON",
+                                    "variant": "SOCIAL",
+                                    "config": {
+                                        "type": "button",
+                                        "text": "Continue with Magic Link",
+                                        "image": "https://www.svgrepo.com/show/532869/link-alt-1.svg"
+                                    },
+                                    "action": {
+                                        "type": "NEXT",
+                                        "next": "{{MAGIC_LINK_EXECUTION_STEP_ID}}"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{MAGIC_LINK_EXECUTION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 690,
+                            "y": 500
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "MagicLinkExecutor"
+                                },
+                                "next": "End"
+                            },
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<h3 class=\"rich-text-heading-h3 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Check Your Email</span></h3><h5 class=\"rich-text-heading-h5 rich-text-align-center\"><br><span class=\"rich-text-pre-wrap\">An email containing further instructions has been sent to your email address. Please check your inbox to continue.</span></h5>"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
     }
 ]
