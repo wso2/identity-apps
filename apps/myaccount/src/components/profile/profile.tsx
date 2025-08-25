@@ -770,8 +770,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         // If the attribute is a complex type, it should not be displayed.
         if (schema.type?.toLowerCase() === ClaimDataType.COMPLEX.toLowerCase() &&
-        schema.schemaUri !== ProfileConstants.SCIM2_CORE_USER_SCHEMA_ATTRIBUTES.emails &&
-        schema.schemaUri !== ProfileConstants.SCIM2_CORE_USER_SCHEMA_ATTRIBUTES.mobile) {
+            schema.schemaUri !== ProfileConstants.SCIM2_CORE_USER_SCHEMA_ATTRIBUTES.emails &&
+            schema.schemaUri !== ProfileConstants.SCIM2_CORE_USER_SCHEMA_ATTRIBUTES.mobile) {
             return false;
         }
 
