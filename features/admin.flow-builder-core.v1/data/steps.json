@@ -167,5 +167,36 @@
             "showOnResourcePanel": false
         },
         "config": {}
+    },
+    {
+        "resourceType": "STEP",
+        "category": "WORKFLOW",
+        "type": "EXECUTION",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Magic Link View",
+            "image": "https://www.svgrepo.com/show/532869/link-alt-1.svg",
+            "showOnResourcePanel": true
+        },
+        "data": {
+            "action": {
+                "type": "EXECUTOR",
+                "executor": {
+                    "name": "MagicLinkExecutor"
+                },
+                "next": ""
+            },
+            "components": [
+                {
+                    "id": "{{ID}}",
+                    "category": "DISPLAY",
+                    "type": "RICH_TEXT",
+                    "config": {
+                        "text": "<h3 class=\"rich-text-heading-h3 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Check Your Email</span></h3><h5 class=\"rich-text-heading-h5 rich-text-align-center\"><br><span class=\"rich-text-pre-wrap\">An email containing further instructions has been sent to your email address. Please check your inbox to continue.</span></h5>"
+                    }
+                }
+            ]
+        }
     }
 ]
