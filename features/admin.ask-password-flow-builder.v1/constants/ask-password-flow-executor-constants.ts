@@ -42,6 +42,8 @@ class AskPasswordFlowExecutorConstants {
     public static readonly USER_RESOLVE_EXECUTOR: string = "UserResolveExecutor";
 
     public static readonly GOOGLE_SIGNUP_EXECUTOR: string = "GoogleSignupExecutor";
+
+    public static readonly CONFIRMATION_CODE_VALIDATION_EXECUTOR: string = "ConfirmationCodeValidationExecutor";
 }
 
 export default AskPasswordFlowExecutorConstants;

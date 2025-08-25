@@ -108,6 +108,7 @@
         idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
     }
 
+    String forwardedQueryString = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING);
     String appName = Encode.forUriComponent(request.getParameter("sp"));
     String userType = request.getParameter("utype");
     String consoleURL = application.getInitParameter("ConsoleURL");
@@ -347,7 +348,7 @@
             selfSignUpOverrideURL = selfSignUpOverrideURL.concat("?ui_locales=" + localeString);
         }
     }
-    passwordRecoveryOverrideURL = getRecoveryPortalUrl(passwordRecoveryOverrideURL, recoveryPortalOverrideURL, localeString);
+    passwordRecoveryOverrideURL = getRecoveryPortalUrl(passwordRecoveryOverrideURL, recoveryPortalOverrideURL, localeString, forwardedQueryString);
 %>
 
 <%

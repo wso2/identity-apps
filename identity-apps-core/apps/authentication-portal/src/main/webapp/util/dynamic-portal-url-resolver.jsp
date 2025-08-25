@@ -73,7 +73,7 @@
      * @return The final recovery portal URL.
      */
      public static String getRecoveryPortalUrl(String passwordRecoveryOverrideURL, String recoveryPortalOverrideURL, 
-        String localeString) {
+        String localeString, String urlParameters) {
 
         String baseURL = passwordRecoveryOverrideURL;
 
@@ -83,7 +83,7 @@
 
         if (StringUtils.isNotBlank(baseURL) && StringUtils.isNotBlank(localeString)) {
             String separator = baseURL.contains("?") ? "&" : "?";
-            baseURL = baseURL + separator + "ui_locales=" + localeString;
+            baseURL = baseURL + separator + "ui_locales=" + localeString + "&" + urlParameters;
         }
         return baseURL;
     }
