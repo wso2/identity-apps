@@ -5,11 +5,11 @@
                 "action": {
                     "type": "EXECUTOR",
                     "executor": {
-                        "name": "PasswordOnboardExecutor"
+                        "name": "PasswordProvisioningExecutor"
                     }
                 },
                 "display": {
-                    "label": "Onboard Password",
+                    "label": "Provision Password",
                     "image": "https://www.svgrepo.com/show/526627/password.svg",
                     "defaultVariant": "PRIMARY"
                 }

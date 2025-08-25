@@ -66,191 +66,203 @@
         }
     },
     {
-    "resourceType": "TEMPLATE",
-    "category": "STARTER",
-    "type": "PASSWORD_RECOVERY_WITH_MAGIC_LINK",
-    "version": "0.1.0",
-    "deprecated": false,
-    "display": {
-        "label": "Password Recovery with Magic Link",
-        "description": "Password recovery using a secure email magic link",
-        "image": "https://www.svgrepo.com/show/524687/link.svg",
-        "showOnResourcePanel": true
-    },
-    "config": {
-        "data": {
-            "flowType": "PASSWORD_RECOVERY",
-            "steps": [
-        {
-            "id": "view_xl50",
-            "type": "VIEW",
-            "size": {
-                "width": 350,
-                "height": 560
-            },
-            "position": {
-                "x": -141.25,
-                "y": 387.5
-            },
-            "data": {
-                "components": [
-                    {
-                        "category": "DISPLAY",
-                        "type": "TYPOGRAPHY",
-                        "id": "typography_fsxu",
-                        "variant": "H3",
-                        "config": {
-                            "text": "Forgot Password?"
-                        }
-                    },
-                    {
-                        "category": "BLOCK",
-                        "type": "FORM",
-                        "config": {},
-                        "id": "form_ry5l",
-                        "components": [
-                            {
-                                "category": "DISPLAY",
-                                "type": "RICH_TEXT",
-                                "config": {
-                                    "text": "<h5 class=\"rich-text-heading-h5\"><span class=\"rich-text-pre-wrap\">We've got you covered. Enter your username to begin resetting your password.</span></h5>"
-                                },
-                                "id": "display_hjoe"
-                            },
-                            {
-                                "category": "FIELD",
-                                "type": "INPUT",
-                                "variant": "TEXT",
-                                "config": {
-                                    "type": "text",
-                                    "hint": "",
-                                    "label": "Username",
-                                    "required": true,
-                                    "placeholder": "Enter your username",
-                                    "identifier": "http://wso2.org/claims/username"
-                                },
-                                "id": "input_qw13"
-                            },
-                            {
-                                "category": "ACTION",
-                                "type": "BUTTON",
-                                "id": "action_au9i",
-                                "variant": "PRIMARY",
-                                "action": {
-                                    "type": "EXECUTOR",
-                                    "executor": {
-                                        "name": "UserResolveExecutor"
-                                    },
-                                    "next": "ID_1l2q"
-                                },
-                                "config": {
-                                    "type": "submit",
-                                    "text": "Send Reset Link"
-                                }
-                            }
-                        ]
-                    }
-                ]
-            }
+        "resourceType": "TEMPLATE",
+        "category": "STARTER",
+        "type": "BASIC",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Password Recovery with Magic Link",
+            "description": "Password recovery using Magic Link",
+            "image": "https://www.svgrepo.com/show/532869/link-alt-1.svg",
+            "showOnResourcePanel": true
         },
-        {
-            "id": "view_hk3c",
-            "type": "VIEW",
-            "size": {
-                "width": 350,
-                "height": 453
-            },
-            "position": {
-                "x": 690.3251307379431,
-                "y": 406.33968622893684
-            },
+        "config": {
             "data": {
-                "components": [
-                    {
-                        "category": "DISPLAY",
-                        "type": "TYPOGRAPHY",
-                        "id": "typography_3vhe",
-                        "variant": "H3",
-                        "config": {
-                            "text": "Reset Password"
-                        }
-                    },
-                    {
-                        "category": "BLOCK",
-                        "type": "FORM",
-                        "config": {},
-                        "id": "form_m0v6",
-                        "components": [
-                            {
-                                "category": "FIELD",
-                                "type": "INPUT",
-                                "variant": "PASSWORD",
-                                "config": {
-                                    "identifier": "password",
-                                    "type": "password",
-                                    "hint": "",
-                                    "label": "Password",
-                                    "required": false,
-                                    "placeholder": "Enter your password"
-                                },
-                                "id": "field_a2qe"
-                            },
-                            {
-                                "category": "ACTION",
-                                "type": "BUTTON",
-                                "id": "button_5soo",
-                                "variant": "PRIMARY",
-                                "action": {
-                                    "type": "EXECUTOR",
-                                    "executor": {
-                                        "name": "PasswordProvisioningExecutor"
-                                    },
-                                    "next": "End"
-                                },
-                                "config": {
-                                    "type": "submit",
-                                    "text": "Continue"
-                                }
-                            }
-                        ]
-                    }
-                ]
-            }
-        },
-        {
-            "id": "ID_1l2q",
-            "type": "EXECUTION",
-            "size": {
-                "width": 350,
-                "height": 532
-            },
-            "position": {
-                "x": 278.25,
-                "y": 407.24999999999994
-            },
-            "data": {
-                "components": [
-                    {
-                        "category": "DISPLAY",
-                        "type": "RICH_TEXT",
-                        "config": {
-                            "text": "<h3 class=\"rich-text-heading-h3 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Check Your Email</span></h3><h5 class=\"rich-text-heading-h5 rich-text-align-center\"><br><b><strong class=\"rich-text-bold rich-text-pre-wrap\">An email with a password reset link and instructions has been sent to your email.</strong></b><br><br><b><strong class=\"rich-text-bold rich-text-pre-wrap\">Didn't receive an email yet? Your email address might not be registered or you have signed up using a social account with the provided email. Create an account or use a different login option.</strong></b><br><br><br><b><strong class=\"rich-text-bold rich-text-pre-wrap\">&nbsp;</strong></b><a href=\"{{application.callbackOrAccessUrl}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"rich-text-link\"><b><strong class=\"rich-text-bold rich-text-pre-wrap\">Back to application</strong></b></a></h5><h5 class=\"rich-text-heading-h5 rich-text-align-center\"><b><strong class=\"rich-text-bold rich-text-pre-wrap\">For further assistance, please write to&nbsp;</strong></b><a href=\"mailto:{{branding.supportEmail}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"rich-text-link\"><b><strong class=\"rich-text-bold rich-text-pre-wrap\">{{branding.supportEmail}}</strong></b></a><b><strong class=\"rich-text-bold rich-text-pre-wrap\"> .</strong></b></h5>"
+                "__generationMeta__": {
+                    "replacers": [
+                        {
+                            "key": "EXECUTION_STEP_ID",
+                            "type": "ID"
                         },
-                        "id": "display_xg5u"
-                    }
-                ],
-                "action": {
-                    "type": "EXECUTOR",
-                    "executor": {
-                        "name": "MagicLinkExecutor"
+                        {
+                            "key": "RESET_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "flowType": "PASSWORD_RECOVERY",
+                "steps": [
+                    {
+                        "id": "{{ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 560
+                        },
+                        "position": {
+                            "x": -129,
+                            "y": 270
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Forgot Password?"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "DISPLAY",
+                                            "type": "RICH_TEXT",
+                                            "config": {
+                                                "text": "<h5 class=\"rich-text-heading-h5 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">We've got you covered. Enter your username to begin resetting your password.</span></h5>"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "TEXT",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "label": "Username",
+                                                "required": true,
+                                                "placeholder": "Enter your username",
+                                                "identifier": "http://wso2.org/claims/username"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Send Reset Link"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "UserResolveExecutor"
+                                                },
+                                                "next": "{{EXECUTION_STEP_ID}}"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
                     },
-                    "next": "view_hk3c"
-                }
+                    {
+                        "id": "{{EXECUTION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 512
+                        },
+                        "position": {
+                            "x": 278,
+                            "y": 281
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "MagicLinkExecutor"
+                                },
+                                "next": "{{RESET_STEP_ID}}"
+                            },
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<h3 class=\"rich-text-heading-h3 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Check Your Email</span></h3><h5 class=\"rich-text-heading-h5 rich-text-align-center\"><br><span class=\"rich-text-pre-wrap\">An email with a password reset link and instructions has been sent to your email.</span><br><br><span class=\"rich-text-pre-wrap\">Didn't receive an email yet? Your email address might not be registered or you have signed up using a social account with the provided email. Create an account or use a different login option.</span><br><br><br><b><strong class=\"rich-text-bold rich-text-pre-wrap\">&nbsp;</strong></b><a href=\"{{application.callbackOrAccessUrl}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"rich-text-link\"><b><strong class=\"rich-text-bold rich-text-pre-wrap\">Back to application</strong></b></a></h5><h5 class=\"rich-text-heading-h5 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">For further assistance, please write to&nbsp;</span><a href=\"mailto:{{branding.supportEmail}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"rich-text-link\"><span class=\"rich-text-pre-wrap\">{{branding.supportEmail}}</span></a><span class=\"rich-text-pre-wrap\"> .</span></h5>"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{RESET_STEP_ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 453
+                        },
+                        "position": {
+                            "x": 700,
+                            "y": 300
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Reset Password"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "PASSWORD",
+                                            "config": {
+                                                "identifier": "password",
+                                                "type": "password",
+                                                "hint": "",
+                                                "label": "Password",
+                                                "required": true,
+                                                "placeholder": "Enter your password"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "PasswordProvisioningExecutor"
+                                                },
+                                                "next": "End"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
             }
         }
-    ]
-        }
-    }
     },
     {
         "resourceType": "TEMPLATE",
@@ -261,7 +273,7 @@
         "display": {
             "label": "Password Recovery with Email OTP",
             "description": "Password recovery using Email OTP",
-            "image": "https://www.svgrepo.com/show/533214/mail-notification.svg",
+            "image": "https://www.svgrepo.com/show/387455/email-down.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -454,7 +466,7 @@
                                                 "type": "password",
                                                 "hint": "",
                                                 "label": "Password",
-                                                "required": false,
+                                                "required": true,
                                                 "placeholder": "Enter your password"
                                             }
                                         },
@@ -493,7 +505,7 @@
         "display": {
             "label": "Password Recovery with SMS OTP",
             "description": "Password recovery using SMS OTP",
-            "image": "https://www.svgrepo.com/show/533121/mobile-check.svg",
+            "image": "https://www.svgrepo.com/show/455832/mobile-message.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -686,7 +698,7 @@
                                                 "type": "password",
                                                 "hint": "",
                                                 "label": "Password",
-                                                "required": false,
+                                                "required": true,
                                                 "placeholder": "Enter your password"
                                             }
                                         },
@@ -730,6 +742,26 @@
         },
         "config": {
             "data": {
+                "__generationMeta__": {
+                    "replacers": [
+                        {
+                            "key": "CHANNEL_SELECTION_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "SMS_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "EMAIL_STEP_ID",
+                            "type": "ID"
+                        },
+                        {
+                            "key": "PASSWORD_RESET_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
                 "flowType": "PASSWORD_RECOVERY",
                 "steps": [
                     {
@@ -746,45 +778,46 @@
                         "data": {
                             "components": [
                                 {
-                                    "id": "{{ID}}",
                                     "category": "DISPLAY",
                                     "type": "TYPOGRAPHY",
+                                    "id": "{{ID}}",
                                     "variant": "H3",
                                     "config": {
                                         "text": "Forgot Password?"
                                     }
                                 },
                                 {
-                                    "id": "{{ID}}",
                                     "category": "BLOCK",
                                     "type": "FORM",
                                     "config": {},
+                                    "id": "{{ID}}",
                                     "components": [
                                         {
-                                            "id": "{{ID}}",
                                             "category": "DISPLAY",
                                             "type": "RICH_TEXT",
                                             "config": {
                                                 "text": "<h5 class=\"rich-text-heading-h5 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">We've got you covered. Enter your username to begin resetting your password.</span></h5>"
-                                            }
+                                            },
+                                            "id": "{{ID}}"
                                         },
                                         {
-                                            "id": "{{ID}}",
                                             "category": "FIELD",
                                             "type": "INPUT",
                                             "variant": "TEXT",
                                             "config": {
                                                 "type": "text",
+                                                "hint": "",
                                                 "label": "Username",
                                                 "required": true,
                                                 "placeholder": "Enter your username",
                                                 "identifier": "http://wso2.org/claims/username"
-                                            }
+                                            },
+                                            "id": "{{ID}}"
                                         },
                                         {
-                                            "id": "{{ID}}",
                                             "category": "ACTION",
                                             "type": "BUTTON",
+                                            "id": "{{ID}}",
                                             "variant": "PRIMARY",
                                             "config": {
                                                 "type": "submit",
@@ -808,58 +841,50 @@
                         "type": "VIEW",
                         "size": {
                             "width": 350,
-                            "height": 542
+                            "height": 350
                         },
                         "position": {
-                            "x": 428,
-                            "y": 316
+                            "x": 410.0376949152543,
+                            "y": 399.86589830508484
                         },
                         "data": {
                             "components": [
                                 {
-                                    "id": "{{ID}}",
                                     "category": "DISPLAY",
                                     "type": "TYPOGRAPHY",
+                                    "id": "{{ID}}",
                                     "variant": "H3",
                                     "config": {
                                         "text": "Select Channel"
                                     }
                                 },
                                 {
+                                    "category": "ACTION",
+                                    "type": "BUTTON",
                                     "id": "{{ID}}",
-                                    "category": "BLOCK",
-                                    "type": "FORM",
-                                    "config": {},
-                                    "components": [
-                                        {
-                                            "id": "{{ID}}",
-                                            "category": "ACTION",
-                                            "type": "BUTTON",
-                                            "variant": "PRIMARY",
-                                            "config": {
-                                                "type": "submit",
-                                                "text": "SMS"
-                                            },
-                                            "action": {
-                                                "type": "NEXT",
-                                                "next": "{{SMS_STEP_ID}}"
-                                            }
-                                        },
-                                        {
-                                            "id": "{{ID}}",
-                                            "category": "ACTION",
-                                            "type": "BUTTON",
-                                            "variant": "PRIMARY",
-                                            "config": {
-                                                "type": "submit",
-                                                "text": "Email"
-                                            },
-                                            "action": {
-                                                "type": "NEXT",
-                                                "next": "{{EMAIL_STEP_ID}}"
-                                            }
-                                        }
-                                    ]
+                                    "variant": "PRIMARY",
+                                    "config": {
+                                        "type": "button",
+                                        "text": "SMS"
+                                    },
+                                    "action": {
+                                        "type": "NEXT",
+                                        "next": "{{SMS_STEP_ID}}"
+                                    }
+                                },
+                                {
+                                    "category": "ACTION",
+                                    "type": "BUTTON",
+                                    "id": "{{ID}}",
+                                    "variant": "PRIMARY",
+                                    "config": {
+                                        "type": "button",
+                                        "text": "EMAIL"
+                                    },
+                                    "action": {
+                                        "type": "NEXT",
+                                        "next": "{{EMAIL_STEP_ID}}"
+                                    }
                                 }
                             ]
                         }
@@ -878,35 +903,38 @@
                         "data": {
                             "components": [
                                 {
-                                    "id": "{{ID}}",
                                     "category": "DISPLAY",
                                     "type": "TYPOGRAPHY",
+                                    "id": "{{ID}}",
                                     "variant": "H3",
                                     "config": {
                                         "text": "SMS OTP Verification"
                                     }
                                 },
                                 {
-                                    "id": "{{ID}}",
                                     "category": "BLOCK",
                                     "type": "FORM",
                                     "config": {},
+                                    "id": "{{ID}}",
                                     "components": [
                                         {
-                                            "id": "{{ID}}",
                                             "category": "FIELD",
                                             "type": "INPUT",
                                             "variant": "OTP",
                                             "config": {
                                                 "type": "text",
+                                                "hint": "",
+                                                "identifier": "otp",
                                                 "label": "Enter the code sent to your mobile",
-                                                "identifier": "otp"
-                                            }
+                                                "required": false,
+                                                "placeholder": ""
+                                            },
+                                            "id": "{{ID}}"
                                         },
                                         {
-                                            "id": "{{ID}}",
                                             "category": "ACTION",
                                             "type": "BUTTON",
+                                            "id": "{{ID}}",
                                             "variant": "PRIMARY",
                                             "config": {
                                                 "type": "submit",
@@ -939,35 +967,38 @@
                         "data": {
                             "components": [
                                 {
-                                    "id": "{{ID}}",
                                     "category": "DISPLAY",
                                     "type": "TYPOGRAPHY",
+                                    "id": "{{ID}}",
                                     "variant": "H3",
                                     "config": {
                                         "text": "Email OTP Verification"
                                     }
                                 },
                                 {
-                                    "id": "{{ID}}",
                                     "category": "BLOCK",
                                     "type": "FORM",
                                     "config": {},
+                                    "id": "{{ID}}",
                                     "components": [
                                         {
-                                            "id": "{{ID}}",
                                             "category": "FIELD",
                                             "type": "INPUT",
                                             "variant": "OTP",
                                             "config": {
                                                 "type": "text",
+                                                "hint": "",
+                                                "identifier": "otp",
                                                 "label": "Enter the code sent to your email",
-                                                "identifier": "otp"
-                                            }
+                                                "required": false,
+                                                "placeholder": ""
+                                            },
+                                            "id": "{{ID}}"
                                         },
                                         {
-                                            "id": "{{ID}}",
                                             "category": "ACTION",
                                             "type": "BUTTON",
+                                            "id": "{{ID}}",
                                             "variant": "PRIMARY",
                                             "config": {
                                                 "type": "submit",
@@ -1000,36 +1031,38 @@
                         "data": {
                             "components": [
                                 {
-                                    "id": "{{ID}}",
                                     "category": "DISPLAY",
                                     "type": "TYPOGRAPHY",
+                                    "id": "{{ID}}",
                                     "variant": "H3",
                                     "config": {
                                         "text": "Reset Password"
                                     }
                                 },
                                 {
-                                    "id": "{{ID}}",
                                     "category": "BLOCK",
                                     "type": "FORM",
                                     "config": {},
+                                    "id": "{{ID}}",
                                     "components": [
                                         {
-                                            "id": "{{ID}}",
                                             "category": "FIELD",
                                             "type": "INPUT",
                                             "variant": "PASSWORD",
                                             "config": {
                                                 "identifier": "password",
                                                 "type": "password",
+                                                "hint": "",
                                                 "label": "Password",
+                                                "required": true,
                                                 "placeholder": "Enter your password"
-                                            }
+                                            },
+                                            "id": "{{ID}}"
                                         },
                                         {
-                                            "id": "{{ID}}",
                                             "category": "ACTION",
                                             "type": "BUTTON",
+                                            "id": "{{ID}}",
                                             "variant": "PRIMARY",
                                             "config": {
                                                 "type": "submit",
