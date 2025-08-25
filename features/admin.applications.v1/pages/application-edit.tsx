@@ -180,7 +180,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     );
 
     useEffect(() => {
-        if (application && applicationInboundConfigs) {
+        if (application && applicationInboundConfigs && !application?.advancedConfigurations?.fragment) {
             const isAppOutdated: boolean = ApplicationManagementUtils.isApplicationOutdated(
                 application?.applicationVersion, true);
 
@@ -1022,7 +1022,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                 ApplicationManagementUtils.isApplicationOutdated(
                                     moderatedApplicationData?.applicationVersion,
                                     moderatedApplicationData?.clientId
-                                    && !isEmpty(moderatedApplicationData?.clientId)) && (
+                                    && !isEmpty(moderatedApplicationData?.clientId)) &&
+                                    !application?.advancedConfigurations?.fragment && (
                                     <>
                                         <Label
                                             className="outdated-app-label"
