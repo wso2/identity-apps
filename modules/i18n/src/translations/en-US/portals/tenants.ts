@@ -192,7 +192,7 @@ export const tenants: TenantsNS = {
             hint: "If you try to login to <1>{{domain}}</1> organization's Console using the same browser, you will have to logout from this active session first.",
             label: "Console URL"
         },
-        subtitle: "Crated on {{date}}"
+        subtitle: "Created on {{date}}"
     },
     editTenant: {
         actions: {
@@ -354,6 +354,9 @@ export const tenants: TenantsNS = {
     },
     tenantDropdown: {
         options: {
+            edit: {
+                label: "Edit Organization"
+            },
             manage: {
                 label: "Manage Root Organizations"
             }

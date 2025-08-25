@@ -1763,14 +1763,14 @@ export const getDefaultLayoutRoutes = (): RouteInterface[] => {
         {
             children: [
                 {
-                    component: lazy(() => import("@wso2is/admin.tenants.v1/pages/system-settings-page")),
+                    component: lazy(() => import("@wso2is/admin.tenants.v1/pages/edit-self-organization-page")),
                     exact: true,
                     icon: null,
-                    id: "systemSettings",
-                    order: 2,
-                    path: AppConstants.getPaths().get("SYSTEM_SETTINGS"),
+                    id: "editSelfOrganization",
+                    order: 0,
+                    path: AppConstants.getPaths().get("EDIT_SELF_ORGANIZATION"),
                     protected: true,
-                    showOnSidePanel: true
+                    showOnSidePanel: false
                 },
                 {
                     component: lazy(() => import("@wso2is/admin.tenants.v1/pages/edit-tenant-page")),
@@ -1781,6 +1781,16 @@ export const getDefaultLayoutRoutes = (): RouteInterface[] => {
                     path: AppConstants.getPaths().get("EDIT_TENANT"),
                     protected: true,
                     showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.tenants.v1/pages/system-settings-page")),
+                    exact: true,
+                    icon: null,
+                    id: "systemSettings",
+                    order: 2,
+                    path: AppConstants.getPaths().get("SYSTEM_SETTINGS"),
+                    protected: true,
+                    showOnSidePanel: true
                 }
             ],
             component: lazy(() => import("@wso2is/admin.tenants.v1/pages/tenants-page")),

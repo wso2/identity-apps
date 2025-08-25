@@ -25,6 +25,7 @@ import {
     BuildingCircleCheckIcon,
     BuildingPenIcon,
     HierarchyIcon,
+    PenToSquareIcon,
     PlusIcon
 } from "@oxygen-ui/react-icons";
 import {
@@ -667,6 +668,19 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                 );
             });
         }
+
+        options.push(
+            <Dropdown.Item
+                className="action-panel"
+                onClick={ (): void => {
+                    history.push(AppConstants.getPaths().get("EDIT_SELF_ORGANIZATION"));
+                } }
+                data-compnentid="edit-self-organization"
+            >
+                <PenToSquareIcon />
+                { t("tenants:tenantDropdown.options.edit.label") }
+            </Dropdown.Item>
+        );
 
         if (isManagingTenantsFromDropdownEnabled && isSuperOrganization()) {
             options.push(

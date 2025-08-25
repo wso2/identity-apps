@@ -348,6 +348,9 @@ export interface TenantsNS {
     };
     tenantDropdown: {
         options: {
+            edit: {
+                label: string;
+            };
             manage: {
                 label: string;
             };

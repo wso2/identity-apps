@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,18 @@
  * under the License.
  */
 
-export * from "./add-modal";
-export * from "./dropdown";
-export * from "./edit-self-organization";
-export * from "./forms";
+.edit-self-organization-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: var(--wso2is-admin-form-max-width);
+
+    p {
+        margin-top: -1.5rem;
+    }
+
+    .edit-self-organization-form-submit-button {
+        align-self: flex-start;
+        margin-top: var(--oxygen-spacing-2);
+    }
+}
